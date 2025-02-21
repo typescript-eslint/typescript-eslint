@@ -2,6 +2,7 @@ import type {
   ParserServicesWithTypeInformation,
   TSESTree,
 } from '@typescript-eslint/utils';
+import type { ReportSuggestionArray } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -33,7 +34,7 @@ export type Options = [
   },
 ];
 
-export type MessageId =
+type ConditionErrorMessageId =
   | 'conditionErrorAny'
   | 'conditionErrorNullableBoolean'
   | 'conditionErrorNullableEnum'
@@ -44,7 +45,9 @@ export type MessageId =
   | 'conditionErrorNumber'
   | 'conditionErrorObject'
   | 'conditionErrorOther'
-  | 'conditionErrorString'
+  | 'conditionErrorString';
+
+export type MessageId =
   | 'conditionFixCastBoolean'
   | 'conditionFixCompareArrayLengthNonzero'
   | 'conditionFixCompareArrayLengthZero'
@@ -61,9 +64,7 @@ export type MessageId =
   | 'explicitBooleanReturnType'
   | 'noStrictNullCheck'
   | 'predicateCannotBeAsync'
-  | 'predicateReturnsNonBoolean';
-
-type ConditionContext = 'array predicate' | 'conditional';
+  | ConditionErrorMessageId;
 
 export default createRule<Options, MessageId>({
   name: 'strict-boolean-expressions',
@@ -141,7 +142,6 @@ export default createRule<Options, MessageId>({
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
       predicateCannotBeAsync:
         "Predicate function should not be 'async'; expected a boolean return type.",
-      predicateReturnsNonBoolean: 'Predicate function should return a boolean.',
     },
     schema: [
       {
@@ -305,8 +305,6 @@ export default createRule<Options, MessageId>({
     /**
      * Dedicated function to check array method predicate calls. Reports predicate
      * arguments that don't return a boolean value.
-     *
-     * Ignores the `allow*` options and requires a boolean value.
      */
     function checkArrayMethodCallPredicate(
       predicateNode: TSESTree.CallExpressionArgument,
@@ -337,219 +335,68 @@ export default createRule<Options, MessageId>({
         ...new Set(returnTypes.flatMap(type => tsutils.unionTypeParts(type))),
       ];
       const types = inspectVariantTypes(flattenTypes);
-      const category = determineTypeCategory(types);
+      const reportType = determineReportType(types);
 
-      if (category === 'boolean' || category === 'never') {
+      if (reportType == null) {
         return;
       }
 
-      if (category === 'nullable boolean') {
-        if (options.allowNullableBoolean) {
-          return;
-        }
-
-        if (
-          isFunctionExpression &&
-          predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
-        ) {
-          reportUnexpectedNullableBooleanCondition(
-            predicateNode.body,
-            'array predicate',
-          );
-
-          return;
-        }
-      }
-
+      const suggestions: ReportSuggestionArray<MessageId> = [];
       if (
-        (options.allowNumber && category === 'nullable truthy number') ||
-        (options.allowString && category === 'nullable truthy string')
+        isFunctionExpression &&
+        predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
       ) {
-        return;
+        suggestions.push(
+          ...getSuggestionsForConditionError(predicateNode.body, reportType),
+        );
       }
 
-      if (category === 'nullable string') {
-        if (options.allowNullableString) {
-          return;
-        }
+      if (isFunctionExpression && !predicateNode.returnType) {
+        suggestions.push({
+          messageId: 'explicitBooleanReturnType',
+          fix: fixer => {
+            if (
+              predicateNode.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+              isParenlessArrowFunction(predicateNode, context.sourceCode)
+            ) {
+              return [
+                fixer.insertTextBefore(predicateNode.params[0], '('),
+                fixer.insertTextAfter(predicateNode.params[0], '): boolean'),
+              ];
+            }
 
-        if (
-          isFunctionExpression &&
-          predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
-        ) {
-          reportUnexpectedNullableStringCondition(
-            predicateNode.body,
-            'array predicate',
-          );
-          return;
-        }
-      }
+            if (predicateNode.params.length === 0) {
+              const closingBracket = nullThrows(
+                context.sourceCode.getFirstToken(
+                  predicateNode,
+                  token => token.value === ')',
+                ),
+                'function expression has to have a closing parenthesis.',
+              );
 
-      if (category === 'object' && isFunctionExpression) {
-        context.report({
-          node: predicateNode.body,
-          messageId: 'conditionErrorObject',
-          data: {
-            context: 'array predicate',
+              return fixer.insertTextAfter(closingBracket, ': boolean');
+            }
+
+            const lastClosingParenthesis = nullThrows(
+              context.sourceCode.getTokenAfter(
+                predicateNode.params[predicateNode.params.length - 1],
+                token => token.value === ')',
+              ),
+              'function expression has to have a closing parenthesis.',
+            );
+
+            return fixer.insertTextAfter(lastClosingParenthesis, ': boolean');
           },
         });
-        return;
       }
-
-      if (category === 'string') {
-        if (options.allowString) {
-          return;
-        }
-
-        if (
-          isFunctionExpression &&
-          predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
-        ) {
-          reportUnexpectedStringCondition(
-            predicateNode.body,
-            'array predicate',
-          );
-
-          return;
-        }
-      }
-
-      if (category === 'number') {
-        if (options.allowNumber) {
-          return;
-        }
-
-        if (
-          isFunctionExpression &&
-          predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
-        ) {
-          reportUnexpectedNumberCondition(
-            predicateNode.body,
-            'array predicate',
-          );
-
-          return;
-        }
-      }
-
-      if (category === 'nullable number') {
-        if (options.allowNullableNumber) {
-          return;
-        }
-
-        if (
-          isFunctionExpression &&
-          predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
-        ) {
-          reportUnexpectedNullableNumberCondition(
-            predicateNode.body,
-            'array predicate',
-          );
-
-          return;
-        }
-      }
-
-      if (category === 'nullable object') {
-        if (options.allowNullableObject) {
-          return;
-        }
-
-        if (
-          isFunctionExpression &&
-          predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
-        ) {
-          reportUnexpectedNullableObjectCondition(
-            predicateNode.body,
-            'array predicate',
-          );
-          return;
-        }
-      }
-
-      if (category === 'nullable enum') {
-        if (options.allowNullableEnum) {
-          return;
-        }
-
-        if (
-          isFunctionExpression &&
-          predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
-        ) {
-          reportUnexpectedNullableEnumCondition(
-            predicateNode.body,
-            'array predicate',
-          );
-          return;
-        }
-      }
-
-      if (category === 'any') {
-        if (options.allowAny) {
-          return;
-        }
-
-        if (
-          isFunctionExpression &&
-          predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
-        ) {
-          reportUnexpectedAnyCondition(predicateNode.body, 'array predicate');
-          return;
-        }
-      }
-
-      const canFix = isFunctionExpression && !predicateNode.returnType;
 
       return context.report({
         node: predicateNode,
-        messageId: 'predicateReturnsNonBoolean',
-        suggest: canFix
-          ? [
-              {
-                messageId: 'explicitBooleanReturnType',
-                fix: fixer => {
-                  if (
-                    predicateNode.type ===
-                      AST_NODE_TYPES.ArrowFunctionExpression &&
-                    isParenlessArrowFunction(predicateNode, context.sourceCode)
-                  ) {
-                    return [
-                      fixer.insertTextBefore(predicateNode.params[0], '('),
-                      fixer.insertTextAfter(
-                        predicateNode.params[0],
-                        '): boolean',
-                      ),
-                    ];
-                  }
-
-                  if (predicateNode.params.length === 0) {
-                    const closingBracket = nullThrows(
-                      context.sourceCode.getFirstToken(
-                        predicateNode,
-                        token => token.value === ')',
-                      ),
-                      'function expression has to have a closing parenthesis.',
-                    );
-
-                    return fixer.insertTextAfter(closingBracket, ': boolean');
-                  }
-
-                  const lastClosingParenthesis = nullThrows(
-                    context.sourceCode.getTokenAfter(
-                      predicateNode.params[predicateNode.params.length - 1],
-                      token => token.value === ')',
-                    ),
-                    'function expression has to have a closing parenthesis.',
-                  );
-
-                  return fixer.insertTextAfter(
-                    lastClosingParenthesis,
-                    ': boolean',
-                  );
-                },
-              },
-            ]
-          : null,
+        messageId: reportType,
+        data: {
+          context: 'array predicate return type',
+        },
+        suggest: suggestions,
       });
     }
 
@@ -588,64 +435,88 @@ export default createRule<Options, MessageId>({
       checkNode(node);
     }
 
-    function determineTypeCategory(types: Set<VariantType>) {
+    function determineReportType(
+      types: Set<VariantType>,
+    ): ConditionErrorMessageId | undefined {
       const is = (...wantedTypes: readonly VariantType[]): boolean =>
         types.size === wantedTypes.length &&
         wantedTypes.every(type => types.has(type));
 
+      // boolean
       if (is('boolean') || is('truthy boolean')) {
-        return 'boolean';
+        // boolean is always ok
+        return undefined;
       }
 
+      // never
       if (is('never')) {
-        return 'never';
+        // never is always okay
+        return undefined;
       }
 
+      // nullish
       if (is('nullish')) {
-        return 'nullish';
+        // condition is always false
+        return 'conditionErrorNullish';
       }
 
       // Known edge case: boolean `true` and nullish values are always valid boolean expressions
       if (is('nullish', 'truthy boolean')) {
-        return 'nullable truthy boolean';
+        return;
       }
 
+      // nullable boolean
       if (is('nullish', 'boolean')) {
-        return 'nullable boolean';
+        return !options.allowNullableBoolean
+          ? 'conditionErrorNullableBoolean'
+          : undefined;
       }
 
-      if (is('nullish', 'truthy string')) {
-        return 'nullable truthy string';
+      // Known edge case: truthy primitives and nullish values are always valid boolean expressions
+      if (
+        (options.allowNumber && is('nullish', 'truthy number')) ||
+        (options.allowString && is('nullish', 'truthy string'))
+      ) {
+        return;
       }
 
+      // string
       if (is('string') || is('truthy string')) {
-        return 'string';
+        return !options.allowString ? 'conditionErrorString' : undefined;
       }
 
+      // nullable string
       if (is('nullish', 'string')) {
-        return 'nullable string';
+        return !options.allowNullableString
+          ? 'conditionErrorNullableString'
+          : undefined;
       }
 
-      if (is('nullish', 'truthy number')) {
-        return 'nullable truthy number';
-      }
-
+      // number
       if (is('number') || is('truthy number')) {
-        return 'number';
+        return !options.allowNumber ? 'conditionErrorNumber' : undefined;
       }
 
+      // nullable number
       if (is('nullish', 'number')) {
-        return 'nullable number';
+        return !options.allowNullableNumber
+          ? 'conditionErrorNullableNumber'
+          : undefined;
       }
 
+      // object
       if (is('object')) {
-        return 'object';
+        return 'conditionErrorObject';
       }
 
+      // nullable object
       if (is('nullish', 'object')) {
-        return 'nullable object';
+        return !options.allowNullableObject
+          ? 'conditionErrorNullableObject'
+          : undefined;
       }
 
+      // nullable enum
       if (
         is('nullish', 'number', 'enum') ||
         is('nullish', 'string', 'enum') ||
@@ -657,81 +528,151 @@ export default createRule<Options, MessageId>({
         is('nullish', 'truthy string', 'number', 'enum') ||
         is('nullish', 'number', 'string', 'enum')
       ) {
-        return 'nullable enum';
+        return !options.allowNullableEnum
+          ? 'conditionErrorNullableEnum'
+          : undefined;
       }
 
+      // any
       if (is('any')) {
-        return 'any';
+        return !options.allowAny ? 'conditionErrorAny' : undefined;
       }
 
-      return null;
+      return 'conditionErrorOther';
     }
 
-    function reportUnexpectedStringCondition(
+    function getSuggestionsForConditionError(
       node: TSESTree.Expression,
-      conditionContext: ConditionContext,
-    ) {
-      if (isLogicalNegationExpression(node.parent)) {
-        // if (!string)
-        context.report({
-          node,
-          messageId: 'conditionErrorString',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
-            {
-              messageId: 'conditionFixCompareStringLength',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code}.length === 0`,
-              }),
-            },
-            {
-              messageId: 'conditionFixCompareEmptyString',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} === ""`,
-              }),
-            },
+      conditionError: ConditionErrorMessageId,
+    ): ReportSuggestionArray<MessageId> {
+      switch (conditionError) {
+        case 'conditionErrorAny':
+          return [
             {
               messageId: 'conditionFixCastBoolean',
               fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
+                node,
                 sourceCode: context.sourceCode,
-                wrap: code => `!Boolean(${code})`,
+                wrap: code => `Boolean(${code})`,
               }),
             },
-          ],
-        });
-      } else {
-        // if (string)
-        context.report({
-          node,
-          messageId: 'conditionErrorString',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
+          ];
+        case 'conditionErrorNullableBoolean':
+          if (isLogicalNegationExpression(node.parent)) {
+            // if (!nullableBoolean)
+            return [
+              {
+                messageId: 'conditionFixDefaultFalse',
+                fix: getWrappingFixer({
+                  node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `${code} ?? false`,
+                }),
+              },
+              {
+                messageId: 'conditionFixCompareFalse',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `${code} === false`,
+                }),
+              },
+            ];
+          }
+          // if (nullableBoolean)
+          return [
             {
-              messageId: 'conditionFixCompareStringLength',
+              messageId: 'conditionFixDefaultFalse',
               fix: getWrappingFixer({
                 node,
                 sourceCode: context.sourceCode,
-                wrap: code => `${code}.length > 0`,
+                wrap: code => `${code} ?? false`,
               }),
             },
             {
-              messageId: 'conditionFixCompareEmptyString',
+              messageId: 'conditionFixCompareTrue',
               fix: getWrappingFixer({
                 node,
                 sourceCode: context.sourceCode,
-                wrap: code => `${code} !== ""`,
+                wrap: code => `${code} === true`,
+              }),
+            },
+          ];
+
+        case 'conditionErrorNullableEnum':
+          if (isLogicalNegationExpression(node.parent)) {
+            return [
+              {
+                messageId: 'conditionFixCompareNullish',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `${code} == null`,
+                }),
+              },
+            ];
+          }
+          return [
+            {
+              messageId: 'conditionFixCompareNullish',
+              fix: getWrappingFixer({
+                node,
+                sourceCode: context.sourceCode,
+                wrap: code => `${code} != null`,
+              }),
+            },
+          ];
+
+        case 'conditionErrorNullableNumber':
+          if (isLogicalNegationExpression(node.parent)) {
+            // if (!nullableNumber)
+            return [
+              {
+                messageId: 'conditionFixCompareNullish',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `${code} == null`,
+                }),
+              },
+              {
+                messageId: 'conditionFixDefaultZero',
+                fix: getWrappingFixer({
+                  node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `${code} ?? 0`,
+                }),
+              },
+              {
+                messageId: 'conditionFixCastBoolean',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `!Boolean(${code})`,
+                }),
+              },
+            ];
+          }
+          // if (nullableNumber)
+          return [
+            {
+              messageId: 'conditionFixCompareNullish',
+              fix: getWrappingFixer({
+                node,
+                sourceCode: context.sourceCode,
+                wrap: code => `${code} != null`,
+              }),
+            },
+            {
+              messageId: 'conditionFixDefaultZero',
+              fix: getWrappingFixer({
+                node,
+                sourceCode: context.sourceCode,
+                wrap: code => `${code} ?? 0`,
               }),
             },
             {
@@ -742,61 +683,69 @@ export default createRule<Options, MessageId>({
                 wrap: code => `Boolean(${code})`,
               }),
             },
-          ],
-        });
-      }
-    }
+          ];
 
-    function reportUnexpectedNullableStringCondition(
-      node: TSESTree.Expression,
-      conditionContext: ConditionContext,
-    ) {
-      if (isLogicalNegationExpression(node.parent)) {
-        // if (!nullableString)
-        context.report({
-          node,
-          messageId: 'conditionErrorNullableString',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
+        case 'conditionErrorNullableObject':
+          if (isLogicalNegationExpression(node.parent)) {
+            // if (!nullableObject)
+            return [
+              {
+                messageId: 'conditionFixCompareNullish',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `${code} == null`,
+                }),
+              },
+            ];
+          }
+          // if (nullableObject)
+          return [
             {
               messageId: 'conditionFixCompareNullish',
               fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} == null`,
-              }),
-            },
-            {
-              messageId: 'conditionFixDefaultEmptyString',
-              fix: getWrappingFixer({
                 node,
                 sourceCode: context.sourceCode,
-                wrap: code => `${code} ?? ""`,
+                wrap: code => `${code} != null`,
               }),
             },
-            {
-              messageId: 'conditionFixCastBoolean',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `!Boolean(${code})`,
-              }),
-            },
-          ],
-        });
-      } else {
-        // if (nullableString)
-        context.report({
-          node,
-          messageId: 'conditionErrorNullableString',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
+          ];
+
+        case 'conditionErrorNullableString':
+          if (isLogicalNegationExpression(node.parent)) {
+            // if (!nullableString)
+            return [
+              {
+                messageId: 'conditionFixCompareNullish',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `${code} == null`,
+                }),
+              },
+              {
+                messageId: 'conditionFixDefaultEmptyString',
+                fix: getWrappingFixer({
+                  node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `${code} ?? ""`,
+                }),
+              },
+              {
+                messageId: 'conditionFixCastBoolean',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `!Boolean(${code})`,
+                }),
+              },
+            ];
+          }
+          // if (nullableString)
+          return [
             {
               messageId: 'conditionFixCompareNullish',
               fix: getWrappingFixer({
@@ -821,45 +770,26 @@ export default createRule<Options, MessageId>({
                 wrap: code => `Boolean(${code})`,
               }),
             },
-          ],
-        });
-      }
-    }
+          ];
 
-    function reportUnexpectedNumberCondition(
-      node: TSESTree.Expression,
-      conditionContext: ConditionContext,
-    ) {
-      if (isArrayLengthExpression(node, checker, services)) {
-        if (isLogicalNegationExpression(node.parent)) {
-          // if (!array.length)
-          context.report({
-            node,
-            messageId: 'conditionErrorNumber',
-            data: {
-              context: conditionContext,
-            },
-            suggest: [
-              {
-                messageId: 'conditionFixCompareArrayLengthZero',
-                fix: getWrappingFixer({
-                  node: node.parent,
-                  innerNode: node,
-                  sourceCode: context.sourceCode,
-                  wrap: code => `${code} === 0`,
-                }),
-              },
-            ],
-          });
-        } else {
-          // if (array.length)
-          context.report({
-            node,
-            messageId: 'conditionErrorNumber',
-            data: {
-              context: conditionContext,
-            },
-            suggest: [
+        case 'conditionErrorNumber':
+          if (isArrayLengthExpression(node, checker, services)) {
+            if (isLogicalNegationExpression(node.parent)) {
+              // if (!array.length)
+              return [
+                {
+                  messageId: 'conditionFixCompareArrayLengthZero',
+                  fix: getWrappingFixer({
+                    node: node.parent,
+                    innerNode: node,
+                    sourceCode: context.sourceCode,
+                    wrap: code => `${code} === 0`,
+                  }),
+                },
+              ];
+            }
+            // if (array.length)
+            return [
               {
                 messageId: 'conditionFixCompareArrayLengthNonzero',
                 fix: getWrappingFixer({
@@ -868,58 +798,44 @@ export default createRule<Options, MessageId>({
                   wrap: code => `${code} > 0`,
                 }),
               },
-            ],
-          });
-        }
-      } else if (isLogicalNegationExpression(node.parent)) {
-        // if (!number)
-        context.report({
-          node,
-          messageId: 'conditionErrorNumber',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
-            {
-              messageId: 'conditionFixCompareZero',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                // TODO: we have to compare to 0n if the type is bigint
-                wrap: code => `${code} === 0`,
-              }),
-            },
-            {
-              // TODO: don't suggest this for bigint because it can't be NaN
-              messageId: 'conditionFixCompareNaN',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `Number.isNaN(${code})`,
-              }),
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `!Boolean(${code})`,
-              }),
-            },
-          ],
-        });
-      } else {
-        // if (number)
-        context.report({
-          node,
-          messageId: 'conditionErrorNumber',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
+            ];
+          }
+          if (isLogicalNegationExpression(node.parent)) {
+            // if (!number)
+            return [
+              {
+                messageId: 'conditionFixCompareZero',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  // TODO: we have to compare to 0n if the type is bigint
+                  wrap: code => `${code} === 0`,
+                }),
+              },
+              {
+                // TODO: don't suggest this for bigint because it can't be NaN
+                messageId: 'conditionFixCompareNaN',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `Number.isNaN(${code})`,
+                }),
+              },
+              {
+                messageId: 'conditionFixCastBoolean',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `!Boolean(${code})`,
+                }),
+              },
+            ];
+          }
+          // if (number)
+          return [
             {
               messageId: 'conditionFixCompareZero',
               fix: getWrappingFixer({
@@ -944,75 +860,57 @@ export default createRule<Options, MessageId>({
                 wrap: code => `Boolean(${code})`,
               }),
             },
-          ],
-        });
-      }
-    }
+          ];
 
-    function reportUnexpectedNullableNumberCondition(
-      node: TSESTree.Expression,
-      conditionContext: ConditionContext,
-    ) {
-      if (isLogicalNegationExpression(node.parent)) {
-        // if (!nullableNumber)
-        context.report({
-          node,
-          messageId: 'conditionErrorNullableNumber',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
+        case 'conditionErrorString':
+          if (isLogicalNegationExpression(node.parent)) {
+            // if (!string)
+            return [
+              {
+                messageId: 'conditionFixCompareStringLength',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `${code}.length === 0`,
+                }),
+              },
+              {
+                messageId: 'conditionFixCompareEmptyString',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `${code} === ""`,
+                }),
+              },
+              {
+                messageId: 'conditionFixCastBoolean',
+                fix: getWrappingFixer({
+                  node: node.parent,
+                  innerNode: node,
+                  sourceCode: context.sourceCode,
+                  wrap: code => `!Boolean(${code})`,
+                }),
+              },
+            ];
+          }
+          // if (string)
+          return [
             {
-              messageId: 'conditionFixCompareNullish',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} == null`,
-              }),
-            },
-            {
-              messageId: 'conditionFixDefaultZero',
-              fix: getWrappingFixer({
-                node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} ?? 0`,
-              }),
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `!Boolean(${code})`,
-              }),
-            },
-          ],
-        });
-      } else {
-        // if (nullableNumber)
-        context.report({
-          node,
-          messageId: 'conditionErrorNullableNumber',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
-            {
-              messageId: 'conditionFixCompareNullish',
+              messageId: 'conditionFixCompareStringLength',
               fix: getWrappingFixer({
                 node,
                 sourceCode: context.sourceCode,
-                wrap: code => `${code} != null`,
+                wrap: code => `${code}.length > 0`,
               }),
             },
             {
-              messageId: 'conditionFixDefaultZero',
+              messageId: 'conditionFixCompareEmptyString',
               fix: getWrappingFixer({
                 node,
                 sourceCode: context.sourceCode,
-                wrap: code => `${code} ?? 0`,
+                wrap: code => `${code} !== ""`,
               }),
             },
             {
@@ -1023,184 +921,16 @@ export default createRule<Options, MessageId>({
                 wrap: code => `Boolean(${code})`,
               }),
             },
-          ],
-        });
-      }
-    }
+          ];
 
-    function reportUnexpectedNullableBooleanCondition(
-      node: TSESTree.Expression,
-      conditionContext: ConditionContext,
-    ) {
-      if (isLogicalNegationExpression(node.parent)) {
-        // if (!nullableBoolean)
-        context.report({
-          node,
-          messageId: 'conditionErrorNullableBoolean',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
-            {
-              messageId: 'conditionFixDefaultFalse',
-              fix: getWrappingFixer({
-                node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} ?? false`,
-              }),
-            },
-            {
-              messageId: 'conditionFixCompareFalse',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} === false`,
-              }),
-            },
-          ],
-        });
-      } else {
-        // if (nullableBoolean)
-        context.report({
-          node,
-          messageId: 'conditionErrorNullableBoolean',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
-            {
-              messageId: 'conditionFixDefaultFalse',
-              fix: getWrappingFixer({
-                node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} ?? false`,
-              }),
-            },
-            {
-              messageId: 'conditionFixCompareTrue',
-              fix: getWrappingFixer({
-                node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} === true`,
-              }),
-            },
-          ],
-        });
+        case 'conditionErrorObject':
+        case 'conditionErrorNullish':
+        case 'conditionErrorOther':
+          return [];
+        default:
+          conditionError satisfies never;
+          throw new Error('Unreachable');
       }
-    }
-
-    function reportUnexpectedNullableObjectCondition(
-      node: TSESTree.Expression,
-      conditionContext: ConditionContext,
-    ) {
-      if (isLogicalNegationExpression(node.parent)) {
-        // if (!nullableObject)
-        context.report({
-          node,
-          messageId: 'conditionErrorNullableObject',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} == null`,
-              }),
-            },
-          ],
-        });
-      } else {
-        // if (nullableObject)
-        context.report({
-          node,
-          messageId: 'conditionErrorNullableObject',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              fix: getWrappingFixer({
-                node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} != null`,
-              }),
-            },
-          ],
-        });
-      }
-    }
-
-    function reportUnexpectedNullableEnumCondition(
-      node: TSESTree.Expression,
-      conditionContext: ConditionContext,
-    ) {
-      if (isLogicalNegationExpression(node.parent)) {
-        context.report({
-          node,
-          messageId: 'conditionErrorNullableEnum',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} == null`,
-              }),
-            },
-          ],
-        });
-      } else {
-        context.report({
-          node,
-          messageId: 'conditionErrorNullableEnum',
-          data: {
-            context: conditionContext,
-          },
-          suggest: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              fix: getWrappingFixer({
-                node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} != null`,
-              }),
-            },
-          ],
-        });
-      }
-    }
-
-    function reportUnexpectedAnyCondition(
-      node: TSESTree.Expression,
-      conditionContext: ConditionContext,
-    ) {
-      context.report({
-        node,
-        messageId: 'conditionErrorAny',
-        data: {
-          context: conditionContext,
-        },
-        suggest: [
-          {
-            messageId: 'conditionFixCastBoolean',
-            fix: getWrappingFixer({
-              node,
-              sourceCode: context.sourceCode,
-              wrap: code => `Boolean(${code})`,
-            }),
-          },
-        ],
-      });
     }
 
     /**
@@ -1210,100 +940,18 @@ export default createRule<Options, MessageId>({
     function checkNode(node: TSESTree.Expression): void {
       const type = getConstrainedTypeAtLocation(services, node);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
-      const category = determineTypeCategory(types);
+      const reportType = determineReportType(types);
 
-      if (category === 'boolean' || category === 'never') {
-        return;
-      }
-
-      if (category === 'nullish') {
-        // condition is always false
-        context.report({ node, messageId: 'conditionErrorNullish' });
-        return;
-      }
-
-      if (category === 'nullable truthy boolean') {
-        return;
-      }
-
-      if (category === 'nullable boolean') {
-        if (!options.allowNullableBoolean) {
-          reportUnexpectedNullableBooleanCondition(node, 'conditional');
-        }
-        return;
-      }
-
-      // Known edge case: truthy primitives and nullish values are always valid boolean expressions
-      if (
-        (options.allowNumber && category === 'nullable truthy number') ||
-        (options.allowString && category === 'nullable truthy string')
-      ) {
-        return;
-      }
-
-      if (category === 'string') {
-        if (!options.allowString) {
-          reportUnexpectedStringCondition(node, 'conditional');
-        }
-        return;
-      }
-
-      if (category === 'nullable string') {
-        if (!options.allowNullableString) {
-          reportUnexpectedNullableStringCondition(node, 'conditional');
-        }
-        return;
-      }
-
-      if (category === 'number') {
-        if (!options.allowNumber) {
-          reportUnexpectedNumberCondition(node, 'conditional');
-        }
-        return;
-      }
-
-      if (category === 'nullable number') {
-        if (!options.allowNullableNumber) {
-          reportUnexpectedNullableNumberCondition(node, 'conditional');
-        }
-        return;
-      }
-
-      if (category === 'object') {
-        // condition is always true
+      if (reportType != null) {
         context.report({
           node,
-          messageId: 'conditionErrorObject',
+          messageId: reportType,
           data: {
             context: 'conditional',
           },
+          suggest: getSuggestionsForConditionError(node, reportType),
         });
-        return;
       }
-
-      if (category === 'nullable object') {
-        if (!options.allowNullableObject) {
-          reportUnexpectedNullableObjectCondition(node, 'conditional');
-        }
-        return;
-      }
-
-      if (category === 'nullable enum') {
-        if (!options.allowNullableEnum) {
-          reportUnexpectedNullableEnumCondition(node, 'conditional');
-        }
-        return;
-      }
-
-      if (category === 'any') {
-        if (!options.allowAny) {
-          reportUnexpectedAnyCondition(node, 'conditional');
-        }
-        return;
-      }
-
-      // other
-      context.report({ node, messageId: 'conditionErrorOther' });
     }
 
     /** The types we care about */

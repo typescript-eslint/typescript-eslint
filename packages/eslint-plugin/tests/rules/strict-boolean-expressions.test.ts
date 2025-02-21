@@ -775,7 +775,7 @@ declare function f(x: string | null): boolean;
       errors: [
         {
           data: {
-            context: 'array predicate',
+            context: 'array predicate return type',
           },
           messageId: 'conditionErrorString',
           suggestions: [
@@ -798,6 +798,13 @@ declare function f(x: string | null): boolean;
               output: `
         declare const array: string[];
         array.some(x => Boolean(x));
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+        declare const array: string[];
+        array.some((x): boolean => x);
       `,
             },
           ],
@@ -3518,7 +3525,7 @@ assert(Boolean(nullableString));
           endColumn: 2,
           endLine: 4,
           line: 2,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'explicitBooleanReturnType',
@@ -3545,7 +3552,7 @@ assert(Boolean(nullableString));
           endColumn: 2,
           endLine: 4,
           line: 2,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorNullish',
           suggestions: [
             {
               messageId: 'explicitBooleanReturnType',
@@ -3571,7 +3578,7 @@ assert(Boolean(nullableString));
           endColumn: 2,
           endLine: 4,
           line: 2,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorNullish',
           suggestions: [
             {
               messageId: 'explicitBooleanReturnType',
@@ -3589,7 +3596,7 @@ assert(Boolean(nullableString));
       code: `
 ['one', 'two', ''].find(x => {
   if (x) {
-    return true;
+    return Math.random() > 0.5;
   }
 });
       `,
@@ -3599,14 +3606,14 @@ assert(Boolean(nullableString));
           endColumn: 2,
           endLine: 6,
           line: 2,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorNullableBoolean',
           suggestions: [
             {
               messageId: 'explicitBooleanReturnType',
               output: `
 ['one', 'two', ''].find((x): boolean => {
   if (x) {
-    return true;
+    return Math.random() > 0.5;
   }
 });
       `,
@@ -3619,7 +3626,7 @@ assert(Boolean(nullableString));
       code: `
 const predicate = (x: string) => {
   if (x) {
-    return true;
+    return Math.random() > 0.5;
   }
 };
 
@@ -3631,9 +3638,10 @@ const predicate = (x: string) => {
           endColumn: 34,
           endLine: 8,
           line: 8,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorNullableBoolean',
         },
       ],
+      options: [{ allowNullableBoolean: false }],
     },
     {
       code: `
@@ -3668,7 +3676,7 @@ const predicate = async x => {
           endColumn: 26,
           endLine: 6,
           line: 6,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorObject',
         },
       ],
     },
@@ -3684,7 +3692,7 @@ const predicate = async x => {
           endColumn: 2,
           endLine: 4,
           line: 2,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorOther',
         },
       ],
     },
@@ -3700,7 +3708,7 @@ const predicate = async x => {
           endColumn: 2,
           endLine: 4,
           line: 2,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorNullableBoolean',
         },
       ],
     },
@@ -3715,7 +3723,7 @@ const predicate = async x => {
           endColumn: 29,
           endLine: 2,
           line: 2,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorNullish',
           suggestions: [
             {
               messageId: 'explicitBooleanReturnType',
@@ -3737,7 +3745,7 @@ const predicate = async x => {
           endColumn: 45,
           endLine: 2,
           line: 2,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorNullish',
           suggestions: [
             {
               messageId: 'explicitBooleanReturnType',
@@ -3759,7 +3767,7 @@ const predicate = async x => {
           endColumn: 51,
           endLine: 2,
           line: 2,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorNullish',
           suggestions: [
             {
               messageId: 'explicitBooleanReturnType',
@@ -3781,7 +3789,7 @@ const predicate = async x => {
           endColumn: 32,
           endLine: 2,
           line: 2,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorNullish',
           suggestions: [
             {
               messageId: 'explicitBooleanReturnType',
@@ -3807,7 +3815,7 @@ declare function f(x: string | null): boolean;
           endColumn: 14,
           endLine: 5,
           line: 5,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorOther',
         },
       ],
     },
@@ -3825,14 +3833,14 @@ declare function f(x: string | null): boolean;
           endColumn: 14,
           endLine: 6,
           line: 6,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorOther',
         },
       ],
     },
     // type constraints
     {
       code: `
-function foo<T>(x: number): T {}
+declare function foo<T>(x: number): T;
 [1, null].every(foo);
       `,
       errors: [
@@ -3841,7 +3849,7 @@ function foo<T>(x: number): T {}
           endColumn: 20,
           endLine: 3,
           line: 3,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorAny',
         },
       ],
     },
@@ -3856,7 +3864,7 @@ function foo<T extends number>(x: number): T {}
           endColumn: 20,
           endLine: 3,
           line: 3,
-          messageId: 'predicateReturnsNonBoolean',
+          messageId: 'conditionErrorNumber',
         },
       ],
       options: [
@@ -3872,9 +3880,9 @@ declare const nullOrString: string | null;
       `,
       errors: [
         {
-          column: 27,
+          column: 22,
           data: {
-            context: 'array predicate',
+            context: 'array predicate return type',
           },
           endColumn: 39,
           endLine: 3,
@@ -3900,6 +3908,13 @@ declare const nullOrString: string | null;
               output: `
 declare const nullOrString: string | null;
 ['one', null].filter(x => Boolean(nullOrString));
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter((x): boolean => nullOrString);
       `,
             },
           ],
@@ -3954,9 +3969,9 @@ declare const anyValue: any;
       `,
       errors: [
         {
-          column: 27,
+          column: 22,
           data: {
-            context: 'array predicate',
+            context: 'array predicate return type',
           },
           endColumn: 35,
           endLine: 3,
@@ -3970,6 +3985,13 @@ declare const anyValue: any;
 ['one', null].filter(x => Boolean(anyValue));
       `,
             },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+declare const anyValue: any;
+['one', null].filter((x): boolean => anyValue);
+      `,
+            },
           ],
         },
       ],
@@ -3981,9 +4003,9 @@ declare const nullOrBoolean: boolean | null;
       `,
       errors: [
         {
-          column: 26,
+          column: 21,
           data: {
-            context: 'array predicate',
+            context: 'array predicate return type',
           },
           endColumn: 39,
           endLine: 3,
@@ -4004,6 +4026,13 @@ declare const nullOrBoolean: boolean | null;
 [true, null].filter(x => nullOrBoolean === true);
       `,
             },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+declare const nullOrBoolean: boolean | null;
+[true, null].filter((x): boolean => nullOrBoolean);
+      `,
+            },
           ],
         },
       ],
@@ -4019,9 +4048,9 @@ const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
       `,
       errors: [
         {
-          column: 20,
+          column: 15,
           data: {
-            context: 'array predicate',
+            context: 'array predicate return type',
           },
           endColumn: 27,
           endLine: 7,
@@ -4039,6 +4068,17 @@ const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
 [0, 1].filter(x => theEnum != null);
       `,
             },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+[0, 1].filter((x): boolean => theEnum);
+      `,
+            },
           ],
         },
       ],
@@ -4050,9 +4090,9 @@ declare const nullOrNumber: number | null;
       `,
       errors: [
         {
-          column: 23,
+          column: 18,
           data: {
-            context: 'array predicate',
+            context: 'array predicate return type',
           },
           endColumn: 35,
           endLine: 3,
@@ -4080,6 +4120,13 @@ declare const nullOrNumber: number | null;
 [0, null].filter(x => Boolean(nullOrNumber));
       `,
             },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+declare const nullOrNumber: number | null;
+[0, null].filter((x): boolean => nullOrNumber);
+      `,
+            },
           ],
         },
       ],
@@ -4091,14 +4138,23 @@ const objectValue: object = {};
       `,
       errors: [
         {
-          column: 28,
+          column: 23,
           data: {
-            context: 'array predicate',
+            context: 'array predicate return type',
           },
           endColumn: 39,
           endLine: 3,
           line: 3,
           messageId: 'conditionErrorObject',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+const objectValue: object = {};
+[{ a: 0 }, {}].filter((x): boolean => objectValue);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -4111,14 +4167,25 @@ const objectValue: object = {};
       `,
       errors: [
         {
-          column: 28,
+          column: 23,
           data: {
-            context: 'array predicate',
+            context: 'array predicate return type',
           },
           endColumn: 2,
           endLine: 5,
           line: 3,
           messageId: 'conditionErrorObject',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+const objectValue: object = {};
+[{ a: 0 }, {}].filter((x): boolean => {
+  return objectValue;
+});
+      `,
+            },
+          ],
         },
       ],
     },
@@ -4129,9 +4196,9 @@ declare const nullOrObject: object | null;
       `,
       errors: [
         {
-          column: 30,
+          column: 25,
           data: {
-            context: 'array predicate',
+            context: 'array predicate return type',
           },
           endColumn: 42,
           endLine: 3,
@@ -4143,6 +4210,13 @@ declare const nullOrObject: object | null;
               output: `
 declare const nullOrObject: object | null;
 [{ a: 0 }, null].filter(x => nullOrObject != null);
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+declare const nullOrObject: object | null;
+[{ a: 0 }, null].filter((x): boolean => nullOrObject);
       `,
             },
           ],
@@ -4157,9 +4231,9 @@ const numbers: number[] = [1];
       `,
       errors: [
         {
-          column: 20,
+          column: 15,
           data: {
-            context: 'array predicate',
+            context: 'array predicate return type',
           },
           endColumn: 34,
           endLine: 3,
@@ -4171,6 +4245,13 @@ const numbers: number[] = [1];
               output: `
 const numbers: number[] = [1];
 [1, 2].filter(x => numbers.length > 0);
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+const numbers: number[] = [1];
+[1, 2].filter((x): boolean => numbers.length);
       `,
             },
           ],
@@ -4185,9 +4266,9 @@ const numberValue: number = 1;
       `,
       errors: [
         {
-          column: 20,
+          column: 15,
           data: {
-            context: 'array predicate',
+            context: 'array predicate return type',
           },
           endColumn: 31,
           endLine: 3,
@@ -4215,6 +4296,13 @@ const numberValue: number = 1;
 [1, 2].filter(x => Boolean(numberValue));
       `,
             },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+const numberValue: number = 1;
+[1, 2].filter((x): boolean => numberValue);
+      `,
+            },
           ],
         },
       ],
@@ -4227,9 +4315,9 @@ const stringValue: string = 'hoge';
       `,
       errors: [
         {
-          column: 29,
+          column: 24,
           data: {
-            context: 'array predicate',
+            context: 'array predicate return type',
           },
           endColumn: 40,
           endLine: 3,
@@ -4255,6 +4343,13 @@ const stringValue: string = 'hoge';
               output: `
 const stringValue: string = 'hoge';
 ['hoge', 'foo'].filter(x => Boolean(stringValue));
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+const stringValue: string = 'hoge';
+['hoge', 'foo'].filter((x): boolean => stringValue);
       `,
             },
           ],
