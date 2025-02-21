@@ -11,6 +11,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       "ignoreDifferentlyNamedParameters": {
         "description": "Whether two parameters with different names at the same index should be considered different even if their types are the same.",
         "type": "boolean"
+      },
+      "ignoreOverloadsWithDifferentJSDoc": {
+        "description": "Whether two overloads with different JSDoc comments should be considered different even if their parameter and return types are the same.",
+        "type": "boolean"
       }
     },
     "type": "object"
@@ -24,6 +28,8 @@ type Options = [
   {
     /** Whether two parameters with different names at the same index should be considered different even if their types are the same. */
     ignoreDifferentlyNamedParameters?: boolean;
+    /** Whether two overloads with different JSDoc comments should be considered different even if their parameter and return types are the same. */
+    ignoreOverloadsWithDifferentJSDoc?: boolean;
   },
 ];
 "
