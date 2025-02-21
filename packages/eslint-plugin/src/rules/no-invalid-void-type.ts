@@ -81,6 +81,7 @@ export default createRule<[Options], MessageIds>({
       AST_NODE_TYPES.TSPropertySignature,
       AST_NODE_TYPES.CallExpression,
       AST_NODE_TYPES.PropertyDefinition,
+      AST_NODE_TYPES.AccessorProperty,
       AST_NODE_TYPES.Identifier,
     ];
     const validUnionMembers: AST_NODE_TYPES[] = [
