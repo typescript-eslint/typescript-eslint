@@ -44,7 +44,7 @@ assert(maybeString);
 
 // array predicates' return types are boolean contexts.
 ['one', null].filter(x => x);
-                          ~ Unexpected nullable string value in array predicate. Please handle the nullish/empty cases explicitly.
+                     ~~~~~~ Unexpected nullable string value in array predicate return type. Please handle the nullish/empty cases explicitly.
 "
 `;
 
