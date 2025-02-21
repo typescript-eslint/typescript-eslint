@@ -25,7 +25,7 @@ export * from './scopeUtils';
 export * from './types';
 export * from './getConstraintInfo';
 export * from './getValueOfLiteralType';
-export * from './truthinessAndNullishUtils';
+export * from './truthinessUtils';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';
