@@ -2912,5 +2912,65 @@ class B extends A {
         },
       ],
     },
+    {
+      code: `
+        const a = {
+          /** @deprecated */
+          b: 'string',
+        };
+
+        const c = a['b'];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: 'b' },
+          endColumn: 24,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        const a = {
+          /** @deprecated */
+          b: 'string',
+        };
+        const x = 'b';
+        const c = a[x];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: 'b' },
+          endColumn: 22,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        const a = {
+          /** @deprecated */
+          [2]: 'string',
+        };
+        const x = 'b';
+        const c = a[2];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: '2' },
+          endColumn: 22,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
   ],
 });
