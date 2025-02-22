@@ -3,7 +3,6 @@
   "devDependencies": {
     "@types/eslint__eslintrc": "latest",
     "@eslint/eslintrc": "latest",
-    "@types/eslint__js": "^8",
     "@eslint/js": "latest",
     "@types/eslint": "^8",
     "eslint": "9.9.1",
