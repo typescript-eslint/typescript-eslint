@@ -6,7 +6,9 @@ import type {
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
-const baseRule = getESLintCoreRule('no-loss-of-precision');
+const baseRule: ReturnType<typeof getESLintCoreRule> = getESLintCoreRule(
+  'no-loss-of-precision',
+);
 
 export type Options = InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
 export type MessageIds = InferMessageIdsTypeFromRule<

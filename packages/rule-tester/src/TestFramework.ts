@@ -1,3 +1,8 @@
+// These globals may or may not exist, we check for them at runtime
+declare const describe: RuleTesterTestFrameworkFunction | undefined;
+declare const it: RuleTesterTestFrameworkItFunction | undefined;
+declare const afterAll: AfterAll | undefined;
+
 /**
  * @param text a string describing the rule
  */
