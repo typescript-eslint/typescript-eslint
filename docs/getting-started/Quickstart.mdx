@@ -39,7 +39,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
-  tseslint.configs.recommended,
+  ...tseslint.configs.recommended,
 );
 ```
 
@@ -103,11 +103,11 @@ We recommend you consider enabling the following two configs:
 export default tseslint.config(
   eslint.configs.recommended,
   // Remove this line
-  tseslint.configs.recommended,
+  ...tseslint.configs.recommended,
   // Add this line
-  tseslint.configs.strict,
+  ...tseslint.configs.strict,
   // Add this line
-  tseslint.configs.stylistic,
+  ...tseslint.configs.stylistic,
 );
 ```
 
