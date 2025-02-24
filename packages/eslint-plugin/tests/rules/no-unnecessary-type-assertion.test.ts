@@ -416,6 +416,18 @@ enum T {
 const b = 1 as T.Value2;
       `,
     },
+    `
+const foo: unknown = {};
+const bar: object = foo!;
+const baz: {} = foo!;
+    `,
+    `
+function foo<T extends unknown>(bar: T) {
+  return {} as T;
+}
+const baz: unknown = {}
+foo(baz!);
+    `,
   ],
 
   invalid: [
@@ -1333,6 +1345,38 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    {
+      code: `
+const foo: unknown = {};
+const bar: unknown = foo!;
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+const foo: unknown = {};
+const bar: unknown = foo;
+      `,
+    },
+    {
+      code: `
+function foo(bar: unknown) {}
+const baz: unknown = {};
+foo(baz!);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function foo(bar: unknown) {}
+const baz: unknown = {};
+foo(baz);
       `,
     },
   ],
