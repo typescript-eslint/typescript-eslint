@@ -3,6 +3,7 @@ export type PreferOptionalChainMessageIds =
   | 'preferOptionalChain';
 
 export interface PreferOptionalChainOptions {
+  ignoreIfStatements?: boolean;
   allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing?: boolean;
   checkAny?: boolean;
   checkBigInt?: boolean;
