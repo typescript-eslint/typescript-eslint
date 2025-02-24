@@ -76,22 +76,36 @@ function getProperty<T, K extends keyof T>(obj: T, key: K) {
 ## Limitations
 
 Note that this rule allows any type parameter that is used multiple times, even if those uses are via a type argument.
-For example, the following `T` is used multiple times by virtue of being in an `Set`, even though its name only appears once after declaration:
+For example, the following `T` is used multiple times by virtue of being in an `Array`, even though its name only appears once after declaration:
 
 ```ts
-declare function createStateHistory<T>(): Set<T>;
+declare function createStateHistory<T>(): T[];
 ```
 
-This is because the type parameter `T` relates multiple methods in the `Set<T>` together, making it used more than once.
+This is because the type parameter `T` relates multiple methods in `T[]` (`Array<T>`) together, making it used more than once.
 
 Therefore, this rule won't report on type parameters used as a type argument.
-This includes type arguments provided to global types such as `Map` and `Set`, whereas `readonly T[]`, `T[]`, `ReadonlyArray`, `Array`, and tuples are special cases that are specifically reported on when used as input types, or as `readonly` output types.
+This includes type arguments provided to global types such as `Array`, `Map`, and `Set` that have multiple methods and properties that can change values based on the type parameter.
+
+On the other hand, readonly and fixed array-likes such as `readonly T[]`, `ReadonlyArray`, and tuples such as `[T]` are special cases that are specifically reported on when used as input types, or as `readonly` output types.
+The following example will be reported because `T` is used only once as type argument for the `ReadonlyArray` global type:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts
 declare function length<T>(array: ReadonlyArray<T>): number;
 ```
 
-In such case an error will be reported because `T` is used only once as type argument for the `ReadonlyArray` global type.
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+declare function length(array: ReadonlyArray<unknown>): number;
+```
+
+</TabItem>
+</Tabs>
 
 ## FAQ
 
