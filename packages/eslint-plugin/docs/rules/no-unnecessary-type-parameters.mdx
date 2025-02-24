@@ -82,10 +82,30 @@ For example, the following `T` is used multiple times by virtue of being in an `
 declare function createStateHistory<T>(): T[];
 ```
 
-This is because the type parameter `T` relates multiple methods in the `T[]` together, making it used more than once.
+This is because the type parameter `T` relates multiple methods in `T[]` (`Array<T>`) together, making it used more than once.
 
 Therefore, this rule won't report on type parameters used as a type argument.
-That includes type arguments given to global types such as `Array` (including the `T[]` shorthand and in tuples), `Map`, and `Set`.
+This includes type arguments provided to global types such as `Array`, `Map`, and `Set` that have multiple methods and properties that can change values based on the type parameter.
+
+On the other hand, readonly and fixed array-likes such as `readonly T[]`, `ReadonlyArray`, and tuples such as `[T]` are special cases that are specifically reported on when used as input types, or as `readonly` output types.
+The following example will be reported because `T` is used only once as type argument for the `ReadonlyArray` global type:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+declare function length<T>(array: ReadonlyArray<T>): number;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+declare function length(array: ReadonlyArray<unknown>): number;
+```
+
+</TabItem>
+</Tabs>
 
 ## FAQ
 
