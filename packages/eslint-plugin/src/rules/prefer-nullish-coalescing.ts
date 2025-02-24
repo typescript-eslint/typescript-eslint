@@ -13,7 +13,7 @@ import {
   isNodeEqual,
   isNodeOfTypes,
   isNullLiteral,
-  isPossiblyNullish,
+  isNullableType,
   isUndefinedIdentifier,
   nullThrows,
   NullThrowsReasons,
@@ -190,7 +190,7 @@ export default createRule<Options, MessageIds>({
      * a nullishness check, taking into account the rule's configuration.
      */
     function isTypeEligibleForPreferNullish(type: ts.Type): boolean {
-      if (!isPossiblyNullish(type)) {
+      if (!isNullableType(type)) {
         return false;
       }
 
@@ -208,14 +208,23 @@ export default createRule<Options, MessageIds>({
       ]
         .filter((flag): flag is number => typeof flag === 'number')
         .reduce((previous, flag) => previous | flag, 0);
+
       if (
-        type.flags !== ts.TypeFlags.Null &&
-        type.flags !== ts.TypeFlags.Undefined &&
-        (type as ts.UnionOrIntersectionType).types.some(t =>
-          tsutils
-            .intersectionTypeParts(t)
-            .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
-        )
+        // if the type is any, undefined, or void, we can't make any assumptions
+        // about the value, so it could be any primitive, even though the flags
+        // won't be set.
+        (tsutils.isTypeFlagSet(
+          type,
+          ts.TypeFlags.Any | ts.TypeFlags.Undefined | ts.TypeFlags.Void,
+        ) &&
+          ignorableFlags !== 0) ||
+        tsutils
+          .typeParts(type)
+          .some(t =>
+            tsutils
+              .intersectionTypeParts(t)
+              .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
+          )
       ) {
         return false;
       }
