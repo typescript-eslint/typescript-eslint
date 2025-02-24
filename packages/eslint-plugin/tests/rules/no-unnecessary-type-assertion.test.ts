@@ -425,7 +425,7 @@ const baz: {} = foo!;
 function foo<T extends unknown>(bar: T) {
   return {} as T;
 }
-const baz: unknown = {}
+const baz: unknown = {};
 foo(baz!);
     `,
   ],
