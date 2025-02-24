@@ -339,51 +339,51 @@ declare let x: { n: object };
       `,
       `
 declare let x: { n: string[] };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: string[] };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: Function };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: Function };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: () => string };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: () => string };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: () => string | null };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: () => string | null };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: () => string | undefined };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: () => string | undefined };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: () => string | null | undefined };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: () => string | null | undefined };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
     ].map(code => ({
       code,
@@ -580,6 +580,46 @@ declare let x: (${type} & { __brand?: any }) | undefined;
       declare let x: never;
       declare let y: number;
       !x ? y : x;
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== null ? defaultBoxOptional.a?.b : getFallbackBox();
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | null } };
+
+defaultBoxOptional.a?.b !== null ? defaultBoxOptional.a?.b : getFallbackBox();
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | null } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a?.b
+  : getFallbackBox();
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | null } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a.b
+  : getFallbackBox();
     `,
     {
       code: `
@@ -1981,6 +2021,312 @@ declare let x: { n: (() => string) | null | undefined };
               output: `
 ${code.split('\n')[1]}
 x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }] as const,
+      output: null,
+    })),
+
+    ...[
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a !== undefined ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a !== undefined ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a !== undefined ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a != undefined ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a != undefined ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a != undefined ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a != null ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a != null ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a != null ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x.n?.a !== undefined && x.n.a !== null ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x.n?.a !== undefined && x.n.a !== null ? x.n.a : y;
+      `,
+    ].map(code => ({
+      code,
+      errors: [
+        {
+          column: 1,
+          endColumn: code.split('\n')[2].length,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary' as const,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: `
+${code.split('\n')[1]}
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }] as const,
+      output: null,
+    })),
+    ...[
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? (x?.n)?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? (x.n)?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? (x?.n).a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? (x.n).a : y;
+      `,
+    ].map(code => ({
+      code,
+      errors: [
+        {
+          column: 1,
+          endColumn: code.split('\n')[2].length,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary' as const,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: `
+${code.split('\n')[1]}
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }] as const,
+      output: null,
+    })),
+    ...[
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? (x?.n)?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? (x.n)?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? (x?.n).a : y;
+      `,
+    ].map(code => ({
+      code,
+      errors: [
+        {
+          column: 1,
+          endColumn: code.split('\n')[2].length,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary' as const,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: `
+${code.split('\n')[1]}
+(x?.n)?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }] as const,
+      output: null,
+    })),
+
+    ...[
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? (x?.n)?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? (x.n)?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? (x?.n).a : y;
+      `,
+    ].map(code => ({
+      code,
+      errors: [
+        {
+          column: 1,
+          endColumn: code.split('\n')[2].length,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary' as const,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: `
+${code.split('\n')[1]}
+(x.n)?.a ?? y;
       `,
             },
           ],
@@ -4690,6 +5036,270 @@ declare function getFallbackBox(): Box;
 declare const defaultBox: Box | undefined;
 
 defaultBox ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b != null ? defaultBoxOptional.a?.b : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b != null ? defaultBoxOptional.a.b : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ? defaultBoxOptional.a?.b : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ? defaultBoxOptional.a.b : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a?.b
+  : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a.b
+  : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== undefined && defaultBoxOptional.a?.b !== null
+  ? defaultBoxOptional.a?.b
+  : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== undefined && defaultBoxOptional.a?.b !== null
+  ? defaultBoxOptional.a.b
+  : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
       `,
             },
           ],

@@ -270,7 +270,8 @@ export default createRule<Options, MessageIds>({
         node.type === AST_NODE_TYPES.MethodDefinition ||
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
         (node.type === AST_NODE_TYPES.Property && node.method) ||
-        node.type === AST_NODE_TYPES.PropertyDefinition
+        node.type === AST_NODE_TYPES.PropertyDefinition ||
+        node.type === AST_NODE_TYPES.AccessorProperty
       ) {
         return isStaticMemberAccessOfValue(
           node,
@@ -369,6 +370,7 @@ export default createRule<Options, MessageIds>({
           return;
 
         case AST_NODE_TYPES.PropertyDefinition:
+        case AST_NODE_TYPES.AccessorProperty:
         case AST_NODE_TYPES.MethodDefinition:
         case AST_NODE_TYPES.TSAbstractMethodDefinition:
           if (
