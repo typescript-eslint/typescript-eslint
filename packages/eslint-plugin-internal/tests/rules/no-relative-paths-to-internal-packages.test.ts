@@ -113,5 +113,9 @@ import type {
         'ast-spec/src/expression/AssignmentExpression/spec.ts',
       ),
     },
+    {
+      code: "import packageJson from '../../package.json' with { type: 'json' };",
+      filename: path.resolve(PACKAGES_DIR, 'ast-spec/vitest.config.mts'),
+    },
   ],
 });
