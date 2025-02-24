@@ -8948,11 +8948,11 @@ __metadata:
   linkType: hard
 
 "docusaurus-plugin-typedoc@npm:^1.0.5":
-  version: 1.1.1
-  resolution: "docusaurus-plugin-typedoc@npm:1.1.1"
+  version: 1.2.3
+  resolution: "docusaurus-plugin-typedoc@npm:1.2.3"
   peerDependencies:
-    typedoc-plugin-markdown: ">=4.3.0"
-  checksum: 115b0f421bcb11c5f7ba9b36dfcb1cf43ebf1efc5af740109bd79ce474a8b73bc76b26f366e544d2241d81d8cc7cad490e1ef61ceb76e68f26f57dee99ca519b
+    typedoc-plugin-markdown: ">=4.4.0"
+  checksum: 5ecc686ce8770178e08460f574a6d3268ccb16a2093238f2e22ab603ba957d99528e1c4b3f644ef42989ae3ee407fecdc2c3b2be7f7802ea3f5489ac6d601f5c
   languageName: node
   linkType: hard
 
