@@ -349,6 +349,16 @@ export default createRule<Options, MessageIds>({
 
           const contextualType = getContextualType(checker, originalNode);
           if (contextualType) {
+            const typeIsUnknown = isTypeFlagSet(type, ts.TypeFlags.Unknown);
+            const contextualTypeIsUnknown = isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Unknown,
+            );
+
+            if (typeIsUnknown && !contextualTypeIsUnknown) {
+              return;
+            }
+
             // in strict mode you can't assign null to undefined, so we have to make sure that
             // the two types share a nullable type
             const typeIncludesUndefined = isTypeFlagSet(
