@@ -36,11 +36,6 @@
       description: 'Label GHA ecosystem PRs appropriately.',
       matchManagers: ['github-actions'],
     },
-    {
-      description: 'Ignore Nrwl/Nx packages updated using the nx migrate CLI.',
-      enabled: false,
-      packagePatterns: ['^@nrwl/', '^@nx/', 'nx-cloud'],
-    },
   ],
 
   // We've found enabling patch updates on all dependencies is a lot of noise.
