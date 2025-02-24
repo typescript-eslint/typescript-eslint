@@ -12,8 +12,8 @@ import {
   isAwaitKeyword,
   needsToBeAwaited,
   nullThrows,
+  isHigherPrecedenceThanAwait,
 } from '../util';
-import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
 
 type FunctionNode =
   | TSESTree.ArrowFunctionExpression
@@ -276,18 +276,6 @@ export default createRule({
         fixer.insertTextBefore(node, 'await ('),
         fixer.insertTextAfter(node, ')'),
       ];
-    }
-
-    function isHigherPrecedenceThanAwait(node: ts.Node): boolean {
-      const operator = ts.isBinaryExpression(node)
-        ? node.operatorToken.kind
-        : ts.SyntaxKind.Unknown;
-      const nodePrecedence = getOperatorPrecedence(node.kind, operator);
-      const awaitPrecedence = getOperatorPrecedence(
-        ts.SyntaxKind.AwaitExpression,
-        ts.SyntaxKind.Unknown,
-      );
-      return nodePrecedence > awaitPrecedence;
     }
 
     function test(node: TSESTree.Expression, expression: ts.Node): void {
