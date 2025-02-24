@@ -19487,11 +19487,11 @@ __metadata:
   linkType: hard
 
 "typedoc-plugin-markdown@npm:^4.2.10":
-  version: 4.3.1
-  resolution: "typedoc-plugin-markdown@npm:4.3.1"
+  version: 4.4.2
+  resolution: "typedoc-plugin-markdown@npm:4.4.2"
   peerDependencies:
     typedoc: 0.27.x
-  checksum: ef461e35e09bc2782fae26f9ba4d8aa4218d25220fa3a3570a3f6c1eab0434f0f6e21ddad604181f0636c72a960cf11425da327bd549f8271b202587d7d88e13
+  checksum: 07b04e5aba3b7e1772a22f348645df9e41983f483da4315c6dedd9bdf0d19bfcf72ff088b4896c2ace38827e47efb7b1519a7636e0eead994077ed81129983a0
   languageName: node
   linkType: hard
 
