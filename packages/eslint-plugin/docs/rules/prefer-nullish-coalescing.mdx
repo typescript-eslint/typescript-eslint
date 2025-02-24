@@ -17,6 +17,54 @@ This rule reports when you may consider replacing:
 - An `||` operator with `??`
 - An `||=` operator with `??=`
 - Ternary expressions (`?:`) that are equivalent to `||` or `??` with `??`
+- Assignment expressions (`=`) that can be safely replaced by `??=`
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+declare const a: string | null;
+declare const b: string | null;
+
+const c = a || b;
+
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitializeFooByTruthiness() {
+  if (!foo) {
+    foo = makeFoo();
+  }
+}
+
+function lazyInitializeFooByNullCheck() {
+  if (foo == null) {
+    foo = makeFoo();
+  }
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+declare const a: string | null;
+declare const b: string | null;
+
+const c = a ?? b;
+
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitializeFoo() {
+  foo ??= makeFoo();
+}
+```
+
+</TabItem>
+</Tabs>
 
 :::caution
 This rule will not work as expected if [`strictNullChecks`](https://www.typescriptlang.org/tsconfig#strictNullChecks) is not enabled.
@@ -84,7 +132,7 @@ Examples of code for this rule with `{ ignoreConditionalTests: false }`:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "ignoreConditionalTests": false }'
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 
 if (a || b) {
@@ -102,7 +150,7 @@ a || b ? true : false;
 <TabItem value="✅ Correct">
 
 ```ts option='{ "ignoreConditionalTests": false }'
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 
 if (a ?? b) {
@@ -133,7 +181,7 @@ Examples of code for this rule with `{ ignoreMixedLogicalExpressions: false }`:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "ignoreMixedLogicalExpressions": false }'
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 declare const c: string | null;
 declare const d: string | null;
@@ -149,7 +197,7 @@ a || (b && c && d);
 <TabItem value="✅ Correct">
 
 ```ts option='{ "ignoreMixedLogicalExpressions": false }'
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 declare const c: string | null;
 declare const d: string | null;
