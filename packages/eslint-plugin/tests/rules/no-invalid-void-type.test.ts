@@ -120,6 +120,11 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'type promiseNeverUnion = Promise<void> | never;',
     'const arrowGeneric1 = <T = void,>(arg: T) => {};',
     'declare function functionDeclaration1<T = void>(arg: T): void;',
+    `
+      class ClassName {
+        accessor propName: number;
+      }
+    `,
   ],
   invalid: [
     {
@@ -281,6 +286,20 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       errors: [
         {
           column: 38,
+          line: 3,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: `
+        class ClassName {
+          accessor propName: void;
+        }
+      `,
+      errors: [
+        {
+          column: 30,
           line: 3,
           messageId: 'invalidVoidNotReturnOrGeneric',
         },
