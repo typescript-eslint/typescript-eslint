@@ -192,3 +192,28 @@ type FooType = (bar: string) => void;
 export const foo: FooType = bar => {};
 "
 `;
+
+exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 11`] = `
+"Incorrect
+Options: { "allowOverloadFunctions": false }
+
+export function test(a: string): string;
+export function test(a: number): number;
+export function test(a: unknown) {
+       ~~~~~~~~~~~~~ Missing return type on function.
+  return a;
+}
+"
+`;
+
+exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 12`] = `
+"Correct
+Options: { "allowOverloadFunctions": true }
+
+export function test(a: string): string;
+export function test(a: number): number;
+export function test(a: unknown) {
+  return a;
+}
+"
+`;
