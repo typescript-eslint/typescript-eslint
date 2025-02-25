@@ -349,7 +349,7 @@ export default createRule<Options, MessageIds>({
       let hasNullCheckWithoutTruthinessCheck = false;
       let hasUndefinedCheckWithoutTruthinessCheck = false;
 
-      if (['!', ''].includes(operator)) {
+      if (!nodesInsideTestExpression.length) {
         hasTruthinessCheck = true;
         nullishCoalescingLeftNode =
           node.test.type === AST_NODE_TYPES.UnaryExpression
