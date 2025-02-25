@@ -426,6 +426,48 @@ function lazyInitialize() {
   }
 }
       `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject !== undefined && null !== null
+  ? nullOrObject
+  : 42;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject !== undefined && null != null
+  ? nullOrObject
+  : 42;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject !== undefined && null != undefined
+  ? nullOrObject
+  : 42;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject === undefined || null === null
+  ? 42
+  : nullOrObject;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject === undefined || null == null
+  ? 42
+  : nullOrObject;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject === undefined || null == undefined
+  ? 42
+  : nullOrObject;
+      `,
     ].map(code => ({
       code,
       options: [{ ignoreTernaryTests: false }] as const,

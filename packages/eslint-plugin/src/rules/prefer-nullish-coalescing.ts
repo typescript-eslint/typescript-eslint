@@ -26,6 +26,13 @@ const isIdentifierOrMemberOrChainExpression = isNodeOfTypes([
   AST_NODE_TYPES.MemberExpression,
 ] as const);
 
+const isNullLiteralOrUndefinedIdentifier = (node: TSESTree.Node): boolean =>
+  isNullLiteral(node) || isUndefinedIdentifier(node);
+
+const isNodeNullishComparison = (node: TSESTree.BinaryExpression): boolean =>
+  isNullLiteralOrUndefinedIdentifier(node.left) &&
+  isNullLiteralOrUndefinedIdentifier(node.right);
+
 type NullishCheckOperator = '!' | '!=' | '!==' | '' | '==' | '===';
 
 export type Options = [
@@ -740,6 +747,7 @@ function getOperatorAndNodesInsideTestExpression(
 } {
   let operator: NullishCheckOperator | undefined;
   let nodesInsideTestExpression: TSESTree.Node[] = [];
+
   if (node.test.type === AST_NODE_TYPES.BinaryExpression) {
     nodesInsideTestExpression = [node.test.left, node.test.right];
     if (
@@ -755,6 +763,12 @@ function getOperatorAndNodesInsideTestExpression(
     node.test.left.type === AST_NODE_TYPES.BinaryExpression &&
     node.test.right.type === AST_NODE_TYPES.BinaryExpression
   ) {
+    if (
+      isNodeNullishComparison(node.test.left) ||
+      isNodeNullishComparison(node.test.right)
+    ) {
+      return { nodesInsideTestExpression, operator };
+    }
     nodesInsideTestExpression = [
       node.test.left.left,
       node.test.left.right,
