@@ -594,12 +594,12 @@ export default createRule<Options, MessageIds>({
 
       // collect overloads
       MethodDefinition(node): void {
-        if (!node.value.body) {
+        if (!node.value.body && !isGetterOrSetter(node)) {
           addOverload(node);
         }
       },
       TSAbstractMethodDefinition(node): void {
-        if (!node.value.body) {
+        if (!node.value.body && !isGetterOrSetter(node)) {
           addOverload(node);
         }
       },
@@ -609,7 +609,11 @@ export default createRule<Options, MessageIds>({
         const exportingNode = getExportingNode(node);
         addOverload(node, node.id?.name ?? exportingNode?.type, exportingNode);
       },
-      TSMethodSignature: addOverload,
+      TSMethodSignature(node): void {
+        if (!isGetterOrSetter(node)) {
+          addOverload(node);
+        }
+      },
 
       // validate scopes
       'ClassDeclaration:exit': checkScope,
@@ -692,4 +696,13 @@ function isJSDocComment(comment: TSESTree.Comment) {
     lines.slice(1, -1).every(line => /^\s* /u.test(line)) &&
     /^\s*$/u.test(lines[lines.length - 1])
   );
+}
+
+function isGetterOrSetter(
+  node:
+    | TSESTree.MethodDefinition
+    | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.TSMethodSignature,
+): boolean {
+  return node.kind === 'get' || node.kind === 'set';
 }

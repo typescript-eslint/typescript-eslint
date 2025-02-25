@@ -1,9 +1,10 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.23.0",
+  "version": "8.25.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "docs",
     "eslint-recommended-raw.d.ts",
     "index.d.ts",
@@ -57,14 +58,14 @@
     "lint": "npx nx lint",
     "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --coverage --logHeapUsage",
     "test-single": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --no-coverage",
-    "typecheck": "tsc --noEmit"
+    "check-types": "npx nx typecheck"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",
-    "@typescript-eslint/scope-manager": "8.23.0",
-    "@typescript-eslint/type-utils": "8.23.0",
-    "@typescript-eslint/utils": "8.23.0",
-    "@typescript-eslint/visitor-keys": "8.23.0",
+    "@typescript-eslint/scope-manager": "8.25.0",
+    "@typescript-eslint/type-utils": "8.25.0",
+    "@typescript-eslint/utils": "8.25.0",
+    "@typescript-eslint/visitor-keys": "8.25.0",
     "graphemer": "^1.4.0",
     "ignore": "^5.3.1",
     "natural-compare": "^1.4.0",
@@ -75,8 +76,8 @@
     "@types/marked": "^5.0.2",
     "@types/mdast": "^4.0.3",
     "@types/natural-compare": "*",
-    "@typescript-eslint/rule-schema-to-typescript-types": "8.23.0",
-    "@typescript-eslint/rule-tester": "8.23.0",
+    "@typescript-eslint/rule-schema-to-typescript-types": "8.25.0",
+    "@typescript-eslint/rule-tester": "8.25.0",
     "ajv": "^6.12.6",
     "cross-env": "^7.0.3",
     "cross-fetch": "*",

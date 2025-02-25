@@ -104,14 +104,20 @@ export default createRule<Options, MessageIds>({
         }
       | {
           class: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
-          member: TSESTree.MethodDefinition | TSESTree.PropertyDefinition;
+          member:
+            | TSESTree.AccessorProperty
+            | TSESTree.MethodDefinition
+            | TSESTree.PropertyDefinition;
           parent: Stack | undefined;
           usesThis: boolean;
         };
     let stack: Stack | undefined;
 
     function pushContext(
-      member?: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
+      member?:
+        | TSESTree.AccessorProperty
+        | TSESTree.MethodDefinition
+        | TSESTree.PropertyDefinition,
     ): void {
       if (member?.parent.type === AST_NODE_TYPES.ClassBody) {
         stack = {
@@ -135,7 +141,8 @@ export default createRule<Options, MessageIds>({
     ): void {
       if (
         node.parent.type === AST_NODE_TYPES.MethodDefinition ||
-        node.parent.type === AST_NODE_TYPES.PropertyDefinition
+        node.parent.type === AST_NODE_TYPES.PropertyDefinition ||
+        node.parent.type === AST_NODE_TYPES.AccessorProperty
       ) {
         pushContext(node.parent);
       } else {
@@ -172,7 +179,8 @@ export default createRule<Options, MessageIds>({
         node.static ||
         (node.type === AST_NODE_TYPES.MethodDefinition &&
           node.kind === 'constructor') ||
-        (node.type === AST_NODE_TYPES.PropertyDefinition &&
+        ((node.type === AST_NODE_TYPES.PropertyDefinition ||
+          node.type === AST_NODE_TYPES.AccessorProperty) &&
           !enforceForClassFields)
       ) {
         return false;
@@ -242,6 +250,16 @@ export default createRule<Options, MessageIds>({
       },
       ...(enforceForClassFields
         ? {
+            'AccessorProperty > ArrowFunctionExpression.value'(
+              node: TSESTree.ArrowFunctionExpression,
+            ): void {
+              enterFunction(node);
+            },
+            'AccessorProperty > ArrowFunctionExpression.value:exit'(
+              node: TSESTree.ArrowFunctionExpression,
+            ): void {
+              exitFunction(node);
+            },
             'PropertyDefinition > ArrowFunctionExpression.value'(
               node: TSESTree.ArrowFunctionExpression,
             ): void {
@@ -258,6 +276,12 @@ export default createRule<Options, MessageIds>({
       /*
        * Class field value are implicit functions.
        */
+      'AccessorProperty:exit'(): void {
+        popContext();
+      },
+      'AccessorProperty > *.key:exit'(): void {
+        pushContext();
+      },
       'PropertyDefinition:exit'(): void {
         popContext();
       },

@@ -1,9 +1,10 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "8.23.0",
+  "version": "8.25.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"
@@ -43,16 +44,16 @@
     "generate-lib": "npx nx generate-lib repo",
     "lint": "npx nx lint",
     "test": "npx nx test --code-coverage",
-    "typecheck": "npx nx typecheck"
+    "check-types": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "8.23.0",
-    "@typescript-eslint/visitor-keys": "8.23.0"
+    "@typescript-eslint/types": "8.25.0",
+    "@typescript-eslint/visitor-keys": "8.25.0"
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
     "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "8.23.0",
+    "@typescript-eslint/typescript-estree": "8.25.0",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
