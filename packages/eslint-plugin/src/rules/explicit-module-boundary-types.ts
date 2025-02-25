@@ -30,7 +30,7 @@ export type Options = [
     allowedNames?: string[];
     allowHigherOrderFunctions?: boolean;
     allowTypedFunctionExpressions?: boolean;
-    allowImplicitReturnTypeForOverloadImplementations?: boolean;
+    allowOverloadFunctions?: boolean;
   },
 ];
 export type MessageIds =
@@ -88,10 +88,10 @@ export default createRule<Options, MessageIds>({
               'You must still type the parameters of the function.',
             ].join('\n'),
           },
-          allowImplicitReturnTypeForOverloadImplementations: {
+          allowOverloadFunctions: {
             type: 'boolean',
             description:
-              'Whether to ignore missing return type annotations on functions with overload signatures.',
+              'Whether to ignore return type annotations on functions with overload signatures.',
           },
           allowTypedFunctionExpressions: {
             type: 'boolean',
@@ -108,7 +108,7 @@ export default createRule<Options, MessageIds>({
       allowDirectConstAssertionInArrowFunctions: true,
       allowedNames: [],
       allowHigherOrderFunctions: true,
-      allowImplicitReturnTypeForOverloadImplementations: false,
+      allowOverloadFunctions: false,
       allowTypedFunctionExpressions: true,
     },
   ],
@@ -469,7 +469,7 @@ export default createRule<Options, MessageIds>({
       }
 
       if (
-        options.allowImplicitReturnTypeForOverloadImplementations &&
+        options.allowOverloadFunctions &&
         node.parent.type === AST_NODE_TYPES.MethodDefinition &&
         hasOverloadSignatures(node.parent, context)
       ) {
@@ -506,7 +506,7 @@ export default createRule<Options, MessageIds>({
       }
 
       if (
-        options.allowImplicitReturnTypeForOverloadImplementations &&
+        options.allowOverloadFunctions &&
         hasOverloadSignatures(node, context)
       ) {
         return;

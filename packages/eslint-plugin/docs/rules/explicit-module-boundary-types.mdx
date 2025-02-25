@@ -260,16 +260,16 @@ export const foo: FooType = bar => {};
 </TabItem>
 </Tabs>
 
-### `allowImplicitReturnTypeForOverloadImplementations`
+### `allowOverloadFunctions`
 
 {/* insert option description */}
 
-Examples of code for this rule with `{ allowImplicitReturnTypeForOverloadImplementations: false }`:
+Examples of code for this rule with `{ allowOverloadFunctions: false }`:
 
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "allowImplicitReturnTypeForOverloadImplementations": false }'
+```ts option='{ "allowOverloadFunctions": false }'
 export function test(a: string): string;
 export function test(a: number): number;
 export function test(a: unknown) {
@@ -280,7 +280,7 @@ export function test(a: unknown) {
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{ "allowImplicitReturnTypeForOverloadImplementations": true }'
+```ts option='{ "allowOverloadFunctions": true }'
 export function test(a: string): string;
 export function test(a: number): number;
 export function test(a: unknown) {

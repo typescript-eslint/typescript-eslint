@@ -831,7 +831,7 @@ export function test(a: unknown) {
       `,
       options: [
         {
-          allowImplicitReturnTypeForOverloadImplementations: true,
+          allowOverloadFunctions: true,
         },
       ],
     },
@@ -845,7 +845,7 @@ export default function test(a: unknown) {
       `,
       options: [
         {
-          allowImplicitReturnTypeForOverloadImplementations: true,
+          allowOverloadFunctions: true,
         },
       ],
     },
@@ -859,7 +859,7 @@ export default function (a: unknown) {
       `,
       options: [
         {
-          allowImplicitReturnTypeForOverloadImplementations: true,
+          allowOverloadFunctions: true,
         },
       ],
     },
@@ -875,7 +875,7 @@ export class Test {
       `,
       options: [
         {
-          allowImplicitReturnTypeForOverloadImplementations: true,
+          allowOverloadFunctions: true,
         },
       ],
     },
