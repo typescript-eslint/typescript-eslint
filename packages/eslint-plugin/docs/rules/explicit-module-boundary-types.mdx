@@ -260,6 +260,37 @@ export const foo: FooType = bar => {};
 </TabItem>
 </Tabs>
 
+### `allowImplicitReturnTypeForOverloadImplementations`
+
+{/* insert option description */}
+
+Examples of code for this rule with `{ allowImplicitReturnTypeForOverloadImplementations: false }`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "allowImplicitReturnTypeForOverloadImplementations": false }'
+export function test(a: string): string;
+export function test(a: number): number;
+export function test(a: unknown) {
+  return a;
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "allowImplicitReturnTypeForOverloadImplementations": true }'
+export function test(a: string): string;
+export function test(a: number): number;
+export function test(a: unknown) {
+  return a;
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## When Not To Use It
 
 If your project is not used by downstream consumers that are sensitive to API types, you can disable this rule.
