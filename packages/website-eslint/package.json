@@ -27,7 +27,7 @@
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "scripts": {
-    "build": "tsx ./build.mts",
+    "build": "node --experimental-strip-types ./build.mts",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "check-types": "npx nx typecheck"
@@ -42,7 +42,6 @@
     "esbuild": "~0.25.0",
     "eslint": "*",
     "esquery": "*",
-    "prettier": "^3.2.5",
-    "tsx": "*"
+    "prettier": "^3.2.5"
   }
 }

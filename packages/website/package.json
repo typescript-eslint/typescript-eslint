@@ -15,7 +15,7 @@
     "build": "docusaurus build",
     "clear": "docusaurus clear",
     "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore",
-    "generate-website-dts": "tsx ./tools/generate-website-dts.mts",
+    "generate-website-dts": "node --experimental-strip-types ./tools/generate-website-dts.mts",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
     "lint": "npx nx lint",
@@ -79,7 +79,6 @@
     "stylelint-config-recommended": "^14.0.0",
     "stylelint-config-standard": "^36.0.0",
     "stylelint-order": "^6.0.4",
-    "tsx": "*",
     "unified": "^11.0.4",
     "vfile": "^6.0.1",
     "webpack": "^5.91.0"
