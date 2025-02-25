@@ -1,9 +1,25 @@
 {
-  "extends": "./tsconfig.build.json",
-  "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
-  },
-  "include": ["src", "typings", "tests", "tools"],
-  "references": [{ "path": "../utils/tsconfig.build.json" }]
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "../types"
+    },
+    {
+      "path": "../utils"
+    },
+    {
+      "path": "../typescript-estree"
+    },
+    {
+      "path": "../parser"
+    },
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

@@ -2,7 +2,7 @@
   "name": "integration-tests",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
-  "implicitDependencies": [],
+  "implicitDependencies": ["typescript-eslint"],
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",

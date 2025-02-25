@@ -17,6 +17,7 @@ import {
 type IdentifierLike =
   | TSESTree.Identifier
   | TSESTree.JSXIdentifier
+  | TSESTree.PrivateIdentifier
   | TSESTree.Super;
 
 type MessageIds = 'deprecated' | 'deprecatedWithReason';
@@ -121,6 +122,7 @@ export default createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.MethodDefinition:
         case AST_NODE_TYPES.PropertyDefinition:
+        case AST_NODE_TYPES.AccessorProperty:
           return parent.key === node;
 
         case AST_NODE_TYPES.Property:
@@ -376,7 +378,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const name = node.type === AST_NODE_TYPES.Super ? 'super' : node.name;
+      const name = getReportedNodeName(node);
 
       context.report({
         ...(reason
@@ -399,7 +401,20 @@ export default createRule<Options, MessageIds>({
           checkIdentifier(node);
         }
       },
+      PrivateIdentifier: checkIdentifier,
       Super: checkIdentifier,
     };
   },
 });
+
+function getReportedNodeName(node: IdentifierLike): string {
+  if (node.type === AST_NODE_TYPES.Super) {
+    return 'super';
+  }
+
+  if (node.type === AST_NODE_TYPES.PrivateIdentifier) {
+    return `#${node.name}`;
+  }
+
+  return node.name;
+}

@@ -337,6 +337,16 @@ export default createRule({
     }
 
     return {
+      'AccessorProperty[value != null]'(
+        node: { value: NonNullable<unknown> } & TSESTree.AccessorProperty,
+      ): void {
+        checkAssignment(
+          node.key,
+          node.value,
+          node,
+          getComparisonType(node.typeAnnotation),
+        );
+      },
       'AssignmentExpression[operator = "="], AssignmentPattern'(
         node: TSESTree.AssignmentExpression | TSESTree.AssignmentPattern,
       ): void {

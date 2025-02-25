@@ -81,6 +81,25 @@ class Derived extends Base {
   }
 }
     `,
+    `
+class Foo {
+  accessor f = () => {
+    return this;
+  };
+}
+    `,
+    `
+class Foo {
+  accessor f = (): this => {
+    return this;
+  };
+}
+    `,
+    `
+class Foo {
+  f?: string;
+}
+    `,
   ],
   invalid: [
     {
@@ -103,6 +122,29 @@ class Foo {
   f(): this {
     return this;
   }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f = function (): Foo {
+    return this;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  f = function (): this {
+    return this;
+  };
 }
       `,
     },
@@ -195,6 +237,48 @@ class Foo {
       output: `
 class Foo {
   f = (): this => this;
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  accessor f = (): Foo => {
+    return this;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  accessor f = (): this => {
+    return this;
+  };
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  accessor f = (): Foo => this;
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  accessor f = (): this => this;
 }
       `,
     },

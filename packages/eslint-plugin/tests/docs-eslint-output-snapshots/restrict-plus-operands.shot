@@ -101,6 +101,7 @@ Options: { "allowNumberAndString": true }
 
 let fn = (a: number, b: string) => a + b;
 let fn = (a: number, b: number | string) => a + b;
+let fn = (a: bigint, b: string) => a + b;
 "
 `;
 
