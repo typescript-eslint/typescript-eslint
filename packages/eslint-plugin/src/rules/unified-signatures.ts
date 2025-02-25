@@ -4,12 +4,7 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import type { Equal } from '../util';
 
-import {
-  arraysAreEqual,
-  createRule,
-  LINEBREAK_MATCHER,
-  nullThrows,
-} from '../util';
+import { arraysAreEqual, createRule, nullThrows } from '../util';
 
 interface Failure {
   only2: boolean;
@@ -246,8 +241,8 @@ export default createRule<Options, MessageIds>({
       }
 
       if (ignoreOverloadsWithDifferentJSDoc) {
-        const aComment = getJSDocCommentForNode(getExportingNode(a) ?? a);
-        const bComment = getJSDocCommentForNode(getExportingNode(b) ?? b);
+        const aComment = getBlockCommentForNode(getExportingNode(a) ?? a);
+        const bComment = getBlockCommentForNode(getExportingNode(b) ?? b);
 
         if (aComment?.value !== bComment?.value) {
           return false;
@@ -549,13 +544,13 @@ export default createRule<Options, MessageIds>({
     /**
      * @returns the first valid JSDoc comment annotating `node`
      */
-    function getJSDocCommentForNode(
+    function getBlockCommentForNode(
       node: TSESTree.Node,
     ): TSESTree.Comment | undefined {
       return context.sourceCode
         .getCommentsBefore(node)
         .reverse()
-        .find(comment => isJSDocComment(comment));
+        .find(comment => comment.type === AST_TOKEN_TYPES.Block);
     }
 
     function addOverload(
@@ -673,29 +668,6 @@ function getStaticParameterName(param: TSESTree.Node): string | undefined {
 }
 function isIdentifier(node: TSESTree.Node): node is TSESTree.Identifier {
   return node.type === AST_NODE_TYPES.Identifier;
-}
-
-/**
- * Checks if a comment is in JSDoc form.
- *
- * Based on https://github.com/eslint/eslint/blob/93c325a7a841d0fe4b5bf79efdec832e7c8f805f/lib/rules/multiline-comment-style.js#L104-L119
- */
-function isJSDocComment(comment: TSESTree.Comment) {
-  if (comment.type !== AST_TOKEN_TYPES.Block) {
-    return false;
-  }
-
-  const lines = comment.value.split(LINEBREAK_MATCHER);
-
-  if (lines.length === 1) {
-    return lines[0].startsWith('*');
-  }
-
-  return (
-    /^\*\s*$/u.test(lines[0]) &&
-    lines.slice(1, -1).every(line => /^\s* /u.test(line)) &&
-    /^\s*$/u.test(lines[lines.length - 1])
-  );
 }
 
 function isGetterOrSetter(

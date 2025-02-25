@@ -339,6 +339,35 @@ interface I {
       `,
       options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
     },
+    // invalid jsdoc comments
+    {
+      code: `
+/* @deprecated */
+declare function f(x: number): unknown;
+declare function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/*
+ * This signature does something.
+ */
+declare function f(x: number): unknown;
+declare function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * This signature does something.
+ **/
+declare function f(x: number): unknown;
+declare function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
   ],
   invalid: [
     {
@@ -1055,77 +1084,9 @@ interface I {
       ],
       options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
     },
-    // invalid jsdoc comments
     {
       code: `
-/* @deprecated */
-declare function f(x: number): unknown;
-declare function f(x: boolean): unknown;
-      `,
-      errors: [
-        {
-          column: 20,
-          data: {
-            failureStringStart:
-              'These overloads can be combined into one signature',
-            type1: 'number',
-            type2: 'boolean',
-          },
-          line: 4,
-          messageId: 'singleParameterDifference',
-        },
-      ],
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-/*
- * This signature does something.
- */
-declare function f(x: number): unknown;
-declare function f(x: boolean): unknown;
-      `,
-      errors: [
-        {
-          column: 20,
-          data: {
-            failureStringStart:
-              'These overloads can be combined into one signature',
-            type1: 'number',
-            type2: 'boolean',
-          },
-          line: 6,
-          messageId: 'singleParameterDifference',
-        },
-      ],
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-/**
- * This signature does something.
- **/
-declare function f(x: number): unknown;
-declare function f(x: boolean): unknown;
-      `,
-      errors: [
-        {
-          column: 20,
-          data: {
-            failureStringStart:
-              'These overloads can be combined into one signature',
-            type1: 'number',
-            type2: 'boolean',
-          },
-          line: 6,
-          messageId: 'singleParameterDifference',
-        },
-      ],
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-// just a comment
+// a line comment
 declare function f(x: number): unknown;
 declare function f(x: boolean): unknown;
       `,
