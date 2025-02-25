@@ -704,10 +704,26 @@ function areNodesSimilarMemberAccess(
     a.type === AST_NODE_TYPES.MemberExpression &&
     b.type === AST_NODE_TYPES.MemberExpression
   ) {
-    return (
-      isNodeEqual(a.property, b.property) &&
-      areNodesSimilarMemberAccess(a.object, b.object)
-    );
+    if (!areNodesSimilarMemberAccess(a.object, b.object)) {
+      return false;
+    }
+
+    if (a.computed === b.computed) {
+      return isNodeEqual(a.property, b.property);
+    }
+    if (
+      a.property.type === AST_NODE_TYPES.Literal &&
+      b.property.type === AST_NODE_TYPES.Identifier
+    ) {
+      return a.property.value === b.property.name;
+    }
+    if (
+      a.property.type === AST_NODE_TYPES.Identifier &&
+      b.property.type === AST_NODE_TYPES.Literal
+    ) {
+      return a.property.name === b.property.value;
+    }
+    return false;
   }
   if (
     a.type === AST_NODE_TYPES.ChainExpression ||

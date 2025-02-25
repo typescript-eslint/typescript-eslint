@@ -468,6 +468,24 @@ const test = nullOrObject === undefined || null == undefined
   ? 42
   : nullOrObject;
       `,
+      `
+const a = 'b';
+declare let x: { a: string, b: string } | null
+
+x?.a != null ? x[a] : 'foo'
+      `,
+      `
+const a = 'b';
+declare let x: { a: string, b: string } | null
+
+x?.[a] != null ? x.a : 'foo'
+      `,
+      `
+declare let x: { a: string } | null
+declare let y: { a: string } | null
+
+x?.a ? y?.a : 'foo'
+      `,
     ].map(code => ({
       code,
       options: [{ ignoreTernaryTests: false }] as const,
@@ -5389,6 +5407,100 @@ defaultBoxOptional.a?.b ?? getFallbackBox();
         },
       ],
       options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { a: string } | null;
+
+x?.['a'] != null ? x['a'] : 'foo';
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { a: string } | null;
+
+x?.['a'] ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { a: string } | null;
+
+x?.['a'] != null ? x.a : 'foo';
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { a: string } | null;
+
+x?.['a'] ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { a: string } | null;
+
+x?.a != null ? x['a'] : 'foo';
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { a: string } | null;
+
+x?.a ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const a = 'b';
+declare let x: { a: string; b: string } | null;
+
+x?.[a] != null ? x[a] : 'foo';
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+const a = 'b';
+declare let x: { a: string; b: string } | null;
+
+x?.[a] ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
       output: null,
     },
     {
