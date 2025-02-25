@@ -821,6 +821,64 @@ export const a: Foo = {
   f: (x: boolean) => x,
 };
     `,
+    {
+      code: `
+export function test(a: string): string;
+export function test(a: number): number;
+export function test(a: unknown) {
+  return a;
+}
+      `,
+      options: [
+        {
+          allowImplicitReturnTypeForOverloadImplementations: true,
+        },
+      ],
+    },
+    {
+      code: `
+export default function test(a: string): string;
+export default function test(a: number): number;
+export default function test(a: unknown) {
+  return a;
+}
+      `,
+      options: [
+        {
+          allowImplicitReturnTypeForOverloadImplementations: true,
+        },
+      ],
+    },
+    {
+      code: `
+export default function (a: string): string;
+export default function (a: number): number;
+export default function (a: unknown) {
+  return a;
+}
+      `,
+      options: [
+        {
+          allowImplicitReturnTypeForOverloadImplementations: true,
+        },
+      ],
+    },
+    {
+      code: `
+export class Test {
+  test(a: string): string;
+  test(a: number): number;
+  test(a: unknown) {
+    return a;
+  }
+}
+      `,
+      options: [
+        {
+          allowImplicitReturnTypeForOverloadImplementations: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
