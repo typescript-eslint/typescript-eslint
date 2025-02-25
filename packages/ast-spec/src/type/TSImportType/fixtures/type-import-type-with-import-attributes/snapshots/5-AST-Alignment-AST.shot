@@ -49,113 +49,93 @@ exports[`AST Fixtures type TSImportType type-import-type-with-import-attributes 
               end: { column: 19, line: 3 },
             },
           },
--         attributes: Array [
--           ImportAttribute {
--             type: 'ImportAttribute',
--             key: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'type',
--               optional: false,
-+         options: ObjectExpression {
-+           type: 'ObjectExpression',
-+           properties: Array [
-+             Property {
-+               type: 'Property',
-+               computed: false,
-+               key: Identifier {
-+                 type: 'Identifier',
-+                 name: 'with',
-+
-+                 range: [96, 100],
-+                 loc: {
-+                   start: { column: 23, line: 3 },
-+                   end: { column: 27, line: 3 },
-+                 },
-+               },
-+               kind: 'init',
-+               method: false,
-+               shorthand: false,
-+               value: ObjectExpression {
-+                 type: 'ObjectExpression',
-+                 properties: Array [
-+                   Property {
-+                     type: 'Property',
-+                     computed: false,
-+                     key: Identifier {
-+                       type: 'Identifier',
-+                       name: 'type',
-+
-+                       range: [104, 108],
-+                       loc: {
-+                         start: { column: 31, line: 3 },
-+                         end: { column: 35, line: 3 },
-+                       },
-+                     },
-+                     kind: 'init',
-+                     method: false,
-+                     shorthand: false,
-+                     value: Literal {
-+                       type: 'Literal',
-+                       raw: '"json"',
-+                       value: 'json',
-+
-+                       range: [110, 116],
-+                       loc: {
-+                         start: { column: 37, line: 3 },
-+                         end: { column: 43, line: 3 },
-+                       },
-+                     },
-+
-+                     range: [104, 116],
-+                     loc: {
-+                       start: { column: 31, line: 3 },
-+                       end: { column: 43, line: 3 },
-+                     },
-+                   },
-+                 ],
+          options: ObjectExpression {
+            type: 'ObjectExpression',
+            properties: Array [
+              Property {
+                type: 'Property',
+                computed: false,
+                key: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'with',
+-                 optional: false,
 
--               range: [104, 108],
--               loc: {
--                 start: { column: 31, line: 3 },
--                 end: { column: 35, line: 3 },
-+                 range: [102, 118],
-+                 loc: {
-+                   start: { column: 29, line: 3 },
-+                   end: { column: 45, line: 3 },
-+                 },
+                  range: [96, 100],
+                  loc: {
+                    start: { column: 23, line: 3 },
+                    end: { column: 27, line: 3 },
+                  },
                 },
--             },
--             value: Literal {
--               type: 'Literal',
--               raw: '"json"',
--               value: 'json',
+                kind: 'init',
+                method: false,
+-               optional: false,
+                shorthand: false,
+                value: ObjectExpression {
+                  type: 'ObjectExpression',
+                  properties: Array [
+                    Property {
+                      type: 'Property',
+                      computed: false,
+                      key: Identifier {
+                        type: 'Identifier',
+-                       decorators: Array [],
+                        name: 'type',
+-                       optional: false,
 
--               range: [110, 116],
-+               range: [96, 118],
+                        range: [104, 108],
+                        loc: {
+                          start: { column: 31, line: 3 },
+                          end: { column: 35, line: 3 },
+                        },
+                      },
+                      kind: 'init',
+                      method: false,
+-                     optional: false,
+                      shorthand: false,
+                      value: Literal {
+                        type: 'Literal',
+                        raw: '"json"',
+                        value: 'json',
+
+                        range: [110, 116],
+                        loc: {
+                          start: { column: 37, line: 3 },
+                          end: { column: 43, line: 3 },
+                        },
+                      },
+
+                      range: [104, 116],
+                      loc: {
+                        start: { column: 31, line: 3 },
+                        end: { column: 43, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [102, 118],
+                  loc: {
+                    start: { column: 29, line: 3 },
+                    end: { column: 45, line: 3 },
+                  },
+                },
+
+                range: [96, 118],
                 loc: {
--                 start: { column: 37, line: 3 },
--                 end: { column: 43, line: 3 },
-+                 start: { column: 23, line: 3 },
-+                 end: { column: 45, line: 3 },
+                  start: { column: 23, line: 3 },
+                  end: { column: 45, line: 3 },
                 },
               },
-+           ],
+            ],
 
--             range: [104, 116],
--             loc: {
--               start: { column: 31, line: 3 },
--               end: { column: 43, line: 3 },
--             },
-+           range: [94, 120],
-+           loc: {
-+             start: { column: 21, line: 3 },
-+             end: { column: 47, line: 3 },
+            range: [94, 120],
+            loc: {
+              start: { column: 21, line: 3 },
+              end: { column: 47, line: 3 },
             },
--         ],
+          },
 -         qualifier: null,
 -         typeArguments: null,
-+         },
 
           range: [82, 121],
           loc: {

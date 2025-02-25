@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, hasOverloadSignatures } from '../util';
 
 export interface Options {
   allowAsThisParameter?: boolean;
@@ -204,6 +204,20 @@ export default createRule<[Options], MessageIds>({
           return;
         }
 
+        // using `void` as part of the return type of function overloading implementation
+        if (node.parent.type === AST_NODE_TYPES.TSUnionType) {
+          const declaringFunction = getParentFunctionDeclarationNode(
+            node.parent,
+          );
+
+          if (
+            declaringFunction &&
+            hasOverloadSignatures(declaringFunction, context)
+          ) {
+            return;
+          }
+        }
+
         // this parameter is ok to be void.
         if (
           allowAsThisParameter &&
@@ -246,4 +260,26 @@ function getNotReturnOrGenericMessageId(
   return node.parent.type === AST_NODE_TYPES.TSUnionType
     ? 'invalidVoidUnionConstituent'
     : 'invalidVoidNotReturnOrGeneric';
+}
+
+function getParentFunctionDeclarationNode(
+  node: TSESTree.Node,
+): TSESTree.FunctionDeclaration | TSESTree.MethodDefinition | null {
+  let current = node.parent;
+  while (current) {
+    if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
+      return current;
+    }
+
+    if (
+      current.type === AST_NODE_TYPES.MethodDefinition &&
+      current.value.body != null
+    ) {
+      return current;
+    }
+
+    current = current.parent;
+  }
+
+  return null;
 }
