@@ -65,13 +65,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       }
     `,
     `
-      class Joiner {
-        join<T extends string | number>(els: T[]) {
-          return els.map(el => '' + el).join(',');
-        }
-      }
-    `,
-    `
       declare class Foo {
         getProp<T>(this: Record<'prop', T>): T;
       }
@@ -1719,6 +1712,33 @@ function f(x: unknown): void {
   x.notAMethod();
 }
       `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Joiner {
+  join<T extends number>(els: T[]) {
+    return els.map(el => '' + el).join(',');
+  }
+}
+    `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class Joiner {
+  join(els: number[]) {
+    return els.map(el => '' + el).join(',');
+  }
+}
+    `,
             },
           ],
         },

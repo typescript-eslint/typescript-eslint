@@ -295,12 +295,7 @@ function countTypeParameterUsage(
       collectTypeParameterUsageCounts(checker, member, counts, true);
     }
   } else {
-    collectTypeParameterUsageCounts(
-      checker,
-      node,
-      counts,
-      ts.isClassElement(node),
-    );
+    collectTypeParameterUsageCounts(checker, node, counts, false);
   }
 
   return counts;
