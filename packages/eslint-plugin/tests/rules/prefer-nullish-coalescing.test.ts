@@ -274,6 +274,24 @@ declare let x: () => string | null | undefined;
 !x ? y : x;
       `,
       `
+declare let x: () => string | null;
+x() ? x() : y;
+      `,
+      `
+declare let x: () => string | null;
+!x() ? y : x();
+      `,
+      `
+const a = 'foo';
+declare let x: (a: string | null) => string | null;
+x(a) ? x(a) : y;
+      `,
+      `
+const a = 'foo';
+declare let x: (a: string | null) => string | null;
+!x(a) ? y : x(a);
+      `,
+      `
 declare let x: { n: string };
 x.n ? x.n : y;
       `,
