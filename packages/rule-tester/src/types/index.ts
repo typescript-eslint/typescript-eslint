@@ -35,4 +35,4 @@ export type {
   TestCaseError,
 } from './InvalidTestCase';
 export type { RuleTesterConfig } from './RuleTesterConfig';
-export type { ValidTestCase } from './ValidTestCase';
+export type { TestLanguageOptions, ValidTestCase } from './ValidTestCase';
