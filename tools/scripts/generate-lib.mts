@@ -193,7 +193,7 @@ async function main(): Promise<void> {
       ast: { comments: TSESTree.Comment[] } & TSESTree.Program;
     } & ReturnType<typeof parseAndAnalyze>;
 
-    const code = [`export const ${sanitize(libName)} = {`];
+    const code = [`export const ${sanitize(libName)}: LibDefinition = {`];
 
     const references = getReferences(ast);
     if (references.size > 0) {
@@ -202,19 +202,20 @@ async function main(): Promise<void> {
     }
 
     // import and spread all of the references
-    const imports = [
-      "import type { ImplicitLibVariableOptions } from '../variable';",
-    ];
+    const imports = ["import type { LibDefinition } from '../variable';"];
+    code.push('libs: [');
     for (const reference of references) {
       const name = sanitize(reference);
       imports.push(`import { ${name} } from './${reference}'`);
-      code.push(`...${name},`);
+      code.push(`${name},`);
     }
+    code.push('],');
 
     const requiredBaseImports = new Set<BASE_CONFIG_EXPORT_NAMES>();
 
     // add a declaration for each variable
     const variables = getVariablesFromScope(scopeManager);
+    code.push('variables: [');
     for (const variable of variables) {
       const importName = ((): BASE_CONFIG_EXPORT_NAMES => {
         if (variable.isTypeVariable && variable.isValueVariable) {
@@ -233,9 +234,10 @@ async function main(): Promise<void> {
       })();
       requiredBaseImports.add(importName);
 
-      code.push(`'${variable.name}': ${importName},`);
+      code.push(`['${variable.name}', ${importName}],`);
     }
-    code.push('} as Record<string, ImplicitLibVariableOptions>;');
+    code.push('],');
+    code.push('};');
 
     if (requiredBaseImports.size > 0) {
       imports.push(
@@ -266,19 +268,26 @@ async function main(): Promise<void> {
 
   // generate and write a barrel file
   const barrelImports = []; // use a separate way so everything is in the same order
-  const barrelCode = ['', `export const lib = {`];
+  const barrelCode = [
+    '',
+    `export const lib: ReadonlyMap<string, LibDefinition> =`,
+    `new Map<string, LibDefinition>([`,
+  ];
+  // Call `Object.entries` during barrel construction to avoid redundantly calling
+  // and allocating a new array on every reference
   for (const lib of libMap.keys()) {
     const name = sanitize(lib);
     if (name === 'lib') {
       barrelImports.push(`import { lib as libBase } from './${lib}'`);
-      barrelCode.push(`'${lib}': libBase,`);
+      barrelCode.push(`['${lib}', libBase],`);
     } else {
       barrelImports.push(`import { ${name} } from './${lib}'`);
-      barrelCode.push(lib === name ? `${lib},` : `'${lib}': ${name},`);
+      barrelCode.push(`['${lib}', ${name}],`);
     }
   }
   barrelCode.unshift(...barrelImports);
-  barrelCode.push('} as const;');
+  barrelCode.unshift('', `import type { LibDefinition } from '../variable';`);
+  barrelCode.push(']);');
 
   const formattedBarrelCode = await formatCode(barrelCode);
 
