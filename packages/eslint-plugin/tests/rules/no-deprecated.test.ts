@@ -315,6 +315,21 @@ ruleTester.run('no-deprecated', rule, {
     {
       code: `
 /** @deprecated */
+function A() {
+  return <div />;
+}
+
+const a = <A></A>;
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'A' }],
+        },
+      ],
+    },
+    {
+      code: `
+/** @deprecated */
 declare class A {}
 
 new A();
@@ -2778,6 +2793,37 @@ class B extends A {
           endLine: 19,
           line: 19,
           messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+import { exists } from 'fs';
+exists('/foo');
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            name: 'exists',
+            reason:
+              'Since v1.0.0 - Use {@link stat} or {@link access} instead.',
+          },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+      options: [
+        {
+          allow: [
+            {
+              from: 'package',
+              name: 'exists',
+              package: 'hoge',
+            },
+          ],
         },
       ],
     },

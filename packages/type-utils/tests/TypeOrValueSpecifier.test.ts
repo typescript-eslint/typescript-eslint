@@ -518,7 +518,7 @@ describe('TypeOrValueSpecifier', () => {
       expected: boolean,
     ): void {
       const rootDir = path.join(__dirname, 'fixtures');
-      const { ast } = parseForESLint(code, {
+      const { ast, scopeManager } = parseForESLint(code, {
         disallowAutomaticSingleRunInference: true,
         filePath: path.join(rootDir, 'file.ts'),
         project: './tsconfig.json',
@@ -527,7 +527,9 @@ describe('TypeOrValueSpecifier', () => {
 
       const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;
       const { init } = declaration.declarations[0];
-      expect(valueMatchesSpecifier(init!, specifier)).toBe(expected);
+      expect(valueMatchesSpecifier(init!, specifier, scopeManager)).toBe(
+        expected,
+      );
     }
 
     function runTestPositive(
@@ -608,6 +610,10 @@ describe('TypeOrValueSpecifier', () => {
       [
         'import { mock } from "node:test"; const hoge = mock;',
         { from: 'package', name: 'hoge', package: 'node:test' },
+      ],
+      [
+        'import { mock } from "node"; const hoge = mock;',
+        { from: 'package', name: 'mock', package: 'node:test' },
       ],
     ])("doesn't match a mismatched package specifier: %s", runTestNegative);
   });
