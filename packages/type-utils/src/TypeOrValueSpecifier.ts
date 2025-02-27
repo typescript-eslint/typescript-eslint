@@ -2,6 +2,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type * as ts from 'typescript';
 
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as tsutils from 'ts-api-utils';
 
 import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
@@ -208,7 +209,10 @@ export function valueMatchesSpecifier(
   node: TSESTree.Node,
   specifier: TypeOrValueSpecifier,
 ): boolean {
-  if ('name' in node && typeof node.name === 'string') {
+  if (
+    node.type === AST_NODE_TYPES.Identifier ||
+    node.type === AST_NODE_TYPES.JSXIdentifier
+  ) {
     if (typeof specifier === 'string') {
       return node.name === specifier;
     }
