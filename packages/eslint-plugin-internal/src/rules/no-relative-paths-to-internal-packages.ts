@@ -53,6 +53,11 @@ export default createRule({
         );
         const packageOfImport = pathOfImportFromPackagesDir.split(path.sep)[0];
 
+        if (path.dirname(absolutePathOfImport) === REPO_ROOT) {
+          // this is to allow importing the root package.json
+          return;
+        }
+
         if (packageOfImport !== packageOfFile) {
           context.report({
             node: importSource,
