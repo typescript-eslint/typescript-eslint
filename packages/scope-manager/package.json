@@ -43,7 +43,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-lib": "npx nx generate-lib repo",
     "lint": "npx nx lint",
-    "test": "npx nx test --code-coverage",
+    "test": "jest",
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
@@ -55,6 +55,7 @@
     "@types/glob": "*",
     "@typescript-eslint/typescript-estree": "8.25.0",
     "glob": "*",
+    "jest": "29.7.0",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
     "prettier": "^3.2.5",
