@@ -68,11 +68,11 @@ thing && thing.toString();
 ~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
 
 Correct
-Options: { "checkAny": false }
+Options: { "checkAny": true }
 
 declare const thing: any;
 
-thing && thing.toString();
+thing?.toString();
 
 Incorrect
 Options: { "checkUnknown": true }
@@ -83,11 +83,11 @@ thing && thing.toString();
 ~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
 
 Correct
-Options: { "checkUnknown": false }
+Options: { "checkUnknown": true }
 
 declare const thing: unknown;
 
-thing && thing.toString();
+thing?.toString();
 
 Incorrect
 Options: { "checkString": true }
@@ -98,11 +98,11 @@ thing && thing.toString();
 ~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
 
 Correct
-Options: { "checkString": false }
+Options: { "checkString": true }
 
 declare const thing: string;
 
-thing && thing.toString();
+thing?.toString();
 
 Incorrect
 Options: { "checkNumber": true }
@@ -113,11 +113,11 @@ thing && thing.toString();
 ~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
 
 Correct
-Options: { "checkNumber": false }
+Options: { "checkNumber": true }
 
 declare const thing: number;
 
-thing && thing.toString();
+thing?.toString();
 
 Incorrect
 Options: { "checkBoolean": true }
@@ -128,11 +128,11 @@ thing && thing.toString();
 ~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
 
 Correct
-Options: { "checkBoolean": false }
+Options: { "checkBoolean": true }
 
 declare const thing: true;
 
-thing && thing.toString();
+thing?.toString();
 
 Incorrect
 Options: { "checkBigInt": true }
@@ -143,11 +143,11 @@ thing && thing.toString();
 ~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
 
 Correct
-Options: { "checkBigInt": false }
+Options: { "checkBigInt": true }
 
 declare const thing: bigint;
 
-thing && thing.toString();
+thing?.toString();
 
 Incorrect
 Options: { "requireNullish": true }

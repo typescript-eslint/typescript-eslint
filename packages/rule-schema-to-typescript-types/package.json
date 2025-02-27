@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "8.22.0",
+  "version": "8.25.0",
   "private": true,
   "type": "commonjs",
   "exports": {
@@ -30,18 +30,15 @@
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
-    "test": "npx jest",
-    "test-coverage": "npx jest --coverage",
-    "typecheck": "tsc --noEmit"
+    "check-types": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/type-utils": "8.22.0",
-    "@typescript-eslint/utils": "8.22.0",
+    "@typescript-eslint/type-utils": "8.25.0",
+    "@typescript-eslint/utils": "8.25.0",
     "natural-compare": "^1.4.0",
     "prettier": "^3.2.5"
   },
   "devDependencies": {
-    "@jest/types": "29.6.3",
     "typescript": "*"
   },
   "funding": {

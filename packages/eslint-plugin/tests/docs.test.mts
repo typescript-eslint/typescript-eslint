@@ -188,6 +188,7 @@ describe('Validating rule docs', () => {
     'switch-exhaustiveness-check',
     'switch-exhaustiveness-check',
     'unbound-method',
+    'no-unnecessary-boolean-literal-compare',
   ]);
 
   it('All rules must have a corresponding rule doc', () => {

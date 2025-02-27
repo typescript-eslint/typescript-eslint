@@ -1,13 +1,33 @@
 Options: { "ignoreOverrideMethods": true }
 
-class X {
+abstract class Base {
+  abstract method(): void;
+  abstract property: () => void;
+}
+
+class Derived extends Base {
   override method() {}
   override property = () => {};
 }
 
+Incorrect
 Options: { "ignoreClassesThatImplementAnInterface": true }
 
-class X implements Y {
+class Standalone {
+  method() {}
+  ~~~~~~ Expected 'this' to be used by class method 'method'.
+  property = () => {};
+  ~~~~~~~~~~~ Expected 'this' to be used by class method 'property'.
+}
+
+Correct
+Options: { "ignoreClassesThatImplementAnInterface": true }
+
+interface Base {
+  method(): void;
+}
+
+class Derived implements Base {
   method() {}
   property = () => {};
 }
@@ -15,7 +35,11 @@ class X implements Y {
 Incorrect
 Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
 
-class X implements Y {
+interface Base {
+  method(): void;
+}
+
+class Derived implements Base {
   method() {}
   property = () => {};
 
@@ -24,16 +48,20 @@ class X implements Y {
   private privateProperty = () => {};
   ~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected 'this' to be used by class method 'privateProperty'.
 
-  protected privateMethod() {}
-  ~~~~~~~~~~~~~~~~~~~~~~~ Expected 'this' to be used by class method 'privateMethod'.
-  protected privateProperty = () => {};
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected 'this' to be used by class method 'privateProperty'.
+  protected protectedMethod() {}
+  ~~~~~~~~~~~~~~~~~~~~~~~~~ Expected 'this' to be used by class method 'protectedMethod'.
+  protected protectedProperty = () => {};
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected 'this' to be used by class method 'protectedProperty'.
 }
 
 Correct
 Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
 
-class X implements Y {
+interface Base {
+  method(): void;
+}
+
+class Derived implements Base {
   method() {}
   property = () => {};
 }

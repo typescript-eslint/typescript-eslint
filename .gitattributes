@@ -1,10 +1,4 @@
-* text=auto
-*.js eol=lf
-*.json eol=lf
-*.md eol=lf
-*.ts eol=lf
-*.tsx eol=lf
-*.yml eol=lf
+* text=auto eol=lf
 
 # force github to treat out custom jest snapshot extension as normal jest snapshots
 *.shot linguist-language=Jest-Snapshot

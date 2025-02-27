@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -17,7 +18,7 @@
         "type": "array"
       },
       "ignoreClassesThatImplementAnInterface": {
-        "description": "Makes the rule ignore class members that are defined within a class that `implements` a type",
+        "description": "Whether to ignore class members that are defined within a class that `implements` a type.",
         "oneOf": [
           {
             "description": "Ignore all classes that implement an interface",
@@ -31,7 +32,7 @@
         ]
       },
       "ignoreOverrideMethods": {
-        "description": "Ignore members marked with the `override` modifier",
+        "description": "Whether to ignore members marked with the `override` modifier.",
         "type": "boolean"
       }
     },
@@ -48,16 +49,15 @@ type Options = [
     enforceForClassFields?: boolean;
     /** Allows specified method names to be ignored with this rule. */
     exceptMethods?: string[];
-    /** Makes the rule ignore class members that are defined within a class that `implements` a type */
+    /** Whether to ignore class members that are defined within a class that `implements` a type. */
     ignoreClassesThatImplementAnInterface?: /**
-     * Makes the rule ignore class members that are defined within a class that `implements` a type
+     * Whether to ignore class members that are defined within a class that `implements` a type.
      * Ignore all classes that implement an interface
      */
     | boolean
       /** Ignore only the public fields of classes that implement an interface */
       | 'public-fields';
-    /** Ignore members marked with the `override` modifier */
+    /** Whether to ignore members marked with the `override` modifier. */
     ignoreOverrideMethods?: boolean;
   },
 ];
-
