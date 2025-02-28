@@ -8,7 +8,6 @@ import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
 
 export const webworker_iterable = {
-  AbortSignal: TYPE,
   Cache: TYPE,
   CanvasPath: TYPE,
   CanvasPathDrawingStyles: TYPE,
@@ -24,6 +23,7 @@ export const webworker_iterable = {
   HeadersIterator: TYPE,
   IDBDatabase: TYPE,
   IDBObjectStore: TYPE,
+  ImageTrackList: TYPE,
   MessageEvent: TYPE,
   StylePropertyMapReadOnly: TYPE,
   StylePropertyMapReadOnlyIterator: TYPE,

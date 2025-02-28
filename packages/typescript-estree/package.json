@@ -74,7 +74,7 @@
     "typescript": "*"
   },
   "peerDependencies": {
-    "typescript": ">=4.8.4 <5.8.0"
+    "typescript": ">=4.8.4 <5.9.0"
   },
   "funding": {
     "type": "opencollective",

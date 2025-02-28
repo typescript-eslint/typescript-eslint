@@ -9,5 +9,4 @@ import { TYPE } from './base-config';
 
 export const esnext_promise = {
   PromiseConstructor: TYPE,
-  PromiseWithResolvers: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

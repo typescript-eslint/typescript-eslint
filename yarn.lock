@@ -5724,7 +5724,7 @@ __metadata:
   peerDependencies:
     "@typescript-eslint/parser": ^8.0.0 || ^8.0.0-alpha.0
     eslint: ^8.57.0 || ^9.0.0
-    typescript: ">=4.8.4 <5.8.0"
+    typescript: ">=4.8.4 <5.9.0"
   languageName: unknown
   linkType: soft
 
@@ -5759,7 +5759,7 @@ __metadata:
     typescript: "*"
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
-    typescript: ">=4.8.4 <5.8.0"
+    typescript: ">=4.8.4 <5.9.0"
   languageName: unknown
   linkType: soft
 
@@ -5839,7 +5839,7 @@ __metadata:
     typescript: "*"
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
-    typescript: ">=4.8.4 <5.8.0"
+    typescript: ">=4.8.4 <5.9.0"
   languageName: unknown
   linkType: soft
 
@@ -5930,7 +5930,7 @@ __metadata:
     semver: 7.7.0
     tmp: ^0.2.1
     tsx: "*"
-    typescript: ">=4.8.4 <5.8.0"
+    typescript: ">=4.8.4 <5.9.0"
     typescript-eslint: "workspace:^"
     yargs: 17.7.2
   languageName: unknown
@@ -5956,7 +5956,7 @@ __metadata:
     ts-api-utils: ^2.0.1
     typescript: "*"
   peerDependencies:
-    typescript: ">=4.8.4 <5.8.0"
+    typescript: ">=4.8.4 <5.9.0"
   languageName: unknown
   linkType: soft
 
@@ -5975,7 +5975,7 @@ __metadata:
     typescript: "*"
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
-    typescript: ">=4.8.4 <5.8.0"
+    typescript: ">=4.8.4 <5.9.0"
   languageName: unknown
   linkType: soft
 
@@ -19570,27 +19570,27 @@ __metadata:
     typescript: "*"
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
-    typescript: ">=4.8.4 <5.8.0"
+    typescript: ">=4.8.4 <5.9.0"
   languageName: unknown
   linkType: soft
 
-"typescript@npm:5.7.2":
-  version: 5.7.2
-  resolution: "typescript@npm:5.7.2"
+"typescript@npm:~5.8.0":
+  version: 5.8.2
+  resolution: "typescript@npm:5.8.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: b55300c4cefee8ee380d14fa9359ccb41ff8b54c719f6bc49b424899d662a5ce62ece390ce769568c7f4d14af844085255e63788740084444eb12ef423b13433
+  checksum: 7f9e3d7ac15da6df713e439e785e51facd65d6450d5f51fab3e8d2f2e3f4eb317080d895480b8e305450cdbcb37e17383e8bf521e7395f8b556e2f2a4730ed86
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.7.2#~builtin<compat/typescript>":
-  version: 5.7.2
-  resolution: "typescript@patch:typescript@npm%3A5.7.2#~builtin<compat/typescript>::version=5.7.2&hash=b45daf"
+"typescript@patch:typescript@npm%3A~5.8.0#~builtin<compat/typescript>":
+  version: 5.8.2
+  resolution: "typescript@patch:typescript@npm%3A5.8.2#~builtin<compat/typescript>::version=5.8.2&hash=b45daf"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 803430c6da2ba73c25a21880d8d4f08a56d9d2444e6db2ea949ac4abceeece8e4a442b7b9b585db7d8a0b47ebda2060e45fe8ee8b8aca23e27ec1d4844987ee6
+  checksum: a58d19ff9811c1764a299dd83ca20ed8020f0ab642906dafc880121b710751227201531fdc99878158205c356ac79679b0b61ac5b42eda0e28bfb180947a258d
   languageName: node
   linkType: hard
 
