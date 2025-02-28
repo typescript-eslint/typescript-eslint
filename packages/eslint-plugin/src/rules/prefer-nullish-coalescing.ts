@@ -759,9 +759,9 @@ function getOperatorAndNodesInsideTestExpression(
   node: TSESTree.ConditionalExpression | TSESTree.IfStatement,
 ): {
   nodesInsideTestExpression: TSESTree.Node[];
-  operator: NullishCheckOperator | undefined;
+  operator: NullishCheckOperator | null;
 } {
-  let operator: NullishCheckOperator | undefined;
+  let operator: NullishCheckOperator | null = null;
   let nodesInsideTestExpression: TSESTree.Node[] = [];
 
   if (
@@ -838,7 +838,7 @@ function getNonBinaryNodeOperator(
     | TSESTree.Identifier
     | TSESTree.MemberExpression
     | TSESTree.UnaryExpression,
-): NullishCheckOperator | undefined {
+): NullishCheckOperator | null {
   if (node.type !== AST_NODE_TYPES.UnaryExpression) {
     return '';
   }
@@ -848,4 +848,5 @@ function getNonBinaryNodeOperator(
   ) {
     return '!';
   }
+  return null;
 }
