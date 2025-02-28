@@ -50,7 +50,7 @@
   },
   {
     "id": "Sourcegraph",
-    "image": "https://images.opencollective.com/sourcegraph/67e40ff/logo.png",
+    "image": "https://images.opencollective.com/sourcegraph/f67b621/logo.png",
     "name": "Sourcegraph",
     "totalDonations": 320000,
     "website": "https://about.sourcegraph.com"
@@ -203,13 +203,6 @@
     "website": "https://webdriver.io/"
   },
   {
-    "id": "syntaxfm",
-    "image": "https://avatars.githubusercontent.com/u/130389858?v=4",
-    "name": "Syntax",
-    "totalDonations": 43280,
-    "website": "https://syntax.fm"
-  },
-  {
     "id": "Whitebox",
     "image": "https://images.opencollective.com/whiteboxinc/ef0d11d/logo.png",
     "name": "Whitebox",
@@ -229,6 +222,13 @@
     "name": "Defined Networking",
     "totalDonations": 40000,
     "website": "https://www.defined.net"
+  },
+  {
+    "id": "syntaxfm",
+    "image": "https://avatars.githubusercontent.com/u/130389858?v=4",
+    "name": "Syntax",
+    "totalDonations": 38211,
+    "website": "https://syntax.fm"
   },
   {
     "id": "Torutek",
@@ -329,13 +329,6 @@
     "website": "https://paddn.com/"
   },
   {
-    "id": "getsentry",
-    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
-    "name": "Sentry",
-    "totalDonations": 14869,
-    "website": "https://sentry.io"
-  },
-  {
     "id": "Now4real",
     "image": "https://images.opencollective.com/now4real/54ca7d9/logo.png",
     "name": "Now4real",
@@ -343,10 +336,17 @@
     "website": "https://now4real.com/"
   },
   {
+    "id": "getsentry",
+    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
+    "name": "Sentry",
+    "totalDonations": 13636,
+    "website": "https://sentry.io"
+  },
+  {
     "id": "codecov",
     "image": "https://avatars.githubusercontent.com/u/8226205?v=4",
     "name": "Codecov",
-    "totalDonations": 14051,
+    "totalDonations": 12659,
     "website": "https://codecov.io/"
   },
   {
