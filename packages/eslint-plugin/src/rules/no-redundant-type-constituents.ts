@@ -294,6 +294,70 @@ function getGroupTypeRelationsBySuperTypeName(typeRelations: TypeRelation[]) {
   return groupedTypeRelation;
 }
 
+function hasSameKeys(
+  type1: ts.Type,
+  type2: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  if (tsutils.isUnionType(type1)) {
+    return type1.types.some(typePart => hasSameKeys(typePart, type2, checker));
+  }
+  if (tsutils.isUnionType(type2)) {
+    return type2.types.some(typePart => hasSameKeys(type1, typePart, checker));
+  }
+  if (
+    !tsutils.isIntersectionType(type1) &&
+    !tsutils.isIntersectionType(type2) &&
+    !tsutils.isObjectType(type1) &&
+    !tsutils.isObjectType(type2)
+  ) {
+    return false;
+  }
+
+  const propertiesOfType1 = type1.getProperties();
+  const propertiesOfType2 = type2.getProperties();
+
+  if (propertiesOfType1.length !== propertiesOfType2.length) {
+    return false;
+  }
+  for (const propertyOfType1 of propertiesOfType1) {
+    const propertyOfType2 = propertiesOfType2.find(
+      p => p.getName() === propertyOfType1.getName(),
+    );
+
+    if (!propertyOfType2) {
+      return false;
+    }
+    const valueOfType1 = propertyOfType1.valueDeclaration;
+    const valueOfType2 = propertyOfType2.valueDeclaration;
+
+    if (
+      valueOfType1 &&
+      ts.isPropertySignature(valueOfType1) &&
+      valueOfType1.type &&
+      valueOfType2 &&
+      ts.isPropertySignature(valueOfType2) &&
+      valueOfType2.type
+    ) {
+      const isType1TypeLiteral = ts.isTypeLiteralNode(valueOfType1.type);
+      const isType2TypeLiteral = ts.isTypeLiteralNode(valueOfType2.type);
+
+      if (isType1TypeLiteral !== isType2TypeLiteral) {
+        return false;
+      }
+
+      if (isType1TypeLiteral) {
+        return hasSameKeys(
+          checker.getTypeAtLocation(valueOfType1.type),
+          checker.getTypeAtLocation(valueOfType2.type),
+          checker,
+        );
+      }
+    }
+  }
+  return true;
+}
+
 export default createRule({
   name: 'no-redundant-type-constituents',
   meta: {
@@ -756,6 +820,10 @@ export default createRule({
                 parentTypeNode,
                 typeNode: sourceTypeNode,
               } = seenObjectType;
+              if (!hasSameKeys(sourceType, targetType, checker)) {
+                break;
+              }
+
               const typeAssignability = checkTypeAssignability(
                 sourceType,
                 targetType,
