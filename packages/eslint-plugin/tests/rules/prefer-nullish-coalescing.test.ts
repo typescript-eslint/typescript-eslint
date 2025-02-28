@@ -445,6 +445,18 @@ function lazyInitialize() {
 }
       `,
       `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    return foo;
+  } else {
+    return 'bar';
+  }
+}
+      `,
+      `
 declare const nullOrObject: null | { a: string };
 
 const test = nullOrObject !== undefined && null !== null

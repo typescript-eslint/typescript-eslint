@@ -764,7 +764,12 @@ function getOperatorAndNodesInsideTestExpression(
   let operator: NullishCheckOperator | undefined;
   let nodesInsideTestExpression: TSESTree.Node[] = [];
 
-  if (node.test.type === AST_NODE_TYPES.BinaryExpression) {
+  if (
+    isIdentifierOrMemberOrChainExpression(node.test) ||
+    node.test.type === AST_NODE_TYPES.UnaryExpression
+  ) {
+    operator = getNonBinaryNodeOperator(node.test);
+  } else if (node.test.type === AST_NODE_TYPES.BinaryExpression) {
     nodesInsideTestExpression = [node.test.left, node.test.right];
     if (
       node.test.operator === '==' ||
@@ -824,17 +829,23 @@ function getOperatorAndNodesInsideTestExpression(
     }
   }
 
-  if (operator == null) {
-    if (isIdentifierOrMemberOrChainExpression(node.test)) {
-      operator = '';
-    } else if (
-      node.test.type === AST_NODE_TYPES.UnaryExpression &&
-      isIdentifierOrMemberOrChainExpression(node.test.argument) &&
-      node.test.operator === '!'
-    ) {
-      operator = '!';
-    }
-  }
-
   return { nodesInsideTestExpression, operator };
+}
+
+function getNonBinaryNodeOperator(
+  node:
+    | TSESTree.ChainExpression
+    | TSESTree.Identifier
+    | TSESTree.MemberExpression
+    | TSESTree.UnaryExpression,
+): NullishCheckOperator | undefined {
+  if (node.type !== AST_NODE_TYPES.UnaryExpression) {
+    return '';
+  }
+  if (
+    isIdentifierOrMemberOrChainExpression(node.argument) &&
+    node.operator === '!'
+  ) {
+    return '!';
+  }
 }
