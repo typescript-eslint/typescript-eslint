@@ -621,11 +621,11 @@ function getOverloadInfo(node: OverloadNode): string {
       const { key } = node as MethodDefinition;
 
       if (isPrivateIdentifier(key)) {
-        return `privateId_${key.name}`;
+        return `private_identifier_${key.name}`;
       }
 
       if (isIdentifier(key)) {
-        return `id_${key.name}`;
+        return `identifier_${key.name}`;
       }
 
       return (key as TSESTree.Literal).raw;
