@@ -1,6 +1,7 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -76,16 +77,13 @@ export default createRule<[], MessageId>({
       return isStringLike(type);
     }
 
-    /**
-     * Checks for whole enum types, i.e. `MyEnum`, and not their values, i.e. `MyEnum.A`
-     */
-    function isEnumType(type: ts.Type): boolean {
-      const symbol = type.getSymbol();
-
-      return !!(
-        symbol?.valueDeclaration &&
-        ts.isEnumDeclaration(symbol.valueDeclaration)
-      );
+    function isEnumMemberType(type: ts.Type): boolean {
+      return tsutils.typeParts(type).some(t => {
+        const symbol = t.getSymbol();
+        return !!(
+          symbol?.valueDeclaration && ts.isEnumMember(symbol.valueDeclaration)
+        );
+      });
     }
 
     const isLiteral = isNodeOfType(TSESTree.AST_NODE_TYPES.Literal);
@@ -460,7 +458,7 @@ export default createRule<[], MessageId>({
             constraintType &&
             !isTypeParameter &&
             isUnderlyingTypeString(constraintType) &&
-            !isEnumType(constraintType)
+            !isEnumMemberType(constraintType)
           ) {
             reportSingleInterpolation(node);
             return;

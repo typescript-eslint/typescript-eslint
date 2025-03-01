@@ -1,3 +1,29 @@
+## 8.25.0 (2025-02-24)
+
+### 🩹 Fixes
+
+- **ast-spec:** replace `attributes` with `options` property in `TSImportType` ([#10691](https://github.com/typescript-eslint/typescript-eslint/pull/10691))
+- **typescript-estree:** align TS module nodes to namespaces ([#10504](https://github.com/typescript-eslint/typescript-eslint/pull/10504))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.24.1 (2025-02-17)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.24.0 (2025-02-10)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.23.0 (2025-02-03)
 
 ### 🩹 Fixes

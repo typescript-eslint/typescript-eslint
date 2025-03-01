@@ -1,9 +1,10 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "8.23.0",
+  "version": "8.25.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "_ts4.3",
     "package.json",
     "README.md",
@@ -45,7 +46,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-lib": "npx nx run scope-manager:generate-lib",
     "lint": "npx nx lint",
-    "typecheck": "tsc --noEmit"
+    "check-types": "npx nx typecheck"
   },
   "nx": {
     "targets": {
@@ -67,7 +68,6 @@
     }
   },
   "devDependencies": {
-    "@jest/types": "29.6.3",
     "downlevel-dts": "*",
     "prettier": "^3.2.5",
     "rimraf": "*",

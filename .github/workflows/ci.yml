@@ -171,7 +171,6 @@ jobs:
             'eslint-plugin-internal',
             'parser',
             'rule-tester',
-            'rule-schema-to-typescript-types',
             'scope-manager',
             'type-utils',
             'typescript-eslint',
@@ -197,17 +196,14 @@ jobs:
 
       # collect coverage on the primary node version
       # we don't collect coverage on other node versions so they run faster
-      # note that we don't do this as a single `run` with a flag because some
-      # packages don't collect coverage on purpose, so forcing `--coverage=true`
-      # would override the config
       - name: Run unit tests with coverage for ${{ matrix.package }}
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        run: npx nx test ${{ matrix.package }}
+        run: npx nx run ${{ matrix.package }}:test -- --coverage
         env:
           CI: true
       - name: Run unit tests for ${{ matrix.package }}
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        run: npx nx test ${{ matrix.package }} --coverage=false
+        run: npx nx test ${{ matrix.package }}
         env:
           CI: true
 
