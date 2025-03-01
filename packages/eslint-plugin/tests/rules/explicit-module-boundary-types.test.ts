@@ -601,6 +601,15 @@ export default { Foo };
     },
     {
       code: `
+export class Foo {
+  accessor bar = (): void => {
+    return;
+  };
+}
+      `,
+    },
+    {
+      code: `
 export function foo(): (n: number) => string {
   return n => String(n);
 }
@@ -1667,6 +1676,52 @@ export default Foo;
       code: `
 class Foo {
   bool = function (arg) {
+    return arg;
+  };
+}
+export default Foo;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'missingReturnType',
+        },
+        {
+          data: {
+            name: 'arg',
+          },
+          line: 3,
+          messageId: 'missingArgType',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  accessor bool = arg => {
+    return arg;
+  };
+}
+export default Foo;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+          },
+          line: 3,
+          messageId: 'missingArgType',
+        },
+        {
+          line: 3,
+          messageId: 'missingReturnType',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  accessor bool = function (arg) {
     return arg;
   };
 }

@@ -8,7 +8,6 @@ const { tseslintPackages } = require('./tools/pack-packages');
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
   ...require('../../jest.config.base.js'),
-  collectCoverage: false,
   globals: {
     tseslintPackages,
   },
