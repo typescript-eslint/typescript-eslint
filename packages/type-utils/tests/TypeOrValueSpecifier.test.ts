@@ -598,6 +598,15 @@ describe('TypeOrValueSpecifier', () => {
     }
 
     it.each<[string, TypeOrValueSpecifier]>([
+      ['const value = 45;', 'value'],
+      ['let value = 45;', 'value'],
+      ['var value = 45;', 'value'],
+    ])(
+      'does not match for non-Identifier or non-JSXIdentifier node: %s',
+      runTestNegative,
+    );
+
+    it.each<[string, TypeOrValueSpecifier]>([
       ['const value = 45; const hoge = value;', 'value'],
       ['let value = 45; const hoge = value;', 'value'],
       ['var value = 45; const hoge = value;', 'value'],
@@ -664,6 +673,10 @@ describe('TypeOrValueSpecifier', () => {
       ],
       [
         'import { mock } from "node"; const hoge = mock;',
+        { from: 'package', name: 'mock', package: 'node:test' },
+      ],
+      [
+        'const mock = 42; const hoge = mock;',
         { from: 'package', name: 'mock', package: 'node:test' },
       ],
     ])("doesn't match a mismatched package specifier: %s", runTestNegative);
