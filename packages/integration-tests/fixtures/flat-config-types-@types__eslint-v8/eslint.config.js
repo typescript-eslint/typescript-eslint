@@ -52,7 +52,6 @@ function _otherCases() {
     jestPlugin.configs['flat/recommended'],
   );
   tseslint.config(
-    // @ts-expect-error
     compat.config(deprecationPlugin.configs.recommended),
     ...compat.config(jestPlugin.configs.recommended),
   );
