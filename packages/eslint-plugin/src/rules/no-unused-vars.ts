@@ -16,6 +16,7 @@ import {
   getNameLocationInGlobalDirectiveComment,
   isDefinitionFile,
   isFunction,
+  MakeRequired,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -57,6 +58,11 @@ type VariableType =
   | 'catch-clause'
   | 'parameter'
   | 'variable';
+
+type ModuleDeclarationWithBody = MakeRequired<
+  TSESTree.TSModuleDeclaration,
+  'body'
+>;
 
 export default createRule<Options, MessageIds>({
   name: 'no-unused-vars',
@@ -145,7 +151,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [{}],
   create(context, [firstOption]) {
     const MODULE_DECL_CACHE = new Map<
-      TSESTree.Program | TSESTree.TSModuleDeclaration,
+      TSESTree.Program | ModuleDeclarationWithBody,
       boolean
     >();
 
@@ -587,7 +593,7 @@ export default createRule<Options, MessageIds>({
         const moduleDecl = nullThrows(
           node.parent.parent,
           NullThrowsReasons.MissingParent,
-        ) as TSESTree.TSModuleDeclaration;
+        ) as ModuleDeclarationWithBody;
 
         if (checkForOverridingExportStatements(moduleDecl)) {
           return;
@@ -603,7 +609,7 @@ export default createRule<Options, MessageIds>({
         const moduleDecl = nullThrows(
           node.parent.parent,
           NullThrowsReasons.MissingParent,
-        ) as TSESTree.TSModuleDeclaration;
+        ) as ModuleDeclarationWithBody;
 
         if (checkForOverridingExportStatements(moduleDecl)) {
           return;
@@ -622,7 +628,7 @@ export default createRule<Options, MessageIds>({
         const moduleDecl = nullThrows(
           node.parent.parent,
           NullThrowsReasons.MissingParent,
-        ) as TSESTree.TSModuleDeclaration;
+        ) as ModuleDeclarationWithBody;
 
         if (checkForOverridingExportStatements(moduleDecl)) {
           return;
@@ -705,7 +711,7 @@ export default createRule<Options, MessageIds>({
     };
 
     function checkForOverridingExportStatements(
-      node: TSESTree.Program | TSESTree.TSModuleDeclaration,
+      node: TSESTree.Program | ModuleDeclarationWithBody,
     ): boolean {
       const cached = MODULE_DECL_CACHE.get(node);
       if (cached != null) {
@@ -828,18 +834,13 @@ function hasOverridingExportStatement(
 }
 
 function getStatementsOfNode(
-  block: TSESTree.Program | TSESTree.TSModuleDeclaration,
+  block: TSESTree.Program | ModuleDeclarationWithBody,
 ): TSESTree.ProgramStatement[] {
   if (block.type === AST_NODE_TYPES.Program) {
     return block.body;
   }
 
-  const body = nullThrows(
-    block.body,
-    'Module declarations with no body are filtered out by the rule',
-  );
-
-  return body.body;
+  return block.body.body;
 }
 
 /*
