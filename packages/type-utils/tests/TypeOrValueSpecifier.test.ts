@@ -10,6 +10,7 @@ import {
   typeMatchesSomeSpecifier,
   typeMatchesSpecifier,
   typeOrValueSpecifiersSchema,
+  valueMatchesSomeSpecifier,
   valueMatchesSpecifier,
 } from '../src';
 
@@ -733,6 +734,55 @@ describe('TypeOrValueSpecifier', () => {
       ['type Test = RegExp;', ['Foo', 'BigInt']],
     ])(
       "doesn't match a mismatched universal string specifiers",
+      runTestNegative,
+    );
+  });
+
+  describe('valueMatchesSomeSpecifier', () => {
+    function runTests(
+      code: string,
+      specifiers: TypeOrValueSpecifier[],
+      expected: boolean,
+    ): void {
+      const rootDir = path.join(__dirname, 'fixtures');
+      const { ast, scopeManager } = parseForESLint(code, {
+        disallowAutomaticSingleRunInference: true,
+        filePath: path.join(rootDir, 'file.ts'),
+        project: './tsconfig.json',
+        tsconfigRootDir: rootDir,
+      });
+
+      const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;
+      const { init } = declaration.declarations[0];
+      expect(valueMatchesSomeSpecifier(init!, specifiers, scopeManager)).toBe(
+        expected,
+      );
+    }
+
+    function runTestPositive(
+      code: string,
+      specifiers: TypeOrValueSpecifier[],
+    ): void {
+      runTests(code, specifiers, true);
+    }
+
+    function runTestNegative(
+      code: string,
+      specifiers: TypeOrValueSpecifier[],
+    ): void {
+      runTests(code, specifiers, false);
+    }
+
+    it.each<[string, TypeOrValueSpecifier[]]>([
+      ['const value = 45; const hoge = value;', ['value', 'hoge']],
+      ['let value = 45; const hoge = value;', ['value', 'hoge']],
+      ['var value = 45; const hoge = value;', ['value', 'hoge']],
+    ])('matches a matching universal string specifiers: %s', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier[]]>([
+      ['const value = 45; const hoge = value;', ['incorrect', 'invalid']],
+    ])(
+      "doesn't match a mismatched universal string specifiers: %s",
       runTestNegative,
     );
   });
