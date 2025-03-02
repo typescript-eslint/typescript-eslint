@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs prefer-ts-expect-error.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 // @ts-ignore
 ~~~~~~~~~~~~~ Use "@ts-expect-error" to ensure an error is actually being suppressed.
@@ -26,11 +23,8 @@ const isOptionEnabled = (key: string): boolean => {
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use "@ts-expect-error" to ensure an error is actually being suppressed.
   return !!globalOptions[key];
 };
-"
-`;
 
-exports[`Validating rule docs prefer-ts-expect-error.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 // @ts-expect-error
 const str: string = 1;
@@ -48,5 +42,3 @@ const isOptionEnabled = (key: string): boolean => {
   // @ts-expect-error: if key isn't in globalOptions it'll be undefined which is false
   return !!globalOptions[key];
 };
-"
-`;

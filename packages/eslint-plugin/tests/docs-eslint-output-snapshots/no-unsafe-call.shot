@@ -1,35 +1,29 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-unsafe-call.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 declare const anyVar: any;
 declare const nestedAny: { prop: any };
 
 anyVar();
-~~~~~~ Unsafe call of a(n) \`any\` typed value.
+~~~~~~ Unsafe call of a(n) `any` typed value.
 anyVar.a.b();
-~~~~~~~~~~ Unsafe call of a(n) \`any\` typed value.
+~~~~~~~~~~ Unsafe call of a(n) `any` typed value.
 
 nestedAny.prop();
-~~~~~~~~~~~~~~ Unsafe call of a(n) \`any\` typed value.
+~~~~~~~~~~~~~~ Unsafe call of a(n) `any` typed value.
 nestedAny.prop['a']();
-~~~~~~~~~~~~~~~~~~~ Unsafe call of a(n) \`any\` typed value.
+~~~~~~~~~~~~~~~~~~~ Unsafe call of a(n) `any` typed value.
 
 new anyVar();
-~~~~~~~~~~~~ Unsafe construction of a(n) \`any\` typed value.
+~~~~~~~~~~~~ Unsafe construction of a(n) `any` typed value.
 new nestedAny.prop();
-~~~~~~~~~~~~~~~~~~~~ Unsafe construction of a(n) \`any\` typed value.
+~~~~~~~~~~~~~~~~~~~~ Unsafe construction of a(n) `any` typed value.
 
-anyVar\`foo\`;
-~~~~~~ Unsafe use of a(n) \`any\` typed template tag.
-nestedAny.prop\`foo\`;
-~~~~~~~~~~~~~~ Unsafe use of a(n) \`any\` typed template tag.
-"
-`;
+anyVar`foo`;
+~~~~~~ Unsafe use of a(n) `any` typed template tag.
+nestedAny.prop`foo`;
+~~~~~~~~~~~~~~ Unsafe use of a(n) `any` typed template tag.
 
-exports[`Validating rule docs no-unsafe-call.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 declare const typedVar: () => void;
 declare const typedNested: { prop: { a: () => void } };
@@ -41,15 +35,10 @@ typedNested.prop.a();
 
 new Map();
 
-String.raw\`foo\`;
-"
-`;
+String.raw`foo`;
 
-exports[`Validating rule docs no-unsafe-call.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 
 const f: Function = () => {};
 f();
-~ Unsafe call of a(n) \`Function\` typed value.
-"
-`;
+~ Unsafe call of a(n) `Function` typed value.

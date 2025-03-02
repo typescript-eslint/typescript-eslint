@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 function array1(arg: string[]) {} // array is not readonly
                 ~~~~~~~~~~~~~ Parameter should be a read only type.
@@ -56,11 +53,8 @@ interface Foo {
   foo(arg: string[]): void;
       ~~~~~~~~~~~~~ Parameter should be a read only type.
 }
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 function array1(arg: readonly string[]) {}
 function array2(arg: readonly (readonly string[])[]) {}
@@ -122,11 +116,8 @@ type Foo = (arg: readonly string[]) => void;
 interface Foo {
   foo(arg: readonly string[]): void;
 }
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: {"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 interface ThisIsMutable {
@@ -153,11 +144,8 @@ function fn2(arg: Wrapper) {}
 // Incorrect because WrapperWithOther.otherProp is not readonly and not in the allowlist
 function fn3(arg: WrapperWithOther) {}
              ~~~~~~~~~~~~~~~~~~~~~ Parameter should be a read only type.
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 4`] = `
-"Incorrect
+Incorrect
 Options: {"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 import { Foo } from 'some-lib';
@@ -176,11 +164,8 @@ function fn2(arg: HTMLElement) {}
 
 // Incorrect because Bar is not from "bar-lib"
 function fn3(arg: Bar) {}
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 5`] = `
-"Correct
+Correct
 Options: {"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 interface Foo {
@@ -197,11 +182,8 @@ function fn1(arg: Foo) {}
 
 // Works even when Foo is nested somewhere in the type, with other properties still being checked
 function fn2(arg: Wrapper) {}
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 Options: {"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 import { Bar } from 'bar-lib';
@@ -218,43 +200,31 @@ function fn2(arg: HTMLElement) {}
 
 // Works because Bar is from "bar-lib"
 function fn3(arg: Bar) {}
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 7`] = `
-"Correct
+Correct
 Options: {"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 import { Foo } from './foo';
 
 // Works because Foo is still a local type - it has to be in the same package
 function fn(arg: Foo) {}
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 8`] = `
-"Incorrect
+Incorrect
 Options: { "checkParameterProperties": true }
 
 class Foo {
   constructor(private paramProp: string[]) {}
                       ~~~~~~~~~~~~~~~~~~~ Parameter should be a read only type.
 }
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 9`] = `
-"Correct
+Correct
 Options: { "checkParameterProperties": true }
 
 class Foo {
   constructor(private paramProp: readonly string[]) {}
 }
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 10`] = `
-"Options: { "checkParameterProperties": false }
+Options: { "checkParameterProperties": false }
 
 class Foo {
   constructor(
@@ -262,21 +232,15 @@ class Foo {
     private paramProp2: readonly string[],
   ) {}
 }
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 11`] = `
-"Incorrect
+Incorrect
 Options: { "ignoreInferredTypes": true }
 
 import { acceptsCallback, CallbackOptions } from 'external-dependency';
 
 acceptsCallback((options: CallbackOptions) => {});
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 12`] = `
-"Incorrect
+Incorrect
 Options: { "ignoreInferredTypes": true }
 
 export interface CallbackOptions {
@@ -287,21 +251,15 @@ type Callback = (options: CallbackOptions) => void;
 type AcceptsCallback = (callback: Callback) => void;
 
 export const acceptsCallback: AcceptsCallback;
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 13`] = `
-"Correct
+Correct
 Options: { "ignoreInferredTypes": true }
 
 import { acceptsCallback } from 'external-dependency';
 
 acceptsCallback(options => {});
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 14`] = `
-"Correct
+Correct
 Options: { "ignoreInferredTypes": true }
 
 export interface CallbackOptions {
@@ -312,11 +270,8 @@ type Callback = (options: CallbackOptions) => void;
 type AcceptsCallback = (callback: Callback) => void;
 
 export const acceptsCallback: AcceptsCallback;
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 15`] = `
-"Incorrect
+Incorrect
 Options: { "treatMethodsAsReadonly": false }
 
 type MyType = {
@@ -325,11 +280,8 @@ type MyType = {
 };
 function foo(arg: MyType) {}
              ~~~~~~~~~~~ Parameter should be a read only type.
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 16`] = `
-"Correct
+Correct
 Options: { "treatMethodsAsReadonly": false }
 
 type MyType = Readonly<{
@@ -343,16 +295,11 @@ type MyOtherType = {
   readonly method: () => string;
 };
 function bar(arg: MyOtherType) {}
-"
-`;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 17`] = `
-"Options: { "treatMethodsAsReadonly": true }
+Options: { "treatMethodsAsReadonly": true }
 
 type MyType = {
   readonly prop: string;
   method(): string; // note: this method is mutable
 };
 function foo(arg: MyType) {}
-"
-`;

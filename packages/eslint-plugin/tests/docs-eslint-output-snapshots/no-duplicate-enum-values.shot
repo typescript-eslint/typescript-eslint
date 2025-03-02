@@ -1,46 +1,32 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-duplicate-enum-values.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 enum E {
   A = 0,
   B = 0,
   ~~~~~ Duplicate enum member value 0.
 }
-"
-`;
 
-exports[`Validating rule docs no-duplicate-enum-values.mdx code examples ESLint output 2`] = `
-"Incorrect
+Incorrect
 
 enum E {
   A = 'A',
   B = 'A',
   ~~~~~~~ Duplicate enum member value A.
-  C = \`A\`,
+  C = `A`,
   ~~~~~~~ Duplicate enum member value A.
 }
-"
-`;
 
-exports[`Validating rule docs no-duplicate-enum-values.mdx code examples ESLint output 3`] = `
-"Correct
+Correct
 
 enum E {
   A = 0,
   B = 1,
 }
-"
-`;
 
-exports[`Validating rule docs no-duplicate-enum-values.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 
 enum E {
   A = 'A',
   B = 'B',
-  C = \`C\`,
+  C = `C`,
 }
-"
-`;

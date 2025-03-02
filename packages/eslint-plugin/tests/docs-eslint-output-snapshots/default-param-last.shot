@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs default-param-last.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 function f(a = 0, b: number) {}
            ~~~~~ Default parameters should be last.
@@ -23,11 +20,8 @@ class Foo {
     private b: number,
   ) {}
 }
-"
-`;
 
-exports[`Validating rule docs default-param-last.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 function f(a = 0) {}
 function f(a: number, b = 0) {}
@@ -46,5 +40,3 @@ class Foo {
     private b?: number,
   ) {}
 }
-"
-`;

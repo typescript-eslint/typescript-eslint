@@ -1,143 +1,86 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 const age: any = 'seventeen';
            ~~~ Unexpected any. Specify a different type.
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 2`] = `
-"Incorrect
+Incorrect
 
 const ages: any[] = ['seventeen'];
             ~~~ Unexpected any. Specify a different type.
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 
 const ages: Array<any> = ['seventeen'];
                   ~~~ Unexpected any. Specify a different type.
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 4`] = `
-"Incorrect
+Incorrect
 
 function greet(): any {}
                   ~~~ Unexpected any. Specify a different type.
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 5`] = `
-"Incorrect
+Incorrect
 
 function greet(): any[] {}
                   ~~~ Unexpected any. Specify a different type.
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 6`] = `
-"Incorrect
+Incorrect
 
 function greet(): Array<any> {}
                         ~~~ Unexpected any. Specify a different type.
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 7`] = `
-"Incorrect
+Incorrect
 
 function greet(): Array<Array<any>> {}
                               ~~~ Unexpected any. Specify a different type.
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 8`] = `
-"Incorrect
+Incorrect
 
 function greet(param: Array<any>): string {}
                             ~~~ Unexpected any. Specify a different type.
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 9`] = `
-"Incorrect
+Incorrect
 
 function greet(param: Array<any>): Array<any> {}
                             ~~~ Unexpected any. Specify a different type.
                                          ~~~ Unexpected any. Specify a different type.
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 10`] = `
-"Correct
+Correct
 
 const age: number = 17;
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 11`] = `
-"Correct
+Correct
 
 const ages: number[] = [17];
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 12`] = `
-"Correct
+Correct
 
 const ages: Array<number> = [17];
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 13`] = `
-"Correct
+Correct
 
 function greet(): string {}
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 14`] = `
-"Correct
+Correct
 
 function greet(): string[] {}
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 15`] = `
-"Correct
+Correct
 
 function greet(): Array<string> {}
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 16`] = `
-"Correct
+Correct
 
 function greet(): Array<Array<string>> {}
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 17`] = `
-"Correct
+Correct
 
 function greet(param: Array<string>): string {}
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 18`] = `
-"Correct
+Correct
 
 function greet(param: Array<string>): Array<string> {}
-"
-`;
 
-exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 19`] = `
-"Options: { "ignoreRestArgs": false }
+Options: { "ignoreRestArgs": false }
 
 function foo1(...args: any[]): void {}
                        ~~~ Unexpected any. Specify a different type.
@@ -173,5 +116,3 @@ interface Garply {
   f(...args: any[]): void;
              ~~~ Unexpected any. Specify a different type.
 }
-"
-`;
