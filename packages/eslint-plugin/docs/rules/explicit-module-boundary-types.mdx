@@ -264,32 +264,15 @@ export const foo: FooType = bar => {};
 
 {/* insert option description */}
 
-Examples of code for this rule with `{ allowOverloadFunctions: false }`:
+Examples of correct code when `allowOverloadFunctions` is set to `true`:
 
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts option='{ "allowOverloadFunctions": false }'
+```ts option='{ "allowOverloadFunctions": true }' showPlaygroundButton
 export function test(a: string): string;
 export function test(a: number): number;
 export function test(a: unknown) {
   return a;
 }
 ```
-
-</TabItem>
-<TabItem value="✅ Correct">
-
-```ts option='{ "allowOverloadFunctions": true }'
-export function test(a: string): string;
-export function test(a: number): number;
-export function test(a: unknown) {
-  return a;
-}
-```
-
-</TabItem>
-</Tabs>
 
 ## When Not To Use It
 
