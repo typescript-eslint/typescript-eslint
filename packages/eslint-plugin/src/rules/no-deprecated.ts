@@ -405,18 +405,12 @@ export default createRule<Options, MessageIds>({
       if (propertyType.isStringLiteral() || propertyType.isLiteral()) {
         const objectType = services.getTypeAtLocation(node.object);
 
-        let propertyName: string | undefined;
+        let propertyName: string;
 
         if (propertyType.isStringLiteral()) {
           propertyName = propertyType.value;
-        } else if (typeof propertyType.value === 'string') {
-          propertyName = propertyType.value;
-        } else if (typeof propertyType.value === 'number') {
-          propertyName = String(propertyType.value);
-        }
-
-        if (!propertyName) {
-          return;
+        } else {
+          propertyName = String(propertyType.value as number);
         }
 
         const property = objectType.getProperty(propertyName);
