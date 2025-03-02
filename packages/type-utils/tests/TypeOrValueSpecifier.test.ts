@@ -7,6 +7,7 @@ import path from 'node:path';
 import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
 
 import {
+  typeMatchesSomeSpecifier,
   typeMatchesSpecifier,
   typeOrValueSpecifiersSchema,
   valueMatchesSpecifier,
@@ -680,5 +681,59 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'package', name: 'mock', package: 'node:test' },
       ],
     ])("doesn't match a mismatched package specifier: %s", runTestNegative);
+  });
+
+  describe('typeMatchesSomeSpecifier', () => {
+    function runTests(
+      code: string,
+      specifiers: TypeOrValueSpecifier[],
+      expected: boolean,
+    ): void {
+      const rootDir = path.join(__dirname, 'fixtures');
+      const { ast, services } = parseForESLint(code, {
+        disallowAutomaticSingleRunInference: true,
+        filePath: path.join(rootDir, 'file.ts'),
+        project: './tsconfig.json',
+        tsconfigRootDir: rootDir,
+      });
+      const type = services
+        .program!.getTypeChecker()
+        .getTypeAtLocation(
+          services.esTreeNodeToTSNodeMap.get(
+            (ast.body[ast.body.length - 1] as TSESTree.TSTypeAliasDeclaration)
+              .id,
+          ),
+        );
+      expect(
+        typeMatchesSomeSpecifier(type, specifiers, services.program!),
+      ).toBe(expected);
+    }
+
+    function runTestPositive(
+      code: string,
+      specifiers: TypeOrValueSpecifier[],
+    ): void {
+      runTests(code, specifiers, true);
+    }
+
+    function runTestNegative(
+      code: string,
+      specifiers: TypeOrValueSpecifier[],
+    ): void {
+      runTests(code, specifiers, false);
+    }
+
+    it.each<[string, TypeOrValueSpecifier[]]>([
+      ['interface Foo {prop: string}; type Test = Foo;', ['Foo', 'Hoge']],
+      ['type Test = RegExp;', ['RegExp', 'BigInt']],
+    ])('matches a matching universal string specifiers', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier[]]>([
+      ['interface Foo {prop: string}; type Test = Foo;', ['Bar', 'Hoge']],
+      ['type Test = RegExp;', ['Foo', 'BigInt']],
+    ])(
+      "doesn't match a mismatched universal string specifiers",
+      runTestNegative,
+    );
   });
 });
