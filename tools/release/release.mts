@@ -1,5 +1,9 @@
 import { execaSync } from 'execa';
-import { releaseChangelog, releasePublish, releaseVersion } from 'nx/release';
+import {
+  releaseChangelog,
+  releasePublish,
+  releaseVersion,
+} from 'nx/release/index.js';
 import yargs from 'yargs';
 
 const options = await yargs(process.argv.slice(2))

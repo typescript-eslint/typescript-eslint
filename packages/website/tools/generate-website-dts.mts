@@ -2,9 +2,11 @@ import fetch from 'cross-fetch';
 import makeDir from 'make-dir';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import prettier from 'prettier';
 import { rimraf } from 'rimraf';
 
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const BASE_HOST = 'https://www.staging-typescript.org';
 
 const banner = [

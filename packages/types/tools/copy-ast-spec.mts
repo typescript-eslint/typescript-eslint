@@ -1,10 +1,12 @@
 import childProcess from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 // the promisify util will eat the stderr logs
 async function execAsync(

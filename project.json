@@ -10,16 +10,16 @@
       "command": "eslint . --ignore-pattern=packages --cache"
     },
     "generate-configs": {
-      "command": "tsx tools/scripts/generate-configs.mts"
+      "command": "node --experimental-strip-types tools/scripts/generate-configs.mts"
     },
     "generate-contributors": {
-      "command": "tsx tools/scripts/generate-contributors.mts"
+      "command": "node --experimental-strip-types tools/scripts/generate-contributors.mts"
     },
     "generate-lib": {
-      "command": "tsx tools/scripts/generate-lib.mts"
+      "command": "node --experimental-strip-types tools/scripts/generate-lib.mts"
     },
     "generate-sponsors": {
-      "command": "tsx tools/scripts/generate-sponsors.mts"
+      "command": "node --experimental-strip-types tools/scripts/generate-sponsors.mts"
     }
   }
 }

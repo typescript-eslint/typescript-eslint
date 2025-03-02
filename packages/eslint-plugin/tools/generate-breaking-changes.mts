@@ -8,7 +8,7 @@ import { fetch } from 'cross-fetch';
 import { markdownTable } from 'markdown-table';
 
 async function main(): Promise<void> {
-  const rulesImport = await import('../src/rules/index.js');
+  const rulesImport = await import('../dist/rules/index.js');
   /*
   weird TS resolution which adds an additional default layer in the type like:
       { default: { default: Rules }}

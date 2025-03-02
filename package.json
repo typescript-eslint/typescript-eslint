@@ -39,9 +39,9 @@
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
     "lint-stylelint": "npx nx lint website stylelint",
     "lint": "npx nx lint eslint-plugin --skip-nx-cache && npx nx run-many --target=lint --exclude eslint-plugin",
-    "postinstall": "tsx tools/scripts/postinstall.mts",
+    "postinstall": "node --experimental-strip-types tools/scripts/postinstall.mts",
     "pre-commit": "yarn lint-staged",
-    "release": "tsx tools/release/release.mts",
+    "release": "node --experimental-strip-types tools/release/release.mts",
     "start": "npx nx run website:start",
     "test": "npx nx run-many --target=test --exclude integration-tests --exclude website --exclude website-eslint",
     "test-integration": "npx nx run integration-tests:test",
@@ -121,7 +121,6 @@
     "rimraf": "^5.0.5",
     "semver": "7.7.0",
     "tmp": "^0.2.1",
-    "tsx": "*",
     "typescript": ">=4.8.4 <5.8.0",
     "typescript-eslint": "workspace:^",
     "yargs": "17.7.2"
@@ -144,7 +143,6 @@
     "pretty-format": "^29",
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tmp": "0.2.1",
-    "tsx": "^4.7.2",
     "typescript": "5.7.2"
   },
   "packageManager": "yarn@3.8.2",
