@@ -19574,7 +19574,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"typescript@npm:~5.8.0":
+"typescript@npm:5.8.2":
   version: 5.8.2
   resolution: "typescript@npm:5.8.2"
   bin:
@@ -19584,7 +19584,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A~5.8.0#~builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A5.8.2#~builtin<compat/typescript>":
   version: 5.8.2
   resolution: "typescript@patch:typescript@npm%3A5.8.2#~builtin<compat/typescript>::version=5.8.2&hash=b45daf"
   bin:
