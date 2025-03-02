@@ -1724,7 +1724,7 @@ class Joiner {
     return els.map(el => '' + el).join(',');
   }
 }
-    `,
+      `,
       errors: [
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
