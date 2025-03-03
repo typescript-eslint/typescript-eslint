@@ -3,22 +3,25 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
 
 import { TYPE, TYPE_VALUE } from './base-config';
 
-export const scripthost = {
-  ActiveXObject: TYPE_VALUE,
-  Date: TYPE,
-  DateConstructor: TYPE,
-  Enumerator: TYPE_VALUE,
-  EnumeratorConstructor: TYPE,
-  ITextWriter: TYPE,
-  SafeArray: TYPE_VALUE,
-  TextStreamBase: TYPE,
-  TextStreamReader: TYPE,
-  TextStreamWriter: TYPE,
-  VarDate: TYPE_VALUE,
-  VBArray: TYPE_VALUE,
-  VBArrayConstructor: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const scripthost: LibDefinition = {
+  libs: [],
+  variables: [
+    ['ActiveXObject', TYPE_VALUE],
+    ['ITextWriter', TYPE],
+    ['TextStreamBase', TYPE],
+    ['TextStreamWriter', TYPE],
+    ['TextStreamReader', TYPE],
+    ['SafeArray', TYPE_VALUE],
+    ['Enumerator', TYPE_VALUE],
+    ['EnumeratorConstructor', TYPE],
+    ['VBArray', TYPE_VALUE],
+    ['VBArrayConstructor', TYPE],
+    ['VarDate', TYPE_VALUE],
+    ['DateConstructor', TYPE],
+    ['Date', TYPE],
+  ],
+};

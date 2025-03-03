@@ -3,11 +3,14 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
 
 import { TYPE } from './base-config';
 
-export const es2015_proxy = {
-  ProxyConstructor: TYPE,
-  ProxyHandler: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const es2015_proxy: LibDefinition = {
+  libs: [],
+  variables: [
+    ['ProxyHandler', TYPE],
+    ['ProxyConstructor', TYPE],
+  ],
+};
