@@ -1,21 +1,19 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs prefer-for-of.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > prefer-for-of.mdx > code examples ESLint output`]
+Incorrect
 
 declare const array: string[];
 
 for (let i = 0; i < array.length; i++) {
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected a \`for-of\` loop instead of a \`for\` loop with this simple iteration.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected a `for-of` loop instead of a `for` loop with this simple iteration.
   console.log(array[i]);
 ~~~~~~~~~~~~~~~~~~~~~~~~
 }
 ~
-"
-`;
 
-exports[`Validating rule docs prefer-for-of.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > prefer-for-of.mdx > code examples ESLint output`]
+Correct
 
 declare const array: string[];
 
@@ -27,5 +25,3 @@ for (let i = 0; i < array.length; i++) {
   // i is used, so for-of could not be used.
   console.log(i, array[i]);
 }
-"
-`;

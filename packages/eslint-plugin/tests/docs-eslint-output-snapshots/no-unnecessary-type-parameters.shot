@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-unnecessary-type-parameters.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-unnecessary-type-parameters.mdx > code examples ESLint output`]
+Incorrect
 
 function second<A, B>(a: A, b: B): B {
                 ~ Type parameter A is used only once in the function signature.
@@ -17,11 +17,9 @@ function printProperty<T, K extends keyof T>(obj: T, key: K) {
                           ~~~~~~~~~~~~~~~~~ Type parameter K is used only once in the function signature.
   console.log(obj[key]);
 }
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-type-parameters.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-unnecessary-type-parameters.mdx > code examples ESLint output`]
+Correct
 
 function second<B>(a: unknown, b: B): B {
   return b;
@@ -45,20 +43,14 @@ function identity<T>(arg: T): T {
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
   return obj[key];
 }
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-type-parameters.mdx code examples ESLint output 3`] = `
-"Incorrect
+exports[`Validating rule docs > no-unnecessary-type-parameters.mdx > code examples ESLint output`]
+Incorrect
 
 declare function length<T>(array: ReadonlyArray<T>): number;
                         ~ Type parameter T is used only once in the function signature.
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-type-parameters.mdx code examples ESLint output 4`] = `
-"Correct
+exports[`Validating rule docs > no-unnecessary-type-parameters.mdx > code examples ESLint output`]
+Correct
 
 declare function length(array: ReadonlyArray<unknown>): number;
-"
-`;

@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-restricted-imports 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > no-restricted-imports > no-restricted-imports`]
 # SCHEMA:
 
 {
@@ -213,5 +212,4 @@ type Options =
           | string[];
       },
     ];
-"
-`;
+

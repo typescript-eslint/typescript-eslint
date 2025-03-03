@@ -1,18 +1,16 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs consistent-generic-constructors.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > consistent-generic-constructors.mdx > code examples ESLint output`]
+Incorrect
 Options: "constructor"
 
 const map: Map<string, number> = new Map();
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The generic type arguments should be specified as part of the constructor type arguments.
 const set: Set<string> = new Set();
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The generic type arguments should be specified as part of the constructor type arguments.
-"
-`;
 
-exports[`Validating rule docs consistent-generic-constructors.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > consistent-generic-constructors.mdx > code examples ESLint output`]
+Correct
 Options: "constructor"
 
 const map = new Map<string, number>();
@@ -20,27 +18,21 @@ const map: Map<string, number> = new MyMap();
 const set = new Set<string>();
 const set = new Set();
 const set: Set<string> = new Set<string>();
-"
-`;
 
-exports[`Validating rule docs consistent-generic-constructors.mdx code examples ESLint output 3`] = `
-"Incorrect
+exports[`Validating rule docs > consistent-generic-constructors.mdx > code examples ESLint output`]
+Incorrect
 Options: "type-annotation"
 
 const map = new Map<string, number>();
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The generic type arguments should be specified as part of the type annotation.
 const set = new Set<string>();
       ~~~~~~~~~~~~~~~~~~~~~~~ The generic type arguments should be specified as part of the type annotation.
-"
-`;
 
-exports[`Validating rule docs consistent-generic-constructors.mdx code examples ESLint output 4`] = `
-"Correct
+exports[`Validating rule docs > consistent-generic-constructors.mdx > code examples ESLint output`]
+Correct
 Options: "type-annotation"
 
 const map: Map<string, number> = new Map();
 const set: Set<string> = new Set();
 const set = new Set();
 const set: Set<string> = new Set<string>();
-"
-`;

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs prefer-literal-enum-member.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > prefer-literal-enum-member.mdx > code examples ESLint output`]
+Incorrect
 
 const str = 'Test';
 const string1 = 'string1';
@@ -10,30 +10,26 @@ const string2 = 'string2';
 enum Invalid {
   A = str, // Variable assignment
   ~ Explicit enum value must only be a literal value (string or number).
-  B = \`Interpolates \${string1} and \${string2}\`, // Template literal with interpolation
+  B = `Interpolates ${string1} and ${string2}`, // Template literal with interpolation
   ~ Explicit enum value must only be a literal value (string or number).
   C = 2 + 2, // Expression assignment
   ~ Explicit enum value must only be a literal value (string or number).
   D = C, // Assignment to another enum member
   ~ Explicit enum value must only be a literal value (string or number).
 }
-"
-`;
 
-exports[`Validating rule docs prefer-literal-enum-member.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > prefer-literal-enum-member.mdx > code examples ESLint output`]
+Correct
 
 enum Valid {
   A, // No initializer; initialized with ascending integers starting from 0
   B = 'TestStr', // A regular string
-  C = \`A template literal string\`, // A template literal without interpolation
+  C = `A template literal string`, // A template literal without interpolation
   D = 4, // A number
 }
-"
-`;
 
-exports[`Validating rule docs prefer-literal-enum-member.mdx code examples ESLint output 3`] = `
-"Incorrect
+exports[`Validating rule docs > prefer-literal-enum-member.mdx > code examples ESLint output`]
+Incorrect
 Options: { "allowBitwiseExpressions": true }
 
 const x = 1;
@@ -53,11 +49,9 @@ enum Foo {
   G = ~x,
   ~ Explicit enum value must only be a literal value (string or number) or a bitwise expression.
 }
-"
-`;
 
-exports[`Validating rule docs prefer-literal-enum-member.mdx code examples ESLint output 4`] = `
-"Correct
+exports[`Validating rule docs > prefer-literal-enum-member.mdx > code examples ESLint output`]
+Correct
 Options: { "allowBitwiseExpressions": true }
 
 enum Foo {
@@ -69,5 +63,3 @@ enum Foo {
   F = 1 ^ 0,
   G = ~1,
 }
-"
-`;

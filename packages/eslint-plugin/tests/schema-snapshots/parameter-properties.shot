@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes parameter-properties 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > parameter-properties > parameter-properties`]
 # SCHEMA:
 
 [
@@ -62,5 +61,4 @@ type Options = [
       | 'class-property';
   },
 ];
-"
-`;
+

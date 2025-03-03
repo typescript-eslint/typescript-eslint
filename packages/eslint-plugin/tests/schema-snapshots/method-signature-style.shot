@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes method-signature-style 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > method-signature-style > method-signature-style`]
 # SCHEMA:
 
 [
@@ -15,5 +14,4 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Options = ['method' | 'property'];
-"
-`;
+
