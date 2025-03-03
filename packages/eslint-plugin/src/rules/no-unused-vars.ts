@@ -10,13 +10,14 @@ import {
 } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
+import type { MakeRequired } from '../util';
+
 import {
   collectVariables,
   createRule,
   getNameLocationInGlobalDirectiveComment,
   isDefinitionFile,
   isFunction,
-  MakeRequired,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -151,7 +152,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [{}],
   create(context, [firstOption]) {
     const MODULE_DECL_CACHE = new Map<
-      TSESTree.Program | ModuleDeclarationWithBody,
+      ModuleDeclarationWithBody | TSESTree.Program,
       boolean
     >();
 
@@ -711,7 +712,7 @@ export default createRule<Options, MessageIds>({
     };
 
     function checkForOverridingExportStatements(
-      node: TSESTree.Program | ModuleDeclarationWithBody,
+      node: ModuleDeclarationWithBody | TSESTree.Program,
     ): boolean {
       const cached = MODULE_DECL_CACHE.get(node);
       if (cached != null) {
@@ -834,7 +835,7 @@ function hasOverridingExportStatement(
 }
 
 function getStatementsOfNode(
-  block: TSESTree.Program | ModuleDeclarationWithBody,
+  block: ModuleDeclarationWithBody | TSESTree.Program,
 ): TSESTree.ProgramStatement[] {
   if (block.type === AST_NODE_TYPES.Program) {
     return block.body;
