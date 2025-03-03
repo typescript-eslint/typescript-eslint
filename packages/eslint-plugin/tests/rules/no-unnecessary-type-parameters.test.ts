@@ -1744,5 +1744,51 @@ class Joiner {
         },
       ],
     },
+    {
+      code: `
+function join<T extends string | number>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: (string | number)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function join<T extends string & number>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: (string & number)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
