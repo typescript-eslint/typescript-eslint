@@ -242,6 +242,62 @@ function checkTypeAssignability(
   return TypeAssignability.NotAssignable;
 }
 
+function checkIntersectionTypeAssignability(
+  sourceType: ts.Type,
+  targetType: ts.Type,
+  checker: ts.TypeChecker,
+): TypeAssignability {
+  if (tsutils.isUnionType(sourceType)) {
+    let assignability: TypeAssignability = TypeAssignability.NotAssignable;
+    for (const typePart of sourceType.types) {
+      const typeAssignability = checkIntersectionTypeAssignability(
+        typePart,
+        targetType,
+        checker,
+      );
+      if (typeAssignability === TypeAssignability.NotAssignable) {
+        return TypeAssignability.NotAssignable;
+      }
+      if (typeAssignability === TypeAssignability.Equal) {
+        continue;
+      }
+      if (
+        assignability !== TypeAssignability.NotAssignable &&
+        assignability !== typeAssignability
+      ) {
+        return TypeAssignability.NotAssignable;
+      }
+      assignability = typeAssignability;
+    }
+    return assignability;
+  }
+  if (tsutils.isUnionType(targetType)) {
+    let assignability: TypeAssignability = TypeAssignability.NotAssignable;
+    for (const typePart of targetType.types) {
+      const typeAssignability = checkIntersectionTypeAssignability(
+        sourceType,
+        typePart,
+        checker,
+      );
+      if (typeAssignability === TypeAssignability.NotAssignable) {
+        return TypeAssignability.NotAssignable;
+      }
+      if (typeAssignability === TypeAssignability.Equal) {
+        continue;
+      }
+      if (
+        assignability !== TypeAssignability.NotAssignable &&
+        assignability !== typeAssignability
+      ) {
+        return TypeAssignability.NotAssignable;
+      }
+      assignability = typeAssignability;
+    }
+    return assignability;
+  }
+  return checkTypeAssignability(sourceType, targetType, checker);
+}
+
 function mergeTypeNames(
   typeWithNames: TypeNodeWithName[],
   operator: '&' | '|',
@@ -601,7 +657,7 @@ export default createRule({
                 parentTypeNode,
                 typeNode: sourceTypeNode,
               } = seenObjectType;
-              const typeAssignability = checkTypeAssignability(
+              const typeAssignability = checkIntersectionTypeAssignability(
                 sourceType,
                 targetType,
                 checker,

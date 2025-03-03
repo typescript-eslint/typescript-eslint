@@ -172,6 +172,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     'type Foo = { a: 1 } | { a: 1; b: 1 };',
     'type Foo = { a: 1 } | ({ a: 1 } & { b: 1 });',
     'type Foo = ({ a: 1 } & { b: 1 }) | { a: 1 };',
+    'type Foo = { a: 1 } & { b: number };',
   ],
 
   invalid: [
@@ -1599,6 +1600,81 @@ type U = T | { a: 2 };
           },
           endColumn: 26,
           messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type F = { a: 1 } & ({ a: 1; b: 1 } | { a: 1 });',
+      errors: [
+        {
+          column: 10,
+          data: {
+            subType: '{ a: 1; b: 1 } | { a: 1 }',
+            superType: '{ a: 1 }',
+          },
+          endColumn: 18,
+          messageId: 'superObjectTypeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type F = ({ a: 1; b: 1 } | { a: 1 }) & { a: 1 };',
+      errors: [
+        {
+          column: 40,
+          data: {
+            subType: '{ a: 1; b: 1 } | { a: 1 }',
+            superType: '{ a: 1 }',
+          },
+          endColumn: 48,
+          messageId: 'superObjectTypeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type F = { a: 1; b: 1 } & ({ a: 1 } | { b: 1 });',
+      errors: [
+        {
+          column: 28,
+          data: {
+            subType: '{ a: 1; b: 1 }',
+            superType: '{ a: 1 } | { b: 1 }',
+          },
+          endColumn: 47,
+          messageId: 'superObjectTypeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type F = { a: 1 } & { a: 1; b: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            subType: '{ a: 1; b: 1 }',
+            superType: '{ a: 1 }',
+          },
+          endColumn: 18,
+          messageId: 'superObjectTypeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type R = { a: 1; b: 2 } | { a: 2; b: 1 };
+type T = { a: number } | { b: number };
+type U = R & T;
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            subType: '{ a: 1; b: 2 } | { a: 2; b: 1 }',
+            superType: '{ a: number } | { b: number }',
+          },
+          endColumn: 15,
+          line: 4,
+          messageId: 'superObjectTypeOverridden',
         },
       ],
     },
