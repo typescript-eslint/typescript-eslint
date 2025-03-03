@@ -3,7 +3,7 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
 
 import { es2024 } from './es2024';
 import { esnext_array } from './esnext.array';
@@ -15,14 +15,17 @@ import { esnext_intl } from './esnext.intl';
 import { esnext_iterator } from './esnext.iterator';
 import { esnext_promise } from './esnext.promise';
 
-export const esnext = {
-  ...es2024,
-  ...esnext_intl,
-  ...esnext_decorators,
-  ...esnext_disposable,
-  ...esnext_collection,
-  ...esnext_array,
-  ...esnext_iterator,
-  ...esnext_promise,
-  ...esnext_float16,
-} as Record<string, ImplicitLibVariableOptions>;
+export const esnext: LibDefinition = {
+  libs: [
+    es2024,
+    esnext_intl,
+    esnext_decorators,
+    esnext_disposable,
+    esnext_collection,
+    esnext_array,
+    esnext_iterator,
+    esnext_promise,
+    esnext_float16,
+  ],
+  variables: [],
+};
