@@ -10,7 +10,6 @@ import { TYPE } from './base-config';
 export const dom_iterable: LibDefinition = {
   libs: [],
   variables: [
-    ['AbortSignal', TYPE],
     ['AudioParam', TYPE],
     ['AudioParamMap', TYPE],
     ['BaseAudioContext', TYPE],
@@ -44,6 +43,7 @@ export const dom_iterable: LibDefinition = {
     ['HighlightRegistry', TYPE],
     ['IDBDatabase', TYPE],
     ['IDBObjectStore', TYPE],
+    ['ImageTrackList', TYPE],
     ['MIDIInputMap', TYPE],
     ['MIDIOutput', TYPE],
     ['MIDIOutputMap', TYPE],
@@ -77,6 +77,7 @@ export const dom_iterable: LibDefinition = {
     ['TouchList', TYPE],
     ['URLSearchParamsIterator', TYPE],
     ['URLSearchParams', TYPE],
+    ['ViewTransitionTypeSet', TYPE],
     ['WEBGL_draw_buffers', TYPE],
     ['WEBGL_multi_draw', TYPE],
     ['WebGL2RenderingContextBase', TYPE],

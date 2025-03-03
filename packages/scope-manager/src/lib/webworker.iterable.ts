@@ -10,7 +10,6 @@ import { TYPE } from './base-config';
 export const webworker_iterable: LibDefinition = {
   libs: [],
   variables: [
-    ['AbortSignal', TYPE],
     ['CSSNumericArray', TYPE],
     ['CSSTransformValue', TYPE],
     ['CSSUnparsedValue', TYPE],
@@ -26,6 +25,7 @@ export const webworker_iterable: LibDefinition = {
     ['Headers', TYPE],
     ['IDBDatabase', TYPE],
     ['IDBObjectStore', TYPE],
+    ['ImageTrackList', TYPE],
     ['MessageEvent', TYPE],
     ['StylePropertyMapReadOnlyIterator', TYPE],
     ['StylePropertyMapReadOnly', TYPE],

@@ -9,8 +9,5 @@ import { TYPE } from './base-config';
 
 export const esnext_promise: LibDefinition = {
   libs: [],
-  variables: [
-    ['PromiseWithResolvers', TYPE],
-    ['PromiseConstructor', TYPE],
-  ],
+  variables: [['PromiseConstructor', TYPE]],
 };
