@@ -52,7 +52,6 @@
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
-    "@types/glob": "*",
     "@typescript-eslint/typescript-estree": "8.25.0",
     "glob": "*",
     "jest": "29.7.0",

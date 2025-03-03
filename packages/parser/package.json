@@ -62,7 +62,6 @@
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
-    "@types/glob": "*",
     "downlevel-dts": "*",
     "glob": "*",
     "jest": "29.7.0",
