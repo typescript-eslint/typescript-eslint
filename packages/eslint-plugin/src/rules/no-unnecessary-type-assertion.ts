@@ -349,13 +349,10 @@ export default createRule<Options, MessageIds>({
 
           const contextualType = getContextualType(checker, originalNode);
           if (contextualType) {
-            const typeIsUnknown = isTypeFlagSet(type, ts.TypeFlags.Unknown);
-            const contextualTypeIsUnknown = isTypeFlagSet(
-              contextualType,
-              ts.TypeFlags.Unknown,
-            );
-
-            if (typeIsUnknown && !contextualTypeIsUnknown) {
+            if (
+              isTypeFlagSet(type, ts.TypeFlags.Unknown) &&
+              !isTypeFlagSet(contextualType, ts.TypeFlags.Unknown)
+            ) {
               return;
             }
 

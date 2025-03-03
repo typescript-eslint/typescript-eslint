@@ -418,13 +418,14 @@ const b = 1 as T.Value2;
     },
     `
 const foo: unknown = {};
-const bar: object = foo!;
 const baz: {} = foo!;
     `,
     `
-function foo<T extends unknown>(bar: T) {
-  return {} as T;
-}
+const foo: unknown = {};
+const bar: object = foo!;
+    `,
+    `
+declare function foo<T extends unknown>(bar: T): T;
 const baz: unknown = {};
 foo(baz!);
     `,
