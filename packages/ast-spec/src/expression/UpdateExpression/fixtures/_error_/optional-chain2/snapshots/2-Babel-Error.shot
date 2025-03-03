@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures expression UpdateExpression _error_ optional-chain2 Babel - Error 1`] = `[SyntaxError: This experimental syntax requires enabling the parser plugin: "optionalChainingAssign". (1:0)]`;
+exports[`AST Fixtures > expression > UpdateExpression > _error_ > optional-chain2 > Babel - Error`]
+SyntaxError: This experimental syntax requires enabling the parser plugin: "optionalChainingAssign". (1:0)

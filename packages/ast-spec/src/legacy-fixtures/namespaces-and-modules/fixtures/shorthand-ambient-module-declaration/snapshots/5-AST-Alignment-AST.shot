@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures namespaces-and-modules shorthand-ambient-module-declaration AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > namespaces-and-modules > shorthand-ambient-module-declaration > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -14,7 +14,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules shorthand-ambient-m
 -       global: false,
         id: Literal {
           type: 'Literal',
-          raw: '\\'hot-new-module\\'',
+          raw: '\'hot-new-module\'',
           value: 'hot-new-module',
 
           range: [88, 104],
@@ -39,5 +39,4 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules shorthand-ambient-m
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

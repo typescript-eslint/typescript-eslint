@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures expression ObjectExpression _error_ missing-getter-body TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > missing-getter-body > TSESTree - Error`]
+TSError
 > 1 | ({get foo();})
     |            ^ '{' expected.
-  2 |"
-`;
+  2 |

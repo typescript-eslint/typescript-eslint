@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration ClassDeclaration extends-type-param Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -72,4 +69,3 @@ Program {
     end: { column: 0, line: 2 },
   },
 }
-`;

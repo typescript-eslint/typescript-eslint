@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-instance-member AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > parameter-decorators > parameter-decorator-instance-member > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -48,7 +48,7 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-i
                           type: 'BinaryExpression',
                           left: Literal {
                             type: 'Literal',
-                            raw: '\\'Hello \\'',
+                            raw: '\'Hello \'',
                             value: 'Hello ',
 
                             range: [134, 142],
@@ -80,7 +80,7 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-i
                         operator: '+',
                         right: Literal {
                           type: 'Literal',
-                          raw: '\\'!\\'',
+                          raw: '\'!\'',
                           value: '!',
 
                           range: [152, 155],
@@ -222,5 +222,4 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-i
       start: { column: 0, line: 3 },
       end: { column: 0, line: 8 },
     },
-  }"
-`;
+  }

@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures special ExportSpecifier _error_ literal-specifier TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > special > ExportSpecifier > _error_ > literal-specifier > TSESTree - Error`]
+TSError
 > 1 | export { 'A' as A };
-    |          ^^^ A string literal cannot be used as a local exported binding without \`from\`.
-  2 |"
-`;
+    |          ^^^ A string literal cannot be used as a local exported binding without `from`.
+  2 |

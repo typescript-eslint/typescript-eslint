@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures List fixtures with Error differences 1`] = `
+exports[`AST Fixtures > List fixtures with Error differences`]
 {
   "Babel errored but TSESTree didn't": [
     "declaration/ClassDeclaration/fixtures/_error_/implements-non-identifier/fixture.ts",
@@ -48,7 +48,7 @@ exports[`AST Fixtures List fixtures with Error differences 1`] = `
     "legacy-fixtures/errorRecovery/fixtures/_error_/interface-multiple-extends/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/interface-with-optional-index-signature/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-array-pattern-decorator/fixture.ts",
-    "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-rest-element-decorator/fixture.ts",
+    "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-rest-element-decorator/fixture.ts"
   ],
   "TSESTree errored but Babel didn't": [
     "declaration/TSDeclareFunction/fixtures/_error_/generator-ambient/fixture.ts",
@@ -76,7 +76,6 @@ exports[`AST Fixtures List fixtures with Error differences 1`] = `
     "legacy-fixtures/expressions/fixtures/_error_/instantiation-expression/fixture.ts",
     "statement/ForOfStatement/fixtures/_error_/decl-definite-using/fixture.ts",
     "statement/ForOfStatement/fixtures/_error_/decl-definite/fixture.ts",
-    "statement/ForOfStatement/fixtures/_error_/decl-type/fixture.ts",
-  ],
+    "statement/ForOfStatement/fixtures/_error_/decl-type/fixture.ts"
+  ]
 }
-`;

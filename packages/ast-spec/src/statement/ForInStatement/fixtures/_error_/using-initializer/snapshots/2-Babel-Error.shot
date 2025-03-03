@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures statement ForInStatement _error_ using-initializer Babel - Error 1`] = `[SyntaxError: For-in loop may not start with 'using' declaration. (1:4)]`;
+exports[`AST Fixtures > statement > ForInStatement > _error_ > using-initializer > Babel - Error`]
+SyntaxError: For-in loop may not start with 'using' declaration. (1:4)

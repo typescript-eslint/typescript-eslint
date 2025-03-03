@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types template-literal-type-4 Babel - Tokens 1`] = `
 [
   Identifier {
     type: "Identifier",
@@ -84,7 +81,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 Babel - Toke
   },
   Template {
     type: "Template",
-    value: "\`\${",
+    value: "`${",
 
     range: [121, 124],
     loc: {
@@ -134,7 +131,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 Babel - Toke
   },
   Template {
     type: "Template",
-    value: "} - \${",
+    value: "} - ${",
 
     range: [136, 142],
     loc: {
@@ -184,7 +181,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 Babel - Toke
   },
   Template {
     type: "Template",
-    value: "} - \${",
+    value: "} - ${",
 
     range: [154, 160],
     loc: {
@@ -234,7 +231,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 Babel - Toke
   },
   Template {
     type: "Template",
-    value: "} - \${",
+    value: "} - ${",
 
     range: [173, 179],
     loc: {
@@ -284,7 +281,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 Babel - Toke
   },
   Template {
     type: "Template",
-    value: "}\`",
+    value: "}`",
 
     range: [194, 196],
     loc: {
@@ -383,4 +380,3 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 Babel - Toke
     },
   },
 ]
-`;
