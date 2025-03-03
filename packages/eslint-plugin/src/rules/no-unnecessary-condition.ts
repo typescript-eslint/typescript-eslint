@@ -41,7 +41,7 @@ function isAlwaysNullish(type: ts.Type): boolean {
 }
 
 /**
- * Note that this differs from {@link isNullableType} in that it doesn't
+ * Note that this differs from {@link isNullableType} in that it doesn't consider
  * `any` or `unknown` to be nullable.
  */
 function isPossiblyNullish(type: ts.Type): boolean {
