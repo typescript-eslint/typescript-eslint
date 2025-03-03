@@ -1299,7 +1299,25 @@ a ? a : b;
         },
       ],
     },
+
+    {
+      code: `
+declare const u2: unknown;
+const foo2 = u2 || 'bar';
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: false,
+            string: false,
+          },
+        },
+      ],
+    },
   ],
+
   invalid: [
     ...nullishTypeTest((nullish, type, equals) => ({
       code: `
@@ -4716,7 +4734,7 @@ x ?? y;
 declare let x: unknown;
 declare let y: number;
 !x ? y : x;
-    `,
+      `,
       errors: [
         {
           messageId: 'preferNullishOverTernary',
@@ -4727,7 +4745,7 @@ declare let y: number;
 declare let x: unknown;
 declare let y: number;
 x ?? y;
-    `,
+      `,
             },
           ],
         },
@@ -4739,7 +4757,7 @@ x ?? y;
 declare let x: unknown;
 declare let y: number;
 x ? x : y;
-    `,
+      `,
       errors: [
         {
           messageId: 'preferNullishOverTernary',
@@ -4750,7 +4768,7 @@ x ? x : y;
 declare let x: unknown;
 declare let y: number;
 x ?? y;
-    `,
+      `,
             },
           ],
         },

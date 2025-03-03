@@ -210,14 +210,17 @@ export default createRule<Options, MessageIds>({
         .reduce((previous, flag) => previous | flag, 0);
 
       if (
-        // if the type is any, undefined, or void, we can't make any assumptions
+        // if the type is `any` or `unknown` we can't make any assumptions
         // about the value, so it could be any primitive, even though the flags
         // won't be set.
-        (tsutils.isTypeFlagSet(
-          type,
-          ts.TypeFlags.Any | ts.TypeFlags.Undefined | ts.TypeFlags.Void,
-        ) &&
-          ignorableFlags !== 0) ||
+        //
+        // technically, this is true of `void` as well, however, it's a TS error
+        // to test `void` for truthiness, so we won't bother checking for it.
+        (ignorableFlags !== 0 &&
+          tsutils.isTypeFlagSet(
+            type,
+            ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+          )) ||
         tsutils
           .typeParts(type)
           .some(t =>
