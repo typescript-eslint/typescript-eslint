@@ -124,6 +124,20 @@ export function discriminateAnyType(
   program: ts.Program,
   tsNode: ts.Node,
 ): AnyType {
+  return discriminateAnyTypeWorker(type, checker, program, tsNode, new Set());
+}
+
+function discriminateAnyTypeWorker(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+  program: ts.Program,
+  tsNode: ts.Node,
+  visited: Set<ts.Type>,
+) {
+  if (visited.has(type)) {
+    return AnyType.Safe;
+  }
+  visited.add(type);
   if (isTypeAnyType(type)) {
     return AnyType.Any;
   }
@@ -134,11 +148,12 @@ export function discriminateAnyType(
     if (tsutils.isThenableType(checker, tsNode, part)) {
       const awaitedType = checker.getAwaitedType(part);
       if (awaitedType) {
-        const awaitedAnyType = discriminateAnyType(
+        const awaitedAnyType = discriminateAnyTypeWorker(
           awaitedType,
           checker,
           program,
           tsNode,
+          visited,
         );
         if (awaitedAnyType === AnyType.Any) {
           return AnyType.PromiseAny;
