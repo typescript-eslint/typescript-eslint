@@ -51,7 +51,7 @@
     "postclean": "rimraf dist && rimraf _ts4.3 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
-    "test": "jest --coverage --runInBand --verbose",
+    "test": "jest --runInBand --verbose",
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
@@ -74,7 +74,7 @@
     "typescript": "*"
   },
   "peerDependencies": {
-    "typescript": ">=4.8.4 <5.8.0"
+    "typescript": ">=4.8.4 <5.9.0"
   },
   "funding": {
     "type": "opencollective",

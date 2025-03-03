@@ -31,6 +31,18 @@ class C {
   a(a?: number, b?: number): void {}
 }
     `,
+    `
+declare class Example {
+  privateMethod(a: number): void;
+  #privateMethod(a: number, b?: string): void;
+}
+    `,
+    `
+declare class Example {
+  #privateMethod1(a: number): void;
+  #privateMethod2(a: number, b?: string): void;
+}
+    `,
     // No error for arity difference greater than 1.
     `
 interface I {
@@ -501,6 +513,25 @@ type T = {
       errors: [
         {
           column: 4,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 4,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      code: `
+declare class Example {
+  #privateMethod(a: number): void;
+  #privateMethod(a: number, b?: string): void;
+}
+      `,
+      errors: [
+        {
+          column: 29,
           data: {
             failureStringStart:
               'These overloads can be combined into one signature',

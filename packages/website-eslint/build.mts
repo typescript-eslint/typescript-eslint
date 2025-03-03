@@ -4,6 +4,9 @@ import * as esbuild from 'esbuild';
 import * as fs from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
 
 function requireResolved(targetPath: string): string {
   return createRequire(__filename).resolve(targetPath);
