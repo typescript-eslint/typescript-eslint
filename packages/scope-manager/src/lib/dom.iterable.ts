@@ -8,7 +8,6 @@ import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
 
 export const dom_iterable = {
-  AbortSignal: TYPE,
   AudioParam: TYPE,
   AudioParamMap: TYPE,
   BaseAudioContext: TYPE,
@@ -42,6 +41,7 @@ export const dom_iterable = {
   HTMLSelectElement: TYPE,
   IDBDatabase: TYPE,
   IDBObjectStore: TYPE,
+  ImageTrackList: TYPE,
   MediaKeyStatusMap: TYPE,
   MediaKeyStatusMapIterator: TYPE,
   MediaList: TYPE,
@@ -75,6 +75,7 @@ export const dom_iterable = {
   TouchList: TYPE,
   URLSearchParams: TYPE,
   URLSearchParamsIterator: TYPE,
+  ViewTransitionTypeSet: TYPE,
   WEBGL_draw_buffers: TYPE,
   WEBGL_multi_draw: TYPE,
   WebGL2RenderingContextBase: TYPE,

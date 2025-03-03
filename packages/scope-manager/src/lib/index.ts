@@ -93,6 +93,7 @@ import { esnext_bigint } from './esnext.bigint';
 import { esnext_collection } from './esnext.collection';
 import { esnext_decorators } from './esnext.decorators';
 import { esnext_disposable } from './esnext.disposable';
+import { esnext_float16 } from './esnext.float16';
 import { esnext_full } from './esnext.full';
 import { esnext_intl } from './esnext.intl';
 import { esnext_iterator } from './esnext.iterator';
@@ -200,6 +201,7 @@ export const lib = {
   'esnext.collection': esnext_collection,
   'esnext.decorators': esnext_decorators,
   'esnext.disposable': esnext_disposable,
+  'esnext.float16': esnext_float16,
   'esnext.full': esnext_full,
   'esnext.intl': esnext_intl,
   'esnext.iterator': esnext_iterator,
