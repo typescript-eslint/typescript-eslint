@@ -209,18 +209,25 @@ export default createRule<Options, MessageIds>({
         .filter((flag): flag is number => typeof flag === 'number')
         .reduce((previous, flag) => previous | flag, 0);
 
+      if (ignorableFlags === 0) {
+        // any types are eligible for conversion.
+        return true;
+      }
+
+      // if the type is `any` or `unknown` we can't make any assumptions
+      // about the value, so it could be any primitive, even though the flags
+      // won't be set.
+      //
+      // technically, this is true of `void` as well, however, it's a TS error
+      // to test `void` for truthiness, so we don't need to bother checking for
+      // it in valid code.
       if (
-        // if the type is `any` or `unknown` we can't make any assumptions
-        // about the value, so it could be any primitive, even though the flags
-        // won't be set.
-        //
-        // technically, this is true of `void` as well, however, it's a TS error
-        // to test `void` for truthiness, so we won't bother checking for it.
-        (ignorableFlags !== 0 &&
-          tsutils.isTypeFlagSet(
-            type,
-            ts.TypeFlags.Any | ts.TypeFlags.Unknown,
-          )) ||
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)
+      ) {
+        return false;
+      }
+
+      if (
         tsutils
           .typeParts(type)
           .some(t =>
