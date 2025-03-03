@@ -247,4 +247,48 @@ describe('config helper', () => {
       { rules: { rule: 'error' } },
     ]);
   });
+
+  it('does not create global ignores in extends', () => {
+    const configWithIgnores = plugin.config({
+      extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+      ignores: ['ignored'],
+    });
+
+    expect(configWithIgnores).toEqual([
+      { ignores: ['ignored'], rules: { rule1: 'error' } },
+      { ignores: ['ignored'], rules: { rule2: 'error' } },
+    ]);
+    expect(configWithIgnores).not.toContainEqual(
+      // Should not create global ignores
+      { ignores: ['ignored'] },
+    );
+  });
+
+  it('does not create noop config in extends', () => {
+    const configWithMetadata = plugin.config({
+      extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+      files: ['file'],
+      ignores: ['ignored'],
+      name: 'my-config',
+    });
+
+    expect(configWithMetadata).toEqual([
+      {
+        files: ['file'],
+        ignores: ['ignored'],
+        name: 'my-config',
+        rules: { rule1: 'error' },
+      },
+      {
+        files: ['file'],
+        ignores: ['ignored'],
+        name: 'my-config',
+        rules: { rule2: 'error' },
+      },
+    ]);
+    expect(configWithMetadata).not.toContainEqual(
+      // Should not create configuration object with no non-metadata keys (noop config)
+      { files: ['file'], ignores: ['ignored'], name: 'my-config' },
+    );
+  });
 });
