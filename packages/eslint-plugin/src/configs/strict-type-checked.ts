@@ -106,6 +106,7 @@ export = {
       'error',
       'error-handling-correctness-only',
     ],
+    '@typescript-eslint/thenable-in-promise-aggregators': 'error',
     '@typescript-eslint/triple-slash-reference': 'error',
     '@typescript-eslint/unbound-method': 'error',
     '@typescript-eslint/unified-signatures': 'error',
