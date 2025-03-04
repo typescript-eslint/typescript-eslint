@@ -342,12 +342,10 @@ function getGroupTypeRelationsBySuperTypeName(typeRelations: TypeRelation[]) {
     }),
   );
 
-  const groupedTypeRelation = arrayGroupByToMap(
+  return arrayGroupByToMap(
     typeRelationAndName,
     ({ superTypeName }) => superTypeName,
   );
-
-  return groupedTypeRelation;
 }
 
 function hasSameKeys(
@@ -675,7 +673,6 @@ export default createRule({
                     subTypeNode: targetTypeNode,
                     superTypeNode: sourceTypeNode,
                   });
-                  continue;
               }
             }
           }
@@ -898,7 +895,6 @@ export default createRule({
                     subTypeNode: targetTypeNode,
                     superTypeNode: sourceTypeNode,
                   });
-                  continue;
               }
             }
           }
