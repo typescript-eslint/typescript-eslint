@@ -76,10 +76,10 @@ class Foo {
   });
 
   describe('returns Any', () => {
-    it.each([['const foo = 1 as any;', AnyType.Any]])(
-      'when code is %s, returns %s',
-      runTest,
-    );
+    it.each([
+      ['const foo = 1 as any;', AnyType.Any],
+      ['let foo;', AnyType.Any],
+    ])('when code is %s, returns %s', runTest);
   });
 
   describe('returns PromiseAny', () => {
@@ -93,9 +93,9 @@ class Foo {
   });
 
   describe('returns AnyArray', () => {
-    it.each([['const foo = [{} as any];', AnyType.AnyArray]])(
-      'when code is %s, returns %s',
-      runTest,
-    );
+    it.each([
+      ['const foo = [{} as any];', AnyType.AnyArray],
+      ['const foo = [{} as any, 2];', AnyType.AnyArray],
+    ])('when code is %s, returns %s', runTest);
   });
 });
