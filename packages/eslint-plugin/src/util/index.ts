@@ -11,6 +11,7 @@ export * from './getStringLength';
 export * from './getTextWithParentheses';
 export * from './getThisExpression';
 export * from './getWrappingFixer';
+export * from './hasOverloadSignatures';
 export * from './isArrayMethodCallWithPredicate';
 export * from './isAssignee';
 export * from './isNodeEqual';
@@ -25,6 +26,8 @@ export * from './scopeUtils';
 export * from './types';
 export * from './getConstraintInfo';
 export * from './getValueOfLiteralType';
+export * from './isHigherPrecedenceThanAwait';
+export * from './skipChainExpression';
 export * from './truthinessUtils';
 
 // this is done for convenience - saves migrating all of the old rules

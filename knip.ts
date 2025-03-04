@@ -24,7 +24,6 @@ export default {
         '@nx/js',
         '@nx/workspace',
         'glob',
-        'husky',
         'jest-specific-snapshot',
         'make-dir',
         'ncp',
@@ -103,9 +102,6 @@ export default {
 
         // it's imported only as type (esquery types are forked and defined in packages/website/typings/esquery.d.ts)
         'esquery',
-
-        // Referenced in webpack via the CopyPlugin
-        '@typescript-eslint/website-eslint',
 
         '@docusaurus/mdx-loader',
         '@docusaurus/types',

@@ -1,9 +1,7 @@
 {
   "type": "module",
   "devDependencies": {
-    "@types/eslint__eslintrc": "latest",
     "@eslint/eslintrc": "latest",
-    "@types/eslint__js": "latest",
     "@eslint/js": "latest",
     "@types/eslint": "^9",
     "eslint": "latest",

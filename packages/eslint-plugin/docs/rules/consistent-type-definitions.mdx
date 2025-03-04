@@ -82,13 +82,52 @@ type T = { x: number };
 </TabItem>
 </Tabs>
 
+## FAQs
+
+### What are the differences between `interface` and `type`?
+
+There are very few differences between interfaces and object types in TypeScript.
+Other than type aliases being used to represent union types, it is rare that you will need to choose one over the other.
+
+| Feature               | Interfaces | Object Types | Explanation                                                                                            |
+| --------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------ |
+| Object shapes         | ✅         | ✅           | Both can be used to represent general object shapes.                                                   |
+| General performance   | ✅         | ✅           | Both are optimized for performance in TypeScript's type checker.                                       |
+| Edge case performance | ✅         |              | Large, complex logical types can be optimized better with interfaces by TypeScript's type checker.     |
+| Traditional semantics | ✅         |              | Interfaces are typically the default in much -though not all- of the TypeScript community.             |
+| Non-object shapes     |            | ✅           | Object types may describe literals, primitives, unions, and intersections.                             |
+| Logical types         |            | ✅           | Object types may include conditional and mapped types.                                                 |
+| Merging               | Allowed    | Not allowed  | Interfaces of the same name are treated as one interface ("merged"); type aliases may not share names. |
+
+We recommend choosing one definition style, using it when possible, and falling back to the other style when needed.
+The benefits of remaining consistent within a codebase almost always outweigh the benefits of either definition style.
+
+### When do the performance differences between `interface` and `type` matter?
+
+Almost never.
+Most TypeScript projects do not -and should not- utilize types that exercise the performance differences between the two kinds of definitions.
+
+If you are having problems with type checking performance, see the [TypeScript Wiki's Performance page](https://github.com/microsoft/TypeScript/wiki/Performance).
+
+### Why is the default `interface`?
+
+Interfaces are the prevailing, most common style in the TypeScript.
+`interface` has traditionally been TypeScript's intended ("semantic") way to convey _"an object with these fields"_.
+
+We generally recommend staying with the default, `'interface'`, to be stylistically consistent with the majority of TypeScript projects.
+If you strongly prefer `'type'`, that's fine too.
+
 ## When Not To Use It
 
-If you specifically want to use an interface or type literal for stylistic reasons, you can avoid this rule.
+If you specifically want to manually choose whether to use an interface or type literal for stylistic reasons each time you define a type, you can avoid this rule.
 
 However, keep in mind that inconsistent style can harm readability in a project.
 We recommend picking a single option for this rule that works best for your project.
 
-There are also subtle differences between `Record` and `interface` that can be difficult to catch statically.
-For example, if your project is a dependency of another project that relies on a specific type definition style, this rule may be counterproductive.
-You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+You might occasionally need to a different definition type in specific cases, such as if your project is a dependency or dependent of another project that relies on a specific type definition style.
+Consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+
+## Further Reading
+
+- [TypeScript Handbook > Everyday Types > Differences Between Type Aliases and Interfaces](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces)
+- [StackOverflow: Interfaces vs Types in TypeScript](https://stackoverflow.com/questions/37233735/interfaces-vs-types-in-typescript)

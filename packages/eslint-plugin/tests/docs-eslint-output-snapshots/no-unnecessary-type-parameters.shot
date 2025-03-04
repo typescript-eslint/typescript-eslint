@@ -47,3 +47,18 @@ function getProperty<T, K extends keyof T>(obj: T, key: K) {
 }
 "
 `;
+
+exports[`Validating rule docs no-unnecessary-type-parameters.mdx code examples ESLint output 3`] = `
+"Incorrect
+
+declare function length<T>(array: ReadonlyArray<T>): number;
+                        ~ Type parameter T is used only once in the function signature.
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-type-parameters.mdx code examples ESLint output 4`] = `
+"Correct
+
+declare function length(array: ReadonlyArray<unknown>): number;
+"
+`;
