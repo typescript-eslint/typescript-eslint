@@ -5057,6 +5057,8 @@ defaultBoxOptional.a?.b ?? getFallbackBox();
           ],
         },
       ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
     },
     {
       code: `
