@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes init-declarations 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > init-declarations > init-declarations`]
 # SCHEMA:
 
 {
@@ -51,5 +50,4 @@ type Options =
         ignoreForLoopInit?: boolean;
       },
     ];
-"
-`;
+

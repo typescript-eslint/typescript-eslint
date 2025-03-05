@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-indexed-object-style 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > consistent-indexed-object-style > consistent-indexed-object-style`]
 # SCHEMA:
 
 [
@@ -21,5 +20,4 @@ type Options = [
   /** Which indexed object syntax to prefer. */
   | 'index-signature',
 ];
-"
-`;
+

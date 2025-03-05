@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-dynamic-delete.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-dynamic-delete.mdx > code examples ESLint output`]
+Incorrect
 
 // Dynamic, difficult-to-reason-about lookups
 const name = 'name';
@@ -9,11 +9,9 @@ delete container[name];
                  ~~~~ Do not delete dynamically computed property keys.
 delete container[name.toUpperCase()];
                  ~~~~~~~~~~~~~~~~~~ Do not delete dynamically computed property keys.
-"
-`;
 
-exports[`Validating rule docs no-dynamic-delete.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-dynamic-delete.mdx > code examples ESLint output`]
+Correct
 
 const container: { [i: string]: number } = {
   /* ... */
@@ -30,5 +28,3 @@ delete container[-1];
 // TS compiler option
 delete container['aaa'];
 delete container['Infinity'];
-"
-`;
