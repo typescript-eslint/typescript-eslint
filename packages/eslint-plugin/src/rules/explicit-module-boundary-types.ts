@@ -9,7 +9,12 @@ import type {
   FunctionNode,
 } from '../util/explicitReturnTypeUtils';
 
-import { createRule, isFunction, isStaticMemberAccessOfValue } from '../util';
+import {
+  createRule,
+  hasOverloadSignatures,
+  isFunction,
+  isStaticMemberAccessOfValue,
+} from '../util';
 import {
   ancestorHasReturnType,
   checkFunctionExpressionReturnType,
@@ -25,6 +30,7 @@ export type Options = [
     allowedNames?: string[];
     allowHigherOrderFunctions?: boolean;
     allowTypedFunctionExpressions?: boolean;
+    allowOverloadFunctions?: boolean;
   },
 ];
 export type MessageIds =
@@ -82,6 +88,11 @@ export default createRule<Options, MessageIds>({
               'You must still type the parameters of the function.',
             ].join('\n'),
           },
+          allowOverloadFunctions: {
+            type: 'boolean',
+            description:
+              'Whether to ignore return type annotations on functions with overload signatures.',
+          },
           allowTypedFunctionExpressions: {
             type: 'boolean',
             description:
@@ -97,6 +108,7 @@ export default createRule<Options, MessageIds>({
       allowDirectConstAssertionInArrowFunctions: true,
       allowedNames: [],
       allowHigherOrderFunctions: true,
+      allowOverloadFunctions: false,
       allowTypedFunctionExpressions: true,
     },
   ],
@@ -456,6 +468,14 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
+      if (
+        options.allowOverloadFunctions &&
+        node.parent.type === AST_NODE_TYPES.MethodDefinition &&
+        hasOverloadSignatures(node.parent, context)
+      ) {
+        return;
+      }
+
       checkFunctionExpressionReturnType(
         { node, returns },
         options,
@@ -482,6 +502,13 @@ export default createRule<Options, MessageIds>({
       checkedFunctions.add(node);
 
       if (isAllowedName(node) || ancestorHasReturnType(node)) {
+        return;
+      }
+
+      if (
+        options.allowOverloadFunctions &&
+        hasOverloadSignatures(node, context)
+      ) {
         return;
       }
 

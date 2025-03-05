@@ -11,7 +11,7 @@
     "allowJs": true,
     "checkJs": true
   },
-  "include": ["src/**/*.ts", "src/index.js", "types", "build.ts"],
+  "include": ["src/**/*.ts", "src/index.js", "types", "build.mts"],
   "exclude": ["jest.config.js", "src/**/*.spec.ts", "src/**/*.test.ts"],
   "references": [
     {

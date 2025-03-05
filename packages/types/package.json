@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "8.25.0",
+  "version": "8.26.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -38,7 +38,7 @@
     "estree"
   ],
   "scripts": {
-    "copy-ast-spec": "tsx ./tools/copy-ast-spec.ts",
+    "copy-ast-spec": "tsx ./tools/copy-ast-spec.mts",
     "build": "tsc -b tsconfig.build.json",
     "postbuild": "downlevel-dts dist _ts4.3/dist --to=4.3",
     "clean": "tsc -b tsconfig.build.json --clean",
