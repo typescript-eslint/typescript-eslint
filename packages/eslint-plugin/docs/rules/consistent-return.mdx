@@ -9,11 +9,10 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/consistent-return** for documentation.
 
-This rule extends the base [`eslint/consistent-return`](https://eslint.org/docs/rules/consistent-return) rule.
-This version adds support for functions that return `void` or `Promise<void>`.
+It adds support for functions that return `void` or `Promise<void>`.
 
 :::danger warning
-If possible, it is recommended to use tsconfig's `noImplicitReturns` option rather than this rule. `noImplicitReturns` is powered by TS's type information and control-flow analysis so it has better coverage than this rule.
+If possible, it is recommended to use tsconfig's [`noImplicitReturns`](https://www.typescriptlang.org/tsconfig/#noImplicitReturns) option rather than this rule. `noImplicitReturns` is powered by TS's type information and control-flow analysis so it has better coverage than this rule.
 :::
 
 <Tabs>

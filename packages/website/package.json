@@ -15,14 +15,14 @@
     "build": "docusaurus build",
     "clear": "docusaurus clear",
     "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore",
-    "generate-website-dts": "tsx ./tools/generate-website-dts.ts",
+    "generate-website-dts": "tsx ./tools/generate-website-dts.mts",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
     "lint": "npx nx lint",
     "serve": "docusaurus serve",
     "start": "npx nx start",
     "swizzle": "docusaurus swizzle",
-    "typecheck": "tsc -b ./tsconfig.json"
+    "check-types": "npx nx typecheck"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.4",

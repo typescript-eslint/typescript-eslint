@@ -847,6 +847,48 @@ function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}
         },
       ],
     },
+    {
+      code: `
+declare const has = (environment: 'dev' | 'prod' | 'test') => boolean;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'has',
+          },
+          messageId: 'noShadowGlobal',
+        },
+      ],
+      languageOptions: {
+        globals: {
+          has: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare const has: (environment: 'dev' | 'prod' | 'test') => boolean;
+const fn = (has: string) => {};
+      `,
+      errors: [
+        {
+          data: {
+            name: 'has',
+            shadowedColumn: 15,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      filename: 'foo.d.ts',
+      languageOptions: {
+        globals: {
+          has: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
   ],
   valid: [
     'function foo<T = (arg: any) => any>(arg: T) {}',
@@ -1454,6 +1496,135 @@ declare module 'bar' {
   }
 }
       `,
+    },
+    {
+      code: `
+declare const foo1: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo1: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare let foo2: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo2: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare var foo3: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo3: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+function foo4(name: string): void;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo4: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare class Foopy1 {
+  name: string;
+}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy1: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare interface Foopy2 {
+  name: string;
+}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy2: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare type Foopy3 = {
+  x: number;
+};
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy3: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare enum Foopy4 {
+  x,
+}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy4: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare namespace Foopy5 {}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy5: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare;
+foo5: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo5: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
     },
   ],
 });

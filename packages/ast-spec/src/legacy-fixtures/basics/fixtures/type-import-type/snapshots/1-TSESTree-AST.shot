@@ -43,7 +43,7 @@ Program {
               end: { column: 26, line: 3 },
             },
           },
-          attributes: [],
+          options: null,
           qualifier: null,
           typeArguments: null,
 
@@ -104,7 +104,7 @@ Program {
             end: { column: 19, line: 4 },
           },
         },
-        attributes: [],
+        options: null,
         qualifier: Identifier {
           type: "Identifier",
           decorators: [],
