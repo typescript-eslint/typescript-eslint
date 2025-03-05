@@ -502,7 +502,7 @@ export default createRule({
         const type = checker.getTypeFromTypeNode(typeNode);
         const node = getTypeNodeFromReferenceType(type);
 
-        if (node) {
+        if (node && node !== typeNode) {
           return getObjectUnionTypePart(node, checker);
         }
       }
@@ -535,7 +535,7 @@ export default createRule({
       if (ts.isTypeReferenceNode(typeNode)) {
         const type = checker.getTypeFromTypeNode(typeNode);
         const node = getTypeNodeFromReferenceType(type);
-        if (node) {
+        if (node && node !== typeNode) {
           return getObjectInterSectionTypePart(node, checker);
         }
       }

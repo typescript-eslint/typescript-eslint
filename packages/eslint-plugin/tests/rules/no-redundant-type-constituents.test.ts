@@ -181,6 +181,18 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         | (({ a: 1 } | { c: 1 }) & { a: 1 });
     `,
     'type Foo = { a: 1 } | { a: { a: 1 } };',
+    `
+      type T = { a: 1; b: 1 };
+      type U<K extends string> = Omit<T, K> & Required<T>;
+      type K = U<'a'>;
+      type R = K | { a: 1 };
+    `,
+    `
+      type T = { a: 1; b: 1 };
+      type U<K extends string> = Omit<T, K> & Required<T>;
+      type K = U<'a'>;
+      type R = K & { a: 1 };
+    `,
   ],
 
   invalid: [
