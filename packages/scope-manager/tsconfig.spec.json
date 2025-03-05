@@ -3,15 +3,9 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/packages/scope-manager",
     "module": "NodeNext",
-    "types": ["jest", "node"]
+    "types": ["node", "vitest/globals", "vitest/importMeta"]
   },
-  "include": [
-    "jest.config.js",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts",
-    "tests"
-  ],
+  "include": ["src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts", "tests"],
   "exclude": ["**/fixtures/**"],
   "references": [
     {
