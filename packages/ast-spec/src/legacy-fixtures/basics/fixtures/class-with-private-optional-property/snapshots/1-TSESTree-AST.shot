@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-property TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -190,4 +187,3 @@ Program {
     end: { column: 0, line: 8 },
   },
 }
-`;

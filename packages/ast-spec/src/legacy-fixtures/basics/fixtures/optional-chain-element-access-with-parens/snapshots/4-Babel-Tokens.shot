@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-parens Babel - Tokens 1`] = `
 [
   Keyword {
     type: "Keyword",
@@ -813,4 +810,3 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
     },
   },
 ]
-`;

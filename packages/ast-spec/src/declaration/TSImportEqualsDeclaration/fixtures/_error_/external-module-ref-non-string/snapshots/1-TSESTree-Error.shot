@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSImportEqualsDeclaration _error_ external-module-ref-non-string TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > TSImportEqualsDeclaration > _error_ > external-module-ref-non-string > TSESTree - Error`]
+TSError
 > 1 | import F = require(1);
     |                    ^ String literal expected.
-  2 |"
-`;
+  2 |

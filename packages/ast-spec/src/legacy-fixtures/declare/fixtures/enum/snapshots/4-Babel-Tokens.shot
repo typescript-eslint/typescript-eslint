@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures declare enum Babel - Tokens 1`] = `
 [
   Identifier {
     type: "Identifier",
@@ -93,4 +90,3 @@ exports[`AST Fixtures legacy-fixtures declare enum Babel - Tokens 1`] = `
     },
   },
 ]
-`;
