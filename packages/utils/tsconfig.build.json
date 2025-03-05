@@ -10,7 +10,7 @@
   },
   "include": ["src/**/*.ts", "typings"],
   "exclude": [
-    "jest.config.js",
+    "vitest.config.mts",
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
     "**/fixtures/**"
