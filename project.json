@@ -1,13 +1,19 @@
 {
-  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "$schema": "./node_modules/nx/schemas/project-schema.json",
   "name": "repo",
+  "projectType": "library",
+  "root": ".",
+  "sourceRoot": ".",
   "// These targets are used for repo level utils and checking repo files which do not belong to specific published packages": {},
   "targets": {
     "typecheck": {
       "command": "tsc -b ./tsconfig.repo-config-files.json"
     },
     "lint": {
-      "command": "eslint . --ignore-pattern=packages --cache"
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["{workspaceRoot}/!packages"]
+      }
     },
     "generate-configs": {
       "command": "tsx tools/scripts/generate-configs.mts"

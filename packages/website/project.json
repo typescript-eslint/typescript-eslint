@@ -1,20 +1,25 @@
 {
   "name": "website",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "type": "library",
-  "implicitDependencies": [],
+  "projectType": "library",
+  "root": "packages/website",
+  "sourceRoot": "packages/website/src",
   "targets": {
     "start": {
-      "dependsOn": ["website-eslint:build"],
+      "dependsOn": [
+        {
+          "projects": ["website-eslint"],
+          "target": "build"
+        }
+      ],
       "executor": "nx:run-commands",
       "options": {
-        "cwd": "packages/website",
+        "cwd": "{projectRoot}",
         "command": "docusaurus start"
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     }
   }
 }
