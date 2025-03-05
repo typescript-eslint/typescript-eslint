@@ -3,7 +3,7 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
 
 import { dom } from './dom';
 import { dom_asynciterable } from './dom.asynciterable';
@@ -12,11 +12,14 @@ import { es2019 } from './es2019';
 import { scripthost } from './scripthost';
 import { webworker_importscripts } from './webworker.importscripts';
 
-export const es2019_full = {
-  ...es2019,
-  ...dom,
-  ...webworker_importscripts,
-  ...scripthost,
-  ...dom_iterable,
-  ...dom_asynciterable,
-} as Record<string, ImplicitLibVariableOptions>;
+export const es2019_full: LibDefinition = {
+  libs: [
+    es2019,
+    dom,
+    webworker_importscripts,
+    scripthost,
+    dom_iterable,
+    dom_asynciterable,
+  ],
+  variables: [],
+};

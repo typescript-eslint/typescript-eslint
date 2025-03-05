@@ -8,7 +8,7 @@ import { version as TYPESCRIPT_ESTREE_VERSION } from '../version';
 /**
  * This needs to be kept in sync with package.json in the typescript-eslint monorepo
  */
-export const SUPPORTED_TYPESCRIPT_VERSIONS = '>=4.8.4 <5.8.0';
+export const SUPPORTED_TYPESCRIPT_VERSIONS = '>=4.8.4 <5.9.0';
 
 /*
  * The semver package will ignore prerelease ranges, and we don't want to explicitly document every one

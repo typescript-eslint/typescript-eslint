@@ -19,7 +19,7 @@ type AccessibilityLevel =
   | 'no-public' // don't require public
   | 'off'; // don't check
 
-interface Config {
+export interface Config {
   accessibility?: AccessibilityLevel;
   ignoredMethodNames?: string[];
   overrides?: {
