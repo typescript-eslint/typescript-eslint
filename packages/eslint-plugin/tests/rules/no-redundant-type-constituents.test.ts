@@ -173,6 +173,14 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     'type Foo = { a: 1 } | ({ a: 1 } & { b: 1 });',
     'type Foo = ({ a: 1 } & { b: 1 }) | { a: 1 };',
     'type Foo = { a: 1 } & { b: number };',
+    'type Foo = { a: 1; b: 1 } & ({ a: 1; b: 1; c: 1 } | { a: 1 });',
+    'type Foo = ({ a: 1; b: 1; c: 1 } | { a: 1 }) & { a: 1; b: 1 };',
+    `
+      type Foo =
+        | (({ a: 1 } | { b: 1 }) & { a: 1 })
+        | (({ a: 1 } | { c: 1 }) & { a: 1 });
+    `,
+    'type Foo = { a: 1 } | { a: { a: 1 } };',
   ],
 
   invalid: [
@@ -1210,6 +1218,23 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
+      code: `
+type Foo = { a: { b: 1 } } | { a: { b: number } };
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            subType: '{ a: { b: 1 } }',
+            superType: '{ a: { b: number } }',
+          },
+          endColumn: 27,
+          line: 2,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
       code: "type Foo = ({ a: 'b' } | { a: 1 }) | { a: string } | { a: number };",
       errors: [
         {
@@ -1325,6 +1350,34 @@ type T = R | { a: 1 };
           },
           endColumn: 22,
           messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type R = ({ a: 1; b: 2; c: 1 } & { a: 1; b: 2 }) | { a: 2; b: 1 };
+type P = R & { a: number; b: number };
+      `,
+      errors: [
+        {
+          column: 34,
+          data: {
+            subType: '{ a: 1; b: 2; c: 1 }',
+            superType: '{ a: 1; b: 2 }',
+          },
+          endColumn: 48,
+          line: 2,
+          messageId: 'superObjectTypeOverridden',
+        },
+        {
+          column: 14,
+          data: {
+            subType: '({ a: 1; b: 2; c: 1 } & { a: 1; b: 2 }) | { a: 2; b: 1 }',
+            superType: '{ a: number; b: number }',
+          },
+          endColumn: 38,
+          line: 3,
+          messageId: 'superObjectTypeOverridden',
         },
       ],
     },
@@ -1585,6 +1638,52 @@ type U = T | { a: 2 };
             superType: '{ a: number }',
           },
           endColumn: 38,
+          messageId: 'superObjectTypeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = ({ a: number } & { b: number }) & { a: 1; b: 1 };',
+      errors: [
+        {
+          column: 13,
+          data: {
+            subType: '{ a: 1; b: 1 }',
+            superType: '{ a: number }',
+          },
+          endColumn: 42,
+          messageId: 'superObjectTypeOverridden',
+        },
+        {
+          column: 13,
+          data: {
+            subType: '{ a: 1; b: 1 }',
+            superType: '{ b: number }',
+          },
+          endColumn: 42,
+          messageId: 'superObjectTypeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = ({ a: number } & { b: number }) & { a: 1 } & { b: 1 };',
+      errors: [
+        {
+          column: 13,
+          data: {
+            subType: '{ a: 1 }',
+            superType: '{ a: number }',
+          },
+          endColumn: 42,
+          messageId: 'superObjectTypeOverridden',
+        },
+        {
+          column: 13,
+          data: {
+            subType: '{ b: 1 }',
+            superType: '{ b: number }',
+          },
+          endColumn: 42,
           messageId: 'superObjectTypeOverridden',
         },
       ],

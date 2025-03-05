@@ -359,14 +359,6 @@ function hasSameKeys(
   if (tsutils.isUnionType(type2)) {
     return type2.types.some(typePart => hasSameKeys(type1, typePart, checker));
   }
-  if (
-    !tsutils.isIntersectionType(type1) &&
-    !tsutils.isIntersectionType(type2) &&
-    !tsutils.isObjectType(type1) &&
-    !tsutils.isObjectType(type2)
-  ) {
-    return false;
-  }
 
   const propertiesOfType1 = type1.getProperties();
   const propertiesOfType2 = type2.getProperties();
