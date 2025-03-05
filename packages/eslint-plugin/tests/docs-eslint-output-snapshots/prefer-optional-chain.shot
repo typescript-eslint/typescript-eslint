@@ -198,6 +198,27 @@ thing?.toString();
 
 exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 16`] = `
 "Incorrect
+Options: { "ignoreIfStatements": false }
+
+if (foo) {
+~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+  foo.bar();
+~~~~~~~~~~~~
+}
+~
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 17`] = `
+"Correct
+Options: { "ignoreIfStatements": true }
+
+foo?.bar();
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 18`] = `
+"Incorrect
 Options: { "requireNullish": true }
 
 declare const thing1: string | null;
@@ -206,7 +227,7 @@ thing1 && thing1.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 17`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 19`] = `
 "Correct
 Options: { "requireNullish": true }
 

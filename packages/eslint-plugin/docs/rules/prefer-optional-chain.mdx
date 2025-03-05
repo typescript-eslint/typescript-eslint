@@ -265,6 +265,32 @@ thing?.toString();
 </TabItem>
 </Tabs>
 
+### `ignoreIfStatements`
+
+{/* insert option description */}
+
+Examples of code for this rule with `{ ignoreIfStatements: false }`:
+
+<Tabs>
+
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "ignoreIfStatements": false }'
+if (foo) {
+  foo.bar();
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "ignoreIfStatements": true }'
+foo?.bar();
+```
+
+</TabItem>
+</Tabs>
+
 ### `requireNullish`
 
 {/* insert option description */}
