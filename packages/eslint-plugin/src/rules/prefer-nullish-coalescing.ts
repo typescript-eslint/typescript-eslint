@@ -497,24 +497,34 @@ export default createRule<Options, MessageIds>({
         }
       },
       IfStatement(node: TSESTree.IfStatement): void {
+        if (node.alternate != null) {
+          return;
+        }
+
+        let assignmentExpression: TSESTree.Expression | undefined;
         if (
-          node.alternate != null ||
-          node.consequent.type !== AST_NODE_TYPES.BlockStatement ||
-          node.consequent.body.length !== 1 ||
-          node.consequent.body[0].type !== AST_NODE_TYPES.ExpressionStatement ||
-          node.consequent.body[0].expression.type !==
-            AST_NODE_TYPES.AssignmentExpression ||
-          (node.consequent.body[0].expression.left.type !==
-            AST_NODE_TYPES.Identifier &&
-            node.consequent.body[0].expression.left.type !==
-              AST_NODE_TYPES.MemberExpression)
+          node.consequent.type === AST_NODE_TYPES.BlockStatement &&
+          node.consequent.body.length === 1 &&
+          node.consequent.body[0].type === AST_NODE_TYPES.ExpressionStatement
+        ) {
+          assignmentExpression = node.consequent.body[0].expression;
+        } else if (
+          node.consequent.type === AST_NODE_TYPES.ExpressionStatement
+        ) {
+          assignmentExpression = node.consequent.expression;
+        }
+
+        if (
+          !assignmentExpression ||
+          assignmentExpression.type !== AST_NODE_TYPES.AssignmentExpression ||
+          (assignmentExpression.left.type !== AST_NODE_TYPES.Identifier &&
+            assignmentExpression.left.type !== AST_NODE_TYPES.MemberExpression)
         ) {
           return;
         }
 
-        const assignmentLeftNode = node.consequent.body[0].expression.left;
-        const nullishCoalescingRightNode =
-          node.consequent.body[0].expression.right;
+        const nullishCoalescingLeftNode = assignmentExpression.left;
+        const nullishCoalescingRightNode = assignmentExpression.right;
 
         const { nodesInsideTestExpression, operator } =
           getOperatorAndNodesInsideTestExpression(node);
@@ -525,7 +535,7 @@ export default createRule<Options, MessageIds>({
 
         const nullishCoalescingParams = getNullishCoalescingParams(
           node,
-          assignmentLeftNode,
+          nullishCoalescingLeftNode,
           nodesInsideTestExpression,
           operator,
         );
@@ -544,7 +554,7 @@ export default createRule<Options, MessageIds>({
                     node,
                     `${getTextWithParentheses(
                       context.sourceCode,
-                      assignmentLeftNode,
+                      nullishCoalescingLeftNode,
                     )} ??= ${getTextWithParentheses(
                       context.sourceCode,
                       nullishCoalescingRightNode,
