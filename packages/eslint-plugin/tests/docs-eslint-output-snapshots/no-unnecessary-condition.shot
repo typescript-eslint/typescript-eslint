@@ -166,3 +166,57 @@ assertIsString(s); // Unnecessary; s is always a string.
                ~ Unnecessary conditional, expression already has the type being checked by the assertion function.
 "
 `;
+
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 8`] = `
+"
+
+const array: string[] = [];
+const firstElement = array[0];
+// false positive
+if (firstElement != null) {
+    ~~~~~~~~~~~~~~~~~~~~ Unnecessary conditional, the types have no overlap.
+  // ...
+}
+
+const record: Record<string, string> = {};
+const someValue = record.someKey;
+// false positive
+if (someValue != null) {
+    ~~~~~~~~~~~~~~~~~ Unnecessary conditional, the types have no overlap.
+  // ...
+}
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 9`] = `
+"
+
+let condition = false;
+
+const f = () => {
+  condition = Math.random() > 0.5;
+};
+f();
+
+if (condition) {
+    ~~~~~~~~~ Unnecessary conditional, value is always falsy.
+  // ...
+}
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 10`] = `
+"
+
+let condition = false as boolean;
+
+const f = () => {
+  condition = Math.random() > 0.5;
+};
+f();
+
+if (condition) {
+  // ...
+}
+"
+`;
