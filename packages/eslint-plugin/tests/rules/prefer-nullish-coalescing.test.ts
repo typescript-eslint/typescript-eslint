@@ -1342,8 +1342,8 @@ a ? a : b;
 
     {
       code: `
-declare const u2: unknown;
-const foo2 = u2 || 'bar';
+declare const a: unknown;
+const b = a || 'bar';
       `,
       options: [
         {
