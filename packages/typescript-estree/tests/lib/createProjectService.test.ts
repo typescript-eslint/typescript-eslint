@@ -26,11 +26,9 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
         this.eventHandler = args[0].eventHandler;
         this.host = args[0].host;
         this.logger = args[0].logger;
-        if (this.eventHandler) {
-          this.eventHandler({
-            eventName: 'projectLoadingStart',
-          } as ts.server.ProjectLoadingStartEvent);
-        }
+        this.eventHandler?.({
+          eventName: 'projectLoadingStart',
+        } as ts.server.ProjectLoadingStartEvent);
       }
     },
   },
