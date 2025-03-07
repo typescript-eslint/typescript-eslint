@@ -94,6 +94,16 @@
         }
       }
     },
+    "@nx/eslint:lint": {
+      "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
+      "options": {
+        "noEslintrc": true,
+        "cache": true,
+        "eslintConfig": "{workspaceRoot}/eslint.config.mjs"
+      },
+      "outputs": ["{options.outputFile}"],
+      "cache": true
+    },
     "@nx/vite:test": {
       "dependsOn": ["^build"],
       "inputs": [
