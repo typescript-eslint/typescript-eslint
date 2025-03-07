@@ -8,7 +8,7 @@ const vitestConfig = mergeConfig(
 
   defineConfig({
     test: {
-      name: packageJson.name,
+      name: packageJson.name.split('/').pop(),
       root: import.meta.dirname,
       passWithNoTests: true,
     },
