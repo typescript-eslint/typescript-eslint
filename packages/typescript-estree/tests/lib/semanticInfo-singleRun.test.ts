@@ -88,7 +88,7 @@ const createProgramFromConfigFile = vi.mocked(
   createProgramFromConfigFileOriginal,
 );
 
-const FIXTURES_DIR = './tests/fixtures/semanticInfo';
+const FIXTURES_DIR = path.join(__dirname, '..', 'fixtures', 'semanticInfo');
 const testFiles = glob.sync(`**/*.src.ts`, {
   cwd: FIXTURES_DIR,
 });
@@ -101,11 +101,10 @@ const options = {
   filePath: testFiles[0],
   loggerFn: false,
   project: tsconfigs,
-  tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
+  tsconfigRootDir: FIXTURES_DIR,
 } as const;
 
-const resolvedProject = (p: string): string =>
-  path.resolve(path.join(process.cwd(), FIXTURES_DIR), p);
+const resolvedProject = (p: string): string => path.resolve(FIXTURES_DIR, p);
 
 describe('semanticInfo - singleRun', () => {
   beforeEach(() => {

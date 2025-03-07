@@ -17,7 +17,7 @@ import {
   parseCodeAndGenerateServices,
 } from '../test-utils/test-utils';
 
-const FIXTURES_DIR = './tests/fixtures/semanticInfo';
+const FIXTURES_DIR = path.join(__dirname, '..', 'fixtures', 'semanticInfo');
 const testFiles = glob.sync(`**/*.src.ts`, {
   cwd: FIXTURES_DIR,
 });
@@ -34,7 +34,7 @@ function createOptions(fileName: string): { cwd?: string } & TSESTreeOptions {
     project: `./tsconfig.json`,
     range: true,
     tokens: true,
-    tsconfigRootDir: path.join(__dirname, '..', '..', FIXTURES_DIR),
+    tsconfigRootDir: FIXTURES_DIR,
   };
 }
 
