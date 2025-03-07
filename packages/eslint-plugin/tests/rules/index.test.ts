@@ -8,9 +8,7 @@ describe('./src/rules/index.ts', async () => {
     .map(name => `${name}.ts`)
     .sort();
   const files = (
-    await fs.readdir(path.join(__dirname, '..', '..', 'src', 'rules'), {
-      encoding: 'utf-8',
-    })
+    await fs.readdir(path.join(__dirname, '..', '..', 'src', 'rules'))
   ).filter(file => file !== 'index.ts' && file.endsWith('.ts'));
 
   it('imports all available rule modules', () => {
