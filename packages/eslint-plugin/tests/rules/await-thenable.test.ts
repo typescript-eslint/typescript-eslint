@@ -4,7 +4,6 @@ import rule from '../../src/rules/await-thenable';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const messageId = 'await';
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -348,7 +347,7 @@ class C<R extends unknown> {
       errors: [
         {
           line: 1,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -363,7 +362,7 @@ class C<R extends unknown> {
       errors: [
         {
           line: 1,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -378,7 +377,7 @@ class C<R extends unknown> {
       errors: [
         {
           line: 1,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -393,7 +392,7 @@ class C<R extends unknown> {
       errors: [
         {
           line: 1,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -411,7 +410,7 @@ await new NonPromise();
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -438,7 +437,7 @@ async function test() {
       errors: [
         {
           line: 8,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -465,7 +464,7 @@ await callback?.();
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -486,7 +485,7 @@ await obj.a?.b?.();
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -507,7 +506,7 @@ await obj?.a.b.c?.();
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
