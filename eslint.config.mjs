@@ -435,7 +435,6 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-return': 'off',
       'vitest/no-alias-methods': 'error',
       'vitest/no-disabled-tests': 'error',
-      'vitest/no-done-callback': 'error',
       'vitest/no-focused-tests': 'error',
       'vitest/no-identical-title': 'error',
       'vitest/no-test-prefixes': 'error',
