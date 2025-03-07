@@ -202,22 +202,6 @@ declare let x: boolean;
 !x ? y : x;
       `,
       `
-declare let x: any;
-x ? x : y;
-      `,
-      `
-declare let x: any;
-!x ? y : x;
-      `,
-      `
-declare let x: unknown;
-x ? x : y;
-      `,
-      `
-declare let x: unknown;
-!x ? y : x;
-      `,
-      `
 declare let x: object;
 x ? x : y;
       `,
@@ -311,22 +295,6 @@ x.n ? x.n : y;
       `,
       `
 declare let x: { n: boolean };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: any };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: any };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: unknown };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: unknown };
 !x.n ? y : x.n;
       `,
       `
@@ -537,39 +505,9 @@ declare let x: (${type} & { __brand?: any }) | undefined;
       options: [{ ignorePrimitives: true }],
     })),
     `
-      declare let x: any;
-      declare let y: number;
-      x || y;
-    `,
-    `
-      declare let x: unknown;
-      declare let y: number;
-      x || y;
-    `,
-    `
       declare let x: never;
       declare let y: number;
       x || y;
-    `,
-    `
-      declare let x: any;
-      declare let y: number;
-      x ? x : y;
-    `,
-    `
-      declare let x: any;
-      declare let y: number;
-      !x ? y : x;
-    `,
-    `
-      declare let x: unknown;
-      declare let y: number;
-      x ? x : y;
-    `,
-    `
-      declare let x: unknown;
-      declare let y: number;
-      !x ? y : x;
     `,
     `
       declare let x: never;
@@ -1373,7 +1311,53 @@ if (c || (!a ? b : a)) {
         },
       ],
     },
+
+    {
+      code: `
+declare const a: any;
+declare const b: any;
+a ? a : b;
+      `,
+      options: [
+        {
+          ignorePrimitives: true,
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const a: any;
+declare const b: any;
+a ? a : b;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const a: unknown;
+const b = a || 'bar';
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: false,
+            string: false,
+          },
+        },
+      ],
+    },
   ],
+
   invalid: [
     ...nullishTypeTest((nullish, type, equals) => ({
       code: `
@@ -5078,6 +5062,51 @@ defaultBoxOptional.a?.b ?? getFallbackBox();
     },
     {
       code: `
+declare const x: any;
+declare const y: any;
+x || y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: any;
+declare const y: any;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const x: unknown;
+declare const y: any;
+x || y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: unknown;
+declare const y: any;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 interface Box {
   value: string;
 }
@@ -5307,6 +5336,72 @@ defaultBoxOptional.a?.b ?? getFallbackBox();
       ],
       options: [{ ignoreTernaryTests: false }],
       output: null,
+    },
+    {
+      code: `
+declare let x: unknown;
+declare let y: number;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: unknown;
+declare let y: number;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare let x: unknown;
+declare let y: number;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: unknown;
+declare let y: number;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare let x: { n: unknown };
+!x.n ? y : x.n;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n: unknown };
+x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
   ],
 });
