@@ -6,6 +6,9 @@
   "root": "packages/integration-tests",
   "sourceRoot": "packages/integration-tests/tools",
   "targets": {
+    "typecheck": {
+      "dependsOn": []
+    },
     "lint": {
       "executor": "@nx/eslint:lint"
     }
