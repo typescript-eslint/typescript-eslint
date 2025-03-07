@@ -58,12 +58,12 @@ if (a || b) {
       ~~ Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
 }
 if ((a ||= b)) {
-       ~~~ Prefer using nullish coalescing operator (\`??=\`) instead of a logical assignment (\`||=\`), as it is a safer operator.
+       ~~~ Prefer using nullish coalescing operator (`??=`) instead of a logical assignment (`||=`), as it is a safer operator.
 }
 while (a || b) {}
          ~~ Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
 while ((a ||= b)) {}
-          ~~~ Prefer using nullish coalescing operator (\`??=\`) instead of a logical assignment (\`||=\`), as it is a safer operator.
+          ~~~ Prefer using nullish coalescing operator (`??=`) instead of a logical assignment (`||=`), as it is a safer operator.
 do {} while (a || b);
                ~~ Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
 for (let i = 0; a || b; i += 1) {}
@@ -100,7 +100,7 @@ declare const d: string | null;
 a || (b && c);
   ~~ Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
 a ||= b && c;
-  ~~~ Prefer using nullish coalescing operator (\`??=\`) instead of a logical assignment (\`||=\`), as it is a safer operator.
+  ~~~ Prefer using nullish coalescing operator (`??=`) instead of a logical assignment (`||=`), as it is a safer operator.
 (a && b) || c || d;
          ~~ Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
               ~~ Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
