@@ -1,4 +1,5 @@
 import * as os from 'node:os';
+import * as path from 'node:path';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
 import { vitestBaseConfig } from '../../vitest.config.base.mjs';
@@ -9,13 +10,17 @@ const vitestConfig = mergeConfig(
 
   defineConfig({
     test: {
-      dir: `${import.meta.dirname}/tests`,
-
-      fileParallelism: os.platform() !== 'win32',
+      dir: path.join(import.meta.dirname, 'tests'),
 
       globalSetup: ['./tools/pack-packages.ts'],
 
-      name: packageJson.name,
+      name: packageJson.name.split('/').pop(),
+
+      poolOptions: {
+        forks: {
+          singleFork: os.platform() === 'win32',
+        },
+      },
 
       root: import.meta.dirname,
     },
