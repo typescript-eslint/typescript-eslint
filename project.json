@@ -4,7 +4,7 @@
   "// These targets are used for repo level utils and checking repo files which do not belong to specific published packages": {},
   "targets": {
     "typecheck": {
-      "command": "tsc"
+      "command": "tsc -b ./tsconfig.repo-config-files.json"
     },
     "lint": {
       "command": "eslint . --ignore-pattern=packages --cache"
