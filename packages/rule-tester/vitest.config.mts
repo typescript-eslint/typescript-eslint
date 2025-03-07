@@ -1,3 +1,4 @@
+import * as path from 'node:path';
 import { defaultExclude, defineConfig, mergeConfig } from 'vitest/config';
 
 import { vitestBaseConfig } from '../../vitest.config.base.mjs';
@@ -56,9 +57,9 @@ const vitestConfig = mergeConfig(
     ],
 
     test: {
-      dir: `${import.meta.dirname}/tests`,
+      dir: path.join(import.meta.dirname, 'tests'),
       exclude: [...defaultExclude, 'eslint-base/eslint-base.test.js'],
-      name: packageJson.name,
+      name: packageJson.name.split('/').pop(),
 
       root: import.meta.dirname,
     },
