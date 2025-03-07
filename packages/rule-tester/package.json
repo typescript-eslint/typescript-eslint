@@ -44,7 +44,7 @@
     "lint": "npx nx lint",
     "pretest-eslint-base": "tsc -b tsconfig.build.json",
     "test-eslint-base": "mocha --require source-map-support/register ./tests/eslint-base/eslint-base.test.js",
-    "test": "vitest --run",
+    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
     "check-types": "npx nx typecheck"
   },
   "//": "NOTE - AJV is out-of-date, but it's intentionally synced with ESLint - https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/package.json#L70",
