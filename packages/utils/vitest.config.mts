@@ -1,3 +1,4 @@
+import * as path from 'node:path';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
 import { vitestBaseConfig } from '../../vitest.config.base.mjs';
@@ -8,13 +9,13 @@ const vitestConfig = mergeConfig(
 
   defineConfig({
     test: {
-      dir: `${import.meta.dirname}/tests`,
-      name: packageJson.name,
+      dir: path.join(import.meta.dirname, 'tests'),
+      name: packageJson.name.split('/').pop(),
       root: import.meta.dirname,
 
       typecheck: {
         enabled: true,
-        tsconfig: `${import.meta.dirname}/tsconfig.json`,
+        tsconfig: path.join(import.meta.dirname, 'tsconfig.json'),
       },
     },
   }),
