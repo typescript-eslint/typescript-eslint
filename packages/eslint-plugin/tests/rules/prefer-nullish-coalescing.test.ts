@@ -258,6 +258,24 @@ declare let x: () => string | null | undefined;
 !x ? y : x;
       `,
       `
+declare let x: () => string | null;
+x() ? x() : y;
+      `,
+      `
+declare let x: () => string | null;
+!x() ? y : x();
+      `,
+      `
+const a = 'foo';
+declare let x: (a: string | null) => string | null;
+x(a) ? x(a) : y;
+      `,
+      `
+const a = 'foo';
+declare let x: (a: string | null) => string | null;
+!x(a) ? y : x(a);
+      `,
+      `
 declare let x: { n: string };
 x.n ? x.n : y;
       `,
@@ -352,6 +370,119 @@ x.n ? x.n : y;
       `
 declare let x: { n: () => string | null | undefined };
 !x.n ? y : x.n;
+      `,
+      `
+declare let foo: string;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (!foo) {
+    foo = makeFoo();
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo) {
+    foo = makeFoo();
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo != null) {
+    foo = makeFoo();
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo = makeFoo();
+    return foo;
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    return foo;
+  } else {
+    return 'bar';
+  }
+}
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject !== undefined && null !== null
+  ? nullOrObject
+  : 42;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject !== undefined && null != null
+  ? nullOrObject
+  : 42;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject !== undefined && null != undefined
+  ? nullOrObject
+  : 42;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject === undefined || null === null
+  ? 42
+  : nullOrObject;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject === undefined || null == null
+  ? 42
+  : nullOrObject;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject === undefined || null == undefined
+  ? 42
+  : nullOrObject;
+      `,
+      `
+const a = 'b';
+declare let x: { a: string, b: string } | null
+
+x?.a != null ? x[a] : 'foo'
+      `,
+      `
+const a = 'b';
+declare let x: { a: string, b: string } | null
+
+x?.[a] != null ? x.a : 'foo'
+      `,
+      `
+declare let x: { a: string } | null
+declare let y: { a: string } | null
+
+x?.a ? y?.a : 'foo'
       `,
     ].map(code => ({
       code,
@@ -5402,6 +5533,514 @@ x.n ?? y;
           ],
         },
       ],
+    },
+    {
+      code: `
+declare let x: { a: string } | null;
+
+x?.['a'] != null ? x['a'] : 'foo';
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { a: string } | null;
+
+x?.['a'] ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { a: string } | null;
+
+x?.['a'] != null ? x.a : 'foo';
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { a: string } | null;
+
+x?.['a'] ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { a: string } | null;
+
+x?.a != null ? x['a'] : 'foo';
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { a: string } | null;
+
+x?.a ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const a = 'b';
+declare let x: { a: string; b: string } | null;
+
+x?.[a] != null ? x[a] : 'foo';
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+const a = 'b';
+declare let x: { a: string; b: string } | null;
+
+x?.[a] ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (!foo) {
+    foo = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo ??= makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo ||= makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo ??= makeFoo();
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo === null) {
+    foo = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) foo = makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) foo ??= makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) foo ||= makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) foo ??= makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | undefined;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo === undefined) {
+    foo = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | undefined;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null | undefined;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo === undefined || foo === null) {
+    foo = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null | undefined;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  if (foo.a == null) {
+    foo.a = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  foo.a ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  if (foo?.a == null) {
+    foo.a = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  foo.a ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
   ],
 });
