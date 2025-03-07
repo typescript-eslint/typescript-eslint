@@ -13,6 +13,7 @@ export * from './propertyTypes';
 export * from './requiresQuoting';
 export * from './typeFlagUtils';
 export * from './TypeOrValueSpecifier';
+export * from './discriminateAnyType';
 export {
   getDecorators,
   getModifiers,
