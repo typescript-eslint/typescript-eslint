@@ -6,6 +6,16 @@
   "sourceRoot": ".",
   "// These targets are used for repo level utils and checking repo files which do not belong to specific published packages": {},
   "targets": {
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": true,
+        "commands": [
+          { "command": "tsc -b ./tsconfig.repo-config-files.json --clean" },
+          { "command": "rimraf dist/ coverage/ .eslintcache" }
+        ]
+      }
+    },
     "typecheck": {
       "command": "tsc -b ./tsconfig.repo-config-files.json",
       "dependsOn": ["types:copy-ast-spec"],
