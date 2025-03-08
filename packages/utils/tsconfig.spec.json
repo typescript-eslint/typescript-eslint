@@ -6,6 +6,9 @@
     "types": ["node", "vitest/globals", "vitest/importMeta"]
   },
   "include": [
+    "../../vitest.config.base.mts",
+    "vitest.config.mts",
+    "package.json",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts",
