@@ -1790,5 +1790,28 @@ function join(els: (string & number)[]) {
         },
       ],
     },
+    {
+      code: `
+function join<T extends { hoge: string } | { hoge: number }>(els: T['hoge'][]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: ({ hoge: string } | { hoge: number })['hoge'][]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
