@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`semanticInfo fixtures/export-file.src 1`] = `
+exports[`semanticInfo > fixtures/export-file.src 1`] = `
 {
   "body": [
     {
@@ -300,7 +300,7 @@ exports[`semanticInfo fixtures/export-file.src 1`] = `
 }
 `;
 
-exports[`semanticInfo fixtures/import-file.src 1`] = `
+exports[`semanticInfo > fixtures/import-file.src 1`] = `
 {
   "body": [
     {
@@ -789,7 +789,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
 }
 `;
 
-exports[`semanticInfo fixtures/isolated-file.src 1`] = `
+exports[`semanticInfo > fixtures/isolated-file.src 1`] = `
 {
   "body": [
     {
@@ -1148,7 +1148,7 @@ exports[`semanticInfo fixtures/isolated-file.src 1`] = `
 }
 `;
 
-exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
+exports[`semanticInfo > fixtures/non-existent-estree-nodes.src 1`] = `
 {
   "body": [
     {
