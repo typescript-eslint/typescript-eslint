@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-param AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > ClassDeclaration > type-parameters-extends-type-param > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -132,5 +132,4 @@ exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

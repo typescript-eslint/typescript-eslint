@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures expression UpdateExpression _error_ call-expr TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > expression > UpdateExpression > _error_ > call-expr > TSESTree - Error`]
+TSError
 > 1 | a()++;
     | ^^^ Invalid left-hand side expression in unary operation
-  2 |"
-`;
+  2 |
