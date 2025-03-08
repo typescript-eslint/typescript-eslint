@@ -108,7 +108,21 @@ export default createRule({
                 for (const reference of smTypeParameterVariable.references) {
                   if (reference.isTypeReference) {
                     const referenceNode = reference.identifier;
-                    yield fixer.replaceText(referenceNode, constraintText);
+                    const isCompositeType =
+                      constraint?.type === AST_NODE_TYPES.TSUnionType ||
+                      constraint?.type === AST_NODE_TYPES.TSIntersectionType;
+                    const hasMatchingAncestorType = [
+                      AST_NODE_TYPES.TSArrayType,
+                      AST_NODE_TYPES.TSIndexedAccessType,
+                    ].some(type => referenceNode.parent.parent?.type === type);
+                    if (isCompositeType && hasMatchingAncestorType) {
+                      yield fixer.replaceText(
+                        referenceNode,
+                        `(${constraintText})`,
+                      );
+                    } else {
+                      yield fixer.replaceText(referenceNode, constraintText);
+                    }
                   }
                 }
 
