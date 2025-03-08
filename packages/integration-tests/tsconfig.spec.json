@@ -3,10 +3,13 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/packages/integration-tests",
     "module": "NodeNext",
-    "resolveJsonModule": true,
     "types": ["node", "vitest/globals", "vitest/importMeta"]
   },
   "include": [
+    "../../vitest.config.base.mts",
+    "../../package.json",
+    "vitest.config.mts",
+    "package.json",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts",
