@@ -74,7 +74,6 @@ export default tseslint.config(
       '.nx/',
       '.yarn/',
       '**/jest.config.js',
-      '**/vitest.config.mts',
       '**/node_modules/**',
       '**/dist/**',
       '**/fixtures/**',
