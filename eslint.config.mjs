@@ -70,7 +70,6 @@ export default tseslint.config(
       '.nx/',
       '.yarn/',
       '**/jest.config.js',
-      '**/vitest.config.mts',
       '**/node_modules/**',
       '**/dist/**',
       '**/fixtures/**',
@@ -474,7 +473,13 @@ export default tseslint.config(
     },
   },
   {
-    files: ['eslint.config.{js,cjs,mjs}', 'knip.ts', 'packages/*/src/index.ts'],
+    files: [
+      'eslint.config.{js,cjs,mjs}',
+      'knip.ts',
+      'packages/*/src/index.ts',
+      'vitest.config.mts',
+      'packages/*/vitest.config.mts',
+    ],
     rules: {
       // requirement
       'import/no-default-export': 'off',
