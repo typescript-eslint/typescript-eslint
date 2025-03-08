@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-type-imports 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > consistent-type-imports > consistent-type-imports`]
 # SCHEMA:
 
 [
@@ -9,7 +8,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "disallowTypeAnnotations": {
-        "description": "Whether to disallow type imports in type annotations (\`import()\`).",
+        "description": "Whether to disallow type imports in type annotations (`import()`).",
         "type": "boolean"
       },
       "fixStyle": {
@@ -32,7 +31,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to disallow type imports in type annotations (\`import()\`). */
+    /** Whether to disallow type imports in type annotations (`import()`). */
     disallowTypeAnnotations?: boolean;
     /** The expected type modifier to be added when an import is detected as used only in the type position. */
     fixStyle?:
@@ -46,5 +45,4 @@ type Options = [
       | 'no-type-imports';
   },
 ];
-"
-`;
+

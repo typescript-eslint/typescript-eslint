@@ -1,25 +1,21 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-unnecessary-type-arguments.mdx > code examples ESLint output`]
+Incorrect
 
 function f<T = number>() {}
 f<number>();
   ~~~~~~ This is the default value for this type parameter, so it can be omitted.
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 2`] = `
-"Incorrect
+exports[`Validating rule docs > no-unnecessary-type-arguments.mdx > code examples ESLint output`]
+Incorrect
 
 function g<T = number, U = string>() {}
 g<string, string>();
           ~~~~~~ This is the default value for this type parameter, so it can be omitted.
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 3`] = `
-"Incorrect
+exports[`Validating rule docs > no-unnecessary-type-arguments.mdx > code examples ESLint output`]
+Incorrect
 
 class C<T = number> {}
 new C<number>();
@@ -27,38 +23,30 @@ new C<number>();
 
 class D extends C<number> {}
                   ~~~~~~ This is the default value for this type parameter, so it can be omitted.
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 4`] = `
-"Incorrect
+exports[`Validating rule docs > no-unnecessary-type-arguments.mdx > code examples ESLint output`]
+Incorrect
 
 interface I<T = number> {}
 class Impl implements I<number> {}
                         ~~~~~~ This is the default value for this type parameter, so it can be omitted.
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 5`] = `
-"Correct
+exports[`Validating rule docs > no-unnecessary-type-arguments.mdx > code examples ESLint output`]
+Correct
 
 function f<T = number>() {}
 f();
 f<string>();
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 6`] = `
-"Correct
+exports[`Validating rule docs > no-unnecessary-type-arguments.mdx > code examples ESLint output`]
+Correct
 
 function g<T = number, U = string>() {}
 g<string>();
 g<number, number>();
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 7`] = `
-"Correct
+exports[`Validating rule docs > no-unnecessary-type-arguments.mdx > code examples ESLint output`]
+Correct
 
 class C<T = number> {}
 new C();
@@ -66,13 +54,9 @@ new C<string>();
 
 class D extends C {}
 class D extends C<string> {}
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 8`] = `
-"Correct
+exports[`Validating rule docs > no-unnecessary-type-arguments.mdx > code examples ESLint output`]
+Correct
 
 interface I<T = number> {}
 class Impl implements I<string> {}
-"
-`;

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-var-requires.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-var-requires.mdx > code examples ESLint output`]
+Incorrect
 
 var foo = require('foo');
           ~~~~~~~~~~~~~~ Require statement not part of import statement.
@@ -9,31 +9,23 @@ const foo = require('foo');
             ~~~~~~~~~~~~~~ Require statement not part of import statement.
 let foo = require('foo');
           ~~~~~~~~~~~~~~ Require statement not part of import statement.
-"
-`;
 
-exports[`Validating rule docs no-var-requires.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-var-requires.mdx > code examples ESLint output`]
+Correct
 
 import foo = require('foo');
 require('foo');
 import foo from 'foo';
-"
-`;
 
-exports[`Validating rule docs no-var-requires.mdx code examples ESLint output 3`] = `
-"Incorrect
+exports[`Validating rule docs > no-var-requires.mdx > code examples ESLint output`]
+Incorrect
 Options: { "allow": ["/package.json$"] }
 
 const foo = require('../data.json');
             ~~~~~~~~~~~~~~~~~~~~~~~ Require statement not part of import statement.
-"
-`;
 
-exports[`Validating rule docs no-var-requires.mdx code examples ESLint output 4`] = `
-"Correct
+exports[`Validating rule docs > no-var-requires.mdx > code examples ESLint output`]
+Correct
 Options: { "allow": ["/package.json$"] }
 
 const foo = require('../package.json');
-"
-`;
