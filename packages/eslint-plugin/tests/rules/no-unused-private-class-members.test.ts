@@ -54,6 +54,37 @@ class C {
   }
 }
     `,
+    `
+class C {
+  private accessor accessorMember = 42;
+
+  method() {
+    return this.accessorMember;
+  }
+}
+    `,
+    `
+class C {
+  private static staticMember = 42;
+
+  static method() {
+    return this.staticMember;
+  }
+}
+    `,
+    {
+      code: `
+class C {
+  private static staticMember = 42;
+
+  method() {
+    return C.staticMember;
+  }
+}
+      `,
+      // TODO make this work
+      skip: true,
+    },
 
     ...[
       `
@@ -289,6 +320,22 @@ class C {
           line: 3,
         },
       ],
+    },
+    {
+      code: `
+class C {
+  private accessor accessorMember = 42;
+}
+      `,
+      errors: [definedError('accessorMember', false)],
+    },
+    {
+      code: `
+class C {
+  private static staticMember = 42;
+}
+      `,
+      errors: [definedError('staticMember', false)],
     },
 
     // intentionally not handled cases

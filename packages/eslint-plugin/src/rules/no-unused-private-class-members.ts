@@ -11,15 +11,6 @@ import { createRule } from '../util';
 type Options = [];
 export type MessageIds = 'unusedPrivateClassMember';
 
-interface PrivateMember {
-  declaredNode:
-    | TSESTree.MethodDefinitionComputedName
-    | TSESTree.MethodDefinitionNonComputedName
-    | TSESTree.PropertyDefinitionComputedName
-    | TSESTree.PropertyDefinitionNonComputedName;
-  isAccessor: boolean;
-}
-
 export default createRule<Options, MessageIds>({
   name: 'no-unused-private-class-members',
   meta: {
@@ -39,6 +30,15 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   create(context) {
+    interface PrivateMember {
+      declaredNode:
+        | TSESTree.AccessorProperty
+        | TSESTree.MethodDefinitionComputedName
+        | TSESTree.MethodDefinitionNonComputedName
+        | TSESTree.PropertyDefinitionComputedName
+        | TSESTree.PropertyDefinitionNonComputedName;
+      isAccessor: boolean;
+    }
     const trackedClassMembers: Map<string, PrivateMember>[] = [];
 
     /**
@@ -48,6 +48,7 @@ export default createRule<Options, MessageIds>({
      * track whether a method is being used.
      */
     const trackedClassMembersUsed = new Set<
+      | TSESTree.AccessorProperty
       | TSESTree.MethodDefinitionComputedName
       | TSESTree.MethodDefinitionNonComputedName
       | TSESTree.PropertyDefinitionComputedName
@@ -199,6 +200,7 @@ export default createRule<Options, MessageIds>({
         for (const bodyMember of classBodyNode.body) {
           if (
             (bodyMember.type === AST_NODE_TYPES.PropertyDefinition ||
+              bodyMember.type === AST_NODE_TYPES.AccessorProperty ||
               bodyMember.type === AST_NODE_TYPES.MethodDefinition) &&
             (bodyMember.key.type === AST_NODE_TYPES.PrivateIdentifier ||
               (bodyMember.key.type === AST_NODE_TYPES.Identifier &&

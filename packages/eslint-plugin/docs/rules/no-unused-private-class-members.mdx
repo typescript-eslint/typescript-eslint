@@ -47,20 +47,18 @@ class A {
 
 This rule does not detect the following cases:
 
-(1) Nested classes using private members of the outer class:
+(1) Private members only used using private only without `this`:
 
 ```ts
 class Foo {
   private prop = 123;
 
   method(a: Foo) {
-    return class {
-      // ✅ Detected as a usage
-      prop = this.prop;
+    // ✅ Detected as a usage
+    const prop = this.prop;
 
-      // ❌ NOT detected as a usage
-      innerProp = a.prop;
-    };
+    // ❌ NOT detected as a usage
+    const otherProp = a.prop;
   }
 }
 ```
