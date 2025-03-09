@@ -16,25 +16,30 @@ export * from './getStaticStringValue';
 export * from './getStringLength';
 export * from './getTextWithParentheses';
 export * from './getThisExpression';
+export * from './getValueOfLiteralType';
 export * from './getWrappingFixer';
+export * from './hasOverloadSignatures';
 export * from './isArrayMethodCallWithPredicate';
 export * from './isAssignee';
+export * from './isHigherPrecedenceThanAwait';
 export * from './isNodeEqual';
 export * from './isNullLiteral';
 export * from './isStartOfExpressionStatement';
 export * from './isUndefinedIdentifier';
 export * from './misc';
 export * from './needsPrecedingSemiColon';
-export * from './objectIterators';
 export * from './needsToBeAwaited';
+export * from './objectIterators';
 export * from './scopeUtils';
+export * from './skipChainExpression';
+export * from './truthinessUtils';
 export * from './types';
 export * from './walkStatements';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';
 
-const {
+export const {
   applyDefault,
   deepMerge,
   getParserServices,
@@ -42,17 +47,7 @@ const {
   nullThrows,
   NullThrowsReasons,
 } = ESLintUtils;
-type InferMessageIdsTypeFromRule<T> =
+export type InferMessageIdsTypeFromRule<T> =
   ESLintUtils.InferMessageIdsTypeFromRule<T>;
-type InferOptionsTypeFromRule<T> = ESLintUtils.InferOptionsTypeFromRule<T>;
-
-export {
-  applyDefault,
-  deepMerge,
-  getParserServices,
-  type InferMessageIdsTypeFromRule,
-  type InferOptionsTypeFromRule,
-  isObjectNotArray,
-  nullThrows,
-  NullThrowsReasons,
-};
+export type InferOptionsTypeFromRule<T> =
+  ESLintUtils.InferOptionsTypeFromRule<T>;

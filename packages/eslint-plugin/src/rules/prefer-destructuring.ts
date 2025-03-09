@@ -19,9 +19,9 @@ type BaseOptions = InferOptionsTypeFromRule<typeof baseRule>;
 type EnforcementOptions = {
   enforceForDeclarationWithTypeAnnotation?: boolean;
 } & BaseOptions[1];
-type Options = [BaseOptions[0], EnforcementOptions];
+export type Options = [BaseOptions[0], EnforcementOptions];
 
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const destructuringTypeConfig: JSONSchema4 = {
   type: 'object',

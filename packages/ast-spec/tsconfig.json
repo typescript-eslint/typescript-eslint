@@ -1,10 +1,13 @@
 {
-  "extends": "./tsconfig.build.json",
-  "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
-  },
-  "include": ["src", "typings", "tests", "tools", "**/fixtures/**/config.ts"],
-  "exclude": ["**/fixtures/**/fixture.ts", "**/fixtures/**/fixture.tsx"],
-  "references": [{ "path": "../typescript-estree/tsconfig.build.json" }]
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

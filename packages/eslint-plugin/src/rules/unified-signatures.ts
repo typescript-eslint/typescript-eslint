@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import type { Equal } from '../util';
 
@@ -53,14 +53,15 @@ type MethodDefinition =
   | TSESTree.MethodDefinition
   | TSESTree.TSAbstractMethodDefinition;
 
-type MessageIds =
+export type MessageIds =
   | 'omittingRestParameter'
   | 'omittingSingleParameter'
   | 'singleParameterDifference';
 
-type Options = [
+export type Options = [
   {
     ignoreDifferentlyNamedParameters?: boolean;
+    ignoreOverloadsWithDifferentJSDoc?: boolean;
   },
 ];
 
@@ -91,6 +92,11 @@ export default createRule<Options, MessageIds>({
             description:
               'Whether two parameters with different names at the same index should be considered different even if their types are the same.',
           },
+          ignoreOverloadsWithDifferentJSDoc: {
+            type: 'boolean',
+            description:
+              'Whether two overloads with different JSDoc comments should be considered different even if their parameter and return types are the same.',
+          },
         },
       },
     ],
@@ -98,9 +104,13 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       ignoreDifferentlyNamedParameters: false,
+      ignoreOverloadsWithDifferentJSDoc: false,
     },
   ],
-  create(context, [{ ignoreDifferentlyNamedParameters }]) {
+  create(
+    context,
+    [{ ignoreDifferentlyNamedParameters, ignoreOverloadsWithDifferentJSDoc }],
+  ) {
     //----------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------
@@ -227,6 +237,15 @@ export default createRule<Options, MessageIds>({
           ) {
             return false;
           }
+        }
+      }
+
+      if (ignoreOverloadsWithDifferentJSDoc) {
+        const aComment = getBlockCommentForNode(getExportingNode(a) ?? a);
+        const bComment = getBlockCommentForNode(getExportingNode(b) ?? b);
+
+        if (aComment?.value !== bComment?.value) {
+          return false;
         }
       }
 
@@ -522,6 +541,18 @@ export default createRule<Options, MessageIds>({
       currentScope = scopes.pop();
     }
 
+    /**
+     * @returns the first valid JSDoc comment annotating `node`
+     */
+    function getBlockCommentForNode(
+      node: TSESTree.Node,
+    ): TSESTree.Comment | undefined {
+      return context.sourceCode
+        .getCommentsBefore(node)
+        .reverse()
+        .find(comment => comment.type === AST_TOKEN_TYPES.Block);
+    }
+
     function addOverload(
       signature: OverloadNode,
       key?: string,
@@ -558,12 +589,12 @@ export default createRule<Options, MessageIds>({
 
       // collect overloads
       MethodDefinition(node): void {
-        if (!node.value.body) {
+        if (!node.value.body && !isGetterOrSetter(node)) {
           addOverload(node);
         }
       },
       TSAbstractMethodDefinition(node): void {
-        if (!node.value.body) {
+        if (!node.value.body && !isGetterOrSetter(node)) {
           addOverload(node);
         }
       },
@@ -573,7 +604,11 @@ export default createRule<Options, MessageIds>({
         const exportingNode = getExportingNode(node);
         addOverload(node, node.id?.name ?? exportingNode?.type, exportingNode);
       },
-      TSMethodSignature: addOverload,
+      TSMethodSignature(node): void {
+        if (!isGetterOrSetter(node)) {
+          addOverload(node);
+        }
+      },
 
       // validate scopes
       'ClassDeclaration:exit': checkScope,
@@ -586,7 +621,7 @@ export default createRule<Options, MessageIds>({
 });
 
 function getExportingNode(
-  node: TSESTree.TSDeclareFunction,
+  node: SignatureDefinition,
 ):
   | TSESTree.ExportDefaultDeclaration
   | TSESTree.ExportNamedDeclaration
@@ -616,7 +651,15 @@ function getOverloadInfo(node: OverloadNode): string {
     default: {
       const { key } = node as MethodDefinition;
 
-      return isIdentifier(key) ? key.name : (key as TSESTree.Literal).raw;
+      if (isPrivateIdentifier(key)) {
+        return `private_identifier_${key.name}`;
+      }
+
+      if (isIdentifier(key)) {
+        return `identifier_${key.name}`;
+      }
+
+      return (key as TSESTree.Literal).raw;
     }
   }
 }
@@ -633,4 +676,19 @@ function getStaticParameterName(param: TSESTree.Node): string | undefined {
 }
 function isIdentifier(node: TSESTree.Node): node is TSESTree.Identifier {
   return node.type === AST_NODE_TYPES.Identifier;
+}
+
+function isPrivateIdentifier(
+  node: TSESTree.Node,
+): node is TSESTree.PrivateIdentifier {
+  return node.type === AST_NODE_TYPES.PrivateIdentifier;
+}
+
+function isGetterOrSetter(
+  node:
+    | TSESTree.MethodDefinition
+    | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.TSMethodSignature,
+): boolean {
+  return node.kind === 'get' || node.kind === 'set';
 }

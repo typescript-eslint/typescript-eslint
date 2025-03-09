@@ -8,7 +8,7 @@ import { ClassNameDefinition, ParameterDefinition } from '../definition';
 import { TypeVisitor } from './TypeVisitor';
 import { Visitor } from './Visitor';
 
-class ClassVisitor extends Visitor {
+export class ClassVisitor extends Visitor {
   readonly #classNode: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
   readonly #referencer: Referencer;
 
@@ -29,7 +29,7 @@ class ClassVisitor extends Visitor {
     classVisitor.visitClass(node);
   }
 
-  visit(node: TSESTree.Node | null | undefined): void {
+  override visit(node: TSESTree.Node | null | undefined): void {
     // make sure we only handle the nodes we are designed to handle
     if (node && node.type in this) {
       super.visit(node);
@@ -373,5 +373,3 @@ function getLiteralMethodKeyName(
   }
   return null;
 }
-
-export { ClassVisitor };

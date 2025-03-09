@@ -1,9 +1,10 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "8.19.1",
+  "version": "8.26.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"
@@ -42,18 +43,18 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-lib": "npx nx generate-lib repo",
     "lint": "npx nx lint",
-    "test": "npx nx test --code-coverage",
-    "typecheck": "npx nx typecheck"
+    "test": "jest",
+    "check-types": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "8.19.1",
-    "@typescript-eslint/visitor-keys": "8.19.1"
+    "@typescript-eslint/types": "8.26.0",
+    "@typescript-eslint/visitor-keys": "8.26.0"
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
-    "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "8.19.1",
+    "@typescript-eslint/typescript-estree": "8.26.0",
     "glob": "*",
+    "jest": "29.7.0",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
     "prettier": "^3.2.5",

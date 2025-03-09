@@ -15,8 +15,8 @@ import {
   getParameterPropertyHeadLoc,
 } from '../util/getMemberHeadLoc';
 
-type MessageIds = 'preferReadonly';
-type Options = [
+export type MessageIds = 'preferReadonly';
+export type Options = [
   {
     onlyInlineLambdas?: boolean;
   },
@@ -173,6 +173,38 @@ export default createRule<Options, MessageIds>({
       };
     }
 
+    function getTypeAnnotationForViolatingNode(
+      node: TSESTree.Node,
+      type: ts.Type,
+      initializerType: ts.Type,
+    ) {
+      const annotation = checker.typeToString(type);
+
+      // verify the about-to-be-added type annotation is in-scope
+      if (tsutils.isTypeFlagSet(initializerType, ts.TypeFlags.EnumLiteral)) {
+        const scope = context.sourceCode.getScope(node);
+        const variable = ASTUtils.findVariable(scope, annotation);
+
+        if (variable == null) {
+          return null;
+        }
+
+        const definition = variable.defs.find(def => def.isTypeDefinition);
+
+        if (definition == null) {
+          return null;
+        }
+
+        const definitionType = services.getTypeAtLocation(definition.node);
+
+        if (definitionType !== type) {
+          return null;
+        }
+      }
+
+      return annotation;
+    }
+
     return {
       [`${functionScopeBoundaries}:exit`](
         node:
@@ -229,13 +261,62 @@ export default createRule<Options, MessageIds>({
             }
           })();
 
+          const typeAnnotation = (() => {
+            if (esNode.type !== AST_NODE_TYPES.PropertyDefinition) {
+              return null;
+            }
+
+            if (esNode.typeAnnotation || !esNode.value) {
+              return null;
+            }
+
+            if (nameNode.type !== AST_NODE_TYPES.Identifier) {
+              return null;
+            }
+
+            const hasConstructorModifications =
+              finalizedClassScope.memberHasConstructorModifications(
+                nameNode.name,
+              );
+
+            if (!hasConstructorModifications) {
+              return null;
+            }
+
+            const violatingType = services.getTypeAtLocation(esNode);
+            const initializerType = services.getTypeAtLocation(esNode.value);
+
+            // if the RHS is a literal, its type would be narrowed, while the
+            // type of the initializer (which isn't `readonly`) would be the
+            // widened type
+            if (initializerType === violatingType) {
+              return null;
+            }
+
+            if (!tsutils.isLiteralType(initializerType)) {
+              return null;
+            }
+
+            return getTypeAnnotationForViolatingNode(
+              esNode,
+              violatingType,
+              initializerType,
+            );
+          })();
+
           context.report({
             ...reportNodeOrLoc,
             messageId: 'preferReadonly',
             data: {
               name: context.sourceCode.getText(nameNode),
             },
-            fix: fixer => fixer.insertTextBefore(nameNode, 'readonly '),
+            *fix(fixer) {
+              yield fixer.insertTextBefore(nameNode, 'readonly ');
+
+              if (typeAnnotation) {
+                yield fixer.insertTextAfter(nameNode, `: ${typeAnnotation}`);
+              }
+            },
           });
         }
       },
@@ -288,6 +369,8 @@ class ClassScope {
   private readonly classType: ts.Type;
   private constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
   private readonly memberVariableModifications = new Set<string>();
+  private readonly memberVariableWithConstructorModifications =
+    new Set<string>();
   private readonly privateModifiableMembers = new Map<
     string,
     ParameterOrPropertyDeclaration
@@ -358,6 +441,7 @@ class ClassScope {
       relationOfModifierTypeToClass === TypeToClassRelation.Instance &&
       this.constructorScopeDepth === DIRECTLY_INSIDE_CONSTRUCTOR
     ) {
+      this.memberVariableWithConstructorModifications.add(node.name.text);
       return;
     }
 
@@ -464,5 +548,9 @@ class ClassScope {
     }
 
     return TypeToClassRelation.Instance;
+  }
+
+  public memberHasConstructorModifications(name: string) {
+    return this.memberVariableWithConstructorModifications.has(name);
   }
 }

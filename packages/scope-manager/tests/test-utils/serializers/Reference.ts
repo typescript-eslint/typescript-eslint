@@ -1,7 +1,7 @@
 import { Reference } from '../../../src/referencer/Reference';
 import { createSerializer } from './baseSerializer';
 
-const serializer = createSerializer(Reference, [
+export const serializer = createSerializer(Reference, [
   'identifier',
   'init',
   'isRead',
@@ -11,5 +11,3 @@ const serializer = createSerializer(Reference, [
   'resolved',
   'writeExpr',
 ]);
-
-export { serializer };

@@ -1,9 +1,10 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.19.1",
+  "version": "8.26.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "docs",
     "eslint-recommended-raw.d.ts",
     "index.d.ts",
@@ -55,28 +56,28 @@
     "generate:breaking-changes": "tsx tools/generate-breaking-changes.mts",
     "generate:configs": "npx nx generate-configs repo",
     "lint": "npx nx lint",
-    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --coverage --logHeapUsage",
+    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --logHeapUsage",
     "test-single": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --no-coverage",
-    "typecheck": "tsc --noEmit"
+    "check-types": "npx nx typecheck"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",
-    "@typescript-eslint/scope-manager": "8.19.1",
-    "@typescript-eslint/type-utils": "8.19.1",
-    "@typescript-eslint/utils": "8.19.1",
-    "@typescript-eslint/visitor-keys": "8.19.1",
+    "@typescript-eslint/scope-manager": "8.26.0",
+    "@typescript-eslint/type-utils": "8.26.0",
+    "@typescript-eslint/utils": "8.26.0",
+    "@typescript-eslint/visitor-keys": "8.26.0",
     "graphemer": "^1.4.0",
     "ignore": "^5.3.1",
     "natural-compare": "^1.4.0",
-    "ts-api-utils": "^2.0.0"
+    "ts-api-utils": "^2.0.1"
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
     "@types/marked": "^5.0.2",
     "@types/mdast": "^4.0.3",
     "@types/natural-compare": "*",
-    "@typescript-eslint/rule-schema-to-typescript-types": "8.19.1",
-    "@typescript-eslint/rule-tester": "8.19.1",
+    "@typescript-eslint/rule-schema-to-typescript-types": "8.26.0",
+    "@typescript-eslint/rule-tester": "8.26.0",
     "ajv": "^6.12.6",
     "cross-env": "^7.0.3",
     "cross-fetch": "*",
@@ -99,7 +100,7 @@
   "peerDependencies": {
     "@typescript-eslint/parser": "^8.0.0 || ^8.0.0-alpha.0",
     "eslint": "^8.57.0 || ^9.0.0",
-    "typescript": ">=4.8.4 <5.8.0"
+    "typescript": ">=4.8.4 <5.9.0"
   },
   "funding": {
     "type": "opencollective",

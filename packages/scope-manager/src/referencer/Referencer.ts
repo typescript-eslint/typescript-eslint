@@ -4,6 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type { GlobalScope, Scope } from '../scope';
 import type { ScopeManager } from '../ScopeManager';
+import type { LibDefinition } from '../variable';
 import type { ReferenceImplicitGlobal } from './Reference';
 import type { VisitorOptions } from './Visitor';
 
@@ -27,14 +28,14 @@ import { ReferenceFlag } from './Reference';
 import { TypeVisitor } from './TypeVisitor';
 import { Visitor } from './Visitor';
 
-interface ReferencerOptions extends VisitorOptions {
+export interface ReferencerOptions extends VisitorOptions {
   jsxFragmentName: string | null;
   jsxPragma: string | null;
   lib: Lib[];
 }
 
 // Referencing variables and creating bindings.
-class Referencer extends Visitor {
+export class Referencer extends Visitor {
   #hasReferencedJsxFactory = false;
   #hasReferencedJsxFragmentFactory = false;
   #jsxFragmentName: string | null;
@@ -51,13 +52,25 @@ class Referencer extends Visitor {
   }
 
   private populateGlobalsFromLib(globalScope: GlobalScope): void {
+    const flattenedLibs = new Set<LibDefinition>();
     for (const lib of this.#lib) {
-      const variables = TSLibraries[lib];
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      /* istanbul ignore if */ if (!variables) {
+      const definition = TSLibraries.get(lib);
+      if (!definition) {
         throw new Error(`Invalid value for lib provided: ${lib}`);
       }
-      for (const [name, variable] of Object.entries(variables)) {
+      flattenedLibs.add(definition);
+    }
+
+    // Flatten and deduplicate the set of included libs
+    for (const lib of flattenedLibs) {
+      // By adding the dependencies to the set as we iterate it,
+      // they get iterated only if they are new
+      for (const referencedLib of lib.libs) {
+        flattenedLibs.add(referencedLib);
+      }
+
+      // This loop is guaranteed to see each included lib exactly once
+      for (const [name, variable] of lib.variables) {
         globalScope.defineImplicitVariable(name, variable);
       }
     }
@@ -289,6 +302,26 @@ class Referencer extends Visitor {
     }
   }
 
+  protected visitJSXElement(
+    node: TSESTree.JSXClosingElement | TSESTree.JSXOpeningElement,
+  ): void {
+    if (node.name.type === AST_NODE_TYPES.JSXIdentifier) {
+      if (
+        node.name.name[0].toUpperCase() === node.name.name[0] ||
+        node.name.name === 'this'
+      ) {
+        // lower cased component names are always treated as "intrinsic" names, and are converted to a string,
+        // not a variable by JSX transforms:
+        // <div /> => React.createElement("div", null)
+
+        // the only case we want to visit a lower-cased component has its name as "this",
+        this.visit(node.name);
+      }
+    } else {
+      this.visit(node.name);
+    }
+  }
+
   protected visitProperty(node: TSESTree.Property): void {
     if (node.computed) {
       this.visit(node.key);
@@ -497,8 +530,8 @@ class Referencer extends Visitor {
     this.visit(node.value);
   }
 
-  protected JSXClosingElement(): void {
-    // should not be counted as a reference
+  protected JSXClosingElement(node: TSESTree.JSXClosingElement): void {
+    this.visitJSXElement(node);
   }
 
   protected JSXFragment(node: TSESTree.JSXFragment): void {
@@ -522,21 +555,7 @@ class Referencer extends Visitor {
   }
   protected JSXOpeningElement(node: TSESTree.JSXOpeningElement): void {
     this.referenceJsxPragma();
-    if (node.name.type === AST_NODE_TYPES.JSXIdentifier) {
-      if (
-        node.name.name[0].toUpperCase() === node.name.name[0] ||
-        node.name.name === 'this'
-      ) {
-        // lower cased component names are always treated as "intrinsic" names, and are converted to a string,
-        // not a variable by JSX transforms:
-        // <div /> => React.createElement("div", null)
-
-        // the only case we want to visit a lower-cased component has its name as "this",
-        this.visit(node.name);
-      }
-    } else {
-      this.visit(node.name);
-    }
+    this.visitJSXElement(node);
     this.visitType(node.typeArguments);
     for (const attr of node.attributes) {
       this.visit(attr);
@@ -819,5 +838,3 @@ class Referencer extends Visitor {
     return left;
   }
 }
-
-export { Referencer, type ReferencerOptions };

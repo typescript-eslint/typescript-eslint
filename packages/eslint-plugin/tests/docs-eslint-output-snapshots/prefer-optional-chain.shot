@@ -83,11 +83,11 @@ thing && thing.toString();
 
 exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 5`] = `
 "Correct
-Options: { "checkAny": false }
+Options: { "checkAny": true }
 
 declare const thing: any;
 
-thing && thing.toString();
+thing?.toString();
 "
 `;
 
@@ -104,11 +104,11 @@ thing && thing.toString();
 
 exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 7`] = `
 "Correct
-Options: { "checkUnknown": false }
+Options: { "checkUnknown": true }
 
 declare const thing: unknown;
 
-thing && thing.toString();
+thing?.toString();
 "
 `;
 
@@ -125,11 +125,11 @@ thing && thing.toString();
 
 exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 9`] = `
 "Correct
-Options: { "checkString": false }
+Options: { "checkString": true }
 
 declare const thing: string;
 
-thing && thing.toString();
+thing?.toString();
 "
 `;
 
@@ -146,11 +146,11 @@ thing && thing.toString();
 
 exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 11`] = `
 "Correct
-Options: { "checkNumber": false }
+Options: { "checkNumber": true }
 
 declare const thing: number;
 
-thing && thing.toString();
+thing?.toString();
 "
 `;
 
@@ -167,11 +167,11 @@ thing && thing.toString();
 
 exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 13`] = `
 "Correct
-Options: { "checkBoolean": false }
+Options: { "checkBoolean": true }
 
 declare const thing: true;
 
-thing && thing.toString();
+thing?.toString();
 "
 `;
 
@@ -188,11 +188,11 @@ thing && thing.toString();
 
 exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 15`] = `
 "Correct
-Options: { "checkBigInt": false }
+Options: { "checkBigInt": true }
 
 declare const thing: bigint;
 
-thing && thing.toString();
+thing?.toString();
 "
 `;
 

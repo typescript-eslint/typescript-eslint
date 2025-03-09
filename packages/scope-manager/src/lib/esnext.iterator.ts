@@ -3,13 +3,15 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
 
 import { TYPE, TYPE_VALUE } from './base-config';
 import { es2015_iterable } from './es2015.iterable';
 
-export const esnext_iterator = {
-  ...es2015_iterable,
-  Iterator: TYPE_VALUE,
-  IteratorObjectConstructor: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const esnext_iterator: LibDefinition = {
+  libs: [es2015_iterable],
+  variables: [
+    ['Iterator', TYPE_VALUE],
+    ['IteratorObjectConstructor', TYPE],
+  ],
+};
