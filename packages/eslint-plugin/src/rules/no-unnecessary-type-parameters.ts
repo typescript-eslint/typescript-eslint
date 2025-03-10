@@ -114,7 +114,8 @@ export default createRule({
                     const hasMatchingAncestorType = [
                       AST_NODE_TYPES.TSArrayType,
                       AST_NODE_TYPES.TSIndexedAccessType,
-                    ].some(type => referenceNode.parent.parent?.type === type);
+                      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    ].some(type => referenceNode.parent.parent!.type === type);
                     if (isCompositeType && hasMatchingAncestorType) {
                       yield fixer.replaceText(
                         referenceNode,
