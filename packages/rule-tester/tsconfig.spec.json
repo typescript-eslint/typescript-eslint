@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/packages/rule-tester",
     "module": "NodeNext",
+    "resolveJsonModule": true,
     "types": ["node", "vitest/globals", "vitest/importMeta"]
   },
   "include": [
