@@ -11,6 +11,9 @@ export default {
     types: 'off',
     unresolved: 'off',
   },
+  vitest: {
+    config: ['vitest.config.mts', 'packages/*/vitest.config.mts'],
+  },
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
@@ -73,7 +76,6 @@ export default {
     },
     'packages/utils': {
       ignore: [
-        'tests/**/*.type-test.ts',
         'typings/eslint.d.ts',
         'typings/eslint-community-eslint-utils.d.ts',
       ],
