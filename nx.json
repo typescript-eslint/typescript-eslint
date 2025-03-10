@@ -58,6 +58,7 @@
       "cache": true
     },
     "@nx/jest:jest": {
+      "dependsOn": ["^build"],
       "inputs": [
         "default",
         "^production",
