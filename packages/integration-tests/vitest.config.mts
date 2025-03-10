@@ -12,7 +12,7 @@ const vitestConfig = mergeConfig(
     test: {
       dir: path.join(import.meta.dirname, 'tests'),
       globalSetup: ['./tools/pack-packages.ts'],
-      name: packageJson.name.split('/').pop(),
+      name: packageJson.name.replace('@typescript-eslint/', ''),
 
       poolOptions: {
         forks: {
