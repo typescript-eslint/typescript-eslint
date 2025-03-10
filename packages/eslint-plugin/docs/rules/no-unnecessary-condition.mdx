@@ -244,7 +244,7 @@ if (someValue != null) {
 }
 ```
 
-To get pessimistic, but correct, types for these cases, you can uses TypeScript's [`noUncheckedIndexedAccess` compiler option](https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess), though this is often unwieldy in real-world usage.
+To get pessimistic, but correct, types for these cases, you can use TypeScript's [`noUncheckedIndexedAccess` compiler option](https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess), though this is often unwieldy in real-world usage.
 Another workaround is to use `array.at(0)` (which is always possibly-undefined) to indicate array access that may be out-of-bounds.
 Otherwise, a disable comment will often make sense for these kinds of cases.
 
