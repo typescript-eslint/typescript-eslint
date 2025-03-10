@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-unsafe-type-assertion.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-unsafe-type-assertion.mdx > code examples ESLint output`]
+Incorrect
 
 function f() {
   return Math.random() < 0.5 ? 42 : 'oops';
@@ -14,11 +14,9 @@ const items = [1, '2', 3, '4'];
 
 const number = items[0] as number;
                ~~~~~~~~~~~~~~~~~~ Unsafe type assertion: type 'number' is more narrow than the original type.
-"
-`;
 
-exports[`Validating rule docs no-unsafe-type-assertion.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-unsafe-type-assertion.mdx > code examples ESLint output`]
+Correct
 
 function f() {
   return Math.random() < 0.5 ? 42 : 'oops';
@@ -29,5 +27,3 @@ const z = f() as number | string | boolean;
 const items = [1, '2', 3, '4'];
 
 const number = items[0] as number | string | undefined;
-"
-`;

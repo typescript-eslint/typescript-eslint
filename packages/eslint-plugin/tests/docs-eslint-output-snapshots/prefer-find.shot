@@ -1,19 +1,15 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs prefer-find.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > prefer-find.mdx > code examples ESLint output`]
+Incorrect
 
 [1, 2, 3].filter(x => x > 1)[0];
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer .find(...) instead of .filter(...)[0].
 
 [1, 2, 3].filter(x => x > 1).at(0);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer .find(...) instead of .filter(...)[0].
-"
-`;
 
-exports[`Validating rule docs prefer-find.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > prefer-find.mdx > code examples ESLint output`]
+Correct
 
 [1, 2, 3].find(x => x > 1);
-"
-`;

@@ -1,17 +1,15 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-unnecessary-boolean-literal-compare.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-unnecessary-boolean-literal-compare.mdx > code examples ESLint output`]
+Incorrect
 
 declare const someCondition: boolean;
 if (someCondition === true) {
     ~~~~~~~~~~~~~~~~~~~~~~ This expression unnecessarily compares a boolean value to a boolean instead of using it directly.
 }
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-boolean-literal-compare.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-unnecessary-boolean-literal-compare.mdx > code examples ESLint output`]
+Correct
 
 declare const someCondition: boolean;
 if (someCondition) {
@@ -24,11 +22,9 @@ if (someObjectBoolean === true) {
 declare const someStringBoolean: boolean | string;
 if (someStringBoolean === true) {
 }
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-boolean-literal-compare.mdx code examples ESLint output 3`] = `
-"Incorrect
+exports[`Validating rule docs > no-unnecessary-boolean-literal-compare.mdx > code examples ESLint output`]
+Incorrect
 Options: { "allowComparingNullableBooleansToTrue": false }
 
 declare const someUndefinedCondition: boolean | undefined;
@@ -40,11 +36,9 @@ declare const someNullCondition: boolean | null;
 if (someNullCondition !== true) {
     ~~~~~~~~~~~~~~~~~~~~~~~~~~ This expression unnecessarily compares a nullable boolean value to true instead of negating it.
 }
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-boolean-literal-compare.mdx code examples ESLint output 4`] = `
-"Correct
+exports[`Validating rule docs > no-unnecessary-boolean-literal-compare.mdx > code examples ESLint output`]
+Correct
 Options: { "allowComparingNullableBooleansToTrue": false }
 
 declare const someUndefinedCondition: boolean | undefined;
@@ -54,11 +48,9 @@ if (someUndefinedCondition) {
 declare const someNullCondition: boolean | null;
 if (!someNullCondition) {
 }
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-boolean-literal-compare.mdx code examples ESLint output 5`] = `
-"Incorrect
+exports[`Validating rule docs > no-unnecessary-boolean-literal-compare.mdx > code examples ESLint output`]
+Incorrect
 Options: { "allowComparingNullableBooleansToFalse": false }
 
 declare const someUndefinedCondition: boolean | undefined;
@@ -70,11 +62,9 @@ declare const someNullCondition: boolean | null;
 if (someNullCondition !== false) {
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~ This expression unnecessarily compares a nullable boolean value to false instead of using the ?? operator to provide a default.
 }
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-boolean-literal-compare.mdx code examples ESLint output 6`] = `
-"Correct
+exports[`Validating rule docs > no-unnecessary-boolean-literal-compare.mdx > code examples ESLint output`]
+Correct
 Options: { "allowComparingNullableBooleansToFalse": false }
 
 declare const someUndefinedCondition: boolean | undefined;
@@ -84,5 +74,3 @@ if (!(someUndefinedCondition ?? true)) {
 declare const someNullCondition: boolean | null;
 if (someNullCondition ?? true) {
 }
-"
-`;
