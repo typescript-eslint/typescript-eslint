@@ -8,7 +8,7 @@ const vitestConfig = mergeConfig(
 
   defineConfig({
     test: {
-      name: packageJson.name.split('/').pop(),
+      name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
       passWithNoTests: true,
     },
