@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/packages/scope-manager",
     "module": "NodeNext",
+    "resolveJsonModule": true,
     "types": ["node", "vitest/globals", "vitest/importMeta"]
   },
   "include": [
