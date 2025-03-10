@@ -10,7 +10,7 @@ const vitestConfig = mergeConfig(
   defineProject({
     test: {
       dir: path.join(import.meta.dirname, 'tests'),
-      name: packageJson.name.split('/').pop(),
+      name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
       setupFiles: ['./tests/util/setupVitest.mts'],
 
