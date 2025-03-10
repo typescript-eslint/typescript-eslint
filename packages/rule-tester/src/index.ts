@@ -6,6 +6,7 @@ export type {
   RunTests,
   SuggestionOutput,
   TestCaseError,
+  TestLanguageOptions,
   ValidTestCase,
 } from './types';
 export type {
