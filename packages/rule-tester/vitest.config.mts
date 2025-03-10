@@ -60,7 +60,7 @@ const vitestConfig = mergeConfig(
     test: {
       dir: path.join(import.meta.dirname, 'tests'),
       exclude: [...defaultExclude, 'eslint-base/eslint-base.test.js'],
-      name: packageJson.name.split('/').pop(),
+      name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
     },
   }),
