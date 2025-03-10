@@ -7,8 +7,6 @@
     "types": ["node", "vitest/globals", "vitest/importMeta"]
   },
   "include": [
-    "../../vitest.config.base.mts",
-    "../../package.json",
     "vitest.config.mts",
     "package.json",
     "src/**/*.test.ts",
@@ -20,6 +18,9 @@
   "references": [
     {
       "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "../../tsconfig.repo-config-files.json"
     }
   ]
 }
