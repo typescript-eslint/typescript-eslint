@@ -21,7 +21,7 @@
     "noImplicitReturns": true,
     "pretty": true,
     "removeComments": false,
-    "resolveJsonModule": true,
+    "resolveJsonModule": false,
     "rootDir": "./",
     "skipDefaultLibCheck": false,
     "skipLibCheck": true,
