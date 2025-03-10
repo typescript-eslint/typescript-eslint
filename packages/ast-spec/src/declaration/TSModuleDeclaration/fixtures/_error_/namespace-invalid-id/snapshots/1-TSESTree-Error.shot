@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSModuleDeclaration _error_ namespace-invalid-id TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > TSModuleDeclaration > _error_ > namespace-invalid-id > TSESTree - Error`]
+TSError
 > 1 | namespace 1 {}
     |           ^ Namespace name cannot be '1'.
-  2 |"
-`;
+  2 |

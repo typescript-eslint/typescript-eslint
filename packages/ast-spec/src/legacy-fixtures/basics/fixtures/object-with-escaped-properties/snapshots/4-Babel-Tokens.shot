@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties Babel - Tokens 1`] = `
 [
   Punctuator {
     type: "Punctuator",
@@ -363,4 +360,3 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties Babe
     },
   },
 ]
-`;

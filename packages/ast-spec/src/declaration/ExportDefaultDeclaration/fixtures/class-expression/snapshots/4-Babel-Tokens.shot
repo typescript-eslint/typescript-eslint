@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration ExportDefaultDeclaration class-expression Babel - Tokens 1`] = `
 [
   Keyword {
     type: "Keyword",
@@ -93,4 +90,3 @@ exports[`AST Fixtures declaration ExportDefaultDeclaration class-expression Babe
     },
   },
 ]
-`;
