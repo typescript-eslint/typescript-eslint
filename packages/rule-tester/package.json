@@ -38,8 +38,7 @@
   "scripts": {
     "build": "tsc -b tsconfig.build.json && yarn run postbuild",
     "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
-    "clean": "tsc -b tsconfig.build.json --clean & yarn run postclean",
-    "postclean": "rimraf dist/ _ts4.2/ coverage/",
+    "clean": "rimraf dist/ _ts4.2/ coverage/",
     "format": "yarn run -T format",
     "lint": "yarn run -T nx lint",
     "pretest-eslint-base": "tsc -b tsconfig.build.json",

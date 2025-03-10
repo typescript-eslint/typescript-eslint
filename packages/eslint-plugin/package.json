@@ -50,8 +50,7 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "clean": "tsc -b tsconfig.build.json --clean & yarn run postclean",
-    "postclean": "rimraf dist/ coverage/",
+    "clean": "rimraf dist/ coverage/",
     "format": "yarn run -T format",
     "generate:breaking-changes": "tsx tools/generate-breaking-changes.mts",
     "generate:configs": "yarn run -T generate-configs",
