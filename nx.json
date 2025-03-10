@@ -17,6 +17,7 @@
     },
     {
       "plugin": "@nx/vite/plugin",
+      "include": ["packages/*"],
       "options": {
         "buildTargetName": "vite:build",
         "testTargetName": "test",
