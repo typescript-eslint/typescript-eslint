@@ -121,7 +121,32 @@ export default createRule<Options, MessageIds>({
   name: 'sort-type-constituents',
   meta: {
     type: 'suggestion',
-    deprecated: true,
+    deprecated: {
+      deprecatedSince: '7.13.0',
+      replacedBy: [
+        {
+          plugin: {
+            name: 'eslint-plugin-perfectionist',
+            url: 'https://perfectionist.dev',
+          },
+          rule: {
+            name: 'perfectionist/sort-intersection-types',
+            url: 'https://perfectionist.dev/rules/sort-intersection-types',
+          },
+        },
+        {
+          plugin: {
+            name: 'eslint-plugin-perfectionist',
+            url: 'https://perfectionist.dev',
+          },
+          rule: {
+            name: 'perfectionist/sort-union-types',
+            url: 'https://perfectionist.dev/rules/sort-union-types',
+          },
+        },
+      ],
+      url: 'https://github.com/typescript-eslint/typescript-eslint/pull/9253',
+    },
     docs: {
       description:
         'Enforce constituents of a type union/intersection to be sorted alphabetically',
