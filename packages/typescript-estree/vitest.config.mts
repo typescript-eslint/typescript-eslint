@@ -15,7 +15,7 @@ const vitestConfig = mergeConfig(
         ? [...defaultExclude, 'parse.project-true.test.ts']
         : [...defaultExclude],
 
-      name: packageJson.name.split('/').pop(),
+      name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
       unstubEnvs: true,
       unstubGlobals: true,
