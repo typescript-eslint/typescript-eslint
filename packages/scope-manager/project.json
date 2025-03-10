@@ -1,9 +1,9 @@
 {
   "name": "scope-manager",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "packages/scope-manager",
   "sourceRoot": "packages/scope-manager/src",
   "projectType": "library",
-  "tags": [],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
@@ -21,22 +21,21 @@
     "clean": {
       "executor": "nx:run-commands",
       "options": {
-        "parallel": false,
-        "cwd": "packages/scope-manager",
+        "cwd": "{projectRoot}",
+        "parallel": true,
         "commands": [
-          "tsc -b tsconfig.build.json --clean",
-          "rimraf dist",
-          "rimraf _ts4.3",
-          "rimraf coverage"
+          { "command": "tsc -b tsconfig.build.json --clean" },
+          { "command": "rimraf dist/ _ts4.3/ coverage/" }
         ]
       }
     },
     "clean-fixtures": {
       "executor": "nx:run-commands",
       "options": {
-        "parallel": false,
-        "cwd": "packages/scope-manager",
-        "commands": ["rimraf -g \"./src/**/fixtures/**/snapshots\""]
+        "cwd": "{projectRoot}",
+        "commands": [
+          { "command": "rimraf -g \"./src/**/fixtures/**/snapshots\"" }
+        ]
       }
     },
     "lint": {
@@ -44,10 +43,7 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nx/jest:jest",
-      "options": {
-        "jestConfig": "packages/scope-manager/jest.config.js"
-      }
+      "executor": "@nx/vite:test"
     }
   }
 }
