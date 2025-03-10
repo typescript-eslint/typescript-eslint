@@ -160,6 +160,17 @@ function foo(): Set<number> {
       }
     `,
     'const foo: (() => void) | undefined = () => 1;',
+    `
+      class Foo {
+        public foo(): this {
+          return this;
+        }
+
+        protected then(resolve: () => void): void {
+          resolve();
+        }
+      }
+    `,
   ],
   invalid: [
     {
