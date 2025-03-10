@@ -45,6 +45,16 @@ class A {
     `
 const a = function (a: Foo = new Foo<string>()) {};
     `,
+    'let a: Uint8Array<ArrayBufferLike> = new Uint8Array();',
+    'let a: Uint8ClampedArray<ArrayBufferLike> = new Uint8ClampedArray();',
+    'let a: Int16Array<ArrayBufferLike> = new Int16Array();',
+    'let a: Uint16Array<ArrayBufferLike> = new Uint16Array();',
+    'let a: Int32Array<ArrayBufferLike> = new Int32Array();',
+    'let a: Uint32Array<ArrayBufferLike> = new Uint32Array();',
+    'let a: BigInt64Array<ArrayBufferLike> = new BigInt64Array();',
+    'let a: BigUint64Array<ArrayBufferLike> = new BigUint64Array();',
+    'let a: Float32Array<ArrayBufferLike> = new Float32Array();',
+    'let a: Float64Array<ArrayBufferLike> = new Float64Array();',
     // type-annotation
     {
       code: 'const a = new Foo();',
@@ -385,6 +395,31 @@ const a = function (a = new Foo<string>()) {};
       `,
     },
     {
+      code: `
+class Uint8Array<T> {
+  // ...
+}
+
+let a: Uint8Array<ArrayBufferLike> = new Uint8Array();
+
+export {};
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+class Uint8Array<T> {
+  // ...
+}
+
+let a = new Uint8Array<ArrayBufferLike>();
+
+export {};
+      `,
+    },
+    {
       code: 'const a = new Foo<string>();',
       errors: [
         {
@@ -580,6 +615,32 @@ const a = function (a = new Foo<string>()) {};
       options: ['type-annotation'],
       output: `
 const a = function (a: Foo<string> = new Foo()) {};
+      `,
+    },
+    {
+      code: `
+class Uint8Array<T> {
+  // ...
+}
+
+let a = new Uint8Array<ArrayBufferLike>();
+
+export {};
+      `,
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      options: ['type-annotation'],
+      output: `
+class Uint8Array<T> {
+  // ...
+}
+
+let a: Uint8Array<ArrayBufferLike> = new Uint8Array();
+
+export {};
       `,
     },
   ],
