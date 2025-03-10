@@ -25,8 +25,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "clean": "tsc -b tsconfig.build.json --clean & yarn run postclean",
-    "postclean": "rimraf dist/ coverage/",
+    "clean": "rimraf dist/ coverage/",
     "format": "yarn run -T format",
     "lint": "yarn run -T nx lint",
     "check-types": "yarn run --top-level nx typecheck"

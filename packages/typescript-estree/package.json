@@ -47,8 +47,7 @@
   "scripts": {
     "build": "tsc -b tsconfig.build.json && yarn run postbuild",
     "postbuild": "downlevel-dts dist _ts4.3/dist --to=4.3",
-    "clean": "tsc -b tsconfig.build.json --clean & yarn run postclean",
-    "postclean": "rimraf dist/ _ts4.3/ coverage/",
+    "clean": "rimraf dist/ _ts4.3/ coverage/",
     "format": "yarn run -T format",
     "lint": "yarn run -T nx lint",
     "test": "jest --runInBand --verbose",
