@@ -22,7 +22,6 @@
     "pretty": true,
     "removeComments": false,
     "resolveJsonModule": false,
-    "rootDir": "./",
     "skipDefaultLibCheck": false,
     "skipLibCheck": true,
     "sourceMap": false,
