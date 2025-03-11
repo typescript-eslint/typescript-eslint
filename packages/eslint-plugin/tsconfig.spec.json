@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/eslint-plugin/jest",
+    "outDir": "../../dist/out-tsc/packages/eslint-plugin/vitest",
     "module": "NodeNext",
     "resolveJsonModule": true,
     "types": ["node", "vitest/globals", "vitest/importMeta"]
