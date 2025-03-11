@@ -1,0 +1,198 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures parameter AssignmentPattern decorated-assignment-pattern-parameter TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [21, 23],
+        loc: {
+          start: { column: 21, line: 1 },
+          end: { column: 23, line: 1 },
+        },
+      },
+      declare: false,
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "decorator",
+        optional: false,
+
+        range: [9, 18],
+        loc: {
+          start: { column: 9, line: 1 },
+          end: { column: 18, line: 1 },
+        },
+      },
+      params: [],
+
+      range: [0, 23],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 23, line: 1 },
+      },
+    },
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            decorators: [],
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "foo",
+              optional: false,
+
+              range: [37, 40],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
+              },
+            },
+            kind: "method",
+            optional: false,
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [],
+
+                range: [59, 61],
+                loc: {
+                  start: { column: 24, line: 4 },
+                  end: { column: 26, line: 4 },
+                },
+              },
+              declare: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                AssignmentPattern {
+                  type: "AssignmentPattern",
+                  decorators: [
+                    Decorator {
+                      type: "Decorator",
+                      expression: Identifier {
+                        type: "Identifier",
+                        decorators: [],
+                        name: "decorator",
+                        optional: false,
+
+                        range: [42, 51],
+                        loc: {
+                          start: { column: 7, line: 4 },
+                          end: { column: 16, line: 4 },
+                        },
+                      },
+
+                      range: [41, 51],
+                      loc: {
+                        start: { column: 6, line: 4 },
+                        end: { column: 16, line: 4 },
+                      },
+                    },
+                  ],
+                  left: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "d",
+                    optional: false,
+
+                    range: [52, 53],
+                    loc: {
+                      start: { column: 17, line: 4 },
+                      end: { column: 18, line: 4 },
+                    },
+                  },
+                  optional: false,
+                  right: Literal {
+                    type: "Literal",
+                    raw: "1",
+                    value: 1,
+
+                    range: [56, 57],
+                    loc: {
+                      start: { column: 21, line: 4 },
+                      end: { column: 22, line: 4 },
+                    },
+                  },
+
+                  range: [41, 57],
+                  loc: {
+                    start: { column: 6, line: 4 },
+                    end: { column: 22, line: 4 },
+                  },
+                },
+              ],
+
+              range: [40, 61],
+              loc: {
+                start: { column: 5, line: 4 },
+                end: { column: 26, line: 4 },
+              },
+            },
+
+            range: [37, 61],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 26, line: 4 },
+            },
+          },
+        ],
+
+        range: [33, 63],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "A",
+        optional: false,
+
+        range: [31, 32],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+      implements: [],
+      superClass: null,
+
+      range: [25, 63],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 64],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;
