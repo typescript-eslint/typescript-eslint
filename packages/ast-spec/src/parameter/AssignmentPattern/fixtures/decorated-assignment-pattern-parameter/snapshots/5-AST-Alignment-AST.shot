@@ -138,11 +138,9 @@ exports[`AST Fixtures parameter AssignmentPattern decorated-assignment-pattern-p
                       },
                     },
 
--                   range: [41, 57],
-+                   range: [52, 57],
+                    range: [52, 57],
                     loc: {
--                     start: { column: 6, line: 4 },
-+                     start: { column: 17, line: 4 },
+                      start: { column: 17, line: 4 },
                       end: { column: 22, line: 4 },
                     },
                   },
