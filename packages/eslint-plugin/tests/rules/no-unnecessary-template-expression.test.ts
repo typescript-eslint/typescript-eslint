@@ -16,10 +16,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-const invalidCases: readonly InvalidTestCase<
-  'noUnnecessaryTemplateExpression',
-  []
->[] = [
+const invalidCases = [
   {
     code: '`${1}`;',
     errors: [
@@ -956,21 +953,17 @@ this code has trailing position template expression but it isn\\'t whitespace
     `,
     ],
   },
-];
+] as const satisfies readonly InvalidTestCase<
+  'noUnnecessaryTemplateExpression',
+  []
+>[];
 
 describe('fixer should not change runtime value', () => {
-  test.each(invalidCases.filter(testCase => testCase.output))(
-    '$code',
-    ({ code, output }) => {
-      // TODO (43081j): use a type guard or something so the type system knows
-      // this is already non-null
-      if (output) {
-        expect(eval(code)).toEqual(
-          eval(Array.isArray(output) ? output.at(-1)! : output),
-        );
-      }
-    },
-  );
+  test.for(invalidCases)('$code', ({ code, output }, { expect }) => {
+    expect(eval(code)).toEqual(
+      eval(Array.isArray(output) ? output.at(-1)! : output),
+    );
+  });
 });
 
 ruleTester.run('no-unnecessary-template-expression', rule, {

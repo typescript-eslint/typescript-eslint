@@ -1,5 +1,5 @@
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
-import fs from 'node:fs';
+import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import prettier from 'prettier';
 
@@ -7,11 +7,6 @@ import rules from '../src/rules/index';
 import { areOptionsValid } from './areOptionsValid';
 
 const snapshotFolder = path.resolve(__dirname, 'schema-snapshots');
-try {
-  fs.mkdirSync(snapshotFolder);
-} catch {
-  // ignore failure as it means it already exists probably
-}
 
 const PRETTIER_CONFIG_PATH = path.resolve(
   __dirname,
@@ -45,16 +40,21 @@ const SKIPPED_RULES_FOR_TYPE_GENERATION = new Set(['indent']);
 // Set this to a rule name to only run that rule
 const ONLY = '';
 
-describe('Rule schemas should be convertible to TS types for documentation purposes', () => {
-  // eslint-disable-next-line vitest/prefer-each
-  for (const [ruleName, ruleDef] of Object.entries(rules)) {
-    if (SKIPPED_RULES_FOR_TYPE_GENERATION.has(ruleName)) {
-      // eslint-disable-next-line vitest/no-disabled-tests
-      it.skip(ruleName, () => {});
-      continue;
-    }
+const ruleEntries = Object.entries(rules);
 
-    (ruleName === ONLY ? it.only : it)(ruleName, async () => {
+describe('Rule schemas should be convertible to TS types for documentation purposes', () => {
+  beforeAll(async () => {
+    await fs.mkdir(snapshotFolder, { recursive: true });
+  });
+
+  describe.for(ruleEntries)('%s', ([ruleName, ruleDef]) => {
+    // skip for documentation purposes
+    it.skipIf(SKIPPED_RULES_FOR_TYPE_GENERATION.has(ruleName))(
+      ruleName,
+      () => {},
+    );
+
+    it(ruleName, { only: ruleName === ONLY }, async ({ expect }) => {
       const schemaString = await prettier.format(
         JSON.stringify(
           ruleDef.meta.schema,
@@ -88,33 +88,35 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
         PRETTIER_CONFIG.tsType,
       );
 
-      await expect(
-        [
-          '',
-          '# SCHEMA:',
-          '',
-          schemaString,
-          '',
-          '# TYPES:',
-          '',
-          compilationResult,
-        ].join('\n'),
-      ).toMatchFileSnapshot(path.join(snapshotFolder, `${ruleName}.shot`));
+      const snapshotPath = path.join(snapshotFolder, `${ruleName}.shot`);
+
+      const snapshotContent = [
+        '',
+        '# SCHEMA:',
+        '',
+        schemaString,
+        '',
+        '# TYPES:',
+        '',
+        compilationResult,
+      ].join('\n');
+
+      await expect(snapshotContent).toMatchFileSnapshot(snapshotPath);
     });
-  }
+  });
 });
 
-test('There should be no old snapshots for rules that have been deleted', () => {
-  const files = fs.readdirSync(snapshotFolder);
+describe('There should be no old snapshots for rules that have been deleted', async () => {
+  const files = await fs.readdir(snapshotFolder, { encoding: 'utf-8' });
   const names = new Set(
-    Object.keys(rules)
-      .filter(k => !SKIPPED_RULES_FOR_TYPE_GENERATION.has(k))
-      .map(k => `${k}.shot`),
+    ruleEntries
+      .filter(([k]) => !SKIPPED_RULES_FOR_TYPE_GENERATION.has(k))
+      .map(([k]) => `${k}.shot`),
   );
 
-  for (const file of files) {
+  test.for(files)('%s', (file, { expect }) => {
     expect(names).toContain(file);
-  }
+  });
 });
 
 const VALID_SCHEMA_PROPS = new Set([
@@ -156,8 +158,8 @@ const VALID_SCHEMA_PROPS = new Set([
   'uniqueItems',
 ]);
 describe('Rules should only define valid keys on schemas', () => {
-  for (const [ruleName, ruleDef] of Object.entries(rules)) {
-    (ruleName === ONLY ? it.only : it)(ruleName, () => {
+  describe.for(ruleEntries)('%s', ([ruleName, ruleDef]) => {
+    it(ruleName, { only: ruleName === ONLY }, () => {
       JSON.stringify(ruleDef.meta.schema, (key, value: unknown) => {
         if (key === '') {
           // the root object will have key ""
@@ -176,7 +178,7 @@ describe('Rules should only define valid keys on schemas', () => {
         return value;
       });
     });
-  }
+  });
 });
 
 describe('Rule schemas should validate options correctly', () => {
@@ -190,22 +192,24 @@ describe('Rule schemas should validate options correctly', () => {
     semi: ['never'],
   };
 
-  const ruleEntries = Object.entries(rules);
+  test.for(ruleEntries)(
+    '%s must accept valid options',
+    ([ruleName, rule], { expect }) => {
+      expect(
+        areOptionsValid(
+          rule,
+          overrideValidOptions[ruleName] ?? rule.defaultOptions,
+        ),
+      ).toBe(true);
+    },
+  );
 
-  test.each(ruleEntries)('%s must accept valid options', (ruleName, rule) => {
-    if (
-      !areOptionsValid(
-        rule,
-        overrideValidOptions[ruleName] ?? rule.defaultOptions,
-      )
-    ) {
-      throw new Error(`Options failed validation against rule's schema`);
-    }
-  });
-
-  test.each(ruleEntries)('%s rejects arbitrary options', (_ruleName, rule) => {
-    if (areOptionsValid(rule, [{ 'arbitrary-schemas.test.ts': true }])) {
-      throw new Error(`Options succeeded validation for arbitrary options`);
-    }
-  });
+  test.for(ruleEntries)(
+    '%s rejects arbitrary options',
+    ([, rule], { expect }) => {
+      expect(
+        areOptionsValid(rule, [{ 'arbitrary-schemas.test.ts': true }]),
+      ).toBe(false);
+    },
+  );
 });

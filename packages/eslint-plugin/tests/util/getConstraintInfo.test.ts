@@ -1,6 +1,6 @@
 import type {
-  TSESTree,
   ParserServicesWithTypeInformation,
+  TSESTree,
 } from '@typescript-eslint/utils';
 
 import { parseForESLint } from '@typescript-eslint/parser';
@@ -12,7 +12,7 @@ import { getConstraintInfo } from '../../src/util/getConstraintInfo';
 function parseCodeForEslint(code: string): ReturnType<typeof parseForESLint> & {
   services: ParserServicesWithTypeInformation;
 } {
-  const fixturesDir = path.join(__dirname, '../fixtures/');
+  const fixturesDir = path.join(__dirname, '..', 'fixtures');
 
   // @ts-expect-error -- services will have type information.
   return parseForESLint(code, {

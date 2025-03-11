@@ -3,8 +3,10 @@ import type { RuleRecommendation } from '@typescript-eslint/utils/ts-eslint';
 import plugin from '../src/index';
 import rules from '../src/rules';
 
+const rulesEntriesList = Object.entries(rules);
+
 const RULE_NAME_PREFIX = '@typescript-eslint/';
-const EXTENSION_RULES = Object.entries(rules)
+const EXTENSION_RULES = rulesEntriesList
   .filter(([, rule]) => rule.meta.docs?.extendsBaseRule)
   .map(
     ([ruleName, rule]) =>
@@ -35,7 +37,7 @@ function filterAndMapRuleConfigs({
   recommendations,
   typeChecked,
 }: FilterAndMapRuleConfigsSettings = {}): [string, unknown][] {
-  let result = Object.entries(rules);
+  let result = rulesEntriesList;
 
   if (excludeDeprecated) {
     result = result.filter(([, rule]) => !rule.meta.deprecated);
@@ -86,17 +88,16 @@ function filterAndMapRuleConfigs({
 function itHasBaseRulesOverriden(
   unfilteredConfigRules: Record<string, string | unknown[]>,
 ): void {
-  it('has the base rules overriden by the appropriate extension rules', () => {
+  it('has the base rules overridden by the appropriate extension rules', () => {
     const ruleNames = new Set(Object.keys(unfilteredConfigRules));
-    EXTENSION_RULES.forEach(([ruleName, extRuleName]) => {
-      if (ruleNames.has(ruleName)) {
-        // this looks a little weird, but it provides the cleanest test output style
-        expect(unfilteredConfigRules).toMatchObject({
-          ...unfilteredConfigRules,
-          [extRuleName]: 'off',
-        });
-      }
-    });
+
+    const expectedOverrides = Object.fromEntries(
+      EXTENSION_RULES.filter(([ruleName]) => ruleNames.has(ruleName)).map(
+        ([, extRuleName]) => [extRuleName, 'off'] as const,
+      ),
+    );
+
+    expect(unfilteredConfigRules).toMatchObject(expectedOverrides);
   });
 }
 
@@ -126,9 +127,9 @@ describe('disable-type-checked.ts', () => {
   it('disables all type checked rules', () => {
     const configRules = filterRules(unfilteredConfigRules);
 
-    const ruleConfigs: [string, string][] = Object.entries(rules)
+    const ruleConfigs = rulesEntriesList
       .filter(([, rule]) => rule.meta.docs?.requiresTypeChecking)
-      .map(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'off']);
+      .map(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'off'] as const);
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(
       Object.fromEntries(configRules),
