@@ -15,7 +15,7 @@ const vitestConfig = mergeConfig(
 
       typecheck: {
         enabled: true,
-        tsconfig: path.join(import.meta.dirname, 'tsconfig.json'),
+        tsconfig: path.join(import.meta.dirname, 'tsconfig.spec.json'),
       },
     },
   }),
