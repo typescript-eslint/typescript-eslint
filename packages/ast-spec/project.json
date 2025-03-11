@@ -15,12 +15,7 @@
     },
     "test": {
       "executor": "@nx/vite:test",
-      "dependsOn": [
-        {
-          "projects": ["typescript-estree"],
-          "target": "build"
-        }
-      ]
+      "dependsOn": ["typescript-estree:build", "typecheck"]
     },
     "typecheck": {
       "dependsOn": ["typescript-estree:build"]
