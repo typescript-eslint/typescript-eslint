@@ -9,17 +9,16 @@ export const vitestBaseConfig = {
       extension: ['.ts', '.tsx', '.js', '.jsx'],
       include: ['src'],
 
-      reporter: [
-        ['lcov'],
-        process.env.GITHUB_ACTIONS ? ['text-summary'] : ['none'],
-      ],
+      reporter: process.env.GITHUB_ACTIONS
+        ? [['lcov'], ['text'], ['text-summary']]
+        : [['lcov']],
     },
 
     globals: true,
     include: ['**/*.test.?(c|m)ts?(x)'],
 
     reporters: process.env.GITHUB_ACTIONS
-      ? [['github-actions'], ['verbose']]
+      ? [['verbose'], ['github-actions']]
       : [['verbose']],
 
     setupFiles: ['console-fail-test/setup'],
