@@ -40,16 +40,6 @@ class A {
     `
 const a = function (a: Foo = new Foo<string>()) {};
     `,
-    'let a: Uint8Array<ArrayBufferLike> = new Uint8Array();',
-    'let a: Uint8ClampedArray<ArrayBufferLike> = new Uint8ClampedArray();',
-    'let a: Int16Array<ArrayBufferLike> = new Int16Array();',
-    'let a: Uint16Array<ArrayBufferLike> = new Uint16Array();',
-    'let a: Int32Array<ArrayBufferLike> = new Int32Array();',
-    'let a: Uint32Array<ArrayBufferLike> = new Uint32Array();',
-    'let a: BigInt64Array<ArrayBufferLike> = new BigInt64Array();',
-    'let a: BigUint64Array<ArrayBufferLike> = new BigUint64Array();',
-    'let a: Float32Array<ArrayBufferLike> = new Float32Array();',
-    'let a: Float64Array<ArrayBufferLike> = new Float64Array();',
     // type-annotation
     {
       code: 'const a = new Foo();',

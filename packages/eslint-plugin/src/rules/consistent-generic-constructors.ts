@@ -33,30 +33,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['constructor'],
   create(context, [mode]) {
-    const isTypedArrayReference = (typeNode: TSESTree.TypeNode) => {
-      const typedArrayNames = [
-        'Int8Array',
-        'Uint8Array',
-        'Uint8ClampedArray',
-        'Int16Array',
-        'Uint16Array',
-        'Int32Array',
-        'Uint32Array',
-        'BigInt64Array',
-        'BigUint64Array',
-        'Float32Array',
-        'Float64Array',
-      ];
-      if (
-        typeNode.type === AST_NODE_TYPES.TSTypeReference &&
-        typeNode.typeName.type === AST_NODE_TYPES.Identifier &&
-        typedArrayNames.includes(typeNode.typeName.name)
-      ) {
-        return true;
-      }
-      return false;
-    };
-
     return {
       'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
         node:
@@ -83,12 +59,6 @@ export default createRule<Options, MessageIds>({
         }
         const [lhsName, rhs] = getLHSRHS();
         const lhs = lhsName.typeAnnotation?.typeAnnotation;
-
-        // If it's a typed array, we will ignore.
-        // https://github.com/typescript-eslint/typescript-eslint/issues/10445
-        if (lhs && isTypedArrayReference(lhs)) {
-          return;
-        }
 
         if (
           !rhs ||
