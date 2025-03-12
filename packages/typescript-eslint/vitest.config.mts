@@ -8,6 +8,8 @@ const vitestConfig = mergeConfig(
   vitestBaseConfig,
 
   defineProject({
+    root: import.meta.dirname,
+
     test: {
       dir: path.join(import.meta.dirname, 'tests'),
       name: packageJson.name,
