@@ -73,6 +73,25 @@ interface TypeNodeWithValue {
   typeNode: TSESTree.TypeNode;
 }
 
+interface TypeWithNode {
+  type: ts.Type;
+  typeNode: ts.Node;
+}
+
+interface TypeRelation {
+  subTypeNode: ts.Node;
+  superTypeNode: ts.Node;
+}
+
+interface TypeWithNameAndParentNode extends TypeWithNode {
+  parentTypeNode: TSESTree.TypeNode;
+}
+
+interface TypeNodeWithName {
+  typeName: string;
+  typeNode: ts.Node;
+}
+
 function addToMapGroup<Key, Value>(
   map: Map<Key, Value[]>,
   key: Key,
@@ -190,6 +209,201 @@ function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
     : tsutils.unionTypeParts(type);
 }
 
+enum TypeAssignability {
+  Equal,
+  SourceToTargetAssignable,
+  TargetToSourceAssignable,
+  NotAssignable,
+}
+
+function checkTypeAssignability(
+  sourceType: ts.Type,
+  targetType: ts.Type,
+  checker: ts.TypeChecker,
+): TypeAssignability {
+  const isSourceAssignableToTarget = checker.isTypeAssignableTo(
+    sourceType,
+    targetType,
+  );
+  const isTargetAssignableToSource = checker.isTypeAssignableTo(
+    targetType,
+    sourceType,
+  );
+
+  if (isSourceAssignableToTarget && isTargetAssignableToSource) {
+    return TypeAssignability.Equal;
+  }
+  if (isSourceAssignableToTarget) {
+    return TypeAssignability.SourceToTargetAssignable;
+  }
+  if (isTargetAssignableToSource) {
+    return TypeAssignability.TargetToSourceAssignable;
+  }
+  return TypeAssignability.NotAssignable;
+}
+
+function checkIntersectionTypeAssignability(
+  sourceType: ts.Type,
+  targetType: ts.Type,
+  checker: ts.TypeChecker,
+): TypeAssignability {
+  if (tsutils.isUnionType(sourceType)) {
+    let assignability: TypeAssignability = TypeAssignability.NotAssignable;
+    for (const typePart of sourceType.types) {
+      const typeAssignability = checkIntersectionTypeAssignability(
+        typePart,
+        targetType,
+        checker,
+      );
+      if (typeAssignability === TypeAssignability.NotAssignable) {
+        return TypeAssignability.NotAssignable;
+      }
+      if (typeAssignability === TypeAssignability.Equal) {
+        continue;
+      }
+      if (
+        assignability !== TypeAssignability.NotAssignable &&
+        assignability !== typeAssignability
+      ) {
+        return TypeAssignability.NotAssignable;
+      }
+      assignability = typeAssignability;
+    }
+    return assignability;
+  }
+  if (tsutils.isUnionType(targetType)) {
+    let assignability: TypeAssignability = TypeAssignability.NotAssignable;
+    for (const typePart of targetType.types) {
+      const typeAssignability = checkIntersectionTypeAssignability(
+        sourceType,
+        typePart,
+        checker,
+      );
+      if (typeAssignability === TypeAssignability.NotAssignable) {
+        return TypeAssignability.NotAssignable;
+      }
+      if (typeAssignability === TypeAssignability.Equal) {
+        continue;
+      }
+      if (
+        assignability !== TypeAssignability.NotAssignable &&
+        assignability !== typeAssignability
+      ) {
+        return TypeAssignability.NotAssignable;
+      }
+      assignability = typeAssignability;
+    }
+    return assignability;
+  }
+  return checkTypeAssignability(sourceType, targetType, checker);
+}
+
+function mergeTypeNames(
+  typeWithNames: TypeNodeWithName[],
+  operator: '&' | '|',
+): string {
+  if (typeWithNames.length === 1) {
+    return typeWithNames[0].typeName;
+  }
+
+  const wrapType = (typeWithName: TypeNodeWithName) => {
+    if (operator === '|' && ts.isIntersectionTypeNode(typeWithName.typeNode)) {
+      return `(${typeWithName.typeName})`;
+    }
+    if (operator === '&' && ts.isUnionTypeNode(typeWithName.typeNode)) {
+      return `(${typeWithName.typeName})`;
+    }
+    return typeWithName.typeName;
+  };
+
+  return typeWithNames.map(wrapType).join(` ${operator} `);
+}
+
+function getTypeNodeFromReferenceType(type: ts.Type): ts.Node | undefined {
+  const symbol = type.getSymbol() ?? type.aliasSymbol;
+  const declaration = symbol?.getDeclarations()?.[0];
+
+  if (declaration) {
+    if (ts.isTypeAliasDeclaration(declaration)) {
+      return declaration.type;
+    }
+    return declaration;
+  }
+  return;
+}
+
+function getGroupTypeRelationsBySuperTypeName(typeRelations: TypeRelation[]) {
+  const typeRelationAndName = typeRelations.map(
+    ({ subTypeNode, superTypeNode }) => ({
+      subTypeName: subTypeNode.getText(),
+      subTypeNode,
+      superTypeName: superTypeNode.getText(),
+      superTypeNode,
+    }),
+  );
+
+  return arrayGroupByToMap(
+    typeRelationAndName,
+    ({ superTypeName }) => superTypeName,
+  );
+}
+
+function hasSameKeys(
+  type1: ts.Type,
+  type2: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  if (tsutils.isUnionType(type1)) {
+    return type1.types.some(typePart => hasSameKeys(typePart, type2, checker));
+  }
+  if (tsutils.isUnionType(type2)) {
+    return type2.types.some(typePart => hasSameKeys(type1, typePart, checker));
+  }
+
+  const propertiesOfType1 = type1.getProperties();
+  const propertiesOfType2 = type2.getProperties();
+
+  if (propertiesOfType1.length !== propertiesOfType2.length) {
+    return false;
+  }
+  for (const propertyOfType1 of propertiesOfType1) {
+    const propertyOfType2 = propertiesOfType2.find(
+      p => p.getName() === propertyOfType1.getName(),
+    );
+
+    if (!propertyOfType2) {
+      return false;
+    }
+    const valueOfType1 = propertyOfType1.valueDeclaration;
+    const valueOfType2 = propertyOfType2.valueDeclaration;
+
+    if (
+      valueOfType1 &&
+      ts.isPropertySignature(valueOfType1) &&
+      valueOfType1.type &&
+      valueOfType2 &&
+      ts.isPropertySignature(valueOfType2) &&
+      valueOfType2.type
+    ) {
+      const isType1TypeLiteral = ts.isTypeLiteralNode(valueOfType1.type);
+      const isType2TypeLiteral = ts.isTypeLiteralNode(valueOfType2.type);
+
+      if (isType1TypeLiteral !== isType2TypeLiteral) {
+        return false;
+      }
+
+      if (isType1TypeLiteral) {
+        return hasSameKeys(
+          checker.getTypeAtLocation(valueOfType1.type),
+          checker.getTypeAtLocation(valueOfType2.type),
+          checker,
+        );
+      }
+    }
+  }
+  return true;
+}
+
 export default createRule({
   name: 'no-redundant-type-constituents',
   meta: {
@@ -203,15 +417,18 @@ export default createRule({
     messages: {
       errorTypeOverrides: `'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.`,
       literalOverridden: `{{literal}} is overridden by {{primitive}} in this union type.`,
+      objectOverridden: `{{subType}} is overridden by {{superType}} in this union type.`,
       overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
       overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
       primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
+      superObjectTypeOverridden: `{{superType}} is overridden by {{subType}} in this intersection type.`,
     },
     schema: [],
   },
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
 
     function getTypeNodeTypePartFlags(
@@ -256,6 +473,75 @@ export default createRule({
       }));
     }
 
+    function getObjectUnionTypePart(
+      typeNode: ts.Node,
+      checker: ts.TypeChecker,
+    ): TypeWithNode[] {
+      if (ts.isParenthesizedTypeNode(typeNode)) {
+        return getObjectUnionTypePart(typeNode.type, checker);
+      }
+
+      if (
+        ts.isTypeLiteralNode(typeNode) ||
+        ts.isIntersectionTypeNode(typeNode)
+      ) {
+        const type = checker.getTypeFromTypeNode(typeNode);
+        return [
+          {
+            type,
+            typeNode,
+          },
+        ];
+      }
+      if (ts.isUnionTypeNode(typeNode)) {
+        return typeNode.types.flatMap(typeNode =>
+          getObjectUnionTypePart(typeNode, checker),
+        );
+      }
+      if (ts.isTypeReferenceNode(typeNode)) {
+        const type = checker.getTypeFromTypeNode(typeNode);
+        const node = getTypeNodeFromReferenceType(type);
+
+        if (node && node !== typeNode) {
+          return getObjectUnionTypePart(node, checker);
+        }
+      }
+      return [];
+    }
+
+    function getObjectInterSectionTypePart(
+      typeNode: ts.Node,
+      checker: ts.TypeChecker,
+    ): TypeWithNode[] {
+      if (ts.isParenthesizedTypeNode(typeNode)) {
+        return getObjectInterSectionTypePart(typeNode.type, checker);
+      }
+
+      if (ts.isTypeLiteralNode(typeNode) || ts.isUnionTypeNode(typeNode)) {
+        const type = checker.getTypeFromTypeNode(typeNode);
+        return [
+          {
+            type,
+            typeNode,
+          },
+        ];
+      }
+      if (ts.isIntersectionTypeNode(typeNode)) {
+        return typeNode.types.flatMap(typeNode =>
+          getObjectInterSectionTypePart(typeNode, checker),
+        );
+      }
+
+      if (ts.isTypeReferenceNode(typeNode)) {
+        const type = checker.getTypeFromTypeNode(typeNode);
+        const node = getTypeNodeFromReferenceType(type);
+        if (node && node !== typeNode) {
+          return getObjectInterSectionTypePart(node, checker);
+        }
+      }
+      return [];
+    }
+
     function getTypeNodeTypePartFlagsCached(
       typeNode: TSESTree.TypeNode,
     ): TypeFlagsWithName[] {
@@ -279,6 +565,12 @@ export default createRule({
         const seenUnionTypes = new Map<
           TSESTree.TypeNode,
           TypeFlagsWithName[]
+        >();
+
+        const seenObjectTypes = new Set<TypeWithNameAndParentNode>();
+        const overriddenObjectTypes = new Map<
+          TSESTree.TypeNode,
+          TypeRelation[]
         >();
 
         function checkIntersectionBottomAndTopTypes(
@@ -338,6 +630,50 @@ export default createRule({
           if (typePartFlags.length >= 2) {
             seenUnionTypes.set(typeNode, typePartFlags);
           }
+
+          const tsTypeNode = services.esTreeNodeToTSNodeMap.get(typeNode);
+          const objectTypeParts = getObjectInterSectionTypePart(
+            tsTypeNode,
+            checker,
+          );
+
+          for (const objectTypePart of objectTypeParts) {
+            const { type: targetType, typeNode: targetTypeNode } =
+              objectTypePart;
+
+            for (const seenObjectType of seenObjectTypes) {
+              const {
+                type: sourceType,
+                parentTypeNode,
+                typeNode: sourceTypeNode,
+              } = seenObjectType;
+              const typeAssignability = checkIntersectionTypeAssignability(
+                sourceType,
+                targetType,
+                checker,
+              );
+
+              switch (typeAssignability) {
+                case TypeAssignability.SourceToTargetAssignable:
+                  addToMapGroup(overriddenObjectTypes, typeNode, {
+                    subTypeNode: sourceTypeNode,
+                    superTypeNode: targetTypeNode,
+                  });
+                  continue;
+                case TypeAssignability.TargetToSourceAssignable:
+                  addToMapGroup(overriddenObjectTypes, parentTypeNode, {
+                    subTypeNode: targetTypeNode,
+                    superTypeNode: sourceTypeNode,
+                  });
+              }
+            }
+          }
+          for (const objectTypePart of objectTypeParts) {
+            seenObjectTypes.add({
+              ...objectTypePart,
+              parentTypeNode: typeNode,
+            });
+          }
         }
         /**
          * @example
@@ -384,24 +720,51 @@ export default createRule({
         };
         if (seenUnionTypes.size > 0) {
           checkIfUnionsAreAssignable();
-          return;
-        }
-        // For each primitive type of all the seen primitive types,
-        // if there was a literal type seen that overrides it,
-        // report each of the primitive type's type nodes
-        for (const [primitiveTypeFlag, typeNodes] of seenPrimitiveTypes) {
-          const matchedLiteralTypes = seenLiteralTypes.get(primitiveTypeFlag);
-          if (matchedLiteralTypes) {
-            for (const typeNode of typeNodes) {
-              context.report({
-                node: typeNode,
-                messageId: 'primitiveOverridden',
-                data: {
-                  literal: matchedLiteralTypes.join(' | '),
-                  primitive: primitiveTypeFlagNames[primitiveTypeFlag],
-                },
-              });
+        } else {
+          // For each primitive type of all the seen primitive types,
+          // if there was a literal type seen that overrides it,
+          // report each of the primitive type's type nodes
+          for (const [primitiveTypeFlag, typeNodes] of seenPrimitiveTypes) {
+            const matchedLiteralTypes = seenLiteralTypes.get(primitiveTypeFlag);
+            if (matchedLiteralTypes) {
+              for (const typeNode of typeNodes) {
+                context.report({
+                  node: typeNode,
+                  messageId: 'primitiveOverridden',
+                  data: {
+                    literal: matchedLiteralTypes.join(' & '),
+                    primitive: primitiveTypeFlagNames[primitiveTypeFlag],
+                  },
+                });
+              }
             }
+          }
+        }
+
+        for (const [typeNode, typeRelations] of overriddenObjectTypes) {
+          const groupTypeRelationsBySuperTypeName =
+            getGroupTypeRelationsBySuperTypeName(typeRelations);
+
+          for (const [
+            superTypeName,
+            typeRelationAndNames,
+          ] of groupTypeRelationsBySuperTypeName) {
+            const mergedSubTypeName = mergeTypeNames(
+              typeRelationAndNames.map(({ subTypeName, subTypeNode }) => ({
+                typeName: subTypeName,
+                typeNode: subTypeNode,
+              })),
+              '&',
+            );
+
+            context.report({
+              node: typeNode,
+              messageId: 'superObjectTypeOverridden',
+              data: {
+                subType: mergedSubTypeName,
+                superType: superTypeName,
+              },
+            });
           }
         }
       },
@@ -411,6 +774,12 @@ export default createRule({
           TypeNodeWithValue[]
         >();
         const seenPrimitiveTypes = new Set<PrimitiveTypeFlag>();
+
+        const seenObjectTypes = new Set<TypeWithNameAndParentNode>();
+        const overriddenObjectTypes = new Map<
+          TSESTree.TypeNode,
+          TypeRelation[]
+        >();
 
         function checkUnionBottomAndTopTypes(
           { typeFlags, typeName }: TypeFlagsWithName,
@@ -482,6 +851,52 @@ export default createRule({
               }
             }
           }
+
+          const tsTypeNode = services.esTreeNodeToTSNodeMap.get(typeNode);
+          const objectTypeParts = getObjectUnionTypePart(tsTypeNode, checker);
+
+          for (const objectTypePart of objectTypeParts) {
+            const { type: targetType, typeNode: targetTypeNode } =
+              objectTypePart;
+
+            for (const seenObjectType of seenObjectTypes) {
+              const {
+                type: sourceType,
+                parentTypeNode,
+                typeNode: sourceTypeNode,
+              } = seenObjectType;
+              if (!hasSameKeys(sourceType, targetType, checker)) {
+                break;
+              }
+
+              const typeAssignability = checkTypeAssignability(
+                sourceType,
+                targetType,
+                checker,
+              );
+
+              switch (typeAssignability) {
+                case TypeAssignability.SourceToTargetAssignable:
+                  addToMapGroup(overriddenObjectTypes, parentTypeNode, {
+                    subTypeNode: sourceTypeNode,
+                    superTypeNode: targetTypeNode,
+                  });
+                  continue;
+                case TypeAssignability.TargetToSourceAssignable:
+                  addToMapGroup(overriddenObjectTypes, typeNode, {
+                    subTypeNode: targetTypeNode,
+                    superTypeNode: sourceTypeNode,
+                  });
+              }
+            }
+          }
+
+          for (const objectTypePart of objectTypeParts) {
+            seenObjectTypes.add({
+              ...objectTypePart,
+              parentTypeNode: typeNode,
+            });
+          }
         }
 
         interface TypeFlagWithText {
@@ -524,6 +939,33 @@ export default createRule({
               data: {
                 literal: pairs.map(pair => pair.literalValue).join(' | '),
                 primitive: primitiveTypeFlagNames[primitiveTypeFlag],
+              },
+            });
+          }
+        }
+
+        for (const [typeNode, typeRelations] of overriddenObjectTypes) {
+          const groupTypeRelationsBySuperTypeName =
+            getGroupTypeRelationsBySuperTypeName(typeRelations);
+
+          for (const [
+            superTypeName,
+            typeRelationAndNames,
+          ] of groupTypeRelationsBySuperTypeName) {
+            const mergedSubTypeName = mergeTypeNames(
+              typeRelationAndNames.map(({ subTypeName, subTypeNode }) => ({
+                typeName: subTypeName,
+                typeNode: subTypeNode,
+              })),
+              '|',
+            );
+
+            context.report({
+              node: typeNode,
+              messageId: 'objectOverridden',
+              data: {
+                subType: mergedSubTypeName,
+                superType: superTypeName,
               },
             });
           }
