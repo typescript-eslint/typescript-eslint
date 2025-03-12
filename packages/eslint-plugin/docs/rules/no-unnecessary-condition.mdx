@@ -218,25 +218,74 @@ You should be using `strictNullChecks` to ensure complete type-safety in your co
 
 If for some reason you cannot turn on `strictNullChecks`, but still want to use this rule - you can use this option to allow it - but know that the behavior of this rule is _undefined_ with the compiler option turned off. We will not accept bug reports if you are using this option.
 
+## Limitations
+
+This rule is powered by TypeScript types, therefore, if the types do not match match the runtime behavior, the rule may report inaccurately.
+This can happen in several commonplace scenarios.
+
+### Possibly-undefined indexed access
+
+By default, TypeScript optimistically assumes that indexed access will always return a value.
+This means that cases like the following will be erroneously flagged as unnecessary conditions:
+
+```ts showPlaygroundButton
+const array: string[] = [];
+const firstElement = array[0];
+// false positive
+if (firstElement != null) {
+  // ...
+}
+
+const record: Record<string, string> = {};
+const someValue = record.someKey;
+// false positive
+if (someValue != null) {
+  // ...
+}
+```
+
+To get pessimistic, but correct, types for these cases, you can use TypeScript's [`noUncheckedIndexedAccess` compiler option](https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess), though this is often unwieldy in real-world usage.
+Another workaround is to use `array.at(0)` (which is always possibly-undefined) to indicate array access that may be out-of-bounds.
+Otherwise, a disable comment will often make sense for these kinds of cases.
+
+### Values modified within function calls
+
+The following code will be erroneously flagged as unnecessary, even though the condition is modified within the function call.
+
+```ts showPlaygroundButton
+let condition = false;
+
+const f = () => {
+  condition = Math.random() > 0.5;
+};
+f();
+
+if (condition) {
+  // ...
+}
+```
+
+This occurs due to limitations of TypeScript's type narrowing.
+See [microsoft/TypeScript#9998](https://github.com/microsoft/TypeScript/issues/9998) for details.
+We recommend using a [type assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) in these cases, like so:
+
+```ts showPlaygroundButton
+let condition = false as boolean;
+
+const f = () => {
+  condition = Math.random() > 0.5;
+};
+f();
+
+if (condition) {
+  // ...
+}
+```
+
 ## When Not To Use It
 
 If your project is not accurately typed, such as if it's in the process of being converted to TypeScript or is susceptible to [trade-offs in control flow analysis](https://github.com/Microsoft/TypeScript/issues/9998), it may be difficult to enable this rule for particularly non-type-safe areas of code.
 You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
-
-This rule has a known edge case of triggering on conditions that were modified within function calls (as side effects).
-It is due to limitations of TypeScript's type narrowing.
-See [#9998](https://github.com/microsoft/TypeScript/issues/9998) for details.
-We recommend using a [type assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) in those cases.
-
-```ts
-let condition = false as boolean;
-
-const f = () => (condition = true);
-f();
-
-if (condition) {
-}
-```
 
 ## Related To
 
