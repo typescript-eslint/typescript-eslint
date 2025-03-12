@@ -19,7 +19,7 @@ import { resolveProjectList } from './resolveProjectList';
 import { warnAboutTSVersion } from './warnAboutTSVersion';
 
 const log = debug(
-  'typescript-eslint:typescript-estree:parser:parseSettings:createParseSettings',
+  'typescript-eslint:typescript-estree:parseSettings:createParseSettings',
 );
 
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
@@ -134,8 +134,8 @@ export function createParseSettings(
     tsconfigMatchCache: (TSCONFIG_MATCH_CACHE ??= new ExpiringCache(
       singleRun
         ? 'Infinity'
-        : tsestreeOptions.cacheLifetime?.glob ??
-          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
+        : (tsestreeOptions.cacheLifetime?.glob ??
+          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS),
     )),
     tsconfigRootDir,
   };

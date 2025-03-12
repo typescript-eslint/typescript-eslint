@@ -10,7 +10,7 @@ import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class FunctionScope extends ScopeBase<
+export class FunctionScope extends ScopeBase<
   ScopeType.function,
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
@@ -47,7 +47,10 @@ class FunctionScope extends ScopeBase<
   //         const x = 2
   //         console.log(a)
   //     }
-  protected isValidResolution(ref: Reference, variable: Variable): boolean {
+  protected override isValidResolution(
+    ref: Reference,
+    variable: Variable,
+  ): boolean {
     // If `options.globalReturn` is true, `this.block` becomes a Program node.
     if (this.block.type === AST_NODE_TYPES.Program) {
       return true;
@@ -65,5 +68,3 @@ class FunctionScope extends ScopeBase<
     );
   }
 }
-
-export { FunctionScope };

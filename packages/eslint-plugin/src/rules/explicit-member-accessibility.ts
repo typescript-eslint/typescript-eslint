@@ -19,7 +19,7 @@ type AccessibilityLevel =
   | 'no-public' // don't require public
   | 'off'; // don't check
 
-interface Config {
+export interface Config {
   accessibility?: AccessibilityLevel;
   ignoredMethodNames?: string[];
   overrides?: {
@@ -31,9 +31,9 @@ interface Config {
   };
 }
 
-type Options = [Config];
+export type Options = [Config];
 
-type MessageIds =
+export type MessageIds =
   | 'addExplicitAccessibility'
   | 'missingAccessibility'
   | 'unwantedPublicAccessibility';
@@ -196,8 +196,10 @@ export default createRule<Options, MessageIds>({
      */
     function findPublicKeyword(
       node:
+        | TSESTree.AccessorProperty
         | TSESTree.MethodDefinition
         | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractAccessorProperty
         | TSESTree.TSAbstractMethodDefinition
         | TSESTree.TSAbstractPropertyDefinition
         | TSESTree.TSParameterProperty,
@@ -238,8 +240,10 @@ export default createRule<Options, MessageIds>({
      */
     function getMissingAccessibilitySuggestions(
       node:
+        | TSESTree.AccessorProperty
         | TSESTree.MethodDefinition
         | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractAccessorProperty
         | TSESTree.TSAbstractMethodDefinition
         | TSESTree.TSAbstractPropertyDefinition
         | TSESTree.TSParameterProperty,
@@ -284,7 +288,9 @@ export default createRule<Options, MessageIds>({
      */
     function checkPropertyAccessibilityModifier(
       propertyDefinition:
+        | TSESTree.AccessorProperty
         | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractAccessorProperty
         | TSESTree.TSAbstractPropertyDefinition,
     ): void {
       if (propertyDefinition.key.type === AST_NODE_TYPES.PrivateIdentifier) {
@@ -389,7 +395,7 @@ export default createRule<Options, MessageIds>({
     return {
       'MethodDefinition, TSAbstractMethodDefinition':
         checkMethodAccessibilityModifier,
-      'PropertyDefinition, TSAbstractPropertyDefinition':
+      'PropertyDefinition, TSAbstractPropertyDefinition, AccessorProperty, TSAbstractAccessorProperty':
         checkPropertyAccessibilityModifier,
       TSParameterProperty: checkParameterPropertyAccessibilityModifier,
     };

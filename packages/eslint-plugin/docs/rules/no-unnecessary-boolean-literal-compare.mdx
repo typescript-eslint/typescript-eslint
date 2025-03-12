@@ -129,6 +129,22 @@ if (someNullCondition ?? true) {
 </TabItem>
 </Tabs>
 
+### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
+
+:::danger Deprecated
+
+This option will be removed in the next major version of typescript-eslint.
+
+:::
+
+{/* insert option description */}
+
+Without `strictNullChecks`, TypeScript essentially erases `undefined` and `null` from the types. This means when this rule inspects the types from a variable, **it will not be able to tell that the variable might be `null` or `undefined`**, which essentially makes this rule useless.
+
+You should be using `strictNullChecks` to ensure complete type-safety in your codebase.
+
+If for some reason you cannot turn on `strictNullChecks`, but still want to use this rule - you can use this option to allow it - but know that the behavior of this rule is _undefined_ with the compiler option turned off. We will not accept bug reports if you are using this option.
+
 ## Fixer
 
 |           Comparison           | Fixer Output                    | Notes                                                                               |

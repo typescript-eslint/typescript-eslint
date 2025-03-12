@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';
 
-class TSEnumNameDefinition extends DefinitionBase<
+export class TSEnumNameDefinition extends DefinitionBase<
   DefinitionType.TSEnumName,
   TSESTree.TSEnumDeclaration,
   null,
@@ -16,5 +16,3 @@ class TSEnumNameDefinition extends DefinitionBase<
     super(DefinitionType.TSEnumName, name, node, null);
   }
 }
-
-export { TSEnumNameDefinition };

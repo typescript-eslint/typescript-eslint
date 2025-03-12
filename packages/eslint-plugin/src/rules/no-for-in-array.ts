@@ -1,10 +1,10 @@
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
-  isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
 import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
@@ -32,10 +32,7 @@ export default createRule({
 
         const type = getConstrainedTypeAtLocation(services, node.right);
 
-        if (
-          isTypeArrayTypeOrUnionOfArrayTypes(type, checker) ||
-          (type.flags & ts.TypeFlags.StringLike) !== 0
-        ) {
+        if (isArrayLike(checker, type)) {
           context.report({
             loc: getForStatementHeadLoc(context.sourceCode, node),
             messageId: 'forInViolation',
@@ -45,3 +42,34 @@ export default createRule({
     };
   },
 });
+
+function isArrayLike(checker: ts.TypeChecker, type: ts.Type): boolean {
+  return isTypeRecurser(
+    type,
+    t => t.getNumberIndexType() != null && hasArrayishLength(checker, t),
+  );
+}
+
+function hasArrayishLength(checker: ts.TypeChecker, type: ts.Type): boolean {
+  const lengthProperty = type.getProperty('length');
+
+  if (lengthProperty == null) {
+    return false;
+  }
+
+  return tsutils.isTypeFlagSet(
+    checker.getTypeOfSymbol(lengthProperty),
+    ts.TypeFlags.NumberLike,
+  );
+}
+
+function isTypeRecurser(
+  type: ts.Type,
+  predicate: (t: ts.Type) => boolean,
+): boolean {
+  if (type.isUnionOrIntersection()) {
+    return type.types.some(t => isTypeRecurser(t, predicate));
+  }
+
+  return predicate(type);
+}

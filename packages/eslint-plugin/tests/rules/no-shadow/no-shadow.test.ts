@@ -203,6 +203,120 @@ interface Test {
     },
     {
       code: `
+const arg = 0;
+
+declare function test(arg: string): typeof arg;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare const test: (arg: string) => typeof arg;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare class Test {
+  p1(arg: string): typeof arg;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare const Test: {
+  new (arg: string): typeof arg;
+};
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+type Bar = new (arg: number) => typeof arg;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare namespace Lib {
+  function test(arg: string): typeof arg;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
 import type { foo } from './foo';
 function doThing(foo: number) {}
       `,
@@ -301,94 +415,10 @@ declare module 'baz' {
     },
     {
       code: `
-import type { Foo } from 'bar';
-
-declare module 'bar' {
-  export type Foo = string;
-}
-      `,
-      errors: [
-        {
-          data: {
-            name: 'Foo',
-            shadowedColumn: 15,
-            shadowedLine: 2,
-          },
-          messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-import type { Foo } from 'bar';
-
-declare module 'bar' {
-  interface Foo {
-    x: string;
-  }
-}
-      `,
-      errors: [
-        {
-          data: {
-            name: 'Foo',
-            shadowedColumn: 15,
-            shadowedLine: 2,
-          },
-          messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
 import { type Foo } from 'bar';
 
 declare module 'baz' {
   export interface Foo {
-    x: string;
-  }
-}
-      `,
-      errors: [
-        {
-          data: {
-            name: 'Foo',
-            shadowedColumn: 15,
-            shadowedLine: 2,
-          },
-          messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-import { type Foo } from 'bar';
-
-declare module 'bar' {
-  export type Foo = string;
-}
-      `,
-      errors: [
-        {
-          data: {
-            name: 'Foo',
-            shadowedColumn: 15,
-            shadowedLine: 2,
-          },
-          messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-import { type Foo } from 'bar';
-
-declare module 'bar' {
-  interface Foo {
     x: string;
   }
 }
@@ -435,6 +465,364 @@ let y;
     },
     {
       code: `
+let x = foo((x, y) => {});
+let y;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'x',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+{
+  interface A {}
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+{
+  interface A {}
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+{
+  interface A {}
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+
+    {
+      code: `
 function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}
       `,
       errors: [
@@ -458,6 +846,48 @@ function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}
           ignoreTypeValueShadow: false,
         },
       ],
+    },
+    {
+      code: `
+declare const has = (environment: 'dev' | 'prod' | 'test') => boolean;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'has',
+          },
+          messageId: 'noShadowGlobal',
+        },
+      ],
+      languageOptions: {
+        globals: {
+          has: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare const has: (environment: 'dev' | 'prod' | 'test') => boolean;
+const fn = (has: string) => {};
+      `,
+      errors: [
+        {
+          data: {
+            name: 'has',
+            shadowedColumn: 15,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      filename: 'foo.d.ts',
+      languageOptions: {
+        globals: {
+          has: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
     },
   ],
   valid: [
@@ -617,6 +1047,60 @@ const arg = 0;
 
 interface Test {
   p1(arg: string): typeof arg;
+}
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare function test(arg: string): typeof arg;
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare const test: (arg: string) => typeof arg;
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare class Test {
+  p1(arg: string): typeof arg;
+}
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare const Test: {
+  new (arg: string): typeof arg;
+};
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+type Bar = new (arg: number) => typeof arg;
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare namespace Lib {
+  function test(arg: string): typeof arg;
 }
       `,
       options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
@@ -859,5 +1343,288 @@ const person = {
       options: [{ ignoreOnInitialization: true }],
     },
     { code: 'const [x = y => y] = [].map(y => y);' },
+
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+{
+  interface Foo<A> {}
+}
+type A = 1;
+      `,
+      options: [{ hoist: 'never' }],
+    },
+
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+{
+  interface Foo<A> {}
+}
+type A = 1;
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+import type { Foo } from 'bar';
+
+declare module 'bar' {
+  export type Foo = string;
+}
+      `,
+    },
+    {
+      code: `
+import type { Foo } from 'bar';
+
+declare module 'bar' {
+  interface Foo {
+    x: string;
+  }
+}
+      `,
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
+  export type Foo = string;
+}
+      `,
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
+  export interface Foo {
+    x: string;
+  }
+}
+      `,
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
+  type Foo = string;
+}
+      `,
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
+  interface Foo {
+    x: string;
+  }
+}
+      `,
+    },
+    {
+      code: `
+declare const foo1: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo1: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare let foo2: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo2: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare var foo3: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo3: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+function foo4(name: string): void;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo4: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare class Foopy1 {
+  name: string;
+}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy1: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare interface Foopy2 {
+  name: string;
+}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy2: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare type Foopy3 = {
+  x: number;
+};
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy3: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare enum Foopy4 {
+  x,
+}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy4: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare namespace Foopy5 {}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy5: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare;
+foo5: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo5: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
   ],
 });

@@ -27,7 +27,7 @@ const tarFolder = tmp.dirSync({
   keep: true,
 }).name;
 
-const tseslintPackages: PackageJSON['devDependencies'] = {};
+export const tseslintPackages: PackageJSON['devDependencies'] = {};
 for (const pkg of PACKAGES) {
   const packageDir = path.join(PACKAGES_DIR, pkg);
   const packagePath = path.join(packageDir, 'package.json');
@@ -52,4 +52,3 @@ for (const pkg of PACKAGES) {
 }
 
 console.log('Finished packing local packages.');
-export { tseslintPackages };

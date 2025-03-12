@@ -395,13 +395,64 @@ describe('TypeOrValueSpecifier', () => {
       [
         `
           type SafePromise = Promise<number> & { __safeBrand: string };
-          type JoinedPromise = SafePromise & {};
+          type ResultType = { foo: 'bar' };
+          type Test = SafePromise & ResultType;
         `,
-        { from: 'file', name: ['JoinedPromise'] },
+        { from: 'file', name: ['ResultType'] },
       ],
     ])(
       'matches a matching type specifier for an intersection type: %s',
       runTestPositive,
+    );
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        `
+          declare module "node:test" {
+            type SafePromise = Promise<undefined> & { __safeBrand: string };
+            type ItResult = { foo: 'bar' };
+
+            export function it(): SafePromise & ItResult;
+          }
+
+          import { it } from "node:test";
+
+          type Test = ReturnType<typeof it>;
+        `,
+        {
+          from: 'package',
+          name: ['ItResult'],
+          package: 'node:test',
+        },
+      ],
+    ])(
+      'matches a matching package specifier for an intersection type: %s',
+      runTestPositive,
+    );
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        `
+          declare module "node:test" {
+            type SafePromise = Promise<undefined> & { __safeBrand: string };
+            type ItResult = { foo: 'bar' };
+
+            export function it(): SafePromise & ItResult;
+          }
+
+          import { it } from "node:test";
+
+          type Test = ReturnType<typeof it>;
+        `,
+        {
+          from: 'package',
+          name: ['Result'],
+          package: 'node:test',
+        },
+      ],
+    ])(
+      "doesn't match a mismatched package specifier for an intersection type: %s",
+      runTestNegative,
     );
 
     it("does not match a `declare global` with the 'global' package name", () => {

@@ -6,7 +6,7 @@ import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class ForScope extends ScopeBase<
+export class ForScope extends ScopeBase<
   ScopeType.for,
   TSESTree.ForInStatement | TSESTree.ForOfStatement | TSESTree.ForStatement,
   Scope
@@ -19,5 +19,3 @@ class ForScope extends ScopeBase<
     super(scopeManager, ScopeType.for, upperScope, block, false);
   }
 }
-
-export { ForScope };

@@ -3,8 +3,8 @@
 import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
+import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
-import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
 import jestPlugin from 'eslint-plugin-jest';
@@ -22,6 +22,12 @@ import tseslint from 'typescript-eslint';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
+const restrictNamedDeclarations = {
+  message:
+    'Prefer a named export (e.g. `export const ...`) over an object export (e.g. `export { ... }`).',
+  selector: 'ExportNamedDeclaration[declaration=null][source=null]',
+};
+
 export default tseslint.config(
   // register all of the plugins up-front
   {
@@ -30,7 +36,6 @@ export default tseslint.config(
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
-      ['eslint-comments']: eslintCommentsPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
       ['import']: importPlugin,
       ['jest']: jestPlugin,
@@ -40,6 +45,8 @@ export default tseslint.config(
       ['perfectionist']: perfectionistPlugin,
       // https://github.com/facebook/react/issues/28313
       ['react']: reactPlugin,
+      // @ts-expect-error -- Temporary types incompatibility pending flat config support
+      // https://github.com/facebook/react/pull/30774
       ['react-hooks']: fixupPluginRules(reactHooksPlugin),
       ['regexp']: regexpPlugin,
       ['unicorn']: unicornPlugin,
@@ -82,6 +89,7 @@ export default tseslint.config(
   },
 
   // extends ...
+  eslintCommentsPlugin.recommended,
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
@@ -188,12 +196,14 @@ export default tseslint.config(
       // Internal repo rules
       //
 
+      '@typescript-eslint/internal/debug-namespace': 'error',
       '@typescript-eslint/internal/eqeq-nullish': 'error',
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
       '@typescript-eslint/internal/no-relative-paths-to-internal-packages':
         'error',
       '@typescript-eslint/internal/no-typescript-default-import': 'error',
       '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
+      'no-restricted-syntax': ['error', restrictNamedDeclarations],
 
       //
       // eslint-base
@@ -244,35 +254,9 @@ export default tseslint.config(
       // eslint-plugin-eslint-comment
       //
 
-      // require a eslint-enable comment for every eslint-disable comment
-      'eslint-comments/disable-enable-pair': [
+      '@eslint-community/eslint-comments/disable-enable-pair': [
         'error',
-        {
-          allowWholeFile: true,
-        },
-      ],
-      // disallow a eslint-enable comment for multiple eslint-disable comments
-      'eslint-comments/no-aggregating-enable': 'error',
-      // disallow duplicate eslint-disable comments
-      'eslint-comments/no-duplicate-disable': 'error',
-      // disallow eslint-disable comments without rule names
-      'eslint-comments/no-unlimited-disable': 'error',
-      // disallow unused eslint-disable comments
-      'eslint-comments/no-unused-disable': 'error',
-      // disallow unused eslint-enable comments
-      'eslint-comments/no-unused-enable': 'error',
-      // disallow ESLint directive-comments
-      'eslint-comments/no-use': [
-        'error',
-        {
-          allow: [
-            'eslint-disable',
-            'eslint-disable-line',
-            'eslint-disable-next-line',
-            'eslint-enable',
-            'global',
-          ],
-        },
+        { allowWholeFile: true },
       ],
 
       //
@@ -503,6 +487,7 @@ export default tseslint.config(
           selector:
             'ExportDefaultDeclaration Property[key.name="create"] MemberExpression[object.name="context"][property.name="options"]',
         },
+        restrictNamedDeclarations,
       ],
     },
   },
@@ -565,8 +550,11 @@ export default tseslint.config(
   {
     extends: [
       jsxA11yPlugin.flatConfigs.recommended,
+      // https://github.com/facebook/react/pull/30774
+      // @ts-expect-error -- Temporary types incompatibility pending flat config support
       reactPlugin.configs.flat.recommended,
       // https://github.com/facebook/react/pull/30774
+      // @ts-expect-error -- Temporary types incompatibility pending flat config support
       fixupConfigRules(compat.config(reactHooksPlugin.configs.recommended)),
     ],
     files: ['packages/website/**/*.{ts,tsx,mts,cts,js,jsx}'],

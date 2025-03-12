@@ -134,7 +134,7 @@ const VARIABLE_SCOPE_TYPES = new Set([
 ]);
 
 type AnyScope = ScopeBase<ScopeType, TSESTree.Node, Scope | null>;
-abstract class ScopeBase<
+export abstract class ScopeBase<
   Type extends ScopeType,
   Block extends TSESTree.Node,
   Upper extends Scope | null,
@@ -492,5 +492,3 @@ abstract class ScopeBase<
     this.leftToResolve?.push(ref);
   }
 }
-
-export { ScopeBase };

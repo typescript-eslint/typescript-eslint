@@ -156,25 +156,25 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
         end: { column: 33, line: 5 },
       },
     },
+    Identifier {
+      type: 'Identifier',
+      value: 'declare',
+
+      range: [169, 176],
+      loc: {
+        start: { column: 2, line: 6 },
+        end: { column: 9, line: 6 },
+      },
+    },
 -   Keyword {
 -     type: 'Keyword',
 +   Identifier {
 +     type: 'Identifier',
       value: 'public',
 
-      range: [169, 175],
+      range: [177, 183],
       loc: {
-        start: { column: 2, line: 6 },
-        end: { column: 8, line: 6 },
-      },
-    },
-    Identifier {
-      type: 'Identifier',
-      value: 'declare',
-
-      range: [176, 183],
-      loc: {
-        start: { column: 9, line: 6 },
+        start: { column: 10, line: 6 },
         end: { column: 16, line: 6 },
       },
     },
@@ -298,25 +298,25 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
         end: { column: 42, line: 7 },
       },
     },
+    Identifier {
+      type: 'Identifier',
+      value: 'declare',
+
+      range: [253, 260],
+      loc: {
+        start: { column: 2, line: 8 },
+        end: { column: 9, line: 8 },
+      },
+    },
 -   Keyword {
 -     type: 'Keyword',
 +   Identifier {
 +     type: 'Identifier',
       value: 'public',
 
-      range: [253, 259],
+      range: [261, 267],
       loc: {
-        start: { column: 2, line: 8 },
-        end: { column: 8, line: 8 },
-      },
-    },
-    Identifier {
-      type: 'Identifier',
-      value: 'declare',
-
-      range: [260, 267],
-      loc: {
-        start: { column: 9, line: 8 },
+        start: { column: 10, line: 8 },
         end: { column: 16, line: 8 },
       },
     },

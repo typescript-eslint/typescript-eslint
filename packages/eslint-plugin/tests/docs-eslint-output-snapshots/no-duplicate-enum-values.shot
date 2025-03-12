@@ -18,6 +18,8 @@ enum E {
   A = 'A',
   B = 'A',
   ~~~~~~~ Duplicate enum member value A.
+  C = \`A\`,
+  ~~~~~~~ Duplicate enum member value A.
 }
 "
 `;
@@ -38,6 +40,7 @@ exports[`Validating rule docs no-duplicate-enum-values.mdx code examples ESLint 
 enum E {
   A = 'A',
   B = 'B',
+  C = \`C\`,
 }
 "
 `;

@@ -3,18 +3,19 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
 
 import { TYPE } from './base-config';
 import { es2015_iterable } from './es2015.iterable';
 import { es2015_symbol } from './es2015.symbol';
 
-export const es2018_asynciterable = {
-  ...es2015_symbol,
-  ...es2015_iterable,
-  AsyncIterable: TYPE,
-  AsyncIterableIterator: TYPE,
-  AsyncIterator: TYPE,
-  AsyncIteratorObject: TYPE,
-  SymbolConstructor: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const es2018_asynciterable: LibDefinition = {
+  libs: [es2015_symbol, es2015_iterable],
+  variables: [
+    ['SymbolConstructor', TYPE],
+    ['AsyncIterator', TYPE],
+    ['AsyncIterable', TYPE],
+    ['AsyncIterableIterator', TYPE],
+    ['AsyncIteratorObject', TYPE],
+  ],
+};

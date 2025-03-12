@@ -9,7 +9,7 @@ import {
   getParserServices,
 } from '../util';
 
-type MessageId = 'noArrayDelete' | 'useSplice';
+export type MessageId = 'noArrayDelete' | 'useSplice';
 
 export default createRule<[], MessageId>({
   name: 'no-array-delete',

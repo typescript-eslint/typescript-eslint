@@ -203,7 +203,7 @@ function isInInitializer(
   return false;
 }
 
-interface Config {
+export interface Config {
   allowNamedExports?: boolean;
   classes?: boolean;
   enums?: boolean;
@@ -212,8 +212,8 @@ interface Config {
   typedefs?: boolean;
   variables?: boolean;
 }
-type Options = ['nofunc' | Config];
-type MessageIds = 'noUseBeforeDefine';
+export type Options = ['nofunc' | Config];
+export type MessageIds = 'noUseBeforeDefine';
 
 export default createRule<Options, MessageIds>({
   name: 'no-use-before-define',

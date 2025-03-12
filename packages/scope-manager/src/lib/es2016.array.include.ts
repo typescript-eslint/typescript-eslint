@@ -3,20 +3,23 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
 
 import { TYPE } from './base-config';
 
-export const es2016_array_include = {
-  Array: TYPE,
-  Float32Array: TYPE,
-  Float64Array: TYPE,
-  Int8Array: TYPE,
-  Int16Array: TYPE,
-  Int32Array: TYPE,
-  ReadonlyArray: TYPE,
-  Uint8Array: TYPE,
-  Uint8ClampedArray: TYPE,
-  Uint16Array: TYPE,
-  Uint32Array: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const es2016_array_include: LibDefinition = {
+  libs: [],
+  variables: [
+    ['Array', TYPE],
+    ['ReadonlyArray', TYPE],
+    ['Int8Array', TYPE],
+    ['Uint8Array', TYPE],
+    ['Uint8ClampedArray', TYPE],
+    ['Int16Array', TYPE],
+    ['Uint16Array', TYPE],
+    ['Int32Array', TYPE],
+    ['Uint32Array', TYPE],
+    ['Float32Array', TYPE],
+    ['Float64Array', TYPE],
+  ],
+};

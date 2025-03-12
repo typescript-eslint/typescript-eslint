@@ -12,7 +12,7 @@ import {
   readonlynessOptionsSchema,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     allow?: TypeOrValueSpecifier[];
     checkParameterProperties?: boolean;
@@ -20,7 +20,7 @@ type Options = [
     treatMethodsAsReadonly?: boolean;
   },
 ];
-type MessageIds = 'shouldBeReadonly';
+export type MessageIds = 'shouldBeReadonly';
 
 export default createRule<Options, MessageIds>({
   name: 'prefer-readonly-parameter-types',

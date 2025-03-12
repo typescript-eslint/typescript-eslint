@@ -240,6 +240,7 @@ export interface ParserWeakMapESTreeToTSNode<
 export interface ParserServicesBase {
   emitDecoratorMetadata: boolean | undefined;
   experimentalDecorators: boolean | undefined;
+  isolatedDeclarations: boolean | undefined;
 }
 export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;

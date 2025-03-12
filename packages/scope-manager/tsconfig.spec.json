@@ -1,17 +1,21 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
+    "outDir": "../../dist/out-tsc/packages/scope-manager",
+    "module": "NodeNext",
     "types": ["jest", "node"]
   },
-  "exclude": ["tests/fixtures"],
   "include": [
-    "tests",
-    "tools",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*.test.js",
-    "**/*.test.jsx",
-    "**/*.d.ts"
+    "jest.config.js",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "tests"
+  ],
+  "exclude": ["**/fixtures/**"],
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    }
   ]
 }

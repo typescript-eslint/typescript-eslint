@@ -467,6 +467,36 @@ class Bar extends Foo {
 }
     `,
     `
+class Foo {
+  public doThing = (): void => {};
+}
+
+class Bar extends Foo {
+  public static accessor doThing = async (): Promise<void> => {};
+}
+    `,
+    `
+class Foo {
+  public accessor doThing = (): void => {};
+}
+
+class Bar extends Foo {
+  public static accessor doThing = (): void => {};
+}
+    `,
+    {
+      code: `
+class Foo {
+  [key: string]: void;
+}
+
+class Bar extends Foo {
+  [key: string]: Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
+    },
+    `
 function restTuple(...args: []): void;
 function restTuple(...args: [string]): void;
 function restTuple(..._args: string[]): void {}
@@ -2024,6 +2054,46 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
       errors: [
         {
           data: { heritageTypeName: 'MyInterface' },
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  accessor setThing = (): void => {
+    return;
+  };
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  accessor setThing = async (): Promise<void> => {
+    await Promise.resolve();
+  };
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 9,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+abstract class MyClass {
+  abstract accessor setThing: () => void;
+}
+
+abstract class MySubclassExtendsMyClass extends MyClass {
+  abstract accessor setThing: () => Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyClass' },
           line: 7,
           messageId: 'voidReturnInheritedMethod',
         },

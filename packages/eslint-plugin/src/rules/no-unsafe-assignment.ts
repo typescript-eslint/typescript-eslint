@@ -251,8 +251,8 @@ export default createRule({
       const receiverTsNode = services.esTreeNodeToTSNodeMap.get(receiverNode);
       const receiverType =
         comparisonType === ComparisonType.Contextual
-          ? getContextualType(checker, receiverTsNode as ts.Expression) ??
-            services.getTypeAtLocation(receiverNode)
+          ? (getContextualType(checker, receiverTsNode as ts.Expression) ??
+            services.getTypeAtLocation(receiverNode))
           : services.getTypeAtLocation(receiverNode);
       const senderType = services.getTypeAtLocation(senderNode);
 
@@ -337,6 +337,16 @@ export default createRule({
     }
 
     return {
+      'AccessorProperty[value != null]'(
+        node: { value: NonNullable<unknown> } & TSESTree.AccessorProperty,
+      ): void {
+        checkAssignment(
+          node.key,
+          node.value,
+          node,
+          getComparisonType(node.typeAnnotation),
+        );
+      },
       'AssignmentExpression[operator = "="], AssignmentPattern'(
         node: TSESTree.AssignmentExpression | TSESTree.AssignmentPattern,
       ): void {

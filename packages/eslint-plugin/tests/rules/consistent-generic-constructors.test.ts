@@ -24,6 +24,11 @@ class Foo {
 }
     `,
     `
+class Foo {
+  accessor a = new Foo<string>();
+}
+    `,
+    `
 function foo(a: Foo = new Foo<string>()) {}
     `,
     `
@@ -89,6 +94,14 @@ const a = function (a: Foo = new Foo<string>()) {};
       code: `
 class Foo {
   a: Foo<string> = new Foo();
+}
+      `,
+      options: ['type-annotation'],
+    },
+    {
+      code: `
+class Foo {
+  accessor a: Foo<string> = new Foo();
 }
       `,
       options: ['type-annotation'],
@@ -251,6 +264,58 @@ class Foo {
       output: `
 class Foo {
   [a] = new Foo<string>();
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  accessor a: Foo<string> = new Foo();
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+class Foo {
+  accessor a = new Foo<string>();
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  accessor a = new Foo<string>();
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      options: ['type-annotation'],
+      output: `
+class Foo {
+  accessor a: Foo<string> = new Foo();
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  accessor [a]: Foo<string> = new Foo();
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+class Foo {
+  accessor [a] = new Foo<string>();
 }
       `,
     },

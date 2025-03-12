@@ -41,6 +41,10 @@ declare function assert(value: unknown): asserts value;
 let maybeString = Math.random() > 0.5 ? '' : undefined;
 assert(maybeString);
        ~~~~~~~~~~~ Unexpected nullable string value in conditional. Please handle the nullish/empty cases explicitly.
+
+// array predicates' return types are boolean contexts.
+['one', null].filter(x => x);
+                     ~~~~~~ Unexpected nullable string value in array predicate return type. Please handle the nullish/empty cases explicitly.
 "
 `;
 

@@ -239,9 +239,17 @@ function isTypeParameterRepeatedInAST(
       const grandparent = skipConstituentsUpward(
         reference.identifier.parent.parent,
       );
+
       if (
         grandparent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
-        grandparent.params.includes(reference.identifier.parent)
+        grandparent.params.includes(reference.identifier.parent) &&
+        // Array and ReadonlyArray must be handled carefully
+        // let's defer the check to the type-aware phase
+        !(
+          grandparent.parent.type === AST_NODE_TYPES.TSTypeReference &&
+          grandparent.parent.typeName.type === AST_NODE_TYPES.Identifier &&
+          ['Array', 'ReadonlyArray'].includes(grandparent.parent.typeName.name)
+        )
       ) {
         return true;
       }
@@ -281,13 +289,13 @@ function countTypeParameterUsage(
 
   if (ts.isClassLike(node)) {
     for (const typeParameter of node.typeParameters) {
-      collectTypeParameterUsageCounts(checker, typeParameter, counts);
+      collectTypeParameterUsageCounts(checker, typeParameter, counts, true);
     }
     for (const member of node.members) {
-      collectTypeParameterUsageCounts(checker, member, counts);
+      collectTypeParameterUsageCounts(checker, member, counts, true);
     }
   } else {
-    collectTypeParameterUsageCounts(checker, node, counts);
+    collectTypeParameterUsageCounts(checker, node, counts, false);
   }
 
   return counts;
@@ -302,6 +310,7 @@ function collectTypeParameterUsageCounts(
   checker: ts.TypeChecker,
   node: ts.Node,
   foundIdentifierUsages: Map<ts.Identifier, number>,
+  fromClass: boolean, // We are talking about the type parameters of a class or one of its methods
 ): void {
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
@@ -325,6 +334,7 @@ function collectTypeParameterUsageCounts(
   function visitType(
     type: ts.Type | undefined,
     assumeMultipleUses: boolean,
+    isReturnType = false,
   ): void {
     // Seeing the same type > (threshold=3 ** 2) times indicates a likely
     // recursive type, like `type T = { [P in keyof T]: T }`.
@@ -334,8 +344,7 @@ function collectTypeParameterUsageCounts(
       return;
     }
 
-    // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
-    if ((tsutils.isTypeParameter as (type: ts.Type) => boolean)(type)) {
+    if (tsutils.isTypeParameter(type)) {
       const declaration = type.getSymbol()?.getDeclarations()?.[0] as
         | ts.TypeParameterDeclaration
         | undefined;
@@ -380,9 +389,23 @@ function collectTypeParameterUsageCounts(
 
     // Tuple types like `[K, V]`
     // Generic type references like `Map<K, V>`
-    else if (tsutils.isTupleType(type) || tsutils.isTypeReference(type)) {
+    else if (tsutils.isTypeReference(type)) {
       for (const typeArgument of type.typeArguments ?? []) {
-        visitType(typeArgument, true);
+        // currently, if we are in a "class context", everything is accepted
+        let thisAssumeMultipleUses = fromClass || assumeMultipleUses;
+
+        // special cases - readonly arrays/tuples are considered only to use the
+        // type parameter once. Mutable arrays/tuples are considered to use the
+        // type parameter multiple times if and only if they are returned.
+        // other kind of type references always count as multiple uses
+        thisAssumeMultipleUses ||= tsutils.isTupleType(type.target)
+          ? isReturnType && !type.target.readonly
+          : checker.isArrayType(type.target)
+            ? isReturnType &&
+              (type.symbol as ts.Symbol | undefined)?.getName() === 'Array'
+            : true;
+
+        visitType(typeArgument, thisAssumeMultipleUses, isReturnType);
       }
     }
 
@@ -472,6 +495,7 @@ function collectTypeParameterUsageCounts(
       checker.getTypePredicateOfSignature(signature)?.type ??
         signature.getReturnType(),
       false,
+      true,
     );
   }
 

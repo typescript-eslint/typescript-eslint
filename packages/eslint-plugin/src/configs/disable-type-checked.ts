@@ -8,7 +8,7 @@
 import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export = {
-  parserOptions: { project: false, program: null, projectService: false },
+  parserOptions: { program: null, project: false, projectService: false },
   rules: {
     '@typescript-eslint/await-thenable': 'off',
     '@typescript-eslint/consistent-return': 'off',
@@ -25,6 +25,7 @@ export = {
     '@typescript-eslint/no-implied-eval': 'off',
     '@typescript-eslint/no-meaningless-void-operator': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
+    '@typescript-eslint/no-misused-spread': 'off',
     '@typescript-eslint/no-mixed-enums': 'off',
     '@typescript-eslint/no-redundant-type-constituents': 'off',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',

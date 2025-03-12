@@ -1,10 +1,22 @@
 {
-  "extends": "./tsconfig.build.json",
-  "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
-  },
-  "include": ["src", "tests", "tools"],
-  "exclude": ["tests/fixtures"],
-  "references": [{ "path": "../parser/tsconfig.build.json" }]
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "../utils"
+    },
+    {
+      "path": "../parser"
+    },
+    {
+      "path": "../eslint-plugin"
+    },
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

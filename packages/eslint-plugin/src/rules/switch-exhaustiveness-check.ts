@@ -23,7 +23,7 @@ interface SwitchMetadata {
   readonly symbolName: string | undefined;
 }
 
-type Options = [
+export type Options = [
   {
     /**
      * If `true`, allow `default` cases on switch statements with exhaustive
@@ -54,7 +54,7 @@ type Options = [
   },
 ];
 
-type MessageIds =
+export type MessageIds =
   | 'addMissingCases'
   | 'dangerousDefaultCase'
   | 'switchIsNotExhaustive';
@@ -140,6 +140,16 @@ export default createRule<Options, MessageIds>({
       }
 
       return;
+    }
+
+    function typeToString(type: ts.Type): string {
+      return checker.typeToString(
+        type,
+        undefined,
+        ts.TypeFormatFlags.AllowUniqueESSymbolType |
+          ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope |
+          ts.TypeFormatFlags.UseFullyQualifiedType,
+      );
     }
 
     function getSwitchMetadata(node: TSESTree.SwitchStatement): SwitchMetadata {
@@ -230,7 +240,7 @@ export default createRule<Options, MessageIds>({
               .map(missingType =>
                 tsutils.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
                   ? `typeof ${missingType.getSymbol()?.escapedName as string}`
-                  : checker.typeToString(missingType),
+                  : typeToString(missingType),
               )
               .join(' | '),
           },
@@ -282,7 +292,7 @@ export default createRule<Options, MessageIds>({
         )
           ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             missingBranchName!
-          : checker.typeToString(missingBranchType);
+          : typeToString(missingBranchType);
 
         if (
           symbolName &&

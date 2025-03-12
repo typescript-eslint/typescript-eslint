@@ -3,15 +3,15 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, isDefinitionFile } from '../util';
 import { isTypeImport } from '../util/isTypeImport';
 
-type MessageIds = 'noShadow' | 'noShadowGlobal';
-type Options = [
+export type MessageIds = 'noShadow' | 'noShadowGlobal';
+export type Options = [
   {
     allow?: string[];
     builtinGlobals?: boolean;
-    hoist?: 'all' | 'functions' | 'never';
+    hoist?: 'all' | 'functions' | 'functions-and-types' | 'never' | 'types';
     ignoreFunctionTypeParameterNameValueShadow?: boolean;
     ignoreOnInitialization?: boolean;
     ignoreTypeValueShadow?: boolean;
@@ -22,6 +22,17 @@ const allowedFunctionVariableDefTypes = new Set([
   AST_NODE_TYPES.TSCallSignatureDeclaration,
   AST_NODE_TYPES.TSFunctionType,
   AST_NODE_TYPES.TSMethodSignature,
+  AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
+  AST_NODE_TYPES.TSDeclareFunction,
+  AST_NODE_TYPES.TSConstructSignatureDeclaration,
+  AST_NODE_TYPES.TSConstructorType,
+]);
+
+const functionsHoistedNodes = new Set([AST_NODE_TYPES.FunctionDeclaration]);
+
+const typesHoistedNodes = new Set([
+  AST_NODE_TYPES.TSInterfaceDeclaration,
+  AST_NODE_TYPES.TSTypeAliasDeclaration,
 ]);
 
 export default createRule<Options, MessageIds>({
@@ -59,7 +70,7 @@ export default createRule<Options, MessageIds>({
             type: 'string',
             description:
               'Whether to report shadowing before outer functions or variables are defined.',
-            enum: ['all', 'functions', 'never'],
+            enum: ['all', 'functions', 'functions-and-types', 'never', 'types'],
           },
           ignoreFunctionTypeParameterNameValueShadow: {
             type: 'boolean',
@@ -84,7 +95,7 @@ export default createRule<Options, MessageIds>({
     {
       allow: [],
       builtinGlobals: false,
-      hoist: 'functions',
+      hoist: 'functions-and-types',
       ignoreFunctionTypeParameterNameValueShadow: true,
       ignoreOnInitialization: false,
       ignoreTypeValueShadow: true,
@@ -268,9 +279,8 @@ export default createRule<Options, MessageIds>({
           scope,
           firstDefinition.parent.source.value,
         ) &&
-        secondDefinition.node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
-        secondDefinition.node.parent.type ===
-          AST_NODE_TYPES.ExportNamedDeclaration
+        (secondDefinition.node.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
+          secondDefinition.node.type === AST_NODE_TYPES.TSTypeAliasDeclaration)
       );
     }
 
@@ -509,15 +519,30 @@ export default createRule<Options, MessageIds>({
       const inner = getNameRange(variable);
       const outer = getNameRange(scopeVar);
 
-      return !!(
-        inner &&
-        outer &&
-        inner[1] < outer[0] &&
-        // Excepts FunctionDeclaration if is {"hoist":"function"}.
-        (options.hoist !== 'functions' ||
-          !outerDef ||
-          outerDef.node.type !== AST_NODE_TYPES.FunctionDeclaration)
-      );
+      if (!inner || !outer || inner[1] >= outer[0]) {
+        return false;
+      }
+
+      if (!outerDef) {
+        return true;
+      }
+
+      if (options.hoist === 'functions') {
+        return !functionsHoistedNodes.has(outerDef.node.type);
+      }
+
+      if (options.hoist === 'types') {
+        return !typesHoistedNodes.has(outerDef.node.type);
+      }
+
+      if (options.hoist === 'functions-and-types') {
+        return (
+          !functionsHoistedNodes.has(outerDef.node.type) &&
+          !typesHoistedNodes.has(outerDef.node.type)
+        );
+      }
+
+      return true;
     }
 
     /**
@@ -539,6 +564,25 @@ export default createRule<Options, MessageIds>({
       return {
         global: true,
       };
+    }
+
+    /**
+     * Checks if the initialization of a variable has the declare modifier in a
+     * definition file.
+     */
+    function isDeclareInDTSFile(variable: TSESLint.Scope.Variable): boolean {
+      const fileName = context.filename;
+      if (!isDefinitionFile(fileName)) {
+        return false;
+      }
+      return variable.defs.some(def => {
+        return (
+          (def.type === DefinitionType.Variable && def.parent.declare) ||
+          (def.type === DefinitionType.ClassName && def.node.declare) ||
+          (def.type === DefinitionType.TSEnumName && def.node.declare) ||
+          (def.type === DefinitionType.TSModuleName && def.node.declare)
+        );
+      });
     }
 
     /**
@@ -576,6 +620,11 @@ export default createRule<Options, MessageIds>({
 
         // ignore configured allowed names
         if (isAllowed(variable)) {
+          continue;
+        }
+
+        // ignore variables with the declare keyword in .d.ts files
+        if (isDeclareInDTSFile(variable)) {
           continue;
         }
 

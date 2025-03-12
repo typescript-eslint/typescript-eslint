@@ -3,15 +3,20 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, nullThrows, NullThrowsReasons } from '../util';
+import {
+  createRule,
+  nullThrows,
+  NullThrowsReasons,
+  skipChainExpression,
+} from '../util';
 
-type Options = [
+export type Options = [
   {
     ignoreParameters?: boolean;
     ignoreProperties?: boolean;
   },
 ];
-type MessageIds = 'noInferrableType';
+export type MessageIds = 'noInferrableType';
 
 export default createRule<Options, MessageIds>({
   name: 'no-inferrable-types',
@@ -55,14 +60,12 @@ export default createRule<Options, MessageIds>({
       init: TSESTree.Expression,
       callName: string,
     ): boolean {
-      if (init.type === AST_NODE_TYPES.ChainExpression) {
-        return isFunctionCall(init.expression, callName);
-      }
+      const node = skipChainExpression(init);
 
       return (
-        init.type === AST_NODE_TYPES.CallExpression &&
-        init.callee.type === AST_NODE_TYPES.Identifier &&
-        init.callee.name === callName
+        node.type === AST_NODE_TYPES.CallExpression &&
+        node.callee.type === AST_NODE_TYPES.Identifier &&
+        node.callee.name === callName
       );
     }
     function isLiteral(init: TSESTree.Expression, typeName: string): boolean {
@@ -193,6 +196,7 @@ export default createRule<Options, MessageIds>({
      */
     function reportInferrableType(
       node:
+        | TSESTree.AccessorProperty
         | TSESTree.Parameter
         | TSESTree.PropertyDefinition
         | TSESTree.VariableDeclarator,
@@ -265,7 +269,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function inferrablePropertyVisitor(
-      node: TSESTree.PropertyDefinition,
+      node: TSESTree.AccessorProperty | TSESTree.PropertyDefinition,
     ): void {
       // We ignore `readonly` because of Microsoft/TypeScript#14416
       // Essentially a readonly property without a type
@@ -278,6 +282,7 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
+      AccessorProperty: inferrablePropertyVisitor,
       ArrowFunctionExpression: inferrableParameterVisitor,
       FunctionDeclaration: inferrableParameterVisitor,
       FunctionExpression: inferrableParameterVisitor,

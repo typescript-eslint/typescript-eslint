@@ -19,7 +19,7 @@ import stylisticConfig from './configs/stylistic';
 import stylisticTypeCheckedConfig from './configs/stylistic-type-checked';
 import stylisticTypeCheckedOnlyConfig from './configs/stylistic-type-checked-only';
 
-const parser: TSESLint.FlatConfig.Parser = {
+export const parser: TSESLint.FlatConfig.Parser = {
   meta: parserBase.meta,
   parseForESLint: parserBase.parseForESLint,
 };
@@ -47,12 +47,12 @@ use our new package); however legacy configs consumed via `@eslint/eslintrc`
 would never be able to satisfy this constraint and thus users would be blocked
 from using them.
 */
-const plugin: TSESLint.FlatConfig.Plugin = pluginBase as Omit<
+export const plugin: TSESLint.FlatConfig.Plugin = pluginBase as Omit<
   typeof pluginBase,
   'configs'
 >;
 
-const configs = {
+export const configs = {
   /**
    * Enables each the rules provided as a part of typescript-eslint. Note that many rules are not applicable in all codebases, or are meant to be configured.
    * @see {@link https://typescript-eslint.io/users/configs#all}
@@ -184,6 +184,10 @@ export default {
   parser,
   plugin,
 };
-export { configs, parser, plugin };
 
-export { config, type ConfigWithExtends } from './config-helper';
+export {
+  config,
+  type ConfigWithExtends,
+  type InfiniteDepthConfigWithExtends,
+  type ConfigArray,
+} from './config-helper';

@@ -34,6 +34,7 @@ The inferred type of 'default' cannot be named without a reference to
 This is likely not portable. A type annotation is necessary. ts(2742)
 ```
 */
+/* eslint-disable no-restricted-syntax */
 
 import type {
   RuleModuleWithMetaDocs,

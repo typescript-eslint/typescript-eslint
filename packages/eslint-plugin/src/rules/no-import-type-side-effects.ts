@@ -10,8 +10,8 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type Options = [];
-type MessageIds = 'useTopLevelQualifier';
+export type Options = [];
+export type MessageIds = 'useTopLevelQualifier';
 
 export default createRule<Options, MessageIds>({
   name: 'no-import-type-side-effects',

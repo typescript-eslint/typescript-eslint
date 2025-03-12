@@ -6,7 +6,7 @@ import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class SwitchScope extends ScopeBase<
+export class SwitchScope extends ScopeBase<
   ScopeType.switch,
   TSESTree.SwitchStatement,
   Scope
@@ -19,5 +19,3 @@ class SwitchScope extends ScopeBase<
     super(scopeManager, ScopeType.switch, upperScope, block, false);
   }
 }
-
-export { SwitchScope };

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-namespace, no-restricted-syntax */
 
 import { Linter as ESLintLinter } from 'eslint';
 

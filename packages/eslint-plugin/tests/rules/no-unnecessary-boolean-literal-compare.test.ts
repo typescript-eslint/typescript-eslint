@@ -1,4 +1,5 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-unnecessary-boolean-literal-compare';
 import { getFixturesRootDir } from '../RuleTester';
@@ -109,6 +110,38 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
     },
     "'false' === true;",
     "'true' === false;",
+    `
+const unconstrained: <T>(someCondition: T) => void = someCondition => {
+  if (someCondition === true) {
+  }
+};
+    `,
+    `
+const extendsUnknown: <T extends unknown>(
+  someCondition: T,
+) => void = someCondition => {
+  if (someCondition === true) {
+  }
+};
+    `,
+    {
+      code: `
+function test(a?: boolean): boolean {
+  // eslint-disable-next-line
+  return a !== false;
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'unstrict'),
+        },
+      },
+      options: [
+        {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
+        },
+      ],
+    },
   ],
 
   invalid: [
@@ -571,6 +604,26 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
           }
         };
       `,
+    },
+    {
+      code: `
+function foo(): boolean {}
+      `,
+      errors: [
+        {
+          messageId: 'noStrictNullCheck',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'unstrict'),
+        },
+      },
+      options: [
+        {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+        },
+      ],
     },
   ],
 });

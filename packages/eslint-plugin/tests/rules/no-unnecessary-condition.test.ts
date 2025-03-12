@@ -27,6 +27,12 @@ const optionsWithExactOptionalPropertyTypes = {
   tsconfigRootDir: rootPath,
 };
 
+const optionsWithNoUncheckedIndexedAccess = {
+  project: './tsconfig.noUncheckedIndexedAccess.json',
+  projectService: false,
+  tsconfigRootDir: getFixturesRootDir(),
+};
+
 const necessaryConditionTest = (condition: string): string => `
 declare const b1: ${condition};
 declare const b2: boolean;
@@ -135,6 +141,24 @@ function test<T>(t: T) {
 // Naked type param in union
 function test<T>(t: T | []) {
   return t ? 'yes' : 'no';
+}
+    `,
+    `
+function test<T>(arg: T, key: keyof T) {
+  if (arg[key]?.toString()) {
+  }
+}
+    `,
+    `
+function test<T>(arg: T, key: keyof T) {
+  if (arg?.toString()) {
+  }
+}
+    `,
+    `
+function test<T>(arg: T | { value: string }) {
+  if (arg?.value) {
+  }
 }
     `,
 
@@ -287,6 +311,22 @@ function count(
   return list.filter(predicate).length;
 }
     `,
+    `
+declare const test: <T>() => T;
+
+[1, null].filter(test);
+    `,
+    `
+declare const test: <T extends boolean>() => T;
+
+[1, null].filter(test);
+    `,
+    `
+[1, null].filter(1 as any);
+    `,
+    `
+[1, null].filter(1 as never);
+    `,
     // Ignores non-array methods of the same name
     `
 const notArray = {
@@ -405,10 +445,62 @@ const x = b1 && b2;
     {
       code: `
 while (true) {}
+      `,
+      options: [{ allowConstantLoopConditions: true }],
+    },
+    {
+      code: `
 for (; true; ) {}
+      `,
+      options: [{ allowConstantLoopConditions: true }],
+    },
+    {
+      code: `
 do {} while (true);
       `,
       options: [{ allowConstantLoopConditions: true }],
+    },
+    {
+      code: `
+while (true) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'always' }],
+    },
+    {
+      code: `
+for (; true; ) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'always' }],
+    },
+    {
+      code: `
+do {} while (true);
+      `,
+      options: [{ allowConstantLoopConditions: 'always' }],
+    },
+    {
+      code: `
+while (true) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+while (1) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+while (false) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+while (0) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     `
 let variable = 'abc' as string | void;
@@ -591,11 +683,7 @@ const key = '1' as BrandedKey;
 foo?.[key]?.trim();
       `,
       languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
     },
     {
@@ -649,11 +737,7 @@ function Foo(outer: Outer, key: Foo): number | undefined {
 }
       `,
       languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
     },
     {
@@ -666,11 +750,51 @@ declare const key: Key;
 foo?.[key]?.trim();
       `,
       languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
+      },
+    },
+    {
+      code: `
+type Foo = {
+  key?: Record<string, { key: string }>;
+};
+declare const foo: Foo;
+foo.key?.someKey?.key;
+      `,
+      languageOptions: {
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
+      },
+    },
+    {
+      code: `
+type Foo = {
+  key?: {
+    [key: string]: () => void;
+  };
+};
+declare const foo: Foo;
+foo.key?.value?.();
+      `,
+      languageOptions: {
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
+      },
+    },
+    {
+      code: `
+type A = {
+  [name in Lowercase<string>]?: {
+    [name in Lowercase<string>]: {
+      a: 1;
+    };
+  };
+};
+
+declare const a: A;
+
+a.a?.a?.a;
+      `,
+      languageOptions: {
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
     },
     `
@@ -1745,6 +1869,14 @@ function nothing3(x: [string, string]) {
         { column: 25, line: 17, messageId: 'alwaysFalsy' },
       ],
     },
+    {
+      code: `
+declare const test: <T extends true>() => T;
+
+[1, null].filter(test);
+      `,
+      errors: [{ column: 18, line: 4, messageId: 'alwaysTruthyFunc' }],
+    },
     // Indexing cases
     {
       // This is an error because 'dict' doesn't represent
@@ -1817,16 +1949,137 @@ function falsy() {}
     //     },
     {
       code: `
-while (true) {}
-for (; true; ) {}
-do {} while (true);
+declare const test: true;
+
+while (test) {}
       `,
-      errors: [
-        { column: 8, line: 2, messageId: 'alwaysTruthy' },
-        { column: 8, line: 3, messageId: 'alwaysTruthy' },
-        { column: 14, line: 4, messageId: 'alwaysTruthy' },
-      ],
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
       options: [{ allowConstantLoopConditions: false }],
+    },
+    {
+      code: `
+declare const test: true;
+
+for (; test; ) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: false }],
+    },
+    {
+      code: `
+declare const test: true;
+
+do {} while (test);
+      `,
+      errors: [{ column: 14, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: false }],
+    },
+    {
+      code: `
+declare const test: true;
+
+while (test) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'never' }],
+    },
+    {
+      code: `
+declare const test: true;
+
+for (; test; ) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'never' }],
+    },
+    {
+      code: `
+declare const test: true;
+
+do {} while (test);
+      `,
+      errors: [{ column: 14, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'never' }],
+    },
+    {
+      code: `
+declare const test: true;
+
+while (test) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+declare const test: 1;
+
+while (test) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+declare const test: true;
+
+for (; test; ) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+declare const test: true;
+
+do {} while (test);
+      `,
+      errors: [{ column: 14, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+for (; true; ) {}
+      `,
+      errors: [{ column: 8, line: 2, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+for (; 0; ) {}
+      `,
+      errors: [{ column: 8, line: 2, messageId: 'alwaysFalsy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+do {} while (0);
+      `,
+      errors: [{ column: 14, line: 2, messageId: 'alwaysFalsy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+let shouldRun = true;
+
+while ((shouldRun = true)) {}
+      `,
+      errors: [{ column: 9, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+while (2) {}
+      `,
+      errors: [{ column: 8, line: 2, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+while ('truthy') {}
+      `,
+      errors: [{ column: 8, line: 2, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: noFormat`

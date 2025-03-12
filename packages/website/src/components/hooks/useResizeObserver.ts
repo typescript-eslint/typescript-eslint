@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
-const useResizeObserver = (
+export const useResizeObserver = (
   element: HTMLElement | null,
   callback: () => void,
 ): void => {
@@ -21,5 +21,3 @@ const useResizeObserver = (
     };
   }, [element, resizeObserver]);
 };
-
-export { useResizeObserver };

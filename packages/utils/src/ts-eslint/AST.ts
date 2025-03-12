@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-namespace, no-restricted-syntax */
 
 import type { AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
 

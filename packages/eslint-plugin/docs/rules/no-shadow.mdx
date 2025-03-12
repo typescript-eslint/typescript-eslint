@@ -9,7 +9,6 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-shadow** for documentation.
 
-This rule extends the base [`eslint/no-shadow`](https://eslint.org/docs/rules/no-shadow) rule.
 It adds support for TypeScript's `this` parameters and global augmentation, and adds options for TypeScript features.
 
 ## Options
@@ -17,16 +16,50 @@ It adds support for TypeScript's `this` parameters and global augmentation, and 
 This rule adds the following options:
 
 ```ts
+type AdditionalHoistOptionEntries = 'types' | 'functions-and-types';
+
+type HoistOptionEntries =
+  | BaseNoShadowHoistOptionEntries
+  | AdditionalHoistOptionEntries;
+
 interface Options extends BaseNoShadowOptions {
+  hoist?: HoistOptionEntries;
   ignoreTypeValueShadow?: boolean;
   ignoreFunctionTypeParameterNameValueShadow?: boolean;
 }
 
 const defaultOptions: Options = {
   ...baseNoShadowDefaultOptions,
+  hoist: 'functions-and-types',
   ignoreTypeValueShadow: true,
   ignoreFunctionTypeParameterNameValueShadow: true,
 };
+```
+
+### hoist: `types`
+
+Examples of incorrect code for the `{ "hoist": "types" }` option:
+
+```ts option='{ "hoist": "types" }' showPlaygroundButton
+type Bar<Foo> = 1;
+type Foo = 1;
+```
+
+### hoist: `functions-and-types`
+
+Examples of incorrect code for the `{ "hoist": "functions-and-types" }` option:
+
+```ts option='{ "hoist": "functions-and-types" }' showPlaygroundButton
+// types
+type Bar<Foo> = 1;
+type Foo = 1;
+
+// functions
+if (true) {
+  let b = 6;
+}
+
+function b() {}
 ```
 
 ### `ignoreTypeValueShadow`
