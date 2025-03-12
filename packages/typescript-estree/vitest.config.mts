@@ -8,6 +8,8 @@ const vitestConfig = mergeConfig(
   vitestBaseConfig,
 
   defineProject({
+    root: import.meta.dirname,
+
     test: {
       dir: path.join(import.meta.dirname, 'tests', 'lib'),
 
@@ -17,6 +19,7 @@ const vitestConfig = mergeConfig(
 
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
+      testTimeout: 10_000,
       unstubEnvs: true,
       unstubGlobals: true,
     },

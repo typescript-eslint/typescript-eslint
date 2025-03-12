@@ -635,40 +635,30 @@ describe(parser.parseAndGenerateServices, () => {
             ).toThrow(/notIncluded\.vue was not found by the project service/);
           });
 
-          it('duplicate extension', { timeout: 10_000 }, () => {
+          it('duplicate extension', () => {
             expect(
               testExtraFileExtensions('ts/notIncluded.ts', ['.ts']),
             ).toThrow(/notIncluded\.ts was not found by the project service/);
           });
         });
 
-        it(
-          'extension matching the file name but not a file on disk',
-          { timeout: 10_000 },
-          () => {
-            expect(
-              testExtraFileExtensions('other/unknownFileType.unknown', [
-                '.unknown',
-              ]),
-            ).toThrow(
-              /unknownFileType\.unknown was not found by the project service/,
-            );
-          },
-        );
+        it('extension matching the file name but not a file on disk', () => {
+          expect(
+            testExtraFileExtensions('other/unknownFileType.unknown', [
+              '.unknown',
+            ]),
+          ).toThrow(
+            /unknownFileType\.unknown was not found by the project service/,
+          );
+        });
 
-        it(
-          'the extension does not match the file name',
-          { timeout: 10_000 },
-          () => {
-            expect(
-              testExtraFileExtensions('other/unknownFileType.unknown', [
-                '.vue',
-              ]),
-            ).toThrow(
-              /unknownFileType\.unknown was not found by the project service/,
-            );
-          },
-        );
+        it('the extension does not match the file name', () => {
+          expect(
+            testExtraFileExtensions('other/unknownFileType.unknown', ['.vue']),
+          ).toThrow(
+            /unknownFileType\.unknown was not found by the project service/,
+          );
+        });
       });
     },
   );
@@ -814,7 +804,7 @@ describe(parser.parseAndGenerateServices, () => {
           });
         };
 
-      it('ignores nothing when given nothing', { timeout: 10_000 }, () => {
+      it('ignores nothing when given nothing', () => {
         expect(testParse('ignoreme')).not.toThrow();
         expect(testParse('includeme')).not.toThrow();
       });
