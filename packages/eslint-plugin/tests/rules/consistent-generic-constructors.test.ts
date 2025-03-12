@@ -330,31 +330,6 @@ const a = function (a = new Foo<string>()) {};
       `,
     },
     {
-      code: `
-class Uint8Array<T> {
-  // ...
-}
-
-let a: Uint8Array<ArrayBufferLike> = new Uint8Array();
-
-export {};
-      `,
-      errors: [
-        {
-          messageId: 'preferConstructor',
-        },
-      ],
-      output: `
-class Uint8Array<T> {
-  // ...
-}
-
-let a = new Uint8Array<ArrayBufferLike>();
-
-export {};
-      `,
-    },
-    {
       code: 'const a = new Foo<string>();',
       errors: [
         {
@@ -550,32 +525,6 @@ const a = function (a = new Foo<string>()) {};
       options: ['type-annotation'],
       output: `
 const a = function (a: Foo<string> = new Foo()) {};
-      `,
-    },
-    {
-      code: `
-class Uint8Array<T> {
-  // ...
-}
-
-let a = new Uint8Array<ArrayBufferLike>();
-
-export {};
-      `,
-      errors: [
-        {
-          messageId: 'preferTypeAnnotation',
-        },
-      ],
-      options: ['type-annotation'],
-      output: `
-class Uint8Array<T> {
-  // ...
-}
-
-let a: Uint8Array<ArrayBufferLike> = new Uint8Array();
-
-export {};
       `,
     },
   ],

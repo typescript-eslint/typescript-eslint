@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
@@ -35,25 +34,27 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['constructor'],
   create(context, [mode]) {
     const isTypedArrayReference = (typeNode: TSESTree.TypeNode) => {
+      const typedArrayNames = [
+        'Int8Array',
+        'Uint8Array',
+        'Uint8ClampedArray',
+        'Int16Array',
+        'Uint16Array',
+        'Int32Array',
+        'Uint32Array',
+        'BigInt64Array',
+        'BigUint64Array',
+        'Float32Array',
+        'Float64Array',
+      ];
       if (
-        typeNode.type !== AST_NODE_TYPES.TSTypeReference ||
-        typeNode.typeName.type !== AST_NODE_TYPES.Identifier ||
-        !typedArrayNames.has(typeNode.typeName.name)
+        typeNode.type === AST_NODE_TYPES.TSTypeReference &&
+        typeNode.typeName.type === AST_NODE_TYPES.Identifier &&
+        typedArrayNames.includes(typeNode.typeName.name)
       ) {
-        return false;
-      }
-
-      const scope = context.sourceCode.getScope(typeNode);
-      const variable = scope.set.get(typeNode.typeName.name);
-      if (!variable) {
         return true;
       }
-      for (const definition of variable.defs) {
-        if (definition.type === DefinitionType.ClassName) {
-          return false;
-        }
-      }
-      return true;
+      return false;
     };
 
     return {
@@ -82,6 +83,7 @@ export default createRule<Options, MessageIds>({
         }
         const [lhsName, rhs] = getLHSRHS();
         const lhs = lhsName.typeAnnotation?.typeAnnotation;
+
         // If it's a typed array, we will ignore.
         // https://github.com/typescript-eslint/typescript-eslint/issues/10445
         if (lhs && isTypedArrayReference(lhs)) {
@@ -176,17 +178,3 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
-
-const typedArrayNames = new Set([
-  'Int8Array',
-  'Uint8Array',
-  'Uint8ClampedArray',
-  'Int16Array',
-  'Uint16Array',
-  'Int32Array',
-  'Uint32Array',
-  'BigInt64Array',
-  'BigUint64Array',
-  'Float32Array',
-  'Float64Array',
-]);
