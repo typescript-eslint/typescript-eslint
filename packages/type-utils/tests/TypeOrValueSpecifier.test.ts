@@ -741,7 +741,7 @@ describe('TypeOrValueSpecifier', () => {
   describe('valueMatchesSomeSpecifier', () => {
     function runTests(
       code: string,
-      specifiers: TypeOrValueSpecifier[],
+      specifiers: TypeOrValueSpecifier[] | undefined,
       expected: boolean,
     ): void {
       const rootDir = path.join(__dirname, 'fixtures');
@@ -768,7 +768,7 @@ describe('TypeOrValueSpecifier', () => {
 
     function runTestNegative(
       code: string,
-      specifiers: TypeOrValueSpecifier[],
+      specifiers: TypeOrValueSpecifier[] | undefined,
     ): void {
       runTests(code, specifiers, false);
     }
@@ -779,8 +779,9 @@ describe('TypeOrValueSpecifier', () => {
       ['var value = 45; const hoge = value;', ['value', 'hoge']],
     ])('matches a matching universal string specifiers: %s', runTestPositive);
 
-    it.each<[string, TypeOrValueSpecifier[]]>([
+    it.each<[string, TypeOrValueSpecifier[] | undefined]>([
       ['const value = 45; const hoge = value;', ['incorrect', 'invalid']],
+      ['const value = 45; const hoge = value;', undefined],
     ])(
       "doesn't match a mismatched universal string specifiers: %s",
       runTestNegative,
