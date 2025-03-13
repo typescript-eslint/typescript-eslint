@@ -1,3 +1,23 @@
+## 8.26.1 (2025-03-10)
+
+This was a version bump only for scope-manager to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.26.0 (2025-03-03)
+
+### 🚀 Features
+
+- **scope-manager:** only call Object.entries once for each lib ([#10647](https://github.com/typescript-eslint/typescript-eslint/pull/10647))
+- support TypeScript 5.8 ([#10903](https://github.com/typescript-eslint/typescript-eslint/pull/10903))
+
+### ❤️ Thank You
+
+- David Michon
+- Dirk Luijk @dirkluijk
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.25.0 (2025-02-24)
 
 This was a version bump only for scope-manager to align it with other projects, there were no code changes.

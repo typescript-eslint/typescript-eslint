@@ -13,7 +13,7 @@ import {
   isNodeEqual,
   isNodeOfTypes,
   isNullLiteral,
-  isPossiblyNullish,
+  isNullableType,
   isUndefinedIdentifier,
   nullThrows,
   NullThrowsReasons,
@@ -193,7 +193,7 @@ export default createRule<Options, MessageIds>({
      * a nullishness check, taking into account the rule's configuration.
      */
     function isTypeEligibleForPreferNullish(type: ts.Type): boolean {
-      if (!isPossiblyNullish(type)) {
+      if (!isNullableType(type)) {
         return false;
       }
 
@@ -211,14 +211,33 @@ export default createRule<Options, MessageIds>({
       ]
         .filter((flag): flag is number => typeof flag === 'number')
         .reduce((previous, flag) => previous | flag, 0);
+
+      if (ignorableFlags === 0) {
+        // any types are eligible for conversion.
+        return true;
+      }
+
+      // if the type is `any` or `unknown` we can't make any assumptions
+      // about the value, so it could be any primitive, even though the flags
+      // won't be set.
+      //
+      // technically, this is true of `void` as well, however, it's a TS error
+      // to test `void` for truthiness, so we don't need to bother checking for
+      // it in valid code.
       if (
-        type.flags !== ts.TypeFlags.Null &&
-        type.flags !== ts.TypeFlags.Undefined &&
-        (type as ts.UnionOrIntersectionType).types.some(t =>
-          tsutils
-            .intersectionTypeParts(t)
-            .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
-        )
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)
+      ) {
+        return false;
+      }
+
+      if (
+        tsutils
+          .typeParts(type)
+          .some(t =>
+            tsutils
+              .intersectionTypeParts(t)
+              .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
+          )
       ) {
         return false;
       }

@@ -15,7 +15,7 @@
     "build": "docusaurus build",
     "clear": "docusaurus clear",
     "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore",
-    "generate-website-dts": "tsx ./tools/generate-website-dts.ts",
+    "generate-website-dts": "tsx ./tools/generate-website-dts.mts",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
     "lint": "npx nx lint",

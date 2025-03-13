@@ -5,15 +5,16 @@
 
 import type { LibDefinition } from '../variable';
 
-import { TYPE } from './base-config';
+import { TYPE, TYPE_VALUE } from './base-config';
 import { es2015_iterable } from './es2015.iterable';
 import { es2015_symbol } from './es2015.symbol';
 
-export const es2020_symbol_wellknown: LibDefinition = {
-  libs: [es2015_iterable, es2015_symbol],
+export const esnext_float16: LibDefinition = {
+  libs: [es2015_symbol, es2015_iterable],
   variables: [
-    ['SymbolConstructor', TYPE],
-    ['RegExpStringIterator', TYPE],
-    ['RegExp', TYPE],
+    ['Float16Array', TYPE_VALUE],
+    ['Float16ArrayConstructor', TYPE],
+    ['Math', TYPE],
+    ['DataView', TYPE],
   ],
 };
