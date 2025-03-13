@@ -259,7 +259,7 @@ export function valueMatchesSpecifier(
 
 export const valueMatchesSomeSpecifier = (
   node: TSESTree.Node,
-  specifiers: TypeOrValueSpecifier[],
+  specifiers: TypeOrValueSpecifier[] = [],
   scopeManager: ScopeManager,
 ): boolean =>
   specifiers.some(specifier =>
