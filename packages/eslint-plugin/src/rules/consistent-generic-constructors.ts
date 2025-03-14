@@ -36,6 +36,7 @@ export default createRule<Options, MessageIds>({
       },
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           ignoreConstructors: {
             type: 'array',

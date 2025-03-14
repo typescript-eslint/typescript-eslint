@@ -9,6 +9,19 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "description": "Which constructor call syntax to prefer.",
     "enum": ["constructor", "type-annotation"],
     "type": "string"
+  },
+  {
+    "additionalProperties": false,
+    "properties": {
+      "ignoreConstructors": {
+        "description": "A list of constructor names to ignore when enforcing the rule.",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
   }
 ]
 
@@ -17,9 +30,15 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   /** Which constructor call syntax to prefer. */
-  | 'type-annotation'
-  /** Which constructor call syntax to prefer. */
-  | 'constructor',
+  (
+    | 'type-annotation'
+    /** Which constructor call syntax to prefer. */
+    | 'constructor'
+  ),
+  {
+    /** A list of constructor names to ignore when enforcing the rule. */
+    ignoreConstructors?: string[];
+  },
 ];
 "
 `;
