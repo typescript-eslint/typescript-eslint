@@ -825,12 +825,42 @@ function promiseInUnionWithoutExplicitReturnType(p: boolean) {
       `,
       errors: [
         {
-          messageId: 'missingAsyncMixedReturn',
+          messageId: 'missingAsyncHybridReturn',
         },
       ],
       output: `
 async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
   return p ? Promise.resolve(5) : 5;
+}
+      `,
+    },
+    {
+      code: `
+class PromiseType {
+  s?: string;
+}
+
+function promiseInUnionWithoutExplicitReturnType(p: boolean) {
+  return p ? new PromiseType() : 5;
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAsyncHybridReturn',
+        },
+      ],
+      options: [
+        {
+          allowedPromiseNames: ['PromiseType'],
+        },
+      ],
+      output: `
+class PromiseType {
+  s?: string;
+}
+
+async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
+  return p ? new PromiseType() : 5;
 }
       `,
     },
