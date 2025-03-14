@@ -836,6 +836,35 @@ async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
     },
     {
       code: `
+function test1(): 'one' | Promise<'one'>;
+function test1(a: number): Promise<number>;
+function test1(a?: number) {
+  if (a) {
+    return Promise.resolve(a);
+  }
+
+  return Math.random() > 0.5 ? 'one' : Promise.resolve('one');
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAsyncHybridReturn',
+        },
+      ],
+      output: `
+function test1(): 'one' | Promise<'one'>;
+function test1(a: number): Promise<number>;
+async function test1(a?: number) {
+  if (a) {
+    return Promise.resolve(a);
+  }
+
+  return Math.random() > 0.5 ? 'one' : Promise.resolve('one');
+}
+      `,
+    },
+    {
+      code: `
 class PromiseType {
   s?: string;
 }
