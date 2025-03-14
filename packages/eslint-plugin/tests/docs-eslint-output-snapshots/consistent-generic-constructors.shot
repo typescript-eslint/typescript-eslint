@@ -44,3 +44,29 @@ const set = new Set();
 const set: Set<string> = new Set<string>();
 "
 `;
+
+exports[`Validating rule docs consistent-generic-constructors.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: "constructor"
+
+// Incorrect because Uint8Array has deffenrent type signature and not in ignoreConstructors list
+let a: Uint8Array<ArrayBufferLike> = new Uint8Array();
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The generic type arguments should be specified as part of the constructor type arguments.
+
+// Incorrect because type arguments appear in type-annotation and not in ignoreConstructors list
+let a: UserConstructor<Type> = new UserConstructor();
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The generic type arguments should be specified as part of the constructor type arguments.
+"
+`;
+
+exports[`Validating rule docs consistent-generic-constructors.mdx code examples ESLint output 6`] = `
+"Correct
+Options: "constructor", { "ignoreConstructors": ["Uint8Array", "UserConstructor"] }
+
+// Correct because Uint8Array has deffenrent type signature but are included in the ignoreConstructors list.
+let a: Uint8Array<ArrayBufferLike> = new Uint8Array();
+
+// Correct because type arguments appear in type-annotations but are included in the ignoreConstructors list.
+let a: UserConstructor<Type> = new UserConstructor();
+"
+`;

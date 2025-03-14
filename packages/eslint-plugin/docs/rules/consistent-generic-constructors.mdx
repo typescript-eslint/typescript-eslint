@@ -79,19 +79,36 @@ const set: Set<string> = new Set<string>();
 </TabItem>
 </Tabs>
 
-### `'ignoreConstructors'`
+### `ignoreConstructors`
 
 {/* insert option description */}
 
-This is useful when the type signature of a value differs from its type, for example with built-in array-likes.
+Some constructors have different type signatures between their type and value, for example like Uint8Array.
 
-The following patterns are considered correct with the options `{ "ignoreConstructors": ["Uint8Array", "UserConstructor"] }`:
+<Tabs>
+<TabItem value="❌ Incorrect">
 
-```ts option='"constructor", { "ignoreConstructors": ["Uint8Array", "UserConstructor"] }' showPlaygroundButton
+```ts option='"constructor"'
+// Incorrect because Uint8Array has deffenrent type signature and not in ignoreConstructors list
 let a: Uint8Array<ArrayBufferLike> = new Uint8Array();
 
+// Incorrect because type arguments appear in type-annotation and not in ignoreConstructors list
 let a: UserConstructor<Type> = new UserConstructor();
 ```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='"constructor", { "ignoreConstructors": ["Uint8Array", "UserConstructor"] }' showPlaygroundButton
+// Correct because Uint8Array has deffenrent type signature but are included in the ignoreConstructors list.
+let a: Uint8Array<ArrayBufferLike> = new Uint8Array();
+
+// Correct because type arguments appear in type-annotations but are included in the ignoreConstructors list.
+let a: UserConstructor<Type> = new UserConstructor();
+```
+
+</TabItem>
+</Tabs>
 
 ## When Not To Use It
 
