@@ -79,6 +79,20 @@ const set: Set<string> = new Set<string>();
 </TabItem>
 </Tabs>
 
+### `'ignoreConstructors'`
+
+{/* insert option description */}
+
+This is useful when the type signature of a value differs from its type, for example with built-in array-likes.
+
+The following patterns are considered correct with the options `{ "ignoreConstructors": ["Uint8Array", "UserConstructor"] }`:
+
+```ts option='"constructor", { "ignoreConstructors": ["Uint8Array", "UserConstructor"] }' showPlaygroundButton
+let a: Uint8Array<ArrayBufferLike> = new Uint8Array();
+
+let a: UserConstructor<Type> = new UserConstructor();
+```
+
 ## When Not To Use It
 
 You can turn this rule off if you don't want to enforce one kind of generic constructor style over the other.
