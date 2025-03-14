@@ -825,7 +825,7 @@ function promiseInUnionWithoutExplicitReturnType(p: boolean) {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsyncMixedReturn',
         },
       ],
       output: `
