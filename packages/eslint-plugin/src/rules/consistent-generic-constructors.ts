@@ -8,7 +8,7 @@ type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
 type Options = [
   'constructor' | 'type-annotation',
   {
-    ignoreConstructors?: string[];
+    ignore?: string[];
   }?,
 ];
 
@@ -38,7 +38,7 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          ignoreConstructors: {
+          ignore: {
             type: 'array',
             description:
               'A list of constructor names to ignore when enforcing the rule.',
@@ -97,7 +97,7 @@ export default createRule<Options, MessageIds>({
           (lhs.type !== AST_NODE_TYPES.TSTypeReference ||
             lhs.typeName.type !== AST_NODE_TYPES.Identifier ||
             lhs.typeName.name !== rhs.callee.name ||
-            options?.ignoreConstructors?.includes(lhs.typeName.name))
+            options?.ignore?.includes(lhs.typeName.name))
         ) {
           return;
         }

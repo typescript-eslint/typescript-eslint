@@ -47,7 +47,7 @@ const a = function (a: Foo = new Foo<string>()) {};
     `,
     {
       code: 'let a: Uint8Array<ArrayBufferLike> = new Uint8Array();',
-      options: ['constructor', { ignoreConstructors: ['Uint8Array'] }],
+      options: ['constructor', { ignore: ['Uint8Array'] }],
     },
     // type-annotation
     {

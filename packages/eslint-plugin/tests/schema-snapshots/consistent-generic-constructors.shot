@@ -13,7 +13,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
   {
     "additionalProperties": false,
     "properties": {
-      "ignoreConstructors": {
+      "ignore": {
         "description": "A list of constructor names to ignore when enforcing the rule.",
         "items": {
           "type": "string"
@@ -37,7 +37,7 @@ type Options = [
   ),
   {
     /** A list of constructor names to ignore when enforcing the rule. */
-    ignoreConstructors?: string[];
+    ignore?: string[];
   },
 ];
 "
