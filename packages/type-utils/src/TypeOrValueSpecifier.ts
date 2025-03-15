@@ -1,6 +1,9 @@
+import type { ScopeManager } from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/types';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type * as ts from 'typescript';
 
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as tsutils from 'ts-api-utils';
 
 import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
@@ -219,3 +222,46 @@ export const typeMatchesSomeSpecifier = (
   program: ts.Program,
 ): boolean =>
   specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));
+
+export function valueMatchesSpecifier(
+  node: TSESTree.Node,
+  specifier: TypeOrValueSpecifier,
+  scopeManager: ScopeManager,
+): boolean {
+  if (
+    node.type === AST_NODE_TYPES.Identifier ||
+    node.type === AST_NODE_TYPES.JSXIdentifier
+  ) {
+    if (typeof specifier === 'string') {
+      return node.name === specifier;
+    }
+
+    if (specifier.from === 'package') {
+      const variable = scopeManager.variables.find(v => v.name === node.name);
+      const targetNode = variable?.defs[0].parent;
+      if (targetNode?.type !== AST_NODE_TYPES.ImportDeclaration) {
+        return false;
+      }
+      if (targetNode.source.value !== specifier.package) {
+        return false;
+      }
+    }
+
+    if (typeof specifier.name === 'string') {
+      return node.name === specifier.name;
+    }
+
+    return specifier.name.includes(node.name);
+  }
+
+  return false;
+}
+
+export const valueMatchesSomeSpecifier = (
+  node: TSESTree.Node,
+  specifiers: TypeOrValueSpecifier[] = [],
+  scopeManager: ScopeManager,
+): boolean =>
+  specifiers.some(specifier =>
+    valueMatchesSpecifier(node, specifier, scopeManager),
+  );
