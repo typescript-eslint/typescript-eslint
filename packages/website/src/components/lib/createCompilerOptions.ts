@@ -26,9 +26,7 @@ export function createCompilerOptions(
 
   const options = config.options;
 
-  if (!options.lib) {
-    options.lib = [window.ts.getDefaultLibFileName(options)];
-  }
+  options.lib ??= [window.ts.getDefaultLibFileName(options)];
 
   return options;
 }
