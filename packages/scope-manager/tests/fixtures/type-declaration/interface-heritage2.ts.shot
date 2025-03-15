@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`type-declaration interface-heritage2 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -99,4 +96,3 @@ ScopeManager {
     },
   ],
 }
-`;
