@@ -12,10 +12,15 @@
     "tools/**/*.ts",
     "tools/**/*.mts",
     "eslint.config.mjs",
-    "jest.config.base.js",
-    "jest.config.js",
-    "jest.preset.js",
     "knip.ts",
     ".github/**/*.js"
+  ],
+  "references": [
+    {
+      "path": "./packages/typescript-eslint/tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
   ]
 }
