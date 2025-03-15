@@ -7,10 +7,15 @@
  * against the exact same version of the package.
  */
 
-import { spawnSync } from 'node:child_process';
-import fs from 'node:fs';
+import type { TestProject } from 'vitest/node';
+
+import * as child_process from 'node:child_process';
+import fs from 'node:fs/promises';
+import * as os from 'node:os';
 import path from 'node:path';
-import tmp from 'tmp';
+import { promisify } from 'node:util';
+
+const execFile = promisify(child_process.execFile);
 
 interface PackageJSON {
   devDependencies: Record<string, string>;
@@ -18,37 +23,81 @@ interface PackageJSON {
   private?: boolean;
 }
 
-const PACKAGES_DIR = path.resolve(__dirname, '..', '..');
-const PACKAGES = fs.readdirSync(PACKAGES_DIR);
-
-const tarFolder = tmp.dirSync({
-  // because of how jest executes things, we need to ensure
-  // the temp files hang around
-  keep: true,
-}).name;
-
-export const tseslintPackages: PackageJSON['devDependencies'] = {};
-for (const pkg of PACKAGES) {
-  const packageDir = path.join(PACKAGES_DIR, pkg);
-  const packagePath = path.join(packageDir, 'package.json');
-  if (!fs.existsSync(packagePath)) {
-    continue;
+declare module 'vitest' {
+  export interface ProvidedContext {
+    tseslintPackages: PackageJSON['devDependencies'];
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-require-imports -- this file needs to be sync and CJS for jest
-  const packageJson = require(packagePath) as PackageJSON;
-  if (packageJson.private === true) {
-    continue;
-  }
-
-  const result = spawnSync('npm', ['pack', packageDir], {
-    cwd: tarFolder,
-    encoding: 'utf-8',
-  });
-  const stdoutLines = result.stdout.trim().split('\n');
-  const tarball = stdoutLines[stdoutLines.length - 1];
-
-  tseslintPackages[packageJson.name] = `file:${path.join(tarFolder, tarball)}`;
 }
 
-console.log('Finished packing local packages.');
+const PACKAGES_DIR = path.resolve(__dirname, '..', '..');
+
+const homeOrTmpDir = os.tmpdir() || os.homedir();
+
+const tarFolder = path.join(
+  homeOrTmpDir,
+  'typescript-eslint-integration-tests',
+  'tarballs',
+);
+
+export const setup = async (project: TestProject): Promise<void> => {
+  const PACKAGES = await fs.readdir(PACKAGES_DIR, { withFileTypes: true });
+
+  await fs.mkdir(tarFolder, { recursive: true });
+
+  const tseslintPackages = Object.fromEntries(
+    (
+      await Promise.all(
+        PACKAGES.map(async ({ name: pkg }) => {
+          const packageDir = path.join(PACKAGES_DIR, pkg);
+          const packagePath = path.join(packageDir, 'package.json');
+
+          try {
+            if (!(await fs.stat(packagePath)).isFile()) {
+              return;
+            }
+          } catch {
+            return;
+          }
+
+          const packageJson: PackageJSON = (
+            await import(packagePath, {
+              with: { type: 'json' },
+            })
+          ).default;
+
+          if ('private' in packageJson && packageJson.private === true) {
+            return;
+          }
+
+          const result = await execFile('npm', ['pack', packageDir], {
+            cwd: tarFolder,
+            encoding: 'utf-8',
+            shell: true,
+          });
+
+          if (typeof result.stdout !== 'string') {
+            return;
+          }
+
+          const stdoutLines = result.stdout.trim().split('\n');
+          const tarball = stdoutLines[stdoutLines.length - 1];
+
+          return [
+            packageJson.name,
+            `file:${path.join(tarFolder, tarball)}`,
+          ] as const;
+        }),
+      )
+    ).filter(e => e != null),
+  );
+
+  console.log('Finished packing local packages.');
+
+  project.provide('tseslintPackages', tseslintPackages);
+};
+
+export const teardown = async (): Promise<void> => {
+  if (process.env.KEEP_INTEGRATION_TEST_DIR !== 'true') {
+    await fs.rm(path.dirname(tarFolder), { recursive: true });
+  }
+};

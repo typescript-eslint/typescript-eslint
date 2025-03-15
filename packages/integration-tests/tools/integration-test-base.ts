@@ -1,11 +1,13 @@
-import type { DirOptions } from 'tmp';
-
-import ncp from 'ncp';
-import childProcess from 'node:child_process';
-import fs from 'node:fs';
-import path from 'node:path';
+import * as childProcess from 'node:child_process';
+import * as fs from 'node:fs/promises';
+import * as os from 'node:os';
+import * as path from 'node:path';
 import { promisify } from 'node:util';
-import tmp from 'tmp';
+import { inject } from 'vitest';
+
+import rootPackageJson from '../../../package.json';
+
+const tseslintPackages = inject('tseslintPackages');
 
 interface PackageJSON {
   devDependencies: Record<string, string>;
@@ -13,22 +15,13 @@ interface PackageJSON {
   private?: boolean;
 }
 
-const rootPackageJson: PackageJSON = require('../../../package.json');
-
-tmp.setGracefulCleanup();
-
-const copyDir = promisify(ncp.ncp);
 const execFile = promisify(childProcess.execFile);
-const readFile = promisify(fs.readFile);
-const tmpDir = promisify(tmp.dir) as (opts?: DirOptions) => Promise<string>;
-const tmpFile = promisify(tmp.file);
-const writeFile = promisify(fs.writeFile);
 
 const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
-  ...global.tseslintPackages,
+  ...tseslintPackages,
   eslint: rootPackageJson.devDependencies.eslint,
-  jest: rootPackageJson.devDependencies.jest,
   typescript: rootPackageJson.devDependencies.typescript,
+  vitest: rootPackageJson.devDependencies.vitest,
 };
 
 const FIXTURES_DIR = path.join(__dirname, '..', 'fixtures');
@@ -36,8 +29,10 @@ const FIXTURES_DIR = path.join(__dirname, '..', 'fixtures');
 const KEEP_INTEGRATION_TEST_DIR =
   process.env.KEEP_INTEGRATION_TEST_DIR === 'true';
 
-// make sure that jest doesn't timeout the test
-jest.setTimeout(60000);
+const homeOrTmpDir = os.tmpdir() || os.homedir();
+
+// make sure that vitest doesn't timeout the test
+vi.setConfig({ testTimeout: 60_000 });
 
 function integrationTest(
   testName: string,
@@ -50,41 +45,55 @@ function integrationTest(
 
     describe(testName, () => {
       it('should work successfully', async () => {
-        const testFolder = await tmpDir({
-          keep: KEEP_INTEGRATION_TEST_DIR,
-        });
+        const testFolder = path.join(
+          homeOrTmpDir,
+          'typescript-eslint-integration-tests',
+          fixture,
+        );
+
+        await fs.mkdir(testFolder, { recursive: true });
+
         if (KEEP_INTEGRATION_TEST_DIR) {
           console.error(testFolder);
         }
 
         // copy the fixture files to the temp folder
-        await copyDir(fixtureDir, testFolder);
+        await fs.cp(fixtureDir, testFolder, { recursive: true });
 
         // build and write the package.json for the test
-        const fixturePackageJson: PackageJSON = await import(
-          path.join(fixtureDir, 'package.json')
-        );
-        await writeFile(
+        const fixturePackageJson: PackageJSON = (
+          await import(path.join(fixtureDir, 'package.json'), {
+            with: { type: 'json' },
+          })
+        ).default;
+
+        await fs.writeFile(
           path.join(testFolder, 'package.json'),
-          JSON.stringify({
-            private: true,
-            ...fixturePackageJson,
-            devDependencies: {
-              ...BASE_DEPENDENCIES,
-              ...fixturePackageJson.devDependencies,
+          JSON.stringify(
+            {
+              private: true,
+              ...fixturePackageJson,
+              devDependencies: {
+                ...BASE_DEPENDENCIES,
+                ...fixturePackageJson.devDependencies,
+              },
+              // ensure everything uses the locally packed versions instead of the NPM versions
+              resolutions: {
+                ...tseslintPackages,
+              },
             },
-            // ensure everything uses the locally packed versions instead of the NPM versions
-            resolutions: {
-              ...global.tseslintPackages,
-            },
-          }),
+            null,
+            2,
+          ),
+          { encoding: 'utf-8' },
         );
         // console.log('package.json written.');
 
         // Ensure yarn uses the node-modules linker and not PnP
-        await writeFile(
+        await fs.writeFile(
           path.join(testFolder, '.yarnrc.yml'),
-          `nodeLinker: node-modules`,
+          `nodeLinker: node-modules\n`,
+          { encoding: 'utf-8' },
         );
 
         await new Promise<void>((resolve, reject) => {
@@ -97,6 +106,7 @@ function integrationTest(
             ['install', '--no-immutable'],
             {
               cwd: testFolder,
+              shell: true,
             },
             (err, stdout, stderr) => {
               if (err) {
@@ -119,8 +129,6 @@ function integrationTest(
 
         await executeTest(testFolder);
       });
-
-      afterAll(() => {});
     });
   });
 }
@@ -131,7 +139,9 @@ export function eslintIntegrationTest(
 ): void {
   integrationTest('eslint', testFilename, async testFolder => {
     // lint, outputting to a JSON file
-    const outFile = await tmpFile();
+    const outFile = path.join(testFolder, 'eslint.json');
+
+    await fs.writeFile(outFile, '', { encoding: 'utf-8' });
     let stderr = '';
     try {
       await execFile(
@@ -147,6 +157,7 @@ export function eslintIntegrationTest(
         ],
         {
           cwd: testFolder,
+          shell: true,
         },
       );
     } catch (ex) {
@@ -161,11 +172,18 @@ export function eslintIntegrationTest(
     expect(stderr).toHaveLength(0);
 
     // assert the linting state is consistent
-    const lintOutputRAW = (await readFile(outFile, 'utf8'))
+    const lintOutputRAW = (await fs.readFile(outFile, 'utf8'))
       // clean the output to remove any changing facets so tests are stable
       .replaceAll(
         new RegExp(`"filePath": ?"(/private)?${testFolder}`, 'g'),
         '"filePath": "<root>',
+      )
+      .replaceAll(/"filePath":"([^"]*)"/g, (_, testFile: string) => {
+        return `"filePath": "<root>/${path.relative(testFolder, testFile)}"`;
+      })
+      .replaceAll(
+        /C:\\\\usr\\\\linked\\\\tsconfig.json/g,
+        path.posix.join('/usr', 'linked', 'tsconfig.json'),
       );
     try {
       const lintOutput = JSON.parse(lintOutputRAW);
@@ -186,8 +204,9 @@ export function typescriptIntegrationTest(
 ): void {
   integrationTest(testName, testFilename, async testFolder => {
     const [result] = await Promise.allSettled([
-      execFile('yarn', ['tsc', '--noEmit', ...tscArgs], {
+      execFile('yarn', ['tsc', '--noEmit', '--skipLibCheck', ...tscArgs], {
         cwd: testFolder,
+        shell: true,
       }),
     ]);
 
