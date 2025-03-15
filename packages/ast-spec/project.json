@@ -15,6 +15,9 @@
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
+    },
+    "typecheck": {
+      "dependsOn": ["typescript-estree:build"]
     }
   }
 }
