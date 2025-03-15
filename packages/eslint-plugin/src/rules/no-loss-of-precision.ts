@@ -20,7 +20,18 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     // defaultOptions, -- base rule does not use defaultOptions
-    deprecated: true,
+    deprecated: {
+      deprecatedSince: '8.0.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-loss-of-precision',
+            url: 'https://eslint.org/docs/latest/rules/no-loss-of-precision',
+          },
+        },
+      ],
+      url: 'https://github.com/typescript-eslint/typescript-eslint/pull/8832',
+    },
     docs: {
       description: 'Disallow literal numbers that lose precision',
       extendsBaseRule: true,
