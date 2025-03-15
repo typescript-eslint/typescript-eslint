@@ -24,7 +24,6 @@ export default {
         '@babel/eslint-parser',
         '@babel/parser',
         '@babel/types',
-        '@nx/js',
         '@nx/workspace',
         'glob',
         'jest-specific-snapshot',
