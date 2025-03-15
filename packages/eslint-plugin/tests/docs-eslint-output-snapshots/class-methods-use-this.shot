@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 1`] = `
-"Options: { "ignoreOverrideMethods": true }
+exports[`Validating rule docs > class-methods-use-this.mdx > code examples ESLint output`]
+Options: { "ignoreOverrideMethods": true }
 
 abstract class Base {
   abstract method(): void;
@@ -12,11 +12,9 @@ class Derived extends Base {
   override method() {}
   override property = () => {};
 }
-"
-`;
 
-exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 2`] = `
-"Incorrect
+exports[`Validating rule docs > class-methods-use-this.mdx > code examples ESLint output`]
+Incorrect
 Options: { "ignoreClassesThatImplementAnInterface": true }
 
 class Standalone {
@@ -25,11 +23,9 @@ class Standalone {
   property = () => {};
   ~~~~~~~~~~~ Expected 'this' to be used by class method 'property'.
 }
-"
-`;
 
-exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 3`] = `
-"Correct
+exports[`Validating rule docs > class-methods-use-this.mdx > code examples ESLint output`]
+Correct
 Options: { "ignoreClassesThatImplementAnInterface": true }
 
 interface Base {
@@ -40,11 +36,9 @@ class Derived implements Base {
   method() {}
   property = () => {};
 }
-"
-`;
 
-exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 4`] = `
-"Incorrect
+exports[`Validating rule docs > class-methods-use-this.mdx > code examples ESLint output`]
+Incorrect
 Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
 
 interface Base {
@@ -65,11 +59,9 @@ class Derived implements Base {
   protected protectedProperty = () => {};
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected 'this' to be used by class method 'protectedProperty'.
 }
-"
-`;
 
-exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 5`] = `
-"Correct
+exports[`Validating rule docs > class-methods-use-this.mdx > code examples ESLint output`]
+Correct
 Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
 
 interface Base {
@@ -80,5 +72,3 @@ class Derived implements Base {
   method() {}
   property = () => {};
 }
-"
-`;
