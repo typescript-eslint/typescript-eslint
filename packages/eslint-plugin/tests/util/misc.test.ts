@@ -1,5 +1,26 @@
 import * as misc from '../../src/util/misc';
 
+describe('isDefinitionFile', () => {
+  it('returns true for standard definition files', () => {
+    expect(misc.isDefinitionFile('index.d.ts')).toBe(true);
+    expect(misc.isDefinitionFile('module.d.cts')).toBe(true);
+    expect(misc.isDefinitionFile('package.d.mts')).toBe(true);
+  });
+
+  it('returns true for arbitrary extension definition files', () => {
+    expect(misc.isDefinitionFile('vite-env.d.ts')).toBe(true);
+    expect(misc.isDefinitionFile('styled-components.d.ts')).toBe(true);
+    expect(misc.isDefinitionFile('mdx.d.ts')).toBe(true);
+  });
+
+  it('returns false for non definition files', () => {
+    expect(misc.isDefinitionFile('index.ts')).toBe(false);
+    expect(misc.isDefinitionFile('app.tsx')).toBe(false);
+    expect(misc.isDefinitionFile('styles.css.ts')).toBe(false);
+    expect(misc.isDefinitionFile('vite.config.ts')).toBe(false);
+  });
+});
+
 describe('formatWordList', () => {
   it('can format with no words', () => {
     expect(misc.formatWordList([])).toBe('');
