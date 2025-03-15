@@ -8,9 +8,9 @@ describe('isDefinitionFile', () => {
   });
 
   it('returns true for arbitrary extension definition files', () => {
-    expect(misc.isDefinitionFile('vite-env.d.ts')).toBe(true);
-    expect(misc.isDefinitionFile('styled-components.d.ts')).toBe(true);
-    expect(misc.isDefinitionFile('mdx.d.ts')).toBe(true);
+    expect(misc.isDefinitionFile('styles.d.css.ts')).toBe(true);
+    expect(misc.isDefinitionFile('component.d.vue.ts')).toBe(true);
+    expect(misc.isDefinitionFile('env.d.node.ts')).toBe(true);
   });
 
   it('returns false for non definition files', () => {
