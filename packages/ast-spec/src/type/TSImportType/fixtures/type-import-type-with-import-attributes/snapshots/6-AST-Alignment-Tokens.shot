@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures type TSImportType type-import-type-with-import-attributes AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > type > TSImportType > type-import-type-with-import-attributes > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -188,5 +188,4 @@ exports[`AST Fixtures type TSImportType type-import-type-with-import-attributes 
         end: { column: 49, line: 3 },
       },
     },
-  ]"
-`;
+  ]

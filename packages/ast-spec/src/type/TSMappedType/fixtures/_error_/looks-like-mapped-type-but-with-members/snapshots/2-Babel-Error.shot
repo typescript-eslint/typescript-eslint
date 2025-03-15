@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures type TSMappedType _error_ looks-like-mapped-type-but-with-members Babel - Error 1`] = `[SyntaxError: Unexpected token, expected "]" (3:16)]`;
+exports[`AST Fixtures > type > TSMappedType > _error_ > looks-like-mapped-type-but-with-members > Babel - Error`]
+SyntaxError: Unexpected token, expected "]" (3:16)

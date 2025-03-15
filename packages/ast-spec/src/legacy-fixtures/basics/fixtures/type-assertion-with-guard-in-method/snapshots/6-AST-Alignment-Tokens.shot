@@ -1,6 +1,5 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-method AST Alignment - Token 1`] = `
-"Snapshot Diff:
-Compared values have no visual difference."
-`;
+exports[`AST Fixtures > legacy-fixtures > basics > type-assertion-with-guard-in-method > AST Alignment - Token`]
+Snapshot Diff:
+Compared values have no visual difference.
