@@ -25,6 +25,11 @@ export function isDefinitionFile(fileName: string): boolean {
       return true;
     }
   }
+
+  if (lowerFileName.includes('.d.') && lowerFileName.endsWith('.ts')) {
+    return true;
+  }
+
   return false;
 }
 
