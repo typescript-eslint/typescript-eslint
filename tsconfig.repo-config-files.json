@@ -12,8 +12,6 @@
     "tools/**/*.ts",
     "tools/**/*.mts",
     "eslint.config.mjs",
-    "vitest.config.base.mts",
-    "vitest.config.mts",
     "jest.config.base.js",
     "jest.config.js",
     "jest.preset.js",
