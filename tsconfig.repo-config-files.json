@@ -11,8 +11,6 @@
     "tools/**/*.ts",
     "tools/**/*.mts",
     "eslint.config.mjs",
-    "vitest.config.base.mts",
-    "vitest.config.mts",
     "jest.config.base.js",
     "jest.config.js",
     "jest.preset.js",
@@ -22,6 +20,9 @@
   "references": [
     {
       "path": "./packages/typescript-eslint/tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
     }
   ]
 }
