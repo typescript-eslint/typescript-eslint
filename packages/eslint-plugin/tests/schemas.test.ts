@@ -2,6 +2,7 @@ import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import prettier from 'prettier';
+import { VitestSnapshotEnvironment } from 'vitest/snapshot';
 
 import rules from '../src/rules/index';
 import { areOptionsValid } from './areOptionsValid';
@@ -42,9 +43,7 @@ const ONLY = '';
 
 const testCases = Object.entries(rules);
 
-describe('Rule schemas should be convertible to TS types for documentation purposes', async () => {
-  const { VitestSnapshotEnvironment } = await import('vitest/snapshot');
-
+describe('Rule schemas should be convertible to TS types for documentation purposes', () => {
   beforeAll(async () => {
     await fs.mkdir(snapshotFolder, { recursive: true });
   });
