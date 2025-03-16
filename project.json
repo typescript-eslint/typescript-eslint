@@ -5,7 +5,8 @@
   "targets": {
     "typecheck": {
       "command": "tsc -b ./tsconfig.repo-config-files.json",
-      "dependsOn": ["typescript-eslint:build"]
+      "dependsOn": ["types:copy-ast-spec"],
+      "outputs": ["{workspaceRoot}/dist/out-tsc/root"]
     },
     "lint": {
       "command": "eslint . --ignore-pattern=packages --cache"
