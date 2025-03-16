@@ -3272,5 +3272,37 @@ declare const t: T;
 t.a.a.a.value;
       `,
     },
+    {
+      code: `
+declare const test: Array<{ a?: string }>;
+
+if (test[0]?.a) {
+  test[0]?.a;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'neverOptionalChain',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+      output: `
+declare const test: Array<{ a?: string }>;
+
+if (test[0]?.a) {
+  test[0].a;
+}
+      `,
+    },
   ],
 });
