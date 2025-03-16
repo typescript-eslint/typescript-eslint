@@ -399,6 +399,21 @@ const tuple = ['foo'] as const;
 declare const n: number;
 tuple[n]?.toUpperCase();
     `,
+    {
+      code: `
+declare const arr: Array<{ value: string } & (() => void)>;
+if (arr[42]?.value) {
+}
+arr[41]?.();
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+    },
     `
 if (arr?.[42]) {
 }
@@ -417,6 +432,23 @@ declare const foo: TupleA | TupleB;
 declare const index: number;
 foo[index]?.toString();
     `,
+    {
+      code: `
+type TupleA = [string, number];
+type TupleB = [string, number];
+
+declare const foo: TupleA | TupleB;
+declare const index: number;
+foo[index]?.toString();
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+    },
     `
 declare const returnsArr: undefined | (() => string[]);
 if (returnsArr?.()[42]) {
@@ -3302,6 +3334,39 @@ declare const test: Array<{ a?: string }>;
 if (test[0]?.a) {
   test[0].a;
 }
+      `,
+    },
+    {
+      code: `
+declare const arr2: Array<{ x: { y: { z: object } } }>;
+arr2[42]?.x?.y?.z;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 15,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+      output: `
+declare const arr2: Array<{ x: { y: { z: object } } }>;
+arr2[42]?.x.y.z;
       `,
     },
   ],
