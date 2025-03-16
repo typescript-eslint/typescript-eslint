@@ -12,12 +12,10 @@ import {
   getTypeName,
   getTypeOfPropertyOfName,
   getValueOfLiteralType,
-  isAlwaysNullish,
   isArrayMethodCallWithPredicate,
   isIdentifier,
   isNullableType,
   isPossiblyFalsy,
-  isPossiblyNullish,
   isPossiblyTruthy,
   isTypeAnyType,
   isTypeFlagSet,
@@ -31,6 +29,25 @@ import {
 } from '../util/assertionFunctionUtils';
 
 // #region
+
+const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
+
+function isNullishType(type: ts.Type): boolean {
+  return tsutils.isTypeFlagSet(type, nullishFlag);
+}
+
+function isAlwaysNullish(type: ts.Type): boolean {
+  return tsutils.unionTypeParts(type).every(isNullishType);
+}
+
+/**
+ * Note that this differs from {@link isNullableType} in that it doesn't consider
+ * `any` or `unknown` to be nullable.
+ */
+function isPossiblyNullish(type: ts.Type): boolean {
+  return tsutils.unionTypeParts(type).some(isNullishType);
+}
+
 function toStaticValue(
   type: ts.Type,
 ):
