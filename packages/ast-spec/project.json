@@ -13,7 +13,7 @@
       "executor": "@nx/eslint:lint"
     },
     "test": {
-      "dependsOn": ["typescript-estree:build"]
+      "dependsOn": ["typecheck"]
     },
     "typecheck": {
       "dependsOn": ["typescript-estree:build"]
