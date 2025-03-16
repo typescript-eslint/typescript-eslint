@@ -21,7 +21,7 @@
       "path": "./tsconfig.build.json"
     },
     {
-      "path": "../../tsconfig.repo-config-files.json"
+      "path": "../../tsconfig.spec.json"
     }
   ]
 }
