@@ -13,7 +13,7 @@
       "options": {
         "script": "generate:breaking-changes"
       },
-      "dependsOn": ["utils:build", "type-utils:build"]
+      "dependsOn": ["type-utils:build"]
     }
   }
 }
