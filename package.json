@@ -66,6 +66,7 @@
     "@nx/devkit": "20.4.5",
     "@nx/eslint": "20.4.5",
     "@nx/jest": "20.4.5",
+    "@nx/vite": "20.4.5",
     "@nx/workspace": "20.4.5",
     "@swc/core": "^1.4.12",
     "@swc/jest": "^0.2.36",
@@ -88,6 +89,8 @@
     "@typescript-eslint/types": "workspace:^",
     "@typescript-eslint/typescript-estree": "workspace:^",
     "@typescript-eslint/utils": "workspace:^",
+    "@vitest/coverage-v8": "^3.0.8",
+    "@vitest/eslint-plugin": "^1.1.37",
     "console-fail-test": "^0.5.0",
     "cross-fetch": "^4.0.0",
     "cspell": "^8.15.2",
@@ -123,6 +126,8 @@
     "tsx": "*",
     "typescript": ">=4.8.4 <5.9.0",
     "typescript-eslint": "workspace:^",
+    "vite": "^6.2.2",
+    "vitest": "^3.0.8",
     "yargs": "17.7.2"
   },
   "resolutions": {
