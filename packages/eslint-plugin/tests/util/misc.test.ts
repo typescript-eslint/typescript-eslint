@@ -1,24 +1,26 @@
 import * as misc from '../../src/util/misc';
 
 describe('isDefinitionFile', () => {
-  it('returns true for standard definition files', () => {
-    expect(misc.isDefinitionFile('index.d.ts')).toBe(true);
-    expect(misc.isDefinitionFile('module.d.cts')).toBe(true);
-    expect(misc.isDefinitionFile('package.d.mts')).toBe(true);
-  });
+  it.each([['index.d.ts'], ['module.d.cts'], ['package.d.mts']])(
+    'returns true for standard definition file: %s',
+    filename => {
+      expect(misc.isDefinitionFile(filename)).toBe(true);
+    },
+  );
 
-  it('returns true for arbitrary extension definition files', () => {
-    expect(misc.isDefinitionFile('styles.d.css.ts')).toBe(true);
-    expect(misc.isDefinitionFile('component.d.vue.ts')).toBe(true);
-    expect(misc.isDefinitionFile('env.d.node.ts')).toBe(true);
-  });
+  it.each([['styles.d.css.ts'], ['component.d.vue.ts'], ['env.d.node.ts']])(
+    'returns true for arbitrary extension definition file: %s',
+    filename => {
+      expect(misc.isDefinitionFile(filename)).toBe(true);
+    },
+  );
 
-  it('returns false for non definition files', () => {
-    expect(misc.isDefinitionFile('index.ts')).toBe(false);
-    expect(misc.isDefinitionFile('app.tsx')).toBe(false);
-    expect(misc.isDefinitionFile('styles.css.ts')).toBe(false);
-    expect(misc.isDefinitionFile('vite.config.ts')).toBe(false);
-  });
+  it.each([['index.ts'], ['app.tsx'], ['styles.css.ts'], ['vite.config.ts']])(
+    'returns false for non definition file: %s',
+    filename => {
+      expect(misc.isDefinitionFile(filename)).toBe(false);
+    },
+  );
 });
 
 describe('formatWordList', () => {

@@ -26,11 +26,7 @@ export function isDefinitionFile(fileName: string): boolean {
     }
   }
 
-  if (lowerFileName.includes('.d.') && lowerFileName.endsWith('.ts')) {
-    return true;
-  }
-
-  return false;
+  return /\.d\.(ts|cts|mts|.*\.ts)$/.test(lowerFileName);
 }
 
 /**
