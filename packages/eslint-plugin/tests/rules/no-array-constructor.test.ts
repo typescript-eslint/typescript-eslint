@@ -33,8 +33,6 @@ ruleTester.run('no-array-constructor', rule, {
     'Array.foo?.();',
     'Array?.<Foo>(1, 2, 3);',
     'Array?.<Foo>();',
-    'Array?.(0, 1, 2);',
-    'Array?.(x, y);',
   ],
 
   invalid: [
@@ -50,6 +48,16 @@ ruleTester.run('no-array-constructor', rule, {
     },
     {
       code: 'Array();',
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: '[];',
+    },
+    {
+      code: 'Array?.();',
       errors: [
         {
           messageId,
@@ -79,6 +87,16 @@ ruleTester.run('no-array-constructor', rule, {
       output: '[x, y];',
     },
     {
+      code: 'Array?.(x, y);',
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: '[x, y];',
+    },
+    {
       code: 'new Array(0, 1, 2);',
       errors: [
         {
@@ -90,6 +108,16 @@ ruleTester.run('no-array-constructor', rule, {
     },
     {
       code: 'Array(0, 1, 2);',
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: '[0, 1, 2];',
+    },
+    {
+      code: 'Array?.(0, 1, 2);',
       errors: [
         {
           messageId,

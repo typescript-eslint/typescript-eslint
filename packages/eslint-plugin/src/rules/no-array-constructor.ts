@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isOptionalCallExpression } from '../util';
+import { createRule } from '../util';
 
 export default createRule({
   name: 'no-array-constructor',
@@ -32,8 +32,7 @@ export default createRule({
         node.arguments.length !== 1 &&
         node.callee.type === AST_NODE_TYPES.Identifier &&
         node.callee.name === 'Array' &&
-        !node.typeArguments &&
-        !isOptionalCallExpression(node)
+        !node.typeArguments
       ) {
         context.report({
           node,
@@ -43,7 +42,10 @@ export default createRule({
               return fixer.replaceText(node, '[]');
             }
             const fullText = context.sourceCode.getText(node);
-            const preambleLength = node.callee.range[1] - node.range[0];
+            const preambleLength =
+              node.parent.type === AST_NODE_TYPES.ChainExpression
+                ? node.callee.range[1] + 2 - node.range[0]
+                : node.callee.range[1] - node.range[0];
 
             return fixer.replaceText(
               node,
