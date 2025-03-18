@@ -38,7 +38,7 @@ export default createRule<Options, MessageIds>({
     messages: {
       missingAsync: 'Functions that return promises must be async.',
       missingAsyncHybridReturn:
-        'Functions that return promises must be async. Consider adding an explicit return type annotation if the function is intended to return both a promise and a non-promise.',
+        'Functions that return promises must be async. Consider adding an explicit return type annotation if the function is intended to return either a promise or a non-promise.',
     },
     schema: [
       {
