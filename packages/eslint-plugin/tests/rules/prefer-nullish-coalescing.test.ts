@@ -6089,6 +6089,95 @@ function lazyInitialize() {
       output: null,
     },
     {
+      code: `
+declare let foo: string | null;
+declare function makeFoo(): string;
+
+if (foo == null) {
+  // comment before 1
+  /* comment before 2 */
+  /* comment before 3
+    which is multiline
+  */
+  /**
+   * comment before 4
+   * which is also multiline
+   */
+  foo = makeFoo(); // comment inline
+  // comment after 1
+  /* comment after 2 */
+  /* comment after 3
+    which is multiline
+  */
+  /**
+   * comment after 4
+   * which is also multiline
+   */
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: string | null;
+declare function makeFoo(): string;
+
+// comment before 1
+/* comment before 2 */
+/* comment before 3
+    which is multiline
+  */
+/**
+   * comment before 4
+   * which is also multiline
+   */
+foo ??= makeFoo();// comment inline
+// comment after 1
+/* comment after 2 */
+/* comment after 3
+    which is multiline
+  */
+/**
+   * comment after 4
+   * which is also multiline
+   */
+
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: string | null;
+declare function makeFoo(): string;
+
+if (foo == null) /* comment before 1 */ /* comment before 2 */ foo = makeFoo(); // comment inline
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: string | null;
+declare function makeFoo(): string;
+
+/* comment before 1 */ /* comment before 2 */ foo ??= makeFoo(); // comment inline
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
       code: noFormat`
 declare let foo: { a: string | null };
 declare function makeString(): string;

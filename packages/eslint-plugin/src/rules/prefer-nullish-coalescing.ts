@@ -559,6 +559,23 @@ export default createRule<Options, MessageIds>({
         );
 
         if (nullishCoalescingParams.isFixable) {
+          // Handle comments
+          const isConsequenceNodeBlockStatement =
+            node.consequent.type === AST_NODE_TYPES.BlockStatement;
+
+          const commentsBefore = formatComments(
+            context.sourceCode.getCommentsBefore(assignmentExpression),
+            isConsequenceNodeBlockStatement ? '\n' : ' ',
+          );
+          const commentsAfter = isConsequenceNodeBlockStatement
+            ? formatComments(
+                context.sourceCode.getCommentsAfter(
+                  assignmentExpression.parent,
+                ),
+                '\n',
+              )
+            : '';
+
           context.report({
             node,
             messageId: 'preferNullishOverAssignment',
@@ -570,13 +587,13 @@ export default createRule<Options, MessageIds>({
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
                   return fixer.replaceText(
                     node,
-                    `${getTextWithParentheses(
+                    `${commentsBefore}${getTextWithParentheses(
                       context.sourceCode,
                       nullishCoalescingLeftNode,
                     )} ??= ${getTextWithParentheses(
                       context.sourceCode,
                       nullishCoalescingRightNode,
-                    )};`,
+                    )};${commentsAfter}`,
                   );
                 },
               },
@@ -874,4 +891,17 @@ function getNonBinaryNodeOperator(
     return '!';
   }
   return null;
+}
+
+function formatComments(
+  comments: TSESTree.Comment[],
+  separator: string,
+): string {
+  return comments
+    .map(({ type, value }) =>
+      type === AST_TOKEN_TYPES.Line
+        ? `//${value}${separator}`
+        : `/*${value}*/${separator}`,
+    )
+    .join('');
 }
