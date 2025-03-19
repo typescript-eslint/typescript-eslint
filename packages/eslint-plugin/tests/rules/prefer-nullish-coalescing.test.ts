@@ -3,7 +3,7 @@ import type {
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
 
 import type {
@@ -6077,7 +6077,7 @@ function lazyInitialize() {
       output: null,
     },
     {
-      code: `
+      code: noFormat`
 declare let foo: { a: string | null };
 declare function makeString(): string;
 
