@@ -418,8 +418,20 @@ declare function makeFoo(): { a: string };
 
 function lazyInitialize() {
   if (foo == null) {
-    return foo;
+    foo = makeFoo();
   } else {
+    return 'bar';
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo = makeFoo();
+  } else if (foo.a) {
     return 'bar';
   }
 }
