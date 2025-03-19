@@ -148,9 +148,10 @@ export namespace FlatConfig {
   export type Severity = SharedConfig.Severity;
   export type SeverityString = SharedConfig.SeverityString;
   export type SourceType = 'commonjs' | ParserOptionsTypes.SourceType;
+  export type ConfigOrArray = Config | ConfigArray;
 
   export interface SharedConfigs {
-    [key: string]: Config | ConfigArray;
+    [key: string]: ConfigOrArray;
   }
   export interface Plugin {
     /**

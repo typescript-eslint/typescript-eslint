@@ -6,7 +6,12 @@ import type {
 import type rules from './rules';
 
 declare const cjsExport: {
-  configs: Record<string, ClassicConfig.Config>;
+  configs: {
+    [configName: string]: ClassicConfig.Config;
+    [flatConfigName: `flat/${string}`]:
+      | FlatConfig.Config
+      | FlatConfig.ConfigArray;
+  };
   meta: FlatConfig.PluginMeta;
   rules: typeof rules;
 };

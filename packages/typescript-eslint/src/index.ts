@@ -5,20 +5,8 @@ import pluginBase from '@typescript-eslint/eslint-plugin';
 import * as parserBase from '@typescript-eslint/parser';
 
 import { config } from './config-helper';
-import allConfig from './configs/all';
-import baseConfig from './configs/base';
-import disableTypeCheckedConfig from './configs/disable-type-checked';
-import eslintRecommendedConfig from './configs/eslint-recommended';
-import recommendedConfig from './configs/recommended';
-import recommendedTypeCheckedConfig from './configs/recommended-type-checked';
-import recommendedTypeCheckedOnlyConfig from './configs/recommended-type-checked-only';
-import strictConfig from './configs/strict';
-import strictTypeCheckedConfig from './configs/strict-type-checked';
-import strictTypeCheckedOnlyConfig from './configs/strict-type-checked-only';
-import stylisticConfig from './configs/stylistic';
-import stylisticTypeCheckedConfig from './configs/stylistic-type-checked';
-import stylisticTypeCheckedOnlyConfig from './configs/stylistic-type-checked-only';
 
+// TODO - MAKE THIS === TO THE PLUGIN'S PARSER OBJECT.
 export const parser: TSESLint.FlatConfig.Parser = {
   meta: parserBase.meta,
   parseForESLint: parserBase.parseForESLint,
@@ -57,20 +45,20 @@ export const configs = {
    * Enables each the rules provided as a part of typescript-eslint. Note that many rules are not applicable in all codebases, or are meant to be configured.
    * @see {@link https://typescript-eslint.io/users/configs#all}
    */
-  all: allConfig(plugin, parser),
+  all: pluginBase.configs['flat/all'],
 
   /**
    * A minimal ruleset that sets only the required parser and plugin options needed to run typescript-eslint.
    * We don't recommend using this directly; instead, extend from an earlier recommended rule.
    * @see {@link https://typescript-eslint.io/users/configs#base}
    */
-  base: baseConfig(plugin, parser),
+  base: pluginBase.configs['flat/base'],
 
   /**
    * A utility ruleset that will disable type-aware linting and all type-aware rules available in our project.
    * @see {@link https://typescript-eslint.io/users/configs#disable-type-checked}
    */
-  disableTypeChecked: disableTypeCheckedConfig(plugin, parser),
+  disableTypeChecked: pluginBase.configs['flat/disable-type-checked'],
 
   /**
    * This is a compatibility ruleset that:
@@ -78,61 +66,63 @@ export const configs = {
    * - enables rules that make sense due to TS's typechecking / transpilation.
    * @see {@link https://typescript-eslint.io/users/configs/#eslint-recommended}
    */
-  eslintRecommended: eslintRecommendedConfig(plugin, parser),
+  eslintRecommended: pluginBase.configs['flat/eslint-recommended'],
 
   /**
    * Recommended rules for code correctness that you can drop in without additional configuration.
    * @see {@link https://typescript-eslint.io/users/configs#recommended}
    */
-  recommended: recommendedConfig(plugin, parser),
+  recommended: pluginBase.configs['flat/recommended'],
 
   /**
    * Contains all of `recommended` along with additional recommended rules that require type information.
    * @see {@link https://typescript-eslint.io/users/configs#recommended-type-checked}
    */
-  recommendedTypeChecked: recommendedTypeCheckedConfig(plugin, parser),
+  recommendedTypeChecked: pluginBase.configs['flat/recommended-type-checked'],
 
   /**
    * A version of `recommended` that only contains type-checked rules and disables of any corresponding core ESLint rules.
    * @see {@link https://typescript-eslint.io/users/configs#recommended-type-checked-only}
    */
-  recommendedTypeCheckedOnly: recommendedTypeCheckedOnlyConfig(plugin, parser),
+  recommendedTypeCheckedOnly:
+    pluginBase.configs['flat/recommended-type-checked-only'],
 
   /**
    * Contains all of `recommended`, as well as additional strict rules that can also catch bugs.
    * @see {@link https://typescript-eslint.io/users/configs#strict}
    */
-  strict: strictConfig(plugin, parser),
+  strict: pluginBase.configs['flat/strict'],
 
   /**
    * Contains all of `recommended`, `recommended-type-checked`, and `strict`, along with additional strict rules that require type information.
    * @see {@link https://typescript-eslint.io/users/configs#strict-type-checked}
    */
-  strictTypeChecked: strictTypeCheckedConfig(plugin, parser),
+  strictTypeChecked: pluginBase.configs['flat/strict-type-checked'],
 
   /**
    * A version of `strict` that only contains type-checked rules and disables of any corresponding core ESLint rules.
    * @see {@link https://typescript-eslint.io/users/configs#strict-type-checked-only}
    */
-  strictTypeCheckedOnly: strictTypeCheckedOnlyConfig(plugin, parser),
+  strictTypeCheckedOnly: pluginBase.configs['flat/strict-type-checked-only'],
 
   /**
    * Rules considered to be best practice for modern TypeScript codebases, but that do not impact program logic.
    * @see {@link https://typescript-eslint.io/users/configs#stylistic}
    */
-  stylistic: stylisticConfig(plugin, parser),
+  stylistic: pluginBase.configs['flat/stylistic'],
 
   /**
    * Contains all of `stylistic`, along with additional stylistic rules that require type information.
    * @see {@link https://typescript-eslint.io/users/configs#stylistic-type-checked}
    */
-  stylisticTypeChecked: stylisticTypeCheckedConfig(plugin, parser),
+  stylisticTypeChecked: pluginBase.configs['flat/stylistic-type-checked'],
 
   /**
    * A version of `stylistic` that only contains type-checked rules and disables of any corresponding core ESLint rules.
    * @see {@link https://typescript-eslint.io/users/configs#stylistic-type-checked-only}
    */
-  stylisticTypeCheckedOnly: stylisticTypeCheckedOnlyConfig(plugin, parser),
+  stylisticTypeCheckedOnly:
+    pluginBase.configs['flat/stylistic-type-checked-only'],
 };
 
 export type Config = TSESLint.FlatConfig.ConfigFile;

@@ -197,7 +197,7 @@ async function main(): Promise<void> {
     const config = getConfig();
 
     //
-    // 1. Classic Config - written to the eslint-plugin package
+    // 1. Classic Config - written to eslint-plugin/src/configs/eslintrc
     // These configs are just JSON blobs that we write as TS files
     //
 
@@ -215,12 +215,18 @@ async function main(): Promise<void> {
       },
     );
     fs.writeFileSync(
-      path.join(PACKAGES_ESLINT_PLUGIN, 'src', 'configs', `${name}.ts`),
+      path.join(
+        PACKAGES_ESLINT_PLUGIN,
+        'src',
+        'configs',
+        'eslintrc',
+        `${name}.ts`,
+      ),
       classicConfigStr,
     );
 
     //
-    // 2. Flat Config - written to the core package
+    // 2. Flat Config - written to the eslint-plugin/src/configs/flat
     // These configs are actual TS modules that import other configs
     //
     const flatCode: string[] = [
@@ -277,7 +283,7 @@ async function main(): Promise<void> {
       ...prettierConfig,
     });
     fs.writeFileSync(
-      path.join(PACKAGES_TYPESCRIPT_ESLINT, 'src', 'configs', `${name}.ts`),
+      path.join(PACKAGES_ESLINT_PLUGIN, 'src', 'configs', 'flat', `${name}.ts`),
       flatConfigStr,
     );
   }
