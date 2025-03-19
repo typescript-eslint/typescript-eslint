@@ -6093,6 +6093,39 @@ function lazyInitialize() {
 declare let foo: string | null;
 declare function makeFoo(): string;
 
+function lazyInitialize() {
+  if (foo == null) {
+    // comment
+    foo = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: string | null;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  // comment
+foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: string | null;
+declare function makeFoo(): string;
+
 if (foo == null) {
   // comment before 1
   /* comment before 2 */

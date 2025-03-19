@@ -560,14 +560,14 @@ export default createRule<Options, MessageIds>({
 
         if (nullishCoalescingParams.isFixable) {
           // Handle comments
-          const isConsequenceNodeBlockStatement =
+          const isConsequentNodeBlockStatement =
             node.consequent.type === AST_NODE_TYPES.BlockStatement;
 
           const commentsBefore = formatComments(
             context.sourceCode.getCommentsBefore(assignmentExpression),
-            isConsequenceNodeBlockStatement ? '\n' : ' ',
+            isConsequentNodeBlockStatement ? '\n' : ' ',
           );
-          const commentsAfter = isConsequenceNodeBlockStatement
+          const commentsAfter = isConsequentNodeBlockStatement
             ? formatComments(
                 context.sourceCode.getCommentsAfter(
                   assignmentExpression.parent,
