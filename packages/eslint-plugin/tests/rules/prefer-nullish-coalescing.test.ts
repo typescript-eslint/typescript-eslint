@@ -373,7 +373,7 @@ declare let x: { n: () => string | null | undefined };
       `,
       `
 declare let foo: string;
-declare function makeFoo(): { a: string };
+declare function makeFoo(): string;
 
 function lazyInitialize() {
   if (!foo) {
@@ -421,6 +421,40 @@ function lazyInitialize() {
     return foo;
   } else {
     return 'bar';
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+function shadowed() {
+  if (foo == null) {
+    const foo = makeFoo();
+  }
+}
+declare let foo: { foo: string } | null;
+declare function makeFoo(): { foo: { foo: string } };
+function weirdDestructuringAssignment() {
+  if (foo == null) {
+    ({ foo } = makeFoo());
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+function shadowed() {
+  if (foo == null) {
+    const foo = makeFoo();
+  }
+}
+      `,
+      `
+declare let foo: { foo: string } | null;
+declare function makeFoo(): { foo: { foo: string } };
+function weirdDestructuringAssignment() {
+  if (foo == null) {
+    ({ foo } = makeFoo());
   }
 }
       `,
@@ -6034,6 +6068,37 @@ declare function makeFoo(): string;
 
 function lazyInitialize() {
   foo.a ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string | null };
+declare function makeString(): string;
+
+function weirdParens() {
+  if (((((foo.a)) == null))) {
+    ((((((((foo).a))))) = makeString()));
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string | null };
+declare function makeString(): string;
+
+function weirdParens() {
+  ((foo).a) ??= makeString();
 }
       `,
             },

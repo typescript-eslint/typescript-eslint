@@ -20,7 +20,7 @@ import {
   skipChainExpression,
 } from '../util';
 
-const isIdentifierOrMemberOrChainExpression = isNodeOfTypes([
+const isMemberAccessLike = isNodeOfTypes([
   AST_NODE_TYPES.ChainExpression,
   AST_NODE_TYPES.Identifier,
   AST_NODE_TYPES.MemberExpression,
@@ -459,8 +459,8 @@ export default createRule<Options, MessageIds>({
       })();
 
       return isFixable
-        ? { isFixable, nullishCoalescingLeftNode }
-        : { isFixable };
+        ? { isFixable: true, nullishCoalescingLeftNode }
+        : { isFixable: false };
     }
 
     return {
@@ -536,8 +536,7 @@ export default createRule<Options, MessageIds>({
         if (
           !assignmentExpression ||
           assignmentExpression.type !== AST_NODE_TYPES.AssignmentExpression ||
-          (assignmentExpression.left.type !== AST_NODE_TYPES.Identifier &&
-            assignmentExpression.left.type !== AST_NODE_TYPES.MemberExpression)
+          !isMemberAccessLike(assignmentExpression.left)
         ) {
           return;
         }
@@ -794,7 +793,7 @@ function getOperatorAndNodesInsideTestExpression(
   let nodesInsideTestExpression: TSESTree.Node[] = [];
 
   if (
-    isIdentifierOrMemberOrChainExpression(node.test) ||
+    isMemberAccessLike(node.test) ||
     node.test.type === AST_NODE_TYPES.UnaryExpression
   ) {
     operator = getNonBinaryNodeOperator(node.test);
@@ -871,10 +870,7 @@ function getNonBinaryNodeOperator(
   if (node.type !== AST_NODE_TYPES.UnaryExpression) {
     return '';
   }
-  if (
-    isIdentifierOrMemberOrChainExpression(node.argument) &&
-    node.operator === '!'
-  ) {
+  if (isMemberAccessLike(node.argument) && node.operator === '!') {
     return '!';
   }
   return null;
