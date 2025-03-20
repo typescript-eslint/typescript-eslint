@@ -108,15 +108,18 @@ export default createRule({
                 for (const reference of smTypeParameterVariable.references) {
                   if (reference.isTypeReference) {
                     const referenceNode = reference.identifier;
-                    const isCompositeType =
+                    const isComplexType =
                       constraint?.type === AST_NODE_TYPES.TSUnionType ||
-                      constraint?.type === AST_NODE_TYPES.TSIntersectionType;
+                      constraint?.type === AST_NODE_TYPES.TSIntersectionType ||
+                      constraint?.type === AST_NODE_TYPES.TSConditionalType;
                     const hasMatchingAncestorType = [
                       AST_NODE_TYPES.TSArrayType,
                       AST_NODE_TYPES.TSIndexedAccessType,
+                      AST_NODE_TYPES.TSIntersectionType,
+                      AST_NODE_TYPES.TSUnionType,
                       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                     ].some(type => referenceNode.parent.parent!.type === type);
-                    if (isCompositeType && hasMatchingAncestorType) {
+                    if (isComplexType && hasMatchingAncestorType) {
                       yield fixer.replaceText(
                         referenceNode,
                         `(${constraintText})`,

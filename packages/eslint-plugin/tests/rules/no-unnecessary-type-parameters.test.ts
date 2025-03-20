@@ -1859,5 +1859,57 @@ function join(els: ({ hoge: string } | { hoge: number })['hoge'][]) {
         },
       ],
     },
+    {
+      code: `
+type A = string;
+type B = string;
+type C = string;
+declare function f<T extends A | B>(): T & C;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+type A = string;
+type B = string;
+type C = string;
+declare function f(): (A | B) & C;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+type A = string;
+type B = string;
+type C = string;
+type D = string;
+declare function f<T extends A extends B ? C : D>(): T | null;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+type A = string;
+type B = string;
+type C = string;
+type D = string;
+declare function f(): (A extends B ? C : D) | null;
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
