@@ -584,7 +584,7 @@ export default createRule<Options, MessageIds>({
               {
                 messageId: 'suggestNullish',
                 data: { equals: '=' },
-                fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
+                fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] {
                   return [
                     fixer.insertTextBefore(node, commentsBefore),
                     fixer.replaceText(
