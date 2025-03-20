@@ -104,7 +104,7 @@ const flatConfigs = {
   TSESLint.FlatConfig.Config | TSESLint.FlatConfig.ConfigArray
 >;
 
-Object.assign(flatPlugin, flatConfigs);
+Object.assign(plugin.configs, flatConfigs);
 
 export = {
   flatConfigs,

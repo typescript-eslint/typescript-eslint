@@ -72,6 +72,7 @@
     "ts-api-utils": "^2.0.1"
   },
   "devDependencies": {
+    "@eslint/config-helpers": "^0.2.0",
     "@jest/types": "29.6.3",
     "@types/marked": "^5.0.2",
     "@types/mdast": "^4.0.3",
