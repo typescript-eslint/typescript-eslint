@@ -19,6 +19,7 @@ import { analyzeChain } from './prefer-optional-chain-utils/analyzeChain';
 import { checkNullishAndReport } from './prefer-optional-chain-utils/checkNullishAndReport';
 import {
   gatherLogicalOperands,
+  NullishComparisonType,
   OperandValidity,
 } from './prefer-optional-chain-utils/gatherLogicalOperands';
 
@@ -82,6 +83,11 @@ export default createRule<
             description:
               'Check operands that are typed as `unknown` when inspecting "loose boolean" operands.',
           },
+          ignoreIfStatements: {
+            type: 'boolean',
+            description:
+              'Whether to ignore `if` statements with a single expression in the consequent.',
+          },
           requireNullish: {
             type: 'boolean',
             description:
@@ -100,6 +106,7 @@ export default createRule<
       checkNumber: true,
       checkString: true,
       checkUnknown: true,
+      ignoreIfStatements: false,
       requireNullish: false,
     },
   ],
@@ -109,7 +116,84 @@ export default createRule<
     const seenLogicals = new Set<TSESTree.LogicalExpression>();
 
     return {
-      // specific handling for `(foo ?? {}).bar` / `(foo || {}).bar`
+      // specific handling for `if (foo) { foo.bar }` / `if (foo) foo.bar`
+      'IfStatement[consequent.type=BlockStatement][consequent.body.length=1], IfStatement[consequent.type=ExpressionStatement]'(
+        node: TSESTree.IfStatement,
+      ): void {
+        if (options.ignoreIfStatements || node.alternate) {
+          return;
+        }
+        const ifBodyStatement =
+          node.consequent.type === AST_NODE_TYPES.BlockStatement
+            ? node.consequent.body[0]
+            : node.consequent;
+
+        if (ifBodyStatement.type !== AST_NODE_TYPES.ExpressionStatement) {
+          return;
+        }
+
+        const ifBodyExpression = ifBodyStatement.expression;
+        const currentChain: ValidOperand[] = [
+          {
+            node: node.test,
+            type: OperandValidity.Valid,
+            comparedName: node.test,
+            comparisonType: NullishComparisonType.Boolean,
+            isYoda: false,
+          },
+        ];
+        if (node.test.type === AST_NODE_TYPES.LogicalExpression) {
+          const { newlySeenLogicals, operands } = gatherLogicalOperands(
+            node.test,
+            parserServices,
+            context.sourceCode,
+            options,
+          );
+          for (const logical of newlySeenLogicals) {
+            seenLogicals.add(logical);
+          }
+          for (const operand of operands) {
+            if (operand.type === OperandValidity.Invalid) {
+              return;
+            }
+            currentChain.push(operand);
+          }
+        }
+        if (ifBodyExpression.type === AST_NODE_TYPES.LogicalExpression) {
+          const { newlySeenLogicals, operands } = gatherLogicalOperands(
+            ifBodyExpression,
+            parserServices,
+            context.sourceCode,
+            options,
+          );
+          for (const logical of newlySeenLogicals) {
+            seenLogicals.add(logical);
+          }
+          for (const operand of operands) {
+            if (operand.type === OperandValidity.Invalid) {
+              return;
+            }
+            currentChain.push(operand);
+          }
+        } else {
+          currentChain.push({
+            node: ifBodyExpression,
+            type: OperandValidity.Valid,
+            comparedName: ifBodyExpression,
+            comparisonType: NullishComparisonType.Boolean,
+            isYoda: false,
+          });
+        }
+        analyzeChain(
+          context,
+          parserServices,
+          options,
+          node,
+          '&&',
+          currentChain,
+        );
+      },
+
       'LogicalExpression[operator!="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {
@@ -157,6 +241,7 @@ export default createRule<
         }
       },
 
+      // specific handling for `(foo ?? {}).bar` / `(foo || {}).bar`
       'LogicalExpression[operator="||"], LogicalExpression[operator="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {

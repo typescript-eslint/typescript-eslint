@@ -9,7 +9,7 @@ import type {
   SourceCode,
 } from '@typescript-eslint/utils/ts-eslint';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import { unionTypeParts } from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -208,9 +208,13 @@ const analyzeOrChainOperand: OperandAnalyzer = (
  */
 function getReportRange(
   chain: ValidOperand[],
-  boundary: TSESTree.Range,
+  node: TSESTree.Node,
   sourceCode: SourceCode,
 ): TSESTree.Range {
+  if (node.type === AST_NODE_TYPES.IfStatement) {
+    return node.range;
+  }
+  const boundary = node.range;
   const leftNode = chain[0].node;
   const rightNode = chain[chain.length - 1].node;
   let leftMost = nullThrows(
@@ -324,7 +328,7 @@ function getReportDescriptor(
   // 6) diff(`foo.bar.baz?.bam`, `foo.bar.baz.bam()`) = `()`
   // 7) result = `foo?.bar?.baz?.bam?.()`
 
-  const parts = [];
+  const parts: FlattenedChain[] = [];
   for (const current of chain) {
     const nextOperand = flattenChainExpression(
       sourceCode,
@@ -401,7 +405,85 @@ function getReportDescriptor(
     newCode = `!${newCode}`;
   }
 
-  const reportRange = getReportRange(chain, node.range, sourceCode);
+  const reportRange = getReportRange(chain, node, sourceCode);
+
+  if (node.type === AST_NODE_TYPES.IfStatement) {
+    const chainEndedWithSemicolon =
+      sourceCode.getTokenAfter(lastOperand.node)?.value === ';';
+    if (chainEndedWithSemicolon) {
+      newCode += ';';
+    }
+
+    const nodeBeforeTheComment = chainEndedWithSemicolon
+      ? lastOperand.node.parent
+      : lastOperand.node;
+
+    const commentsBefore = sourceCode.getCommentsBefore(chain[1].node);
+    const commentsAfter = sourceCode.getCommentsAfter(nodeBeforeTheComment);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const tokenAfterNodeTest = sourceCode.getTokenAfter(node.test)!; // if (foo) /* this */, there is always a token here
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const tokenBeforeNodeTest = sourceCode.getTokenBefore(node.test)!; // if /* this */ (foo), there is always a token here
+    const tokenAfterAfterNodeTest =
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      sourceCode.getTokenAfter(tokenAfterNodeTest)!; // if (foo) /* this */, there is always a token here
+    const commentsBeforeNodeTest =
+      sourceCode.getCommentsBefore(tokenBeforeNodeTest); // if /* this */ (foo)
+    const beforeNodeTestComments = sourceCode.getCommentsBefore(node.test); // if (/* this */ foo)
+    const afterNodeTestComments1 = sourceCode.getCommentsAfter(node.test); // if (foo /* this */)
+    const afterNodeTestComments2 =
+      tokenAfterAfterNodeTest.type === AST_TOKEN_TYPES.Punctuator
+        ? sourceCode.getCommentsBefore(tokenAfterAfterNodeTest)
+        : []; // if (foo) /* this */
+
+    const commentsToReloacte = [
+      ...commentsBeforeNodeTest,
+      ...beforeNodeTestComments,
+      ...afterNodeTestComments1,
+      ...afterNodeTestComments2,
+    ];
+
+    if (commentsToReloacte.length) {
+      commentsBefore.unshift(...commentsToReloacte);
+      useSuggestionFixer = true;
+      const indentationCount = node.loc.start.column;
+      const indentation = ' '.repeat(indentationCount);
+      const newLineIndentation = `\n${indentation}`;
+      function getTextFromCommentsArray(comments: TSESTree.Comment[]): string {
+        return comments
+          .map(({ type, value }) =>
+            type === AST_TOKEN_TYPES.Line ? `//${value}` : `/*${value}*/`,
+          )
+          .join(newLineIndentation);
+      }
+      if (commentsBefore.length > 0) {
+        const commentsText = getTextFromCommentsArray(commentsBefore);
+        newCode = `${commentsText}\n${indentation}${newCode}`;
+      }
+      if (commentsAfter.length > 0) {
+        const commentsText = getTextFromCommentsArray(commentsAfter);
+        newCode = `${newCode}\n${indentation}${commentsText}`;
+      }
+    } else if (commentsBefore.length || commentsAfter.length) {
+      const indentationCount = node.loc.start.column;
+      const indentation = ' '.repeat(indentationCount);
+      function getTextFromCommentsArray(comments: TSESTree.Comment[]): string {
+        return sourceCode
+          .getText()
+          .slice(comments[0].range[0], comments[comments.length - 1].range[1]);
+      }
+      if (commentsBefore.length > 0) {
+        const commentsTextBeforeWithoutIndent =
+          getTextFromCommentsArray(commentsBefore);
+        newCode = `${commentsTextBeforeWithoutIndent}\n${indentation}${newCode}`;
+      }
+      if (commentsAfter.length > 0) {
+        const commentsTextAfterWithoutIndent =
+          getTextFromCommentsArray(commentsAfter);
+        newCode = `${newCode}\n${indentation}${commentsTextAfterWithoutIndent}`;
+      }
+    }
+  }
 
   const fix: ReportFixFunction = fixer =>
     fixer.replaceTextRange(reportRange, newCode);
