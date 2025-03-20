@@ -6,9 +6,7 @@ import type {
 import type rules from './rules';
 
 declare const cjsExport: {
-  configs: {
-    [configName: string]: ClassicConfig.Config;
-  };
+  configs: Record<string, ClassicConfig.Config>;
   meta: FlatConfig.PluginMeta;
   rules: typeof rules;
 };

@@ -1,4 +1,7 @@
+import type { TSESLint } from '@typescript-eslint/utils';
 import type { FlatConfig, Linter } from '@typescript-eslint/utils/ts-eslint';
+
+import * as parserBase from '@typescript-eslint/parser';
 
 import all from './configs/eslintrc/all';
 import base from './configs/eslintrc/base';
@@ -27,9 +30,6 @@ import stylisticFlat from './configs/flat/stylistic';
 import stylisticTypeCheckedFlat from './configs/flat/stylistic-type-checked';
 import stylisticTypeCheckedOnlyFlat from './configs/flat/stylistic-type-checked-only';
 import rules from './rules';
-
-import * as parserBase from '@typescript-eslint/parser';
-import { TSESLint } from '@typescript-eslint/utils';
 
 const parser: TSESLint.FlatConfig.Parser = {
   meta: parserBase.meta,
@@ -72,6 +72,7 @@ const plugin = {
 // @ts-expect-error -- upstream type incompatibility stuff
 const flatPlugin = plugin as FlatConfig.Plugin;
 
+// included due to https://github.com/eslint/eslint/issues/19513
 const flatConfigs = {
   'flat/all': allFlat(flatPlugin, parser),
   'flat/base': baseFlat(flatPlugin, parser),
@@ -106,7 +107,7 @@ const flatConfigs = {
 Object.assign(flatPlugin, flatConfigs);
 
 export = {
-  plugin,
   flatConfigs,
   parser,
+  plugin,
 };
