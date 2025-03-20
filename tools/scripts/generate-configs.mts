@@ -11,11 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import prettier from 'prettier';
 
-import {
-  PACKAGES_ESLINT_PLUGIN,
-  PACKAGES_TYPESCRIPT_ESLINT,
-  PRETTIER_CONFIG_PATH,
-} from './paths.mts';
+import { PACKAGES_ESLINT_PLUGIN, PRETTIER_CONFIG_PATH } from './paths.mts';
 
 // no need for us to bring in an entire dependency for a few simple terminal colors
 const chalk = {
