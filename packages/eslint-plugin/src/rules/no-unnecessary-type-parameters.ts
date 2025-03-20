@@ -149,7 +149,7 @@ export default createRule({
                 // We are assuming at this point that the reported type parameter
                 // is present in the inspected node's type parameters.
                 if (typeParamsNode.params.length === 1) {
-                  // Remove the whole <T> generic syntax if we're le <Ting the only type parameter in the list. we're removing the only type parameter in the list.
+                  // Remove the whole <T> generic syntax if we're removing the only type parameter in the list.
                   yield fixer.remove(typeParamsNode);
                 } else {
                   const index = typeParamsNode.params.indexOf(esTypeParameter);
