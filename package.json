@@ -148,7 +148,8 @@
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tmp": "0.2.1",
     "tsx": "^4.7.2",
-    "typescript": "5.8.2"
+    "typescript": "5.8.2",
+    "@eslint/config-helpers": "^0.2.0"
   },
   "packageManager": "yarn@3.8.2",
   "nx": {
