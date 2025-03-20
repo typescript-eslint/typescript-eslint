@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import eslintPlugin from '../src';
+import eslintPlugin from '../src/index';
 import rules from '../src/rules';
 
 describe('eslint-plugin ("./src/index.ts")', () => {

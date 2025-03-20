@@ -1,6 +1,4 @@
-// NOTE: this file is isolated to be shared across legacy and flat configs
-// it is exported via `./use-at-your-own-risk/eslint-recommended-raw`
-// and it has types manually defined in `./eslint-recommended-raw.d.ts`
+// NOTE: this file is isolated to be shared across legacy and flat configs.
 
 /**
  * This is a compatibility ruleset that:

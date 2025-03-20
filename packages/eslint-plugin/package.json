@@ -24,9 +24,9 @@
       "types": "./rules.d.ts",
       "default": "./dist/rules/index.js"
     },
-    "./use-at-your-own-risk/eslint-recommended-raw": {
-      "types": "./eslint-recommended-raw.d.ts",
-      "default": "./dist/configs/eslint-recommended-raw.js"
+    "./use-at-your-own-risk/raw-plugin": {
+      "types": "./raw-plugin.d.ts",
+      "default": "./dist/raw-plugin.js"
     }
   },
   "engines": {
