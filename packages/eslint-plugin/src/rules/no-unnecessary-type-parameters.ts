@@ -10,6 +10,7 @@ import type { MakeRequired } from '../util';
 import {
   createRule,
   getParserServices,
+  getWrappingFixer,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -120,10 +121,18 @@ export default createRule({
                       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                     ].some(type => referenceNode.parent.parent!.type === type);
                     if (isComplexType && hasMatchingAncestorType) {
-                      yield fixer.replaceText(
-                        referenceNode,
-                        `(${constraintText})`,
-                      );
+                      const fixResult = getWrappingFixer({
+                        node: referenceNode,
+                        innerNode: constraint,
+                        sourceCode: context.sourceCode,
+                        wrap: constraintNode => constraintNode,
+                      })(fixer);
+                      if (fixResult == null) {
+                        return null;
+                      }
+                      if ('text' in fixResult) {
+                        yield fixResult;
+                      }
                     } else {
                       yield fixer.replaceText(referenceNode, constraintText);
                     }
@@ -140,7 +149,7 @@ export default createRule({
                 // We are assuming at this point that the reported type parameter
                 // is present in the inspected node's type parameters.
                 if (typeParamsNode.params.length === 1) {
-                  // Remove the whole <T> generic syntax if we're removing the only type parameter in the list.
+                  // Remove the whole <T> generic syntax if we're le <Ting the only type parameter in the list. we're removing the only type parameter in the list.
                   yield fixer.remove(typeParamsNode);
                 } else {
                   const index = typeParamsNode.params.indexOf(esTypeParameter);
