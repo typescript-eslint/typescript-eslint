@@ -585,16 +585,25 @@ export default createRule<Options, MessageIds>({
                 messageId: 'suggestNullish',
                 data: { equals: '=' },
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
-                  return fixer.replaceText(
-                    node,
-                    `${commentsBefore}${getTextWithParentheses(
-                      context.sourceCode,
-                      nullishCoalescingLeftNode,
-                    )} ??= ${getTextWithParentheses(
-                      context.sourceCode,
-                      nullishCoalescingRightNode,
-                    )};${commentsAfter}`,
-                  );
+                  return [
+                    fixer.insertTextBefore(node, commentsBefore),
+                    fixer.replaceText(
+                      node,
+                      `${getTextWithParentheses(
+                        context.sourceCode,
+                        nullishCoalescingLeftNode,
+                      )} ??= ${getTextWithParentheses(
+                        context.sourceCode,
+                        nullishCoalescingRightNode,
+                      )};`,
+                    ),
+                    fixer.insertTextAfter(
+                      node,
+                      `${
+                        commentsAfter.startsWith('/') ? ' ' : ''
+                      }${commentsAfter.slice(0, -1)}`,
+                    ),
+                  ];
                 },
               },
             ],

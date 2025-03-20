@@ -6167,7 +6167,7 @@ declare function makeFoo(): string;
    * comment before 4
    * which is also multiline
    */
-foo ??= makeFoo();// comment inline
+foo ??= makeFoo(); // comment inline
 // comment after 1
 /* comment after 2 */
 /* comment after 3
@@ -6177,7 +6177,6 @@ foo ??= makeFoo();// comment inline
    * comment after 4
    * which is also multiline
    */
-
       `,
             },
           ],
