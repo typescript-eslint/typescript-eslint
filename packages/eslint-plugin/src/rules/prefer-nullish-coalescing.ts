@@ -585,8 +585,13 @@ export default createRule<Options, MessageIds>({
                 messageId: 'suggestNullish',
                 data: { equals: '=' },
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] {
-                  return [
-                    fixer.insertTextBefore(node, commentsBefore),
+                  const fixes: TSESLint.RuleFix[] = [];
+
+                  if (commentsBefore) {
+                    fixes.push(fixer.insertTextBefore(node, commentsBefore));
+                  }
+
+                  fixes.push(
                     fixer.replaceText(
                       node,
                       `${getTextWithParentheses(
@@ -597,13 +602,18 @@ export default createRule<Options, MessageIds>({
                         nullishCoalescingRightNode,
                       )};`,
                     ),
-                    fixer.insertTextAfter(
-                      node,
-                      `${
-                        commentsAfter.startsWith('/') ? ' ' : ''
-                      }${commentsAfter.slice(0, -1)}`,
-                    ),
-                  ];
+                  );
+
+                  if (commentsAfter) {
+                    fixes.push(
+                      fixer.insertTextAfter(
+                        node,
+                        ` ${commentsAfter.slice(0, -1)}`,
+                      ),
+                    );
+                  }
+
+                  return fixes;
                 },
               },
             ],
