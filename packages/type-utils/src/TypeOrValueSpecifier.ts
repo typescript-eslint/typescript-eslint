@@ -1,6 +1,9 @@
+import type { ScopeManager } from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/types';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type * as ts from 'typescript';
 
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as tsutils from 'ts-api-utils';
 
 import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
@@ -219,3 +222,53 @@ export const typeMatchesSomeSpecifier = (
   program: ts.Program,
 ): boolean =>
   specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));
+
+const getSpecifierNames = (specifier: TypeOrValueSpecifier): string[] => {
+  if (typeof specifier === 'string') {
+    return [specifier];
+  }
+
+  return typeof specifier.name === 'string' ? [specifier.name] : specifier.name;
+};
+
+const getNodeName = (node: TSESTree.Node): string | undefined => {
+  if (
+    node.type === AST_NODE_TYPES.Identifier ||
+    node.type === AST_NODE_TYPES.JSXIdentifier ||
+    node.type === AST_NODE_TYPES.PrivateIdentifier
+  ) {
+    return node.name;
+  }
+
+  return undefined;
+};
+
+export function valueMatchesSpecifier(
+  node: TSESTree.Node,
+  specifier: TypeOrValueSpecifier,
+  scopeManager: ScopeManager,
+): boolean {
+  const specifierNames = getSpecifierNames(specifier);
+  const nodeName = getNodeName(node);
+  if (typeof specifier !== 'string' && specifier.from === 'package') {
+    const variable = scopeManager.variables.find(v => nodeName === v.name);
+    const targetNode = variable?.defs[0].parent;
+    if (
+      targetNode?.type !== AST_NODE_TYPES.ImportDeclaration ||
+      targetNode.source.value !== specifier.package
+    ) {
+      return false;
+    }
+  }
+
+  return nodeName ? specifierNames.includes(nodeName) : false;
+}
+
+export const valueMatchesSomeSpecifier = (
+  node: TSESTree.Node,
+  specifiers: TypeOrValueSpecifier[] = [],
+  scopeManager: ScopeManager,
+): boolean =>
+  specifiers.some(specifier =>
+    valueMatchesSpecifier(node, specifier, scopeManager),
+  );
