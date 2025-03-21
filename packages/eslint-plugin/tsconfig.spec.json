@@ -8,6 +8,7 @@
   },
   "include": [
     "vitest.config.mts",
+    "package.json",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts",
@@ -18,6 +19,9 @@
   "references": [
     {
       "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "../../tsconfig.spec.json"
     }
   ]
 }
