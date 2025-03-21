@@ -46,17 +46,19 @@ c ?? 'a string';
 Incorrect
 Options: { "ignoreConditionalTests": false }
 
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 
 if (a || b) {
       ~~ Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
 }
 if ((a ||= b)) {
+       ~~~ Prefer using nullish coalescing operator (`??=`) instead of a logical assignment (`||=`), as it is a safer operator.
 }
 while (a || b) {}
          ~~ Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
 while ((a ||= b)) {}
+          ~~~ Prefer using nullish coalescing operator (`??=`) instead of a logical assignment (`||=`), as it is a safer operator.
 do {} while (a || b);
                ~~ Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
 for (let i = 0; a || b; i += 1) {}
@@ -67,7 +69,7 @@ a || b ? true : false;
 Correct
 Options: { "ignoreConditionalTests": false }
 
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 
 if (a ?? b) {
@@ -83,7 +85,7 @@ for (let i = 0; a ?? b; i += 1) {}
 Incorrect
 Options: { "ignoreMixedLogicalExpressions": false }
 
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 declare const c: string | null;
 declare const d: string | null;
@@ -91,6 +93,7 @@ declare const d: string | null;
 a || (b && c);
   ~~ Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
 a ||= b && c;
+  ~~~ Prefer using nullish coalescing operator (`??=`) instead of a logical assignment (`||=`), as it is a safer operator.
 (a && b) || c || d;
          ~~ Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
               ~~ Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
@@ -103,7 +106,7 @@ a || (b && c && d);
 Correct
 Options: { "ignoreMixedLogicalExpressions": false }
 
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 declare const c: string | null;
 declare const d: string | null;

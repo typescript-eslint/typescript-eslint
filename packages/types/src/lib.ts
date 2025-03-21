@@ -94,6 +94,7 @@ export type Lib =
   | 'esnext.collection'
   | 'esnext.decorators'
   | 'esnext.disposable'
+  | 'esnext.float16'
   | 'esnext.full'
   | 'esnext.intl'
   | 'esnext.iterator'

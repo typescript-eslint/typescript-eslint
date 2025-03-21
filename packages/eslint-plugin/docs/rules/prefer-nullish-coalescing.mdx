@@ -84,7 +84,7 @@ Examples of code for this rule with `{ ignoreConditionalTests: false }`:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "ignoreConditionalTests": false }'
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 
 if (a || b) {
@@ -102,7 +102,7 @@ a || b ? true : false;
 <TabItem value="✅ Correct">
 
 ```ts option='{ "ignoreConditionalTests": false }'
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 
 if (a ?? b) {
@@ -133,7 +133,7 @@ Examples of code for this rule with `{ ignoreMixedLogicalExpressions: false }`:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "ignoreMixedLogicalExpressions": false }'
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 declare const c: string | null;
 declare const d: string | null;
@@ -149,7 +149,7 @@ a || (b && c && d);
 <TabItem value="✅ Correct">
 
 ```ts option='{ "ignoreMixedLogicalExpressions": false }'
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 declare const c: string | null;
 declare const d: string | null;

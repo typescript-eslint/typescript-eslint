@@ -28,14 +28,3 @@ export const isPossiblyTruthy = (type: ts.Type): boolean =>
       // like `"" & { __brand: string }`.
       intersectionParts.every(type => !tsutils.isFalsyType(type)),
     );
-
-// Nullish utilities
-const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
-const isNullishType = (type: ts.Type): boolean =>
-  tsutils.isTypeFlagSet(type, nullishFlag);
-
-export const isPossiblyNullish = (type: ts.Type): boolean =>
-  tsutils.unionTypeParts(type).some(isNullishType);
-
-export const isAlwaysNullish = (type: ts.Type): boolean =>
-  tsutils.unionTypeParts(type).every(isNullishType);

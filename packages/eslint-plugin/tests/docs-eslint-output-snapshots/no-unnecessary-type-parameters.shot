@@ -39,3 +39,12 @@ function identity<T>(arg: T): T {
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
   return obj[key];
 }
+
+Incorrect
+
+declare function length<T>(array: ReadonlyArray<T>): number;
+                        ~ Type parameter T is used only once in the function signature.
+
+Correct
+
+declare function length(array: ReadonlyArray<unknown>): number;

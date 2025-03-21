@@ -121,6 +121,11 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'const arrowGeneric1 = <T = void,>(arg: T) => {};',
     'declare function functionDeclaration1<T = void>(arg: T): void;',
     `
+      class ClassName {
+        accessor propName: number;
+      }
+    `,
+    `
 function f(): void;
 function f(x: string): string;
 function f(x?: string): string | void {
@@ -441,6 +446,20 @@ export function f(x?: string): string | void {
       errors: [
         {
           column: 38,
+          line: 3,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: `
+        class ClassName {
+          accessor propName: void;
+        }
+      `,
+      errors: [
+        {
+          column: 30,
           line: 3,
           messageId: 'invalidVoidNotReturnOrGeneric',
         },

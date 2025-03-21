@@ -37,3 +37,36 @@ Options: { "ignoreDifferentlyNamedParameters": true }
 
 function f(a: number): void;
 function f(b: string): void;
+
+Incorrect
+Options: { "ignoreOverloadsWithDifferentJSDoc": true }
+
+declare function f(x: string): void;
+declare function f(x: boolean): void;
+                   ~~~~~~~~~~ This overload and the one on line 1 can be combined into one signature taking `string | boolean`.
+/**
+ * @deprecate
+ */
+declare function f(x: number): void;
+/**
+ * @deprecate
+ */
+declare function f(x: null): void;
+                   ~~~~~~~ This overload and the one on line 6 can be combined into one signature taking `number | null`.
+
+Correct
+Options: { "ignoreOverloadsWithDifferentJSDoc": true }
+
+declare function f(x: string): void;
+/**
+ * This signature does something else.
+ */
+declare function f(x: boolean): void;
+/**
+ * @async
+ */
+declare function f(x: number): void;
+/**
+ * @deprecate
+ */
+declare function f(x: null): void;

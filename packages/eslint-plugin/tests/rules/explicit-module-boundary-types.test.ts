@@ -821,6 +821,64 @@ export const a: Foo = {
   f: (x: boolean) => x,
 };
     `,
+    {
+      code: `
+export function test(a: string): string;
+export function test(a: number): number;
+export function test(a: unknown) {
+  return a;
+}
+      `,
+      options: [
+        {
+          allowOverloadFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+export default function test(a: string): string;
+export default function test(a: number): number;
+export default function test(a: unknown) {
+  return a;
+}
+      `,
+      options: [
+        {
+          allowOverloadFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+export default function (a: string): string;
+export default function (a: number): number;
+export default function (a: unknown) {
+  return a;
+}
+      `,
+      options: [
+        {
+          allowOverloadFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+export class Test {
+  test(a: string): string;
+  test(a: number): number;
+  test(a: unknown) {
+    return a;
+  }
+}
+      `,
+      options: [
+        {
+          allowOverloadFunctions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -2074,6 +2132,76 @@ export const foo = {
       options: [
         {
           allowedNames: [],
+        },
+      ],
+    },
+    {
+      code: `
+export function test(a: string): string;
+export function test(a: number): number;
+export function test(a: unknown) {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 21,
+          line: 4,
+          messageId: 'missingReturnType',
+        },
+      ],
+    },
+    {
+      code: `
+export default function test(a: string): string;
+export default function test(a: number): number;
+export default function test(a: unknown) {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 29,
+          line: 4,
+          messageId: 'missingReturnType',
+        },
+      ],
+    },
+    {
+      code: `
+export default function (a: string): string;
+export default function (a: number): number;
+export default function (a: unknown) {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 25,
+          line: 4,
+          messageId: 'missingReturnType',
+        },
+      ],
+    },
+    {
+      code: `
+export class Test {
+  test(a: string): string;
+  test(a: number): number;
+  test(a: unknown) {
+    return a;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 7,
+          line: 5,
+          messageId: 'missingReturnType',
         },
       ],
     },
