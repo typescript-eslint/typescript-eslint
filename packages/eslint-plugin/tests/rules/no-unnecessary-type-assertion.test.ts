@@ -429,6 +429,18 @@ declare function foo<T extends unknown>(bar: T): T;
 const baz: unknown = {};
 foo(baz!);
     `,
+    {
+      code: 'const a = `a` as const;',
+      options: [{ ignoreStringConstAssertion: true }],
+    },
+    {
+      code: "const a = 'a' as const;",
+      options: [{ ignoreStringConstAssertion: true }],
+    },
+    {
+      code: "const a = <const>'a';",
+      options: [{ ignoreStringConstAssertion: true }],
+    },
   ],
 
   invalid: [
