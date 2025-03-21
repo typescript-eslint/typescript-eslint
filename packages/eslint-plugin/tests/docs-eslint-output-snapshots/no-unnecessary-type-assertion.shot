@@ -84,6 +84,13 @@ function foo(x: number | undefined): number {
 `;
 
 exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 11`] = `
+"Options: { "ignoreStringConstAssertion": true }
+
+const foo = \`foo\` as const;
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 12`] = `
 "Options: { "typesToIgnore": ["Foo"] }
 
 type Foo = 3;
