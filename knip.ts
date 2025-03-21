@@ -12,7 +12,7 @@ export default {
     unresolved: 'off',
   },
   vitest: {
-    config: ['vitest.config.mts', 'packages/*/vitest.config.mts'],
+    config: ['vitest.config.mts', 'packages/*/vitest.config.{ts,mts}'],
   },
   workspaces: {
     '.': {
@@ -46,7 +46,6 @@ export default {
       ],
     },
     'packages/eslint-plugin': {
-      ignoreDependencies: ['vite'],
       ignore: [
         'tests/fixtures/**',
         'typings/eslint-rules.d.ts',

@@ -73,7 +73,6 @@ export default tseslint.config(
       '.nx/',
       '.yarn/',
       '**/jest.config.js',
-      '**/vitest.config.ts',
       '**/node_modules/**',
       '**/dist/**',
       '**/fixtures/**',
@@ -394,7 +393,6 @@ export default tseslint.config(
       'packages/integration-tests/tools/integration-test-base.ts',
       'packages/integration-tests/tools/pack-packages.ts',
     ],
-    ignores: vitestFiles,
     rules: {
       '@typescript-eslint/no-empty-function': [
         'error',
@@ -415,7 +413,7 @@ export default tseslint.config(
       'packages/integration-tests/tools/integration-test-base.ts',
       'packages/integration-tests/tools/pack-packages.ts',
     ],
-    ignores: ['packages/eslint-plugin/**/*'],
+    ignores: vitestFiles,
     rules: {
       'jest/no-alias-methods': 'error',
       'jest/no-deprecated-functions': 'error',
