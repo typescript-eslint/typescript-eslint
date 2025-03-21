@@ -169,14 +169,14 @@ export default createRule<Options, MessageIds>({
             }
           }
         }
-        if (!!funcName && !!options.allowedNames.includes(funcName)) {
+        if (!!funcName && options.allowedNames.includes(funcName)) {
           return true;
         }
       }
       if (
         node.type === AST_NODE_TYPES.FunctionDeclaration &&
         node.id &&
-        !!options.allowedNames.includes(node.id.name)
+        options.allowedNames.includes(node.id.name)
       ) {
         return true;
       }
