@@ -835,7 +835,10 @@ export default createRule<Options, MessageId>({
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
-      if (optionChainContainsOptionArrayIndex(node)) {
+      if (
+        !isNoUncheckedIndexedAccess &&
+        optionChainContainsOptionArrayIndex(node)
+      ) {
         return;
       }
 
