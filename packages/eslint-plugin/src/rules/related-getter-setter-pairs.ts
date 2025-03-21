@@ -11,9 +11,7 @@ type GetMethod = {
   returnType: TSESTree.TSTypeAnnotation;
 } & Method;
 
-type GetMethodRaw = {
-  returnType: TSESTree.TSTypeAnnotation | undefined;
-} & GetMethod;
+type GetMethodRaw = GetMethod;
 
 type SetMethod = { kind: 'set'; params: [TSESTree.Node] } & Method;
 
