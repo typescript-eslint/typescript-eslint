@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 type T1 = B | A;
           ~~~~~ Union type T1 constituents must be sorted.
@@ -49,11 +46,8 @@ type T4 =
 ~~~~~~~~~~
   | any;
 ~~~~~~~
-"
-`;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 type T1 = A | B;
 
@@ -80,73 +74,47 @@ type T4 =
   | { b: string }
   | [1, 2, 3]
   | [1, 2, 4];
-"
-`;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: { "caseSensitive": true }
 
 type T = 'DeletedAt' | 'DeleteForever';
          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Union type T constituents must be sorted.
-"
-`;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 Options: { "caseSensitive": true }
 
 type T = 'DeleteForever' | 'DeletedAt';
-"
-`;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 5`] = `
-"Incorrect
+Incorrect
 Options: { "checkIntersections": true }
 
 type ExampleIntersection = B & A;
                            ~~~~~ Intersection type ExampleIntersection constituents must be sorted.
-"
-`;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 Options: { "checkIntersections": true }
 
 type ExampleIntersection = A & B;
-"
-`;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 7`] = `
-"Incorrect
+Incorrect
 Options: { "checkUnions": true }
 
 type ExampleUnion = B | A;
                     ~~~~~ Union type ExampleUnion constituents must be sorted.
-"
-`;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 8`] = `
-"Correct
+Correct
 Options: { "checkUnions": true }
 
 type ExampleUnion = A | B;
-"
-`;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 9`] = `
-"Incorrect
+Incorrect
 Options: { "groupOrder": ["literal", "nullish" ]}
 
 type ExampleGroup = null | 123;
                     ~~~~~~~~~~ Union type ExampleGroup constituents must be sorted.
-"
-`;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 10`] = `
-"Correct
+Correct
 Options: { "groupOrder": ["literal", "nullish" ]}
 
 type ExampleGroup = 123 | null;
-"
-`;

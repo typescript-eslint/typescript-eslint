@@ -1,16 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-shadow.mdx code examples ESLint output 1`] = `
-"Options: { "hoist": "types" }
+Options: { "hoist": "types" }
 
 type Bar<Foo> = 1;
          ~~~ 'Foo' is already declared in the upper scope on line 2 column 6.
 type Foo = 1;
-"
-`;
 
-exports[`Validating rule docs no-shadow.mdx code examples ESLint output 2`] = `
-"Options: { "hoist": "functions-and-types" }
+Options: { "hoist": "functions-and-types" }
 
 // types
 type Bar<Foo> = 1;
@@ -24,11 +18,8 @@ if (true) {
 }
 
 function b() {}
-"
-`;
 
-exports[`Validating rule docs no-shadow.mdx code examples ESLint output 3`] = `
-"Options: { "ignoreTypeValueShadow": true }
+Options: { "ignoreTypeValueShadow": true }
 
 type Foo = number;
 interface Bar {
@@ -39,13 +30,8 @@ function f() {
   const Foo = 1;
   const Bar = 'test';
 }
-"
-`;
 
-exports[`Validating rule docs no-shadow.mdx code examples ESLint output 4`] = `
-"Options: { "ignoreFunctionTypeParameterNameValueShadow": true }
+Options: { "ignoreFunctionTypeParameterNameValueShadow": true }
 
 const test = 1;
 type Func = (test: string) => typeof test;
-"
-`;

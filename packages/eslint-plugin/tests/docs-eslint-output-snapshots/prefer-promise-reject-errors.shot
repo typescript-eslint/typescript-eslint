@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs prefer-promise-reject-errors.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 Promise.reject('error');
 ~~~~~~~~~~~~~~~~~~~~~~~ Expected the Promise rejection reason to be an Error.
@@ -18,11 +15,8 @@ new Promise((resolve, reject) => {
   reject('an ' + err);
   ~~~~~~~~~~~~~~~~~~~ Expected the Promise rejection reason to be an Error.
 });
-"
-`;
 
-exports[`Validating rule docs prefer-promise-reject-errors.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 Promise.reject(new Error());
 
@@ -39,5 +33,3 @@ new Promise((resolve, reject) => {
   }
   return reject(new CustomError());
 });
-"
-`;

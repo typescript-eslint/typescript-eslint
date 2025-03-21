@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-unsafe-unary-minus.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 declare const a: string;
 -a;
@@ -10,11 +7,8 @@ declare const a: string;
 declare const b: {};
 -b;
 ~~ Argument of unary negation should be assignable to number | bigint but is {} instead.
-"
-`;
 
-exports[`Validating rule docs no-unsafe-unary-minus.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 -42;
 -42n;
@@ -33,5 +27,3 @@ declare const d: any;
 
 declare const e: 1 | 2;
 -e;
-"
-`;

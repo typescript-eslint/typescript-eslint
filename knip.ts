@@ -12,7 +12,7 @@ export default {
     unresolved: 'off',
   },
   vitest: {
-    config: ['vitest.config.mts', 'packages/*/vitest.config.mts'],
+    config: ['vitest.config.mts', 'packages/*/vitest.config.{ts,mts}'],
   },
   workspaces: {
     '.': {

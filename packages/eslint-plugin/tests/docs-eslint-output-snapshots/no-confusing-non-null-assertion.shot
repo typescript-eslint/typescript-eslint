@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-confusing-non-null-assertion.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 interface Foo {
   bar?: string;
@@ -10,14 +7,11 @@ interface Foo {
 
 const foo: Foo = getFoo();
 const isEqualsBar = foo.bar! == 'hello';
-                    ~~~~~~~~~~~~~~~~~~~ Confusing combination of non-null assertion and equality test like \`a! == b\`, which looks very similar to \`a !== b\`.
+                    ~~~~~~~~~~~~~~~~~~~ Confusing combination of non-null assertion and equality test like `a! == b`, which looks very similar to `a !== b`.
 const isEqualsNum = 1 + foo.num! == 2;
-                    ~~~~~~~~~~~~~~~~~ Confusing combination of non-null assertion and equality test like \`a! == b\`, which looks very similar to \`a !== b\`.
-"
-`;
+                    ~~~~~~~~~~~~~~~~~ Confusing combination of non-null assertion and equality test like `a! == b`, which looks very similar to `a !== b`.
 
-exports[`Validating rule docs no-confusing-non-null-assertion.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 interface Foo {
   bar?: string;
@@ -27,5 +21,3 @@ interface Foo {
 const foo: Foo = getFoo();
 const isEqualsBar = foo.bar == 'hello';
 const isEqualsNum = (1 + foo.num!) == 2;
-"
-`;

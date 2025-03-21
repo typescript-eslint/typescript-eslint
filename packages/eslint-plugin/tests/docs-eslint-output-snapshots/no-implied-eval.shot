@@ -1,18 +1,15 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+Incorrect
 
-exports[`Validating rule docs no-implied-eval.mdx code examples ESLint output 1`] = `
-"Incorrect
-
-setTimeout('alert(\`Hi!\`);', 100);
+setTimeout('alert(`Hi!`);', 100);
            ~~~~~~~~~~~~~~~ Implied eval. Consider passing a function.
 
-setInterval('alert(\`Hi!\`);', 100);
+setInterval('alert(`Hi!`);', 100);
             ~~~~~~~~~~~~~~~ Implied eval. Consider passing a function.
 
-setImmediate('alert(\`Hi!\`)');
+setImmediate('alert(`Hi!`)');
              ~~~~~~~~~~~~~~ Implied eval. Consider passing a function.
 
-execScript('alert(\`Hi!\`)');
+execScript('alert(`Hi!`)');
            ~~~~~~~~~~~~~~ Implied eval. Consider passing a function.
 
 window.setTimeout('count = 5', 10);
@@ -33,11 +30,8 @@ setTimeout(fn(), 100);
 
 const fn = new Function('a', 'b', 'return a + b');
            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Implied eval. Do not use the Function constructor to create functions.
-"
-`;
 
-exports[`Validating rule docs no-implied-eval.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 setTimeout(function () {
   alert('Hi!');
@@ -69,5 +63,3 @@ class Foo {
 }
 
 setTimeout(Foo.fn, 100);
-"
-`;

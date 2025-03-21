@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-namespace.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 module foo {}
 ~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
@@ -12,31 +9,22 @@ declare module foo {}
 ~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
 declare namespace foo {}
 ~~~~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
-"
-`;
 
-exports[`Validating rule docs no-namespace.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 declare module 'foo' {}
 
 // anything inside a d.ts file
-"
-`;
 
-exports[`Validating rule docs no-namespace.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: { "allowDeclarations": true }
 
 module foo {}
 ~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
 namespace foo {}
 ~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
-"
-`;
 
-exports[`Validating rule docs no-namespace.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 Options: { "allowDeclarations": true }
 
 declare module 'foo' {}
@@ -50,11 +38,8 @@ declare global {
 declare module foo {
   namespace foo {}
 }
-"
-`;
 
-exports[`Validating rule docs no-namespace.mdx code examples ESLint output 5`] = `
-"Incorrect
+Incorrect
 Options: { "allowDeclarations": false }
 
 module foo {}
@@ -65,19 +50,13 @@ declare module foo {}
 ~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
 declare namespace foo {}
 ~~~~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
-"
-`;
 
-exports[`Validating rule docs no-namespace.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 Options: { "allowDeclarations": false }
 
 declare module 'foo' {}
-"
-`;
 
-exports[`Validating rule docs no-namespace.mdx code examples ESLint output 7`] = `
-"Incorrect
+Incorrect
 Options: { "allowDefinitionFiles": true }
 
 // if outside a d.ts file
@@ -95,15 +74,10 @@ declare module foo {}
 ~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
 declare namespace foo {}
 ~~~~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
-"
-`;
 
-exports[`Validating rule docs no-namespace.mdx code examples ESLint output 8`] = `
-"Correct
+Correct
 Options: { "allowDefinitionFiles": true }
 
 declare module 'foo' {}
 
 // anything inside a d.ts file
-"
-`;

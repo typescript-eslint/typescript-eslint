@@ -12,7 +12,7 @@
   "exclude": [
     "dist",
     "out-tsc",
-    "jest.config.js",
+    "vitest.config.mts",
     "src/**/*.spec.ts",
     "src/**/*.test.ts"
   ],

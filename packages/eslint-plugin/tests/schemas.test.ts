@@ -1,5 +1,4 @@
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
-import 'jest-specific-snapshot';
 import fs from 'node:fs';
 import path from 'node:path';
 import prettier from 'prettier';
@@ -47,9 +46,10 @@ const SKIPPED_RULES_FOR_TYPE_GENERATION = new Set(['indent']);
 const ONLY = '';
 
 describe('Rule schemas should be convertible to TS types for documentation purposes', () => {
+  // eslint-disable-next-line vitest/prefer-each
   for (const [ruleName, ruleDef] of Object.entries(rules)) {
     if (SKIPPED_RULES_FOR_TYPE_GENERATION.has(ruleName)) {
-      // eslint-disable-next-line jest/no-disabled-tests -- intentional skip for documentation purposes
+      // eslint-disable-next-line vitest/no-disabled-tests
       it.skip(ruleName, () => {});
       continue;
     }
@@ -88,7 +88,7 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
         PRETTIER_CONFIG.tsType,
       );
 
-      expect(
+      await expect(
         [
           '',
           '# SCHEMA:',
@@ -99,7 +99,7 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
           '',
           compilationResult,
         ].join('\n'),
-      ).toMatchSpecificSnapshot(path.join(snapshotFolder, `${ruleName}.shot`));
+      ).toMatchFileSnapshot(path.join(snapshotFolder, `${ruleName}.shot`));
     });
   }
 });
@@ -190,22 +190,22 @@ describe('Rule schemas should validate options correctly', () => {
     semi: ['never'],
   };
 
-  for (const [ruleName, rule] of Object.entries(rules)) {
-    test(`${ruleName} must accept valid options`, () => {
-      if (
-        !areOptionsValid(
-          rule,
-          overrideValidOptions[ruleName] ?? rule.defaultOptions,
-        )
-      ) {
-        throw new Error(`Options failed validation against rule's schema`);
-      }
-    });
+  const ruleEntries = Object.entries(rules);
 
-    test(`${ruleName} rejects arbitrary options`, () => {
-      if (areOptionsValid(rule, [{ 'arbitrary-schemas.test.ts': true }])) {
-        throw new Error(`Options succeeded validation for arbitrary options`);
-      }
-    });
-  }
+  test.each(ruleEntries)('%s must accept valid options', (ruleName, rule) => {
+    if (
+      !areOptionsValid(
+        rule,
+        overrideValidOptions[ruleName] ?? rule.defaultOptions,
+      )
+    ) {
+      throw new Error(`Options failed validation against rule's schema`);
+    }
+  });
+
+  test.each(ruleEntries)('%s rejects arbitrary options', (_ruleName, rule) => {
+    if (areOptionsValid(rule, [{ 'arbitrary-schemas.test.ts': true }])) {
+      throw new Error(`Options succeeded validation for arbitrary options`);
+    }
+  });
 });

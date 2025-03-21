@@ -31,6 +31,7 @@ const restrictNamedDeclarations = {
 
 const vitestFiles = [
   'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/eslint-plugin/tests/**/*.test.{ts,tsx,cts,mts}',
 ];
 
 export default tseslint.config(
@@ -392,7 +393,6 @@ export default tseslint.config(
       'packages/integration-tests/tools/integration-test-base.ts',
       'packages/integration-tests/tools/pack-packages.ts',
     ],
-    ignores: vitestFiles,
     rules: {
       '@typescript-eslint/no-empty-function': [
         'error',
@@ -403,6 +403,18 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
+    },
+  },
+  {
+    files: [
+      'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
+      'packages/*/tests/**/test.{ts,tsx,cts,mts}',
+      'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
+      'packages/integration-tests/tools/integration-test-base.ts',
+      'packages/integration-tests/tools/pack-packages.ts',
+    ],
+    ignores: vitestFiles,
+    rules: {
       'jest/no-alias-methods': 'error',
       'jest/no-deprecated-functions': 'error',
       'jest/no-disabled-tests': 'error',

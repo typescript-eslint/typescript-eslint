@@ -1,22 +1,14 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs max-params.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 Options: { "countVoidThis": false, "max": 1 }
 
 function hasNoThis(this: void, first: string, second: string) {
 ~~~~~~~~~~~~~~~~~~ Function 'hasNoThis' has too many parameters (2). Maximum allowed is 1.
   // ...
 }
-"
-`;
 
-exports[`Validating rule docs max-params.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 Options: { "countVoidThis": false, "max": 1 }
 
 function hasNoThis(this: void, first: string) {
   // ...
 }
-"
-`;

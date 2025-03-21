@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-unused-expressions.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 Set<number>;
 ~~~~~~~~~~~~ Expected an assignment or function call and instead saw an expression.
@@ -9,11 +6,8 @@ Set<number>;
 ~~~~~~~~~~~~ Expected an assignment or function call and instead saw an expression.
 window!;
 ~~~~~~~~ Expected an assignment or function call and instead saw an expression.
-"
-`;
 
-exports[`Validating rule docs no-unused-expressions.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 function getSet() {
   return Set;
@@ -28,5 +22,3 @@ getSet()!;
 namespace A {
   'use strict';
 }
-"
-`;

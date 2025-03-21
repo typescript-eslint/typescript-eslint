@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs prefer-reduce-type-parameter.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 [1, 2, 3].reduce((arr, num) => arr.concat(num * 2), [] as number[]);
                                                     ~~~~~~~~~~~~~~ Unnecessary assertion: Array#reduce accepts a type parameter for the default value.
@@ -14,11 +11,8 @@ exports[`Validating rule docs prefer-reduce-type-parameter.mdx code examples ESL
   {} as Record<string, boolean>,
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unnecessary assertion: Array#reduce accepts a type parameter for the default value.
 );
-"
-`;
 
-exports[`Validating rule docs prefer-reduce-type-parameter.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 [1, 2, 3].reduce<number[]>((arr, num) => arr.concat(num * 2), []);
 
@@ -29,5 +23,3 @@ exports[`Validating rule docs prefer-reduce-type-parameter.mdx code examples ESL
   }),
   {},
 );
-"
-`;

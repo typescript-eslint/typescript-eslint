@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs consistent-type-exports.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 interface ButtonProps {
   onClick: () => void;
@@ -12,12 +9,9 @@ class Button implements ButtonProps {
 }
 
 export { Button, ButtonProps };
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type export ButtonProps is not a value and should be exported using \`export type\`.
-"
-`;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type export ButtonProps is not a value and should be exported using `export type`.
 
-exports[`Validating rule docs consistent-type-exports.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 interface ButtonProps {
   onClick: () => void;
@@ -29,5 +23,3 @@ class Button implements ButtonProps {
 
 export { Button };
 export type { ButtonProps };
-"
-`;

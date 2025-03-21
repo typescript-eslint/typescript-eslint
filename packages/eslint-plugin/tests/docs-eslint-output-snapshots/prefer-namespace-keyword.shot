@@ -1,18 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs prefer-namespace-keyword.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 module Example {}
 ~~~~~~~~~~~~~~~~~ Use 'namespace' instead of 'module' to declare custom TypeScript modules.
-"
-`;
 
-exports[`Validating rule docs prefer-namespace-keyword.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 namespace Example {}
 
 declare module 'foo' {}
-"
-`;

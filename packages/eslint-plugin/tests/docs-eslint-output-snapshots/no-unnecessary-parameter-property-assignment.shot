@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-unnecessary-parameter-property-assignment.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 class Foo {
   constructor(public bar: string) {
@@ -9,14 +6,9 @@ class Foo {
     ~~~~~~~~~~~~~~ This assignment is unnecessary since it is already assigned by a parameter property.
   }
 }
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-parameter-property-assignment.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 class Foo {
   constructor(public bar: string) {}
 }
-"
-`;

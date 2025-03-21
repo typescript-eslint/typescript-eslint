@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs prefer-includes.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 const str: string;
 const array: any[];
@@ -26,12 +23,9 @@ userDefined.indexOf(value) >= 0;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use 'includes()' method instead.
 
 /example/.test(str);
-~~~~~~~~~~~~~~~~~~~ Use \`String#includes()\` method with a string instead.
-"
-`;
+~~~~~~~~~~~~~~~~~~~ Use `String#includes()` method with a string instead.
 
-exports[`Validating rule docs prefer-includes.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 const str: string;
 const array: any[];
@@ -58,5 +52,3 @@ declare const mismatchExample: {
   includes(x: unknown): boolean;
 };
 mismatchExample.indexOf(value) >= 0;
-"
-`;
