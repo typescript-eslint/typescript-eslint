@@ -223,38 +223,45 @@ export const typeMatchesSomeSpecifier = (
 ): boolean =>
   specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));
 
+const getSpecifierNames = (specifier: TypeOrValueSpecifier): string[] => {
+  if (typeof specifier === 'string') {
+    return [specifier];
+  }
+
+  return typeof specifier.name === 'string' ? [specifier.name] : specifier.name;
+};
+
+const getNodeName = (node: TSESTree.Node): string | undefined => {
+  if (
+    node.type === AST_NODE_TYPES.Identifier ||
+    node.type === AST_NODE_TYPES.JSXIdentifier ||
+    node.type === AST_NODE_TYPES.PrivateIdentifier
+  ) {
+    return node.name;
+  }
+
+  return undefined;
+};
+
 export function valueMatchesSpecifier(
   node: TSESTree.Node,
   specifier: TypeOrValueSpecifier,
   scopeManager: ScopeManager,
 ): boolean {
-  if (
-    node.type === AST_NODE_TYPES.Identifier ||
-    node.type === AST_NODE_TYPES.JSXIdentifier
-  ) {
-    if (typeof specifier === 'string') {
-      return node.name === specifier;
+  const specifierNames = getSpecifierNames(specifier);
+  const nodeName = getNodeName(node);
+  if (typeof specifier !== 'string' && specifier.from === 'package') {
+    const variable = scopeManager.variables.find(v => nodeName === v.name);
+    const targetNode = variable?.defs[0].parent;
+    if (
+      targetNode?.type !== AST_NODE_TYPES.ImportDeclaration ||
+      targetNode.source.value !== specifier.package
+    ) {
+      return false;
     }
-
-    if (specifier.from === 'package') {
-      const variable = scopeManager.variables.find(v => v.name === node.name);
-      const targetNode = variable?.defs[0].parent;
-      if (targetNode?.type !== AST_NODE_TYPES.ImportDeclaration) {
-        return false;
-      }
-      if (targetNode.source.value !== specifier.package) {
-        return false;
-      }
-    }
-
-    if (typeof specifier.name === 'string') {
-      return node.name === specifier.name;
-    }
-
-    return specifier.name.includes(node.name);
   }
 
-  return false;
+  return nodeName ? specifierNames.includes(nodeName) : false;
 }
 
 export const valueMatchesSomeSpecifier = (
