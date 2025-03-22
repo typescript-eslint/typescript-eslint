@@ -37,7 +37,18 @@ export default createRule<Options, MessageIds>({
   name: 'no-type-alias',
   meta: {
     type: 'suggestion',
-    deprecated: true,
+    deprecated: {
+      deprecatedSince: '6.0.0',
+      replacedBy: [
+        {
+          rule: {
+            name: '@typescript-eslint/consistent-type-definitions',
+            url: 'https://typescript-eslint.io/rules/consistent-type-definitions',
+          },
+        },
+      ],
+      url: 'https://github.com/typescript-eslint/typescript-eslint/pull/6229',
+    },
     docs: {
       description: 'Disallow type aliases',
       // too opinionated to be recommended

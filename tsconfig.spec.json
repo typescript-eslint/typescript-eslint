@@ -6,5 +6,11 @@
     "outDir": "./dist/out-tsc/root/jest",
     "resolveJsonModule": true
   },
-  "include": ["package.json", "jest.config.base.js", "jest.config.js"]
+  "include": [
+    "package.json",
+    "jest.config.base.js",
+    "jest.config.js",
+    "vitest.config.base.mts",
+    "vitest.config.mts"
+  ]
 }

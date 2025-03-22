@@ -21,6 +21,28 @@
       "options": {
         "targetName": "test"
       }
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "include": ["packages/*"],
+      "options": {
+        "buildTargetName": "vite:build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "devTargetName": "dev",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "vite:typecheck",
+        "buildDepsTargetName": "vite:build-deps",
+        "watchDepsTargetName": "vite:watch-deps"
+      }
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "include": ["packages/*"],
+      "options": {
+        "targetName": "test"
+      }
     }
   ],
   "release": {
@@ -55,12 +77,6 @@
     },
     "test": {
       "dependsOn": ["^build"],
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/jest.config.js",
-        "{workspaceRoot}/jest.config.base.js"
-      ],
       "outputs": ["{projectRoot}/coverage"],
       "cache": true
     },
@@ -95,7 +111,25 @@
       "outputs": ["{options.outputFile}"],
       "cache": true
     },
+    "@nx/vite:test": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/vitest.config.mts",
+        "{workspaceRoot}/vitest.config.base.mts",
+        "{projectRoot}/vitest.config.mts"
+      ],
+      "outputs": ["{options.reportsDirectory}"],
+      "cache": true,
+      "options": {
+        "config": "{projectRoot}/vitest.config.mts",
+        "watch": false,
+        "reportsDirectory": "{projectRoot}/coverage"
+      }
+    },
     "lint": {
+      "executor": "@nx/eslint:lint",
       "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
       "inputs": [
         "default",
@@ -134,6 +168,7 @@
       "!{projectRoot}/**/?(*.)+(test).?(m|c)[jt]s?(x)?(.snap|.shot)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.js",
+      "!{projectRoot}/vitest.config.m[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s"
     ]
   }
