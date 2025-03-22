@@ -433,7 +433,7 @@ export default tseslint.config(
       'jest/valid-expect': 'error',
     },
   },
-  // test file specific configuration
+  // vitest-specific configuration
   {
     files: vitestFiles,
     rules: {
