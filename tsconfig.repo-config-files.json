@@ -4,7 +4,8 @@
     "outDir": "dist/out-tsc/root/eslint",
     "types": ["@types/node"],
     "allowJs": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true
   },
   "include": [
     "typings",

@@ -29,7 +29,10 @@ const restrictNamedDeclarations = {
   selector: 'ExportNamedDeclaration[declaration=null][source=null]',
 };
 
-const vitestFiles = ['packages/ast-spec/tests/**/*.test.{ts,tsx,cts,mts}'];
+const vitestFiles = [
+  'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/ast-spec/tests/**/*.test.{ts,tsx,cts,mts}',
+];
 
 export default tseslint.config(
   // register all of the plugins up-front
