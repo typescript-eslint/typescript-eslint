@@ -406,6 +406,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-return': 'off',
     },
   },
+  // jest-specific config
   {
     files: [
       'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
