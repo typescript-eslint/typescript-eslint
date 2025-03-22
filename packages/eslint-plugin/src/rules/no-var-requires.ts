@@ -15,7 +15,18 @@ export default createRule<Options, MessageIds>({
   name: 'no-var-requires',
   meta: {
     type: 'problem',
-    deprecated: true,
+    deprecated: {
+      deprecatedSince: '8.0.0',
+      replacedBy: [
+        {
+          rule: {
+            name: '@typescript-eslint/no-require-imports',
+            url: 'https://typescript-eslint.io/rules/no-require-imports',
+          },
+        },
+      ],
+      url: 'https://github.com/typescript-eslint/typescript-eslint/pull/8334',
+    },
     docs: {
       description: 'Disallow `require` statements except in import statements',
     },
