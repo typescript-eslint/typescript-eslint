@@ -6184,17 +6184,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/scope-manager@workspace:packages/scope-manager"
   dependencies:
-    "@jest/types": 29.6.3
     "@typescript-eslint/types": 8.27.0
     "@typescript-eslint/typescript-estree": 8.27.0
     "@typescript-eslint/visitor-keys": 8.27.0
+    "@vitest/coverage-v8": ^3.0.8
     glob: "*"
-    jest: 29.7.0
-    jest-specific-snapshot: "*"
-    make-dir: "*"
     prettier: ^3.2.5
     pretty-format: "*"
     typescript: "*"
+    vitest: ^3.0.8
   languageName: unknown
   linkType: soft
 
@@ -13727,7 +13725,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-specific-snapshot@npm:*, jest-specific-snapshot@npm:^8.0.0":
+"jest-specific-snapshot@npm:^8.0.0":
   version: 8.0.0
   resolution: "jest-specific-snapshot@npm:8.0.0"
   dependencies:
