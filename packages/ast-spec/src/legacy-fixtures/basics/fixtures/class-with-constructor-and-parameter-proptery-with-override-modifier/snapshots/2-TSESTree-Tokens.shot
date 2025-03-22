@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-parameter-proptery-with-override-modifier TSESTree - Tokens 1`] = `
 [
   Keyword {
     type: "Keyword",
@@ -193,4 +190,3 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-paramete
     },
   },
 ]
-`;

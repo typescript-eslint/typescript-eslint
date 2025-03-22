@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSDeclareFunction _error_ generator TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > TSDeclareFunction > _error_ > generator > TSESTree - Error`]
+TSError
 > 1 | declare function* foo();
     | ^^^^^^^^^^^^^^^^^^^^^^^^ Generators are not allowed in an ambient context.
-  2 |"
-`;
+  2 |

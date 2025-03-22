@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration ExportNamedDeclaration braced-string-literal-aliased-to-identifier-with-source AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > ExportNamedDeclaration > braced-string-literal-aliased-to-identifier-with-source > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -16,7 +16,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration braced-string-literal-a
         exportKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\'mod\\'',
+          raw: '\'mod\'',
           value: 'mod',
 
           range: [27, 32],
@@ -43,7 +43,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration braced-string-literal-a
             exportKind: 'value',
             local: Literal {
               type: 'Literal',
-              raw: '\\'a a\\'',
+              raw: '\'a a\'',
               value: 'a a',
 
               range: [9, 14],
@@ -75,5 +75,4 @@ exports[`AST Fixtures declaration ExportNamedDeclaration braced-string-literal-a
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

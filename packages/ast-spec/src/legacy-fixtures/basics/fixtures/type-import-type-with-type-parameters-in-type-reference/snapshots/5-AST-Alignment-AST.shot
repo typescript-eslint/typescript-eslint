@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-parameters-in-type-reference AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > type-import-type-with-type-parameters-in-type-reference > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -45,11 +45,11 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
 -                 type: 'TSLiteralType',
 -                 literal: Literal {
 -                   type: 'Literal',
--                   raw: '\\'\\'',
+-                   raw: '\'\'',
 -                   value: '',
 +               argument: Literal {
 +                 type: 'Literal',
-+                 raw: '\\'\\'',
++                 raw: '\'\'',
 +                 value: '',
 
 -                   range: [91, 93],
@@ -148,5 +148,4 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

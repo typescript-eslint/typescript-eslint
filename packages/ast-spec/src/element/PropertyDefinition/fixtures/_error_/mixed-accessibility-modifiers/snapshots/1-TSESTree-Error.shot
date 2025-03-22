@@ -1,10 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures element PropertyDefinition _error_ mixed-accessibility-modifiers TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > element > PropertyDefinition > _error_ > mixed-accessibility-modifiers > TSESTree - Error`]
+TSError
   1 | class Foo {
 > 2 |   public protected bar;
     |          ^^^^^^^^^ Accessibility modifier already seen.
   3 | }
-  4 |"
-`;
+  4 |
