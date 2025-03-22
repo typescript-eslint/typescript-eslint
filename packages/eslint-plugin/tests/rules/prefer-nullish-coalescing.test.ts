@@ -444,22 +444,6 @@ function shadowed() {
     const foo = makeFoo();
   }
 }
-declare let foo: { foo: string } | null;
-declare function makeFoo(): { foo: { foo: string } };
-function weirdDestructuringAssignment() {
-  if (foo == null) {
-    ({ foo } = makeFoo());
-  }
-}
-      `,
-      `
-declare let foo: { a: string } | null;
-declare function makeFoo(): { a: string };
-function shadowed() {
-  if (foo == null) {
-    const foo = makeFoo();
-  }
-}
       `,
       `
 declare let foo: { foo: string } | null;
