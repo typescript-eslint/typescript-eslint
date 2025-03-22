@@ -14,13 +14,12 @@
   "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
-    "build": "npx tsc -b tsconfig.build.json",
-    "clean": "npx tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist/ coverage/",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "npx nx lint",
-    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
-    "check-types": "npx nx typecheck"
+    "build": "tsc -b tsconfig.build.json",
+    "clean": "rimraf dist/ coverage/",
+    "format": "yarn run -T format",
+    "lint": "yarn run -T nx lint",
+    "test": "jest",
+    "check-types": "yarn run --top-level nx typecheck"
   },
   "dependencies": {
     "@prettier/sync": "^0.5.1",
@@ -31,8 +30,10 @@
     "prettier": "^3.2.5"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^3.0.8",
+    "@jest/types": "29.6.3",
+    "eslint": "*",
+    "jest": "29.7.0",
     "rimraf": "*",
-    "vitest": "^3.0.8"
+    "typescript": "*"
   }
 }
