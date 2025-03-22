@@ -6321,21 +6321,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
-    "@jest/types": 29.6.3
     "@typescript-eslint/types": 8.27.0
     "@typescript-eslint/visitor-keys": 8.27.0
+    "@vitest/coverage-v8": ^3.0.8
     debug: ^4.3.4
     fast-glob: ^3.3.2
     glob: "*"
     is-glob: ^4.0.3
-    jest: 29.7.0
     minimatch: ^9.0.4
     prettier: ^3.2.5
     rimraf: "*"
     semver: ^7.6.0
-    tmp: "*"
     ts-api-utils: ^2.0.1
     typescript: "*"
+    vitest: ^3.0.8
   peerDependencies:
     typescript: ">=4.8.4 <5.9.0"
   languageName: unknown
