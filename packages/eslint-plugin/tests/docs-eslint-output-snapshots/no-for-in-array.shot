@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-for-in-array.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-for-in-array.mdx > code examples ESLint output`]
+Incorrect
 
 declare const array: string[];
 
@@ -14,11 +14,9 @@ for (const i in array) {
 ~~~~~~~~~~~~~~~~~~~~~~ For-in loops over arrays skips holes, returns indices as strings, and may visit the prototype chain or other enumerable properties. Use a more robust iteration method such as for-of or array.forEach instead.
   console.log(i, array[i]);
 }
-"
-`;
 
-exports[`Validating rule docs no-for-in-array.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-for-in-array.mdx > code examples ESLint output`]
+Correct
 
 declare const array: string[];
 
@@ -37,5 +35,3 @@ array.forEach((value, i) => {
 for (const [i, value] of array.entries()) {
   console.log(i, value);
 }
-"
-`;

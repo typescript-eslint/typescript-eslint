@@ -1,22 +1,18 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs related-getter-setter-pairs.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > related-getter-setter-pairs.mdx > code examples ESLint output`]
+Incorrect
 
 interface Box {
   get value(): string;
-               ~~~~~~ \`get()\` type should be assignable to its equivalent \`set()\` type.
+               ~~~~~~ `get()` type should be assignable to its equivalent `set()` type.
   set value(newValue: number);
 }
-"
-`;
 
-exports[`Validating rule docs related-getter-setter-pairs.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > related-getter-setter-pairs.mdx > code examples ESLint output`]
+Correct
 
 interface Box {
   get value(): string;
   set value(newValue: string);
 }
-"
-`;

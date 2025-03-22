@@ -6068,7 +6068,6 @@ __metadata:
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
     "@eslint-community/regexpp": ^4.10.0
-    "@jest/types": 29.6.3
     "@types/marked": ^5.0.2
     "@types/mdast": ^4.0.3
     "@types/natural-compare": "*"
@@ -6078,14 +6077,12 @@ __metadata:
     "@typescript-eslint/type-utils": 8.27.0
     "@typescript-eslint/utils": 8.27.0
     "@typescript-eslint/visitor-keys": 8.27.0
+    "@vitest/coverage-v8": ^3.0.8
     ajv: ^6.12.6
-    cross-env: ^7.0.3
     cross-fetch: "*"
     eslint: "*"
     graphemer: ^1.4.0
     ignore: ^5.3.1
-    jest: 29.7.0
-    jest-specific-snapshot: ^8.0.0
     json-schema: "*"
     markdown-table: ^3.0.3
     marked: ^5.1.2
@@ -6100,6 +6097,7 @@ __metadata:
     tsx: "*"
     typescript: "*"
     unist-util-visit: ^5.0.0
+    vitest: ^3.0.8
   peerDependencies:
     "@typescript-eslint/parser": ^8.0.0 || ^8.0.0-alpha.0
     eslint: ^8.57.0 || ^9.0.0
@@ -8708,18 +8706,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-env@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "cross-env@npm:7.0.3"
-  dependencies:
-    cross-spawn: ^7.0.1
-  bin:
-    cross-env: src/bin/cross-env.js
-    cross-env-shell: src/bin/cross-env-shell.js
-  checksum: 26f2f3ea2ab32617f57effb70d329c2070d2f5630adc800985d8b30b56e8bf7f5f439dd3a0358b79cee6f930afc23cf8e23515f17ccfb30092c6b62c6b630a79
-  languageName: node
-  linkType: hard
-
 "cross-fetch@npm:*, cross-fetch@npm:^4.0.0":
   version: 4.1.0
   resolution: "cross-fetch@npm:4.1.0"
@@ -8729,7 +8715,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.1, cross-spawn@npm:^7.0.3, cross-spawn@npm:^7.0.6":
+"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.3, cross-spawn@npm:^7.0.6":
   version: 7.0.6
   resolution: "cross-spawn@npm:7.0.6"
   dependencies:
