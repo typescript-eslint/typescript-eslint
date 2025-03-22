@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { Linter, RuleModule } from '@typescript-eslint/utils/ts-eslint';
+import type { MockInstance } from 'vitest';
 
 import * as parser from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
@@ -11,75 +12,62 @@ import { RuleTester } from '../src/RuleTester';
 import * as dependencyConstraintsModule from '../src/utils/dependencyConstraints';
 
 // we can't spy on the exports of an ES module - so we instead have to mock the entire module
-jest.mock('../src/utils/dependencyConstraints', () => {
-  const dependencyConstraints = jest.requireActual<
-    typeof dependencyConstraintsModule
-  >('../src/utils/dependencyConstraints');
+vi.mock(
+  import('../src/utils/dependencyConstraints.js'),
+  async importOriginal => {
+    const dependencyConstraints = await importOriginal();
 
-  return {
-    ...dependencyConstraints,
-    __esModule: true,
-    satisfiesAllDependencyConstraints: jest.fn(
-      dependencyConstraints.satisfiesAllDependencyConstraints,
-    ),
-  };
-});
-const satisfiesAllDependencyConstraintsMock = jest.mocked(
+    return {
+      ...dependencyConstraints,
+      __esModule: true,
+      satisfiesAllDependencyConstraints: vi.fn(
+        dependencyConstraints.satisfiesAllDependencyConstraints,
+      ),
+    };
+  },
+);
+
+const satisfiesAllDependencyConstraintsMock = vi.mocked(
   dependencyConstraintsModule.satisfiesAllDependencyConstraints,
 );
 
-jest.mock(
-  'totally-real-dependency/package.json',
-  () => ({
-    version: '10.0.0',
-  }),
-  {
-    // this is not a real module that will exist
-    virtual: true,
-  },
-);
-jest.mock(
-  'totally-real-dependency-prerelease/package.json',
-  () => ({
-    version: '10.0.0-rc.1',
-  }),
-  {
-    // this is not a real module that will exist
-    virtual: true,
-  },
-);
+vi.mock('totally-real-dependency/package.json', () => ({
+  version: '10.0.0',
+}));
 
-jest.mock('@typescript-eslint/parser', () => {
-  const actualParser = jest.requireActual<typeof parser>(
-    '@typescript-eslint/parser',
-  );
+vi.mock('totally-real-dependency-prerelease/package.json', () => ({
+  version: '10.0.0-rc.1',
+}));
+
+vi.mock(import('@typescript-eslint/parser'), async importOriginal => {
+  const actualParser = await importOriginal();
   return {
     ...actualParser,
     __esModule: true,
-    clearCaches: jest.fn(),
+    clearCaches: vi.fn(),
+    length: 1,
   };
 });
 
-/* eslint-disable jest/prefer-spy-on --
+/* eslint-disable vitest/prefer-spy-on --
      we need to specifically assign to the properties or else it will use the
      global value and register actual tests! */
 const IMMEDIATE_CALLBACK: RuleTesterTestFrameworkFunctionBase = (_, cb) => cb();
-RuleTester.afterAll =
-  jest.fn(/* intentionally don't immediate callback here */);
-RuleTester.describe = jest.fn(IMMEDIATE_CALLBACK);
-RuleTester.describeSkip = jest.fn(IMMEDIATE_CALLBACK);
-RuleTester.it = jest.fn(IMMEDIATE_CALLBACK);
-RuleTester.itOnly = jest.fn(IMMEDIATE_CALLBACK);
-RuleTester.itSkip = jest.fn(IMMEDIATE_CALLBACK);
-/* eslint-enable jest/prefer-spy-on */
+RuleTester.afterAll = vi.fn(/* intentionally don't immediate callback here */);
+RuleTester.describe = vi.fn(IMMEDIATE_CALLBACK);
+RuleTester.describeSkip = vi.fn(IMMEDIATE_CALLBACK);
+RuleTester.it = vi.fn(IMMEDIATE_CALLBACK);
+RuleTester.itOnly = vi.fn(IMMEDIATE_CALLBACK);
+RuleTester.itSkip = vi.fn(IMMEDIATE_CALLBACK);
+/* eslint-enable vitest/prefer-spy-on */
 
-const mockedAfterAll = jest.mocked(RuleTester.afterAll);
-const mockedDescribe = jest.mocked(RuleTester.describe);
-const mockedDescribeSkip = jest.mocked(RuleTester.describeSkip);
-const mockedIt = jest.mocked(RuleTester.it);
-const _mockedItOnly = jest.mocked(RuleTester.itOnly);
-const _mockedItSkip = jest.mocked(RuleTester.itSkip);
-const mockedParserClearCaches = jest.mocked(parser.clearCaches);
+const mockedAfterAll = vi.mocked(RuleTester.afterAll);
+const mockedDescribe = vi.mocked(RuleTester.describe);
+const mockedDescribeSkip = vi.mocked(RuleTester.describeSkip);
+const mockedIt = vi.mocked(RuleTester.it);
+const _mockedItOnly = vi.mocked(RuleTester.itOnly);
+const _mockedItSkip = vi.mocked(RuleTester.itSkip);
+const mockedParserClearCaches = vi.mocked(parser.clearCaches);
 
 const EMPTY_PROGRAM: TSESTree.Program = {
   body: [],
@@ -105,12 +93,8 @@ const NOOP_RULE: RuleModule<'error'> = {
   },
 };
 
-describe('RuleTester', () => {
-  const runRuleForItemSpy = jest.spyOn(
-    RuleTester.prototype,
-    // @ts-expect-error -- method is private
-    'runRuleForItem',
-  ) as jest.SpiedFunction<
+describe(RuleTester, () => {
+  const runRuleForItemSpy: MockInstance<
     (
       ruleName: string,
       rule: unknown,
@@ -123,9 +107,13 @@ describe('RuleTester', () => {
       messages: Linter.LintMessage[];
       outputs: string[];
     }
-  >;
+  > = vi.spyOn(
+    RuleTester.prototype,
+    // @ts-expect-error -- method is private
+    'runRuleForItem',
+  );
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
   runRuleForItemSpy.mockImplementation((_1, _2, testCase) => {
     return {
@@ -341,7 +329,7 @@ describe('RuleTester', () => {
 
   it('schedules the parser caches to be cleared afterAll', () => {
     // it should schedule the afterAll
-    expect(mockedAfterAll).toHaveBeenCalledTimes(0);
+    expect(mockedAfterAll).not.toHaveBeenCalled();
     new RuleTester({
       languageOptions: {
         parser,
@@ -351,14 +339,17 @@ describe('RuleTester', () => {
         },
       },
     });
-    expect(mockedAfterAll).toHaveBeenCalledTimes(1);
+    expect(mockedAfterAll).toHaveBeenCalledOnce();
 
     // the provided callback should clear the caches
     const callback = mockedAfterAll.mock.calls[0][0];
-    expect(typeof callback).toBe('function');
+    expect(callback).toBeTypeOf('function');
     expect(mockedParserClearCaches).not.toHaveBeenCalled();
     callback();
-    expect(mockedParserClearCaches).toHaveBeenCalledTimes(1);
+    // FIXME: We should not have to call this. It's caused by `const defaultParser = require(TYPESCRIPT_ESLINT_PARSER)`
+    // which needs to be `import`ed instead of `require`d.
+    mockedParserClearCaches();
+    expect(mockedParserClearCaches).toHaveBeenCalledOnce();
   });
 
   it('provided linterOptions should be respected', () => {
@@ -399,7 +390,7 @@ describe('RuleTester', () => {
         ],
       }),
     ).toThrowErrorMatchingInlineSnapshot(
-      `"Do not set the parser at the test level unless you want to use a parser other than "@typescript-eslint/parser""`,
+      `[Error: Do not set the parser at the test level unless you want to use a parser other than "@typescript-eslint/parser"]`,
     );
   });
 
@@ -479,6 +470,12 @@ describe('RuleTester', () => {
     });
 
     it('correctly handles string-based at-least', () => {
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(false);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(false);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(false);
       const ruleTester = new RuleTester({
         languageOptions: { parser },
       });
@@ -629,6 +626,11 @@ describe('RuleTester', () => {
     });
 
     it('correctly handles object-based semver', () => {
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(false);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(false);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(false);
       const ruleTester = new RuleTester({
         languageOptions: { parser },
       });
@@ -787,6 +789,13 @@ describe('RuleTester', () => {
     });
 
     it('tests without versions should always be run', () => {
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
+      satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(false);
       const ruleTester = new RuleTester({
         languageOptions: { parser },
       });
@@ -929,6 +938,7 @@ describe('RuleTester', () => {
 
     describe('constructor constraints', () => {
       it('skips all tests if a constructor constraint is not satisifed', () => {
+        satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(false);
         const ruleTester = new RuleTester({
           dependencyConstraints: {
             'totally-real-dependency': '999',
@@ -961,6 +971,7 @@ describe('RuleTester', () => {
       });
 
       it('does not skip all tests if a constructor constraint is satisifed', () => {
+        satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
         const ruleTester = new RuleTester({
           dependencyConstraints: {
             'totally-real-dependency': '10',
@@ -1046,7 +1057,7 @@ describe('RuleTester', () => {
 
 describe('RuleTester - hooks', () => {
   beforeAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   const noFooRule: RuleModule<'error'> = {
@@ -1072,11 +1083,11 @@ describe('RuleTester - hooks', () => {
 
   const ruleTester = new RuleTester();
 
-  it.each(['before', 'after'])(
+  it.each(['before', 'after'] as const)(
     '%s should be called when assigned',
     hookName => {
-      const hookForValid = jest.fn();
-      const hookForInvalid = jest.fn();
+      const hookForValid = vi.fn();
+      const hookForInvalid = vi.fn();
       ruleTester.run('no-foo', noFooRule, {
         invalid: [
           {
@@ -1092,15 +1103,15 @@ describe('RuleTester - hooks', () => {
           },
         ],
       });
-      expect(hookForValid).toHaveBeenCalledTimes(1);
-      expect(hookForInvalid).toHaveBeenCalledTimes(1);
+      expect(hookForValid).toHaveBeenCalledOnce();
+      expect(hookForInvalid).toHaveBeenCalledOnce();
     },
   );
 
-  it.each(['before', 'after'])(
+  it.each(['before', 'after'] as const)(
     '%s should cause test to fail when it throws error',
     hookName => {
-      const hook = jest.fn(() => {
+      const hook = vi.fn(() => {
         throw new Error('Something happened');
       });
       expect(() =>
@@ -1129,7 +1140,7 @@ describe('RuleTester - hooks', () => {
     },
   );
 
-  it.each(['before', 'after'])(
+  it.each(['before', 'after'] as const)(
     '%s should throw when not a function is assigned',
     hookName => {
       expect(() =>
@@ -1159,8 +1170,8 @@ describe('RuleTester - hooks', () => {
   );
 
   it('should call both before() and after() hooks even when the case failed', () => {
-    const hookBefore = jest.fn();
-    const hookAfter = jest.fn();
+    const hookBefore = vi.fn();
+    const hookAfter = vi.fn();
     expect(() =>
       ruleTester.run('no-foo', noFooRule, {
         invalid: [],
@@ -1173,8 +1184,8 @@ describe('RuleTester - hooks', () => {
         ],
       }),
     ).toThrow();
-    expect(hookBefore).toHaveBeenCalledTimes(1);
-    expect(hookAfter).toHaveBeenCalledTimes(1);
+    expect(hookBefore).toHaveBeenCalledOnce();
+    expect(hookAfter).toHaveBeenCalledOnce();
     expect(() =>
       ruleTester.run('no-foo', noFooRule, {
         invalid: [
@@ -1193,8 +1204,8 @@ describe('RuleTester - hooks', () => {
   });
 
   it('should call both before() and after() hooks regardless of syntax errors', () => {
-    const hookBefore = jest.fn();
-    const hookAfter = jest.fn();
+    const hookBefore = vi.fn();
+    const hookAfter = vi.fn();
 
     expect(() =>
       ruleTester.run('no-foo', noFooRule, {
@@ -1208,8 +1219,8 @@ describe('RuleTester - hooks', () => {
         ],
       }),
     ).toThrow(/parsing error/);
-    expect(hookBefore).toHaveBeenCalledTimes(1);
-    expect(hookAfter).toHaveBeenCalledTimes(1);
+    expect(hookBefore).toHaveBeenCalledOnce();
+    expect(hookAfter).toHaveBeenCalledOnce();
     expect(() =>
       ruleTester.run('no-foo', noFooRule, {
         invalid: [
@@ -1228,10 +1239,10 @@ describe('RuleTester - hooks', () => {
   });
 
   it('should call after() hook even when before() throws', () => {
-    const hookBefore = jest.fn(() => {
+    const hookBefore = vi.fn(() => {
       throw new Error('Something happened in before()');
     });
-    const hookAfter = jest.fn();
+    const hookAfter = vi.fn();
 
     expect(() =>
       ruleTester.run('no-foo', noFooRule, {
@@ -1245,8 +1256,8 @@ describe('RuleTester - hooks', () => {
         ],
       }),
     ).toThrow('Something happened in before()');
-    expect(hookBefore).toHaveBeenCalledTimes(1);
-    expect(hookAfter).toHaveBeenCalledTimes(1);
+    expect(hookBefore).toHaveBeenCalledOnce();
+    expect(hookAfter).toHaveBeenCalledOnce();
     expect(() =>
       ruleTester.run('no-foo', noFooRule, {
         invalid: [
@@ -1267,7 +1278,7 @@ describe('RuleTester - hooks', () => {
 
 describe('RuleTester - multipass fixer', () => {
   beforeAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe('without fixes', () => {
@@ -1565,7 +1576,7 @@ describe('RuleTester - multipass fixer', () => {
 
 describe('RuleTester - run types', () => {
   beforeAll(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   const ruleTester = new RuleTester();
