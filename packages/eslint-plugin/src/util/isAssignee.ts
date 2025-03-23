@@ -53,9 +53,12 @@ export function isAssignee(node: TSESTree.Node): boolean {
     return true;
   }
 
-  // a[i]!++, [...a[i]!] = [0], etc.
+  // (a[i] as number)++, [...a[i]!] = [0], etc.
   if (
-    parent.type === AST_NODE_TYPES.TSNonNullExpression &&
+    (parent.type === AST_NODE_TYPES.TSNonNullExpression ||
+      parent.type === AST_NODE_TYPES.TSAsExpression ||
+      parent.type === AST_NODE_TYPES.TSTypeAssertion ||
+      parent.type === AST_NODE_TYPES.TSSatisfiesExpression) &&
     isAssignee(parent)
   ) {
     return true;
