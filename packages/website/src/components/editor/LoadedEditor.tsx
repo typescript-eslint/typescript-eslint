@@ -83,7 +83,11 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     const markers = monaco.editor.getModelMarkers({
       resource: model.uri,
     });
-    onMarkersChange(parseMarkers(markers, codeActions, editor));
+
+    const test = parseMarkers(markers, codeActions, editor);
+
+    console.log(test);
+    // onMarkersChange(parseMarkers(markers, codeActions, editor));
   }, [codeActions, onMarkersChange, editor, monaco.editor]);
 
   useEffect(() => {

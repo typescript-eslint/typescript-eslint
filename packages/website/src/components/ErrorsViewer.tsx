@@ -133,6 +133,8 @@ export function ErrorViewer({
 export function ErrorsViewer({ value }: ErrorsViewerProps): React.JSX.Element {
   const [isLocked, setIsLocked] = useState(false);
 
+  console.log(value);
+
   useEffect(() => {
     setIsLocked(false);
   }, [value]);

@@ -19,7 +19,7 @@ import { createEventsBinder } from '../lib/createEventsBinder';
 import { parseESLintRC, parseTSConfig } from '../lib/parseConfig';
 import { defaultEslintConfig, PARSER_NAME } from './config';
 import { createParser } from './createParser';
-
+import { ErrorGroup } from '../../../../website/src/components/types';
 export interface CreateLinter {
   configs: string[];
   onLint(cb: LinterOnLint): () => void;
@@ -42,6 +42,7 @@ export function createLinter(
   system: PlaygroundSystem,
   webLinterModule: WebLinterModule,
   vfs: typeof tsvfs,
+  onMarkersChange: (value: ErrorGroup[]) => void,
 ): CreateLinter {
   const rules: CreateLinter['rules'] = new Map();
   const configs = new Map(Object.entries(webLinterModule.configs));
@@ -160,7 +161,31 @@ export function createLinter(
       console.log('[Editor] Updating', fileName, compilerOptions);
       parser.updateConfig(compilerOptions);
     } catch (e) {
-      console.error(e);
+      const errors = {
+        group: 'Typescript',
+        items: e.message
+          .trim()
+          .split('\n')
+          .map((message: string) => {
+            return {
+              fixer: undefined,
+              location: '',
+              message,
+              severity: 8,
+              suggestions: [],
+            };
+          }),
+        uri: undefined,
+      };
+
+      console.log(onMarkersChange);
+      console.log(errors);
+
+      onMarkersChange([errors]);
+
+      // const marker =
+
+      // console.error("asdf",e);
     }
   };
 
