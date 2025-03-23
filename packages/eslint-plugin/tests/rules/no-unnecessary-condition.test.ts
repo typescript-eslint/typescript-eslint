@@ -3369,5 +3369,54 @@ declare const arr2: Array<{ x: { y: { z: object } } }>;
 arr2[42]?.x.y.z;
       `,
     },
+    {
+      code: `
+declare const arr: string[];
+
+if (arr[0]) {
+  arr[0] ?? 'foo';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+    },
+    {
+      code: `
+declare const arr: object[];
+
+if (arr[42] && arr[42]) {
+}
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+    },
   ],
 });
