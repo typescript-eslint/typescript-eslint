@@ -13,6 +13,7 @@ import {
   isStaticMemberAccessOfValue,
   nullThrows,
   NullThrowsReasons,
+  skipChainExpression,
 } from '../util';
 
 const EQ_OPERATORS = /^[=!]=/;
@@ -306,18 +307,11 @@ export default createRule<Options, MessageIds>({
     }
 
     function getLeftNode(
-      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+      init: TSESTree.Expression | TSESTree.PrivateIdentifier,
     ): TSESTree.MemberExpression {
-      if (node.type === AST_NODE_TYPES.ChainExpression) {
-        return getLeftNode(node.expression);
-      }
-
-      let leftNode;
-      if (node.type === AST_NODE_TYPES.CallExpression) {
-        leftNode = node.callee;
-      } else {
-        leftNode = node;
-      }
+      const node = skipChainExpression(init);
+      const leftNode =
+        node.type === AST_NODE_TYPES.CallExpression ? node.callee : node;
 
       if (leftNode.type !== AST_NODE_TYPES.MemberExpression) {
         throw new Error(`Expected a MemberExpression, got ${leftNode.type}`);

@@ -91,12 +91,6 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
             href: 'https://stackoverflow.com/questions/tagged/typescript-eslint',
             label: 'Stack Overflow',
           },
-          {
-            className: 'image-link twitter-link social-link-icon',
-            href: 'https://twitter.com/tseslint',
-            label: 'Twitter',
-            rel: 'me noopener',
-          },
         ],
         title: 'Community',
       },

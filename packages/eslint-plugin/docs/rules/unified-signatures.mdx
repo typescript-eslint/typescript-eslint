@@ -78,6 +78,50 @@ function f(b: string): void;
 </TabItem>
 </Tabs>
 
+### `ignoreOverloadsWithDifferentJSDoc`
+
+{/* insert option description */}
+
+Examples of code for this rule with `ignoreOverloadsWithDifferentJSDoc`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "ignoreOverloadsWithDifferentJSDoc": true }'
+declare function f(x: string): void;
+declare function f(x: boolean): void;
+/**
+ * @deprecate
+ */
+declare function f(x: number): void;
+/**
+ * @deprecate
+ */
+declare function f(x: null): void;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "ignoreOverloadsWithDifferentJSDoc": true }'
+declare function f(x: string): void;
+/**
+ * This signature does something else.
+ */
+declare function f(x: boolean): void;
+/**
+ * @async
+ */
+declare function f(x: number): void;
+/**
+ * @deprecate
+ */
+declare function f(x: null): void;
+```
+
+</TabItem>
+</Tabs>
+
 ## When Not To Use It
 
 This is purely a stylistic rule to help with readability of function signature overloads.

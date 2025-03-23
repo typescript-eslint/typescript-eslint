@@ -239,6 +239,7 @@ export function isParenlessArrowFunction(
 }
 
 export type NodeWithKey =
+  | TSESTree.AccessorProperty
   | TSESTree.MemberExpression
   | TSESTree.MethodDefinition
   | TSESTree.Property

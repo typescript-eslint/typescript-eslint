@@ -64,10 +64,27 @@ ruleTester.run('no-deprecated', rule, {
       new A().b;
     `,
     `
+      class A {
+        accessor b: 1;
+        /** @deprecated */ accessor c: 2;
+      }
+
+      new A().b;
+    `,
+    `
       declare class A {
         /** @deprecated */
         static b: string;
         static c: string;
+      }
+
+      A.c;
+    `,
+    `
+      declare class A {
+        /** @deprecated */
+        static accessor b: string;
+        static accessor c: string;
       }
 
       A.c;
@@ -345,6 +362,15 @@ exists('/foo');
     `
       declare const test: string;
       const bar = { test };
+    `,
+    `
+      class A {
+        #b = () => {};
+
+        c() {
+          this.#b();
+        }
+      }
     `,
   ],
   invalid: [
@@ -2753,6 +2779,116 @@ class B extends A {
           endColumn: 56,
           endLine: 19,
           line: 19,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        declare class A {
+          /** @deprecated */
+          accessor b: () => string;
+        }
+
+        declare const a: A;
+
+        a.b;
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: 'b' },
+          endColumn: 12,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        declare class A {
+          /** @deprecated */
+          accessor b: () => string;
+        }
+
+        declare const a: A;
+
+        a.b();
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: 'b' },
+          endColumn: 12,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        class A {
+          /** @deprecated */
+          accessor b = (): string => {
+            return '';
+          };
+        }
+
+        declare const a: A;
+
+        a.b();
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: 'b' },
+          endColumn: 12,
+          endLine: 11,
+          line: 11,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        declare class A {
+          /** @deprecated */
+          static accessor b: () => string;
+        }
+
+        A.b();
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: 'b' },
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        class A {
+          /** @deprecated */
+          #b = () => {};
+
+          c() {
+            this.#b();
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { name: '#b' },
+          endColumn: 20,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],

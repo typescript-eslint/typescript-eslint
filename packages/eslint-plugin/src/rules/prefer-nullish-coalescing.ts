@@ -13,16 +13,20 @@ import {
   isNodeEqual,
   isNodeOfTypes,
   isNullLiteral,
-  isPossiblyNullish,
+  isNullableType,
   isUndefinedIdentifier,
   nullThrows,
   NullThrowsReasons,
+  skipChainExpression,
 } from '../util';
 
-const isIdentifierOrMemberExpression = isNodeOfTypes([
+const isIdentifierOrMemberOrChainExpression = isNodeOfTypes([
+  AST_NODE_TYPES.ChainExpression,
   AST_NODE_TYPES.Identifier,
   AST_NODE_TYPES.MemberExpression,
 ] as const);
+
+type NullishCheckOperator = '!' | '!=' | '!==' | '==' | '===' | undefined;
 
 export type Options = [
   {
@@ -166,7 +170,6 @@ export default createRule<Options, MessageIds>({
     const parserServices = getParserServices(context);
     const compilerOptions = parserServices.program.getCompilerOptions();
 
-    const checker = parserServices.program.getTypeChecker();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
@@ -190,7 +193,7 @@ export default createRule<Options, MessageIds>({
      * a nullishness check, taking into account the rule's configuration.
      */
     function isTypeEligibleForPreferNullish(type: ts.Type): boolean {
-      if (!isPossiblyNullish(type)) {
+      if (!isNullableType(type)) {
         return false;
       }
 
@@ -208,14 +211,33 @@ export default createRule<Options, MessageIds>({
       ]
         .filter((flag): flag is number => typeof flag === 'number')
         .reduce((previous, flag) => previous | flag, 0);
+
+      if (ignorableFlags === 0) {
+        // any types are eligible for conversion.
+        return true;
+      }
+
+      // if the type is `any` or `unknown` we can't make any assumptions
+      // about the value, so it could be any primitive, even though the flags
+      // won't be set.
+      //
+      // technically, this is true of `void` as well, however, it's a TS error
+      // to test `void` for truthiness, so we don't need to bother checking for
+      // it in valid code.
       if (
-        type.flags !== ts.TypeFlags.Null &&
-        type.flags !== ts.TypeFlags.Undefined &&
-        (type as ts.UnionOrIntersectionType).types.some(t =>
-          tsutils
-            .intersectionTypeParts(t)
-            .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
-        )
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)
+      ) {
+        return false;
+      }
+
+      if (
+        tsutils
+          .typeParts(type)
+          .some(t =>
+            tsutils
+              .intersectionTypeParts(t)
+              .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
+          )
       ) {
         return false;
       }
@@ -340,7 +362,7 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        let operator: '!' | '!=' | '!==' | '==' | '===' | undefined;
+        let operator: NullishCheckOperator;
         let nodesInsideTestExpression: TSESTree.Node[] = [];
         if (node.test.type === AST_NODE_TYPES.BinaryExpression) {
           nodesInsideTestExpression = [node.test.left, node.test.right];
@@ -398,27 +420,34 @@ export default createRule<Options, MessageIds>({
           }
         }
 
-        let identifierOrMemberExpression: TSESTree.Node | undefined;
+        let nullishCoalescingLeftNode: TSESTree.Node | undefined;
         let hasTruthinessCheck = false;
         let hasNullCheckWithoutTruthinessCheck = false;
         let hasUndefinedCheckWithoutTruthinessCheck = false;
 
         if (!operator) {
+          let testNode: TSESTree.Node | undefined;
           hasTruthinessCheck = true;
 
-          if (
-            isIdentifierOrMemberExpression(node.test) &&
-            isNodeEqual(node.test, node.consequent)
-          ) {
-            identifierOrMemberExpression = node.test;
+          if (isIdentifierOrMemberOrChainExpression(node.test)) {
+            testNode = node.test;
           } else if (
             node.test.type === AST_NODE_TYPES.UnaryExpression &&
-            node.test.operator === '!' &&
-            isIdentifierOrMemberExpression(node.test.argument) &&
-            isNodeEqual(node.test.argument, node.alternate)
+            isIdentifierOrMemberOrChainExpression(node.test.argument) &&
+            node.test.operator === '!'
           ) {
-            identifierOrMemberExpression = node.test.argument;
+            testNode = node.test.argument;
             operator = '!';
+          }
+
+          if (
+            testNode &&
+            areNodesSimilarMemberAccess(
+              testNode,
+              getBranchNodes(node, operator).nonNullishBranch,
+            )
+          ) {
+            nullishCoalescingLeftNode = testNode;
           }
         } else {
           // we check that the test only contains null, undefined and the identifier
@@ -428,20 +457,25 @@ export default createRule<Options, MessageIds>({
             } else if (isUndefinedIdentifier(testNode)) {
               hasUndefinedCheckWithoutTruthinessCheck = true;
             } else if (
-              (operator === '!==' || operator === '!=') &&
-              isNodeEqual(testNode, node.consequent)
+              areNodesSimilarMemberAccess(
+                testNode,
+                getBranchNodes(node, operator).nonNullishBranch,
+              )
             ) {
-              identifierOrMemberExpression = testNode;
-            } else if (
-              (operator === '===' || operator === '==') &&
-              isNodeEqual(testNode, node.alternate)
-            ) {
-              identifierOrMemberExpression = testNode;
+              // Only consider the first expression in a multi-part nullish check,
+              // as subsequent expressions might not require all the optional chaining operators.
+              // For example: a?.b?.c !== undefined && a.b.c !== null ? a.b.c : 'foo';
+              // This works because `node.test` is always evaluated first in the loop
+              // and has the same or more necessary optional chaining operators
+              // than `node.alternate` or `node.consequent`.
+              nullishCoalescingLeftNode ??= testNode;
+            } else {
+              return;
             }
           }
         }
 
-        if (!identifierOrMemberExpression) {
+        if (!nullishCoalescingLeftNode) {
           return;
         }
 
@@ -450,15 +484,9 @@ export default createRule<Options, MessageIds>({
           if (hasTruthinessCheck) {
             return isTruthinessCheckEligibleForPreferNullish({
               node,
-              testNode: identifierOrMemberExpression,
+              testNode: nullishCoalescingLeftNode,
             });
           }
-
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
-            identifierOrMemberExpression,
-          );
-          const type = checker.getTypeAtLocation(tsNode);
-          const flags = getTypeFlags(type);
 
           // it is fixable if we check for both null and undefined, or not if neither
           if (
@@ -472,6 +500,11 @@ export default createRule<Options, MessageIds>({
           if (operator === '==' || operator === '!=') {
             return true;
           }
+
+          const type = parserServices.getTypeAtLocation(
+            nullishCoalescingLeftNode,
+          );
+          const flags = getTypeFlags(type);
 
           if (flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
             return false;
@@ -501,15 +534,11 @@ export default createRule<Options, MessageIds>({
                 messageId: 'suggestNullish',
                 data: { equals: '' },
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
-                  const [left, right] =
-                    operator === '===' || operator === '==' || operator === '!'
-                      ? [identifierOrMemberExpression, node.consequent]
-                      : [identifierOrMemberExpression, node.alternate];
                   return fixer.replaceText(
                     node,
-                    `${getTextWithParentheses(context.sourceCode, left)} ?? ${getTextWithParentheses(
+                    `${getTextWithParentheses(context.sourceCode, nullishCoalescingLeftNode)} ?? ${getTextWithParentheses(
                       context.sourceCode,
-                      right,
+                      getBranchNodes(node, operator).nullishBranch,
                     )}`,
                   );
                 },
@@ -644,4 +673,59 @@ function isMixedLogicalExpression(
   }
 
   return false;
+}
+
+/**
+ * Checks if two TSESTree nodes have the same member access sequence,
+ * regardless of optional chaining differences.
+ *
+ * Note: This does not imply that the nodes are runtime-equivalent.
+ *
+ * Example: `a.b.c`, `a?.b.c`, `a.b?.c`, `(a?.b).c`, `(a.b)?.c` are considered similar.
+ *
+ * @param a First TSESTree node.
+ * @param b Second TSESTree node.
+ * @returns `true` if the nodes access members in the same order; otherwise, `false`.
+ */
+function areNodesSimilarMemberAccess(
+  a: TSESTree.Node,
+  b: TSESTree.Node,
+): boolean {
+  if (
+    a.type === AST_NODE_TYPES.MemberExpression &&
+    b.type === AST_NODE_TYPES.MemberExpression
+  ) {
+    return (
+      isNodeEqual(a.property, b.property) &&
+      areNodesSimilarMemberAccess(a.object, b.object)
+    );
+  }
+  if (
+    a.type === AST_NODE_TYPES.ChainExpression ||
+    b.type === AST_NODE_TYPES.ChainExpression
+  ) {
+    return areNodesSimilarMemberAccess(
+      skipChainExpression(a),
+      skipChainExpression(b),
+    );
+  }
+  return isNodeEqual(a, b);
+}
+
+/**
+ * Returns the branch nodes of a conditional expression:
+ * - the "nonNullish branch" is the branch when test node is not nullish
+ * - the "nullish branch" is the branch when test node is nullish
+ */
+function getBranchNodes(
+  node: TSESTree.ConditionalExpression,
+  operator: NullishCheckOperator,
+): {
+  nonNullishBranch: TSESTree.Expression;
+  nullishBranch: TSESTree.Expression;
+} {
+  if (!operator || ['!=', '!=='].includes(operator)) {
+    return { nonNullishBranch: node.consequent, nullishBranch: node.alternate };
+  }
+  return { nonNullishBranch: node.alternate, nullishBranch: node.consequent };
 }

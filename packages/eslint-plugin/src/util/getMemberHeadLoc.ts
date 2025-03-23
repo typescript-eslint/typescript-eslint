@@ -30,8 +30,10 @@ import {
 export function getMemberHeadLoc(
   sourceCode: Readonly<TSESLint.SourceCode>,
   node:
+    | TSESTree.AccessorProperty
     | TSESTree.MethodDefinition
     | TSESTree.PropertyDefinition
+    | TSESTree.TSAbstractAccessorProperty
     | TSESTree.TSAbstractMethodDefinition
     | TSESTree.TSAbstractPropertyDefinition,
 ): TSESTree.SourceLocation {

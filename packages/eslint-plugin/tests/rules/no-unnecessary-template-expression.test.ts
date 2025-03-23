@@ -1190,6 +1190,66 @@ enum Foo {
 }
 type Bar = \`\${Foo.A}\`;
     `,
+    `
+enum Enum1 {
+  A = 'A1',
+  B = 'B1',
+}
+
+enum Enum2 {
+  A = 'A2',
+  B = 'B2',
+}
+
+type Union = \`\${Enum1 | Enum2}\`;
+    `,
+    `
+enum Enum1 {
+  A = 'A1',
+  B = 'B1',
+}
+
+enum Enum2 {
+  A = 'A2',
+  B = 'B2',
+}
+
+type Union = \`\${Enum1.A | Enum2.B}\`;
+    `,
+    `
+enum Enum1 {
+  A = 'A1',
+  B = 'B1',
+}
+
+enum Enum2 {
+  A = 'A2',
+  B = 'B2',
+}
+type Enums = Enum1 | Enum2;
+type Union = \`\${Enums}\`;
+    `,
+    `
+enum Enum {
+  A = 'A',
+  B = 'A',
+}
+
+type Intersection = \`\${Enum1.A & string}\`;
+    `,
+    `
+enum Foo {
+  A = 'A',
+  B = 'B',
+}
+type Bar = \`\${Foo.A}\`;
+    `,
+    `
+function foo<T extends string>() {
+  const a: \`\${T}\` = 'a';
+}
+    `,
+    'type T<A extends string> = `${A}`;',
   ],
 
   invalid: [
@@ -1405,52 +1465,6 @@ type Bar = Foo;
         },
       ],
       output: "type FooBar = 'foo' | 'bar';",
-    },
-    {
-      code: `
-enum Foo {
-  A = 'A',
-  B = 'B',
-}
-type Bar = \`\${Foo.A}\`;
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 21,
-          endLine: 6,
-          line: 6,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-enum Foo {
-  A = 'A',
-  B = 'B',
-}
-type Bar = Foo.A;
-      `,
-    },
-    {
-      code: `
-function foo<T extends string>() {
-  const a: \`\${T}\` = 'a';
-}
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 17,
-          endLine: 3,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-function foo<T extends string>() {
-  const a: T = 'a';
-}
-      `,
     },
   ],
 });

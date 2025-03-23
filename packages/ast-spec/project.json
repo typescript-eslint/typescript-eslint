@@ -2,7 +2,7 @@
   "name": "ast-spec",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
-  "implicitDependencies": [],
+  "implicitDependencies": ["!typescript-estree"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
@@ -15,6 +15,9 @@
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
+    },
+    "typecheck": {
+      "dependsOn": ["typescript-estree:build"]
     }
   }
 }

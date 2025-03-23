@@ -1,10 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+import type { Linter, RuleModule } from '@typescript-eslint/utils/ts-eslint';
 
 import * as parser from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
-import type { InvalidTestCase, ValidTestCase } from '../src';
+import type { InvalidTestCase, RuleTesterConfig, ValidTestCase } from '../src';
 import type { RuleTesterTestFrameworkFunctionBase } from '../src/TestFramework';
 
 import { RuleTester } from '../src/RuleTester';
@@ -110,7 +110,20 @@ describe('RuleTester', () => {
     RuleTester.prototype,
     // @ts-expect-error -- method is private
     'runRuleForItem',
-  ) as jest.SpiedFunction<RuleTester['runRuleForItem']>;
+  ) as jest.SpiedFunction<
+    (
+      ruleName: string,
+      rule: unknown,
+      item: InvalidTestCase<string, unknown[]> | ValidTestCase<unknown[]>,
+    ) => {
+      afterAST: TSESTree.Program;
+      beforeAST: TSESTree.Program;
+      config: RuleTesterConfig;
+      filename?: string;
+      messages: Linter.LintMessage[];
+      outputs: string[];
+    }
+  >;
   beforeEach(() => {
     jest.clearAllMocks();
   });

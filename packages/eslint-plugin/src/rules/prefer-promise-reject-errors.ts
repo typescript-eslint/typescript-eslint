@@ -14,6 +14,7 @@ import {
   isPromiseLike,
   isReadonlyErrorLike,
   isStaticMemberAccessOfValue,
+  skipChainExpression,
 } from '../util';
 
 export type MessageIds = 'rejectAnError';
@@ -100,14 +101,6 @@ export default createRule<Options, MessageIds>({
         node: callExpression,
         messageId: 'rejectAnError',
       });
-    }
-
-    function skipChainExpression<T extends TSESTree.Node>(
-      node: T,
-    ): T | TSESTree.ChainElement {
-      return node.type === AST_NODE_TYPES.ChainExpression
-        ? node.expression
-        : node;
     }
 
     function typeAtLocationIsLikePromise(node: TSESTree.Node): boolean {

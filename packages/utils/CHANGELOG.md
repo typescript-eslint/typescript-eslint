@@ -1,3 +1,63 @@
+## 8.27.0 (2025-03-17)
+
+### 🚀 Features
+
+- **utils:** support `DeprecatedInfo` for `rule.meta.deprecated` ([#10932](https://github.com/typescript-eslint/typescript-eslint/pull/10932))
+
+### ❤️ Thank You
+
+- ntnyq @ntnyq
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.26.1 (2025-03-10)
+
+This was a version bump only for utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.26.0 (2025-03-03)
+
+### 🚀 Features
+
+- support TypeScript 5.8 ([#10903](https://github.com/typescript-eslint/typescript-eslint/pull/10903))
+
+### ❤️ Thank You
+
+- Dirk Luijk @dirkluijk
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.25.0 (2025-02-24)
+
+This was a version bump only for utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.24.1 (2025-02-17)
+
+This was a version bump only for utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.24.0 (2025-02-10)
+
+### 🚀 Features
+
+- **utils:** add `reportUnusedInlineConfigs` to LinterOptions ([#10718](https://github.com/typescript-eslint/typescript-eslint/pull/10718))
+
+### ❤️ Thank You
+
+- Flo Edelmann @FloEdelmann
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.23.0 (2025-02-03)
+
+This was a version bump only for utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.22.0 (2025-01-27)
 
 This was a version bump only for utils to align it with other projects, there were no code changes.

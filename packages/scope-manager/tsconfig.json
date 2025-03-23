@@ -4,16 +4,19 @@
   "include": [],
   "references": [
     {
+      "path": "../visitor-keys"
+    },
+    {
+      "path": "../types"
+    },
+    {
+      "path": "../typescript-estree"
+    },
+    {
       "path": "./tsconfig.build.json"
     },
     {
       "path": "./tsconfig.spec.json"
     }
-  ],
-  "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": false
-  }
+  ]
 }

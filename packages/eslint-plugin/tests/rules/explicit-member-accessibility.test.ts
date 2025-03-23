@@ -308,7 +308,6 @@ class Test {
       `,
       options: [{ accessibility: 'no-public' }],
     },
-    // private members
     {
       code: `
 class Test {
@@ -317,6 +316,20 @@ class Test {
 }
       `,
       options: [{ accessibility: 'explicit' }],
+    },
+    {
+      code: `
+class Test {
+  private accessor foo = 1;
+}
+      `,
+    },
+    {
+      code: `
+abstract class Test {
+  private abstract accessor foo: number;
+}
+      `,
     },
   ],
   invalid: [
@@ -1916,6 +1929,98 @@ abstract class SomeClass {
   abstract x: string;
 }
       `,
+    },
+    {
+      code: `
+class SomeClass {
+  accessor foo = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingAccessibility',
+          suggestions: [
+            {
+              data: { type: 'public' },
+              messageId: 'addExplicitAccessibility',
+              output: `
+class SomeClass {
+  public accessor foo = 1;
+}
+      `,
+            },
+            {
+              data: { type: 'private' },
+              messageId: 'addExplicitAccessibility',
+              output: `
+class SomeClass {
+  private accessor foo = 1;
+}
+      `,
+            },
+            {
+              data: { type: 'protected' },
+              messageId: 'addExplicitAccessibility',
+              output: `
+class SomeClass {
+  protected accessor foo = 1;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ accessibility: 'explicit' }],
+    },
+    {
+      code: `
+abstract class SomeClass {
+  abstract accessor foo: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingAccessibility',
+          suggestions: [
+            {
+              data: { type: 'public' },
+              messageId: 'addExplicitAccessibility',
+              output: `
+abstract class SomeClass {
+  public abstract accessor foo: string;
+}
+      `,
+            },
+            {
+              data: { type: 'private' },
+              messageId: 'addExplicitAccessibility',
+              output: `
+abstract class SomeClass {
+  private abstract accessor foo: string;
+}
+      `,
+            },
+            {
+              data: { type: 'protected' },
+              messageId: 'addExplicitAccessibility',
+              output: `
+abstract class SomeClass {
+  protected abstract accessor foo: string;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ accessibility: 'explicit' }],
     },
     {
       code: `

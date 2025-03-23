@@ -1,6 +1,43 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
+  "plugins": [
+    {
+      "plugin": "@nx/js/typescript",
+      "exclude": [".", "packages/integration-tests/fixtures/**"],
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        },
+        "build": {
+          "targetName": "build",
+          "configName": "tsconfig.build.json"
+        }
+      }
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "include": ["packages/*"],
+      "options": {
+        "buildTargetName": "vite:build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "devTargetName": "dev",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "vite:typecheck",
+        "buildDepsTargetName": "vite:build-deps",
+        "watchDepsTargetName": "vite:watch-deps"
+      }
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "include": ["packages/*"],
+      "options": {
+        "targetName": "test"
+      }
+    }
+  ],
   "release": {
     "projects": [
       "!repo",
@@ -25,19 +62,19 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"],
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "cwd": "{projectRoot}"
+      },
       "cache": true
     },
     "test": {
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/jest.config.js",
-        "{workspaceRoot}/jest.config.base.js"
-      ],
+      "dependsOn": ["^build"],
       "outputs": ["{projectRoot}/coverage"],
       "cache": true
     },
     "@nx/jest:jest": {
+      "dependsOn": ["^build"],
       "inputs": [
         "default",
         "^production",
@@ -57,7 +94,25 @@
         }
       }
     },
+    "@nx/vite:test": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/vitest.config.mts",
+        "{workspaceRoot}/vitest.config.base.mts",
+        "{projectRoot}/vitest.config.mts"
+      ],
+      "outputs": ["{options.reportsDirectory}"],
+      "cache": true,
+      "options": {
+        "config": "{projectRoot}/vitest.config.mts",
+        "watch": false,
+        "reportsDirectory": "{projectRoot}/coverage"
+      }
+    },
     "lint": {
+      "executor": "@nx/eslint:lint",
       "dependsOn": [
         "eslint-plugin:build",
         "eslint-plugin-internal:build",
@@ -72,6 +127,12 @@
           "transitive": false
         }
       ],
+      "outputs": ["{options.outputFile}"],
+      "cache": true
+    },
+    "typecheck": {
+      "dependsOn": ["types:copy-ast-spec"],
+      "outputs": ["{workspaceRoot}/dist/out-tsc/{projectRoot}"],
       "cache": true
     }
   },
@@ -95,6 +156,7 @@
       "!{projectRoot}/**/?(*.)+(test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/vitest.config.m[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s"
     ]
   }
