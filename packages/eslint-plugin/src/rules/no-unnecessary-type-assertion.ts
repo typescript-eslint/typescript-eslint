@@ -222,6 +222,16 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
+    function isTypeLiteral(type: ts.Type) {
+      // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the conditions.
+      return (
+        type.isLiteral() ||
+        tsutils.isBooleanLiteralType(type) ||
+        type.flags === ts.TypeFlags.Undefined ||
+        type.flags === ts.TypeFlags.Null
+      );
+    }
+
     return {
       'TSAsExpression, TSTypeAssertion'(
         node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
@@ -240,13 +250,13 @@ export default createRule<Options, MessageIds>({
 
         if (
           !options.checkLiteralConstAssertion &&
-          node.expression.type === AST_NODE_TYPES.Literal &&
-          isConstAssertion(node.typeAnnotation)
+          isConstAssertion(node.typeAnnotation) &&
+          isTypeLiteral(castType)
         ) {
           return;
         }
 
-        const wouldSameTypeBeInferred = castType.isLiteral()
+        const wouldSameTypeBeInferred = isTypeLiteral(castType)
           ? isImplicitlyNarrowedLiteralDeclaration(node)
           : !isConstAssertion(node.typeAnnotation);
 
