@@ -8,8 +8,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
   {
     "additionalProperties": false,
     "properties": {
-      "ignoreStringConstAssertion": {
-        "description": "Whether to ignore string const assertions.",
+      "checkLiteralConstAssertion": {
+        "description": "Whether to check literal const assertions.",
         "type": "boolean"
       },
       "typesToIgnore": {
@@ -29,8 +29,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to ignore string const assertions. */
-    ignoreStringConstAssertion?: boolean;
+    /** Whether to check literal const assertions. */
+    checkLiteralConstAssertion?: boolean;
     /** A list of type names to ignore. */
     typesToIgnore?: string[];
   },
