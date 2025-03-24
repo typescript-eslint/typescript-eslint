@@ -16,6 +16,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unnecessary-type-conversion', rule, {
   valid: [
+    // standard type conversions are valid
     'String(1);',
     '(1).toString();',
     '`${1}`;',
@@ -31,15 +32,63 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
     'Boolean(0);',
     '!!0;',
     'BigInt(3);',
+
+    // things that are not type conversion idioms (but look similar) are valid
     "new String('asdf');",
+    'new Number(2);',
+    'new Boolean(true);',
     '!false;',
-    '~256;',
+    '~2;',
     `
       function String(value) {
         return value;
       }
       String('asdf');
     `,
+    `
+      function Number(value) {
+        return value;
+      }
+      Number(2);
+    `,
+    `
+      function Boolean(value) {
+        return value;
+      }
+      Boolean(true);
+    `,
+    `
+      function BigInt(value) {
+        return value;
+      }
+      BigInt(3n);
+    `,
+    `
+      function toString(value) {
+        return value;
+      }
+      toString('asdf');
+    `,
+    `
+      export {};
+      declare const toString: string;
+      toString.toUpperCase();
+    `,
+
+    // using type conversion idioms to unbox boxed primitives is valid
+    'String(new String);',
+    'new String.toString();',
+    "'' + new String;",
+    "new String + '';",
+    `
+      let str = new String;
+      str += '';
+    `,
+    'Number(new Number);',
+    '+new Number;',
+    '~~new Number;',
+    'Boolean(new Boolean);',
+    '!!new Boolean;',
   ],
 
   invalid: [
@@ -253,7 +302,7 @@ let str = 'asdf';
       output: 'true;',
     },
     {
-      code: 'BigInt(BigInt(1));',
+      code: 'BigInt(3n);',
       errors: [
         {
           column: 1,
@@ -262,15 +311,141 @@ let str = 'asdf';
           suggestions: [
             {
               messageId: 'unnecessaryTypeConversionSuggestion',
-              output: 'BigInt(1) satisfies bigint;',
+              output: '3n satisfies bigint;',
             },
           ],
         },
       ],
-      output: 'BigInt(1);',
+      output: '3n;',
     },
 
-    // make sure autofixes preserve parentheses in cases where logic would otherwise break
+    // using type conversion idioms on generics that extend primitives is invalid
+    {
+      code: `
+        function f<T extends string>(x: T) {
+          return String(x);
+        }
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: `
+        function f<T extends string>(x: T) {
+          return x satisfies string;
+        }
+      `,
+            },
+          ],
+        },
+      ],
+      output: `
+        function f<T extends string>(x: T) {
+          return x;
+        }
+      `,
+    },
+    {
+      code: `
+        function f<T extends number>(x: T) {
+          return Number(x);
+        }
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: `
+        function f<T extends number>(x: T) {
+          return x satisfies number;
+        }
+      `,
+            },
+          ],
+        },
+      ],
+      output: `
+        function f<T extends number>(x: T) {
+          return x;
+        }
+      `,
+    },
+    {
+      code: `
+        function f<T extends boolean>(x: T) {
+          return Boolean(x);
+        }
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: `
+        function f<T extends boolean>(x: T) {
+          return x satisfies boolean;
+        }
+      `,
+            },
+          ],
+        },
+      ],
+      output: `
+        function f<T extends boolean>(x: T) {
+          return x;
+        }
+      `,
+    },
+    {
+      code: `
+        function f<T extends bigint>(x: T) {
+          return BigInt(x);
+        }
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: `
+        function f<T extends bigint>(x: T) {
+          return x satisfies bigint;
+        }
+      `,
+            },
+          ],
+        },
+      ],
+      output: `
+        function f<T extends bigint>(x: T) {
+          return x;
+        }
+      `,
+    },
+
+    // make sure fixes preserve parentheses in cases where logic would otherwise break
     {
       code: "String('a' + 'b').length;",
       errors: [
