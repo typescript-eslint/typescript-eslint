@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "8.27.0",
+  "version": "8.28.0",
   "private": true,
   "type": "commonjs",
   "exports": {
@@ -30,8 +30,8 @@
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/type-utils": "8.27.0",
-    "@typescript-eslint/utils": "8.27.0",
+    "@typescript-eslint/type-utils": "8.28.0",
+    "@typescript-eslint/utils": "8.28.0",
     "natural-compare": "^1.4.0",
     "prettier": "^3.2.5"
   },
