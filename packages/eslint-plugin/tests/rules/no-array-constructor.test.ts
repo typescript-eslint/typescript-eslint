@@ -67,6 +67,16 @@ ruleTester.run('no-array-constructor', rule, {
       output: '[];',
     },
     {
+      code: '/* a */ /* b */ Array /* c */ /* d */ /* e */ /* f */?.(); /* g */ /* h */',
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: '/* a */ /* b */ []; /* g */ /* h */',
+    },
+    {
       code: 'new Array(x, y);',
       errors: [
         {
@@ -97,6 +107,16 @@ ruleTester.run('no-array-constructor', rule, {
       output: '[x, y];',
     },
     {
+      code: '/* a */ /* b */ Array /* c */ /* d */ /* e */ /* f */?.(x, y); /* g */ /* h */',
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: '/* a */ /* b */ [x, y]; /* g */ /* h */',
+    },
+    {
       code: 'new Array(0, 1, 2);',
       errors: [
         {
@@ -125,6 +145,28 @@ ruleTester.run('no-array-constructor', rule, {
         },
       ],
       output: '[0, 1, 2];',
+    },
+    {
+      code: `
+/* a */ /* b */ Array /* c */ /* d */ /* e */ /* f */?.(
+  0,
+  1,
+  2,
+); /* g */ /* h */
+      `,
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: `
+/* a */ /* b */ [
+  0,
+  1,
+  2,
+]; /* g */ /* h */
+      `,
     },
     {
       code: `

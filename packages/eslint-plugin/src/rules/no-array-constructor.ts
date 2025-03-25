@@ -1,6 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import {
+  isOpeningParenToken,
+  isClosingParenToken,
+} from '@typescript-eslint/utils/ast-utils';
 
 import { createRule } from '../util';
 
@@ -21,6 +25,37 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const sourceCode = context.sourceCode;
+
+    function getArgumentsText(
+      node: TSESTree.CallExpression | TSESTree.NewExpression,
+    ) {
+      const lastToken = sourceCode.getLastToken(node);
+
+      if (lastToken == null || !isClosingParenToken(lastToken)) {
+        return '';
+      }
+
+      let firstToken = sourceCode.getTokenAfter(node.callee);
+
+      // if(firstToken == null){
+      //   return ""
+      // }
+
+      do {
+        if (firstToken == null) {
+          return '';
+        }
+        const fisrtTokenCandidate = sourceCode.getTokenAfter(firstToken);
+
+        if (fisrtTokenCandidate == null || fisrtTokenCandidate === lastToken) {
+          return '';
+        }
+        firstToken = fisrtTokenCandidate;
+      } while (!isOpeningParenToken(firstToken));
+
+      return sourceCode.text.slice(firstToken.range[1], lastToken.range[0]);
+    }
     /**
      * Disallow construction of dense arrays using the Array constructor
      * @param node node to evaluate
@@ -38,19 +73,9 @@ export default createRule({
           node,
           messageId: 'useLiteral',
           fix(fixer) {
-            if (node.arguments.length === 0) {
-              return fixer.replaceText(node, '[]');
-            }
-            const fullText = context.sourceCode.getText(node);
-            const preambleLength =
-              node.parent.type === AST_NODE_TYPES.ChainExpression
-                ? node.callee.range[1] + 2 - node.range[0]
-                : node.callee.range[1] - node.range[0];
+            const argsText = getArgumentsText(node);
 
-            return fixer.replaceText(
-              node,
-              `[${fullText.slice(preambleLength + 1, -1)}]`,
-            );
+            return fixer.replaceText(node, `[${argsText}]`);
           },
         });
       }
