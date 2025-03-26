@@ -31,6 +31,7 @@ const restrictNamedDeclarations = {
 
 const vitestFiles = [
   'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/eslint-plugin/tests/**/*.test.{ts,tsx,cts,mts}',
 ];
 
