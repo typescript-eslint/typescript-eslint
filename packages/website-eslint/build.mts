@@ -96,7 +96,6 @@ async function buildPackage(name: string, file: string): Promise<void> {
               '/ts-eslint/ESLint.ts',
               '/ts-eslint/RuleTester.ts',
               '/ts-eslint/CLIEngine.ts',
-              '/parser/src/parser.ts',
             ]),
             async args => {
               console.log('onLoad:replace', args.path);
@@ -123,6 +122,11 @@ async function buildPackage(name: string, file: string): Promise<void> {
             // this is needed to bypass system module resolver
             text = text.replace('vt:eslint/linter', normalizePath(linterPath));
             return { contents: text, loader: 'js' };
+          });
+          build.onLoad(makeFilter(['/parser/src/parser.ts']), async args => {
+            console.log('onLoad:replace', args.path);
+            const contents = await requireMock('./src/mock/parser.js');
+            return { contents, loader: 'js' };
           });
           build.onResolve(
             makeFilter([
