@@ -96,6 +96,7 @@ async function buildPackage(name: string, file: string): Promise<void> {
               '/ts-eslint/ESLint.ts',
               '/ts-eslint/RuleTester.ts',
               '/ts-eslint/CLIEngine.ts',
+              '/parser/src/parser.ts',
             ]),
             async args => {
               console.log('onLoad:replace', args.path);
