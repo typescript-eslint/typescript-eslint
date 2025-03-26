@@ -80,9 +80,7 @@ export default createRule({
         ts.isArrowFunction(functionTSNode)
           ? getContextualType(checker, functionTSNode)
           : services.getTypeAtLocation(functionNode);
-      if (!functionType) {
-        functionType = services.getTypeAtLocation(functionNode);
-      }
+      functionType ??= services.getTypeAtLocation(functionNode);
       const callSignatures = tsutils.getCallSignaturesOfType(functionType);
       // If there is an explicit type annotation *and* that type matches the actual
       // function return type, we shouldn't complain (it's intentional, even if unsafe)
