@@ -30,6 +30,8 @@ const restrictNamedDeclarations = {
 };
 
 const vitestFiles = [
+  'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/rule-schema-to-typescript-types/tests/**/*.test.{ts,tsx,cts,mts}',
 ];
 
@@ -476,7 +478,13 @@ export default tseslint.config(
     },
   },
   {
-    files: ['eslint.config.{js,cjs,mjs}', 'knip.ts', 'packages/*/src/index.ts'],
+    files: [
+      'eslint.config.{js,cjs,mjs}',
+      'knip.ts',
+      'packages/*/src/index.ts',
+      'vitest.config.mts',
+      'packages/*/vitest.config.mts',
+    ],
     rules: {
       // requirement
       'import/no-default-export': 'off',

@@ -12,7 +12,6 @@ export default createRule({
       description: 'Disallow using the unsafe built-in Function type',
       recommended: 'recommended',
     },
-    fixable: 'code',
     messages: {
       bannedFunctionType: [
         'The `Function` type accepts any function-like value.',
