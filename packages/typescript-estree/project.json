@@ -1,12 +1,16 @@
 {
   "name": "typescript-estree",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "type": "library",
-  "implicitDependencies": ["types"],
+  "projectType": "library",
+  "root": "packages/typescript-estree",
+  "sourceRoot": "packages/typescript-estree/src",
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/vite:test"
     }
   }
 }
