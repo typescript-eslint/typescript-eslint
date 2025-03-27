@@ -118,6 +118,55 @@ c ?? 'a string';
 </TabItem>
 </Tabs>
 
+### `ignoreIfStatements`
+
+{/* insert option description */}
+
+Examples of code for this rule with `{ ignoreIfStatements: false }`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "ignoreIfStatements": false }'
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitializeFoo() {
+  if (!foo) {
+    foo = makeFoo();
+  }
+}
+
+declare let bar: { a: string } | null;
+declare function makeBar(): { a: string };
+
+function lazyInitializeBar() {
+  if (!bar) bar = makeBar();
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "ignoreIfStatements": false }'
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitializeFoo() {
+  foo ??= makeFoo();
+}
+
+declare let bar: { a: string } | null;
+declare function makeBar(): { a: string };
+
+function lazyInitializeBar() {
+  bar ??= makeBar();
+}
+```
+
+</TabItem>
+</Tabs>
+
 ### `ignoreConditionalTests`
 
 {/* insert option description */}

@@ -50,6 +50,7 @@ export type Options = [
         }
       | true;
     ignoreTernaryTests?: boolean;
+    ignoreIfStatements?: boolean;
   },
 ];
 
@@ -145,6 +146,11 @@ export default createRule<Options, MessageIds>({
             description:
               'Whether to ignore any ternary expressions that could be simplified by using the nullish coalescing operator.',
           },
+          ignoreIfStatements: {
+            type: 'boolean',
+            description:
+              'Whether to ignore any if statements that could be simplified by using the nullish coalescing operator.',
+          },
         },
       },
     ],
@@ -162,6 +168,7 @@ export default createRule<Options, MessageIds>({
         string: false,
       },
       ignoreTernaryTests: false,
+      ignoreIfStatements: false,
     },
   ],
   create(
@@ -174,6 +181,7 @@ export default createRule<Options, MessageIds>({
         ignoreMixedLogicalExpressions,
         ignorePrimitives,
         ignoreTernaryTests,
+        ignoreIfStatements,
       },
     ],
   ) {
@@ -516,7 +524,7 @@ export default createRule<Options, MessageIds>({
         }
       },
       IfStatement(node: TSESTree.IfStatement): void {
-        if (node.alternate != null) {
+        if (ignoreIfStatements || node.alternate != null) {
           return;
         }
 
