@@ -259,7 +259,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `no-unnecessary-override`             | 🛑  | N/A                                                                    |
 | `no-unnecessary-semicolons`           | 🌟  | [`no-extra-semi`][no-extra-semi] or [Prettier]                         |
 | `no-useless-files`                    | 🛑  | N/A                                                                    |
-| `no-with-statement`                   | 🌟  | [`no-with`][no-with]                                                   |
+| `no-with-statement`                   | 🛑  | `with` statements are not allowed by Typescript compiler               |
 | `promise-must-complete`               | 🛑  | N/A                                                                    |
 | `underscore-consistent-invocation`    | 🔌  | [`lodash/chaining`]                                                    |
 | `use-named-parameter`                 | 🛑  | N/A                                                                    |
@@ -588,7 +588,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [no-octal]: https://eslint.org/docs/rules/no-octal
 [no-octal-escape]: https://eslint.org/docs/rules/no-octal-escape
 [no-extra-semi]: https://eslint.org/docs/rules/no-extra-semi
-[no-with]: https://eslint.org/docs/rules/no-with
 [no-warning-comments]: https://eslint.org/docs/rules/no-warning-comments
 
 <!-- @typescript-eslint/eslint-plugin -->
