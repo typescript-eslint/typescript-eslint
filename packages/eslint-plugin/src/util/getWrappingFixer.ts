@@ -30,13 +30,11 @@ interface WrappingFixerParams {
  * Wraps node with some code. Adds parenthesis as necessary.
  * @returns Fixer which adds the specified code and parens if necessary.
  */
-export function getWrappingFixer(
-  params: WrappingFixerParams,
-): TSESLint.ReportFixFunction {
+export function getWrappingFixer(params: WrappingFixerParams) {
   const { node, innerNode = node, sourceCode, wrap } = params;
   const innerNodes = Array.isArray(innerNode) ? innerNode : [innerNode];
 
-  return (fixer): TSESLint.RuleFix => {
+  return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
     const innerCodes = innerNodes.map(innerNode => {
       let code = sourceCode.getText(innerNode);
 
@@ -69,7 +67,7 @@ export function getWrappingFixer(
     }
 
     // check if we need to insert semicolon
-    if (/^[`([]/.test(code) && isMissingSemicolonBefore(node, sourceCode)) {
+    if (/^[-+`<([]/.test(code) && isMissingSemicolonBefore(node, sourceCode)) {
       code = `;${code}`;
     }
 
