@@ -36,26 +36,18 @@ export default createRule({
         return '';
       }
 
-      let firstToken = sourceCode.getTokenAfter(node.callee);
-
-      // if(firstToken == null){
-      //   return ""
-      // }
+      let firstToken: TSESTree.Expression | TSESTree.Token | null = node.callee;
 
       do {
-        if (firstToken == null) {
+        firstToken = sourceCode.getTokenAfter(firstToken);
+        if (!firstToken || firstToken === lastToken) {
           return '';
         }
-        const fisrtTokenCandidate = sourceCode.getTokenAfter(firstToken);
-
-        if (fisrtTokenCandidate == null || fisrtTokenCandidate === lastToken) {
-          return '';
-        }
-        firstToken = fisrtTokenCandidate;
       } while (!isOpeningParenToken(firstToken));
 
       return sourceCode.text.slice(firstToken.range[1], lastToken.range[0]);
     }
+
     /**
      * Disallow construction of dense arrays using the Array constructor
      * @param node node to evaluate
