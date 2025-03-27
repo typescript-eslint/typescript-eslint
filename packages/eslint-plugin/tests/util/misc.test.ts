@@ -1,6 +1,6 @@
 import * as misc from '../../src/util/misc';
 
-describe('formatWordList', () => {
+describe(misc.formatWordList, () => {
   it('can format with no words', () => {
     expect(misc.formatWordList([])).toBe('');
   });
@@ -24,7 +24,7 @@ describe('formatWordList', () => {
   });
 });
 
-describe('findLastIndex', () => {
+describe(misc.findLastIndex, () => {
   it('returns -1 if there are no elements to iterate over', () => {
     expect(misc.findLastIndex([], () => true)).toBe(-1);
   });
