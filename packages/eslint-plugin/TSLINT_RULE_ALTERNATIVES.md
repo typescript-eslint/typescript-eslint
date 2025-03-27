@@ -259,7 +259,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `no-unnecessary-override`             | 🛑  | N/A                                                                    |
 | `no-unnecessary-semicolons`           | 🌟  | [`no-extra-semi`][no-extra-semi] or [Prettier]                         |
 | `no-useless-files`                    | 🛑  | N/A                                                                    |
-| `no-with-statement`                   | 🛑  | `with` statements are not allowed by Typescript compiler               |
+| `no-with-statement`                   | 🛑  | `with` statements are not allowed by TypeScript compiler               |
 | `promise-must-complete`               | 🛑  | N/A                                                                    |
 | `underscore-consistent-invocation`    | 🔌  | [`lodash/chaining`]                                                    |
 | `use-named-parameter`                 | 🛑  | N/A                                                                    |
