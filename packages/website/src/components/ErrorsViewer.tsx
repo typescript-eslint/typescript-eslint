@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 
 import type { AlertBlockProps } from './layout/AlertBlock';
-import type { ErrorGroup, ErrorItem, TabType } from './types';
+import type { ErrorGroup, ErrorItem } from './types';
 
 import styles from './ErrorsViewer.module.css';
 import AlertBlock from './layout/AlertBlock';
@@ -132,8 +132,6 @@ export function ErrorViewer({
 
 export function ErrorsViewer({ value }: ErrorsViewerProps): React.JSX.Element {
   const [isLocked, setIsLocked] = useState(false);
-
-  console.log(value);
 
   useEffect(() => {
     setIsLocked(false);

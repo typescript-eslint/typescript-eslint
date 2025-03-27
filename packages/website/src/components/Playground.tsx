@@ -43,7 +43,7 @@ function Playground(): React.JSX.Element {
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
   const [selectedRange, setSelectedRange] = useState<SelectedRange>();
   const [position, setPosition] = useState<number>();
-  const [activeTab, setTab] = useState<TabType>('tsconfig');
+  const [activeTab, setTab] = useState<TabType>('code');
   const [esQueryError, setEsQueryError] = useState<Error>();
   const [visualEslintRc, setVisualEslintRc] = useState(false);
   const [visualTSConfig, setVisualTSConfig] = useState(false);
@@ -90,8 +90,6 @@ function Playground(): React.JSX.Element {
       playgroundMenuRef.current?.expand();
     }
   }, [windowSize]);
-
-  console.log(activeTab, markers);
 
   return (
     <div className={styles.codeContainer}>
