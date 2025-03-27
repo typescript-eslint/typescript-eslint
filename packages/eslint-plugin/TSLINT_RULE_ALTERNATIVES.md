@@ -259,7 +259,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `no-unnecessary-override`             | 🛑  | N/A                                                                    |
 | `no-unnecessary-semicolons`           | 🌟  | [`no-extra-semi`][no-extra-semi] or [Prettier]                         |
 | `no-useless-files`                    | 🛑  | N/A                                                                    |
-| `no-with-statement`                   | 🌟  | [`no-with`][no-with]                                                   |
+| `no-with-statement`                   | 🌟  | [`no-with`][no-with] <sup>[6]</sup>                                    |
 | `promise-must-complete`               | 🛑  | N/A                                                                    |
 | `underscore-consistent-invocation`    | 🔌  | [`lodash/chaining`]                                                    |
 | `use-named-parameter`                 | 🛑  | N/A                                                                    |
@@ -270,6 +270,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 <sup>[3]</sup> Recommended config: `["error", "declaration", { "allowArrowFunctions": true }]`<br>
 <sup>[4]</sup> Recommended config: `["error", { "terms": ["BUG", "HACK", "FIXME", "LATER", "LATER2", "TODO"], "location": "anywhere" }]`<br>
 <sup>[5]</sup> Does not check class fields.
+<sup>[6]</sup> But note that `with` statements are not allowed by the TypeScript compiler
 
 ### Security
 
