@@ -57,10 +57,6 @@ export default {
       ignore: ['fixtures/**', 'typings/global.d.ts'],
       vitest: {
         config: ['vitest.config.mts'],
-        entry: [
-          '**/*.{bench,test,test-d,spec}.?(c|m)[jt]s?(x)',
-          'tools/pack-packages.ts',
-        ],
       },
     },
     'packages/parser': {
