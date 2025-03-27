@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures statement ForOfStatement _error_ decl-type TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > statement > ForOfStatement > _error_ > decl-type > TSESTree - Error`]
+TSError
 > 1 | for (const x: string of []) {}
     |            ^^^^^^^^^ The variable declaration of a 'for...of' statement cannot have a type annotation.
-  2 |"
-`;
+  2 |

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration multiple-declarations AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > VariableDeclaration > multiple-declarations > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -78,5 +78,4 @@ exports[`AST Fixtures declaration VariableDeclaration multiple-declarations AST 
         end: { column: 12, line: 1 },
       },
     },
-  ]"
-`;
+  ]

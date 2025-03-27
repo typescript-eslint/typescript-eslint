@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration ExportNamedDeclaration braced-identifier-many-with-source AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > ExportNamedDeclaration > braced-identifier-many-with-source > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -16,7 +16,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration braced-identifier-many-
         exportKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\'mod\\'',
+          raw: '\'mod\'',
           value: 'mod',
 
           range: [21, 26],
@@ -110,5 +110,4 @@ exports[`AST Fixtures declaration ExportNamedDeclaration braced-identifier-many-
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

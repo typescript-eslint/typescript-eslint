@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics abstract-class-with-override-method TSESTree - Tokens 1`] = `
 [
   Identifier {
     type: "Identifier",
@@ -133,4 +130,3 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-override-method
     },
   },
 ]
-`;

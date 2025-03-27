@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ declare-const-id-definite-type-no-init Babel - Error 1`] = `"NO ERROR"`;
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-const-id-definite-type-no-init > Babel - Error`]
+NO ERROR

@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ declare-using-id-definite-init TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-using-id-definite-init > TSESTree - Error`]
+TSError
 > 1 | declare using foo! = 1;
     | ^^^^^^^ 'declare' modifier cannot appear on a 'using' declaration.
-  2 |"
-`;
+  2 |

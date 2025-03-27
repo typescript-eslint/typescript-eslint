@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSInterfaceDeclaration _error_ missing-type-param Babel - Error 1`] = `[SyntaxError: Type parameter list cannot be empty. (1:11)]`;
+exports[`AST Fixtures > declaration > TSInterfaceDeclaration > _error_ > missing-type-param > Babel - Error`]
+SyntaxError: Type parameter list cannot be empty. (1:11)

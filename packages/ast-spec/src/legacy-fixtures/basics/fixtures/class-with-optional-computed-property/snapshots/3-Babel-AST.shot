@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-property Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -78,4 +75,3 @@ Program {
     end: { column: 0, line: 6 },
   },
 }
-`;
