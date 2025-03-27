@@ -43,7 +43,7 @@
     "format": "yarn run -T format",
     "lint": "yarn run -T nx lint",
     "test": "jest",
-    "check-types": "yarn run --top-level nx typecheck"
+    "check-types": "yarn run -T nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/typescript-estree": "8.28.0",

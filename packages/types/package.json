@@ -43,9 +43,9 @@
     "postbuild": "downlevel-dts dist _ts4.3/dist --to=4.3",
     "clean": "rimraf dist/ src/generated/ _ts4.3/ coverage/",
     "format": "yarn run -T format",
-    "generate-lib": "yarn run --top-level nx run scope-manager:generate-lib",
+    "generate-lib": "yarn run -T nx run scope-manager:generate-lib",
     "lint": "yarn run -T nx lint",
-    "check-types": "yarn run --top-level nx typecheck"
+    "check-types": "yarn run -T nx typecheck"
   },
   "devDependencies": {
     "downlevel-dts": "*",

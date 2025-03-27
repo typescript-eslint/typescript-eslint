@@ -23,7 +23,7 @@
     "serve": "docusaurus serve",
     "start": "yarn run -T nx start",
     "swizzle": "docusaurus swizzle",
-    "check-types": "yarn run --top-level nx typecheck"
+    "check-types": "yarn run -T nx typecheck"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.4",

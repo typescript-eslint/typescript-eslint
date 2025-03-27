@@ -46,7 +46,7 @@
     "generate-lib": "yarn run -T nx generate-lib repo",
     "lint": "yarn run -T nx lint",
     "test": "jest",
-    "check-types": "yarn run --top-level nx typecheck"
+    "check-types": "yarn run -T nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/types": "8.28.0",

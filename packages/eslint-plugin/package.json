@@ -57,7 +57,7 @@
     "lint": "yarn run -T nx lint",
     "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --logHeapUsage",
     "test-single": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --no-coverage",
-    "check-types": "yarn run --top-level nx typecheck"
+    "check-types": "yarn run -T nx typecheck"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",

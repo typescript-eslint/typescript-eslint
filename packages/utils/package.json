@@ -60,7 +60,7 @@
     "format": "yarn run -T format",
     "lint": "yarn run -T nx lint",
     "test": "jest",
-    "check-types": "yarn run --top-level nx typecheck"
+    "check-types": "yarn run -T nx typecheck"
   },
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.4.0",
