@@ -1,6 +1,4 @@
-// NOTE: this file is isolated to be shared across legacy and flat configs
-// it is exported via `./use-at-your-own-risk/eslint-recommended-raw`
-// and it has types manually defined in `./eslint-recommended-raw.d.ts`
+// NOTE: this file is isolated to be shared across legacy and flat configs.
 
 /**
  * This is a compatibility ruleset that:
@@ -11,7 +9,7 @@ const config = (
   style: 'glob' | 'minimatch',
 ): {
   files: string[];
-  rules: Record<string, 'off' | 'warn' | 'error'>;
+  rules: Record<string, 'error' | 'off' | 'warn'>;
 } => ({
   files:
     style === 'glob'
@@ -30,8 +28,8 @@ const config = (
     'no-func-assign': 'off', // ts(2630)
     'no-import-assign': 'off', // ts(2632) & ts(2540)
     // TODO - remove this once we no longer support ESLint v8
-    'no-new-symbol': 'off', // ts(7009)
     'no-new-native-nonconstructor': 'off', // ts(7009)
+    'no-new-symbol': 'off', // ts(7009)
     'no-obj-calls': 'off', // ts(2349)
     'no-redeclare': 'off', // ts(2451)
     'no-setter-return': 'off', // ts(2408)

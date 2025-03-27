@@ -6,7 +6,7 @@
 
 import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
-import eslintRecommended_raw from './eslint-recommended-raw';
+import eslintRecommended_raw from '../eslint-recommended-raw';
 
 export = {
   overrides: [eslintRecommended_raw('glob')],

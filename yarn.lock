@@ -3598,10 +3598,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/config-helpers@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@eslint/config-helpers@npm:0.1.0"
-  checksum: 1136dcda37cf7b259a81686c71f31d457caa42d91a4a9cdac4677c5fc7a958410ac3cbef3b92971c7463fa8182fa1619e4f4743de94dd603c128303feee37fc8
+"@eslint/config-helpers@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@eslint/config-helpers@npm:0.2.0"
+  checksum: 36e857165f1d4661ce1dd31e739135e49b3fc0cf1dcbd64e07e53475441640ab0b7abefa3e9718a598c570ee05a91b2f91cd74c008fa30fc3db8b05d07645fb2
   languageName: node
   linkType: hard
 
