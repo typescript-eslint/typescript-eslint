@@ -36,7 +36,6 @@ export default createRule<[], MessageIds>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       addUnknownRestTypeAnnotationSuggestion:
