@@ -6224,11 +6224,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
+    "@vitest/coverage-v8": ^3.0.8
     downlevel-dts: "*"
     prettier: ^3.2.5
     rimraf: "*"
     tsx: "*"
     typescript: "*"
+    vitest: ^3.0.8
   languageName: unknown
   linkType: soft
 
