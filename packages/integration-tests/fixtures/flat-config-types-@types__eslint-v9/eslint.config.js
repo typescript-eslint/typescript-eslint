@@ -52,6 +52,7 @@ function _otherCases() {
     vitestPlugin.configs.recommended,
   );
   tseslint.config(
+    // @ts-expect-error
     compat.config(deprecationPlugin.configs.recommended),
     vitestPlugin.configs.recommended,
   );

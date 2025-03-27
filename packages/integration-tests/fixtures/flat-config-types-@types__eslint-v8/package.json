@@ -1,7 +1,7 @@
 {
   "type": "module",
   "devDependencies": {
-    "@eslint/eslintrc": "3.3.0",
+    "@eslint/eslintrc": "latest",
     "@eslint/js": "latest",
     "@types/eslint": "^8",
     "eslint": "9.9.1",

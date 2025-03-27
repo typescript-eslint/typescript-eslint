@@ -162,9 +162,11 @@ export function eslintIntegrationTest(
         new RegExp(`"filePath": ?"(/private)?${testFolder}`, 'g'),
         '"filePath": "<root>',
       )
-      .replaceAll(/"filePath":"([^"]*)"/g, (_, testFile: string) => {
-        return `"filePath": "<root>/${path.relative(testFolder, testFile)}"`;
-      })
+      .replaceAll(
+        /"filePath":"([^"]*)"/g,
+        (_, testFile: string) =>
+          `"filePath": "<root>/${path.relative(testFolder, testFile)}"`,
+      )
       .replaceAll(
         /C:\\\\usr\\\\linked\\\\tsconfig.json/g,
         path.posix.join('/usr', 'linked', 'tsconfig.json'),
