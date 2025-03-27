@@ -6295,13 +6295,11 @@ __metadata:
     lint-staged: ^15.2.2
     make-dir: ^4.0.0
     markdownlint-cli: ^0.44.0
-    ncp: ^2.0.0
     nx: 20.4.5
     prettier: 3.5.0
     pretty-format: ^29.7.0
     rimraf: ^5.0.5
     semver: 7.7.0
-    tmp: ^0.2.1
     tsx: "*"
     typescript: ">=4.8.4 <5.9.0"
     typescript-eslint: "workspace:^"
@@ -15906,15 +15904,6 @@ __metadata:
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
   checksum: 23ad088b08f898fc9b53011d7bb78ec48e79de7627e01ab5518e806033861bef68d5b0cd0e2205c2f36690ac9571ff6bcb05eb777ced2eeda8d4ac5b44592c3d
-  languageName: node
-  linkType: hard
-
-"ncp@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "ncp@npm:2.0.0"
-  bin:
-    ncp: ./bin/ncp
-  checksum: ea9b19221da1d1c5529bdb9f8e85c9d191d156bcaae408cce5e415b7fbfd8744c288e792bd7faf1fe3b70fd44c74e22f0d43c39b209bc7ac1fb8016f70793a16
   languageName: node
   linkType: hard
 
