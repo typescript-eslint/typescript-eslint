@@ -29,8 +29,6 @@ export default {
         'glob',
         'jest-specific-snapshot',
         'make-dir',
-        'ncp',
-        'tmp',
         // imported for type purposes only
         'website',
       ],
@@ -56,7 +54,7 @@ export default {
       ignore: ['tests/fixtures/**'],
     },
     'packages/integration-tests': {
-      ignore: ['fixtures/**', 'typings/global.d.ts'],
+      ignore: ['fixtures/**'],
     },
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
