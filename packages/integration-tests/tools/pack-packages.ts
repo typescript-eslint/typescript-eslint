@@ -10,14 +10,15 @@
 import type { TestProject } from 'vitest/node';
 
 import * as child_process from 'node:child_process';
-import fs from 'node:fs/promises';
+import * as fs from 'node:fs/promises';
 import * as os from 'node:os';
-import path from 'node:path';
+import * as path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 
-const execFile = promisify(child_process.execFile);
+export const execFile = promisify(child_process.execFile);
 
-interface PackageJSON {
+export interface PackageJSON {
   devDependencies: Record<string, string>;
   name: string;
   private?: boolean;
@@ -31,7 +32,7 @@ declare module 'vitest' {
 
 const PACKAGES_DIR = path.resolve(__dirname, '..', '..');
 
-const homeOrTmpDir = os.tmpdir() || os.homedir();
+export const homeOrTmpDir = os.tmpdir() || os.homedir();
 
 const tarFolder = path.join(
   homeOrTmpDir,
@@ -40,7 +41,10 @@ const tarFolder = path.join(
 );
 
 export const setup = async (project: TestProject): Promise<void> => {
-  const PACKAGES = await fs.readdir(PACKAGES_DIR, { withFileTypes: true });
+  const PACKAGES = await fs.readdir(PACKAGES_DIR, {
+    encoding: 'utf-8',
+    withFileTypes: true,
+  });
 
   await fs.mkdir(tarFolder, { recursive: true });
 
@@ -60,7 +64,7 @@ export const setup = async (project: TestProject): Promise<void> => {
           }
 
           const packageJson: PackageJSON = (
-            await import(packagePath, {
+            await import(pathToFileURL(packagePath).href, {
               with: { type: 'json' },
             })
           ).default;

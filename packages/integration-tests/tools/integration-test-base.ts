@@ -1,21 +1,14 @@
 import * as childProcess from 'node:child_process';
 import * as fs from 'node:fs/promises';
-import * as os from 'node:os';
 import * as path from 'node:path';
-import { promisify } from 'node:util';
 import { inject } from 'vitest';
 
+import type { PackageJSON } from './pack-packages.js';
+
 import rootPackageJson from '../../../package.json';
+import { execFile, homeOrTmpDir } from './pack-packages.js';
 
 const tseslintPackages = inject('tseslintPackages');
-
-interface PackageJSON {
-  devDependencies: Record<string, string>;
-  name: string;
-  private?: boolean;
-}
-
-const execFile = promisify(childProcess.execFile);
 
 const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
   ...tseslintPackages,
@@ -25,11 +18,6 @@ const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
 };
 
 const FIXTURES_DIR = path.join(__dirname, '..', 'fixtures');
-// an env var to persist the temp folder so that it can be inspected for debugging purposes
-const KEEP_INTEGRATION_TEST_DIR =
-  process.env.KEEP_INTEGRATION_TEST_DIR === 'true';
-
-const homeOrTmpDir = os.tmpdir() || os.homedir();
 
 // make sure that vitest doesn't timeout the test
 vi.setConfig({ testTimeout: 60_000 });
@@ -52,10 +40,6 @@ function integrationTest(
         );
 
         await fs.mkdir(testFolder, { recursive: true });
-
-        if (KEEP_INTEGRATION_TEST_DIR) {
-          console.error(testFolder);
-        }
 
         // copy the fixture files to the temp folder
         await fs.cp(fixtureDir, testFolder, { recursive: true });
@@ -172,7 +156,7 @@ export function eslintIntegrationTest(
     expect(stderr).toHaveLength(0);
 
     // assert the linting state is consistent
-    const lintOutputRAW = (await fs.readFile(outFile, 'utf8'))
+    const lintOutputRAW = (await fs.readFile(outFile, { encoding: 'utf-8' }))
       // clean the output to remove any changing facets so tests are stable
       .replaceAll(
         new RegExp(`"filePath": ?"(/private)?${testFolder}`, 'g'),
