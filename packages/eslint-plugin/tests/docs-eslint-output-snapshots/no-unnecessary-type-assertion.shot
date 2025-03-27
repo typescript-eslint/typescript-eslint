@@ -38,14 +38,6 @@ const foo = (3 + 5) as Foo;
 exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 5`] = `
 "Incorrect
 
-const foo = 'foo' as const;
-            ~~~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.
-"
-`;
-
-exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 6`] = `
-"Incorrect
-
 function foo(x: number): number {
   return x!; // unnecessary non-null
          ~~ This assertion is unnecessary since it does not change the type of the expression.
@@ -53,33 +45,41 @@ function foo(x: number): number {
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 7`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 6`] = `
 "Correct
 
 const foo = <number>3;
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 8`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 7`] = `
 "Correct
 
 const foo = 3 as number;
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 9`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 8`] = `
 "Correct
 
 let foo = 'foo' as const;
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 10`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 9`] = `
 "Correct
 
 function foo(x: number | undefined): number {
   return x!;
 }
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 10`] = `
+"Options: { "checkLiteralConstAssertion": true }
+
+const foo = 'foo' as const;
+            ~~~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.
 "
 `;
 
