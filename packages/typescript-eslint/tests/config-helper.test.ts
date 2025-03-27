@@ -59,6 +59,17 @@ describe('config helper', () => {
     ]);
   });
 
+  it('throws error when extends is not an array', () => {
+    expect(() =>
+      plugin.config({
+        // @ts-expect-error purposely testing invalid values
+        extends: 42,
+      }),
+    ).toThrow(
+      'tseslint.config(): Config at index 0 (anonymous): Key "extends": Expected value to be an array.',
+    );
+  });
+
   it('throws error containing config name when some extensions are undefined', () => {
     const extension: TSESLint.FlatConfig.Config = { rules: { rule1: 'error' } };
 
@@ -81,8 +92,7 @@ describe('config helper', () => {
         },
       ),
     ).toThrow(
-      'Your config at index 1, named "my-config-2", contains undefined ' +
-        'extensions at the following indices: 0, 2',
+      'tseslint.config(): Config at index 1 "my-config-2": Key "extends": Expected array to only contain objects (contains non-objects at the following indices: 0, 2).',
     );
   });
 
@@ -107,8 +117,7 @@ describe('config helper', () => {
         },
       ),
     ).toThrow(
-      'Your config at index 1 (anonymous) contains undefined extensions at ' +
-        'the following indices: 0, 2',
+      'tseslint.config(): Config at index 1 (anonymous): Key "extends": Expected array to only contain objects (contains non-objects at the following indices: 0, 2).',
     );
   });
 
@@ -247,4 +256,16 @@ describe('config helper', () => {
       { rules: { rule: 'error' } },
     ]);
   });
+
+  it.each([undefined, null, 'not a config object', 42])(
+    'passes invalid arguments through unchanged',
+    config => {
+      expect(
+        plugin.config(
+          // @ts-expect-error purposely testing invalid values
+          config,
+        ),
+      ).toStrictEqual([config]);
+    },
+  );
 });
