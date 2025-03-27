@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`type-declaration type-parameters type-decl body-reference 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -71,4 +68,3 @@ ScopeManager {
     },
   ],
 }
-`;
