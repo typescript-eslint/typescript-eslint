@@ -6147,9 +6147,11 @@ __metadata:
   dependencies:
     "@typescript-eslint/type-utils": 8.28.0
     "@typescript-eslint/utils": 8.28.0
+    "@vitest/coverage-v8": ^3.0.8
     natural-compare: ^1.4.0
     prettier: ^3.2.5
     typescript: "*"
+    vitest: ^3.0.8
   languageName: unknown
   linkType: soft
 
