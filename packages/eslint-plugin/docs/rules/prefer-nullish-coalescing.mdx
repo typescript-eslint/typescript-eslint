@@ -131,17 +131,14 @@ Examples of code for this rule with `{ ignoreIfStatements: false }`:
 declare let foo: { a: string } | null;
 declare function makeFoo(): { a: string };
 
-function lazyInitializeFoo() {
+function lazyInitializeFoo1() {
   if (!foo) {
     foo = makeFoo();
   }
 }
 
-declare let bar: { a: string } | null;
-declare function makeBar(): { a: string };
-
-function lazyInitializeBar() {
-  if (!bar) bar = makeBar();
+function lazyInitializeFoo2() {
+  if (!foo) foo = makeFoo();
 }
 ```
 
@@ -152,15 +149,12 @@ function lazyInitializeBar() {
 declare let foo: { a: string } | null;
 declare function makeFoo(): { a: string };
 
-function lazyInitializeFoo() {
+function lazyInitializeFoo1() {
   foo ??= makeFoo();
 }
 
-declare let bar: { a: string } | null;
-declare function makeBar(): { a: string };
-
-function lazyInitializeBar() {
-  bar ??= makeBar();
+function lazyInitializeFoo2() {
+  foo ??= makeFoo();
 }
 ```
 

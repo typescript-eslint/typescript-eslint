@@ -107,7 +107,7 @@ Options: { "ignoreIfStatements": false }
 declare let foo: { a: string } | null;
 declare function makeFoo(): { a: string };
 
-function lazyInitializeFoo() {
+function lazyInitializeFoo1() {
   if (!foo) {
   ~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??=\`) instead of an assignment expression, as it is simpler to read.
     foo = makeFoo();
@@ -116,11 +116,8 @@ function lazyInitializeFoo() {
 ~~~
 }
 
-declare let bar: { a: string } | null;
-declare function makeBar(): { a: string };
-
-function lazyInitializeBar() {
-  if (!bar) bar = makeBar();
+function lazyInitializeFoo2() {
+  if (!foo) foo = makeFoo();
   ~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??=\`) instead of an assignment expression, as it is simpler to read.
 }
 "
@@ -133,15 +130,12 @@ Options: { "ignoreIfStatements": false }
 declare let foo: { a: string } | null;
 declare function makeFoo(): { a: string };
 
-function lazyInitializeFoo() {
+function lazyInitializeFoo1() {
   foo ??= makeFoo();
 }
 
-declare let bar: { a: string } | null;
-declare function makeBar(): { a: string };
-
-function lazyInitializeBar() {
-  bar ??= makeBar();
+function lazyInitializeFoo2() {
+  foo ??= makeFoo();
 }
 "
 `;
