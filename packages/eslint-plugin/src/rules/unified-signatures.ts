@@ -294,6 +294,10 @@ export default createRule<Options, MessageIds>({
         : undefined;
     }
 
+    function isThisParam(param: TSESTree.Parameter | undefined) {
+      return param?.type === AST_NODE_TYPES.Identifier && param.name === 'this';
+    }
+
     /**
      * Detect `a(): void` and `a(x: number): void`.
      * Returns the parameter declaration (`x: number` in this example) that should be optional/rest, and overload it's a part of.
@@ -309,6 +313,12 @@ export default createRule<Options, MessageIds>({
       const longer = sig1.length < sig2.length ? sig2 : sig1;
       const shorter = sig1.length < sig2.length ? sig1 : sig2;
       const shorterSig = sig1.length < sig2.length ? a : b;
+
+      // If one signature has explicit this type and another doesn't, they can't
+      // be unified.
+      if (isThisParam(sig1[0]) !== isThisParam(sig2[0])) {
+        return undefined;
+      }
 
       // If one is has 2+ parameters more than the other, they must all be optional/rest.
       // Differ by optional parameters: f() and f(x), f() and f(x, ?y, ...z)

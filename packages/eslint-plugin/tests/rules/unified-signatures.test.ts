@@ -380,6 +380,16 @@ declare function f(x: boolean): unknown;
       `,
       options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
     },
+    `
+function f(): void;
+function f(this: {}): void;
+function f(this: void | {}): void {}
+    `,
+    `
+function f(a: boolean): void;
+function f(this: {}, a: boolean): void;
+function f(this: void | {}, a: boolean): void {}
+    `,
   ],
   invalid: [
     {
@@ -1135,6 +1145,34 @@ declare function f(x: boolean): unknown;
         },
       ],
       options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+function f(this: {}, a: boolean): void;
+function f(this: {}, a: string): void;
+function f(this: {}, a: boolean | string): void {}
+      `,
+      errors: [
+        {
+          column: 22,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
+function f(this: {}): void;
+function f(this: {}, a: string): void;
+function f(this: {}, a?: string): void {}
+      `,
+      errors: [
+        {
+          column: 22,
+          line: 3,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
     },
   ],
 });
