@@ -10,13 +10,14 @@ import {
   createRule,
   getParserServices,
   nullThrows,
-  typeOrValueSpecifiersSchema,
   typeMatchesSomeSpecifier,
+  typeOrValueSpecifiersSchema,
 } from '../util';
 
 type IdentifierLike =
   | TSESTree.Identifier
   | TSESTree.JSXIdentifier
+  | TSESTree.Literal
   | TSESTree.PrivateIdentifier
   | TSESTree.Super;
 
@@ -209,13 +210,9 @@ export default createRule<Options, MessageIds>({
       return displayParts ? ts.displayPartsToString(displayParts) : '';
     }
 
-    type CallLikeNode =
-      | TSESTree.CallExpression
-      | TSESTree.JSXOpeningElement
-      | TSESTree.NewExpression
-      | TSESTree.TaggedTemplateExpression;
+    type CalleeNode = TSESTree.Expression | TSESTree.JSXTagNameExpression;
 
-    function isNodeCalleeOfParent(node: TSESTree.Node): node is CallLikeNode {
+    function isNodeCalleeOfParent(node: TSESTree.Node): node is CalleeNode {
       switch (node.parent?.type) {
         case AST_NODE_TYPES.NewExpression:
         case AST_NODE_TYPES.CallExpression:
@@ -232,7 +229,7 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function getCallLikeNode(node: TSESTree.Node): CallLikeNode | undefined {
+    function getCallLikeNode(node: TSESTree.Node): CalleeNode | undefined {
       let callee = node;
 
       while (
@@ -245,7 +242,7 @@ export default createRule<Options, MessageIds>({
       return isNodeCalleeOfParent(callee) ? callee : undefined;
     }
 
-    function getCallLikeDeprecation(node: CallLikeNode): string | undefined {
+    function getCallLikeDeprecation(node: CalleeNode): string | undefined {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node.parent);
 
       // If the node is a direct function call, we look for its signature.
@@ -254,7 +251,10 @@ export default createRule<Options, MessageIds>({
         'Expected call like node to have signature',
       );
 
-      const symbol = services.getSymbolAtLocation(node);
+      const nodeToFind =
+        node.type === AST_NODE_TYPES.MemberExpression ? node.property : node;
+
+      const symbol = services.getSymbolAtLocation(nodeToFind);
       const aliasedSymbol =
         symbol != null && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
           ? checker.getAliasedSymbol(symbol)
@@ -334,14 +334,16 @@ export default createRule<Options, MessageIds>({
 
       if (
         node.parent.type === AST_NODE_TYPES.JSXAttribute &&
-        node.type !== AST_NODE_TYPES.Super
+        node.type !== AST_NODE_TYPES.Super &&
+        node.type !== AST_NODE_TYPES.Literal
       ) {
         return getJSXAttributeDeprecation(node.parent.parent, node.name);
       }
 
       if (
         node.parent.type === AST_NODE_TYPES.Property &&
-        node.type !== AST_NODE_TYPES.Super
+        node.type !== AST_NODE_TYPES.Super &&
+        node.type !== AST_NODE_TYPES.Literal
       ) {
         const property = services
           .getTypeAtLocation(node.parent.parent)
@@ -401,6 +403,7 @@ export default createRule<Options, MessageIds>({
           checkIdentifier(node);
         }
       },
+      'MemberExpression > Literal': checkIdentifier,
       PrivateIdentifier: checkIdentifier,
       Super: checkIdentifier,
     };
@@ -414,6 +417,10 @@ function getReportedNodeName(node: IdentifierLike): string {
 
   if (node.type === AST_NODE_TYPES.PrivateIdentifier) {
     return `#${node.name}`;
+  }
+
+  if (node.type === AST_NODE_TYPES.Literal) {
+    return String(node.value);
   }
 
   return node.name;
