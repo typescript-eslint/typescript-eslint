@@ -1045,8 +1045,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            subType: '{ a: 1 }',
-            superType: '{ a: number }',
+            subType: '{ a: 1; }',
+            superType: '{ a: number; }',
           },
           endColumn: 18,
           messageId: 'objectOverridden',
@@ -1059,8 +1059,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 26,
           data: {
-            subType: '{ a: 1 }',
-            superType: '{ a: number }',
+            subType: '{ a: 1; }',
+            superType: '{ a: number; }',
           },
           endColumn: 34,
           messageId: 'objectOverridden',
@@ -1073,8 +1073,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 27,
           data: {
-            subType: '{ a: 1 } | { a: 2 }',
-            superType: '{ a: number }',
+            subType: '{ a: 1; } | { a: 2; }',
+            superType: '{ a: number; }',
           },
           endColumn: 46,
           messageId: 'objectOverridden',
@@ -1087,8 +1087,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            subType: '{ a: 1 } | { a: 2 }',
-            superType: '{ a: number }',
+            subType: '{ a: 1; } | { a: 2; }',
+            superType: '{ a: number; }',
           },
           endColumn: 30,
           messageId: 'objectOverridden',
@@ -1104,8 +1104,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 19,
           data: {
-            subType: '{ a: 3 } | { a: 1 } | { a: 2 }',
-            superType: '{ a: number }',
+            subType: '{ a: 3; } | { a: 1; } | { a: 2; }',
+            superType: '{ a: number; }',
           },
           endColumn: 31,
           line: 3,
@@ -1119,8 +1119,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            subType: '{ a: 0 } | { a: 1 } | { a: 2 }',
-            superType: '{ a: number }',
+            subType: '{ a: 0; } | { a: 1; } | { a: 2; }',
+            superType: '{ a: number; }',
           },
           endColumn: 43,
           messageId: 'objectOverridden',
@@ -1133,8 +1133,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            subType: '{ a: 1 } | { a: 2 }',
-            superType: '{ a: 1 | 2 }',
+            subType: '{ a: 1; } | { a: 2; }',
+            superType: '{ a: 1 | 2; }',
           },
           endColumn: 43,
           messageId: 'objectOverridden',
@@ -1147,8 +1147,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            subType: '{ a: 0 } | { a: 1 }',
-            superType: '{ a: number }',
+            subType: '{ a: 0; } | { a: 1; }',
+            superType: '{ a: number; }',
           },
           endColumn: 30,
           messageId: 'objectOverridden',
@@ -1161,8 +1161,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            subType: '{ a: 1 } | { a: 2 }',
-            superType: '{ a: number }',
+            subType: '{ a: 1; } | { a: 2; }',
+            superType: '{ a: number; }',
           },
           endColumn: 40,
           messageId: 'objectOverridden',
@@ -1175,8 +1175,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            subType: '{ a: 1 } | { a: 2 }',
-            superType: '{ a: 1 | 2 }',
+            subType: '{ a: 1; } | { a: 2; }',
+            superType: '{ a: 1 | 2; }',
           },
           endColumn: 40,
           messageId: 'objectOverridden',
@@ -1189,8 +1189,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 28,
           data: {
-            subType: "{ a: 'b' | 'c' }",
-            superType: '{ a: string }',
+            subType: '{ a: "b" | "c"; }',
+            superType: '{ a: string; }',
           },
           endColumn: 44,
           messageId: 'objectOverridden',
@@ -1203,8 +1203,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 29,
           data: {
-            subType: "{ a: 'a' }",
-            superType: '{ a: string }',
+            subType: '{ a: "a"; }',
+            superType: '{ a: string; }',
           },
           endColumn: 39,
           messageId: 'objectOverridden',
@@ -1212,8 +1212,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 29,
           data: {
-            subType: "{ a: 'a' } | { a: 'b' }",
-            superType: '{ a: string }',
+            subType: '{ a: "a"; } | { a: "b"; }',
+            superType: '{ a: string; }',
           },
           endColumn: 68,
           messageId: 'objectOverridden',
@@ -1221,8 +1221,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 58,
           data: {
-            subType: "{ a: 'b' }",
-            superType: '{ a: string }',
+            subType: '{ a: "b"; }',
+            superType: '{ a: string; }',
           },
           endColumn: 68,
           messageId: 'objectOverridden',
@@ -1237,8 +1237,8 @@ type Foo = { a: { b: 1 } } | { a: { b: number } };
         {
           column: 12,
           data: {
-            subType: '{ a: { b: 1 } }',
-            superType: '{ a: { b: number } }',
+            subType: '{ a: { b: 1; }; }',
+            superType: '{ a: { b: number; }; }',
           },
           endColumn: 27,
           line: 2,
@@ -1252,8 +1252,8 @@ type Foo = { a: { b: 1 } } | { a: { b: number } };
         {
           column: 13,
           data: {
-            subType: "{ a: 'b' }",
-            superType: '{ a: string }',
+            subType: '{ a: "b"; }',
+            superType: '{ a: string; }',
           },
           endColumn: 34,
           messageId: 'objectOverridden',
@@ -1261,8 +1261,8 @@ type Foo = { a: { b: 1 } } | { a: { b: number } };
         {
           column: 13,
           data: {
-            subType: '{ a: 1 }',
-            superType: '{ a: number }',
+            subType: '{ a: 1; }',
+            superType: '{ a: number; }',
           },
           endColumn: 34,
           messageId: 'objectOverridden',
@@ -1275,8 +1275,8 @@ type Foo = { a: { b: 1 } } | { a: { b: number } };
         {
           column: 28,
           data: {
-            subType: '{ a: 1 } & { a: 1 | 3 }',
-            superType: '{ a: 1 | 2 }',
+            subType: '{ a: 1; } & { a: 1 | 3; }',
+            superType: '{ a: 1 | 2; }',
           },
           endColumn: 51,
           messageId: 'objectOverridden',
@@ -1284,8 +1284,8 @@ type Foo = { a: { b: 1 } } | { a: { b: number } };
         {
           column: 39,
           data: {
-            subType: '{ a: 1 }',
-            superType: '{ a: 1 | 3 }',
+            subType: '{ a: 1; }',
+            superType: '{ a: 1 | 3; }',
           },
           endColumn: 51,
           messageId: 'superObjectTypeOverridden',
@@ -1298,8 +1298,9 @@ type Foo = { a: { b: 1 } } | { a: { b: number } };
         {
           column: 28,
           data: {
-            subType: '{ a: 1 } | ({ a: 2 } & { a: 1 | 2 })',
-            superType: '{ a: 1 | 2 }',
+            // TypeScript can unexpectedly change union property order, where { a: 1 | 2 } shows as {a: 2 | 1}
+            subType: '{ a: 1; } | ({ a: 2; } & { a: 2 | 1; })',
+            superType: '{ a: 2 | 1; }',
           },
           endColumn: 64,
           messageId: 'objectOverridden',
@@ -1307,8 +1308,9 @@ type Foo = { a: { b: 1 } } | { a: { b: number } };
         {
           column: 51,
           data: {
-            subType: '{ a: 2 }',
-            superType: '{ a: 1 | 2 }',
+            subType: '{ a: 2; }',
+            // TypeScript can unexpectedly change union property order, where { a: 1 | 2 } shows as {a: 2 | 1}
+            superType: '{ a: 2 | 1; }',
           },
           endColumn: 63,
           messageId: 'superObjectTypeOverridden',
@@ -1321,8 +1323,8 @@ type Foo = { a: { b: 1 } } | { a: { b: number } };
         {
           column: 12,
           data: {
-            subType: '{ a: 1 }',
-            superType: '{ a: 1 | 2 } & { a: number }',
+            subType: '{ a: 1; }',
+            superType: '{ a: 1 | 2; } & { a: number; }',
           },
           endColumn: 20,
           messageId: 'objectOverridden',
@@ -1330,8 +1332,8 @@ type Foo = { a: { b: 1 } } | { a: { b: number } };
         {
           column: 51,
           data: {
-            subType: '{ a: 1 | 2 }',
-            superType: '{ a: number }',
+            subType: '{ a: 1 | 2; }',
+            superType: '{ a: number; }',
           },
           endColumn: 64,
           messageId: 'superObjectTypeOverridden',
@@ -1347,8 +1349,8 @@ type T = R | { a: 1 };
         {
           column: 25,
           data: {
-            subType: '{ a: 1 | 2 }',
-            superType: '{ a: number }',
+            subType: '{ a: 1 | 2; }',
+            superType: '{ a: number; }',
           },
           endColumn: 38,
           line: 2,
@@ -1357,10 +1359,11 @@ type T = R | { a: 1 };
         {
           column: 14,
           data: {
-            subType: '{ a: 1 }',
-            superType: '{ a: 1 | 2 } & { a: number }',
+            subType: '{ a: 1; }',
+            superType: 'R',
           },
           endColumn: 22,
+          line: 3,
           messageId: 'objectOverridden',
         },
       ],
@@ -1374,8 +1377,8 @@ type P = R & { a: number; b: number };
         {
           column: 34,
           data: {
-            subType: '{ a: 1; b: 2; c: 1 }',
-            superType: '{ a: 1; b: 2 }',
+            subType: '{ a: 1; b: 2; c: 1; }',
+            superType: '{ a: 1; b: 2; }',
           },
           endColumn: 48,
           line: 2,
@@ -1384,8 +1387,8 @@ type P = R & { a: number; b: number };
         {
           column: 14,
           data: {
-            subType: '({ a: 1; b: 2; c: 1 } & { a: 1; b: 2 }) | { a: 2; b: 1 }',
-            superType: '{ a: number; b: number }',
+            subType: 'R',
+            superType: '{ a: number; b: number; }',
           },
           endColumn: 38,
           line: 3,
@@ -1403,8 +1406,8 @@ type U = T | { a: 2 };
         {
           column: 25,
           data: {
-            subType: '{ a: 1 | 2 }',
-            superType: '{ a: number }',
+            subType: '{ a: 1 | 2; }',
+            superType: '{ a: number; }',
           },
           endColumn: 38,
           line: 2,
@@ -1413,8 +1416,8 @@ type U = T | { a: 2 };
         {
           column: 14,
           data: {
-            subType: '{ a: 1 }',
-            superType: '{ a: 1 | 2 } & { a: number }',
+            subType: '{ a: 1; }',
+            superType: 'R',
           },
           endColumn: 22,
           line: 3,
@@ -1423,8 +1426,8 @@ type U = T | { a: 2 };
         {
           column: 14,
           data: {
-            subType: '{ a: 2 }',
-            superType: '{ a: 1 | 2 } & { a: number }',
+            subType: '{ a: 2; }',
+            superType: 'R',
           },
           endColumn: 22,
           line: 4,
@@ -1438,8 +1441,8 @@ type U = T | { a: 2 };
         {
           column: 25,
           data: {
-            subType: '{ a: false }',
-            superType: '{ a: boolean }',
+            subType: '{ a: false; }',
+            superType: '{ a: boolean; }',
           },
           endColumn: 39,
           messageId: 'superObjectTypeOverridden',
@@ -1455,8 +1458,8 @@ type U = T | { a: 2 };
         {
           column: 22,
           data: {
-            subType: '{ a: false }',
-            superType: '{ a: boolean }',
+            subType: 'B',
+            superType: '{ a: boolean; }',
           },
           endColumn: 36,
           line: 3,
@@ -1470,8 +1473,8 @@ type U = T | { a: 2 };
         {
           column: 24,
           data: {
-            subType: '{ a: true }',
-            superType: '{ a: boolean }',
+            subType: '{ a: true; }',
+            superType: '{ a: boolean; }',
           },
           endColumn: 38,
           messageId: 'superObjectTypeOverridden',
@@ -1588,16 +1591,18 @@ type U = T | { a: 2 };
     },
     {
       code: `
-        type T = { a: 1 } | { a: 2 };
-        type U = T & { a: number };
+type T = { a: 1 } | { a: 2 };
+type U = T & { a: number };
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
-            subType: '{ a: 1 } | { a: 2 }',
-            superType: '{ a: number }',
+            subType: 'T',
+            superType: '{ a: number; }',
           },
+          endColumn: 27,
+          line: 3,
           messageId: 'superObjectTypeOverridden',
         },
       ],
@@ -1612,8 +1617,8 @@ type U = T | { a: 2 };
         {
           column: 26,
           data: {
-            subType: "{ a: 'a' } | { a: 'b' }",
-            superType: '{ a: string }',
+            subType: 'T',
+            superType: '{ a: string; }',
           },
           endColumn: 39,
           line: 4,
@@ -1622,8 +1627,8 @@ type U = T | { a: 2 };
         {
           column: 42,
           data: {
-            subType: '{ a: 1 } | { a: 2 }',
-            superType: '{ a: number }',
+            subType: 'S',
+            superType: '{ a: number; }',
           },
           endColumn: 55,
           line: 4,
@@ -1637,8 +1642,8 @@ type U = T | { a: 2 };
         {
           column: 10,
           data: {
-            subType: '{ a: 1 }',
-            superType: '{ a: 1 | 2 }',
+            subType: '{ a: 1; }',
+            superType: '{ a: 1 | 2; }',
           },
           endColumn: 22,
           messageId: 'superObjectTypeOverridden',
@@ -1646,8 +1651,8 @@ type U = T | { a: 2 };
         {
           column: 25,
           data: {
-            subType: '{ a: 1 | 2 } & { a: 1 }',
-            superType: '{ a: number }',
+            subType: '{ a: 1 | 2; } & { a: 1; }',
+            superType: '{ a: number; }',
           },
           endColumn: 38,
           messageId: 'superObjectTypeOverridden',
@@ -1660,8 +1665,8 @@ type U = T | { a: 2 };
         {
           column: 13,
           data: {
-            subType: '{ a: 1; b: 1 }',
-            superType: '{ a: number }',
+            subType: '{ a: 1; b: 1; }',
+            superType: '{ a: number; }',
           },
           endColumn: 42,
           messageId: 'superObjectTypeOverridden',
@@ -1669,8 +1674,8 @@ type U = T | { a: 2 };
         {
           column: 13,
           data: {
-            subType: '{ a: 1; b: 1 }',
-            superType: '{ b: number }',
+            subType: '{ a: 1; b: 1; }',
+            superType: '{ b: number; }',
           },
           endColumn: 42,
           messageId: 'superObjectTypeOverridden',
@@ -1683,8 +1688,8 @@ type U = T | { a: 2 };
         {
           column: 13,
           data: {
-            subType: '{ a: 1 }',
-            superType: '{ a: number }',
+            subType: '{ a: 1; }',
+            superType: '{ a: number; }',
           },
           endColumn: 42,
           messageId: 'superObjectTypeOverridden',
@@ -1692,8 +1697,8 @@ type U = T | { a: 2 };
         {
           column: 13,
           data: {
-            subType: '{ b: 1 }',
-            superType: '{ b: number }',
+            subType: '{ b: 1; }',
+            superType: '{ b: number; }',
           },
           endColumn: 42,
           messageId: 'superObjectTypeOverridden',
@@ -1706,8 +1711,8 @@ type U = T | { a: 2 };
         {
           column: 12,
           data: {
-            subType: '{ a: 1; b: 1 }',
-            superType: '{ a: number } & ({ b: 1 } | { d: 1 })',
+            subType: '{ a: 1; b: 1; }',
+            superType: '{ a: number; } & ({ b: 1; } | { d: 1; })',
           },
           endColumn: 26,
           messageId: 'objectOverridden',
@@ -1720,8 +1725,8 @@ type U = T | { a: 2 };
         {
           column: 10,
           data: {
-            subType: '{ a: 1; b: 1 } | { a: 1 }',
-            superType: '{ a: 1 }',
+            subType: '{ a: 1; b: 1; } | { a: 1; }',
+            superType: '{ a: 1; }',
           },
           endColumn: 18,
           messageId: 'superObjectTypeOverridden',
@@ -1734,8 +1739,8 @@ type U = T | { a: 2 };
         {
           column: 40,
           data: {
-            subType: '{ a: 1; b: 1 } | { a: 1 }',
-            superType: '{ a: 1 }',
+            subType: '{ a: 1; b: 1; } | { a: 1; }',
+            superType: '{ a: 1; }',
           },
           endColumn: 48,
           messageId: 'superObjectTypeOverridden',
@@ -1748,8 +1753,8 @@ type U = T | { a: 2 };
         {
           column: 28,
           data: {
-            subType: '{ a: 1; b: 1 }',
-            superType: '{ a: 1 } | { b: 1 }',
+            subType: '{ a: 1; b: 1; }',
+            superType: '{ a: 1; } | { b: 1; }',
           },
           endColumn: 47,
           messageId: 'superObjectTypeOverridden',
@@ -1762,8 +1767,8 @@ type U = T | { a: 2 };
         {
           column: 10,
           data: {
-            subType: '{ a: 1; b: 1 }',
-            superType: '{ a: 1 }',
+            subType: '{ a: 1; b: 1; }',
+            superType: '{ a: 1; }',
           },
           endColumn: 18,
           messageId: 'superObjectTypeOverridden',
@@ -1780,8 +1785,8 @@ type U = R & T;
         {
           column: 14,
           data: {
-            subType: '{ a: 1; b: 2 } | { a: 2; b: 1 }',
-            superType: '{ a: number } | { b: number }',
+            subType: 'R',
+            superType: 'T',
           },
           endColumn: 15,
           line: 4,
