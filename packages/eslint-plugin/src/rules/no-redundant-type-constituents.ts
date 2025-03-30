@@ -328,17 +328,6 @@ function getTypeNodeFromReferenceType(type: ts.Type): ts.Node | undefined {
 }
 
 function getGroupTypeRelationsBySuperTypeName(typeRelations: TypeRelation[]) {
-  // const typeRelationAndName = typeRelations.map(
-  //   ({ subTypeWithName, superTypeWithName }) => {
-  //     return {
-  //       subTypeName: subType.getText(),
-  //       subTypeNode: subType,
-  //       superTypeName: superType.getText(),
-  //       superTypeNode: subType,
-  //     };
-  //   },
-  // );
-
   return arrayGroupByToMap(
     typeRelations,
     ({ superTypeWithName }) => superTypeWithName.typeName,
@@ -414,11 +403,10 @@ export default createRule({
     messages: {
       errorTypeOverrides: `'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.`,
       literalOverridden: `{{literal}} is overridden by {{primitive}} in this union type.`,
-      objectOverridden: `{{subType}} is overridden by {{superType}} in this union type.`,
+      objectOverridden: `{{redundantType}} is overridden by {{nonRedundantType}} in this {{container}} type.`,
       overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
       overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
       primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
-      superObjectTypeOverridden: `{{superType}} is overridden by {{subType}} in this intersection type.`,
     },
     schema: [],
   },
@@ -428,6 +416,38 @@ export default createRule({
     const checker = services.program.getTypeChecker();
     const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
 
+    function reportOverriddenTypes(
+      overriddenObjectTypes: Map<TSESTree.TypeNode, TypeRelation[]>,
+      container: 'intersection' | 'union',
+    ) {
+      for (const [typeNode, typeRelations] of overriddenObjectTypes) {
+        const groupTypeRelationsBySuperTypeName =
+          getGroupTypeRelationsBySuperTypeName(typeRelations);
+
+        for (const [
+          superTypeName,
+          typeRelationAndNames,
+        ] of groupTypeRelationsBySuperTypeName) {
+          const mergedSubTypeName = mergeTypeNames(
+            typeRelationAndNames.map(({ subTypeWithName }) => subTypeWithName),
+            container === 'union' ? '|' : '&',
+          );
+          const redundantType =
+            container === 'union' ? mergedSubTypeName : superTypeName;
+          const nonRedundantType =
+            container === 'union' ? superTypeName : mergedSubTypeName;
+          context.report({
+            node: typeNode,
+            messageId: 'objectOverridden',
+            data: {
+              container,
+              nonRedundantType,
+              redundantType,
+            },
+          });
+        }
+      }
+    }
     function getTypeNodeTypePartFlags(
       typeNode: TSESTree.TypeNode,
     ): TypeFlagsWithName[] {
@@ -749,32 +769,7 @@ export default createRule({
             }
           }
         }
-
-        for (const [typeNode, typeRelations] of overriddenObjectTypes) {
-          const groupTypeRelationsBySuperTypeName =
-            getGroupTypeRelationsBySuperTypeName(typeRelations);
-
-          for (const [
-            superTypeName,
-            typeRelationAndNames,
-          ] of groupTypeRelationsBySuperTypeName) {
-            const mergedSubTypeName = mergeTypeNames(
-              typeRelationAndNames.map(
-                ({ subTypeWithName }) => subTypeWithName,
-              ),
-              '&',
-            );
-
-            context.report({
-              node: typeNode,
-              messageId: 'superObjectTypeOverridden',
-              data: {
-                subType: mergedSubTypeName,
-                superType: superTypeName,
-              },
-            });
-          }
-        }
+        reportOverriddenTypes(overriddenObjectTypes, 'intersection');
       },
       'TSUnionType:exit'(node: TSESTree.TSUnionType): void {
         const seenLiteralTypes = new Map<
@@ -964,31 +959,7 @@ export default createRule({
           }
         }
 
-        for (const [typeNode, typeRelations] of overriddenObjectTypes) {
-          const groupTypeRelationsBySuperTypeName =
-            getGroupTypeRelationsBySuperTypeName(typeRelations);
-
-          for (const [
-            superTypeName,
-            typeRelationAndNames,
-          ] of groupTypeRelationsBySuperTypeName) {
-            const mergedSubTypeName = mergeTypeNames(
-              typeRelationAndNames.map(
-                ({ subTypeWithName }) => subTypeWithName,
-              ),
-              '|',
-            );
-
-            context.report({
-              node: typeNode,
-              messageId: 'objectOverridden',
-              data: {
-                subType: mergedSubTypeName,
-                superType: superTypeName,
-              },
-            });
-          }
-        }
+        reportOverriddenTypes(overriddenObjectTypes, 'union');
       },
     };
   },
