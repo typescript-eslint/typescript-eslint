@@ -33,8 +33,6 @@ ruleTester.run('no-array-constructor', rule, {
     'Array.foo?.();',
     'Array?.<Foo>(1, 2, 3);',
     'Array?.<Foo>();',
-    'Array?.(0, 1, 2);',
-    'Array?.(x, y);',
   ],
 
   invalid: [
@@ -59,6 +57,26 @@ ruleTester.run('no-array-constructor', rule, {
       output: '[];',
     },
     {
+      code: 'Array?.();',
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: '[];',
+    },
+    {
+      code: '/* a */ /* b */ Array /* c */ /* d */ /* e */ /* f */?.(); /* g */ /* h */',
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: '/* a */ /* b */ []; /* g */ /* h */',
+    },
+    {
       code: 'new Array(x, y);',
       errors: [
         {
@@ -79,6 +97,26 @@ ruleTester.run('no-array-constructor', rule, {
       output: '[x, y];',
     },
     {
+      code: 'Array?.(x, y);',
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: '[x, y];',
+    },
+    {
+      code: '/* a */ /* b */ Array /* c */ /* d */ /* e */ /* f */?.(x, y); /* g */ /* h */',
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: '/* a */ /* b */ [x, y]; /* g */ /* h */',
+    },
+    {
       code: 'new Array(0, 1, 2);',
       errors: [
         {
@@ -97,6 +135,38 @@ ruleTester.run('no-array-constructor', rule, {
         },
       ],
       output: '[0, 1, 2];',
+    },
+    {
+      code: 'Array?.(0, 1, 2);',
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: '[0, 1, 2];',
+    },
+    {
+      code: `
+/* a */ /* b */ Array /* c */ /* d */ /* e */ /* f */?.(
+  0,
+  1,
+  2,
+); /* g */ /* h */
+      `,
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      output: `
+/* a */ /* b */ [
+  0,
+  1,
+  2,
+]; /* g */ /* h */
+      `,
     },
     {
       code: `
