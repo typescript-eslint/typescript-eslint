@@ -38,6 +38,7 @@ interface ParserOptions {
   cacheLifetime?: {
     glob?: number | 'Infinity';
   };
+  debugLevel?: boolean | ('eslint' | 'typescript' | 'typescript-eslint')[];
   disallowAutomaticSingleRunInference?: boolean;
   ecmaFeatures?: {
     jsx?: boolean;
@@ -45,9 +46,12 @@ interface ParserOptions {
   };
   ecmaVersion?: number | 'latest';
   emitDecoratorMetadata?: boolean;
+  errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
+  errorOnUnknownASTType?: boolean;
   experimentalDecorators?: boolean;
   isolatedDeclarations?: boolean;
   extraFileExtensions?: string[];
+  filePath?: string;
   jsDocParsingMode?: 'all' | 'none' | 'type-info';
   jsxFragmentName?: string | null;
   jsxPragma?: string | null;
@@ -56,6 +60,9 @@ interface ParserOptions {
   project?: string | string[] | boolean | null;
   projectFolderIgnoreList?: string[];
   projectService?: boolean | ProjectServiceOptions;
+  range?: boolean;
+  sourceType?: 'module' | 'script' | undefined;
+  tokens?: boolean;
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
 }
