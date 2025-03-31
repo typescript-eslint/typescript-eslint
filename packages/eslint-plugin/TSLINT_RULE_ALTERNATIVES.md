@@ -270,7 +270,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 <sup>[3]</sup> Recommended config: `["error", "declaration", { "allowArrowFunctions": true }]`<br>
 <sup>[4]</sup> Recommended config: `["error", { "terms": ["BUG", "HACK", "FIXME", "LATER", "LATER2", "TODO"], "location": "anywhere" }]`<br>
 <sup>[5]</sup> Does not check class fields.
-<sup>[6]</sup> But note that `with` statements are not allowed by the TypeScript compiler
+<sup>[6]</sup> `with` statements are not allowed by the TypeScript compiler
 
 ### Security
 
