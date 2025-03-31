@@ -25,7 +25,8 @@ export function isDefinitionFile(fileName: string): boolean {
       return true;
     }
   }
-  return false;
+
+  return /\.d\.(ts|cts|mts|.*\.ts)$/.test(lowerFileName);
 }
 
 /**
