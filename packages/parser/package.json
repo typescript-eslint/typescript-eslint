@@ -61,13 +61,13 @@
     "debug": "^4.3.4"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^3.0.9",
+    "@vitest/coverage-v8": "^3.1.1",
     "downlevel-dts": "*",
     "glob": "*",
     "prettier": "^3.2.5",
     "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.0.9"
+    "vitest": "^3.1.1"
   },
   "funding": {
     "type": "opencollective",
