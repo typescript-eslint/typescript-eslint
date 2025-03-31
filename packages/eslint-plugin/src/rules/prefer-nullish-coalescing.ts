@@ -40,6 +40,7 @@ export type Options = [
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     ignoreBooleanCoercion?: boolean;
     ignoreConditionalTests?: boolean;
+    ignoreIfStatements?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
     ignorePrimitives?:
       | {
@@ -102,6 +103,11 @@ export default createRule<Options, MessageIds>({
             description:
               'Whether to ignore cases that are located within a conditional test.',
           },
+          ignoreIfStatements: {
+            type: 'boolean',
+            description:
+              'Whether to ignore any if statements that could be simplified by using the nullish coalescing operator.',
+          },
           ignoreMixedLogicalExpressions: {
             type: 'boolean',
             description:
@@ -154,6 +160,7 @@ export default createRule<Options, MessageIds>({
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
       ignoreBooleanCoercion: false,
       ignoreConditionalTests: true,
+      ignoreIfStatements: false,
       ignoreMixedLogicalExpressions: false,
       ignorePrimitives: {
         bigint: false,
@@ -171,6 +178,7 @@ export default createRule<Options, MessageIds>({
         allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
         ignoreBooleanCoercion,
         ignoreConditionalTests,
+        ignoreIfStatements,
         ignoreMixedLogicalExpressions,
         ignorePrimitives,
         ignoreTernaryTests,
@@ -516,7 +524,7 @@ export default createRule<Options, MessageIds>({
         }
       },
       IfStatement(node: TSESTree.IfStatement): void {
-        if (node.alternate != null) {
+        if (ignoreIfStatements || node.alternate != null) {
           return;
         }
 
