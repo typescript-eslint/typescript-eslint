@@ -58,13 +58,13 @@
   },
   "devDependencies": {
     "@typescript-eslint/parser": "8.29.0",
-    "@vitest/coverage-v8": "^3.0.9",
+    "@vitest/coverage-v8": "^3.1.1",
     "ajv": "^6.12.6",
     "downlevel-dts": "*",
     "prettier": "^3.2.5",
     "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.0.9"
+    "vitest": "^3.1.1"
   },
   "funding": {
     "type": "opencollective",
