@@ -6063,10 +6063,10 @@ __metadata:
     "@typescript-eslint/scope-manager": "workspace:*"
     "@typescript-eslint/type-utils": "workspace:*"
     "@typescript-eslint/utils": "workspace:*"
-    "@vitest/coverage-v8": ^3.0.8
+    "@vitest/coverage-v8": ^3.1.1
     prettier: ^3.2.5
     rimraf: "*"
-    vitest: ^3.0.8
+    vitest: ^3.1.1
   languageName: unknown
   linkType: soft
 
@@ -6231,13 +6231,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
-    "@vitest/coverage-v8": ^3.0.8
+    "@vitest/coverage-v8": ^3.1.1
     downlevel-dts: "*"
     prettier: ^3.2.5
     rimraf: "*"
     tsx: "*"
     typescript: "*"
-    vitest: ^3.0.8
+    vitest: ^3.1.1
   languageName: unknown
   linkType: soft
 
@@ -6283,7 +6283,7 @@ __metadata:
     "@typescript-eslint/types": "workspace:^"
     "@typescript-eslint/typescript-estree": "workspace:^"
     "@typescript-eslint/utils": "workspace:^"
-    "@vitest/coverage-v8": ^3.0.8
+    "@vitest/coverage-v8": ^3.1.1
     "@vitest/eslint-plugin": ^1.1.37
     console-fail-test: ^0.5.0
     cross-fetch: ^4.0.0
@@ -6320,8 +6320,8 @@ __metadata:
     tsx: "*"
     typescript: ">=4.8.4 <5.9.0"
     typescript-eslint: "workspace:^"
-    vite: ^6.2.2
-    vitest: ^3.0.8
+    vite: ^6.2.4
+    vitest: ^3.1.1
     yargs: 17.7.2
   languageName: unknown
   linkType: soft
@@ -6422,7 +6422,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/coverage-v8@npm:^3.0.8":
+"@vitest/coverage-v8@npm:^3.1.1":
   version: 3.1.1
   resolution: "@vitest/coverage-v8@npm:3.1.1"
   dependencies:
@@ -20443,12 +20443,12 @@ __metadata:
     "@typescript-eslint/eslint-plugin": 8.29.0
     "@typescript-eslint/parser": 8.29.0
     "@typescript-eslint/utils": 8.29.0
-    "@vitest/coverage-v8": ^3.0.8
+    "@vitest/coverage-v8": ^3.1.1
     downlevel-dts: "*"
     prettier: ^3.2.5
     rimraf: "*"
     typescript: "*"
-    vitest: ^3.0.8
+    vitest: ^3.1.1
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
     typescript: ">=4.8.4 <5.9.0"
@@ -20897,7 +20897,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.0 || ^6.0.0, vite@npm:^6.2.2":
+"vite@npm:^5.0.0 || ^6.0.0, vite@npm:^6.2.4":
   version: 6.2.5
   resolution: "vite@npm:6.2.5"
   dependencies:
@@ -20949,7 +20949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^3.0.8":
+"vitest@npm:^3.1.1":
   version: 3.1.1
   resolution: "vitest@npm:3.1.1"
   dependencies:
