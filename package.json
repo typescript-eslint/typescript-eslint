@@ -89,7 +89,7 @@
     "@typescript-eslint/types": "workspace:^",
     "@typescript-eslint/typescript-estree": "workspace:^",
     "@typescript-eslint/utils": "workspace:^",
-    "@vitest/coverage-v8": "^3.0.9",
+    "@vitest/coverage-v8": "^3.1.1",
     "@vitest/eslint-plugin": "^1.1.38",
     "console-fail-test": "^0.5.0",
     "cross-fetch": "^4.0.0",
@@ -126,8 +126,8 @@
     "tsx": "*",
     "typescript": ">=4.8.4 <5.9.0",
     "typescript-eslint": "workspace:^",
-    "vite": "^6.2.3",
-    "vitest": "^3.0.9",
+    "vite": "^6.2.4",
+    "vitest": "^3.1.1",
     "yargs": "17.7.2"
   },
   "resolutions": {
