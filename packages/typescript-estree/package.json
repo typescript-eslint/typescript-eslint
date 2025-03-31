@@ -65,12 +65,12 @@
     "ts-api-utils": "^2.0.1"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^3.0.9",
+    "@vitest/coverage-v8": "^3.1.1",
     "glob": "*",
     "prettier": "^3.2.5",
     "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.0.9"
+    "vitest": "^3.1.1"
   },
   "peerDependencies": {
     "typescript": ">=4.8.4 <5.9.0"
