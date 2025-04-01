@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures token NumericToken literal-bigint TSESTree - AST 1`] = `
+exports[`AST Fixtures token NumericToken bigint-literal Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [

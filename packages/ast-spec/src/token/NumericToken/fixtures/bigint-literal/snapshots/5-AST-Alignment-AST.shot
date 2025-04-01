@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures token NumericToken literal-bigint AST Alignment - Token 1`] = `
+exports[`AST Fixtures token NumericToken bigint-literal AST Alignment - AST 1`] = `
 "Snapshot Diff:
 Compared values have no visual difference."
 `;
