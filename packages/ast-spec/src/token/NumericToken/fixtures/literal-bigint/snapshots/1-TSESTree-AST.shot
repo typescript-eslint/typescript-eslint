@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures token NumericToken literal-bigint TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: Literal {
+        type: "Literal",
+        bigint: "0",
+        raw: "0n",
+        value: 0n,
+
+        range: [0, 2],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 2, line: 1 },
+        },
+      },
+
+      range: [0, 3],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 3, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 4],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;
