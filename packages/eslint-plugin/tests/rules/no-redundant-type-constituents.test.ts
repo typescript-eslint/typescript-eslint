@@ -187,12 +187,6 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type K = U<'a'>;
       type R = K | { a: 1 };
     `,
-    `
-      type T = { a: 1; b: 1 };
-      type U<K extends string> = Omit<T, K> & Required<T>;
-      type K = U<'a'>;
-      type R = K & { a: 1 };
-    `,
   ],
 
   invalid: [
@@ -357,10 +351,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 19,
           data: {
-            literal: '0',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '0',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -370,10 +365,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 20,
           data: {
-            literal: '0 | 1',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '0 | 1',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -383,10 +379,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            literal: '0 | 0',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '0 | 0',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -399,10 +396,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 19,
           data: {
-            literal: '2 | 0 | 1',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '2 | 0 | 1',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -412,10 +410,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            literal: '0 | 1 | 2',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '0 | 1 | 2',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -425,10 +424,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            literal: '0 | 1',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '0 | 1',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -438,10 +438,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            literal: '0 | 0 | 1',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '0 | 0 | 1',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -451,10 +452,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            literal: '2 | 3',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '2 | 3',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -464,10 +466,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: '""',
-            primitive: 'string',
+            container: 'union',
+            nonRedundantType: 'string',
+            redundantType: '""',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -480,10 +483,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 18,
           data: {
-            literal: '"b"',
-            primitive: 'string',
+            container: 'union',
+            nonRedundantType: 'string',
+            redundantType: '"b"',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -493,10 +497,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: 'template literal type',
-            primitive: 'string',
+            container: 'union',
+            nonRedundantType: 'string',
+            redundantType: '`a${number}c`',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -509,10 +514,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 18,
           data: {
-            literal: 'template literal type',
-            primitive: 'string',
+            container: 'union',
+            nonRedundantType: 'string',
+            redundantType: '`a${number}c`',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -522,10 +528,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: 'template literal type',
-            primitive: 'string',
+            container: 'union',
+            nonRedundantType: 'string',
+            redundantType: '`${number}`',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -535,10 +542,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: '0n',
-            primitive: 'bigint',
+            container: 'union',
+            nonRedundantType: 'bigint',
+            redundantType: '0n',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -548,10 +556,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: '-1n',
-            primitive: 'bigint',
+            container: 'union',
+            nonRedundantType: 'bigint',
+            redundantType: '-1n',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -561,10 +570,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            literal: '-1n | 1n',
-            primitive: 'bigint',
+            container: 'union',
+            nonRedundantType: 'bigint',
+            redundantType: '-1n | 1n',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -577,10 +587,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 22,
           data: {
-            literal: 'false',
-            primitive: 'boolean',
+            container: 'union',
+            nonRedundantType: 'boolean',
+            redundantType: 'false',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -590,10 +601,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: 'false',
-            primitive: 'boolean',
+            container: 'union',
+            nonRedundantType: 'boolean',
+            redundantType: 'false',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -603,10 +615,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: 'true',
-            primitive: 'boolean',
+            container: 'union',
+            nonRedundantType: 'boolean',
+            redundantType: 'true',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -616,10 +629,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 18,
           data: {
-            literal: 'false',
-            primitive: 'boolean',
+            container: 'intersection',
+            nonRedundantType: 'false',
+            redundantType: 'boolean',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -632,10 +646,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 22,
           data: {
-            literal: 'false',
-            primitive: 'boolean',
+            container: 'intersection',
+            nonRedundantType: 'false',
+            redundantType: 'boolean',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -648,10 +663,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 22,
           data: {
-            literal: 'true',
-            primitive: 'boolean',
+            container: 'intersection',
+            nonRedundantType: 'true',
+            redundantType: 'boolean',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -661,10 +677,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 17,
           data: {
-            literal: 'true',
-            primitive: 'boolean',
+            container: 'intersection',
+            nonRedundantType: 'true',
+            redundantType: 'boolean',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -781,10 +798,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: '0',
-            primitive: 'number',
+            container: 'intersection',
+            nonRedundantType: '0',
+            redundantType: 'number',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -794,10 +812,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 15,
           data: {
-            literal: '""',
-            primitive: 'string',
+            container: 'intersection',
+            nonRedundantType: '""',
+            redundantType: 'string',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -810,10 +829,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 22,
           data: {
-            literal: '0n',
-            primitive: 'bigint',
+            container: 'intersection',
+            nonRedundantType: '0n',
+            redundantType: 'bigint',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -823,10 +843,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 15,
           data: {
-            literal: '0n',
-            primitive: 'bigint',
+            container: 'intersection',
+            nonRedundantType: '0n',
+            redundantType: 'bigint',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -836,10 +857,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 16,
           data: {
-            literal: '-1n',
-            primitive: 'bigint',
+            container: 'intersection',
+            nonRedundantType: '-1n',
+            redundantType: 'bigint',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -850,12 +872,13 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       `,
       errors: [
         {
-          column: 18,
+          column: 22,
           data: {
-            literal: '"a" | "b"',
-            primitive: 'string',
+            container: 'intersection',
+            nonRedundantType: 'T',
+            redundantType: 'string',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -867,20 +890,26 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       `,
       errors: [
         {
-          column: 18,
+          column: 26,
           data: {
-            literal: '1 | 2',
-            primitive: 'number',
+            container: 'intersection',
+            nonRedundantType: 'T',
+            redundantType: 'string',
           },
-          messageId: 'primitiveOverridden',
+          endColumn: 32,
+          line: 4,
+          messageId: 'typeOverridden',
         },
         {
-          column: 22,
+          column: 35,
           data: {
-            literal: '"a" | "b"',
-            primitive: 'string',
+            container: 'intersection',
+            nonRedundantType: 'S',
+            redundantType: 'number',
           },
-          messageId: 'primitiveOverridden',
+          endColumn: 41,
+          line: 4,
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1039,7 +1068,6 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         },
       ],
     },
-
     {
       code: 'type Foo = { a: 1 | 2 } | ({ a: 1 } & { a: 1 | 3 });',
       errors: [
@@ -1051,7 +1079,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
             redundantType: '{ a: 1; } & { a: 1 | 3; }',
           },
           endColumn: 51,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
         {
           column: 39,
@@ -1061,7 +1089,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
             redundantType: '{ a: 1 | 3; }',
           },
           endColumn: 51,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1076,7 +1104,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
             redundantType: '{ a: 1; } | ({ a: 2; } & { a: 2 | 1; })',
           },
           endColumn: 64,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
         {
           column: 51,
@@ -1086,7 +1114,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
             redundantType: '{ a: 2 | 1; }',
           },
           endColumn: 63,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1101,7 +1129,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
             redundantType: '{ a: 1; }',
           },
           endColumn: 20,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
         {
           column: 51,
@@ -1111,7 +1139,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
             redundantType: '{ a: number; }',
           },
           endColumn: 64,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1130,7 +1158,7 @@ type T = R | { a: 1 };
           },
           endColumn: 38,
           line: 2,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
         {
           column: 14,
@@ -1141,7 +1169,7 @@ type T = R | { a: 1 };
           },
           endColumn: 22,
           line: 3,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1160,7 +1188,7 @@ type P = R & { a: number; b: number };
           },
           endColumn: 48,
           line: 2,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
         {
           column: 14,
@@ -1171,7 +1199,7 @@ type P = R & { a: number; b: number };
           },
           endColumn: 38,
           line: 3,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1191,7 +1219,7 @@ type U = T | { a: 2 };
           },
           endColumn: 38,
           line: 2,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
         {
           column: 14,
@@ -1202,7 +1230,7 @@ type U = T | { a: 2 };
           },
           endColumn: 22,
           line: 3,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
         {
           column: 14,
@@ -1213,7 +1241,7 @@ type U = T | { a: 2 };
           },
           endColumn: 22,
           line: 4,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1228,7 +1256,7 @@ type U = T | { a: 2 };
             redundantType: '{ a: boolean; }',
           },
           endColumn: 39,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1247,7 +1275,7 @@ type T = B & { a: boolean };
           },
           endColumn: 28,
           line: 3,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1262,7 +1290,7 @@ type T = B & { a: boolean };
             redundantType: '{ a: boolean; }',
           },
           endColumn: 38,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1389,7 +1417,7 @@ type U = T & { a: number };
           },
           endColumn: 27,
           line: 3,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1409,7 +1437,7 @@ type U = S & T & { a: string } & { a: number };
           },
           endColumn: 31,
           line: 4,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
         {
           column: 34,
@@ -1420,7 +1448,7 @@ type U = S & T & { a: string } & { a: number };
           },
           endColumn: 47,
           line: 4,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1435,7 +1463,7 @@ type U = S & T & { a: string } & { a: number };
             redundantType: '{ a: 1 | 2; }',
           },
           endColumn: 22,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
         {
           column: 25,
@@ -1445,7 +1473,7 @@ type U = S & T & { a: string } & { a: number };
             redundantType: '{ a: number; }',
           },
           endColumn: 38,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1460,7 +1488,7 @@ type U = S & T & { a: string } & { a: number };
             redundantType: '{ a: number; }',
           },
           endColumn: 42,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
         {
           column: 13,
@@ -1470,7 +1498,7 @@ type U = S & T & { a: string } & { a: number };
             redundantType: '{ b: number; }',
           },
           endColumn: 42,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1485,7 +1513,7 @@ type U = S & T & { a: string } & { a: number };
             redundantType: '{ a: number; }',
           },
           endColumn: 42,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
         {
           column: 13,
@@ -1495,7 +1523,7 @@ type U = S & T & { a: string } & { a: number };
             redundantType: '{ b: number; }',
           },
           endColumn: 42,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1510,7 +1538,7 @@ type U = S & T & { a: string } & { a: number };
             redundantType: '{ a: 1; b: 1; }',
           },
           endColumn: 26,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1525,7 +1553,7 @@ type U = S & T & { a: string } & { a: number };
             redundantType: '{ a: 1; }',
           },
           endColumn: 18,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1540,7 +1568,7 @@ type U = S & T & { a: string } & { a: number };
             redundantType: '{ a: 1; }',
           },
           endColumn: 48,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1555,7 +1583,7 @@ type U = S & T & { a: string } & { a: number };
             redundantType: '{ a: 1; } | { b: 1; }',
           },
           endColumn: 47,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1570,7 +1598,7 @@ type U = S & T & { a: string } & { a: number };
             redundantType: '{ a: 1; }',
           },
           endColumn: 18,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -1590,7 +1618,28 @@ type U = R & T;
           },
           endColumn: 15,
           line: 4,
-          messageId: 'objectOverridden',
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { a: 1; b: 1 };
+type U<K extends string> = Omit<T, K> & Required<T>;
+type K = U<'a'>;
+type R = K & { a: 1 };
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'K',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 22,
+          line: 5,
+          messageId: 'typeOverridden',
         },
       ],
     },
