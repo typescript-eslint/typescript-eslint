@@ -529,6 +529,9 @@ export function getTokenType(
     case SyntaxKind.NumericLiteral:
       return AST_TOKEN_TYPES.Numeric;
 
+    case SyntaxKind.PrivateIdentifier:
+      return AST_TOKEN_TYPES.PrivateIdentifier;
+
     case SyntaxKind.JsxText:
       return AST_TOKEN_TYPES.JSXText;
 
@@ -602,6 +605,16 @@ export function convertToken(
       value,
     };
   }
+
+  if (tokenType === AST_TOKEN_TYPES.PrivateIdentifier) {
+    return {
+      type: tokenType,
+      loc,
+      range,
+      value: value.slice(1),
+    };
+  }
+
   // @ts-expect-error TS is complaining about `value` not being the correct
   // type but it is
   return {
