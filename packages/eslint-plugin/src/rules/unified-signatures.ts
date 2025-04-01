@@ -264,6 +264,14 @@ export default createRule<Options, MessageIds>({
       types1: readonly TSESTree.Parameter[],
       types2: readonly TSESTree.Parameter[],
     ): Unify | undefined {
+      const firstParam1 = types1[0];
+      const firstParam2 = types2[0];
+
+      // exempt signatures with `this: void` from the rule
+      if (isThisVoidParam(firstParam1) || isThisVoidParam(firstParam2)) {
+        return undefined;
+      }
+
       const index = getIndexOfFirstDifference(
         types1,
         types2,
@@ -294,8 +302,18 @@ export default createRule<Options, MessageIds>({
         : undefined;
     }
 
-    function isThisParam(param: TSESTree.Parameter | undefined) {
+    function isThisParam(
+      param: TSESTree.Parameter | undefined,
+    ): param is TSESTree.Identifier {
       return param?.type === AST_NODE_TYPES.Identifier && param.name === 'this';
+    }
+
+    function isThisVoidParam(param: TSESTree.Parameter | undefined) {
+      return (
+        isThisParam(param) &&
+        param?.typeAnnotation?.typeAnnotation?.type ===
+          AST_NODE_TYPES.TSVoidKeyword
+      );
     }
 
     /**
@@ -314,9 +332,16 @@ export default createRule<Options, MessageIds>({
       const shorter = sig1.length < sig2.length ? sig1 : sig2;
       const shorterSig = sig1.length < sig2.length ? a : b;
 
+      const firstParam1 = sig1[0];
+      const firstParam2 = sig2[0];
       // If one signature has explicit this type and another doesn't, they can't
       // be unified.
-      if (isThisParam(sig1[0]) !== isThisParam(sig2[0])) {
+      if (isThisParam(firstParam1) !== isThisParam(firstParam2)) {
+        return undefined;
+      }
+
+      // exempt signatures with `this: void` from the rule
+      if (isThisVoidParam(firstParam1) || isThisVoidParam(firstParam2)) {
         return undefined;
       }
 

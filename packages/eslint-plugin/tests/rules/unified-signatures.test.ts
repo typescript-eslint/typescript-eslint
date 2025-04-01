@@ -390,6 +390,11 @@ function f(a: boolean): void;
 function f(this: {}, a: boolean): void;
 function f(this: void | {}, a: boolean): void {}
     `,
+    `
+function f(this: void, a: boolean): void;
+function f(this: {}, a: boolean): void;
+function f(this: void | {}, a: boolean): void {}
+    `,
   ],
   invalid: [
     {
@@ -1171,6 +1176,46 @@ function f(this: {}, a?: string): void {}
           column: 22,
           line: 3,
           messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      code: `
+function f(this: string): void;
+function f(this: number): void;
+function f(this: string | number): void {}
+      `,
+      errors: [
+        {
+          column: 12,
+          line: 3,
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'string',
+            type2: 'number',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function f(this: string, a: boolean): void;
+function f(this: number, a: boolean): void;
+function f(this: string | number, a: boolean): void {}
+      `,
+      errors: [
+        {
+          column: 12,
+          line: 3,
+          messageId: 'singleParameterDifference',
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'string',
+            type2: 'number',
+          },
         },
       ],
     },
