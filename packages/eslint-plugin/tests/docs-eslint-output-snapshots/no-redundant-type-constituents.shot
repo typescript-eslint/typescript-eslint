@@ -25,11 +25,11 @@ type IntersectionNever = string | never;
                                   ~~~~~ 'never' is overridden by other types in this union type.
 
 type IntersectionBooleanLiteral = boolean & false;
-                                  ~~~~~~~ boolean is overridden by the false in this intersection type.
+                                  ~~~~~~~ boolean is overridden by false in this intersection type.
 type IntersectionNumberLiteral = number & 1;
-                                 ~~~~~~ number is overridden by the 1 in this intersection type.
+                                 ~~~~~~ number is overridden by 1 in this intersection type.
 type IntersectionStringLiteral = string & 'foo';
-                                 ~~~~~~ string is overridden by the "foo" in this intersection type.
+                                 ~~~~~~ string is overridden by "foo" in this intersection type.
 "
 `;
 
