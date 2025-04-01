@@ -181,12 +181,9 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         | (({ a: 1 } | { c: 1 }) & { a: 1 });
     `,
     'type Foo = { a: 1 } | { a: { a: 1 } };',
-    `
-      type T = { a: 1; b: 1 };
-      type U<K extends string> = Omit<T, K> & Required<T>;
-      type K = U<'a'>;
-      type R = K | { a: 1 };
-    `,
+    'type T = { [key: string]: 1 } | { a: 1 };',
+    'type T = Partial<{ a: 1; b: 1 }> | { a: 1 };',
+    "type T = Omit<{ a: 1; b: 1 }, 'a'> | { a: number; b: number };",
   ],
 
   invalid: [
@@ -1100,8 +1097,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
           column: 28,
           data: {
             container: 'union',
-            nonRedundantType: '{ a: 2 | 1; }',
-            redundantType: '{ a: 1; } | ({ a: 2; } & { a: 2 | 1; })',
+            nonRedundantType: '{ a: 1 | 2; }',
+            redundantType: '{ a: 1; } | ({ a: 2; } & { a: 1 | 2; })',
           },
           endColumn: 64,
           messageId: 'typeOverridden',
@@ -1111,7 +1108,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
           data: {
             container: 'intersection',
             nonRedundantType: '{ a: 2; }',
-            redundantType: '{ a: 2 | 1; }',
+            redundantType: '{ a: 1 | 2; }',
           },
           endColumn: 63,
           messageId: 'typeOverridden',
@@ -1627,9 +1624,41 @@ type U = R & T;
 type T = { a: 1; b: 1 };
 type U<K extends string> = Omit<T, K> & Required<T>;
 type K = U<'a'>;
+type R = K | { a: 1 };
+      `,
+      errors: [
+        {
+          column: 28,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'Required<T>',
+            redundantType: 'Omit<T, K>',
+          },
+          endColumn: 38,
+          line: 3,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { a: 1; b: 1 };
+type U<K extends string> = Omit<T, K> & Required<T>;
+type K = U<'a'>;
 type R = K & { a: 1 };
       `,
       errors: [
+        {
+          column: 28,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'Required<T>',
+            redundantType: 'Omit<T, K>',
+          },
+          endColumn: 38,
+          line: 3,
+          messageId: 'typeOverridden',
+        },
         {
           column: 14,
           data: {
@@ -1639,6 +1668,164 @@ type R = K & { a: 1 };
           },
           endColumn: 22,
           line: 5,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+interface T {
+  a: 1;
+}
+type U = T | { a: number };
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: number; }',
+            redundantType: 'T',
+          },
+          endColumn: 11,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { [key: string]: 1 } & { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }',
+            redundantType: '{ [key: string]: 1; }',
+          },
+          endColumn: 30,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Record<string, number> & { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }',
+            redundantType: 'Record<string, number>',
+          },
+          endColumn: 32,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { [key: string]: 1 };
+type U = T & { a: 1 };
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }',
+            redundantType: 'T',
+          },
+          endColumn: 11,
+          line: 3,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type U = { [key: string]: 1 } | { [key: string]: number };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ [key: string]: number; }',
+            redundantType: '{ [key: string]: 1; }',
+          },
+          endColumn: 30,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { a: '1'; b: '2' };
+type U<Type> = {
+  [Property in keyof Type]: 0;
+};
+type F = U<T> | { a: number; b: number };
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: number; b: number; }',
+            redundantType: 'U<T>',
+          },
+          endColumn: 14,
+          line: 6,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { a: '1'; b: '2' };
+type U<Type> = {
+  [Property in keyof Type]: 0;
+};
+type F = U<T> & { a: number; b: number };
+      `,
+      errors: [
+        {
+          column: 17,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'U<T>',
+            redundantType: '{ a: number; b: number; }',
+          },
+          endColumn: 41,
+          line: 6,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Partial<{ a: 1 }> | { a: 1 };',
+      errors: [
+        {
+          column: 30,
+          data: {
+            container: 'union',
+            nonRedundantType: 'Partial<{ a: 1; }>',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 38,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Partial<{ a: 1 }> & { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }',
+            redundantType: 'Partial<{ a: 1; }>',
+          },
+          endColumn: 27,
           messageId: 'typeOverridden',
         },
       ],

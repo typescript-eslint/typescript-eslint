@@ -314,14 +314,16 @@ export default createRule({
           getObjectUnionTypePart(typeNode, checker),
         );
       }
-      if (ts.isTypeReferenceNode(typeNode)) {
-        const type = checker.getTypeFromTypeNode(typeNode);
+      const type = checker.getTypeAtLocation(typeNode);
+      if (
+        ts.isTypeReferenceNode(typeNode) &&
+        tsutils.isUnionOrIntersectionType(type)
+      ) {
         const node = getTypeNodeFromReferenceType(type);
         if (node && node !== typeNode) {
           return getObjectUnionTypePart(node, checker);
         }
       }
-      const type = checker.getTypeAtLocation(typeNode);
       return [
         {
           type,
@@ -344,15 +346,16 @@ export default createRule({
         );
       }
 
-      if (ts.isTypeReferenceNode(typeNode)) {
-        const type = checker.getTypeFromTypeNode(typeNode);
+      const type = checker.getTypeAtLocation(typeNode);
+      if (
+        ts.isTypeReferenceNode(typeNode) &&
+        tsutils.isUnionOrIntersectionType(type)
+      ) {
         const node = getTypeNodeFromReferenceType(type);
         if (node && node !== typeNode) {
           return getObjectInterSectionTypePart(node, checker);
         }
       }
-
-      const type = checker.getTypeAtLocation(typeNode);
       return [
         {
           type,
@@ -429,7 +432,6 @@ export default createRule({
                 targetType,
                 checker,
               );
-
               switch (typeAssignability) {
                 case TypeAssignability.SourceToTargetAssignable:
                   addToMapGroup(overriddenObjectTypes, typeNode, {
