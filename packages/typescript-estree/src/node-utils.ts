@@ -527,6 +527,7 @@ export function getTokenType(
 
   switch (token.kind) {
     case SyntaxKind.NumericLiteral:
+    case SyntaxKind.BigIntLiteral:
       return AST_TOKEN_TYPES.Numeric;
 
     case SyntaxKind.JsxText:
