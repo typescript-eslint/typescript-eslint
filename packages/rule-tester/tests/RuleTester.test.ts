@@ -1083,9 +1083,9 @@ describe('RuleTester - hooks', () => {
 
   const ruleTester = new RuleTester();
 
-  it.each(['before', 'after'] as const)(
+  it.for(['before', 'after'] as const)(
     '%s should be called when assigned',
-    hookName => {
+    (hookName, { expect }) => {
       const hookForValid = vi.fn();
       const hookForInvalid = vi.fn();
       ruleTester.run('no-foo', noFooRule, {
@@ -1108,9 +1108,9 @@ describe('RuleTester - hooks', () => {
     },
   );
 
-  it.each(['before', 'after'] as const)(
+  it.for(['before', 'after'] as const)(
     '%s should cause test to fail when it throws error',
-    hookName => {
+    (hookName, { expect }) => {
       const hook = vi.fn(() => {
         throw new Error('Something happened');
       });
@@ -1140,9 +1140,9 @@ describe('RuleTester - hooks', () => {
     },
   );
 
-  it.each(['before', 'after'] as const)(
+  it.for(['before', 'after'] as const)(
     '%s should throw when not a function is assigned',
-    hookName => {
+    (hookName, { expect }) => {
       expect(() =>
         ruleTester.run('no-foo', noFooRule, {
           invalid: [],
