@@ -90,7 +90,7 @@
     "@typescript-eslint/typescript-estree": "workspace:^",
     "@typescript-eslint/utils": "workspace:^",
     "@vitest/coverage-v8": "^3.1.1",
-    "@vitest/eslint-plugin": "^1.1.38",
+    "@vitest/eslint-plugin": "^1.1.39",
     "console-fail-test": "^0.5.0",
     "cross-fetch": "^4.0.0",
     "cspell": "^8.15.2",
