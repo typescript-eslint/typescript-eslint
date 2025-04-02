@@ -16,9 +16,10 @@ const IGNORED_KEYS = new Set([
   'ExperimentalRestProperty',
   'ExperimentalSpreadProperty',
 ]);
-describe('Every visitor key should have an ast node type defined', () => {
-  const nonIgnoredKeys = [...keys].filter(key => !IGNORED_KEYS.has(key));
 
+const nonIgnoredKeys = [...keys].filter(key => !IGNORED_KEYS.has(key));
+
+describe('Every visitor key should have an ast node type defined', () => {
   it.for(nonIgnoredKeys)('%s', (key, { expect }) => {
     expect(types).toContain(key);
   });
