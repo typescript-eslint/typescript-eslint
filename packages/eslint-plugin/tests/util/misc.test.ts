@@ -1,23 +1,32 @@
 import * as misc from '../../src/util/misc';
 
-describe('isDefinitionFile', () => {
-  it.each([['index.d.ts'], ['module.d.cts'], ['package.d.mts']])(
+describe(misc.isDefinitionFile, () => {
+  it.for([['index.d.ts'], ['module.d.cts'], ['package.d.mts']] as const)(
     'returns true for standard definition file: %s',
-    filename => {
+    ([filename], { expect }) => {
       expect(misc.isDefinitionFile(filename)).toBe(true);
     },
   );
 
-  it.each([['styles.d.css.ts'], ['component.d.vue.ts'], ['env.d.node.ts']])(
+  it.for([
+    ['styles.d.css.ts'],
+    ['component.d.vue.ts'],
+    ['env.d.node.ts'],
+  ] as const)(
     'returns true for arbitrary extension definition file: %s',
-    filename => {
+    ([filename], { expect }) => {
       expect(misc.isDefinitionFile(filename)).toBe(true);
     },
   );
 
-  it.each([['index.ts'], ['app.tsx'], ['styles.css.ts'], ['vite.config.ts']])(
+  it.for([
+    ['index.ts'],
+    ['app.tsx'],
+    ['styles.css.ts'],
+    ['vite.config.ts'],
+  ] as const)(
     'returns false for non definition file: %s',
-    filename => {
+    ([filename], { expect }) => {
       expect(misc.isDefinitionFile(filename)).toBe(false);
     },
   );
