@@ -121,7 +121,7 @@ describe('parser', () => {
     });
   });
 
-  it.each([
+  it.for([
     ['esnext.full', ScriptTarget.ESNext],
     ['es2022.full', ScriptTarget.ES2022],
     ['es2021.full', ScriptTarget.ES2021],
@@ -135,7 +135,7 @@ describe('parser', () => {
     ['lib', undefined],
   ] as const)(
     'calls analyze() with `lib: [%s]` when the compiler options target is %s',
-    (lib, target) => {
+    ([lib, target], { expect }) => {
       const code = 'const valid = true;';
       const spy = vi.spyOn(scopeManager, 'analyze');
       const config: ParserOptions = {
