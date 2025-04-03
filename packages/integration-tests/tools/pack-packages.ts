@@ -48,7 +48,7 @@ export const setup = async (): Promise<PackageJSON['devDependencies']> => {
           const packagePath = path.join(packageDir, 'package.json');
 
           try {
-            if (!(await fs.stat(packagePath)).isFile()) {
+            if (!(await fs.lstat(packagePath)).isFile()) {
               return;
             }
           } catch {
