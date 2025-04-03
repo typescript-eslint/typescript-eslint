@@ -6316,7 +6316,7 @@ __metadata:
     tsx: "*"
     typescript: ">=4.8.4 <5.9.0"
     typescript-eslint: "workspace:^"
-    vite: ^6.2.4
+    vite: ^6.2.5
     vitest: ^3.1.1
     yargs: 17.7.2
   languageName: unknown
@@ -20893,7 +20893,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.0 || ^6.0.0, vite@npm:^6.2.4":
+"vite@npm:^5.0.0 || ^6.0.0, vite@npm:^6.2.5":
   version: 6.2.5
   resolution: "vite@npm:6.2.5"
   dependencies:
