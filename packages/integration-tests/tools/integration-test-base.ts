@@ -1,4 +1,3 @@
-import * as childProcess from 'node:child_process';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 
@@ -79,36 +78,10 @@ function integrationTest(
           { encoding: 'utf-8' },
         );
 
-        await new Promise<void>((resolve, reject) => {
-          // we use the non-promise version so we can log everything on error
-          childProcess.execFile(
-            // we use yarn instead of npm as it will cache the remote packages and
-            // make installing things faster
-            'yarn',
-            // We call explicitly with --no-immutable to prevent errors related to missing lock files in CI
-            ['install', '--no-immutable'],
-            {
-              cwd: testFolder,
-              shell: true,
-            },
-            (err, stdout, stderr) => {
-              if (err) {
-                if (stdout.length > 0) {
-                  console.warn(stdout);
-                }
-                if (stderr.length > 0) {
-                  console.error(stderr);
-                }
-                // childProcess.ExecFileException is an extension of Error
-                // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-                reject(err);
-              } else {
-                resolve();
-              }
-            },
-          );
+        await execFile('yarn', ['install', '--no-immutable'], {
+          cwd: testFolder,
+          shell: true,
         });
-        // console.log('Install complete.');
 
         await executeTest(testFolder);
       });
@@ -166,10 +139,7 @@ export function eslintIntegrationTest(
         (_, testFile: string) =>
           `"filePath": "<root>/${path.relative(testFolder, testFile)}"`,
       )
-      .replaceAll(
-        /C:\\\\usr\\\\linked\\\\tsconfig.json/g,
-        path.posix.join('/usr', 'linked', 'tsconfig.json'),
-      );
+      .replaceAll(/C:\\\\(usr)\\\\(linked)\\\\(tsconfig.json)/g, '/$1/$2/$3');
     try {
       const lintOutput = JSON.parse(lintOutputRAW);
       expect(lintOutput).toMatchSnapshot();
