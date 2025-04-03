@@ -11,9 +11,14 @@ export default {
     types: 'off',
     unresolved: 'off',
   },
+
+  vite: false,
+
   vitest: {
-    config: ['vitest.config.mts', 'packages/*/vitest.config.mts'],
+    config: ['vitest.config.mts'],
+    entry: ['tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
   },
+
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
@@ -37,16 +42,18 @@ export default {
     },
     'packages/ast-spec': {
       ignore: [
-        'src/**/fixtures/**',
         // @typescript-eslint/typescript-estree is not listed in dependencies to avoid circular dependency errors
         // You can check a more detailed explanation in this file
         'tests/util/parsers/typescript-estree-import.ts',
         'typings/global.d.ts',
       ],
+
+      project: ['src/**/*.ts', 'tests/util/**/*.ts', '!src/**/fixtures/**'],
+
       vitest: {
         config: ['vitest.config.mts'],
         entry: [
-          '**/*.{bench,test,test-d,spec}.?(c|m)[jt]s?(x)',
+          'tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
           'tests/util/setupVitest.mts',
         ],
       },
