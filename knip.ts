@@ -11,9 +11,14 @@ export default {
     types: 'off',
     unresolved: 'off',
   },
+
+  vite: false,
+
   vitest: {
-    config: ['vitest.config.mts', 'packages/*/vitest.config.mts'],
+    config: ['vitest.config.mts'],
+    entry: ['tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
   },
+
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
@@ -70,10 +75,11 @@ export default {
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
+
       vitest: {
         config: ['vitest.config.mts'],
         entry: [
-          '**/*.{bench,test,test-d,spec}.?(c|m)[jt]s?(x)',
+          'tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
           'tests/test-utils/serializers/index.ts',
         ],
       },
