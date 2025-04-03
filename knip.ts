@@ -11,9 +11,14 @@ export default {
     types: 'off',
     unresolved: 'off',
   },
+
+  vite: false,
+
   vitest: {
-    config: ['vitest.config.mts', 'packages/*/vitest.config.mts'],
+    config: ['vitest.config.mts'],
+    entry: ['tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
   },
+
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
@@ -73,6 +78,11 @@ export default {
     'packages/typescript-estree': {
       entry: ['src/use-at-your-own-risk.ts'],
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: ['tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+      },
     },
     'packages/utils': {
       ignore: [
