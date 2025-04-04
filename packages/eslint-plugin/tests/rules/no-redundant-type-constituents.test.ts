@@ -166,6 +166,24 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type U = T & string;
     `,
     "declare function fn(): never | 'foo';",
+    'type Foo = { a: string } | { a: number };',
+    "type Foo = { a: string } | { a: 'b' | 'c' | 0 };",
+    "type Foo = { a: 'b' | 'c' | 0 } | ({ a: 1 } | { a: 'a' });",
+    'type Foo = { a: 1 } | { a: 1; b: 1 };',
+    'type Foo = { a: 1 } | ({ a: 1 } & { b: 1 });',
+    'type Foo = ({ a: 1 } & { b: 1 }) | { a: 1 };',
+    'type Foo = { a: 1 } & { b: number };',
+    'type Foo = { a: 1; b: 1 } & ({ a: 1; b: 1; c: 1 } | { a: 1 });',
+    'type Foo = ({ a: 1; b: 1; c: 1 } | { a: 1 }) & { a: 1; b: 1 };',
+    `
+      type Foo =
+        | (({ a: 1 } | { b: 1 }) & { a: 1 })
+        | (({ a: 1 } | { c: 1 }) & { a: 1 });
+    `,
+    'type Foo = { a: 1 } | { a: { a: 1 } };',
+    'type T = { [key: string]: 1 } | { a: 1 };',
+    'type T = Partial<{ a: 1; b: 1 }> | { a: 1 };',
+    "type T = Omit<{ a: 1; b: 1 }, 'a'> | { a: number; b: number };",
   ],
 
   invalid: [
@@ -330,10 +348,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 19,
           data: {
-            literal: '0',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '0',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -343,10 +362,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 20,
           data: {
-            literal: '0 | 1',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '0 | 1',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -356,10 +376,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            literal: '0 | 0',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '0 | 0',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -372,10 +393,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 19,
           data: {
-            literal: '2 | 0 | 1',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '2 | 0 | 1',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -385,10 +407,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            literal: '0 | 1 | 2',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '0 | 1 | 2',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -398,10 +421,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            literal: '0 | 1',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '0 | 1',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -411,10 +435,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            literal: '0 | 0 | 1',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '0 | 0 | 1',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -424,10 +449,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            literal: '2 | 3',
-            primitive: 'number',
+            container: 'union',
+            nonRedundantType: 'number',
+            redundantType: '2 | 3',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -437,10 +463,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: '""',
-            primitive: 'string',
+            container: 'union',
+            nonRedundantType: 'string',
+            redundantType: '""',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -453,10 +480,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 18,
           data: {
-            literal: '"b"',
-            primitive: 'string',
+            container: 'union',
+            nonRedundantType: 'string',
+            redundantType: '"b"',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -466,10 +494,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: 'template literal type',
-            primitive: 'string',
+            container: 'union',
+            nonRedundantType: 'string',
+            redundantType: '`a${number}c`',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -482,10 +511,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 18,
           data: {
-            literal: 'template literal type',
-            primitive: 'string',
+            container: 'union',
+            nonRedundantType: 'string',
+            redundantType: '`a${number}c`',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -495,10 +525,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: 'template literal type',
-            primitive: 'string',
+            container: 'union',
+            nonRedundantType: 'string',
+            redundantType: '`${number}`',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -508,10 +539,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: '0n',
-            primitive: 'bigint',
+            container: 'union',
+            nonRedundantType: 'bigint',
+            redundantType: '0n',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -521,10 +553,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: '-1n',
-            primitive: 'bigint',
+            container: 'union',
+            nonRedundantType: 'bigint',
+            redundantType: '-1n',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -534,10 +567,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 11,
           data: {
-            literal: '-1n | 1n',
-            primitive: 'bigint',
+            container: 'union',
+            nonRedundantType: 'bigint',
+            redundantType: '-1n | 1n',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -550,10 +584,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 22,
           data: {
-            literal: 'false',
-            primitive: 'boolean',
+            container: 'union',
+            nonRedundantType: 'boolean',
+            redundantType: 'false',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -563,10 +598,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: 'false',
-            primitive: 'boolean',
+            container: 'union',
+            nonRedundantType: 'boolean',
+            redundantType: 'false',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -576,10 +612,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: 'true',
-            primitive: 'boolean',
+            container: 'union',
+            nonRedundantType: 'boolean',
+            redundantType: 'true',
           },
-          messageId: 'literalOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -589,10 +626,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 18,
           data: {
-            literal: 'false',
-            primitive: 'boolean',
+            container: 'intersection',
+            nonRedundantType: 'false',
+            redundantType: 'boolean',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -605,10 +643,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 22,
           data: {
-            literal: 'false',
-            primitive: 'boolean',
+            container: 'intersection',
+            nonRedundantType: 'false',
+            redundantType: 'boolean',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -621,10 +660,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 22,
           data: {
-            literal: 'true',
-            primitive: 'boolean',
+            container: 'intersection',
+            nonRedundantType: 'true',
+            redundantType: 'boolean',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -634,10 +674,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 17,
           data: {
-            literal: 'true',
-            primitive: 'boolean',
+            container: 'intersection',
+            nonRedundantType: 'true',
+            redundantType: 'boolean',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -754,10 +795,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 10,
           data: {
-            literal: '0',
-            primitive: 'number',
+            container: 'intersection',
+            nonRedundantType: '0',
+            redundantType: 'number',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -767,10 +809,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 15,
           data: {
-            literal: '""',
-            primitive: 'string',
+            container: 'intersection',
+            nonRedundantType: '""',
+            redundantType: 'string',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -783,10 +826,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 22,
           data: {
-            literal: '0n',
-            primitive: 'bigint',
+            container: 'intersection',
+            nonRedundantType: '0n',
+            redundantType: 'bigint',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -796,10 +840,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 15,
           data: {
-            literal: '0n',
-            primitive: 'bigint',
+            container: 'intersection',
+            nonRedundantType: '0n',
+            redundantType: 'bigint',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -809,10 +854,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         {
           column: 16,
           data: {
-            literal: '-1n',
-            primitive: 'bigint',
+            container: 'intersection',
+            nonRedundantType: '-1n',
+            redundantType: 'bigint',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -823,12 +869,13 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       `,
       errors: [
         {
-          column: 18,
+          column: 22,
           data: {
-            literal: '"a" | "b"',
-            primitive: 'string',
+            container: 'intersection',
+            nonRedundantType: 'T',
+            redundantType: 'string',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'typeOverridden',
         },
       ],
     },
@@ -840,20 +887,946 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       `,
       errors: [
         {
-          column: 18,
+          column: 26,
           data: {
-            literal: '1 | 2',
-            primitive: 'number',
+            container: 'intersection',
+            nonRedundantType: 'T',
+            redundantType: 'string',
           },
-          messageId: 'primitiveOverridden',
+          endColumn: 32,
+          line: 4,
+          messageId: 'typeOverridden',
         },
+        {
+          column: 35,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'S',
+            redundantType: 'number',
+          },
+          endColumn: 41,
+          line: 4,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 } | any;',
+      errors: [
+        {
+          column: 21,
+          data: {
+            container: 'union',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = { a: 1 };
+        type T = B | any;
+      `,
+      errors: [
         {
           column: 22,
           data: {
-            literal: '"a" | "b"',
-            primitive: 'string',
+            container: 'union',
+            typeName: 'any',
           },
-          messageId: 'primitiveOverridden',
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = any | { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = any;
+        type T = B | { a: 1 };
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            container: 'union',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 } | never;',
+      errors: [
+        {
+          column: 21,
+          data: {
+            container: 'union',
+            typeName: 'never',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = { a: 1 };
+        type T = B | never;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            container: 'union',
+            typeName: 'never',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = never;
+        type T = B | { a: 1 };
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            container: 'union',
+            typeName: 'never',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = never | { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            typeName: 'never',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 } | unknown;',
+      errors: [
+        {
+          column: 21,
+          data: {
+            container: 'union',
+            typeName: 'unknown',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = unknown | { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            typeName: 'unknown',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type ErrorTypes = NotKnown | { a: 1 };',
+      errors: [
+        {
+          column: 19,
+          data: {
+            container: 'union',
+            typeName: 'NotKnown',
+          },
+          messageId: 'errorTypeOverrides',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = { a: 1 | 2 } | ({ a: 1 } & { a: 1 | 3 });',
+      errors: [
+        {
+          column: 28,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: 1 | 2; }',
+            redundantType: '{ a: 1; } & { a: 1 | 3; }',
+          },
+          endColumn: 51,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 39,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }',
+            redundantType: '{ a: 1 | 3; }',
+          },
+          endColumn: 51,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = { a: 1 | 2 } | ({ a: 1 } | ({ a: 2 } & { a: 1 | 2 }));',
+      errors: [
+        {
+          column: 28,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: 1 | 2; }',
+            redundantType: '{ a: 1; } | ({ a: 2; } & { a: 1 | 2; })',
+          },
+          endColumn: 64,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 51,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 2; }',
+            redundantType: '{ a: 1 | 2; }',
+          },
+          endColumn: 63,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = { a: 1 } | ({ a: 3 } | ({ a: 1 | 2 } & { a: number }));',
+      errors: [
+        {
+          column: 12,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: 1 | 2; } & { a: number; }',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 20,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 51,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1 | 2; }',
+            redundantType: '{ a: number; }',
+          },
+          endColumn: 64,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type R = { a: 1 | 2 } & { a: number };
+type T = R | { a: 1 };
+      `,
+      errors: [
+        {
+          column: 25,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1 | 2; }',
+            redundantType: '{ a: number; }',
+          },
+          endColumn: 38,
+          line: 2,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 14,
+          data: {
+            container: 'union',
+            nonRedundantType: 'R',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 22,
+          line: 3,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type R = ({ a: 1; b: 2; c: 1 } & { a: 1; b: 2 }) | { a: 2; b: 1 };
+type P = R & { a: number; b: number };
+      `,
+      errors: [
+        {
+          column: 34,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; b: 2; c: 1; }',
+            redundantType: '{ a: 1; b: 2; }',
+          },
+          endColumn: 48,
+          line: 2,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 14,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'R',
+            redundantType: '{ a: number; b: number; }',
+          },
+          endColumn: 38,
+          line: 3,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type R = { a: 1 | 2 } & { a: number };
+type T = R | { a: 1 };
+type U = T | { a: 2 };
+      `,
+      errors: [
+        {
+          column: 25,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1 | 2; }',
+            redundantType: '{ a: number; }',
+          },
+          endColumn: 38,
+          line: 2,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 14,
+          data: {
+            container: 'union',
+            nonRedundantType: 'R',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 22,
+          line: 3,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 14,
+          data: {
+            container: 'union',
+            nonRedundantType: 'R',
+            redundantType: '{ a: 2; }',
+          },
+          endColumn: 22,
+          line: 4,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: false } & { a: boolean };',
+      errors: [
+        {
+          column: 25,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: false; }',
+            redundantType: '{ a: boolean; }',
+          },
+          endColumn: 39,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type B = { a: false };
+type T = B & { a: boolean };
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'B',
+            redundantType: '{ a: boolean; }',
+          },
+          endColumn: 28,
+          line: 3,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: true } & { a: boolean };',
+      errors: [
+        {
+          column: 24,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: true; }',
+            redundantType: '{ a: boolean; }',
+          },
+          endColumn: 38,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: number } & any;',
+      errors: [
+        {
+          column: 26,
+          data: {
+            container: 'intersection',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = any & { a: number };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type ErrorTypes = NotKnown & { a: 0 };',
+      errors: [
+        {
+          column: 19,
+          data: {
+            container: 'intersection',
+            typeName: 'NotKnown',
+          },
+          messageId: 'errorTypeOverrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: number } & never;',
+      errors: [
+        {
+          column: 26,
+          data: {
+            container: 'intersection',
+            typeName: 'never',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = never;
+        type T = B & { a: number };
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            container: 'intersection',
+            typeName: 'never',
+          },
+          line: 3,
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = never & { a: number };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            typeName: 'never',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: number } & unknown;',
+      errors: [
+        {
+          column: 26,
+          data: {
+            container: 'intersection',
+            typeName: 'unknown',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = unknown & { a: number };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            typeName: 'unknown',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { a: 1 } | { a: 2 };
+type U = T & { a: number };
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'T',
+            redundantType: '{ a: number; }',
+          },
+          endColumn: 27,
+          line: 3,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type S = { a: 1 } | { a: 2 };
+type T = { a: 'a' } | { a: 'b' };
+type U = S & T & { a: string } & { a: number };
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'T',
+            redundantType: '{ a: string; }',
+          },
+          endColumn: 31,
+          line: 4,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 34,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'S',
+            redundantType: '{ a: number; }',
+          },
+          endColumn: 47,
+          line: 4,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 | 2 } & { a: number } & { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }',
+            redundantType: '{ a: 1 | 2; }',
+          },
+          endColumn: 22,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 25,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1 | 2; } & { a: 1; }',
+            redundantType: '{ a: number; }',
+          },
+          endColumn: 38,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = ({ a: number } & { b: number }) & { a: 1; b: 1 };',
+      errors: [
+        {
+          column: 13,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; b: 1; }',
+            redundantType: '{ a: number; }',
+          },
+          endColumn: 42,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 13,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; b: 1; }',
+            redundantType: '{ b: number; }',
+          },
+          endColumn: 42,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = ({ a: number } & { b: number }) & { a: 1 } & { b: 1 };',
+      errors: [
+        {
+          column: 13,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }',
+            redundantType: '{ a: number; }',
+          },
+          endColumn: 42,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 13,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ b: 1; }',
+            redundantType: '{ b: number; }',
+          },
+          endColumn: 42,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = { a: 1; b: 1 } | ({ a: number } & ({ b: 1 } | { d: 1 }));',
+      errors: [
+        {
+          column: 12,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: number; } & ({ b: 1; } | { d: 1; })',
+            redundantType: '{ a: 1; b: 1; }',
+          },
+          endColumn: 26,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type F = { a: 1 } & ({ a: 1; b: 1 } | { a: 1 });',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; b: 1; } | { a: 1; }',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 18,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type F = ({ a: 1; b: 1 } | { a: 1 }) & { a: 1 };',
+      errors: [
+        {
+          column: 40,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; b: 1; } | { a: 1; }',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 48,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type F = { a: 1; b: 1 } & ({ a: 1 } | { b: 1 });',
+      errors: [
+        {
+          column: 28,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; b: 1; }',
+            redundantType: '{ a: 1; } | { b: 1; }',
+          },
+          endColumn: 47,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type F = { a: 1 } & { a: 1; b: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; b: 1; }',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 18,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type R = { a: 1; b: 2 } | { a: 2; b: 1 };
+type T = { a: number } | { b: number };
+type U = R & T;
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'R',
+            redundantType: 'T',
+          },
+          endColumn: 15,
+          line: 4,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { a: 1; b: 1 };
+type U<K extends string> = Omit<T, K> & Required<T>;
+type K = U<'a'>;
+type R = K | { a: 1 };
+      `,
+      errors: [
+        {
+          column: 28,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'Required<T>',
+            redundantType: 'Omit<T, K>',
+          },
+          endColumn: 38,
+          line: 3,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { a: 1; b: 1 };
+type U<K extends string> = Omit<T, K> & Required<T>;
+type K = U<'a'>;
+type R = K & { a: 1 };
+      `,
+      errors: [
+        {
+          column: 28,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'Required<T>',
+            redundantType: 'Omit<T, K>',
+          },
+          endColumn: 38,
+          line: 3,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 14,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'K',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 22,
+          line: 5,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+interface T {
+  a: 1;
+}
+type U = T | { a: number };
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: number; }',
+            redundantType: 'T',
+          },
+          endColumn: 11,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { [key: string]: 1 } & { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }',
+            redundantType: '{ [key: string]: 1; }',
+          },
+          endColumn: 30,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Record<string, number> & { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }',
+            redundantType: 'Record<string, number>',
+          },
+          endColumn: 32,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { [key: string]: 1 };
+type U = T & { a: 1 };
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }',
+            redundantType: 'T',
+          },
+          endColumn: 11,
+          line: 3,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type U = { [key: string]: 1 } | { [key: string]: number };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ [key: string]: number; }',
+            redundantType: '{ [key: string]: 1; }',
+          },
+          endColumn: 30,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { a: '1'; b: '2' };
+type U<Type> = {
+  [Property in keyof Type]: 0;
+};
+type F = U<T> | { a: number; b: number };
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: number; b: number; }',
+            redundantType: 'U<T>',
+          },
+          endColumn: 14,
+          line: 6,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { a: '1'; b: '2' };
+type U<Type> = {
+  [Property in keyof Type]: 0;
+};
+type F = U<T> & { a: number; b: number };
+      `,
+      errors: [
+        {
+          column: 17,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'U<T>',
+            redundantType: '{ a: number; b: number; }',
+          },
+          endColumn: 41,
+          line: 6,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Partial<{ a: 1 }> | { a: 1 };',
+      errors: [
+        {
+          column: 30,
+          data: {
+            container: 'union',
+            nonRedundantType: 'Partial<{ a: 1; }>',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 38,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Partial<{ a: 1 }> & { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }',
+            redundantType: 'Partial<{ a: 1; }>',
+          },
+          endColumn: 27,
+          messageId: 'typeOverridden',
         },
       ],
     },
