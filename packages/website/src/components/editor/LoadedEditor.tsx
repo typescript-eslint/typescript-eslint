@@ -83,8 +83,28 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     const markers = monaco.editor.getModelMarkers({
       resource: model.uri,
     });
-    onMarkersChange(parseMarkers(markers, codeActions, editor));
-  }, [codeActions, onMarkersChange, editor, monaco.editor]);
+
+    const errors = parseMarkers(markers, codeActions, editor);
+
+    onMarkersChange(prev => {
+      const tsconfigError =
+        activeTab === 'tsconfig' &&
+        Object.fromEntries(prev[activeTab].map(error => [error.group, error]))
+          .Typescript;
+
+      if (!errors.length && tsconfigError) {
+        return {
+          ...prev,
+          [activeTab]: [tsconfigError],
+        };
+      }
+
+      return {
+        ...prev,
+        [activeTab]: errors,
+      };
+    });
+  }, [activeTab, codeActions, onMarkersChange, editor, monaco.editor]);
 
   useEffect(() => {
     webLinter.updateParserOptions(sourceType);
