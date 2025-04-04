@@ -123,6 +123,11 @@ async function buildPackage(name: string, file: string): Promise<void> {
             text = text.replace('vt:eslint/linter', normalizePath(linterPath));
             return { contents: text, loader: 'js' };
           });
+          build.onLoad(makeFilter(['/parser/src/parser.ts']), async args => {
+            console.log('onLoad:replace', args.path);
+            const contents = await requireMock('./src/mock/parser.js');
+            return { contents, loader: 'js' };
+          });
           build.onResolve(
             makeFilter([
               '@typescript-eslint/typescript-estree',
