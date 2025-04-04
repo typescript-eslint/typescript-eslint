@@ -1744,5 +1744,172 @@ class Joiner {
         },
       ],
     },
+    {
+      code: `
+function join<T extends string | number>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: (string | number)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function join<T extends string & number>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: (string & number)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function join<T extends (string & number) | boolean>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: ((string & number) | boolean)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+function join<T extends (string | number)>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: (string | number)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function join<T extends { hoge: string } | { hoge: number }>(els: T['hoge'][]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: ({ hoge: string } | { hoge: number })['hoge'][]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+type A = string;
+type B = string;
+type C = string;
+declare function f<T extends A | B>(): T & C;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+type A = string;
+type B = string;
+type C = string;
+declare function f(): (A | B) & C;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+type A = string;
+type B = string;
+type C = string;
+type D = string;
+declare function f<T extends A extends B ? C : D>(): T | null;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+type A = string;
+type B = string;
+type C = string;
+type D = string;
+declare function f(): (A extends B ? C : D) | null;
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
