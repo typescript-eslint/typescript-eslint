@@ -19,6 +19,7 @@ import stylisticConfig from './configs/stylistic';
 import stylisticTypeCheckedConfig from './configs/stylistic-type-checked';
 import stylisticTypeCheckedOnlyConfig from './configs/stylistic-type-checked-only';
 
+export type { TSESLint } from '@typescript-eslint/utils';
 export const parser: TSESLint.FlatConfig.Parser = {
   meta: parserBase.meta,
   parseForESLint: parserBase.parseForESLint,
