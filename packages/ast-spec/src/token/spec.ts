@@ -2,6 +2,7 @@ export * from './BlockComment/spec';
 export * from './BooleanToken/spec';
 export * from './IdentifierToken/spec';
 export * from './JSXIdentifierToken/spec';
+export * from './PrivateIdentifierToken/spec';
 export * from './JSXTextToken/spec';
 export * from './KeywordToken/spec';
 export * from './LineComment/spec';
