@@ -1,25 +1,30 @@
-import type { TSESTree } from '@typescript-eslint/utils';
-
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
-
-import type { TypeOrValueSpecifier } from '../util';
 
 import {
   createRule,
   getParserServices,
   nullThrows,
   typeMatchesSomeSpecifier,
+  TypeOrValueSpecifier,
   typeOrValueSpecifiersSchema,
 } from '../util';
+import { getPropertyName } from '@typescript-eslint/utils/ast-utils';
+import { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 
 type IdentifierLike =
   | TSESTree.Identifier
   | TSESTree.JSXIdentifier
   | TSESTree.Literal
   | TSESTree.PrivateIdentifier
-  | TSESTree.Super;
+  | TSESTree.Super
+  | TSESTree.TemplateLiteral;
+
+type IdentifierInComputedProperty =
+  | TSESTree.Identifier
+  | TSESTree.Literal
+  | TSESTree.TemplateLiteral;
 
 type MessageIds = 'deprecated' | 'deprecatedWithReason';
 
@@ -189,6 +194,19 @@ export default createRule<Options, MessageIds>({
       }
     }
 
+    function isInComputedProperty(
+      node: IdentifierLike,
+    ): node is IdentifierInComputedProperty {
+      return (
+        node.parent.type === AST_NODE_TYPES.MemberExpression &&
+        node.parent.computed &&
+        node === node.parent.property &&
+        (node.type === AST_NODE_TYPES.Literal ||
+          node.type === AST_NODE_TYPES.TemplateLiteral ||
+          node.type === AST_NODE_TYPES.Identifier)
+      );
+    }
+
     function getJsDocDeprecation(
       symbol: ts.Signature | ts.Symbol | undefined,
     ): string | undefined {
@@ -208,6 +226,22 @@ export default createRule<Options, MessageIds>({
       const displayParts = tag.text;
 
       return displayParts ? ts.displayPartsToString(displayParts) : '';
+    }
+
+    function getComputedPropertyDeprecation(
+      node: TSESTree.MemberExpression,
+    ): string | undefined {
+      const propertyName = getPropertyName(
+        node,
+        context.sourceCode.getScope(node),
+      );
+      if (!propertyName) {
+        return undefined;
+      }
+
+      const objectType = services.getTypeAtLocation(node.object);
+      const property = objectType.getProperty(propertyName);
+      return getJsDocDeprecation(property);
     }
 
     type CalleeNode = TSESTree.Expression | TSESTree.JSXTagNameExpression;
@@ -251,10 +285,11 @@ export default createRule<Options, MessageIds>({
         'Expected call like node to have signature',
       );
 
-      const nodeToFind =
-        node.type === AST_NODE_TYPES.MemberExpression ? node.property : node;
+      if (node.type === AST_NODE_TYPES.MemberExpression && node.computed) {
+        return getComputedPropertyDeprecation(node);
+      }
 
-      const symbol = services.getSymbolAtLocation(nodeToFind);
+      const symbol = services.getSymbolAtLocation(node);
       const aliasedSymbol =
         symbol != null && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
           ? checker.getAliasedSymbol(symbol)
@@ -332,18 +367,22 @@ export default createRule<Options, MessageIds>({
         return getCallLikeDeprecation(callLikeNode);
       }
 
+      if (isInComputedProperty(node)) {
+        return getComputedPropertyDeprecation(
+          node.parent as TSESTree.MemberExpression,
+        );
+      }
+
       if (
         node.parent.type === AST_NODE_TYPES.JSXAttribute &&
-        node.type !== AST_NODE_TYPES.Super &&
-        node.type !== AST_NODE_TYPES.Literal
+        node.type !== AST_NODE_TYPES.Super
       ) {
         return getJSXAttributeDeprecation(node.parent.parent, node.name);
       }
 
       if (
         node.parent.type === AST_NODE_TYPES.Property &&
-        node.type !== AST_NODE_TYPES.Super &&
-        node.type !== AST_NODE_TYPES.Literal
+        node.type !== AST_NODE_TYPES.Super
       ) {
         const property = services
           .getTypeAtLocation(node.parent.parent)
@@ -380,7 +419,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const name = getReportedNodeName(node);
+      const name = getReportedNodeName(node, context);
 
       context.report({
         ...(reason
@@ -404,13 +443,17 @@ export default createRule<Options, MessageIds>({
         }
       },
       'MemberExpression > Literal': checkIdentifier,
+      'MemberExpression > TemplateLiteral': checkIdentifier,
       PrivateIdentifier: checkIdentifier,
       Super: checkIdentifier,
     };
   },
 });
 
-function getReportedNodeName(node: IdentifierLike): string {
+function getReportedNodeName(
+  node: IdentifierLike,
+  context: Readonly<RuleContext<MessageIds, Options>>,
+): string {
   if (node.type === AST_NODE_TYPES.Super) {
     return 'super';
   }
@@ -421,6 +464,15 @@ function getReportedNodeName(node: IdentifierLike): string {
 
   if (node.type === AST_NODE_TYPES.Literal) {
     return String(node.value);
+  }
+
+  if (node.type === AST_NODE_TYPES.TemplateLiteral) {
+    return (
+      getPropertyName(
+        node.parent as TSESTree.MemberExpression,
+        context.sourceCode.getScope(node),
+      ) || ''
+    );
   }
 
   return node.name;
