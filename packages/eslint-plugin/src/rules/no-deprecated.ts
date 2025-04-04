@@ -1,17 +1,20 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getPropertyName } from '@typescript-eslint/utils/ast-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
+
+import type { TypeOrValueSpecifier } from '../util';
 
 import {
   createRule,
   getParserServices,
   nullThrows,
   typeMatchesSomeSpecifier,
-  TypeOrValueSpecifier,
   typeOrValueSpecifiersSchema,
 } from '../util';
-import { getPropertyName } from '@typescript-eslint/utils/ast-utils';
-import { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 
 type IdentifierLike =
   | TSESTree.Identifier
