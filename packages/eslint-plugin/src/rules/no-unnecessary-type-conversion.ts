@@ -1,9 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type {
-  ReportDescriptorMessageData,
-  RuleFix,
-  RuleFixer,
-} from '@typescript-eslint/utils/ts-eslint';
+import type { RuleFix, RuleFixer } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { unionTypeParts } from 'ts-api-utils';
@@ -57,29 +53,29 @@ export default createRule<Options, MessageIds>({
     function handleUnaryOperator(
       node: TSESTree.UnaryExpression,
       typeFlag: ts.TypeFlags,
-      reportDescriptorMessageData: ReportDescriptorMessageData,
+      typeString: 'boolean' | 'number',
+      violation: string,
       isDoubleOperator: boolean, // !! or ~~
     ) {
+      const outerNode = isDoubleOperator ? node.parent : node;
       const type = services.getTypeAtLocation(node.argument);
       if (doesUnderlyingTypeMatchFlag(type, typeFlag)) {
         const wrappingFixerParams = {
-          node: isDoubleOperator ? node.parent : node,
+          node: outerNode,
           innerNode: [node.argument],
           sourceCode: context.sourceCode,
         };
-        const typeString =
-          typeFlag === ts.TypeFlags.BooleanLike ? 'boolean' : 'number';
 
         context.report({
           loc: {
-            start: isDoubleOperator ? node.parent.loc.start : node.loc.start,
+            start: outerNode.loc.start,
             end: {
               column: node.loc.start.column + 1,
               line: node.loc.start.line,
             },
           },
           messageId: 'unnecessaryTypeConversion',
-          data: reportDescriptorMessageData,
+          data: { type: typeString, violation },
           suggest: [
             {
               messageId: 'suggestRemove',
@@ -87,7 +83,7 @@ export default createRule<Options, MessageIds>({
             },
             {
               messageId: 'suggestSatisfies',
-              data: { type: reportDescriptorMessageData.type },
+              data: { type: typeString },
               fix: getWrappingFixer({
                 ...wrappingFixerParams,
                 wrap: expr => `${expr} satisfies ${typeString}`,
@@ -350,10 +346,8 @@ export default createRule<Options, MessageIds>({
         handleUnaryOperator(
           node,
           ts.TypeFlags.BooleanLike,
-          {
-            type: 'boolean',
-            violation: 'Using !! on a boolean',
-          },
+          'boolean',
+          'Using !! on a boolean',
           true,
         );
       },
@@ -361,10 +355,8 @@ export default createRule<Options, MessageIds>({
         handleUnaryOperator(
           node,
           ts.TypeFlags.NumberLike,
-          {
-            type: 'number',
-            violation: 'Using the unary + operator on a number',
-          },
+          'number',
+          'Using the unary + operator on a number',
           false,
         );
       },
@@ -374,10 +366,8 @@ export default createRule<Options, MessageIds>({
         handleUnaryOperator(
           node,
           ts.TypeFlags.NumberLike,
-          {
-            type: 'number',
-            violation: 'Using ~~ on a number',
-          },
+          'number',
+          'Using ~~ on a number',
           true,
         );
       },
