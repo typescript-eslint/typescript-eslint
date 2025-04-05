@@ -382,7 +382,7 @@ export default createRule<Options, MessageIds>({
           node,
           ts.TypeFlags.NumberLike,
           {
-            type: 'boolean',
+            type: 'number',
             violation: 'Using ~~ on a number',
           },
           true,
