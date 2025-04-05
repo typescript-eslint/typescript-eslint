@@ -18,8 +18,9 @@ import {
 
 type Options = [];
 type MessageIds =
-  | 'unnecessaryTypeConversion'
-  | 'unnecessaryTypeConversionSuggestion';
+  | 'suggestRemove'
+  | 'suggestSatisfies'
+  | 'unnecessaryTypeConversion';
 
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-conversion',
@@ -33,10 +34,11 @@ export default createRule<Options, MessageIds>({
     fixable: 'code',
     hasSuggestions: true,
     messages: {
+      suggestRemove: 'Remove the type conversion.',
+      suggestSatisfies:
+        'Instead, assert that the value satisfies the {{type}} type.',
       unnecessaryTypeConversion:
         '{{violation}} does not change the type or value of the {{type}}.',
-      unnecessaryTypeConversionSuggestion:
-        'Instead, assert that the value satisfies type {{type}}.',
     },
     schema: [],
   },
@@ -85,10 +87,13 @@ export default createRule<Options, MessageIds>({
           },
           messageId: 'unnecessaryTypeConversion',
           data: reportDescriptorMessageData,
-          fix: getWrappingFixer(wrappingFixerParams),
           suggest: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              fix: getWrappingFixer(wrappingFixerParams),
+            },
+            {
+              messageId: 'suggestSatisfies',
               data: { type: reportDescriptorMessageData.type },
               fix: getWrappingFixer({
                 ...wrappingFixerParams,
@@ -125,18 +130,21 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Concatenating a string with ''",
             },
-            fix:
-              node.parent.type === AST_NODE_TYPES.ExpressionStatement
-                ? (fixer: RuleFixer): RuleFix[] => [
-                    fixer.removeRange([
-                      node.parent.range[0],
-                      node.parent.range[1],
-                    ]),
-                  ]
-                : getWrappingFixer(wrappingFixerParams),
             suggest: [
               {
-                messageId: 'unnecessaryTypeConversionSuggestion',
+                messageId: 'suggestRemove',
+                fix:
+                  node.parent.type === AST_NODE_TYPES.ExpressionStatement
+                    ? (fixer: RuleFixer): RuleFix[] => [
+                        fixer.removeRange([
+                          node.parent.range[0],
+                          node.parent.range[1],
+                        ]),
+                      ]
+                    : getWrappingFixer(wrappingFixerParams),
+              },
+              {
+                messageId: 'suggestSatisfies',
                 data: { type: 'string' },
                 fix: getWrappingFixer({
                   ...wrappingFixerParams,
@@ -174,10 +182,13 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Concatenating a string with ''",
             },
-            fix: getWrappingFixer(wrappingFixerParams),
             suggest: [
               {
-                messageId: 'unnecessaryTypeConversionSuggestion',
+                messageId: 'suggestRemove',
+                fix: getWrappingFixer(wrappingFixerParams),
+              },
+              {
+                messageId: 'suggestSatisfies',
                 data: { type: 'string' },
                 fix: getWrappingFixer({
                   ...wrappingFixerParams,
@@ -210,10 +221,13 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Concatenating '' with a string",
             },
-            fix: getWrappingFixer(wrappingFixerParams),
             suggest: [
               {
-                messageId: 'unnecessaryTypeConversionSuggestion',
+                messageId: 'suggestRemove',
+                fix: getWrappingFixer(wrappingFixerParams),
+              },
+              {
+                messageId: 'suggestSatisfies',
                 data: { type: 'string' },
                 fix: getWrappingFixer({
                   ...wrappingFixerParams,
@@ -276,10 +290,13 @@ export default createRule<Options, MessageIds>({
                 type: node.callee.name.toLowerCase(),
                 violation: `Passing a ${typeString} to ${node.callee.name}()`,
               },
-              fix: getWrappingFixer(wrappingFixerParams),
               suggest: [
                 {
-                  messageId: 'unnecessaryTypeConversionSuggestion',
+                  messageId: 'suggestRemove',
+                  fix: getWrappingFixer(wrappingFixerParams),
+                },
+                {
+                  messageId: 'suggestSatisfies',
                   data: { type: typeString },
                   fix: getWrappingFixer({
                     ...wrappingFixerParams,
@@ -313,10 +330,13 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Calling a string's .toString() method",
             },
-            fix: getWrappingFixer(wrappingFixerParams),
             suggest: [
               {
-                messageId: 'unnecessaryTypeConversionSuggestion',
+                messageId: 'suggestRemove',
+                fix: getWrappingFixer(wrappingFixerParams),
+              },
+              {
+                messageId: 'suggestSatisfies',
                 data: { type: 'string' },
                 fix: getWrappingFixer({
                   ...wrappingFixerParams,

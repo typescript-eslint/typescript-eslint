@@ -76,19 +76,19 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
     `,
 
     // using type conversion idioms to unbox boxed primitives is valid
-    'String(new String);',
+    'String(new String());',
     'new String.toString();',
-    "'' + new String;",
-    "new String + '';",
+    "'' + new String();",
+    "new String() + '';",
     `
-      let str = new String;
+      let str = new String();
       str += '';
     `,
-    'Number(new Number);',
-    '+new Number;',
-    '~~new Number;',
-    'Boolean(new Boolean);',
-    '!!new Boolean;',
+    'Number(new Number());',
+    '+new Number();',
+    '~~new Number();',
+    'Boolean(new Boolean());',
+    '!!new Boolean();',
   ],
 
   invalid: [
@@ -101,13 +101,16 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: "'asdf';",
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: "'asdf' satisfies string;",
             },
           ],
         },
       ],
-      output: "'asdf';",
     },
     {
       code: "'asdf'.toString();",
@@ -118,13 +121,16 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: "'asdf';",
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: "'asdf' satisfies string;",
             },
           ],
         },
       ],
-      output: "'asdf';",
     },
     {
       code: "'' + 'asdf';",
@@ -135,13 +141,16 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: "'asdf';",
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: "'asdf' satisfies string;",
             },
           ],
         },
       ],
-      output: "'asdf';",
     },
     {
       code: "'asdf' + '';",
@@ -152,13 +161,16 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: "'asdf';",
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: "'asdf' satisfies string;",
             },
           ],
         },
       ],
-      output: "'asdf';",
     },
     {
       code: `
@@ -174,7 +186,14 @@ str += '';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: `
+let str = 'asdf';
+
+      `,
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: `
 let str = 'asdf';
 str satisfies string;
@@ -183,10 +202,6 @@ str satisfies string;
           ],
         },
       ],
-      output: `
-let str = 'asdf';
-
-      `,
     },
     {
       code: `
@@ -202,7 +217,14 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: `
+let str = 'asdf';
+'asdf' + (str);
+      `,
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: `
 let str = 'asdf';
 'asdf' + (str satisfies string);
@@ -211,10 +233,6 @@ let str = 'asdf';
           ],
         },
       ],
-      output: `
-let str = 'asdf';
-'asdf' + (str);
-      `,
     },
     {
       code: 'Number(123);',
@@ -225,13 +243,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: '123;',
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: '123 satisfies number;',
             },
           ],
         },
       ],
-      output: '123;',
     },
     {
       code: '+123;',
@@ -242,13 +263,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: '123;',
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: '123 satisfies number;',
             },
           ],
         },
       ],
-      output: '123;',
     },
     {
       code: '~~123;',
@@ -259,13 +283,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: '123;',
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: '123 satisfies number;',
             },
           ],
         },
       ],
-      output: '123;',
     },
     {
       code: 'Boolean(true);',
@@ -276,13 +303,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: 'true;',
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: 'true satisfies boolean;',
             },
           ],
         },
       ],
-      output: 'true;',
     },
     {
       code: '!!true;',
@@ -293,13 +323,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: 'true;',
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: 'true satisfies boolean;',
             },
           ],
         },
       ],
-      output: 'true;',
     },
     {
       code: 'BigInt(3n);',
@@ -310,13 +343,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: '3n;',
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: '3n satisfies bigint;',
             },
           ],
         },
       ],
-      output: '3n;',
     },
 
     // using type conversion idioms on generics that extend primitives is invalid
@@ -335,7 +371,15 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: `
+        function f<T extends string>(x: T) {
+          return x;
+        }
+      `,
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: `
         function f<T extends string>(x: T) {
           return x satisfies string;
@@ -345,11 +389,6 @@ let str = 'asdf';
           ],
         },
       ],
-      output: `
-        function f<T extends string>(x: T) {
-          return x;
-        }
-      `,
     },
     {
       code: `
@@ -366,7 +405,15 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: `
+        function f<T extends number>(x: T) {
+          return x;
+        }
+      `,
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: `
         function f<T extends number>(x: T) {
           return x satisfies number;
@@ -376,11 +423,6 @@ let str = 'asdf';
           ],
         },
       ],
-      output: `
-        function f<T extends number>(x: T) {
-          return x;
-        }
-      `,
     },
     {
       code: `
@@ -397,7 +439,15 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: `
+        function f<T extends boolean>(x: T) {
+          return x;
+        }
+      `,
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: `
         function f<T extends boolean>(x: T) {
           return x satisfies boolean;
@@ -407,11 +457,6 @@ let str = 'asdf';
           ],
         },
       ],
-      output: `
-        function f<T extends boolean>(x: T) {
-          return x;
-        }
-      `,
     },
     {
       code: `
@@ -428,7 +473,15 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: `
+        function f<T extends bigint>(x: T) {
+          return x;
+        }
+      `,
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: `
         function f<T extends bigint>(x: T) {
           return x satisfies bigint;
@@ -438,11 +491,6 @@ let str = 'asdf';
           ],
         },
       ],
-      output: `
-        function f<T extends bigint>(x: T) {
-          return x;
-        }
-      `,
     },
 
     // make sure fixes preserve parentheses in cases where logic would otherwise break
@@ -455,13 +503,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: "('a' + 'b').length;",
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: "(('a' + 'b') satisfies string).length;",
             },
           ],
         },
       ],
-      output: "('a' + 'b').length;",
     },
     {
       code: "('a' + 'b').toString().length;",
@@ -472,13 +523,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: "('a' + 'b').length;",
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: "(('a' + 'b') satisfies string).length;",
             },
           ],
         },
       ],
-      output: "('a' + 'b').length;",
     },
     {
       code: '2 * +(2 + 2);',
@@ -489,13 +543,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: '2 * (2 + 2);',
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: '2 * ((2 + 2) satisfies number);',
             },
           ],
         },
       ],
-      output: '2 * (2 + 2);',
     },
     {
       code: '2 * Number(2 + 2);',
@@ -506,13 +563,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: '2 * (2 + 2);',
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: '2 * ((2 + 2) satisfies number);',
             },
           ],
         },
       ],
-      output: '2 * (2 + 2);',
     },
     {
       code: '2 * ~~(2 + 2);',
@@ -523,13 +583,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: '2 * (2 + 2);',
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: '2 * ((2 + 2) satisfies number);',
             },
           ],
         },
       ],
-      output: '2 * (2 + 2);',
     },
     {
       code: 'false && !!(false || true);',
@@ -540,13 +603,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: 'false && (false || true);',
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: 'false && ((false || true) satisfies boolean);',
             },
           ],
         },
       ],
-      output: 'false && (false || true);',
     },
     {
       code: 'false && Boolean(false || true);',
@@ -557,13 +623,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: 'false && (false || true);',
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: 'false && ((false || true) satisfies boolean);',
             },
           ],
         },
       ],
-      output: 'false && (false || true);',
     },
     {
       code: '2n * BigInt(2n + 2n);',
@@ -574,13 +643,16 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: '2n * (2n + 2n);',
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: '2n * ((2n + 2n) satisfies bigint);',
             },
           ],
         },
       ],
-      output: '2n * (2n + 2n);',
     },
 
     // make sure suggestions add parentheses in cases where syntax would otherwise break
@@ -598,7 +670,14 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: `
+        let str = 'asdf';
+        str.length;
+      `,
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: `
         let str = 'asdf';
         (str satisfies string).length;
@@ -607,10 +686,6 @@ let str = 'asdf';
           ],
         },
       ],
-      output: `
-        let str = 'asdf';
-        str.length;
-      `,
     },
     {
       code: `
@@ -624,7 +699,14 @@ let str = 'asdf';
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
-              messageId: 'unnecessaryTypeConversionSuggestion',
+              messageId: 'suggestRemove',
+              output: `
+        let str = 'asdf';
+        str.length;
+      `,
+            },
+            {
+              messageId: 'suggestSatisfies',
               output: `
         let str = 'asdf';
         (str satisfies string).length;
@@ -633,10 +715,6 @@ let str = 'asdf';
           ],
         },
       ],
-      output: `
-        let str = 'asdf';
-        str.length;
-      `,
     },
   ],
 });
