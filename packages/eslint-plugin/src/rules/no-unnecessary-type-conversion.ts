@@ -6,6 +6,7 @@ import type {
 } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { unionTypeParts } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -48,15 +49,7 @@ export default createRule<Options, MessageIds>({
       type: ts.Type,
       typeFlag: ts.TypeFlags,
     ): boolean {
-      const matchesType = (t: ts.Type): boolean => {
-        return isTypeFlagSet(t, typeFlag);
-      };
-
-      if (type.isUnion()) {
-        return type.types.every(matchesType);
-      }
-
-      return matchesType(type);
+      return unionTypeParts(type).every(t => isTypeFlagSet(t, typeFlag));
     }
 
     const services = getParserServices(context);
