@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 1`] = `
-"Options: { "requireDefaultForNonUnion": true }
+exports[`Validating rule docs > switch-exhaustiveness-check.mdx > code examples ESLint output`]
+Options: { "requireDefaultForNonUnion": true }
 
 const value: number = Math.floor(Math.random() * 3);
 
@@ -12,11 +12,9 @@ switch (value) {
   case 1:
     return 1;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 2`] = `
-"Options: { "considerDefaultExhaustiveForUnions": true }
+exports[`Validating rule docs > switch-exhaustiveness-check.mdx > code examples ESLint output`]
+Options: { "considerDefaultExhaustiveForUnions": true }
 
 declare const literal: 'a' | 'b';
 
@@ -26,11 +24,9 @@ switch (literal) {
   default:
     break;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 3`] = `
-"Options: { "defaultCaseCommentPattern": "^skip default" }
+exports[`Validating rule docs > switch-exhaustiveness-check.mdx > code examples ESLint output`]
+Options: { "defaultCaseCommentPattern": "^skip default" }
 
 declare const value: 'a' | 'b';
 
@@ -40,11 +36,9 @@ switch (value) {
     break;
   // skip default
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 4`] = `
-"Incorrect
+exports[`Validating rule docs > switch-exhaustiveness-check.mdx > code examples ESLint output`]
+Incorrect
 
 type Day =
   | 'Monday'
@@ -64,11 +58,9 @@ switch (day) {
     result = 1;
     break;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 5`] = `
-"Correct
+exports[`Validating rule docs > switch-exhaustiveness-check.mdx > code examples ESLint output`]
+Correct
 
 type Day =
   | 'Monday'
@@ -105,14 +97,12 @@ switch (day) {
     result = 7;
     break;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 6`] = `
-"Correct
+exports[`Validating rule docs > switch-exhaustiveness-check.mdx > code examples ESLint output`]
+Correct
 Options: { "considerDefaultExhaustiveForUnions": true }
 
-// requires \`considerDefaultExhaustiveForUnions\` to be set to true
+// requires `considerDefaultExhaustiveForUnions` to be set to true
 
 type Day =
   | 'Monday'
@@ -133,11 +123,9 @@ switch (day) {
   default:
     result = 42;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 7`] = `
-"Incorrect
+exports[`Validating rule docs > switch-exhaustiveness-check.mdx > code examples ESLint output`]
+Incorrect
 
 enum Fruit {
   Apple,
@@ -153,11 +141,9 @@ switch (fruit) {
     console.log('an apple');
     break;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 8`] = `
-"Correct
+exports[`Validating rule docs > switch-exhaustiveness-check.mdx > code examples ESLint output`]
+Correct
 
 enum Fruit {
   Apple,
@@ -180,14 +166,12 @@ switch (fruit) {
     console.log('a cherry');
     break;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 9`] = `
-"Correct
+exports[`Validating rule docs > switch-exhaustiveness-check.mdx > code examples ESLint output`]
+Correct
 Options: { "considerDefaultExhaustiveForUnions": true }
 
-// requires \`considerDefaultExhaustiveForUnions\` to be set to true
+// requires `considerDefaultExhaustiveForUnions` to be set to true
 
 enum Fruit {
   Apple,
@@ -206,5 +190,3 @@ switch (fruit) {
     console.log('a fruit');
     break;
 }
-"
-`;
