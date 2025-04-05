@@ -11,13 +11,22 @@ export default {
     types: 'off',
     unresolved: 'off',
   },
+
+  vite: false,
+
   vitest: {
-    config: ['vitest.config.mts', 'packages/*/vitest.config.mts'],
+    config: ['vitest.config.mts'],
+    entry: ['tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
   },
+
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignore: ['tools/scripts/typings/typescript.d.ts', 'typings/*.d.ts'],
+      ignore: [
+        'jest.config.base.js',
+        'tools/scripts/typings/typescript.d.ts',
+        'typings/*.d.ts',
+      ],
       ignoreDependencies: [
         '@babel/code-frame',
         '@babel/core',
@@ -66,6 +75,14 @@ export default {
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: [
+          'tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
+          'tests/test-utils/serializers/index.ts',
+        ],
+      },
     },
     'packages/type-utils': {
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
