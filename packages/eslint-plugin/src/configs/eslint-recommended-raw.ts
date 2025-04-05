@@ -43,6 +43,7 @@ const config = (
     'prefer-const': 'error', // ts provides better types with const
     'prefer-rest-params': 'error', // ts provides better types with rest args over arguments
     'prefer-spread': 'error', // ts transpiles spread to apply, so no need for manual apply
+    'no-with': 'off', // ts(1101) & ts(2410)
   },
 });
 
