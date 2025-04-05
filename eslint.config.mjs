@@ -32,6 +32,7 @@ const restrictNamedDeclarations = {
 const vitestFiles = [
   'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/type-utils/tests/**/*.test.{ts,tsx,cts,mts}',
 ];
 
 export default tseslint.config(

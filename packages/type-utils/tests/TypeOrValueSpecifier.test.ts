@@ -8,6 +8,10 @@ import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
 
 import { typeMatchesSpecifier, typeOrValueSpecifiersSchema } from '../src';
 
+const ROOT_DIR = path.posix.join(
+  ...path.relative(process.cwd(), path.join(__dirname, '..')).split(path.sep),
+);
+
 describe('TypeOrValueSpecifier', () => {
   describe('Schema', () => {
     const ajv = new Ajv();
@@ -21,7 +25,7 @@ describe('TypeOrValueSpecifier', () => {
       expect(validate([typeOrValueSpecifier])).toBe(false);
     }
 
-    it.each([['MyType'], ['myValue'], ['any'], ['void'], ['never']])(
+    it.each([['MyType'], ['myValue'], ['any'], ['void'], ['never']] as const)(
       'matches a simple string specifier %s',
       runTestPositive,
     );
@@ -33,14 +37,14 @@ describe('TypeOrValueSpecifier', () => {
       [undefined],
       [['MyType']],
       [(): void => {}],
-    ])("doesn't match any non-string basic type: %s", runTestNegative);
+    ] as const)("doesn't match any non-string basic type: %s", runTestNegative);
 
     it.each([
       [{ from: 'file', name: 'MyType' }],
       [{ from: 'file', name: ['MyType', 'myValue'] }],
       [{ from: 'file', name: 'MyType', path: './filename.js' }],
       [{ from: 'file', name: ['MyType', 'myValue'], path: './filename.js' }],
-    ])('matches a file specifier: %s', runTestPositive);
+    ] as const)('matches a file specifier: %s', runTestPositive);
 
     it.each([
       [{ from: 'file', name: 42 }],
@@ -59,12 +63,15 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
       [{ from: 'file', name: 'MyType', unrelatedProperty: '' }],
-    ])("doesn't match a malformed file specifier: %s", runTestNegative);
+    ] as const)(
+      "doesn't match a malformed file specifier: %s",
+      runTestNegative,
+    );
 
     it.each([
       [{ from: 'lib', name: 'MyType' }],
       [{ from: 'lib', name: ['MyType', 'myValue'] }],
-    ])('matches a lib specifier: %s', runTestPositive);
+    ] as const)('matches a lib specifier: %s', runTestPositive);
 
     it.each([
       [{ from: 'lib', name: 42 }],
@@ -73,7 +80,7 @@ describe('TypeOrValueSpecifier', () => {
       [{ from: 'lib', name: [] }],
       [{ from: 'lib' }],
       [{ from: 'lib', name: 'MyType', unrelatedProperty: '' }],
-    ])("doesn't match a malformed lib specifier: %s", runTestNegative);
+    ] as const)("doesn't match a malformed lib specifier: %s", runTestNegative);
 
     it.each([
       [{ from: 'package', name: 'MyType', package: 'jquery' }],
@@ -84,7 +91,7 @@ describe('TypeOrValueSpecifier', () => {
           package: 'jquery',
         },
       ],
-    ])('matches a package specifier: %s', runTestPositive);
+    ] as const)('matches a package specifier: %s', runTestPositive);
 
     it.each([
       [{ from: 'package', name: 42, package: 'jquery' }],
@@ -119,10 +126,13 @@ describe('TypeOrValueSpecifier', () => {
           unrelatedProperty: '',
         },
       ],
-    ])("doesn't match a malformed package specifier: %s", runTestNegative);
+    ] as const)(
+      "doesn't match a malformed package specifier: %s",
+      runTestNegative,
+    );
   });
 
-  describe('typeMatchesSpecifier', () => {
+  describe(typeMatchesSpecifier, () => {
     function runTests(
       code: string,
       specifier: TypeOrValueSpecifier,
@@ -162,22 +172,25 @@ describe('TypeOrValueSpecifier', () => {
       runTests(code, specifier, false);
     }
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       ['interface Foo {prop: string}; type Test = Foo;', 'Foo'],
       ['type Test = RegExp;', 'RegExp'],
-    ])('matches a matching universal string specifier', runTestPositive);
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      'matches a matching universal string specifier',
+      runTestPositive,
+    );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       ['interface Foo {prop: string}; type Test = Foo;', 'Bar'],
       ['interface Foo {prop: string}; type Test = Foo;', 'RegExp'],
       ['type Test = RegExp;', 'Foo'],
       ['type Test = RegExp;', 'BigInt'],
-    ])(
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched universal string specifier",
       runTestNegative,
     );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       [
         'interface Foo {prop: string}; type Test = Foo;',
         { from: 'file', name: 'Foo' },
@@ -196,11 +209,19 @@ describe('TypeOrValueSpecifier', () => {
       ],
       [
         'interface Foo {prop: string}; type Test = Foo;',
-        { from: 'file', name: 'Foo', path: 'tests/fixtures/file.ts' },
+        {
+          from: 'file',
+          name: 'Foo',
+          path: `${ROOT_DIR}/tests/fixtures/file.ts`,
+        },
       ],
       [
         'type Foo = {prop: string}; type Test = Foo;',
-        { from: 'file', name: 'Foo', path: 'tests/fixtures/file.ts' },
+        {
+          from: 'file',
+          name: 'Foo',
+          path: `${ROOT_DIR}/tests/fixtures/file.ts`,
+        },
       ],
       [
         'type Foo = Promise<number> & {hey?: string}; let foo: Foo = Promise.resolve(5); type Test = typeof foo;',
@@ -211,7 +232,7 @@ describe('TypeOrValueSpecifier', () => {
         {
           from: 'file',
           name: 'Foo',
-          path: 'tests/../tests/fixtures/////file.ts',
+          path: `${ROOT_DIR}/tests/../tests/fixtures/////file.ts`,
         },
       ],
       [
@@ -219,7 +240,7 @@ describe('TypeOrValueSpecifier', () => {
         {
           from: 'file',
           name: 'Foo',
-          path: 'tests/../tests/fixtures/////file.ts',
+          path: `${ROOT_DIR}/tests/../tests/fixtures/////file.ts`,
         },
       ],
       [
@@ -227,7 +248,7 @@ describe('TypeOrValueSpecifier', () => {
         {
           from: 'file',
           name: ['Foo', 'Bar'],
-          path: 'tests/fixtures/file.ts',
+          path: `${ROOT_DIR}/tests/fixtures/file.ts`,
         },
       ],
       [
@@ -235,12 +256,15 @@ describe('TypeOrValueSpecifier', () => {
         {
           from: 'file',
           name: ['Foo', 'Bar'],
-          path: 'tests/fixtures/file.ts',
+          path: `${ROOT_DIR}/tests/fixtures/file.ts`,
         },
       ],
-    ])('matches a matching file specifier: %s', runTestPositive);
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      'matches a matching file specifier: %s',
+      runTestPositive,
+    );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       [
         'interface Foo {prop: string}; type Test = Foo;',
         { from: 'file', name: 'Bar' },
@@ -261,32 +285,44 @@ describe('TypeOrValueSpecifier', () => {
           path: 'tests/fixtures/wrong-file.ts',
         },
       ],
-    ])("doesn't match a mismatched file specifier: %s", runTestNegative);
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      "doesn't match a mismatched file specifier: %s",
+      runTestNegative,
+    );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       ['type Test = RegExp;', { from: 'lib', name: 'RegExp' }],
       ['type Test = RegExp;', { from: 'lib', name: ['RegExp', 'BigInt'] }],
-    ])('matches a matching lib specifier: %s', runTestPositive);
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      'matches a matching lib specifier: %s',
+      runTestPositive,
+    );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       ['type Test = RegExp;', { from: 'lib', name: 'BigInt' }],
       ['type Test = RegExp;', { from: 'lib', name: ['BigInt', 'Date'] }],
-    ])("doesn't match a mismatched lib specifier: %s", runTestNegative);
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      "doesn't match a mismatched lib specifier: %s",
+      runTestNegative,
+    );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       ['type Test = string;', { from: 'lib', name: 'string' }],
       ['type Test = string;', { from: 'lib', name: ['string', 'number'] }],
-    ])('matches a matching intrinsic type specifier: %s', runTestPositive);
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      'matches a matching intrinsic type specifier: %s',
+      runTestPositive,
+    );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       ['type Test = string;', { from: 'lib', name: 'number' }],
       ['type Test = string;', { from: 'lib', name: ['number', 'boolean'] }],
-    ])(
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched intrinsic type specifier: %s",
       runTestNegative,
     );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       [
         'import type {Node} from "typescript"; type Test = Node;',
         { from: 'package', name: 'Node', package: 'typescript' },
@@ -366,9 +402,12 @@ describe('TypeOrValueSpecifier', () => {
           package: 'node:test',
         },
       ],
-    ])('matches a matching package specifier: %s', runTestPositive);
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      'matches a matching package specifier: %s',
+      runTestPositive,
+    );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       [
         `
           type Other = { __otherBrand: true };
@@ -386,12 +425,12 @@ describe('TypeOrValueSpecifier', () => {
         `,
         { from: 'file', name: ['SafePromise'] },
       ],
-    ])(
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched type specifier for an intersection type: %s",
       runTestNegative,
     );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       [
         `
           type SafePromise = Promise<number> & { __safeBrand: string };
@@ -400,12 +439,12 @@ describe('TypeOrValueSpecifier', () => {
         `,
         { from: 'file', name: ['ResultType'] },
       ],
-    ])(
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching type specifier for an intersection type: %s',
       runTestPositive,
     );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       [
         `
           declare module "node:test" {
@@ -425,12 +464,12 @@ describe('TypeOrValueSpecifier', () => {
           package: 'node:test',
         },
       ],
-    ])(
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching package specifier for an intersection type: %s',
       runTestPositive,
     );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       [
         `
           declare module "node:test" {
@@ -450,7 +489,7 @@ describe('TypeOrValueSpecifier', () => {
           package: 'node:test',
         },
       ],
-    ])(
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier for an intersection type: %s",
       runTestNegative,
     );
@@ -472,7 +511,7 @@ describe('TypeOrValueSpecifier', () => {
       );
     });
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       [
         'import type {Node} from "typescript"; type Test = Node;',
         { from: 'package', name: 'Symbol', package: 'typescript' },
@@ -497,9 +536,12 @@ describe('TypeOrValueSpecifier', () => {
         'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
         { from: 'package', name: 'TsNode', package: 'typescript' },
       ],
-    ])("doesn't match a mismatched package specifier: %s", runTestNegative);
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      "doesn't match a mismatched package specifier: %s",
+      runTestNegative,
+    );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       [
         'interface Foo {prop: string}; type Test = Foo;',
         { from: 'lib', name: 'Foo' },
@@ -528,18 +570,25 @@ describe('TypeOrValueSpecifier', () => {
           package: 'foo-package',
         },
       ],
-      ['type Test = RegExp;', { from: 'file', name: 'RegExp' }],
-      ['type Test = RegExp;', { from: 'file', name: ['RegExp', 'BigInt'] }],
+      ['type Test = RegExp;', { from: 'file', name: 'RegExp', path: ROOT_DIR }],
       [
         'type Test = RegExp;',
-        { from: 'file', name: 'RegExp', path: 'tests/fixtures/file.ts' },
+        { from: 'file', name: ['RegExp', 'BigInt'], path: ROOT_DIR },
+      ],
+      [
+        'type Test = RegExp;',
+        {
+          from: 'file',
+          name: 'RegExp',
+          path: `${ROOT_DIR}/tests/fixtures/file.ts`,
+        },
       ],
       [
         'type Test = RegExp;',
         {
           from: 'file',
           name: ['RegExp', 'BigInt'],
-          path: 'tests/fixtures/file.ts',
+          path: `${ROOT_DIR}/tests/fixtures/file.ts`,
         },
       ],
       [
@@ -550,11 +599,17 @@ describe('TypeOrValueSpecifier', () => {
         'type Test = RegExp;',
         { from: 'package', name: ['RegExp', 'BigInt'], package: 'foo-package' },
       ],
-    ])("doesn't match a mismatched specifier type: %s", runTestNegative);
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      "doesn't match a mismatched specifier type: %s",
+      runTestNegative,
+    );
 
-    it.each<[string, TypeOrValueSpecifier]>([
+    it.each([
       ['type Test = Foo;', { from: 'lib', name: 'Foo' }],
       ['type Test = Foo;', { from: 'lib', name: ['Foo', 'number'] }],
-    ])("doesn't match an error type: %s", runTestNegative);
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      "doesn't match an error type: %s",
+      runTestNegative,
+    );
   });
 });
