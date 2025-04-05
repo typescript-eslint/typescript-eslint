@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures expression TSSatisfiesExpression identifier-tuple-type Babel - Tokens 1`] = `
 [
   Identifier {
     type: "Identifier",
@@ -103,4 +100,3 @@ exports[`AST Fixtures expression TSSatisfiesExpression identifier-tuple-type Bab
     },
   },
 ]
-`;

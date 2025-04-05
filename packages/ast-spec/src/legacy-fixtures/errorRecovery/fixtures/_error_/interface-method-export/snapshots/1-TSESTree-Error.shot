@@ -1,12 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-method-export TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > interface-method-export > TSESTree - Error`]
+TSError
   2 |
   3 | interface Foo {
 > 4 |     export g(bar: string): void;
     |     ^^^^^^ 'export' modifier cannot appear on a type member
   5 | }
   6 |
-  7 |"
-`;
+  7 |

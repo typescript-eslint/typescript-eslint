@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics type-guard-in-arrow-function AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > type-guard-in-arrow-function > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -62,7 +62,7 @@ exports[`AST Fixtures legacy-fixtures basics type-guard-in-arrow-function AST Al
                       operator: '===',
                       right: Literal {
                         type: 'Literal',
-                        raw: '\\'string\\'',
+                        raw: '\'string\'',
                         value: 'string',
 
                         range: [139, 147],
@@ -209,5 +209,4 @@ exports[`AST Fixtures legacy-fixtures basics type-guard-in-arrow-function AST Al
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

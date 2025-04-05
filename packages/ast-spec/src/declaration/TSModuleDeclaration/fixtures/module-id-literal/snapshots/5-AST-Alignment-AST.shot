@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSModuleDeclaration module-id-literal AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > TSModuleDeclaration > module-id-literal > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -24,7 +24,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-id-literal AST Alig
 -       global: false,
         id: Literal {
           type: 'Literal',
-          raw: '\\'a\\'',
+          raw: '\'a\'',
           value: 'a',
 
           range: [7, 10],
@@ -49,5 +49,4 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-id-literal AST Alig
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures expression TSSatisfiesExpression array-array TSESTree - Tokens 1`] = `
 [
   Punctuator {
     type: "Punctuator",
@@ -163,4 +160,3 @@ exports[`AST Fixtures expression TSSatisfiesExpression array-array TSESTree - To
     },
   },
 ]
-`;
