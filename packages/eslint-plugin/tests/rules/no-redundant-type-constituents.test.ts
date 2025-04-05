@@ -184,6 +184,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     'type T = { [key: string]: 1 } | { a: 1 };',
     'type T = Partial<{ a: 1; b: 1 }> | { a: 1 };',
     "type T = Omit<{ a: 1; b: 1 }, 'a'> | { a: number; b: number };",
+    'type T = { a?: 1; b?: 1 } & { a: 1 };',
+    'type T = { a?: 1 } & { a: 1; b?: 1 };',
+    "type F<T> = Omit<T, 'a'> & { a: 1 };",
+    "type F<T> = Omit<T, 'a'> & { a?: 1 };",
+    "type F<T> = Omit<T, 'c'> & { a?: 1; b?: 1 };",
   ],
 
   invalid: [

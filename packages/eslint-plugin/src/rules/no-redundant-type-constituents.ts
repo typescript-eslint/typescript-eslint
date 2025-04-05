@@ -143,6 +143,13 @@ function checkIntersectionTypeAssignability(
     }
     return assignability;
   }
+  if (
+    tsutils.isObjectType(sourceType) &&
+    tsutils.isObjectType(targetType) &&
+    hasDifferingOptionalProps(sourceType, targetType)
+  ) {
+    return TypeAssignability.NotAssignable;
+  }
   return checkTypeAssignability(sourceType, targetType, checker);
 }
 
@@ -184,6 +191,30 @@ function getGroupTypeRelationsBySuperTypeName(typeRelations: TypeRelation[]) {
   return arrayGroupByToMap(
     typeRelations,
     ({ superTypeWithName }) => superTypeWithName.typeName,
+  );
+}
+
+function hasTargetOnlyOptionalProps(
+  sourceProps: ts.Symbol[],
+  targetProps: ts.Symbol[],
+) {
+  return targetProps.some(targetProp => {
+    if (targetProp.flags & ts.SymbolFlags.Optional) {
+      return sourceProps.every(
+        sourceProp => sourceProp.getName() !== targetProp.getName(),
+      );
+    }
+    return false;
+  });
+}
+
+function hasDifferingOptionalProps(type1: ts.ObjectType, type2: ts.ObjectType) {
+  const propertiesOfType1 = type1.getProperties();
+  const propertiesOfType2 = type2.getProperties();
+
+  return (
+    hasTargetOnlyOptionalProps(propertiesOfType1, propertiesOfType2) ||
+    hasTargetOnlyOptionalProps(propertiesOfType2, propertiesOfType1)
   );
 }
 
