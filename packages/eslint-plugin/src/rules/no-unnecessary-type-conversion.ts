@@ -239,15 +239,16 @@ export default createRule<Options, MessageIds>({
         }
       },
       CallExpression(node: TSESTree.CallExpression): void {
+        const nodeCallee = node.callee;
         if (
-          node.callee.type === AST_NODE_TYPES.Identifier &&
+          nodeCallee.type === AST_NODE_TYPES.Identifier &&
           node.arguments.length === 1
         ) {
           const getTypeLazy = () =>
             getConstrainedTypeAtLocation(services, node.arguments[0]);
 
           const isBuiltInCall = (name: string) => {
-            if ((node.callee as TSESTree.Identifier).name === name) {
+            if (nodeCallee.name === name) {
               const scope = context.sourceCode.getScope(node);
               const variable = scope.set.get(name);
               return !variable?.defs.length;
@@ -284,14 +285,14 @@ export default createRule<Options, MessageIds>({
               innerNode: [node.arguments[0]],
               sourceCode: context.sourceCode,
             };
-            const typeString = node.callee.name.toLowerCase();
+            const typeString = nodeCallee.name.toLowerCase();
 
             context.report({
-              loc: node.callee.loc,
+              node: nodeCallee,
               messageId: 'unnecessaryTypeConversion',
               data: {
-                type: node.callee.name.toLowerCase(),
-                violation: `Passing a ${typeString} to ${node.callee.name}()`,
+                type: nodeCallee.name.toLowerCase(),
+                violation: `Passing a ${typeString} to ${nodeCallee.name}()`,
               },
               suggest: [
                 {
