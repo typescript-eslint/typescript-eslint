@@ -58,7 +58,7 @@ ruleTester.run('no-array-constructor', rule, {
       code: 'Array?.();',
       errors: [
         {
-          messageId,
+          messageId: 'useLiteral',
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
@@ -68,7 +68,7 @@ ruleTester.run('no-array-constructor', rule, {
       code: '/* a */ /* b */ Array /* c */ /* d */ /* e */ /* f */?.(); /* g */ /* h */',
       errors: [
         {
-          messageId,
+          messageId: 'useLiteral',
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
@@ -98,7 +98,7 @@ ruleTester.run('no-array-constructor', rule, {
       code: 'Array?.(x, y);',
       errors: [
         {
-          messageId,
+          messageId: 'useLiteral',
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
@@ -108,7 +108,7 @@ ruleTester.run('no-array-constructor', rule, {
       code: '/* a */ /* b */ Array /* c */ /* d */ /* e */ /* f */?.(x, y); /* g */ /* h */',
       errors: [
         {
-          messageId,
+          messageId: 'useLiteral',
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
@@ -138,7 +138,7 @@ ruleTester.run('no-array-constructor', rule, {
       code: 'Array?.(0, 1, 2);',
       errors: [
         {
-          messageId,
+          messageId: 'useLiteral',
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
@@ -154,7 +154,7 @@ ruleTester.run('no-array-constructor', rule, {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'useLiteral',
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
