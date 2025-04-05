@@ -11,9 +11,14 @@ export default {
     types: 'off',
     unresolved: 'off',
   },
+
+  vite: false,
+
   vitest: {
-    config: ['vitest.config.mts', 'packages/*/vitest.config.mts'],
+    config: ['vitest.config.mts'],
+    entry: ['tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
   },
+
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
@@ -60,6 +65,11 @@ export default {
     },
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: ['tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+      },
     },
     'packages/rule-tester': {
       ignore: ['typings/eslint.d.ts'],
