@@ -97,11 +97,10 @@ export default createRule<Options, MessageIds>({
               def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
             );
 
-          const isInAmbientDeclaration = !!(
+          const isInAmbientDeclaration =
             isDefinitionFile(context.filename) &&
             scope.type === ScopeType.tsModule &&
-            scope.block.declare
-          );
+            scope.block.declare;
 
           const useAutoFix = !(
             isInAmbientDeclaration || mergedWithClassDeclaration
