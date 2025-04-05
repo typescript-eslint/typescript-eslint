@@ -243,7 +243,7 @@ export default createRule<Options, MessageIds>({
           node.callee.type === AST_NODE_TYPES.Identifier &&
           node.arguments.length === 1
         ) {
-          const getType = () =>
+          const getTypeLazy = () =>
             getConstrainedTypeAtLocation(services, node.arguments[0]);
 
           const isBuiltInCall = (name: string) => {
@@ -259,22 +259,25 @@ export default createRule<Options, MessageIds>({
             // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             (isBuiltInCall('String') &&
               doesUnderlyingTypeMatchFlag(
-                getType(),
+                getTypeLazy(),
                 ts.TypeFlags.StringLike,
               )) ||
             (isBuiltInCall('Number') &&
               doesUnderlyingTypeMatchFlag(
-                getType(),
+                getTypeLazy(),
                 ts.TypeFlags.NumberLike,
               )) ||
             // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
             (isBuiltInCall('Boolean') &&
               doesUnderlyingTypeMatchFlag(
-                getType(),
+                getTypeLazy(),
                 ts.TypeFlags.BooleanLike,
               )) ||
             (isBuiltInCall('BigInt') &&
-              doesUnderlyingTypeMatchFlag(getType(), ts.TypeFlags.BigIntLike))
+              doesUnderlyingTypeMatchFlag(
+                getTypeLazy(),
+                ts.TypeFlags.BigIntLike,
+              ))
           ) {
             const wrappingFixerParams = {
               node,
