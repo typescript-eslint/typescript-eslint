@@ -1199,8 +1199,68 @@ const test = <T extends Partial<never>>() => {};
         ],
         options: [{ ignoreRestArgs: true }],
       },
+      {
+        code: 'type Keys = keyof any;',
+        errors: [
+          {
+            column: 19,
+            line: 1,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestPropertyKey',
+                output: 'type Keys = PropertyKey;',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: 'const integer = <TKey extends keyof any, TTarget extends { [K in TKey]: number }>(target: TTarget, key: TKey) => { /* ... */ };',
+        errors: [
+          {
+            column: 37,
+            line: 1,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestPropertyKey',
+                output:
+                  'const integer = <TKey extends PropertyKey, TTarget extends { [K in TKey]: number }>(target: TTarget, key: TKey) => { /* ... */ };',
+              },
+            ],
+          },
+        ],
+      },
     ] as RuleInvalidTestCase[]
   ).flatMap(testCase => {
+    if (testCase.code.includes('keyof any')) {
+      return [
+        testCase,
+        {
+          code: `// fixToUnknown: true\n${testCase.code}`,
+          errors: testCase.errors.map(err => {
+            if (err.line == null) {
+              return err;
+            }
+
+            return {
+              ...err,
+              line: err.line + 1,
+              suggestions: err.suggestions?.map(
+                (s): RuleSuggestionOutput => ({
+                  ...s,
+                  output: `// fixToUnknown: true\n${s.output}`,
+                }),
+              ),
+            };
+          }),
+          options: [{ ...testCase.options?.[0], fixToUnknown: true }],
+          output: `// fixToUnknown: true\n${testCase.code.replaceAll('keyof any', 'PropertyKey')}`,
+        },
+      ];
+    }
+
     const suggestions = (code: string): RuleSuggestionOutput[] => [
       {
         messageId: 'suggestUnknown',

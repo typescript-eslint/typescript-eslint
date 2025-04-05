@@ -10,7 +10,11 @@ export type Options = [
     ignoreRestArgs?: boolean;
   },
 ];
-export type MessageIds = 'suggestNever' | 'suggestUnknown' | 'unexpectedAny';
+export type MessageIds =
+  | 'suggestNever'
+  | 'suggestPropertyKey'
+  | 'suggestUnknown'
+  | 'unexpectedAny';
 
 export default createRule<Options, MessageIds>({
   name: 'no-explicit-any',
@@ -25,6 +29,8 @@ export default createRule<Options, MessageIds>({
     messages: {
       suggestNever:
         "Use `never` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+      suggestPropertyKey:
+        'Use `PropertyKey` instead, this is more explicit than `keyof any`.',
       suggestUnknown:
         'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
       unexpectedAny: 'Unexpected any. Specify a different type.',
@@ -170,36 +176,88 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    /**
+     * Checks if the node is within a keyof any expression
+     * @param node the node to be validated.
+     * @returns true if the node is within a keyof any expression, false otherwise
+     * @private
+     */
+    function isNodeWithinKeyofAny(node: TSESTree.Node): boolean {
+      return (
+        node.parent?.type === AST_NODE_TYPES.TSTypeOperator &&
+        node.parent.operator === 'keyof'
+      );
+    }
+
+    /**
+     * Creates a fixer that replaces a keyof any with PropertyKey
+     * @param node the node to be fixed.
+     * @returns a function that will fix the node.
+     * @private
+     */
+    function createPropertyKeyFixer(node: TSESTree.Node) {
+      return (fixer: TSESLint.RuleFixer) => {
+        if (node.parent && node.parent.type === AST_NODE_TYPES.TSTypeOperator) {
+          return fixer.replaceText(node.parent, 'PropertyKey');
+        }
+        return fixer.replaceText(node, 'unknown');
+      };
+    }
+
+    /**
+     * Creates a fixer that replaces any with unknown
+     * @param node the node to be fixed.
+     * @returns a function that will fix the node.
+     * @private
+     */
+    function createUnknownFixer(node: TSESTree.Node) {
+      return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
+        return fixer.replaceText(node, 'unknown');
+      };
+    }
+
     return {
       TSAnyKeyword(node): void {
+        const isKeyofAny = isNodeWithinKeyofAny(node);
+
         if (ignoreRestArgs && isNodeDescendantOfRestElementInFunction(node)) {
           return;
         }
+
+        const propertyKeySuggestion: TSESLint.SuggestionReportDescriptor<MessageIds> =
+          {
+            messageId: 'suggestPropertyKey',
+            fix: createPropertyKeyFixer(node),
+          };
+
+        const unknownSuggestion: TSESLint.SuggestionReportDescriptor<MessageIds> =
+          {
+            messageId: 'suggestUnknown',
+            fix: createUnknownFixer(node),
+          };
+
+        const neverSuggestion: TSESLint.SuggestionReportDescriptor<MessageIds> =
+          {
+            messageId: 'suggestNever',
+            fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
+              return fixer.replaceText(node, 'never');
+            },
+          };
 
         const fixOrSuggest: {
           fix: TSESLint.ReportFixFunction | null;
           suggest: TSESLint.ReportSuggestionArray<MessageIds> | null;
         } = {
           fix: null,
-          suggest: [
-            {
-              messageId: 'suggestUnknown',
-              fix(fixer): TSESLint.RuleFix {
-                return fixer.replaceText(node, 'unknown');
-              },
-            },
-            {
-              messageId: 'suggestNever',
-              fix(fixer): TSESLint.RuleFix {
-                return fixer.replaceText(node, 'never');
-              },
-            },
-          ],
+          suggest: isKeyofAny
+            ? [propertyKeySuggestion]
+            : [unknownSuggestion, neverSuggestion],
         };
 
         if (fixToUnknown) {
-          fixOrSuggest.fix = (fixer): TSESLint.RuleFix =>
-            fixer.replaceText(node, 'unknown');
+          fixOrSuggest.fix = isKeyofAny
+            ? createPropertyKeyFixer(node)
+            : createUnknownFixer(node);
         }
 
         context.report({
