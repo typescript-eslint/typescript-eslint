@@ -14,9 +14,11 @@ import * as path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 
+import rootPackageJson from '../../../package.json';
+
 export const execFile = promisify(child_process.execFile);
 
-export interface PackageJSON {
+interface PackageJSON {
   devDependencies: Record<string, string>;
   name: string;
   private?: boolean;
@@ -24,21 +26,37 @@ export interface PackageJSON {
 
 const PACKAGES_DIR = path.resolve(__dirname, '..', '..');
 
-export const homeOrTmpDir = os.tmpdir() || os.homedir();
-
-const tarFolder = path.join(
-  homeOrTmpDir,
+const INTEGRATION_TEST_DIR = path.join(
+  os.tmpdir() || os.homedir(),
   'typescript-eslint-integration-tests',
-  'tarballs',
 );
 
+const FIXTURES_DIR_BASENAME = 'fixtures';
+
+export const FIXTURES_DESTINATION_DIR = path.join(
+  INTEGRATION_TEST_DIR,
+  FIXTURES_DIR_BASENAME,
+);
+
+const YARN_RC_CONTENT = 'nodeLinker: node-modules\n\nenableGlobalCache: true\n';
+
+const FIXTURES_DIR = path.join(__dirname, '..', FIXTURES_DIR_BASENAME);
+
+const TAR_FOLDER = path.join(INTEGRATION_TEST_DIR, 'tarballs');
+
 export const setup = async (): Promise<PackageJSON['devDependencies']> => {
+  const testFileBaseNames = await fs.readdir(FIXTURES_DIR, {
+    encoding: 'utf-8',
+  });
+
   const PACKAGES = await fs.readdir(PACKAGES_DIR, {
     encoding: 'utf-8',
     withFileTypes: true,
   });
 
-  await fs.mkdir(tarFolder, { recursive: true });
+  await fs.mkdir(FIXTURES_DESTINATION_DIR, { recursive: true });
+
+  await fs.mkdir(TAR_FOLDER, { recursive: true });
 
   const tseslintPackages = Object.fromEntries(
     (
@@ -66,7 +84,7 @@ export const setup = async (): Promise<PackageJSON['devDependencies']> => {
           }
 
           const result = await execFile('npm', ['pack', packageDir], {
-            cwd: tarFolder,
+            cwd: TAR_FOLDER,
             encoding: 'utf-8',
             shell: true,
           });
@@ -80,12 +98,113 @@ export const setup = async (): Promise<PackageJSON['devDependencies']> => {
 
           return [
             packageJson.name,
-            `file:${path.join(tarFolder, tarball)}`,
+            `file:${path.join(TAR_FOLDER, tarball)}`,
           ] as const;
         }),
       )
     ).filter(e => e != null),
   );
+
+  const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
+    ...tseslintPackages,
+    eslint: rootPackageJson.devDependencies.eslint,
+    typescript: rootPackageJson.devDependencies.typescript,
+    vitest: rootPackageJson.devDependencies.vitest,
+  };
+
+  const temp = await fs.mkdtemp(path.join(INTEGRATION_TEST_DIR, 'temp'), {
+    encoding: 'utf-8',
+  });
+
+  await fs.writeFile(path.join(temp, '.yarnrc.yml'), YARN_RC_CONTENT, {
+    encoding: 'utf-8',
+  });
+
+  await fs.writeFile(
+    path.join(temp, 'package.json'),
+    JSON.stringify(
+      {
+        devDependencies: BASE_DEPENDENCIES,
+        packageManager: rootPackageJson.packageManager,
+        private: true,
+        resolutions: tseslintPackages,
+      },
+      null,
+      2,
+    ),
+    { encoding: 'utf-8' },
+  );
+
+  await execFile('yarn', ['install', '--no-immutable'], {
+    cwd: temp,
+    shell: true,
+  });
+
+  await Promise.all(
+    testFileBaseNames.map(async fixture => {
+      const testFolder = path.join(FIXTURES_DESTINATION_DIR, fixture);
+
+      const fixtureDir = path.join(FIXTURES_DIR, fixture);
+
+      const fixturePackageJson: PackageJSON = (
+        await import(
+          pathToFileURL(path.join(fixtureDir, 'package.json')).href,
+          { with: { type: 'json' } }
+        )
+      ).default;
+
+      await fs.cp(fixtureDir, testFolder, { recursive: true });
+
+      await fs.writeFile(
+        path.join(testFolder, 'package.json'),
+        JSON.stringify(
+          {
+            private: true,
+            ...fixturePackageJson,
+            devDependencies: {
+              ...BASE_DEPENDENCIES,
+              ...fixturePackageJson.devDependencies,
+            },
+
+            packageManager: rootPackageJson.packageManager,
+
+            // ensure everything uses the locally packed versions instead of the NPM versions
+            resolutions: {
+              ...tseslintPackages,
+            },
+          },
+          null,
+          2,
+        ),
+        { encoding: 'utf-8' },
+      );
+
+      await fs.writeFile(
+        path.join(testFolder, '.yarnrc.yml'),
+        YARN_RC_CONTENT,
+        { encoding: 'utf-8' },
+      );
+
+      const { stderr, stdout } = await execFile(
+        'yarn',
+        ['install', '--no-immutable'],
+        {
+          cwd: testFolder,
+          shell: true,
+        },
+      );
+
+      if (stderr) {
+        console.error(stderr);
+
+        if (stdout) {
+          console.log(stdout);
+        }
+      }
+    }),
+  );
+
+  await fs.rm(temp, { recursive: true });
 
   console.log('Finished packing local packages.');
 
@@ -94,7 +213,7 @@ export const setup = async (): Promise<PackageJSON['devDependencies']> => {
 
 const teardown = async (): Promise<void> => {
   if (process.env.KEEP_INTEGRATION_TEST_DIR !== 'true') {
-    await fs.rm(path.dirname(tarFolder), { recursive: true });
+    await fs.rm(INTEGRATION_TEST_DIR, { recursive: true });
   }
 };
 
