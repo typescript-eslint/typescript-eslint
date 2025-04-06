@@ -16,11 +16,13 @@ const EXCLUDED_KEYS = new Set([
 ]);
 
 const generator = createIdGenerator();
-type Node = { type: AST_NODE_TYPES } & Record<string, unknown>;
-type Identifier = { name: string; type: AST_NODE_TYPES.Identifier } & Record<
-  string,
-  unknown
->;
+interface Node {
+  type: AST_NODE_TYPES;
+}
+interface Identifier {
+  name: string;
+  type: AST_NODE_TYPES.Identifier;
+}
 const SEEN_NODES = new Map<Node, number>();
 
 export const serializer: NewPlugin = {
