@@ -11,11 +11,7 @@
       "options": {
         "parallel": false,
         "cwd": "packages/scope-manager",
-        "commands": [
-          "rimraf _ts4.3",
-          "tsc -b tsconfig.build.json",
-          "downlevel-dts dist _ts4.3/dist --to=4.3"
-        ]
+        "commands": ["rimraf _ts4.3", "tsc -b tsconfig.build.json"]
       }
     },
     "clean": {
