@@ -33,6 +33,8 @@ const vitestFiles = [
   'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/integration-tests/tests/**/*.test.{ts,tsx,cts,mts},',
+  'packages/integration-tests/tools/integration-test-base.ts',
+  'packages/integration-tests/tools/pack-packages.ts',
 ];
 
 export default tseslint.config(
@@ -391,8 +393,6 @@ export default tseslint.config(
       'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
       'packages/*/tests/**/test.{ts,tsx,cts,mts}',
       'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
-      'packages/integration-tests/tools/integration-test-base.ts',
-      'packages/integration-tests/tools/pack-packages.ts',
     ],
     ignores: vitestFiles,
     rules: {
