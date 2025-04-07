@@ -399,7 +399,7 @@ export default createRule<Options, MessageId>({
     function isPromiseArray(node: ts.Node): boolean {
       const type = checker.getTypeAtLocation(node);
       for (const ty of tsutils
-        .unionTypeParts(type)
+        .unionConstituents(type)
         .map(t => checker.getApparentType(t))) {
         if (checker.isArrayType(ty)) {
           const arrayType = checker.getTypeArguments(ty)[0];
@@ -434,7 +434,9 @@ export default createRule<Options, MessageId>({
       }
 
       // Otherwise, we always consider the built-in Promise to be Promise-like...
-      const typeParts = tsutils.unionTypeParts(checker.getApparentType(type));
+      const typeParts = tsutils.unionConstituents(
+        checker.getApparentType(type),
+      );
       if (
         typeParts.some(typePart =>
           isBuiltinSymbolLike(services.program, typePart, 'Promise'),
@@ -480,7 +482,7 @@ function hasMatchingSignature(
   type: ts.Type,
   matcher: (signature: ts.Signature) => boolean,
 ): boolean {
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tsutils.unionConstituents(type)) {
     if (t.getCallSignatures().some(matcher)) {
       return true;
     }
@@ -497,7 +499,7 @@ function isFunctionParam(
   const type: ts.Type | undefined = checker.getApparentType(
     checker.getTypeOfSymbolAtLocation(param, node),
   );
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tsutils.unionConstituents(type)) {
     if (t.getCallSignatures().length !== 0) {
       return true;
     }

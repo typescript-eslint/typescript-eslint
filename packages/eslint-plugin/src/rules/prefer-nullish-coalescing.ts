@@ -250,10 +250,10 @@ export default createRule<Options, MessageIds>({
 
       if (
         tsutils
-          .typeParts(type)
+          .typeConstituents(type)
           .some(t =>
             tsutils
-              .intersectionTypeParts(t)
+              .intersectionConstituents(t)
               .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
           )
       ) {
