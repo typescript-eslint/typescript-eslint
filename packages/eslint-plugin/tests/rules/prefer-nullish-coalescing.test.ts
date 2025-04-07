@@ -514,6 +514,41 @@ declare let y: { a: string } | null
 
 x?.a ? y?.a : 'foo'
       `,
+      `
+function test<T>(val: T | undefined) {
+  return val !== undefined ? val : 'foo';
+}
+      `,
+      `
+function test<T>(val: T | null) {
+  return val !== null ? val : 'foo';
+}
+      `,
+      `
+function test<T>(val: T | string | undefined) {
+  return val !== undefined ? val : 'foo';
+}
+      `,
+      `
+function test<T>(val: T | string | null) {
+  return val !== null ? val : 'foo';
+}
+      `,
+      `
+function test<T>(val: T & string) {
+  return val !== undefined ? val : 'foo';
+}
+      `,
+      `
+function test<T>(val: T & string) {
+  return val !== null ? val : 'foo';
+}
+      `,
+      `
+function test<T>(val: T & string) {
+  return val ? val : 'foo';
+}
+      `,
     ].map(code => ({
       code,
       options: [{ ignoreTernaryTests: false }] as const,
@@ -1529,6 +1564,60 @@ a ? a : b;
       code: `
 declare const a: unknown;
 const b = a || 'bar';
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: false,
+            string: false,
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+function test<T>(val: T) {
+  return val || 'foo';
+}
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: false,
+            string: false,
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+function test<T>(val: T | string) {
+  return val || 'foo';
+}
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: false,
+            string: false,
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+function test<T>(val: T & string) {
+  return val || 'foo';
+}
       `,
       options: [
         {
@@ -6240,6 +6329,351 @@ declare function makeString(): string;
 
 function weirdParens() {
   ((foo).a) ??= makeString();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T) {
+  return val !== null && val !== undefined ? val : 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T) {
+  return val ? val : 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T) {
+  return val || 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | string) {
+  return val !== null && val !== undefined ? val : 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | string) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | string) {
+  return val ? val : 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | string) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | string) {
+  return val || 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | string) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | string | null) {
+  return val !== null && val !== undefined ? val : 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | string | null) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | string | null) {
+  return val ? val : 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | string | null) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | string | null) {
+  return val || 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | string | null) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | string | undefined) {
+  return val !== null && val !== undefined ? val : 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | string | undefined) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | string | undefined) {
+  return val ? val : 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | string | undefined) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | string | undefined) {
+  return val || 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | string | undefined) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | string | null | undefined) {
+  return val !== null && val !== undefined ? val : 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | string | null | undefined) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | string | null | undefined) {
+  return val ? val : 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | string | null | undefined) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | string | null | undefined) {
+  return val || 'foo';
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | string | null | undefined) {
+  return val ?? 'foo';
 }
       `,
             },

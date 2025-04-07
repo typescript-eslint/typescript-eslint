@@ -14,6 +14,7 @@ import {
   isNodeOfTypes,
   isNullLiteral,
   isNullableType,
+  isTypeFlagSet,
   isUndefinedIdentifier,
   nullThrows,
   NullThrowsReasons,
@@ -211,7 +212,10 @@ export default createRule<Options, MessageIds>({
      * a nullishness check, taking into account the rule's configuration.
      */
     function isTypeEligibleForPreferNullish(type: ts.Type): boolean {
-      if (!isNullableType(type)) {
+      if (
+        !isNullableType(type) &&
+        !isTypeFlagSet(type, ts.TypeFlags.TypeParameter)
+      ) {
         return false;
       }
 
@@ -235,16 +239,7 @@ export default createRule<Options, MessageIds>({
         return true;
       }
 
-      // if the type is `any` or `unknown` we can't make any assumptions
-      // about the value, so it could be any primitive, even though the flags
-      // won't be set.
-      //
-      // technically, this is true of `void` as well, however, it's a TS error
-      // to test `void` for truthiness, so we don't need to bother checking for
-      // it in valid code.
-      if (
-        tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)
-      ) {
+      if (isIndeterminateType(type)) {
         return false;
       }
 
@@ -254,7 +249,7 @@ export default createRule<Options, MessageIds>({
           .some(t =>
             tsutils
               .intersectionTypeParts(t)
-              .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
+              .some(t => isTypeFlagSet(t, ignorableFlags)),
           )
       ) {
         return false;
@@ -447,12 +442,12 @@ export default createRule<Options, MessageIds>({
         const type = parserServices.getTypeAtLocation(
           nullishCoalescingLeftNode,
         );
-        const flags = getTypeFlags(type);
 
-        if (flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+        if (isIndeterminateType(type)) {
           return false;
         }
 
+        const flags = getTypeFlags(type);
         const hasNullType = (flags & ts.TypeFlags.Null) !== 0;
 
         // it is fixable if we check for undefined and the type is not nullable
@@ -931,4 +926,29 @@ function formatComments(
         : `/*${value}*/${separator}`,
     )
     .join('');
+}
+
+/**
+ * Returns `true` if the provided type is `any`, `unknown`,
+ * or a union type that includes a type parameter.
+ *
+ * In these cases, no assumptions can be made about the value's structure or behavior,
+ * as it might represent `undefined`, `null`, or any primitive,
+ * even if the standard type flags are not set.
+ *
+ * Note: This could technically include `void` as well, but testing for `void` is unnecessary,
+ * since evaluating `void` for truthiness results in a TypeScript error.
+ */
+function isIndeterminateType(type: ts.Type): boolean {
+  if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+    return true;
+  }
+
+  return tsutils
+    .typeParts(type)
+    .some(t =>
+      tsutils
+        .unionTypeParts(t)
+        .some(t => isTypeFlagSet(t, ts.TypeFlags.TypeParameter)),
+    );
 }
