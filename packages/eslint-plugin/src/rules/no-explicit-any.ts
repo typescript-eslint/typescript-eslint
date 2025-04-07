@@ -197,10 +197,10 @@ export default createRule<Options, MessageIds>({
      */
     function createPropertyKeyFixer(node: TSESTree.Node) {
       return (fixer: TSESLint.RuleFixer) => {
-        if (node.parent && node.parent.type === AST_NODE_TYPES.TSTypeOperator) {
-          return fixer.replaceText(node.parent, 'PropertyKey');
-        }
-        return fixer.replaceText(node, 'unknown');
+        return fixer.replaceText(
+          node.parent as TSESTree.TSTypeOperator,
+          'PropertyKey',
+        );
       };
     }
 
