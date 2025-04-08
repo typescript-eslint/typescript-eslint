@@ -1,16 +1,6 @@
-// import type {
-//   InvalidTestCase,
-//   SuggestionOutput,
-// } from '@typescript-eslint/rule-tester';
-
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-// import type { MessageIds, Options } from '../../src/rules/no-explicit-any';
-
 import rule from '../../src/rules/no-explicit-any';
-
-// type RuleInvalidTestCase = InvalidTestCase<MessageIds, Options>;
-// type RuleSuggestionOutput = SuggestionOutput<MessageIds>;
 
 const ruleTester = new RuleTester();
 
