@@ -246,7 +246,9 @@ export type NodeWithKey =
   | TSESTree.Property
   | TSESTree.PropertyDefinition
   | TSESTree.TSAbstractMethodDefinition
-  | TSESTree.TSAbstractPropertyDefinition;
+  | TSESTree.TSAbstractPropertyDefinition
+  | TSESTree.TSMethodSignature
+  | TSESTree.TSPropertySignature;
 
 /**
  * Gets a member being accessed or declared if its value can be determined statically, and
@@ -296,7 +298,7 @@ export type NodeWithKey =
 export function getStaticMemberAccessValue(
   node: NodeWithKey,
   { sourceCode }: RuleContext<string, unknown[]>,
-): string | symbol | undefined {
+): number | string | symbol | undefined {
   const key =
     node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
   const { type } = key;
@@ -312,7 +314,14 @@ export function getStaticMemberAccessValue(
     return undefined;
   }
   const { value } = result;
-  return typeof value === 'symbol' ? value : String(value);
+  if (
+    typeof value === 'symbol' ||
+    typeof value === 'string' ||
+    typeof value === 'number'
+  ) {
+    return value;
+  }
+  return String(value);
 }
 
 /**
@@ -323,8 +332,8 @@ export function getStaticMemberAccessValue(
 export const isStaticMemberAccessOfValue = (
   memberExpression: NodeWithKey,
   context: RuleContext<string, unknown[]>,
-  ...values: (string | symbol)[]
+  ...values: (number | string | symbol)[]
 ): boolean =>
-  (values as (string | symbol | undefined)[]).includes(
+  (values as (number | string | symbol | undefined)[]).includes(
     getStaticMemberAccessValue(memberExpression, context),
   );
