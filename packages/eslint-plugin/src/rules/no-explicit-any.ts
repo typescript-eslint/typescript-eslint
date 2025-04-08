@@ -195,24 +195,9 @@ export default createRule<Options, MessageIds>({
      * @returns a function that will fix the node.
      * @private
      */
-    function createPropertyKeyFixer(node: TSESTree.Node) {
+    function createPropertyKeyFixer(node: TSESTree.TSAnyKeyword) {
       return (fixer: TSESLint.RuleFixer) => {
-        return fixer.replaceText(
-          node.parent as TSESTree.TSTypeOperator,
-          'PropertyKey',
-        );
-      };
-    }
-
-    /**
-     * Creates a fixer that replaces any with unknown
-     * @param node the node to be fixed.
-     * @returns a function that will fix the node.
-     * @private
-     */
-    function createUnknownFixer(node: TSESTree.Node) {
-      return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
-        return fixer.replaceText(node, 'unknown');
+        return fixer.replaceText(node.parent, 'PropertyKey');
       };
     }
 
@@ -233,7 +218,7 @@ export default createRule<Options, MessageIds>({
         const unknownSuggestion: TSESLint.SuggestionReportDescriptor<MessageIds> =
           {
             messageId: 'suggestUnknown',
-            fix: createUnknownFixer(node),
+            fix: fixer => fixer.replaceText(node, 'unknown'),
           };
 
         const neverSuggestion: TSESLint.SuggestionReportDescriptor<MessageIds> =
@@ -257,7 +242,7 @@ export default createRule<Options, MessageIds>({
         if (fixToUnknown) {
           fixOrSuggest.fix = isKeyofAny
             ? createPropertyKeyFixer(node)
-            : createUnknownFixer(node);
+            : fixer => fixer.replaceText(node, 'unknown');
         }
 
         context.report({
