@@ -13,63 +13,29 @@ vi.mock(
 
     return {
       ...actual,
-      default: actual.default,
       getParsedConfigFile: vi.fn(actual.getParsedConfigFile),
     };
   },
 );
-
-vi.mock(import('typescript/lib/tsserverlibrary.js'), async importOriginal => {
-  const actual = await importOriginal();
-
-  return {
-    ...actual,
-    default: actual.default,
-    server: {
-      ...actual.server,
-      ProjectService: class ProjectService extends actual.server
-        .ProjectService {
-        eventHandler: ts.server.ProjectServiceEventHandler | undefined;
-        override host: ts.server.ServerHost;
-        override logger: ts.server.Logger;
-        override setCompilerOptionsForInferredProjects = vi.fn();
-        override setHostConfiguration = vi.fn();
-        constructor(
-          ...args: ConstructorParameters<typeof ts.server.ProjectService>
-        ) {
-          super(...args);
-          this.eventHandler = args[0].eventHandler;
-          this.host = args[0].host;
-          this.logger = args[0].logger;
-          if (this.eventHandler) {
-            this.eventHandler({
-              eventName: 'projectLoadingStart',
-            } as ts.server.ProjectLoadingStartEvent);
-          }
-        }
-      },
-    },
-  };
-});
 
 vi.mock(
   import('../../src/create-program/createProjectService.js'),
   async importOriginal => {
     const actual = await importOriginal();
 
+    vi.spyOn(
+      ts.server.ProjectService.prototype,
+      'setCompilerOptionsForInferredProjects',
+    );
+
+    vi.spyOn(ts.server.ProjectService.prototype, 'setHostConfiguration');
+
     return {
       ...actual,
-      createProjectService: vi.fn(
-        (...args: Parameters<typeof createProjectService>) => {
-          const createProjectServiceSpy = vi.fn(actual.createProjectService);
-          vi.spyOn(
-            ts.server.ProjectService.prototype,
-            'setCompilerOptionsForInferredProjects',
-          );
-          vi.spyOn(ts.server.ProjectService.prototype, 'setHostConfiguration');
-
-          const projectServiceSettings = createProjectServiceSpy(...args);
-
+      createProjectService: vi
+        .fn(actual.createProjectService)
+        .mockImplementation((...args) => {
+          const projectServiceSettings = actual.createProjectService(...args);
           const service =
             projectServiceSettings.service as typeof projectServiceSettings.service & {
               eventHandler: ts.server.ProjectServiceEventHandler | undefined;
@@ -82,10 +48,7 @@ vi.mock(
           }
 
           return projectServiceSettings;
-        },
-      ),
-
-      default: actual.default,
+        }),
     };
   },
 );
