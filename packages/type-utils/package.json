@@ -67,12 +67,5 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
-  },
-  "typesVersions": {
-    "<4.7": {
-      "*": [
-        "_ts4.3/*"
-      ]
-    }
   }
 }

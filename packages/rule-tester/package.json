@@ -78,12 +78,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "typesVersions": {
-    "<3.8": {
-      "*": [
-        "_ts3.4/*"
-      ]
-    }
   }
 }
