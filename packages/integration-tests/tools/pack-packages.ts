@@ -47,9 +47,9 @@ const FIXTURES_DIR = path.join(__dirname, '..', FIXTURES_DIR_BASENAME);
 const TAR_FOLDER = path.join(INTEGRATION_TEST_DIR, 'tarballs');
 
 export const setup = async (project: TestProject): Promise<void> => {
-  const testFileBaseNames = project.vitest.state
-    .getPaths()
-    .map(testFilePath => path.basename(testFilePath, '.test.ts'));
+  const testFileBaseNames = (
+    await project.globTestFiles(project.vitest.state.getPaths())
+  ).testFiles.map(testFilePath => path.basename(testFilePath, '.test.ts'));
 
   const PACKAGES = await fs.readdir(PACKAGES_DIR, {
     encoding: 'utf-8',
