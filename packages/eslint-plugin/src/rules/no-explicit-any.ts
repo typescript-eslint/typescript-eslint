@@ -182,9 +182,9 @@ export default createRule<Options, MessageIds>({
      * @returns true if the node is within a keyof any expression, false otherwise
      * @private
      */
-    function isNodeWithinKeyofAny(node: TSESTree.Node): boolean {
+    function isNodeWithinKeyofAny(node: TSESTree.TSAnyKeyword): boolean {
       return (
-        node.parent?.type === AST_NODE_TYPES.TSTypeOperator &&
+        node.parent.type === AST_NODE_TYPES.TSTypeOperator &&
         node.parent.operator === 'keyof'
       );
     }
@@ -209,34 +209,28 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const propertyKeySuggestion: TSESLint.SuggestionReportDescriptor<MessageIds> =
-          {
-            messageId: 'suggestPropertyKey',
-            fix: createPropertyKeyFixer(node),
-          };
-
-        const unknownSuggestion: TSESLint.SuggestionReportDescriptor<MessageIds> =
-          {
-            messageId: 'suggestUnknown',
-            fix: fixer => fixer.replaceText(node, 'unknown'),
-          };
-
-        const neverSuggestion: TSESLint.SuggestionReportDescriptor<MessageIds> =
-          {
-            messageId: 'suggestNever',
-            fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
-              return fixer.replaceText(node, 'never');
-            },
-          };
-
         const fixOrSuggest: {
           fix: TSESLint.ReportFixFunction | null;
           suggest: TSESLint.ReportSuggestionArray<MessageIds> | null;
         } = {
           fix: null,
           suggest: isKeyofAny
-            ? [propertyKeySuggestion]
-            : [unknownSuggestion, neverSuggestion],
+            ? [
+                {
+                  messageId: 'suggestPropertyKey',
+                  fix: createPropertyKeyFixer(node),
+                },
+              ]
+            : [
+                {
+                  messageId: 'suggestUnknown',
+                  fix: fixer => fixer.replaceText(node, 'unknown'),
+                },
+                {
+                  messageId: 'suggestNever',
+                  fix: fixer => fixer.replaceText(node, 'never'),
+                },
+              ],
         };
 
         if (fixToUnknown) {
