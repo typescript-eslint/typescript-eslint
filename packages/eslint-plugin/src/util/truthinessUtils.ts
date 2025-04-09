@@ -10,10 +10,10 @@ const isTruthyLiteral = (type: ts.Type): boolean =>
 
 export const isPossiblyFalsy = (type: ts.Type): boolean =>
   tsutils
-    .unionTypeParts(type)
+    .unionConstituents(type)
     // Intersections like `string & {}` can also be possibly falsy,
     // requiring us to look into the intersection.
-    .flatMap(type => tsutils.intersectionTypeParts(type))
+    .flatMap(type => tsutils.intersectionConstituents(type))
     // PossiblyFalsy flag includes literal values, so exclude ones that
     // are definitely truthy
     .filter(t => !isTruthyLiteral(t))
@@ -21,8 +21,8 @@ export const isPossiblyFalsy = (type: ts.Type): boolean =>
 
 export const isPossiblyTruthy = (type: ts.Type): boolean =>
   tsutils
-    .unionTypeParts(type)
-    .map(type => tsutils.intersectionTypeParts(type))
+    .unionConstituents(type)
+    .map(type => tsutils.intersectionConstituents(type))
     .some(intersectionParts =>
       // It is possible to define intersections that are always falsy,
       // like `"" & { __brand: string }`.

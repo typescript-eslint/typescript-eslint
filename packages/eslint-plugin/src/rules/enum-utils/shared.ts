@@ -34,7 +34,7 @@ function getBaseEnumType(typeChecker: ts.TypeChecker, type: ts.Type): ts.Type {
  */
 export function getEnumLiterals(type: ts.Type): ts.LiteralType[] {
   return tsutils
-    .unionTypeParts(type)
+    .unionConstituents(type)
     .filter((subType): subType is ts.LiteralType =>
       isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral),
     );

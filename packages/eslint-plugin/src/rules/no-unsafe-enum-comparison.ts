@@ -23,7 +23,7 @@ function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
 }
 
 function isNumberLike(type: ts.Type): boolean {
-  const typeParts = tsutils.intersectionTypeParts(type);
+  const typeParts = tsutils.intersectionConstituents(type);
 
   return typeParts.some(typePart => {
     return tsutils.isTypeFlagSet(
@@ -34,7 +34,7 @@ function isNumberLike(type: ts.Type): boolean {
 }
 
 function isStringLike(type: ts.Type): boolean {
-  const typeParts = tsutils.intersectionTypeParts(type);
+  const typeParts = tsutils.intersectionConstituents(type);
 
   return typeParts.some(typePart => {
     return tsutils.isTypeFlagSet(
@@ -112,8 +112,8 @@ export default createRule({
       // declare const something: Fruit | Vegetable;
       // something === Fruit.Apple;
       // ```
-      const leftTypeParts = tsutils.unionTypeParts(leftType);
-      const rightTypeParts = tsutils.unionTypeParts(rightType);
+      const leftTypeParts = tsutils.unionConstituents(leftType);
+      const rightTypeParts = tsutils.unionConstituents(rightType);
 
       // If a type exists in both sides, we consider this comparison safe:
       //

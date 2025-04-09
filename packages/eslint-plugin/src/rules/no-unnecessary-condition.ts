@@ -37,7 +37,7 @@ function isNullishType(type: ts.Type): boolean {
 }
 
 function isAlwaysNullish(type: ts.Type): boolean {
-  return tsutils.unionTypeParts(type).every(isNullishType);
+  return tsutils.unionConstituents(type).every(isNullishType);
 }
 
 /**
@@ -45,7 +45,7 @@ function isAlwaysNullish(type: ts.Type): boolean {
  * `any` or `unknown` to be nullable.
  */
 function isPossiblyNullish(type: ts.Type): boolean {
-  return tsutils.unionTypeParts(type).some(isNullishType);
+  return tsutils.unionConstituents(type).some(isNullishType);
 }
 
 function toStaticValue(
@@ -272,14 +272,14 @@ export default createRule<Options, MessageId>({
     function nodeIsArrayType(node: TSESTree.Expression): boolean {
       const nodeType = getConstrainedTypeAtLocation(services, node);
       return tsutils
-        .unionTypeParts(nodeType)
+        .unionConstituents(nodeType)
         .some(part => checker.isArrayType(part));
     }
 
     function nodeIsTupleType(node: TSESTree.Expression): boolean {
       const nodeType = getConstrainedTypeAtLocation(services, node);
       return tsutils
-        .unionTypeParts(nodeType)
+        .unionConstituents(nodeType)
         .some(part => checker.isTupleType(part));
     }
 
@@ -301,7 +301,7 @@ export default createRule<Options, MessageId>({
     //    `any` or `unknown` or a naked type variable
     function isConditionalAlwaysNecessary(type: ts.Type): boolean {
       return tsutils
-        .unionTypeParts(type)
+        .unionConstituents(type)
         .some(
           part =>
             isTypeAnyType(part) ||

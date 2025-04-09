@@ -114,7 +114,7 @@ export default createRule({
      */
     function isArrayish(type: Type): boolean {
       let isAtLeastOneArrayishComponent = false;
-      for (const unionPart of tsutils.unionTypeParts(type)) {
+      for (const unionPart of tsutils.unionConstituents(type)) {
         if (
           tsutils.isIntrinsicNullType(unionPart) ||
           tsutils.isIntrinsicUndefinedType(unionPart)
@@ -125,7 +125,7 @@ export default createRule({
         // apparently checker.isArrayType(T[] & S[]) => false.
         // so we need to check the intersection parts individually.
         const isArrayOrIntersectionThereof = tsutils
-          .intersectionTypeParts(unionPart)
+          .intersectionConstituents(unionPart)
           .every(
             intersectionPart =>
               checker.isArrayType(intersectionPart) ||

@@ -187,7 +187,7 @@ function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
     tsutils.isFalseLiteralType(type.types[0]) &&
     tsutils.isTrueLiteralType(type.types[1])
     ? [type]
-    : tsutils.unionTypeParts(type);
+    : tsutils.unionConstituents(type);
 }
 
 export default createRule({

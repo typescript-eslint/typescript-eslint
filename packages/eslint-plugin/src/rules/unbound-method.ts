@@ -259,8 +259,10 @@ export default createRule<Options, MessageIds>({
           }
 
           for (const intersectionPart of tsutils
-            .unionTypeParts(services.getTypeAtLocation(node))
-            .flatMap(unionPart => tsutils.intersectionTypeParts(unionPart))) {
+            .unionConstituents(services.getTypeAtLocation(node))
+            .flatMap(unionPart =>
+              tsutils.intersectionConstituents(unionPart),
+            )) {
             const reported = checkIfMethodAndReport(
               property.key,
               intersectionPart.getProperty(property.key.name),

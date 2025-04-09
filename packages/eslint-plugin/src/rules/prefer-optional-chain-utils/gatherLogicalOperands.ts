@@ -10,7 +10,7 @@ import {
   isBooleanLiteralType,
   isNumberLiteralType,
   isStringLiteralType,
-  unionTypeParts,
+  unionConstituents,
 } from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -68,7 +68,7 @@ function isValidFalseBooleanCheckType(
   options: PreferOptionalChainOptions,
 ): boolean {
   const type = parserServices.getTypeAtLocation(node);
-  const types = unionTypeParts(type);
+  const types = unionConstituents(type);
 
   if (
     disallowFalseyLiteral &&

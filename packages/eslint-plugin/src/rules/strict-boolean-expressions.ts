@@ -332,7 +332,9 @@ export default createRule<Options, MessageId>({
           return type;
         });
       const flattenTypes = [
-        ...new Set(returnTypes.flatMap(type => tsutils.unionTypeParts(type))),
+        ...new Set(
+          returnTypes.flatMap(type => tsutils.unionConstituents(type)),
+        ),
       ];
       const types = inspectVariantTypes(flattenTypes);
       const reportType = determineReportType(types);
@@ -939,7 +941,7 @@ export default createRule<Options, MessageId>({
      */
     function checkNode(node: TSESTree.Expression): void {
       const type = getConstrainedTypeAtLocation(services, node);
-      const types = inspectVariantTypes(tsutils.unionTypeParts(type));
+      const types = inspectVariantTypes(tsutils.unionConstituents(type));
       const reportType = determineReportType(types);
 
       if (reportType != null) {
@@ -991,7 +993,7 @@ export default createRule<Options, MessageId>({
       // If incoming type is either "true" or "false", there will be one type
       // object with intrinsicName set accordingly
       // If incoming type is boolean, there will be two type objects with
-      // intrinsicName set "true" and "false" each because of ts-api-utils.unionTypeParts()
+      // intrinsicName set "true" and "false" each because of ts-api-utils.unionConstituents()
       if (booleans.length === 1) {
         variantTypes.add(
           tsutils.isTrueLiteralType(booleans[0]) ? 'truthy boolean' : 'boolean',

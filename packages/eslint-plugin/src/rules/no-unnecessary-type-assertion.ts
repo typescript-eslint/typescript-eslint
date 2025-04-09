@@ -199,11 +199,11 @@ export default createRule<Options, MessageIds>({
         )
       ) {
         const uncastParts = tsutils
-          .unionTypeParts(uncast)
+          .unionConstituents(uncast)
           .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
 
         const castParts = tsutils
-          .unionTypeParts(cast)
+          .unionConstituents(cast)
           .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
 
         if (uncastParts.length !== castParts.length) {

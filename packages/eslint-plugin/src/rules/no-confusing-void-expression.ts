@@ -431,7 +431,7 @@ export default createRule<Options, MessageId>({
         const returnType = signature.getReturnType();
 
         return tsutils
-          .unionTypeParts(returnType)
+          .unionConstituents(returnType)
           .some(tsutils.isIntrinsicVoidType);
       });
     }
@@ -455,7 +455,7 @@ export default createRule<Options, MessageId>({
         const returnType = checker.getTypeFromTypeNode(functionTSNode.type);
 
         return tsutils
-          .unionTypeParts(returnType)
+          .unionConstituents(returnType)
           .some(tsutils.isIntrinsicVoidType);
       }
 
@@ -464,7 +464,7 @@ export default createRule<Options, MessageId>({
 
         if (functionType) {
           return tsutils
-            .unionTypeParts(functionType)
+            .unionConstituents(functionType)
             .some(isFunctionReturnTypeIncludesVoid);
         }
       }

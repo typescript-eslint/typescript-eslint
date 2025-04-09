@@ -91,7 +91,7 @@ export default createRule<[], MessageId>({
         }
 
         const hasAsyncIteratorSymbol = tsutils
-          .unionTypeParts(type)
+          .unionConstituents(type)
           .some(
             typePart =>
               tsutils.getWellKnownSymbolPropertyOfType(
@@ -137,7 +137,7 @@ export default createRule<[], MessageId>({
           }
 
           const hasAsyncDisposeSymbol = tsutils
-            .unionTypeParts(type)
+            .unionConstituents(type)
             .some(
               typePart =>
                 tsutils.getWellKnownSymbolPropertyOfType(

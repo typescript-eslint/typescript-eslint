@@ -117,7 +117,7 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.JSXSpreadAttribute | TSESTree.SpreadElement,
       type: ts.Type,
     ): TSESLint.ReportSuggestionArray<MessageIds> | null {
-      const types = tsutils.unionTypeParts(type);
+      const types = tsutils.unionConstituents(type);
       if (types.some(t => !isMap(services.program, t))) {
         return null;
       }
@@ -260,7 +260,7 @@ export default createRule<Options, MessageIds>({
 
 function isIterable(type: ts.Type, checker: ts.TypeChecker): boolean {
   return tsutils
-    .typeParts(type)
+    .typeConstituents(type)
     .some(
       t => !!tsutils.getWellKnownSymbolPropertyOfType(t, 'iterator', checker),
     );

@@ -186,8 +186,8 @@ export default createRule<Options, MessageIds>({
 
       const missingLiteralBranchTypes: ts.Type[] = [];
 
-      for (const unionPart of tsutils.unionTypeParts(discriminantType)) {
-        for (const intersectionPart of tsutils.intersectionTypeParts(
+      for (const unionPart of tsutils.unionConstituents(discriminantType)) {
+        for (const intersectionPart of tsutils.intersectionConstituents(
           unionPart,
         )) {
           if (
@@ -433,10 +433,10 @@ function isTypeLiteralLikeType(type: ts.Type): boolean {
  */
 function doesTypeContainNonLiteralType(type: ts.Type): boolean {
   return tsutils
-    .unionTypeParts(type)
+    .unionConstituents(type)
     .some(type =>
       tsutils
-        .intersectionTypeParts(type)
+        .intersectionConstituents(type)
         .every(subType => !isTypeLiteralLikeType(subType)),
     );
 }
