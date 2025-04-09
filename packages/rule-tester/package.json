@@ -5,7 +5,6 @@
   "files": [
     "dist",
     "!*.tsbuildinfo",
-    "_ts4.2",
     "README.md",
     "LICENSE"
   ],
