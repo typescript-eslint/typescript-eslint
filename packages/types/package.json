@@ -41,7 +41,7 @@
     "copy-ast-spec": "tsx ./tools/copy-ast-spec.mts",
     "build": "tsc -b tsconfig.build.json",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf src/generated && rimraf _ts3.4 && rimraf _ts4.3 && rimraf coverage",
+    "postclean": "rimraf dist/ src/generated/ coverage/",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-lib": "npx nx run scope-manager:generate-lib",
     "lint": "npx nx lint",

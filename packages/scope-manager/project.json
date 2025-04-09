@@ -11,7 +11,7 @@
       "options": {
         "parallel": false,
         "cwd": "packages/scope-manager",
-        "commands": ["rimraf _ts4.3", "tsc -b tsconfig.build.json"]
+        "commands": ["tsc -b tsconfig.build.json"]
       }
     },
     "clean": {
