@@ -351,6 +351,7 @@ export default createRule<Options, MessageIds>({
           propertySymbol?.valueDeclaration,
         );
         return (
+          searchForDeprecationInAliasesChain(propertySymbol, true) ??
           getJsDocDeprecation(property) ??
           getJsDocDeprecation(propertySymbol) ??
           getJsDocDeprecation(valueSymbol)

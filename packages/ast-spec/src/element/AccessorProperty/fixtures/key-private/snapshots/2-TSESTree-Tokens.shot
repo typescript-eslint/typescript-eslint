@@ -42,9 +42,9 @@ exports[`AST Fixtures element AccessorProperty key-private TSESTree - Tokens 1`]
       end: { column: 10, line: 2 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#foo",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "foo",
 
     range: [23, 27],
     loc: {

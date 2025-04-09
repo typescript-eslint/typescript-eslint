@@ -2075,6 +2075,25 @@ exists('/foo');
     },
     {
       code: `
+        import { deprecatedVariable } from './deprecated';
+
+        const test = {
+          someField: deprecatedVariable,
+        };
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { name: 'deprecatedVariable' },
+          endColumn: 40,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
         import { normalFunction } from './deprecated';
 
         const foo = normalFunction;
