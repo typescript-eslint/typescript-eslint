@@ -6,6 +6,8 @@ import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw
 
 import { config } from './config-helper';
 
+export const parser: TSESLint.FlatConfig.Parser = rawPlugin.parser;
+
 /*
 we could build a plugin object here without the `configs` key - but if we do
 that then we create a situation in which
@@ -35,8 +37,6 @@ export const plugin: TSESLint.FlatConfig.Plugin = pluginBase as Omit<
 >;
 
 const flatConfigs = rawPlugin.flatConfigs;
-
-export const parser = rawPlugin.parser;
 
 export const configs = {
   /**
