@@ -34,7 +34,9 @@ export const plugin: TSESLint.FlatConfig.Plugin = pluginBase as Omit<
   'configs'
 >;
 
-const { flatConfigs, parser } = rawPlugin;
+const flatConfigs = rawPlugin.flatConfigs;
+
+export const parser = rawPlugin.parser;
 
 export const configs = {
   /**
