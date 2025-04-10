@@ -5,6 +5,7 @@ import type { JSXTextToken } from '../token/JSXTextToken/spec';
 import type { KeywordToken } from '../token/KeywordToken/spec';
 import type { NullToken } from '../token/NullToken/spec';
 import type { NumericToken } from '../token/NumericToken/spec';
+import type { PrivateIdentifierToken } from '../token/PrivateIdentifierToken/spec';
 import type { PunctuatorToken } from '../token/PunctuatorToken/spec';
 import type { RegularExpressionToken } from '../token/RegularExpressionToken/spec';
 import type { StringToken } from '../token/StringToken/spec';
@@ -20,6 +21,7 @@ export type Token =
   | KeywordToken
   | NullToken
   | NumericToken
+  | PrivateIdentifierToken
   | PunctuatorToken
   | RegularExpressionToken
   | StringToken
