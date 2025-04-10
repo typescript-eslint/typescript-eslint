@@ -135,7 +135,9 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
         snapshotsDirName: fixture.snapshotPath,
       }).getHeader();
 
-      const contents = await fs.readFile(fixture.absolute, 'utf8');
+      const contents = await fs.readFile(fixture.absolute, {
+        encoding: 'utf-8',
+      });
 
       await fs.mkdir(fixture.snapshotPath, { recursive: true });
 
