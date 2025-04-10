@@ -739,6 +739,14 @@ describe('TypeOrValueSpecifier', () => {
           }`,
           'privateProp',
         ],
+        [
+          `
+          class MyClass {
+            ['computed prop'] = 42;
+            value = this['computed prop'];
+          }`,
+          `computed prop`,
+        ],
       ])('matches a matching universal string specifier: %s', runTestPositive);
 
       it.each<[string, TypeOrValueSpecifier]>([

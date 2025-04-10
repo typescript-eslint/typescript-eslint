@@ -231,13 +231,17 @@ const getSpecifierNames = (specifier: TypeOrValueSpecifier): string[] => {
   return typeof specifier.name === 'string' ? [specifier.name] : specifier.name;
 };
 
-const getNodeName = (node: TSESTree.Node): string | undefined => {
+const getStaticName = (node: TSESTree.Node): string | undefined => {
   if (
     node.type === AST_NODE_TYPES.Identifier ||
     node.type === AST_NODE_TYPES.JSXIdentifier ||
     node.type === AST_NODE_TYPES.PrivateIdentifier
   ) {
     return node.name;
+  }
+
+  if (node.type === AST_NODE_TYPES.Literal && typeof node.value === 'string') {
+    return node.value;
   }
 
   return undefined;
@@ -249,9 +253,9 @@ export function valueMatchesSpecifier(
   scopeManager: ScopeManager,
 ): boolean {
   const specifierNames = getSpecifierNames(specifier);
-  const nodeName = getNodeName(node);
+  const staticName = getStaticName(node);
   if (typeof specifier !== 'string' && specifier.from === 'package') {
-    const variable = scopeManager.variables.find(v => nodeName === v.name);
+    const variable = scopeManager.variables.find(v => staticName === v.name);
     const targetNode = variable?.defs[0].parent;
     if (
       targetNode?.type !== AST_NODE_TYPES.ImportDeclaration ||
@@ -261,7 +265,7 @@ export function valueMatchesSpecifier(
     }
   }
 
-  return nodeName ? specifierNames.includes(nodeName) : false;
+  return staticName ? specifierNames.includes(staticName) : false;
 }
 
 export const valueMatchesSomeSpecifier = (
