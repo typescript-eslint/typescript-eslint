@@ -230,15 +230,15 @@ function getGroupTypeRelationsBySuperTypeName(typeRelations: TypeRelation[]) {
 }
 
 function hasTargetOnlyOptionalProps(
-  type1: ts.ObjectType,
-  type2: ts.ObjectType,
+  sourceType: ts.ObjectType,
+  targetType: ts.ObjectType,
   checker: ts.TypeChecker,
 ) {
-  const targetProps = type2.getProperties();
+  const targetProps = targetType.getProperties();
   for (const targetProp of targetProps) {
     const sourceProp = checker.getPropertyOfType(
-      type1,
-      targetProp.escapedName.toString(),
+      sourceType,
+      targetProp.getName(),
     );
 
     if (!sourceProp) {
@@ -247,10 +247,17 @@ function hasTargetOnlyOptionalProps(
       }
       continue;
     }
-    const sourceType = checker.getTypeOfSymbol(sourceProp);
-    const targetType = checker.getTypeOfSymbol(targetProp);
-    if (tsutils.isObjectType(sourceType) && tsutils.isObjectType(targetType)) {
-      const res = hasTargetOnlyOptionalProps(sourceType, targetType, checker);
+    const sourcePropertyType = checker.getTypeOfSymbol(sourceProp);
+    const targetPropertyType = checker.getTypeOfSymbol(targetProp);
+    if (
+      tsutils.isObjectType(sourcePropertyType) &&
+      tsutils.isObjectType(targetPropertyType)
+    ) {
+      const res = hasTargetOnlyOptionalProps(
+        sourcePropertyType,
+        targetPropertyType,
+        checker,
+      );
       if (res) {
         return true;
       }
