@@ -23,11 +23,11 @@ interface WrappingFixerParams {
    * Receives multiple arguments if there are multiple innerNodes.
    * E.g. ``code => `${code} != null` ``
    */
-  wrap: (...code: string[]) => string;
+  wrap?: (...code: string[]) => string;
 }
 
 /**
- * Wraps node with some code. Adds parenthesis as necessary.
+ * Wraps node with some code. Adds parentheses as necessary.
  * @returns Fixer which adds the specified code and parens if necessary.
  */
 export function getWrappingFixer(
@@ -54,6 +54,10 @@ export function getWrappingFixer(
 
       return code;
     });
+
+    if (!wrap) {
+      return fixer.replaceText(node, innerCodes.join(''));
+    }
 
     // do the wrapping
     let code = wrap(...innerCodes);
@@ -105,7 +109,7 @@ export function getMovedNodeCode(params: {
 }
 
 /**
- * Check if a node will always have the same precedence if it's parent changes.
+ * Check if a node will always have the same precedence if its parent changes.
  */
 export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
   return (
