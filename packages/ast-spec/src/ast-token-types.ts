@@ -2,6 +2,7 @@ export enum AST_TOKEN_TYPES {
   Boolean = 'Boolean',
   Identifier = 'Identifier',
   JSXIdentifier = 'JSXIdentifier',
+  PrivateIdentifier = 'PrivateIdentifier',
   JSXText = 'JSXText',
   Keyword = 'Keyword',
   Null = 'Null',
