@@ -185,10 +185,11 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     'type T = Partial<{ a: 1; b: 1 }> | { a: 1 };',
     "type T = Omit<{ a: 1; b: 1 }, 'a'> | { a: number; b: number };",
     'type T = { a?: 1; b?: 1 } & { a: 1 };',
-    'type T = { a?: 1 } & { a: 1; b?: 1 };',
     "type F<T> = Omit<T, 'a'> & { a: 1 };",
     "type F<T> = Omit<T, 'a'> & { a?: 1 };",
     "type F<T> = Omit<T, 'c'> & { a?: 1; b?: 1 };",
+    "type F<T> = Omit<T, 'c'> & { a?: 1; b: 1 };",
+    'type T = { a: { b: 1 } } & { a: { b: { c: 1 } } };',
   ],
 
   invalid: [
@@ -1831,6 +1832,36 @@ type F = U<T> & { a: number; b: number };
             redundantType: 'Partial<{ a: 1; }>',
           },
           endColumn: 27,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a?: 1 } & { a: 1; b?: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; b?: 1 | undefined; }',
+            redundantType: '{ a?: 1 | undefined; }',
+          },
+          endColumn: 19,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: { b: 1 } } & { a: { b: 1; c?: 1 } };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: { b: 1; c?: 1 | undefined; }; }',
+            redundantType: '{ a: { b: 1; }; }',
+          },
+          endColumn: 25,
           messageId: 'typeOverridden',
         },
       ],

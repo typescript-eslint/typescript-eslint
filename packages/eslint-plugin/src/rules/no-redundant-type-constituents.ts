@@ -143,11 +143,46 @@ function checkIntersectionTypeAssignability(
     }
     return assignability;
   }
-  if (
-    tsutils.isObjectType(sourceType) &&
-    tsutils.isObjectType(targetType) &&
-    hasDifferingOptionalProps(sourceType, targetType)
-  ) {
+  if (tsutils.isObjectType(sourceType) && tsutils.isObjectType(targetType)) {
+    const rawSourceAssignableToTarget = checker.isTypeAssignableTo(
+      sourceType,
+      targetType,
+    );
+
+    const rawTargetAssignableToSource = checker.isTypeAssignableTo(
+      targetType,
+      sourceType,
+    );
+
+    const targetHasOnlyOptionalProperty = hasTargetOnlyOptionalProps(
+      sourceType,
+      targetType,
+      checker,
+    );
+
+    const sourceHasOnlyOptionalProperty = hasTargetOnlyOptionalProps(
+      targetType,
+      sourceType,
+      checker,
+    );
+
+    const isSourceAssignableToTarget =
+      rawSourceAssignableToTarget && !targetHasOnlyOptionalProperty;
+    const isTargetAssignableToSource =
+      rawTargetAssignableToSource && !sourceHasOnlyOptionalProperty;
+
+    if (isSourceAssignableToTarget && isTargetAssignableToSource) {
+      return TypeAssignability.Equal;
+    }
+
+    if (isSourceAssignableToTarget) {
+      return TypeAssignability.SourceToTargetAssignable;
+    }
+
+    if (isTargetAssignableToSource) {
+      return TypeAssignability.TargetToSourceAssignable;
+    }
+
     return TypeAssignability.NotAssignable;
   }
   return checkTypeAssignability(sourceType, targetType, checker);
@@ -195,27 +230,33 @@ function getGroupTypeRelationsBySuperTypeName(typeRelations: TypeRelation[]) {
 }
 
 function hasTargetOnlyOptionalProps(
-  sourceProps: ts.Symbol[],
-  targetProps: ts.Symbol[],
+  type1: ts.ObjectType,
+  type2: ts.ObjectType,
+  checker: ts.TypeChecker,
 ) {
-  return targetProps.some(targetProp => {
-    if (targetProp.flags & ts.SymbolFlags.Optional) {
-      return sourceProps.every(
-        sourceProp => sourceProp.getName() !== targetProp.getName(),
-      );
+  const targetProps = type2.getProperties();
+  for (const targetProp of targetProps) {
+    const sourceProp = checker.getPropertyOfType(
+      type1,
+      targetProp.escapedName.toString(),
+    );
+
+    if (!sourceProp) {
+      if (targetProp.flags & ts.SymbolFlags.Optional) {
+        return true;
+      }
+      continue;
     }
-    return false;
-  });
-}
-
-function hasDifferingOptionalProps(type1: ts.ObjectType, type2: ts.ObjectType) {
-  const propertiesOfType1 = type1.getProperties();
-  const propertiesOfType2 = type2.getProperties();
-
-  return (
-    hasTargetOnlyOptionalProps(propertiesOfType1, propertiesOfType2) ||
-    hasTargetOnlyOptionalProps(propertiesOfType2, propertiesOfType1)
-  );
+    const sourceType = checker.getTypeOfSymbol(sourceProp);
+    const targetType = checker.getTypeOfSymbol(targetProp);
+    if (tsutils.isObjectType(sourceType) && tsutils.isObjectType(targetType)) {
+      const res = hasTargetOnlyOptionalProps(sourceType, targetType, checker);
+      if (res) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 function hasSameKeys(
