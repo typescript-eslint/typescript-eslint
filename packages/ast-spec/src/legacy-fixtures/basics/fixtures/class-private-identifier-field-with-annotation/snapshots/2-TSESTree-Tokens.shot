@@ -29,9 +29,9 @@
       end: { column: 11, line: 3 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#priv1",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "priv1",
 
     range: [87, 93],
     loc: {
@@ -69,9 +69,9 @@
       end: { column: 17, line: 4 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#priv2",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "priv2",
 
     range: [105, 111],
     loc: {
@@ -189,9 +189,9 @@
       end: { column: 9, line: 8 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#priv1",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "priv1",
 
     range: [153, 159],
     loc: {

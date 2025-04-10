@@ -39,9 +39,9 @@
       end: { column: 10, line: 4 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#priv",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "priv",
 
     range: [96, 101],
     loc: {

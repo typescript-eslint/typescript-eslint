@@ -29,9 +29,9 @@
       end: { column: 9, line: 1 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#a",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "a",
 
     range: [12, 14],
     loc: {
@@ -109,9 +109,9 @@
       end: { column: 9, line: 5 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#a",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "a",
 
     range: [34, 36],
     loc: {
@@ -359,9 +359,9 @@
       end: { column: 10, line: 10 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#a",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "a",
 
     range: [117, 119],
     loc: {
@@ -459,9 +459,9 @@
       end: { column: 18, line: 11 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#a",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "a",
 
     range: [142, 144],
     loc: {
@@ -529,9 +529,9 @@
       end: { column: 10, line: 12 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#a",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "a",
 
     range: [159, 161],
     loc: {
@@ -619,9 +619,9 @@
       end: { column: 10, line: 13 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#a",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "a",
 
     range: [193, 195],
     loc: {
@@ -699,9 +699,9 @@
       end: { column: 9, line: 14 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#a",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "a",
 
     range: [219, 221],
     loc: {

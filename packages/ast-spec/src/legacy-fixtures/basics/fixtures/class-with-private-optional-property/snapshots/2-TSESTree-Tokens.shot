@@ -29,9 +29,9 @@
       end: { column: 11, line: 3 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#prop",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "prop",
 
     range: [87, 92],
     loc: {
@@ -79,9 +79,9 @@
       end: { column: 17, line: 4 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#propExplicitWithValue",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "propExplicitWithValue",
 
     range: [105, 127],
     loc: {
@@ -149,9 +149,9 @@
       end: { column: 39, line: 5 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#propImplicitWithValue",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "propImplicitWithValue",
 
     range: [145, 167],
     loc: {
