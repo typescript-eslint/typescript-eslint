@@ -6318,7 +6318,7 @@ __metadata:
     tsx: "*"
     typescript: ">=4.8.4 <5.9.0"
     typescript-eslint: "workspace:^"
-    vite: ^6.2.5
+    vite: ^6.2.6
     vitest: ^3.1.1
     yargs: 17.7.2
   languageName: unknown
@@ -6446,10 +6446,9 @@ __metadata:
   linkType: hard
 
 "@vitest/eslint-plugin@npm:^1.1.39":
-  version: 1.1.39
-  resolution: "@vitest/eslint-plugin@npm:1.1.39"
+  version: 1.1.40
+  resolution: "@vitest/eslint-plugin@npm:1.1.40"
   peerDependencies:
-    "@typescript-eslint/utils": ^8.24.0
     eslint: ">= 8.57.0"
     typescript: ">= 5.0.0"
     vitest: "*"
@@ -6458,7 +6457,7 @@ __metadata:
       optional: true
     vitest:
       optional: true
-  checksum: 0730c7d2a24b6e72ad74478991f7426fe889d0a326f4dc5034db5bfb1fcedeb1f54f8d90d61587e66c447139fa5c72af07003d740753860de82a9b0565bd14aa
+  checksum: bb8c4d7654945890f666be6ef0ebd8c21b6f896416099655bfd286ad0d388b6e5b83e11a9cdd044daeb11dac1bc1ee03d41db02db27426a8cedfdd33a6675645
   languageName: node
   linkType: hard
 
@@ -19430,9 +19429,9 @@ __metadata:
   linkType: hard
 
 "std-env@npm:^3.8.1":
-  version: 3.8.1
-  resolution: "std-env@npm:3.8.1"
-  checksum: 20114a5270aa2a3fc50d897461c6ab73329cf2d3c6bff1c124bb969577493aeebda8ee1916588b2657afcee9881bc652437cfdec6360e3f30be36c8675ea0cbb
+  version: 3.9.0
+  resolution: "std-env@npm:3.9.0"
+  checksum: d40126e4a650f6e5456711e6c297420352a376ef99a9599e8224d2d8f2ff2b91a954f3264fcef888d94fce5c9ae14992c5569761c95556fc87248ce4602ed212
   languageName: node
   linkType: hard
 
@@ -20894,9 +20893,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.0 || ^6.0.0, vite@npm:^6.2.5":
-  version: 6.2.5
-  resolution: "vite@npm:6.2.5"
+"vite@npm:^5.0.0 || ^6.0.0, vite@npm:^6.2.6":
+  version: 6.2.6
+  resolution: "vite@npm:6.2.6"
   dependencies:
     esbuild: ^0.25.0
     fsevents: ~2.3.3
@@ -20942,7 +20941,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 49a6529c5ae8d6e4926f2daa51d7e20c50d780d8d2ec8c08605e966983fe8d17ec69bc36a356c1a21141c5a630b7a4109f3690c5b33f579d3e2bf26f914a149d
+  checksum: ddeb36d29c053c6d6f0e70eb01939848db611135878d85e9497fc4b899667f58ce35ea4014acf01342ee1cf115879280fac809c0a806ad6432833cde87fe90dc
   languageName: node
   linkType: hard
 
