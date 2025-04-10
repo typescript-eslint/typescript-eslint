@@ -42,7 +42,9 @@ function createConfig(filename: string): ParserOptions {
 const program = createProgram(path.resolve(FIXTURES_DIR, 'tsconfig.json'));
 
 describe.for(testFiles)('services', async filename => {
-  const code = await fs.readFile(path.join(FIXTURES_DIR, filename), 'utf8');
+  const code = await fs.readFile(path.join(FIXTURES_DIR, filename), {
+    encoding: 'utf-8',
+  });
   const config = createConfig(filename);
   const snapshotName = formatSnapshotName(filename, FIXTURES_DIR, '.ts');
   it(snapshotName, createSnapshotTestBlock(code, config));
