@@ -11,7 +11,7 @@ vi.mock(import('node:fs'), async importOriginal => {
 
   return {
     ...actual,
-    default: actual,
+    default: actual.default,
     existsSync: vi.fn(actual.existsSync),
   };
 });
@@ -168,7 +168,7 @@ describe(getProjectConfigFiles, () => {
     });
 
     it('throws when searching passes the tsconfigRootDir', () => {
-      mockExistsSync.mockReturnValueOnce(false);
+      mockExistsSync.mockReturnValue(false);
 
       expect(() =>
         getProjectConfigFiles({ ...parseSettings, tsconfigRootDir: '/' }, true),

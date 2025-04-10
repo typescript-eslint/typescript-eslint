@@ -242,21 +242,21 @@ describe('convert', () => {
   });
   /* eslint-enable @typescript-eslint/dot-notation */
 
-  it('should throw error on jsDoc node', () => {
+  describe('should throw error on jsDoc node', () => {
     const jsDocCode = [
       'const x: function(new: number, string);',
       'const x: function(this: number, string);',
       'var g: function(number, number): number;',
-    ];
+    ] as const;
 
-    for (const code of jsDocCode) {
+    it.for(jsDocCode)('%s', (code, { expect }) => {
       const ast = convertCode(code);
 
       const instance = new Converter(ast);
       expect(() => instance.convertProgram()).toThrow(
         'JSDoc types can only be used inside documentation comments.',
       );
-    }
+    });
   });
 
   describe('allowInvalidAST', () => {

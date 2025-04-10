@@ -12,7 +12,7 @@ import { createProgramFromConfigFile as createProgram } from '../../src/create-p
 import { parseAndGenerateServices } from '../../src/parser';
 import { expectToHaveParserServices } from '../test-utils/expectToHaveParserServices';
 import {
-  createSnapshotTestBlock,
+  deeplyCopy,
   formatSnapshotName,
   parseCodeAndGenerateServices,
 } from '../test-utils/test-utils';
@@ -51,24 +51,32 @@ describe('semanticInfo', async () => {
   // test all AST snapshots
   const testCases = await Promise.all(
     testFiles.map(async filename => {
-      const code = await fs.readFile(path.join(FIXTURES_DIR, filename), 'utf8');
+      const code = await fs.readFile(path.join(FIXTURES_DIR, filename), {
+        encoding: 'utf-8',
+      });
       const snapshotName = formatSnapshotName(
         filename,
         FIXTURES_DIR,
         path.extname(filename),
       );
 
-      return [snapshotName, code, createOptions(filename)] as const;
+      const { ast } = parseAndGenerateServices(code, createOptions(filename));
+
+      const result = deeplyCopy(ast);
+
+      return [snapshotName, result] as const;
     }),
   );
 
-  it.for(testCases)('%s', ([, code, options]) => {
-    createSnapshotTestBlock(code, options, /*generateServices*/ true)();
+  it.for(testCases)('%s', ([, result], { expect }) => {
+    expect(result).toMatchSnapshot();
   });
 
   it(`should cache the created ts.program`, async () => {
     const filename = testFiles[0];
-    const code = await fs.readFile(path.join(FIXTURES_DIR, filename), 'utf8');
+    const code = await fs.readFile(path.join(FIXTURES_DIR, filename), {
+      encoding: 'utf-8',
+    });
     const options = createOptions(filename);
     const optionsProjectString = {
       ...options,
@@ -83,7 +91,9 @@ describe('semanticInfo', async () => {
 
   it(`should handle "project": "./tsconfig.json" and "project": ["./tsconfig.json"] the same`, async () => {
     const filename = testFiles[0];
-    const code = await fs.readFile(path.join(FIXTURES_DIR, filename), 'utf8');
+    const code = await fs.readFile(path.join(FIXTURES_DIR, filename), {
+      encoding: 'utf-8',
+    });
     const options = createOptions(filename);
     const optionsProjectString = {
       ...options,
@@ -109,7 +119,9 @@ describe('semanticInfo', async () => {
 
   it(`should resolve absolute and relative tsconfig paths the same`, async () => {
     const filename = testFiles[0];
-    const code = await fs.readFile(path.join(FIXTURES_DIR, filename), 'utf8');
+    const code = await fs.readFile(path.join(FIXTURES_DIR, filename), {
+      encoding: 'utf-8',
+    });
     const options = createOptions(filename);
     const optionsAbsolutePath = {
       ...options,
@@ -145,7 +157,7 @@ describe('semanticInfo', async () => {
     async () => {
       const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
       const parseResult = parseCodeAndGenerateServices(
-        await fs.readFile(fileName, 'utf8'),
+        await fs.readFile(fileName, { encoding: 'utf-8' }),
         createOptions(fileName),
       );
 
@@ -158,7 +170,7 @@ describe('semanticInfo', async () => {
     async () => {
       const fileName = path.resolve(FIXTURES_DIR, 'extra-file-extension.vue');
       const parseResult = parseCodeAndGenerateServices(
-        await fs.readFile(fileName, 'utf8'),
+        await fs.readFile(fileName, { encoding: 'utf-8' }),
         {
           ...createOptions(fileName),
           extraFileExtensions: ['.vue'],
@@ -175,7 +187,7 @@ describe('semanticInfo', async () => {
       'non-existent-estree-nodes.src.ts',
     );
     const parseResult = parseCodeAndGenerateServices(
-      await fs.readFile(fileName, 'utf8'),
+      await fs.readFile(fileName, { encoding: 'utf-8' }),
       createOptions(fileName),
     );
 
@@ -201,7 +213,7 @@ describe('semanticInfo', async () => {
   it('imported-file tests', async () => {
     const fileName = path.resolve(FIXTURES_DIR, 'import-file.src.ts');
     const parseResult = parseCodeAndGenerateServices(
-      await fs.readFile(fileName, 'utf8'),
+      await fs.readFile(fileName, { encoding: 'utf-8' }),
       createOptions(fileName),
     );
 
@@ -284,7 +296,7 @@ describe('semanticInfo', async () => {
       const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
       const badConfig = createOptions(fileName);
       badConfig.project = './tsconfigs.json';
-      const code = await fs.readFile(fileName, 'utf8');
+      const code = await fs.readFile(fileName, { encoding: 'utf-8' });
       expect(() => parseCodeAndGenerateServices(code, badConfig)).toThrow(
         /Cannot read file .+tsconfigs\.json'/,
       );
@@ -297,7 +309,7 @@ describe('semanticInfo', async () => {
       const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
       const badConfig = createOptions(fileName);
       badConfig.project = '.';
-      const code = await fs.readFile(fileName, 'utf8');
+      const code = await fs.readFile(fileName, { encoding: 'utf-8' });
       expect(() => parseCodeAndGenerateServices(code, badConfig)).toThrow(
         // case insensitive because unix based systems are case insensitive
         /Cannot read file .+semanticInfo'/i,
@@ -311,7 +323,7 @@ describe('semanticInfo', async () => {
       const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
       const badConfig = createOptions(fileName);
       badConfig.project = './badTSConfig/tsconfig.json';
-      const code = await fs.readFile(fileName, 'utf8');
+      const code = await fs.readFile(fileName, { encoding: 'utf-8' });
       expect(() =>
         parseCodeAndGenerateServices(code, badConfig),
       ).toThrowErrorMatchingInlineSnapshot(
@@ -335,7 +347,9 @@ describe('semanticInfo', async () => {
       const filename = testFiles[0];
       const program1 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
       const program2 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
-      const code = await fs.readFile(path.join(FIXTURES_DIR, filename), 'utf8');
+      const code = await fs.readFile(path.join(FIXTURES_DIR, filename), {
+        encoding: 'utf-8',
+      });
       const options = createOptions(filename);
       const optionsProjectString = {
         ...options,

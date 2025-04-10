@@ -30,6 +30,7 @@ vi.mock(import('typescript'), async importOriginal => {
   const ts = await importOriginal();
   return {
     ...ts,
+    default: ts.default,
     sys: {
       ...ts.sys,
       useCaseSensitiveFileNames: true,
@@ -41,6 +42,7 @@ vi.mock('fast-glob', async importOriginal => {
   const fastGlob = await importOriginal<typeof fastGlobModule>();
   return {
     ...fastGlob,
+    default: fastGlob.default,
     sync: vi.fn(fastGlob.sync),
   };
 });
