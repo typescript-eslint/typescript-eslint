@@ -222,7 +222,7 @@ async function main(): Promise<void> {
     );
 
     //
-    // 2. Flat Config - written to the eslint-plugin/src/configs/flat
+    // 2. Flat Config - written to eslint-plugin/src/configs/flat
     // These configs are actual TS modules that import other configs
     //
     const flatCode: string[] = [
