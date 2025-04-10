@@ -190,6 +190,15 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     "type F<T> = Omit<T, 'c'> & { a?: 1; b?: 1 };",
     "type F<T> = Omit<T, 'c'> & { a?: 1; b: 1 };",
     'type T = { a: { b: 1 } } & { a: { b: { c: 1 } } };',
+    `
+      interface A {
+        a: 1;
+      }
+      interface B extends A {
+        b: 1;
+      }
+      type C = A | B;
+    `,
   ],
 
   invalid: [
@@ -1862,6 +1871,30 @@ type F = U<T> & { a: number; b: number };
             redundantType: '{ a: { b: 1; }; }',
           },
           endColumn: 25,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  a: 1;
+}
+interface B extends A {
+  b: 1;
+}
+type C = A & B;
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'B',
+            redundantType: 'A',
+          },
+          endColumn: 11,
+          line: 8,
           messageId: 'typeOverridden',
         },
       ],
