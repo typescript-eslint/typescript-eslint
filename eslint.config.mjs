@@ -646,9 +646,9 @@ export default tseslint.config(
   {
     files: ['**/*'],
     ignores: [
-      'packages/eslint-plugin/src/configs/*',
+      'packages/eslint-plugin/src/configs/eslintrc/*',
+      'packages/eslint-plugin/src/configs/flat/*',
       'packages/scope-manager/src/configs/*',
-      'packages/typescript-eslint/src/configs/*',
     ],
     rules: {
       '@typescript-eslint/sort-type-constituents': 'off',
