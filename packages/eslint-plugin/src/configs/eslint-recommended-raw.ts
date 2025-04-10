@@ -38,10 +38,10 @@ const config = (
     'no-unreachable': 'off', // ts(7027)
     'no-unsafe-negation': 'off', // ts(2365) & ts(2322) & ts(2358)
     'no-var': 'error', // ts transpiles let/const to var, so no need for vars any more
+    'no-with': 'off', // ts(1101) & ts(2410)
     'prefer-const': 'error', // ts provides better types with const
     'prefer-rest-params': 'error', // ts provides better types with rest args over arguments
     'prefer-spread': 'error', // ts transpiles spread to apply, so no need for manual apply
-    'no-with': 'off', // ts(1101) & ts(2410)
   },
 });
 
