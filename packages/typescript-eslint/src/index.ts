@@ -29,14 +29,14 @@ use our new package); however legacy configs consumed via `@eslint/eslintrc`
 would never be able to satisfy this constraint and thus users would be blocked
 from using them.
 */
-export const plugin: TSESLint.FlatConfig.Plugin = pluginBase as Omit<
+const plugin: TSESLint.FlatConfig.Plugin = pluginBase as Omit<
   typeof pluginBase,
   'configs'
 >;
 
 const { flatConfigs, parser } = rawPlugin;
 
-export const configs = {
+const configs = {
   /**
    * Enables each the rules provided as a part of typescript-eslint. Note that many rules are not applicable in all codebases, or are meant to be configured.
    * @see {@link https://typescript-eslint.io/users/configs#all}
