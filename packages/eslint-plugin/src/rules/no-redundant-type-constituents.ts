@@ -51,6 +51,11 @@ function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
   );
 }
 
+function isObjectOrIntersectionType(
+  type: ts.Type,
+): type is ts.IntersectionType | ts.ObjectType {
+  return tsutils.isObjectType(type) || tsutils.isIntersectionType(type);
+}
 enum TypeAssignability {
   Equal,
   SourceToTargetAssignable,
@@ -267,59 +272,55 @@ function hasTargetOnlyOptionalProps(
 }
 
 function hasSameKeys(
-  type1: ts.Type,
-  type2: ts.Type,
-  checker: ts.TypeChecker,
+  typeA: ts.Type,
+  typeB: ts.Type,
+  typeChecker: ts.TypeChecker,
 ): boolean {
-  if (tsutils.isUnionType(type1)) {
-    return type1.types.some(typePart => hasSameKeys(typePart, type2, checker));
-  }
-  if (tsutils.isUnionType(type2)) {
-    return type2.types.some(typePart => hasSameKeys(type1, typePart, checker));
-  }
-
-  const propertiesOfType1 = type1.getProperties();
-  const propertiesOfType2 = type2.getProperties();
-
-  if (propertiesOfType1.length !== propertiesOfType2.length) {
-    return false;
-  }
-  if (propertiesOfType1.length === 0) {
+  if (typeA === typeB) {
     return true;
   }
-  for (const propertyOfType1 of propertiesOfType1) {
-    const propertyOfType2 = propertiesOfType2.find(
-      p => p.getName() === propertyOfType1.getName(),
+  if (tsutils.isUnionType(typeA)) {
+    return typeA.types.some(unionMember =>
+      hasSameKeys(unionMember, typeB, typeChecker),
     );
+  }
+  if (tsutils.isUnionType(typeB)) {
+    return typeB.types.some(unionMember =>
+      hasSameKeys(typeA, unionMember, typeChecker),
+    );
+  }
+  if (
+    !isObjectOrIntersectionType(typeA) ||
+    !isObjectOrIntersectionType(typeB)
+  ) {
+    return true;
+  }
+  const propsA = typeA.getProperties();
+  const propsB = typeB.getProperties();
 
-    if (!propertyOfType2) {
+  if (propsA.length !== propsB.length) {
+    return false;
+  }
+  if (propsA.length === 0) {
+    return true;
+  }
+
+  for (const propA of propsA) {
+    const propB = propsB.find(prop => prop.getName() === propA.getName());
+
+    if (!propB) {
       return false;
     }
-    const valueOfType1 = propertyOfType1.valueDeclaration;
-    const valueOfType2 = propertyOfType2.valueDeclaration;
+
+    const propTypeA = typeChecker.getTypeOfSymbol(propA);
+    const propTypeB = typeChecker.getTypeOfSymbol(propB);
 
     if (
-      valueOfType1 &&
-      ts.isPropertySignature(valueOfType1) &&
-      valueOfType1.type &&
-      valueOfType2 &&
-      ts.isPropertySignature(valueOfType2) &&
-      valueOfType2.type
+      isObjectOrIntersectionType(propTypeA) &&
+      isObjectOrIntersectionType(propTypeB) &&
+      !hasSameKeys(propTypeA, propTypeB, typeChecker)
     ) {
-      const isType1TypeLiteral = ts.isTypeLiteralNode(valueOfType1.type);
-      const isType2TypeLiteral = ts.isTypeLiteralNode(valueOfType2.type);
-
-      if (isType1TypeLiteral !== isType2TypeLiteral) {
-        return false;
-      }
-
-      if (isType1TypeLiteral) {
-        return hasSameKeys(
-          checker.getTypeAtLocation(valueOfType1.type),
-          checker.getTypeAtLocation(valueOfType2.type),
-          checker,
-        );
-      }
+      return false;
     }
   }
   return true;
@@ -609,14 +610,17 @@ export default createRule({
           const objectTypeParts = getObjectUnionTypePart(tsTypeNode, checker);
           for (const objectTypePart of objectTypeParts) {
             if (
+              objectTypePart.type.flags & ts.TypeFlags.Never ||
+              objectTypePart.type.flags & ts.TypeFlags.Any ||
+              objectTypePart.type.flags & ts.TypeFlags.Unknown
+            ) {
               checkUnionBottomAndTopTypes(
                 {
                   typeFlags: objectTypePart.type.flags,
                   typeName: objectTypePart.typeName,
                 },
                 typeNode,
-              )
-            ) {
+              );
               continue;
             }
 

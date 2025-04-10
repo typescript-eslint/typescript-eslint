@@ -199,6 +199,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       }
       type C = A | B;
     `,
+    'type T = { a: { b: 1 }; c: { d: 1 } } | { a: { b: 1 }; c: { d: 1; a: 1 } };',
   ],
 
   invalid: [
