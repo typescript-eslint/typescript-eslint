@@ -63,6 +63,11 @@ export default {
     },
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: ['tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+      },
     },
     'packages/rule-tester': {
       ignore: ['typings/eslint.d.ts'],
