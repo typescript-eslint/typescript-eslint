@@ -380,11 +380,7 @@ export default tseslint.config(
   // define the vitest globals for all test files
   {
     files: vitestFiles,
-    languageOptions: {
-      globals: {
-        ...vitestPlugin.environments.env.globals,
-      },
-    },
+    ...vitestPlugin.configs.env,
   },
   // test file specific configuration
   {
