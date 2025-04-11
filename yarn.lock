@@ -5756,15 +5756,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ncp@npm:^2.0.8":
-  version: 2.0.8
-  resolution: "@types/ncp@npm:2.0.8"
-  dependencies:
-    "@types/node": "*"
-  checksum: 33ab7fb6f6777b9b77114acb159acb565c24fed7d78ab19553b9621f1da38c8bf5976b8cb8d0c66864b5c1d08db6ca155978ba07b93bbc2e661fc3e535e2677f
-  languageName: node
-  linkType: hard
-
 "@types/node-forge@npm:^1.3.0":
   version: 1.3.11
   resolution: "@types/node-forge@npm:1.3.11"
@@ -6073,8 +6064,6 @@ __metadata:
   dependencies:
     "@jest/types": 29.6.3
     jest: 29.7.0
-    ncp: "*"
-    tmp: "*"
     tsx: "*"
   languageName: unknown
   linkType: soft
@@ -6223,7 +6212,6 @@ __metadata:
     "@types/jest": 29.5.13
     "@types/jest-specific-snapshot": ^0.5.9
     "@types/natural-compare": ^1.4.3
-    "@types/ncp": ^2.0.8
     "@types/node": ^20.12.5
     "@types/semver": ^7.5.8
     "@types/tmp": ^0.2.6
@@ -6262,13 +6250,11 @@ __metadata:
     lint-staged: ^15.2.2
     make-dir: ^4.0.0
     markdownlint-cli: ^0.44.0
-    ncp: ^2.0.0
     nx: 20.7.2
     prettier: 3.5.0
     pretty-format: ^29.7.0
     rimraf: ^5.0.5
     semver: 7.7.0
-    tmp: ^0.2.1
     tsx: "*"
     typescript: ">=4.8.4 <5.9.0"
     typescript-eslint: "workspace:^"
@@ -15856,15 +15842,6 @@ __metadata:
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
   checksum: 23ad088b08f898fc9b53011d7bb78ec48e79de7627e01ab5518e806033861bef68d5b0cd0e2205c2f36690ac9571ff6bcb05eb777ced2eeda8d4ac5b44592c3d
-  languageName: node
-  linkType: hard
-
-"ncp@npm:*, ncp@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "ncp@npm:2.0.0"
-  bin:
-    ncp: ./bin/ncp
-  checksum: ea9b19221da1d1c5529bdb9f8e85c9d191d156bcaae408cce5e415b7fbfd8744c288e792bd7faf1fe3b70fd44c74e22f0d43c39b209bc7ac1fb8016f70793a16
   languageName: node
   linkType: hard
 
