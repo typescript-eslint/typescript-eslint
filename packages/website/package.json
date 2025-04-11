@@ -19,11 +19,11 @@
     "generate-website-dts": "tsx ./tools/generate-website-dts.mts",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
-    "lint": "yarn run -T nx lint",
+    "lint": "yarn run -BT nx lint",
     "serve": "docusaurus serve",
-    "start": "yarn run -T nx start",
+    "start": "yarn run -BT nx start",
     "swizzle": "docusaurus swizzle",
-    "check-types": "yarn run -T nx typecheck"
+    "check-types": "yarn run -BT nx typecheck"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.4",

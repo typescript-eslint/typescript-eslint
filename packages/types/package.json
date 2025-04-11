@@ -41,9 +41,9 @@
     "build": "tsc -b tsconfig.build.json",
     "clean": "rimraf dist/ src/generated/ coverage/",
     "format": "yarn run -T format",
-    "generate-lib": "yarn run -T nx run scope-manager:generate-lib",
-    "lint": "yarn run -T nx lint",
-    "check-types": "yarn run -T nx typecheck"
+    "generate-lib": "yarn run -BT nx run scope-manager:generate-lib",
+    "lint": "yarn run -BT nx lint",
+    "check-types": "yarn run -BT nx typecheck"
   },
   "devDependencies": {
     "rimraf": "*",

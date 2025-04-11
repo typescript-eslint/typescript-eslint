@@ -54,10 +54,10 @@
     "format": "yarn run -T format",
     "generate-breaking-changes": "tsx tools/generate-breaking-changes.mts",
     "generate-configs": "yarn run -T generate-configs",
-    "lint": "yarn run -T nx lint",
+    "lint": "yarn run -BT nx lint",
     "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --logHeapUsage",
     "test-single": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --no-coverage",
-    "check-types": "yarn run -T nx typecheck"
+    "check-types": "yarn run -BT nx typecheck"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",

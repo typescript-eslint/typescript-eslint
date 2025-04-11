@@ -41,10 +41,10 @@
     "clean": "rimraf dist/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "yarn run -T format",
-    "generate-lib": "yarn run -T nx generate-lib repo",
-    "lint": "yarn run -T nx lint",
+    "generate-lib": "yarn run -BT nx generate-lib repo",
+    "lint": "yarn run -BT nx lint",
     "test": "jest",
-    "check-types": "yarn run -T nx typecheck"
+    "check-types": "yarn run -BT nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/types": "8.29.1",
