@@ -1,6 +1,6 @@
 import { nullThrows, NullThrowsReasons } from '../../src/eslint-utils';
 
-describe('nullThrows', () => {
+describe(nullThrows, () => {
   it('returns a falsy value when it exists', () => {
     const value = 0;
 
