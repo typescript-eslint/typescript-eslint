@@ -14,6 +14,7 @@ import {
   valueMatchesSomeSpecifier,
   valueMatchesSpecifier,
 } from '../src';
+import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 describe('TypeOrValueSpecifier', () => {
   describe('Schema', () => {
@@ -568,14 +569,15 @@ describe('TypeOrValueSpecifier', () => {
   describe('valueMatchesSpecifier', () => {
     function parseCode(code: string) {
       const rootDir = path.join(__dirname, 'fixtures');
-      const { ast, scopeManager } = parseForESLint(code, {
+      const { ast, services } = parseForESLint(code, {
         disallowAutomaticSingleRunInference: true,
         filePath: path.join(rootDir, 'file.ts'),
         project: './tsconfig.json',
         tsconfigRootDir: rootDir,
       });
+      expectToHaveParserServices(services);
 
-      return { ast, scopeManager };
+      return { ast, services };
     }
 
     describe(AST_NODE_TYPES.VariableDeclaration, () => {
@@ -584,12 +586,13 @@ describe('TypeOrValueSpecifier', () => {
         specifier: TypeOrValueSpecifier,
         expected: boolean,
       ) {
-        const { ast, scopeManager } = parseCode(code);
+        const { ast, services } = parseCode(code);
         const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;
-        const { init } = declaration.declarations[0];
-        expect(valueMatchesSpecifier(init!, specifier, scopeManager)).toBe(
-          expected,
-        );
+        const { id, init } = declaration.declarations[0];
+        const type = services.getTypeAtLocation(id);
+        expect(
+          valueMatchesSpecifier(init!, specifier, services.program, type),
+        ).toBe(expected);
       }
 
       function runTestPositive(
@@ -682,6 +685,10 @@ describe('TypeOrValueSpecifier', () => {
           'import { mock } from "node:test"; const hoge = mock;',
           { from: 'package', name: ['mock', 'hoge'], package: 'node:test' },
         ],
+        [
+          `const fs: typeof import("fs"); const module = fs;`,
+          { from: 'package', name: 'fs', package: 'fs' },
+        ],
       ])('matches a matching package specifier: %s', runTestPositive);
 
       it.each<[string, TypeOrValueSpecifier]>([
@@ -706,15 +713,16 @@ describe('TypeOrValueSpecifier', () => {
         specifier: TypeOrValueSpecifier,
         expected: boolean,
       ) {
-        const { ast, scopeManager } = parseCode(code);
+        const { ast, services } = parseCode(code);
         const declaration = ast.body.at(-1) as TSESTree.ClassDeclaration;
         const definition = declaration.body.body.at(
           -1,
         ) as TSESTree.PropertyDefinition;
         const { property } = definition.value as TSESTree.MemberExpression;
-        expect(valueMatchesSpecifier(property, specifier, scopeManager)).toBe(
-          expected,
-        );
+        const type = services.getTypeAtLocation(property);
+        expect(
+          valueMatchesSpecifier(property, specifier, services.program, type),
+        ).toBe(expected);
       }
 
       function runTestPositive(
@@ -822,18 +830,20 @@ describe('TypeOrValueSpecifier', () => {
       expected: boolean,
     ): void {
       const rootDir = path.join(__dirname, 'fixtures');
-      const { ast, scopeManager } = parseForESLint(code, {
+      const { ast, services } = parseForESLint(code, {
         disallowAutomaticSingleRunInference: true,
         filePath: path.join(rootDir, 'file.ts'),
         project: './tsconfig.json',
         tsconfigRootDir: rootDir,
       });
+      expectToHaveParserServices(services);
 
       const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;
-      const { init } = declaration.declarations[0];
-      expect(valueMatchesSomeSpecifier(init!, specifiers, scopeManager)).toBe(
-        expected,
-      );
+      const { id, init } = declaration.declarations[0];
+      const type = services.getTypeAtLocation(id);
+      expect(
+        valueMatchesSomeSpecifier(init!, specifiers, services.program, type),
+      ).toBe(expected);
     }
 
     function runTestPositive(

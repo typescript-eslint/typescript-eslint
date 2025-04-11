@@ -377,12 +377,7 @@ export default createRule<Options, MessageIds>({
       const type = services.getTypeAtLocation(node);
       if (
         typeMatchesSomeSpecifier(type, allow, services.program) ||
-        (context.sourceCode.scopeManager &&
-          valueMatchesSomeSpecifier(
-            node,
-            allow,
-            context.sourceCode.scopeManager,
-          ))
+        valueMatchesSomeSpecifier(node, allow, services.program, type)
       ) {
         return;
       }

@@ -1,4 +1,3 @@
-import type { ScopeManager } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/types';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type * as ts from 'typescript';
@@ -223,12 +222,8 @@ export const typeMatchesSomeSpecifier = (
 ): boolean =>
   specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));
 
-const getSpecifierNames = (specifier: TypeOrValueSpecifier): string[] => {
-  if (typeof specifier === 'string') {
-    return [specifier];
-  }
-
-  return typeof specifier.name === 'string' ? [specifier.name] : specifier.name;
+const getSpecifierNames = (specifierName: string | string[]): string[] => {
+  return typeof specifierName === 'string' ? [specifierName] : specifierName;
 };
 
 const getStaticName = (node: TSESTree.Node): string | undefined => {
@@ -250,29 +245,45 @@ const getStaticName = (node: TSESTree.Node): string | undefined => {
 export function valueMatchesSpecifier(
   node: TSESTree.Node,
   specifier: TypeOrValueSpecifier,
-  scopeManager: ScopeManager,
+  program: ts.Program,
+  type: ts.Type,
 ): boolean {
-  const specifierNames = getSpecifierNames(specifier);
   const staticName = getStaticName(node);
-  if (typeof specifier !== 'string' && specifier.from === 'package') {
-    const variable = scopeManager.variables.find(v => staticName === v.name);
-    const targetNode = variable?.defs[0].parent;
-    if (
-      targetNode?.type !== AST_NODE_TYPES.ImportDeclaration ||
-      targetNode.source.value !== specifier.package
-    ) {
-      return false;
-    }
+  if (!staticName) {
+    return false;
   }
 
-  return staticName ? specifierNames.includes(staticName) : false;
+  if (typeof specifier === 'string') {
+    return specifier === staticName;
+  }
+
+  if (!getSpecifierNames(specifier.name).includes(staticName)) {
+    return false;
+  }
+
+  if (specifier.from === 'package') {
+    const symbol = type.getSymbol() ?? type.aliasSymbol;
+    const declarations = symbol?.getDeclarations() ?? [];
+    const declarationFiles = declarations.map(declaration =>
+      declaration.getSourceFile(),
+    );
+    return typeDeclaredInPackageDeclarationFile(
+      specifier.package,
+      declarations,
+      declarationFiles,
+      program,
+    );
+  }
+
+  return true;
 }
 
 export const valueMatchesSomeSpecifier = (
   node: TSESTree.Node,
   specifiers: TypeOrValueSpecifier[] = [],
-  scopeManager: ScopeManager,
+  program: ts.Program,
+  type: ts.Type,
 ): boolean =>
   specifiers.some(specifier =>
-    valueMatchesSpecifier(node, specifier, scopeManager),
+    valueMatchesSpecifier(node, specifier, program, type),
   );
