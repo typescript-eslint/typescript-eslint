@@ -3,10 +3,12 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/packages/utils",
     "module": "NodeNext",
-    "types": ["jest", "node"]
+    "resolveJsonModule": true,
+    "types": ["node", "vitest/globals", "vitest/importMeta"]
   },
   "include": [
-    "jest.config.js",
+    "vitest.config.mts",
+    "package.json",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts",
@@ -16,6 +18,9 @@
   "references": [
     {
       "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "../../tsconfig.spec.json"
     }
   ]
 }
