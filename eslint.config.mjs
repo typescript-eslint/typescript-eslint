@@ -34,6 +34,7 @@ const vitestFiles = [
   'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/visitor-keys/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/scope-manager/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/scope-manager/tests/test-utils/serializers/index.ts',
 ];
 
 export default tseslint.config(
