@@ -3,7 +3,7 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
-    "outDir": "./dist/out-tsc/root/jest",
+    "outDir": "./dist/out-tsc/root/vitest",
     "resolveJsonModule": true
   },
   "include": [
