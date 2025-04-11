@@ -33,6 +33,8 @@ const vitestFiles = [
   'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/visitor-keys/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/parser/tests/lib/**/*.test.{ts,tsx,cts,mts}',
+  'packages/parser/tests/test-utils/**/*.{ts,tsx,cts,mts}',
 ];
 
 export default tseslint.config(
@@ -379,18 +381,13 @@ export default tseslint.config(
   // define the vitest globals for all test files
   {
     files: vitestFiles,
-    languageOptions: {
-      globals: {
-        ...vitestPlugin.environments.env.globals,
-      },
-    },
+    ...vitestPlugin.configs.env,
   },
   // test file specific configuration
   {
     files: [
       'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
       'packages/*/tests/**/test.{ts,tsx,cts,mts}',
-      'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
       'packages/integration-tests/tools/integration-test-base.ts',
       'packages/integration-tests/tools/pack-packages.ts',
     ],
@@ -440,6 +437,7 @@ export default tseslint.config(
       'vitest/no-identical-title': 'error',
       'vitest/no-test-prefixes': 'error',
       'vitest/no-test-return-statement': 'error',
+      'vitest/prefer-describe-function-title': 'error',
       'vitest/prefer-each': 'error',
       'vitest/prefer-spy-on': 'error',
       'vitest/prefer-to-be': 'error',
