@@ -34,6 +34,7 @@ const vitestFiles = [
   'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/visitor-keys/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/ast-spec/tests/**/*.test?(-d).{ts,tsx,cts,mts}',
+  'packages/ast-spec/tests/util/setupVitest.mts',
 ];
 
 export default tseslint.config(
