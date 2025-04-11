@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures parameter TSParameterProperty _error_ override-function-parameter TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > parameter > TSParameterProperty > _error_ > override-function-parameter > TSESTree - Error`]
+TSError
 > 1 | function foo(override parameter) {}
     |              ^^^^^^^^ A parameter property is only allowed in a constructor implementation.
-  2 |"
-`;
+  2 |

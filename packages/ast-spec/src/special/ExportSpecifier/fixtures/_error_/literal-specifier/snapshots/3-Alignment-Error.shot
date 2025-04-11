@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures special ExportSpecifier _error_ literal-specifier Error Alignment 1`] = `"Both errored"`;
+exports[`AST Fixtures > special > ExportSpecifier > _error_ > literal-specifier > Error Alignment`]
+Both errored

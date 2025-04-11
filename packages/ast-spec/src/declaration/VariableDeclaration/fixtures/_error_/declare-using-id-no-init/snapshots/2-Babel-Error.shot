@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ declare-using-id-no-init Babel - Error 1`] = `[SyntaxError: Missing semicolon. (1:7)]`;
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-using-id-no-init > Babel - Error`]
+SyntaxError: Missing semicolon. (1:7)

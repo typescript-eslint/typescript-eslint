@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ decorator TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > decorator > TSESTree - Error`]
+TSError
 > 1 | @decl type Test = {};
     | ^^^^^ Decorators are not valid here.
-  2 |"
-`;
+  2 |
