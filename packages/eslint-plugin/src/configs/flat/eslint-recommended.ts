@@ -1,6 +1,6 @@
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
-import config from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/eslint-recommended-raw';
+import config from '../eslint-recommended-raw';
 
 /**
  * This is a compatibility ruleset that:
