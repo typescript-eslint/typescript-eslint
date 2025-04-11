@@ -371,6 +371,20 @@ const bar = deprecatedValue;
     },
     {
       code: `
+class MyClass {
+  /** @deprecated */
+  #privateProp = 42;
+  value = this.#privateProp;
+}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'privateProp' }],
+        },
+      ],
+    },
+    {
+      code: `
 /** @deprecated */
 const deprecatedValue = 45;
 const bar = deprecatedValue;
@@ -384,6 +398,23 @@ const bar = deprecatedValue;
     {
       code: `
 import { exists } from 'fs';
+exists('/foo');
+      `,
+      options: [
+        {
+          allow: [
+            {
+              from: 'package',
+              name: 'exists',
+              package: 'fs',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const { exists } = import('fs');
 exists('/foo');
       `,
       options: [
