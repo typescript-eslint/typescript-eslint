@@ -51,21 +51,21 @@ describe(inferSingleRun, () => {
     expect(actual).toBe(true);
   });
 
-  it.each(['project', 'programs'] as const)(
+  it.for(['project', 'programs'] as const)(
     'returns false when given %s is null',
-    key => {
+    (key, { expect }) => {
       const actual = inferSingleRun({ [key]: null });
 
       expect(actual).toBe(false);
     },
   );
 
-  it.each([
+  it.for([
     ['true', true],
     ['false', false],
   ] as const)(
     'return %s when given TSESTREE_SINGLE_RUN is "%s"',
-    (run, expected) => {
+    ([run, expected], { expect }) => {
       vi.stubEnv('TSESTREE_SINGLE_RUN', run);
 
       const actual = inferSingleRun({
@@ -77,7 +77,7 @@ describe(inferSingleRun, () => {
     },
   );
 
-  describe.each([
+  describe.for([
     'node_modules/.bin/eslint',
     'node_modules/eslint/bin/eslint.js',
   ] as const)('%s', pathName => {

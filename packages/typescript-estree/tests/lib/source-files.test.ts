@@ -3,12 +3,12 @@ import * as ts from 'typescript';
 import { getCodeText, isSourceFile } from '../../src/source-files';
 
 describe(isSourceFile, () => {
-  it.each([
-    null,
-    undefined,
-    {},
-    { getFullText: (): string => '', text: '' },
-  ] as const)('returns false when given %o', input => {
+  it.for([
+    [null],
+    [undefined],
+    [{}],
+    [{ getFullText: (): string => '', text: '' }],
+  ] as const)('returns false when given %o', ([input], { expect }) => {
     expect(isSourceFile(input)).toBe(false);
   });
 
