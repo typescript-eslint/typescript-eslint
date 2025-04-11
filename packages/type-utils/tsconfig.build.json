@@ -15,9 +15,6 @@
       "path": "../types/tsconfig.build.json"
     },
     {
-      "path": "../scope-manager/tsconfig.build.json"
-    },
-    {
       "path": "../utils/tsconfig.build.json"
     },
     {
