@@ -89,8 +89,8 @@
     "@typescript-eslint/types": "workspace:^",
     "@typescript-eslint/typescript-estree": "workspace:^",
     "@typescript-eslint/utils": "workspace:^",
-    "@vitest/coverage-v8": "^3.0.8",
-    "@vitest/eslint-plugin": "^1.1.37",
+    "@vitest/coverage-v8": "^3.1.1",
+    "@vitest/eslint-plugin": "^1.1.42",
     "console-fail-test": "^0.5.0",
     "cross-fetch": "^4.0.0",
     "cspell": "^8.15.2",
@@ -125,8 +125,8 @@
     "tsx": "*",
     "typescript": ">=4.8.4 <5.9.0",
     "typescript-eslint": "workspace:^",
-    "vite": "^6.2.2",
-    "vitest": "^3.0.8",
+    "vite": "^6.2.6",
+    "vitest": "^3.1.1",
     "yargs": "17.7.2"
   },
   "resolutions": {
@@ -147,7 +147,8 @@
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tmp": "0.2.1",
     "tsx": "^4.7.2",
-    "typescript": "5.8.2"
+    "typescript": "5.8.2",
+    "@eslint/config-helpers": "^0.2.0"
   },
   "packageManager": "yarn@3.8.2",
   "nx": {

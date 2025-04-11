@@ -44,7 +44,7 @@
     "postclean": "rimraf dist/ coverage/",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
-    "test": "jest",
+    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
     "check-types": "npx nx typecheck"
   },
   "peerDependencies": {
@@ -59,12 +59,12 @@
     "debug": "^4.3.4"
   },
   "devDependencies": {
-    "@jest/types": "29.6.3",
+    "@vitest/coverage-v8": "^3.1.1",
     "glob": "*",
-    "jest": "29.7.0",
     "prettier": "^3.2.5",
     "rimraf": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "vitest": "^3.1.1"
   },
   "funding": {
     "type": "opencollective",
