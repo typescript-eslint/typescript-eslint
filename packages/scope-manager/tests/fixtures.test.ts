@@ -62,7 +62,9 @@ function nestDescribe(
       fixture.name,
       { only: [...fixture.segments, fixture.name].join(path.sep) === ONLY },
       async () => {
-        const contents = await fs.readFile(fixture.absolute, 'utf8');
+        const contents = await fs.readFile(fixture.absolute, {
+          encoding: 'utf-8',
+        });
 
         const lines = contents.split('\n');
         const options: Record<string, unknown> = {
