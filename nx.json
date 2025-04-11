@@ -62,7 +62,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"],
-      "outputs": ["{projectRoot}/dist", "{projectRoot}/_ts4.*"],
+      "outputs": ["{projectRoot}/dist"],
       "options": {
         "cwd": "{projectRoot}"
       },

@@ -6137,7 +6137,6 @@ __metadata:
     "@typescript-eslint/typescript-estree": 8.29.1
     "@typescript-eslint/visitor-keys": 8.29.1
     debug: ^4.3.4
-    downlevel-dts: "*"
     glob: "*"
     jest: 29.7.0
     rimraf: "*"
@@ -6174,7 +6173,6 @@ __metadata:
     "@typescript-eslint/utils": 8.29.1
     ajv: ^6.12.6
     chai: ^4.4.1
-    downlevel-dts: "*"
     eslint: "*"
     eslint-visitor-keys: ^4.2.0
     espree: ^10.3.0
@@ -6201,7 +6199,6 @@ __metadata:
     "@typescript-eslint/types": 8.29.1
     "@typescript-eslint/typescript-estree": 8.29.1
     "@typescript-eslint/visitor-keys": 8.29.1
-    downlevel-dts: "*"
     glob: "*"
     jest: 29.7.0
     jest-specific-snapshot: "*"
@@ -6222,7 +6219,6 @@ __metadata:
     "@typescript-eslint/utils": 8.29.1
     ajv: ^6.12.6
     debug: ^4.3.4
-    downlevel-dts: "*"
     eslint: "*"
     jest: 29.7.0
     rimraf: "*"
@@ -6238,7 +6234,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
-    downlevel-dts: "*"
     rimraf: "*"
     tsx: "*"
     typescript: "*"
@@ -6339,7 +6334,6 @@ __metadata:
     "@typescript-eslint/types": 8.29.1
     "@typescript-eslint/visitor-keys": 8.29.1
     debug: ^4.3.4
-    downlevel-dts: "*"
     fast-glob: ^3.3.2
     glob: "*"
     is-glob: ^4.0.3
@@ -6363,7 +6357,6 @@ __metadata:
     "@typescript-eslint/scope-manager": 8.29.1
     "@typescript-eslint/types": 8.29.1
     "@typescript-eslint/typescript-estree": 8.29.1
-    downlevel-dts: "*"
     jest: 29.7.0
     rimraf: "*"
     typescript: "*"
@@ -6379,7 +6372,6 @@ __metadata:
   dependencies:
     "@typescript-eslint/types": 8.29.1
     "@vitest/coverage-v8": ^3.1.1
-    downlevel-dts: "*"
     eslint-visitor-keys: ^4.2.0
     rimraf: "*"
     typescript: "*"
@@ -9644,19 +9636,6 @@ __metadata:
   version: 16.4.5
   resolution: "dotenv@npm:16.4.5"
   checksum: 301a12c3d44fd49888b74eb9ccf9f07a1f5df43f489e7fcb89647a2edcd84c42d6bc349dc8df099cd18f07c35c7b04685c1a4f3e6a6a9e6b30f8d48c15b7f49c
-  languageName: node
-  linkType: hard
-
-"downlevel-dts@npm:*":
-  version: 0.11.0
-  resolution: "downlevel-dts@npm:0.11.0"
-  dependencies:
-    semver: ^7.3.2
-    shelljs: ^0.8.3
-    typescript: next
-  bin:
-    downlevel-dts: index.js
-  checksum: 846ad69da03795340b2fbd9432ff41605b885bf5a7d6636faa86342e91d9e4b27a49c2f68380a2f7ba26ddc28a11b3b02581a41c6b5c7034b8b0fb099c017307
   languageName: node
   linkType: hard
 
@@ -18971,7 +18950,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shelljs@npm:^0.8.3, shelljs@npm:^0.8.5":
+"shelljs@npm:^0.8.5":
   version: 0.8.5
   resolution: "shelljs@npm:0.8.5"
   dependencies:
@@ -20447,7 +20426,6 @@ __metadata:
     "@typescript-eslint/parser": 8.29.1
     "@typescript-eslint/utils": 8.29.1
     "@vitest/coverage-v8": ^3.1.1
-    downlevel-dts: "*"
     eslint: "*"
     rimraf: "*"
     typescript: "*"

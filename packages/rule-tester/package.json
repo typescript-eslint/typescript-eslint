@@ -5,7 +5,6 @@
   "files": [
     "dist",
     "!*.tsbuildinfo",
-    "_ts4.2",
     "README.md",
     "LICENSE"
   ],
@@ -36,9 +35,8 @@
     "estree"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json && yarn run postbuild",
-    "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
-    "clean": "rimraf dist/ _ts4.2/ coverage/",
+    "build": "tsc -b tsconfig.build.json",
+    "clean": "rimraf dist/ coverage/",
     "format": "yarn run -T format",
     "lint": "yarn run -T nx lint",
     "pretest-eslint-base": "tsc -b tsconfig.build.json",
@@ -64,7 +62,6 @@
     "@types/json-stable-stringify-without-jsonify": "^1.0.2",
     "@types/lodash.merge": "4.6.9",
     "chai": "^4.4.1",
-    "downlevel-dts": "*",
     "eslint": "*",
     "eslint-visitor-keys": "^4.2.0",
     "espree": "^10.3.0",
@@ -82,12 +79,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "typesVersions": {
-    "<4.7": {
-      "*": [
-        "_ts4.2/*"
-      ]
-    }
   }
 }
