@@ -33,6 +33,8 @@ const vitestFiles = [
   'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/visitor-keys/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/scope-manager/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/scope-manager/tests/test-utils/serializers/index.ts',
 ];
 
 export default tseslint.config(
@@ -379,11 +381,7 @@ export default tseslint.config(
   // define the vitest globals for all test files
   {
     files: vitestFiles,
-    languageOptions: {
-      globals: {
-        ...vitestPlugin.environments.env.globals,
-      },
-    },
+    ...vitestPlugin.configs.env,
   },
   // test file specific configuration
   {
@@ -440,6 +438,7 @@ export default tseslint.config(
       'vitest/no-identical-title': 'error',
       'vitest/no-test-prefixes': 'error',
       'vitest/no-test-return-statement': 'error',
+      'vitest/prefer-describe-function-title': 'error',
       'vitest/prefer-each': 'error',
       'vitest/prefer-spy-on': 'error',
       'vitest/prefer-to-be': 'error',
