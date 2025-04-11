@@ -19,6 +19,7 @@ type Member =
 
 type MemberDeclaration =
   | TSESTree.DefaultExportDeclarations
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   | TSESTree.NamedExportDeclarations;
 
 export default createRule({
@@ -49,6 +50,7 @@ export default createRule({
      * @returns the name and attribute of the member or null if it's a member not relevant to the rule.
      */
     function getMemberMethod(
+      // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
       member: Member | MemberDeclaration,
     ): Method | null {
       switch (member.type) {
