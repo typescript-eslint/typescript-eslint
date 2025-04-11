@@ -92,7 +92,7 @@
     "@typescript-eslint/typescript-estree": "workspace:^",
     "@typescript-eslint/utils": "workspace:^",
     "@vitest/coverage-v8": "^3.1.1",
-    "@vitest/eslint-plugin": "^1.1.39",
+    "@vitest/eslint-plugin": "^1.1.42",
     "console-fail-test": "^0.5.0",
     "cross-fetch": "^4.0.0",
     "cspell": "^8.15.2",
@@ -127,7 +127,7 @@
     "tsx": "*",
     "typescript": ">=4.8.4 <5.9.0",
     "typescript-eslint": "workspace:^",
-    "vite": "^6.2.5",
+    "vite": "^6.2.6",
     "vitest": "^3.1.1",
     "yargs": "17.7.2"
   },
