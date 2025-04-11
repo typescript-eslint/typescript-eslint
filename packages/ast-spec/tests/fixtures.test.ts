@@ -331,7 +331,7 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
           // NOTE - the comments below exist so that they show up in the stack trace jest shows
           //        when the test fails. Yes, sadly, they're duplicated, but it's necessary to
           //        provide the best and most understandable DevX that we can here.
-          //        Jest will print a code frame with the fail line as well as 2 lines before and after
+          //        Vitest will print a code frame with the fail line as well as 2 lines before and after
 
           // if this fails and you WERE expecting a parser error, then your fixture should be in the `_error_` subfolder
           // if this fails and you WEREN'T expecting a parser error - then something is broken.
