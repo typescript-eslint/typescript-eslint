@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs prefer-string-starts-ends-with.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > prefer-string-starts-ends-with.mdx > code examples ESLint output`]
+Incorrect
 
 declare const foo: string;
 
@@ -36,11 +36,9 @@ foo.match(/bar$/) != null;
 ~~~~~~~~~~~~~~~~~ Use the 'String#endsWith' method instead.
 /bar$/.test(foo);
 ~~~~~~~~~~~~~~~~ Use the 'String#endsWith' method instead.
-"
-`;
 
-exports[`Validating rule docs prefer-string-starts-ends-with.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > prefer-string-starts-ends-with.mdx > code examples ESLint output`]
+Correct
 
 declare const foo: string;
 
@@ -49,11 +47,9 @@ foo.startsWith('bar');
 
 // ends with
 foo.endsWith('bar');
-"
-`;
 
-exports[`Validating rule docs prefer-string-starts-ends-with.mdx code examples ESLint output 3`] = `
-"Options: { "allowSingleElementEquality": "always" }
+exports[`Validating rule docs > prefer-string-starts-ends-with.mdx > code examples ESLint output`]
+Options: { "allowSingleElementEquality": "always" }
 
 declare const text: string;
 
@@ -61,5 +57,3 @@ text[0] === 'a';
 text[0] === text[0].toUpperCase();
 text[0] === text[1];
 text[text.length - 1] === 'b';
-"
-`;

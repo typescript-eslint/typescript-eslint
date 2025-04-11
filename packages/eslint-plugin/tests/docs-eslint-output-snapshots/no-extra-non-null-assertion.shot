@@ -1,58 +1,46 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-extra-non-null-assertion.mdx > code examples ESLint output`]
+Incorrect
 
 const foo: { bar: number } | null = null;
 const bar = foo!!!.bar;
             ~~~~~ Forbidden extra non-null assertion.
             ~~~~ Forbidden extra non-null assertion.
-"
-`;
 
-exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 2`] = `
-"Incorrect
+exports[`Validating rule docs > no-extra-non-null-assertion.mdx > code examples ESLint output`]
+Incorrect
 
 function foo(bar: number | undefined) {
   const bar: number = bar!!!;
                       ~~~~~ Forbidden extra non-null assertion.
                       ~~~~ Forbidden extra non-null assertion.
 }
-"
-`;
 
-exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 3`] = `
-"Incorrect
+exports[`Validating rule docs > no-extra-non-null-assertion.mdx > code examples ESLint output`]
+Incorrect
 
 function foo(bar?: { n: number }) {
   return bar!?.n;
          ~~~~ Forbidden extra non-null assertion.
 }
-"
-`;
 
-exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 4`] = `
-"Correct
+exports[`Validating rule docs > no-extra-non-null-assertion.mdx > code examples ESLint output`]
+Correct
 
 const foo: { bar: number } | null = null;
 const bar = foo!.bar;
-"
-`;
 
-exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 5`] = `
-"Correct
+exports[`Validating rule docs > no-extra-non-null-assertion.mdx > code examples ESLint output`]
+Correct
 
 function foo(bar: number | undefined) {
   const bar: number = bar!;
 }
-"
-`;
 
-exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 6`] = `
-"Correct
+exports[`Validating rule docs > no-extra-non-null-assertion.mdx > code examples ESLint output`]
+Correct
 
 function foo(bar?: { n: number }) {
   return bar?.n;
 }
-"
-`;

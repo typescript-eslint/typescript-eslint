@@ -1,35 +1,29 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-empty-function.mdx code examples ESLint output 1`] = `
-"Options: { "allow": ["private-constructors"] }
+exports[`Validating rule docs > no-empty-function.mdx > code examples ESLint output`]
+Options: { "allow": ["private-constructors"] }
 
 class Foo {
   private constructor() {}
 }
-"
-`;
 
-exports[`Validating rule docs no-empty-function.mdx code examples ESLint output 2`] = `
-"Options: { "allow": ["protected-constructors"] }
+exports[`Validating rule docs > no-empty-function.mdx > code examples ESLint output`]
+Options: { "allow": ["protected-constructors"] }
 
 class Foo {
   protected constructor() {}
 }
-"
-`;
 
-exports[`Validating rule docs no-empty-function.mdx code examples ESLint output 3`] = `
-"Options: { "allow": ["decoratedFunctions"] }
+exports[`Validating rule docs > no-empty-function.mdx > code examples ESLint output`]
+Options: { "allow": ["decoratedFunctions"] }
 
 class Foo {
   @decorator()
   foo() {}
 }
-"
-`;
 
-exports[`Validating rule docs no-empty-function.mdx code examples ESLint output 4`] = `
-"Options: { "allow": ["overrideMethods"] }
+exports[`Validating rule docs > no-empty-function.mdx > code examples ESLint output`]
+Options: { "allow": ["overrideMethods"] }
 
 abstract class Base {
   protected greet(): void {
@@ -40,5 +34,3 @@ abstract class Base {
 class Foo extends Base {
   protected override greet(): void {}
 }
-"
-`;
