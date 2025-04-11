@@ -2,20 +2,16 @@
 
 // pack the packages ahead of time and create a mapping for use in the tests
 require('tsx/cjs');
-const { tseslintPackages } = require('./tools/pack-packages');
+const { setup } = require('./tools/pack-packages');
 
 // @ts-check
-/** @type {import('@jest/types').Config.InitialOptions} */
-module.exports = {
+/** @type {() => Promise<import('@jest/types').Config.InitialOptions>} */
+module.exports = async () => ({
   ...require('../../jest.config.base.js'),
   globals: {
-    tseslintPackages,
+    tseslintPackages: await setup(),
   },
+  globalTeardown: './tools/pack-packages.ts',
   testRegex: ['/tests/[^/]+.test.ts$'],
   rootDir: __dirname,
-
-  // TODO(Brad Zacher) - for some reason if we run more than 1 test at a time
-  //                     yarn will error saying the tarballs are corrupt on just
-  //                     the first test.
-  maxWorkers: 1,
-};
+});
