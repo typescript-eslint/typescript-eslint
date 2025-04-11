@@ -8,7 +8,7 @@ import { expectToHaveParserServices } from './test-utils/expectToHaveParserServi
 
 type GetNode = (ast: TSESTree.Program) => TSESTree.Node;
 
-describe('discriminateAnyType', () => {
+describe(discriminateAnyType, () => {
   const rootDir = path.join(__dirname, 'fixtures');
 
   function getDeclarationId(ast: TSESTree.Program): TSESTree.Node {
