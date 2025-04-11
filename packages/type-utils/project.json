@@ -1,12 +1,16 @@
 {
   "name": "type-utils",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "type": "library",
-  "implicitDependencies": [],
+  "projectType": "library",
+  "root": "packages/type-utils",
+  "sourceRoot": "packages/type-utils/src",
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/vite:test"
     }
   }
 }
