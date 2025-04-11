@@ -441,6 +441,7 @@ export default tseslint.config(
       'vitest/no-identical-title': 'error',
       'vitest/no-test-prefixes': 'error',
       'vitest/no-test-return-statement': 'error',
+      'vitest/prefer-describe-function-title': 'error',
       'vitest/prefer-each': 'error',
       'vitest/prefer-spy-on': 'error',
       'vitest/prefer-to-be': 'error',
