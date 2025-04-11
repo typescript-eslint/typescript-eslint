@@ -98,7 +98,6 @@ export default {
     },
     'packages/utils': {
       ignore: [
-        'tests/**/*.type-test.ts',
         'typings/eslint.d.ts',
         'typings/eslint-community-eslint-utils.d.ts',
       ],
