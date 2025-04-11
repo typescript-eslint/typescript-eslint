@@ -21,6 +21,7 @@ import {
 
 export type Options = [
   {
+    checkLiteralConstAssertions?: boolean;
     typesToIgnore?: string[];
   },
 ];
@@ -48,6 +49,10 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          checkLiteralConstAssertions: {
+            type: 'boolean',
+            description: 'Whether to check literal const assertions.',
+          },
           typesToIgnore: {
             type: 'array',
             description: 'A list of type names to ignore.',
@@ -217,6 +222,15 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
+    function isTypeLiteral(type: ts.Type) {
+      return (
+        type.isLiteral() ||
+        tsutils.isBooleanLiteralType(type) ||
+        type.flags === ts.TypeFlags.Undefined ||
+        type.flags === ts.TypeFlags.Null
+      );
+    }
+
     return {
       'TSAsExpression, TSTypeAssertion'(
         node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
@@ -232,10 +246,22 @@ export default createRule<Options, MessageIds>({
         const castType = services.getTypeAtLocation(node);
         const uncastType = services.getTypeAtLocation(node.expression);
         const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
+        const castTypeIsLiteral = isTypeLiteral(castType);
+        const typeAnnotationIsConstAssertion = isConstAssertion(
+          node.typeAnnotation,
+        );
 
-        const wouldSameTypeBeInferred = castType.isLiteral()
+        if (
+          !options.checkLiteralConstAssertions &&
+          castTypeIsLiteral &&
+          typeAnnotationIsConstAssertion
+        ) {
+          return;
+        }
+
+        const wouldSameTypeBeInferred = castTypeIsLiteral
           ? isImplicitlyNarrowedLiteralDeclaration(node)
-          : !isConstAssertion(node.typeAnnotation);
+          : !typeAnnotationIsConstAssertion;
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
           context.report({
