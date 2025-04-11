@@ -217,6 +217,13 @@
     "website": "https://quicko.com"
   },
   {
+    "id": "syntaxfm",
+    "image": "https://avatars.githubusercontent.com/u/130389858?v=4",
+    "name": "Syntax",
+    "totalDonations": 41050,
+    "website": "https://syntax.fm"
+  },
+  {
     "id": "frontendmasters",
     "image": "https://avatars.githubusercontent.com/u/5613852?v=4",
     "name": "Frontend Masters",
@@ -229,13 +236,6 @@
     "name": "Whitebox",
     "totalDonations": 40000,
     "website": "https://whitebox.com"
-  },
-  {
-    "id": "syntaxfm",
-    "image": "https://avatars.githubusercontent.com/u/130389858?v=4",
-    "name": "Syntax",
-    "totalDonations": 37643,
-    "website": "https://syntax.fm"
   },
   {
     "id": "Monito",
@@ -322,6 +322,13 @@
     "website": "https://balsa.com/"
   },
   {
+    "id": "getsentry",
+    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
+    "name": "Sentry",
+    "totalDonations": 15241,
+    "website": "https://sentry.io"
+  },
+  {
     "id": "THE PADDING",
     "image": "https://images.opencollective.com/thepadding/55e79ad/logo.png",
     "name": "THE PADDING",
@@ -336,17 +343,10 @@
     "website": "https://now4real.com/"
   },
   {
-    "id": "getsentry",
-    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
-    "name": "Sentry",
-    "totalDonations": 13864,
-    "website": "https://sentry.io"
-  },
-  {
     "id": "codecov",
     "image": "https://avatars.githubusercontent.com/u/8226205?v=4",
     "name": "Codecov",
-    "totalDonations": 12385,
+    "totalDonations": 13431,
     "website": "https://codecov.io/"
   },
   {
