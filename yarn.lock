@@ -5925,13 +5925,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/tmp@npm:^0.2.6":
-  version: 0.2.6
-  resolution: "@types/tmp@npm:0.2.6"
-  checksum: 0b24bb6040cc289440a609e10ec99a704978c890a5828ff151576489090b2257ce2e2570b0f320ace9c8099c3642ea6221fbdf6d8f2e22b7cd1f4fbf6e989e3e
-  languageName: node
-  linkType: hard
-
 "@types/trusted-types@npm:^2.0.2":
   version: 2.0.2
   resolution: "@types/trusted-types@npm:2.0.2"
@@ -6216,7 +6209,6 @@ __metadata:
     "@types/natural-compare": ^1.4.3
     "@types/node": ^20.12.5
     "@types/semver": ^7.5.8
-    "@types/tmp": ^0.2.6
     "@types/yargs": ^17.0.32
     "@typescript-eslint/eslint-plugin": "workspace:^"
     "@typescript-eslint/eslint-plugin-internal": "workspace:^"

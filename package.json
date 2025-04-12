@@ -80,7 +80,6 @@
     "@types/natural-compare": "^1.4.3",
     "@types/node": "^20.12.5",
     "@types/semver": "^7.5.8",
-    "@types/tmp": "^0.2.6",
     "@types/yargs": "^17.0.32",
     "@typescript-eslint/eslint-plugin": "workspace:^",
     "@typescript-eslint/eslint-plugin-internal": "workspace:^",
