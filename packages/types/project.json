@@ -1,12 +1,20 @@
 {
   "name": "types",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "type": "library",
-  "implicitDependencies": ["ast-spec"],
+  "projectType": "library",
+  "root": "packages/types",
+  "sourceRoot": "packages/types/src",
   "targets": {
+    "copy-ast-spec": {
+      "dependsOn": ["ast-spec:build"],
+      "outputs": ["{projectRoot}/src/generated"],
+      "cache": true
+    },
+    "build": {
+      "dependsOn": ["copy-ast-spec"]
+    },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     }
   }
 }

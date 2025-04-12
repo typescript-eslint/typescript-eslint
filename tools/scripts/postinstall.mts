@@ -44,5 +44,6 @@ void (async function (): Promise<void> {
 
     // Build all the packages ready for use
     await $`yarn build`;
+    await $`yarn nx typecheck ast-spec`;
   }
 })();

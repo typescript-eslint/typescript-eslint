@@ -15,5 +15,9 @@
     "tools",
     "typings"
   ],
-  "references": []
+  "references": [
+    {
+      "path": "../../tsconfig.spec.json"
+    }
+  ]
 }
