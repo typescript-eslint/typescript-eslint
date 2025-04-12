@@ -41,10 +41,12 @@ vi.mock('totally-real-dependency-prerelease/package.json', () => ({
 
 vi.mock(import('@typescript-eslint/parser'), async importOriginal => {
   const actualParser = await importOriginal();
+
   return {
     ...actualParser,
     __esModule: true,
     clearCaches: vi.fn(),
+    default: actualParser.default,
     length: 1,
   };
 });
