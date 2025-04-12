@@ -14,8 +14,6 @@ type AllSelectors =
   | `${TSESTree.AST_NODE_TYPES}:exit`
   | `${TSESTree.AST_NODE_TYPES}`;
 
-type ExpectNever<T extends never> = T;
-
 type SelectorsWithWrongNodeType = {
   [K in TSESTree.AST_NODE_TYPES]: Parameters<
     NonNullable<RuleListener[K]>
@@ -25,13 +23,11 @@ type SelectorsWithWrongNodeType = {
       : K
     : K;
 }[TSESTree.AST_NODE_TYPES];
-type _test_rule_listener_selectors_have_correct_node_types =
-  ExpectNever<SelectorsWithWrongNodeType>;
 
-type ExtraSelectors = Exclude<RuleListenerSelectors, AllSelectors>;
-type _test_rule_listener_does_not_define_extra_selectors =
-  ExpectNever<ExtraSelectors>;
+test('type tests', () => {
+  expectTypeOf<SelectorsWithWrongNodeType>().toBeNever();
 
-type MissingSelectors = Exclude<AllSelectors, RuleListenerSelectors>;
-type _test_rule_listener_has_selectors_for_all_node_types =
-  ExpectNever<MissingSelectors>;
+  expectTypeOf<RuleListenerSelectors>().exclude<AllSelectors>().toBeNever();
+
+  expectTypeOf<AllSelectors>().exclude<RuleListenerSelectors>().toBeNever();
+});

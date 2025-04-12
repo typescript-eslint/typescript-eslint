@@ -20,8 +20,6 @@
   "devDependencies": {
     "@jest/types": "29.6.3",
     "jest": "29.7.0",
-    "ncp": "*",
-    "tmp": "*",
     "tsx": "*"
   }
 }

@@ -35,6 +35,7 @@ const vitestFiles = [
   'packages/visitor-keys/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/parser/tests/lib/**/*.test.{ts,tsx,cts,mts}',
   'packages/parser/tests/test-utils/**/*.{ts,tsx,cts,mts}',
+  'packages/utils/tests/**/*.test?(-d).{ts,tsx,cts,mts}',
   'packages/rule-schema-to-typescript-types/tests/**/*.test.{ts,tsx,cts,mts}',
 ];
 
