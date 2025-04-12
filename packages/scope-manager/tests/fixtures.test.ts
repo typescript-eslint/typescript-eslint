@@ -172,7 +172,7 @@ describe.runIf(ONLY === '')(
       return [relative, path.join(FIXTURES_DIR, dir, name)] as const;
     });
     it.for(snapshots)('%s', async ([, fixturePath], { expect }) => {
-      expect((await fs.stat(fixturePath)).isFile()).toBe(true);
+      expect((await fs.lstat(fixturePath)).isFile()).toBe(true);
     });
   },
 );
