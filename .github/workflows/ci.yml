@@ -182,6 +182,10 @@ jobs:
       # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
       NX_CLOUD_ENV_NAME: 'Node ${{ matrix.node-version }} -'
       COLLECT_COVERAGE: false
+      NX_SKIP_NX_CACHE: true
+      NX_DISABLE_NX_CACHE: true
+      NX_SKIP_REMOTE_CACHE: true
+      NX_DISABLE_REMOTE_CACHE: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -207,6 +211,8 @@ jobs:
         env:
           NX_SKIP_REMOTE_CACHE: true
           NX_DISABLE_NX_CACHE: true
+          NX_SKIP_NX_CACHE: true
+          NX_DISABLE_REMOTE_CACHE: true
           CI: true
 
       - name: Store coverage for uploading
