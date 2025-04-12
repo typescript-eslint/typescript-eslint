@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type { TestContext } from 'vitest';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import Ajv from 'ajv';
@@ -17,20 +18,26 @@ describe('TypeOrValueSpecifier', () => {
     const ajv = new Ajv();
     const validate = ajv.compile(typeOrValueSpecifiersSchema);
 
-    function runTestPositive(typeOrValueSpecifier: unknown): void {
+    function runTestPositive(
+      [typeOrValueSpecifier]: readonly [typeOrValueSpecifier: unknown],
+      { expect }: TestContext,
+    ): void {
       expect(validate([typeOrValueSpecifier])).toBe(true);
     }
 
-    function runTestNegative(typeOrValueSpecifier: unknown): void {
+    function runTestNegative(
+      [typeOrValueSpecifier]: readonly [typeOrValueSpecifier: unknown],
+      { expect }: TestContext,
+    ): void {
       expect(validate([typeOrValueSpecifier])).toBe(false);
     }
 
-    it.each([['MyType'], ['myValue'], ['any'], ['void'], ['never']] as const)(
+    it.for([['MyType'], ['myValue'], ['any'], ['void'], ['never']] as const)(
       'matches a simple string specifier %s',
       runTestPositive,
     );
 
-    it.each([
+    it.for([
       [42],
       [false],
       [null],
@@ -39,14 +46,14 @@ describe('TypeOrValueSpecifier', () => {
       [(): void => {}],
     ] as const)("doesn't match any non-string basic type: %s", runTestNegative);
 
-    it.each([
+    it.for([
       [{ from: 'file', name: 'MyType' }],
       [{ from: 'file', name: ['MyType', 'myValue'] }],
       [{ from: 'file', name: 'MyType', path: './filename.js' }],
       [{ from: 'file', name: ['MyType', 'myValue'], path: './filename.js' }],
     ] as const)('matches a file specifier: %s', runTestPositive);
 
-    it.each([
+    it.for([
       [{ from: 'file', name: 42 }],
       [{ from: 'file', name: ['MyType', 42] }],
       [{ from: 'file', name: ['MyType', 'MyType'] }],
@@ -68,12 +75,12 @@ describe('TypeOrValueSpecifier', () => {
       runTestNegative,
     );
 
-    it.each([
+    it.for([
       [{ from: 'lib', name: 'MyType' }],
       [{ from: 'lib', name: ['MyType', 'myValue'] }],
     ] as const)('matches a lib specifier: %s', runTestPositive);
 
-    it.each([
+    it.for([
       [{ from: 'lib', name: 42 }],
       [{ from: 'lib', name: ['MyType', 42] }],
       [{ from: 'lib', name: ['MyType', 'MyType'] }],
@@ -82,7 +89,7 @@ describe('TypeOrValueSpecifier', () => {
       [{ from: 'lib', name: 'MyType', unrelatedProperty: '' }],
     ] as const)("doesn't match a malformed lib specifier: %s", runTestNegative);
 
-    it.each([
+    it.for([
       [{ from: 'package', name: 'MyType', package: 'jquery' }],
       [
         {
@@ -93,7 +100,7 @@ describe('TypeOrValueSpecifier', () => {
       ],
     ] as const)('matches a package specifier: %s', runTestPositive);
 
-    it.each([
+    it.for([
       [{ from: 'package', name: 42, package: 'jquery' }],
       [{ from: 'package', name: ['MyType', 42], package: 'jquery' }],
       [
@@ -137,6 +144,7 @@ describe('TypeOrValueSpecifier', () => {
       code: string,
       specifier: TypeOrValueSpecifier,
       expected: boolean,
+      expect: TestContext['expect'],
     ): void {
       const rootDir = path.join(__dirname, 'fixtures');
       const { ast, services } = parseForESLint(code, {
@@ -159,20 +167,30 @@ describe('TypeOrValueSpecifier', () => {
     }
 
     function runTestPositive(
-      code: string,
-      specifier: TypeOrValueSpecifier,
+      [code, specifier]: readonly [
+        code: string,
+        specifier: TypeOrValueSpecifier,
+      ],
+      testContext: Partial<TestContext> & Pick<TestContext, 'expect'> = {
+        expect,
+      },
     ): void {
-      runTests(code, specifier, true);
+      runTests(code, specifier, true, testContext.expect);
     }
 
     function runTestNegative(
-      code: string,
-      specifier: TypeOrValueSpecifier,
+      [code, specifier]: readonly [
+        code: string,
+        specifier: TypeOrValueSpecifier,
+      ],
+      testContext: Partial<TestContext> & Pick<TestContext, 'expect'> = {
+        expect,
+      },
     ): void {
-      runTests(code, specifier, false);
+      runTests(code, specifier, false, testContext.expect);
     }
 
-    it.each([
+    it.for([
       ['interface Foo {prop: string}; type Test = Foo;', 'Foo'],
       ['type Test = RegExp;', 'RegExp'],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
@@ -180,7 +198,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestPositive,
     );
 
-    it.each([
+    it.for([
       ['interface Foo {prop: string}; type Test = Foo;', 'Bar'],
       ['interface Foo {prop: string}; type Test = Foo;', 'RegExp'],
       ['type Test = RegExp;', 'Foo'],
@@ -190,7 +208,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestNegative,
     );
 
-    it.each([
+    it.for([
       [
         'interface Foo {prop: string}; type Test = Foo;',
         { from: 'file', name: 'Foo' },
@@ -264,7 +282,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestPositive,
     );
 
-    it.each([
+    it.for([
       [
         'interface Foo {prop: string}; type Test = Foo;',
         { from: 'file', name: 'Bar' },
@@ -290,7 +308,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestNegative,
     );
 
-    it.each([
+    it.for([
       ['type Test = RegExp;', { from: 'lib', name: 'RegExp' }],
       ['type Test = RegExp;', { from: 'lib', name: ['RegExp', 'BigInt'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
@@ -298,7 +316,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestPositive,
     );
 
-    it.each([
+    it.for([
       ['type Test = RegExp;', { from: 'lib', name: 'BigInt' }],
       ['type Test = RegExp;', { from: 'lib', name: ['BigInt', 'Date'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
@@ -306,7 +324,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestNegative,
     );
 
-    it.each([
+    it.for([
       ['type Test = string;', { from: 'lib', name: 'string' }],
       ['type Test = string;', { from: 'lib', name: ['string', 'number'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
@@ -314,7 +332,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestPositive,
     );
 
-    it.each([
+    it.for([
       ['type Test = string;', { from: 'lib', name: 'number' }],
       ['type Test = string;', { from: 'lib', name: ['number', 'boolean'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
@@ -322,7 +340,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestNegative,
     );
 
-    it.each([
+    it.for([
       [
         'import type {Node} from "typescript"; type Test = Node;',
         { from: 'package', name: 'Node', package: 'typescript' },
@@ -407,7 +425,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestPositive,
     );
 
-    it.each([
+    it.for([
       [
         `
           type Other = { __otherBrand: true };
@@ -430,7 +448,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestNegative,
     );
 
-    it.each([
+    it.for([
       [
         `
           type SafePromise = Promise<number> & { __safeBrand: string };
@@ -444,7 +462,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestPositive,
     );
 
-    it.each([
+    it.for([
       [
         `
           declare module "node:test" {
@@ -469,7 +487,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestPositive,
     );
 
-    it.each([
+    it.for([
       [
         `
           declare module "node:test" {
@@ -495,7 +513,7 @@ describe('TypeOrValueSpecifier', () => {
     );
 
     it("does not match a `declare global` with the 'global' package name", () => {
-      runTestNegative(
+      runTestNegative([
         `
           declare global {
             export type URL = {};
@@ -508,10 +526,10 @@ describe('TypeOrValueSpecifier', () => {
           name: 'URL',
           package: 'global',
         },
-      );
+      ]);
     });
 
-    it.each([
+    it.for([
       [
         'import type {Node} from "typescript"; type Test = Node;',
         { from: 'package', name: 'Symbol', package: 'typescript' },
@@ -541,7 +559,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestNegative,
     );
 
-    it.each([
+    it.for([
       [
         'interface Foo {prop: string}; type Test = Foo;',
         { from: 'lib', name: 'Foo' },
@@ -604,7 +622,7 @@ describe('TypeOrValueSpecifier', () => {
       runTestNegative,
     );
 
-    it.each([
+    it.for([
       ['type Test = Foo;', { from: 'lib', name: 'Foo' }],
       ['type Test = Foo;', { from: 'lib', name: ['Foo', 'number'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(

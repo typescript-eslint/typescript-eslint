@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
 import type * as ts from 'typescript';
+import type { TestContext } from 'vitest';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import path from 'node:path';
@@ -24,14 +25,17 @@ describe(getTypeName, () => {
     return { checker, type: services.getTypeAtLocation(declaration.id) };
   }
 
-  function runTest(code: string, expected: string): void {
+  function runTest(
+    [code, expected]: readonly [code: string, expected: string],
+    { expect }: TestContext,
+  ): void {
     const { checker, type } = getTypes(code);
     const result = getTypeName(checker, type);
     expect(result).toBe(expected);
   }
 
   describe('returns primitive type', () => {
-    it.each([
+    it.for([
       ['type Test = string;', 'string'],
       ['type Test = "text";', 'string'],
       ['type Test = string | "text";', 'string'],
@@ -49,7 +53,7 @@ describe(getTypeName, () => {
   });
 
   describe('returns non-primitive type', () => {
-    it.each([
+    it.for([
       ['type Test = 123;', '123'],
       ['type Test = true;', 'true'],
       ['type Test = false;', 'false'],

@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
 import type * as ts from 'typescript';
+import type { TestContext } from 'vitest';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import path from 'node:path';
@@ -26,18 +27,25 @@ describe(isSymbolFromDefaultLibrary, () => {
     return { program: services.program, symbol: type.getSymbol() };
   }
 
-  function runTestForAliasDeclaration(code: string, expected: boolean): void {
+  function runTestForAliasDeclaration(
+    code: string,
+    expected: boolean,
+    expect: TestContext['expect'],
+  ): void {
     const { program, symbol } = getTypes(code);
     const result = isSymbolFromDefaultLibrary(program, symbol);
     expect(result).toBe(expected);
   }
 
   describe('is symbol from default library', () => {
-    function runTest(code: string): void {
-      runTestForAliasDeclaration(code, true);
+    function runTest(
+      [code]: readonly [code: string],
+      { expect }: TestContext,
+    ): void {
+      runTestForAliasDeclaration(code, true, expect);
     }
 
-    it.each([
+    it.for([
       ['type Test = Array<number>;'],
       ['type Test = Map<string,number>;'],
       ['type Test = Promise<void>'],
@@ -47,11 +55,14 @@ describe(isSymbolFromDefaultLibrary, () => {
   });
 
   describe('is not symbol from default library', () => {
-    function runTest(code: string): void {
-      runTestForAliasDeclaration(code, false);
+    function runTest(
+      [code]: readonly [code: string],
+      { expect }: TestContext,
+    ): void {
+      runTestForAliasDeclaration(code, false, expect);
     }
 
-    it.each([
+    it.for([
       ['const test: Array<number> = [1,2,3];'],
       ['type Test = number;'],
       ['interface Test { bar: string; };'],

@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
+import type { TestContext } from 'vitest';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import path from 'node:path';
@@ -25,15 +26,15 @@ describe('typeFlagUtils', () => {
 
   describe(getTypeFlags, () => {
     function runTestForAliasDeclaration(
-      code: string,
-      expected: ts.TypeFlags,
+      [code, expected]: readonly [code: string, expected: ts.TypeFlags],
+      { expect }: TestContext,
     ): void {
       const type = getType(code);
       const result = getTypeFlags(type);
       expect(result).toBe(expected);
     }
 
-    it.each([
+    it.for([
       ['type Test = any;', 1],
       ['type Test = unknown;', 2],
       ['type Test = string;', 4],
@@ -56,6 +57,7 @@ describe('typeFlagUtils', () => {
       code: string,
       flagsToCheck: ts.TypeFlags,
       expected: boolean,
+      { expect }: TestContext,
     ): void {
       const type = getType(code);
       const result = isTypeFlagSet(type, flagsToCheck);
@@ -64,13 +66,16 @@ describe('typeFlagUtils', () => {
 
     describe('is type flags set', () => {
       function runTestIsTypeFlagSet(
-        code: string,
-        flagsToCheck: ts.TypeFlags,
+        [code, flagsToCheck]: readonly [
+          code: string,
+          flagsToCheck: ts.TypeFlags,
+        ],
+        testContext: TestContext,
       ): void {
-        runTestForAliasDeclaration(code, flagsToCheck, true);
+        runTestForAliasDeclaration(code, flagsToCheck, true, testContext);
       }
 
-      it.each([
+      it.for([
         ['type Test = any;', ts.TypeFlags.Any],
         ['type Test = string;', ts.TypeFlags.String],
         ['type Test = string | number;', ts.TypeFlags.String],
@@ -83,13 +88,16 @@ describe('typeFlagUtils', () => {
 
     describe('is not type flags set', () => {
       function runTestIsNotTypeFlagSet(
-        code: string,
-        flagsToCheck: ts.TypeFlags,
+        [code, flagsToCheck]: readonly [
+          code: string,
+          flagsToCheck: ts.TypeFlags,
+        ],
+        testContext: TestContext,
       ): void {
-        runTestForAliasDeclaration(code, flagsToCheck, false);
+        runTestForAliasDeclaration(code, flagsToCheck, false, testContext);
       }
 
-      it.each([
+      it.for([
         ['type Test = string', ts.TypeFlags.Any],
         ['type Test = string | number;', ts.TypeFlags.Any],
         ['type Test = string & { foo: string }', ts.TypeFlags.String],
