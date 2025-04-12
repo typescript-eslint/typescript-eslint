@@ -28,6 +28,7 @@ vi.mock(import('../../src/create-program/shared.js'), async importOriginal => {
 // resulting in path.relative results starting with many "../"s
 vi.mock(import('typescript'), async importOriginal => {
   const ts = await importOriginal();
+
   return {
     ...ts,
     default: ts.default,
@@ -40,6 +41,7 @@ vi.mock(import('typescript'), async importOriginal => {
 
 vi.mock('fast-glob', async importOriginal => {
   const fastGlob = await importOriginal<typeof fastGlobModule>();
+
   return {
     ...fastGlob,
     default: fastGlob.default,

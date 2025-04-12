@@ -55,8 +55,8 @@ async function writeTSConfig(
 ): Promise<void> {
   await fs.writeFile(
     path.join(dirName, 'tsconfig.json'),
-    JSON.stringify(config),
-    'utf-8',
+    JSON.stringify(config, null, 2),
+    { encoding: 'utf-8' },
   );
 }
 async function writeFile(
@@ -125,7 +125,7 @@ async function exists(
   filename: keyof typeof CONTENTS,
   tmpDir = '',
 ): Promise<boolean> {
-  return (await fs.stat(path.join(tmpDir, 'src', `${filename}.ts`))).isFile();
+  return (await fs.lstat(path.join(tmpDir, 'src', `${filename}.ts`))).isFile();
 }
 
 function baseTests(

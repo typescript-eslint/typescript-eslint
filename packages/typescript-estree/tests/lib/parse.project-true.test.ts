@@ -14,7 +14,7 @@ describe(parser.parseAndGenerateServices, () => {
     it('finds a parent project when it exists in the project', () => {
       const result = parser.parseAndGenerateServices('const a = true', {
         ...config,
-        filePath: join(PROJECT_DIR, 'nested/deep/included.ts'),
+        filePath: join(PROJECT_DIR, 'nested', 'deep', 'included.ts'),
       });
 
       expect(result).toEqual({
