@@ -103,12 +103,11 @@
         "{workspaceRoot}/vitest.config.base.mts",
         "{projectRoot}/vitest.config.mts"
       ],
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": ["{projectRoot}/coverage"],
       "cache": true,
       "options": {
         "config": "{projectRoot}/vitest.config.mts",
-        "watch": false,
-        "reportsDirectory": "{projectRoot}/coverage"
+        "watch": false
       }
     },
     "lint": {
