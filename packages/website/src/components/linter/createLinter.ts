@@ -160,6 +160,8 @@ export function createLinter(
   };
 
   const applyTSConfig = (fileName: string): void => {
+    let error: ErrorGroup | null = null;
+
     try {
       const file = system.readFile(fileName) ?? '{}';
       const parsed = parseTSConfig(file).compilerOptions;
@@ -168,36 +170,37 @@ export function createLinter(
       parser.updateConfig(compilerOptions);
     } catch (e) {
       if (e instanceof Error) {
-        const error = {
-          group: 'Typescript',
+        error = {
+          group: 'TypeScript',
           items: e.message
             .trim()
             .split('\n')
             .map((message: string) => {
               return {
-                fixer: undefined,
-                location: '',
                 message,
-                severity: 8,
-                suggestions: [],
+                severity: 8, // MarkerSeverity.Error
               };
             }),
           uri: undefined,
         };
-
-        onMarkersChange(prev => {
-          const activeTabErrors = Object.fromEntries(
-            prev.tsconfig.map(error => [error.group, error]),
-          );
-
-          activeTabErrors.Typescript = error;
-
-          return {
-            ...prev,
-            tsconfig: Object.values(activeTabErrors),
-          };
-        });
       }
+    } finally {
+      onMarkersChange(prev => {
+        const activeTabErrors = Object.fromEntries(
+          prev.tsconfig.map(error => [error.group, error]),
+        );
+
+        if (error) {
+          activeTabErrors.TypeScript = error;
+        } else {
+          delete activeTabErrors.TypeScript;
+        }
+
+        return {
+          ...prev,
+          tsconfig: Object.values(activeTabErrors),
+        };
+      });
     }
   };
 

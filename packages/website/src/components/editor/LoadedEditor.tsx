@@ -87,21 +87,16 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     const errors = parseMarkers(markers, codeActions, editor);
 
     onMarkersChange(prev => {
-      const tsconfigError =
+      const tsconfigErrors =
         activeTab === 'tsconfig' &&
-        Object.fromEntries(prev[activeTab].map(error => [error.group, error]))
-          .Typescript;
-
-      if (!errors.length && tsconfigError) {
-        return {
-          ...prev,
-          [activeTab]: [tsconfigError],
-        };
-      }
+        !errors.length &&
+        Object.values(prev[activeTab]).filter(
+          error => error.group === 'TypeScript',
+        );
 
       return {
         ...prev,
-        [activeTab]: errors,
+        [activeTab]: tsconfigErrors || errors,
       };
     });
   }, [activeTab, codeActions, onMarkersChange, editor, monaco.editor]);
