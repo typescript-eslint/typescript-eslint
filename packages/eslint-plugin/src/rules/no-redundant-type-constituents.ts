@@ -247,6 +247,9 @@ function hasTargetOnlyOptionalProps(
   targetType: ts.ObjectType,
   checker: ts.TypeChecker,
 ) {
+  if (sourceType === targetType) {
+    return false;
+  }
   const targetProps = targetType.getProperties();
   for (const targetProp of targetProps) {
     const sourceProp = checker.getPropertyOfType(
