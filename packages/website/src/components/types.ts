@@ -52,9 +52,7 @@ export interface ErrorGroup {
   uri?: string;
 }
 
-export interface EslintRC {
-  rules: RulesRecord;
-}
-export interface TSConfig {
+export type EslintRC = { rules: RulesRecord } & Record<string, unknown>;
+export type TSConfig = {
   compilerOptions: CompilerFlags;
-}
+} & Record<string, unknown>;
