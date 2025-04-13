@@ -5,6 +5,7 @@ import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
 import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
+import vitestPlugin from '@vitest/eslint-plugin';
 import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
 import jestPlugin from 'eslint-plugin-jest';
@@ -28,6 +29,15 @@ const restrictNamedDeclarations = {
   selector: 'ExportNamedDeclaration[declaration=null][source=null]',
 };
 
+const vitestFiles = [
+  'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/visitor-keys/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/parser/tests/lib/**/*.test.{ts,tsx,cts,mts}',
+  'packages/parser/tests/test-utils/**/*.{ts,tsx,cts,mts}',
+  'packages/utils/tests/**/*.test?(-d).{ts,tsx,cts,mts}',
+];
+
 export default tseslint.config(
   // register all of the plugins up-front
   {
@@ -43,6 +53,7 @@ export default tseslint.config(
       // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
       ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
       ['perfectionist']: perfectionistPlugin,
+      ['vitest']: vitestPlugin,
       // https://github.com/facebook/react/issues/28313
       ['react']: reactPlugin,
       // @ts-expect-error -- Temporary types incompatibility pending flat config support
@@ -361,21 +372,27 @@ export default tseslint.config(
   // define the jest globals for all test files
   {
     files: ['packages/*/tests/**/*.{ts,tsx,cts,mts}'],
+    ignores: vitestFiles,
     languageOptions: {
       globals: {
         ...jestPlugin.environments.globals.globals,
       },
     },
   },
+  // define the vitest globals for all test files
+  {
+    files: vitestFiles,
+    ...vitestPlugin.configs.env,
+  },
   // test file specific configuration
   {
     files: [
       'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
       'packages/*/tests/**/test.{ts,tsx,cts,mts}',
-      'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
       'packages/integration-tests/tools/integration-test-base.ts',
       'packages/integration-tests/tools/pack-packages.ts',
     ],
+    ignores: vitestFiles,
     rules: {
       '@typescript-eslint/no-empty-function': [
         'error',
@@ -401,6 +418,35 @@ export default tseslint.config(
       'jest/prefer-to-have-length': 'error',
       'jest/valid-expect': 'error',
     },
+  },
+  // test file specific configuration
+  {
+    files: vitestFiles,
+    rules: {
+      '@typescript-eslint/no-empty-function': [
+        'error',
+        { allow: ['arrowFunctions'] },
+      ],
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      'vitest/no-alias-methods': 'error',
+      'vitest/no-disabled-tests': 'error',
+      'vitest/no-focused-tests': 'error',
+      'vitest/no-identical-title': 'error',
+      'vitest/no-test-prefixes': 'error',
+      'vitest/no-test-return-statement': 'error',
+      'vitest/prefer-describe-function-title': 'error',
+      'vitest/prefer-each': 'error',
+      'vitest/prefer-spy-on': 'error',
+      'vitest/prefer-to-be': 'error',
+      'vitest/prefer-to-contain': 'error',
+      'vitest/prefer-to-have-length': 'error',
+      'vitest/valid-expect': 'error',
+    },
+    settings: { vitest: { typecheck: true } },
   },
   // plugin rule tests
   {
@@ -430,7 +476,13 @@ export default tseslint.config(
     },
   },
   {
-    files: ['eslint.config.{js,cjs,mjs}', 'knip.ts', 'packages/*/src/index.ts'],
+    files: [
+      'eslint.config.{js,cjs,mjs}',
+      'knip.ts',
+      'packages/*/src/index.ts',
+      'vitest.config.mts',
+      'packages/*/vitest.config.mts',
+    ],
     rules: {
       // requirement
       'import/no-default-export': 'off',
@@ -593,9 +645,9 @@ export default tseslint.config(
   {
     files: ['**/*'],
     ignores: [
-      'packages/eslint-plugin/src/configs/*',
+      'packages/eslint-plugin/src/configs/eslintrc/*',
+      'packages/eslint-plugin/src/configs/flat/*',
       'packages/scope-manager/src/configs/*',
-      'packages/typescript-eslint/src/configs/*',
     ],
     rules: {
       '@typescript-eslint/sort-type-constituents': 'off',

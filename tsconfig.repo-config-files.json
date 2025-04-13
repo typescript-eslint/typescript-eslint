@@ -3,9 +3,9 @@
   "compilerOptions": {
     "outDir": "dist/out-tsc/root/eslint",
     "types": ["@types/node"],
-    "noEmit": true,
     "allowJs": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true
   },
   "include": [
     "typings",
@@ -17,5 +17,13 @@
     "jest.preset.js",
     "knip.ts",
     ".github/**/*.js"
+  ],
+  "references": [
+    {
+      "path": "./packages/typescript-eslint/tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
   ]
 }

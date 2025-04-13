@@ -12,12 +12,10 @@ import {
   getTypeName,
   getTypeOfPropertyOfName,
   getValueOfLiteralType,
-  isAlwaysNullish,
   isArrayMethodCallWithPredicate,
   isIdentifier,
   isNullableType,
   isPossiblyFalsy,
-  isPossiblyNullish,
   isPossiblyTruthy,
   isTypeAnyType,
   isTypeFlagSet,
@@ -31,6 +29,25 @@ import {
 } from '../util/assertionFunctionUtils';
 
 // #region
+
+const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
+
+function isNullishType(type: ts.Type): boolean {
+  return tsutils.isTypeFlagSet(type, nullishFlag);
+}
+
+function isAlwaysNullish(type: ts.Type): boolean {
+  return tsutils.unionTypeParts(type).every(isNullishType);
+}
+
+/**
+ * Note that this differs from {@link isNullableType} in that it doesn't consider
+ * `any` or `unknown` to be nullable.
+ */
+function isPossiblyNullish(type: ts.Type): boolean {
+  return tsutils.unionTypeParts(type).some(isNullishType);
+}
+
 function toStaticValue(
   type: ts.Type,
 ):
@@ -340,7 +357,7 @@ export default createRule<Options, MessageId>({
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
-      if (isArrayIndexExpression(expression)) {
+      if (!isNoUncheckedIndexedAccess && isArrayIndexExpression(expression)) {
         return;
       }
 
@@ -407,12 +424,13 @@ export default createRule<Options, MessageId>({
         //  possibility of out-of-bounds access, if we're indexing into an array
         //  just skip the check, to avoid false positives
         if (
-          !isArrayIndexExpression(node) &&
-          !(
-            node.type === AST_NODE_TYPES.ChainExpression &&
-            node.expression.type !== AST_NODE_TYPES.TSNonNullExpression &&
-            optionChainContainsOptionArrayIndex(node.expression)
-          )
+          isNoUncheckedIndexedAccess ||
+          (!isArrayIndexExpression(node) &&
+            !(
+              node.type === AST_NODE_TYPES.ChainExpression &&
+              node.expression.type !== AST_NODE_TYPES.TSNonNullExpression &&
+              optionChainContainsOptionArrayIndex(node.expression)
+            ))
         ) {
           messageId = 'neverNullish';
         }
@@ -818,7 +836,10 @@ export default createRule<Options, MessageId>({
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
-      if (optionChainContainsOptionArrayIndex(node)) {
+      if (
+        !isNoUncheckedIndexedAccess &&
+        optionChainContainsOptionArrayIndex(node)
+      ) {
         return;
       }
 

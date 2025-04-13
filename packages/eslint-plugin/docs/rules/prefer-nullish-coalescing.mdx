@@ -17,6 +17,54 @@ This rule reports when you may consider replacing:
 - An `||` operator with `??`
 - An `||=` operator with `??=`
 - Ternary expressions (`?:`) that are equivalent to `||` or `??` with `??`
+- Assignment expressions (`=`) that can be safely replaced by `??=`
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+declare const a: string | null;
+declare const b: string | null;
+
+const c = a || b;
+
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitializeFooByTruthiness() {
+  if (!foo) {
+    foo = makeFoo();
+  }
+}
+
+function lazyInitializeFooByNullCheck() {
+  if (foo == null) {
+    foo = makeFoo();
+  }
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+declare const a: string | null;
+declare const b: string | null;
+
+const c = a ?? b;
+
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitializeFoo() {
+  foo ??= makeFoo();
+}
+```
+
+</TabItem>
+</Tabs>
 
 :::caution
 This rule will not work as expected if [`strictNullChecks`](https://www.typescriptlang.org/tsconfig#strictNullChecks) is not enabled.
@@ -70,6 +118,49 @@ c ?? 'a string';
 </TabItem>
 </Tabs>
 
+### `ignoreIfStatements`
+
+{/* insert option description */}
+
+Examples of code for this rule with `{ ignoreIfStatements: false }`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "ignoreIfStatements": false }'
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitializeFoo1() {
+  if (!foo) {
+    foo = makeFoo();
+  }
+}
+
+function lazyInitializeFoo2() {
+  if (!foo) foo = makeFoo();
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "ignoreIfStatements": false }'
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitializeFoo1() {
+  foo ??= makeFoo();
+}
+
+function lazyInitializeFoo2() {
+  foo ??= makeFoo();
+}
+```
+
+</TabItem>
+</Tabs>
+
 ### `ignoreConditionalTests`
 
 {/* insert option description */}
@@ -84,7 +175,7 @@ Examples of code for this rule with `{ ignoreConditionalTests: false }`:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "ignoreConditionalTests": false }'
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 
 if (a || b) {
@@ -102,7 +193,7 @@ a || b ? true : false;
 <TabItem value="✅ Correct">
 
 ```ts option='{ "ignoreConditionalTests": false }'
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 
 if (a ?? b) {
@@ -133,7 +224,7 @@ Examples of code for this rule with `{ ignoreMixedLogicalExpressions: false }`:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "ignoreMixedLogicalExpressions": false }'
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 declare const c: string | null;
 declare const d: string | null;
@@ -149,7 +240,7 @@ a || (b && c && d);
 <TabItem value="✅ Correct">
 
 ```ts option='{ "ignoreMixedLogicalExpressions": false }'
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 declare const c: string | null;
 declare const d: string | null;
@@ -255,3 +346,4 @@ If you are not using TypeScript 3.7 (or greater), then you will not be able to u
 
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 - [Nullish Coalescing Operator Proposal](https://github.com/tc39/proposal-nullish-coalescing/)
+- [`logical-assignment-operators`](https://eslint.org/docs/latest/rules/logical-assignment-operators)
