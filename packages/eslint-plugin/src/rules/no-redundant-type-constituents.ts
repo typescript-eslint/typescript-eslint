@@ -149,6 +149,14 @@ function checkIntersectionTypeAssignability(
     return assignability;
   }
   if (tsutils.isObjectType(sourceType) && tsutils.isObjectType(targetType)) {
+    const sourceTypeProperties = sourceType.getProperties();
+    const targetTypeProperties = targetType.getProperties();
+    if (
+      sourceTypeProperties.length === 0 ||
+      targetTypeProperties.length === 0
+    ) {
+      return TypeAssignability.NotAssignable;
+    }
     const rawSourceAssignableToTarget = checker.isTypeAssignableTo(
       sourceType,
       targetType,

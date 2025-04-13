@@ -200,6 +200,18 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type C = A | B;
     `,
     'type T = { a: { b: 1 }; c: { d: 1 } } | { a: { b: 1 }; c: { d: 1; a: 1 } };',
+    'type T = Record<string, number> & { a: 1 };',
+    'type T = { [key: string]: 1 } & { a: 1 };',
+    `
+      type T = { [key: string]: 1 };
+      type U = T & { a: 1 };
+    `,
+    `
+      type T = { a: 1; b: 1 };
+      type U<K extends string> = Omit<T, K> & Required<T>;
+      type K = U<'a'>;
+      type R = K | { a: 1 };
+    `,
   ],
 
   invalid: [
@@ -1640,41 +1652,9 @@ type U = R & T;
 type T = { a: 1; b: 1 };
 type U<K extends string> = Omit<T, K> & Required<T>;
 type K = U<'a'>;
-type R = K | { a: 1 };
-      `,
-      errors: [
-        {
-          column: 28,
-          data: {
-            container: 'intersection',
-            nonRedundantType: 'Required<T>',
-            redundantType: 'Omit<T, K>',
-          },
-          endColumn: 38,
-          line: 3,
-          messageId: 'typeOverridden',
-        },
-      ],
-    },
-    {
-      code: `
-type T = { a: 1; b: 1 };
-type U<K extends string> = Omit<T, K> & Required<T>;
-type K = U<'a'>;
 type R = K & { a: 1 };
       `,
       errors: [
-        {
-          column: 28,
-          data: {
-            container: 'intersection',
-            nonRedundantType: 'Required<T>',
-            redundantType: 'Omit<T, K>',
-          },
-          endColumn: 38,
-          line: 3,
-          messageId: 'typeOverridden',
-        },
         {
           column: 14,
           data: {
@@ -1704,55 +1684,6 @@ type U = T | { a: number };
             redundantType: 'T',
           },
           endColumn: 11,
-          messageId: 'typeOverridden',
-        },
-      ],
-    },
-    {
-      code: 'type T = { [key: string]: 1 } & { a: 1 };',
-      errors: [
-        {
-          column: 10,
-          data: {
-            container: 'intersection',
-            nonRedundantType: '{ a: 1; }',
-            redundantType: '{ [key: string]: 1; }',
-          },
-          endColumn: 30,
-          messageId: 'typeOverridden',
-        },
-      ],
-    },
-    {
-      code: 'type T = Record<string, number> & { a: 1 };',
-      errors: [
-        {
-          column: 10,
-          data: {
-            container: 'intersection',
-            nonRedundantType: '{ a: 1; }',
-            redundantType: 'Record<string, number>',
-          },
-          endColumn: 32,
-          messageId: 'typeOverridden',
-        },
-      ],
-    },
-    {
-      code: `
-type T = { [key: string]: 1 };
-type U = T & { a: 1 };
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            container: 'intersection',
-            nonRedundantType: '{ a: 1; }',
-            redundantType: 'T',
-          },
-          endColumn: 11,
-          line: 3,
           messageId: 'typeOverridden',
         },
       ],
