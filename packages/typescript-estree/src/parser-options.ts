@@ -244,6 +244,7 @@ export interface ParserServicesBase {
 }
 export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
 }
 export interface ParserServicesWithTypeInformation

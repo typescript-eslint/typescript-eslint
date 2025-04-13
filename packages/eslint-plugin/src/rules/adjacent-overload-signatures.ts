@@ -19,7 +19,6 @@ type Member =
 
 type MemberDeclaration =
   | TSESTree.DefaultExportDeclarations
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   | TSESTree.NamedExportDeclarations;
 
 export default createRule({
