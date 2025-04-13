@@ -1,3 +1,9 @@
+## 8.29.1 (2025-04-07)
+
+This was a version bump only for types to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.29.0 (2025-03-31)
 
 This was a version bump only for types to align it with other projects, there were no code changes.
