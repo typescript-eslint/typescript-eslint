@@ -6219,13 +6219,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/tmp@npm:^0.2.6":
-  version: 0.2.6
-  resolution: "@types/tmp@npm:0.2.6"
-  checksum: 0b24bb6040cc289440a609e10ec99a704978c890a5828ff151576489090b2257ce2e2570b0f320ace9c8099c3642ea6221fbdf6d8f2e22b7cd1f4fbf6e989e3e
-  languageName: node
-  linkType: hard
-
 "@types/trusted-types@npm:^2.0.2":
   version: 2.0.2
   resolution: "@types/trusted-types@npm:2.0.2"
@@ -6503,7 +6496,6 @@ __metadata:
     "@types/natural-compare": ^1.4.3
     "@types/node": ^20.12.5
     "@types/semver": ^7.5.8
-    "@types/tmp": ^0.2.6
     "@types/yargs": ^17.0.32
     "@typescript-eslint/eslint-plugin": "workspace:^"
     "@typescript-eslint/eslint-plugin-internal": "workspace:^"
@@ -6556,21 +6548,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
-    "@jest/types": 29.6.3
     "@typescript-eslint/types": 8.29.1
     "@typescript-eslint/visitor-keys": 8.29.1
+    "@vitest/coverage-v8": ^3.1.1
     debug: ^4.3.4
     fast-glob: ^3.3.2
     glob: "*"
     is-glob: ^4.0.3
-    jest: 29.7.0
     minimatch: ^9.0.4
     prettier: ^3.2.5
     rimraf: "*"
     semver: ^7.6.0
-    tmp: "*"
     ts-api-utils: ^2.0.1
     typescript: "*"
+    vitest: ^3.1.1
   peerDependencies:
     typescript: ">=4.8.4 <5.9.0"
   languageName: unknown

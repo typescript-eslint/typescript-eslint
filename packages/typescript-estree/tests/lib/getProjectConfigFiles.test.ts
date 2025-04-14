@@ -1,14 +1,20 @@
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 
 import { ExpiringCache } from '../../src/parseSettings/ExpiringCache';
 import { getProjectConfigFiles } from '../../src/parseSettings/getProjectConfigFiles';
 
-const mockExistsSync = jest.fn<boolean, [string]>();
+const mockExistsSync = vi.mocked(existsSync);
 
-jest.mock('node:fs', () => ({
-  ...jest.requireActual('fs'),
-  existsSync: (filePath: string): boolean => mockExistsSync(filePath),
-}));
+vi.mock(import('node:fs'), async importOriginal => {
+  const actual = await importOriginal();
+
+  return {
+    ...actual,
+    default: actual.default,
+    existsSync: vi.fn(actual.existsSync),
+  };
+});
 
 const parseSettings = {
   filePath: './repos/repo/packages/package/file.ts',
@@ -16,12 +22,16 @@ const parseSettings = {
   tsconfigRootDir: './repos/repo',
 };
 
-beforeEach(() => {
-  parseSettings.tsconfigMatchCache.clear();
-  jest.clearAllMocks();
-});
-
 describe(getProjectConfigFiles, () => {
+  beforeEach(() => {
+    parseSettings.tsconfigMatchCache.clear();
+    vi.clearAllMocks();
+  });
+
+  afterAll(() => {
+    vi.restoreAllMocks();
+  });
+
   it('returns an array with just the project when given as a string', () => {
     const project = './tsconfig.eslint.json';
 
@@ -39,19 +49,18 @@ describe(getProjectConfigFiles, () => {
   });
 
   describe('it does not enable type-aware linting when given as', () => {
-    // eslint-disable-next-line vitest/prefer-each
-    for (const project of [undefined, null, false]) {
-      it(`${project}`, () => {
-        const actual = getProjectConfigFiles(parseSettings, project);
+    const testCases = [[undefined], [null], [false]] as const;
 
-        expect(actual).toBeNull();
-      });
-    }
+    it.for(testCases)('%o', ([project], { expect }) => {
+      const actual = getProjectConfigFiles(parseSettings, project);
+
+      expect(actual).toBeNull();
+    });
   });
 
   describe('when caching hits', () => {
     it('returns a local tsconfig.json without calling existsSync a second time', () => {
-      mockExistsSync.mockReturnValue(true);
+      mockExistsSync.mockReturnValueOnce(true);
 
       getProjectConfigFiles(parseSettings, true);
       const actual = getProjectConfigFiles(parseSettings, true);
@@ -59,7 +68,7 @@ describe(getProjectConfigFiles, () => {
       expect(actual).toEqual([
         path.normalize('repos/repo/packages/package/tsconfig.json'),
       ]);
-      expect(mockExistsSync).toHaveBeenCalledTimes(1);
+      expect(mockExistsSync).toHaveBeenCalledOnce();
     });
 
     it('returns a nearby parent tsconfig.json when it was previously cached by a different directory search', () => {
@@ -129,7 +138,7 @@ describe(getProjectConfigFiles, () => {
 
   describe('when caching misses', () => {
     it('returns a local tsconfig.json when matched', () => {
-      mockExistsSync.mockReturnValue(true);
+      mockExistsSync.mockReturnValueOnce(true);
 
       const actual = getProjectConfigFiles(parseSettings, true);
 
@@ -154,7 +163,7 @@ describe(getProjectConfigFiles, () => {
       expect(() =>
         getProjectConfigFiles(parseSettings, true),
       ).toThrowErrorMatchingInlineSnapshot(
-        `"project was set to \`true\` but couldn't find any tsconfig.json relative to './repos/repo/packages/package/file.ts' within './repos/repo'."`,
+        `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to './repos/repo/packages/package/file.ts' within './repos/repo'.]`,
       );
     });
 
@@ -164,7 +173,7 @@ describe(getProjectConfigFiles, () => {
       expect(() =>
         getProjectConfigFiles({ ...parseSettings, tsconfigRootDir: '/' }, true),
       ).toThrowErrorMatchingInlineSnapshot(
-        `"project was set to \`true\` but couldn't find any tsconfig.json relative to './repos/repo/packages/package/file.ts' within '/'."`,
+        `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to './repos/repo/packages/package/file.ts' within '/'.]`,
       );
     });
   });
