@@ -71,6 +71,10 @@ export default {
     },
     'packages/rule-tester': {
       ignore: ['typings/eslint.d.ts'],
+
+      mocha: {
+        entry: ['tests/eslint-base/eslint-base.test.js'],
+      },
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
