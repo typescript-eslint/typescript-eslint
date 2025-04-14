@@ -63,7 +63,7 @@ export default {
       ignore: ['tests/fixtures/**'],
     },
     'packages/integration-tests': {
-      ignore: ['fixtures/**', 'typings/global.d.ts'],
+      ignore: ['fixtures/**'],
     },
     'packages/parser': {
       ignore: ['tests/fixtures/**'],

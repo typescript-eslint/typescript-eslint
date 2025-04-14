@@ -6064,9 +6064,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/integration-tests@workspace:packages/integration-tests"
   dependencies:
-    "@jest/types": 29.6.3
-    jest: 29.7.0
-    tsx: "*"
+    "@vitest/coverage-v8": ^3.1.1
+    vitest: ^3.1.1
   languageName: unknown
   linkType: soft
 
@@ -6080,7 +6079,6 @@ __metadata:
     "@typescript-eslint/visitor-keys": 8.29.1
     "@vitest/coverage-v8": ^3.1.1
     debug: ^4.3.4
-    downlevel-dts: "*"
     glob: "*"
     prettier: ^3.2.5
     rimraf: "*"
@@ -6151,18 +6149,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/type-utils@workspace:packages/type-utils"
   dependencies:
-    "@jest/types": 29.6.3
     "@typescript-eslint/parser": 8.29.1
     "@typescript-eslint/typescript-estree": 8.29.1
     "@typescript-eslint/utils": 8.29.1
+    "@vitest/coverage-v8": ^3.1.1
     ajv: ^6.12.6
     debug: ^4.3.4
-    downlevel-dts: "*"
-    jest: 29.7.0
     prettier: ^3.2.5
     rimraf: "*"
     ts-api-utils: ^2.0.1
     typescript: "*"
+    vitest: ^3.1.1
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
     typescript: ">=4.8.4 <5.9.0"
@@ -6173,7 +6170,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
-    downlevel-dts: "*"
     prettier: ^3.2.5
     rimraf: "*"
     tsx: "*"
@@ -6227,7 +6223,6 @@ __metadata:
     console-fail-test: ^0.5.0
     cross-fetch: ^4.0.0
     cspell: ^8.15.2
-    downlevel-dts: ">=0.11.0"
     eslint: ^9.15.0
     eslint-plugin-eslint-plugin: ^6.3.1
     eslint-plugin-import: ^2.31.0
@@ -6297,7 +6292,6 @@ __metadata:
     "@typescript-eslint/types": 8.29.1
     "@typescript-eslint/typescript-estree": 8.29.1
     "@vitest/coverage-v8": ^3.1.1
-    downlevel-dts: "*"
     prettier: ^3.2.5
     rimraf: "*"
     typescript: "*"
@@ -6314,7 +6308,6 @@ __metadata:
   dependencies:
     "@typescript-eslint/types": 8.29.1
     "@vitest/coverage-v8": ^3.1.1
-    downlevel-dts: "*"
     eslint-visitor-keys: ^4.2.0
     prettier: ^3.2.5
     rimraf: "*"
@@ -9557,19 +9550,6 @@ __metadata:
   version: 16.4.5
   resolution: "dotenv@npm:16.4.5"
   checksum: 301a12c3d44fd49888b74eb9ccf9f07a1f5df43f489e7fcb89647a2edcd84c42d6bc349dc8df099cd18f07c35c7b04685c1a4f3e6a6a9e6b30f8d48c15b7f49c
-  languageName: node
-  linkType: hard
-
-"downlevel-dts@npm:*, downlevel-dts@npm:>=0.11.0":
-  version: 0.11.0
-  resolution: "downlevel-dts@npm:0.11.0"
-  dependencies:
-    semver: ^7.3.2
-    shelljs: ^0.8.3
-    typescript: next
-  bin:
-    downlevel-dts: index.js
-  checksum: 846ad69da03795340b2fbd9432ff41605b885bf5a7d6636faa86342e91d9e4b27a49c2f68380a2f7ba26ddc28a11b3b02581a41c6b5c7034b8b0fb099c017307
   languageName: node
   linkType: hard
 
@@ -18880,7 +18860,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shelljs@npm:^0.8.3, shelljs@npm:^0.8.5":
+"shelljs@npm:^0.8.5":
   version: 0.8.5
   resolution: "shelljs@npm:0.8.5"
   dependencies:
@@ -20328,7 +20308,6 @@ __metadata:
     "@typescript-eslint/parser": 8.29.1
     "@typescript-eslint/utils": 8.29.1
     "@vitest/coverage-v8": ^3.1.1
-    downlevel-dts: "*"
     prettier: ^3.2.5
     rimraf: "*"
     typescript: "*"
