@@ -5,7 +5,6 @@ import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
-  arrayGroupByToMap,
   createRule,
   getParserServices,
   isFunctionOrFunctionType,
@@ -191,10 +190,13 @@ function getTypeNodeFromReferenceType(type: ts.Type): ts.Node | undefined {
 }
 
 function getGroupTypeRelationsBySuperTypeName(typeRelations: TypeRelation[]) {
-  return arrayGroupByToMap(
-    typeRelations,
-    ({ superTypeWithName }) => superTypeWithName.typeName,
-  );
+  const groups = new Map<ts.Type, TypeRelation[]>();
+
+  for (const typeRelation of typeRelations) {
+    addToMapGroup(groups, typeRelation.superTypeWithName.type, typeRelation);
+  }
+
+  return groups;
 }
 
 function hasTargetOnlyOptionalProps(
@@ -324,9 +326,10 @@ export default createRule({
           getGroupTypeRelationsBySuperTypeName(typeRelations);
 
         for (const [
-          superTypeName,
+          type,
           typeRelationAndNames,
         ] of groupTypeRelationsBySuperTypeName) {
+          const superTypeName = checker.typeToString(type);
           const mergedSubTypeName = mergeTypeNames(
             typeRelationAndNames.map(({ subTypeWithName }) => subTypeWithName),
             container === 'union' ? '|' : '&',

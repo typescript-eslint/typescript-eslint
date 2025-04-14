@@ -1861,5 +1861,30 @@ type C = A & B;
         },
       ],
     },
+    {
+      code: 'type T = { a: 1 } | { a: number } | { a: number };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: number; }',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 18,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: number; }',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 18,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
   ],
 });
