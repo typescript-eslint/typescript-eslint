@@ -311,9 +311,9 @@ describe('config helper', () => {
   it('handles name field when global-ignoring in extension', () => {
     expect(
       plugin.config({
-        extends: [{ name: 'global-ignore-stuff', ignores: ['files/**/*'] }],
+        extends: [{ ignores: ['files/**/*'], name: 'global-ignore-stuff' }],
         ignores: ['ignored'],
       }),
-    ).toEqual([{ name: 'global-ignore-stuff', ignores: ['files/**/*'] }]);
+    ).toEqual([{ ignores: ['files/**/*'], name: 'global-ignore-stuff' }]);
   });
 });
