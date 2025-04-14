@@ -30,6 +30,8 @@ const restrictNamedDeclarations = {
 };
 
 const vitestFiles = [
+  'packages/ast-spec/tests/**/*.test?(-d).{ts,tsx,cts,mts}',
+  'packages/ast-spec/tests/util/setupVitest.mts',
   'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/eslint-plugin/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/integration-tests/tests/**/*.test.{ts,tsx,cts,mts},',

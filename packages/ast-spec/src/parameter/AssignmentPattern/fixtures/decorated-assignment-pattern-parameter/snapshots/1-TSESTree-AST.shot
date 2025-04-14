@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures parameter AssignmentPattern decorated-assignment-pattern-parameter TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -195,4 +192,3 @@ Program {
     end: { column: 0, line: 6 },
   },
 }
-`;
