@@ -74,7 +74,7 @@ const createProjectServiceSettings = <
   ...settings,
 });
 
-describe('useProgramFromProjectService', () => {
+describe(useProgramFromProjectService, () => {
   it('creates a standalone AST with no program when hasFullTypeInformation is false and allowDefaultProject is falsy', () => {
     const { service } = createMockProjectService();
 

@@ -6,7 +6,7 @@ jest.mock('../../src/create-program/createProjectService', () => ({
   createProjectService: (): typeof projectService => projectService,
 }));
 
-describe('createParseSettings', () => {
+describe(createParseSettings, () => {
   describe('projectService', () => {
     it('is created when options.projectService is enabled', () => {
       process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE = 'false';

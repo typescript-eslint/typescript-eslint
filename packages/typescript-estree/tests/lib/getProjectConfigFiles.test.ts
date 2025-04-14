@@ -21,7 +21,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe('getProjectConfigFiles', () => {
+describe(getProjectConfigFiles, () => {
   it('returns an array with just the project when given as a string', () => {
     const project = './tsconfig.eslint.json';
 
@@ -39,6 +39,7 @@ describe('getProjectConfigFiles', () => {
   });
 
   describe('it does not enable type-aware linting when given as', () => {
+    // eslint-disable-next-line vitest/prefer-each
     for (const project of [undefined, null, false]) {
       it(`${project}`, () => {
         const actual = getProjectConfigFiles(parseSettings, project);

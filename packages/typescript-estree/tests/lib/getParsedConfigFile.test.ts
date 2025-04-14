@@ -12,7 +12,7 @@ const mockTsserver: typeof ts = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any;
 
-describe('getParsedConfigFile', () => {
+describe(getParsedConfigFile, () => {
   afterEach(() => {
     jest.resetAllMocks();
   });

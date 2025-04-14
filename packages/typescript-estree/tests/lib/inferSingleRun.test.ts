@@ -2,7 +2,7 @@ import path from 'node:path';
 
 import { inferSingleRun } from '../../src/parseSettings/inferSingleRun';
 
-describe('inferSingleRun', () => {
+describe(inferSingleRun, () => {
   beforeEach(() => {
     process.argv = ['node', 'eslint'];
     process.env.CI = undefined;

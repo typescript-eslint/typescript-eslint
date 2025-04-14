@@ -1,6 +1,6 @@
 import { describeFilePath } from '../../src/create-program/describeFilePath';
 
-describe('describeFilePath', () => {
+describe(describeFilePath, () => {
   describe.each(['./repos/repo', '/repos/repo', '~/repos/repo'])(
     'tsconfigRootDir %s',
     tsconfigRootDir => {

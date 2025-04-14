@@ -351,6 +351,7 @@ describe('persistent parse', () => {
         };
 
         const testNames = ['object', 'number', 'string', 'foo'] as const;
+        // eslint-disable-next-line vitest/prefer-each
         for (const name of testNames) {
           it(`first parse of ${name} should not throw`, () => {
             const PROJECT_DIR = setup(tsConfigIncludeAll);

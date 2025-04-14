@@ -42,6 +42,7 @@ const vitestFiles = [
   'packages/scope-manager/tests/test-utils/serializers/index.ts',
   'packages/type-utils/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/typescript-estree/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/utils/tests/**/*.test?(-d).{ts,tsx,cts,mts}',
   'packages/visitor-keys/tests/**/*.test.{ts,tsx,cts,mts}',
 ];
@@ -398,6 +399,7 @@ export default tseslint.config(
       'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
       'packages/*/tests/**/test.{ts,tsx,cts,mts}',
     ],
+    ignores: vitestFiles,
     rules: {
       '@typescript-eslint/no-empty-function': [
         'error',
@@ -408,18 +410,6 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
-    },
-  },
-  {
-    files: [
-      'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
-      'packages/*/tests/**/test.{ts,tsx,cts,mts}',
-      'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
-      'packages/integration-tests/tools/integration-test-base.ts',
-      'packages/integration-tests/tools/pack-packages.ts',
-    ],
-    ignores: vitestFiles,
-    rules: {
       'jest/no-alias-methods': 'error',
       'jest/no-deprecated-functions': 'error',
       'jest/no-disabled-tests': 'error',
