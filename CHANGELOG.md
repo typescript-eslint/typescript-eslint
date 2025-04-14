@@ -1,3 +1,21 @@
+## 8.30.0 (2025-04-14)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-explicit-any] suggest to replace keyof any with PropertyKey ([#11032](https://github.com/typescript-eslint/typescript-eslint/pull/11032))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [promise-function-async] use a different error message for functions with promise and non-promise types ([#10950](https://github.com/typescript-eslint/typescript-eslint/pull/10950))
+- **typescript-estree:** use token type of `PrivateIdentifier` instead of `Identifier` for private identifiers ([#11023](https://github.com/typescript-eslint/typescript-eslint/pull/11023))
+
+### ❤️ Thank You
+
+- Dima Barabash @dbarabashh
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.29.1 (2025-04-07)
 
 ### 🩹 Fixes
