@@ -34,8 +34,6 @@ export default {
         'glob',
         'jest-specific-snapshot',
         'make-dir',
-        'ncp',
-        'tmp',
         // imported for type purposes only
         'website',
       ],
@@ -61,7 +59,7 @@ export default {
       ignore: ['tests/fixtures/**'],
     },
     'packages/integration-tests': {
-      ignore: ['fixtures/**', 'typings/global.d.ts'],
+      ignore: ['fixtures/**'],
     },
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
@@ -73,6 +71,10 @@ export default {
     },
     'packages/rule-tester': {
       ignore: ['typings/eslint.d.ts'],
+
+      mocha: {
+        entry: ['tests/eslint-base/eslint-base.test.js'],
+      },
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
@@ -86,7 +88,6 @@ export default {
     },
     'packages/utils': {
       ignore: [
-        'tests/**/*.type-test.ts',
         'typings/eslint.d.ts',
         'typings/eslint-community-eslint-utils.d.ts',
       ],

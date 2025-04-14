@@ -7,7 +7,7 @@ import path from 'node:path';
 import { isUnsafeAssignment } from '../src/isUnsafeAssignment';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
-describe('isUnsafeAssignment', () => {
+describe(isUnsafeAssignment, () => {
   const rootDir = path.join(__dirname, 'fixtures');
 
   function getTypes(
