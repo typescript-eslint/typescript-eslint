@@ -10,7 +10,7 @@
   },
   "include": ["src/**/*.ts", "typings"],
   "exclude": [
-    "vitest.config.mts",
+    "vitest.config.*",
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
     "**/fixtures/**"

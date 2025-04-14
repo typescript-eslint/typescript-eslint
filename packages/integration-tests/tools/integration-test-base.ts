@@ -1,10 +1,10 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 
-import { execFile, FIXTURES_DESTINATION_DIR } from './pack-packages';
+import { execFile, FIXTURES_DESTINATION_DIR } from './pack-packages.js';
 
-// make sure that jest doesn't timeout the test
-jest.setTimeout(60_000);
+// make sure that vitest doesn't timeout the test
+vi.setConfig({ testTimeout: 60_000 });
 
 function integrationTest(
   testName: string,
