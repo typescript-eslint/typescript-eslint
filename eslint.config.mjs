@@ -31,12 +31,13 @@ const restrictNamedDeclarations = {
 
 const vitestFiles = [
   'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
-  'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
-  'packages/visitor-keys/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/parser/tests/lib/**/*.test.{ts,tsx,cts,mts}',
   'packages/parser/tests/test-utils/**/*.{ts,tsx,cts,mts}',
-  'packages/utils/tests/**/*.test?(-d).{ts,tsx,cts,mts}',
   'packages/rule-tester/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/type-utils/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/utils/tests/**/*.test?(-d).{ts,tsx,cts,mts}',
+  'packages/visitor-keys/tests/**/*.test.{ts,tsx,cts,mts}',
 ];
 
 export default tseslint.config(

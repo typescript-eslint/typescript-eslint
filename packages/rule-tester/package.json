@@ -5,7 +5,6 @@
   "files": [
     "dist",
     "!*.tsbuildinfo",
-    "_ts4.2",
     "README.md",
     "LICENSE"
   ],
@@ -37,9 +36,8 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist/ _ts4.2/ coverage/",
+    "postclean": "rimraf dist/ coverage/",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "pretest-eslint-base": "tsc -b tsconfig.build.json",
@@ -80,12 +78,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "typesVersions": {
-    "<3.8": {
-      "*": [
-        "_ts3.4/*"
-      ]
-    }
   }
 }
