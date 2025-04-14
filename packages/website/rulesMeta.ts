@@ -6,7 +6,6 @@ export const rulesMeta = Object.entries(rules).map(([name, content]) => ({
   fixable: content.meta.fixable,
   hasSuggestions: content.meta.hasSuggestions,
   name,
-  replacedBy: content.meta.replacedBy,
   type: content.meta.type,
 }));
 
