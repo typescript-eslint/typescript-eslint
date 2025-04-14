@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-restricted-types 1`] = `
-"
 # SCHEMA:
 
 [
@@ -83,5 +80,3 @@ type Options = [
     };
   },
 ];
-"
-`;

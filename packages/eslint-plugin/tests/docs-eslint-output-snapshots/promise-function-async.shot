@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs promise-function-async.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 const arrowFunctionReturnsPromise = () => Promise.resolve('value');
                                        ~~ Functions that return promises must be async.
@@ -15,11 +12,8 @@ function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Functions that return promises must be async. Consider adding an explicit return type annotation if the function is intended to return a union of promise and non-promise types.
   return p ? 'value' : Promise.resolve('value');
 }
-"
-`;
 
-exports[`Validating rule docs promise-function-async.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 const arrowFunctionReturnsPromise = async () => Promise.resolve('value');
 
@@ -37,43 +31,29 @@ function functionReturnsUnionWithPromiseExplicitly(
 async function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
   return p ? 'value' : Promise.resolve('value');
 }
-"
-`;
 
-exports[`Validating rule docs promise-function-async.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: { "allowAny": false }
 
 const returnsAny = () => ({}) as any;
                       ~~ Functions that return promises must be async.
-"
-`;
 
-exports[`Validating rule docs promise-function-async.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 Options: { "allowAny": false }
 
 const returnsAny = async () => ({}) as any;
-"
-`;
 
-exports[`Validating rule docs promise-function-async.mdx code examples ESLint output 5`] = `
-"Incorrect
+Incorrect
 Options: { "allowedPromiseNames": ["Bluebird"] }
 
 class Bluebird {}
 
 const returnsBluebird = () => new Bluebird(() => {});
                            ~~ Functions that return promises must be async.
-"
-`;
 
-exports[`Validating rule docs promise-function-async.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 Options: { "allowedPromiseNames": ["Bluebird"] }
 
 class Bluebird {}
 
 const returnsBluebird = async () => new Bluebird(() => {});
-"
-`;
