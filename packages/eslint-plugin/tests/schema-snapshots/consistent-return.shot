@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -20,4 +21,3 @@ type Options = [
     treatUndefinedAsUnspecified?: boolean;
   },
 ];
-

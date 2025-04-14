@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -81,4 +82,3 @@ type Options = [
     ignoreTypeIndexes?: boolean;
   },
 ];
-

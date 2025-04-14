@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -42,4 +43,3 @@ type Options = [
       | 'no-type-imports';
   },
 ];
-

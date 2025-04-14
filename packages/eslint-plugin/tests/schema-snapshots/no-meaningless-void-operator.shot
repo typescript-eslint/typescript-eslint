@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -23,4 +24,3 @@ type Options = [
     checkNever?: boolean;
   },
 ];
-

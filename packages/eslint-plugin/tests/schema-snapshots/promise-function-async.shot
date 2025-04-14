@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -55,4 +56,3 @@ type Options = [
     checkMethodDeclarations?: boolean;
   },
 ];
-

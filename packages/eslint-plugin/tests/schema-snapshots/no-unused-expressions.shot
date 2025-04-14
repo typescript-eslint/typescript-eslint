@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -32,4 +33,3 @@ type Options = [
     enforceForJSX?: boolean;
   },
 ];
-

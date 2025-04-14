@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -47,4 +48,3 @@ type Options = [
       | 'always';
   },
 ];
-

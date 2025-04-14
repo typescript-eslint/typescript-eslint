@@ -1,3 +1,5 @@
+
+
 const box = {
       ~~~ 'box' is assigned a value but only used as a type.
   //  ~~~

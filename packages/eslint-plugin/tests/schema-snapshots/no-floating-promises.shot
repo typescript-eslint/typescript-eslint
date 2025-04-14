@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -260,4 +261,3 @@ type Options = [
     ignoreVoid?: boolean;
   },
 ];
-

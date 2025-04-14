@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -17,4 +18,3 @@ type Options = [
   /** Which constructor call syntax to prefer. */
   | 'constructor',
 ];
-

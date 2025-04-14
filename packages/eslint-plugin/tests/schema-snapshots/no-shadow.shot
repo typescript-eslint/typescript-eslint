@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -62,4 +63,3 @@ type Options = [
     ignoreTypeValueShadow?: boolean;
   },
 ];
-

@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -99,4 +100,3 @@ type Options = [
       varsIgnorePattern?: string;
     },
 ];
-

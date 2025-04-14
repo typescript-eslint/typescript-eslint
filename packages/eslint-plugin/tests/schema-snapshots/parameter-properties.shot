@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -58,4 +59,3 @@ type Options = [
       | 'class-property';
   },
 ];
-

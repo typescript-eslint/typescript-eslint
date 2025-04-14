@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -11,4 +12,3 @@
 # TYPES:
 
 type Options = ['method' | 'property'];
-

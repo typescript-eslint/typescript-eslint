@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 {
@@ -2242,4 +2243,3 @@ type Options = /** Multiple selectors in one config */
       trailingUnderscore?: UnderscoreOptions;
     }
 )[];
-

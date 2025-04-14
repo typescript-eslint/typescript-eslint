@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -147,4 +148,3 @@ type Options = [
     treatMethodsAsReadonly?: boolean;
   },
 ];
-

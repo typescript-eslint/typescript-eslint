@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -36,4 +37,3 @@ type Options = [
     maximum?: number;
   },
 ];
-

@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -51,4 +52,3 @@ type Options = [
     allowProtectedClassPropertyAccess?: boolean;
   },
 ];
-

@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -61,4 +62,3 @@ type Options = [
     allowedNames?: string[];
   },
 ];
-

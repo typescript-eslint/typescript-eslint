@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -64,4 +65,3 @@ type Options = [
     variableDeclarationIgnoreFunction?: boolean;
   },
 ];
-

@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -25,4 +26,3 @@ type Options = [
     typesToIgnore?: string[];
   },
 ];
-

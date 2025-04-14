@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -17,4 +18,3 @@ type Options = [
   /** Which literal class member syntax to prefer. */
   | 'fields',
 ];
-
