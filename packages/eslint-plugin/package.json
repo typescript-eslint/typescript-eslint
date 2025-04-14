@@ -93,7 +93,7 @@
     "tsx": "*",
     "typescript": "*",
     "unist-util-visit": "^5.0.0",
-    "vitest": "^2.1.8"
+    "vitest": "^3.1.1"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^8.0.0 || ^8.0.0-alpha.0",
