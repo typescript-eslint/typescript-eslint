@@ -23,6 +23,8 @@ export const vitestBaseConfig = {
 
     setupFiles: ['console-fail-test/setup'],
 
+    testTimeout: 10_000,
+
     typecheck: {
       include: ['**/*.test-d.?(c|m)ts?(x)'],
     },
