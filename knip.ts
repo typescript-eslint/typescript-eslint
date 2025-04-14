@@ -97,6 +97,11 @@ export default {
     'packages/typescript-estree': {
       entry: ['src/use-at-your-own-risk.ts'],
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: ['tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+      },
     },
     'packages/utils': {
       ignore: [
