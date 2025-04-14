@@ -135,8 +135,8 @@ function isTargetTypeRedundantInIntersection(
     const sourceTypeProperties = sourceType.getProperties();
     const targetTypeProperties = targetType.getProperties();
     if (
-      sourceTypeProperties.length === 0 ||
-      targetTypeProperties.length === 0
+      (sourceTypeProperties.length === 0) !==
+      (targetTypeProperties.length === 0)
     ) {
       return false;
     }

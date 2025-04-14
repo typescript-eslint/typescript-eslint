@@ -1831,5 +1831,35 @@ type C = A & B;
         },
       ],
     },
+    {
+      code: 'type T = Record<string, 1> & Record<string, number>;',
+      errors: [
+        {
+          column: 30,
+          data: {
+            container: 'intersection',
+            nonRedundantType: 'Record<string, 1>',
+            redundantType: 'Record<string, number>',
+          },
+          endColumn: 52,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Record<string, 1> | Record<string, number>;',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: 'Record<string, number>',
+            redundantType: 'Record<string, 1>',
+          },
+          endColumn: 27,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
   ],
 });
