@@ -59,7 +59,7 @@ export default {
       ignore: ['tests/fixtures/**'],
     },
     'packages/integration-tests': {
-      ignore: ['fixtures/**', 'typings/global.d.ts'],
+      ignore: ['fixtures/**'],
     },
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
@@ -71,6 +71,10 @@ export default {
     },
     'packages/rule-tester': {
       ignore: ['typings/eslint.d.ts'],
+
+      mocha: {
+        entry: ['tests/eslint-base/eslint-base.test.js'],
+      },
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
