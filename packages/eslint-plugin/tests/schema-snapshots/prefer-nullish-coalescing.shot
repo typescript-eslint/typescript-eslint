@@ -1,3 +1,4 @@
+
 # SCHEMA:
 
 [
@@ -14,6 +15,10 @@
       },
       "ignoreConditionalTests": {
         "description": "Whether to ignore cases that are located within a conditional test.",
+        "type": "boolean"
+      },
+      "ignoreIfStatements": {
+        "description": "Whether to ignore any if statements that could be simplified by using the nullish coalescing operator.",
         "type": "boolean"
       },
       "ignoreMixedLogicalExpressions": {
@@ -72,6 +77,8 @@ type Options = [
     ignoreBooleanCoercion?: boolean;
     /** Whether to ignore cases that are located within a conditional test. */
     ignoreConditionalTests?: boolean;
+    /** Whether to ignore any if statements that could be simplified by using the nullish coalescing operator. */
+    ignoreIfStatements?: boolean;
     /** Whether to ignore any logical or expressions that are part of a mixed logical expression (with `&&`). */
     ignoreMixedLogicalExpressions?: boolean;
     /** Whether to ignore all (`true`) or some (an object with properties) primitive types. */
@@ -96,4 +103,3 @@ type Options = [
     ignoreTernaryTests?: boolean;
   },
 ];
-

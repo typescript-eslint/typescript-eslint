@@ -11,13 +11,22 @@ export default {
     types: 'off',
     unresolved: 'off',
   },
+
+  vite: false,
+
   vitest: {
-    config: ['vitest.config.mts', 'packages/*/vitest.config.{ts,mts}'],
+    config: ['vitest.config.mts'],
+    entry: ['tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
   },
+
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignore: ['tools/scripts/typings/typescript.d.ts', 'typings/*.d.ts'],
+      ignore: [
+        'jest.config.base.js',
+        'tools/scripts/typings/typescript.d.ts',
+        'typings/*.d.ts',
+      ],
       ignoreDependencies: [
         '@babel/code-frame',
         '@babel/core',
@@ -29,8 +38,6 @@ export default {
         'glob',
         'jest-specific-snapshot',
         'make-dir',
-        'ncp',
-        'tmp',
         // imported for type purposes only
         'website',
       ],
@@ -56,16 +63,33 @@ export default {
       ignore: ['tests/fixtures/**'],
     },
     'packages/integration-tests': {
-      ignore: ['fixtures/**', 'typings/global.d.ts'],
+      ignore: ['fixtures/**'],
     },
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: ['tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+      },
     },
     'packages/rule-tester': {
       ignore: ['typings/eslint.d.ts'],
+
+      mocha: {
+        entry: ['tests/eslint-base/eslint-base.test.js'],
+      },
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: [
+          'tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
+          'tests/test-utils/serializers/index.ts',
+        ],
+      },
     },
     'packages/type-utils': {
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
@@ -76,7 +100,6 @@ export default {
     },
     'packages/utils': {
       ignore: [
-        'tests/**/*.type-test.ts',
         'typings/eslint.d.ts',
         'typings/eslint-community-eslint-utils.d.ts',
       ],
@@ -134,6 +157,7 @@ export default {
         'src/mock/eslint-rules.js',
         'src/mock/eslint.js',
         'src/mock/lru-cache.js',
+        'src/mock/parser.js',
         'src/mock/path.js',
         'src/mock/typescript.js',
         'src/mock/util.js',

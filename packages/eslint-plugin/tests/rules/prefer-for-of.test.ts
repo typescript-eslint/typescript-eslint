@@ -140,12 +140,57 @@ for (let i = 0; i < arr.length; i++) {
     `,
     `
 for (let i = 0; i < arr.length; i++) {
+  arr[i]++;
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  arr[i]!++;
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  arr[i]!!!++;
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  (arr[i] as number)++;
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  (<number>arr[i])++;
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  (arr[i] as unknown as number)++;
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  (arr[i] satisfies number)++;
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  (arr[i]! satisfies number)++;
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
   [arr[i]] = [1];
 }
     `,
     `
 for (let i = 0; i < arr.length; i++) {
   [...arr[i]] = [1];
+}
+    `,
+    `
+for (let i = 0; i < arr.length; i++) {
+  [...arr[i]!] = [1];
 }
     `,
     `
