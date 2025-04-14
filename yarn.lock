@@ -3968,15 +3968,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jest/create-cache-key-function@npm:^29":
-  version: 29.7.0
-  resolution: "@jest/create-cache-key-function@npm:29.7.0"
-  dependencies:
-    "@jest/types": ^29.6.3
-  checksum: 681bc761fa1d6fa3dd77578d444f97f28296ea80755e90e46d1c8fa68661b9e67f54dd38b988742db636d26cf160450dc6011892cec98b3a7ceb58cad8ff3aae
-  languageName: node
-  linkType: hard
-
 "@jest/environment@npm:^29.7.0":
   version: 29.7.0
   resolution: "@jest/environment@npm:29.7.0"
@@ -5632,19 +5623,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/jest@npm:^0.2.36":
-  version: 0.2.36
-  resolution: "@swc/jest@npm:0.2.36"
-  dependencies:
-    "@jest/create-cache-key-function": ^29.7.0
-    "@swc/counter": ^0.1.3
-    jsonc-parser: ^3.2.0
-  peerDependencies:
-    "@swc/core": "*"
-  checksum: 14f2e696ac093e23dae1e2e57d894bbcde4de6fe80341a26c8d0d8cbae5aae31832f8fa32dc698529f128d19a76aeedf2227f59480de6dab5eb3f30bfdf9b71a
-  languageName: node
-  linkType: hard
-
 "@swc/types@npm:^0.1.19":
   version: 0.1.19
   resolution: "@swc/types@npm:0.1.19"
@@ -5943,16 +5921,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest-specific-snapshot@npm:^0.5.9":
-  version: 0.5.9
-  resolution: "@types/jest-specific-snapshot@npm:0.5.9"
-  dependencies:
-    "@types/jest": "*"
-  checksum: b452e423a024d20aa1091cb962f4b0c81c04fc5065af7e1ecb2b4b46f90255ebefd18463d9c39fcd2a15ba34c4ab09bfc4f03e35d8227da5f1bb73f79b9836d1
-  languageName: node
-  linkType: hard
-
-"@types/jest@npm:*, @types/jest@npm:29.5.13":
+"@types/jest@npm:29.5.13":
   version: 29.5.13
   resolution: "@types/jest@npm:29.5.13"
   dependencies:
@@ -6483,14 +6452,12 @@ __metadata:
     "@nx/vite": 20.7.2
     "@nx/workspace": 20.7.2
     "@swc/core": ^1.4.12
-    "@swc/jest": ^0.2.36
     "@types/babel__code-frame": ^7.0.6
     "@types/babel__core": ^7.20.5
     "@types/debug": ^4.1.12
     "@types/eslint-plugin-jsx-a11y": ^6.10.0
     "@types/is-glob": ^4.0.4
     "@types/jest": 29.5.13
-    "@types/jest-specific-snapshot": ^0.5.9
     "@types/natural-compare": ^1.4.3
     "@types/node": ^20.12.5
     "@types/semver": ^7.5.8
@@ -14345,7 +14312,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonc-parser@npm:^3.2.0, jsonc-parser@npm:~3.3.1":
+"jsonc-parser@npm:~3.3.1":
   version: 3.3.1
   resolution: "jsonc-parser@npm:3.3.1"
   checksum: 81ef19d98d9c6bd6e4a37a95e2753c51c21705cbeffd895e177f4b542cca9cda5fda12fb942a71a2e824a9132cf119dc2e642e9286386055e1365b5478f49a47
