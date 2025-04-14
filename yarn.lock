@@ -6080,7 +6080,6 @@ __metadata:
     "@typescript-eslint/visitor-keys": 8.29.1
     "@vitest/coverage-v8": ^3.1.1
     debug: ^4.3.4
-    downlevel-dts: "*"
     glob: "*"
     prettier: ^3.2.5
     rimraf: "*"
@@ -6159,7 +6158,6 @@ __metadata:
     "@vitest/coverage-v8": ^3.1.1
     ajv: ^6.12.6
     debug: ^4.3.4
-    downlevel-dts: "*"
     prettier: ^3.2.5
     rimraf: "*"
     ts-api-utils: ^2.0.1
@@ -6175,7 +6173,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
-    downlevel-dts: "*"
     prettier: ^3.2.5
     rimraf: "*"
     tsx: "*"
@@ -6229,7 +6226,6 @@ __metadata:
     console-fail-test: ^0.5.0
     cross-fetch: ^4.0.0
     cspell: ^8.15.2
-    downlevel-dts: ">=0.11.0"
     eslint: ^9.15.0
     eslint-plugin-eslint-plugin: ^6.3.1
     eslint-plugin-import: ^2.31.0
@@ -6316,7 +6312,6 @@ __metadata:
   dependencies:
     "@typescript-eslint/types": 8.29.1
     "@vitest/coverage-v8": ^3.1.1
-    downlevel-dts: "*"
     eslint-visitor-keys: ^4.2.0
     prettier: ^3.2.5
     rimraf: "*"
@@ -9562,7 +9557,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"downlevel-dts@npm:*, downlevel-dts@npm:>=0.11.0":
+"downlevel-dts@npm:*":
   version: 0.11.0
   resolution: "downlevel-dts@npm:0.11.0"
   dependencies:
@@ -20330,7 +20325,6 @@ __metadata:
     "@typescript-eslint/parser": 8.29.1
     "@typescript-eslint/utils": 8.29.1
     "@vitest/coverage-v8": ^3.1.1
-    downlevel-dts: "*"
     prettier: ^3.2.5
     rimraf: "*"
     typescript: "*"
