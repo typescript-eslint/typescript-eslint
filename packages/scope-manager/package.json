@@ -37,7 +37,7 @@
     "estree"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json && yarn run postbuild",
+    "build": "tsc -b tsconfig.build.json",
     "clean": "rimraf dist/ _ts4.3/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
