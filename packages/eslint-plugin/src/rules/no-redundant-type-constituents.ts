@@ -20,9 +20,9 @@ interface TypeWithName {
   typeName: string;
 }
 
-interface TypeRelation {
-  subTypeWithName: TypeWithName;
-  superTypeWithName: TypeWithName;
+interface TypeRedundancyRelation {
+  redundantTypeWithName: TypeWithName;
+  nonRedundantTypeWithName: TypeWithName;
 }
 
 interface TypeWithNameAndParentNode extends TypeWithName {
@@ -55,6 +55,7 @@ function isObjectOrIntersectionType(
 ): type is ts.IntersectionType | ts.ObjectType {
   return tsutils.isObjectType(type) || tsutils.isIntersectionType(type);
 }
+
 enum TypeAssignability {
   Equal,
   SourceToTargetAssignable,
@@ -103,9 +104,7 @@ function isTargetTypeRedundantInIntersection(
         targetType,
         checker,
       );
-      if (isRedundant) {
-        continue;
-      } else {
+      if (!isRedundant) {
         return false;
       }
     }
@@ -122,9 +121,7 @@ function isTargetTypeRedundantInIntersection(
         typePart,
         checker,
       );
-      if (isRedundant) {
-        continue;
-      } else {
+      if (!isRedundant) {
         return false;
       }
     }
@@ -189,13 +186,18 @@ function getTypeNodeFromReferenceType(type: ts.Type): ts.Node | undefined {
   return;
 }
 
-function getGroupTypeRelationsBySuperTypeName(typeRelations: TypeRelation[]) {
-  const groups = new Map<ts.Type, TypeRelation[]>();
+function getGroupTypeRelationsByNonRedundantType(
+  typeRedundancyRelations: TypeRedundancyRelation[],
+) {
+  const groups = new Map<ts.Type, TypeRedundancyRelation[]>();
 
-  for (const typeRelation of typeRelations) {
-    addToMapGroup(groups, typeRelation.superTypeWithName.type, typeRelation);
+  for (const typeRedundancyRelation of typeRedundancyRelations) {
+    addToMapGroup(
+      groups,
+      typeRedundancyRelation.nonRedundantTypeWithName.type,
+      typeRedundancyRelation,
+    );
   }
-
   return groups;
 }
 
@@ -317,50 +319,49 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function reportOverriddenTypes(
-      overriddenObjectTypes: Map<TSESTree.TypeNode, TypeRelation[]>,
+    function reportRedundantTypes(
+      redundantTypes: Map<TSESTree.TypeNode, TypeRedundancyRelation[]>,
       container: 'intersection' | 'union',
     ) {
-      for (const [typeNode, typeRelations] of overriddenObjectTypes) {
-        const groupTypeRelationsBySuperTypeName =
-          getGroupTypeRelationsBySuperTypeName(typeRelations);
+      for (const [typeNode, typeRelations] of redundantTypes) {
+        const groupTypeRelationsByNonRedundantType =
+          getGroupTypeRelationsByNonRedundantType(typeRelations);
 
         for (const [
-          type,
+          nonRedundantType,
           typeRelationAndNames,
-        ] of groupTypeRelationsBySuperTypeName) {
-          const superTypeName = checker.typeToString(type);
-          const mergedSubTypeName = mergeTypeNames(
-            typeRelationAndNames.map(({ subTypeWithName }) => subTypeWithName),
+        ] of groupTypeRelationsByNonRedundantType) {
+          const nonRedundantTypeName = checker.typeToString(nonRedundantType);
+          const mergedRedundantTypeName = mergeTypeNames(
+            typeRelationAndNames.map(
+              ({ redundantTypeWithName }) => redundantTypeWithName,
+            ),
             container === 'union' ? '|' : '&',
           );
-          const redundantType =
-            container === 'union' ? mergedSubTypeName : superTypeName;
-          const nonRedundantType =
-            container === 'union' ? superTypeName : mergedSubTypeName;
+
           context.report({
             node: typeNode,
             messageId: 'typeOverridden',
             data: {
               container,
-              nonRedundantType,
-              redundantType,
+              nonRedundantType: nonRedundantTypeName,
+              redundantType: mergedRedundantTypeName,
             },
           });
         }
       }
     }
 
-    function getObjectUnionTypePart(
+    function getUnionTypePart(
       typeNode: ts.Node,
       checker: ts.TypeChecker,
     ): TypeWithName[] {
       if (ts.isParenthesizedTypeNode(typeNode)) {
-        return getObjectUnionTypePart(typeNode.type, checker);
+        return getUnionTypePart(typeNode.type, checker);
       }
       if (ts.isUnionTypeNode(typeNode)) {
         return typeNode.types.flatMap(typeNode =>
-          getObjectUnionTypePart(typeNode, checker),
+          getUnionTypePart(typeNode, checker),
         );
       }
       const type = checker.getTypeAtLocation(typeNode);
@@ -370,7 +371,7 @@ export default createRule({
       ) {
         const node = getTypeNodeFromReferenceType(type);
         if (node && node !== typeNode) {
-          return getObjectUnionTypePart(node, checker);
+          return getUnionTypePart(node, checker);
         }
       }
       return [
@@ -381,17 +382,17 @@ export default createRule({
       ];
     }
 
-    function getObjectInterSectionTypePart(
+    function getInterSectionTypePart(
       typeNode: ts.Node,
       checker: ts.TypeChecker,
     ): TypeWithName[] {
       if (ts.isParenthesizedTypeNode(typeNode)) {
-        return getObjectInterSectionTypePart(typeNode.type, checker);
+        return getInterSectionTypePart(typeNode.type, checker);
       }
 
       if (ts.isIntersectionTypeNode(typeNode)) {
         return typeNode.types.flatMap(typeNode =>
-          getObjectInterSectionTypePart(typeNode, checker),
+          getInterSectionTypePart(typeNode, checker),
         );
       }
 
@@ -402,7 +403,7 @@ export default createRule({
       ) {
         const node = getTypeNodeFromReferenceType(type);
         if (node && node !== typeNode) {
-          return getObjectInterSectionTypePart(node, checker);
+          return getInterSectionTypePart(node, checker);
         }
       }
       return [
@@ -412,12 +413,13 @@ export default createRule({
         },
       ];
     }
+
     return {
       'TSIntersectionType:exit'(node: TSESTree.TSIntersectionType): void {
-        const seenObjectTypes = new Set<TypeWithNameAndParentNode>();
-        const overriddenObjectTypes = new Map<
+        const seenTypes = new Set<TypeWithNameAndParentNode>();
+        const redundantTypes = new Map<
           TSESTree.TypeNode,
-          TypeRelation[]
+          TypeRedundancyRelation[]
         >();
 
         function checkIntersectionBottomAndTopTypes(
@@ -450,41 +452,37 @@ export default createRule({
 
         for (const typeNode of node.types) {
           const tsTypeNode = services.esTreeNodeToTSNodeMap.get(typeNode);
-          const objectTypeParts = getObjectInterSectionTypePart(
-            tsTypeNode,
-            checker,
-          );
+          const typeParts = getInterSectionTypePart(tsTypeNode, checker);
 
-          for (const objectTypePart of objectTypeParts) {
+          for (const typePart of typeParts) {
             if (
-              objectTypePart.type.flags & ts.TypeFlags.Never ||
-              objectTypePart.type.flags & ts.TypeFlags.Any ||
-              objectTypePart.type.flags & ts.TypeFlags.Unknown
+              typePart.type.flags & ts.TypeFlags.Never ||
+              typePart.type.flags & ts.TypeFlags.Any ||
+              typePart.type.flags & ts.TypeFlags.Unknown
             ) {
               checkIntersectionBottomAndTopTypes(
                 {
-                  typeFlags: objectTypePart.type.flags,
-                  typeName: objectTypePart.typeName,
+                  typeFlags: typePart.type.flags,
+                  typeName: typePart.typeName,
                 },
                 typeNode,
               );
               continue;
             }
-            const { type: targetType, typeName: targetTypeName } =
-              objectTypePart;
+            const { type: targetType, typeName: targetTypeName } = typePart;
 
-            for (const seenObjectType of seenObjectTypes) {
+            for (const seenType of seenTypes) {
               const {
                 type: sourceType,
                 parentTypeNode,
                 typeName: sourceTypeName,
-              } = seenObjectType;
-              const sourceTypeIsRedundant = isTargetTypeRedundantInIntersection(
+              } = seenType;
+              const targetTypeIsRedundant = isTargetTypeRedundantInIntersection(
                 sourceType,
                 targetType,
                 checker,
               );
-              const targetTypeIsRedundant = isTargetTypeRedundantInIntersection(
+              const sourceTypeIsRedundant = isTargetTypeRedundantInIntersection(
                 targetType,
                 sourceType,
                 checker,
@@ -496,53 +494,53 @@ export default createRule({
                 continue;
               }
               if (sourceTypeIsRedundant) {
-                addToMapGroup(overriddenObjectTypes, typeNode, {
-                  subTypeWithName: {
-                    type: sourceType,
-                    typeName: sourceTypeName,
-                  },
-                  superTypeWithName: {
+                addToMapGroup(redundantTypes, parentTypeNode, {
+                  nonRedundantTypeWithName: {
                     type: targetType,
                     typeName: targetTypeName,
+                  },
+                  redundantTypeWithName: {
+                    type: sourceType,
+                    typeName: sourceTypeName,
                   },
                 });
               }
               if (targetTypeIsRedundant) {
-                addToMapGroup(overriddenObjectTypes, parentTypeNode, {
-                  subTypeWithName: {
-                    type: targetType,
-                    typeName: targetTypeName,
-                  },
-                  superTypeWithName: {
+                addToMapGroup(redundantTypes, typeNode, {
+                  nonRedundantTypeWithName: {
                     type: sourceType,
                     typeName: sourceTypeName,
+                  },
+                  redundantTypeWithName: {
+                    type: targetType,
+                    typeName: targetTypeName,
                   },
                 });
               }
             }
           }
-          for (const objectTypePart of objectTypeParts) {
+          for (const typePart of typeParts) {
             if (
-              objectTypePart.type.flags === ts.TypeFlags.Any ||
-              objectTypePart.type.flags === ts.TypeFlags.Unknown ||
-              objectTypePart.type.flags === ts.TypeFlags.Never
+              typePart.type.flags === ts.TypeFlags.Any ||
+              typePart.type.flags === ts.TypeFlags.Unknown ||
+              typePart.type.flags === ts.TypeFlags.Never
             ) {
               continue;
             }
 
-            seenObjectTypes.add({
-              ...objectTypePart,
+            seenTypes.add({
+              ...typePart,
               parentTypeNode: typeNode,
             });
           }
         }
-        reportOverriddenTypes(overriddenObjectTypes, 'intersection');
+        reportRedundantTypes(redundantTypes, 'intersection');
       },
       'TSUnionType:exit'(node: TSESTree.TSUnionType): void {
-        const seenObjectTypes = new Set<TypeWithNameAndParentNode>();
-        const overriddenObjectTypes = new Map<
+        const seenTypes = new Set<TypeWithNameAndParentNode>();
+        const redundantTypes = new Map<
           TSESTree.TypeNode,
-          TypeRelation[]
+          TypeRedundancyRelation[]
         >();
 
         function checkUnionBottomAndTopTypes(
@@ -589,31 +587,30 @@ export default createRule({
 
         for (const typeNode of node.types) {
           const tsTypeNode = services.esTreeNodeToTSNodeMap.get(typeNode);
-          const objectTypeParts = getObjectUnionTypePart(tsTypeNode, checker);
-          for (const objectTypePart of objectTypeParts) {
+          const typeParts = getUnionTypePart(tsTypeNode, checker);
+          for (const typePart of typeParts) {
             if (
-              objectTypePart.type.flags & ts.TypeFlags.Never ||
-              objectTypePart.type.flags & ts.TypeFlags.Any ||
-              objectTypePart.type.flags & ts.TypeFlags.Unknown
+              typePart.type.flags & ts.TypeFlags.Never ||
+              typePart.type.flags & ts.TypeFlags.Any ||
+              typePart.type.flags & ts.TypeFlags.Unknown
             ) {
               checkUnionBottomAndTopTypes(
                 {
-                  typeFlags: objectTypePart.type.flags,
-                  typeName: objectTypePart.typeName,
+                  typeFlags: typePart.type.flags,
+                  typeName: typePart.typeName,
                 },
                 typeNode,
               );
               continue;
             }
 
-            const { type: targetType, typeName: targetTypeName } =
-              objectTypePart;
-            for (const seenObjectType of seenObjectTypes) {
+            const { type: targetType, typeName: targetTypeName } = typePart;
+            for (const seenType of seenTypes) {
               const {
                 type: sourceType,
                 parentTypeNode,
                 typeName: sourceTypeName,
-              } = seenObjectType;
+              } = seenType;
               if (!hasSameKeys(sourceType, targetType, checker)) {
                 continue;
               }
@@ -626,48 +623,48 @@ export default createRule({
 
               switch (typeAssignability) {
                 case TypeAssignability.SourceToTargetAssignable:
-                  addToMapGroup(overriddenObjectTypes, parentTypeNode, {
-                    subTypeWithName: {
-                      type: sourceType,
-                      typeName: sourceTypeName,
-                    },
-                    superTypeWithName: {
+                  addToMapGroup(redundantTypes, parentTypeNode, {
+                    nonRedundantTypeWithName: {
                       type: targetType,
                       typeName: targetTypeName,
+                    },
+                    redundantTypeWithName: {
+                      type: sourceType,
+                      typeName: sourceTypeName,
                     },
                   });
                   continue;
                 case TypeAssignability.TargetToSourceAssignable:
-                  addToMapGroup(overriddenObjectTypes, typeNode, {
-                    subTypeWithName: {
-                      type: targetType,
-                      typeName: targetTypeName,
-                    },
-                    superTypeWithName: {
+                  addToMapGroup(redundantTypes, typeNode, {
+                    nonRedundantTypeWithName: {
                       type: sourceType,
                       typeName: sourceTypeName,
+                    },
+                    redundantTypeWithName: {
+                      type: targetType,
+                      typeName: targetTypeName,
                     },
                   });
               }
             }
           }
 
-          for (const objectTypePart of objectTypeParts) {
+          for (const typePart of typeParts) {
             if (
-              objectTypePart.type.flags === ts.TypeFlags.Any ||
-              objectTypePart.type.flags === ts.TypeFlags.Unknown ||
-              objectTypePart.type.flags === ts.TypeFlags.Never
+              typePart.type.flags === ts.TypeFlags.Any ||
+              typePart.type.flags === ts.TypeFlags.Unknown ||
+              typePart.type.flags === ts.TypeFlags.Never
             ) {
               continue;
             }
-            seenObjectTypes.add({
-              ...objectTypePart,
+            seenTypes.add({
+              ...typePart,
               parentTypeNode: typeNode,
             });
           }
         }
 
-        reportOverriddenTypes(overriddenObjectTypes, 'union');
+        reportRedundantTypes(redundantTypes, 'union');
       },
     };
   },

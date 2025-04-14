@@ -1494,7 +1494,17 @@ type U = S & T & { a: string } & { a: number };
           column: 25,
           data: {
             container: 'intersection',
-            nonRedundantType: '{ a: 1 | 2; } & { a: 1; }',
+            nonRedundantType: '{ a: 1 | 2; }',
+            redundantType: '{ a: number; }',
+          },
+          endColumn: 38,
+          messageId: 'typeOverridden',
+        },
+        {
+          column: 25,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }',
             redundantType: '{ a: number; }',
           },
           endColumn: 38,
@@ -1510,17 +1520,7 @@ type U = S & T & { a: string } & { a: number };
           data: {
             container: 'intersection',
             nonRedundantType: '{ a: 1; b: 1; }',
-            redundantType: '{ a: number; }',
-          },
-          endColumn: 42,
-          messageId: 'typeOverridden',
-        },
-        {
-          column: 13,
-          data: {
-            container: 'intersection',
-            nonRedundantType: '{ a: 1; b: 1; }',
-            redundantType: '{ b: number; }',
+            redundantType: '{ a: number; } & { b: number; }',
           },
           endColumn: 42,
           messageId: 'typeOverridden',
