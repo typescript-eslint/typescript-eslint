@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-property AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-private-optional-property > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -100,7 +100,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-propert
               },
               value: Literal {
                 type: 'Literal',
-                raw: '\\'\\'',
+                raw: '\'\'',
                 value: '',
 
                 range: [139, 141],
@@ -138,7 +138,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-propert
               static: false,
               value: Literal {
                 type: 'Literal',
-                raw: '\\'\\'',
+                raw: '\'\'',
                 value: '',
 
                 range: [171, 173],
@@ -193,5 +193,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-propert
       start: { column: 0, line: 3 },
       end: { column: 0, line: 8 },
     },
-  }"
-`;
+  }

@@ -1,6 +1,6 @@
 import { unescapeStringLiteralText } from '../../src/node-utils';
 
-describe('unescapeStringLiteralText()', () => {
+describe(unescapeStringLiteralText, () => {
   it('should not modify content', () => {
     let text = 'amp;';
     expect(unescapeStringLiteralText(text)).toBe(text);

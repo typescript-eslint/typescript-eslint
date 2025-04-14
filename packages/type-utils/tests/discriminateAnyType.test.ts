@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
+import type { TestContext } from 'vitest';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import path from 'node:path';
@@ -8,7 +9,7 @@ import { expectToHaveParserServices } from './test-utils/expectToHaveParserServi
 
 type GetNode = (ast: TSESTree.Program) => TSESTree.Node;
 
-describe('discriminateAnyType', () => {
+describe(discriminateAnyType, () => {
   const rootDir = path.join(__dirname, 'fixtures');
 
   function getDeclarationId(ast: TSESTree.Program): TSESTree.Node {
@@ -36,9 +37,12 @@ describe('discriminateAnyType', () => {
   }
 
   function runTest(
-    code: string,
-    expected: AnyType,
-    getNode: GetNode = getDeclarationId,
+    [code, expected, getNode = getDeclarationId]: readonly [
+      code: string,
+      expected: AnyType,
+      getNode?: GetNode,
+    ],
+    { expect }: TestContext,
   ): void {
     const { checker, program, tsNode, type } = getTypes(code, getNode);
     const result = discriminateAnyType(type, checker, program, tsNode);
@@ -46,13 +50,13 @@ describe('discriminateAnyType', () => {
   }
 
   describe('returns Safe', () => {
-    it.each([
+    it.for([
       ['const foo = "foo";', AnyType.Safe],
       ['const foo = 1;', AnyType.Safe],
       ['const foo = [1, 2];', AnyType.Safe],
-    ])('when code is %s, returns %s', runTest);
+    ] as const)('when code is %s, returns %s', runTest);
 
-    it('should returns Safe for a recursive thenable.', () => {
+    it('should returns Safe for a recursive thenable.', testContext => {
       const code = `
 class Foo {
   foo() {
@@ -63,39 +67,46 @@ class Foo {
   }
 };
         `;
-      runTest(code, AnyType.Safe, ast => {
-        const classDeclration = ast.body[0] as TSESTree.ClassDeclaration;
-        const method = classDeclration.body
-          .body[0] as TSESTree.MethodDefinition;
-        const returnStatement = method.value.body?.body.at(
-          -1,
-        ) as TSESTree.ReturnStatement;
-        return returnStatement.argument!;
-      });
+      runTest(
+        [
+          code,
+          AnyType.Safe,
+          ast => {
+            const classDeclration = ast.body[0] as TSESTree.ClassDeclaration;
+            const method = classDeclration.body
+              .body[0] as TSESTree.MethodDefinition;
+            const returnStatement = method.value.body?.body.at(
+              -1,
+            ) as TSESTree.ReturnStatement;
+            return returnStatement.argument!;
+          },
+        ],
+        testContext,
+      );
     });
   });
 
   describe('returns Any', () => {
-    it.each([
+    it.for([
       ['const foo = 1 as any;', AnyType.Any],
       ['let foo;', AnyType.Any],
-    ])('when code is %s, returns %s', runTest);
+    ] as const)('when code is %s, returns %s', runTest);
   });
 
   describe('returns PromiseAny', () => {
-    it.each([
+    it.for([
       ['const foo = Promise.resolve({} as any);', AnyType.PromiseAny],
       [
         'const foo = Promise.resolve(Promise.resolve({} as any));',
         AnyType.PromiseAny,
       ],
-    ])('when code is %s, returns %s', runTest);
+    ] as const)('when code is %s, returns %s', runTest);
   });
 
   describe('returns AnyArray', () => {
-    it.each([
+    it.for([
       ['const foo = [{} as any];', AnyType.AnyArray],
       ['const foo = [{} as any, 2];', AnyType.AnyArray],
-    ])('when code is %s, returns %s', runTest);
+    ] as const)('when code is %s, returns %s', runTest);
   });
 });

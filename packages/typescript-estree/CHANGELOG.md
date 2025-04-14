@@ -1,3 +1,21 @@
+## 8.30.1 (2025-04-14)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.30.0 (2025-04-14)
+
+### 🩹 Fixes
+
+- **typescript-estree:** use token type of `PrivateIdentifier` instead of `Identifier` for private identifiers ([#11023](https://github.com/typescript-eslint/typescript-eslint/pull/11023))
+
+### ❤️ Thank You
+
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.29.1 (2025-04-07)
 
 ### 🩹 Fixes

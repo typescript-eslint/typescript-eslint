@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-method-private Babel - Error 1`] = `[SyntaxError: 'private' modifier cannot appear on a type member. (4:4)]`;
+exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > interface-method-private > Babel - Error`]
+SyntaxError: 'private' modifier cannot appear on a type member. (4:4)

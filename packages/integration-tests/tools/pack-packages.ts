@@ -7,6 +7,8 @@
  * against the exact same version of the package.
  */
 
+import type { TestProject } from 'vitest/node';
+
 import * as child_process from 'node:child_process';
 import * as fs from 'node:fs/promises';
 import * as os from 'node:os';
@@ -44,10 +46,10 @@ const FIXTURES_DIR = path.join(__dirname, '..', FIXTURES_DIR_BASENAME);
 
 const TAR_FOLDER = path.join(INTEGRATION_TEST_DIR, 'tarballs');
 
-export const setup = async (): Promise<PackageJSON['devDependencies']> => {
-  const testFileBaseNames = await fs.readdir(FIXTURES_DIR, {
-    encoding: 'utf-8',
-  });
+export const setup = async (project: TestProject): Promise<void> => {
+  const testFileBaseNames = (
+    await project.globTestFiles(project.vitest.state.getPaths())
+  ).testFiles.map(testFilePath => path.basename(testFilePath, '.test.ts'));
 
   const PACKAGES = await fs.readdir(PACKAGES_DIR, {
     encoding: 'utf-8',
@@ -213,15 +215,10 @@ export const setup = async (): Promise<PackageJSON['devDependencies']> => {
   await fs.rm(temp, { recursive: true });
 
   console.log('Finished packing local packages.');
-
-  return tseslintPackages;
 };
 
-const teardown = async (): Promise<void> => {
+export const teardown = async (): Promise<void> => {
   if (process.env.KEEP_INTEGRATION_TEST_DIR !== 'true') {
     await fs.rm(INTEGRATION_TEST_DIR, { recursive: true });
   }
 };
-
-// eslint-disable-next-line import/no-default-export
-export default teardown;
