@@ -96,7 +96,7 @@ function validateUnderscores(name: string): boolean {
   return !wasUnderscore;
 }
 
-const PredefinedFormatToCheckFunction: Readonly<
+export const PredefinedFormatToCheckFunction: Readonly<
   Record<PredefinedFormats, (name: string) => boolean>
 > = {
   [PredefinedFormats.camelCase]: isCamelCase,
@@ -106,5 +106,3 @@ const PredefinedFormatToCheckFunction: Readonly<
   [PredefinedFormats.StrictPascalCase]: isStrictPascalCase,
   [PredefinedFormats.UPPER_CASE]: isUpperCase,
 };
-
-export { PredefinedFormatToCheckFunction };

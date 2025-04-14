@@ -38,7 +38,7 @@ function hasValidType(type: unknown): type is string {
   return typeof type === 'string';
 }
 
-const serializer: NewPlugin = {
+export const serializer: NewPlugin = {
   serialize(
     node: Record<string, unknown> & TSESTree.Node,
     config,
@@ -63,6 +63,7 @@ const serializer: NewPlugin = {
 
     for (const key of keys) {
       const value = node[key];
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish -- intentional strict equality
       if (value === undefined) {
         continue;
       }
@@ -90,5 +91,3 @@ const serializer: NewPlugin = {
     return isObject(val) && hasValidType(val.type);
   },
 };
-
-export { serializer };

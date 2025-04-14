@@ -24,6 +24,10 @@ packages/ast-spec/src/declaration/ImportDeclaration/fixtures/named-string-litera
 packages/ast-spec/src/special/ExportSpecifier/fixtures/literal-specifier/fixture.ts
 packages/ast-spec/src/special/ExportSpecifier/fixtures/value-export-specifier/fixture.ts
 
+# TODO - remove this once prettier supports it
+# https://github.com/prettier/prettier/issues/16072
+packages/ast-spec/src/type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts
+
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
 

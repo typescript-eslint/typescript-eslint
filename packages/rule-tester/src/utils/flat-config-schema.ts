@@ -29,7 +29,7 @@ const ruleSeverities = new Map<SharedConfig.RuleLevel, SharedConfig.Severity>([
  * @returns `true` if the value is a non-null object.
  */
 function isNonNullObject(value: unknown): boolean {
-  // eslint-disable-next-line eqeqeq
+  // eslint-disable-next-line eqeqeq, @typescript-eslint/internal/eqeq-nullish
   return typeof value === 'object' && value !== null;
 }
 
@@ -104,6 +104,7 @@ function deepMerge<First extends object, Second extends object>(
         secondValue!,
         mergeMap,
       );
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
     } else if (secondValue === undefined) {
       (result as ObjectLike)[key] = firstValue;
     }
@@ -204,7 +205,7 @@ class InvalidRuleSeverityError extends Error {
 function assertIsRuleSeverity(ruleId: string, value: unknown): void {
   const severity = ruleSeverities.get(value as SharedConfig.RuleLevel);
 
-  if (severity === undefined) {
+  if (severity == null) {
     throw new InvalidRuleSeverityError(ruleId, value);
   }
 }

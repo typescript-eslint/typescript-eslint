@@ -209,8 +209,8 @@ export class RuleTester extends TestFramework {
     // path. For any other path, which would just be a plain
     // file name (`foo.ts`), don't change the base path.
     if (
-      filename !== undefined &&
-      (filename.startsWith('/') || filename.startsWith('..'))
+      filename != null &&
+      (path.isAbsolute(filename) || filename.startsWith('..'))
     ) {
       basePath = path.parse(
         path.resolve(basePath ?? process.cwd(), filename),
@@ -771,14 +771,19 @@ export class RuleTester extends TestFramework {
     do {
       passNumber++;
 
+      const SourceCodePrototype = SourceCode.prototype as Record<
+        ForbiddenMethodName,
+        ForbiddenFunction
+      >;
+
       const { applyInlineConfig, applyLanguageOptions, finalize } =
-        SourceCode.prototype;
+        SourceCodePrototype;
 
       try {
         forbiddenMethods.forEach(methodName => {
-          SourceCode.prototype[methodName] = throwForbiddenMethodError(
+          SourceCodePrototype[methodName] = throwForbiddenMethodError(
             methodName,
-            SourceCode.prototype,
+            SourceCodePrototype,
           );
         });
 
@@ -798,9 +803,9 @@ export class RuleTester extends TestFramework {
         });
         messages = linter.verify(code, actualConfig, filename);
       } finally {
-        SourceCode.prototype.applyInlineConfig = applyInlineConfig;
-        SourceCode.prototype.applyLanguageOptions = applyLanguageOptions;
-        SourceCode.prototype.finalize = finalize;
+        SourceCodePrototype.applyInlineConfig = applyInlineConfig;
+        SourceCodePrototype.applyLanguageOptions = applyLanguageOptions;
+        SourceCodePrototype.finalize = finalize;
       }
 
       initialMessages ??= messages;
@@ -1011,7 +1016,7 @@ export class RuleTester extends TestFramework {
           // Just an error message.
           assertMessageMatches(message.message, error);
           assert.ok(
-            message.suggestions === undefined,
+            message.suggestions == null,
             `Error at index ${i} has suggestions. Please convert the test error into an object and specify 'suggestions' property on it to test suggestions.`,
           );
         } else if (typeof error === 'object' && error != null) {
@@ -1146,7 +1151,7 @@ export class RuleTester extends TestFramework {
             const expectsSuggestions = Array.isArray(error.suggestions)
               ? error.suggestions.length > 0
               : Boolean(error.suggestions);
-            const hasSuggestions = message.suggestions !== undefined;
+            const hasSuggestions = message.suggestions != null;
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const messageSuggestions = message.suggestions!;
 

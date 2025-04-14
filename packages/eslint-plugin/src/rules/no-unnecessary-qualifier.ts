@@ -75,7 +75,7 @@ export default createRule({
       const namespaceSymbol = services.getSymbolAtLocation(qualifier);
 
       if (
-        namespaceSymbol === undefined ||
+        namespaceSymbol == null ||
         !symbolIsNamespaceInScope(namespaceSymbol)
       ) {
         return false;
@@ -83,7 +83,7 @@ export default createRule({
 
       const accessedSymbol = services.getSymbolAtLocation(name);
 
-      if (accessedSymbol === undefined) {
+      if (accessedSymbol == null) {
         return false;
       }
 

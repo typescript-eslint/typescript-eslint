@@ -14,7 +14,7 @@ import {
   nullThrows,
 } from '../util';
 
-type MessageIds =
+export type MessageIds =
   | 'addUnknownRestTypeAnnotationSuggestion'
   | 'addUnknownTypeAnnotationSuggestion'
   | 'useUnknown'
@@ -36,7 +36,6 @@ export default createRule<[], MessageIds>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       addUnknownRestTypeAnnotationSuggestion:
@@ -100,10 +99,41 @@ export default createRule<[], MessageIds>({
       return false;
     }
 
-    function shouldFlagArgument(node: TSESTree.Expression): boolean {
-      const argument = esTreeNodeToTSNodeMap.get(node);
-      const typeOfArgument = checker.getTypeAtLocation(argument);
-      return isFlaggableHandlerType(typeOfArgument);
+    function collectFlaggedNodes(
+      node: Exclude<TSESTree.Node, TSESTree.SpreadElement>,
+    ): (TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression)[] {
+      switch (node.type) {
+        case AST_NODE_TYPES.LogicalExpression:
+          return [
+            ...collectFlaggedNodes(node.left),
+            ...collectFlaggedNodes(node.right),
+          ];
+        case AST_NODE_TYPES.SequenceExpression:
+          return collectFlaggedNodes(
+            nullThrows(
+              node.expressions.at(-1),
+              'sequence expression must have multiple expressions',
+            ),
+          );
+        case AST_NODE_TYPES.ConditionalExpression:
+          return [
+            ...collectFlaggedNodes(node.consequent),
+            ...collectFlaggedNodes(node.alternate),
+          ];
+        case AST_NODE_TYPES.ArrowFunctionExpression:
+        case AST_NODE_TYPES.FunctionExpression:
+          {
+            const argument = esTreeNodeToTSNodeMap.get(node);
+            const typeOfArgument = checker.getTypeAtLocation(argument);
+            if (isFlaggableHandlerType(typeOfArgument)) {
+              return [node];
+            }
+          }
+          break;
+        default:
+          break;
+      }
+      return [];
     }
 
     /**
@@ -114,18 +144,8 @@ export default createRule<[], MessageIds>({
      * rule _is reporting_, so it is not guaranteed to be sound to call otherwise.
      */
     function refineReportIfPossible(
-      argument: TSESTree.Expression,
+      argument: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): Partial<ReportDescriptor<MessageIds>> | undefined {
-      // Only know how to be helpful if a function literal has been provided.
-      if (
-        !(
-          argument.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-          argument.type === AST_NODE_TYPES.FunctionExpression
-        )
-      ) {
-        return undefined;
-      }
-
       const catchVariableOuterWithIncorrectTypes = nullThrows(
         argument.params.at(0),
         'There should have been at least one parameter for the rule to have flagged.',
@@ -277,11 +297,12 @@ export default createRule<[], MessageIds>({
         }
 
         // the `some` check above has already excluded `SpreadElement`, so we are safe to assert the same
-        const node = argsToCheck[argIndexToCheck] as Exclude<
-          (typeof argsToCheck)[number],
+        const argToCheck = argsToCheck[argIndexToCheck] as Exclude<
+          TSESTree.Node,
           TSESTree.SpreadElement
         >;
-        if (shouldFlagArgument(node)) {
+
+        for (const node of collectFlaggedNodes(argToCheck)) {
           // We are now guaranteed to report, but we have a bit of work to do
           // to determine exactly where, and whether we can fix it.
           const overrides = refineReportIfPossible(node);

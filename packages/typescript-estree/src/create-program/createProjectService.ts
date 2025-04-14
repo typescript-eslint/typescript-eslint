@@ -10,7 +10,9 @@ import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForF
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
 
-const log = debug('typescript-eslint:typescript-estree:createProjectService');
+const log = debug(
+  'typescript-eslint:typescript-estree:create-program:createProjectService',
+);
 const logTsserverErr = debug(
   'typescript-eslint:typescript-estree:tsserver:err',
 );

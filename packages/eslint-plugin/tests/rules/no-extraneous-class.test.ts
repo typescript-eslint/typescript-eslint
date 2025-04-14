@@ -98,6 +98,29 @@ abstract class Foo {
   abstract method(): string;
 }
     `,
+    `
+class Foo {
+  accessor prop: string;
+}
+    `,
+    `
+class Foo {
+  accessor prop = 'bar';
+  static bar() {
+    return false;
+  }
+}
+    `,
+    `
+abstract class Foo {
+  accessor prop: string;
+}
+    `,
+    `
+abstract class Foo {
+  abstract accessor prop: string;
+}
+    `,
   ],
 
   invalid: [
@@ -211,6 +234,22 @@ abstract class Foo {
 }
       `,
       errors: [onlyConstructor],
+    },
+    {
+      code: `
+class Foo {
+  static accessor prop: string;
+}
+      `,
+      errors: [onlyStatic],
+    },
+    {
+      code: `
+abstract class Foo {
+  static accessor prop: string;
+}
+      `,
+      errors: [onlyStatic],
     },
   ],
 });

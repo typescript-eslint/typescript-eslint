@@ -159,8 +159,7 @@ export function isBuiltinSymbolLikeRecurser(
       isBuiltinSymbolLikeRecurser(program, t, predicate),
     );
   }
-  // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
-  if ((tsutils.isTypeParameter as (type: ts.Type) => boolean)(type)) {
+  if (tsutils.isTypeParameter(type)) {
     const t = type.getConstraint();
 
     if (t) {

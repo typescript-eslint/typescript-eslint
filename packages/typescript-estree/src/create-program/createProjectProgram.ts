@@ -9,7 +9,9 @@ import { firstDefined } from '../node-utils';
 import { createProjectProgramError } from './createProjectProgramError';
 import { getAstFromProgram } from './shared';
 
-const log = debug('typescript-eslint:typescript-estree:createProjectProgram');
+const log = debug(
+  'typescript-eslint:typescript-estree:create-program:createProjectProgram',
+);
 
 /**
  * @param parseSettings Internal settings for parsing the file

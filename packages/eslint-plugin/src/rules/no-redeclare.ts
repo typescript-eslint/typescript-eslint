@@ -5,8 +5,11 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getNameLocationInGlobalDirectiveComment } from '../util';
 
-type MessageIds = 'redeclared' | 'redeclaredAsBuiltin' | 'redeclaredBySyntax';
-type Options = [
+export type MessageIds =
+  | 'redeclared'
+  | 'redeclaredAsBuiltin'
+  | 'redeclaredBySyntax';
+export type Options = [
   {
     builtinGlobals?: boolean;
     ignoreDeclarationMerge?: boolean;

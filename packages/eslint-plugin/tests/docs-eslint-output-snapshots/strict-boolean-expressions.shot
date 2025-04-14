@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs strict-boolean-expressions.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 // nullable numbers are considered unsafe by default
 declare const num: number | undefined;
@@ -25,9 +22,9 @@ function foo(bool?: boolean) {
   }
 }
 
-// \`any\`, unconstrained generics and unions of more than one primitive type are disallowed
+// `any`, unconstrained generics and unions of more than one primitive type are disallowed
 const foo = <T>(arg: T) => (arg ? 1 : 0);
-                            ~~~ Unexpected any value in conditional. An explicit comparison or type cast is required.
+                            ~~~ Unexpected any value in conditional. An explicit comparison or type conversion is required.
 
 // always-truthy and always-falsy types are disallowed
 let obj = {};
@@ -36,16 +33,17 @@ while (obj) {
   obj = getObj();
 }
 
-// assertion functions without an \`is\` are boolean contexts.
+// assertion functions without an `is` are boolean contexts.
 declare function assert(value: unknown): asserts value;
 let maybeString = Math.random() > 0.5 ? '' : undefined;
 assert(maybeString);
        ~~~~~~~~~~~ Unexpected nullable string value in conditional. Please handle the nullish/empty cases explicitly.
-"
-`;
 
-exports[`Validating rule docs strict-boolean-expressions.mdx code examples ESLint output 2`] = `
-"Correct
+// array predicates' return types are boolean contexts.
+['one', null].filter(x => x);
+                     ~~~~~~ Unexpected nullable string value in array predicate return type. Please handle the nullish/empty cases explicitly.
+
+Correct
 
 // nullable values should be checked explicitly against null or undefined
 let num: number | undefined = 0;
@@ -64,7 +62,5 @@ function foo(bool?: boolean) {
   }
 }
 
-// \`any\` types should be cast to boolean explicitly
+// `any` types should be converted to boolean explicitly
 const foo = (arg: any) => (Boolean(arg) ? 1 : 0);
-"
-`;

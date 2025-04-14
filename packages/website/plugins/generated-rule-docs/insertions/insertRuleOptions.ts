@@ -74,6 +74,7 @@ export function insertRuleOptions(page: RuleDocsPage): void {
     page.spliceChildren(
       commentInsertionIndex,
       0,
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish -- I don't know whether this is safe to fix
       defaultValue !== undefined
         ? `${option.description} Default: \`${JSON.stringify(defaultValue)}\`.`
         : option.description,

@@ -3,7 +3,8 @@
   "private": true,
   "description": "ESLint which works in browsers.",
   "files": [
-    "dist"
+    "dist",
+    "!*.tsbuildinfo"
   ],
   "repository": {
     "type": "git",
@@ -26,10 +27,10 @@
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "scripts": {
-    "build": "tsx ./build.ts",
+    "build": "tsx ./build.mts",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
-    "typecheck": "tsc --noEmit"
+    "check-types": "npx nx typecheck"
   },
   "devDependencies": {
     "@eslint/js": "*",
@@ -38,7 +39,7 @@
     "@typescript-eslint/scope-manager": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
-    "esbuild": "~0.24.0",
+    "esbuild": "~0.25.0",
     "eslint": "*",
     "esquery": "*",
     "prettier": "^3.2.5",

@@ -19,9 +19,9 @@ type BaseOptions = InferOptionsTypeFromRule<typeof baseRule>;
 type EnforcementOptions = {
   enforceForDeclarationWithTypeAnnotation?: boolean;
 } & BaseOptions[1];
-type Options = [BaseOptions[0], EnforcementOptions];
+export type Options = [BaseOptions[0], EnforcementOptions];
 
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const destructuringTypeConfig: JSONSchema4 = {
   type: 'object',
@@ -124,14 +124,14 @@ export default createRule<Options, MessageIds>({
     ): void {
       const rules =
         leftNode.type === AST_NODE_TYPES.Identifier &&
-        leftNode.typeAnnotation === undefined
+        leftNode.typeAnnotation == null
           ? baseRules
           : baseRulesWithoutFix();
       if (
         (leftNode.type === AST_NODE_TYPES.ArrayPattern ||
           leftNode.type === AST_NODE_TYPES.Identifier ||
           leftNode.type === AST_NODE_TYPES.ObjectPattern) &&
-        leftNode.typeAnnotation !== undefined &&
+        leftNode.typeAnnotation != null &&
         !enforceForDeclarationWithTypeAnnotation
       ) {
         return;
@@ -228,7 +228,7 @@ function isTypeAnyOrIterableType(
       'iterator',
       typeChecker,
     );
-    return iterator !== undefined;
+    return iterator != null;
   }
   return type.types.every(t => isTypeAnyOrIterableType(t, typeChecker));
 }

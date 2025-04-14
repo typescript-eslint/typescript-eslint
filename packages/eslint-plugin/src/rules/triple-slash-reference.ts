@@ -4,14 +4,14 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type Options = [
+export type Options = [
   {
     lib?: 'always' | 'never';
     path?: 'always' | 'never';
     types?: 'always' | 'never' | 'prefer-import';
   },
 ];
-type MessageIds = 'tripleSlashReference';
+export type MessageIds = 'tripleSlashReference';
 
 export default createRule<Options, MessageIds>({
   name: 'triple-slash-reference',

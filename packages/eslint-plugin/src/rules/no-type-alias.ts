@@ -11,7 +11,7 @@ type Values =
   | 'in-unions-and-intersections'
   | 'never';
 
-type Options = [
+export type Options = [
   {
     allowAliases?: Values;
     allowCallbacks?: 'always' | 'never';
@@ -23,7 +23,7 @@ type Options = [
     allowTupleTypes?: Values;
   },
 ];
-type MessageIds = 'noCompositionAlias' | 'noTypeAlias';
+export type MessageIds = 'noCompositionAlias' | 'noTypeAlias';
 
 type CompositionType =
   | AST_NODE_TYPES.TSIntersectionType
@@ -37,7 +37,18 @@ export default createRule<Options, MessageIds>({
   name: 'no-type-alias',
   meta: {
     type: 'suggestion',
-    deprecated: true,
+    deprecated: {
+      deprecatedSince: '6.0.0',
+      replacedBy: [
+        {
+          rule: {
+            name: '@typescript-eslint/consistent-type-definitions',
+            url: 'https://typescript-eslint.io/rules/consistent-type-definitions',
+          },
+        },
+      ],
+      url: 'https://github.com/typescript-eslint/typescript-eslint/pull/6229',
+    },
     docs: {
       description: 'Disallow type aliases',
       // too opinionated to be recommended
@@ -229,7 +240,7 @@ export default createRule<Options, MessageIds>({
     const isValidGeneric = (type: TypeWithLabel): boolean => {
       return (
         type.node.type === AST_NODE_TYPES.TSTypeReference &&
-        type.node.typeArguments !== undefined
+        type.node.typeArguments != null
       );
     };
 

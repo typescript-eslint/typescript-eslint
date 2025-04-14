@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import type { Equal } from '../util';
 
@@ -53,14 +53,15 @@ type MethodDefinition =
   | TSESTree.MethodDefinition
   | TSESTree.TSAbstractMethodDefinition;
 
-type MessageIds =
+export type MessageIds =
   | 'omittingRestParameter'
   | 'omittingSingleParameter'
   | 'singleParameterDifference';
 
-type Options = [
+export type Options = [
   {
     ignoreDifferentlyNamedParameters?: boolean;
+    ignoreOverloadsWithDifferentJSDoc?: boolean;
   },
 ];
 
@@ -91,6 +92,11 @@ export default createRule<Options, MessageIds>({
             description:
               'Whether two parameters with different names at the same index should be considered different even if their types are the same.',
           },
+          ignoreOverloadsWithDifferentJSDoc: {
+            type: 'boolean',
+            description:
+              'Whether two overloads with different JSDoc comments should be considered different even if their parameter and return types are the same.',
+          },
         },
       },
     ],
@@ -98,9 +104,13 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       ignoreDifferentlyNamedParameters: false,
+      ignoreOverloadsWithDifferentJSDoc: false,
     },
   ],
-  create(context, [{ ignoreDifferentlyNamedParameters }]) {
+  create(
+    context,
+    [{ ignoreDifferentlyNamedParameters, ignoreOverloadsWithDifferentJSDoc }],
+  ) {
     //----------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------
@@ -108,7 +118,7 @@ export default createRule<Options, MessageIds>({
     function failureStringStart(otherLine?: number): string {
       // For only 2 overloads we don't need to specify which is the other one.
       const overloads =
-        otherLine === undefined
+        otherLine == null
           ? 'These overloads'
           : `This overload and the one on line ${otherLine}`;
       return `${overloads} can be combined into one signature`;
@@ -183,7 +193,7 @@ export default createRule<Options, MessageIds>({
             signature1 as SignatureDefinition,
             isTypeParameter,
           );
-          if (unify !== undefined) {
+          if (unify != null) {
             result.push({ only2: overloads.length === 2, unify });
           }
         });
@@ -213,9 +223,9 @@ export default createRule<Options, MessageIds>({
       // Must return the same type.
 
       const aTypeParams =
-        a.typeParameters !== undefined ? a.typeParameters.params : undefined;
+        a.typeParameters != null ? a.typeParameters.params : undefined;
       const bTypeParams =
-        b.typeParameters !== undefined ? b.typeParameters.params : undefined;
+        b.typeParameters != null ? b.typeParameters.params : undefined;
 
       if (ignoreDifferentlyNamedParameters) {
         const commonParamsLength = Math.min(a.params.length, b.params.length);
@@ -227,6 +237,15 @@ export default createRule<Options, MessageIds>({
           ) {
             return false;
           }
+        }
+      }
+
+      if (ignoreOverloadsWithDifferentJSDoc) {
+        const aComment = getBlockCommentForNode(getExportingNode(a) ?? a);
+        const bComment = getBlockCommentForNode(getExportingNode(b) ?? b);
+
+        if (aComment?.value !== bComment?.value) {
+          return false;
         }
       }
 
@@ -250,7 +269,7 @@ export default createRule<Options, MessageIds>({
         types2,
         parametersAreEqual,
       );
-      if (index === undefined) {
+      if (index == null) {
         return undefined;
       }
 
@@ -333,7 +352,7 @@ export default createRule<Options, MessageIds>({
     function getIsTypeParameter(
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
     ): IsTypeParameter {
-      if (typeParameters === undefined) {
+      if (typeParameters == null) {
         return (() => false) as IsTypeParameter;
       }
 
@@ -444,8 +463,8 @@ export default createRule<Options, MessageIds>({
     ): boolean {
       return (
         a === b ||
-        (a !== undefined &&
-          b !== undefined &&
+        (a != null &&
+          b != null &&
           context.sourceCode.getText(a.typeAnnotation) ===
             context.sourceCode.getText(b.typeAnnotation))
       );
@@ -455,9 +474,7 @@ export default createRule<Options, MessageIds>({
       a: TSESTree.TypeNode | undefined,
       b: TSESTree.TypeNode | undefined,
     ): boolean {
-      return (
-        a === b || (a !== undefined && b !== undefined && a.type === b.type)
-      );
+      return a === b || (a != null && b != null && a.type === b.type);
     }
 
     /* Returns the first index where `a` and `b` differ. */
@@ -524,6 +541,18 @@ export default createRule<Options, MessageIds>({
       currentScope = scopes.pop();
     }
 
+    /**
+     * @returns the first valid JSDoc comment annotating `node`
+     */
+    function getBlockCommentForNode(
+      node: TSESTree.Node,
+    ): TSESTree.Comment | undefined {
+      return context.sourceCode
+        .getCommentsBefore(node)
+        .reverse()
+        .find(comment => comment.type === AST_TOKEN_TYPES.Block);
+    }
+
     function addOverload(
       signature: OverloadNode,
       key?: string,
@@ -535,7 +564,7 @@ export default createRule<Options, MessageIds>({
         (containingNode ?? signature).parent === currentScope.parent
       ) {
         const overloads = currentScope.overloads.get(key);
-        if (overloads !== undefined) {
+        if (overloads != null) {
           overloads.push(signature);
         } else {
           currentScope.overloads.set(key, [signature]);
@@ -560,12 +589,12 @@ export default createRule<Options, MessageIds>({
 
       // collect overloads
       MethodDefinition(node): void {
-        if (!node.value.body) {
+        if (!node.value.body && !isGetterOrSetter(node)) {
           addOverload(node);
         }
       },
       TSAbstractMethodDefinition(node): void {
-        if (!node.value.body) {
+        if (!node.value.body && !isGetterOrSetter(node)) {
           addOverload(node);
         }
       },
@@ -575,7 +604,11 @@ export default createRule<Options, MessageIds>({
         const exportingNode = getExportingNode(node);
         addOverload(node, node.id?.name ?? exportingNode?.type, exportingNode);
       },
-      TSMethodSignature: addOverload,
+      TSMethodSignature(node): void {
+        if (!isGetterOrSetter(node)) {
+          addOverload(node);
+        }
+      },
 
       // validate scopes
       'ClassDeclaration:exit': checkScope,
@@ -588,7 +621,7 @@ export default createRule<Options, MessageIds>({
 });
 
 function getExportingNode(
-  node: TSESTree.TSDeclareFunction,
+  node: SignatureDefinition,
 ):
   | TSESTree.ExportDefaultDeclaration
   | TSESTree.ExportNamedDeclaration
@@ -618,7 +651,15 @@ function getOverloadInfo(node: OverloadNode): string {
     default: {
       const { key } = node as MethodDefinition;
 
-      return isIdentifier(key) ? key.name : (key as TSESTree.Literal).raw;
+      if (isPrivateIdentifier(key)) {
+        return `private_identifier_${key.name}`;
+      }
+
+      if (isIdentifier(key)) {
+        return `identifier_${key.name}`;
+      }
+
+      return (key as TSESTree.Literal).raw;
     }
   }
 }
@@ -635,4 +676,19 @@ function getStaticParameterName(param: TSESTree.Node): string | undefined {
 }
 function isIdentifier(node: TSESTree.Node): node is TSESTree.Identifier {
   return node.type === AST_NODE_TYPES.Identifier;
+}
+
+function isPrivateIdentifier(
+  node: TSESTree.Node,
+): node is TSESTree.PrivateIdentifier {
+  return node.type === AST_NODE_TYPES.PrivateIdentifier;
+}
+
+function isGetterOrSetter(
+  node:
+    | TSESTree.MethodDefinition
+    | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.TSMethodSignature,
+): boolean {
+  return node.kind === 'get' || node.kind === 'set';
 }

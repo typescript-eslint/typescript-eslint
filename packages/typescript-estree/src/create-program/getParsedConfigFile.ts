@@ -11,12 +11,12 @@ import { CORE_COMPILER_OPTIONS } from './shared';
  * @param configFile the path to the tsconfig.json file, relative to `projectDirectory`
  * @param projectDirectory the project directory to use as the CWD, defaults to `process.cwd()`
  */
-function getParsedConfigFile(
+export function getParsedConfigFile(
   tsserver: typeof ts,
   configFile: string,
   projectDirectory?: string,
 ): ts.ParsedCommandLine {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/internal/eqeq-nullish
   if (tsserver.sys === undefined) {
     throw new Error(
       '`getParsedConfigFile` is only supported in a Node-like environment.',
@@ -61,5 +61,3 @@ function getParsedConfigFile(
     });
   }
 }
-
-export { getParsedConfigFile };

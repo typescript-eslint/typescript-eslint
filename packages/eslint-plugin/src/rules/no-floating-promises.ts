@@ -15,10 +15,11 @@ import {
   OperatorPrecedence,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
+  skipChainExpression,
   typeMatchesSomeSpecifier,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowForKnownSafeCalls?: TypeOrValueSpecifier[];
     allowForKnownSafePromises?: TypeOrValueSpecifier[];
@@ -28,7 +29,7 @@ type Options = [
   },
 ];
 
-type MessageId =
+export type MessageId =
   | 'floating'
   | 'floatingFixAwait'
   | 'floatingFixVoid'
@@ -135,11 +136,7 @@ export default createRule<Options, MessageId>({
           return;
         }
 
-        let expression = node.expression;
-
-        if (expression.type === AST_NODE_TYPES.ChainExpression) {
-          expression = expression.expression;
-        }
+        const expression = skipChainExpression(node.expression);
 
         if (isKnownSafePromiseReturn(expression)) {
           return;
@@ -457,7 +454,7 @@ export default createRule<Options, MessageId>({
       //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
       for (const ty of typeParts) {
         const then = ty.getProperty('then');
-        if (then === undefined) {
+        if (then == null) {
           continue;
         }
 

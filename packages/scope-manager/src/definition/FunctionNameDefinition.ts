@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';
 
-class FunctionNameDefinition extends DefinitionBase<
+export class FunctionNameDefinition extends DefinitionBase<
   DefinitionType.FunctionName,
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression
@@ -19,5 +19,3 @@ class FunctionNameDefinition extends DefinitionBase<
     super(DefinitionType.FunctionName, name, node, null);
   }
 }
-
-export { FunctionNameDefinition };

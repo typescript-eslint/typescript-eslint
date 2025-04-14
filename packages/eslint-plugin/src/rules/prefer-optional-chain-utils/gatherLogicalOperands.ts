@@ -354,7 +354,7 @@ export function gatherLogicalOperands(
   ): ComparisonValueType | null {
     switch (node.type) {
       case AST_NODE_TYPES.Literal:
-        // eslint-disable-next-line eqeqeq -- intentional exact comparison against null
+        // eslint-disable-next-line eqeqeq, @typescript-eslint/internal/eqeq-nullish -- intentional exact comparison against null
         if (node.value === null && node.raw === 'null') {
           return ComparisonValueType.Null;
         }

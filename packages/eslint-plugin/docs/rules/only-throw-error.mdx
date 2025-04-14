@@ -9,14 +9,14 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/only-throw-error** for documentation.
 
+It uses type information to determine which values are `Error`s.
+
 It is considered good practice to only `throw` the `Error` object itself or an object using the `Error` object as base objects for user-defined exceptions.
 The fundamental benefit of `Error` objects is that they automatically keep track of where they were built and originated.
 
-This rule restricts what can be thrown as an exception.
-
 :::info[Migration from `no-throw-literal`]
 
-This rule was formerly known as `no-throw-literal`.
+This extension rule was formerly known as `@typescript-eslint/no-throw-literal`.
 The new name is a drop-in replacement with identical functionality.
 
 :::

@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc/packages/integration-tests",
+    "module": "NodeNext",
+    "resolveJsonModule": true,
+    "types": ["node", "vitest/globals", "vitest/importMeta"]
+  },
+  "include": [
+    "vitest.config.mts",
+    "package.json",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "tests",
+    "tools",
+    "typings"
+  ],
+  "references": [
+    {
+      "path": "../../tsconfig.spec.json"
+    }
+  ]
+}

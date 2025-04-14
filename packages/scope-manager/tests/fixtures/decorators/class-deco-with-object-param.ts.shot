@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`decorators class-deco-with-object-param 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -144,4 +141,3 @@ ScopeManager {
     },
   ],
 }
-`;

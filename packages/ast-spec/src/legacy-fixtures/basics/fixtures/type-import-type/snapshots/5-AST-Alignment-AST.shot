@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > type-import-type > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -31,29 +31,29 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
 -             type: 'TSLiteralType',
 -             literal: Literal {
 -               type: 'Literal',
--               raw: '\\'A\\'',
+-               raw: '\'A\'',
 -               value: 'A',
--
++           argument: Literal {
++             type: 'Literal',
++             raw: '\'A\'',
++             value: 'A',
+
 -               range: [96, 99],
 -               loc: {
 -                 start: { column: 23, line: 3 },
 -                 end: { column: 26, line: 3 },
 -               },
 -             },
-+           argument: Literal {
-+             type: 'Literal',
-+             raw: '\\'A\\'',
-+             value: 'A',
-
+-
               range: [96, 99],
               loc: {
                 start: { column: 23, line: 3 },
                 end: { column: 26, line: 3 },
               },
             },
+            options: null,
 -           qualifier: null,
 -           typeArguments: null,
-+           options: null,
 
             range: [89, 100],
             loc: {
@@ -96,7 +96,7 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
 -           type: 'TSLiteralType',
 -           literal: Literal {
 -             type: 'Literal',
--             raw: '\\'B\\'',
+-             raw: '\'B\'',
 -             value: 'B',
 -
 -             range: [118, 121],
@@ -107,7 +107,7 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
 -           },
 +         argument: Literal {
 +           type: 'Literal',
-+           raw: '\\'B\\'',
++           raw: '\'B\'',
 +           value: 'B',
 
             range: [118, 121],
@@ -116,7 +116,7 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
               end: { column: 19, line: 4 },
             },
           },
-+         options: null,
+          options: null,
           qualifier: Identifier {
             type: 'Identifier',
 -           decorators: Array [],
@@ -184,5 +184,4 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
       start: { column: 0, line: 3 },
       end: { column: 0, line: 5 },
     },
-  }"
-`;
+  }

@@ -161,7 +161,6 @@ let funcExpr: FuncType = function () {
 };
 
 let asTyped = (() => '') as () => string;
-let castTyped = <() => string>(() => '');
 
 interface ObjectType {
   foo(): number;
@@ -172,9 +171,6 @@ let objectProp: ObjectType = {
 let objectPropAs = {
   foo: () => 1,
 } as ObjectType;
-let objectPropCast = <ObjectType>{
-  foo: () => 1,
-};
 
 declare function functionWithArg(arg: () => number);
 functionWithArg(() => 1);

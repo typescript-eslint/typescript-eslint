@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`decorators parameter 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -30,6 +27,14 @@ ScopeManager {
           resolved: Variable$2,
         },
         Reference$3 {
+          identifier: Identifier<"decorator">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+        Reference$4 {
           identifier: Identifier<"decorator">,
           isRead: true,
           isTypeReference: false,
@@ -132,7 +137,7 @@ ScopeManager {
       ],
       name: "d",
       references: [
-        Reference$4 {
+        Reference$7 {
           identifier: Identifier<"d">,
           init: true,
           isRead: false,
@@ -143,6 +148,22 @@ ScopeManager {
           writeExpr: Literal$4,
         },
       ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$11 {
+      defs: [
+        ParameterDefinition$8 {
+          name: Identifier<"decorator">,
+          node: FunctionExpression$3,
+        },
+        ParameterDefinition$9 {
+          name: Identifier<"decorator">,
+          node: FunctionExpression$3,
+        },
+      ],
+      name: "decorator",
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
@@ -181,7 +202,21 @@ ScopeManager {
     ClassScope$3 {
       block: ClassDeclaration$2,
       isStrict: true,
-      references: [],
+      references: [
+        Reference$1,
+        Reference$2,
+        Reference$3,
+        Reference$4,
+        Reference$5,
+        Reference$6 {
+          identifier: Identifier<"d">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: null,
+        },
+      ],
       set: Map {
         "A" => Variable$5,
       },
@@ -195,11 +230,7 @@ ScopeManager {
       block: FunctionExpression$3,
       isStrict: true,
       references: [
-        Reference$1,
-        Reference$2,
-        Reference$3,
-        Reference$4,
-        Reference$5,
+        Reference$7,
       ],
       set: Map {
         "arguments" => Variable$6,
@@ -207,6 +238,7 @@ ScopeManager {
         "b" => Variable$8,
         "c" => Variable$9,
         "d" => Variable$10,
+        "decorator" => Variable$11,
       },
       type: "function",
       upper: ClassScope$3,
@@ -216,8 +248,8 @@ ScopeManager {
         Variable$8,
         Variable$9,
         Variable$10,
+        Variable$11,
       ],
     },
   ],
 }
-`;

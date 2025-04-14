@@ -14,7 +14,7 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     fixMixedExportsWithInlineTypeSpecifier: boolean;
   },
@@ -34,7 +34,7 @@ interface ReportValueExport {
   valueSpecifiers: TSESTree.ExportSpecifier[];
 }
 
-type MessageIds =
+export type MessageIds =
   | 'multipleExportsAreTypes'
   | 'singleExportIsType'
   | 'typeOverValue';
@@ -203,13 +203,11 @@ export default createRule<Options, MessageIds>({
         // Cache the first encountered exports for the package. We will need to come
         // back to these later when fixing the problems.
         if (node.exportKind === 'type') {
-          if (sourceExports.typeOnlyNamedExport == null) {
-            // The export is a type export
-            sourceExports.typeOnlyNamedExport = node;
-          }
-        } else if (sourceExports.valueOnlyNamedExport == null) {
+          // The export is a type export
+          sourceExports.typeOnlyNamedExport ??= node;
+        } else {
           // The export is a value export
-          sourceExports.valueOnlyNamedExport = node;
+          sourceExports.valueOnlyNamedExport ??= node;
         }
 
         // Next for the current export, we will separate type/value specifiers.

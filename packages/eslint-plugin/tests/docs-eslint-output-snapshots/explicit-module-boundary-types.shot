@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 // Should indicate that no value is returned (void)
 export function test() {
@@ -14,9 +11,9 @@ export var arrowFn = () => 'test';
                         ~~ Missing return type on function.
 
 // All arguments should be typed
-export var arrowFn = (arg): string => \`test \${arg}\`;
+export var arrowFn = (arg): string => `test ${arg}`;
                       ~~~ Argument 'arg' should be typed.
-export var arrowFn = (arg: any): string => \`test \${arg}\`;
+export var arrowFn = (arg: any): string => `test ${arg}`;
                       ~~~~~~~~ Argument 'arg' should be typed with a non-any type.
 
 export class Test {
@@ -26,11 +23,8 @@ export class Test {
     return;
   }
 }
-"
-`;
 
-exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 // A function with no return value (void)
 export function test(): void {
@@ -41,8 +35,8 @@ export function test(): void {
 export var arrowFn = (): string => 'test';
 
 // All arguments should be typed
-export var arrowFn = (arg: string): string => \`test \${arg}\`;
-export var arrowFn = (arg: unknown): string => \`test \${arg}\`;
+export var arrowFn = (arg: string): string => `test ${arg}`;
+export var arrowFn = (arg: unknown): string => `test ${arg}`;
 
 export class Test {
   // A class method with no return value (void)
@@ -55,28 +49,19 @@ export class Test {
 function test() {
   return;
 }
-"
-`;
 
-exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: { "allowArgumentsExplicitlyTypedAsAny": false }
 
 export const func = (value: any): number => value + 1;
                      ~~~~~~~~~~ Argument 'value' should be typed with a non-any type.
-"
-`;
 
-exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 Options: { "allowArgumentsExplicitlyTypedAsAny": true }
 
 export const func = (value: any): number => value + 1;
-"
-`;
 
-exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 5`] = `
-"Incorrect
+Incorrect
 Options: { "allowDirectConstAssertionInArrowFunctions": false }
 
 export const func = (value: number) => ({ type: 'X', value });
@@ -87,11 +72,8 @@ export const foo = () => ({
 });
 export const bar = () => 1;
                       ~~ Missing return type on function.
-"
-`;
 
-exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 Options: { "allowDirectConstAssertionInArrowFunctions": true }
 
 export const func = (value: number) => ({ type: 'X', value }) as const;
@@ -100,11 +82,8 @@ export const foo = () =>
     bar: true,
   }) as const;
 export const bar = () => 1 as const;
-"
-`;
 
-exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 7`] = `
-"Incorrect
+Incorrect
 Options: { "allowHigherOrderFunctions": false }
 
 export const arrowFn = () => () => {};
@@ -122,11 +101,8 @@ export function foo(outer: string) {
   return function (inner: string) {};
          ~~~~~~~~~ Missing return type on function.
 }
-"
-`;
 
-exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 8`] = `
-"Correct
+Correct
 Options: { "allowHigherOrderFunctions": true }
 
 export const arrowFn = () => (): void => {};
@@ -138,11 +114,8 @@ export function fn() {
 export function foo(outer: string) {
   return function (inner: string): void {};
 }
-"
-`;
 
-exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 9`] = `
-"Incorrect
+Incorrect
 Options: { "allowTypedFunctionExpressions": false }
 
 export let arrowFn = () => 'test';
@@ -161,11 +134,8 @@ export let objectProp = {
 export const foo = bar => {};
                    ~~~ Argument 'bar' should be typed.
                        ~~ Missing return type on function.
-"
-`;
 
-exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 10`] = `
-"Correct
+Correct
 Options: { "allowTypedFunctionExpressions": true }
 
 type FuncType = () => string;
@@ -177,7 +147,6 @@ export let funcExpr: FuncType = function () {
 };
 
 export let asTyped = (() => '') as () => string;
-export let castTyped = <() => string>(() => '');
 
 interface ObjectType {
   foo(): number;
@@ -188,11 +157,14 @@ export let objectProp: ObjectType = {
 export let objectPropAs = {
   foo: () => 1,
 } as ObjectType;
-export let objectPropCast = <ObjectType>{
-  foo: () => 1,
-};
 
 type FooType = (bar: string) => void;
 export const foo: FooType = bar => {};
-"
-`;
+
+Options: { "allowOverloadFunctions": true }
+
+export function test(a: string): string;
+export function test(a: number): number;
+export function test(a: unknown) {
+  return a;
+}

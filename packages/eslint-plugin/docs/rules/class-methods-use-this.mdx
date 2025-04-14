@@ -9,8 +9,7 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/class-methods-use-this** for documentation.
 
-This rule extends the base [`eslint/class-methods-use-this`](https://eslint.org/docs/rules/class-methods-use-this) rule.
-It adds support for ignoring `override` methods or methods on classes that implement an interface.
+It adds support for ignoring `override` methods and/or methods on classes that implement an interface. It also supports auto-accessor properties.
 
 ## Options
 
@@ -33,12 +32,15 @@ const defaultOptions: Options = {
 
 {/* insert option description */}
 
-Makes the rule ignore any class member explicitly marked with `override`.
-
-Example of a correct code when `ignoreOverrideMethods` is set to `true`:
+Example of correct code when `ignoreOverrideMethods` is set to `true`:
 
 ```ts option='{ "ignoreOverrideMethods": true }' showPlaygroundButton
-class X {
+abstract class Base {
+  abstract method(): void;
+  abstract property: () => void;
+}
+
+class Derived extends Base {
   override method() {}
   override property = () => {};
 }
@@ -53,18 +55,38 @@ If specified, it can be either:
 - `true`: Ignore all classes that implement an interface
 - `'public-fields'`: Ignore only the public fields of classes that implement an interface
 
-It's important to note that this option does not only apply to members defined in the interface as that would require type information.
+Note that this option applies to all class members, not just those defined in the interface.
 
 #### `true`
 
-Example of correct code when `ignoreClassesThatImplementAnInterface` is set to `true`:
+Examples of code when `ignoreClassesThatImplementAnInterface` is set to `true`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "ignoreClassesThatImplementAnInterface": true }' showPlaygroundButton
-class X implements Y {
+class Standalone {
   method() {}
   property = () => {};
 }
 ```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "ignoreClassesThatImplementAnInterface": true }' showPlaygroundButton
+interface Base {
+  method(): void;
+}
+
+class Derived implements Base {
+  method() {}
+  property = () => {};
+}
+```
+
+</TabItem>
+</Tabs>
 
 #### `'public-fields'`
 
@@ -73,16 +95,20 @@ Example of incorrect code when `ignoreClassesThatImplementAnInterface` is set to
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "ignoreClassesThatImplementAnInterface": "public-fields" }'
-class X implements Y {
+```ts option='{ "ignoreClassesThatImplementAnInterface": "public-fields" }' showPlaygroundButton
+interface Base {
+  method(): void;
+}
+
+class Derived implements Base {
   method() {}
   property = () => {};
 
   private privateMethod() {}
   private privateProperty = () => {};
 
-  protected privateMethod() {}
-  protected privateProperty = () => {};
+  protected protectedMethod() {}
+  protected protectedProperty = () => {};
 }
 ```
 
@@ -90,7 +116,11 @@ class X implements Y {
 <TabItem value="✅ Correct">
 
 ```ts option='{ "ignoreClassesThatImplementAnInterface": "public-fields" }'
-class X implements Y {
+interface Base {
+  method(): void;
+}
+
+class Derived implements Base {
   method() {}
   property = () => {};
 }

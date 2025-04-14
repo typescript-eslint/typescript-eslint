@@ -30,9 +30,6 @@ jobs:
           # To ensure we can push from a different user (and therefore cause actions to rerun)
           persist-credentials: false
 
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v3
-
       - name: Check if @nx/workspace was changed as part of the latest commit on the PR
         id: nrwl-workspace-package-check
         run: |
@@ -50,17 +47,17 @@ jobs:
           gh pr checkout ${{ github.event.pull_request.number }}
 
           # Get the version of Nx we are migrating to
-          NX_VERSION=$(node -e "console.log(require('./package.json').devDependencies['@nx/workspace'])")
+          NX_VERSION=$(node -e "console.log(require('./package.json').devDependencies['nx'])")
 
           # Revert renovate's changes to package.json and yarn.lock so that it is a clean migrate from the status quo
           git checkout HEAD~1 -- package.json yarn.lock
 
-          YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn
+          YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
 
-          yarn nx migrate @nx/workspace@$NX_VERSION
+          yarn nx migrate $NX_VERSION
 
           # Sometimes Nx can require config formatting changes after a migrate command
-          YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn
+          YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
           yarn nx format
 
           # migrations.json may or may not exist after running nx migrate
@@ -84,5 +81,5 @@ jobs:
           git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
 
           git add --all
-          git commit -m "chore: run nx migrate for @nx/workspace v$NX_VERSION"
+          git commit -m "chore: run nx migrate for nx v$NX_VERSION"
           git push

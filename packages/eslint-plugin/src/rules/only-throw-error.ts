@@ -18,9 +18,9 @@ import {
   typeOrValueSpecifiersSchema,
 } from '../util';
 
-type MessageIds = 'object' | 'undef';
+export type MessageIds = 'object' | 'undef';
 
-type Options = [
+export type Options = [
   {
     allow?: TypeOrValueSpecifier[];
     allowThrowingAny?: boolean;

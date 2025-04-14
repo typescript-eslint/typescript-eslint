@@ -5,20 +5,20 @@ import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
 
-interface ASTAndNoProgram {
+export interface ASTAndNoProgram {
   ast: ts.SourceFile;
   program: null;
 }
-interface ASTAndDefiniteProgram {
+export interface ASTAndDefiniteProgram {
   ast: ts.SourceFile;
   program: ts.Program;
 }
-type ASTAndProgram = ASTAndDefiniteProgram | ASTAndNoProgram;
+export type ASTAndProgram = ASTAndDefiniteProgram | ASTAndNoProgram;
 
 /**
  * Compiler options required to avoid critical functionality issues
  */
-const CORE_COMPILER_OPTIONS: ts.CompilerOptions = {
+export const CORE_COMPILER_OPTIONS: ts.CompilerOptions = {
   noEmit: true, // required to avoid parse from causing emit to occur
 
   /**
@@ -38,7 +38,7 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   checkJs: true,
 };
 
-const DEFAULT_EXTRA_FILE_EXTENSIONS = new Set<string>([
+export const DEFAULT_EXTRA_FILE_EXTENSIONS = new Set<string>([
   ts.Extension.Cjs,
   ts.Extension.Cts,
   ts.Extension.Js,
@@ -49,7 +49,7 @@ const DEFAULT_EXTRA_FILE_EXTENSIONS = new Set<string>([
   ts.Extension.Tsx,
 ]);
 
-function createDefaultCompilerOptionsFromExtra(
+export function createDefaultCompilerOptionsFromExtra(
   parseSettings: ParseSettings,
 ): ts.CompilerOptions {
   if (parseSettings.debugLevel.has('typescript')) {
@@ -63,17 +63,17 @@ function createDefaultCompilerOptionsFromExtra(
 }
 
 // This narrows the type so we can be sure we're passing canonical names in the correct places
-type CanonicalPath = { __brand: unknown } & string;
+export type CanonicalPath = { __brand: unknown } & string;
 
 // typescript doesn't provide a ts.sys implementation for browser environments
 const useCaseSensitiveFileNames =
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/internal/eqeq-nullish
   ts.sys !== undefined ? ts.sys.useCaseSensitiveFileNames : true;
 const correctPathCasing = useCaseSensitiveFileNames
   ? (filePath: string): string => filePath
   : (filePath: string): string => filePath.toLowerCase();
 
-function getCanonicalFileName(filePath: string): CanonicalPath {
+export function getCanonicalFileName(filePath: string): CanonicalPath {
   let normalized = path.normalize(filePath);
   if (normalized.endsWith(path.sep)) {
     normalized = normalized.slice(0, -1);
@@ -81,13 +81,13 @@ function getCanonicalFileName(filePath: string): CanonicalPath {
   return correctPathCasing(normalized) as CanonicalPath;
 }
 
-function ensureAbsolutePath(p: string, tsconfigRootDir: string): string {
+export function ensureAbsolutePath(p: string, tsconfigRootDir: string): string {
   return path.isAbsolute(p)
     ? p
     : path.join(tsconfigRootDir || process.cwd(), p);
 }
 
-function canonicalDirname(p: CanonicalPath): CanonicalPath {
+export function canonicalDirname(p: CanonicalPath): CanonicalPath {
   return path.dirname(p) as CanonicalPath;
 }
 
@@ -108,7 +108,7 @@ function getExtension(fileName: string | undefined): string | null {
   );
 }
 
-function getAstFromProgram(
+export function getAstFromProgram(
   currentProgram: Program,
   filePath: string,
 ): ASTAndDefiniteProgram | undefined {
@@ -129,7 +129,7 @@ function getAstFromProgram(
  * @param content hashed contend
  * @returns hashed result
  */
-function createHash(content: string): string {
+export function createHash(content: string): string {
   // No ts.sys in browser environments.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (ts.sys?.createHash) {
@@ -137,18 +137,3 @@ function createHash(content: string): string {
   }
   return content;
 }
-
-export {
-  type ASTAndDefiniteProgram,
-  type ASTAndNoProgram,
-  type ASTAndProgram,
-  canonicalDirname,
-  type CanonicalPath,
-  CORE_COMPILER_OPTIONS,
-  createDefaultCompilerOptionsFromExtra,
-  createHash,
-  DEFAULT_EXTRA_FILE_EXTENSIONS,
-  ensureAbsolutePath,
-  getAstFromProgram,
-  getCanonicalFileName,
-};

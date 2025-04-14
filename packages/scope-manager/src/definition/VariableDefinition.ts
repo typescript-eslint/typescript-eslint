@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';
 
-class VariableDefinition extends DefinitionBase<
+export class VariableDefinition extends DefinitionBase<
   DefinitionType.Variable,
   TSESTree.VariableDeclarator,
   TSESTree.VariableDeclaration,
@@ -20,5 +20,3 @@ class VariableDefinition extends DefinitionBase<
     super(DefinitionType.Variable, name, node, decl);
   }
 }
-
-export { VariableDefinition };

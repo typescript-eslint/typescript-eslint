@@ -82,7 +82,7 @@ export default createRule<Options, MessageIds>({
   create(context, [options]) {
     const rules = baseRule.create(context);
     const services = getParserServices(context);
-
+    const checker = services.program.getTypeChecker();
     const allowPrivateClassPropertyAccess =
       options.allowPrivateClassPropertyAccess;
     const allowProtectedClassPropertyAccess =
@@ -125,15 +125,16 @@ export default createRule<Options, MessageIds>({
           ) {
             return;
           }
-          if (
-            propertySymbol === undefined &&
-            allowIndexSignaturePropertyAccess
-          ) {
-            const objectType = services.getTypeAtLocation(node.object);
-            const indexType = objectType
-              .getNonNullableType()
-              .getStringIndexType();
-            if (indexType !== undefined) {
+          if (propertySymbol == null && allowIndexSignaturePropertyAccess) {
+            const objectType = services
+              .getTypeAtLocation(node.object)
+              .getNonNullableType();
+            const indexInfos = checker.getIndexInfosOfType(objectType);
+            if (
+              indexInfos.some(
+                info => info.keyType.flags & ts.TypeFlags.StringLike,
+              )
+            ) {
               return;
             }
           }

@@ -21,14 +21,14 @@ export default createRule({
     type: 'problem',
     docs: {
       description:
-        'Enforce using type parameter when calling `Array#reduce` instead of casting',
+        'Enforce using type parameter when calling `Array#reduce` instead of using a type assertion',
       recommended: 'strict',
       requiresTypeChecking: true,
     },
     fixable: 'code',
     messages: {
       preferTypeParameter:
-        'Unnecessary cast: Array#reduce accepts a type parameter for the default value.',
+        'Unnecessary assertion: Array#reduce accepts a type parameter for the default value.',
     },
     schema: [],
   },
@@ -57,7 +57,29 @@ export default createRule({
 
         const [, secondArg] = callee.parent.arguments;
 
-        if (callee.parent.arguments.length < 2 || !isTypeAssertion(secondArg)) {
+        if (callee.parent.arguments.length < 2) {
+          return;
+        }
+
+        if (isTypeAssertion(secondArg)) {
+          const initializerType = services.getTypeAtLocation(
+            secondArg.expression,
+          );
+
+          const assertedType = services.getTypeAtLocation(
+            secondArg.typeAnnotation,
+          );
+
+          const isAssertionNecessary = !checker.isTypeAssignableTo(
+            initializerType,
+            assertedType,
+          );
+
+          // don't report this if the resulting fix will be a type error
+          if (isAssertionNecessary) {
+            return;
+          }
+        } else {
           return;
         }
 

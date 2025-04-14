@@ -4,8 +4,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
-type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
-type Options = ['constructor' | 'type-annotation'];
+export type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
+export type Options = ['constructor' | 'type-annotation'];
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-generic-constructors',
@@ -34,20 +34,26 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['constructor'],
   create(context, [mode]) {
     return {
-      'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
+      'VariableDeclarator,PropertyDefinition,AccessorProperty,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
         node:
+          | TSESTree.AccessorProperty
           | TSESTree.AssignmentPattern
           | TSESTree.PropertyDefinition
           | TSESTree.VariableDeclarator,
       ): void {
         function getLHSRHS(): [
-          TSESTree.BindingName | TSESTree.PropertyDefinition,
+          (
+            | TSESTree.AccessorProperty
+            | TSESTree.BindingName
+            | TSESTree.PropertyDefinition
+          ),
           TSESTree.Expression | null,
         ] {
           switch (node.type) {
             case AST_NODE_TYPES.VariableDeclarator:
               return [node.id, node.init];
             case AST_NODE_TYPES.PropertyDefinition:
+            case AST_NODE_TYPES.AccessorProperty:
               return [node, node.value];
             case AST_NODE_TYPES.AssignmentPattern:
               return [node.left, node.right];
@@ -88,7 +94,10 @@ export default createRule<Options, MessageIds>({
                 function getIDToAttachAnnotation():
                   | TSESTree.Node
                   | TSESTree.Token {
-                  if (node.type !== AST_NODE_TYPES.PropertyDefinition) {
+                  if (
+                    node.type !== AST_NODE_TYPES.PropertyDefinition &&
+                    node.type !== AST_NODE_TYPES.AccessorProperty
+                  ) {
                     return lhsName;
                   }
                   if (!node.computed) {

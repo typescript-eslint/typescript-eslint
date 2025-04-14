@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types template-literal-type-1 TSESTree - Tokens 1`] = `
 [
   Identifier {
     type: "Identifier",
@@ -34,7 +31,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-1 TSESTree - T
   },
   Template {
     type: "Template",
-    value: "\`foo\`",
+    value: "`foo`",
 
     range: [82, 87],
     loc: {
@@ -53,4 +50,3 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-1 TSESTree - T
     },
   },
 ]
-`;

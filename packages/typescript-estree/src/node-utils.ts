@@ -527,7 +527,11 @@ export function getTokenType(
 
   switch (token.kind) {
     case SyntaxKind.NumericLiteral:
+    case SyntaxKind.BigIntLiteral:
       return AST_TOKEN_TYPES.Numeric;
+
+    case SyntaxKind.PrivateIdentifier:
+      return AST_TOKEN_TYPES.PrivateIdentifier;
 
     case SyntaxKind.JsxText:
       return AST_TOKEN_TYPES.JSXText;
@@ -602,6 +606,16 @@ export function convertToken(
       value,
     };
   }
+
+  if (tokenType === AST_TOKEN_TYPES.PrivateIdentifier) {
+    return {
+      type: tokenType,
+      loc,
+      range,
+      value: value.slice(1),
+    };
+  }
+
   // @ts-expect-error TS is complaining about `value` not being the correct
   // type but it is
   return {
@@ -718,12 +732,14 @@ export function firstDefined<T, U>(
   array: readonly T[] | undefined,
   callback: (element: T, index: number) => U | undefined,
 ): U | undefined {
+  // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
   if (array === undefined) {
     return undefined;
   }
 
   for (let i = 0; i < array.length; i++) {
     const result = callback(array[i], i);
+    // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
     if (result !== undefined) {
       return result;
     }
@@ -764,7 +780,7 @@ export function isThisInTypeQuery(node: ts.Node): boolean {
 
 // `ts.nodeIsMissing`
 function nodeIsMissing(node: ts.Node | undefined): boolean {
-  if (node === undefined) {
+  if (node == null) {
     return true;
   }
   return (

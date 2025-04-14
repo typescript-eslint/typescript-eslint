@@ -5,13 +5,24 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type MessageIds = 'preferExpectErrorComment';
+export type MessageIds = 'preferExpectErrorComment';
 
 export default createRule<[], MessageIds>({
   name: 'prefer-ts-expect-error',
   meta: {
     type: 'problem',
-    deprecated: true,
+    deprecated: {
+      deprecatedSince: '7.11.0',
+      replacedBy: [
+        {
+          rule: {
+            name: '@typescript-eslint/ban-ts-comment',
+            url: 'https://typescript-eslint.io/rules/ban-ts-comment',
+          },
+        },
+      ],
+      url: 'https://github.com/typescript-eslint/typescript-eslint/pull/9081',
+    },
     docs: {
       description: 'Enforce using `@ts-expect-error` over `@ts-ignore`',
     },

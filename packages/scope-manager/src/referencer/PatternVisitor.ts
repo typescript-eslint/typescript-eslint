@@ -6,7 +6,7 @@ import type { VisitorOptions } from './VisitorBase';
 
 import { VisitorBase } from './VisitorBase';
 
-type PatternVisitorCallback = (
+export type PatternVisitorCallback = (
   pattern: TSESTree.Identifier,
   info: {
     assignments: (TSESTree.AssignmentExpression | TSESTree.AssignmentPattern)[];
@@ -15,8 +15,8 @@ type PatternVisitorCallback = (
   },
 ) => void;
 
-type PatternVisitorOptions = VisitorOptions;
-class PatternVisitor extends VisitorBase {
+export type PatternVisitorOptions = VisitorOptions;
+export class PatternVisitor extends VisitorBase {
   readonly #assignments: (
     | TSESTree.AssignmentExpression
     | TSESTree.AssignmentPattern
@@ -140,9 +140,3 @@ class PatternVisitor extends VisitorBase {
     // we don't want to visit types
   }
 }
-
-export {
-  PatternVisitor,
-  type PatternVisitorCallback,
-  type PatternVisitorOptions,
-};

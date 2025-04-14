@@ -6,6 +6,8 @@ import {
 } from '@typescript-eslint/type-utils';
 import * as tsutils from 'ts-api-utils';
 
+import { getConstraintInfo } from './getConstraintInfo';
+
 export enum Awaitable {
   Always,
   Never,
@@ -17,24 +19,20 @@ export function needsToBeAwaited(
   node: ts.Node,
   type: ts.Type,
 ): Awaitable {
-  // can't use `getConstrainedTypeAtLocation` directly since it's bugged for
-  // unconstrained generics.
-  const constrainedType = !tsutils.isTypeParameter(type)
-    ? type
-    : checker.getBaseConstraintOfType(type);
+  const { constraintType, isTypeParameter } = getConstraintInfo(checker, type);
 
   // unconstrained generic types should be treated as unknown
-  if (constrainedType == null) {
+  if (isTypeParameter && constraintType == null) {
     return Awaitable.May;
   }
 
   // `any` and `unknown` types may need to be awaited
-  if (isTypeAnyType(constrainedType) || isTypeUnknownType(constrainedType)) {
+  if (isTypeAnyType(constraintType) || isTypeUnknownType(constraintType)) {
     return Awaitable.May;
   }
 
   // 'thenable' values should always be be awaited
-  if (tsutils.isThenableType(checker, node, constrainedType)) {
+  if (tsutils.isThenableType(checker, node, constraintType)) {
     return Awaitable.Always;
   }
 

@@ -1,7 +1,7 @@
 const ID_CACHE = new Map<number, number>();
 let NEXT_KEY = 0;
 
-function createIdGenerator(): () => number {
+export function createIdGenerator(): () => number {
   const key = (NEXT_KEY += 1);
   ID_CACHE.set(key, 0);
 
@@ -13,8 +13,6 @@ function createIdGenerator(): () => number {
   };
 }
 
-function resetIds(): void {
+export function resetIds(): void {
   ID_CACHE.clear();
 }
-
-export { createIdGenerator, resetIds };

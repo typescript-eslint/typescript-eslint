@@ -746,7 +746,7 @@ export class Converter {
     this.#checkModifiers(node);
 
     const pattern = this.allowPattern;
-    if (allowPattern !== undefined) {
+    if (allowPattern != null) {
       this.allowPattern = allowPattern;
     }
 
@@ -764,7 +764,7 @@ export class Converter {
   private convertImportAttributes(
     node: ts.ImportAttributes | undefined,
   ): TSESTree.ImportAttribute[] {
-    return node === undefined
+    return node == null
       ? []
       : node.elements.map(element => this.convertChild(element));
   }
@@ -807,7 +807,6 @@ export class Converter {
     // this is intentional we can ignore conversion if `:` is in first character
     if (colonIndex > 0) {
       const range = getRange(node, this.ast);
-      // @ts-expect-error -- TypeScript@<5.1 doesn't have ts.JsxNamespacedName
       const result = this.createNode<TSESTree.JSXNamespacedName>(node, {
         type: AST_NODE_TYPES.JSXNamespacedName,
         range,
@@ -1956,6 +1955,7 @@ export class Converter {
           parameter = this.convertChild(node.name) as TSESTree.BindingName;
           result = this.createNode<TSESTree.AssignmentPattern>(node, {
             type: AST_NODE_TYPES.AssignmentPattern,
+            range: [node.name.getStart(this.ast), node.initializer.end],
             decorators: [],
             left: parameter,
             optional: false,
@@ -2406,7 +2406,7 @@ export class Converter {
           type: AST_NODE_TYPES.MemberExpression,
           computed,
           object,
-          optional: node.questionDotToken !== undefined,
+          optional: node.questionDotToken != null,
           property,
         });
 
@@ -2422,7 +2422,7 @@ export class Converter {
           type: AST_NODE_TYPES.MemberExpression,
           computed,
           object,
-          optional: node.questionDotToken !== undefined,
+          optional: node.questionDotToken != null,
           property,
         });
 
@@ -2467,7 +2467,7 @@ export class Converter {
           type: AST_NODE_TYPES.CallExpression,
           arguments: args,
           callee,
-          optional: node.questionDotToken !== undefined,
+          optional: node.questionDotToken != null,
           typeArguments,
         });
 
@@ -3067,7 +3067,7 @@ export class Converter {
       case SyntaxKind.TypePredicate: {
         const result = this.createNode<TSESTree.TSTypePredicate>(node, {
           type: AST_NODE_TYPES.TSTypePredicate,
-          asserts: node.assertsModifier !== undefined,
+          asserts: node.assertsModifier != null,
           parameterName: this.convertChild(node.parameterName),
           typeAnnotation: null,
         });
@@ -3089,10 +3089,69 @@ export class Converter {
           const token = findNextToken(node.getFirstToken()!, node, this.ast)!;
           range[0] = token.getStart(this.ast);
         }
+
+        let options = null;
+        if (node.attributes) {
+          const value = this.createNode<TSESTree.ObjectExpression>(
+            node.attributes,
+            {
+              type: AST_NODE_TYPES.ObjectExpression,
+              properties: node.attributes.elements.map(importAttribute =>
+                this.createNode<TSESTree.Property>(importAttribute, {
+                  type: AST_NODE_TYPES.Property,
+                  computed: false,
+                  key: this.convertChild(importAttribute.name),
+                  kind: 'init',
+                  method: false,
+                  optional: false,
+                  shorthand: false,
+                  value: this.convertChild(importAttribute.value),
+                }),
+              ),
+            },
+          );
+
+          const commaToken = findNextToken(node.argument, node, this.ast)!;
+          const openBraceToken = findNextToken(commaToken, node, this.ast)!;
+          const closeBraceToken = findNextToken(
+            node.attributes,
+            node,
+            this.ast,
+          )!;
+          const withToken = findNextToken(openBraceToken, node, this.ast)!;
+          const withTokenRange = getRange(withToken, this.ast);
+
+          options = this.createNode<TSESTree.ObjectExpression>(node, {
+            type: AST_NODE_TYPES.ObjectExpression,
+            range: [openBraceToken.getStart(this.ast), closeBraceToken.end],
+            properties: [
+              this.createNode<TSESTree.Property>(node, {
+                type: AST_NODE_TYPES.Property,
+                range: [withTokenRange[0], node.attributes.end],
+                computed: false,
+                key: this.createNode<TSESTree.Identifier>(node, {
+                  type: AST_NODE_TYPES.Identifier,
+                  range: withTokenRange,
+                  decorators: [],
+                  name: 'with',
+                  optional: false,
+                  typeAnnotation: undefined,
+                }),
+                kind: 'init',
+                method: false,
+                optional: false,
+                shorthand: false,
+                value,
+              }),
+            ],
+          });
+        }
+
         const result = this.createNode<TSESTree.TSImportType>(node, {
           type: AST_NODE_TYPES.TSImportType,
           range,
           argument: this.convertChild(node.argument),
+          options,
           qualifier: this.convertChild(node.qualifier),
           typeArguments: node.typeArguments
             ? this.convertTypeArgumentsToTypeParameterInstantiation(
@@ -3189,7 +3248,7 @@ export class Converter {
               };
             }
 
-            if (!(node.flags & ts.NodeFlags.Namespace)) {
+            if (ts.isStringLiteral(node.name)) {
               const body: TSESTree.TSModuleBlock | null = this.convertChild(
                 node.body,
               );
@@ -3258,7 +3317,8 @@ export class Converter {
               declare: false,
               global: false,
               id: name,
-              kind: 'namespace',
+              kind:
+                node.flags & ts.NodeFlags.Namespace ? 'namespace' : 'module',
             };
           })(),
         });
@@ -3450,8 +3510,7 @@ export class Converter {
   }
 
   private createNode<T extends TSESTree.Node = TSESTree.Node>(
-    // The 'parent' property will be added later if specified
-    node: Omit<TSESTreeToTSNode<T>, 'parent'>,
+    node: ts.Node,
     data: Omit<TSESTree.OptionalRangeAndLoc<T>, 'parent'>,
   ): T {
     const result = data;
@@ -3585,8 +3644,7 @@ export class Converter {
     result: T,
   ): T | TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration {
     const isNamespaceNode =
-      ts.isModuleDeclaration(node) &&
-      Boolean(node.flags & ts.NodeFlags.Namespace);
+      ts.isModuleDeclaration(node) && !ts.isStringLiteral(node.name);
 
     const modifiers = isNamespaceNode
       ? getNamespaceModifiers(node)

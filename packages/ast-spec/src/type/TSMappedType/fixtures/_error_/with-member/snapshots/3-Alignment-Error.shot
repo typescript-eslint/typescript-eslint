@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures type TSMappedType _error_ with-member Error Alignment 1`] = `"Both errored"`;
+exports[`AST Fixtures > type > TSMappedType > _error_ > with-member > Error Alignment`]
+Both errored

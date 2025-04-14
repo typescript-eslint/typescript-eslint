@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-invalid-void-type 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,18 +6,18 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowAsThisParameter": {
-        "description": "Whether a \`this\` parameter of a function may be \`void\`.",
+        "description": "Whether a `this` parameter of a function may be `void`.",
         "type": "boolean"
       },
       "allowInGenericTypeArguments": {
-        "description": "Whether \`void\` can be used as a valid value for generic type parameters.",
+        "description": "Whether `void` can be used as a valid value for generic type parameters.",
         "oneOf": [
           {
-            "description": "Whether \`void\` can be used as a valid value for all generic type parameters.",
+            "description": "Whether `void` can be used as a valid value for all generic type parameters.",
             "type": "boolean"
           },
           {
-            "description": "Allowlist of types that may accept \`void\` as a generic type parameter.",
+            "description": "Allowlist of types that may accept `void` as a generic type parameter.",
             "items": {
               "type": "string"
             },
@@ -39,17 +36,15 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether a \`this\` parameter of a function may be \`void\`. */
+    /** Whether a `this` parameter of a function may be `void`. */
     allowAsThisParameter?: boolean;
-    /** Whether \`void\` can be used as a valid value for generic type parameters. */
+    /** Whether `void` can be used as a valid value for generic type parameters. */
     allowInGenericTypeArguments?: /**
-     * Whether \`void\` can be used as a valid value for generic type parameters.
-     * Whether \`void\` can be used as a valid value for all generic type parameters.
+     * Whether `void` can be used as a valid value for generic type parameters.
+     * Whether `void` can be used as a valid value for all generic type parameters.
      */
     | boolean
-      /** Allowlist of types that may accept \`void\` as a generic type parameter. */
+      /** Allowlist of types that may accept `void` as a generic type parameter. */
       | [string, ...string[]];
   },
 ];
-"
-`;

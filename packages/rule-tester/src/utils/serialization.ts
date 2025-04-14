@@ -3,7 +3,7 @@
  */
 function isSerializablePrimitiveOrPlainObject(val: unknown): boolean {
   return (
-    // eslint-disable-next-line eqeqeq
+    // eslint-disable-next-line eqeqeq, @typescript-eslint/internal/eqeq-nullish
     val === null ||
     typeof val === 'string' ||
     typeof val === 'boolean' ||

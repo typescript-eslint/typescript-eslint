@@ -4,14 +4,31 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices, nullThrows } from '../util';
+import type { TypeOrValueSpecifier } from '../util';
+
+import {
+  createRule,
+  getParserServices,
+  nullThrows,
+  typeOrValueSpecifiersSchema,
+  typeMatchesSomeSpecifier,
+} from '../util';
 
 type IdentifierLike =
   | TSESTree.Identifier
   | TSESTree.JSXIdentifier
+  | TSESTree.PrivateIdentifier
   | TSESTree.Super;
 
-export default createRule({
+type MessageIds = 'deprecated' | 'deprecatedWithReason';
+
+type Options = [
+  {
+    allow?: TypeOrValueSpecifier[];
+  },
+];
+
+export default createRule<Options, MessageIds>({
   name: 'no-deprecated',
   meta: {
     type: 'problem',
@@ -24,11 +41,27 @@ export default createRule({
       deprecated: `\`{{name}}\` is deprecated.`,
       deprecatedWithReason: `\`{{name}}\` is deprecated. {{reason}}`,
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allow: {
+            ...typeOrValueSpecifiersSchema,
+            description: 'Type specifiers that can be allowed.',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      allow: [],
+    },
+  ],
+  create(context, [options]) {
     const { jsDocParsingMode } = context.parserOptions;
+    const allow = options.allow;
     if (jsDocParsingMode === 'none' || jsDocParsingMode === 'type-info') {
       throw new Error(
         `Cannot be used with jsDocParsingMode: '${jsDocParsingMode}'.`,
@@ -58,7 +91,7 @@ export default createRule({
       const targetSymbol = checker.getAliasedSymbol(symbol);
       while (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
         const reason = getJsDocDeprecation(symbol);
-        if (reason !== undefined) {
+        if (reason != null) {
           return reason;
         }
         const immediateAliasedSymbol: ts.Symbol | undefined =
@@ -89,15 +122,19 @@ export default createRule({
 
         case AST_NODE_TYPES.MethodDefinition:
         case AST_NODE_TYPES.PropertyDefinition:
+        case AST_NODE_TYPES.AccessorProperty:
           return parent.key === node;
 
         case AST_NODE_TYPES.Property:
           // foo in "const { foo } = bar" will be processed twice, as parent.key
           // and parent.value. The second is treated as a declaration.
-          return (
-            (parent.shorthand && parent.value === node) ||
-            parent.parent.type === AST_NODE_TYPES.ObjectExpression
-          );
+          if (parent.shorthand && parent.value === node) {
+            return parent.parent.type === AST_NODE_TYPES.ObjectPattern;
+          }
+          if (parent.value === node) {
+            return false;
+          }
+          return parent.parent.type === AST_NODE_TYPES.ObjectExpression;
 
         case AST_NODE_TYPES.AssignmentPattern:
           // foo in "const { foo = "" } = bar" will be processed twice, as parent.parent.key
@@ -219,8 +256,7 @@ export default createRule({
 
       const symbol = services.getSymbolAtLocation(node);
       const aliasedSymbol =
-        symbol !== undefined &&
-        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
+        symbol != null && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
           ? checker.getAliasedSymbol(symbol)
           : symbol;
       const symbolDeclarationKind = aliasedSymbol?.declarations?.[0].kind;
@@ -307,10 +343,21 @@ export default createRule({
         node.parent.type === AST_NODE_TYPES.Property &&
         node.type !== AST_NODE_TYPES.Super
       ) {
-        return getJsDocDeprecation(
-          services.getTypeAtLocation(node.parent.parent).getProperty(node.name),
+        const property = services
+          .getTypeAtLocation(node.parent.parent)
+          .getProperty(node.name);
+        const propertySymbol = services.getSymbolAtLocation(node);
+        const valueSymbol = checker.getShorthandAssignmentValueSymbol(
+          propertySymbol?.valueDeclaration,
+        );
+        return (
+          searchForDeprecationInAliasesChain(propertySymbol, true) ??
+          getJsDocDeprecation(property) ??
+          getJsDocDeprecation(propertySymbol) ??
+          getJsDocDeprecation(valueSymbol)
         );
       }
+
       return searchForDeprecationInAliasesChain(
         services.getSymbolAtLocation(node),
         true,
@@ -323,11 +370,16 @@ export default createRule({
       }
 
       const reason = getDeprecationReason(node);
-      if (reason === undefined) {
+      if (reason == null) {
         return;
       }
 
-      const name = node.type === AST_NODE_TYPES.Super ? 'super' : node.name;
+      const type = services.getTypeAtLocation(node);
+      if (typeMatchesSomeSpecifier(type, allow, services.program)) {
+        return;
+      }
+
+      const name = getReportedNodeName(node);
 
       context.report({
         ...(reason
@@ -350,7 +402,20 @@ export default createRule({
           checkIdentifier(node);
         }
       },
+      PrivateIdentifier: checkIdentifier,
       Super: checkIdentifier,
     };
   },
 });
+
+function getReportedNodeName(node: IdentifierLike): string {
+  if (node.type === AST_NODE_TYPES.Super) {
+    return 'super';
+  }
+
+  if (node.type === AST_NODE_TYPES.PrivateIdentifier) {
+    return `#${node.name}`;
+  }
+
+  return node.name;
+}
