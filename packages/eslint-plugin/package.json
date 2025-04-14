@@ -1,13 +1,13 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.29.0",
+  "version": "8.29.1",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
     "!*.tsbuildinfo",
     "docs",
-    "eslint-recommended-raw.d.ts",
     "index.d.ts",
+    "raw-plugin.d.ts",
     "rules.d.ts",
     "package.json",
     "README.md",
@@ -24,9 +24,9 @@
       "types": "./rules.d.ts",
       "default": "./dist/rules/index.js"
     },
-    "./use-at-your-own-risk/eslint-recommended-raw": {
-      "types": "./eslint-recommended-raw.d.ts",
-      "default": "./dist/configs/eslint-recommended-raw.js"
+    "./use-at-your-own-risk/raw-plugin": {
+      "types": "./raw-plugin.d.ts",
+      "default": "./dist/raw-plugin.js"
     }
   },
   "engines": {
@@ -62,10 +62,10 @@
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",
-    "@typescript-eslint/scope-manager": "8.29.0",
-    "@typescript-eslint/type-utils": "8.29.0",
-    "@typescript-eslint/utils": "8.29.0",
-    "@typescript-eslint/visitor-keys": "8.29.0",
+    "@typescript-eslint/scope-manager": "8.29.1",
+    "@typescript-eslint/type-utils": "8.29.1",
+    "@typescript-eslint/utils": "8.29.1",
+    "@typescript-eslint/visitor-keys": "8.29.1",
     "graphemer": "^1.4.0",
     "ignore": "^5.3.1",
     "natural-compare": "^1.4.0",
@@ -76,8 +76,8 @@
     "@types/marked": "^5.0.2",
     "@types/mdast": "^4.0.3",
     "@types/natural-compare": "*",
-    "@typescript-eslint/rule-schema-to-typescript-types": "8.29.0",
-    "@typescript-eslint/rule-tester": "8.29.0",
+    "@typescript-eslint/rule-schema-to-typescript-types": "8.29.1",
+    "@typescript-eslint/rule-tester": "8.29.1",
     "ajv": "^6.12.6",
     "cross-env": "^7.0.3",
     "cross-fetch": "*",
