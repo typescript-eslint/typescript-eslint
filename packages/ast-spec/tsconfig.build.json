@@ -1,12 +1,19 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
-    "jsx": "preserve",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "resolveJsonModule": true
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.build.tsbuildinfo",
+    "emitDeclarationOnly": false,
+    "types": ["node"]
   },
-  "include": ["src", "typings"],
-  "exclude": ["**/fixtures/**"]
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "jest.config.js",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "**/fixtures/**"
+  ],
+  "references": []
 }

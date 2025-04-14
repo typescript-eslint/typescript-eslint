@@ -260,7 +260,7 @@ This error may appear from the combination of two things:
 
 - The ESLint configuration for the source file specifies at least one TSConfig file in `parserOptions.project`
 - None of those TSConfig files includes the source file being linted
-  - Note that files with the same name and different extension may not be recognized by TypeScript: see [`parserOptions.project` docs](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsproject)
+  - Note that files with the same name and different extension may not be recognized by TypeScript: see [`parserOptions.project` docs](../../packages/parser/#project)
 
 When TSConfig files are specified for parsing a source file, `@typescript-eslint/parser` will use the first TSConfig that is able to include that source file (per [aka.ms/tsconfig#include](https://www.typescriptlang.org/tsconfig#include)) to generate type information.
 However, if no specified TSConfig includes the source file, the parser won't be able to generate type information.

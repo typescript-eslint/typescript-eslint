@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-invalid-void-type';
 
@@ -120,6 +120,171 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'type promiseNeverUnion = Promise<void> | never;',
     'const arrowGeneric1 = <T = void,>(arg: T) => {};',
     'declare function functionDeclaration1<T = void>(arg: T): void;',
+    `
+      class ClassName {
+        accessor propName: number;
+      }
+    `,
+    `
+function f(): void;
+function f(x: string): string;
+function f(x?: string): string | void {
+  if (x !== undefined) {
+    return x;
+  }
+}
+    `,
+    `
+class SomeClass {
+  f(): void;
+  f(x: string): string;
+  f(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+class SomeClass {
+  ['f'](): void;
+  ['f'](x: string): string;
+  ['f'](x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+class SomeClass {
+  [Symbol.iterator](): void;
+  [Symbol.iterator](x: string): string;
+  [Symbol.iterator](x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    noFormat`
+class SomeClass {
+  'f'(): void;
+  'f'(x: string): string;
+  'f'(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+class SomeClass {
+  1(): void;
+  1(x: string): string;
+  1(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+const staticSymbol = Symbol.for('static symbol');
+
+class SomeClass {
+  [staticSymbol](): void;
+  [staticSymbol](x: string): string;
+  [staticSymbol](x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+declare module foo {
+  function f(): void;
+  function f(x: string): string;
+  function f(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+{
+  function f(): void;
+  function f(x: string): string;
+  function f(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+function f(): Promise<void>;
+function f(x: string): Promise<string>;
+async function f(x?: string): Promise<void | string> {
+  if (x !== undefined) {
+    return x;
+  }
+}
+    `,
+    `
+class SomeClass {
+  f(): Promise<void>;
+  f(x: string): Promise<string>;
+  async f(x?: string): Promise<void | string> {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+function f(): void;
+
+const a = 5;
+
+function f(x: string): string;
+function f(x?: string): string | void {
+  if (x !== undefined) {
+    return x;
+  }
+}
+    `,
+    `
+export default function (): void;
+export default function (x: string): string;
+export default function (x?: string): string | void {
+  if (x !== undefined) {
+    return x;
+  }
+}
+    `,
+    `
+export function f(): void;
+export function f(x: string): string;
+export function f(x?: string): string | void {
+  if (x !== undefined) {
+    return x;
+  }
+}
+    `,
+    `
+export {};
+
+export function f(): void;
+export function f(x: string): string;
+export function f(x?: string): string | void {
+  if (x !== undefined) {
+    return x;
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -287,6 +452,20 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       ],
     },
     {
+      code: `
+        class ClassName {
+          accessor propName: void;
+        }
+      `,
+      errors: [
+        {
+          column: 30,
+          line: 3,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
       code: 'let letVoid: void;',
       errors: [
         {
@@ -415,6 +594,92 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
         {
           column: 25,
           line: 1,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: 'type invalidVoidUnion = void | Map;',
+      errors: [
+        {
+          column: 25,
+          line: 1,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: `
+class SomeClass {
+  f(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 27,
+          line: 3,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: 'export default function (x?: string): string | void {}',
+      errors: [
+        {
+          column: 48,
+          line: 1,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: 'export function f(x?: string): string | void {}',
+      errors: [
+        {
+          column: 41,
+          line: 1,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: `
+function f(): void;
+function f(x: string): string | void;
+function f(x?: string): string | void {
+  if (x !== undefined) {
+    return x;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 33,
+          line: 3,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: `
+class SomeClass {
+  f(): void;
+  f(x: string): string | void;
+  f(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 26,
+          line: 4,
           messageId: 'invalidVoidUnionConstituent',
         },
       ],

@@ -59,7 +59,6 @@ function _otherCases() {
   tseslint.config(
     // @ts-expect-error
     deprecationPlugin.configs.recommended,
-    // this should error but doesn't because there are no types exported from the jest plugin
     jestPlugin.configs.recommended,
   );
 }

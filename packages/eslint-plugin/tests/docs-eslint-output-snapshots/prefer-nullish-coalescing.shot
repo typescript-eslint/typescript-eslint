@@ -2,6 +2,55 @@
 
 exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 1`] = `
 "Incorrect
+
+declare const a: string | null;
+declare const b: string | null;
+
+const c = a || b;
+            ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
+
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitializeFooByTruthiness() {
+  if (!foo) {
+  ~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??=\`) instead of an assignment expression, as it is simpler to read.
+    foo = makeFoo();
+~~~~~~~~~~~~~~~~~~~~
+  }
+~~~
+}
+
+function lazyInitializeFooByNullCheck() {
+  if (foo == null) {
+  ~~~~~~~~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??=\`) instead of an assignment expression, as it is simpler to read.
+    foo = makeFoo();
+~~~~~~~~~~~~~~~~~~~~
+  }
+~~~
+}
+"
+`;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 2`] = `
+"Correct
+
+declare const a: string | null;
+declare const b: string | null;
+
+const c = a ?? b;
+
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitializeFoo() {
+  foo ??= makeFoo();
+}
+"
+`;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 3`] = `
+"Incorrect
 Options: { "ignoreTernaryTests": false }
 
 declare const a: any;
@@ -36,7 +85,7 @@ c ? c : 'a string';
 "
 `;
 
-exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 2`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 4`] = `
 "Correct
 Options: { "ignoreTernaryTests": false }
 
@@ -51,21 +100,63 @@ c ?? 'a string';
 "
 `;
 
-exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 3`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: { "ignoreIfStatements": false }
+
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitializeFoo1() {
+  if (!foo) {
+  ~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??=\`) instead of an assignment expression, as it is simpler to read.
+    foo = makeFoo();
+~~~~~~~~~~~~~~~~~~~~
+  }
+~~~
+}
+
+function lazyInitializeFoo2() {
+  if (!foo) foo = makeFoo();
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??=\`) instead of an assignment expression, as it is simpler to read.
+}
+"
+`;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 6`] = `
+"Correct
+Options: { "ignoreIfStatements": false }
+
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitializeFoo1() {
+  foo ??= makeFoo();
+}
+
+function lazyInitializeFoo2() {
+  foo ??= makeFoo();
+}
+"
+`;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 7`] = `
 "Incorrect
 Options: { "ignoreConditionalTests": false }
 
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 
 if (a || b) {
       ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
 }
 if ((a ||= b)) {
+       ~~~ Prefer using nullish coalescing operator (\`??=\`) instead of a logical assignment (\`||=\`), as it is a safer operator.
 }
 while (a || b) {}
          ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
 while ((a ||= b)) {}
+          ~~~ Prefer using nullish coalescing operator (\`??=\`) instead of a logical assignment (\`||=\`), as it is a safer operator.
 do {} while (a || b);
                ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
 for (let i = 0; a || b; i += 1) {}
@@ -75,11 +166,11 @@ a || b ? true : false;
 "
 `;
 
-exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 4`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 8`] = `
 "Correct
 Options: { "ignoreConditionalTests": false }
 
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 
 if (a ?? b) {
@@ -94,11 +185,11 @@ for (let i = 0; a ?? b; i += 1) {}
 "
 `;
 
-exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 5`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 9`] = `
 "Incorrect
 Options: { "ignoreMixedLogicalExpressions": false }
 
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 declare const c: string | null;
 declare const d: string | null;
@@ -106,6 +197,7 @@ declare const d: string | null;
 a || (b && c);
   ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
 a ||= b && c;
+  ~~~ Prefer using nullish coalescing operator (\`??=\`) instead of a logical assignment (\`||=\`), as it is a safer operator.
 (a && b) || c || d;
          ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
               ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
@@ -117,11 +209,11 @@ a || (b && c && d);
 "
 `;
 
-exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 6`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 10`] = `
 "Correct
 Options: { "ignoreMixedLogicalExpressions": false }
 
-declare const a: string | null;
+declare let a: string | null;
 declare const b: string | null;
 declare const c: string | null;
 declare const d: string | null;
@@ -134,7 +226,7 @@ a ?? (b && c && d);
 "
 `;
 
-exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 7`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 11`] = `
 "Incorrect
 Options: { "ignorePrimitives": { "string": false } }
 
@@ -145,7 +237,7 @@ foo || 'a string';
 "
 `;
 
-exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 8`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 12`] = `
 "Correct
 Options: { "ignorePrimitives": { "string": false } }
 
@@ -155,7 +247,7 @@ foo ?? 'a string';
 "
 `;
 
-exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 9`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 13`] = `
 "Incorrect
 Options: { "ignoreBooleanCoercion": false }
 
@@ -167,7 +259,7 @@ const x = Boolean(a || b);
 "
 `;
 
-exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 10`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 14`] = `
 "Correct
 Options: { "ignoreBooleanCoercion": false }
 

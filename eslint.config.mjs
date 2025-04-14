@@ -3,8 +3,9 @@
 import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
+import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
-import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
+import vitestPlugin from '@vitest/eslint-plugin';
 import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
 import jestPlugin from 'eslint-plugin-jest';
@@ -28,6 +29,11 @@ const restrictNamedDeclarations = {
   selector: 'ExportNamedDeclaration[declaration=null][source=null]',
 };
 
+const vitestFiles = [
+  'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
+];
+
 export default tseslint.config(
   // register all of the plugins up-front
   {
@@ -36,7 +42,6 @@ export default tseslint.config(
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
-      ['eslint-comments']: eslintCommentsPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
       ['import']: importPlugin,
       ['jest']: jestPlugin,
@@ -44,8 +49,11 @@ export default tseslint.config(
       // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
       ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
       ['perfectionist']: perfectionistPlugin,
+      ['vitest']: vitestPlugin,
       // https://github.com/facebook/react/issues/28313
       ['react']: reactPlugin,
+      // @ts-expect-error -- Temporary types incompatibility pending flat config support
+      // https://github.com/facebook/react/pull/30774
       ['react-hooks']: fixupPluginRules(reactHooksPlugin),
       ['regexp']: regexpPlugin,
       ['unicorn']: unicornPlugin,
@@ -88,6 +96,7 @@ export default tseslint.config(
   },
 
   // extends ...
+  eslintCommentsPlugin.recommended,
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
@@ -252,35 +261,9 @@ export default tseslint.config(
       // eslint-plugin-eslint-comment
       //
 
-      // require a eslint-enable comment for every eslint-disable comment
-      'eslint-comments/disable-enable-pair': [
+      '@eslint-community/eslint-comments/disable-enable-pair': [
         'error',
-        {
-          allowWholeFile: true,
-        },
-      ],
-      // disallow a eslint-enable comment for multiple eslint-disable comments
-      'eslint-comments/no-aggregating-enable': 'error',
-      // disallow duplicate eslint-disable comments
-      'eslint-comments/no-duplicate-disable': 'error',
-      // disallow eslint-disable comments without rule names
-      'eslint-comments/no-unlimited-disable': 'error',
-      // disallow unused eslint-disable comments
-      'eslint-comments/no-unused-disable': 'error',
-      // disallow unused eslint-enable comments
-      'eslint-comments/no-unused-enable': 'error',
-      // disallow ESLint directive-comments
-      'eslint-comments/no-use': [
-        'error',
-        {
-          allow: [
-            'eslint-disable',
-            'eslint-disable-line',
-            'eslint-disable-next-line',
-            'eslint-enable',
-            'global',
-          ],
-        },
+        { allowWholeFile: true },
       ],
 
       //
@@ -385,9 +368,19 @@ export default tseslint.config(
   // define the jest globals for all test files
   {
     files: ['packages/*/tests/**/*.{ts,tsx,cts,mts}'],
+    ignores: vitestFiles,
     languageOptions: {
       globals: {
         ...jestPlugin.environments.globals.globals,
+      },
+    },
+  },
+  // define the vitest globals for all test files
+  {
+    files: vitestFiles,
+    languageOptions: {
+      globals: {
+        ...vitestPlugin.environments.env.globals,
       },
     },
   },
@@ -400,6 +393,7 @@ export default tseslint.config(
       'packages/integration-tests/tools/integration-test-base.ts',
       'packages/integration-tests/tools/pack-packages.ts',
     ],
+    ignores: vitestFiles,
     rules: {
       '@typescript-eslint/no-empty-function': [
         'error',
@@ -425,6 +419,34 @@ export default tseslint.config(
       'jest/prefer-to-have-length': 'error',
       'jest/valid-expect': 'error',
     },
+  },
+  // test file specific configuration
+  {
+    files: vitestFiles,
+    rules: {
+      '@typescript-eslint/no-empty-function': [
+        'error',
+        { allow: ['arrowFunctions'] },
+      ],
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      'vitest/no-alias-methods': 'error',
+      'vitest/no-disabled-tests': 'error',
+      'vitest/no-focused-tests': 'error',
+      'vitest/no-identical-title': 'error',
+      'vitest/no-test-prefixes': 'error',
+      'vitest/no-test-return-statement': 'error',
+      'vitest/prefer-each': 'error',
+      'vitest/prefer-spy-on': 'error',
+      'vitest/prefer-to-be': 'error',
+      'vitest/prefer-to-contain': 'error',
+      'vitest/prefer-to-have-length': 'error',
+      'vitest/valid-expect': 'error',
+    },
+    settings: { vitest: { typecheck: true } },
   },
   // plugin rule tests
   {
@@ -454,7 +476,13 @@ export default tseslint.config(
     },
   },
   {
-    files: ['eslint.config.{js,cjs,mjs}', 'knip.ts', 'packages/*/src/index.ts'],
+    files: [
+      'eslint.config.{js,cjs,mjs}',
+      'knip.ts',
+      'packages/*/src/index.ts',
+      'vitest.config.mts',
+      'packages/*/vitest.config.mts',
+    ],
     rules: {
       // requirement
       'import/no-default-export': 'off',
@@ -574,8 +602,11 @@ export default tseslint.config(
   {
     extends: [
       jsxA11yPlugin.flatConfigs.recommended,
+      // https://github.com/facebook/react/pull/30774
+      // @ts-expect-error -- Temporary types incompatibility pending flat config support
       reactPlugin.configs.flat.recommended,
       // https://github.com/facebook/react/pull/30774
+      // @ts-expect-error -- Temporary types incompatibility pending flat config support
       fixupConfigRules(compat.config(reactHooksPlugin.configs.recommended)),
     ],
     files: ['packages/website/**/*.{ts,tsx,mts,cts,js,jsx}'],

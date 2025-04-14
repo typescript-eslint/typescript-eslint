@@ -6,76 +6,70 @@ Program {
   body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
-      body: TSModuleDeclaration {
-        type: "TSModuleDeclaration",
-        body: TSModuleDeclaration {
-          type: "TSModuleDeclaration",
-          body: TSModuleBlock {
-            type: "TSModuleBlock",
-            body: [],
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: [],
 
-            range: [27, 29],
-            loc: {
-              start: { column: 27, line: 1 },
-              end: { column: 29, line: 1 },
-            },
-          },
-          declare: false,
-          global: false,
-          id: Identifier {
-            type: "Identifier",
-            decorators: [],
-            name: "ghi",
-            optional: false,
-
-            range: [23, 26],
-            loc: {
-              start: { column: 23, line: 1 },
-              end: { column: 26, line: 1 },
-            },
-          },
-          kind: "module",
-
-          range: [23, 29],
-          loc: {
-            start: { column: 23, line: 1 },
-            end: { column: 29, line: 1 },
-          },
-        },
-        declare: false,
-        global: false,
-        id: Identifier {
-          type: "Identifier",
-          decorators: [],
-          name: "def",
-          optional: false,
-
-          range: [19, 22],
-          loc: {
-            start: { column: 19, line: 1 },
-            end: { column: 22, line: 1 },
-          },
-        },
-        kind: "module",
-
-        range: [19, 29],
+        range: [27, 29],
         loc: {
-          start: { column: 19, line: 1 },
+          start: { column: 27, line: 1 },
           end: { column: 29, line: 1 },
         },
       },
       declare: true,
       global: false,
-      id: Identifier {
-        type: "Identifier",
-        decorators: [],
-        name: "abc",
-        optional: false,
+      id: TSQualifiedName {
+        type: "TSQualifiedName",
+        left: TSQualifiedName {
+          type: "TSQualifiedName",
+          left: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "abc",
+            optional: false,
 
-        range: [15, 18],
+            range: [15, 18],
+            loc: {
+              start: { column: 15, line: 1 },
+              end: { column: 18, line: 1 },
+            },
+          },
+          right: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "def",
+            optional: false,
+
+            range: [19, 22],
+            loc: {
+              start: { column: 19, line: 1 },
+              end: { column: 22, line: 1 },
+            },
+          },
+
+          range: [15, 22],
+          loc: {
+            start: { column: 15, line: 1 },
+            end: { column: 22, line: 1 },
+          },
+        },
+        right: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "ghi",
+          optional: false,
+
+          range: [23, 26],
+          loc: {
+            start: { column: 23, line: 1 },
+            end: { column: 26, line: 1 },
+          },
+        },
+
+        range: [15, 26],
         loc: {
           start: { column: 15, line: 1 },
-          end: { column: 18, line: 1 },
+          end: { column: 26, line: 1 },
         },
       },
       kind: "module",

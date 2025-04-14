@@ -66,6 +66,7 @@ enum ABC {
   C = 'C',
 }
 type ABCUnion = `${ABC}`;
+type A = `${ABC.A}`;
 
 // Interpolating type parameters is allowed.
 type TextUtil<T extends string> = `${T}`;
