@@ -6064,9 +6064,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/integration-tests@workspace:packages/integration-tests"
   dependencies:
-    "@jest/types": 29.6.3
-    jest: 29.7.0
-    tsx: "*"
+    "@vitest/coverage-v8": ^3.1.1
+    vitest: ^3.1.1
   languageName: unknown
   linkType: soft
 

@@ -31,7 +31,12 @@ const restrictNamedDeclarations = {
 
 const vitestFiles = [
   'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/integration-tests/tests/**/*.test.{ts,tsx,cts,mts},',
+  'packages/integration-tests/tools/integration-test-base.ts',
+  'packages/integration-tests/tools/pack-packages.ts',
   'packages/parser/tests/lib/**/*.test.{ts,tsx,cts,mts}',
+  'packages/parser/tests/lib/**/*.test.{ts,tsx,cts,mts}',
+  'packages/parser/tests/test-utils/**/*.{ts,tsx,cts,mts}',
   'packages/parser/tests/test-utils/**/*.{ts,tsx,cts,mts}',
   'packages/rule-tester/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/type-utils/tests/**/*.test.{ts,tsx,cts,mts}',
@@ -391,8 +396,6 @@ export default tseslint.config(
     files: [
       'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
       'packages/*/tests/**/test.{ts,tsx,cts,mts}',
-      'packages/integration-tests/tools/integration-test-base.ts',
-      'packages/integration-tests/tools/pack-packages.ts',
     ],
     ignores: vitestFiles,
     rules: {
