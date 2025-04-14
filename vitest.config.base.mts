@@ -18,7 +18,7 @@ export const vitestBaseConfig = {
     include: ['**/*.test.?(c|m)ts?(x)'],
 
     reporters: process.env.GITHUB_ACTIONS
-      ? [['verbose'], ['github-actions']]
+      ? [['github-actions']]
       : [['verbose']],
 
     setupFiles: ['console-fail-test/setup'],
