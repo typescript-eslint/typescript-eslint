@@ -57,7 +57,7 @@
     "generate:configs": "npx nx generate-configs repo",
     "lint": "npx nx lint",
     "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
-    "test-single": "vitest run",
+    "test-single": "vitest --run --config=$INIT_CWD/vitest.config.mts",
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
