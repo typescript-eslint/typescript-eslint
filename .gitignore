@@ -92,3 +92,6 @@ packages/**/.yarn
 
 .nx/cache
 .nx/workspace-data
+
+# Vitest type tests
+tsconfig*.vitest-temp.json
