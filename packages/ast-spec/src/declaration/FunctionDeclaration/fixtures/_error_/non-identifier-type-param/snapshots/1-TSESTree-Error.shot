@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration FunctionDeclaration _error_ non-identifier-type-param TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > FunctionDeclaration > _error_ > non-identifier-type-param > TSESTree - Error`]
+TSError
 > 1 | function foo<1>() {}
     |              ^ Type parameter declaration expected.
-  2 |"
-`;
+  2 |

@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ var-id-definite-init Error Alignment 1`] = `"TSESTree errored but Babel didn't"`;
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > var-id-definite-init > Error Alignment`]
+TSESTree errored but Babel didn't
