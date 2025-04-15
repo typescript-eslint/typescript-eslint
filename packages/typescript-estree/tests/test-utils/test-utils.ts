@@ -1,56 +1,15 @@
 import type {
   ParseAndGenerateServicesResult,
-  TSESTree,
   TSESTreeOptions,
 } from '../../src';
 
-import { parseAndGenerateServices, parse as parserParse } from '../../src';
+import { parseAndGenerateServices } from '../../src';
 
 export function parseCodeAndGenerateServices(
   code: string,
   config: TSESTreeOptions,
 ): ParseAndGenerateServicesResult<TSESTreeOptions> {
   return parseAndGenerateServices(code, config);
-}
-
-/**
- * Returns a function which can be used as the callback of a Jest test() block,
- * and which performs an assertion on the snapshot for the given code and config.
- * @param code The source code to parse
- * @param config the parser configuration
- * @param generateServices Flag determining whether to generate ast maps and program or not
- * @returns callback for Jest it() block
- */
-export function createSnapshotTestBlock(
-  code: string,
-  config: TSESTreeOptions,
-  generateServices?: true,
-): jest.ProvidesCallback {
-  /**
-   * @returns the AST object
-   */
-  function parse(): TSESTree.Program {
-    const ast = generateServices
-      ? parseAndGenerateServices(code, config).ast
-      : parserParse(code, config);
-    return deeplyCopy(ast);
-  }
-
-  return (): void => {
-    try {
-      const result = parse();
-      expect(result).toMatchSnapshot();
-    } catch (error) {
-      /**
-       * If we are deliberately throwing because of encountering an unknown
-       * AST_NODE_TYPE, we rethrow to cause the test to fail
-       */
-      if ((error as Error).message.includes('Unknown AST_NODE_TYPE')) {
-        throw error;
-      }
-      expect(parse).toThrowErrorMatchingSnapshot();
-    }
-  };
 }
 
 export function formatSnapshotName(

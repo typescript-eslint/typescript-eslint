@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes class-methods-use-this 1`] = `
-"
 # SCHEMA:
 
 [
@@ -10,7 +7,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "properties": {
       "enforceForClassFields": {
         "default": true,
-        "description": "Enforces that functions used as instance field initializers utilize \`this\`.",
+        "description": "Enforces that functions used as instance field initializers utilize `this`.",
         "type": "boolean"
       },
       "exceptMethods": {
@@ -21,7 +18,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "array"
       },
       "ignoreClassesThatImplementAnInterface": {
-        "description": "Whether to ignore class members that are defined within a class that \`implements\` a type.",
+        "description": "Whether to ignore class members that are defined within a class that `implements` a type.",
         "oneOf": [
           {
             "description": "Ignore all classes that implement an interface",
@@ -35,7 +32,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         ]
       },
       "ignoreOverrideMethods": {
-        "description": "Whether to ignore members marked with the \`override\` modifier.",
+        "description": "Whether to ignore members marked with the `override` modifier.",
         "type": "boolean"
       }
     },
@@ -48,21 +45,19 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Enforces that functions used as instance field initializers utilize \`this\`. */
+    /** Enforces that functions used as instance field initializers utilize `this`. */
     enforceForClassFields?: boolean;
     /** Allows specified method names to be ignored with this rule. */
     exceptMethods?: string[];
-    /** Whether to ignore class members that are defined within a class that \`implements\` a type. */
+    /** Whether to ignore class members that are defined within a class that `implements` a type. */
     ignoreClassesThatImplementAnInterface?: /**
-     * Whether to ignore class members that are defined within a class that \`implements\` a type.
+     * Whether to ignore class members that are defined within a class that `implements` a type.
      * Ignore all classes that implement an interface
      */
     | boolean
       /** Ignore only the public fields of classes that implement an interface */
       | 'public-fields';
-    /** Whether to ignore members marked with the \`override\` modifier. */
+    /** Whether to ignore members marked with the `override` modifier. */
     ignoreOverrideMethods?: boolean;
   },
 ];
-"
-`;

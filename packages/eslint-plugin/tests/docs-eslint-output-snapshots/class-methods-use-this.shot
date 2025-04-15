@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 1`] = `
-"Options: { "ignoreOverrideMethods": true }
+Options: { "ignoreOverrideMethods": true }
 
 abstract class Base {
   abstract method(): void;
@@ -12,11 +9,8 @@ class Derived extends Base {
   override method() {}
   override property = () => {};
 }
-"
-`;
 
-exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 2`] = `
-"Incorrect
+Incorrect
 Options: { "ignoreClassesThatImplementAnInterface": true }
 
 class Standalone {
@@ -25,11 +19,8 @@ class Standalone {
   property = () => {};
   ~~~~~~~~~~~ Expected 'this' to be used by class method 'property'.
 }
-"
-`;
 
-exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 3`] = `
-"Correct
+Correct
 Options: { "ignoreClassesThatImplementAnInterface": true }
 
 interface Base {
@@ -40,11 +31,8 @@ class Derived implements Base {
   method() {}
   property = () => {};
 }
-"
-`;
 
-exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 4`] = `
-"Incorrect
+Incorrect
 Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
 
 interface Base {
@@ -65,11 +53,8 @@ class Derived implements Base {
   protected protectedProperty = () => {};
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected 'this' to be used by class method 'protectedProperty'.
 }
-"
-`;
 
-exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 5`] = `
-"Correct
+Correct
 Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
 
 interface Base {
@@ -80,5 +65,3 @@ class Derived implements Base {
   method() {}
   property = () => {};
 }
-"
-`;
