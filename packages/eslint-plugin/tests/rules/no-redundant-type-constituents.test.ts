@@ -1793,6 +1793,21 @@ type F = U<T> & { a: number; b: number };
       ],
     },
     {
+      code: 'type T = { a: 1 } & { a: 1; b?: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; b?: 1 | undefined; }',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 18,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
       code: 'type T = { a: { b: 1 } } & { a: { b: 1; c?: 1 } };',
       errors: [
         {
