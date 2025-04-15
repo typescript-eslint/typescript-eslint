@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-redundant-type-constituents.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 type UnionAny = any | 'foo';
                 ~~~ 'any' overrides all other types in this union type.
@@ -33,8 +30,7 @@ type IntersectionStringLiteral = string & 'foo';
 "
 `;
 
-exports[`Validating rule docs no-redundant-type-constituents.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 type UnionAny = any;
 type UnionUnknown = unknown;
@@ -51,5 +47,3 @@ type IntersectionNever = string;
 type IntersectionBooleanLiteral = false;
 type IntersectionNumberLiteral = 1;
 type IntersectionStringLiteral = 'foo';
-"
-`;

@@ -445,10 +445,11 @@ describe('References:', () => {
       'new function(a = 0) {}',
       'new function([a = 0] = []) {}',
       'new function({b: a = 0} = {}) {}',
-    ];
+    ] as const;
 
-    trueCodes.forEach(code =>
-      it(`"${code}", all references should be true.`, () => {
+    it.for(trueCodes)(
+      '"%s", all references should be true.',
+      (code, { expect }) => {
         const { scopeManager } = parseAndAnalyze(code);
 
         expect(scopeManager.scopes.length).toBeGreaterThanOrEqual(1);
@@ -464,10 +465,10 @@ describe('References:', () => {
           expect(reference.isWrite()).toBeTruthy();
           expect(reference.init).toBeTruthy();
         });
-      }),
+      },
     );
 
-    let falseCodes = [
+    const falseCodes = [
       'let a; a = 0;',
       'let a; [a] = [];',
       'let a; [a = 1] = [];',
@@ -479,10 +480,11 @@ describe('References:', () => {
       'let a; for ([a = 0] in []);',
       'let a; for ({a} in []);',
       'let a; for ({a = 0} in []);',
-    ];
+    ] as const;
 
-    falseCodes.forEach(code =>
-      it(`"${code}", all references should be false.`, () => {
+    it.for(falseCodes)(
+      '"%s", all references should be false.',
+      (code, { expect }) => {
         const { scopeManager } = parseAndAnalyze(code);
 
         expect(scopeManager.scopes.length).toBeGreaterThanOrEqual(1);
@@ -498,10 +500,10 @@ describe('References:', () => {
           expect(reference.isWrite()).toBeTruthy();
           expect(reference.init).toBeFalsy();
         });
-      }),
+      },
     );
 
-    falseCodes = [
+    it.for([
       'let a; let b = a;',
       'let a; let [b] = a;',
       'let a; let [b = a] = [];',
@@ -516,9 +518,9 @@ describe('References:', () => {
       'let a,b; for ([b = a] in []);',
       'let a; a.foo = 0;',
       'let a,b; b = a.foo;',
-    ];
-    falseCodes.forEach(code =>
-      it(`"${code}", readonly references of "a" should be undefined.`, () => {
+    ] as const)(
+      '"%s", readonly references of "a" should be undefined.',
+      (code, { expect }) => {
         const { scopeManager } = parseAndAnalyze(code);
 
         expect(scopeManager.scopes.length).toBeGreaterThanOrEqual(1);
@@ -529,7 +531,7 @@ describe('References:', () => {
         expect(variables.length).toBeGreaterThanOrEqual(1);
         expect(variables[0].name).toBe('a');
 
-        const references = variables[0].references;
+        const { references } = variables[0];
 
         expect(references.length).toBeGreaterThanOrEqual(1);
 
@@ -537,7 +539,7 @@ describe('References:', () => {
           expect(reference.isRead()).toBeTruthy();
           expect(reference.init).toBeUndefined();
         });
-      }),
+      },
     );
   });
 });

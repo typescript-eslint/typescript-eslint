@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-non-null-assertion AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > optional-chain-element-access-with-non-null-assertion > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -41,7 +41,7 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
                       optional: true,
                       property: Literal {
                         type: 'Literal',
-                        raw: '\\'two\\'',
+                        raw: '\'two\'',
                         value: 'two',
 
                         range: [119, 124],
@@ -125,7 +125,7 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
                       optional: true,
                       property: Literal {
                         type: 'Literal',
-                        raw: '\\'two\\'',
+                        raw: '\'two\'',
                         value: 'two',
 
                         range: [143, 148],
@@ -209,7 +209,7 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
                       optional: true,
                       property: Literal {
                         type: 'Literal',
-                        raw: '\\'two\\'',
+                        raw: '\'two\'',
                         value: 'two',
 
                         range: [168, 173],
@@ -320,7 +320,7 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
                   optional: false,
                   property: Literal {
                     type: 'Literal',
-                    raw: '\\'three\\'',
+                    raw: '\'three\'',
                     value: 'three',
 
                     range: [196, 203],
@@ -411,7 +411,7 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
                 optional: false,
                 property: Literal {
                   type: 'Literal',
-                  raw: '\\'three\\'',
+                  raw: '\'three\'',
                   value: 'three',
 
                   range: [220, 227],
@@ -495,7 +495,7 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
                 optional: false,
                 property: Literal {
                   type: 'Literal',
-                  raw: '\\'three\\'',
+                  raw: '\'three\'',
                   value: 'three',
 
                   range: [244, 251],
@@ -588,5 +588,4 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
       start: { column: 0, line: 3 },
       end: { column: 0, line: 11 },
     },
-  }"
-`;
+  }

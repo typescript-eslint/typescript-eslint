@@ -1,11 +1,10 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "8.29.1",
+  "version": "8.30.1",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
     "!*.tsbuildinfo",
-    "_ts4.3",
     "package.json",
     "README.md",
     "LICENSE"
@@ -40,9 +39,8 @@
   "scripts": {
     "copy-ast-spec": "tsx ./tools/copy-ast-spec.mts",
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts4.3/dist --to=4.3",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf src/generated && rimraf _ts3.4 && rimraf _ts4.3 && rimraf coverage",
+    "postclean": "rimraf dist/ src/generated/ coverage/",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-lib": "npx nx run scope-manager:generate-lib",
     "lint": "npx nx lint",
@@ -68,7 +66,6 @@
     }
   },
   "devDependencies": {
-    "downlevel-dts": "*",
     "prettier": "^3.2.5",
     "rimraf": "*",
     "tsx": "*",
@@ -77,12 +74,5 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
-  },
-  "typesVersions": {
-    "<4.7": {
-      "*": [
-        "_ts4.3/*"
-      ]
-    }
   }
 }

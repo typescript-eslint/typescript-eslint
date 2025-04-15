@@ -36,12 +36,12 @@ const EXTENDS_MODULES = [
   {
     moduleRelativePath: './base',
     name: 'baseConfig',
-    packageRelativePath: './configs/base',
+    packageRelativePath: './configs/eslintrc/base',
   },
   {
     moduleRelativePath: './eslint-recommended',
     name: 'eslintRecommendedConfig',
-    packageRelativePath: './configs/eslint-recommended',
+    packageRelativePath: './configs/eslintrc/eslint-recommended',
   },
 ] as const;
 const CLASSIC_EXTENDS: readonly string[] = EXTENDS_MODULES.map(

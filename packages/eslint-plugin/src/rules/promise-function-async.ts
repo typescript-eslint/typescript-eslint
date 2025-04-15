@@ -23,7 +23,7 @@ export type Options = [
     checkMethodDeclarations?: boolean;
   },
 ];
-export type MessageIds = 'missingAsync';
+export type MessageIds = 'missingAsync' | 'missingAsyncHybridReturn';
 
 export default createRule<Options, MessageIds>({
   name: 'promise-function-async',
@@ -37,6 +37,8 @@ export default createRule<Options, MessageIds>({
     fixable: 'code',
     messages: {
       missingAsync: 'Functions that return promises must be async.',
+      missingAsyncHybridReturn:
+        'Functions that return promises must be async. Consider adding an explicit return type annotation if the function is intended to return a union of promise and non-promise types.',
     },
     schema: [
       {
@@ -164,10 +166,20 @@ export default createRule<Options, MessageIds>({
           ),
         )
       ) {
+        const isHybridReturnType = returnTypes.some(
+          type =>
+            type.isUnion() &&
+            !type.types.every(part =>
+              containsAllTypesByName(part, true, allAllowedPromiseNames),
+            ),
+        );
+
         context.report({
           loc: getFunctionHeadLoc(node, context.sourceCode),
           node,
-          messageId: 'missingAsync',
+          messageId: isHybridReturnType
+            ? 'missingAsyncHybridReturn'
+            : 'missingAsync',
           fix: fixer => {
             if (
               node.parent.type === AST_NODE_TYPES.MethodDefinition ||
