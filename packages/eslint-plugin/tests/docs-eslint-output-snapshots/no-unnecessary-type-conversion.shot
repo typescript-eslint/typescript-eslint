@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-unnecessary-type-conversion.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 String('123');
 ~~~~~~ Passing a string to String() does not change the type or value of the string.
@@ -30,11 +27,8 @@ BigInt(BigInt(1));
 let str = '123';
 str += '';
 ~~~~~~~~~ Concatenating a string with '' does not change the type or value of the string.
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-type-conversion.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 function foo(bar: string | number) {
   String(bar);
@@ -53,5 +47,3 @@ function foo(bar: string | number) {
 
   bar += '';
 }
-"
-`;
