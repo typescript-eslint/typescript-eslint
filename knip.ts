@@ -22,11 +22,7 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignore: [
-        'jest.config.base.js',
-        'tools/scripts/typings/typescript.d.ts',
-        'typings/*.d.ts',
-      ],
+      ignore: ['tools/scripts/typings/typescript.d.ts', 'typings/*.d.ts'],
       ignoreDependencies: [
         '@babel/code-frame',
         '@babel/core',
@@ -36,7 +32,6 @@ export default {
         '@nx/js',
         '@nx/workspace',
         'glob',
-        'jest-specific-snapshot',
         'make-dir',
         // imported for type purposes only
         'website',

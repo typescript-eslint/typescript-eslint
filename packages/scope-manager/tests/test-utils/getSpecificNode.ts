@@ -46,6 +46,5 @@ export function getSpecificNode(
 
   // should have found at least one node
   expect(node).not.toBeFalsy();
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return node!;
 }
