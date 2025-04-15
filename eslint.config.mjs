@@ -44,6 +44,7 @@ const vitestFiles = [
   'packages/scope-manager/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/scope-manager/tests/test-utils/serializers/index.ts',
   'packages/type-utils/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/types/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/typescript-estree/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/utils/tests/**/*.test?(-d).{ts,tsx,cts,mts}',
