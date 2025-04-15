@@ -10,7 +10,6 @@ import {
   createRule,
   getOperatorPrecedence,
   getParserServices,
-  getStaticMemberAccessValue,
   isBuiltinSymbolLike,
   OperatorPrecedence,
   readonlynessOptionsDefaults,
