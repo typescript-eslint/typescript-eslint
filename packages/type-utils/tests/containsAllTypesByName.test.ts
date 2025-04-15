@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
 import type * as ts from 'typescript';
+import type { TestContext } from 'vitest';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import path from 'node:path';
@@ -7,7 +8,7 @@ import path from 'node:path';
 import { containsAllTypesByName } from '../src';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
-describe('containsAllTypesByName', () => {
+describe(containsAllTypesByName, () => {
   const rootDir = path.join(__dirname, 'fixtures');
 
   function getType(code: string): ts.Type {
@@ -27,6 +28,7 @@ describe('containsAllTypesByName', () => {
       code: string,
       allowAny: boolean,
       expected: boolean,
+      { expect }: TestContext,
     ): void {
       const type = getType(code);
       const result = containsAllTypesByName(type, allowAny, new Set());
@@ -34,27 +36,33 @@ describe('containsAllTypesByName', () => {
     }
 
     describe('is true', () => {
-      function runTest(code: string, expected: boolean): void {
-        runTestForAliasDeclaration(code, true, expected);
+      function runTest(
+        [code, expected]: readonly [code: string, expected: boolean],
+        testContext: TestContext,
+      ): void {
+        runTestForAliasDeclaration(code, true, expected, testContext);
       }
 
-      it.each([
+      it.for([
         ['type Test = unknown;', false],
         ['type Test = any;', false],
         ['type Test = string;', false],
-      ])('when code is "%s" expected is %s', runTest);
+      ] as const)('when code is "%s" expected is %s', runTest);
     });
 
     describe('is false', () => {
-      function runTest(code: string, expected: boolean): void {
-        runTestForAliasDeclaration(code, false, expected);
+      function runTest(
+        [code, expected]: readonly [code: string, expected: boolean],
+        testContext: TestContext,
+      ): void {
+        runTestForAliasDeclaration(code, false, expected, testContext);
       }
 
-      it.each([
+      it.for([
         ['type Test = unknown;', true],
         ['type Test = any;', true],
         ['type Test = string;', false],
-      ])('when code is "%s" expected is %s', runTest);
+      ] as const)('when code is "%s" expected is %s', runTest);
     });
   });
 
@@ -63,6 +71,7 @@ describe('containsAllTypesByName', () => {
       code: string,
       matchAnyInstead: boolean,
       expected: boolean,
+      { expect }: TestContext,
     ): void {
       const type = getType(code);
       const result = containsAllTypesByName(
@@ -75,27 +84,33 @@ describe('containsAllTypesByName', () => {
     }
 
     describe('is true', () => {
-      function runTest(code: string, expected: boolean): void {
-        runTestForAliasDeclaration(code, true, expected);
+      function runTest(
+        [code, expected]: readonly [code: string, expected: boolean],
+        testContext: TestContext,
+      ): void {
+        runTestForAliasDeclaration(code, true, expected, testContext);
       }
 
-      it.each([
+      it.for([
         [`type Test = Promise<void> & string`, true],
         ['type Test = Promise<void> | string', true],
         ['type Test = Promise<void> | Object', true],
-      ])('when code is "%s" expected is %s', runTest);
+      ] as const)('when code is "%s" expected is %s', runTest);
     });
 
     describe('is false', () => {
-      function runTest(code: string, expected: boolean): void {
-        runTestForAliasDeclaration(code, false, expected);
+      function runTest(
+        [code, expected]: readonly [code: string, expected: boolean],
+        testContext: TestContext,
+      ): void {
+        runTestForAliasDeclaration(code, false, expected, testContext);
       }
 
-      it.each([
+      it.for([
         ['type Test = Promise<void> & string', false],
         ['type Test = Promise<void> | string', false],
         ['type Test = Promise<void> | Object', true],
-      ])('when code is "%s" expected is %s', runTest);
+      ] as const)('when code is "%s" expected is %s', runTest);
     });
   });
 });

@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types this-type-expanded TSESTree - Tokens 1`] = `
 [
   Keyword {
     type: "Keyword",
@@ -1243,4 +1240,3 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded TSESTree - Tokens
     },
   },
 ]
-`;

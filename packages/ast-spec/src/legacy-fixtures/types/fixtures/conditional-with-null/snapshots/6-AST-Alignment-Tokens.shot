@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types conditional-with-null AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > conditional-with-null > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -120,5 +120,4 @@ exports[`AST Fixtures legacy-fixtures types conditional-with-null AST Alignment 
         end: { column: 46, line: 3 },
       },
     },
-  ]"
-`;
+  ]

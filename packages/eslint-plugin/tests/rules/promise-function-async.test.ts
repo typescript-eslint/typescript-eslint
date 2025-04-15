@@ -824,12 +824,71 @@ function promiseInUnionWithoutExplicitReturnType(p: boolean) {
       `,
       errors: [
         {
-          messageId: 'missingAsync',
+          messageId: 'missingAsyncHybridReturn',
         },
       ],
       output: `
 async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
   return p ? Promise.resolve(5) : 5;
+}
+      `,
+    },
+    {
+      code: `
+function test1(): 'one' | Promise<'one'>;
+function test1(a: number): Promise<number>;
+function test1(a?: number) {
+  if (a) {
+    return Promise.resolve(a);
+  }
+
+  return Math.random() > 0.5 ? 'one' : Promise.resolve('one');
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAsyncHybridReturn',
+        },
+      ],
+      output: `
+function test1(): 'one' | Promise<'one'>;
+function test1(a: number): Promise<number>;
+async function test1(a?: number) {
+  if (a) {
+    return Promise.resolve(a);
+  }
+
+  return Math.random() > 0.5 ? 'one' : Promise.resolve('one');
+}
+      `,
+    },
+    {
+      code: `
+class PromiseType {
+  s?: string;
+}
+
+function promiseInUnionWithoutExplicitReturnType(p: boolean) {
+  return p ? new PromiseType() : 5;
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAsyncHybridReturn',
+        },
+      ],
+      options: [
+        {
+          allowedPromiseNames: ['PromiseType'],
+        },
+      ],
+      output: `
+class PromiseType {
+  s?: string;
+}
+
+async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
+  return p ? new PromiseType() : 5;
 }
       `,
     },
