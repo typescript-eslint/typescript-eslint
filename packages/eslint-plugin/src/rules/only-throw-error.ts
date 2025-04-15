@@ -1,5 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
+// eslint-disable-next-line @typescript-eslint/internal/no-typescript-estree-import -- just importing the type
+import type { TSESTreeToTSNode } from '@typescript-eslint/typescript-estree';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { isThenableType } from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -11,12 +14,12 @@ import {
   findVariable,
   getParserServices,
   isErrorLike,
-  isStaticMemberAccessOfValue,
   isTypeAnyType,
   isTypeUnknownType,
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
 } from '../util';
+import { parseCatchCall, parseThenCall } from '../util/promiseUtils';
 
 export type MessageIds = 'object' | 'undef';
 
@@ -88,7 +91,6 @@ export default createRule<Options, MessageIds>({
       }
 
       const scope = context.sourceCode.getScope(node);
-      const functionScope = scope.variableScope;
 
       const smVariable = findVariable(scope, node.name);
 
@@ -103,12 +105,13 @@ export default createRule<Options, MessageIds>({
       }
       const def = smVariable.defs[0];
 
+      // catch (x) { throw x; }
       if (def.node.type === AST_NODE_TYPES.CatchClause) {
-        const isCatchClauseInSameFunctionScope =
-          context.sourceCode.getScope(def.node).variableScope === functionScope;
-        return isCatchClauseInSameFunctionScope;
+        return true;
       }
 
+      // promise.catch(x => { throw x; })
+      // promise.then(onFulfilled, x => { throw x; })
       if (
         def.node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
         def.node.params.length >= 1 &&
@@ -117,60 +120,22 @@ export default createRule<Options, MessageIds>({
       ) {
         const callExpression = def.node.parent;
 
-        // TODO extract to common code.
-        // promise.catch(x => { throw x; })
-        if (callExpression.arguments.length >= 1) {
-          const firstArgument = callExpression.arguments[0];
-          if (
-            firstArgument.type !== AST_NODE_TYPES.SpreadElement &&
-            firstArgument === def.node
-          ) {
-            const callee = callExpression.callee;
-            if (
-              callee.type === AST_NODE_TYPES.MemberExpression &&
-              isStaticMemberAccessOfValue(callee, context, 'catch')
-            ) {
-              const tsObjectNode = services.esTreeNodeToTSNodeMap.get(
-                callee.object,
-              );
-              if (
-                isThenableType(
-                  services.program.getTypeChecker(),
-                  tsObjectNode as ts.Expression,
-                )
-              ) {
-                return true;
-              }
-            }
-          }
-        }
+        const parsedPromiseHandlingCall =
+          parseCatchCall(callExpression, context) ??
+          parseThenCall(callExpression, context);
+        if (parsedPromiseHandlingCall != null) {
+          const { object, onRejected } = parsedPromiseHandlingCall;
+          if (onRejected === def.node) {
+            const tsObjectNode = services.esTreeNodeToTSNodeMap.get(object);
 
-        // TODO extract to common code.
-        // promise.then(onFulfilled, (x) => { throw x; })
-        if (callExpression.arguments.length >= 2) {
-          const firstTwoArgs = callExpression.arguments.slice(0, 2);
-          if (
-            firstTwoArgs.every(arg => arg.type !== AST_NODE_TYPES.SpreadElement)
-          ) {
-            const secondArg = firstTwoArgs[1];
-            if (secondArg === def.node) {
-              const callee = callExpression.callee;
-              if (
-                callee.type === AST_NODE_TYPES.MemberExpression &&
-                isStaticMemberAccessOfValue(callee, context, 'then')
-              ) {
-                const tsObjectNode = services.esTreeNodeToTSNodeMap.get(
-                  callee.object,
-                );
-                if (
-                  isThenableType(
-                    services.program.getTypeChecker(),
-                    tsObjectNode as ts.Expression,
-                  )
-                ) {
-                  return true;
-                }
-              }
+            // make sure we're actually dealing with a promise
+            if (
+              isThenableType(
+                services.program.getTypeChecker(),
+                tsObjectNode satisfies TSESTreeToTSNode<TSESTree.Expression> as ts.Expression,
+              )
+            ) {
+              return true;
             }
           }
         }

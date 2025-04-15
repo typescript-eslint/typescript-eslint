@@ -18,6 +18,11 @@ import {
   skipChainExpression,
   typeMatchesSomeSpecifier,
 } from '../util';
+import {
+  parseCatchCall,
+  parseFinallyCall,
+  parseThenCall,
+} from '../util/promiseUtils';
 
 export type Options = [
   {
@@ -336,38 +341,23 @@ export default createRule<Options, MessageId>({
         // If the outer expression is a call, a `.catch()` or `.then()` with
         // rejection handler handles the promise.
 
-        const { callee } = node;
-        if (callee.type === AST_NODE_TYPES.MemberExpression) {
-          const methodName = getStaticMemberAccessValue(callee, context);
-          const catchRejectionHandler =
-            methodName === 'catch' && node.arguments.length >= 1
-              ? node.arguments[0]
-              : undefined;
-          if (catchRejectionHandler) {
-            if (isValidRejectionHandler(catchRejectionHandler)) {
+        const promiseHandlingMethodCall =
+          parseCatchCall(node, context) ?? parseThenCall(node, context);
+        if (promiseHandlingMethodCall != null) {
+          const onRejected = promiseHandlingMethodCall.onRejected;
+          if (onRejected != null) {
+            if (isValidRejectionHandler(onRejected)) {
               return { isUnhandled: false };
             }
             return { isUnhandled: true, nonFunctionHandler: true };
           }
+          return { isUnhandled: true };
+        }
 
-          const thenRejectionHandler =
-            methodName === 'then' && node.arguments.length >= 2
-              ? node.arguments[1]
-              : undefined;
-          if (thenRejectionHandler) {
-            if (isValidRejectionHandler(thenRejectionHandler)) {
-              return { isUnhandled: false };
-            }
-            return { isUnhandled: true, nonFunctionHandler: true };
-          }
+        const promiseFinallyCall = parseFinallyCall(node, context);
 
-          // `x.finally()` is transparent to resolution of the promise, so check `x`.
-          // ("object" in this context is the `x` in `x.finally()`)
-          const promiseFinallyObject =
-            methodName === 'finally' ? callee.object : undefined;
-          if (promiseFinallyObject) {
-            return isUnhandledPromise(checker, promiseFinallyObject);
-          }
+        if (promiseFinallyCall != null) {
+          return isUnhandledPromise(checker, promiseFinallyCall.object);
         }
 
         // All other cases are unhandled.
