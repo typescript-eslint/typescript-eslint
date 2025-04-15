@@ -26,6 +26,4 @@ export interface ClassDeclarationWithOptionalName extends ClassDeclarationBase {
   id: Identifier | null;
 }
 
-export type ClassDeclaration =
-  | ClassDeclarationWithName
-  | ClassDeclarationWithOptionalName;
+export type ClassDeclaration = ClassDeclarationWithOptionalName;
