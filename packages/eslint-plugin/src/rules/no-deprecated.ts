@@ -395,6 +395,56 @@ export default createRule<Options, MessageIds>({
       });
     }
 
+    function checkMemberExpression(node: TSESTree.MemberExpression): void {
+      if (!node.computed) {
+        return;
+      }
+
+      const propertyType = services.getTypeAtLocation(node.property);
+
+      if (propertyType.isStringLiteral() || propertyType.isLiteral()) {
+        const objectType = services.getTypeAtLocation(node.object);
+
+        let propertyName: string | undefined;
+
+        if (propertyType.isStringLiteral()) {
+          propertyName = propertyType.value;
+        } else if (typeof propertyType.value === 'string') {
+          propertyName = propertyType.value;
+        } else if (typeof propertyType.value === 'number') {
+          propertyName = String(propertyType.value);
+        }
+
+        if (!propertyName) {
+          return;
+        }
+
+        const property = objectType.getProperty(propertyName);
+
+        const reason = getJsDocDeprecation(property);
+        if (reason == null) {
+          return;
+        }
+
+        if (typeMatchesSomeSpecifier(objectType, allow, services.program)) {
+          return;
+        }
+
+        context.report({
+          ...(reason
+            ? {
+                messageId: 'deprecatedWithReason',
+                data: { name: propertyName, reason },
+              }
+            : {
+                messageId: 'deprecated',
+                data: { name: propertyName },
+              }),
+          node: node.property,
+        });
+      }
+    }
+
     return {
       Identifier: checkIdentifier,
       JSXIdentifier(node): void {
@@ -402,6 +452,7 @@ export default createRule<Options, MessageIds>({
           checkIdentifier(node);
         }
       },
+      MemberExpression: checkMemberExpression,
       PrivateIdentifier: checkIdentifier,
       Super: checkIdentifier,
     };
