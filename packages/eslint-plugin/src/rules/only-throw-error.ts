@@ -105,7 +105,7 @@ export default createRule<Options, MessageIds>({
       }
       const def = smVariable.defs[0];
 
-      // catch (x) { throw x; }
+      // try { /* ... */ } catch (x) { throw x; }
       if (def.node.type === AST_NODE_TYPES.CatchClause) {
         return true;
       }
