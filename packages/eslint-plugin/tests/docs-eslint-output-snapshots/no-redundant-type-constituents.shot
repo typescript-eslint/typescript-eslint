@@ -27,8 +27,6 @@ type IntersectionNumberLiteral = number & 1;
                                  ~~~~~~ number is overridden by 1 in this intersection type.
 type IntersectionStringLiteral = string & 'foo';
                                  ~~~~~~ string is overridden by "foo" in this intersection type.
-"
-`;
 
 Correct
 
