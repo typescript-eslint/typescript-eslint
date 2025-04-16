@@ -1931,16 +1931,29 @@ if (x[0]?.foo) {
 }
       `,
       errors: [
-        { column: 5, line: 3, messageId: 'alwaysTruthy' },
-        { column: 9, line: 5, messageId: 'neverOptionalChain' },
-      ],
-      output: `
+        {
+          column: 5,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+        {
+          column: 9,
+          line: 5,
+          messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 const x = [{}] as [{ foo: string }];
 if (x[0]) {
 }
 if (x[0].foo) {
 }
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       // Shouldn't mistake this for an array indexing case
@@ -2130,6 +2143,20 @@ foo
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
+let foo = { bar: true };
+foo.bar;
+foo ?. bar;
+foo ?.
+  bar;
+foo
+  ?. bar;
+      `,
+            },
+          ],
         },
         {
           column: 5,
@@ -2137,6 +2164,20 @@ foo
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
+let foo = { bar: true };
+foo?.bar;
+foo . bar;
+foo ?.
+  bar;
+foo
+  ?. bar;
+      `,
+            },
+          ],
         },
         {
           column: 5,
@@ -2144,6 +2185,20 @@ foo
           endLine: 5,
           line: 5,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
+let foo = { bar: true };
+foo?.bar;
+foo ?. bar;
+foo .
+  bar;
+foo
+  ?. bar;
+      `,
+            },
+          ],
         },
         {
           column: 3,
@@ -2151,17 +2206,22 @@ foo
           endLine: 8,
           line: 8,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
 let foo = { bar: true };
-foo.bar;
-foo . bar;
-foo .
+foo?.bar;
+foo ?. bar;
+foo ?.
   bar;
 foo
   . bar;
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: noFormat`
@@ -2180,6 +2240,20 @@ foo
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
+let foo = () => {};
+foo();
+foo ?. ();
+foo ?.
+  ();
+foo
+  ?. ();
+      `,
+            },
+          ],
         },
         {
           column: 5,
@@ -2187,6 +2261,20 @@ foo
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
+let foo = () => {};
+foo?.();
+foo  ();
+foo ?.
+  ();
+foo
+  ?. ();
+      `,
+            },
+          ],
         },
         {
           column: 5,
@@ -2194,6 +2282,20 @@ foo
           endLine: 5,
           line: 5,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
+let foo = () => {};
+foo?.();
+foo ?. ();
+foo${' '}
+  ();
+foo
+  ?. ();
+      `,
+            },
+          ],
         },
         {
           column: 3,
@@ -2201,17 +2303,22 @@ foo
           endLine: 8,
           line: 8,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: noFormat`
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
 let foo = () => {};
-foo();
-foo  ();
-foo${' '}
+foo?.();
+foo ?. ();
+foo ?.
   ();
 foo
    ();
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: noFormat`
@@ -2230,6 +2337,20 @@ foo
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
+let foo = () => {};
+foo(bar);
+foo ?. (bar);
+foo ?.
+  (bar);
+foo
+  ?. (bar);
+      `,
+            },
+          ],
         },
         {
           column: 5,
@@ -2237,6 +2358,20 @@ foo
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
+let foo = () => {};
+foo?.(bar);
+foo  (bar);
+foo ?.
+  (bar);
+foo
+  ?. (bar);
+      `,
+            },
+          ],
         },
         {
           column: 5,
@@ -2244,6 +2379,20 @@ foo
           endLine: 5,
           line: 5,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
+let foo = () => {};
+foo?.(bar);
+foo ?. (bar);
+foo${' '}
+  (bar);
+foo
+  ?. (bar);
+      `,
+            },
+          ],
         },
         {
           column: 3,
@@ -2251,17 +2400,22 @@ foo
           endLine: 8,
           line: 8,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: noFormat`
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
 let foo = () => {};
-foo(bar);
-foo  (bar);
-foo${' '}
+foo?.(bar);
+foo ?. (bar);
+foo ?.
   (bar);
 foo
    (bar);
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: 'const foo = [1, 2, 3]?.[0];',
@@ -2272,9 +2426,14 @@ foo
           endLine: 1,
           line: 1,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: 'const foo = [1, 2, 3][0];',
+            },
+          ],
         },
       ],
-      output: 'const foo = [1, 2, 3][0];',
     },
     {
       code: `
@@ -2288,12 +2447,17 @@ x?.a?.b;
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 declare const x: { a?: { b: string } };
 x.a?.b;
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2307,12 +2471,17 @@ x.a?.b?.c;
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 declare const x: { a: { b?: { c: string } } };
 x.a.b?.c;
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2326,12 +2495,17 @@ x?.a;
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 let x: { a?: string };
 x.a;
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2345,12 +2519,17 @@ foo?.bar?.baz;
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 declare const foo: { bar: { baz: { c: string } } } | null;
 foo?.bar.baz;
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2364,12 +2543,17 @@ foo?.bar?.baz?.qux;
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 declare const foo: { bar?: { baz: { qux: string } } } | null;
 foo?.bar?.baz.qux;
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2383,6 +2567,15 @@ foo?.bar?.baz?.qux?.();
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+declare const foo: { bar: { baz: { qux?: () => {} } } } | null;
+foo?.bar.baz?.qux?.();
+      `,
+            },
+          ],
         },
         {
           column: 14,
@@ -2390,12 +2583,17 @@ foo?.bar?.baz?.qux?.();
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+declare const foo: { bar: { baz: { qux?: () => {} } } } | null;
+foo?.bar?.baz.qux?.();
+      `,
+            },
+          ],
         },
       ],
-      output: `
-declare const foo: { bar: { baz: { qux?: () => {} } } } | null;
-foo?.bar.baz.qux?.();
-      `,
     },
     {
       code: `
@@ -2409,6 +2607,15 @@ foo?.bar?.baz?.qux?.();
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+declare const foo: { bar: { baz: { qux: () => {} } } } | null;
+foo?.bar.baz?.qux?.();
+      `,
+            },
+          ],
         },
         {
           column: 14,
@@ -2416,6 +2623,15 @@ foo?.bar?.baz?.qux?.();
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+declare const foo: { bar: { baz: { qux: () => {} } } } | null;
+foo?.bar?.baz.qux?.();
+      `,
+            },
+          ],
         },
         {
           column: 19,
@@ -2423,12 +2639,17 @@ foo?.bar?.baz?.qux?.();
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+declare const foo: { bar: { baz: { qux: () => {} } } } | null;
+foo?.bar?.baz?.qux();
+      `,
+            },
+          ],
         },
       ],
-      output: `
-declare const foo: { bar: { baz: { qux: () => {} } } } | null;
-foo?.bar.baz.qux();
-      `,
     },
     {
       code: `
@@ -2443,6 +2664,16 @@ foo?.bar?.baz?.().qux?.();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+type baz = () => { qux: () => {} };
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar.baz?.().qux?.();
+      `,
+            },
+          ],
         },
         {
           column: 14,
@@ -2450,6 +2681,16 @@ foo?.bar?.baz?.().qux?.();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+type baz = () => { qux: () => {} };
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar?.baz().qux?.();
+      `,
+            },
+          ],
         },
         {
           column: 22,
@@ -2457,13 +2698,18 @@ foo?.bar?.baz?.().qux?.();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 type baz = () => { qux: () => {} };
 declare const foo: { bar: { baz: baz } } | null;
-foo?.bar.baz().qux();
+foo?.bar?.baz?.().qux();
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2478,6 +2724,16 @@ foo?.bar?.baz?.().qux?.();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+type baz = null | (() => { qux: () => {} });
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar.baz?.().qux?.();
+      `,
+            },
+          ],
         },
         {
           column: 22,
@@ -2485,13 +2741,18 @@ foo?.bar?.baz?.().qux?.();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 type baz = null | (() => { qux: () => {} });
 declare const foo: { bar: { baz: baz } } | null;
-foo?.bar.baz?.().qux();
+foo?.bar?.baz?.().qux();
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2506,6 +2767,16 @@ foo?.bar?.baz?.()?.qux?.();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+type baz = null | (() => { qux: () => {} } | null);
+declare const foo: { bar: { baz: baz } } | null;
+foo?.bar.baz?.()?.qux?.();
+      `,
+            },
+          ],
         },
         {
           column: 23,
@@ -2513,13 +2784,18 @@ foo?.bar?.baz?.()?.qux?.();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 type baz = null | (() => { qux: () => {} } | null);
 declare const foo: { bar: { baz: baz } } | null;
-foo?.bar.baz?.()?.qux();
+foo?.bar?.baz?.()?.qux();
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2535,25 +2811,41 @@ foo?.fooOrBar?.baz?.qux;
           endLine: 5,
           line: 5,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 type Foo = { baz: number };
 type Bar = { baz: null | string | { qux: string } };
 declare const foo: { fooOrBar: Foo | Bar } | null;
 foo?.fooOrBar.baz?.qux;
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
 declare const x: { a: { b: number } }[];
 x[0].a?.b;
       `,
-      errors: [{ column: 7, line: 3, messageId: 'neverOptionalChain' }],
-      output: `
+      errors: [
+        {
+          column: 7,
+          line: 3,
+          messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 declare const x: { a: { b: number } }[];
 x[0].a.b;
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2571,9 +2863,10 @@ foo?.[key]?.trim();
           endLine: 7,
           line: 7,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
 type Key = 'bar' | 'foo';
 declare const foo: Foo;
@@ -2581,6 +2874,10 @@ declare const key: Key;
 
 foo?.[key].trim();
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2596,14 +2893,19 @@ foo?.[key]?.trim();
           endLine: 5,
           line: 5,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
 declare const foo: Foo;
 const key = 'bar';
 foo?.[key].trim();
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2626,9 +2928,10 @@ export function test(outer: Outer): number | undefined {
           endLine: 11,
           line: 11,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 interface Outer {
   inner?: {
     [key: string]: string | undefined;
@@ -2641,6 +2944,10 @@ export function test(outer: Outer): number | undefined {
   return outer.inner?.[key].charCodeAt(0);
 }
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2663,9 +2970,10 @@ function Foo(outer: Outer, key: Bar): number | undefined {
           endLine: 11,
           line: 11,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 interface Outer {
   inner?: {
     [key: string]: string | undefined;
@@ -2678,6 +2986,10 @@ function Foo(outer: Outer, key: Bar): number | undefined {
   return outer.inner?.[key].charCodeAt(0);
 }
       `,
+            },
+          ],
+        },
+      ],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2384
     {
@@ -2769,9 +3081,10 @@ foo?.test?.length;
           endLine: 9,
           line: 9,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 interface Foo {
   test: string;
   [key: string]: [string] | undefined;
@@ -2781,6 +3094,10 @@ type OptionalFoo = Foo | undefined;
 declare const foo: OptionalFoo;
 foo?.test.length;
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2961,13 +3278,18 @@ foo?.bar()?.toExponential();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: noFormat`
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
 type Foo = { bar: () => number } | null;
 declare const foo: Foo;
 foo?.bar().toExponential();
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2982,6 +3304,16 @@ foo?.bar?.baz()?.qux?.toExponential();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
+type Foo = { bar: null | { baz: () => { qux: number } } } | null;
+declare const foo: Foo;
+foo?.bar?.baz().qux?.toExponential();
+      `,
+            },
+          ],
         },
         {
           column: 21,
@@ -2989,13 +3321,18 @@ foo?.bar?.baz()?.qux?.toExponential();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: noFormat`
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
-foo?.bar?.baz().qux.toExponential();
+foo?.bar?.baz()?.qux.toExponential();
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -3010,13 +3347,18 @@ foo?.()?.toExponential();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: noFormat`
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
 type Foo = (() => number) | null;
 declare const foo: Foo;
 foo?.().toExponential();
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -3031,13 +3373,18 @@ foo?.['bar']()?.toExponential();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: noFormat`
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']().toExponential();
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -3052,13 +3399,18 @@ foo?.['bar']?.()?.toExponential();
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: noFormat`
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: noFormat`
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']?.().toExponential();
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -3219,9 +3571,10 @@ a.a?.a?.a;
           endLine: 12,
           line: 12,
           messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 type A = {
   [name in Lowercase<string>]?: {
     [name in Lowercase<string>]: {
@@ -3234,6 +3587,10 @@ declare const a: A;
 
 a.a?.a.a;
       `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -3265,23 +3622,10 @@ t.a?.a?.a?.value;
           endLine: 21,
           line: 21,
           messageId: 'neverOptionalChain',
-        },
-        {
-          column: 7,
-          endColumn: 9,
-          endLine: 21,
-          line: 21,
-          messageId: 'neverOptionalChain',
-        },
-        {
-          column: 10,
-          endColumn: 12,
-          endLine: 21,
-          line: 21,
-          messageId: 'neverOptionalChain',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
 interface T {
   [name: Lowercase<string>]: {
     [name: Lowercase<string>]: {
@@ -3301,8 +3645,80 @@ interface T {
 
 declare const t: T;
 
-t.a.a.a.value;
+t.a.a?.a?.value;
       `,
+            },
+          ],
+        },
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 21,
+          line: 21,
+          messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+interface T {
+  [name: Lowercase<string>]: {
+    [name: Lowercase<string>]: {
+      [name: Lowercase<string>]: {
+        value: 'value';
+      };
+    };
+  };
+  [name: Uppercase<string>]: null | {
+    [name: Uppercase<string>]: null | {
+      [name: Uppercase<string>]: null | {
+        VALUE: 'VALUE';
+      };
+    };
+  };
+}
+
+declare const t: T;
+
+t.a?.a.a?.value;
+      `,
+            },
+          ],
+        },
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 21,
+          line: 21,
+          messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+interface T {
+  [name: Lowercase<string>]: {
+    [name: Lowercase<string>]: {
+      [name: Lowercase<string>]: {
+        value: 'value';
+      };
+    };
+  };
+  [name: Uppercase<string>]: null | {
+    [name: Uppercase<string>]: null | {
+      [name: Uppercase<string>]: null | {
+        VALUE: 'VALUE';
+      };
+    };
+  };
+}
+
+declare const t: T;
+
+t.a?.a?.a.value;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -3319,6 +3735,18 @@ if (test[0]?.a) {
           endLine: 5,
           line: 5,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+declare const test: Array<{ a?: string }>;
+
+if (test[0]?.a) {
+  test[0].a;
+}
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -3328,13 +3756,6 @@ if (test[0]?.a) {
           tsconfigRootDir: getFixturesRootDir(),
         },
       },
-      output: `
-declare const test: Array<{ a?: string }>;
-
-if (test[0]?.a) {
-  test[0].a;
-}
-      `,
     },
     {
       code: `
@@ -3348,6 +3769,15 @@ arr2[42]?.x?.y?.z;
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+declare const arr2: Array<{ x: { y: { z: object } } }>;
+arr2[42]?.x.y?.z;
+      `,
+            },
+          ],
         },
         {
           column: 15,
@@ -3355,6 +3785,15 @@ arr2[42]?.x?.y?.z;
           endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+declare const arr2: Array<{ x: { y: { z: object } } }>;
+arr2[42]?.x?.y.z;
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -3364,10 +3803,6 @@ arr2[42]?.x?.y?.z;
           tsconfigRootDir: getFixturesRootDir(),
         },
       },
-      output: `
-declare const arr2: Array<{ x: { y: { z: object } } }>;
-arr2[42]?.x.y.z;
-      `,
     },
     {
       code: `
