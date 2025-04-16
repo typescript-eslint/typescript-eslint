@@ -118,9 +118,11 @@ export default createRule<Options, MessageIds>({
         if (
           // is it `const x!: number`
           declaration.initializer == null &&
-          declaration.exclamationToken == null &&
-          declaration.type != null
+          declaration.exclamationToken == null
         ) {
+          if (declaration.type == null) {
+            return true;
+          }
           // check if the defined variable type has changed since assignment
           const declarationType = checker.getTypeFromTypeNode(declaration.type);
           const type = getConstrainedTypeAtLocation(services, node);
