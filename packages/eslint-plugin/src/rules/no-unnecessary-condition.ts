@@ -185,7 +185,7 @@ export default createRule<Options, MessageId>({
         'Unnecessary conditional, the types have no overlap.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
-      suggestRemoveOptionalChain: 'Replace `?.` with `.`',
+      suggestRemoveOptionalChain: 'Remove unnecessary optional chain',
       typeGuardAlreadyIsType:
         'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
     },
