@@ -429,6 +429,13 @@ declare function foo<T extends unknown>(bar: T): T;
 const baz: unknown = {};
 foo(baz!);
     `,
+    `
+let x;
+if (Math.random() > -1) {
+  x = 2;
+}
+x!;
+    `,
   ],
 
   invalid: [
