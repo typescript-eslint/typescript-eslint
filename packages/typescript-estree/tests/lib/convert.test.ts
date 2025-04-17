@@ -449,5 +449,63 @@ describe('convert', () => {
       expect(tsMappedType.typeParameter).toBeUndefined();
       expect(Object.keys(tsMappedType)).toContain('typeParameter');
     });
+
+    describe('TSMappedType AST shape consistency', () => {
+      const getMappedTypeFromCode = (code: string): TSESTree.TSMappedType => {
+        const ast = convertCode(code);
+        const instance = new Converter(ast);
+        const program = instance.convertProgram();
+        const varDec = program.body[0] as TSESTree.VariableDeclaration;
+        const typeAnnotation = varDec.declarations[0]?.id?.typeAnnotation;
+        if (!typeAnnotation) {
+          throw new Error('Type annotation is undefined');
+        }
+        return typeAnnotation.typeAnnotation as TSESTree.TSMappedType;
+      };
+
+      it('should have optional=false when no optional modifier is present', () => {
+        const mappedType = getMappedTypeFromCode('var a: { [k in any]: any };');
+
+        expect(mappedType).toHaveProperty('optional', false);
+      });
+
+      it('should have optional=true when optional modifier is present', () => {
+        const mappedType = getMappedTypeFromCode(
+          'var b: { [k in any]?: any };',
+        );
+
+        expect(mappedType).toHaveProperty('optional', true);
+      });
+
+      it('should have readonly=undefined when no readonly modifier is present', () => {
+        const mappedType = getMappedTypeFromCode('var a: { [k in any]: any };');
+
+        expect(mappedType).toHaveProperty('readonly', undefined);
+      });
+
+      it('should have readonly=true when readonly modifier is present', () => {
+        const mappedType = getMappedTypeFromCode(
+          'var c: { readonly [k in any]: any };',
+        );
+
+        expect(mappedType).toHaveProperty('readonly', true);
+      });
+
+      it('should have readonly="+" when +readonly modifier is present', () => {
+        const mappedType = getMappedTypeFromCode(
+          'var d: { +readonly [k in any]: any };',
+        );
+
+        expect(mappedType).toHaveProperty('readonly', '+');
+      });
+
+      it('should have readonly="-" when -readonly modifier is present', () => {
+        const mappedType = getMappedTypeFromCode(
+          'var e: { -readonly [k in any]: any };',
+        );
+
+        expect(mappedType).toHaveProperty('readonly', '-');
+      });
+    });
   });
 });
