@@ -62,7 +62,7 @@ export default createRule({
 
     function isThisSpecifiedInParameters(originalFunc: FunctionLike): boolean {
       const firstArg = originalFunc.params.at(0);
-      return !!(
+      return (
         firstArg?.type === AST_NODE_TYPES.Identifier && firstArg.name === 'this'
       );
     }
