@@ -506,6 +506,22 @@ describe('convert', () => {
 
         expect(mappedType).toHaveProperty('readonly', '-');
       });
+
+      it('should have optional="+" when +? modifier is present', () => {
+        const mappedType = getMappedTypeFromCode(
+          'var f: { [k in any]+?: any };',
+        );
+
+        expect(mappedType).toHaveProperty('optional', '+');
+      });
+
+      it('should have optional="-" when -? modifier is present', () => {
+        const mappedType = getMappedTypeFromCode(
+          'var g: { [k in any]-?: any };',
+        );
+
+        expect(mappedType).toHaveProperty('optional', '-');
+      });
     });
   });
 });
