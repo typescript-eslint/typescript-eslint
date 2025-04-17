@@ -128,17 +128,42 @@ export function config(
       );
     }
 
-    return [
-      ...extendsArrFlattened.map(extension => {
-        const name = [config.name, extension.name].filter(Boolean).join('__');
-        return {
+    const configArray = [];
+
+    for (const extension of extendsArrFlattened) {
+      const name = [config.name, extension.name].filter(Boolean).join('__');
+      if (isPossiblyGlobalIgnores(extension)) {
+        // If it's a global ignores, then just pass it along
+        configArray.push({
+          ...extension,
+          ...(name && { name }),
+        });
+      } else {
+        configArray.push({
           ...extension,
           ...(config.files && { files: config.files }),
           ...(config.ignores && { ignores: config.ignores }),
           ...(name && { name }),
-        };
-      }),
-      config,
-    ];
+        });
+      }
+    }
+
+    // If the base config could form a global ignores object, then we mustn't include
+    // it in the output. Otherwise, we must add it in order for it to have effect.
+    if (!isPossiblyGlobalIgnores(config)) {
+      configArray.push(config);
+    }
+
+    return configArray;
   });
+}
+
+/**
+ * This utility function returns false if the config objects contains any field
+ * that would prevent it from being considered a global ignores object and true
+ * otherwise. Note in particular that the `ignores` field may not be present and
+ * the return value can still be true.
+ */
+function isPossiblyGlobalIgnores(config: object): boolean {
+  return Object.keys(config).every(key => ['name', 'ignores'].includes(key));
 }
