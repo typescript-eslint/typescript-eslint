@@ -2870,14 +2870,14 @@ export class Converter {
               constraint: this.convertChild(node.typeParameter.constraint),
               key: this.convertChild(node.typeParameter.name),
               nameType: this.convertChild(node.nameType) ?? null,
-              optional:
-                node.questionToken &&
-                (node.questionToken.kind === SyntaxKind.QuestionToken ||
-                  getTextForTokenKind(node.questionToken.kind)),
-              readonly:
-                node.readonlyToken &&
-                (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword ||
-                  getTextForTokenKind(node.readonlyToken.kind)),
+              optional: node.questionToken
+                ? node.questionToken.kind === SyntaxKind.QuestionToken ||
+                  getTextForTokenKind(node.questionToken.kind)
+                : false,
+              readonly: node.readonlyToken
+                ? node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword ||
+                  getTextForTokenKind(node.readonlyToken.kind)
+                : undefined,
               typeAnnotation: node.type && this.convertChild(node.type),
             },
             'typeParameter',
