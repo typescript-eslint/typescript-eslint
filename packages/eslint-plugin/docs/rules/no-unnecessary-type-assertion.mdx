@@ -73,6 +73,16 @@ function foo(x: number | undefined): number {
 
 ## Options
 
+### `ignoreStringConstAssertion`
+
+{/* insert option description */}
+
+With `@typescript-eslint/no-unnecessary-type-assertion: ["error", { ignoreStringConstAssertion: true }]`, the following is **correct** code:
+
+```ts option='{ "ignoreStringConstAssertion": true }' showPlaygroundButton
+const foo = `foo` as const;
+```
+
 ### `typesToIgnore`
 
 {/* insert option description */}

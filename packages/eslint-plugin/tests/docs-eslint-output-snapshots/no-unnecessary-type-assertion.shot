@@ -51,6 +51,10 @@ function foo(x: number | undefined): number {
   return x!;
 }
 
+Options: { "ignoreStringConstAssertion": true }
+
+const foo = `foo` as const;
+
 Options: { "typesToIgnore": ["Foo"] }
 
 type Foo = 3;
