@@ -46,7 +46,7 @@ function foo(x: number | undefined): number {
   return x!;
 }
 
-Options: { "checkLiteralConstAssertion": true }
+Options: { "checkLiteralConstAssertions": true }
 
 const foo = 'foo' as const;
             ~~~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.

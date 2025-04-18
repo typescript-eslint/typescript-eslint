@@ -1324,80 +1324,80 @@ foo(baz);
     {
       code: 'const a = null as const;',
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = null;',
     },
     {
       code: 'const a = <const>null;',
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = null;',
     },
     {
       code: 'const a = undefined as const;',
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = undefined;',
     },
     {
       code: 'const a = <const>undefined;',
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = undefined;',
     },
     {
       code: 'const a = true as const;',
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = true;',
     },
     {
       code: 'const a = <const>true;',
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = true;',
     },
     {
       code: 'const a = 1 as const;',
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = 1;',
     },
     {
       code: 'const a = <const>1;',
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = 1;',
     },
     {
       code: 'const a = 1n as const;',
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = 1n;',
     },
     {
       code: 'const a = <const>1n;',
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = 1n;',
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     {
       code: 'const a = `a` as const;',
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = `a`;',
     },
     {
       code: "const a = 'a' as const;",
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: "const a = 'a';",
     },
     {
       code: "const a = <const>'a';",
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: "const a = 'a';",
     },
     {
@@ -1412,7 +1412,7 @@ class T {
           messageId: 'unnecessaryAssertion',
         },
       ],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: `
 class T {
   readonly a = 'a';
@@ -1434,7 +1434,7 @@ const b = a as const;
           messageId: 'unnecessaryAssertion',
         },
       ],
-      options: [{ checkLiteralConstAssertion: true }],
+      options: [{ checkLiteralConstAssertions: true }],
       output: `
 enum T {
   Value1,

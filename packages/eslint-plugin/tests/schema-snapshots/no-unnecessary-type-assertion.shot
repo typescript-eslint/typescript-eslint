@@ -5,7 +5,7 @@
   {
     "additionalProperties": false,
     "properties": {
-      "checkLiteralConstAssertion": {
+      "checkLiteralConstAssertions": {
         "description": "Whether to check literal const assertions.",
         "type": "boolean"
       },
@@ -27,7 +27,7 @@
 type Options = [
   {
     /** Whether to check literal const assertions. */
-    checkLiteralConstAssertion?: boolean;
+    checkLiteralConstAssertions?: boolean;
     /** A list of type names to ignore. */
     typesToIgnore?: string[];
   },

@@ -69,15 +69,17 @@ function foo(x: number | undefined): number {
 
 ## Options
 
-### `checkLiteralConstAssertion`
+### `checkLiteralConstAssertions`
 
 {/* insert option description */}
 
-With `@typescript-eslint/no-unnecessary-type-assertion: ["error", { checkLiteralConstAssertion: true }]`, the following is **incorrect** code:
+With `@typescript-eslint/no-unnecessary-type-assertion: ["error", { checkLiteralConstAssertions: true }]`, the following is **incorrect** code:
 
-```ts option='{ "checkLiteralConstAssertion": true }' showPlaygroundButton
+```ts option='{ "checkLiteralConstAssertions": true }' showPlaygroundButton
 const foo = 'foo' as const;
 ```
+
+See [#8721 False positives for "as const" assertions (issue comment)](https://github.com/typescript-eslint/typescript-eslint/issues/8721#issuecomment-2145291966) for more information on this option.
 
 ### `typesToIgnore`
 
