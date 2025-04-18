@@ -21,7 +21,7 @@ import {
 
 export type Options = [
   {
-    ignoreStringConstAssertion?: boolean;
+    checkLiteralConstAssertion?: boolean;
     typesToIgnore?: string[];
   },
 ];
@@ -49,9 +49,9 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          ignoreStringConstAssertion: {
+          checkLiteralConstAssertion: {
             type: 'boolean',
-            description: 'Whether to ignore string const assertions.',
+            description: 'Whether to check literal const assertions.',
           },
           typesToIgnore: {
             type: 'array',
@@ -239,8 +239,8 @@ export default createRule<Options, MessageIds>({
         const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
         if (
-          options.ignoreStringConstAssertion &&
-          uncastType.isStringLiteral() &&
+          !options.checkLiteralConstAssertion &&
+          node.expression.type === AST_NODE_TYPES.Literal &&
           isConstAssertion(node.typeAnnotation)
         ) {
           return;
