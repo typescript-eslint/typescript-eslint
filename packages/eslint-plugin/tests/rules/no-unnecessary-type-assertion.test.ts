@@ -1322,6 +1322,42 @@ foo(baz);
       `,
     },
     {
+      code: 'const a = null as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertion: true }],
+      output: 'const a = null;',
+    },
+    {
+      code: 'const a = <const>null;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertion: true }],
+      output: 'const a = null;',
+    },
+    {
+      code: 'const a = undefined as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertion: true }],
+      output: 'const a = undefined;',
+    },
+    {
+      code: 'const a = <const>undefined;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertion: true }],
+      output: 'const a = undefined;',
+    },
+    {
+      code: 'const a = true as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertion: true }],
+      output: 'const a = true;',
+    },
+    {
+      code: 'const a = <const>true;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertion: true }],
+      output: 'const a = true;',
+    },
+    {
       code: 'const a = 1 as const;',
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
       options: [{ checkLiteralConstAssertion: true }],
