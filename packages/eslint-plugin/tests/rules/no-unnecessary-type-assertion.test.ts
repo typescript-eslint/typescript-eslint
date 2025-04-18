@@ -429,6 +429,32 @@ declare function foo<T extends unknown>(bar: T): T;
 const baz: unknown = {};
 foo(baz!);
     `,
+    {
+      code: 'const a = `a` as const;',
+    },
+    {
+      code: "const a = 'a' as const;",
+    },
+    {
+      code: "const a = <const>'a';",
+    },
+    {
+      code: `
+class T {
+  readonly a = 'a' as const;
+}
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+declare const a: T.Value1;
+const b = a as const;
+      `,
+    },
   ],
 
   invalid: [
@@ -1320,30 +1346,6 @@ function foo(bar: unknown) {}
 const baz: unknown = {};
 foo(baz);
       `,
-    },
-    {
-      code: 'const a = null as const;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertions: true }],
-      output: 'const a = null;',
-    },
-    {
-      code: 'const a = <const>null;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertions: true }],
-      output: 'const a = null;',
-    },
-    {
-      code: 'const a = undefined as const;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertions: true }],
-      output: 'const a = undefined;',
-    },
-    {
-      code: 'const a = <const>undefined;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      options: [{ checkLiteralConstAssertions: true }],
-      output: 'const a = undefined;',
     },
     {
       code: 'const a = true as const;',

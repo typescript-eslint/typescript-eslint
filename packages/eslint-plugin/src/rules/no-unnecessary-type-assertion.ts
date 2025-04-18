@@ -223,12 +223,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function isTypeLiteral(type: ts.Type) {
-      return (
-        type.isLiteral() ||
-        tsutils.isBooleanLiteralType(type) ||
-        type.flags === ts.TypeFlags.Undefined ||
-        type.flags === ts.TypeFlags.Null
-      );
+      return type.isLiteral() || tsutils.isBooleanLiteralType(type);
     }
 
     return {
@@ -244,8 +239,6 @@ export default createRule<Options, MessageIds>({
         }
 
         const castType = services.getTypeAtLocation(node);
-        const uncastType = services.getTypeAtLocation(node.expression);
-        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
         const castTypeIsLiteral = isTypeLiteral(castType);
         const typeAnnotationIsConstAssertion = isConstAssertion(
           node.typeAnnotation,
@@ -259,6 +252,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        const uncastType = services.getTypeAtLocation(node.expression);
+        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
         const wouldSameTypeBeInferred = castTypeIsLiteral
           ? isImplicitlyNarrowedLiteralDeclaration(node)
           : !typeAnnotationIsConstAssertion;
