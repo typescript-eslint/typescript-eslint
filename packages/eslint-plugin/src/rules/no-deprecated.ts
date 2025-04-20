@@ -266,7 +266,7 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function getCallLikeNode(node: TSESTree.Node): CalleeNode | undefined {
+    function getCalleeNode(node: TSESTree.Node): CalleeNode | undefined {
       let callee = node;
 
       while (
@@ -287,10 +287,6 @@ export default createRule<Options, MessageIds>({
         checker.getResolvedSignature(tsNode as ts.CallLikeExpression),
         'Expected call like node to have signature',
       );
-
-      if (node.type === AST_NODE_TYPES.MemberExpression && node.computed) {
-        return getComputedPropertyDeprecation(node);
-      }
 
       const symbol = services.getSymbolAtLocation(node);
       const aliasedSymbol =
@@ -364,16 +360,53 @@ export default createRule<Options, MessageIds>({
       return getJsDocDeprecation(symbol);
     }
 
-    function getDeprecationReason(node: IdentifierLike): string | undefined {
-      const callLikeNode = getCallLikeNode(node);
-      if (callLikeNode) {
-        return getCallLikeDeprecation(callLikeNode);
+    function getReportedNodeName(
+      node: IdentifierLike,
+      context: Readonly<RuleContext<MessageIds, Options>>,
+    ): string {
+      if (node.type === AST_NODE_TYPES.Super) {
+        return 'super';
       }
 
+      if (node.type === AST_NODE_TYPES.PrivateIdentifier) {
+        return `#${node.name}`;
+      }
+
+      if (node.type === AST_NODE_TYPES.Literal) {
+        return String(node.value);
+      }
+
+      if (node.type === AST_NODE_TYPES.TemplateLiteral) {
+        return (
+          getPropertyName(
+            node.parent as TSESTree.MemberExpression,
+            context.sourceCode.getScope(node),
+          ) || ''
+        );
+      }
+
+      if (isInComputedProperty(node)) {
+        return (
+          getPropertyName(
+            node.parent as TSESTree.MemberExpression,
+            context.sourceCode.getScope(node),
+          ) || ''
+        );
+      }
+
+      return node.name;
+    }
+
+    function getDeprecationReason(node: IdentifierLike): string | undefined {
       if (isInComputedProperty(node)) {
         return getComputedPropertyDeprecation(
           node.parent as TSESTree.MemberExpression,
         );
+      }
+
+      const callLikeNode = getCalleeNode(node);
+      if (callLikeNode) {
+        return getCallLikeDeprecation(callLikeNode);
       }
 
       if (
@@ -452,31 +485,3 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
-
-function getReportedNodeName(
-  node: IdentifierLike,
-  context: Readonly<RuleContext<MessageIds, Options>>,
-): string {
-  if (node.type === AST_NODE_TYPES.Super) {
-    return 'super';
-  }
-
-  if (node.type === AST_NODE_TYPES.PrivateIdentifier) {
-    return `#${node.name}`;
-  }
-
-  if (node.type === AST_NODE_TYPES.Literal) {
-    return String(node.value);
-  }
-
-  if (node.type === AST_NODE_TYPES.TemplateLiteral) {
-    return (
-      getPropertyName(
-        node.parent as TSESTree.MemberExpression,
-        context.sourceCode.getScope(node),
-      ) || ''
-    );
-  }
-
-  return node.name;
-}

@@ -909,7 +909,7 @@ exists('/foo');
       errors: [
         {
           column: 11,
-          data: { name: 'key' },
+          data: { name: 'b' },
           endColumn: 14,
           endLine: 6,
           line: 6,
@@ -1296,7 +1296,7 @@ exists('/foo');
       errors: [
         {
           column: 11,
-          data: { name: 'key' },
+          data: { name: 'b' },
           endColumn: 14,
           endLine: 10,
           line: 10,
@@ -1319,7 +1319,7 @@ exists('/foo');
       errors: [
         {
           column: 11,
-          data: { name: 'key' },
+          data: { name: 'b' },
           endColumn: 14,
           endLine: 10,
           line: 10,
@@ -1542,7 +1542,7 @@ exists('/foo');
       errors: [
         {
           column: 11,
-          data: { name: 'key' },
+          data: { name: 'b' },
           endColumn: 14,
           endLine: 10,
           line: 10,
@@ -1565,7 +1565,7 @@ exists('/foo');
       errors: [
         {
           column: 11,
-          data: { name: 'key' },
+          data: { name: 'b' },
           endColumn: 14,
           endLine: 10,
           line: 10,
@@ -2074,7 +2074,7 @@ exists('/foo');
       errors: [
         {
           column: 11,
-          data: { name: 'key' },
+          data: { name: 'a' },
           endColumn: 14,
           endLine: 9,
           line: 9,
