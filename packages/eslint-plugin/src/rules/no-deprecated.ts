@@ -376,16 +376,10 @@ export default createRule<Options, MessageIds>({
         return String(node.value);
       }
 
-      if (node.type === AST_NODE_TYPES.TemplateLiteral) {
-        return (
-          getPropertyName(
-            node.parent as TSESTree.MemberExpression,
-            context.sourceCode.getScope(node),
-          ) || ''
-        );
-      }
-
-      if (isInComputedProperty(node)) {
+      if (
+        node.type === AST_NODE_TYPES.TemplateLiteral ||
+        isInComputedProperty(node)
+      ) {
         return (
           getPropertyName(
             node.parent as TSESTree.MemberExpression,
