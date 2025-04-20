@@ -2,7 +2,7 @@ import type * as ts from 'typescript';
 
 import { getValueOfLiteralType } from '../../src/util/getValueOfLiteralType';
 
-describe('getValueOfLiteralType', () => {
+describe(getValueOfLiteralType, () => {
   it('returns a string for a string literal type', () => {
     const stringLiteralType = {
       value: 'hello' satisfies string,

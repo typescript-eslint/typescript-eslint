@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes only-throw-error 1`] = `
-"
 # SCHEMA:
 
 [
@@ -104,11 +101,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "array"
       },
       "allowThrowingAny": {
-        "description": "Whether to always allow throwing values typed as \`any\`.",
+        "description": "Whether to always allow throwing values typed as `any`.",
         "type": "boolean"
       },
       "allowThrowingUnknown": {
-        "description": "Whether to always allow throwing values typed as \`unknown\`.",
+        "description": "Whether to always allow throwing values typed as `unknown`.",
         "type": "boolean"
       }
     },
@@ -139,11 +136,9 @@ type Options = [
         }
       | string
     )[];
-    /** Whether to always allow throwing values typed as \`any\`. */
+    /** Whether to always allow throwing values typed as `any`. */
     allowThrowingAny?: boolean;
-    /** Whether to always allow throwing values typed as \`unknown\`. */
+    /** Whether to always allow throwing values typed as `unknown`. */
     allowThrowingUnknown?: boolean;
   },
 ];
-"
-`;

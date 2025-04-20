@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-property TSESTree - Tokens 1`] = `
 [
   Keyword {
     type: "Keyword",
@@ -32,9 +29,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-propert
       end: { column: 11, line: 3 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#prop",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "prop",
 
     range: [87, 92],
     loc: {
@@ -82,9 +79,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-propert
       end: { column: 17, line: 4 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#propExplicitWithValue",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "propExplicitWithValue",
 
     range: [105, 127],
     loc: {
@@ -152,9 +149,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-propert
       end: { column: 39, line: 5 },
     },
   },
-  Identifier {
-    type: "Identifier",
-    value: "#propImplicitWithValue",
+  PrivateIdentifier {
+    type: "PrivateIdentifier",
+    value: "propImplicitWithValue",
 
     range: [145, 167],
     loc: {
@@ -213,4 +210,3 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-propert
     },
   },
 ]
-`;

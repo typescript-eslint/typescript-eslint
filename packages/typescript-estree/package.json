@@ -1,11 +1,10 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "8.29.0",
+  "version": "8.30.1",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
     "!*.tsbuildinfo",
-    "_ts4.3",
     "README.md",
     "LICENSE"
   ],
@@ -46,17 +45,16 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts4.3/dist --to=4.3",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf _ts4.3 && rimraf coverage",
+    "postclean": "rimraf dist/ coverage/",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
-    "test": "jest --runInBand --verbose",
+    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "8.29.0",
-    "@typescript-eslint/visitor-keys": "8.29.0",
+    "@typescript-eslint/types": "8.30.1",
+    "@typescript-eslint/visitor-keys": "8.30.1",
     "debug": "^4.3.4",
     "fast-glob": "^3.3.2",
     "is-glob": "^4.0.3",
@@ -65,13 +63,12 @@
     "ts-api-utils": "^2.0.1"
   },
   "devDependencies": {
-    "@jest/types": "29.6.3",
+    "@vitest/coverage-v8": "^3.1.1",
     "glob": "*",
-    "jest": "29.7.0",
     "prettier": "^3.2.5",
     "rimraf": "*",
-    "tmp": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "vitest": "^3.1.1"
   },
   "peerDependencies": {
     "typescript": ">=4.8.4 <5.9.0"
@@ -79,12 +76,5 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
-  },
-  "typesVersions": {
-    "<4.7": {
-      "*": [
-        "_ts4.3/*"
-      ]
-    }
   }
 }

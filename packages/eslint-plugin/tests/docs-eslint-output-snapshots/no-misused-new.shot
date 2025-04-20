@@ -1,11 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-misused-new.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 declare class C {
   new(): C;
-  ~~~~~~~~~ Class cannot have method named \`new\`.
+  ~~~~~~~~~ Class cannot have method named `new`.
 }
 
 interface I {
@@ -14,11 +11,8 @@ interface I {
   constructor(): void;
   ~~~~~~~~~~~~~~~~~~~~ Interfaces cannot be constructed, only classes.
 }
-"
-`;
 
-exports[`Validating rule docs no-misused-new.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 declare class C {
   constructor();
@@ -27,5 +21,3 @@ declare class C {
 interface I {
   new (): C;
 }
-"
-`;

@@ -247,4 +247,73 @@ describe('config helper', () => {
       { rules: { rule: 'error' } },
     ]);
   });
+
+  it('does not create global ignores in extends', () => {
+    const configWithIgnores = plugin.config({
+      extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+      ignores: ['ignored'],
+    });
+
+    expect(configWithIgnores).toEqual([
+      { ignores: ['ignored'], rules: { rule1: 'error' } },
+      { ignores: ['ignored'], rules: { rule2: 'error' } },
+    ]);
+    expect(configWithIgnores).not.toContainEqual(
+      // Should not create global ignores
+      { ignores: ['ignored'] },
+    );
+  });
+
+  it('creates noop config in extends', () => {
+    const configWithMetadata = plugin.config({
+      extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+      files: ['file'],
+      ignores: ['ignored'],
+      name: 'my-config',
+    });
+
+    expect(configWithMetadata).toEqual([
+      {
+        files: ['file'],
+        ignores: ['ignored'],
+        name: 'my-config',
+        rules: { rule1: 'error' },
+      },
+      {
+        files: ['file'],
+        ignores: ['ignored'],
+        name: 'my-config',
+        rules: { rule2: 'error' },
+      },
+      // it would also be ok for this not to be present, but we want to align
+      // with the eslint `defineConfig()` behavior.
+      {
+        files: ['file'],
+        ignores: ['ignored'],
+        name: 'my-config',
+      },
+    ]);
+  });
+
+  it('does not create global ignores when extending empty configs', () => {
+    expect(
+      plugin.config({
+        extends: [{ rules: { rule1: 'error' } }, {}],
+        ignores: ['ignored'],
+      }),
+    ).toEqual([
+      { ignores: ['ignored'], rules: { rule1: 'error' } },
+      // Should not create global ignores
+      {},
+    ]);
+  });
+
+  it('handles name field when global-ignoring in extension', () => {
+    expect(
+      plugin.config({
+        extends: [{ ignores: ['files/**/*'], name: 'global-ignore-stuff' }],
+        ignores: ['ignored'],
+      }),
+    ).toEqual([{ ignores: ['files/**/*'], name: 'global-ignore-stuff' }]);
+  });
 });

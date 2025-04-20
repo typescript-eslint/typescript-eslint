@@ -1,9 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSDeclareFunction _error_ generator-overload TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > TSDeclareFunction > _error_ > generator-overload > TSESTree - Error`]
+TSError
 > 1 | function* foo(): any;
     | ^^^^^^^^^^^^^^^^^^^^^ A function signature cannot be declared as a generator.
   2 | function* foo(): any {}
-  3 |"
-`;
+  3 |
