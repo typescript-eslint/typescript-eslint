@@ -1,3 +1,15 @@
+## 8.31.0 (2025-04-21)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] add option to ignore string const assertions ([#10979](https://github.com/typescript-eslint/typescript-eslint/pull/10979))
+
+### ❤️ Thank You
+
+- Nicolas Le Cam
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.30.1 (2025-04-14)
 
 ### 🩹 Fixes

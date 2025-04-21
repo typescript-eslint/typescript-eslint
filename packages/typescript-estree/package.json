@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "8.30.1",
+  "version": "8.31.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -53,8 +53,8 @@
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "8.30.1",
-    "@typescript-eslint/visitor-keys": "8.30.1",
+    "@typescript-eslint/types": "8.31.0",
+    "@typescript-eslint/visitor-keys": "8.31.0",
     "debug": "^4.3.4",
     "fast-glob": "^3.3.2",
     "is-glob": "^4.0.3",
