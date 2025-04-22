@@ -152,6 +152,7 @@ export type MessageId =
   | 'neverOptionalChain'
   | 'noOverlapBooleanExpression'
   | 'noStrictNullCheck'
+  | 'suggestRemoveOptionalChain'
   | 'typeGuardAlreadyIsType';
 
 export default createRule<Options, MessageId>({
@@ -164,7 +165,7 @@ export default createRule<Options, MessageId>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
+    hasSuggestions: true,
     messages: {
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
       alwaysFalsyFunc:
@@ -184,6 +185,7 @@ export default createRule<Options, MessageId>({
         'Unnecessary conditional, the types have no overlap.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      suggestRemoveOptionalChain: 'Remove unnecessary optional chain',
       typeGuardAlreadyIsType:
         'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
     },
@@ -863,9 +865,14 @@ export default createRule<Options, MessageId>({
         loc: questionDotOperator.loc,
         node,
         messageId: 'neverOptionalChain',
-        fix(fixer) {
-          return fixer.replaceText(questionDotOperator, fix);
-        },
+        suggest: [
+          {
+            messageId: 'suggestRemoveOptionalChain',
+            fix(fixer) {
+              return fixer.replaceText(questionDotOperator, fix);
+            },
+          },
+        ],
       });
     }
 
