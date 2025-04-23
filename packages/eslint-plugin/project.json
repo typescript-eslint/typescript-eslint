@@ -8,6 +8,13 @@
     "lint": {
       "executor": "@nx/eslint:lint"
     },
+    "test-single": {
+      "cache": false,
+      "executor": "@nx/vite:test",
+      "options": {
+        "coverage": false
+      }
+    },
     "generate-breaking-changes": {
       "executor": "nx:run-script",
       "options": {
