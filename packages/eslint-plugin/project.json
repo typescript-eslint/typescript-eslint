@@ -15,6 +15,9 @@
         "coverage": false
       }
     },
+    "test": {
+      "executor": "@nx/vite:test"
+    },
     "generate-breaking-changes": {
       "executor": "nx:run-script",
       "options": {
