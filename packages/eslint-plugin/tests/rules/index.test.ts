@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import * as path from 'node:path';
 
 import rules from '../../src/rules';
 
@@ -7,7 +8,7 @@ describe('./src/rules/index.ts', () => {
     .map(name => `${name}.ts`)
     .sort();
   const files = fs
-    .readdirSync('./src/rules')
+    .readdirSync(path.join(__dirname, '..', '..', 'src', 'rules'))
     .filter(file => file !== 'index.ts' && file.endsWith('.ts'));
 
   it('imports all available rule modules', () => {
