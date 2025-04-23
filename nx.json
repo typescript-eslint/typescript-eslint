@@ -29,13 +29,6 @@
         "buildDepsTargetName": "vite:build-deps",
         "watchDepsTargetName": "vite:watch-deps"
       }
-    },
-    {
-      "plugin": "@nx/jest/plugin",
-      "include": ["packages/*"],
-      "options": {
-        "targetName": "test"
-      }
     }
   ],
   "release": {
@@ -72,27 +65,6 @@
       "dependsOn": ["^build"],
       "outputs": ["{projectRoot}/coverage"],
       "cache": true
-    },
-    "@nx/jest:jest": {
-      "dependsOn": ["^build"],
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/jest.config.js",
-        "{workspaceRoot}/jest.config.base.js"
-      ],
-      "outputs": ["{projectRoot}/coverage"],
-      "cache": true,
-      "options": {
-        "jestConfig": "{projectRoot}/jest.config.js",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
-      }
     },
     "@nx/eslint:lint": {
       "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
@@ -158,9 +130,9 @@
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(test).?(m|c)[jt]s?(x)?(.snap|.shot)",
+      "!{projectRoot}/tests",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.js",
-      "!{projectRoot}/vitest.config.m[jt]s",
+      "!{projectRoot}/vitest.config.mts",
       "!{projectRoot}/src/test-setup.[jt]s"
     ]
   }

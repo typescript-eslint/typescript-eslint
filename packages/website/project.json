@@ -6,12 +6,7 @@
   "sourceRoot": "packages/website/src",
   "targets": {
     "start": {
-      "dependsOn": [
-        {
-          "projects": ["website-eslint"],
-          "target": "build"
-        }
-      ],
+      "dependsOn": ["website-eslint:build"],
       "executor": "nx:run-commands",
       "options": {
         "cwd": "{projectRoot}",
