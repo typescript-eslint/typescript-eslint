@@ -14,13 +14,12 @@
   "scripts": {
     "format": "yarn run -T format",
     "lint": "yarn run -BT nx lint",
-    "test": "jest --no-coverage",
+    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
     "check-types": "yarn run -BT nx typecheck"
   },
   "devDependencies": {
-    "@jest/types": "29.6.3",
-    "jest": "29.7.0",
-    "tsx": "*",
-    "typescript": "*"
+    "@vitest/coverage-v8": "^3.1.1",
+    "typescript": "*",
+    "vitest": "^3.1.1"
   }
 }

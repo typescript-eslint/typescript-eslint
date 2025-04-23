@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs dot-notation.mdx code examples ESLint output 1`] = `
-"Options: { "allowPrivateClassPropertyAccess": true }
+Options: { "allowPrivateClassPropertyAccess": true }
 
 class X {
   private priv_prop = 123;
@@ -9,11 +6,8 @@ class X {
 
 const x = new X();
 x['priv_prop'] = 123;
-"
-`;
 
-exports[`Validating rule docs dot-notation.mdx code examples ESLint output 2`] = `
-"Options: { "allowProtectedClassPropertyAccess": true }
+Options: { "allowProtectedClassPropertyAccess": true }
 
 class X {
   protected protected_prop = 123;
@@ -21,11 +15,8 @@ class X {
 
 const x = new X();
 x['protected_prop'] = 123;
-"
-`;
 
-exports[`Validating rule docs dot-notation.mdx code examples ESLint output 3`] = `
-"Options: { "allowIndexSignaturePropertyAccess": true }
+Options: { "allowIndexSignaturePropertyAccess": true }
 
 class X {
   [key: string]: number;
@@ -33,5 +24,3 @@ class X {
 
 const x = new X();
 x['hello'] = 123;
-"
-`;

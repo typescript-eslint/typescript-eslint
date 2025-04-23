@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "8.29.1",
+  "version": "8.31.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -43,12 +43,15 @@
     "format": "yarn run -T format",
     "generate-lib": "yarn run -BT nx run scope-manager:generate-lib",
     "lint": "yarn run -BT nx lint",
+    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
     "check-types": "yarn run -BT nx typecheck"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^3.1.1",
     "rimraf": "*",
     "tsx": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "vitest": "^3.1.1"
   },
   "funding": {
     "type": "opencollective",
