@@ -1,16 +1,8 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true,
     "outDir": "./dist/out-tsc/root/vitest",
     "resolveJsonModule": true
   },
-  "include": [
-    "package.json",
-    "jest.config.base.js",
-    "jest.config.js",
-    "vitest.config.base.mts",
-    "vitest.config.mts"
-  ]
+  "include": ["package.json", "vitest.config.base.mts", "vitest.config.mts"]
 }
