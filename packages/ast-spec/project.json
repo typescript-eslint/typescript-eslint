@@ -13,9 +13,6 @@
       "executor": "@nx/eslint:lint"
     },
     "test": {
-      "dependsOn": ["typecheck"]
-    },
-    "test": {
       "executor": "@nx/vite:test",
       "dependsOn": ["typecheck"]
     },
