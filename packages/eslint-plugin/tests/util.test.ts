@@ -1,6 +1,6 @@
 import { isDefinitionFile, upperCaseFirst } from '../src/util';
 
-describe('isDefinitionFile', () => {
+describe(isDefinitionFile, () => {
   describe('returns false for non-definition files', () => {
     const invalid = [
       'test.js',
@@ -38,7 +38,7 @@ describe('isDefinitionFile', () => {
   });
 });
 
-describe('upperCaseFirst', () => {
+describe(upperCaseFirst, () => {
   it('upper cases first', () => {
     expect(upperCaseFirst('hello')).toBe('Hello');
   });
