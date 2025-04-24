@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { SourceCode } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -20,7 +21,6 @@ import {
   skipChainExpression,
   isParenthesized,
 } from '../util';
-import { SourceCode } from '@typescript-eslint/utils/ts-eslint';
 
 const isMemberAccessLike = isNodeOfTypes([
   AST_NODE_TYPES.ChainExpression,
