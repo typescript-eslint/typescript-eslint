@@ -1,7 +1,9 @@
 {
   "name": "types",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "type": "library",
+  "projectType": "library",
+  "root": "packages/types",
+  "sourceRoot": "packages/types/src",
   "implicitDependencies": ["ast-spec"],
   "targets": {
     "lint": {

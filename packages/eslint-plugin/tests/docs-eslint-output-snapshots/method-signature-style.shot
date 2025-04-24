@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs method-signature-style.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 Options: "property"
 
 interface T1 {
@@ -20,11 +17,8 @@ interface T3 {
   func(arg: boolean): void;
   ~~~~~~~~~~~~~~~~~~~~~~~~~ Shorthand method signature is forbidden. Use a function property instead.
 }
-"
-`;
 
-exports[`Validating rule docs method-signature-style.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 Options: "property"
 
 interface T1 {
@@ -39,11 +33,8 @@ interface T3 {
     ((arg: string) => void) &
     ((arg: boolean) => void);
 }
-"
-`;
 
-exports[`Validating rule docs method-signature-style.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: "method"
 
 interface T1 {
@@ -54,11 +45,8 @@ type T2 = {
   func: (arg: boolean) => void;
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Function property signature is forbidden. Use a method shorthand instead.
 };
-"
-`;
 
-exports[`Validating rule docs method-signature-style.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 Options: "method"
 
 interface T1 {
@@ -67,5 +55,3 @@ interface T1 {
 type T2 = {
   func(arg: boolean): void;
 };
-"
-`;

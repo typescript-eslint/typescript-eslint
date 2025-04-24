@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > jsx > JSXNamespacedName > component > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -252,7 +252,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - AST 1`] = 
               computed: false,
               key: Literal {
                 type: 'Literal',
-                raw: '\\'a:b\\'',
+                raw: '\'a:b\'',
                 value: 'a:b',
 
                 range: [159, 164],
@@ -349,7 +349,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - AST 1`] = 
                       optional: false,
                       property: Literal {
                         type: 'Literal',
-                        raw: '\\'a:b\\'',
+                        raw: '\'a:b\'',
                         value: 'a:b',
 
                         range: [268, 273],
@@ -509,5 +509,4 @@ exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - AST 1`] = 
       start: { column: 0, line: 1 },
       end: { column: 0, line: 11 },
     },
-  }"
-`;
+  }

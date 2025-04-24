@@ -92,53 +92,131 @@ export type ConfigArray = TSESLint.FlatConfig.ConfigArray;
 export function config(
   ...configs: InfiniteDepthConfigWithExtends[]
 ): ConfigArray {
-  const flattened =
-    // @ts-expect-error -- intentionally an infinite type
-    configs.flat(Infinity) as ConfigWithExtends[];
-  return flattened.flatMap((configWithExtends, configIndex) => {
-    const { extends: extendsArr, ...config } = configWithExtends;
-    if (extendsArr == null || extendsArr.length === 0) {
-      return config;
-    }
-    const extendsArrFlattened = extendsArr.flat(
-      Infinity,
-    ) as ConfigWithExtends[];
+  return configImpl(...configs);
+}
 
-    const undefinedExtensions = extendsArrFlattened.reduce<number[]>(
-      (acc, extension, extensionIndex) => {
-        const maybeExtension = extension as
-          | TSESLint.FlatConfig.Config
-          | undefined;
-        if (maybeExtension == null) {
-          acc.push(extensionIndex);
+// Implementation of the config function without assuming the runtime type of
+// the input.
+function configImpl(...configs: unknown[]): ConfigArray {
+  const flattened = configs.flat(Infinity);
+  return flattened.flatMap(
+    (
+      configWithExtends,
+      configIndex,
+    ): TSESLint.FlatConfig.Config | TSESLint.FlatConfig.Config[] => {
+      if (
+        configWithExtends == null ||
+        typeof configWithExtends !== 'object' ||
+        !('extends' in configWithExtends)
+      ) {
+        // Unless the object is a config object with extends key, just forward it
+        // along to eslint.
+        return configWithExtends as TSESLint.FlatConfig.Config;
+      }
+
+      const { extends: extendsArr, ..._config } = configWithExtends;
+      const config = _config as {
+        name?: unknown;
+        extends?: unknown;
+        files?: unknown;
+        ignores?: unknown;
+      };
+
+      if (extendsArr == null) {
+        // If the extends value is nullish, just forward along the rest of the
+        // config object to eslint.
+        return config as TSESLint.FlatConfig.Config;
+      }
+
+      const name = ((): string | undefined => {
+        if ('name' in configWithExtends && configWithExtends.name != null) {
+          if (typeof configWithExtends.name !== 'string') {
+            throw new Error(
+              `tseslint.config(): Config at index ${configIndex} has a 'name' property that is not a string.`,
+            );
+          }
+          return configWithExtends.name;
         }
-        return acc;
-      },
-      [],
-    );
-    if (undefinedExtensions.length) {
-      const configName =
-        configWithExtends.name != null
-          ? `, named "${configWithExtends.name}",`
-          : ' (anonymous)';
-      const extensionIndices = undefinedExtensions.join(', ');
-      throw new Error(
-        `Your config at index ${configIndex}${configName} contains undefined` +
-          ` extensions at the following indices: ${extensionIndices}.`,
-      );
-    }
+        return undefined;
+      })();
+      const nameErrorPhrase =
+        name != null ? `, named "${name}",` : ' (anonymous)';
 
-    return [
-      ...extendsArrFlattened.map(extension => {
-        const name = [config.name, extension.name].filter(Boolean).join('__');
-        return {
-          ...extension,
-          ...(config.files && { files: config.files }),
-          ...(config.ignores && { ignores: config.ignores }),
-          ...(name && { name }),
+      if (!Array.isArray(extendsArr)) {
+        throw new TypeError(
+          `tseslint.config(): Config at index ${configIndex}${nameErrorPhrase} has an 'extends' property that is not an array.`,
+        );
+      }
+
+      const extendsArrFlattened = (extendsArr as unknown[]).flat(Infinity);
+
+      const nonObjectExtensions = [];
+      for (const [extensionIndex, extension] of extendsArrFlattened.entries()) {
+        // special error message to be clear we don't support eslint's stringly typed extends.
+        // https://eslint.org/docs/latest/use/configure/configuration-files#extending-configurations
+        if (typeof extension === 'string') {
+          throw new Error(
+            `tseslint.config(): Config at index ${configIndex}${nameErrorPhrase} has an 'extends' array that contains a string (${JSON.stringify(extension)}) at index ${extensionIndex}.` +
+              " This is a feature of eslint's `defineConfig()` helper and is not supported by typescript-eslint." +
+              ' Please provide a config object instead.',
+          );
+        }
+        if (extension == null || typeof extension !== 'object') {
+          nonObjectExtensions.push(extensionIndex);
+        }
+      }
+      if (nonObjectExtensions.length > 0) {
+        const extensionIndices = nonObjectExtensions.join(', ');
+        throw new Error(
+          `tseslint.config(): Config at index ${configIndex}${nameErrorPhrase} contains non-object` +
+            ` extensions at the following indices: ${extensionIndices}.`,
+        );
+      }
+
+      const configArray = [];
+
+      for (const _extension of extendsArrFlattened) {
+        const extension = _extension as {
+          name?: unknown;
+          files?: unknown;
+          ignores?: unknown;
         };
-      }),
-      config,
-    ];
-  });
+        const resolvedConfigName = [name, extension.name]
+          .filter(Boolean)
+          .join('__');
+        if (isPossiblyGlobalIgnores(extension)) {
+          // If it's a global ignores, then just pass it along
+          configArray.push({
+            ...extension,
+            ...(resolvedConfigName !== '' ? { name: resolvedConfigName } : {}),
+          });
+        } else {
+          configArray.push({
+            ...extension,
+            ...(config.files ? { files: config.files } : {}),
+            ...(config.ignores ? { ignores: config.ignores } : {}),
+            ...(resolvedConfigName !== '' ? { name: resolvedConfigName } : {}),
+          });
+        }
+      }
+
+      // If the base config could form a global ignores object, then we mustn't include
+      // it in the output. Otherwise, we must add it in order for it to have effect.
+      if (!isPossiblyGlobalIgnores(config)) {
+        configArray.push(config);
+      }
+
+      return configArray as ConfigArray;
+    },
+  );
+}
+
+/**
+ * This utility function returns false if the config objects contains any field
+ * that would prevent it from being considered a global ignores object and true
+ * otherwise. Note in particular that the `ignores` field may not be present and
+ * the return value can still be true.
+ */
+function isPossiblyGlobalIgnores(config: object): boolean {
+  return Object.keys(config).every(key => ['name', 'ignores'].includes(key));
 }
