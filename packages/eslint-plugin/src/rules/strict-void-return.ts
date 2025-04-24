@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -8,10 +8,8 @@ import * as util from '../util';
 
 type Options = [
   {
-    allowReturnPromiseIfTryCatch?: boolean;
-    allowReturnUndefined?: boolean;
-    allowReturnNull?: boolean;
     allowReturnAny?: boolean;
+    allowReturnPromiseIfTryCatch?: boolean;
   },
 ];
 
@@ -96,20 +94,10 @@ export default util.createRule<Options, MessageId>({
             description:
               'Whether to allow functions returning `any` to be used in place expecting a `void` function.',
           },
-          allowReturnNull: {
-            type: 'boolean',
-            description:
-              'Whether to allow functions returning `null` to be used in place expecting a `void` function.',
-          },
           allowReturnPromiseIfTryCatch: {
             type: 'boolean',
             description:
               'Whether to allow functions returning a promise if the function is na async function expression whose whole body is wrapped in a try-catch block. This offers an alternative to an async IIFE for handling errors in async callbacks.',
-          },
-          allowReturnUndefined: {
-            type: 'boolean',
-            description:
-              "Whether to allow functions returning `undefined` to be used in place expecting a `void` function. When disabled, `void` operator can't be used to discard the return value, because it evaluates to undefined. Disable this to enforce a consistent style across the codebase.",
           },
         },
       },
@@ -117,9 +105,8 @@ export default util.createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
-      allowReturnNull: false,
+      allowReturnAny: false,
       allowReturnPromiseIfTryCatch: true,
-      allowReturnUndefined: true,
     },
   ],
 
@@ -232,11 +219,9 @@ export default util.createRule<Options, MessageId>({
       msgId: ErrorPlaceId,
       data?: Record<string, string>,
     ): boolean {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      ESLintUtils.assert(
-        ts.isExpression(tsNode),
-        'TS node must be an expression.',
-      );
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+        node,
+      ) as ts.Expression;
       const expectedType = checker.getContextualType(tsNode);
 
       if (expectedType != null && isVoidReturningFunctionType(expectedType)) {
@@ -346,11 +331,7 @@ export default util.createRule<Options, MessageId>({
           // Don't check object methods with computed name.
           return;
         }
-        const objTsNode = propTsNode.parent;
-        ESLintUtils.assert(
-          ts.isObjectLiteralExpression(objTsNode),
-          "Property node's parent must be an object.",
-        );
+        const objTsNode = propTsNode.parent as ts.ObjectLiteralExpression;
         const objType = checker.getContextualType(objTsNode);
         if (objType == null) {
           // Expected object type is unknown.
@@ -476,8 +457,7 @@ export default util.createRule<Options, MessageId>({
       const allowedReturnType =
         ts.TypeFlags.Void |
         ts.TypeFlags.Never |
-        (options.allowReturnUndefined ? ts.TypeFlags.Undefined : 0) |
-        (options.allowReturnNull ? ts.TypeFlags.Null : 0) |
+        ts.TypeFlags.Undefined |
         (options.allowReturnAny ? ts.TypeFlags.Any : 0);
 
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(funcNode);
@@ -557,10 +537,6 @@ export default util.createRule<Options, MessageId>({
 
       if (funcNode.body.type !== AST_NODE_TYPES.BlockStatement) {
         // The provided function is an arrow function shorthand without braces.
-        ESLintUtils.assertNode(
-          funcNode,
-          AST_NODE_TYPES.ArrowFunctionExpression,
-        );
         // TODO: Fix it by removing the body or adding a void operator or braces.
         return context.report({
           node: funcNode.body,

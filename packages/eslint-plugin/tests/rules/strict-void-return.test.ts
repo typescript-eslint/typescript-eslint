@@ -293,18 +293,10 @@ ruleTester.run('strict-void-return', rule, {
     {
       code: `
         declare function foo(cb: () => void): void;
-        foo(() => null);
-      `,
-      options: [{ allowReturnNull: true }],
-    },
-    {
-      code: `
-        declare function foo(cb: () => void): void;
         foo(function () {
           return;
         });
       `,
-      options: [{ allowReturnNull: false, allowReturnUndefined: false }],
     },
     {
       code: `
@@ -321,7 +313,6 @@ ruleTester.run('strict-void-return', rule, {
           return;
         });
       `,
-      options: [{ allowReturnNull: false }],
     },
     {
       code: `
@@ -375,11 +366,10 @@ ruleTester.run('strict-void-return', rule, {
         declare function foo(...cbs: Array<() => void>): void;
         foo(
           () => {},
-          () => null,
+          () => void null,
           () => undefined,
         );
       `,
-      options: [{ allowReturnNull: true }],
     },
     {
       code: `
@@ -393,11 +383,10 @@ ruleTester.run('strict-void-return', rule, {
         declare function foo(...cbs: [() => any, () => void, (() => void)?]): void;
         foo(
           async () => {},
-          () => null,
+          () => void null,
           () => undefined,
         );
       `,
-      options: [{ allowReturnNull: true }],
     },
     {
       code: `
@@ -442,10 +431,9 @@ ruleTester.run('strict-void-return', rule, {
         type Foo = () => void;
         const foo: Foo = cb;
         function cb() {
-          return null;
+          return void null;
         }
       `,
-      options: [{ allowReturnNull: true }],
     },
     {
       code: `
@@ -557,9 +545,8 @@ ruleTester.run('strict-void-return', rule, {
     {
       code: `
         declare function foo(cbs: { arg: number; cb: () => void }): void;
-        foo({ arg: 1, cb: () => null });
+        foo({ arg: 1, cb: () => undefined });
       `,
-      options: [{ allowReturnNull: true }],
     },
     {
       code: `
@@ -1047,7 +1034,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      options: [{ allowReturnUndefined: false }],
     },
     {
       code: `
@@ -1223,7 +1209,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      options: [{ allowReturnNull: false }],
     },
     {
       code: `
@@ -1248,7 +1233,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      options: [{ allowReturnNull: false }],
     },
     {
       code: `
@@ -1414,7 +1398,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      options: [{ allowReturnUndefined: false }],
     },
     {
       code: `
@@ -1539,7 +1522,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'asyncFuncInVar',
         },
       ],
-      options: [{ allowReturnUndefined: false }],
     },
     {
       code: 'const cb: () => void = (): Array<number> => [];',
@@ -1588,7 +1570,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      options: [{ allowReturnUndefined: false }],
     },
     {
       code: `
@@ -1606,7 +1587,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      options: [{ allowReturnUndefined: false }],
     },
     {
       code: 'const cb: () => void = async (): Promise<number> => Promise.resolve(1);',
@@ -1673,16 +1653,7 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'asyncFuncInVar',
         },
       ],
-      options: [{ allowReturnUndefined: false }],
     },
-    // TODO: Check every union type separately
-    // {
-    //   code: `
-    //     declare let foo: (() => void) | (() => boolean);
-    //     foo = () => 1;
-    //   `,
-    //   errors: [{ messageId: 'nonVoidReturnInVar', data: {varName: throw}, line: 3, column: 21 }],
-    // },
     {
       code: 'const foo: () => void = (): number => {};',
       errors: [
@@ -1714,7 +1685,7 @@ ruleTester.run('strict-void-return', rule, {
           if (maybe) {
             return null;
           } else {
-            return void 0;
+            return null;
           }
         };
       `,
@@ -1732,7 +1703,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      options: [{ allowReturnNull: false, allowReturnUndefined: false }],
     },
     {
       code: `
@@ -1751,7 +1721,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      options: [{ allowReturnUndefined: false }],
     },
     {
       code: `
@@ -1794,7 +1763,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'asyncFuncInVar',
         },
       ],
-      options: [{ allowReturnUndefined: false }],
     },
     {
       code: `
@@ -1952,7 +1920,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       filename: 'react.tsx',
-      options: [{ allowReturnNull: false, allowReturnUndefined: false }],
     },
     {
       code: `
@@ -2425,7 +2392,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInExtMember',
         },
       ],
-      options: [{ allowReturnUndefined: false }],
     },
     {
       code: `
@@ -2670,7 +2636,6 @@ ruleTester.run('strict-void-return', rule, {
         foo = () => () => Math.random();
       `,
       errors: [{ column: 27, line: 3, messageId: 'nonVoidReturnInReturn' }],
-      options: [{ allowReturnUndefined: false }],
     },
     {
       code: `
@@ -2702,7 +2667,6 @@ ruleTester.run('strict-void-return', rule, {
         };
       `,
       errors: [{ column: 13, line: 5, messageId: 'nonVoidReturnInReturn' }],
-      options: [{ allowReturnNull: false }],
     },
     {
       code: `
@@ -2748,7 +2712,6 @@ ruleTester.run('strict-void-return', rule, {
         { column: 11, line: 16, messageId: 'nonVoidReturnInReturn' },
       ],
       filename: 'react.tsx',
-      options: [{ allowReturnUndefined: false }],
     },
     {
       code: `

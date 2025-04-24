@@ -12,16 +12,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Whether to allow functions returning \`any\` to be used in place expecting a \`void\` function.",
         "type": "boolean"
       },
-      "allowReturnNull": {
-        "description": "Whether to allow functions returning \`null\` to be used in place expecting a \`void\` function.",
-        "type": "boolean"
-      },
       "allowReturnPromiseIfTryCatch": {
         "description": "Whether to allow functions returning a promise if the function is na async function expression whose whole body is wrapped in a try-catch block. This offers an alternative to an async IIFE for handling errors in async callbacks.",
-        "type": "boolean"
-      },
-      "allowReturnUndefined": {
-        "description": "Whether to allow functions returning \`undefined\` to be used in place expecting a \`void\` function. When disabled, \`void\` operator can't be used to discard the return value, because it evaluates to undefined. Disable this to enforce a consistent style across the codebase.",
         "type": "boolean"
       }
     },
@@ -36,12 +28,8 @@ type Options = [
   {
     /** Whether to allow functions returning \`any\` to be used in place expecting a \`void\` function. */
     allowReturnAny?: boolean;
-    /** Whether to allow functions returning \`null\` to be used in place expecting a \`void\` function. */
-    allowReturnNull?: boolean;
     /** Whether to allow functions returning a promise if the function is na async function expression whose whole body is wrapped in a try-catch block. This offers an alternative to an async IIFE for handling errors in async callbacks. */
     allowReturnPromiseIfTryCatch?: boolean;
-    /** Whether to allow functions returning \`undefined\` to be used in place expecting a \`void\` function. When disabled, \`void\` operator can't be used to discard the return value, because it evaluates to undefined. Disable this to enforce a consistent style across the codebase. */
-    allowReturnUndefined?: boolean;
   },
 ];
 "

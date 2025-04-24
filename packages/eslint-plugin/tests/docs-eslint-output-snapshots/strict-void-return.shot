@@ -271,66 +271,6 @@ const cb: () => void = () => {
 
 exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 19`] = `
 "Incorrect
-Options: { "allowReturnUndefined": false }
-
-let cb: () => void;
-
-cb = () => undefined;
-           ~~~~~~~~~ Value returned in \`cb\`, which is declared as a void function.
-
-cb = () => {
-  return void 0;
-  ~~~~~~ Value returned in \`cb\`, which is declared as a void function.
-};
-"
-`;
-
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 20`] = `
-"Correct
-Options: { "allowReturnUndefined": false }
-
-let cb: () => void;
-
-cb = () => {};
-
-cb = () => {
-  return;
-};
-"
-`;
-
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 21`] = `
-"Incorrect
-Options: { "allowReturnNull": false }
-
-let cb: () => void;
-
-cb = () => null;
-           ~~~~ Value returned in \`cb\`, which is declared as a void function.
-
-cb = () => {
-  return null;
-  ~~~~~~ Value returned in \`cb\`, which is declared as a void function.
-};
-"
-`;
-
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 22`] = `
-"Correct
-Options: { "allowReturnNull": false }
-
-let cb: () => void;
-
-cb = () => {};
-
-cb = () => {
-  return;
-};
-"
-`;
-
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 23`] = `
-"Incorrect
 Options: { "allowReturnAny": false }
 
 declare function fn(cb: () => void): void;
@@ -345,7 +285,7 @@ fn(() => {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 24`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 20`] = `
 "Correct
 Options: { "allowReturnAny": false }
 

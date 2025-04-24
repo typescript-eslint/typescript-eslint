@@ -1,5 +1,4 @@
-import { ESLintUtils } from '@typescript-eslint/utils';
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
 
 /**
  * Given a member of a class which extends another class or implements an interface,
@@ -13,15 +12,12 @@ export function* getBaseTypesOfClassMember(
   baseMemberType: ts.Type;
   heritageToken: ts.SyntaxKind.ExtendsKeyword | ts.SyntaxKind.ImplementsKeyword;
 }> {
-  ESLintUtils.assert(
-    ts.isClassLike(memberTsNode.parent),
-    'Node passed to getBaseTypesOfClassMember must have a class-like parent.',
-  );
+  const classNode = memberTsNode.parent as ts.ClassLikeDeclaration;
   const memberSymbol = checker.getSymbolAtLocation(memberTsNode.name);
   if (memberSymbol == null) {
     return;
   }
-  for (const clauseNode of memberTsNode.parent.heritageClauses ?? []) {
+  for (const clauseNode of classNode.heritageClauses ?? []) {
     for (const baseTypeNode of clauseNode.types) {
       const baseType = checker.getTypeAtLocation(baseTypeNode);
       const baseMemberSymbol = checker.getPropertyOfType(
