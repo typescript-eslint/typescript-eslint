@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
+import type { TestContext } from 'vitest';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -40,6 +41,7 @@ describe(isTypeReadonly, () => {
       code: string,
       options: ReadonlynessOptions | undefined,
       expected: boolean,
+      { expect }: TestContext,
     ): void {
       const { program, type } = getType(code);
 
@@ -50,46 +52,52 @@ describe(isTypeReadonly, () => {
     describe('default options', () => {
       const options = undefined;
 
-      function runTestIsReadonly(code: string): void {
-        runTestForAliasDeclaration(code, options, true);
+      function runTestIsReadonly(
+        [code]: readonly [code: string],
+        testContext: TestContext,
+      ): void {
+        runTestForAliasDeclaration(code, options, true, testContext);
       }
 
-      function runTestIsNotReadonly(code: string): void {
-        runTestForAliasDeclaration(code, options, false);
+      function runTestIsNotReadonly(
+        [code]: readonly [code: string],
+        testContext: TestContext,
+      ): void {
+        runTestForAliasDeclaration(code, options, false, testContext);
       }
 
       describe('basics', () => {
-        describe('is readonly', { timeout: 10_000 }, () => {
+        describe('is readonly', () => {
           const runTests = runTestIsReadonly;
 
           // Record.
-          it.each([
+          it.for([
             ['type Test = { readonly bar: string; };'],
             ['type Test = Readonly<{ bar: string; }>;'],
           ] as const)('handles fully readonly records', runTests);
 
           // Array.
-          it.each([
+          it.for([
             ['type Test = Readonly<readonly string[]>;'],
             ['type Test = Readonly<ReadonlyArray<string>>;'],
           ] as const)('handles fully readonly arrays', runTests);
 
           // Array - special case.
           // Note: Methods are mutable but arrays are treated special; hence no failure.
-          it.each([
+          it.for([
             ['type Test = readonly string[];'],
             ['type Test = ReadonlyArray<string>;'],
           ] as const)('treats readonly arrays as fully readonly', runTests);
 
           // Set and Map.
-          it.each([
+          it.for([
             ['type Test = Readonly<ReadonlySet<string>>;'],
             ['type Test = Readonly<ReadonlyMap<string, string>>;'],
           ] as const)('handles fully readonly sets and maps', runTests);
 
           // Private Identifier.
           // Note: It can't be accessed from outside of class thus exempt from the checks.
-          it.each([
+          it.for([
             ['class Foo { readonly #readonlyPrivateField = "foo"; }'],
             ['class Foo { #privateField = "foo"; }'],
             ['class Foo { #privateMember() {}; }'],
@@ -100,20 +108,20 @@ describe(isTypeReadonly, () => {
           const runTests = runTestIsNotReadonly;
 
           // Record.
-          it.each([
+          it.for([
             ['type Test = { foo: string; };'],
             ['type Test = { foo: string; readonly bar: number; };'],
           ] as const)('handles non fully readonly records', runTests);
 
           // Array.
-          it.each([
+          it.for([
             ['type Test = string[]'],
             ['type Test = Array<string>'],
           ] as const)('handles non fully readonly arrays', runTests);
 
           // Set and Map.
           // Note: Methods are mutable for ReadonlySet and ReadonlyMet; hence failure.
-          it.each([
+          it.for([
             ['type Test = Set<string>;'],
             ['type Test = Map<string, string>;'],
             ['type Test = ReadonlySet<string>;'],
@@ -126,7 +134,7 @@ describe(isTypeReadonly, () => {
         describe('is readonly', () => {
           const runTests = runTestIsReadonly;
 
-          it.each([
+          it.for([
             ['type Test = { readonly [key: string]: string };'],
             [
               'type Test = { readonly [key: string]: { readonly foo: readonly string[]; }; };',
@@ -140,13 +148,19 @@ describe(isTypeReadonly, () => {
         describe('is readonly circular', () => {
           const runTests = runTestIsReadonly;
 
-          it('handles circular readonly PropertySignature inside a readonly IndexSignature', () => {
-            runTests('interface Test { readonly [key: string]: Test };');
+          it('handles circular readonly PropertySignature inside a readonly IndexSignature', testContext => {
+            runTests(
+              ['interface Test { readonly [key: string]: Test };'],
+              testContext,
+            );
           });
 
-          it('handles circular readonly PropertySignature inside interdependent objects', () => {
+          it('handles circular readonly PropertySignature inside interdependent objects', testContext => {
             runTests(
-              'interface Test1 { readonly [key: string]: Test } interface Test { readonly [key: string]: Test1 }',
+              [
+                'interface Test1 { readonly [key: string]: Test } interface Test { readonly [key: string]: Test1 }',
+              ],
+              testContext,
             );
           });
         });
@@ -154,7 +168,7 @@ describe(isTypeReadonly, () => {
         describe('is not readonly', () => {
           const runTests = runTestIsNotReadonly;
 
-          it.each([
+          it.for([
             ['type Test = { [key: string]: string };'],
             ['type Test = { readonly [key: string]: { foo: string[]; }; };'],
           ] as const)(
@@ -166,11 +180,11 @@ describe(isTypeReadonly, () => {
         describe('is not readonly circular', () => {
           const runTests = runTestIsNotReadonly;
 
-          it('handles circular mutable PropertySignature', () => {
-            runTests('interface Test { [key: string]: Test };');
+          it('handles circular mutable PropertySignature', testContext => {
+            runTests(['interface Test { [key: string]: Test };'], testContext);
           });
 
-          it.each([
+          it.for([
             [
               'interface Test1 { [key: string]: Test } interface Test { readonly [key: string]: Test1 }',
             ],
@@ -191,7 +205,7 @@ describe(isTypeReadonly, () => {
         describe('is readonly', () => {
           const runTests = runTestIsReadonly;
 
-          it.each([
+          it.for([
             [
               'type Test = Readonly<{ foo: string; bar: number; }> & Readonly<{ bar: number; }>;',
             ],
@@ -202,7 +216,7 @@ describe(isTypeReadonly, () => {
         describe('is not readonly', () => {
           const runTests = runTestIsNotReadonly;
 
-          it.each([
+          it.for([
             ['type Test = { foo: string; bar: number; } | { bar: number; };'],
             [
               'type Test = { foo: string; bar: number; } | Readonly<{ bar: number; }>;',
@@ -218,7 +232,7 @@ describe(isTypeReadonly, () => {
         describe('is readonly', () => {
           const runTests = runTestIsReadonly;
 
-          it.each([
+          it.for([
             [
               'type Test = Readonly<{ foo: string; bar: number; }> & Readonly<{ bar: number; }>;',
             ],
@@ -227,7 +241,7 @@ describe(isTypeReadonly, () => {
             runTests,
           );
 
-          it.each([
+          it.for([
             [
               'type Test = Readonly<{ foo: string; bar: number; }> & { foo: string; };',
             ],
@@ -238,7 +252,7 @@ describe(isTypeReadonly, () => {
 
           // Array - special case.
           // Note: Methods are mutable but arrays are treated special; hence no failure.
-          it.each([
+          it.for([
             ['type Test = ReadonlyArray<string> & Readonly<{ foo: string; }>;'],
             [
               'type Test = readonly [string, number] & Readonly<{ foo: string; }>;',
@@ -252,7 +266,7 @@ describe(isTypeReadonly, () => {
         describe('is not readonly', () => {
           const runTests = runTestIsNotReadonly;
 
-          it.each([
+          it.for([
             ['type Test = { foo: string; bar: number; } & { bar: number; };'],
             [
               'type Test = { foo: string; bar: number; } & Readonly<{ bar: number; }>;',
@@ -271,7 +285,7 @@ describe(isTypeReadonly, () => {
         describe('is readonly', () => {
           const runTests = runTestIsReadonly;
 
-          it.each([
+          it.for([
             [
               'type Test<T> = T extends readonly number[] ? readonly string[] : readonly number[];',
             ],
@@ -280,7 +294,7 @@ describe(isTypeReadonly, () => {
             runTests,
           );
 
-          it.each([
+          it.for([
             [
               'type Test<T> = T extends number[] ? readonly string[] : readonly number[];',
             ],
@@ -290,7 +304,7 @@ describe(isTypeReadonly, () => {
         describe('is not readonly', () => {
           const runTests = runTestIsNotReadonly;
 
-          it.each([
+          it.for([
             ['type Test<T> = T extends number[] ? string[] : number[];'],
             [
               'type Test<T> = T extends number[] ? string[] : readonly number[];',
@@ -308,8 +322,11 @@ describe(isTypeReadonly, () => {
         treatMethodsAsReadonly: true,
       };
 
-      function runTestIsReadonly(code: string): void {
-        runTestForAliasDeclaration(code, options, true);
+      function runTestIsReadonly(
+        [code]: readonly [code: string],
+        testContext: TestContext,
+      ): void {
+        runTestForAliasDeclaration(code, options, true, testContext);
       }
 
       // function runTestIsNotReadonly(code: string): void {
@@ -320,7 +337,7 @@ describe(isTypeReadonly, () => {
         const runTests = runTestIsReadonly;
 
         // Set and Map.
-        it.each([
+        it.for([
           ['type Test = ReadonlySet<string>;'],
           ['type Test = ReadonlyMap<string, string>;'],
         ] as const)('handles non fully readonly sets and maps', runTests);
@@ -341,16 +358,22 @@ describe(isTypeReadonly, () => {
         ],
       };
 
-      function runTestIsReadonly(code: string): void {
-        runTestForAliasDeclaration(code, options, true);
+      function runTestIsReadonly(
+        [code]: readonly [code: string],
+        testContext: TestContext,
+      ): void {
+        runTestForAliasDeclaration(code, options, true, testContext);
       }
 
-      function runTestIsNotReadonly(code: string): void {
-        runTestForAliasDeclaration(code, options, false);
+      function runTestIsNotReadonly(
+        [code]: readonly [code: string],
+        testContext: TestContext,
+      ): void {
+        runTestForAliasDeclaration(code, options, false, testContext);
       }
 
       describe('is readonly', () => {
-        it.each([
+        it.for([
           [
             'interface Foo {readonly prop: RegExp}; type Test = (arg: Foo) => void;',
           ],
@@ -365,7 +388,7 @@ describe(isTypeReadonly, () => {
       });
 
       describe('is not readonly', () => {
-        it.each([
+        it.for([
           [
             'interface Bar {prop: RegExp}; type Test = (arg: Readonly<Bar>) => void;',
           ],

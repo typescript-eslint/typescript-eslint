@@ -58,15 +58,21 @@ describe('TypeOrValueSpecifier', () => {
       [{ from: 'file', name: ['MyType', 42] }],
       [{ from: 'file', name: ['MyType', 'MyType'] }],
       [{ from: 'file', name: [] }],
-      [{ from: 'file', path: './filename.js' }],
+      [{ from: 'file', path: `${ROOT_DIR}/filename.js` }],
       [{ from: 'file', name: 'MyType', path: 42 }],
-      [{ from: 'file', name: ['MyType', 'MyType'], path: './filename.js' }],
-      [{ from: 'file', name: [], path: './filename.js' }],
+      [
+        {
+          from: 'file',
+          name: ['MyType', 'MyType'],
+          path: `${ROOT_DIR}/filename.js`,
+        },
+      ],
+      [{ from: 'file', name: [], path: `${ROOT_DIR}/filename.js` }],
       [
         {
           from: 'file',
           name: ['MyType', 'myValue'],
-          path: ['./filename.js', './another-file.js'],
+          path: [`${ROOT_DIR}/filename.js`, `${ROOT_DIR}/another-file.js`],
         },
       ],
       [{ from: 'file', name: 'MyType', unrelatedProperty: '' }],
@@ -122,7 +128,7 @@ describe('TypeOrValueSpecifier', () => {
         {
           from: 'package',
           name: ['MyType', 'myValue'],
-          package: ['jquery', './another-file.js'],
+          package: ['jquery', `${ROOT_DIR}/another-file.js`],
         },
       ],
       [
@@ -293,14 +299,18 @@ describe('TypeOrValueSpecifier', () => {
       ],
       [
         'interface Foo {prop: string}; type Test = Foo;',
-        { from: 'file', name: 'Foo', path: 'tests/fixtures/wrong-file.ts' },
+        {
+          from: 'file',
+          name: 'Foo',
+          path: `${ROOT_DIR}/tests/fixtures/wrong-file.ts`,
+        },
       ],
       [
         'interface Foo {prop: string}; type Test = Foo;',
         {
           from: 'file',
           name: ['Foo', 'Bar'],
-          path: 'tests/fixtures/wrong-file.ts',
+          path: `${ROOT_DIR}/tests/fixtures/wrong-file.ts`,
         },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
