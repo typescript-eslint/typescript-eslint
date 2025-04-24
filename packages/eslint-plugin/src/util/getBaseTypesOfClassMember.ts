@@ -1,3 +1,7 @@
+import type {
+  TSESTree,
+  ParserServicesWithTypeInformation,
+} from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
 /**
@@ -5,18 +9,23 @@ import type * as ts from 'typescript';
  * yields the corresponding member type for each of the base class/interfaces.
  */
 export function* getBaseTypesOfClassMember(
-  checker: ts.TypeChecker,
-  memberTsNode: ts.MethodDeclaration | ts.PropertyDeclaration,
+  services: ParserServicesWithTypeInformation,
+  memberNode: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
 ): Generator<{
   baseType: ts.Type;
   baseMemberType: ts.Type;
   heritageToken: ts.SyntaxKind.ExtendsKeyword | ts.SyntaxKind.ImplementsKeyword;
 }> {
-  const classNode = memberTsNode.parent as ts.ClassLikeDeclaration;
+  const memberTsNode = services.esTreeNodeToTSNodeMap.get(memberNode);
+  if (memberTsNode.name == null) {
+    return;
+  }
+  const checker = services.program.getTypeChecker();
   const memberSymbol = checker.getSymbolAtLocation(memberTsNode.name);
   if (memberSymbol == null) {
     return;
   }
+  const classNode = memberTsNode.parent as ts.ClassLikeDeclaration;
   for (const clauseNode of classNode.heritageClauses ?? []) {
     for (const baseTypeNode of clauseNode.types) {
       const baseType = checker.getTypeAtLocation(baseTypeNode);

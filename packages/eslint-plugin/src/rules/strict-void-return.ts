@@ -372,7 +372,6 @@ export default util.createRule<Options, MessageId>({
       if (propNode.value == null) {
         return;
       }
-      const propTsNode = parserServices.esTreeNodeToTSNodeMap.get(propNode);
       const memberName = sourceCode.getText(propNode.key);
       const className = propNode.parent.parent.id?.name ?? 'class';
 
@@ -381,7 +380,7 @@ export default util.createRule<Options, MessageId>({
         baseMemberType,
         baseType,
         heritageToken,
-      } of util.getBaseTypesOfClassMember(checker, propTsNode)) {
+      } of util.getBaseTypesOfClassMember(parserServices, propNode)) {
         const baseName = baseType.getSymbol()?.name ?? 'base';
         if (isVoidReturningFunctionType(baseMemberType)) {
           const msgId: ErrorPlaceId =
@@ -413,12 +412,7 @@ export default util.createRule<Options, MessageId>({
       ) {
         return;
       }
-      const methodTsNode = parserServices.esTreeNodeToTSNodeMap.get(methodNode);
-      if (
-        methodTsNode.kind === ts.SyntaxKind.Constructor ||
-        methodTsNode.kind === ts.SyntaxKind.GetAccessor ||
-        methodTsNode.kind === ts.SyntaxKind.SetAccessor
-      ) {
+      if (methodNode.kind !== 'method') {
         return;
       }
       const memberName = sourceCode.getText(methodNode.key);
@@ -429,7 +423,7 @@ export default util.createRule<Options, MessageId>({
         baseMemberType,
         baseType,
         heritageToken,
-      } of util.getBaseTypesOfClassMember(checker, methodTsNode)) {
+      } of util.getBaseTypesOfClassMember(parserServices, methodNode)) {
         const baseName = baseType.getSymbol()?.name ?? 'base';
         if (isVoidReturningFunctionType(baseMemberType)) {
           const msgId: ErrorPlaceId =
