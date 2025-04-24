@@ -455,6 +455,12 @@ ruleTester.run('strict-void-return', rule, {
     },
     {
       code: `
+        declare let foo: () => void;
+        foo += () => 1;
+      `,
+    },
+    {
+      code: `
         declare function defaultCb(): object;
         declare let foo: { cb?: () => void };
         // default doesn't have to be void
