@@ -633,6 +633,14 @@ ruleTester.run('strict-void-return', rule, {
     },
     {
       code: `
+        declare function cb(): string;
+        const foo: Record<string, () => void> = {
+          ...cb,
+        };
+      `,
+    },
+    {
+      code: `
         declare function cb(): void;
         const foo: Array<(() => void) | false> = [false, cb, () => cb()];
       `,
@@ -2126,6 +2134,7 @@ ruleTester.run('strict-void-return', rule, {
         const foo: Record<string, () => void> = {
           cb1: cb,
           cb2: cb,
+          ...cb,
         };
       `,
       errors: [
@@ -2467,20 +2476,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
     },
-    // TODO: Check getters
-    // {
-    //   code: `
-    //     interface Foo {
-    //       cb: () => void;
-    //     }
-    //     class Bar implements Foo {
-    //       get cb() {
-    //         return () => 1;
-    //       }
-    //     }
-    //   `,
-    //   errors: [],
-    // },
     {
       code: noFormat`
         class Foo {
@@ -2592,6 +2587,84 @@ ruleTester.run('strict-void-return', rule, {
           data: { baseName: 'Foo2', className: 'Bar', memberName: 'cb2' },
           line: 10,
           messageId: 'nonVoidFuncInImplMember',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo1 {
+          cb1(): void;
+        }
+        interface Foo2 {
+          cb2: () => void;
+        }
+        class Baz {
+          cb3() {}
+        }
+        class Bar extends Baz implements Foo1, Foo2 {
+          async cb1() {}
+          async *cb2() {}
+          cb3() {
+            return Math.random();
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { baseName: 'Foo1', className: 'Bar', memberName: 'cb1' },
+          line: 12,
+          messageId: 'asyncFuncInImplMember',
+        },
+        {
+          column: 11,
+          data: { baseName: 'Foo2', className: 'Bar', memberName: 'cb2' },
+          line: 13,
+          messageId: 'nonVoidFuncInImplMember',
+        },
+        {
+          column: 13,
+          data: { baseName: 'Baz', className: 'Bar', memberName: 'cb3' },
+          line: 15,
+          messageId: 'nonVoidReturnInExtMember',
+        },
+      ],
+    },
+    {
+      code: `
+        class A extends class {
+          cb() {}
+        } {
+          cb() {
+            return Math.random();
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { baseName: '__class', className: 'A', memberName: 'cb' },
+          line: 6,
+          messageId: 'nonVoidReturnInExtMember',
+        },
+      ],
+    },
+    {
+      code: `
+        class A extends class B {
+          cb() {}
+        } {
+          cb() {
+            return Math.random();
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { baseName: 'B', className: 'A', memberName: 'cb' },
+          line: 6,
+          messageId: 'nonVoidReturnInExtMember',
         },
       ],
     },
