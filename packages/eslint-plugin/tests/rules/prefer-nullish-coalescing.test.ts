@@ -6248,5 +6248,84 @@ function weirdParens() {
       ],
       output: null,
     },
+    {
+      code: `
+let a: string | undefined
+let b: { message: string } | undefined
+
+const foo = a
+      ? a
+      : (b
+        ? 1 : 2)
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | undefined
+let b: { message: string } | undefined
+
+const foo = a ?? (b
+        ? 1 : 2)
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+let a: string | undefined
+let b: { message: string } | undefined
+
+const foo = a
+      ? a
+      : b
+        ? 1 : 2
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | undefined
+let b: { message: string } | undefined
+
+const foo = a ?? (b
+        ? 1 : 2)
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const c: string | null;
+c !== null ? c :  c ? 1 : 2
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const c: string | null;
+c ?? (c ? 1 : 2)
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
   ],
 });

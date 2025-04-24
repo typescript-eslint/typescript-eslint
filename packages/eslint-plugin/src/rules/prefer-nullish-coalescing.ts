@@ -18,7 +18,9 @@ import {
   nullThrows,
   NullThrowsReasons,
   skipChainExpression,
+  isParenthesized,
 } from '../util';
+import { SourceCode } from '@typescript-eslint/utils/ts-eslint';
 
 const isMemberAccessLike = isNodeOfTypes([
   AST_NODE_TYPES.ChainExpression,
@@ -512,7 +514,7 @@ export default createRule<Options, MessageIds>({
                     `${getTextWithParentheses(
                       context.sourceCode,
                       nullishCoalescingParams.nullishCoalescingLeftNode,
-                    )} ?? ${getTextWithParentheses(
+                    )} ?? ${getTextWithEnsuredParentheses(
                       context.sourceCode,
                       getBranchNodes(node, operator).nullishBranch,
                     )}`,
@@ -931,4 +933,18 @@ function formatComments(
         : `/*${value}*/${separator}`,
     )
     .join('');
+}
+
+function getTextWithEnsuredParentheses(
+  sourceCode: Readonly<SourceCode>,
+  node: TSESTree.Node,
+): string {
+  const replaceCode = getTextWithParentheses(sourceCode, node);
+  if (
+    node.type === AST_NODE_TYPES.ConditionalExpression &&
+    !isParenthesized(node, sourceCode)
+  ) {
+    return `(${replaceCode})`;
+  }
+  return replaceCode;
 }
