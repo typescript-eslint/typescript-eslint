@@ -6250,13 +6250,10 @@ function weirdParens() {
     },
     {
       code: `
-let a: string | undefined
-let b: { message: string } | undefined
+let a: string | undefined;
+let b: { message: string } | undefined;
 
-const foo = a
-      ? a
-      : (b
-        ? 1 : 2)
+const foo = a ? a : b ? 1 : 2;
       `,
       errors: [
         {
@@ -6265,11 +6262,10 @@ const foo = a
             {
               messageId: 'suggestNullish',
               output: `
-let a: string | undefined
-let b: { message: string } | undefined
+let a: string | undefined;
+let b: { message: string } | undefined;
 
-const foo = a ?? (b
-        ? 1 : 2)
+const foo = a ?? (b ? 1 : 2);
       `,
             },
           ],
@@ -6278,14 +6274,11 @@ const foo = a ?? (b
       output: null,
     },
     {
-      code: `
-let a: string | undefined
-let b: { message: string } | undefined
+      code: noFormat`
+let a: string | undefined;
+let b: { message: string } | undefined;
 
-const foo = a
-      ? a
-      : b
-        ? 1 : 2
+const foo = a ? a : (b ? 1 : 2);
       `,
       errors: [
         {
@@ -6294,11 +6287,10 @@ const foo = a
             {
               messageId: 'suggestNullish',
               output: `
-let a: string | undefined
-let b: { message: string } | undefined
+let a: string | undefined;
+let b: { message: string } | undefined;
 
-const foo = a ?? (b
-        ? 1 : 2)
+const foo = a ?? (b ? 1 : 2);
       `,
             },
           ],
@@ -6309,7 +6301,7 @@ const foo = a ?? (b
     {
       code: `
 declare const c: string | null;
-c !== null ? c :  c ? 1 : 2
+c !== null ? c : c ? 1 : 2;
       `,
       errors: [
         {
@@ -6319,7 +6311,7 @@ c !== null ? c :  c ? 1 : 2
               messageId: 'suggestNullish',
               output: `
 declare const c: string | null;
-c ?? (c ? 1 : 2)
+c ?? (c ? 1 : 2);
       `,
             },
           ],
