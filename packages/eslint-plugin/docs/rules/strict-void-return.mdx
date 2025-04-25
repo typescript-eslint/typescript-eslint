@@ -355,43 +355,6 @@ class Bar implements Foo {
 
 ## Options
 
-### `allowReturnPromiseIfTryCatch`
-
-{/* insert option description */}
-
-Additional incorrect code when the option is **disabled**:
-
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts option='{ "allowReturnPromiseIfTryCatch": false }'
-const cb: () => void = async () => {
-  try {
-    const response = await fetch('https://api.example.com/');
-    const data = await response.json();
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
-};
-```
-
-</TabItem>
-<TabItem value="✅ Correct">
-
-```ts option='{ "allowReturnPromiseIfTryCatch": false }'
-const cb: () => void = () => {
-  (async () => {
-    const response = await fetch('https://api.example.com/');
-    const data = await response.json();
-    console.log(data);
-  })().catch(console.error);
-};
-```
-
-</TabItem>
-</Tabs>
-
 ### `allowReturnAny`
 
 {/* insert option description */}

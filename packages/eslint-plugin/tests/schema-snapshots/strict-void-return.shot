@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes strict-void-return 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,11 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowReturnAny": {
-        "description": "Whether to allow functions returning \`any\` to be used in place expecting a \`void\` function.",
-        "type": "boolean"
-      },
-      "allowReturnPromiseIfTryCatch": {
-        "description": "Whether to allow functions returning a promise if the function is na async function expression whose whole body is wrapped in a try-catch block. This offers an alternative to an async IIFE for handling errors in async callbacks.",
+        "description": "Whether to allow functions returning `any` to be used in place expecting a `void` function.",
         "type": "boolean"
       }
     },
@@ -26,11 +19,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to allow functions returning \`any\` to be used in place expecting a \`void\` function. */
+    /** Whether to allow functions returning `any` to be used in place expecting a `void` function. */
     allowReturnAny?: boolean;
-    /** Whether to allow functions returning a promise if the function is na async function expression whose whole body is wrapped in a try-catch block. This offers an alternative to an async IIFE for handling errors in async callbacks. */
-    allowReturnPromiseIfTryCatch?: boolean;
   },
 ];
-"
-`;
