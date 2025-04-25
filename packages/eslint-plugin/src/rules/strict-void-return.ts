@@ -13,19 +13,7 @@ type Options = [
   },
 ];
 
-type ErrorPlaceId =
-  | 'Arg'
-  | 'Attr'
-  | 'ExtMember'
-  | 'ImplMember'
-  | 'Other'
-  | 'Return'
-  | 'Var';
-
-type MessageId =
-  | `asyncFuncIn${ErrorPlaceId}`
-  | `nonVoidFuncIn${ErrorPlaceId}`
-  | `nonVoidReturnIn${ErrorPlaceId}`;
+type MessageId = `asyncFunc` | `nonVoidFunc` | `nonVoidReturn`;
 
 export default util.createRule<Options, MessageId>({
   name: 'strict-void-return',
@@ -39,50 +27,12 @@ export default util.createRule<Options, MessageId>({
     fixable: 'code',
     hasSuggestions: false,
     messages: {
-      asyncFuncInArg:
-        'Async callback passed as an argument to `{{funcName}}`, which expects a void callback.',
-      asyncFuncInAttr:
-        'Async event handler `{{attrName}}` passed as a prop to `{{elemName}}`, which expects a void event handler.',
-      asyncFuncInExtMember:
-        'Async function provided as `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
-      asyncFuncInImplMember:
-        'Async function provided as `{{memberName}}` method of `{{className}}`, whose interface `{{baseName}}` declares it as a void method.',
-      asyncFuncInOther:
+      asyncFunc:
         'Async function used in a context where a void function is expected.',
-      asyncFuncInReturn:
-        'Async callback returned from a function, which must return a void callback.',
-      asyncFuncInVar:
-        'Async function assigned to `{{varName}}`, which is declared as a void function.',
-
-      nonVoidFuncInArg:
-        'Value-returning callback passed as an argument to `{{funcName}}`, which expects a void callback.',
-      nonVoidFuncInAttr:
-        'Value-returning event handler `{{attrName}}` passed as a prop to `{{elemName}}`, which expects a void event handler.',
-      nonVoidFuncInExtMember:
-        'Value-returning function provided as `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
-      nonVoidFuncInImplMember:
-        'Value-returning function provided as `{{memberName}}` method of `{{className}}`, whose interface `{{baseName}}` declares it as a void method.',
-      nonVoidFuncInOther:
+      nonVoidFunc:
         'Value-returning function used in a context where a void function is expected.',
-      nonVoidFuncInReturn:
-        'Value-returning callback returned from a function, which must return a void callback.',
-      nonVoidFuncInVar:
-        'Value-returning function assigned to `{{varName}}`, which is declared as a void function.',
-
-      nonVoidReturnInArg:
-        'Value returned in a callback argument to `{{funcName}}`, which expects a void callback.',
-      nonVoidReturnInAttr:
-        'Value returned in `{{attrName}}` event handler prop of `{{elemName}}`, which expects a void event handler.',
-      nonVoidReturnInExtMember:
-        'Value returned in `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
-      nonVoidReturnInImplMember:
-        'Value returned in `{{memberName}}` method of `{{className}}`, whose interface `{{baseName}}` declares it as a void method.',
-      nonVoidReturnInOther:
+      nonVoidReturn:
         'Value returned in a context where a void return is expected.',
-      nonVoidReturnInReturn:
-        'Value returned in a callback returned from a function, which must return a void callback.',
-      nonVoidReturnInVar:
-        'Value returned in `{{varName}}`, which is declared as a void function.',
     },
     schema: [
       {
@@ -122,22 +72,22 @@ export default util.createRule<Options, MessageId>({
             elemNode != null &&
             elemNode.type !== AST_NODE_TYPES.SpreadElement
           ) {
-            checkExpressionNode(elemNode, 'Other');
+            checkExpressionNode(elemNode);
           }
         }
       },
       ArrowFunctionExpression: (node): void => {
         if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
-          checkExpressionNode(node.body, 'Return');
+          checkExpressionNode(node.body);
         }
       },
       AssignmentExpression: (node): void => {
         if (['=', '||=', '&&=', '??='].includes(node.operator)) {
           const varName = util.getNameFromExpression(sourceCode, node.left);
           if (varName != null) {
-            checkExpressionNode(node.right, 'Var', { varName });
+            checkExpressionNode(node.right);
           } else {
-            checkExpressionNode(node.right, 'Other');
+            checkExpressionNode(node.right);
           }
         }
       },
@@ -147,12 +97,7 @@ export default util.createRule<Options, MessageId>({
           node.value?.type === AST_NODE_TYPES.JSXExpressionContainer &&
           node.value.expression.type !== AST_NODE_TYPES.JSXEmptyExpression
         ) {
-          const attrName = sourceCode.getText(node.name);
-          const elemName = sourceCode.getText(node.parent.name);
-          checkExpressionNode(node.value.expression, 'Attr', {
-            attrName,
-            elemName,
-          });
+          checkExpressionNode(node.value.expression);
         }
       },
       MethodDefinition: checkClassMethodNode,
@@ -166,16 +111,16 @@ export default util.createRule<Options, MessageId>({
       PropertyDefinition: checkClassPropertyNode,
       ReturnStatement: (node): void => {
         if (node.argument != null) {
-          checkExpressionNode(node.argument, 'Return');
+          checkExpressionNode(node.argument);
         }
       },
       VariableDeclarator: (node): void => {
         if (node.init != null) {
           const varName = util.getNameFromExpression(sourceCode, node.id);
           if (varName != null) {
-            checkExpressionNode(node.init, 'Var', { varName });
+            checkExpressionNode(node.init);
           } else {
-            checkExpressionNode(node.init, 'Other');
+            checkExpressionNode(node.init);
           }
         }
       },
@@ -214,18 +159,14 @@ export default util.createRule<Options, MessageId>({
      *
      * @returns `true` if the expected type was void function.
      */
-    function checkExpressionNode(
-      node: TSESTree.Expression,
-      msgId: ErrorPlaceId,
-      data?: Record<string, string>,
-    ): boolean {
+    function checkExpressionNode(node: TSESTree.Expression): boolean {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
         node,
       ) as ts.Expression;
       const expectedType = checker.getContextualType(tsNode);
 
       if (expectedType != null && isVoidReturningFunctionType(expectedType)) {
-        reportIfNonVoidFunction(node, msgId, data);
+        reportIfNonVoidFunction(node);
         return true;
       }
 
@@ -249,9 +190,6 @@ export default util.createRule<Options, MessageId>({
     function checkFunctionCallNode(
       callNode: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
-      const funcName =
-        util.getNameFromExpression(sourceCode, callNode.callee) ?? 'function';
-
       const callTsNode = parserServices.esTreeNodeToTSNodeMap.get(callNode);
 
       const funcType = checker.getTypeAtLocation(callTsNode.expression);
@@ -269,7 +207,7 @@ export default util.createRule<Options, MessageId>({
         }
 
         // Check against the contextual type first
-        if (checkExpressionNode(argNode, 'Arg', { funcName })) {
+        if (checkExpressionNode(argNode)) {
           continue;
         }
 
@@ -301,7 +239,7 @@ export default util.createRule<Options, MessageId>({
           )
         ) {
           // We treat this argument as void even though it might be technically any.
-          reportIfNonVoidFunction(argNode, 'Arg', { funcName });
+          reportIfNonVoidFunction(argNode);
         }
       }
     }
@@ -321,7 +259,6 @@ export default util.createRule<Options, MessageId>({
       ) {
         return;
       }
-      const propName = sourceCode.getText(propNode.key);
       const propTsNode = parserServices.esTreeNodeToTSNodeMap.get(propNode);
 
       if (propTsNode.kind === ts.SyntaxKind.MethodDeclaration) {
@@ -350,13 +287,13 @@ export default util.createRule<Options, MessageId>({
           propTsNode,
         );
         if (isVoidReturningFunctionType(propExpectedType)) {
-          reportIfNonVoidFunction(propNode.value, 'Var', { varName: propName });
+          reportIfNonVoidFunction(propNode.value);
         }
         return;
       }
 
       // Object property is a regular property.
-      checkExpressionNode(propNode.value, 'Var', { varName: propName });
+      checkExpressionNode(propNode.value);
     }
 
     /**
@@ -372,32 +309,20 @@ export default util.createRule<Options, MessageId>({
       if (propNode.value == null) {
         return;
       }
-      const memberName = sourceCode.getText(propNode.key);
-      const className = propNode.parent.parent.id?.name ?? 'class';
 
       // Check in comparison to the base types.
-      for (const {
-        baseMemberType,
-        baseType,
-        heritageToken,
-      } of util.getBaseTypesOfClassMember(parserServices, propNode)) {
-        const baseName = baseType.getSymbol()?.name ?? 'base';
+      for (const { baseMemberType } of util.getBaseTypesOfClassMember(
+        parserServices,
+        propNode,
+      )) {
         if (isVoidReturningFunctionType(baseMemberType)) {
-          const msgId: ErrorPlaceId =
-            heritageToken === ts.SyntaxKind.ExtendsKeyword
-              ? 'ExtMember'
-              : 'ImplMember';
-          reportIfNonVoidFunction(propNode.value, msgId, {
-            baseName,
-            className,
-            memberName,
-          });
+          reportIfNonVoidFunction(propNode.value);
           return; // Report at most one error.
         }
       }
 
       // Check in comparison to the contextual type.
-      checkExpressionNode(propNode.value, 'Var', { varName: memberName });
+      checkExpressionNode(propNode.value);
     }
 
     /**
@@ -415,26 +340,14 @@ export default util.createRule<Options, MessageId>({
       if (methodNode.kind !== 'method') {
         return;
       }
-      const memberName = sourceCode.getText(methodNode.key);
-      const className = methodNode.parent.parent.id?.name ?? 'class';
 
       // Check in comparison to the base types.
-      for (const {
-        baseMemberType,
-        baseType,
-        heritageToken,
-      } of util.getBaseTypesOfClassMember(parserServices, methodNode)) {
-        const baseName = baseType.getSymbol()?.name ?? 'base';
+      for (const { baseMemberType } of util.getBaseTypesOfClassMember(
+        parserServices,
+        methodNode,
+      )) {
         if (isVoidReturningFunctionType(baseMemberType)) {
-          const msgId: ErrorPlaceId =
-            heritageToken === ts.SyntaxKind.ExtendsKeyword
-              ? 'ExtMember'
-              : 'ImplMember';
-          reportIfNonVoidFunction(methodNode.value, msgId, {
-            baseName,
-            className,
-            memberName,
-          });
+          reportIfNonVoidFunction(methodNode.value);
           return; // Report at most one error.
         }
       }
@@ -443,11 +356,7 @@ export default util.createRule<Options, MessageId>({
     /**
      * Reports an error if the provided node is not allowed in a void function context.
      */
-    function reportIfNonVoidFunction(
-      funcNode: TSESTree.Expression,
-      msgId: ErrorPlaceId,
-      data?: Record<string, string>,
-    ): void {
+    function reportIfNonVoidFunction(funcNode: TSESTree.Expression): void {
       const allowedReturnType =
         ts.TypeFlags.Void |
         ts.TypeFlags.Never |
@@ -478,8 +387,7 @@ export default util.createRule<Options, MessageId>({
         // Report a generic error.
         return context.report({
           node: funcNode,
-          messageId: `nonVoidFuncIn${msgId}`,
-          data,
+          messageId: `nonVoidFunc`,
         });
       }
 
@@ -490,8 +398,7 @@ export default util.createRule<Options, MessageId>({
         // Generator functions are not allowed.
         return context.report({
           loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-          messageId: `nonVoidFuncIn${msgId}`,
-          data,
+          messageId: `nonVoidFunc`,
         });
       }
 
@@ -503,8 +410,7 @@ export default util.createRule<Options, MessageId>({
           // TODO: Suggest wrapping its body in an async IIFE.
           return context.report({
             loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-            messageId: `asyncFuncIn${msgId}`,
-            data,
+            messageId: `asyncFunc`,
           });
         }
 
@@ -520,8 +426,7 @@ export default util.createRule<Options, MessageId>({
           // TODO: Suggest wrapping it in a try-catch block in addition to async IIFE.
           return context.report({
             loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-            messageId: `asyncFuncIn${msgId}`,
-            data,
+            messageId: `asyncFunc`,
           });
         }
       }
@@ -534,8 +439,7 @@ export default util.createRule<Options, MessageId>({
         // TODO: Fix it by removing the body or adding a void operator or braces.
         return context.report({
           node: funcNode.body,
-          messageId: `nonVoidReturnIn${msgId}`,
-          data,
+          messageId: `nonVoidReturn`,
         });
       }
 
@@ -561,8 +465,7 @@ export default util.createRule<Options, MessageId>({
           // TODO: Fix it by changing the return type to `void` or `Promise<void>`.
           return context.report({
             node: typeAnnotationNode,
-            messageId: `nonVoidFuncIn${msgId}`,
-            data,
+            messageId: `nonVoidFunc`,
           });
         }
       }
@@ -595,8 +498,7 @@ export default util.createRule<Options, MessageId>({
         );
         context.report({
           node: returnKeyword,
-          messageId: `nonVoidReturnIn${msgId}`,
-          data,
+          messageId: `nonVoidReturn`,
         });
       }
 
