@@ -158,30 +158,6 @@ ruleTester.run('strict-void-return', rule, {
     },
     {
       code: `
-        declare function foo(cb: () => void): void;
-        foo(async () => {
-          try {
-            await Promise.resolve();
-          } catch (err) {
-            console.error(err);
-          }
-        });
-      `,
-    },
-    {
-      code: `
-        declare function foo(cb: () => void): void;
-        foo(async () => {
-          try {
-            await Promise.resolve();
-          } catch {
-            console.error('fail');
-          }
-        });
-      `,
-    },
-    {
-      code: `
         interface Cb {
           (): void;
           (): string;
@@ -1244,7 +1220,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'asyncFunc',
         },
       ],
-      options: [{ allowReturnPromiseIfTryCatch: false }],
     },
     {
       code: `
@@ -1551,9 +1526,9 @@ ruleTester.run('strict-void-return', rule, {
       `,
       errors: [
         {
-          column: 42,
+          column: 58,
           line: 2,
-          messageId: 'nonVoidFunc',
+          messageId: 'asyncFunc',
         },
       ],
     },
@@ -1577,9 +1552,9 @@ ruleTester.run('strict-void-return', rule, {
       `,
       errors: [
         {
-          column: 13,
-          line: 4,
-          messageId: 'nonVoidReturn',
+          column: 42,
+          line: 2,
+          messageId: 'asyncFunc',
         },
       ],
     },
@@ -2439,9 +2414,9 @@ ruleTester.run('strict-void-return', rule, {
       `,
       errors: [
         {
-          column: 15,
-          line: 8,
-          messageId: 'nonVoidReturn',
+          column: 11,
+          line: 6,
+          messageId: 'asyncFunc',
         },
       ],
     },

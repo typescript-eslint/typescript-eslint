@@ -9,7 +9,6 @@ import * as util from '../util';
 type Options = [
   {
     allowReturnAny?: boolean;
-    allowReturnPromiseIfTryCatch?: boolean;
   },
 ];
 
@@ -24,8 +23,6 @@ export default util.createRule<Options, MessageId>({
         'Disallow passing a value-returning function in a position accepting a void function',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
-    hasSuggestions: false,
     messages: {
       asyncFunc:
         'Async function used in a context where a void function is expected.',
@@ -44,11 +41,6 @@ export default util.createRule<Options, MessageId>({
             description:
               'Whether to allow functions returning `any` to be used in place expecting a `void` function.',
           },
-          allowReturnPromiseIfTryCatch: {
-            type: 'boolean',
-            description:
-              'Whether to allow functions returning a promise if the function is na async function expression whose whole body is wrapped in a try-catch block. This offers an alternative to an async IIFE for handling errors in async callbacks.',
-          },
         },
       },
     ],
@@ -56,7 +48,6 @@ export default util.createRule<Options, MessageId>({
   defaultOptions: [
     {
       allowReturnAny: false,
-      allowReturnPromiseIfTryCatch: true,
     },
   ],
 
@@ -394,39 +385,15 @@ export default util.createRule<Options, MessageId>({
 
       if (funcNode.async) {
         // The provided function is an async function.
-
-        if (!options.allowReturnPromiseIfTryCatch) {
-          // Async functions aren't allowed.
-          // TODO: Suggest wrapping its body in an async IIFE.
-          return context.report({
-            loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-            messageId: `asyncFunc`,
-          });
-        }
-
-        // Async functions are allowed if they are wrapped in a try-catch block.
-
-        if (
-          funcNode.body.type !== AST_NODE_TYPES.BlockStatement ||
-          funcNode.body.body.length !== 1 ||
-          funcNode.body.body[0].type !== AST_NODE_TYPES.TryStatement ||
-          funcNode.body.body[0].handler == null
-        ) {
-          // Function is not wrapped in a try-catch block.
-          // TODO: Suggest wrapping it in a try-catch block in addition to async IIFE.
-          return context.report({
-            loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-            messageId: `asyncFunc`,
-          });
-        }
+        // Async functions aren't allowed.
+        return context.report({
+          loc: util.getFunctionHeadLoc(funcNode, sourceCode),
+          messageId: `asyncFunc`,
+        });
       }
-
-      // At this point the function is either a regular function,
-      // or async with block body wrapped in try-catch (if allowed).
 
       if (funcNode.body.type !== AST_NODE_TYPES.BlockStatement) {
         // The provided function is an arrow function shorthand without braces.
-        // TODO: Fix it by removing the body or adding a void operator or braces.
         return context.report({
           node: funcNode.body,
           messageId: `nonVoidReturn`,
@@ -434,25 +401,13 @@ export default util.createRule<Options, MessageId>({
       }
 
       // The function is a regular or arrow function with a block body.
-      // Possibly async and wrapped in try-catch if allowed.
 
       // Check return type annotation.
       if (funcNode.returnType != null) {
         // The provided function has an explicit return type annotation.
         const typeAnnotationNode = funcNode.returnType.typeAnnotation;
-        if (
-          !(
-            typeAnnotationNode.type === AST_NODE_TYPES.TSVoidKeyword ||
-            (funcNode.async &&
-              typeAnnotationNode.type === AST_NODE_TYPES.TSTypeReference &&
-              typeAnnotationNode.typeName.type === AST_NODE_TYPES.Identifier &&
-              typeAnnotationNode.typeName.name === 'Promise' &&
-              typeAnnotationNode.typeArguments?.params[0].type ===
-                AST_NODE_TYPES.TSVoidKeyword)
-          )
-        ) {
-          // The explicit return type is not `void` or `Promise<void>`.
-          // TODO: Fix it by changing the return type to `void` or `Promise<void>`.
+        if (typeAnnotationNode.type !== AST_NODE_TYPES.TSVoidKeyword) {
+          // The explicit return type is not `void`.
           return context.report({
             node: typeAnnotationNode,
             messageId: `nonVoidFunc`,
@@ -479,7 +434,6 @@ export default util.createRule<Options, MessageId>({
         }
 
         // This return statement causes the non-void return type.
-        // TODO: Fix it by discarding the return value.
         const returnKeyword = util.nullThrows(
           sourceCode.getFirstToken(statement, {
             filter: token => token.value === 'return',
