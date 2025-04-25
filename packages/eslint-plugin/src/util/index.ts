@@ -6,7 +6,6 @@ export * from './createRule';
 export * from './getBaseTypesOfClassMember';
 export * from './getFixOrSuggest';
 export * from './getFunctionHeadLoc';
-export * from './getNameFromExpression';
 export * from './getOperatorPrecedence';
 export * from './getStaticStringValue';
 export * from './getStringLength';

@@ -83,12 +83,7 @@ export default util.createRule<Options, MessageId>({
       },
       AssignmentExpression: (node): void => {
         if (['=', '||=', '&&=', '??='].includes(node.operator)) {
-          const varName = util.getNameFromExpression(sourceCode, node.left);
-          if (varName != null) {
-            checkExpressionNode(node.right);
-          } else {
-            checkExpressionNode(node.right);
-          }
+          checkExpressionNode(node.right);
         }
       },
       'CallExpression, NewExpression': checkFunctionCallNode,
@@ -116,12 +111,7 @@ export default util.createRule<Options, MessageId>({
       },
       VariableDeclarator: (node): void => {
         if (node.init != null) {
-          const varName = util.getNameFromExpression(sourceCode, node.id);
-          if (varName != null) {
-            checkExpressionNode(node.init);
-          } else {
-            checkExpressionNode(node.init);
-          }
+          checkExpressionNode(node.init);
         }
       },
     };
