@@ -6213,7 +6213,7 @@ __metadata:
     tsx: "*"
     typescript: ">=4.8.4 <5.9.0"
     typescript-eslint: "workspace:^"
-    vite: ^6.3.2
+    vite: ^6.3.3
     vitest: ^3.1.2
     yargs: 17.7.2
   languageName: unknown
@@ -20724,17 +20724,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0.0 || ^6.0.0, vite@npm:^6.3.2":
-  version: 6.3.2
-  resolution: "vite@npm:6.3.2"
+"vite@npm:^5.0.0 || ^6.0.0, vite@npm:^6.3.3":
+  version: 6.3.3
+  resolution: "vite@npm:6.3.3"
   dependencies:
     esbuild: ^0.25.0
-    fdir: ^6.4.3
+    fdir: ^6.4.4
     fsevents: ~2.3.3
     picomatch: ^4.0.2
     postcss: ^8.5.3
     rollup: ^4.34.9
-    tinyglobby: ^0.2.12
+    tinyglobby: ^0.2.13
   peerDependencies:
     "@types/node": ^18.0.0 || ^20.0.0 || >=22.0.0
     jiti: ">=1.21.0"
@@ -20775,7 +20775,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 1773809788935e4f7b3f718680f80c4e6ff0f9a39b22596bd7d405d996f0c21e67b573418aba23afbb0d54e570a315a0252b045c4a68987aa19974cf70e5d3a1
+  checksum: b12dcd715324d5033226005b514f281541578d619675724c6ba0f684efe875d145ae53404fc7dc604332f2b52b5bd197ed6b6edea219abd604336052f3f3c79e
   languageName: node
   linkType: hard
 
