@@ -5,7 +5,6 @@ import { parseForESLint } from '@typescript-eslint/parser';
 import path from 'node:path';
 
 import { isUnsafeAssignment } from '../src/isUnsafeAssignment';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 describe(isUnsafeAssignment, () => {
   const rootDir = path.join(__dirname, 'fixtures');
@@ -25,7 +24,7 @@ describe(isUnsafeAssignment, () => {
       project: './tsconfig.json',
       tsconfigRootDir: rootDir,
     });
-    expectToHaveParserServices(services);
+    assert.toHaveParserServices(services);
     const checker = services.program.getTypeChecker();
 
     const declaration = ast.body[

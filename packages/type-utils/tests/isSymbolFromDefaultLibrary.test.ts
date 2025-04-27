@@ -6,7 +6,6 @@ import { parseForESLint } from '@typescript-eslint/parser';
 import path from 'node:path';
 
 import { isSymbolFromDefaultLibrary } from '../src';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 describe(isSymbolFromDefaultLibrary, () => {
   const rootDir = path.join(__dirname, 'fixtures');
@@ -21,7 +20,7 @@ describe(isSymbolFromDefaultLibrary, () => {
       project: './tsconfig.json',
       tsconfigRootDir: rootDir,
     });
-    expectToHaveParserServices(services);
+    assert.toHaveParserServices(services);
     const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
     const type = services.getTypeAtLocation(declaration.id);
     return { program: services.program, symbol: type.getSymbol() };

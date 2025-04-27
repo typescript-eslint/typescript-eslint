@@ -6,7 +6,6 @@ import path from 'node:path';
 import * as ts from 'typescript';
 
 import { getTypeFlags, isTypeFlagSet } from '../src';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 describe('typeFlagUtils', () => {
   const rootDir = path.join(__dirname, 'fixtures');
@@ -18,7 +17,7 @@ describe('typeFlagUtils', () => {
       project: './tsconfig.json',
       tsconfigRootDir: rootDir,
     });
-    expectToHaveParserServices(services);
+    assert.toHaveParserServices(services);
     const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
 
     return services.getTypeAtLocation(declaration.id);

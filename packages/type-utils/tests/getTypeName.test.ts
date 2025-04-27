@@ -6,7 +6,6 @@ import { parseForESLint } from '@typescript-eslint/parser';
 import path from 'node:path';
 
 import { getTypeName } from '../src';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 describe(getTypeName, () => {
   function getTypes(code: string): { checker: ts.TypeChecker; type: ts.Type } {
@@ -18,7 +17,7 @@ describe(getTypeName, () => {
       project: './tsconfig.json',
       tsconfigRootDir: rootDir,
     });
-    expectToHaveParserServices(services);
+    assert.toHaveParserServices(services);
     const checker = services.program.getTypeChecker();
     const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
 

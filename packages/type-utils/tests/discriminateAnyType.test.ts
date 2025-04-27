@@ -5,7 +5,6 @@ import { parseForESLint } from '@typescript-eslint/parser';
 import path from 'node:path';
 
 import { AnyType, discriminateAnyType } from '../src';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 type GetNode = (ast: TSESTree.Program) => TSESTree.Node;
 
@@ -25,7 +24,7 @@ describe(discriminateAnyType, () => {
       project: './tsconfig.json',
       tsconfigRootDir: rootDir,
     });
-    expectToHaveParserServices(services);
+    assert.toHaveParserServices(services);
     const node = getNode(ast);
     const type = services.getTypeAtLocation(getNode(ast));
     return {

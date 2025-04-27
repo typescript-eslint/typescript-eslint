@@ -6,7 +6,6 @@ import { parseForESLint } from '@typescript-eslint/parser';
 import path from 'node:path';
 
 import { containsAllTypesByName } from '../src';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 describe(containsAllTypesByName, () => {
   const rootDir = path.join(__dirname, 'fixtures');
@@ -18,7 +17,7 @@ describe(containsAllTypesByName, () => {
       project: './tsconfig.json',
       tsconfigRootDir: rootDir,
     });
-    expectToHaveParserServices(services);
+    assert.toHaveParserServices(services);
     const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
     return services.getTypeAtLocation(declaration.id);
   }

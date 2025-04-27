@@ -9,7 +9,6 @@ import path from 'node:path';
 import type { ReadonlynessOptions } from '../src/isTypeReadonly';
 
 import { isTypeReadonly } from '../src/isTypeReadonly';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 describe(isTypeReadonly, () => {
   const rootDir = path.join(__dirname, 'fixtures');
@@ -25,7 +24,7 @@ describe(isTypeReadonly, () => {
         project: './tsconfig.json',
         tsconfigRootDir: rootDir,
       });
-      expectToHaveParserServices(services);
+      assert.toHaveParserServices(services);
       const { esTreeNodeToTSNodeMap, program } = services;
 
       const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
