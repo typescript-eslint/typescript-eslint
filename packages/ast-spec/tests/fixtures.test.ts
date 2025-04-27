@@ -3,12 +3,7 @@ import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import { VitestSnapshotEnvironment } from 'vitest/snapshot';
 
-import type {
-  Fixture,
-  ParserResponse,
-  ParserResponseError,
-  ParserResponseSuccess,
-} from './util/parsers/parser-types';
+import type { ASTFixtureConfig, Fixture } from './util/parsers/parser-types';
 
 import { parseBabel } from './util/parsers/babel';
 import { ParserResponseType } from './util/parsers/parser-types';
@@ -59,7 +54,10 @@ const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
     const relativeToSrc = path.relative(SRC_DIR, absolute);
     const { dir, ext } = path.parse(relativeToSrc);
     const segments = dir.split(path.sep).filter(s => s !== 'fixtures');
-    const name = segments.pop()!;
+    const name = segments.pop();
+
+    assert.isDefined(name);
+
     const fixtureDir = path.join(SRC_DIR, dir);
     const configPath = path.join(fixtureDir, 'config' /* .ts */);
     const snapshotPath = path.join(fixtureDir, 'snapshots');
@@ -112,17 +110,6 @@ const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
     };
   },
 );
-
-function expectSuccessResponse(
-  thing: ParserResponse,
-): asserts thing is ParserResponseSuccess {
-  expect(thing.type).toEqual(ParserResponseType.NoError);
-}
-function expectErrorResponse(
-  thing: ParserResponse,
-): asserts thing is ParserResponseError {
-  expect(thing.type).toEqual(ParserResponseType.Error);
-}
 
 function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
   if (segments.length > 0) {
@@ -205,13 +192,13 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
         });
       } else {
         it('TSESTree - AST', async () => {
-          expectSuccessResponse(tsestreeParsed);
+          assert.isSuccessResponse(tsestreeParsed);
           await expect(tsestreeParsed.ast).toMatchFileSnapshot(
             fixture.snapshotFiles.success.tsestree.ast(segments.length + 1),
           );
         });
         it('TSESTree - Tokens', async () => {
-          expectSuccessResponse(tsestreeParsed);
+          assert.isSuccessResponse(tsestreeParsed);
           await expect(tsestreeParsed.tokens).toMatchFileSnapshot(
             fixture.snapshotFiles.success.tsestree.tokens(segments.length + 2),
           );
@@ -241,20 +228,20 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
           it.skip('AST Alignment - Skipped as this fixture is configured to expect babel to error', () => {});
         } else {
           it('Babel - AST', async () => {
-            expectSuccessResponse(babelParsed);
+            assert.isSuccessResponse(babelParsed);
             await expect(babelParsed.ast).toMatchFileSnapshot(
               fixture.snapshotFiles.success.babel.ast(segments.length + 3),
             );
           });
           it('Babel - Tokens', async () => {
-            expectSuccessResponse(babelParsed);
+            assert.isSuccessResponse(babelParsed);
             await expect(babelParsed.tokens).toMatchFileSnapshot(
               fixture.snapshotFiles.success.babel.tokens(segments.length + 4),
             );
           });
           it('AST Alignment - AST', async () => {
-            expectSuccessResponse(tsestreeParsed);
-            expectSuccessResponse(babelParsed);
+            assert.isSuccessResponse(tsestreeParsed);
+            assert.isSuccessResponse(babelParsed);
             const diffResult = snapshotDiff(
               'TSESTree',
               tsestreeParsed.ast,
@@ -276,8 +263,8 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
             }
           });
           it('AST Alignment - Token', async () => {
-            expectSuccessResponse(tsestreeParsed);
-            expectSuccessResponse(babelParsed);
+            assert.isSuccessResponse(tsestreeParsed);
+            assert.isSuccessResponse(babelParsed);
             const diffResult = snapshotDiff(
               'TSESTree',
               tsestreeParsed.tokens,
@@ -306,15 +293,15 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
           // log the error for debug purposes in case there wasn't supposed to be an error
           switch (errorLabel) {
             case ErrorLabel.Babel:
-              expectErrorResponse(babelParsed);
+              assert.isErrorResponse(babelParsed);
               if (fixture.config.expectBabelToNotSupport == null) {
                 console.error('Babel:\n', babelParsed.error);
               }
               break;
 
             case ErrorLabel.Both:
-              expectErrorResponse(babelParsed);
-              expectErrorResponse(tsestreeParsed);
+              assert.isErrorResponse(babelParsed);
+              assert.isErrorResponse(tsestreeParsed);
               console.error('Babel:\n', babelParsed.error);
               console.error('TSESTree:\n', tsestreeParsed.error);
               break;
@@ -323,7 +310,7 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
               return;
 
             case ErrorLabel.TSESTree:
-              expectErrorResponse(tsestreeParsed);
+              assert.isErrorResponse(tsestreeParsed);
               console.error('TSESTree:\n', tsestreeParsed.error);
               break;
           }

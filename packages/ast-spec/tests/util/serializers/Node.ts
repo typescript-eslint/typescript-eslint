@@ -1,4 +1,4 @@
-import type { NewPlugin } from 'pretty-format';
+import type { NewPlugin } from '@vitest/pretty-format';
 
 import type * as TSESTree from '../../../src';
 
