@@ -77,7 +77,7 @@
     "@types/natural-compare": "*",
     "@typescript-eslint/rule-schema-to-typescript-types": "8.31.1",
     "@typescript-eslint/rule-tester": "8.31.1",
-    "@vitest/coverage-v8": "^3.1.1",
+    "@vitest/coverage-v8": "^3.1.2",
     "ajv": "^6.12.6",
     "cross-fetch": "*",
     "eslint": "*",
@@ -93,7 +93,7 @@
     "tsx": "*",
     "typescript": "*",
     "unist-util-visit": "^5.0.0",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.2"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^8.0.0 || ^8.0.0-alpha.0",

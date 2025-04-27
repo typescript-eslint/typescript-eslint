@@ -56,12 +56,12 @@
   },
   "devDependencies": {
     "@typescript-eslint/parser": "8.31.1",
-    "@vitest/coverage-v8": "^3.1.1",
+    "@vitest/coverage-v8": "^3.1.2",
     "ajv": "^6.12.6",
     "prettier": "^3.2.5",
     "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.2"
   },
   "funding": {
     "type": "opencollective",
