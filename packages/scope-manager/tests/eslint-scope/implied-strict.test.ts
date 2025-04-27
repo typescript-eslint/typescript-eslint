@@ -1,11 +1,7 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import {
-  expectToBeFunctionScope,
-  expectToBeGlobalScope,
-  expectToBeModuleScope,
-  parseAndAnalyze,
-} from '../test-utils';
+import { ScopeType } from '../../src/index.js';
+import { parseAndAnalyze } from '../test-utils/index.js';
 
 describe('impliedStrict option', () => {
   it('ensures all user scopes are strict', () => {
@@ -26,17 +22,17 @@ describe('impliedStrict option', () => {
 
     let scope = scopeManager.scopes[0];
 
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeTruthy();
 
     scope = scopeManager.scopes[1];
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.FunctionDeclaration);
     expect(scope.isStrict).toBeTruthy();
 
     scope = scopeManager.scopes[2];
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.FunctionDeclaration);
     expect(scope.isStrict).toBeTruthy();
   });
@@ -56,17 +52,17 @@ describe('impliedStrict option', () => {
 
     let scope = scopeManager.scopes[0];
 
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeFalsy();
 
     scope = scopeManager.scopes[1];
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeTruthy();
 
     scope = scopeManager.scopes[2];
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.FunctionDeclaration);
     expect(scope.isStrict).toBeTruthy();
   });
@@ -81,16 +77,16 @@ describe('impliedStrict option', () => {
 
     let scope = scopeManager.scopes[0];
 
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeFalsy();
 
     scope = scopeManager.scopes[1];
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(scope.isStrict).toBeTruthy();
 
     scope = scopeManager.scopes[2];
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.FunctionDeclaration);
     expect(scope.isStrict).toBeTruthy();
   });

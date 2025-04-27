@@ -1,11 +1,7 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import {
-  expectToBeGlobalScope,
-  expectToBeSwitchScope,
-  getRealVariables,
-  parseAndAnalyze,
-} from '../test-utils';
+import { ScopeType } from '../../src/index.js';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('ES6 switch', () => {
   it('materialize scope', () => {
@@ -26,7 +22,7 @@ describe('ES6 switch', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBeFalsy();
     expect(variables).toHaveLength(0);
@@ -35,7 +31,7 @@ describe('ES6 switch', () => {
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeSwitchScope(scope);
+    assert.isScopeOfType(scope, ScopeType.switch);
     expect(scope.block.type).toBe(AST_NODE_TYPES.SwitchStatement);
     expect(scope.isStrict).toBeFalsy();
     expect(variables).toHaveLength(2);

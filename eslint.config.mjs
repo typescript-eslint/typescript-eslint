@@ -43,6 +43,7 @@ const vitestFiles = [
   'packages/rule-tester/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/scope-manager/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/scope-manager/tests/test-utils/serializers/index.ts',
+  'packages/scope-manager/tests/test-utils/custom-matchers/custom-matchers.ts',
   'packages/type-utils/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/types/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',

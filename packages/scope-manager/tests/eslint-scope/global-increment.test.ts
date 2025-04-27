@@ -1,8 +1,5 @@
-import {
-  expectToBeGlobalScope,
-  getRealVariables,
-  parseAndAnalyze,
-} from '../test-utils';
+import { ScopeType } from '../../src/index.js';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('global increment', () => {
   it('becomes read/write', () => {
@@ -12,7 +9,7 @@ describe('global increment', () => {
 
     const scope = scopeManager.scopes[0];
     const variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(1);
     expect(scope.references[0].isReadWrite()).toBeTruthy();

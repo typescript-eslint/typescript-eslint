@@ -1,10 +1,5 @@
-import {
-  expectToBeGlobalScope,
-  expectToBeImportBindingDefinition,
-  expectToBeModuleScope,
-  expectToBeVariableDefinition,
-  getRealVariables,
-} from '../test-utils';
+import { DefinitionType, ScopeType } from '../../src/index.js';
+import { getRealVariables } from '../test-utils/index.js';
 import { parseAndAnalyze } from '../test-utils/parse';
 
 describe('import declaration', () => {
@@ -16,17 +11,20 @@ describe('import declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(scope.isStrict).toBeTruthy();
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('v');
-    expectToBeImportBindingDefinition(variables[0].defs[0]);
+    assert.isDefinitionOfType(
+      variables[0].defs[0],
+      DefinitionType.ImportBinding,
+    );
     expect(scope.references).toHaveLength(0);
   });
 
@@ -40,17 +38,20 @@ describe('import declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(scope.isStrict).toBeTruthy();
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('ns');
-    expectToBeImportBindingDefinition(variables[0].defs[0]);
+    assert.isDefinitionOfType(
+      variables[0].defs[0],
+      DefinitionType.ImportBinding,
+    );
     expect(scope.references).toHaveLength(0);
   });
 
@@ -64,17 +65,20 @@ describe('import declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(scope.isStrict).toBeTruthy();
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('x');
-    expectToBeImportBindingDefinition(variables[0].defs[0]);
+    assert.isDefinitionOfType(
+      variables[0].defs[0],
+      DefinitionType.ImportBinding,
+    );
     expect(scope.references).toHaveLength(0);
   });
 
@@ -88,17 +92,20 @@ describe('import declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(scope.isStrict).toBeTruthy();
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('v');
-    expectToBeImportBindingDefinition(variables[0].defs[0]);
+    assert.isDefinitionOfType(
+      variables[0].defs[0],
+      DefinitionType.ImportBinding,
+    );
     expect(scope.references).toHaveLength(0);
   });
 
@@ -121,21 +128,21 @@ describe('import declaration', () => {
 
       let scope = scopeManager.scopes[0];
       let variables = getRealVariables(scope.variables);
-      expectToBeGlobalScope(scope);
+      assert.isScopeOfType(scope, ScopeType.global);
       expect(variables).toHaveLength(0);
       expect(scope.references).toHaveLength(0);
 
       scope = scopeManager.scopes[1];
       variables = getRealVariables(scope.variables);
-      expectToBeModuleScope(scope);
+      assert.isScopeOfType(scope, ScopeType.module);
       expect(scope.isStrict).toBeTruthy();
       expect(variables).toHaveLength(2);
       const importV = variables[0];
       expect(importV.name).toBe('v');
-      expectToBeImportBindingDefinition(importV.defs[0]);
+      assert.isDefinitionOfType(importV.defs[0], DefinitionType.ImportBinding);
       const variableX = variables[1];
       expect(variableX.name).toBe('x');
-      expectToBeVariableDefinition(variableX.defs[0]);
+      assert.isDefinitionOfType(variableX.defs[0], DefinitionType.Variable);
 
       expect(scope.references).toHaveLength(2);
       expect(scope.references[0].resolved).toBe(variableX);

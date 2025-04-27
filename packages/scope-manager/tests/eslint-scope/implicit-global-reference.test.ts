@@ -2,11 +2,8 @@
 import type { Variable } from '../../src/variable';
 
 import { DefinitionType } from '../../src/definition';
-import {
-  expectToBeGlobalScope,
-  getRealVariables,
-  parseAndAnalyze,
-} from '../test-utils';
+import { ScopeType } from '../../src/index.js';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('implicit global reference', () => {
   it('assignments global scope', () => {
@@ -25,7 +22,7 @@ describe('implicit global reference', () => {
       ),
     ).toEqual([[[DefinitionType.Variable]]]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
@@ -49,7 +46,7 @@ describe('implicit global reference', () => {
       ),
     ).toEqual([[]]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
@@ -75,7 +72,7 @@ describe('implicit global reference', () => {
       ),
     ).toEqual([[[DefinitionType.FunctionName]], [[]]]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
@@ -98,7 +95,7 @@ describe('implicit global reference', () => {
       ),
     ).toEqual([['outer'], ['arguments']]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
@@ -124,7 +121,7 @@ describe('implicit global reference', () => {
       ),
     ).toEqual([['outer'], ['arguments', 'inner', 'x'], ['arguments']]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
@@ -147,7 +144,7 @@ describe('implicit global reference', () => {
       ),
     ).toEqual([['outer'], ['arguments'], []]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
@@ -173,7 +170,7 @@ describe('implicit global reference', () => {
       ),
     ).toEqual([['outer'], ['arguments', 'inner', 'x'], ['arguments'], []]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
