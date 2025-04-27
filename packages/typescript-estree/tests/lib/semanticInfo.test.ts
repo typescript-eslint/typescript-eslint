@@ -10,7 +10,6 @@ import type { TSESTree } from '../../src/ts-estree';
 import { clearCaches } from '../../src';
 import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms';
 import { parseAndGenerateServices } from '../../src/parser';
-import { expectToHaveParserServices } from '../test-utils/expectToHaveParserServices';
 import {
   deeplyCopy,
   formatSnapshotName,
@@ -191,7 +190,7 @@ describe('semanticInfo', async () => {
       createOptions(fileName),
     );
 
-    expectToHaveParserServices(parseResult.services);
+    assert.toHaveParserServices(parseResult.services);
     const binaryExpression = (
       parseResult.ast.body[0] as TSESTree.VariableDeclaration
     ).declarations[0].init!;
@@ -220,7 +219,8 @@ describe('semanticInfo', async () => {
     // get type checker
     expect(parseResult).toHaveProperty('services.program.getTypeChecker');
     const checker = parseResult.services.program?.getTypeChecker();
-    expectToBeDefined(checker);
+
+    assert.isDefined(checker);
 
     // get array node (ast shape validated by snapshot)
     // node is defined in other file than the parsed one
@@ -232,7 +232,7 @@ describe('semanticInfo', async () => {
     ).object as TSESTree.Identifier;
     expect(arrayBoundName.name).toBe('arr');
 
-    expectToHaveParserServices(parseResult.services);
+    assert.toHaveParserServices(parseResult.services);
     const tsArrayBoundName =
       parseResult.services.esTreeNodeToTSNodeMap.get(arrayBoundName);
     expect(tsArrayBoundName).toBeDefined();
@@ -444,7 +444,7 @@ function testIsolatedFile(
   parseResult: ParseAndGenerateServicesResult<TSESTreeOptions>,
 ): void {
   // get type checker
-  expectToHaveParserServices(parseResult.services);
+  assert.toHaveParserServices(parseResult.services);
   const checker = parseResult.services.program.getTypeChecker();
   expect(checker).toBeDefined();
 
@@ -496,8 +496,4 @@ function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node): void {
   const typeArguments = checker.getTypeArguments(nodeType as ts.TypeReference);
   expect(typeArguments).toHaveLength(1);
   expect(typeArguments[0].flags).toBe(ts.TypeFlags.Number);
-}
-
-function expectToBeDefined(thing: unknown): asserts thing {
-  expect(thing).toBeDefined();
 }

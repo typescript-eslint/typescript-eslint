@@ -47,6 +47,7 @@ const vitestFiles = [
   'packages/types/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
   'packages/typescript-estree/tests/**/*.test.{ts,tsx,cts,mts}',
+  'packages/typescript-estree/tests/test-utils/custom-matchers/custom-matchers.ts',
   'packages/utils/tests/**/*.test?(-d).{ts,tsx,cts,mts}',
   'packages/visitor-keys/tests/**/*.test.{ts,tsx,cts,mts}',
 ];

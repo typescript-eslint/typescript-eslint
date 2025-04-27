@@ -35,7 +35,6 @@ export default {
         '@babel/types',
         '@nx/js',
         '@nx/workspace',
-        'glob',
         'jest-specific-snapshot',
         'make-dir',
         // imported for type purposes only
@@ -108,7 +107,11 @@ export default {
 
       vitest: {
         config: ['vitest.config.mts'],
-        entry: ['tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+        entry: [
+          'tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
+          'tests/test-utils/custom-matchers/custom-matchers.ts',
+          'tests/test-utils/custom-matchers/vitest-custom-matchers.d.ts',
+        ],
       },
     },
     'packages/utils': {
