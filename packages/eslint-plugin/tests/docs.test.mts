@@ -7,7 +7,6 @@ import { marked } from 'marked';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { mdxFromMarkdown } from 'mdast-util-mdx';
 import { mdxjs } from 'micromark-extension-mdxjs';
-import assert from 'node:assert/strict';
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import { titleCase } from 'title-case';
@@ -446,11 +445,7 @@ describe('Validating rule docs', () => {
             `["error", ${option}]`,
           ));
 
-          if (!areOptionsValid(rule, options)) {
-            throw new Error(
-              `Options failed validation against rule's schema - ${JSON.stringify(options)}`,
-            );
-          }
+          expect(areOptionsValid(rule, options)).toBe(true);
         } else {
           ruleConfig = 'error';
         }
@@ -477,29 +472,29 @@ describe('Validating rule docs', () => {
           if (shouldContainLintErrors) {
             testCaption.push('Incorrect');
             if (token.meta?.includes('skipValidation')) {
-              assert.ok(
-                messages.length === 0,
+              assert.isEmpty(
+                messages,
                 `Expected not to contain lint errors (with skipValidation):
 ${token.value}`,
               );
             } else {
-              assert.ok(
-                messages.length > 0,
+              assert.isNotEmpty(
+                messages,
                 `Expected to contain at least 1 lint error:\n${token.value}`,
               );
             }
           } else {
             testCaption.push('Correct');
             if (token.meta?.includes('skipValidation')) {
-              assert.ok(
-                messages.length > 0,
+              assert.isNotEmpty(
+                messages,
                 `Expected to contain at least 1 lint error (with skipValidation):\n${
                   token.value
                 }`,
               );
             } else {
-              assert.ok(
-                messages.length === 0,
+              assert.isEmpty(
+                messages,
                 `Expected not to contain lint errors:\n${token.value}`,
               );
             }
