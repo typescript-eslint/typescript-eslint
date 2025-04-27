@@ -6116,6 +6116,7 @@ __metadata:
     "@vitest/coverage-v8": ^3.1.2
     ajv: ^6.12.6
     debug: ^4.3.4
+    eslint: "*"
     prettier: ^3.2.5
     rimraf: "*"
     ts-api-utils: ^2.0.1
