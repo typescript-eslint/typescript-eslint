@@ -461,6 +461,18 @@ export default tseslint.config(
     },
     settings: { vitest: { typecheck: true } },
   },
+  {
+    files: ['packages/*/tests/**/vitest-custom-matchers.d.ts'],
+    name: 'vitest-custom-matchers-declaration-files',
+    rules: {
+      '@typescript-eslint/no-empty-object-type': [
+        'error',
+        { allowInterfaces: 'with-single-extends' },
+      ],
+
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
   // plugin rule tests
   {
     files: [
