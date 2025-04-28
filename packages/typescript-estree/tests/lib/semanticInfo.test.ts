@@ -236,7 +236,7 @@ describe('semanticInfo', async () => {
     const tsArrayBoundName =
       parseResult.services.esTreeNodeToTSNodeMap.get(arrayBoundName);
     expect(tsArrayBoundName).toBeDefined();
-    checkNumberArrayType(checker, tsArrayBoundName);
+    assert.isTSNodeOfNumberArrayType(checker, tsArrayBoundName);
 
     expect(
       parseResult.services.tsNodeToESTreeNodeMap.get(tsArrayBoundName),
@@ -478,22 +478,8 @@ function testIsolatedFile(
   expect(boundName.name).toBe('x');
   const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap.get(boundName);
   expect(tsBoundName).toBeDefined();
-  checkNumberArrayType(checker, tsBoundName);
+  assert.isTSNodeOfNumberArrayType(checker, tsBoundName);
   expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
     boundName,
   );
-}
-
-/**
- * Verifies that the type of a TS node is number[] as expected
- */
-function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node): void {
-  const nodeType = checker.getTypeAtLocation(tsNode);
-  expect(nodeType.flags).toBe(ts.TypeFlags.Object);
-  expect((nodeType as ts.ObjectType).objectFlags).toBe(
-    ts.ObjectFlags.Reference,
-  );
-  const typeArguments = checker.getTypeArguments(nodeType as ts.TypeReference);
-  expect(typeArguments).toHaveLength(1);
-  expect(typeArguments[0].flags).toBe(ts.TypeFlags.Number);
 }

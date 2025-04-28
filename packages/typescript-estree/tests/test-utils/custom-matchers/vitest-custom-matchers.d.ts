@@ -1,3 +1,5 @@
+import type * as ts from 'typescript';
+
 import 'vitest';
 
 import type {
@@ -12,6 +14,15 @@ declare global {
         services: ParserServices | null | undefined,
         errorMessage?: string,
       ): asserts services is ParserServicesWithTypeInformation;
+
+      /**
+       * Verifies that the type of a TS node is `number[]` as expected
+       */
+      isTSNodeOfNumberArrayType(
+        checker: ts.TypeChecker,
+        tsNode: ts.Node,
+        errorMessage?: string,
+      ): void;
     }
   }
 }

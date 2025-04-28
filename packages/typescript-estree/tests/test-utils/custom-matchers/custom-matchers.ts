@@ -1,3 +1,5 @@
+import * as ts from 'typescript';
+
 import type {
   ParserServices,
   ParserServicesWithTypeInformation,
@@ -14,6 +16,30 @@ chai.use((chai, utils) => {
       this.exists(services?.program);
       expect(services.esTreeNodeToTSNodeMap).toBeDefined();
       expect(services.tsNodeToESTreeNodeMap).toBeDefined();
+    },
+  );
+
+  utils.addMethod(
+    chai.assert,
+    'isTSNodeOfNumberArrayType',
+    function isTSNodeOfNumberArrayType(
+      this: Chai.AssertStatic,
+      checker: ts.TypeChecker,
+      tsNode: ts.Node,
+    ): void {
+      const nodeType = checker.getTypeAtLocation(tsNode);
+
+      this.propertyVal(nodeType, 'flags', ts.TypeFlags.Object);
+
+      this.propertyVal(nodeType, 'objectFlags', ts.ObjectFlags.Reference);
+
+      const typeArguments = checker.getTypeArguments(
+        nodeType as ts.TypeReference,
+      );
+
+      this.lengthOf(typeArguments, 1);
+
+      this.propertyVal(typeArguments[0], 'flags', ts.TypeFlags.Number);
     },
   );
 });
