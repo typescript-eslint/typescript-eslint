@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures special ExportSpecifier literal-specifier AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > special > ExportSpecifier > literal-specifier > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -16,7 +16,7 @@ exports[`AST Fixtures special ExportSpecifier literal-specifier AST Alignment - 
         exportKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\'mod\\'',
+          raw: '\'mod\'',
           value: 'mod',
 
           range: [25, 30],
@@ -30,7 +30,7 @@ exports[`AST Fixtures special ExportSpecifier literal-specifier AST Alignment - 
             type: 'ExportSpecifier',
             exported: Literal {
               type: 'Literal',
-              raw: '\\'A\\'',
+              raw: '\'A\'',
               value: 'A',
 
               range: [14, 17],
@@ -75,5 +75,4 @@ exports[`AST Fixtures special ExportSpecifier literal-specifier AST Alignment - 
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

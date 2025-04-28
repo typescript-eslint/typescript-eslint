@@ -1,10 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures statement ThrowStatement _error_ missing-argument TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > statement > ThrowStatement > _error_ > missing-argument > TSESTree - Error`]
+TSError
   1 | {
 > 2 |     throw
     |     ^^^^^ A throw statement must throw an expression.
   3 | }
-  4 |"
-`;
+  4 |

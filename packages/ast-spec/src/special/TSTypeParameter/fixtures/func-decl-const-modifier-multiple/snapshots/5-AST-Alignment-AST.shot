@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures special TSTypeParameter func-decl-const-modifier-multiple AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > special > TSTypeParameter > func-decl-const-modifier-multiple > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -113,5 +113,4 @@ exports[`AST Fixtures special TSTypeParameter func-decl-const-modifier-multiple 
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

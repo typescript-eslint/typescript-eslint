@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-unused-vars.mdx code examples ESLint output 1`] = `
-"
 
 const box = {
       ~~~ 'box' is assigned a value but only used as a type.
@@ -11,20 +8,14 @@ const box = {
 };
 
 export type Box = typeof box;
-"
-`;
 
-exports[`Validating rule docs no-unused-vars.mdx code examples ESLint output 2`] = `
-"
+
 
 export interface Box {
   value: number;
 }
-"
-`;
 
-exports[`Validating rule docs no-unused-vars.mdx code examples ESLint output 3`] = `
-"
+
 
 import { z } from 'zod';
 
@@ -36,14 +27,9 @@ const schema = z.object({
 });
 
 export type Box = z.infer<typeof schema>;
-"
-`;
 
-exports[`Validating rule docs no-unused-vars.mdx code examples ESLint output 4`] = `
-"
+
 
 export interface Box {
   value: number;
 }
-"
-`;

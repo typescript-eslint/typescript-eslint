@@ -8,7 +8,7 @@
 import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export = {
-  extends: ['./configs/base', './configs/eslint-recommended'],
+  extends: ['./configs/eslintrc/base', './configs/eslintrc/eslint-recommended'],
   rules: {
     'dot-notation': 'off',
     '@typescript-eslint/dot-notation': 'error',

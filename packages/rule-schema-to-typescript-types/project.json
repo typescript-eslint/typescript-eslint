@@ -1,8 +1,9 @@
 {
   "name": "rule-schema-to-typescript-types",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "type": "library",
-  "implicitDependencies": [],
+  "projectType": "library",
+  "root": "packages/rule-schema-to-typescript-types",
+  "sourceRoot": "packages/rule-schema-to-typescript-types/src",
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
