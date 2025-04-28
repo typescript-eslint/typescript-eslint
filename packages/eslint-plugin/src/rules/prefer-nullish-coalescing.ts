@@ -1,5 +1,4 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import type { SourceCode } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -20,7 +19,10 @@ import {
   NullThrowsReasons,
   skipChainExpression,
   isParenthesized,
+  getOperatorPrecedenceForNode,
+  OperatorPrecedence,
 } from '../util';
+import { getWrappedCode } from '../util/getWrappedCode';
 
 const isMemberAccessLike = isNodeOfTypes([
   AST_NODE_TYPES.ChainExpression,
@@ -514,10 +516,23 @@ export default createRule<Options, MessageIds>({
                     `${getTextWithParentheses(
                       context.sourceCode,
                       nullishCoalescingParams.nullishCoalescingLeftNode,
-                    )} ?? ${getTextWithEnsuredParentheses(
-                      context.sourceCode,
-                      getBranchNodes(node, operator).nullishBranch,
-                    )}`,
+                    )} ?? ${(() => {
+                      const branch = getBranchNodes(
+                        node,
+                        operator,
+                      ).nullishBranch;
+                      if (isParenthesized(branch, context.sourceCode)) {
+                        return getTextWithParentheses(
+                          context.sourceCode,
+                          branch,
+                        );
+                      }
+                      return getWrappedCode(
+                        getTextWithParentheses(context.sourceCode, branch),
+                        getOperatorPrecedenceForNode(branch),
+                        OperatorPrecedence.Coalesce,
+                      );
+                    })()}`,
                   );
                 },
               },
@@ -933,18 +948,4 @@ function formatComments(
         : `/*${value}*/${separator}`,
     )
     .join('');
-}
-
-function getTextWithEnsuredParentheses(
-  sourceCode: Readonly<SourceCode>,
-  node: TSESTree.Node,
-): string {
-  const replaceCode = getTextWithParentheses(sourceCode, node);
-  if (
-    node.type === AST_NODE_TYPES.ConditionalExpression &&
-    !isParenthesized(node, sourceCode)
-  ) {
-    return `(${replaceCode})`;
-  }
-  return replaceCode;
 }
