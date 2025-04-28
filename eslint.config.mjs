@@ -28,28 +28,6 @@ const restrictNamedDeclarations = {
   selector: 'ExportNamedDeclaration[declaration=null][source=null]',
 };
 
-const vitestFiles = [
-  'packages/ast-spec/tests/**/*.test?(-d).{ts,tsx,cts,mts}',
-  'packages/ast-spec/tests/util/setupVitest.mts',
-  'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
-  'packages/eslint-plugin/tests/**/*.test.{ts,tsx,cts,mts}',
-  'packages/integration-tests/tests/**/*.test.{ts,tsx,cts,mts},',
-  'packages/integration-tests/tools/integration-test-base.ts',
-  'packages/integration-tests/tools/pack-packages.ts',
-  'packages/parser/tests/lib/**/*.test.{ts,tsx,cts,mts}',
-  'packages/parser/tests/test-utils/**/*.{ts,tsx,cts,mts}',
-  'packages/rule-schema-to-typescript-types/tests/**/*.test.{ts,tsx,cts,mts}',
-  'packages/rule-tester/tests/**/*.test.{ts,tsx,cts,mts}',
-  'packages/scope-manager/tests/**/*.test.{ts,tsx,cts,mts}',
-  'packages/scope-manager/tests/test-utils/serializers/index.ts',
-  'packages/type-utils/tests/**/*.test.{ts,tsx,cts,mts}',
-  'packages/types/tests/**/*.test.{ts,tsx,cts,mts}',
-  'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
-  'packages/typescript-estree/tests/**/*.test.{ts,tsx,cts,mts}',
-  'packages/utils/tests/**/*.test?(-d).{ts,tsx,cts,mts}',
-  'packages/visitor-keys/tests/**/*.test.{ts,tsx,cts,mts}',
-];
-
 export default tseslint.config(
   // register all of the plugins up-front
   {
@@ -380,14 +358,13 @@ export default tseslint.config(
   // test file linting
   //
 
-  // define the vitest globals for all test files
-  {
-    files: vitestFiles,
-    ...vitestPlugin.configs.env,
-  },
   // test file specific configuration
   {
-    files: vitestFiles,
+    files: [
+      'packages/*/tests/**/*.{ts,tsx,cts,mts}',
+      'packages/integration-tests/tools/**/*.ts',
+    ],
+    ...vitestPlugin.configs.env,
     rules: {
       '@typescript-eslint/no-empty-function': [
         'error',
