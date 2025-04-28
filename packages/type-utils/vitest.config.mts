@@ -11,6 +11,10 @@ const vitestConfig = mergeConfig(
     root: import.meta.dirname,
 
     test: {
+      diff: {
+        maxDepth: 1,
+      },
+
       dir: path.join(import.meta.dirname, 'tests'),
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,

@@ -80,7 +80,9 @@ expect.extend({
       passSenderNode ? senderNode : null,
     );
 
-    const pass = actual === false;
+    const expected = false;
+
+    const pass = actual === expected;
 
     return {
       actual,
@@ -89,7 +91,7 @@ expect.extend({
             receiver: expect.anything(),
             sender: expect.anything(),
           })
-        : false,
+        : expected,
       message: () => `Expected Assignment${isNot ? ' not' : ''} to be safe.`,
       pass,
     };
