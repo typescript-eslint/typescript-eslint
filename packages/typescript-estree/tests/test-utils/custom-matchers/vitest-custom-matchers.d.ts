@@ -1,10 +1,12 @@
-import type * as ts from 'typescript';
-
 import 'vitest';
 
+import type * as ts from 'typescript';
+
 import type {
+  ParseAndGenerateServicesResult,
   ParserServices,
   ParserServicesWithTypeInformation,
+  TSESTreeOptions,
 } from '../../../src/index.js';
 
 declare global {
@@ -21,6 +23,11 @@ declare global {
       isTSNodeOfNumberArrayType(
         checker: ts.TypeChecker,
         tsNode: ts.Node,
+        errorMessage?: string,
+      ): void;
+
+      testIsolatedFile(
+        parseResult: ParseAndGenerateServicesResult<TSESTreeOptions>,
         errorMessage?: string,
       ): void;
     }

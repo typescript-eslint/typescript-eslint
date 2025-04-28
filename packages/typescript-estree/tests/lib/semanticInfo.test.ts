@@ -3,7 +3,6 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import * as ts from 'typescript';
 
-import type { ParseAndGenerateServicesResult } from '../../src/parser';
 import type { TSESTreeOptions } from '../../src/parser-options';
 import type { TSESTree } from '../../src/ts-estree';
 
@@ -160,7 +159,7 @@ describe('semanticInfo', async () => {
         createOptions(fileName),
       );
 
-      testIsolatedFile(parseResult);
+      assert.testIsolatedFile(parseResult);
     },
   );
 
@@ -176,7 +175,7 @@ describe('semanticInfo', async () => {
         },
       );
 
-      testIsolatedFile(parseResult);
+      assert.testIsolatedFile(parseResult);
     },
   );
 
@@ -439,47 +438,3 @@ describe('semanticInfo', async () => {
     ).toThrow();
   });
 });
-
-function testIsolatedFile(
-  parseResult: ParseAndGenerateServicesResult<TSESTreeOptions>,
-): void {
-  // get type checker
-  assert.toHaveParserServices(parseResult.services);
-  const checker = parseResult.services.program.getTypeChecker();
-  expect(checker).toBeDefined();
-
-  // get number node (ast shape validated by snapshot)
-  const declaration = (parseResult.ast.body[0] as TSESTree.VariableDeclaration)
-    .declarations[0];
-  const arrayMember = (declaration.init! as TSESTree.ArrayExpression)
-    .elements[0]!;
-
-  // get corresponding TS node
-  const tsArrayMember =
-    parseResult.services.esTreeNodeToTSNodeMap.get(arrayMember);
-  expect(tsArrayMember).toBeDefined();
-  expect(tsArrayMember.kind).toBe(ts.SyntaxKind.NumericLiteral);
-  expect((tsArrayMember as ts.NumericLiteral).text).toBe('3');
-
-  // get type of TS node
-  const arrayMemberType = checker.getTypeAtLocation(tsArrayMember);
-  expect(arrayMemberType.flags).toBe(ts.TypeFlags.NumberLiteral);
-  // using an internal api
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  expect((arrayMemberType as any).value).toBe(3);
-
-  // make sure it maps back to original ESTree node
-  expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsArrayMember)).toBe(
-    arrayMember,
-  );
-
-  // get bound name
-  const boundName = declaration.id as TSESTree.Identifier;
-  expect(boundName.name).toBe('x');
-  const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap.get(boundName);
-  expect(tsBoundName).toBeDefined();
-  assert.isTSNodeOfNumberArrayType(checker, tsBoundName);
-  expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
-    boundName,
-  );
-}
