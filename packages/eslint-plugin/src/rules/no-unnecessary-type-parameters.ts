@@ -127,12 +127,7 @@ export default createRule({
                         sourceCode: context.sourceCode,
                         wrap: constraintNode => constraintNode,
                       })(fixer);
-                      if (fixResult == null) {
-                        return null;
-                      }
-                      if ('text' in fixResult) {
-                        yield fixResult;
-                      }
+                      yield fixResult;
                     } else {
                       yield fixer.replaceText(referenceNode, constraintText);
                     }
