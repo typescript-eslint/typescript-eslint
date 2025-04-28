@@ -302,16 +302,18 @@ export default createRule<Options, MessageIds>({
         : undefined;
     }
 
-    function isThisParam(
-      param: TSESTree.Parameter | undefined,
-    ): param is TSESTree.Identifier {
-      return param?.type === AST_NODE_TYPES.Identifier && param.name === 'this';
+    function isThisParam(param: TSESTree.Parameter | undefined): boolean {
+      return (
+        param != null &&
+        param.type === AST_NODE_TYPES.Identifier &&
+        param.name === 'this'
+      );
     }
 
     function isThisVoidParam(param: TSESTree.Parameter | undefined) {
       return (
         isThisParam(param) &&
-        param.typeAnnotation?.typeAnnotation.type ===
+        (param as TSESTree.Identifier).typeAnnotation?.typeAnnotation.type ===
           AST_NODE_TYPES.TSVoidKeyword
       );
     }
@@ -332,8 +334,8 @@ export default createRule<Options, MessageIds>({
       const shorter = sig1.length < sig2.length ? sig1 : sig2;
       const shorterSig = sig1.length < sig2.length ? a : b;
 
-      const firstParam1 = sig1[0];
-      const firstParam2 = sig2[0];
+      const firstParam1 = sig1.at(0);
+      const firstParam2 = sig2.at(0);
       // If one signature has explicit this type and another doesn't, they can't
       // be unified.
       if (isThisParam(firstParam1) !== isThisParam(firstParam2)) {
