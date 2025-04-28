@@ -32,7 +32,7 @@ interface WrappingFixerParams {
  */
 export function getWrappingFixer(
   params: WrappingFixerParams,
-): TSESLint.ReportFixFunction {
+): (fixer: TSESLint.RuleFixer) => TSESLint.RuleFix {
   const { node, innerNode = node, sourceCode, wrap } = params;
   const innerNodes = Array.isArray(innerNode) ? innerNode : [innerNode];
 
