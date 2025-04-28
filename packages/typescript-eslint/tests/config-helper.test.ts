@@ -1,11 +1,11 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
-import plugin from '../src/index';
+import tseslint from '../src/index';
 
 describe('config helper', () => {
   it('works without extends', () => {
     expect(
-      plugin.config({
+      tseslint.config({
         files: ['file'],
         ignores: ['ignored'],
         rules: { rule: 'error' },
@@ -21,7 +21,7 @@ describe('config helper', () => {
 
   it('flattens extended configs', () => {
     expect(
-      plugin.config({
+      tseslint.config({
         extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
         rules: { rule: 'error' },
       }),
@@ -34,7 +34,7 @@ describe('config helper', () => {
 
   it('flattens extended configs with files and ignores', () => {
     expect(
-      plugin.config({
+      tseslint.config({
         extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
         files: ['common-file'],
         ignores: ['common-ignored'],
@@ -63,7 +63,7 @@ describe('config helper', () => {
     const extension: TSESLint.FlatConfig.Config = { rules: { rule1: 'error' } };
 
     expect(() =>
-      plugin.config(
+      tseslint.config(
         {
           extends: [extension],
           files: ['common-file'],
@@ -81,7 +81,7 @@ describe('config helper', () => {
         },
       ),
     ).toThrow(
-      'Your config at index 1, named "my-config-2", contains undefined ' +
+      'tseslint.config(): Config at index 1, named "my-config-2", contains non-object ' +
         'extensions at the following indices: 0, 2',
     );
   });
@@ -90,7 +90,7 @@ describe('config helper', () => {
     const extension: TSESLint.FlatConfig.Config = { rules: { rule1: 'error' } };
 
     expect(() =>
-      plugin.config(
+      tseslint.config(
         {
           extends: [extension],
           files: ['common-file'],
@@ -107,14 +107,14 @@ describe('config helper', () => {
         },
       ),
     ).toThrow(
-      'Your config at index 1 (anonymous) contains undefined extensions at ' +
+      'tseslint.config(): Config at index 1 (anonymous) contains non-object extensions at ' +
         'the following indices: 0, 2',
     );
   });
 
   it('flattens extended configs with config name', () => {
     expect(
-      plugin.config({
+      tseslint.config({
         extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
         files: ['common-file'],
         ignores: ['common-ignored'],
@@ -145,7 +145,7 @@ describe('config helper', () => {
 
   it('flattens extended configs with names if base config is unnamed', () => {
     expect(
-      plugin.config({
+      tseslint.config({
         extends: [
           { name: 'extension-1', rules: { rule1: 'error' } },
           { rules: { rule2: 'error' } },
@@ -176,7 +176,7 @@ describe('config helper', () => {
 
   it('merges config items names', () => {
     expect(
-      plugin.config({
+      tseslint.config({
         extends: [
           { name: 'extension-1', rules: { rule1: 'error' } },
           { rules: { rule2: 'error' } },
@@ -210,7 +210,7 @@ describe('config helper', () => {
 
   it('allows nested arrays in the config function', () => {
     expect(
-      plugin.config(
+      tseslint.config(
         { rules: { rule1: 'error' } },
         [{ rules: { rule2: 'error' } }],
         [[{ rules: { rule3: 'error' } }]],
@@ -228,7 +228,7 @@ describe('config helper', () => {
 
   it('allows nested arrays in extends', () => {
     expect(
-      plugin.config({
+      tseslint.config({
         extends: [
           { rules: { rule1: 'error' } },
           [{ rules: { rule2: 'error' } }],
@@ -249,7 +249,7 @@ describe('config helper', () => {
   });
 
   it('does not create global ignores in extends', () => {
-    const configWithIgnores = plugin.config({
+    const configWithIgnores = tseslint.config({
       extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
       ignores: ['ignored'],
     });
@@ -265,7 +265,7 @@ describe('config helper', () => {
   });
 
   it('creates noop config in extends', () => {
-    const configWithMetadata = plugin.config({
+    const configWithMetadata = tseslint.config({
       extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
       files: ['file'],
       ignores: ['ignored'],
@@ -297,7 +297,7 @@ describe('config helper', () => {
 
   it('does not create global ignores when extending empty configs', () => {
     expect(
-      plugin.config({
+      tseslint.config({
         extends: [{ rules: { rule1: 'error' } }, {}],
         ignores: ['ignored'],
       }),
@@ -310,10 +310,68 @@ describe('config helper', () => {
 
   it('handles name field when global-ignoring in extension', () => {
     expect(
-      plugin.config({
+      tseslint.config({
         extends: [{ ignores: ['files/**/*'], name: 'global-ignore-stuff' }],
         ignores: ['ignored'],
       }),
     ).toEqual([{ ignores: ['files/**/*'], name: 'global-ignore-stuff' }]);
+  });
+
+  it('throws error when extends is not an array', () => {
+    expect(() =>
+      tseslint.config({
+        // @ts-expect-error purposely testing invalid values
+        extends: 42,
+      }),
+    ).toThrow(
+      "tseslint.config(): Config at index 0 (anonymous) has an 'extends' property that is not an array.",
+    );
+  });
+
+  it.each([undefined, null, 'not a config object', 42])(
+    'passes invalid arguments through unchanged',
+    config => {
+      expect(
+        tseslint.config(
+          // @ts-expect-error purposely testing invalid values
+          config,
+        ),
+      ).toStrictEqual([config]);
+    },
+  );
+
+  it('gives a special error message for string extends', () => {
+    expect(() =>
+      tseslint.config({
+        // @ts-expect-error purposely testing invalid values
+        extends: ['some-string'],
+      }),
+    ).toThrow(
+      'tseslint.config(): Config at index 0 (anonymous) has an \'extends\' array that contains a string ("some-string") at index 0. ' +
+        "This is a feature of eslint's `defineConfig()` helper and is not supported by typescript-eslint. " +
+        'Please provide a config object instead.',
+    );
+  });
+
+  it('strips nullish extends arrays from the config object', () => {
+    expect(
+      tseslint.config({
+        // @ts-expect-error purposely testing invalid values
+        extends: null,
+        files: ['files'],
+      }),
+    ).toEqual([{ files: ['files'] }]);
+  });
+
+  it('complains when given an object with an invalid name', () => {
+    expect(() =>
+      tseslint.config({
+        extends: [],
+        // @ts-expect-error purposely testing invalid values
+        name: 42,
+      }),
+    ).toThrow(
+      "tseslint.config(): Config at index 0 has a 'name' property that is not a string.",
+    );
   });
 });
