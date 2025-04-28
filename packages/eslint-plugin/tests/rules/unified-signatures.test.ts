@@ -1188,14 +1188,14 @@ function f(this: string | number): void {}
       errors: [
         {
           column: 12,
-          line: 3,
-          messageId: 'singleParameterDifference',
           data: {
             failureStringStart:
               'These overloads can be combined into one signature',
             type1: 'string',
             type2: 'number',
           },
+          line: 3,
+          messageId: 'singleParameterDifference',
         },
       ],
     },
@@ -1208,14 +1208,14 @@ function f(this: string | number, a: boolean): void {}
       errors: [
         {
           column: 12,
-          line: 3,
-          messageId: 'singleParameterDifference',
           data: {
             failureStringStart:
               'These overloads can be combined into one signature',
             type1: 'string',
             type2: 'number',
           },
+          line: 3,
+          messageId: 'singleParameterDifference',
         },
       ],
     },

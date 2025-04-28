@@ -311,7 +311,7 @@ export default createRule<Options, MessageIds>({
     function isThisVoidParam(param: TSESTree.Parameter | undefined) {
       return (
         isThisParam(param) &&
-        param?.typeAnnotation?.typeAnnotation?.type ===
+        param.typeAnnotation?.typeAnnotation.type ===
           AST_NODE_TYPES.TSVoidKeyword
       );
     }
