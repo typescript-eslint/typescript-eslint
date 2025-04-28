@@ -3,12 +3,12 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
 
 import { TYPE } from './base-config';
 import { es2020_intl } from './es2020.intl';
 
-export const es2020_number = {
-  ...es2020_intl,
-  Number: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const es2020_number: LibDefinition = {
+  libs: [es2020_intl],
+  variables: [['Number', TYPE]],
+};

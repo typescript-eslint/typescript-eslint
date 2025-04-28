@@ -1,0 +1,174 @@
+Program {
+  type: "Program",
+  body: [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [21, 23],
+        loc: {
+          start: { column: 21, line: 1 },
+          end: { column: 23, line: 1 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "decorator",
+
+        range: [9, 18],
+        loc: {
+          start: { column: 9, line: 1 },
+          end: { column: 18, line: 1 },
+        },
+      },
+      params: [],
+
+      range: [0, 23],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 23, line: 1 },
+      },
+    },
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "foo",
+
+              range: [37, 40],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
+              },
+            },
+            kind: "method",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [],
+
+                range: [59, 61],
+                loc: {
+                  start: { column: 24, line: 4 },
+                  end: { column: 26, line: 4 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                AssignmentPattern {
+                  type: "AssignmentPattern",
+                  decorators: [
+                    Decorator {
+                      type: "Decorator",
+                      expression: Identifier {
+                        type: "Identifier",
+                        name: "decorator",
+
+                        range: [42, 51],
+                        loc: {
+                          start: { column: 7, line: 4 },
+                          end: { column: 16, line: 4 },
+                        },
+                      },
+
+                      range: [41, 51],
+                      loc: {
+                        start: { column: 6, line: 4 },
+                        end: { column: 16, line: 4 },
+                      },
+                    },
+                  ],
+                  left: Identifier {
+                    type: "Identifier",
+                    name: "d",
+
+                    range: [52, 53],
+                    loc: {
+                      start: { column: 17, line: 4 },
+                      end: { column: 18, line: 4 },
+                    },
+                  },
+                  right: Literal {
+                    type: "Literal",
+                    raw: "1",
+                    value: 1,
+
+                    range: [56, 57],
+                    loc: {
+                      start: { column: 21, line: 4 },
+                      end: { column: 22, line: 4 },
+                    },
+                  },
+
+                  range: [52, 57],
+                  loc: {
+                    start: { column: 17, line: 4 },
+                    end: { column: 22, line: 4 },
+                  },
+                },
+              ],
+
+              range: [40, 61],
+              loc: {
+                start: { column: 5, line: 4 },
+                end: { column: 26, line: 4 },
+              },
+            },
+
+            range: [37, 61],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 26, line: 4 },
+            },
+          },
+        ],
+
+        range: [33, 63],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "A",
+
+        range: [31, 32],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [25, 63],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 64],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 6 },
+  },
+}

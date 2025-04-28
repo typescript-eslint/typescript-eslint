@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ no-variables Babel - Error 1`] = `[SyntaxError: Unexpected token (1:5)]`;
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > no-variables > Babel - Error`]
+SyntaxError: Unexpected token (1:5)

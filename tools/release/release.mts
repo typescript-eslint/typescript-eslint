@@ -1,5 +1,9 @@
 import { execaSync } from 'execa';
-import { releaseChangelog, releasePublish, releaseVersion } from 'nx/release';
+import {
+  releaseChangelog,
+  releasePublish,
+  releaseVersion,
+} from 'nx/release/index.js';
 import yargs from 'yargs';
 
 const options = await yargs(process.argv.slice(2))
@@ -14,6 +18,12 @@ const options = await yargs(process.argv.slice(2))
     default: true,
     description:
       'Whether to perform a dry-run of the release process, defaults to true',
+    type: 'boolean',
+  })
+  .option('forceReleaseWithoutChanges', {
+    default: false,
+    description:
+      'Whether to do a release regardless of if there have been changes',
     type: 'boolean',
   })
   .option('verbose', {
@@ -51,7 +61,7 @@ await releaseChangelog({
 
 // An explicit null value here means that no changes were detected across any package
 // eslint-disable-next-line eqeqeq, @typescript-eslint/internal/eqeq-nullish
-if (workspaceVersion === null) {
+if (!options.forceReleaseWithoutChanges && workspaceVersion === null) {
   console.log(
     '⏭️ No changes detected across any package, skipping publish step altogether',
   );

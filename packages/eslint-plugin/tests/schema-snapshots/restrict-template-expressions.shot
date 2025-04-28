@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes restrict-template-expressions 1`] = `
-"
 # SCHEMA:
 
 [
@@ -104,31 +101,31 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "array"
       },
       "allowAny": {
-        "description": "Whether to allow \`any\` typed values in template expressions.",
+        "description": "Whether to allow `any` typed values in template expressions.",
         "type": "boolean"
       },
       "allowArray": {
-        "description": "Whether to allow \`array\` typed values in template expressions.",
+        "description": "Whether to allow `array` typed values in template expressions.",
         "type": "boolean"
       },
       "allowBoolean": {
-        "description": "Whether to allow \`boolean\` typed values in template expressions.",
+        "description": "Whether to allow `boolean` typed values in template expressions.",
         "type": "boolean"
       },
       "allowNever": {
-        "description": "Whether to allow \`never\` typed values in template expressions.",
+        "description": "Whether to allow `never` typed values in template expressions.",
         "type": "boolean"
       },
       "allowNullish": {
-        "description": "Whether to allow \`nullish\` typed values in template expressions.",
+        "description": "Whether to allow `nullish` typed values in template expressions.",
         "type": "boolean"
       },
       "allowNumber": {
-        "description": "Whether to allow \`number\` typed values in template expressions.",
+        "description": "Whether to allow `number` typed values in template expressions.",
         "type": "boolean"
       },
       "allowRegExp": {
-        "description": "Whether to allow \`regexp\` typed values in template expressions.",
+        "description": "Whether to allow `regexp` typed values in template expressions.",
         "type": "boolean"
       }
     },
@@ -159,21 +156,19 @@ type Options = [
         }
       | string
     )[];
-    /** Whether to allow \`any\` typed values in template expressions. */
+    /** Whether to allow `any` typed values in template expressions. */
     allowAny?: boolean;
-    /** Whether to allow \`array\` typed values in template expressions. */
+    /** Whether to allow `array` typed values in template expressions. */
     allowArray?: boolean;
-    /** Whether to allow \`boolean\` typed values in template expressions. */
+    /** Whether to allow `boolean` typed values in template expressions. */
     allowBoolean?: boolean;
-    /** Whether to allow \`never\` typed values in template expressions. */
+    /** Whether to allow `never` typed values in template expressions. */
     allowNever?: boolean;
-    /** Whether to allow \`nullish\` typed values in template expressions. */
+    /** Whether to allow `nullish` typed values in template expressions. */
     allowNullish?: boolean;
-    /** Whether to allow \`number\` typed values in template expressions. */
+    /** Whether to allow `number` typed values in template expressions. */
     allowNumber?: boolean;
-    /** Whether to allow \`regexp\` typed values in template expressions. */
+    /** Whether to allow `regexp` typed values in template expressions. */
     allowRegExp?: boolean;
   },
 ];
-"
-`;

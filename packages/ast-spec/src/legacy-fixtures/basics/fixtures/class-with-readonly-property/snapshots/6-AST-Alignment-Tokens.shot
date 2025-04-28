@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-readonly-property AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-readonly-property > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -80,7 +80,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-property AST Al
     },
     String {
       type: 'String',
-      value: '\\'string\\'',
+      value: '\'string\'',
 
       range: [109, 117],
       loc: {
@@ -108,5 +108,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-property AST Al
         end: { column: 1, line: 5 },
       },
     },
-  ]"
-`;
+  ]

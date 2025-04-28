@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes unified-signatures 1`] = `
-"
 # SCHEMA:
 
 [
@@ -10,6 +7,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "properties": {
       "ignoreDifferentlyNamedParameters": {
         "description": "Whether two parameters with different names at the same index should be considered different even if their types are the same.",
+        "type": "boolean"
+      },
+      "ignoreOverloadsWithDifferentJSDoc": {
+        "description": "Whether two overloads with different JSDoc comments should be considered different even if their parameter and return types are the same.",
         "type": "boolean"
       }
     },
@@ -24,7 +25,7 @@ type Options = [
   {
     /** Whether two parameters with different names at the same index should be considered different even if their types are the same. */
     ignoreDifferentlyNamedParameters?: boolean;
+    /** Whether two overloads with different JSDoc comments should be considered different even if their parameter and return types are the same. */
+    ignoreOverloadsWithDifferentJSDoc?: boolean;
   },
 ];
-"
-`;

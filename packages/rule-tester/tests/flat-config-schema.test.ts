@@ -5,9 +5,9 @@ import type { ObjectLike } from '../src/utils/flat-config-schema';
 
 import { flatConfigSchema } from '../src/utils/flat-config-schema';
 
-describe('merge', () => {
-  const { merge } = flatConfigSchema.settings;
+const { merge } = flatConfigSchema.settings;
 
+describe(merge, () => {
   it('merges two objects', () => {
     const first = { foo: 42 };
     const second = { bar: 'baz' };
