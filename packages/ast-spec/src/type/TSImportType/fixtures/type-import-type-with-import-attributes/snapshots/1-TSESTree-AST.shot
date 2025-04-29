@@ -139,12 +139,150 @@ Program {
         end: { column: 49, line: 3 },
       },
     },
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      declare: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "B",
+        optional: false,
+
+        range: [128, 129],
+        loc: {
+          start: { column: 5, line: 4 },
+          end: { column: 6, line: 4 },
+        },
+      },
+      typeAnnotation: TSImportType {
+        type: "TSImportType",
+        argument: TSLiteralType {
+          type: "TSLiteralType",
+          literal: Literal {
+            type: "Literal",
+            raw: ""B"",
+            value: "B",
+
+            range: [139, 142],
+            loc: {
+              start: { column: 16, line: 4 },
+              end: { column: 19, line: 4 },
+            },
+          },
+
+          range: [139, 142],
+          loc: {
+            start: { column: 16, line: 4 },
+            end: { column: 19, line: 4 },
+          },
+        },
+        options: ObjectExpression {
+          type: "ObjectExpression",
+          properties: [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "assert",
+                optional: false,
+
+                range: [146, 152],
+                loc: {
+                  start: { column: 23, line: 4 },
+                  end: { column: 29, line: 4 },
+                },
+              },
+              kind: "init",
+              method: false,
+              optional: false,
+              shorthand: false,
+              value: ObjectExpression {
+                type: "ObjectExpression",
+                properties: [
+                  Property {
+                    type: "Property",
+                    computed: false,
+                    key: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "type",
+                      optional: false,
+
+                      range: [156, 160],
+                      loc: {
+                        start: { column: 33, line: 4 },
+                        end: { column: 37, line: 4 },
+                      },
+                    },
+                    kind: "init",
+                    method: false,
+                    optional: false,
+                    shorthand: false,
+                    value: Literal {
+                      type: "Literal",
+                      raw: ""json"",
+                      value: "json",
+
+                      range: [162, 168],
+                      loc: {
+                        start: { column: 39, line: 4 },
+                        end: { column: 45, line: 4 },
+                      },
+                    },
+
+                    range: [156, 168],
+                    loc: {
+                      start: { column: 33, line: 4 },
+                      end: { column: 45, line: 4 },
+                    },
+                  },
+                ],
+
+                range: [154, 170],
+                loc: {
+                  start: { column: 31, line: 4 },
+                  end: { column: 47, line: 4 },
+                },
+              },
+
+              range: [146, 170],
+              loc: {
+                start: { column: 23, line: 4 },
+                end: { column: 47, line: 4 },
+              },
+            },
+          ],
+
+          range: [144, 172],
+          loc: {
+            start: { column: 21, line: 4 },
+            end: { column: 49, line: 4 },
+          },
+        },
+        qualifier: null,
+        typeArguments: null,
+
+        range: [132, 173],
+        loc: {
+          start: { column: 9, line: 4 },
+          end: { column: 50, line: 4 },
+        },
+      },
+
+      range: [123, 174],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 51, line: 4 },
+      },
+    },
   ],
   sourceType: "script",
 
-  range: [73, 123],
+  range: [73, 175],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 4 },
+    end: { column: 0, line: 5 },
   },
 }
