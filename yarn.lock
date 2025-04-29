@@ -5756,7 +5756,6 @@ __metadata:
     "@types/babel__core": ^7.20.5
     "@types/debug": ^4.1.12
     "@types/eslint-plugin-jsx-a11y": ^6.10.0
-    "@types/is-glob": ^4.0.4
     "@types/natural-compare": ^1.4.3
     "@types/node": ^20.12.5
     "@types/semver": ^7.5.8
