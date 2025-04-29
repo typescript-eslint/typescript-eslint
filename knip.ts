@@ -23,11 +23,6 @@ export default {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
       ignoreDependencies: [
-        '@babel/code-frame',
-        '@babel/core',
-        '@babel/eslint-parser',
-        '@babel/parser',
-        '@babel/types',
         '@nx/workspace',
         // imported for type purposes only
         'website',
