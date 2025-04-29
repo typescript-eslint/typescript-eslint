@@ -59,6 +59,56 @@ const url2 = new URL('/foo', 'http://www.example.com');
 </TabItem>
 </Tabs>
 
+## Options
+
+### `allow`
+
+{/* insert option description */}
+
+This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier).
+
+Examples of code for this rule with:
+
+```json
+{
+  "allow": [
+    { "from": "file", "name": "apiV1" },
+    { "from": "lib", "name": "escape" }
+  ]
+}
+```
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"}]}'
+/** @deprecated */
+declare function apiV2(): Promise<string>;
+
+await apiV2();
+
+// `unescape` has been deprecated since ES5.
+unescape('...');
+```
+
+</TabItem>
+
+<TabItem value="✅ Correct">
+
+```ts option='{"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"}]}'
+import { Bar } from 'bar-lib';
+/** @deprecated */
+declare function apiV1(): Promise<string>;
+
+await apiV1();
+
+// `escape` has been deprecated since ES5.
+escape('...');
+```
+
+</TabItem>
+</Tabs>
+
 ## When Not To Use It
 
 If portions of your project heavily use deprecated APIs and have no plan for moving to non-deprecated ones, you might want to disable this rule in those portions.

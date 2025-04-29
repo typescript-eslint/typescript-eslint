@@ -8,9 +8,11 @@ import type { ASTAndDefiniteProgram } from './shared';
 import { getParsedConfigFile } from './getParsedConfigFile';
 import { getAstFromProgram } from './shared';
 
-const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
+const log = debug(
+  'typescript-eslint:typescript-estree:create-program:useProvidedPrograms',
+);
 
-function useProvidedPrograms(
+export function useProvidedPrograms(
   programInstances: Iterable<ts.Program>,
   parseSettings: ParseSettings,
 ): ASTAndDefiniteProgram | undefined {
@@ -57,7 +59,7 @@ function useProvidedPrograms(
  * @param configFile the path to the tsconfig.json file, relative to `projectDirectory`
  * @param projectDirectory the project directory to use as the CWD, defaults to `process.cwd()`
  */
-function createProgramFromConfigFile(
+export function createProgramFromConfigFile(
   configFile: string,
   projectDirectory?: string,
 ): ts.Program {
@@ -65,5 +67,3 @@ function createProgramFromConfigFile(
   const host = ts.createCompilerHost(parsed.options, true);
   return ts.createProgram(parsed.fileNames, parsed.options, host);
 }
-
-export { createProgramFromConfigFile, useProvidedPrograms };

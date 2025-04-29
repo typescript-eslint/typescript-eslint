@@ -15,14 +15,14 @@ type Modifier =
 
 type Prefer = 'class-property' | 'parameter-property';
 
-type Options = [
+export type Options = [
   {
     allow?: Modifier[];
     prefer?: Prefer;
   },
 ];
 
-type MessageIds = 'preferClassProperty' | 'preferParameterProperty';
+export type MessageIds = 'preferClassProperty' | 'preferParameterProperty';
 
 export default createRule<Options, MessageIds>({
   name: 'parameter-properties',

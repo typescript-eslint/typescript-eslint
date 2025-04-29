@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 Options: { "checksConditionals": true }
 
 const promise = Promise.resolve('value');
@@ -21,16 +18,13 @@ while (promise) {
        ~~~~~~~ Expected non-Promise value in a boolean conditional.
   // Do something
 }
-"
-`;
 
-exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 Options: { "checksConditionals": true }
 
 const promise = Promise.resolve('value');
 
-// Always \`await\` the Promise in a conditional
+// Always `await` the Promise in a conditional
 if (await promise) {
   // Do something
 }
@@ -43,16 +37,13 @@ const returnVal = await promise;
 while (await promise) {
   // Do something
 }
-"
-`;
 
-exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: { "checksVoidReturn": true }
 
 [1, 2, 3].forEach(async value => {
                   ~~~~~~~~~~~~~~~~ Promise returned in function argument where a void return was expected.
-  await fetch(\`/\${value}\`);
+  await fetch(`/${value}`);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 });
 ~
@@ -83,19 +74,16 @@ class MyClass implements MySyncInterface {
   }
 ~~~
 }
-"
-`;
 
-exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 Options: { "checksVoidReturn": true }
 
-// for-of puts \`await\` in outer context
+// for-of puts `await` in outer context
 for (const value of [1, 2, 3]) {
   await doSomething(value);
 }
 
-// If outer context is not \`async\`, handle error explicitly
+// If outer context is not `async`, handle error explicitly
 Promise.all(
   [1, 2, 3].map(async value => {
     await doSomething(value);
@@ -104,7 +92,7 @@ Promise.all(
 
 // Use an async IIFE wrapper
 new Promise((resolve, reject) => {
-  // combine with \`void\` keyword to tell \`no-floating-promises\` rule to ignore unhandled rejection
+  // combine with `void` keyword to tell `no-floating-promises` rule to ignore unhandled rejection
   void (async () => {
     await doSomething();
     resolve();
@@ -135,11 +123,8 @@ class MyClass implements MyAsyncInterface {
     this.thing = await fetchThing();
   }
 }
-"
-`;
 
-exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 5`] = `
-"Incorrect
+Incorrect
 Options: { "checksSpreads": true }
 
 const getData = () => fetch('/');
@@ -153,11 +138,8 @@ const awaitData = async () => {
 
 console.log({ foo: 42, ...awaitData() });
                           ~~~~~~~~~~~ Expected a non-Promise value to be spreaded in an object.
-"
-`;
 
-exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 Options: { "checksSpreads": true }
 
 const getData = () => fetch('/');
@@ -169,5 +151,3 @@ const awaitData = async () => {
 };
 
 console.log({ foo: 42, ...(await awaitData()) });
-"
-`;

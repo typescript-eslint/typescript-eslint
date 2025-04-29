@@ -4,14 +4,31 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices, nullThrows } from '../util';
+import type { TypeOrValueSpecifier } from '../util';
+
+import {
+  createRule,
+  getParserServices,
+  nullThrows,
+  typeOrValueSpecifiersSchema,
+  typeMatchesSomeSpecifier,
+} from '../util';
 
 type IdentifierLike =
   | TSESTree.Identifier
   | TSESTree.JSXIdentifier
+  | TSESTree.PrivateIdentifier
   | TSESTree.Super;
 
-export default createRule({
+type MessageIds = 'deprecated' | 'deprecatedWithReason';
+
+type Options = [
+  {
+    allow?: TypeOrValueSpecifier[];
+  },
+];
+
+export default createRule<Options, MessageIds>({
   name: 'no-deprecated',
   meta: {
     type: 'problem',
@@ -24,11 +41,27 @@ export default createRule({
       deprecated: `\`{{name}}\` is deprecated.`,
       deprecatedWithReason: `\`{{name}}\` is deprecated. {{reason}}`,
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allow: {
+            ...typeOrValueSpecifiersSchema,
+            description: 'Type specifiers that can be allowed.',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      allow: [],
+    },
+  ],
+  create(context, [options]) {
     const { jsDocParsingMode } = context.parserOptions;
+    const allow = options.allow;
     if (jsDocParsingMode === 'none' || jsDocParsingMode === 'type-info') {
       throw new Error(
         `Cannot be used with jsDocParsingMode: '${jsDocParsingMode}'.`,
@@ -89,6 +122,7 @@ export default createRule({
 
         case AST_NODE_TYPES.MethodDefinition:
         case AST_NODE_TYPES.PropertyDefinition:
+        case AST_NODE_TYPES.AccessorProperty:
           return parent.key === node;
 
         case AST_NODE_TYPES.Property:
@@ -317,6 +351,7 @@ export default createRule({
           propertySymbol?.valueDeclaration,
         );
         return (
+          searchForDeprecationInAliasesChain(propertySymbol, true) ??
           getJsDocDeprecation(property) ??
           getJsDocDeprecation(propertySymbol) ??
           getJsDocDeprecation(valueSymbol)
@@ -339,7 +374,12 @@ export default createRule({
         return;
       }
 
-      const name = node.type === AST_NODE_TYPES.Super ? 'super' : node.name;
+      const type = services.getTypeAtLocation(node);
+      if (typeMatchesSomeSpecifier(type, allow, services.program)) {
+        return;
+      }
+
+      const name = getReportedNodeName(node);
 
       context.report({
         ...(reason
@@ -362,7 +402,20 @@ export default createRule({
           checkIdentifier(node);
         }
       },
+      PrivateIdentifier: checkIdentifier,
       Super: checkIdentifier,
     };
   },
 });
+
+function getReportedNodeName(node: IdentifierLike): string {
+  if (node.type === AST_NODE_TYPES.Super) {
+    return 'super';
+  }
+
+  if (node.type === AST_NODE_TYPES.PrivateIdentifier) {
+    return `#${node.name}`;
+  }
+
+  return node.name;
+}

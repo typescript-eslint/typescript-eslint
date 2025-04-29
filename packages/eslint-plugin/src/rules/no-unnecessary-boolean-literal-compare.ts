@@ -11,17 +11,19 @@ import {
   isStrongPrecedenceNode,
 } from '../util';
 
-type MessageIds =
+export type MessageIds =
   | 'comparingNullableToFalse'
   | 'comparingNullableToTrueDirect'
   | 'comparingNullableToTrueNegated'
   | 'direct'
-  | 'negated';
+  | 'negated'
+  | 'noStrictNullCheck';
 
-type Options = [
+export type Options = [
   {
     allowComparingNullableBooleansToFalse?: boolean;
     allowComparingNullableBooleansToTrue?: boolean;
+    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
   },
 ];
 
@@ -57,6 +59,8 @@ export default createRule<Options, MessageIds>({
         'This expression unnecessarily compares a boolean value to a boolean instead of using it directly.',
       negated:
         'This expression unnecessarily compares a boolean value to a boolean instead of negating it.',
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
     },
     schema: [
       {
@@ -73,6 +77,11 @@ export default createRule<Options, MessageIds>({
             description:
               'Whether to allow comparisons between nullable boolean variables and `true`.',
           },
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            type: 'boolean',
+            description:
+              'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
+          },
         },
       },
     ],
@@ -81,11 +90,31 @@ export default createRule<Options, MessageIds>({
     {
       allowComparingNullableBooleansToFalse: true,
       allowComparingNullableBooleansToTrue: true,
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
   ],
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+    const compilerOptions = services.program.getCompilerOptions();
+
+    const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
+      compilerOptions,
+      'strictNullChecks',
+    );
+
+    if (
+      !isStrictNullChecks &&
+      options.allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing !== true
+    ) {
+      context.report({
+        loc: {
+          start: { column: 0, line: 0 },
+          end: { column: 0, line: 0 },
+        },
+        messageId: 'noStrictNullCheck',
+      });
+    }
 
     function getBooleanComparison(
       node: TSESTree.BinaryExpression,

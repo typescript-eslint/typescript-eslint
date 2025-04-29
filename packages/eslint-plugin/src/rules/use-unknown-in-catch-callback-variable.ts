@@ -14,7 +14,7 @@ import {
   nullThrows,
 } from '../util';
 
-type MessageIds =
+export type MessageIds =
   | 'addUnknownRestTypeAnnotationSuggestion'
   | 'addUnknownTypeAnnotationSuggestion'
   | 'useUnknown'
@@ -36,7 +36,6 @@ export default createRule<[], MessageIds>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       addUnknownRestTypeAnnotationSuggestion:

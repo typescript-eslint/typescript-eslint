@@ -23,7 +23,7 @@ function parseCodeForEslint(code: string): ReturnType<typeof parseForESLint> & {
   });
 }
 
-describe('getConstraintInfo', () => {
+describe(getConstraintInfo, () => {
   it('returns undefined for unconstrained generic', () => {
     const sourceCode = `
 function foo<T>(x: T);

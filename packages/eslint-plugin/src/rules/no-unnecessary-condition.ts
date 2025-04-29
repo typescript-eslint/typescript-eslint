@@ -11,9 +11,12 @@ import {
   getParserServices,
   getTypeName,
   getTypeOfPropertyOfName,
+  getValueOfLiteralType,
   isArrayMethodCallWithPredicate,
   isIdentifier,
   isNullableType,
+  isPossiblyFalsy,
+  isPossiblyTruthy,
   isTypeAnyType,
   isTypeFlagSet,
   isTypeUnknownType,
@@ -25,58 +28,25 @@ import {
   findTypeGuardAssertedArgument,
 } from '../util/assertionFunctionUtils';
 
-// Truthiness utilities
 // #region
-const valueIsPseudoBigInt = (
-  value: number | string | ts.PseudoBigInt,
-): value is ts.PseudoBigInt => {
-  return typeof value === 'object';
-};
 
-const getValueOfLiteralType = (
-  type: ts.LiteralType,
-): bigint | number | string => {
-  if (valueIsPseudoBigInt(type.value)) {
-    return pseudoBigIntToBigInt(type.value);
-  }
-  return type.value;
-};
-
-const isTruthyLiteral = (type: ts.Type): boolean =>
-  tsutils.isTrueLiteralType(type) ||
-  (type.isLiteral() && !!getValueOfLiteralType(type));
-
-const isPossiblyFalsy = (type: ts.Type): boolean =>
-  tsutils
-    .unionTypeParts(type)
-    // Intersections like `string & {}` can also be possibly falsy,
-    // requiring us to look into the intersection.
-    .flatMap(type => tsutils.intersectionTypeParts(type))
-    // PossiblyFalsy flag includes literal values, so exclude ones that
-    // are definitely truthy
-    .filter(t => !isTruthyLiteral(t))
-    .some(type => isTypeFlagSet(type, ts.TypeFlags.PossiblyFalsy));
-
-const isPossiblyTruthy = (type: ts.Type): boolean =>
-  tsutils
-    .unionTypeParts(type)
-    .map(type => tsutils.intersectionTypeParts(type))
-    .some(intersectionParts =>
-      // It is possible to define intersections that are always falsy,
-      // like `"" & { __brand: string }`.
-      intersectionParts.every(type => !tsutils.isFalsyType(type)),
-    );
-
-// Nullish utilities
 const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
-const isNullishType = (type: ts.Type): boolean =>
-  isTypeFlagSet(type, nullishFlag);
 
-const isPossiblyNullish = (type: ts.Type): boolean =>
-  tsutils.unionTypeParts(type).some(isNullishType);
+function isNullishType(type: ts.Type): boolean {
+  return tsutils.isTypeFlagSet(type, nullishFlag);
+}
 
-const isAlwaysNullish = (type: ts.Type): boolean =>
-  tsutils.unionTypeParts(type).every(isNullishType);
+function isAlwaysNullish(type: ts.Type): boolean {
+  return tsutils.unionTypeParts(type).every(isNullishType);
+}
+
+/**
+ * Note that this differs from {@link isNullableType} in that it doesn't consider
+ * `any` or `unknown` to be nullable.
+ */
+function isPossiblyNullish(type: ts.Type): boolean {
+  return tsutils.unionTypeParts(type).some(isNullishType);
+}
 
 function toStaticValue(
   type: ts.Type,
@@ -98,10 +68,6 @@ function toStaticValue(
   }
 
   return undefined;
-}
-
-function pseudoBigIntToBigInt(value: ts.PseudoBigInt): bigint {
-  return BigInt((value.negative ? '-' : '') + value.base10Value);
 }
 
 const BOOL_OPERATORS = new Set([
@@ -151,12 +117,24 @@ function booleanComparison(
       return left >= right;
   }
 }
-
 // #endregion
+
+type LegacyAllowConstantLoopConditions = boolean;
+
+type AllowConstantLoopConditions = 'always' | 'never' | 'only-allowed-literals';
+
+const constantLoopConditionsAllowedLiterals = new Set<unknown>([
+  true,
+  false,
+  1,
+  0,
+]);
 
 export type Options = [
   {
-    allowConstantLoopConditions?: boolean;
+    allowConstantLoopConditions?:
+      | AllowConstantLoopConditions
+      | LegacyAllowConstantLoopConditions;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     checkTypePredicates?: boolean;
   },
@@ -174,6 +152,7 @@ export type MessageId =
   | 'neverOptionalChain'
   | 'noOverlapBooleanExpression'
   | 'noStrictNullCheck'
+  | 'suggestRemoveOptionalChain'
   | 'typeGuardAlreadyIsType';
 
 export default createRule<Options, MessageId>({
@@ -186,7 +165,7 @@ export default createRule<Options, MessageId>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
+    hasSuggestions: true,
     messages: {
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
       alwaysFalsyFunc:
@@ -206,6 +185,7 @@ export default createRule<Options, MessageId>({
         'Unnecessary conditional, the types have no overlap.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      suggestRemoveOptionalChain: 'Remove unnecessary optional chain',
       typeGuardAlreadyIsType:
         'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
     },
@@ -215,9 +195,17 @@ export default createRule<Options, MessageId>({
         additionalProperties: false,
         properties: {
           allowConstantLoopConditions: {
-            type: 'boolean',
             description:
               'Whether to ignore constant loop conditions, such as `while (true)`.',
+            oneOf: [
+              {
+                type: 'boolean',
+              },
+              {
+                type: 'string',
+                enum: ['always', 'never', 'only-allowed-literals'],
+              },
+            ],
           },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
@@ -235,7 +223,7 @@ export default createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
-      allowConstantLoopConditions: false,
+      allowConstantLoopConditions: 'never',
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
       checkTypePredicates: false,
     },
@@ -262,6 +250,13 @@ export default createRule<Options, MessageId>({
       compilerOptions,
       'noUncheckedIndexedAccess',
     );
+
+    const allowConstantLoopConditionsOption =
+      normalizeAllowConstantLoopConditions(
+        // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        allowConstantLoopConditions!,
+      );
 
     if (
       !isStrictNullChecks &&
@@ -302,6 +297,19 @@ export default createRule<Options, MessageId>({
             // Exception: literal index into a tuple - will have a sound type
             node.property.type !== AST_NODE_TYPES.Literal))
       );
+    }
+
+    // Conditional is always necessary if it involves:
+    //    `any` or `unknown` or a naked type variable
+    function isConditionalAlwaysNecessary(type: ts.Type): boolean {
+      return tsutils
+        .unionTypeParts(type)
+        .some(
+          part =>
+            isTypeAnyType(part) ||
+            isTypeUnknownType(part) ||
+            isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
+        );
     }
 
     function isNullableMemberExpression(
@@ -351,7 +359,7 @@ export default createRule<Options, MessageId>({
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
-      if (isArrayIndexExpression(expression)) {
+      if (!isNoUncheckedIndexedAccess && isArrayIndexExpression(expression)) {
         return;
       }
 
@@ -370,18 +378,7 @@ export default createRule<Options, MessageId>({
 
       const type = getConstrainedTypeAtLocation(services, expression);
 
-      // Conditional is always necessary if it involves:
-      //    `any` or `unknown` or a naked type variable
-      if (
-        tsutils
-          .unionTypeParts(type)
-          .some(
-            part =>
-              isTypeAnyType(part) ||
-              isTypeUnknownType(part) ||
-              isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
-          )
-      ) {
+      if (isConditionalAlwaysNecessary(type)) {
         return;
       }
       let messageId: MessageId | null = null;
@@ -429,12 +426,13 @@ export default createRule<Options, MessageId>({
         //  possibility of out-of-bounds access, if we're indexing into an array
         //  just skip the check, to avoid false positives
         if (
-          !isArrayIndexExpression(node) &&
-          !(
-            node.type === AST_NODE_TYPES.ChainExpression &&
-            node.expression.type !== AST_NODE_TYPES.TSNonNullExpression &&
-            optionChainContainsOptionArrayIndex(node.expression)
-          )
+          isNoUncheckedIndexedAccess ||
+          (!isArrayIndexExpression(node) &&
+            !(
+              node.type === AST_NODE_TYPES.ChainExpression &&
+              node.expression.type !== AST_NODE_TYPES.TSNonNullExpression &&
+              optionChainContainsOptionArrayIndex(node.expression)
+            ))
         ) {
           messageId = 'neverNullish';
         }
@@ -539,6 +537,20 @@ export default createRule<Options, MessageId>({
       checkNode(node.left);
     }
 
+    function checkIfWhileLoopIsNecessaryConditional(
+      node: TSESTree.WhileStatement,
+    ): void {
+      if (
+        allowConstantLoopConditionsOption === 'only-allowed-literals' &&
+        node.test.type === AST_NODE_TYPES.Literal &&
+        constantLoopConditionsAllowedLiterals.has(node.test.value)
+      ) {
+        return;
+      }
+
+      checkIfLoopIsNecessaryConditional(node);
+    }
+
     /**
      * Checks that a testable expression of a loop is necessarily conditional, reports otherwise.
      */
@@ -553,14 +565,8 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      /**
-       * Allow:
-       *   while (true) {}
-       *   for (;true;) {}
-       *   do {} while (true)
-       */
       if (
-        allowConstantLoopConditions &&
+        allowConstantLoopConditionsOption === 'always' &&
         tsutils.isTrueLiteralType(
           getConstrainedTypeAtLocation(services, node.test),
         )
@@ -813,7 +819,7 @@ export default createRule<Options, MessageId>({
             : true;
 
       return (
-        isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
+        isConditionalAlwaysNecessary(type) ||
         (isOwnNullable && isNullableType(type))
       );
     }
@@ -832,7 +838,10 @@ export default createRule<Options, MessageId>({
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
-      if (optionChainContainsOptionArrayIndex(node)) {
+      if (
+        !isNoUncheckedIndexedAccess &&
+        optionChainContainsOptionArrayIndex(node)
+      ) {
         return;
       }
 
@@ -856,9 +865,14 @@ export default createRule<Options, MessageId>({
         loc: questionDotOperator.loc,
         node,
         messageId: 'neverOptionalChain',
-        fix(fixer) {
-          return fixer.replaceText(questionDotOperator, fix);
-        },
+        suggest: [
+          {
+            messageId: 'suggestRemoveOptionalChain',
+            fix(fixer) {
+              return fixer.replaceText(questionDotOperator, fix);
+            },
+          },
+        ],
       });
     }
 
@@ -916,7 +930,23 @@ export default createRule<Options, MessageId>({
           );
         }
       },
-      WhileStatement: checkIfLoopIsNecessaryConditional,
+      WhileStatement: checkIfWhileLoopIsNecessaryConditional,
     };
   },
 });
+
+function normalizeAllowConstantLoopConditions(
+  allowConstantLoopConditions:
+    | AllowConstantLoopConditions
+    | LegacyAllowConstantLoopConditions,
+): AllowConstantLoopConditions {
+  if (allowConstantLoopConditions === true) {
+    return 'always';
+  }
+
+  if (allowConstantLoopConditions === false) {
+    return 'never';
+  }
+
+  return allowConstantLoopConditions;
+}

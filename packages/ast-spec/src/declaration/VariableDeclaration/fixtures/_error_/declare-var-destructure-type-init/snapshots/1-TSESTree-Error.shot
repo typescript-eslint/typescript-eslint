@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ declare-var-destructure-type-init TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-var-destructure-type-init > TSESTree - Error`]
+TSError
 > 1 | declare var { foo }: any = 1;
     |             ^^^^^^^^^^^^^^^^ Initializers are not permitted in ambient contexts.
-  2 |"
-`;
+  2 |

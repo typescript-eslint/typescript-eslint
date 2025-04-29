@@ -8,9 +8,7 @@ export interface ESLintPluginInternalDocs {
   requiresTypeChecking?: true;
 }
 
-const createRule = ESLintUtils.RuleCreator<ESLintPluginInternalDocs>(
+export const createRule = ESLintUtils.RuleCreator<ESLintPluginInternalDocs>(
   name =>
     `https://github.com/typescript-eslint/typescript-eslint/blob/v${version}/packages/eslint-plugin-internal/src/rules/${name}.ts`,
 );
-
-export { createRule };

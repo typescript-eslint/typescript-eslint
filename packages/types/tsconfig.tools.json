@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc/packages/types",
+    "module": "NodeNext",
+    "types": ["node"]
+  },
+  "include": ["tools"],
+  "references": []
+}

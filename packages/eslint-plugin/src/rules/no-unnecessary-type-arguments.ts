@@ -22,7 +22,7 @@ type ParameterCapableTSNode =
   | ts.TypeQueryNode
   | ts.TypeReferenceNode;
 
-type MessageIds = 'unnecessaryTypeParameter';
+export type MessageIds = 'unnecessaryTypeParameter';
 
 export default createRule<[], MessageIds>({
   name: 'no-unnecessary-type-arguments',
@@ -142,7 +142,9 @@ function getTypeParametersFromNode(
   if (
     ts.isCallExpression(tsNode) ||
     ts.isNewExpression(tsNode) ||
-    ts.isTaggedTemplateExpression(tsNode)
+    ts.isTaggedTemplateExpression(tsNode) ||
+    ts.isJsxOpeningElement(tsNode) ||
+    ts.isJsxSelfClosingElement(tsNode)
   ) {
     return getTypeParametersFromCall(node, tsNode, checker);
   }
@@ -189,7 +191,12 @@ function getTypeParametersFromType(
 
 function getTypeParametersFromCall(
   node: TSESTree.TSTypeParameterInstantiation,
-  tsNode: ts.CallExpression | ts.NewExpression | ts.TaggedTemplateExpression,
+  tsNode:
+    | ts.CallExpression
+    | ts.JsxOpeningElement
+    | ts.JsxSelfClosingElement
+    | ts.NewExpression
+    | ts.TaggedTemplateExpression,
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
   const sig = checker.getResolvedSignature(tsNode);

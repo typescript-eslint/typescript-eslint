@@ -154,6 +154,28 @@ class Foo {
 }
     `,
     `
+class T {
+  a = 'a' as const;
+}
+    `,
+    `
+class T {
+  a = 3 as 3;
+}
+    `,
+    `
+const foo = 'foo';
+
+class T {
+  readonly test = \`\${foo}\` as const;
+}
+    `,
+    `
+class T {
+  readonly a = { foo: 'foo' } as const;
+}
+    `,
+    `
       declare const y: number | null;
       console.log(y!);
     `,
@@ -294,13 +316,17 @@ function bar(items: string[]) {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
-let myString = 'foo';
+declare const myString: 'foo';
 const templateLiteral = \`\${myString}-somethingElse\` as const;
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
-let myString = 'foo';
+declare const myString: 'foo';
 const templateLiteral = <const>\`\${myString}-somethingElse\`;
+    `,
+    `
+const myString = 'foo';
+const templateLiteral = \`\${myString}-somethingElse\` as const;
     `,
     'let a = `a` as const;',
     {
@@ -358,25 +384,80 @@ if (Math.random()) {
 x!;
       `,
     },
-  ],
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
 
-  invalid: [
-    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+declare const a: T.Value1;
+const b = a as T.Value2;
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as T;
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1 = 0,
+  Value2 = 1,
+}
+
+const b = 1 as T.Value2;
+      `,
+    },
+    `
+const foo: unknown = {};
+const baz: {} = foo!;
+    `,
+    `
+const foo: unknown = {};
+const bar: object = foo!;
+    `,
+    `
+declare function foo<T extends unknown>(bar: T): T;
+const baz: unknown = {};
+foo(baz!);
+    `,
     {
       code: 'const a = `a` as const;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      output: 'const a = `a`;',
     },
     {
       code: "const a = 'a' as const;",
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      output: "const a = 'a';",
     },
     {
       code: "const a = <const>'a';",
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      output: "const a = 'a';",
     },
+    {
+      code: `
+class T {
+  readonly a = 'a' as const;
+}
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+declare const a: T.Value1;
+const b = a as const;
+      `,
+    },
+  ],
+
+  invalid: [
     {
       code: 'const foo = <3>3;',
       errors: [{ column: 13, line: 1, messageId: 'unnecessaryAssertion' }],
@@ -1138,6 +1219,64 @@ var x = 1;
     },
     {
       code: `
+class T {
+  readonly a = 3 as 3;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+class T {
+  readonly a = 3;
+}
+      `,
+    },
+    {
+      code: `
+type S = 10;
+
+class T {
+  readonly a = 10 as S;
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type S = 10;
+
+class T {
+  readonly a = 10;
+}
+      `,
+    },
+    {
+      code: `
+class T {
+  readonly a = (3 + 5) as number;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+class T {
+  readonly a = (3 + 5);
+}
+      `,
+    },
+    {
+      code: `
 const a = '';
 const b: string | undefined = (a ? undefined : a)!;
       `,
@@ -1149,6 +1288,163 @@ const b: string | undefined = (a ? undefined : a)!;
       output: `
 const a = '';
 const b: string | undefined = (a ? undefined : a);
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as T.Value1;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a;
+      `,
+    },
+    {
+      code: `
+const foo: unknown = {};
+const bar: unknown = foo!;
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+const foo: unknown = {};
+const bar: unknown = foo;
+      `,
+    },
+    {
+      code: `
+function foo(bar: unknown) {}
+const baz: unknown = {};
+foo(baz!);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function foo(bar: unknown) {}
+const baz: unknown = {};
+foo(baz);
+      `,
+    },
+    {
+      code: 'const a = true as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = true;',
+    },
+    {
+      code: 'const a = <const>true;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = true;',
+    },
+    {
+      code: 'const a = 1 as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = 1;',
+    },
+    {
+      code: 'const a = <const>1;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = 1;',
+    },
+    {
+      code: 'const a = 1n as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = 1n;',
+    },
+    {
+      code: 'const a = <const>1n;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = 1n;',
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    {
+      code: 'const a = `a` as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = `a`;',
+    },
+    {
+      code: "const a = 'a' as const;",
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: "const a = 'a';",
+    },
+    {
+      code: "const a = <const>'a';",
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: "const a = 'a';",
+    },
+    {
+      code: `
+class T {
+  readonly a = 'a' as const;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+class T {
+  readonly a = 'a';
+}
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as const;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a;
       `,
     },
   ],

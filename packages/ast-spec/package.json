@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "8.19.0",
+  "version": "8.31.1",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -13,6 +13,7 @@
   },
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"
@@ -32,12 +33,12 @@
   "scripts": {
     "build": "tsc -b tsconfig.build.json && api-extractor run --local",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf coverage",
+    "postclean": "rimraf dist/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
-    "test": "jest",
-    "typecheck": "tsc --noEmit"
+    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
+    "check-types": "npx nx typecheck"
   },
   "funding": {
     "type": "opencollective",
@@ -47,16 +48,15 @@
     "@babel/code-frame": "*",
     "@babel/core": "*",
     "@babel/eslint-parser": "*",
-    "@jest/types": "29.6.3",
     "@microsoft/api-extractor": "^7.47.11",
+    "@typescript-eslint/typescript-estree": "workspace:*",
+    "@vitest/coverage-v8": "^3.1.1",
     "glob": "*",
-    "jest": "29.7.0",
     "jest-diff": "^29.7.0",
-    "jest-specific-snapshot": "^8.0.0",
-    "make-dir": "*",
     "prettier": "^3.2.5",
     "pretty-format": "*",
     "rimraf": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "vitest": "^3.1.1"
   }
 }

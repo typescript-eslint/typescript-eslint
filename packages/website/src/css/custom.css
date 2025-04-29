@@ -107,10 +107,6 @@ html[data-theme='dark'] .image-link::before {
   background: url('/img/stack-overflow.svg') no-repeat;
 }
 
-.twitter-link::before {
-  background: url('/img/twitter.svg') no-repeat;
-}
-
 .bluesky-link::before {
   background: url('/img/bluesky.svg') no-repeat;
 }

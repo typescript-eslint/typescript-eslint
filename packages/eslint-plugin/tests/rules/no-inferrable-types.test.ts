@@ -113,6 +113,11 @@ class Foo {
   readonly a: number = 5;
 }
     `,
+    `
+class Foo {
+  accessor a = 5;
+}
+    `,
 
     'const a: any = 5;',
     "const fn = function (a: any = 5, b: any = true, c: any = 'foo') {};",
@@ -135,6 +140,14 @@ class Foo {
   a: number = 5;
   b: boolean = true;
   c: string = 'foo';
+}
+      `,
+      options: [{ ignoreProperties: true }],
+    },
+    {
+      code: `
+class Foo {
+  accessor a: number = 5;
 }
       `,
       options: [{ ignoreProperties: true }],
@@ -316,6 +329,28 @@ class Foo {
       output: `
 class Foo {
   constructor(public a = true) {}
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  accessor a: number = 5;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            type: 'number',
+          },
+          line: 3,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: `
+class Foo {
+  accessor a = 5;
 }
       `,
     },

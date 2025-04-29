@@ -3,9 +3,9 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
 
-export const webworker_importscripts = {} as Record<
-  string,
-  ImplicitLibVariableOptions
->;
+export const webworker_importscripts: LibDefinition = {
+  libs: [],
+  variables: [],
+};

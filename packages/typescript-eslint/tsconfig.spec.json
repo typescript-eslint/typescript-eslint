@@ -1,0 +1,26 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc/packages/typescript-eslint",
+    "module": "NodeNext",
+    "resolveJsonModule": true,
+    "types": ["node", "vitest/globals", "vitest/importMeta"]
+  },
+  "include": [
+    "vitest.config.*",
+    "package.json",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "tests"
+  ],
+  "exclude": ["**/fixtures/**"],
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "../../tsconfig.spec.json"
+    }
+  ]
+}

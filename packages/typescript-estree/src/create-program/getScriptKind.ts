@@ -1,7 +1,7 @@
 import path from 'node:path';
 import * as ts from 'typescript';
 
-function getScriptKind(filePath: string, jsx: boolean): ts.ScriptKind {
+export function getScriptKind(filePath: string, jsx: boolean): ts.ScriptKind {
   const extension = path.extname(filePath).toLowerCase() as ts.Extension;
   // note - we only respect the user's jsx setting for unknown extensions
   // this is so that we always match TS's internal script kind logic, preventing
@@ -33,7 +33,9 @@ function getScriptKind(filePath: string, jsx: boolean): ts.ScriptKind {
   }
 }
 
-function getLanguageVariant(scriptKind: ts.ScriptKind): ts.LanguageVariant {
+export function getLanguageVariant(
+  scriptKind: ts.ScriptKind,
+): ts.LanguageVariant {
   // https://github.com/microsoft/TypeScript/blob/d6e483b8dabd8fd37c00954c3f2184bb7f1eb90c/src/compiler/utilities.ts#L6281-L6285
   switch (scriptKind) {
     case ts.ScriptKind.JS:
@@ -46,5 +48,3 @@ function getLanguageVariant(scriptKind: ts.ScriptKind): ts.LanguageVariant {
       return ts.LanguageVariant.Standard;
   }
 }
-
-export { getLanguageVariant, getScriptKind };

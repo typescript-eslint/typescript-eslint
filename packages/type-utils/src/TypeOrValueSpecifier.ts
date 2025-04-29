@@ -167,33 +167,50 @@ export function typeMatchesSpecifier(
   specifier: TypeOrValueSpecifier,
   program: ts.Program,
 ): boolean {
-  if (tsutils.isIntrinsicErrorType(type)) {
-    return false;
+  const wholeTypeMatches = ((): boolean => {
+    if (tsutils.isIntrinsicErrorType(type)) {
+      return false;
+    }
+    if (typeof specifier === 'string') {
+      return specifierNameMatches(type, specifier);
+    }
+    if (!specifierNameMatches(type, specifier.name)) {
+      return false;
+    }
+    const symbol = type.getSymbol() ?? type.aliasSymbol;
+    const declarations = symbol?.getDeclarations() ?? [];
+    const declarationFiles = declarations.map(declaration =>
+      declaration.getSourceFile(),
+    );
+    switch (specifier.from) {
+      case 'file':
+        return typeDeclaredInFile(specifier.path, declarationFiles, program);
+      case 'lib':
+        return typeDeclaredInLib(declarationFiles, program);
+      case 'package':
+        return typeDeclaredInPackageDeclarationFile(
+          specifier.package,
+          declarations,
+          declarationFiles,
+          program,
+        );
+    }
+  })();
+
+  if (wholeTypeMatches) {
+    return true;
   }
-  if (typeof specifier === 'string') {
-    return specifierNameMatches(type, specifier);
+
+  if (
+    tsutils.isIntersectionType(type) &&
+    tsutils
+      .intersectionTypeParts(type)
+      .some(part => typeMatchesSpecifier(part, specifier, program))
+  ) {
+    return true;
   }
-  if (!specifierNameMatches(type, specifier.name)) {
-    return false;
-  }
-  const symbol = type.getSymbol() ?? type.aliasSymbol;
-  const declarations = symbol?.getDeclarations() ?? [];
-  const declarationFiles = declarations.map(declaration =>
-    declaration.getSourceFile(),
-  );
-  switch (specifier.from) {
-    case 'file':
-      return typeDeclaredInFile(specifier.path, declarationFiles, program);
-    case 'lib':
-      return typeDeclaredInLib(declarationFiles, program);
-    case 'package':
-      return typeDeclaredInPackageDeclarationFile(
-        specifier.package,
-        declarations,
-        declarationFiles,
-        program,
-      );
-  }
+
+  return false;
 }
 
 export const typeMatchesSomeSpecifier = (

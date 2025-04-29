@@ -1,17 +1,26 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "types": ["jest", "node"]
+    "outDir": "../../dist/out-tsc/packages/scope-manager",
+    "module": "NodeNext",
+    "resolveJsonModule": true,
+    "types": ["node", "vitest/globals", "vitest/importMeta"]
   },
-  "exclude": ["tests/fixtures"],
   "include": [
-    "tests",
-    "tools",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*.test.js",
-    "**/*.test.jsx",
-    "**/*.d.ts"
+    "vitest.config.mts",
+    "package.json",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "tests"
+  ],
+  "exclude": ["**/fixtures/**"],
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "../../tsconfig.spec.json"
+    }
   ]
 }

@@ -74,13 +74,13 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
 }
 
 export type OptionString = 'array' | 'array-simple' | 'generic';
-type Options = [
+export type Options = [
   {
     default: OptionString;
     readonly?: OptionString;
   },
 ];
-type MessageIds =
+export type MessageIds =
   | 'errorStringArray'
   | 'errorStringArrayReadonly'
   | 'errorStringArraySimple'

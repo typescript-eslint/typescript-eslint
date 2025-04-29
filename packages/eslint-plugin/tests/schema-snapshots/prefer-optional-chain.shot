@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes prefer-optional-chain 1`] = `
-"
 # SCHEMA:
 
 [
@@ -13,31 +10,31 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       },
       "checkAny": {
-        "description": "Check operands that are typed as \`any\` when inspecting \\"loose boolean\\" operands.",
+        "description": "Check operands that are typed as `any` when inspecting \"loose boolean\" operands.",
         "type": "boolean"
       },
       "checkBigInt": {
-        "description": "Check operands that are typed as \`bigint\` when inspecting \\"loose boolean\\" operands.",
+        "description": "Check operands that are typed as `bigint` when inspecting \"loose boolean\" operands.",
         "type": "boolean"
       },
       "checkBoolean": {
-        "description": "Check operands that are typed as \`boolean\` when inspecting \\"loose boolean\\" operands.",
+        "description": "Check operands that are typed as `boolean` when inspecting \"loose boolean\" operands.",
         "type": "boolean"
       },
       "checkNumber": {
-        "description": "Check operands that are typed as \`number\` when inspecting \\"loose boolean\\" operands.",
+        "description": "Check operands that are typed as `number` when inspecting \"loose boolean\" operands.",
         "type": "boolean"
       },
       "checkString": {
-        "description": "Check operands that are typed as \`string\` when inspecting \\"loose boolean\\" operands.",
+        "description": "Check operands that are typed as `string` when inspecting \"loose boolean\" operands.",
         "type": "boolean"
       },
       "checkUnknown": {
-        "description": "Check operands that are typed as \`unknown\` when inspecting \\"loose boolean\\" operands.",
+        "description": "Check operands that are typed as `unknown` when inspecting \"loose boolean\" operands.",
         "type": "boolean"
       },
       "requireNullish": {
-        "description": "Skip operands that are not typed with \`null\` and/or \`undefined\` when inspecting \\"loose boolean\\" operands.",
+        "description": "Skip operands that are not typed with `null` and/or `undefined` when inspecting \"loose boolean\" operands.",
         "type": "boolean"
       }
     },
@@ -52,21 +49,19 @@ type Options = [
   {
     /** Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build. */
     allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing?: boolean;
-    /** Check operands that are typed as \`any\` when inspecting "loose boolean" operands. */
+    /** Check operands that are typed as `any` when inspecting "loose boolean" operands. */
     checkAny?: boolean;
-    /** Check operands that are typed as \`bigint\` when inspecting "loose boolean" operands. */
+    /** Check operands that are typed as `bigint` when inspecting "loose boolean" operands. */
     checkBigInt?: boolean;
-    /** Check operands that are typed as \`boolean\` when inspecting "loose boolean" operands. */
+    /** Check operands that are typed as `boolean` when inspecting "loose boolean" operands. */
     checkBoolean?: boolean;
-    /** Check operands that are typed as \`number\` when inspecting "loose boolean" operands. */
+    /** Check operands that are typed as `number` when inspecting "loose boolean" operands. */
     checkNumber?: boolean;
-    /** Check operands that are typed as \`string\` when inspecting "loose boolean" operands. */
+    /** Check operands that are typed as `string` when inspecting "loose boolean" operands. */
     checkString?: boolean;
-    /** Check operands that are typed as \`unknown\` when inspecting "loose boolean" operands. */
+    /** Check operands that are typed as `unknown` when inspecting "loose boolean" operands. */
     checkUnknown?: boolean;
-    /** Skip operands that are not typed with \`null\` and/or \`undefined\` when inspecting "loose boolean" operands. */
+    /** Skip operands that are not typed with `null` and/or `undefined` when inspecting "loose boolean" operands. */
     requireNullish?: boolean;
   },
 ];
-"
-`;

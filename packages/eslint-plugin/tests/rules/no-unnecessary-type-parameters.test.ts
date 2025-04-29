@@ -65,13 +65,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       }
     `,
     `
-      class Joiner {
-        join<T extends string | number>(els: T[]) {
-          return els.map(el => '' + el).join(',');
-        }
-      }
-    `,
-    `
       declare class Foo {
         getProp<T>(this: Record<'prop', T>): T;
       }
@@ -243,8 +236,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function makeSets<K>(): [Set<K>][];',
     'declare function makeMap<K, V>(): Map<K, V>;',
     'declare function makeMap<K, V>(): [Map<K, V>];',
+    'declare function makeArray<T>(): T[];',
+    'declare function makeArrayNullish<T>(): (T | null)[];',
+    'declare function makeTupleMulti<T>(): [T | null, T | null];',
+    'declare function takeTupleMulti<T>(input: [T, T]): void;',
+    'declare function takeTupleMultiNullish<T>(input: [T | null, T | null]): void;',
     'declare function arrayOfPairs<T>(): [T, T][];',
     'declare function fetchJson<T>(url: string): Promise<T>;',
+    'declare function fetchJsonTuple<T>(url: string): Promise<[T]>;',
     'declare function fn<T>(input: T): 0 extends 0 ? T : never;',
     'declare function useFocus<T extends HTMLOrSVGElement>(): [React.RefObject<T>];',
     `
@@ -442,6 +441,36 @@ const f = <T,>(
             {
               messageId: 'replaceUsagesWithConstraint',
               output: 'const func = (param: unknown) => null;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const func = <T,>(param: [T]) => null;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'const func = (param: [unknown]) => null;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const func = <T,>(param: T[]) => null;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'const func = (param: unknown[]) => null;',
             },
           ],
         },
@@ -1250,6 +1279,139 @@ function foo(_: unknown): <T>(input: T) => T {
       ],
     },
     {
+      code: 'declare function makeReadonlyArray<T>(): readonly T[];',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function makeReadonlyArray(): readonly unknown[];',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function makeReadonlyTuple<T>(): readonly [T];',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function makeReadonlyTuple(): readonly [unknown];',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function makeReadonlyTupleNullish<T>(): readonly [T | null];',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function makeReadonlyTupleNullish(): readonly [unknown | null];',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function takeArray<T>(input: T[]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function takeArray(input: unknown[]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function takeArrayNullish<T>(input: (T | null)[]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function takeArrayNullish(input: (unknown | null)[]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function takeTuple<T>(input: [T]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function takeTuple(input: [unknown]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function takeTupleMultiUnrelated<T>(input: [T, number]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function takeTupleMultiUnrelated(input: [unknown, number]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare function takeTupleMultiUnrelatedNullish<T>(
+          input: [T | null, null],
+        ): void;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare function takeTupleMultiUnrelatedNullish(
+          input: [unknown | null, null],
+        ): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: 'type Fn = <T>() => T;',
       errors: [
         {
@@ -1549,6 +1711,200 @@ function f(x: unknown): void {
   // @ts-expect-error
   x.notAMethod();
 }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Joiner {
+  join<T extends number>(els: T[]) {
+    return els.map(el => '' + el).join(',');
+  }
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class Joiner {
+  join(els: number[]) {
+    return els.map(el => '' + el).join(',');
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function join<T extends string | number>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: (string | number)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function join<T extends string & number>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: (string & number)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function join<T extends (string & number) | boolean>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: ((string & number) | boolean)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+function join<T extends (string | number)>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: (string | number)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function join<T extends { hoge: string } | { hoge: number }>(els: T['hoge'][]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: ({ hoge: string } | { hoge: number })['hoge'][]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+type A = string;
+type B = string;
+type C = string;
+declare function f<T extends A | B>(): T & C;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+type A = string;
+type B = string;
+type C = string;
+declare function f(): (A | B) & C;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+type A = string;
+type B = string;
+type C = string;
+type D = string;
+declare function f<T extends A extends B ? C : D>(): T | null;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+type A = string;
+type B = string;
+type C = string;
+type D = string;
+declare function f(): (A extends B ? C : D) | null;
       `,
             },
           ],

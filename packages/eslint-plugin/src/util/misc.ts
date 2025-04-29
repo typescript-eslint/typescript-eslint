@@ -18,24 +18,25 @@ const DEFINITION_EXTENSIONS = [
 /**
  * Check if the context file name is *.d.ts or *.d.tsx
  */
-function isDefinitionFile(fileName: string): boolean {
+export function isDefinitionFile(fileName: string): boolean {
   const lowerFileName = fileName.toLowerCase();
   for (const definitionExt of DEFINITION_EXTENSIONS) {
     if (lowerFileName.endsWith(definitionExt)) {
       return true;
     }
   }
-  return false;
+
+  return /\.d\.(ts|cts|mts|.*\.ts)$/.test(lowerFileName);
 }
 
 /**
  * Upper cases the first character or the string
  */
-function upperCaseFirst(str: string): string {
+export function upperCaseFirst(str: string): string {
   return str[0].toUpperCase() + str.slice(1);
 }
 
-function arrayGroupByToMap<T, Key extends number | string>(
+export function arrayGroupByToMap<T, Key extends number | string>(
   array: T[],
   getKey: (item: T) => Key,
 ): Map<Key, T[]> {
@@ -56,9 +57,9 @@ function arrayGroupByToMap<T, Key extends number | string>(
 }
 
 /** Return true if both parameters are equal. */
-type Equal<T> = (a: T, b: T) => boolean;
+export type Equal<T> = (a: T, b: T) => boolean;
 
-function arraysAreEqual<T>(
+export function arraysAreEqual<T>(
   a: T[] | undefined,
   b: T[] | undefined,
   eq: (a: T, b: T) => boolean,
@@ -73,7 +74,7 @@ function arraysAreEqual<T>(
 }
 
 /** Returns the first non-`undefined` result. */
-function findFirstResult<T, U>(
+export function findFirstResult<T, U>(
   inputs: T[],
   getResult: (t: T) => U | undefined,
 ): U | undefined {
@@ -90,7 +91,9 @@ function findFirstResult<T, U>(
 /**
  * Gets a string representation of the name of the index signature.
  */
-function getNameFromIndexSignature(node: TSESTree.TSIndexSignature): string {
+export function getNameFromIndexSignature(
+  node: TSESTree.TSIndexSignature,
+): string {
   const propName: TSESTree.PropertyName | undefined = node.parameters.find(
     (parameter: TSESTree.Parameter): parameter is TSESTree.Identifier =>
       parameter.type === AST_NODE_TYPES.Identifier,
@@ -98,7 +101,7 @@ function getNameFromIndexSignature(node: TSESTree.TSIndexSignature): string {
   return propName ? propName.name : '(index signature)';
 }
 
-enum MemberNameType {
+export enum MemberNameType {
   Private = 1,
   Quoted = 2,
   Normal = 3,
@@ -109,7 +112,7 @@ enum MemberNameType {
  * Gets a string name representation of the name of the given MethodDefinition
  * or PropertyDefinition node, with handling for computed property names.
  */
-function getNameFromMember(
+export function getNameFromMember(
   member:
     | TSESTree.AccessorProperty
     | TSESTree.MethodDefinition
@@ -154,16 +157,18 @@ function getNameFromMember(
   };
 }
 
-type ExcludeKeys<
+export type ExcludeKeys<
   Obj extends Record<string, unknown>,
   Keys extends keyof Obj,
 > = { [k in Exclude<keyof Obj, Keys>]: Obj[k] };
-type RequireKeys<
+export type RequireKeys<
   Obj extends Record<string, unknown>,
   Keys extends keyof Obj,
 > = { [k in Keys]-?: Exclude<Obj[k], undefined> } & ExcludeKeys<Obj, Keys>;
 
-function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
+export function getEnumNames<T extends string>(
+  myEnum: Record<T, unknown>,
+): T[] {
   return Object.keys(myEnum).filter(x => isNaN(Number(x))) as T[];
 }
 
@@ -173,7 +178,7 @@ function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
  *
  * Example: ['foo', 'bar', 'baz' ] returns the string "foo, bar, and baz".
  */
-function formatWordList(words: string[]): string {
+export function formatWordList(words: string[]): string {
   if (!words.length) {
     return '';
   }
@@ -191,7 +196,7 @@ function formatWordList(words: string[]): string {
  *
  * @returns Returns the index of the element if it finds it or -1 otherwise.
  */
-function findLastIndex<T>(
+export function findLastIndex<T>(
   members: T[],
   predicate: (member: T) => boolean | null | undefined,
 ): number {
@@ -208,7 +213,7 @@ function findLastIndex<T>(
   return -1;
 }
 
-function typeNodeRequiresParentheses(
+export function typeNodeRequiresParentheses(
   node: TSESTree.TypeNode,
   text: string,
 ): boolean {
@@ -221,11 +226,11 @@ function typeNodeRequiresParentheses(
   );
 }
 
-function isRestParameterDeclaration(decl: ts.Declaration): boolean {
+export function isRestParameterDeclaration(decl: ts.Declaration): boolean {
   return ts.isParameter(decl) && decl.dotDotDotToken != null;
 }
 
-function isParenlessArrowFunction(
+export function isParenlessArrowFunction(
   node: TSESTree.ArrowFunctionExpression,
   sourceCode: TSESLint.SourceCode,
 ): boolean {
@@ -234,7 +239,8 @@ function isParenlessArrowFunction(
   );
 }
 
-type NodeWithKey =
+export type NodeWithKey =
+  | TSESTree.AccessorProperty
   | TSESTree.MemberExpression
   | TSESTree.MethodDefinition
   | TSESTree.Property
@@ -287,7 +293,7 @@ type NodeWithKey =
  * }
  * ```
  */
-function getStaticMemberAccessValue(
+export function getStaticMemberAccessValue(
   node: NodeWithKey,
   { sourceCode }: RuleContext<string, unknown[]>,
 ): string | symbol | undefined {
@@ -314,7 +320,7 @@ function getStaticMemberAccessValue(
  * `x.value`, `x['value']`,
  * or even `const v = 'value'; x[v]` (or optional variants thereof).
  */
-const isStaticMemberAccessOfValue = (
+export const isStaticMemberAccessOfValue = (
   memberExpression: NodeWithKey,
   context: RuleContext<string, unknown[]>,
   ...values: (string | symbol)[]
@@ -322,25 +328,3 @@ const isStaticMemberAccessOfValue = (
   (values as (string | symbol | undefined)[]).includes(
     getStaticMemberAccessValue(memberExpression, context),
   );
-
-export {
-  arrayGroupByToMap,
-  arraysAreEqual,
-  type Equal,
-  type ExcludeKeys,
-  findFirstResult,
-  findLastIndex,
-  formatWordList,
-  getEnumNames,
-  getNameFromIndexSignature,
-  getNameFromMember,
-  getStaticMemberAccessValue,
-  isDefinitionFile,
-  isParenlessArrowFunction,
-  isRestParameterDeclaration,
-  isStaticMemberAccessOfValue,
-  MemberNameType,
-  type RequireKeys,
-  typeNodeRequiresParentheses,
-  upperCaseFirst,
-};

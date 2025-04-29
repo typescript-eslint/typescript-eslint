@@ -8,7 +8,7 @@ import type { TSESTree } from '../../ts-estree';
  *
  * @see {@link https://eslint-community.github.io/eslint-utils/api/scope-utils.html#findvariable}
  */
-const findVariable = eslintUtils.findVariable as (
+export const findVariable = eslintUtils.findVariable as (
   initialScope: TSESLint.Scope.Scope,
   nameOrNode: string | TSESTree.Identifier,
 ) => TSESLint.Scope.Variable | null;
@@ -20,9 +20,7 @@ const findVariable = eslintUtils.findVariable as (
  * @returns The innermost scope which contains the given node.
  * If such scope doesn't exist then it returns the 1st argument `initialScope`.
  */
-const getInnermostScope = eslintUtils.getInnermostScope as (
+export const getInnermostScope = eslintUtils.getInnermostScope as (
   initialScope: TSESLint.Scope.Scope,
   node: TSESTree.Node,
 ) => TSESLint.Scope.Scope;
-
-export { findVariable, getInnermostScope };

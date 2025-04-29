@@ -14,7 +14,7 @@ import {
   nullThrows,
 } from '../util';
 
-type MessageIds =
+export type MessageIds =
   | 'unsafeArgument'
   | 'unsafeArraySpread'
   | 'unsafeSpread'

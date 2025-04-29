@@ -13,7 +13,7 @@ import {
 
 const FUNCTION_CONSTRUCTOR = 'Function';
 const GLOBAL_CANDIDATES = new Set(['global', 'globalThis', 'window']);
-const EVAL_LIKE_METHODS = new Set([
+const EVAL_LIKE_FUNCTIONS = new Set([
   'execScript',
   'setImmediate',
   'setInterval',
@@ -25,7 +25,7 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow the use of `eval()`-like methods',
+      description: 'Disallow the use of `eval()`-like functions',
       extendsBaseRule: true,
       recommended: 'recommended',
       requiresTypeChecking: true,
@@ -148,7 +148,7 @@ export default createRule({
 
       const [handler] = node.arguments;
       if (
-        EVAL_LIKE_METHODS.has(calleeName) &&
+        EVAL_LIKE_FUNCTIONS.has(calleeName) &&
         !isFunction(handler) &&
         isReferenceToGlobalFunction(calleeName, node, context.sourceCode)
       ) {

@@ -4,12 +4,14 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getStringLength, nullThrows } from '../util';
 
-type DirectiveConfig =
+const defaultMinimumDescriptionLength = 3;
+
+export type DirectiveConfig =
   | boolean
   | 'allow-with-description'
   | { descriptionFormat: string };
 
-interface Options {
+export interface OptionsShape {
   minimumDescriptionLength?: number;
   'ts-check'?: DirectiveConfig;
   'ts-expect-error'?: DirectiveConfig;
@@ -17,9 +19,9 @@ interface Options {
   'ts-nocheck'?: DirectiveConfig;
 }
 
-const defaultMinimumDescriptionLength = 3;
+export type Options = [OptionsShape];
 
-type MessageIds =
+export type MessageIds =
   | 'replaceTsIgnoreWithTsExpectError'
   | 'tsDirectiveComment'
   | 'tsDirectiveCommentDescriptionNotMatchPattern'
@@ -31,7 +33,7 @@ interface MatchedTSDirective {
   directive: string;
 }
 
-export default createRule<[Options], MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'ban-ts-comment',
   meta: {
     type: 'problem',
@@ -203,7 +205,7 @@ export default createRule<[Options], MessageIds>({
             return;
           }
 
-          const fullDirective = `ts-${directive}` as keyof Options;
+          const fullDirective = `ts-${directive}` as keyof OptionsShape;
 
           const option = options[fullDirective];
           if (option === true) {

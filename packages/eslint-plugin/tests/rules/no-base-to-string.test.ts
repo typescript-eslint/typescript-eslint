@@ -483,6 +483,34 @@ function foo<T>(x: T) {
 declare const u: unknown;
 String(u);
     `,
+    `
+type Value = string | Value[];
+declare const v: Value;
+
+String(v);
+    `,
+    `
+type Value = (string | Value)[];
+declare const v: Value;
+
+String(v);
+    `,
+    `
+type Value = Value[];
+declare const v: Value;
+
+String(v);
+    `,
+    `
+type Value = [Value];
+declare const v: Value;
+
+String(v);
+    `,
+    `
+declare const v: ('foo' | 'bar')[][];
+String(v);
+    `,
   ],
   invalid: [
     {
@@ -1806,6 +1834,72 @@ foo.toString();
           data: {
             certainty: 'may',
             name: "foo([{ foo: 'foo' }, 'bar'])",
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+type Value = { foo: string } | Value[];
+declare const v: Value;
+
+String(v);
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'v',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+type Value = ({ foo: string } | Value)[];
+declare const v: Value;
+
+String(v);
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'v',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+type Value = [{ foo: string }, Value];
+declare const v: Value;
+
+String(v);
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'v',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+declare const v: { foo: string }[][];
+v.join();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'v',
           },
           messageId: 'baseArrayJoin',
         },

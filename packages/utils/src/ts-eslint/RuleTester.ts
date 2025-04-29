@@ -15,7 +15,7 @@ import type {
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-interface ValidTestCase<Options extends readonly unknown[]> {
+export interface ValidTestCase<Options extends readonly unknown[]> {
   /**
    * Code for the test case.
    */
@@ -61,7 +61,7 @@ interface ValidTestCase<Options extends readonly unknown[]> {
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-interface SuggestionOutput<MessageIds extends string> {
+export interface SuggestionOutput<MessageIds extends string> {
   /**
    * The data used to fill the message template.
    */
@@ -83,7 +83,7 @@ interface SuggestionOutput<MessageIds extends string> {
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-interface InvalidTestCase<
+export interface InvalidTestCase<
   MessageIds extends string,
   Options extends readonly unknown[],
 > extends ValidTestCase<Options> {
@@ -100,7 +100,7 @@ interface InvalidTestCase<
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-interface TestCaseError<MessageIds extends string> {
+export interface TestCaseError<MessageIds extends string> {
   /**
    * The 1-based column number of the reported start location.
    */
@@ -142,7 +142,7 @@ interface TestCaseError<MessageIds extends string> {
  * @param text a string describing the rule
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-type RuleTesterTestFrameworkFunction = (
+export type RuleTesterTestFrameworkFunction = (
   text: string,
   callback: () => void,
 ) => void;
@@ -150,7 +150,7 @@ type RuleTesterTestFrameworkFunction = (
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-interface RunTests<
+export interface RunTests<
   MessageIds extends string,
   Options extends readonly unknown[],
 > {
@@ -162,7 +162,7 @@ interface RunTests<
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-interface RuleTesterConfig extends ClassicConfig.Config {
+export interface RuleTesterConfig extends ClassicConfig.Config {
   // should be require.resolve(parserPackageName)
   readonly parser: string;
   readonly parserOptions?: Readonly<ParserOptions>;
@@ -226,15 +226,4 @@ declare class RuleTesterBase {
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}
-
-export {
-  type InvalidTestCase,
-  RuleTester,
-  type RuleTesterConfig,
-  type RuleTesterTestFrameworkFunction,
-  type RunTests,
-  type SuggestionOutput,
-  type TestCaseError,
-  type ValidTestCase,
-};
+export class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}

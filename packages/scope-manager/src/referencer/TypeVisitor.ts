@@ -9,7 +9,7 @@ import { ParameterDefinition, TypeDefinition } from '../definition';
 import { ScopeType } from '../scope';
 import { Visitor } from './Visitor';
 
-class TypeVisitor extends Visitor {
+export class TypeVisitor extends Visitor {
   readonly #referencer: Referencer;
 
   constructor(referencer: Referencer) {
@@ -297,5 +297,3 @@ class TypeVisitor extends Visitor {
     this.visit(node.typeArguments);
   }
 }
-
-export { TypeVisitor };

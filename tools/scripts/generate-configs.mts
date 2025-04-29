@@ -11,11 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import prettier from 'prettier';
 
-import {
-  PACKAGES_ESLINT_PLUGIN,
-  PACKAGES_TYPESCRIPT_ESLINT,
-  PRETTIER_CONFIG_PATH,
-} from './paths.mts';
+import { PACKAGES_ESLINT_PLUGIN, PRETTIER_CONFIG_PATH } from './paths.mts';
 
 // no need for us to bring in an entire dependency for a few simple terminal colors
 const chalk = {
@@ -40,12 +36,12 @@ const EXTENDS_MODULES = [
   {
     moduleRelativePath: './base',
     name: 'baseConfig',
-    packageRelativePath: './configs/base',
+    packageRelativePath: './configs/eslintrc/base',
   },
   {
     moduleRelativePath: './eslint-recommended',
     name: 'eslintRecommendedConfig',
-    packageRelativePath: './configs/eslint-recommended',
+    packageRelativePath: './configs/eslintrc/eslint-recommended',
   },
 ] as const;
 const CLASSIC_EXTENDS: readonly string[] = EXTENDS_MODULES.map(
@@ -119,8 +115,13 @@ async function main(): Promise<void> {
     [key, value]: RuleEntry,
     settings: ConfigRuleSettings = {},
   ): LinterConfigRules {
-    if (settings.deprecated && value.meta.deprecated) {
-      return config;
+    if (value.meta.deprecated) {
+      if (value.meta.docs.recommended) {
+        throw new Error(`${key} is both deprecated and recommended.`);
+      }
+      if (settings.deprecated) {
+        return config;
+      }
     }
 
     // Explicitly exclude rules requiring type-checking
@@ -192,7 +193,7 @@ async function main(): Promise<void> {
     const config = getConfig();
 
     //
-    // 1. Classic Config - written to the eslint-plugin package
+    // 1. Classic Config - written to eslint-plugin/src/configs/eslintrc
     // These configs are just JSON blobs that we write as TS files
     //
 
@@ -210,12 +211,18 @@ async function main(): Promise<void> {
       },
     );
     fs.writeFileSync(
-      path.join(PACKAGES_ESLINT_PLUGIN, 'src', 'configs', `${name}.ts`),
+      path.join(
+        PACKAGES_ESLINT_PLUGIN,
+        'src',
+        'configs',
+        'eslintrc',
+        `${name}.ts`,
+      ),
       classicConfigStr,
     );
 
     //
-    // 2. Flat Config - written to the core package
+    // 2. Flat Config - written to eslint-plugin/src/configs/flat
     // These configs are actual TS modules that import other configs
     //
     const flatCode: string[] = [
@@ -272,7 +279,7 @@ async function main(): Promise<void> {
       ...prettierConfig,
     });
     fs.writeFileSync(
-      path.join(PACKAGES_TYPESCRIPT_ESLINT, 'src', 'configs', `${name}.ts`),
+      path.join(PACKAGES_ESLINT_PLUGIN, 'src', 'configs', 'flat', `${name}.ts`),
       flatConfigStr,
     );
   }

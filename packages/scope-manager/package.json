@@ -1,9 +1,10 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "8.19.0",
+  "version": "8.31.1",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"
@@ -36,39 +37,30 @@
     "estree"
   ],
   "scripts": {
-    "build": "npx nx build",
-    "clean": "npx nx clean",
-    "clean-fixtures": "npx nx clean-fixtures",
+    "build": "tsc -b tsconfig.build.json",
+    "clean": "rimraf dist/ _ts4.3/ coverage/",
+    "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-lib": "npx nx generate-lib repo",
     "lint": "npx nx lint",
-    "test": "npx nx test --code-coverage",
-    "typecheck": "npx nx typecheck"
+    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
+    "check-types": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "8.19.0",
-    "@typescript-eslint/visitor-keys": "8.19.0"
+    "@typescript-eslint/types": "8.31.1",
+    "@typescript-eslint/visitor-keys": "8.31.1"
   },
   "devDependencies": {
-    "@jest/types": "29.6.3",
-    "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "8.19.0",
+    "@typescript-eslint/typescript-estree": "8.31.1",
+    "@vitest/coverage-v8": "^3.1.1",
     "glob": "*",
-    "jest-specific-snapshot": "*",
-    "make-dir": "*",
     "prettier": "^3.2.5",
     "pretty-format": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "vitest": "^3.1.1"
   },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
-  },
-  "typesVersions": {
-    "<4.7": {
-      "*": [
-        "_ts4.3/*"
-      ]
-    }
   }
 }

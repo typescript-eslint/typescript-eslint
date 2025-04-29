@@ -46,6 +46,7 @@ interface ParserOptions {
   ecmaVersion?: number | 'latest';
   emitDecoratorMetadata?: boolean;
   experimentalDecorators?: boolean;
+  isolatedDeclarations?: boolean;
   extraFileExtensions?: string[];
   jsDocParsingMode?: 'all' | 'none' | 'type-info';
   jsxFragmentName?: string | null;
@@ -155,6 +156,13 @@ Add extensions starting with `.`, followed by the file extension. E.g. for a `.v
 :::note
 See [Changes to `extraFileExtensions` with `projectService`](../troubleshooting/typed-linting/Performance.mdx#changes-to-extrafileextensions-with-projectservice) to avoid performance issues.
 :::
+
+### `isolatedDeclarations`
+
+> Default `undefined`.
+
+This option allow you to tell parser to act as if `isolatedDeclarations: true` is set in `tsconfig.json`, but without [type-aware linting](../getting-started/Typed_Linting.mdx).
+In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
 
 ### `jsDocParsingMode`
 

@@ -818,7 +818,7 @@ function isUsedVariable(variable: ScopeVariable): boolean {
  * - variables within declaration files
  * - variables within ambient module declarations
  */
-function collectVariables<
+export function collectVariables<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
@@ -832,5 +832,3 @@ function collectVariables<
     ),
   );
 }
-
-export { collectVariables };

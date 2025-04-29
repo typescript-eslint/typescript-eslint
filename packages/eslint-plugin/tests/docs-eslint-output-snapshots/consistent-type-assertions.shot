@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs consistent-type-assertions.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }
 
 const x = { foo: 1 } as T;
@@ -11,11 +8,8 @@ function bar() {
   return { foo: 1 } as T;
          ~~~~~~~~~~~~~~~ Always prefer const x: T = { ... }.
 }
-"
-`;
 
-exports[`Validating rule docs consistent-type-assertions.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }
 
 const x: T = { foo: 1 };
@@ -25,11 +19,8 @@ const z = { foo: 1 } as unknown;
 function bar(): T {
   return { foo: 1 };
 }
-"
-`;
 
-exports[`Validating rule docs consistent-type-assertions.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }
 
 const x = { foo: 1 } as T;
@@ -39,11 +30,8 @@ function bar() {
   return { foo: 1 } as T;
          ~~~~~~~~~~~~~~~ Always prefer const x: T = { ... }.
 }
-"
-`;
 
-exports[`Validating rule docs consistent-type-assertions.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }
 
 const x: T = { foo: 1 };
@@ -55,5 +43,49 @@ function bar() {
   throw { foo: 1 } as Foo;
 }
 const foo = <Foo props={{ bar: 1 } as Bar} />;
-"
-`;
+
+Incorrect
+Options: { "assertionStyle": "as", "arrayLiteralTypeAssertions": "never" }
+
+const x = ['foo'] as T;
+          ~~~~~~~~~~~~ Always prefer const x: T[] = [ ... ].
+
+function bar() {
+  return ['foo'] as T;
+         ~~~~~~~~~~~~ Always prefer const x: T[] = [ ... ].
+}
+
+Correct
+Options: { "assertionStyle": "as", "arrayLiteralTypeAssertions": "never" }
+
+const x: T = ['foo'];
+const y = ['foo'] as any;
+const z = ['foo'] as unknown;
+
+function bar(): T {
+  return ['foo'];
+}
+
+Incorrect
+Options: { "assertionStyle": "as", "arrayLiteralTypeAssertions": "allow-as-parameter" }
+
+const x = ['foo'] as T;
+          ~~~~~~~~~~~~ Always prefer const x: T[] = [ ... ].
+
+function bar() {
+  return ['foo'] as T;
+         ~~~~~~~~~~~~ Always prefer const x: T[] = [ ... ].
+}
+
+Correct
+Options: { "assertionStyle": "as", "arrayLiteralTypeAssertions": "allow-as-parameter" }
+
+const x: T = ['foo'];
+const y = ['foo'] as any;
+const z = ['foo'] as unknown;
+bar(['foo'] as T);
+new Clazz(['foo'] as T);
+function bar() {
+  throw ['foo'] as Foo;
+}
+const foo = <Foo props={['foo'] as Bar} />;
