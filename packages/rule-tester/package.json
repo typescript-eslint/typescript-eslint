@@ -62,7 +62,7 @@
     "@types/json-stable-stringify-without-jsonify": "^1.0.2",
     "@types/lodash.merge": "4.6.9",
     "@vitest/coverage-v8": "^3.1.2",
-    "chai": "^4.4.1",
+    "chai": "^5.2.0",
     "eslint-visitor-keys": "^4.2.0",
     "espree": "^10.3.0",
     "esprima": "^4.0.1",
