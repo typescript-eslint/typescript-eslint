@@ -18,6 +18,7 @@ import {
   isTypeUnknownType,
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
+  nullThrows,
 } from '../util';
 import { parseCatchCall, parseThenCall } from '../util/promiseUtils';
 
@@ -92,11 +93,11 @@ export default createRule<Options, MessageIds>({
 
       const scope = context.sourceCode.getScope(node);
 
-      const smVariable = findVariable(scope, node.name);
+      const smVariable = nullThrows(
+        findVariable(scope, node),
+        `Variable ${node.name} should exist in scope manager`,
+      );
 
-      if (smVariable == null) {
-        return false;
-      }
       const variableDefinitions = smVariable.defs.filter(
         def => def.isVariableDefinition,
       );
