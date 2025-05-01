@@ -5,10 +5,16 @@ import type {
   ParserServicesWithTypeInformation,
 } from '@typescript-eslint/typescript-estree';
 
+import type { ReadonlynessOptions } from '../../../src/isTypeReadonly.js';
+
 declare global {
   namespace Chai {
+    interface Assertion {
+      parserServices(errorMessage?: string): void;
+    }
+
     interface Assert {
-      toHaveParserServices(
+      isParserServices(
         services: ParserServices | null | undefined,
         errorMessage?: string,
       ): asserts services is ParserServicesWithTypeInformation;
@@ -22,6 +28,18 @@ interface CustomMatchers<Actual = unknown> {
     receiverStr: string;
     declarationIndex?: number;
     passSenderNode?: boolean;
+  }): Actual;
+
+  toBeValidSpecifier(): Actual;
+
+  toMatchSpecifier(expectedTypeOrValueSpecifier: TypeOrValueSpecifier): Actual;
+
+  toBeReadOnly(readOnlyNessOptions: ReadonlynessOptions | undefined): Actual;
+
+  toContainsAllTypesByName(additionalOptions?: {
+    allowAny?: boolean;
+    allowedNames?: Set<string>;
+    matchAnyInstead?: boolean;
   }): Actual;
 
   toBeSafeAssignment(additionalOptions?: {

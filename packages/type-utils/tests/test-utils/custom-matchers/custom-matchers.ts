@@ -1,3 +1,4 @@
+import type { ParserOptions } from '@typescript-eslint/parser';
 import type {
   ParserServices,
   ParserServicesWithTypeInformation,
@@ -6,24 +7,77 @@ import type {
 import type * as ts from 'typescript';
 
 import { parseForESLint } from '@typescript-eslint/parser';
+import Ajv from 'ajv';
 import * as path from 'node:path';
 
+import type { ReadonlynessOptions } from '../../../src/isTypeReadonly.js';
+import type { TypeOrValueSpecifier } from '../../../src/TypeOrValueSpecifier.js';
+
+import { containsAllTypesByName } from '../../../src/containsAllTypesByName.js';
+import { isTypeReadonly } from '../../../src/isTypeReadonly.js';
 import { isUnsafeAssignment } from '../../../src/isUnsafeAssignment.js';
+import {
+  typeMatchesSpecifier,
+  typeOrValueSpecifiersSchema,
+} from '../../../src/TypeOrValueSpecifier.js';
+
+const FIXTURES_DIR = path.join(__dirname, '..', '..', 'fixtures');
+
+const DEFAULT_PARSER_OPTIONS = {
+  disallowAutomaticSingleRunInference: true,
+  filePath: path.join(FIXTURES_DIR, 'file.ts'),
+  project: './tsconfig.json',
+  tsconfigRootDir: FIXTURES_DIR,
+} satisfies ParserOptions;
 
 chai.use((chai, utils) => {
-  utils.addMethod(
-    chai.assert,
-    'toHaveParserServices',
-    function toHaveParserServices(
-      this: Chai.AssertStatic,
-      services: ParserServices | null | undefined,
-    ): asserts services is ParserServicesWithTypeInformation {
-      this.exists(services?.program);
-      expect(services.esTreeNodeToTSNodeMap).toBeDefined();
-      expect(services.tsNodeToESTreeNodeMap).toBeDefined();
-    },
-  );
+  function parserServices(this: Chai.AssertionStatic, errorMessage?: string) {
+    const services: ParserServices | null | undefined = utils.flag(
+      this,
+      'object',
+    );
+
+    if (errorMessage) {
+      utils.flag(this, 'message', errorMessage);
+    }
+
+    const pass = services?.program != null;
+
+    this.assert(
+      pass,
+      'expected #{this} to exist',
+      'expected #{this} to not exist',
+    );
+  }
+
+  chai.Assertion.addMethod(parserServices.name, parserServices);
+
+  chai.assert.isParserServices = (services, errorMessage) => {
+    new chai.Assertion(services, errorMessage).to.be.parserServices();
+  };
 });
+
+function hasParserServicesWithTypeInformation<
+  T extends ReturnType<typeof parseForESLint>,
+>(
+  parseForESLintResult: T,
+): asserts parseForESLintResult is T & {
+  services: ParserServicesWithTypeInformation;
+} {
+  assert.isParserServices(parseForESLintResult.services);
+}
+
+export function parseCodeForEslint(code: string): ReturnType<
+  typeof parseForESLint
+> & {
+  services: ParserServicesWithTypeInformation;
+} {
+  const parseForESLintResult = parseForESLint(code, DEFAULT_PARSER_OPTIONS);
+
+  hasParserServicesWithTypeInformation(parseForESLintResult);
+
+  return parseForESLintResult;
+}
 
 function getTypes(
   code: string,
@@ -34,29 +88,57 @@ function getTypes(
   sender: ts.Type;
   senderNode: TSESTree.Node;
 } {
-  const rootDir = path.join(__dirname, '..', '..', 'fixtures');
-  const { ast, services } = parseForESLint(code, {
-    disallowAutomaticSingleRunInference: true,
-    filePath: path.join(rootDir, 'file.ts'),
-    project: './tsconfig.json',
-    tsconfigRootDir: rootDir,
-  });
-  assert.toHaveParserServices(services);
+  const { ast, services } = parseCodeForEslint(code);
+
   const checker = services.program.getTypeChecker();
 
   const declaration = ast.body[
     declarationIndex
   ] as TSESTree.VariableDeclaration;
+
   const declarator = declaration.declarations[0];
+
+  assert.isNotNull(declarator.init);
+
   return {
     checker,
     receiver: services.getTypeAtLocation(declarator.id),
-    sender: services.getTypeAtLocation(declarator.init!),
-    senderNode: declarator.init!,
+    sender: services.getTypeAtLocation(declarator.init),
+    senderNode: declarator.init,
   };
 }
 
 expect.extend({
+  toBeReadOnly(
+    code: string,
+    readOnlyNessOptions: ReadonlynessOptions | undefined,
+  ) {
+    const { isNot, utils } = this;
+
+    const { printReceived } = utils;
+
+    const { ast, services } = parseCodeForEslint(code);
+
+    const { esTreeNodeToTSNodeMap, program } = services;
+
+    const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
+
+    const type = program
+      .getTypeChecker()
+      .getTypeAtLocation(esTreeNodeToTSNodeMap.get(declaration.id));
+
+    const actual = isTypeReadonly(program, type, readOnlyNessOptions);
+
+    return {
+      actual,
+      expected: true,
+      message: () =>
+        `Expected type to${isNot ? ' not' : ''} be readonly:\n\n${printReceived(
+          code,
+        )}`,
+      pass: actual,
+    };
+  },
   toBeSafeAssignment(
     code: string,
     additionalOptions: {
@@ -94,6 +176,74 @@ expect.extend({
         : expected,
       message: () => `Expected Assignment${isNot ? ' not' : ''} to be safe.`,
       pass,
+    };
+  },
+
+  toBeValidSpecifier(typeOrValueSpecifier: unknown) {
+    const { isNot, utils } = this;
+
+    const { printReceived } = utils;
+
+    const ajv = new Ajv();
+
+    const validate = ajv.compile(typeOrValueSpecifiersSchema);
+
+    const actual = validate(typeOrValueSpecifier);
+
+    const expected = true;
+
+    const pass = actual === expected;
+
+    return {
+      actual,
+      expected,
+      message: () =>
+        `Expected specifier to${isNot ? ' not' : ''} be valid:\n\n${printReceived(
+          typeOrValueSpecifier,
+        )}`,
+      pass,
+    };
+  },
+
+  toContainsAllTypesByName(
+    code: string,
+    additionalOptions: {
+      allowAny?: boolean;
+      allowedNames?: Set<string>;
+      matchAnyInstead?: boolean;
+    } = {},
+  ) {
+    const { isNot, utils } = this;
+
+    const { printReceived } = utils;
+
+    const {
+      allowAny = false,
+      allowedNames = new Set(),
+      matchAnyInstead,
+    } = additionalOptions;
+
+    const { ast, services } = parseCodeForEslint(code);
+
+    const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
+
+    const type = services.getTypeAtLocation(declaration.id);
+
+    const actual = containsAllTypesByName(
+      type,
+      allowAny,
+      allowedNames,
+      matchAnyInstead,
+    );
+
+    return {
+      actual,
+      expected: true,
+      message: () =>
+        `Expected type to${isNot ? ' not' : ''} contain all types by name:\n\n${printReceived(
+          code,
+        )}`,
+      pass: actual,
     };
   },
 
@@ -143,6 +293,41 @@ expect.extend({
       message: () =>
         `Expected types of sender and receiver to${isNot ? ' not' : ''} match.`,
       pass,
+    };
+  },
+
+  toMatchSpecifier(
+    code: string,
+    expectedTypeOrValueSpecifier: TypeOrValueSpecifier,
+  ) {
+    const { isNot, utils } = this;
+
+    const { printReceived } = utils;
+
+    const { ast, services } = parseCodeForEslint(code);
+
+    const type = services.program
+      .getTypeChecker()
+      .getTypeAtLocation(
+        services.esTreeNodeToTSNodeMap.get(
+          (ast.body.at(-1) as TSESTree.TSTypeAliasDeclaration).id,
+        ),
+      );
+
+    const actual = typeMatchesSpecifier(
+      type,
+      expectedTypeOrValueSpecifier,
+      services.program,
+    );
+
+    return {
+      actual,
+      expected: true,
+      message: () =>
+        `Expected type to${isNot ? ' not' : ''} match specifier:\n\n${printReceived(
+          expectedTypeOrValueSpecifier,
+        )}`,
+      pass: actual,
     };
   },
 });
