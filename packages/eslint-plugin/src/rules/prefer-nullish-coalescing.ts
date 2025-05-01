@@ -493,9 +493,14 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        const { nonNullishBranch, nullishBranch } = getBranchNodes(
+          node,
+          operator,
+        );
+
         const nullishCoalescingParams = getNullishCoalescingParams(
           node,
-          getBranchNodes(node, operator).nonNullishBranch,
+          nonNullishBranch,
           nodesInsideTestExpression,
           operator,
         );
@@ -511,28 +516,27 @@ export default createRule<Options, MessageIds>({
                 messageId: 'suggestNullish',
                 data: { equals: '' },
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
+                  const nullishBranchText = getTextWithParentheses(
+                    context.sourceCode,
+                    nullishBranch,
+                  );
+                  const rightOperandReplacement = isParenthesized(
+                    nullishBranch,
+                    context.sourceCode,
+                  )
+                    ? nullishBranchText
+                    : getWrappedCode(
+                        nullishBranchText,
+                        getOperatorPrecedenceForNode(nullishBranch),
+                        OperatorPrecedence.Coalesce,
+                      );
+
                   return fixer.replaceText(
                     node,
                     `${getTextWithParentheses(
                       context.sourceCode,
                       nullishCoalescingParams.nullishCoalescingLeftNode,
-                    )} ?? ${(() => {
-                      const branch = getBranchNodes(
-                        node,
-                        operator,
-                      ).nullishBranch;
-                      if (isParenthesized(branch, context.sourceCode)) {
-                        return getTextWithParentheses(
-                          context.sourceCode,
-                          branch,
-                        );
-                      }
-                      return getWrappedCode(
-                        getTextWithParentheses(context.sourceCode, branch),
-                        getOperatorPrecedenceForNode(branch),
-                        OperatorPrecedence.Coalesce,
-                      );
-                    })()}`,
+                    )} ?? ${rightOperandReplacement}`,
                   );
                 },
               },
