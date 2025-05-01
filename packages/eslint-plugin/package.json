@@ -56,7 +56,7 @@
     "generate:breaking-changes": "tsx tools/generate-breaking-changes.mts",
     "generate:configs": "npx nx generate-configs repo",
     "lint": "npx nx lint",
-    "test": "vitest --config=$INIT_CWD/vitest.config.mts",
+    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
     "test-single": "vitest --run --config=$INIT_CWD/vitest.config.mts",
     "check-types": "npx nx typecheck"
   },
