@@ -5781,7 +5781,7 @@ __metadata:
     "@typescript-eslint/typescript-estree": "workspace:^"
     "@typescript-eslint/utils": "workspace:^"
     "@vitest/coverage-v8": ^3.1.2
-    "@vitest/eslint-plugin": ^1.1.43
+    "@vitest/eslint-plugin": ^1.1.44
     console-fail-test: ^0.5.0
     cross-fetch: ^4.0.0
     cspell: ^8.15.2
@@ -5938,9 +5938,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/eslint-plugin@npm:^1.1.43":
-  version: 1.1.43
-  resolution: "@vitest/eslint-plugin@npm:1.1.43"
+"@vitest/eslint-plugin@npm:^1.1.44":
+  version: 1.1.44
+  resolution: "@vitest/eslint-plugin@npm:1.1.44"
   peerDependencies:
     "@typescript-eslint/utils": ">= 8.24.0"
     eslint: ">= 8.57.0"
@@ -5951,7 +5951,7 @@ __metadata:
       optional: true
     vitest:
       optional: true
-  checksum: dd036629703c53f5608afe503069f82719bf79c83ad067275e746d40e3c8e65735ed2a6a7d8692d3656cf530caa247b6447f9b2a0fae559e22af2a4ce43b32ec
+  checksum: bd78c75c01cb964888b0fb8c468469bbef3a4dcc25ed9618b82fd6b83c236ac54fad9dd9aa67d3da892796d4c982b9bcee37fa16a412744f50fc9a27ece3bb1f
   languageName: node
   linkType: hard
 
