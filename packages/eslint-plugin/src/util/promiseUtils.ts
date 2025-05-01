@@ -6,7 +6,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getStaticMemberAccessValue } from './misc';
 
 /**
- * Parses a syntactically possible `Promise.then` call. Does not check the
+ * Parses a syntactically possible `Promise.then()` call. Does not check the
  * type of the callee.
  */
 export function parseThenCall(
@@ -57,6 +57,10 @@ export function parseThenCall(
   return undefined;
 }
 
+/**
+ * Parses a syntactically possible `Promise.catch()` call. Does not check the
+ * type of the callee.
+ */
 export function parseCatchCall(
   node: TSESTree.CallExpression,
   context: RuleContext<string, unknown[]>,
@@ -90,6 +94,10 @@ export function parseCatchCall(
   return undefined;
 }
 
+/**
+ * Parses a syntactically possible `Promise.finally()` call. Does not check the
+ * type of the callee.
+ */
 export function parseFinallyCall(
   node: TSESTree.CallExpression,
   context: RuleContext<string, unknown[]>,
