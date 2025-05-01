@@ -101,7 +101,7 @@
         "type": "array"
       },
       "allowRethrowing": {
-        "description": "Whether to allow rethrowing caught values",
+        "description": "Whether to allow rethrowing caught values that are not `Error` objects.",
         "type": "boolean"
       },
       "allowThrowingAny": {
@@ -140,7 +140,7 @@ type Options = [
         }
       | string
     )[];
-    /** Whether to allow rethrowing caught values */
+    /** Whether to allow rethrowing caught values that are not `Error` objects. */
     allowRethrowing?: boolean;
     /** Whether to always allow throwing values typed as `any`. */
     allowThrowingAny?: boolean;

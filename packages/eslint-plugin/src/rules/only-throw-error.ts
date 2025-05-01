@@ -27,9 +27,9 @@ export type MessageIds = 'object' | 'undef';
 export type Options = [
   {
     allow?: TypeOrValueSpecifier[];
+    allowRethrowing?: boolean;
     allowThrowingAny?: boolean;
     allowThrowingUnknown?: boolean;
-    allowRethrowing?: boolean;
   },
 ];
 
@@ -58,7 +58,8 @@ export default createRule<Options, MessageIds>({
           },
           allowRethrowing: {
             type: 'boolean',
-            description: 'Whether to allow rethrowing caught values',
+            description:
+              'Whether to allow rethrowing caught values that are not `Error` objects.',
           },
           allowThrowingAny: {
             type: 'boolean',
