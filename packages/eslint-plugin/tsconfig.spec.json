@@ -1,13 +1,13 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/eslint-plugin/jest",
+    "outDir": "../../dist/out-tsc/packages/eslint-plugin",
     "module": "NodeNext",
     "resolveJsonModule": true,
     "types": ["node", "vitest/globals", "vitest/importMeta"]
   },
   "include": [
-    "vitest.config.mts",
+    "vitest.config.*",
     "package.json",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
