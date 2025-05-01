@@ -1,3 +1,33 @@
+## 8.31.1 (2025-04-28)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-condition] downgrade fix to suggestion ([#11081](https://github.com/typescript-eslint/typescript-eslint/pull/11081))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.31.0 (2025-04-21)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] add option to ignore string const assertions ([#10979](https://github.com/typescript-eslint/typescript-eslint/pull/10979))
+
+### 🩹 Fixes
+
+- **typescript-eslint:** address bugs in `config()` around global ignores ([#11065](https://github.com/typescript-eslint/typescript-eslint/pull/11065))
+- **typescript-eslint:** gracefully handle invalid flat config objects in config helper ([#11070](https://github.com/typescript-eslint/typescript-eslint/pull/11070))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+- Nicolas Le Cam
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.30.1 (2025-04-14)
 
 ### 🩹 Fixes
