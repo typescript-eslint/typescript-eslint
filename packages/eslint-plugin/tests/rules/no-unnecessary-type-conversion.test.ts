@@ -40,31 +40,35 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
     '!false;',
     '~2;',
     `
-      function String(value) {
+      function String(value: unknown) {
         return value;
       }
       String('asdf');
+      export {};
     `,
     `
-      function Number(value) {
+      function Number(value: unknown) {
         return value;
       }
       Number(2);
+      export {};
     `,
     `
-      function Boolean(value) {
+      function Boolean(value: unknown) {
         return value;
       }
       Boolean(true);
+      export {};
     `,
     `
-      function BigInt(value) {
+      function BigInt(value: unknown) {
         return value;
       }
       BigInt(3n);
+      export {};
     `,
     `
-      function toString(value) {
+      function toString(value: unknown) {
         return value;
       }
       toString('asdf');
@@ -77,7 +81,7 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
 
     // using type conversion idioms to unbox boxed primitives is valid
     'String(new String());',
-    'new String.toString();',
+    'new String().toString();',
     "'' + new String();",
     "new String() + '';",
     `
