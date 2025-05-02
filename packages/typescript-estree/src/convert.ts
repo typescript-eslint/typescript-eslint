@@ -3124,7 +3124,10 @@ export class Converter {
             this.ast,
           )!;
           const withOrAssertTokenRange = getRange(withOrAssertToken, this.ast);
-          const withOrAssertName = withOrAssertToken.getText();
+          const withOrAssertName =
+            withOrAssertToken.kind === ts.SyntaxKind.AssertKeyword
+              ? 'assert'
+              : 'with';
 
           options = this.createNode<TSESTree.ObjectExpression>(node, {
             type: AST_NODE_TYPES.ObjectExpression,
