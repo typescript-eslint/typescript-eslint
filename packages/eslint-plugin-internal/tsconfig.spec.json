@@ -7,7 +7,7 @@
     "types": ["node", "vitest/globals", "vitest/importMeta"]
   },
   "include": [
-    "vitest.config.*",
+    "vitest.config.mts",
     "package.json",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
