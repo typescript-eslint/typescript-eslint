@@ -65,7 +65,6 @@ export default tseslint.config(
     ignores: [
       '.nx/',
       '.yarn/',
-      '**/vitest.config.mts',
       '**/node_modules/**',
       '**/dist/**',
       '**/fixtures/**',
