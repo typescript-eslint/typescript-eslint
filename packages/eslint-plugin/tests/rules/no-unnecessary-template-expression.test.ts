@@ -960,8 +960,12 @@ this code has trailing position template expression but it isn\\'t whitespace
 
 describe('fixer should not change runtime value', () => {
   test.for(invalidCases)('$code', ({ code, output }, { expect }) => {
-    expect(eval(code)).toEqual(
-      eval(Array.isArray(output) ? output.at(-1)! : output),
+    const lastOutput = output.at(-1);
+
+    assert.isDefined(lastOutput);
+
+    expect(eval(code)).toStrictEqual(
+      eval(Array.isArray(output) ? lastOutput : output),
     );
   });
 });

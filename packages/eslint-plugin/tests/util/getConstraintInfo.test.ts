@@ -44,7 +44,7 @@ function foo<T>(x: T);
     expect(isTypeParameter).toBe(true);
     // ideally one day we'll be able to change this to assert that it be the intrinsic unknown type.
     // Requires https://github.com/microsoft/TypeScript/issues/60475
-    expect(constraintType).toBeUndefined();
+    assert.isUndefined(constraintType);
   });
 
   it('returns unknown for extends unknown', () => {
@@ -65,9 +65,11 @@ function foo<T extends unknown>(x: T);
     );
 
     expect(isTypeParameter).toBe(true);
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(tsutils.isIntrinsicUnknownType(constraintType!)).toBe(true);
+
+    assert.isDefined(constraintType);
+
+    expect(tsutils.isTypeParameter(constraintType)).toBe(false);
+    expect(tsutils.isIntrinsicUnknownType(constraintType)).toBe(true);
   });
 
   it('returns unknown for extends any', () => {
@@ -88,9 +90,11 @@ function foo<T extends any>(x: T);
     );
 
     expect(isTypeParameter).toBe(true);
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(tsutils.isIntrinsicUnknownType(constraintType!)).toBe(true);
+
+    assert.isDefined(constraintType);
+
+    expect(tsutils.isTypeParameter(constraintType)).toBe(false);
+    expect(tsutils.isIntrinsicUnknownType(constraintType)).toBe(true);
   });
 
   it('returns string for extends string', () => {
@@ -111,9 +115,11 @@ function foo<T extends string>(x: T);
     );
 
     expect(isTypeParameter).toBe(true);
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(tsutils.isIntrinsicStringType(constraintType!)).toBe(true);
+
+    assert.isDefined(constraintType);
+
+    expect(tsutils.isTypeParameter(constraintType)).toBe(false);
+    expect(tsutils.isIntrinsicStringType(constraintType)).toBe(true);
   });
 
   it('returns string for non-generic string', () => {
@@ -134,9 +140,11 @@ function foo(x: string);
     );
 
     expect(isTypeParameter).toBe(false);
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(tsutils.isIntrinsicStringType(constraintType!)).toBe(true);
+
+    assert.isDefined(constraintType);
+
+    expect(tsutils.isTypeParameter(constraintType)).toBe(false);
+    expect(tsutils.isIntrinsicStringType(constraintType)).toBe(true);
     expect(constraintType).toBe(parameterType);
   });
 
@@ -162,9 +170,10 @@ function foo<T extends string>() {
       parameterType,
     );
 
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(tsutils.isIntrinsicStringType(constraintType!)).toBe(true);
+    assert.isDefined(constraintType);
+
+    expect(tsutils.isTypeParameter(constraintType)).toBe(false);
+    expect(tsutils.isIntrinsicStringType(constraintType)).toBe(true);
     expect(isTypeParameter).toBe(true);
   });
 
@@ -191,6 +200,7 @@ function foo<T>() {
     );
 
     expect(isTypeParameter).toBe(true);
-    expect(constraintType).toBeUndefined();
+
+    assert.isUndefined(constraintType);
   });
 });
