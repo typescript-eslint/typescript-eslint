@@ -229,77 +229,63 @@ export default createRule<Options, MessageIds>({
       },
       CallExpression(node: TSESTree.CallExpression): void {
         const nodeCallee = node.callee;
+        const builtInTypeFlags = {
+          BigInt: ts.TypeFlags.BigIntLike,
+          Boolean: ts.TypeFlags.BooleanLike,
+          Number: ts.TypeFlags.NumberLike,
+          String: ts.TypeFlags.StringLike,
+        };
+
         if (
-          nodeCallee.type === AST_NODE_TYPES.Identifier &&
-          node.arguments.length === 1
+          nodeCallee.type !== AST_NODE_TYPES.Identifier ||
+          !(nodeCallee.name in builtInTypeFlags)
         ) {
-          const getTypeLazy = () =>
-            getConstrainedTypeAtLocation(services, node.arguments[0]);
-
-          const isBuiltInCall = (name: string) => {
-            if (nodeCallee.name === name) {
-              const scope = context.sourceCode.getScope(node);
-              const variable = scope.set.get(name);
-              return !variable?.defs.length;
-            }
-            return false;
-          };
-
-          if (
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-            (isBuiltInCall('String') &&
-              doesUnderlyingTypeMatchFlag(
-                getTypeLazy(),
-                ts.TypeFlags.StringLike,
-              )) ||
-            (isBuiltInCall('Number') &&
-              doesUnderlyingTypeMatchFlag(
-                getTypeLazy(),
-                ts.TypeFlags.NumberLike,
-              )) ||
-            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-            (isBuiltInCall('Boolean') &&
-              doesUnderlyingTypeMatchFlag(
-                getTypeLazy(),
-                ts.TypeFlags.BooleanLike,
-              )) ||
-            (isBuiltInCall('BigInt') &&
-              doesUnderlyingTypeMatchFlag(
-                getTypeLazy(),
-                ts.TypeFlags.BigIntLike,
-              ))
-          ) {
-            const wrappingFixerParams = {
-              node,
-              innerNode: [node.arguments[0]],
-              sourceCode: context.sourceCode,
-            };
-            const typeString = nodeCallee.name.toLowerCase();
-
-            context.report({
-              node: nodeCallee,
-              messageId: 'unnecessaryTypeConversion',
-              data: {
-                type: nodeCallee.name.toLowerCase(),
-                violation: `Passing a ${typeString} to ${nodeCallee.name}()`,
-              },
-              suggest: [
-                {
-                  messageId: 'suggestRemove',
-                  fix: getWrappingFixer(wrappingFixerParams),
-                },
-                {
-                  messageId: 'suggestSatisfies',
-                  data: { type: typeString },
-                  fix: getWrappingFixer({
-                    ...wrappingFixerParams,
-                    wrap: expr => `${expr} satisfies ${typeString}`,
-                  }),
-                },
-              ],
-            });
-          }
+          return;
         }
+
+        const typeFlag =
+          builtInTypeFlags[nodeCallee.name as keyof typeof builtInTypeFlags];
+        const scope = context.sourceCode.getScope(node);
+        const variable = scope.set.get(nodeCallee.name);
+        if (
+          !!variable?.defs.length ||
+          !doesUnderlyingTypeMatchFlag(
+            getConstrainedTypeAtLocation(services, node.arguments[0]),
+            typeFlag,
+          )
+        ) {
+          return;
+        }
+
+        const wrappingFixerParams = {
+          node,
+          innerNode: [node.arguments[0]],
+          sourceCode: context.sourceCode,
+        };
+        const typeString = nodeCallee.name.toLowerCase();
+
+        context.report({
+          node: nodeCallee,
+          messageId: 'unnecessaryTypeConversion',
+          data: {
+            type: nodeCallee.name.toLowerCase(),
+            violation: `Passing a ${typeString} to ${nodeCallee.name}()`,
+          },
+          suggest: [
+            {
+              messageId: 'suggestRemove',
+              fix: getWrappingFixer(wrappingFixerParams),
+            },
+            {
+              messageId: 'suggestSatisfies',
+              data: { type: typeString },
+              fix: getWrappingFixer({
+                ...wrappingFixerParams,
+                wrap: expr => `${expr} satisfies ${typeString}`,
+              }),
+            },
+          ],
+        });
       },
       'CallExpression > MemberExpression.callee > Identifier[name = "toString"].property'(
         node: TSESTree.Expression,
