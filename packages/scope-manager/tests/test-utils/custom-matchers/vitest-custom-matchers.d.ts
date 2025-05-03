@@ -1,49 +1,83 @@
 import 'vitest';
 
 import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+import type { TSESTreeOptions } from '@typescript-eslint/typescript-estree';
 
-import type { DefinitionBase } from '../../../src/definition/DefinitionBase.js';
 import type {
   Definition,
   DefinitionType,
   Scope,
   ScopeType,
 } from '../../../src/index.js';
-import type { ScopeBase } from '../../../src/scope/ScopeBase.js';
 
 declare global {
   namespace Chai {
+    interface Assertion {
+      scopeOfType(expectedScopeType: ScopeType, errorMessage?: string): void;
+
+      definitionOfType(
+        expectedDefinitionType: DefinitionType,
+        errorMessage?: string,
+      ): void;
+
+      nodeOfType(expectedNodeType: AST_NODE_TYPES, errorMessage?: string): void;
+    }
+
     interface Assert {
-      isScopeOfType<Type extends ScopeType>(
-        scope: Scope,
-        expectedScopeType: Type,
+      isScopeOfType<ActualType extends Scope, ExpectedType extends ScopeType>(
+        scope: ActualType,
+        expectedScopeType: ExpectedType,
         errorMessage?: string,
-      ): asserts scope is Type extends ScopeBase<
-        Type,
-        infer Block,
-        infer Upper
-      >['type']
-        ? Scope & ScopeBase<Type, Block, Upper>
-        : never;
+      ): asserts scope is Extract<ActualType, { type: ExpectedType }>;
 
-      isDefinitionOfType<Type extends DefinitionType>(
-        definition: Definition,
-        expectedDefinitionType: Type,
+      isNotScopeOfType<ActualType, ExpectedType extends ScopeType>(
+        scope: ActualType,
+        expectedScopeType: ExpectedType,
         errorMessage?: string,
-      ): asserts definition is Type extends DefinitionBase<
-        Type,
-        infer Node,
-        infer Parent,
-        infer Name
-      >['type']
-        ? Definition & DefinitionBase<Type, Node, Parent, Name>
-        : never;
+      ): asserts scope is Exclude<ActualType, { type: ExpectedType }>;
 
-      isNodeOfType<Type extends AST_NODE_TYPES>(
-        node: TSESTree.Node | null | undefined,
-        expectedNodeType: Type,
+      isDefinitionOfType<
+        ActualType extends Definition,
+        ExpectedType extends DefinitionType,
+      >(
+        definition: ActualType,
+        expectedDefinitionType: ExpectedType,
         errorMessage?: string,
-      ): asserts node is TSESTree.Node & { type: Type };
+      ): asserts definition is Extract<ActualType, { type: ExpectedType }>;
+
+      isNotDefinitionOfType<ActualType, ExpectedType extends DefinitionType>(
+        definition: ActualType,
+        expectedDefinitionType: ExpectedType,
+        errorMessage?: string,
+      ): asserts definition is Exclude<ActualType, { type: ExpectedType }>;
+
+      isNodeOfType<
+        ActualType extends TSESTree.Node | null | undefined,
+        ExpectedType extends AST_NODE_TYPES,
+      >(
+        node: ActualType,
+        expectedNodeType: ExpectedType,
+        errorMessage?: string,
+      ): asserts node is Extract<ActualType, { type: ExpectedType }>;
+
+      isNotNodeOfType<ActualType, ExpectedType extends AST_NODE_TYPES>(
+        node: ActualType,
+        expectedNodeType: ExpectedType,
+        errorMessage?: string,
+      ): asserts node is Exclude<ActualType, { type: ExpectedType }>;
     }
   }
+}
+
+interface CustomMatchers<ActualType = unknown> {
+  toHaveDeclaredVariables(additionalOptions: {
+    astNodeType: AST_NODE_TYPES;
+    expectedNamesList: string[][];
+    parserOptions?: TSESTreeOptions;
+  }): ActualType;
+}
+
+declare module 'vitest' {
+  interface Assertion<T = any> extends CustomMatchers<T> {}
+  interface AsymmetricMatchersContaining extends CustomMatchers {}
 }

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/dot-notation -- ['implicit'] is private */
-import type { Variable } from '../../src/variable';
+import type { Variable } from '../../src/index.js';
 
-import { DefinitionType } from '../../src/definition';
-import { ScopeType } from '../../src/index.js';
+import { DefinitionType, ScopeType } from '../../src/index.js';
 import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('implicit global reference', () => {
@@ -12,7 +11,7 @@ describe('implicit global reference', () => {
       x = 300;
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
@@ -36,7 +35,7 @@ describe('implicit global reference', () => {
       x = 300;
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
@@ -62,7 +61,7 @@ describe('implicit global reference', () => {
       }
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
@@ -87,7 +86,7 @@ describe('implicit global reference', () => {
       }
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
@@ -113,7 +112,7 @@ describe('implicit global reference', () => {
       }
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
@@ -136,7 +135,7 @@ describe('implicit global reference', () => {
       }
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
@@ -162,7 +161,7 @@ describe('implicit global reference', () => {
       }
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>

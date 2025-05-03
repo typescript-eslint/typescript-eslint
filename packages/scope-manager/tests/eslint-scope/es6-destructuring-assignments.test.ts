@@ -35,16 +35,16 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[3].name).toBe('c');
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('a');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     expect(scope.references[0].resolved).toBe(variables[1]);
     expect(scope.references[1].identifier.name).toBe('b');
-    expect(scope.references[1].isWrite()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(true);
     expect(scope.references[1].resolved).toBe(variables[2]);
     expect(scope.references[2].identifier.name).toBe('c');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     expect(scope.references[2].resolved).toBe(variables[3]);
     expect(scope.references[3].identifier.name).toBe('array');
-    expect(scope.references[3].isWrite()).toBeFalsy();
+    expect(scope.references[3].isWrite()).toBe(false);
   });
 
   it('Pattern in let in ForInStatement', () => {
@@ -74,16 +74,16 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[2].name).toBe('c');
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('a');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     expect(scope.references[0].resolved).toBe(variables[0]);
     expect(scope.references[1].identifier.name).toBe('b');
-    expect(scope.references[1].isWrite()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(true);
     expect(scope.references[1].resolved).toBe(variables[1]);
     expect(scope.references[2].identifier.name).toBe('c');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     expect(scope.references[2].resolved).toBe(variables[2]);
     expect(scope.references[3].identifier.name).toBe('array');
-    expect(scope.references[3].isWrite()).toBeFalsy();
+    expect(scope.references[3].isWrite()).toBe(false);
     expect(scope.references[3].resolved).toBeNull();
   });
 
@@ -116,7 +116,7 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[3].name).toBe('c');
     expect(scope.references).toHaveLength(6);
     expect(scope.references[0].identifier.name).toBe('c');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[0].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -124,15 +124,15 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[0].writeExpr.name).toBe('d');
     expect(scope.references[0].resolved).toBe(variables[3]);
     expect(scope.references[1].identifier.name).toBe('d');
-    expect(scope.references[1].isWrite()).toBeFalsy();
+    expect(scope.references[1].isWrite()).toBe(false);
     expect(scope.references[2].identifier.name).toBe('a');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     expect(scope.references[2].resolved).toBe(variables[1]);
     expect(scope.references[3].identifier.name).toBe('b');
-    expect(scope.references[3].isWrite()).toBeTruthy();
+    expect(scope.references[3].isWrite()).toBe(true);
     expect(scope.references[3].resolved).toBe(variables[2]);
     expect(scope.references[4].identifier.name).toBe('c');
-    expect(scope.references[4].isWrite()).toBeTruthy();
+    expect(scope.references[4].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[4].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -140,7 +140,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[4].writeExpr.name).toBe('array');
     expect(scope.references[4].resolved).toBe(variables[3]);
     expect(scope.references[5].identifier.name).toBe('array');
-    expect(scope.references[5].isWrite()).toBeFalsy();
+    expect(scope.references[5].isWrite()).toBe(false);
   });
 
   it('Pattern with default values in let in ForInStatement', () => {
@@ -179,7 +179,7 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[2].name).toBe('c');
     expect(scope.references).toHaveLength(6);
     expect(scope.references[0].identifier.name).toBe('c');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[0].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -187,9 +187,9 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[0].writeExpr.name).toBe('d');
     expect(scope.references[0].resolved).toBe(variables[2]);
     expect(scope.references[1].identifier.name).toBe('d');
-    expect(scope.references[1].isWrite()).toBeFalsy();
+    expect(scope.references[1].isWrite()).toBe(false);
     expect(scope.references[2].identifier.name).toBe('a');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[2].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -197,7 +197,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[2].writeExpr.name).toBe('array');
     expect(scope.references[2].resolved).toBe(variables[0]);
     expect(scope.references[3].identifier.name).toBe('b');
-    expect(scope.references[3].isWrite()).toBeTruthy();
+    expect(scope.references[3].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[3].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -205,7 +205,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[3].writeExpr.name).toBe('array');
     expect(scope.references[3].resolved).toBe(variables[1]);
     expect(scope.references[4].identifier.name).toBe('c');
-    expect(scope.references[4].isWrite()).toBeTruthy();
+    expect(scope.references[4].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[4].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -213,7 +213,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[4].writeExpr.name).toBe('array');
     expect(scope.references[4].resolved).toBe(variables[2]);
     expect(scope.references[5].identifier.name).toBe('array');
-    expect(scope.references[5].isWrite()).toBeFalsy();
+    expect(scope.references[5].isWrite()).toBe(false);
     expect(scope.references[5].resolved).toBeNull();
   });
 
@@ -247,7 +247,7 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[3].name).toBe('c');
     expect(scope.references).toHaveLength(9);
     expect(scope.references[0].identifier.name).toBe('b');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[0].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -255,7 +255,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[0].writeExpr.name).toBe('e');
     expect(scope.references[0].resolved).toBe(variables[2]);
     expect(scope.references[1].identifier.name).toBe('c');
-    expect(scope.references[1].isWrite()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[1].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -263,7 +263,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[1].writeExpr.name).toBe('e');
     expect(scope.references[1].resolved).toBe(variables[3]);
     expect(scope.references[2].identifier.name).toBe('c');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[2].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -271,11 +271,11 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[2].writeExpr.name).toBe('d');
     expect(scope.references[2].resolved).toBe(variables[3]);
     expect(scope.references[3].identifier.name).toBe('d');
-    expect(scope.references[3].isWrite()).toBeFalsy();
+    expect(scope.references[3].isWrite()).toBe(false);
     expect(scope.references[4].identifier.name).toBe('e');
-    expect(scope.references[4].isWrite()).toBeFalsy();
+    expect(scope.references[4].isWrite()).toBe(false);
     expect(scope.references[5].identifier.name).toBe('a');
-    expect(scope.references[5].isWrite()).toBeTruthy();
+    expect(scope.references[5].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[5].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -283,7 +283,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[5].writeExpr.name).toBe('array');
     expect(scope.references[5].resolved).toBe(variables[1]);
     expect(scope.references[6].identifier.name).toBe('b');
-    expect(scope.references[6].isWrite()).toBeTruthy();
+    expect(scope.references[6].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[6].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -291,7 +291,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[6].writeExpr.name).toBe('array');
     expect(scope.references[6].resolved).toBe(variables[2]);
     expect(scope.references[7].identifier.name).toBe('c');
-    expect(scope.references[7].isWrite()).toBeTruthy();
+    expect(scope.references[7].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[7].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -299,7 +299,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[7].writeExpr.name).toBe('array');
     expect(scope.references[7].resolved).toBe(variables[3]);
     expect(scope.references[8].identifier.name).toBe('array');
-    expect(scope.references[8].isWrite()).toBeFalsy();
+    expect(scope.references[8].isWrite()).toBe(false);
   });
 
   it('Pattern with nested default values in let in ForInStatement', () => {
@@ -343,7 +343,7 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[2].name).toBe('c');
     expect(scope.references).toHaveLength(9);
     expect(scope.references[0].identifier.name).toBe('b');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[0].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -351,7 +351,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[0].writeExpr.name).toBe('e');
     expect(scope.references[0].resolved).toBe(variables[1]);
     expect(scope.references[1].identifier.name).toBe('c');
-    expect(scope.references[1].isWrite()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[1].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -359,7 +359,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[1].writeExpr.name).toBe('e');
     expect(scope.references[1].resolved).toBe(variables[2]);
     expect(scope.references[2].identifier.name).toBe('c');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[2].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -367,11 +367,11 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[2].writeExpr.name).toBe('d');
     expect(scope.references[2].resolved).toBe(variables[2]);
     expect(scope.references[3].identifier.name).toBe('d');
-    expect(scope.references[3].isWrite()).toBeFalsy();
+    expect(scope.references[3].isWrite()).toBe(false);
     expect(scope.references[4].identifier.name).toBe('e');
-    expect(scope.references[4].isWrite()).toBeFalsy();
+    expect(scope.references[4].isWrite()).toBe(false);
     expect(scope.references[5].identifier.name).toBe('a');
-    expect(scope.references[5].isWrite()).toBeTruthy();
+    expect(scope.references[5].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[5].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -379,7 +379,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[5].writeExpr.name).toBe('array');
     expect(scope.references[5].resolved).toBe(variables[0]);
     expect(scope.references[6].identifier.name).toBe('b');
-    expect(scope.references[6].isWrite()).toBeTruthy();
+    expect(scope.references[6].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[6].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -387,7 +387,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[6].writeExpr.name).toBe('array');
     expect(scope.references[6].resolved).toBe(variables[1]);
     expect(scope.references[7].identifier.name).toBe('c');
-    expect(scope.references[7].isWrite()).toBeTruthy();
+    expect(scope.references[7].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[7].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -395,7 +395,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[7].writeExpr.name).toBe('array');
     expect(scope.references[7].resolved).toBe(variables[2]);
     expect(scope.references[8].identifier.name).toBe('array');
-    expect(scope.references[8].isWrite()).toBeFalsy();
+    expect(scope.references[8].isWrite()).toBe(false);
     expect(scope.references[8].resolved).toBeNull();
   });
 
@@ -429,13 +429,13 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[3].name).toBe('c');
     expect(scope.references).toHaveLength(6);
     expect(scope.references[0].identifier.name).toBe('a');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     expect(scope.references[0].resolved).toBe(variables[1]);
     expect(scope.references[1].identifier.name).toBe('b');
-    expect(scope.references[1].isWrite()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(true);
     expect(scope.references[1].resolved).toBe(variables[2]);
     expect(scope.references[2].identifier.name).toBe('c');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[2].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -443,7 +443,7 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[2].writeExpr.name).toBe('d');
     expect(scope.references[2].resolved).toBe(variables[3]);
     expect(scope.references[3].identifier.name).toBe('c');
-    expect(scope.references[3].isWrite()).toBeTruthy();
+    expect(scope.references[3].isWrite()).toBe(true);
     assert.isNodeOfType(
       scope.references[3].writeExpr,
       AST_NODE_TYPES.Identifier,
@@ -451,9 +451,9 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[3].writeExpr.name).toBe('array');
     expect(scope.references[3].resolved).toBe(variables[3]);
     expect(scope.references[4].identifier.name).toBe('d');
-    expect(scope.references[4].isWrite()).toBeFalsy();
+    expect(scope.references[4].isWrite()).toBe(false);
     expect(scope.references[5].identifier.name).toBe('array');
-    expect(scope.references[5].isWrite()).toBeFalsy();
+    expect(scope.references[5].isWrite()).toBe(false);
   });
 
   it('Pattern with default values in var in ForInStatement (separate declarations and with MemberExpression)', () => {
@@ -484,23 +484,23 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[1].name).toBe('obj');
     expect(scope.references).toHaveLength(5);
     expect(scope.references[0].identifier.name).toBe('obj'); // obj.a
-    expect(scope.references[0].isWrite()).toBeFalsy();
-    expect(scope.references[0].isRead()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(false);
+    expect(scope.references[0].isRead()).toBe(true);
     expect(scope.references[0].resolved).toBe(variables[1]);
     expect(scope.references[1].identifier.name).toBe('obj'); // obj.b
-    expect(scope.references[1].isWrite()).toBeFalsy();
-    expect(scope.references[1].isRead()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(false);
+    expect(scope.references[1].isRead()).toBe(true);
     expect(scope.references[1].resolved).toBe(variables[1]);
     expect(scope.references[2].identifier.name).toBe('obj'); // obj.c
-    expect(scope.references[2].isWrite()).toBeFalsy();
-    expect(scope.references[2].isRead()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(false);
+    expect(scope.references[2].isRead()).toBe(true);
     expect(scope.references[2].resolved).toBe(variables[1]);
     expect(scope.references[3].identifier.name).toBe('d');
-    expect(scope.references[3].isWrite()).toBeFalsy();
-    expect(scope.references[3].isRead()).toBeTruthy();
+    expect(scope.references[3].isWrite()).toBe(false);
+    expect(scope.references[3].isRead()).toBe(true);
     expect(scope.references[4].identifier.name).toBe('array');
-    expect(scope.references[4].isWrite()).toBeFalsy();
-    expect(scope.references[4].isRead()).toBeTruthy();
+    expect(scope.references[4].isWrite()).toBe(false);
+    expect(scope.references[4].isRead()).toBe(true);
   });
 
   it('ArrayPattern in var', () => {
@@ -531,16 +531,16 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[3].name).toBe('c');
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('a');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     expect(scope.references[0].resolved).toBe(variables[1]);
     expect(scope.references[1].identifier.name).toBe('b');
-    expect(scope.references[1].isWrite()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(true);
     expect(scope.references[1].resolved).toBe(variables[2]);
     expect(scope.references[2].identifier.name).toBe('c');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     expect(scope.references[2].resolved).toBe(variables[3]);
     expect(scope.references[3].identifier.name).toBe('array');
-    expect(scope.references[3].isWrite()).toBeFalsy();
+    expect(scope.references[3].isWrite()).toBe(false);
   });
 
   it('SpreadElement in var', () => {
@@ -571,16 +571,16 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[3].name).toBe('rest');
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('a');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     expect(scope.references[0].resolved).toBe(variables[1]);
     expect(scope.references[1].identifier.name).toBe('b');
-    expect(scope.references[1].isWrite()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(true);
     expect(scope.references[1].resolved).toBe(variables[2]);
     expect(scope.references[2].identifier.name).toBe('rest');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     expect(scope.references[2].resolved).toBe(variables[3]);
     expect(scope.references[3].identifier.name).toBe('array');
-    expect(scope.references[3].isWrite()).toBeFalsy();
+    expect(scope.references[3].isWrite()).toBe(false);
 
     ({ scopeManager } = parseAndAnalyze(`
       (function () {
@@ -616,10 +616,10 @@ describe('ES6 destructuring assignments', () => {
       expect(scope.references[index].identifier.name).toBe(
         expectedReferenceNames[index],
       );
-      expect(scope.references[index].isWrite()).toBeTruthy();
+      expect(scope.references[index].isWrite()).toBe(true);
     }
     expect(scope.references[5].identifier.name).toBe('array');
-    expect(scope.references[5].isWrite()).toBeFalsy();
+    expect(scope.references[5].isWrite()).toBe(false);
   });
 
   it('ObjectPattern in var', () => {
@@ -658,16 +658,16 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[3].name).toBe('world');
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('shorthand');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     expect(scope.references[0].resolved).toBe(variables[1]);
     expect(scope.references[1].identifier.name).toBe('value');
-    expect(scope.references[1].isWrite()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(true);
     expect(scope.references[1].resolved).toBe(variables[2]);
     expect(scope.references[2].identifier.name).toBe('world');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     expect(scope.references[2].resolved).toBe(variables[3]);
     expect(scope.references[3].identifier.name).toBe('object');
-    expect(scope.references[3].isWrite()).toBeFalsy();
+    expect(scope.references[3].isWrite()).toBe(false);
   });
 
   it('complex pattern in var', () => {
@@ -729,10 +729,10 @@ describe('ES6 destructuring assignments', () => {
       expect(scope.references[index].identifier.name).toBe(
         expectedReferenceNames[index],
       );
-      expect(scope.references[index].isWrite()).toBeTruthy();
+      expect(scope.references[index].isWrite()).toBe(true);
     }
     expect(scope.references[7].identifier.name).toBe('object');
-    expect(scope.references[7].isWrite()).toBeFalsy();
+    expect(scope.references[7].isWrite()).toBe(false);
   });
 
   it('ArrayPattern in AssignmentExpression', () => {
@@ -764,16 +764,16 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('a');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     expect(scope.references[0].resolved).toBeNull();
     expect(scope.references[1].identifier.name).toBe('b');
-    expect(scope.references[1].isWrite()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(true);
     expect(scope.references[1].resolved).toBeNull();
     expect(scope.references[2].identifier.name).toBe('c');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     expect(scope.references[2].resolved).toBeNull();
     expect(scope.references[3].identifier.name).toBe('array');
-    expect(scope.references[3].isWrite()).toBeFalsy();
+    expect(scope.references[3].isWrite()).toBe(false);
   });
 
   it('ArrayPattern with MemberExpression in AssignmentExpression', () => {
@@ -803,20 +803,20 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[1].name).toBe('obj');
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('obj');
-    expect(scope.references[0].isWrite()).toBeFalsy();
-    expect(scope.references[0].isRead()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(false);
+    expect(scope.references[0].isRead()).toBe(true);
     expect(scope.references[0].resolved).toBe(variables[1]);
     expect(scope.references[1].identifier.name).toBe('obj');
-    expect(scope.references[1].isWrite()).toBeFalsy();
-    expect(scope.references[1].isRead()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(false);
+    expect(scope.references[1].isRead()).toBe(true);
     expect(scope.references[1].resolved).toBe(variables[1]);
     expect(scope.references[2].identifier.name).toBe('obj');
-    expect(scope.references[2].isWrite()).toBeFalsy();
-    expect(scope.references[2].isRead()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(false);
+    expect(scope.references[2].isRead()).toBe(true);
     expect(scope.references[2].resolved).toBe(variables[1]);
     expect(scope.references[3].identifier.name).toBe('array');
-    expect(scope.references[3].isWrite()).toBeFalsy();
-    expect(scope.references[3].isRead()).toBeTruthy();
+    expect(scope.references[3].isWrite()).toBe(false);
+    expect(scope.references[3].isRead()).toBe(true);
   });
 
   it('SpreadElement in AssignmentExpression', () => {
@@ -848,16 +848,16 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('a');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     expect(scope.references[0].resolved).toBeNull();
     expect(scope.references[1].identifier.name).toBe('b');
-    expect(scope.references[1].isWrite()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(true);
     expect(scope.references[1].resolved).toBeNull();
     expect(scope.references[2].identifier.name).toBe('rest');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     expect(scope.references[2].resolved).toBeNull();
     expect(scope.references[3].identifier.name).toBe('array');
-    expect(scope.references[3].isWrite()).toBeFalsy();
+    expect(scope.references[3].isWrite()).toBe(false);
 
     ({ scopeManager } = parseAndAnalyze(`
       (function () {
@@ -893,11 +893,11 @@ describe('ES6 destructuring assignments', () => {
       expect(scope.references[index].identifier.name).toBe(
         expectedReferenceNames[index],
       );
-      expect(scope.references[index].isWrite()).toBeTruthy();
+      expect(scope.references[index].isWrite()).toBe(true);
       expect(scope.references[index].resolved).toBeNull();
     }
     expect(scope.references[5].identifier.name).toBe('array');
-    expect(scope.references[5].isWrite()).toBeFalsy();
+    expect(scope.references[5].isWrite()).toBe(false);
   });
 
   it('SpreadElement with MemberExpression in AssignmentExpression', () => {
@@ -929,15 +929,15 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('a');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     expect(scope.references[0].resolved).toBeNull();
     expect(scope.references[1].identifier.name).toBe('b');
-    expect(scope.references[1].isWrite()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(true);
     expect(scope.references[1].resolved).toBeNull();
     expect(scope.references[2].identifier.name).toBe('obj');
-    expect(scope.references[2].isWrite()).toBeFalsy();
+    expect(scope.references[2].isWrite()).toBe(false);
     expect(scope.references[3].identifier.name).toBe('array');
-    expect(scope.references[3].isWrite()).toBeFalsy();
+    expect(scope.references[3].isWrite()).toBe(false);
   });
 
   it('ObjectPattern in AssignmentExpression', () => {
@@ -975,16 +975,16 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('shorthand');
-    expect(scope.references[0].isWrite()).toBeTruthy();
+    expect(scope.references[0].isWrite()).toBe(true);
     expect(scope.references[0].resolved).toBeNull();
     expect(scope.references[1].identifier.name).toBe('value');
-    expect(scope.references[1].isWrite()).toBeTruthy();
+    expect(scope.references[1].isWrite()).toBe(true);
     expect(scope.references[1].resolved).toBeNull();
     expect(scope.references[2].identifier.name).toBe('world');
-    expect(scope.references[2].isWrite()).toBeTruthy();
+    expect(scope.references[2].isWrite()).toBe(true);
     expect(scope.references[2].resolved).toBeNull();
     expect(scope.references[3].identifier.name).toBe('object');
-    expect(scope.references[3].isWrite()).toBeFalsy();
+    expect(scope.references[3].isWrite()).toBe(false);
   });
 
   it('complex pattern in AssignmentExpression', () => {
@@ -1035,10 +1035,10 @@ describe('ES6 destructuring assignments', () => {
       expect(scope.references[index].identifier.name).toBe(
         expectedReferenceNames[index],
       );
-      expect(scope.references[index].isWrite()).toBeTruthy();
+      expect(scope.references[index].isWrite()).toBe(true);
     }
     expect(scope.references[7].identifier.name).toBe('object');
-    expect(scope.references[7].isWrite()).toBeFalsy();
+    expect(scope.references[7].isWrite()).toBe(false);
   });
 
   it('ArrayPattern in parameters', () => {
@@ -1097,10 +1097,10 @@ describe('ES6 destructuring assignments', () => {
     expect(variables[2].name).toBe('b');
     expect(variables[3].name).toBe('rest');
     assert.isDefinitionOfType(variables[3].defs[0], DefinitionType.Parameter);
-    expect(variables[3].defs[0].rest).toBeTruthy();
+    expect(variables[3].defs[0].rest).toBe(true);
     expect(variables[4].name).toBe('rest2');
     assert.isDefinitionOfType(variables[4].defs[0], DefinitionType.Parameter);
-    expect(variables[4].defs[0].rest).toBeTruthy();
+    expect(variables[4].defs[0].rest).toBe(true);
     expect(scope.references).toHaveLength(0);
   });
 

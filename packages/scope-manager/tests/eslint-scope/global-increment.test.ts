@@ -12,6 +12,6 @@ describe('global increment', () => {
     assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(1);
-    expect(scope.references[0].isReadWrite()).toBeTruthy();
+    expect(scope.references[0].isReadWrite()).toBe(true);
   });
 });

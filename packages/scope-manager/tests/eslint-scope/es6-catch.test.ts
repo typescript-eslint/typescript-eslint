@@ -22,7 +22,7 @@ describe('ES6 catch', () => {
     let variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
@@ -30,7 +30,7 @@ describe('ES6 catch', () => {
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.block);
     expect(scope.block.type).toBe(AST_NODE_TYPES.BlockStatement);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
@@ -38,7 +38,7 @@ describe('ES6 catch', () => {
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.catch);
     expect(scope.block.type).toBe(AST_NODE_TYPES.CatchClause);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
 
     expect(variables).toHaveLength(4);
     expect(variables[0].name).toBe('a');
@@ -51,7 +51,7 @@ describe('ES6 catch', () => {
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.block);
     expect(scope.block.type).toBe(AST_NODE_TYPES.BlockStatement);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(1);
     expect(variables.map(variable => variable.name)).toEqual(['e']);
     expect(scope.references.map(ref => ref.identifier.name)).toEqual([

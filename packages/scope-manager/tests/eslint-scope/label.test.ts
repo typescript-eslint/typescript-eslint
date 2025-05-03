@@ -49,7 +49,7 @@ describe('label', () => {
     expect(variables[0].name).toBe('foo');
     expect(scope.through).toHaveLength(3);
     expect(scope.through[2].identifier.name).toBe('foo');
-    expect(scope.through[2].isRead()).toBeTruthy();
+    expect(scope.through[2].isRead()).toBe(true);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);

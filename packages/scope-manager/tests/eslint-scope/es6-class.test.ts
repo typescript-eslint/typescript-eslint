@@ -19,7 +19,7 @@ describe('ES6 class', () => {
     let variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('Derived');
     expect(scope.references).toHaveLength(1);
@@ -29,7 +29,7 @@ describe('ES6 class', () => {
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.class);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ClassDeclaration);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('Derived');
     expect(scope.references).toHaveLength(1);
@@ -39,7 +39,7 @@ describe('ES6 class', () => {
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.FunctionExpression);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0);
@@ -59,7 +59,7 @@ describe('ES6 class', () => {
     let variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
@@ -67,7 +67,7 @@ describe('ES6 class', () => {
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.class);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ClassExpression);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('Derived');
     expect(scope.references).toHaveLength(1);
@@ -77,7 +77,7 @@ describe('ES6 class', () => {
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.FunctionExpression);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0);
@@ -97,7 +97,7 @@ describe('ES6 class', () => {
     let variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
@@ -113,7 +113,7 @@ describe('ES6 class', () => {
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.FunctionExpression);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0);
@@ -139,13 +139,13 @@ describe('ES6 class', () => {
     let variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.FunctionExpression);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(2);
     expect(variables[0].name).toBe('arguments');
     expect(variables[1].name).toBe('yuyushiki');
@@ -156,7 +156,7 @@ describe('ES6 class', () => {
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.class);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ClassExpression);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(2);
     expect(scope.references[0].identifier.name).toBe('yuyushiki');
@@ -180,7 +180,7 @@ describe('ES6 class', () => {
 
     assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(2);
     expect(variables[0].name).toBe('Shoe');
     expect(variables[1].name).toBe('shoe');

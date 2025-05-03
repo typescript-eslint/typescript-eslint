@@ -1,6 +1,5 @@
 import { DefinitionType, ScopeType } from '../../src/index.js';
-import { getRealVariables } from '../test-utils/index.js';
-import { parseAndAnalyze } from '../test-utils/parse';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('import declaration', () => {
   // http://people.mozilla.org/~jorendorff/es6-draft.html#sec-static-and-runtme-semantics-module-records
@@ -18,7 +17,7 @@ describe('import declaration', () => {
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.module);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('v');
     assert.isDefinitionOfType(
@@ -45,7 +44,7 @@ describe('import declaration', () => {
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.module);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('ns');
     assert.isDefinitionOfType(
@@ -72,7 +71,7 @@ describe('import declaration', () => {
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.module);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('x');
     assert.isDefinitionOfType(
@@ -99,7 +98,7 @@ describe('import declaration', () => {
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
     assert.isScopeOfType(scope, ScopeType.module);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('v');
     assert.isDefinitionOfType(
@@ -135,7 +134,7 @@ describe('import declaration', () => {
       scope = scopeManager.scopes[1];
       variables = getRealVariables(scope.variables);
       assert.isScopeOfType(scope, ScopeType.module);
-      expect(scope.isStrict).toBeTruthy();
+      expect(scope.isStrict).toBe(true);
       expect(variables).toHaveLength(2);
       const importV = variables[0];
       expect(importV.name).toBe('v');

@@ -24,7 +24,7 @@ describe('function name', () => {
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('name');
     expect(scope.references).toHaveLength(0);
-    expect(scope.upper === globalScope).toBeTruthy();
+    expect(scope.upper).toBe(globalScope);
 
     // Function scope
     scope = scopeManager.scopes[2];
@@ -33,6 +33,6 @@ describe('function name', () => {
     expect(variables).toHaveLength(1);
     expect(scope.variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0);
-    expect(scope.upper === scopeManager.scopes[1]).toBeTruthy();
+    expect(scope.upper).toBe(scopeManager.scopes[1]);
   });
 });

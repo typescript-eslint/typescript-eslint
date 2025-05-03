@@ -20,7 +20,7 @@ describe('ES6 new.target', () => {
 
     assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.FunctionExpression);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0);

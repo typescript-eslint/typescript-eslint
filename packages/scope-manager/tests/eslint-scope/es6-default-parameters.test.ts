@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import { getRealVariables, parseAndAnalyze } from '../test-utils';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('ES6 default parameters:', () => {
   describe('a default parameter creates a writable reference for its initialization:', () => {
@@ -28,8 +28,8 @@ describe('ES6 default parameters:', () => {
       expect(reference.identifier.name).toBe('b');
       expect(reference.resolved).toBe(variables[numVars - 1]);
       expect(reference.writeExpr).toBeDefined();
-      expect(reference.isWrite()).toBeTruthy();
-      expect(reference.isRead()).toBeFalsy();
+      expect(reference.isWrite()).toBe(true);
+      expect(reference.isRead()).toBe(false);
     });
   });
 
@@ -78,8 +78,8 @@ describe('ES6 default parameters:', () => {
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
       expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 
@@ -128,8 +128,8 @@ describe('ES6 default parameters:', () => {
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
       expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 
@@ -178,8 +178,8 @@ describe('ES6 default parameters:', () => {
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
       expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 
@@ -227,8 +227,8 @@ describe('ES6 default parameters:', () => {
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
       expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 
@@ -277,8 +277,8 @@ describe('ES6 default parameters:', () => {
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
       expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 
@@ -325,8 +325,8 @@ describe('ES6 default parameters:', () => {
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[variables.length - 1]);
       expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 
@@ -372,8 +372,8 @@ describe('ES6 default parameters:', () => {
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
       expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 });
