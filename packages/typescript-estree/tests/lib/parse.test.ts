@@ -218,16 +218,15 @@ describe(parser.parseAndGenerateServices, () => {
         }
 
         if (!shouldThrow) {
-          expect(result?.ast).toBeDefined();
+          assert.isDefined(result?.ast);
+
           expect({
             ...result,
             services: {
-              ...result?.services,
+              ...result.services,
               // Reduce noise in snapshot by not printing the TS program
               program:
-                result?.services.program == null
-                  ? 'No Program'
-                  : 'With Program',
+                result.services.program == null ? 'No Program' : 'With Program',
             },
           }).toMatchSnapshot();
         }

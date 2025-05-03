@@ -1,115 +1,118 @@
 import * as ts from 'typescript';
 
-import type {
-  ParseAndGenerateServicesResult,
-  ParserServices,
-  ParserServicesWithTypeInformation,
-  TSESTree,
-  TSESTreeOptions,
-} from '../../../src/index.js';
+import type { ParserServices } from '../../../src/index.js';
 
 chai.use((chai, utils) => {
-  utils.addMethod(
-    chai.assert,
-    'toHaveParserServices',
-    function toHaveParserServices(
-      this: Chai.AssertStatic,
-      services: ParserServices | null | undefined,
-    ): asserts services is ParserServicesWithTypeInformation {
-      this.exists(services?.program);
-      expect(services.esTreeNodeToTSNodeMap).toBeDefined();
-      expect(services.tsNodeToESTreeNodeMap).toBeDefined();
-    },
+  function parserServices(this: Chai.AssertionStatic, errorMessage?: string) {
+    if (errorMessage) {
+      utils.flag(this, 'message', errorMessage);
+    }
+
+    const services: ParserServices | null | undefined = utils.flag(
+      this,
+      'object',
+    );
+
+    const negate: boolean = utils.flag(this, 'negate') ?? false;
+
+    const ssfi: (...args: unknown[]) => unknown = utils.flag(this, 'ssfi');
+
+    const assertion = new chai.Assertion(services, errorMessage, ssfi, true);
+
+    (negate ? assertion.not : assertion).to.have
+      .property('program')
+      .that.does.not.equal(null);
+  }
+
+  chai.Assertion.addMethod(parserServices.name, parserServices);
+
+  chai.assert.isParserServices = (services, errorMessage) => {
+    new chai.Assertion(
+      services,
+      errorMessage,
+      chai.assert.isParserServices,
+      true,
+    ).to.be.parserServices();
+  };
+
+  chai.assert.isNotParserServices = (services, errorMessage) => {
+    new chai.Assertion(
+      services,
+      errorMessage,
+      chai.assert.isNotParserServices,
+      true,
+    ).not.to.be.parserServices();
+  };
+
+  function TSNodeOfNumberArrayType(
+    this: Chai.AssertionStatic,
+    errorMessage?: string,
+  ) {
+    if (errorMessage) {
+      utils.flag(this, 'message', errorMessage);
+    }
+
+    const { checker, tsNode }: { checker: ts.TypeChecker; tsNode: ts.Node } =
+      utils.flag(this, 'object');
+
+    const ssfi: (...args: unknown[]) => unknown = utils.flag(this, 'ssfi');
+
+    const negate: boolean = utils.flag(this, 'negate') ?? false;
+
+    const nodeType = checker.getTypeAtLocation(tsNode);
+
+    const nodeTypeAssertion = new chai.Assertion(
+      nodeType,
+      errorMessage,
+      ssfi,
+      true,
+    );
+
+    (negate ? nodeTypeAssertion.not : nodeTypeAssertion).to.have
+      .property('flags')
+      .that.equals(ts.TypeFlags.Object);
+
+    (negate ? nodeTypeAssertion.not : nodeTypeAssertion).to.have
+      .property('objectFlags')
+      .that.equals(ts.ObjectFlags.Reference);
+
+    const typeArguments = checker.getTypeArguments(
+      nodeType as ts.TypeReference,
+    );
+
+    (negate
+      ? new chai.Assertion(typeArguments, errorMessage, ssfi, true).not
+      : new chai.Assertion(typeArguments, errorMessage, ssfi, true)
+    ).lengthOf(1);
+
+    (negate
+      ? new chai.Assertion(typeArguments[0], errorMessage, ssfi, true).not
+      : new chai.Assertion(typeArguments[0], errorMessage, ssfi, true)
+    ).to.have
+      .property('flags')
+      .that.equals(ts.TypeFlags.Number);
+  }
+
+  chai.Assertion.addMethod(
+    TSNodeOfNumberArrayType.name,
+    TSNodeOfNumberArrayType,
   );
 
-  utils.addMethod(
-    chai.assert,
-    'isTSNodeOfNumberArrayType',
-    function isTSNodeOfNumberArrayType(
-      this: Chai.AssertStatic,
-      checker: ts.TypeChecker,
-      tsNode: ts.Node,
-    ): void {
-      const nodeType = checker.getTypeAtLocation(tsNode);
+  chai.assert.isTSNodeOfNumberArrayType = (expected, errorMessage) => {
+    new chai.Assertion(
+      expected,
+      errorMessage,
+      chai.assert.isTSNodeOfNumberArrayType,
+      true,
+    ).to.be.TSNodeOfNumberArrayType();
+  };
 
-      this.propertyVal(nodeType, 'flags', ts.TypeFlags.Object);
-
-      this.propertyVal(nodeType, 'objectFlags', ts.ObjectFlags.Reference);
-
-      const typeArguments = checker.getTypeArguments(
-        nodeType as ts.TypeReference,
-      );
-
-      this.lengthOf(typeArguments, 1);
-
-      this.propertyVal(typeArguments[0], 'flags', ts.TypeFlags.Number);
-    },
-  );
-
-  utils.addMethod(
-    chai.assert,
-    'testIsolatedFile',
-    function testIsolatedFile(
-      this: Chai.AssertStatic,
-      parseResult: ParseAndGenerateServicesResult<TSESTreeOptions>,
-    ): void {
-      // get type checker
-      this.toHaveParserServices(parseResult.services);
-
-      const checker = parseResult.services.program.getTypeChecker();
-
-      expect(checker).toBeDefined();
-
-      // get number node (ast shape validated by snapshot)
-      const declaration = (
-        parseResult.ast.body[0] as TSESTree.VariableDeclaration
-      ).declarations[0];
-
-      this.isNotNull(declaration.init);
-
-      const arrayMember = (declaration.init as TSESTree.ArrayExpression)
-        .elements[0];
-
-      this.isNotNull(arrayMember);
-
-      // get corresponding TS node
-      const tsArrayMember =
-        parseResult.services.esTreeNodeToTSNodeMap.get(arrayMember);
-
-      expect(tsArrayMember).toBeDefined();
-
-      this.propertyVal(tsArrayMember, 'kind', ts.SyntaxKind.NumericLiteral);
-
-      this.propertyVal(tsArrayMember as ts.NumericLiteral, 'text', '3');
-
-      // get type of TS node
-      const arrayMemberType = checker.getTypeAtLocation(tsArrayMember);
-
-      this.propertyVal(arrayMemberType, 'flags', ts.TypeFlags.NumberLiteral);
-
-      this.propertyVal(arrayMemberType, 'value', 3);
-
-      // make sure it maps back to original ESTree node
-      this.strictEqual(
-        parseResult.services.tsNodeToESTreeNodeMap.get(tsArrayMember),
-        arrayMember,
-      );
-
-      // get bound name
-      const boundName = declaration.id as TSESTree.Identifier;
-
-      this.propertyVal(boundName, 'name', 'x');
-
-      const tsBoundName =
-        parseResult.services.esTreeNodeToTSNodeMap.get(boundName);
-
-      expect(tsBoundName).toBeDefined();
-
-      this.isTSNodeOfNumberArrayType(checker, tsBoundName);
-
-      expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
-        boundName,
-      );
-    },
-  );
+  chai.assert.isNotTSNodeOfNumberArrayType = (expected, errorMessage) => {
+    new chai.Assertion(
+      expected,
+      errorMessage,
+      chai.assert.isNotTSNodeOfNumberArrayType,
+      true,
+    ).not.to.be.TSNodeOfNumberArrayType();
+  };
 });
