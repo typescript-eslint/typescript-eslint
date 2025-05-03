@@ -60,7 +60,10 @@ class Foo {
         const returnStatement = method.value.body?.body.at(
           -1,
         ) as TSESTree.ReturnStatement;
-        return returnStatement.argument!;
+
+        assert.isNotNull(returnStatement.argument);
+
+        return returnStatement.argument;
       });
       const result = discriminateAnyType(type, checker, program, tsNode);
       expect(result).toBe(AnyType.Safe);

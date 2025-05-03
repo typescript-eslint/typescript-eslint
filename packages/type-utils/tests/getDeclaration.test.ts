@@ -29,7 +29,7 @@ describe(getDeclaration, () => {
     it('returns null', () => {
       const services = mockServices();
 
-      expect(getDeclaration(services, node)).toBeNull();
+      assert.isNull(getDeclaration(services, node));
     });
   });
 
@@ -38,7 +38,7 @@ describe(getDeclaration, () => {
       const symbol = mockSymbol();
       const services = mockServices(symbol);
 
-      expect(getDeclaration(services, node)).toBeNull();
+      assert.isNull(getDeclaration(services, node));
     });
   });
 

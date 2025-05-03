@@ -43,15 +43,22 @@ chai.use((chai, utils) => {
       'object',
     );
 
-    const negate = utils.flag(this, 'negate') ?? false;
+    const negate: boolean = utils.flag(this, 'negate') ?? false;
 
     const ssfi: (...args: unknown[]) => unknown = utils.flag(this, 'ssfi');
 
     const assertion = new chai.Assertion(services, errorMessage, ssfi, true);
 
-    (negate ? assertion.not : assertion).to.have
-      .property('program')
-      .that.does.not.equal(null);
+    if (negate) {
+      (utils.hasProperty(services, 'program')
+        ? assertion
+        : assertion.not
+      ).to.have
+        .property('program')
+        .that.equals(null);
+    } else {
+      assertion.to.have.property('program').that.does.not.equal(null);
+    }
   }
 
   chai.Assertion.addMethod(parserServices.name, parserServices);
