@@ -34,9 +34,13 @@ chai.use((chai, utils) => {
 
     const assertion = new chai.Assertion(scope, errorMessage, ssfi, true);
 
-    (negate ? assertion.not : assertion).to.have
-      .property('type')
-      .that.equals(expectedScopeType);
+    if (negate) {
+      (utils.hasProperty(scope, 'type') ? assertion : assertion.not).to.have
+        .property('type')
+        .that.does.not.equal(expectedScopeType);
+    } else {
+      assertion.to.have.property('type').that.equals(expectedScopeType);
+    }
   }
 
   chai.Assertion.addMethod(scopeOfType.name, scopeOfType);
@@ -79,9 +83,17 @@ chai.use((chai, utils) => {
     const ssfi: (...args: unknown[]) => unknown = utils.flag(this, 'ssfi');
 
     const assertion = new chai.Assertion(definition, errorMessage, ssfi, true);
-    (negate ? assertion.not : assertion).to.have
-      .property('type')
-      .that.equals(expectedDefinitionType);
+
+    if (negate) {
+      (utils.hasProperty(definition, 'type')
+        ? assertion
+        : assertion.not
+      ).to.have
+        .property('type')
+        .that.does.not.equal(expectedDefinitionType);
+    } else {
+      assertion.to.have.property('type').that.equals(expectedDefinitionType);
+    }
   }
 
   chai.Assertion.addMethod(definitionOfType.name, definitionOfType);
@@ -133,9 +145,13 @@ chai.use((chai, utils) => {
 
     const assertion = new chai.Assertion(node, errorMessage, ssfi, true);
 
-    (negate ? assertion.not : assertion).to.have
-      .property('type')
-      .that.equals(expectedNodeType);
+    if (negate) {
+      (utils.hasProperty(node, 'type') ? assertion : assertion.not).to.have
+        .property('type')
+        .that.does.not.equal(expectedNodeType);
+    } else {
+      assertion.to.have.property('type').that.equals(expectedNodeType);
+    }
   }
 
   chai.Assertion.addMethod(nodeOfType.name, nodeOfType);

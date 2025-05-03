@@ -84,7 +84,8 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[2].resolved).toBe(variables[2]);
     expect(scope.references[3].identifier.name).toBe('array');
     expect(scope.references[3].isWrite()).toBe(false);
-    expect(scope.references[3].resolved).toBeNull();
+
+    assert.isNull(scope.references[3].resolved);
   });
 
   it('Pattern with default values in var in ForInStatement', () => {
@@ -214,7 +215,8 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[4].resolved).toBe(variables[2]);
     expect(scope.references[5].identifier.name).toBe('array');
     expect(scope.references[5].isWrite()).toBe(false);
-    expect(scope.references[5].resolved).toBeNull();
+
+    assert.isNull(scope.references[5].resolved);
   });
 
   it('Pattern with nested default values in var in ForInStatement', () => {
@@ -396,7 +398,8 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references[7].resolved).toBe(variables[2]);
     expect(scope.references[8].identifier.name).toBe('array');
     expect(scope.references[8].isWrite()).toBe(false);
-    expect(scope.references[8].resolved).toBeNull();
+
+    assert.isNull(scope.references[8].resolved);
   });
 
   it('Pattern with default values in var in ForInStatement (separate declarations)', () => {
@@ -765,13 +768,19 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('a');
     expect(scope.references[0].isWrite()).toBe(true);
-    expect(scope.references[0].resolved).toBeNull();
+
+    assert.isNull(scope.references[0].resolved);
+
     expect(scope.references[1].identifier.name).toBe('b');
     expect(scope.references[1].isWrite()).toBe(true);
-    expect(scope.references[1].resolved).toBeNull();
+
+    assert.isNull(scope.references[1].resolved);
+
     expect(scope.references[2].identifier.name).toBe('c');
     expect(scope.references[2].isWrite()).toBe(true);
-    expect(scope.references[2].resolved).toBeNull();
+
+    assert.isNull(scope.references[2].resolved);
+
     expect(scope.references[3].identifier.name).toBe('array');
     expect(scope.references[3].isWrite()).toBe(false);
   });
@@ -849,13 +858,19 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('a');
     expect(scope.references[0].isWrite()).toBe(true);
-    expect(scope.references[0].resolved).toBeNull();
+
+    assert.isNull(scope.references[0].resolved);
+
     expect(scope.references[1].identifier.name).toBe('b');
     expect(scope.references[1].isWrite()).toBe(true);
-    expect(scope.references[1].resolved).toBeNull();
+
+    assert.isNull(scope.references[1].resolved);
+
     expect(scope.references[2].identifier.name).toBe('rest');
     expect(scope.references[2].isWrite()).toBe(true);
-    expect(scope.references[2].resolved).toBeNull();
+
+    assert.isNull(scope.references[2].resolved);
+
     expect(scope.references[3].identifier.name).toBe('array');
     expect(scope.references[3].isWrite()).toBe(false);
 
@@ -894,7 +909,8 @@ describe('ES6 destructuring assignments', () => {
         expectedReferenceNames[index],
       );
       expect(scope.references[index].isWrite()).toBe(true);
-      expect(scope.references[index].resolved).toBeNull();
+
+      assert.isNull(scope.references[index].resolved);
     }
     expect(scope.references[5].identifier.name).toBe('array');
     expect(scope.references[5].isWrite()).toBe(false);
@@ -930,10 +946,14 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('a');
     expect(scope.references[0].isWrite()).toBe(true);
-    expect(scope.references[0].resolved).toBeNull();
+
+    assert.isNull(scope.references[0].resolved);
+
     expect(scope.references[1].identifier.name).toBe('b');
     expect(scope.references[1].isWrite()).toBe(true);
-    expect(scope.references[1].resolved).toBeNull();
+
+    assert.isNull(scope.references[1].resolved);
+
     expect(scope.references[2].identifier.name).toBe('obj');
     expect(scope.references[2].isWrite()).toBe(false);
     expect(scope.references[3].identifier.name).toBe('array');
@@ -976,13 +996,19 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('shorthand');
     expect(scope.references[0].isWrite()).toBe(true);
-    expect(scope.references[0].resolved).toBeNull();
+
+    assert.isNull(scope.references[0].resolved);
+
     expect(scope.references[1].identifier.name).toBe('value');
     expect(scope.references[1].isWrite()).toBe(true);
-    expect(scope.references[1].resolved).toBeNull();
+
+    assert.isNull(scope.references[1].resolved);
+
     expect(scope.references[2].identifier.name).toBe('world');
     expect(scope.references[2].isWrite()).toBe(true);
-    expect(scope.references[2].resolved).toBeNull();
+
+    assert.isNull(scope.references[2].resolved);
+
     expect(scope.references[3].identifier.name).toBe('object');
     expect(scope.references[3].isWrite()).toBe(false);
   });

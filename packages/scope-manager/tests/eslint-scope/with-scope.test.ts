@@ -28,7 +28,8 @@ describe('with', () => {
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(1);
-    expect(scope.references[0].resolved).toBeNull();
+
+    assert.isNull(scope.references[0].resolved);
 
     scope = scopeManager.scopes[2];
     variables = getRealVariables(scope.variables);
@@ -42,6 +43,7 @@ describe('with', () => {
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(1);
     expect(scope.references[0].identifier.name).toBe('testing');
-    expect(scope.references[0].resolved).toBeNull();
+
+    assert.isNull(scope.references[0].resolved);
   });
 });

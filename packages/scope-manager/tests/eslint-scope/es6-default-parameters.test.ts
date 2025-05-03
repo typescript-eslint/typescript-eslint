@@ -27,7 +27,9 @@ describe('ES6 default parameters:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('b');
       expect(reference.resolved).toBe(variables[numVars - 1]);
-      expect(reference.writeExpr).toBeDefined();
+
+      assert.exists(reference.writeExpr);
+
       expect(reference.isWrite()).toBe(true);
       expect(reference.isRead()).toBe(false);
     });
@@ -77,7 +79,9 @@ describe('ES6 default parameters:', () => {
       expect(reference.resolved).toBe(
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
-      expect(reference.writeExpr).toBeUndefined();
+
+      assert.notExists(reference.writeExpr);
+
       expect(reference.isWrite()).toBe(false);
       expect(reference.isRead()).toBe(true);
     });
@@ -127,7 +131,9 @@ describe('ES6 default parameters:', () => {
       expect(reference.resolved).toBe(
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
-      expect(reference.writeExpr).toBeUndefined();
+
+      assert.notExists(reference.writeExpr);
+
       expect(reference.isWrite()).toBe(false);
       expect(reference.isRead()).toBe(true);
     });
@@ -177,7 +183,9 @@ describe('ES6 default parameters:', () => {
       expect(reference.resolved).toBe(
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
-      expect(reference.writeExpr).toBeUndefined();
+
+      assert.notExists(reference.writeExpr);
+
       expect(reference.isWrite()).toBe(false);
       expect(reference.isRead()).toBe(true);
     });
@@ -226,7 +234,9 @@ describe('ES6 default parameters:', () => {
       expect(reference.resolved).toBe(
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
-      expect(reference.writeExpr).toBeUndefined();
+
+      assert.notExists(reference.writeExpr);
+
       expect(reference.isWrite()).toBe(false);
       expect(reference.isRead()).toBe(true);
     });
@@ -276,7 +286,9 @@ describe('ES6 default parameters:', () => {
       expect(reference.resolved).toBe(
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
-      expect(reference.writeExpr).toBeUndefined();
+
+      assert.notExists(reference.writeExpr);
+
       expect(reference.isWrite()).toBe(false);
       expect(reference.isRead()).toBe(true);
     });
@@ -324,7 +336,9 @@ describe('ES6 default parameters:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[variables.length - 1]);
-      expect(reference.writeExpr).toBeUndefined();
+
+      assert.notExists(reference.writeExpr);
+
       expect(reference.isWrite()).toBe(false);
       expect(reference.isRead()).toBe(true);
     });
@@ -371,7 +385,9 @@ describe('ES6 default parameters:', () => {
       expect(reference.resolved).toBe(
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
-      expect(reference.writeExpr).toBeUndefined();
+
+      assert.notExists(reference.writeExpr);
+
       expect(reference.isWrite()).toBe(false);
       expect(reference.isRead()).toBe(true);
     });

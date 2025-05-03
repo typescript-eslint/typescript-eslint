@@ -47,7 +47,9 @@ describe('ES6 iteration scope', () => {
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(2);
     expect(scope.references[0].identifier.name).toBe('console');
-    expect(scope.references[0].resolved).toBeNull();
+
+    assert.isNull(scope.references[0].resolved);
+
     expect(scope.references[1].identifier.name).toBe('i');
     expect(scope.references[1].resolved).toBe(iterVariables[0]);
   });
@@ -105,7 +107,9 @@ describe('ES6 iteration scope', () => {
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(2);
     expect(scope.references[0].identifier.name).toBe('console');
-    expect(scope.references[0].resolved).toBeNull();
+
+    assert.isNull(scope.references[0].resolved);
+
     expect(scope.references[1].identifier.name).toBe('i');
     expect(scope.references[1].resolved).toBe(iterVariables[0]);
   });
@@ -168,7 +172,9 @@ describe('ES6 iteration scope', () => {
     expect(scope.references[4].identifier.name).toBe('i');
     expect(scope.references[4].resolved).toBe(variables[0]);
     expect(scope.references[5].identifier.name).toBe('okok');
-    expect(scope.references[5].resolved).toBeNull();
+
+    assert.isNull(scope.references[5].resolved);
+
     expect(scope.references[6].identifier.name).toBe('i');
     expect(scope.references[6].resolved).toBe(variables[0]);
 
@@ -178,7 +184,9 @@ describe('ES6 iteration scope', () => {
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('console');
-    expect(scope.references[0].resolved).toBeNull();
+
+    assert.isNull(scope.references[0].resolved);
+
     expect(scope.references[1].identifier.name).toBe('i');
     expect(scope.references[1].resolved).toBe(iterVariables[0]);
     expect(scope.references[2].identifier.name).toBe('j');
