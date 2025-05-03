@@ -295,7 +295,7 @@ describe('semanticInfo', async () => {
 
     const tsBinaryExpression =
       parseResult.services.esTreeNodeToTSNodeMap.get(binaryExpression);
-    expect(tsBinaryExpression).toBeDefined();
+
     expect(tsBinaryExpression.kind).toEqual(ts.SyntaxKind.BinaryExpression);
 
     const computedPropertyString = (
@@ -304,7 +304,7 @@ describe('semanticInfo', async () => {
     ).key;
     const tsComputedPropertyString =
       parseResult.services.esTreeNodeToTSNodeMap.get(computedPropertyString);
-    expect(tsComputedPropertyString).toBeDefined();
+
     expect(tsComputedPropertyString.kind).toBe(ts.SyntaxKind.StringLiteral);
   });
 
@@ -335,8 +335,6 @@ describe('semanticInfo', async () => {
     const tsArrayBoundName =
       parseResult.services.esTreeNodeToTSNodeMap.get(arrayBoundName);
 
-    expect(tsArrayBoundName).toBeDefined();
-
     assert.isTSNodeOfNumberArrayType({ checker, tsNode: tsArrayBoundName });
 
     expect(
@@ -361,7 +359,6 @@ describe('semanticInfo', async () => {
 
     const tsBoundName =
       parseResult.services.esTreeNodeToTSNodeMap.get(boundName);
-    expect(tsBoundName).toBeDefined();
 
     expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
       boundName,
@@ -374,7 +371,7 @@ describe('semanticInfo', async () => {
       { ...createOptions('<input>'), project: undefined },
     );
 
-    expect(parseResult.services.program).toBeDefined();
+    assert.isNotParserServices(parseResult.services);
   });
 
   it.runIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true')(

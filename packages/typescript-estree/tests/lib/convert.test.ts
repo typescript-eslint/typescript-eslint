@@ -190,7 +190,6 @@ describe('convert', () => {
       maps.esTreeNodeToTSNodeMap.get(maps.tsNodeToESTreeNodeMap.get(ast)),
     );
 
-    expect(maps.esTreeNodeToTSNodeMap.get(program.body[0])).toBeDefined();
     expect(program.body[0]).not.toBe(
       maps.tsNodeToESTreeNodeMap.get(ast.statements[0] as TSNode),
     );

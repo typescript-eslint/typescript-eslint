@@ -19,9 +19,16 @@ chai.use((chai, utils) => {
 
     const assertion = new chai.Assertion(services, errorMessage, ssfi, true);
 
-    (negate ? assertion.not : assertion).to.have
-      .property('program')
-      .that.does.not.equal(null);
+    if (negate) {
+      (utils.hasProperty(services, 'program')
+        ? assertion
+        : assertion.not
+      ).to.have
+        .property('program')
+        .that.equals(null);
+    } else {
+      assertion.to.have.property('program').that.does.not.equal(null);
+    }
   }
 
   chai.Assertion.addMethod(parserServices.name, parserServices);
@@ -61,6 +68,10 @@ chai.use((chai, utils) => {
 
     const nodeType = checker.getTypeAtLocation(tsNode);
 
+    const typeArguments = checker.getTypeArguments(
+      nodeType as ts.TypeReference,
+    );
+
     const nodeTypeAssertion = new chai.Assertion(
       nodeType,
       errorMessage,
@@ -68,29 +79,58 @@ chai.use((chai, utils) => {
       true,
     );
 
-    (negate ? nodeTypeAssertion.not : nodeTypeAssertion).to.have
-      .property('flags')
-      .that.equals(ts.TypeFlags.Object);
-
-    (negate ? nodeTypeAssertion.not : nodeTypeAssertion).to.have
-      .property('objectFlags')
-      .that.equals(ts.ObjectFlags.Reference);
-
-    const typeArguments = checker.getTypeArguments(
-      nodeType as ts.TypeReference,
+    const typeArgumentsAssertion = new chai.Assertion(
+      typeArguments,
+      errorMessage,
+      ssfi,
+      true,
     );
 
-    (negate
-      ? new chai.Assertion(typeArguments, errorMessage, ssfi, true).not
-      : new chai.Assertion(typeArguments, errorMessage, ssfi, true)
-    ).lengthOf(1);
+    const firstTypeArgumentAssertion = new chai.Assertion(
+      typeArguments[0],
+      errorMessage,
+      ssfi,
+      true,
+    );
 
-    (negate
-      ? new chai.Assertion(typeArguments[0], errorMessage, ssfi, true).not
-      : new chai.Assertion(typeArguments[0], errorMessage, ssfi, true)
-    ).to.have
-      .property('flags')
-      .that.equals(ts.TypeFlags.Number);
+    if (negate) {
+      (utils.hasProperty(nodeType, 'flags')
+        ? nodeTypeAssertion
+        : nodeTypeAssertion.not
+      ).to.have
+        .property('flags')
+        .that.equals(ts.TypeFlags.Object);
+
+      (utils.hasProperty(nodeType, 'objectFlags')
+        ? nodeTypeAssertion
+        : nodeTypeAssertion.not
+      ).to.have
+        .property('objectFlags')
+        .that.equals(ts.ObjectFlags.Reference);
+
+      typeArgumentsAssertion.not.lengthOf(1);
+
+      (utils.hasProperty(firstTypeArgumentAssertion, 'flags')
+        ? firstTypeArgumentAssertion
+        : firstTypeArgumentAssertion.not
+      ).to.have
+        .property('flags')
+        .that.does.not.equal(ts.TypeFlags.Number);
+    } else {
+      nodeTypeAssertion.to.have
+        .property('flags')
+        .that.equals(ts.TypeFlags.Object);
+
+      nodeTypeAssertion.to.have
+        .property('objectFlags')
+        .that.equals(ts.ObjectFlags.Reference);
+
+      typeArgumentsAssertion.lengthOf(1);
+
+      firstTypeArgumentAssertion.to.have
+        .property('flags')
+        .that.equals(ts.TypeFlags.Number);
+    }
   }
 
   chai.Assertion.addMethod(
