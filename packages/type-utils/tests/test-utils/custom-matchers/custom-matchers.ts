@@ -10,16 +10,18 @@ import { parseForESLint } from '@typescript-eslint/parser';
 import Ajv from 'ajv';
 import * as path from 'node:path';
 
-import type { ReadonlynessOptions } from '../../../src/isTypeReadonly.js';
-import type { TypeOrValueSpecifier } from '../../../src/TypeOrValueSpecifier.js';
+import type {
+  ReadonlynessOptions,
+  TypeOrValueSpecifier,
+} from '../../../src/index.js';
 
-import { containsAllTypesByName } from '../../../src/containsAllTypesByName.js';
-import { isTypeReadonly } from '../../../src/isTypeReadonly.js';
-import { isUnsafeAssignment } from '../../../src/isUnsafeAssignment.js';
 import {
+  containsAllTypesByName,
+  isTypeReadonly,
+  isUnsafeAssignment,
   typeMatchesSpecifier,
   typeOrValueSpecifiersSchema,
-} from '../../../src/TypeOrValueSpecifier.js';
+} from '../../../src/index.js';
 
 const FIXTURES_DIR = path.join(__dirname, '..', '..', 'fixtures');
 
@@ -32,28 +34,44 @@ const DEFAULT_PARSER_OPTIONS = {
 
 chai.use((chai, utils) => {
   function parserServices(this: Chai.AssertionStatic, errorMessage?: string) {
+    if (errorMessage) {
+      utils.flag(this, 'message', errorMessage);
+    }
+
     const services: ParserServices | null | undefined = utils.flag(
       this,
       'object',
     );
 
-    if (errorMessage) {
-      utils.flag(this, 'message', errorMessage);
-    }
+    const negate = utils.flag(this, 'negate') ?? false;
 
-    const pass = services?.program != null;
+    const ssfi: (...args: unknown[]) => unknown = utils.flag(this, 'ssfi');
 
-    this.assert(
-      pass,
-      'expected #{this} to exist',
-      'expected #{this} to not exist',
-    );
+    const assertion = new chai.Assertion(services, errorMessage, ssfi, true);
+
+    (negate ? assertion.not : assertion).to.have
+      .property('program')
+      .that.does.not.equal(null);
   }
 
   chai.Assertion.addMethod(parserServices.name, parserServices);
 
   chai.assert.isParserServices = (services, errorMessage) => {
-    new chai.Assertion(services, errorMessage).to.be.parserServices();
+    new chai.Assertion(
+      services,
+      errorMessage,
+      chai.assert.isParserServices,
+      true,
+    ).to.be.parserServices();
+  };
+
+  chai.assert.isNotParserServices = (services, errorMessage) => {
+    new chai.Assertion(
+      services,
+      errorMessage,
+      chai.assert.isNotParserServices,
+      true,
+    ).not.to.be.parserServices();
   };
 });
 

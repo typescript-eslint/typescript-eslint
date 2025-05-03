@@ -14,38 +14,53 @@ declare global {
     }
 
     interface Assert {
-      isParserServices(
-        services: ParserServices | null | undefined,
+      isParserServices<ActualType extends ParserServices | null | undefined>(
+        services: ActualType,
         errorMessage?: string,
-      ): asserts services is ParserServicesWithTypeInformation;
+      ): asserts services is Extract<
+        ActualType,
+        ParserServicesWithTypeInformation
+      >;
+
+      isNotParserServices<ActualType>(
+        services: ActualType,
+        errorMessage?: string,
+      ): asserts services is Exclude<
+        ActualType,
+        ParserServicesWithTypeInformation
+      >;
     }
   }
 }
 
-interface CustomMatchers<Actual = unknown> {
+interface CustomMatchers<ActualType = unknown> {
   toHaveTypes(additionalOptions: {
     senderStr: string;
     receiverStr: string;
     declarationIndex?: number;
     passSenderNode?: boolean;
-  }): Actual;
+  }): ActualType;
 
-  toBeValidSpecifier(): Actual;
+  toBeValidSpecifier(): ActualType;
 
-  toMatchSpecifier(expectedTypeOrValueSpecifier: TypeOrValueSpecifier): Actual;
+  toMatchSpecifier(
+    expectedTypeOrValueSpecifier: TypeOrValueSpecifier,
+  ): ActualType;
 
-  toBeReadOnly(readOnlyNessOptions: ReadonlynessOptions | undefined): Actual;
+  toBeReadOnly(
+    readOnlyNessOptions: ReadonlynessOptions | undefined,
+  ): ActualType;
 
   toContainsAllTypesByName(additionalOptions?: {
     allowAny?: boolean;
     allowedNames?: Set<string>;
     matchAnyInstead?: boolean;
-  }): Actual;
+  }): ActualType;
 
   toBeSafeAssignment(additionalOptions?: {
     declarationIndex?: number;
     passSenderNode?: boolean;
-  }): Actual;
+  }): ActualType;
 }
 
 declare module 'vitest' {
