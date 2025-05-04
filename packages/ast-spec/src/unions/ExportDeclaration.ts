@@ -1,7 +1,4 @@
-import type {
-  ClassDeclarationWithName,
-  ClassDeclarationWithOptionalName,
-} from '../declaration/ClassDeclaration/spec';
+import type { ClassDeclarationWithOptionalName } from '../declaration/ClassDeclaration/spec';
 import type {
   FunctionDeclarationWithName,
   FunctionDeclarationWithOptionalName,
@@ -20,7 +17,6 @@ import type { Expression } from './Expression';
 export type DefaultExportDeclarations =
   | ClassDeclarationWithOptionalName
   | Expression
-  | FunctionDeclarationWithName
   | FunctionDeclarationWithOptionalName
   | TSDeclareFunction
   | TSEnumDeclaration
@@ -32,8 +28,8 @@ export type DefaultExportDeclarations =
 // TODO(#1852) - the following are disallowed syntactically, but allowed by TS error recovery:
 // ClassDeclarationWithOptionalName, FunctionDeclarationWithOptionalName
 export type NamedExportDeclarations =
-  | ClassDeclarationWithName
   | ClassDeclarationWithOptionalName
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   | FunctionDeclarationWithName
   | FunctionDeclarationWithOptionalName
   | TSDeclareFunction
@@ -47,4 +43,5 @@ export type NamedExportDeclarations =
 // TODO - breaking change remove this in the next major
 export type ExportDeclaration =
   | DefaultExportDeclarations
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   | NamedExportDeclarations;

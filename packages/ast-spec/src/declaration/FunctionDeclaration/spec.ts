@@ -32,5 +32,5 @@ export interface FunctionDeclarationWithOptionalName
 }
 
 export type FunctionDeclaration =
-  | FunctionDeclarationWithName
-  | FunctionDeclarationWithOptionalName;
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+  FunctionDeclarationWithName | FunctionDeclarationWithOptionalName;
