@@ -8,7 +8,7 @@ import { fromMarkdown } from 'mdast-util-from-markdown';
 import { mdxFromMarkdown } from 'mdast-util-mdx';
 import { mdxjs } from 'micromark-extension-mdxjs';
 import * as fs from 'node:fs/promises';
-import path from 'node:path';
+import * as path from 'node:path';
 import { titleCase } from 'title-case';
 import * as unistUtilVisit from 'unist-util-visit';
 
@@ -16,7 +16,10 @@ import rules from '../src/rules/index.js';
 import { areOptionsValid } from './areOptionsValid.js';
 import { getFixturesRootDir } from './RuleTester.js';
 
-const docsRoot = path.resolve(import.meta.dirname, '..', 'docs', 'rules');
+const docsRoot = path.join(import.meta.dirname, '..', 'docs', 'rules');
+
+const FIXTURES_DIR = getFixturesRootDir();
+
 const rulesData = Object.entries(rules);
 
 interface ParsedMarkdownFile {
@@ -101,7 +104,7 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
 const linter = new Linter({ configType: 'eslintrc' });
 linter.defineParser('@typescript-eslint/parser', tseslintParser);
 
-const eslintOutputSnapshotFolder = path.resolve(
+const eslintOutputSnapshotFolder = path.join(
   import.meta.dirname,
   'docs-eslint-output-snapshots',
 );
@@ -198,11 +201,13 @@ describe('Validating rule docs', () => {
       .sort();
     const ruleFiles = rulesData.map(([rule]) => `${rule}.mdx`).sort();
 
-    expect(files).toEqual(ruleFiles);
+    expect(files).toStrictEqual(ruleFiles);
   });
 
   describe.for(rulesData)('%s.mdx', async ([ruleName, rule]) => {
-    const { description } = rule.meta.docs!;
+    assert.isDefined(rule.meta.docs);
+
+    const { description } = rule.meta.docs;
 
     const filePath = path.join(docsRoot, `${ruleName}.mdx`);
     const { fullText, tokens } = await parseMarkdownFile(filePath);
@@ -295,7 +300,7 @@ describe('Validating rule docs', () => {
     if (
       !rulesWithComplexOptions.has(ruleName) &&
       Array.isArray(schema) &&
-      !rule.meta.docs?.extendsBaseRule
+      !rule.meta.docs.extendsBaseRule
     ) {
       const testCases = schema
         .filter(schemaItem => schemaItem.type === 'object')
@@ -449,7 +454,6 @@ describe('Validating rule docs', () => {
         } else {
           ruleConfig = 'error';
         }
-        const rootPath = getFixturesRootDir();
 
         const messages = linter.verify(
           token.value,
@@ -458,7 +462,7 @@ describe('Validating rule docs', () => {
             parserOptions: {
               disallowAutomaticSingleRunInference: true,
               project: './tsconfig.json',
-              tsconfigRootDir: rootPath,
+              tsconfigRootDir: FIXTURES_DIR,
             },
             rules: {
               [ruleName]: ruleConfig,
@@ -546,7 +550,7 @@ describe('Validating rule metadata', () => {
       if (
         rulesThatRequireTypeInformationInAWayThatsHardToDetect.has(ruleName)
       ) {
-        expect(true).toEqual(rule.meta.docs?.requiresTypeChecking ?? false);
+        expect(true).toBe(rule.meta.docs?.requiresTypeChecking ?? false);
         return;
       }
 
@@ -557,7 +561,7 @@ describe('Validating rule metadata', () => {
         { encoding: 'utf-8' },
       );
 
-      expect(requiresFullTypeInformation(ruleFileContents)).toEqual(
+      expect(requiresFullTypeInformation(ruleFileContents)).toBe(
         rule.meta.docs?.requiresTypeChecking ?? false,
       );
     });

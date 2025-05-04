@@ -1,10 +1,10 @@
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import * as fs from 'node:fs/promises';
-import path from 'node:path';
+import * as path from 'node:path';
 import prettier from 'prettier';
 
-import rules from '../src/rules/index';
-import { areOptionsValid } from './areOptionsValid';
+import rules from '../src/rules/index.js';
+import { areOptionsValid } from './areOptionsValid.js';
 
 const snapshotFolder = path.resolve(__dirname, 'schema-snapshots');
 
@@ -31,10 +31,6 @@ const getPrettierConfig = async (
     filepath,
   };
 };
-const PRETTIER_CONFIG = {
-  schema: getPrettierConfig(SCHEMA_FILEPATH),
-  tsType: getPrettierConfig(TS_TYPE_FILEPATH),
-};
 
 const SKIPPED_RULES_FOR_TYPE_GENERATION = new Set(['indent']);
 // Set this to a rule name to only run that rule
@@ -42,7 +38,12 @@ const ONLY = '';
 
 const ruleEntries = Object.entries(rules);
 
-describe('Rule schemas should be convertible to TS types for documentation purposes', () => {
+describe('Rule schemas should be convertible to TS types for documentation purposes', async () => {
+  const PRETTIER_CONFIG = {
+    schema: await getPrettierConfig(SCHEMA_FILEPATH),
+    tsType: getPrettierConfig(TS_TYPE_FILEPATH),
+  };
+
   beforeAll(async () => {
     await fs.mkdir(snapshotFolder, { recursive: true });
   });
@@ -81,7 +82,7 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
           // changes per line, or adding a prop can restructure an object
           2,
         ),
-        await PRETTIER_CONFIG.schema,
+        PRETTIER_CONFIG.schema,
       );
       const compilationResult = await compile(
         ruleDef.meta.schema,

@@ -1,15 +1,17 @@
 import * as fs from 'node:fs/promises';
-import path from 'node:path';
+import * as path from 'node:path';
 
-import eslintPlugin from '../src/index';
-import rules from '../src/rules';
+import eslintPlugin from '../src/index.js';
+import rules from '../src/rules/index.js';
 
 describe('eslint-plugin ("./src/index.ts")', async () => {
+  const CONFIGS_DIR = path.join(__dirname, '..', 'src', 'configs');
+
   const ruleKeys = Object.keys(rules);
   const eslintPluginRuleKeys = Object.keys(eslintPlugin.rules);
 
   const eslintrcConfigs = (
-    await fs.readdir(path.join(__dirname, '..', 'src', 'configs', 'eslintrc'), {
+    await fs.readdir(path.join(CONFIGS_DIR, 'eslintrc'), {
       encoding: 'utf-8',
     })
   )
@@ -17,7 +19,7 @@ describe('eslint-plugin ("./src/index.ts")', async () => {
     .map(file => path.basename(file, path.extname(file)));
 
   const flatConfigs = (
-    await fs.readdir(path.join(__dirname, '..', 'src', 'configs', 'flat'), {
+    await fs.readdir(path.join(CONFIGS_DIR, 'flat'), {
       encoding: 'utf-8',
     })
   )
@@ -28,7 +30,9 @@ describe('eslint-plugin ("./src/index.ts")', async () => {
   const eslintPluginConfigKeys = Object.keys(eslintPlugin.configs);
 
   it('exports all available rules', () => {
-    expect(ruleKeys).toEqual(expect.arrayContaining(eslintPluginRuleKeys));
+    expect(ruleKeys).toStrictEqual(
+      expect.arrayContaining(eslintPluginRuleKeys),
+    );
   });
 
   it('exports all available configs', () => {
@@ -37,6 +41,6 @@ describe('eslint-plugin ("./src/index.ts")', async () => {
       // This config is deprecated and eventually will be removed
       'recommended-requiring-type-checking',
       ...flatConfigs,
-    ]).toEqual(expect.arrayContaining(eslintPluginConfigKeys));
+    ]).toStrictEqual(expect.arrayContaining(eslintPluginConfigKeys));
   });
 });

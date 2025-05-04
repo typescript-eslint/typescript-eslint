@@ -14,6 +14,6 @@ describe('./src/rules/index.ts', async () => {
   ).filter(file => file !== 'index.ts' && file.endsWith('.ts'));
 
   it('imports all available rule modules', () => {
-    expect(ruleNames).toEqual(files);
+    expect(ruleNames).toStrictEqual(files);
   });
 });

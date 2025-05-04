@@ -1,6 +1,6 @@
 import { defineConfig } from 'eslint/config';
 
-import plugin from '../src/index';
+import plugin from '../src/index.js';
 
 describe("The plugin object should work with eslint defineConfig's stringly typed extends array", () => {
   it('should not error when explicitly referencing the flat version', () => {
