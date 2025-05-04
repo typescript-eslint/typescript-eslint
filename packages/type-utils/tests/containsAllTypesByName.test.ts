@@ -1,4 +1,4 @@
-import { containsAllTypesByName } from '../src';
+import { containsAllTypesByName } from '../src/index.js';
 
 describe(containsAllTypesByName, () => {
   describe('allowAny', () => {
@@ -10,7 +10,7 @@ describe(containsAllTypesByName, () => {
         ['type Test = any;'],
         ['type Test = string;'],
       ] as const)(
-        'when code is "%s" it does not contain all types by name',
+        'when code is "%s", it does not contain all types by name',
         ([code], { expect }) => {
           expect(code).not.toContainsAllTypesByName(options);
         },
@@ -21,14 +21,14 @@ describe(containsAllTypesByName, () => {
       const options = { allowAny: false };
 
       it.for([['type Test = unknown;'], ['type Test = any;']] as const)(
-        'when code is "%s" it contains all types by name',
+        'when code is "%s", it contains all types by name',
         ([code], { expect }) => {
           expect(code).toContainsAllTypesByName(options);
         },
       );
 
       it.for([['type Test = string;']] as const)(
-        'when code is "%s" it does not contain all types by name',
+        'when code is "%s", it does not contain all types by name',
         ([code], { expect }) => {
           expect(code).not.toContainsAllTypesByName(options);
         },
@@ -48,7 +48,7 @@ describe(containsAllTypesByName, () => {
         ['type Test = Promise<void> | string'],
         ['type Test = Promise<void> | Object'],
       ] as const)(
-        'when code is "%s" it contains all types by name',
+        'when code is "%s", it contains all types by name',
         ([code], { expect }) => {
           expect(code).toContainsAllTypesByName(options);
         },
@@ -62,7 +62,7 @@ describe(containsAllTypesByName, () => {
       };
 
       it.for([['type Test = Promise<void> | Object']] as const)(
-        'when code is "%s" it contains all types by name',
+        'when code is "%s", it contains all types by name',
         ([code], { expect }) => {
           expect(code).toContainsAllTypesByName(options);
         },
@@ -72,7 +72,7 @@ describe(containsAllTypesByName, () => {
         ['type Test = Promise<void> & string'],
         ['type Test = Promise<void> | string'],
       ] as const)(
-        'when code is "%s" it does not contain all types by name',
+        'when code is "%s", it does not contain all types by name',
         ([code], { expect }) => {
           expect(code).not.toContainsAllTypesByName(options);
         },

@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
 import type * as ts from 'typescript';
 
-import { isSymbolFromDefaultLibrary } from '../src';
+import { isSymbolFromDefaultLibrary } from '../src/index.js';
 import { parseCodeForEslint } from './test-utils/custom-matchers/custom-matchers.js';
 
 describe(isSymbolFromDefaultLibrary, () => {

@@ -2,7 +2,10 @@ import type { TSESTree } from '@typescript-eslint/types';
 
 import * as tsutils from 'ts-api-utils';
 
-import { getConstrainedTypeAtLocation, isTypeUnknownType } from '../src';
+import {
+  getConstrainedTypeAtLocation,
+  isTypeUnknownType,
+} from '../src/index.js';
 import { parseCodeForEslint } from './test-utils/custom-matchers/custom-matchers.js';
 
 describe(getConstrainedTypeAtLocation, () => {

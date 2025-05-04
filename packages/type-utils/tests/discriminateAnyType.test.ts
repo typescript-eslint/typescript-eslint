@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
 
-import { AnyType, discriminateAnyType } from '../src';
+import { AnyType, discriminateAnyType } from '../src/index.js';
 import { parseCodeForEslint } from './test-utils/custom-matchers/custom-matchers.js';
 
 type GetNode = (ast: TSESTree.Program) => TSESTree.Node;

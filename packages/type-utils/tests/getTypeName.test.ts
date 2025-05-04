@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
-import { getTypeName } from '../src';
+import { getTypeName } from '../src/index.js';
 import { parseCodeForEslint } from './test-utils/custom-matchers/custom-matchers.js';
 
 describe(getTypeName, () => {

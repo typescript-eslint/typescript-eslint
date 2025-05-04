@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/typescript-estree';
 
 import * as ts from 'typescript';
 
-import { getTypeFlags, isTypeFlagSet } from '../src';
+import { getTypeFlags, isTypeFlagSet } from '../src/index.js';
 import { parseCodeForEslint } from './test-utils/custom-matchers/custom-matchers.js';
 
 describe('typeFlagUtils', () => {

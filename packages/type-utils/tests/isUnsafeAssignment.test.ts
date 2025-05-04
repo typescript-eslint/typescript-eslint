@@ -1,4 +1,4 @@
-import { isUnsafeAssignment } from '../src/isUnsafeAssignment';
+import { isUnsafeAssignment } from '../src/index.js';
 
 describe(isUnsafeAssignment, () => {
   describe('unsafe', () => {

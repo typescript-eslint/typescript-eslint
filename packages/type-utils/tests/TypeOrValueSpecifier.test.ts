@@ -1,8 +1,8 @@
-import path from 'node:path';
+import * as path from 'node:path';
 
-import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
+import type { TypeOrValueSpecifier } from '../src/index.js';
 
-import { typeMatchesSpecifier } from '../src';
+import { typeMatchesSpecifier } from '../src/index.js';
 
 const ROOT_DIR = path.posix.join(
   ...path.relative(process.cwd(), path.join(__dirname, '..')).split(path.sep),
@@ -11,7 +11,7 @@ const ROOT_DIR = path.posix.join(
 describe('TypeOrValueSpecifier', () => {
   describe('Schema', () => {
     it.for([['MyType'], ['myValue'], ['any'], ['void'], ['never']] as const)(
-      'matches a simple string specifier %s',
+      'matches a simple string specifier: %s',
       ([typeOrValueSpecifier], { expect }) => {
         expect([typeOrValueSpecifier]).toBeValidSpecifier();
       },
@@ -159,7 +159,7 @@ describe('TypeOrValueSpecifier', () => {
       ['interface Foo {prop: string}; type Test = Foo;', 'Foo'],
       ['type Test = RegExp;', 'RegExp'],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching universal string specifier',
+      'matches a matching universal string specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -171,7 +171,7 @@ describe('TypeOrValueSpecifier', () => {
       ['type Test = RegExp;', 'Foo'],
       ['type Test = RegExp;', 'BigInt'],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched universal string specifier",
+      "doesn't match a mismatched universal string specifier: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -247,7 +247,7 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching file specifier: %s',
+      'matches a matching file specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -279,7 +279,7 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched file specifier: %s",
+      "doesn't match a mismatched file specifier: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -289,7 +289,7 @@ describe('TypeOrValueSpecifier', () => {
       ['type Test = RegExp;', { from: 'lib', name: 'RegExp' }],
       ['type Test = RegExp;', { from: 'lib', name: ['RegExp', 'BigInt'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching lib specifier: %s',
+      'matches a matching lib specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -299,7 +299,7 @@ describe('TypeOrValueSpecifier', () => {
       ['type Test = RegExp;', { from: 'lib', name: 'BigInt' }],
       ['type Test = RegExp;', { from: 'lib', name: ['BigInt', 'Date'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched lib specifier: %s",
+      "doesn't match a mismatched lib specifier: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -309,7 +309,7 @@ describe('TypeOrValueSpecifier', () => {
       ['type Test = string;', { from: 'lib', name: 'string' }],
       ['type Test = string;', { from: 'lib', name: ['string', 'number'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching intrinsic type specifier: %s',
+      'matches a matching intrinsic type specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -319,7 +319,7 @@ describe('TypeOrValueSpecifier', () => {
       ['type Test = string;', { from: 'lib', name: 'number' }],
       ['type Test = string;', { from: 'lib', name: ['number', 'boolean'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched intrinsic type specifier: %s",
+      "doesn't match a mismatched intrinsic type specifier: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -406,7 +406,7 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching package specifier: %s',
+      'matches a matching package specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -431,7 +431,7 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'file', name: ['SafePromise'] },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched type specifier for an intersection type: %s",
+      "doesn't match a mismatched type specifier for an intersection type: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -447,7 +447,7 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'file', name: ['ResultType'] },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching type specifier for an intersection type: %s',
+      'matches a matching type specifier for an intersection type: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -474,7 +474,7 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching package specifier for an intersection type: %s',
+      'matches a matching package specifier for an intersection type: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -501,7 +501,7 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched package specifier for an intersection type: %s",
+      "doesn't match a mismatched package specifier for an intersection type: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -547,7 +547,7 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'package', name: 'TsNode', package: 'typescript' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched package specifier: %s",
+      "doesn't match a mismatched package specifier: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -612,7 +612,7 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'package', name: ['RegExp', 'BigInt'], package: 'foo-package' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched specifier type: %s",
+      "doesn't match a mismatched specifier type: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
@@ -622,7 +622,7 @@ describe('TypeOrValueSpecifier', () => {
       ['type Test = Foo;', { from: 'lib', name: 'Foo' }],
       ['type Test = Foo;', { from: 'lib', name: ['Foo', 'number'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match an error type: %s",
+      "doesn't match an error type: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
