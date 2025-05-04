@@ -21,6 +21,7 @@ enum Usefulness {
 export type Options = [
   {
     ignoredTypeNames?: string[];
+    restrictUnknown?: boolean;
   },
 ];
 export type MessageIds = 'baseArrayJoin' | 'baseToString';
@@ -54,6 +55,11 @@ export default createRule<Options, MessageIds>({
               type: 'string',
             },
           },
+          restrictUnknown: {
+            type: 'boolean',
+            default: false,
+            description: 'Restrict applying toString to unknown type',
+          },
         },
       },
     ],
@@ -61,6 +67,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
+      restrictUnknown: false,
     },
   ],
   create(context, [option]) {
