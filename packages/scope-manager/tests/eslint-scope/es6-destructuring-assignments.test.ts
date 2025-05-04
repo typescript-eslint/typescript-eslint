@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/dot-notation -- ['implicit'] is private */
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import type { Reference } from '../../src';
+import type { Reference } from '../../src/index.js';
 
 import { DefinitionType, ScopeType } from '../../src/index.js';
 import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
@@ -758,7 +758,7 @@ describe('ES6 destructuring assignments', () => {
       scope['implicit'].leftToBeResolved.map(
         (left: Reference) => left.identifier.name,
       ),
-    ).toEqual(['a', 'b', 'c', 'array']);
+    ).toStrictEqual(['a', 'b', 'c', 'array']);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
@@ -848,7 +848,7 @@ describe('ES6 destructuring assignments', () => {
       scope['implicit'].leftToBeResolved.map(
         (left: Reference) => left.identifier.name,
       ),
-    ).toEqual(['a', 'b', 'rest', 'array']);
+    ).toStrictEqual(['a', 'b', 'rest', 'array']);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
@@ -892,7 +892,7 @@ describe('ES6 destructuring assignments', () => {
       scope['implicit'].leftToBeResolved.map(
         (left: Reference) => left.identifier.name,
       ),
-    ).toEqual(['a', 'b', 'c', 'd', 'rest', 'array']);
+    ).toStrictEqual(['a', 'b', 'c', 'd', 'rest', 'array']);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
@@ -936,7 +936,7 @@ describe('ES6 destructuring assignments', () => {
       scope['implicit'].leftToBeResolved.map(
         (left: Reference) => left.identifier.name,
       ),
-    ).toEqual(['a', 'b', 'obj', 'array']);
+    ).toStrictEqual(['a', 'b', 'obj', 'array']);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
@@ -986,7 +986,7 @@ describe('ES6 destructuring assignments', () => {
       scope['implicit'].leftToBeResolved.map(
         (left: Reference) => left.identifier.name,
       ),
-    ).toEqual(['shorthand', 'value', 'world', 'object']);
+    ).toStrictEqual(['shorthand', 'value', 'world', 'object']);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
@@ -1039,7 +1039,7 @@ describe('ES6 destructuring assignments', () => {
       scope['implicit'].leftToBeResolved.map(
         (left: Reference) => left.identifier.name,
       ),
-    ).toEqual(['shorthand', 'a', 'b', 'c', 'd', 'e', 'world', 'object']);
+    ).toStrictEqual(['shorthand', 'a', 'b', 'c', 'd', 'e', 'world', 'object']);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);

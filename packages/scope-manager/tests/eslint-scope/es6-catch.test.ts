@@ -53,8 +53,8 @@ describe('ES6 catch', () => {
     expect(scope.block.type).toBe(AST_NODE_TYPES.BlockStatement);
     expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(1);
-    expect(variables.map(variable => variable.name)).toEqual(['e']);
-    expect(scope.references.map(ref => ref.identifier.name)).toEqual([
+    expect(variables.map(variable => variable.name)).toStrictEqual(['e']);
+    expect(scope.references.map(ref => ref.identifier.name)).toStrictEqual([
       'e',
       'a',
       'b',

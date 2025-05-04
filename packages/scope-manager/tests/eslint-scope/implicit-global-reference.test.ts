@@ -19,14 +19,14 @@ describe('implicit global reference', () => {
           variable.defs.map(def => def.type),
         ),
       ),
-    ).toEqual([[[DefinitionType.Variable]]]);
+    ).toStrictEqual([[[DefinitionType.Variable]]]);
 
     assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
       ),
-    ).toEqual([]);
+    ).toStrictEqual([]);
   });
 
   it('assignments global scope without definition', () => {
@@ -43,14 +43,14 @@ describe('implicit global reference', () => {
           variable.defs.map(def => def.type),
         ),
       ),
-    ).toEqual([[]]);
+    ).toStrictEqual([[]]);
 
     assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
       ),
-    ).toEqual(['x']);
+    ).toStrictEqual(['x']);
   });
 
   it('assignments global scope without definition eval', () => {
@@ -69,14 +69,14 @@ describe('implicit global reference', () => {
           variable.defs.map(def => def.type),
         ),
       ),
-    ).toEqual([[[DefinitionType.FunctionName]], [[]]]);
+    ).toStrictEqual([[[DefinitionType.FunctionName]], [[]]]);
 
     assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
       ),
-    ).toEqual(['x']);
+    ).toStrictEqual(['x']);
   });
 
   it('assignment leaks', () => {
@@ -92,14 +92,14 @@ describe('implicit global reference', () => {
       scopes.map(scope =>
         getRealVariables(scope.variables).map(variable => variable.name),
       ),
-    ).toEqual([['outer'], ['arguments']]);
+    ).toStrictEqual([['outer'], ['arguments']]);
 
     assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
       ),
-    ).toEqual(['x']);
+    ).toStrictEqual(['x']);
   });
 
   it("assignment doesn't leak", () => {
@@ -118,14 +118,14 @@ describe('implicit global reference', () => {
       scopes.map(scope =>
         getRealVariables(scope.variables).map(variable => variable.name),
       ),
-    ).toEqual([['outer'], ['arguments', 'inner', 'x'], ['arguments']]);
+    ).toStrictEqual([['outer'], ['arguments', 'inner', 'x'], ['arguments']]);
 
     assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
       ),
-    ).toEqual([]);
+    ).toStrictEqual([]);
   });
 
   it('for-in-statement leaks', () => {
@@ -141,14 +141,14 @@ describe('implicit global reference', () => {
       scopes.map(scope =>
         getRealVariables(scope.variables).map(variable => variable.name),
       ),
-    ).toEqual([['outer'], ['arguments'], []]);
+    ).toStrictEqual([['outer'], ['arguments'], []]);
 
     assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
       ),
-    ).toEqual(['x']);
+    ).toStrictEqual(['x']);
   });
 
   it("for-in-statement doesn't leaks", () => {
@@ -167,13 +167,18 @@ describe('implicit global reference', () => {
       scopes.map(scope =>
         getRealVariables(scope.variables).map(variable => variable.name),
       ),
-    ).toEqual([['outer'], ['arguments', 'inner', 'x'], ['arguments'], []]);
+    ).toStrictEqual([
+      ['outer'],
+      ['arguments', 'inner', 'x'],
+      ['arguments'],
+      [],
+    ]);
 
     assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
       scopes[0]['implicit'].variables.map(
         (variable: Variable) => variable.name,
       ),
-    ).toEqual([]);
+    ).toStrictEqual([]);
   });
 });
