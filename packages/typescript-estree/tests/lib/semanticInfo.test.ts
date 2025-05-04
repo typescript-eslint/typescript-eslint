@@ -5,7 +5,7 @@ import * as ts from 'typescript';
 
 import type { TSESTree, TSESTreeOptions } from '../../src/index.js';
 
-import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms';
+import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms.js';
 import { clearCaches, parseAndGenerateServices } from '../../src/index.js';
 import {
   deeplyCopy,
@@ -14,6 +14,7 @@ import {
 } from '../test-utils/test-utils.js';
 
 const FIXTURES_DIR = path.join(__dirname, '..', 'fixtures', 'semanticInfo');
+
 const testFiles = glob.sync(`**/*.src.ts`, {
   cwd: FIXTURES_DIR,
 });
@@ -102,11 +103,11 @@ describe('semanticInfo', async () => {
 
     expect(fromString.services.program).toBe(fromArray.services.program);
 
-    expect(fromString.ast).toEqual(fromArray.ast);
-    expect(fromString.services.esTreeNodeToTSNodeMap).toEqual(
+    expect(fromString.ast).toStrictEqual(fromArray.ast);
+    expect(fromString.services.esTreeNodeToTSNodeMap).toStrictEqual(
       fromArray.services.esTreeNodeToTSNodeMap,
     );
-    expect(fromString.services.tsNodeToESTreeNodeMap).toEqual(
+    expect(fromString.services.tsNodeToESTreeNodeMap).toStrictEqual(
       fromArray.services.tsNodeToESTreeNodeMap,
     );
   });
@@ -140,7 +141,7 @@ describe('semanticInfo', async () => {
 
     expect(
       absolutePathResult.services.program.getResolvedProjectReferences(),
-    ).toEqual(
+    ).toStrictEqual(
       relativePathResult.services.program.getResolvedProjectReferences(),
     );
   });
@@ -296,7 +297,9 @@ describe('semanticInfo', async () => {
     const tsBinaryExpression =
       parseResult.services.esTreeNodeToTSNodeMap.get(binaryExpression);
 
-    expect(tsBinaryExpression.kind).toEqual(ts.SyntaxKind.BinaryExpression);
+    expect(tsBinaryExpression.kind).toStrictEqual(
+      ts.SyntaxKind.BinaryExpression,
+    );
 
     const computedPropertyString = (
       (parseResult.ast.body[1] as TSESTree.ClassDeclaration).body

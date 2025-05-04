@@ -334,7 +334,7 @@ describe(createProjectService, () => {
 
     const required = service.host.require?.('', '');
 
-    expect(required).toEqual({
+    expect(required).toStrictEqual({
       error: {
         message:
           'TypeScript plugins are not required when using parserOptions.projectService.',

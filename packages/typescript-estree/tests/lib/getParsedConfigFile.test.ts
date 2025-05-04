@@ -108,7 +108,7 @@ describe(getParsedConfigFile, () => {
       raw: { compilerOptions: { strict: true } },
     };
     mockGetParsedCommandLineOfConfigFile.mockReturnValue(parsedConfigFile);
-    expect(getParsedConfigFile(mockTsserver, 'tsconfig.json')).toEqual(
+    expect(getParsedConfigFile(mockTsserver, 'tsconfig.json')).toStrictEqual(
       expect.objectContaining(parsedConfigFile),
     );
   });

@@ -114,10 +114,10 @@ describe(parser.parseAndGenerateServices, () => {
     it('should preserve node maps by default for parseAndGenerateServices()', () => {
       const noOptionSet = parser.parseAndGenerateServices(code, baseConfig);
 
-      expect(noOptionSet.services.esTreeNodeToTSNodeMap).toEqual(
+      expect(noOptionSet.services.esTreeNodeToTSNodeMap).toStrictEqual(
         expect.any(WeakMap),
       );
-      expect(noOptionSet.services.tsNodeToESTreeNodeMap).toEqual(
+      expect(noOptionSet.services.tsNodeToESTreeNodeMap).toStrictEqual(
         expect.any(WeakMap),
       );
 
@@ -126,12 +126,12 @@ describe(parser.parseAndGenerateServices, () => {
         projectConfig,
       );
 
-      expect(withProjectNoOptionSet.services.esTreeNodeToTSNodeMap).toEqual(
-        expect.any(WeakMap),
-      );
-      expect(withProjectNoOptionSet.services.tsNodeToESTreeNodeMap).toEqual(
-        expect.any(WeakMap),
-      );
+      expect(
+        withProjectNoOptionSet.services.esTreeNodeToTSNodeMap,
+      ).toStrictEqual(expect.any(WeakMap));
+      expect(
+        withProjectNoOptionSet.services.tsNodeToESTreeNodeMap,
+      ).toStrictEqual(expect.any(WeakMap));
     });
 
     function checkNodeMaps(setting: boolean): void {

@@ -223,7 +223,7 @@ describe('convert', () => {
         range: [0, 20],
         type: AST_NODE_TYPES.TSAbstractKeyword,
       });
-      expect(convertedNode).toEqual({
+      expect(convertedNode).toStrictEqual({
         loc: {
           end: {
             column: 25,
@@ -381,7 +381,7 @@ describe('convert', () => {
       esTsEnumDeclaration.members = [];
 
       // eslint-disable-next-line @typescript-eslint/no-deprecated
-      expect(esTsEnumDeclaration.members).toEqual([]);
+      expect(esTsEnumDeclaration.members).toStrictEqual([]);
       expect(Object.keys(esTsEnumDeclaration)).toContain('members');
     });
 
