@@ -186,6 +186,22 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
+          const constraint = node.constraint;
+
+          if (
+            constraint.type === AST_NODE_TYPES.TSTypeOperator &&
+            constraint.operator === 'keyof' &&
+            !isParenthesized(constraint, context.sourceCode)
+          ) {
+            // This is a weird special case, since modifiers are preserved by
+            // the mapped type, but not by the Record type. So this type is not,
+            // in general, equivalent to a Record type.
+            return;
+          }
+
+          // If the mapped type is circular, we can't convert it to a Record.
+          const parentId = findParentDeclaration(node)?.id;
+
           if (node.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration) {
             const parentId = node.parent.id;
 
@@ -204,30 +220,14 @@ export default createRule<Options, MessageIds>({
             }
           }
 
-          const constraint = node.constraint;
-
-          if (
-            constraint.type === AST_NODE_TYPES.TSTypeOperator &&
-            constraint.operator === 'keyof' &&
-            !isParenthesized(constraint, context.sourceCode)
-          ) {
-            // This is a weird special case, since modifiers are preserved by
-            // the mapped type, but not by the Record type. So this type is not,
-            // in general, equivalent to a Record type.
-            return;
-          }
-
-          // If the mapped type is circular, we can't convert it to a Record.
-          const parentId = findParentDeclaration(node)?.id;
           if (parentId) {
             const scope = context.sourceCode.getScope(key);
             const superVar = ASTUtils.findVariable(scope, parentId.name);
             if (superVar) {
-              const isCircular = superVar.references.some(
-                item =>
-                  item.isTypeReference &&
-                  node.range[0] <= item.identifier.range[0] &&
-                  node.range[1] >= item.identifier.range[1],
+              const isCircular = isDeeplyReferencingType(
+                node.parent,
+                superVar,
+                new Set([parentId]),
               );
               if (isCircular) {
                 return;
