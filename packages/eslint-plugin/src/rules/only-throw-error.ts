@@ -1,8 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-// eslint-disable-next-line @typescript-eslint/internal/no-typescript-estree-import -- just importing the type
-import type { TSESTreeToTSNode } from '@typescript-eslint/typescript-estree';
-
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { isThenableType } from 'ts-api-utils';
 import * as ts from 'typescript';

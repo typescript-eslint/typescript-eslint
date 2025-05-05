@@ -6,8 +6,7 @@
       "esbenp.prettier-vscode",
       "streetsidesoftware.code-spell-checker",
       "tlent.jest-snapshot-language-support",
-      "mrmlnc.vscode-json5",
-      "unifiedjs.vscode-mdx"
+      "mrmlnc.vscode-json5"
   ],
   "unwantedRecommendations": ["hookyqr.beautify", "dbaeumer.jshint"]
 }
