@@ -15728,12 +15728,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-sorting@npm:^8.0.2":
-  version: 8.0.2
-  resolution: "postcss-sorting@npm:8.0.2"
+"postcss-sorting@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "postcss-sorting@npm:9.1.0"
   peerDependencies:
     postcss: ^8.4.20
-  checksum: ebb5cc6a2982a1f0bb8332669e425793ebc01c30fa83ea981c765d64d212e289bef5fdb1e627904c471cb75f1ad0727ed9e85c0d879e263590c8fc64eecf31c2
+  checksum: a1c7c925ef47642bb27a3f0038398343d721de92c032d3f82bd1cf5afdfb00552e689f705e8bbe815ca0e72d3943588dde10135abadfd6d1164d490612f9f9c4
   languageName: node
   linkType: hard
 
@@ -15776,7 +15776,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.21, postcss@npm:^8.4.24, postcss@npm:^8.4.26, postcss@npm:^8.4.32, postcss@npm:^8.4.33, postcss@npm:^8.4.38, postcss@npm:^8.5.3":
+"postcss@npm:^8.4.21, postcss@npm:^8.4.24, postcss@npm:^8.4.26, postcss@npm:^8.4.33, postcss@npm:^8.4.38, postcss@npm:^8.5.3":
   version: 8.5.3
   resolution: "postcss@npm:8.5.3"
   dependencies:
@@ -18114,15 +18114,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stylelint-order@npm:^6.0.4":
-  version: 6.0.4
-  resolution: "stylelint-order@npm:6.0.4"
+"stylelint-order@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "stylelint-order@npm:7.0.0"
   dependencies:
-    postcss: ^8.4.32
-    postcss-sorting: ^8.0.2
+    postcss: ^8.5.3
+    postcss-sorting: ^9.1.0
   peerDependencies:
-    stylelint: ^14.0.0 || ^15.0.0 || ^16.0.1
-  checksum: 66ed8a80b34b98994e38d75671766f102d47c73362495b77861f0648efcc75cf3ad6f30f988c3cf16c9747ac139087ef1ff71b3bea40f9c5e081a25ebeb34feb
+    stylelint: ^16.18.0
+  checksum: edcb9b5698e5d973fa5dcd31dff6ce9d2166ec2aad8fa4a9f2e45f150daf78de9482219580da025a1da362c43901d449986a40a90cf9002852ef84e080e9c0c9
   languageName: node
   linkType: hard
 
@@ -19565,7 +19565,7 @@ __metadata:
     stylelint: ^16.3.1
     stylelint-config-recommended: ^16.0.0
     stylelint-config-standard: ^38.0.0
-    stylelint-order: ^6.0.4
+    stylelint-order: ^7.0.0
     tsx: "*"
     typedoc: ^0.28.4
     typedoc-plugin-markdown: ^4.6.3
