@@ -76,7 +76,7 @@ export default createRule<[], MessageId>({
     }
 
     function isEnumMemberType(type: ts.Type): boolean {
-      return tsutils.typeParts(type).some(t => {
+      return tsutils.typeConstituents(type).some(t => {
         const symbol = t.getSymbol();
         return !!(
           symbol?.valueDeclaration && ts.isEnumMember(symbol.valueDeclaration)

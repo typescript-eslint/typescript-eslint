@@ -5345,7 +5345,7 @@ __metadata:
     prettier: ^3.2.5
     rimraf: "*"
     title-case: ^3.0.3
-    ts-api-utils: ^2.0.1
+    ts-api-utils: ^2.1.0
     tsx: "*"
     typescript: "*"
     unist-util-visit: ^5.0.0
@@ -5459,7 +5459,7 @@ __metadata:
     eslint: "*"
     prettier: ^3.2.5
     rimraf: "*"
-    ts-api-utils: ^2.0.1
+    ts-api-utils: ^2.1.0
     typescript: "*"
     vitest: ^3.1.2
   peerDependencies:
@@ -5568,7 +5568,7 @@ __metadata:
     prettier: ^3.2.5
     rimraf: "*"
     semver: ^7.6.0
-    ts-api-utils: ^2.0.1
+    ts-api-utils: ^2.1.0
     typescript: "*"
     vitest: ^3.1.2
   peerDependencies:
@@ -18306,12 +18306,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-api-utils@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "ts-api-utils@npm:2.0.1"
+"ts-api-utils@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "ts-api-utils@npm:2.1.0"
   peerDependencies:
     typescript: ">=4.8.4"
-  checksum: ca31f4dc3c0d69691599de2955b41879c27cb91257f2a468bbb444d3f09982a5f717a941fcebd3aaa092b778710647a0be1c2b1dd75cf6c82ceffc3bf4c7d27d
+  checksum: 5b1ef89105654d93d67582308bd8dfe4bbf6874fccbcaa729b08fbb00a940fd4c691ca6d0d2b18c3c70878d9a7e503421b7cc473dbc3d0d54258b86401d4b15d
   languageName: node
   linkType: hard
 
