@@ -62,7 +62,7 @@
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
-    "@eslint-community/eslint-utils": "^4.4.0",
+    "@eslint-community/eslint-utils": "^4.7.0",
     "@typescript-eslint/scope-manager": "8.31.1",
     "@typescript-eslint/types": "8.31.1",
     "@typescript-eslint/typescript-estree": "8.31.1"

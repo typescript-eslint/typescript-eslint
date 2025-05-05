@@ -3203,7 +3203,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint-community/eslint-utils@npm:^4.2.0, @eslint-community/eslint-utils@npm:^4.4.0":
+"@eslint-community/eslint-utils@npm:^4.2.0, @eslint-community/eslint-utils@npm:^4.4.0, @eslint-community/eslint-utils@npm:^4.7.0":
   version: 4.7.0
   resolution: "@eslint-community/eslint-utils@npm:4.7.0"
   dependencies:
@@ -5600,7 +5600,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
-    "@eslint-community/eslint-utils": ^4.4.0
+    "@eslint-community/eslint-utils": ^4.7.0
     "@typescript-eslint/scope-manager": 8.31.1
     "@typescript-eslint/types": 8.31.1
     "@typescript-eslint/typescript-estree": 8.31.1
