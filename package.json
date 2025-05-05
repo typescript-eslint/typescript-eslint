@@ -130,7 +130,7 @@
     "tsx": "^4.7.2",
     "typescript": "5.8.2"
   },
-  "packageManager": "yarn@3.8.2",
+  "packageManager": "yarn@4.9.1",
   "nx": {
     "includedScripts": []
   }
