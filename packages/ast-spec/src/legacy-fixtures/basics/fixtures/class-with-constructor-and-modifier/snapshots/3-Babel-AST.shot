@@ -3,6 +3,7 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
@@ -10,9 +11,12 @@ Program {
             type: "MethodDefinition",
             accessibility: "protected",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "constructor",
+              optional: false,
 
               range: [95, 106],
               loc: {
@@ -21,6 +25,8 @@ Program {
               },
             },
             kind: "constructor",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -35,6 +41,7 @@ Program {
                   end: { column: 28, line: 4 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -57,6 +64,7 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: true,
+            decorators: [],
             key: Literal {
               type: "Literal",
               raw: "'constructor'",
@@ -69,6 +77,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -83,6 +93,7 @@ Program {
                   end: { column: 29, line: 6 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -109,9 +120,13 @@ Program {
           end: { column: 1, line: 7 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "C",
+        optional: false,
 
         range: [79, 80],
         loc: {
@@ -119,6 +134,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 144],

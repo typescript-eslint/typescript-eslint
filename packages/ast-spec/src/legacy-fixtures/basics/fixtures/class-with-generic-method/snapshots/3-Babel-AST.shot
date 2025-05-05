@@ -3,15 +3,19 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "getBar",
+              optional: false,
 
               range: [87, 93],
               loc: {
@@ -20,6 +24,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -34,6 +40,7 @@ Program {
                   end: { column: 16, line: 4 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -43,7 +50,10 @@ Program {
                 params: [
                   TSTypeParameter {
                     type: "TSTypeParameter",
+                    const: false,
+                    in: false,
                     name: "T",
+                    out: false,
 
                     range: [94, 95],
                     loc: {
@@ -60,9 +70,9 @@ Program {
                 },
               },
 
-              range: [96, 101],
+              range: [93, 101],
               loc: {
-                start: { column: 11, line: 4 },
+                start: { column: 8, line: 4 },
                 end: { column: 16, line: 4 },
               },
             },
@@ -81,9 +91,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -91,6 +105,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 103],

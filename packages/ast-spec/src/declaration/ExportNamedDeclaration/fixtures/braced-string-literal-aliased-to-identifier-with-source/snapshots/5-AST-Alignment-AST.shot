@@ -30,9 +30,9 @@ Snapshot Diff:
             type: 'ExportSpecifier',
             exported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'b',
--             optional: false,
+              optional: false,
 
               range: [18, 19],
               loc: {

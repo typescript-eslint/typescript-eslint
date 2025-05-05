@@ -6,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "abc",
+            optional: false,
 
             range: [99, 102],
             loc: {
@@ -35,6 +38,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "var",
 
       range: [95, 109],
@@ -52,7 +56,9 @@ Program {
           computed: false,
           object: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "globalThis",
+            optional: false,
 
             range: [142, 152],
             loc: {
@@ -63,7 +69,9 @@ Program {
           optional: false,
           property: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "abc",
+            optional: false,
 
             range: [153, 156],
             loc: {
@@ -109,9 +117,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "answer",
+            optional: false,
 
             range: [169, 175],
             loc: {
@@ -138,6 +149,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [165, 181],
@@ -155,7 +167,9 @@ Program {
           computed: false,
           object: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "globalThis",
+            optional: false,
 
             range: [250, 260],
             loc: {
@@ -166,7 +180,9 @@ Program {
           optional: false,
           property: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "answer",
+            optional: false,
 
             range: [261, 267],
             loc: {

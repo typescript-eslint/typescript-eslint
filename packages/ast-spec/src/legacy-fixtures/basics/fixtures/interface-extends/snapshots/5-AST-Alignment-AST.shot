@@ -20,7 +20,7 @@ Snapshot Diff:
             end: { column: 28, line: 3 },
           },
         },
--       declare: false,
+        declare: false,
         extends: Array [
 -         TSInterfaceHeritage {
 -           type: 'TSInterfaceHeritage',
@@ -28,9 +28,9 @@ Snapshot Diff:
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'Bar',
--             optional: false,
+              optional: false,
 
               range: [95, 98],
               loc: {
@@ -48,9 +48,9 @@ Snapshot Diff:
         ],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [83, 86],
           loc: {

@@ -10,7 +10,7 @@ Snapshot Diff:
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -21,13 +21,13 @@ Snapshot Diff:
             end: { column: 22, line: 1 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'D',
--         optional: false,
+          optional: false,
 
           range: [6, 7],
           loc: {
@@ -35,7 +35,7 @@ Snapshot Diff:
             end: { column: 7, line: 1 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: 'TSTypeParameterDeclaration',
@@ -56,8 +56,8 @@ Snapshot Diff:
 -                 end: { column: 18, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [8, 18],
               loc: {

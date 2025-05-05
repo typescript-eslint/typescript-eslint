@@ -13,12 +13,12 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'f',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSFunctionType {
@@ -29,9 +29,9 @@ Snapshot Diff:
                       type: 'RestElement',
                       argument: Identifier {
                         type: 'Identifier',
--                       decorators: Array [],
+                        decorators: Array [],
                         name: 'a',
--                       optional: false,
+                        optional: false,
 
                         range: [84, 85],
                         loc: {
@@ -39,8 +39,8 @@ Snapshot Diff:
                           end: { column: 12, line: 3 },
                         },
                       },
--                     decorators: Array [],
--                     optional: false,
+                      decorators: Array [],
+                      optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: 'TSTypeAnnotation',
                         typeAnnotation: TSArrayType {
@@ -125,7 +125,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'let',
 
         range: [73, 105],

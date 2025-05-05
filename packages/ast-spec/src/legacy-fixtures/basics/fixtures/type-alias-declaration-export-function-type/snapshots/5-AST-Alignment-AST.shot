@@ -14,12 +14,12 @@ Snapshot Diff:
 +       assertions: Array [],
         declaration: TSTypeAliasDeclaration {
           type: 'TSTypeAliasDeclaration',
--         declare: false,
+          declare: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'TestCallback',
--           optional: false,
+            optional: false,
 
             range: [85, 97],
             loc: {
@@ -33,9 +33,9 @@ Snapshot Diff:
 +           parameters: Array [
               Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'a',
--               optional: false,
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: 'TSTypeAnnotation',
                   typeAnnotation: TSNumberKeyword {
@@ -106,8 +106,7 @@ Snapshot Diff:
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [73, 121],
     loc: {

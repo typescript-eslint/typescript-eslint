@@ -24,13 +24,13 @@ Snapshot Diff:
 -             end: { column: 18, line: 1 },
 -           },
 -         },
--         const: false,
--         declare: false,
+          const: false,
+          declare: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'Foo',
--           optional: false,
+            optional: false,
 
             range: [12, 15],
             loc: {

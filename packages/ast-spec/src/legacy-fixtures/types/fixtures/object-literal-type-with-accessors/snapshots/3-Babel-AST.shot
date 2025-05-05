@@ -3,9 +3,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Thing",
+        optional: false,
 
         range: [78, 83],
         loc: {
@@ -21,7 +24,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "size",
+              optional: false,
 
               range: [94, 98],
               loc: {
@@ -30,7 +35,10 @@ Program {
               },
             },
             kind: "get",
+            optional: false,
             parameters: [],
+            readonly: false,
+            static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSNumberKeyword {
@@ -61,7 +69,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "size",
+              optional: false,
 
               range: [116, 120],
               loc: {
@@ -70,10 +80,13 @@ Program {
               },
             },
             kind: "set",
+            optional: false,
             parameters: [
               Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "value",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSUnionType {
@@ -129,6 +142,8 @@ Program {
                 },
               },
             ],
+            readonly: false,
+            static: false,
 
             range: [112, 155],
             loc: {

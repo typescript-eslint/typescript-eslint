@@ -6,15 +6,20 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: ObjectPattern {
             type: "ObjectPattern",
+            decorators: [],
+            optional: false,
             properties: [
               Property {
                 type: "Property",
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "foo",
+                  optional: false,
 
                   range: [6, 9],
                   loc: {
@@ -24,10 +29,13 @@ Program {
                 },
                 kind: "init",
                 method: false,
+                optional: false,
                 shorthand: true,
                 value: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "foo",
+                  optional: false,
 
                   range: [6, 9],
                   loc: {
@@ -69,6 +77,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [0, 16],

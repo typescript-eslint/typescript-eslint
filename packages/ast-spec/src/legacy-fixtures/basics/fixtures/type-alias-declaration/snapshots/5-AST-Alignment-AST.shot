@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Result',
--         optional: false,
+          optional: false,
 
           range: [78, 84],
           loc: {
@@ -31,7 +31,9 @@ Snapshot Diff:
 -             typeArguments: TSTypeParameterInstantiation {
 +             typeName: Identifier {
 +               type: 'Identifier',
++               decorators: Array [],
 +               name: 'Success',
++               optional: false,
 +
 +               range: [90, 97],
 +               loc: {
@@ -46,9 +48,9 @@ Snapshot Diff:
                     type: 'TSTypeReference',
                     typeName: Identifier {
                       type: 'Identifier',
--                     decorators: Array [],
+                      decorators: Array [],
                       name: 'T',
--                     optional: false,
+                      optional: false,
 
                       range: [98, 99],
                       loc: {
@@ -94,9 +96,9 @@ Snapshot Diff:
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'Failure',
--               optional: false,
+                optional: false,
 
                 range: [103, 110],
                 loc: {
@@ -124,8 +126,8 @@ Snapshot Diff:
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -138,8 +140,8 @@ Snapshot Diff:
 -                 end: { column: 13, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [85, 86],
               loc: {

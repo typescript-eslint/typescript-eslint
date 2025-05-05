@@ -33,7 +33,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "X",
+            optional: false,
 
             range: [18, 19],
             loc: {

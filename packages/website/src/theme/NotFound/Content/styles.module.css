@@ -23,5 +23,8 @@
   height: 13px;
   background: url('/img/squiggle.svg') repeat-x;
   background-size: contain;
+
+  /* https://github.com/stylelint/stylelint/issues/8100 */
+  /* stylelint-disable-next-line declaration-property-value-no-unknown */
   image-rendering: smooth;
 }

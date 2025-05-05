@@ -13,12 +13,12 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'x',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeReference {
@@ -26,7 +26,9 @@ Snapshot Diff:
 -                 typeArguments: TSTypeParameterInstantiation {
 +                 typeName: Identifier {
 +                   type: 'Identifier',
++                   decorators: Array [],
 +                   name: 'X',
++                   optional: false,
 +
 +                   range: [80, 81],
 +                   loc: {
@@ -96,7 +98,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'var',
 
         range: [73, 89],
@@ -115,9 +117,9 @@ Snapshot Diff:
             computed: false,
             object: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'Observable',
--             optional: false,
+              optional: false,
 
               range: [90, 100],
               loc: {
@@ -128,9 +130,9 @@ Snapshot Diff:
             optional: false,
             property: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'empty',
--             optional: false,
+              optional: false,
 
               range: [101, 106],
               loc: {

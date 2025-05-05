@@ -10,21 +10,21 @@ Snapshot Diff:
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             PropertyDefinition {
               type: 'PropertyDefinition',
               computed: false,
--             declare: false,
--             decorators: Array [],
--             definite: false,
+              declare: false,
+              decorators: Array [],
+              definite: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'mBuffers',
--               optional: false,
+                optional: false,
 
                 range: [99, 107],
                 loc: {
@@ -32,9 +32,9 @@ Snapshot Diff:
                   end: { column: 10, line: 4 },
                 },
               },
--             optional: false,
--             override: false,
--             readonly: false,
+              optional: false,
+              override: false,
+              readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -64,9 +64,9 @@ Snapshot Diff:
                     type: 'TSQualifiedName',
                     left: Identifier {
                       type: 'Identifier',
--                     decorators: Array [],
+                      decorators: Array [],
                       name: 'interop',
--                     optional: false,
+                      optional: false,
 
                       range: [109, 116],
                       loc: {
@@ -76,9 +76,9 @@ Snapshot Diff:
                     },
                     right: Identifier {
                       type: 'Identifier',
--                     decorators: Array [],
+                      decorators: Array [],
                       name: 'Reference',
--                     optional: false,
+                      optional: false,
 
                       range: [117, 126],
                       loc: {
@@ -143,13 +143,13 @@ Snapshot Diff:
             end: { column: 1, line: 5 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'AudioBufferList',
--         optional: false,
+          optional: false,
 
           range: [79, 94],
           loc: {
@@ -157,7 +157,7 @@ Snapshot Diff:
             end: { column: 21, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
 
         range: [73, 150],

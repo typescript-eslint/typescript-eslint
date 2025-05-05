@@ -39,12 +39,12 @@ Snapshot Diff:
               declarations: Array [
                 VariableDeclarator {
                   type: 'VariableDeclarator',
--                 definite: false,
+                  definite: false,
                   id: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'a',
--                   optional: false,
+                    optional: false,
 
                     range: [111, 112],
                     loc: {
@@ -71,7 +71,7 @@ Snapshot Diff:
                   },
                 },
               ],
--             declare: false,
+              declare: false,
               kind: 'var',
 
               range: [107, 117],
@@ -108,13 +108,13 @@ Snapshot Diff:
             end: { column: 1, line: 7 },
           },
         },
--       declare: false,
--       global: false,
+        declare: false,
+        global: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'foo',
--         optional: false,
+          optional: false,
 
           range: [83, 86],
           loc: {

@@ -6,9 +6,12 @@ Program {
       assertions: [],
       declaration: TSTypeAliasDeclaration {
         type: "TSTypeAliasDeclaration",
+        declare: false,
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "TestCallback",
+          optional: false,
 
           range: [85, 97],
           loc: {
@@ -21,7 +24,9 @@ Program {
           parameters: [
             Identifier {
               type: "Identifier",
+              decorators: [],
               name: "a",
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSNumberKeyword {
@@ -91,7 +96,7 @@ Program {
       },
     },
   ],
-  sourceType: "script",
+  sourceType: "module",
 
   range: [73, 121],
   loc: {

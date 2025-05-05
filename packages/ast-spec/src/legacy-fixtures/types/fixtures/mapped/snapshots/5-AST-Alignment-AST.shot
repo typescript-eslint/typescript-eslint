@@ -13,12 +13,12 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'map',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSMappedType {
@@ -57,6 +57,7 @@ Snapshot Diff:
 +                 },
 +                 typeParameter: TSTypeParameter {
 +                   type: 'TSTypeParameter',
++                   const: false,
 +                   constraint: TSStringKeyword {
 +                     type: 'TSStringKeyword',
 +
@@ -66,7 +67,9 @@ Snapshot Diff:
 +                       end: { column: 23, line: 3 },
 +                     },
 +                   },
++                   in: false,
 +                   name: 'P',
++                   out: false,
 +
 +                   range: [85, 96],
 +                   loc: {
@@ -104,7 +107,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'let',
 
         range: [73, 108],
