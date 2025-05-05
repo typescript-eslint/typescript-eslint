@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures > type > TSImportType > type-import-type-with-import-attributes > AST Alignment - AST`]
+exports[`AST Fixtures > type > TSImportType > type-import-type-with-import-attributes-assert > AST Alignment - AST`]
 Snapshot Diff:
 - TSESTree
 + Babel
@@ -17,10 +17,10 @@ Snapshot Diff:
           name: 'A',
 -         optional: false,
 
-          range: [78, 79],
+          range: [5, 6],
           loc: {
-            start: { column: 5, line: 3 },
-            end: { column: 6, line: 3 },
+            start: { column: 5, line: 1 },
+            end: { column: 6, line: 1 },
           },
         },
         typeAnnotation: TSImportType {
@@ -32,10 +32,10 @@ Snapshot Diff:
 -             raw: '"A"',
 -             value: 'A',
 -
--             range: [89, 92],
+-             range: [16, 19],
 -             loc: {
--               start: { column: 16, line: 3 },
--               end: { column: 19, line: 3 },
+-               start: { column: 16, line: 1 },
+-               end: { column: 19, line: 1 },
 -             },
 -           },
 +         argument: Literal {
@@ -43,10 +43,10 @@ Snapshot Diff:
 +           raw: '"A"',
 +           value: 'A',
 
-            range: [89, 92],
+            range: [16, 19],
             loc: {
-              start: { column: 16, line: 3 },
-              end: { column: 19, line: 3 },
+              start: { column: 16, line: 1 },
+              end: { column: 19, line: 1 },
             },
           },
           options: ObjectExpression {
@@ -58,13 +58,13 @@ Snapshot Diff:
                 key: Identifier {
                   type: 'Identifier',
 -                 decorators: Array [],
-                  name: 'with',
+                  name: 'assert',
 -                 optional: false,
 
-                  range: [96, 100],
+                  range: [23, 29],
                   loc: {
-                    start: { column: 23, line: 3 },
-                    end: { column: 27, line: 3 },
+                    start: { column: 23, line: 1 },
+                    end: { column: 29, line: 1 },
                   },
                 },
                 kind: 'init',
@@ -83,10 +83,10 @@ Snapshot Diff:
                         name: 'type',
 -                       optional: false,
 
-                        range: [104, 108],
+                        range: [33, 37],
                         loc: {
-                          start: { column: 31, line: 3 },
-                          end: { column: 35, line: 3 },
+                          start: { column: 33, line: 1 },
+                          end: { column: 37, line: 1 },
                         },
                       },
                       kind: 'init',
@@ -98,64 +98,64 @@ Snapshot Diff:
                         raw: '"json"',
                         value: 'json',
 
-                        range: [110, 116],
+                        range: [39, 45],
                         loc: {
-                          start: { column: 37, line: 3 },
-                          end: { column: 43, line: 3 },
+                          start: { column: 39, line: 1 },
+                          end: { column: 45, line: 1 },
                         },
                       },
 
-                      range: [104, 116],
+                      range: [33, 45],
                       loc: {
-                        start: { column: 31, line: 3 },
-                        end: { column: 43, line: 3 },
+                        start: { column: 33, line: 1 },
+                        end: { column: 45, line: 1 },
                       },
                     },
                   ],
 
-                  range: [102, 118],
+                  range: [31, 47],
                   loc: {
-                    start: { column: 29, line: 3 },
-                    end: { column: 45, line: 3 },
+                    start: { column: 31, line: 1 },
+                    end: { column: 47, line: 1 },
                   },
                 },
 
-                range: [96, 118],
+                range: [23, 47],
                 loc: {
-                  start: { column: 23, line: 3 },
-                  end: { column: 45, line: 3 },
+                  start: { column: 23, line: 1 },
+                  end: { column: 47, line: 1 },
                 },
               },
             ],
 
-            range: [94, 120],
+            range: [21, 49],
             loc: {
-              start: { column: 21, line: 3 },
-              end: { column: 47, line: 3 },
+              start: { column: 21, line: 1 },
+              end: { column: 49, line: 1 },
             },
           },
 -         qualifier: null,
 -         typeArguments: null,
 
-          range: [82, 121],
+          range: [9, 50],
           loc: {
-            start: { column: 9, line: 3 },
-            end: { column: 48, line: 3 },
+            start: { column: 9, line: 1 },
+            end: { column: 50, line: 1 },
           },
         },
 
-        range: [73, 122],
+        range: [0, 51],
         loc: {
-          start: { column: 0, line: 3 },
-          end: { column: 49, line: 3 },
+          start: { column: 0, line: 1 },
+          end: { column: 51, line: 1 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [73, 123],
+    range: [0, 52],
     loc: {
-      start: { column: 0, line: 3 },
-      end: { column: 0, line: 4 },
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
     },
   }
