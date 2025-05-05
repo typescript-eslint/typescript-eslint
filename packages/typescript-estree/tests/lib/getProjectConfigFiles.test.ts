@@ -37,7 +37,7 @@ describe(getProjectConfigFiles, () => {
 
     const actual = getProjectConfigFiles(parseSettings, project);
 
-    expect(actual).toEqual([project]);
+    expect(actual).toStrictEqual([project]);
   });
 
   it('returns the project when given as a string array', () => {
@@ -45,7 +45,7 @@ describe(getProjectConfigFiles, () => {
 
     const actual = getProjectConfigFiles(parseSettings, project);
 
-    expect(actual).toEqual(project);
+    expect(actual).toStrictEqual(project);
   });
 
   describe('it does not enable type-aware linting when given as', () => {
@@ -65,7 +65,7 @@ describe(getProjectConfigFiles, () => {
       getProjectConfigFiles(parseSettings, true);
       const actual = getProjectConfigFiles(parseSettings, true);
 
-      expect(actual).toEqual([
+      expect(actual).toStrictEqual([
         path.normalize('repos/repo/packages/package/tsconfig.json'),
       ]);
       expect(mockExistsSync).toHaveBeenCalledOnce();
@@ -99,7 +99,7 @@ describe(getProjectConfigFiles, () => {
         true,
       );
 
-      expect(actual).toEqual([path.normalize('a/tsconfig.json')]);
+      expect(actual).toStrictEqual([path.normalize('a/tsconfig.json')]);
       expect(mockExistsSync).toHaveBeenCalledTimes(4);
     });
 
@@ -131,7 +131,7 @@ describe(getProjectConfigFiles, () => {
         true,
       );
 
-      expect(actual).toEqual([path.normalize('a/tsconfig.json')]);
+      expect(actual).toStrictEqual([path.normalize('a/tsconfig.json')]);
       expect(mockExistsSync).toHaveBeenCalledTimes(6);
     });
   });
@@ -142,7 +142,7 @@ describe(getProjectConfigFiles, () => {
 
       const actual = getProjectConfigFiles(parseSettings, true);
 
-      expect(actual).toEqual([
+      expect(actual).toStrictEqual([
         path.normalize('repos/repo/packages/package/tsconfig.json'),
       ]);
     });
@@ -154,7 +154,9 @@ describe(getProjectConfigFiles, () => {
 
       const actual = getProjectConfigFiles(parseSettings, true);
 
-      expect(actual).toEqual([path.normalize('repos/repo/tsconfig.json')]);
+      expect(actual).toStrictEqual([
+        path.normalize('repos/repo/tsconfig.json'),
+      ]);
     });
 
     it('throws when searching hits .', () => {

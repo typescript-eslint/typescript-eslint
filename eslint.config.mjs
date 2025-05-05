@@ -148,6 +148,7 @@ export default tseslint.config(
         'error',
         { allowConstantLoopConditions: true, checkTypePredicates: true },
       ],
+      '@typescript-eslint/no-unnecessary-type-conversion': 'error',
       '@typescript-eslint/no-unnecessary-type-parameters': 'error',
       '@typescript-eslint/no-unused-expressions': 'error',
       '@typescript-eslint/no-unused-vars': [
@@ -389,6 +390,18 @@ export default tseslint.config(
       'vitest/valid-expect': 'error',
     },
     settings: { vitest: { typecheck: true } },
+  },
+  {
+    files: ['packages/*/tests/**/vitest-custom-matchers.d.ts'],
+    name: 'vitest-custom-matchers-declaration-files',
+    rules: {
+      '@typescript-eslint/no-empty-object-type': [
+        'error',
+        { allowInterfaces: 'with-single-extends' },
+      ],
+
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
   },
   // plugin rule tests
   {

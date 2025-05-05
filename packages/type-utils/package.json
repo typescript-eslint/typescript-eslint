@@ -37,8 +37,7 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist/ coverage/",
+    "clean": "rimraf dist/ coverage/",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
@@ -48,7 +47,7 @@
     "@typescript-eslint/typescript-estree": "8.31.1",
     "@typescript-eslint/utils": "8.31.1",
     "debug": "^4.3.4",
-    "ts-api-utils": "^2.0.1"
+    "ts-api-utils": "^2.1.0"
   },
   "peerDependencies": {
     "eslint": "^8.57.0 || ^9.0.0",
@@ -56,12 +55,13 @@
   },
   "devDependencies": {
     "@typescript-eslint/parser": "8.31.1",
-    "@vitest/coverage-v8": "^3.1.1",
+    "@vitest/coverage-v8": "^3.1.2",
     "ajv": "^6.12.6",
+    "eslint": "*",
     "prettier": "^3.2.5",
     "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.2"
   },
   "funding": {
     "type": "opencollective",

@@ -11,7 +11,7 @@ describe(getValueOfLiteralType, () => {
     const result = getValueOfLiteralType(stringLiteralType);
 
     expect(result).toBe('hello');
-    expect(typeof result).toBe('string');
+    expect(result).toBeTypeOf('string');
   });
 
   it('returns a number for a numeric literal type', () => {
@@ -22,7 +22,7 @@ describe(getValueOfLiteralType, () => {
     const result = getValueOfLiteralType(numberLiteralType);
 
     expect(result).toBe(42);
-    expect(typeof result).toBe('number');
+    expect(result).toBeTypeOf('number');
   });
 
   it('returns a bigint for a pseudo-bigint literal type', () => {
@@ -36,7 +36,7 @@ describe(getValueOfLiteralType, () => {
     const result = getValueOfLiteralType(pseudoBigIntLiteralType);
 
     expect(result).toBe(BigInt('12345678901234567890'));
-    expect(typeof result).toBe('bigint');
+    expect(result).toBeTypeOf('bigint');
   });
 
   it('returns a negative bigint for a pseudo-bigint with negative=true', () => {
@@ -50,6 +50,6 @@ describe(getValueOfLiteralType, () => {
     const result = getValueOfLiteralType(negativePseudoBigIntLiteralType);
 
     expect(result).toBe(BigInt('-98765432109876543210'));
-    expect(typeof result).toBe('bigint');
+    expect(result).toBeTypeOf('bigint');
   });
 });

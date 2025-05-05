@@ -17,7 +17,7 @@ describe(parser.parseAndGenerateServices, () => {
         filePath: join(PROJECT_DIR, 'nested', 'deep', 'included.ts'),
       });
 
-      expect(result).toEqual({
+      expect(result).toStrictEqual({
         ast: expect.any(Object),
         services: expect.any(Object),
       });
@@ -29,7 +29,7 @@ describe(parser.parseAndGenerateServices, () => {
         filePath: join(PROJECT_DIR, 'nested', 'included.ts'),
       });
 
-      expect(result).toEqual({
+      expect(result).toStrictEqual({
         ast: expect.any(Object),
         services: expect.any(Object),
       });
