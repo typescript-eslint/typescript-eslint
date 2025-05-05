@@ -2,6 +2,7 @@ import type {
   JSONSchema4,
   JSONSchema4ObjectSchema,
 } from '@typescript-eslint/utils/json-schema';
+import type { Token, Tokens, TokensList } from 'marked';
 import type * as mdast from 'mdast';
 
 import * as tseslintParser from '@typescript-eslint/parser';
@@ -28,7 +29,7 @@ const rulesData = Object.entries(rules);
 
 interface ParsedMarkdownFile {
   fullText: string;
-  tokens: marked.TokensList;
+  tokens: TokensList;
 }
 
 async function parseMarkdownFile(
@@ -44,22 +45,20 @@ async function parseMarkdownFile(
   return { fullText, tokens };
 }
 
-type TokenType = marked.Token['type'];
+type TokenType = Token['type'];
 
 function tokenIs<Type extends TokenType>(
-  token: marked.Token,
+  token: Token,
   type: Type,
-): token is { type: Type } & marked.Token {
+): token is { type: Type } & Token {
   return token.type === type;
 }
 
-function tokenIsHeading(token: marked.Token): token is marked.Tokens.Heading {
+function tokenIsHeading(token: Token): token is Tokens.Heading {
   return tokenIs(token, 'heading');
 }
 
-function tokenIsH2(
-  token: marked.Token,
-): token is { depth: 2 } & marked.Tokens.Heading {
+function tokenIsH2(token: Token): token is { depth: 2 } & Tokens.Heading {
   return (
     tokenIsHeading(token) && token.depth === 2 && !/[a-z]+: /.test(token.text)
   );
@@ -239,7 +238,6 @@ describe('Validating rule docs', () => {
           `🛑 This file is source code, not the primary documentation location! 🛑`,
           ``,
           `See **https://typescript-eslint.io/rules/${ruleName}** for documentation.`,
-          ``,
         ].join('\n'),
         type: 'blockquote',
       });
@@ -362,7 +360,9 @@ describe('Validating rule docs', () => {
       });
     });
 
-    const codeTokens = tokens.filter(token => tokenIs(token, 'code'));
+    const codeTokens = tokens.filter((token): token is Tokens.Code =>
+      tokenIs(token, 'code'),
+    );
 
     const codeTokensWithTSLanguage = codeTokens.filter(codeToken => {
       const lang = codeToken.lang?.trim();
