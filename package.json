@@ -107,7 +107,7 @@
     "nx": "20.7.2",
     "prettier": "3.5.0",
     "pretty-format": "^29.7.0",
-    "rimraf": "^5.0.5",
+    "rimraf": "^6.0.0",
     "semver": "7.7.0",
     "tsx": "*",
     "typescript": ">=4.8.4 <5.9.0",
