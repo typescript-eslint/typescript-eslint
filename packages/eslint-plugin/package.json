@@ -71,7 +71,7 @@
     "ts-api-utils": "^2.1.0"
   },
   "devDependencies": {
-    "@types/marked": "^5.0.2",
+    "@types/marked": "^6.0.0",
     "@types/mdast": "^4.0.3",
     "@types/natural-compare": "*",
     "@typescript-eslint/rule-schema-to-typescript-types": "8.32.0",
