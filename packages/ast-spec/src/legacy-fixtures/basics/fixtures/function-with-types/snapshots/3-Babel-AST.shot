@@ -11,7 +11,9 @@ Program {
             type: "ReturnStatement",
             argument: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "name",
+              optional: false,
 
               range: [123, 127],
               loc: {
@@ -34,11 +36,14 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "message",
+        optional: false,
 
         range: [82, 89],
         loc: {
@@ -49,7 +54,9 @@ Program {
       params: [
         Identifier {
           type: "Identifier",
+          decorators: [],
           name: "name",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSStringKeyword {

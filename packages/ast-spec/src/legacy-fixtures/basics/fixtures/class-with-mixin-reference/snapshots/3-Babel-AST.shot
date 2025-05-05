@@ -14,11 +14,14 @@ Program {
           end: { column: 48, line: 3 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "M",
+        optional: false,
 
         range: [82, 83],
         loc: {
@@ -29,14 +32,18 @@ Program {
       params: [
         Identifier {
           type: "Identifier",
+          decorators: [],
           name: "Base",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "T",
+                optional: false,
 
                 range: [116, 117],
                 loc: {
@@ -71,11 +78,14 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "Constructor",
+                optional: false,
 
                 range: [94, 105],
                 loc: {
@@ -90,7 +100,9 @@ Program {
                     type: "TSTypeReference",
                     typeName: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "M",
+                      optional: false,
 
                       range: [106, 107],
                       loc: {
@@ -120,7 +132,9 @@ Program {
                 end: { column: 35, line: 3 },
               },
             },
+            in: false,
             name: "T",
+            out: false,
 
             range: [84, 108],
             loc: {

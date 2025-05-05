@@ -13,7 +13,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "assert",
+                optional: false,
 
                 range: [89, 95],
                 loc: {
@@ -23,6 +25,7 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: false,
               value: ObjectExpression {
                 type: "ObjectExpression",
@@ -32,7 +35,9 @@ Program {
                     computed: false,
                     key: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "type",
+                      optional: false,
 
                       range: [99, 103],
                       loc: {
@@ -42,6 +47,7 @@ Program {
                     },
                     kind: "init",
                     method: false,
+                    optional: false,
                     shorthand: false,
                     value: Literal {
                       type: "Literal",
@@ -92,7 +98,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "assert",
+                optional: false,
 
                 range: [89, 95],
                 loc: {
@@ -102,6 +110,7 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: false,
               value: ObjectExpression {
                 type: "ObjectExpression",
@@ -111,7 +120,9 @@ Program {
                     computed: false,
                     key: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "type",
+                      optional: false,
 
                       range: [99, 103],
                       loc: {
@@ -121,6 +132,7 @@ Program {
                     },
                     kind: "init",
                     method: false,
+                    optional: false,
                     shorthand: false,
                     value: Literal {
                       type: "Literal",

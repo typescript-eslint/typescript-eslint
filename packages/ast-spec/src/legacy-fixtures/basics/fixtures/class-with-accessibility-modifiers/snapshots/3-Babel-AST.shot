@@ -3,6 +3,7 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
@@ -10,9 +11,14 @@ Program {
             type: "PropertyDefinition",
             accessibility: "private",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "bar",
+              optional: false,
 
               range: [95, 98],
               loc: {
@@ -20,6 +26,9 @@ Program {
                 end: { column: 13, line: 4 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -51,9 +60,14 @@ Program {
             type: "PropertyDefinition",
             accessibility: "public",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "baz",
+              optional: false,
 
               range: [124, 127],
               loc: {
@@ -61,6 +75,9 @@ Program {
                 end: { column: 19, line: 5 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: true,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -92,9 +109,12 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "getBar",
+              optional: false,
 
               range: [146, 152],
               loc: {
@@ -103,6 +123,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -127,7 +149,9 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "bar",
+                        optional: false,
 
                         range: [173, 176],
                         loc: {
@@ -157,6 +181,7 @@ Program {
                   end: { column: 3, line: 8 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -179,9 +204,12 @@ Program {
             type: "MethodDefinition",
             accessibility: "protected",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "setBar",
+              optional: false,
 
               range: [194, 200],
               loc: {
@@ -190,6 +218,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -216,7 +246,9 @@ Program {
                         optional: false,
                         property: Identifier {
                           type: "Identifier",
+                          decorators: [],
                           name: "bar",
+                          optional: false,
 
                           range: [225, 228],
                           loc: {
@@ -234,7 +266,9 @@ Program {
                       operator: "=",
                       right: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "bar",
+                        optional: false,
 
                         range: [231, 234],
                         loc: {
@@ -264,13 +298,16 @@ Program {
                   end: { column: 3, line: 11 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
               params: [
                 Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "bar",
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSStringKeyword {
@@ -319,9 +356,13 @@ Program {
           end: { column: 1, line: 12 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -329,6 +370,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 241],

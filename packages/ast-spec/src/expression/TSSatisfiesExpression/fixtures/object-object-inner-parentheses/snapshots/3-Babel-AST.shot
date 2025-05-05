@@ -13,7 +13,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "prop",
+                optional: false,
 
                 range: [3, 7],
                 loc: {
@@ -23,6 +25,7 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: false,
               value: Literal {
                 type: "Literal",
@@ -58,7 +61,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "prop",
+                optional: false,
 
                 range: [33, 37],
                 loc: {
@@ -66,6 +71,9 @@ Program {
                   end: { column: 37, line: 1 },
                 },
               },
+              optional: false,
+              readonly: false,
+              static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSStringKeyword {

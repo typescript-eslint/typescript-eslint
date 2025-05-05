@@ -18,9 +18,9 @@ Snapshot Diff:
               type: 'ReturnStatement',
               argument: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'b',
--               optional: false,
+                optional: false,
 
                 range: [118, 119],
                 loc: {
@@ -43,14 +43,14 @@ Snapshot Diff:
             end: { column: 1, line: 5 },
           },
         },
--       declare: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'a',
--         optional: false,
+          optional: false,
 
           range: [82, 83],
           loc: {
@@ -61,18 +61,18 @@ Snapshot Diff:
         params: Array [
           Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'b',
--           optional: false,
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'X',
--                 optional: false,
+                  optional: false,
 
                   range: [101, 102],
                   loc: {
@@ -108,9 +108,9 @@ Snapshot Diff:
             type: 'TSTypeReference',
             typeName: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'X',
--             optional: false,
+              optional: false,
 
               range: [105, 106],
               loc: {
@@ -137,7 +137,7 @@ Snapshot Diff:
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
+              const: false,
               constraint: TSTypeLiteral {
                 type: 'TSTypeLiteral',
                 members: Array [],
@@ -148,7 +148,7 @@ Snapshot Diff:
                   end: { column: 23, line: 3 },
                 },
               },
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -161,8 +161,8 @@ Snapshot Diff:
 -                 end: { column: 12, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'X',
+              out: false,
 
               range: [84, 96],
               loc: {

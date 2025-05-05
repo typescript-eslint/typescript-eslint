@@ -16,13 +16,17 @@ Program {
       },
       left: ObjectPattern {
         type: "ObjectPattern",
+        decorators: [],
+        optional: false,
         properties: [
           Property {
             type: "Property",
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "x",
+              optional: false,
 
               range: [7, 8],
               loc: {
@@ -32,10 +36,13 @@ Program {
             },
             kind: "init",
             method: false,
+            optional: false,
             shorthand: true,
             value: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "x",
+              optional: false,
 
               range: [7, 8],
               loc: {
@@ -55,7 +62,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "y",
+              optional: false,
 
               range: [10, 11],
               loc: {
@@ -65,10 +74,13 @@ Program {
             },
             kind: "init",
             method: false,
+            optional: false,
             shorthand: true,
             value: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "y",
+              optional: false,
 
               range: [10, 11],
               loc: {
@@ -123,10 +135,13 @@ Program {
       },
       left: ArrayPattern {
         type: "ArrayPattern",
+        decorators: [],
         elements: [
           Identifier {
             type: "Identifier",
+            decorators: [],
             name: "x",
+            optional: false,
 
             range: [31, 32],
             loc: {
@@ -136,7 +151,9 @@ Program {
           },
           Identifier {
             type: "Identifier",
+            decorators: [],
             name: "y",
+            optional: false,
 
             range: [34, 35],
             loc: {
@@ -145,6 +162,7 @@ Program {
             },
           },
         ],
+        optional: false,
 
         range: [30, 36],
         loc: {
@@ -187,7 +205,9 @@ Program {
         computed: false,
         object: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "x",
+          optional: false,
 
           range: [53, 54],
           loc: {
@@ -198,7 +218,9 @@ Program {
         optional: false,
         property: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "y",
+          optional: false,
 
           range: [55, 56],
           loc: {
@@ -247,7 +269,9 @@ Program {
         type: "TSAsExpression",
         expression: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "x",
+          optional: false,
 
           range: [73, 74],
           loc: {
@@ -259,7 +283,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "T",
+            optional: false,
 
             range: [78, 79],
             loc: {

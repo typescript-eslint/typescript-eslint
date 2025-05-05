@@ -16,6 +16,7 @@ Program {
             end: { column: 29, line: 1 },
           },
         },
+        declare: false,
         expression: false,
         generator: false,
         id: null,

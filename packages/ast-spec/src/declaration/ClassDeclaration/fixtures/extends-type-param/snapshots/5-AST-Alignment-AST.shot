@@ -10,7 +10,7 @@ Snapshot Diff:
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -21,13 +21,13 @@ Snapshot Diff:
             end: { column: 32, line: 1 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [6, 9],
           loc: {
@@ -35,12 +35,12 @@ Snapshot Diff:
             end: { column: 9, line: 1 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Set',
--         optional: false,
+          optional: false,
 
           range: [18, 21],
           loc: {

@@ -20,12 +20,12 @@ Snapshot Diff:
 +             type: 'MethodDefinition',
 +             abstract: true,
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'show',
--               optional: false,
+                optional: false,
 
                 range: [153, 157],
                 loc: {
@@ -34,7 +34,7 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
+              optional: false,
               override: true,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
@@ -43,7 +43,7 @@ Snapshot Diff:
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -70,13 +70,13 @@ Snapshot Diff:
             end: { column: 1, line: 5 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'SpecializedComponent',
--         optional: false,
+          optional: false,
 
           range: [88, 108],
           loc: {
@@ -84,12 +84,12 @@ Snapshot Diff:
             end: { column: 35, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'SomeComponent',
--         optional: false,
+          optional: false,
 
           range: [117, 130],
           loc: {

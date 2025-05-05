@@ -3,9 +3,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "ReadonlyOptional",
+        optional: false,
 
         range: [5, 21],
         loc: {
@@ -28,6 +31,7 @@ Program {
         },
         typeParameter: TSTypeParameter {
           type: "TSTypeParameter",
+          const: false,
           constraint: TSStringKeyword {
             type: "TSStringKeyword",
 
@@ -37,7 +41,9 @@ Program {
               end: { column: 23, line: 2 },
             },
           },
+          in: false,
           name: "P",
+          out: false,
 
           range: [38, 49],
           loc: {

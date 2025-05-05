@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'T',
--         optional: false,
+          optional: false,
 
           range: [5, 6],
           loc: {
@@ -42,36 +42,39 @@ Snapshot Diff:
 -         key: Identifier {
 -           type: 'Identifier',
 -           decorators: Array [],
+-           name: 'K',
+-           optional: false,
 +         typeParameter: TSTypeParameter {
 +           type: 'TSTypeParameter',
++           const: false,
 +           constraint: TSAnyKeyword {
 +             type: 'TSAnyKeyword',
-+
+
+-           range: [14, 15],
+-           loc: {
+-             start: { column: 3, line: 2 },
+-             end: { column: 4, line: 2 },
 +             range: [19, 22],
 +             loc: {
 +               start: { column: 8, line: 2 },
 +               end: { column: 11, line: 2 },
 +             },
-+           },
-            name: 'K',
--           optional: false,
-
--           range: [14, 15],
-+           range: [14, 22],
-            loc: {
-              start: { column: 3, line: 2 },
--             end: { column: 4, line: 2 },
--           },
+            },
 -         },
 -         nameType: null,
 -         optional: false,
 -         typeAnnotation: TSAnyKeyword {
 -           type: 'TSAnyKeyword',
--
++           in: false,
++           name: 'K',
++           out: false,
+
 -           range: [25, 28],
--           loc: {
++           range: [14, 22],
+            loc: {
 -             start: { column: 14, line: 2 },
 -             end: { column: 17, line: 2 },
++             start: { column: 3, line: 2 },
 +             end: { column: 11, line: 2 },
             },
           },

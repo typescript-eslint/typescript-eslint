@@ -16,9 +16,9 @@ Snapshot Diff:
             type: 'ImportAttribute',
             key: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'type',
--             optional: false,
+              optional: false,
 
               range: [34, 38],
               loc: {
@@ -62,9 +62,9 @@ Snapshot Diff:
             type: 'ImportNamespaceSpecifier',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'a',
--             optional: false,
+              optional: false,
 
               range: [12, 13],
               loc: {

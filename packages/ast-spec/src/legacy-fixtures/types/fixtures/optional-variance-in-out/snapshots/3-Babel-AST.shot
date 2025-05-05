@@ -3,9 +3,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Processor",
+        optional: false,
 
         range: [78, 87],
         loc: {
@@ -18,14 +21,18 @@ Program {
         parameters: [
           Identifier {
             type: "Identifier",
+            decorators: [],
             name: "x",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "T",
+                  optional: false,
 
                   range: [104, 105],
                   loc: {
@@ -61,7 +68,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [110, 111],
               loc: {
@@ -95,6 +104,7 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: true,
             name: "T",
             out: true,

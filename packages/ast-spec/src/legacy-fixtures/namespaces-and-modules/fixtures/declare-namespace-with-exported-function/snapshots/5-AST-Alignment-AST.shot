@@ -20,14 +20,14 @@ Snapshot Diff:
               declaration: TSDeclareFunction {
                 type: 'TSDeclareFunction',
                 async: false,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'select',
--                 optional: false,
+                  optional: false,
 
                   range: [114, 120],
                   loc: {
@@ -38,9 +38,9 @@ Snapshot Diff:
                 params: Array [
                   Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'selector',
--                   optional: false,
+                    optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: 'TSTypeAnnotation',
                       typeAnnotation: TSStringKeyword {
@@ -74,7 +74,9 @@ Snapshot Diff:
 -                   typeArguments: TSTypeParameterInstantiation {
 +                   typeName: Identifier {
 +                     type: 'Identifier',
++                     decorators: Array [],
 +                     name: 'Selection',
++                     optional: false,
 +
 +                     range: [140, 149],
 +                     loc: {
@@ -107,14 +109,14 @@ Snapshot Diff:
 -                     decorators: Array [],
 -                     name: 'Selection',
 -                     optional: false,
-
+-
 -                     range: [140, 149],
 -                     loc: {
 -                       start: { column: 44, line: 4 },
 -                       end: { column: 53, line: 4 },
 -                     },
 -                   },
--
+
                     range: [140, 154],
                     loc: {
                       start: { column: 44, line: 4 },
@@ -154,12 +156,12 @@ Snapshot Diff:
           },
         },
         declare: true,
--       global: false,
+        global: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'd3',
--         optional: false,
+          optional: false,
 
           range: [91, 93],
           loc: {

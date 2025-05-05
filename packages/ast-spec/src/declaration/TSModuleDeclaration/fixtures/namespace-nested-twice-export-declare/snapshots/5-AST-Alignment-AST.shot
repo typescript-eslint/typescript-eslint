@@ -17,7 +17,14 @@ Snapshot Diff:
 -         body: TSModuleBlock {
 -           type: 'TSModuleBlock',
 -           body: Array [],
--
++         body: TSModuleDeclaration {
++           type: 'TSModuleDeclaration',
++           body: TSModuleDeclaration {
++             type: 'TSModuleDeclaration',
++             body: TSModuleBlock {
++               type: 'TSModuleBlock',
++               body: Array [],
+
 -           range: [37, 39],
 -           loc: {
 -             start: { column: 37, line: 1 },
@@ -35,14 +42,7 @@ Snapshot Diff:
 -               decorators: Array [],
 -               name: 'abc',
 -               optional: false,
-+         body: TSModuleDeclaration {
-+           type: 'TSModuleDeclaration',
-+           body: TSModuleDeclaration {
-+             type: 'TSModuleDeclaration',
-+             body: TSModuleBlock {
-+               type: 'TSModuleBlock',
-+               body: Array [],
-
+-
 -               range: [25, 28],
 +               range: [37, 39],
                 loc: {
@@ -53,12 +53,14 @@ Snapshot Diff:
                 },
               },
 -             right: Identifier {
++             declare: false,
++             global: false,
 +             id: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
 -               name: 'def',
--               optional: false,
 +               name: 'ghi',
+                optional: false,
 
 -               range: [29, 32],
 +               range: [33, 36],
@@ -80,12 +82,14 @@ Snapshot Diff:
               },
             },
 -           right: Identifier {
++           declare: false,
++           global: false,
 +           id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
 -             name: 'ghi',
--             optional: false,
 +             name: 'def',
+              optional: false,
 
 -             range: [33, 36],
 +             range: [29, 32],
@@ -105,9 +109,12 @@ Snapshot Diff:
 +           },
 +         },
 +         declare: true,
++         global: false,
 +         id: Identifier {
 +           type: 'Identifier',
++           decorators: Array [],
 +           name: 'abc',
++           optional: false,
 +
 +           range: [25, 28],
             loc: {
@@ -135,8 +142,7 @@ Snapshot Diff:
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [0, 40],
     loc: {
