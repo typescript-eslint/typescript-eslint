@@ -49,12 +49,14 @@ Snapshot Diff:
               },
             },
 -           right: Identifier {
++           declare: false,
++           global: false,
 +           id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
 -             name: 'def',
--             optional: false,
 +             name: 'ghi',
+              optional: false,
 
 -             range: [19, 22],
 +             range: [23, 26],
@@ -76,12 +78,14 @@ Snapshot Diff:
             },
           },
 -         right: Identifier {
++         declare: false,
++         global: false,
 +         id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
 -           name: 'ghi',
--           optional: false,
 +           name: 'def',
+            optional: false,
 
 -           range: [23, 26],
 +           range: [19, 22],
@@ -101,9 +105,12 @@ Snapshot Diff:
 +         },
 +       },
 +       declare: true,
++       global: false,
 +       id: Identifier {
 +         type: 'Identifier',
++         decorators: Array [],
 +         name: 'abc',
++         optional: false,
 +
 +         range: [15, 18],
           loc: {

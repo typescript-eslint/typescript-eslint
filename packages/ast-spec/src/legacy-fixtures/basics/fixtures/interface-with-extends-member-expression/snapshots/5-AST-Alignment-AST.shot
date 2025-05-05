@@ -20,7 +20,7 @@ Snapshot Diff:
             end: { column: 32, line: 3 },
           },
         },
--       declare: false,
+        declare: false,
         extends: Array [
 -         TSInterfaceHeritage {
 -           type: 'TSInterfaceHeritage',
@@ -34,9 +34,9 @@ Snapshot Diff:
 +             type: 'TSQualifiedName',
 +             left: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'bar',
--               optional: false,
+                optional: false,
 
                 range: [95, 98],
                 loc: {
@@ -48,9 +48,9 @@ Snapshot Diff:
 -             property: Identifier {
 +             right: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'baz',
--               optional: false,
+                optional: false,
 
                 range: [99, 102],
                 loc: {
@@ -75,9 +75,9 @@ Snapshot Diff:
         ],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'foo',
--         optional: false,
+          optional: false,
 
           range: [83, 86],
           loc: {

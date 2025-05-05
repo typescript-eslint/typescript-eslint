@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'PlusReadonly',
--         optional: false,
+          optional: false,
 
           range: [5, 17],
           loc: {
@@ -60,6 +60,7 @@ Snapshot Diff:
 +         },
 +         typeParameter: TSTypeParameter {
 +           type: 'TSTypeParameter',
++           const: false,
 +           constraint: TSStringKeyword {
 +             type: 'TSStringKeyword',
 +
@@ -69,7 +70,9 @@ Snapshot Diff:
 +               end: { column: 24, line: 2 },
 +             },
 +           },
++           in: false,
 +           name: 'P',
++           out: false,
 +
 +           range: [35, 46],
 +           loc: {

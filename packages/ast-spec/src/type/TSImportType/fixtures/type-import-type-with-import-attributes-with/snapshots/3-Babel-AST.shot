@@ -3,9 +3,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "A",
+        optional: false,
 
         range: [5, 6],
         loc: {
@@ -34,7 +37,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "with",
+                optional: false,
 
                 range: [23, 27],
                 loc: {
@@ -44,6 +49,7 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: false,
               value: ObjectExpression {
                 type: "ObjectExpression",
@@ -53,7 +59,9 @@ Program {
                     computed: false,
                     key: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "type",
+                      optional: false,
 
                       range: [31, 35],
                       loc: {
@@ -63,6 +71,7 @@ Program {
                     },
                     kind: "init",
                     method: false,
+                    optional: false,
                     shorthand: false,
                     value: Literal {
                       type: "Literal",
@@ -105,6 +114,7 @@ Program {
             end: { column: 47, line: 1 },
           },
         },
+        qualifier: null,
 
         range: [9, 48],
         loc: {

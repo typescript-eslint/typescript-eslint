@@ -20,9 +20,9 @@ Snapshot Diff:
                 computed: false,
                 key: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'method1',
--                 optional: false,
+                  optional: false,
 
                   range: [104, 111],
                   loc: {
@@ -31,11 +31,12 @@ Snapshot Diff:
                   },
                 },
                 kind: 'method',
--               optional: false,
+                optional: false,
 -               params: Array [],
--               readonly: false,
--               returnType: TSTypeAnnotation {
 +               parameters: Array [],
+                readonly: false,
+-               returnType: TSTypeAnnotation {
++               static: false,
 +               typeAnnotation: TSTypeAnnotation {
                   type: 'TSTypeAnnotation',
                   typeAnnotation: TSVoidKeyword {
@@ -70,13 +71,13 @@ Snapshot Diff:
               end: { column: 1, line: 5 },
             },
           },
--         declare: false,
--         extends: Array [],
+          declare: false,
+          extends: Array [],
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'T',
--           optional: false,
+            optional: false,
 
             range: [98, 99],
             loc: {

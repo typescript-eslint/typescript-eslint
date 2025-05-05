@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'A',
--         optional: false,
+          optional: false,
 
           range: [5, 6],
           loc: {
@@ -31,18 +31,18 @@ Snapshot Diff:
 -             type: 'Literal',
 -             raw: '"A"',
 -             value: 'A',
--
++         argument: Literal {
++           type: 'Literal',
++           raw: '"A"',
++           value: 'A',
+
 -             range: [16, 19],
 -             loc: {
 -               start: { column: 16, line: 1 },
 -               end: { column: 19, line: 1 },
 -             },
 -           },
-+         argument: Literal {
-+           type: 'Literal',
-+           raw: '"A"',
-+           value: 'A',
-
+-
             range: [16, 19],
             loc: {
               start: { column: 16, line: 1 },
@@ -57,9 +57,9 @@ Snapshot Diff:
                 computed: false,
                 key: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'with',
--                 optional: false,
+                  optional: false,
 
                   range: [23, 27],
                   loc: {
@@ -69,7 +69,7 @@ Snapshot Diff:
                 },
                 kind: 'init',
                 method: false,
--               optional: false,
+                optional: false,
                 shorthand: false,
                 value: ObjectExpression {
                   type: 'ObjectExpression',
@@ -79,9 +79,9 @@ Snapshot Diff:
                       computed: false,
                       key: Identifier {
                         type: 'Identifier',
--                       decorators: Array [],
+                        decorators: Array [],
                         name: 'type',
--                       optional: false,
+                        optional: false,
 
                         range: [31, 35],
                         loc: {
@@ -91,7 +91,7 @@ Snapshot Diff:
                       },
                       kind: 'init',
                       method: false,
--                     optional: false,
+                      optional: false,
                       shorthand: false,
                       value: Literal {
                         type: 'Literal',
@@ -134,7 +134,7 @@ Snapshot Diff:
               end: { column: 47, line: 1 },
             },
           },
--         qualifier: null,
+          qualifier: null,
 -         typeArguments: null,
 
           range: [9, 48],

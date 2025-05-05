@@ -5,7 +5,9 @@ Program {
       type: "ExpressionStatement",
       expression: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "abstract",
+        optional: false,
 
         range: [73, 81],
         loc: {
@@ -22,6 +24,7 @@ Program {
     },
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -32,9 +35,13 @@ Program {
           end: { column: 10, line: 4 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "B",
+        optional: false,
 
         range: [89, 90],
         loc: {
@@ -42,6 +49,7 @@ Program {
           end: { column: 7, line: 4 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [83, 93],

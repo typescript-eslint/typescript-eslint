@@ -21,12 +21,12 @@ Snapshot Diff:
 -         },
 -       },
         const: true,
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [11, 14],
           loc: {

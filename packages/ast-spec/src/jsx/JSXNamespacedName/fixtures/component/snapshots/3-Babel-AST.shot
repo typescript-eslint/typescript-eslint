@@ -6,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "x",
+            optional: false,
 
             range: [6, 7],
             loc: {
@@ -106,6 +109,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [0, 57],
@@ -119,9 +123,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "y",
+            optional: false,
 
             range: [64, 65],
             loc: {
@@ -219,6 +226,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [58, 115],
@@ -246,6 +254,9 @@ Program {
                 end: { column: 7, line: 5 },
               },
             },
+            optional: false,
+            readonly: false,
+            static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {
@@ -279,9 +290,13 @@ Program {
           end: { column: 1, line: 6 },
         },
       },
+      declare: false,
+      extends: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "NamespacePropComponentProps",
+        optional: false,
 
         range: [127, 154],
         loc: {
@@ -314,7 +329,9 @@ Program {
                     computed: true,
                     object: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "props",
+                      optional: false,
 
                       range: [262, 267],
                       loc: {
@@ -411,11 +428,14 @@ Program {
           end: { column: 1, line: 10 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "NamespacePropComponent",
+        optional: false,
 
         range: [186, 208],
         loc: {
@@ -426,14 +446,18 @@ Program {
       params: [
         Identifier {
           type: "Identifier",
+          decorators: [],
           name: "props",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "NamespacePropComponentProps",
+                optional: false,
 
                 range: [216, 243],
                 loc: {
