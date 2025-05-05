@@ -4,7 +4,7 @@ import { defineProject, mergeConfig } from 'vitest/config';
 import { vitestBaseConfig } from '../../vitest.config.base.mjs';
 import packageJson from './package.json' with { type: 'json' };
 
-export default mergeConfig(
+const vitestConfig = mergeConfig(
   vitestBaseConfig,
 
   defineProject({
@@ -17,3 +17,5 @@ export default mergeConfig(
     },
   }),
 );
+
+export default vitestConfig;

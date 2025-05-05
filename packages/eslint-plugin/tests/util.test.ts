@@ -18,22 +18,18 @@ describe(isDefinitionFile, () => {
       // yes, it's not a definition file if it's a `.d.tsx`!
       'test.d.tsx',
       'test.D.TSX',
-    ];
+    ] as const;
 
-    invalid.forEach(f => {
-      it(f, () => {
-        expect(isDefinitionFile(f)).toBe(false);
-      });
+    it.for(invalid)('%s', (f, { expect }) => {
+      expect(isDefinitionFile(f)).toBe(false);
     });
   });
 
   describe('returns true for definition files', () => {
-    const valid = ['test.d.ts', 'test.D.TS'];
+    const valid = ['test.d.ts', 'test.D.TS'] as const;
 
-    valid.forEach(f => {
-      it(f, () => {
-        expect(isDefinitionFile(f)).toBe(true);
-      });
+    it.for(valid)('%s', (f, { expect }) => {
+      expect(isDefinitionFile(f)).toBe(true);
     });
   });
 });
