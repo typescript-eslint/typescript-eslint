@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import type { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
 import type * as ts from 'typescript';
 
-import { getDeclaration } from '../src';
+import { getDeclaration } from '../src/index.js';
 
 const node = {} as TSESTree.Node;
 
@@ -29,7 +29,7 @@ describe(getDeclaration, () => {
     it('returns null', () => {
       const services = mockServices();
 
-      expect(getDeclaration(services, node)).toBeNull();
+      assert.isNull(getDeclaration(services, node));
     });
   });
 
@@ -38,7 +38,7 @@ describe(getDeclaration, () => {
       const symbol = mockSymbol();
       const services = mockServices(symbol);
 
-      expect(getDeclaration(services, node)).toBeNull();
+      assert.isNull(getDeclaration(services, node));
     });
   });
 

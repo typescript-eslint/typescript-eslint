@@ -25,22 +25,36 @@ Snapshot Diff:
                   type: 'TSMappedType',
 -                 constraint: TSStringKeyword {
 -                   type: 'TSStringKeyword',
-+                 nameType: null,
-+                 typeAnnotation: TSNumberKeyword {
-+                   type: 'TSNumberKeyword',
-
+-
 -                   range: [90, 96],
-+                   range: [99, 105],
-                    loc: {
+-                   loc: {
 -                     start: { column: 17, line: 3 },
 -                     end: { column: 23, line: 3 },
-+                     start: { column: 26, line: 3 },
-+                     end: { column: 32, line: 3 },
-                    },
-                  },
+-                   },
+-                 },
 -                 key: Identifier {
 -                   type: 'Identifier',
 -                   decorators: Array [],
+-                   name: 'P',
+-                   optional: false,
+-
+-                   range: [85, 86],
+-                   loc: {
+-                     start: { column: 12, line: 3 },
+-                     end: { column: 13, line: 3 },
+-                   },
+-                 },
+                  nameType: null,
+-                 optional: false,
+                  typeAnnotation: TSNumberKeyword {
+                    type: 'TSNumberKeyword',
+
+                    range: [99, 105],
+                    loc: {
+                      start: { column: 26, line: 3 },
+                      end: { column: 32, line: 3 },
++                   },
++                 },
 +                 typeParameter: TSTypeParameter {
 +                   type: 'TSTypeParameter',
 +                   constraint: TSStringKeyword {
@@ -52,24 +66,11 @@ Snapshot Diff:
 +                       end: { column: 23, line: 3 },
 +                     },
 +                   },
-                    name: 'P',
--                   optional: false,
-
--                   range: [85, 86],
++                   name: 'P',
++
 +                   range: [85, 96],
-                    loc: {
-                      start: { column: 12, line: 3 },
--                     end: { column: 13, line: 3 },
--                   },
--                 },
--                 nameType: null,
--                 typeAnnotation: TSNumberKeyword {
--                   type: 'TSNumberKeyword',
--
--                   range: [99, 105],
--                   loc: {
--                     start: { column: 26, line: 3 },
--                     end: { column: 32, line: 3 },
++                   loc: {
++                     start: { column: 12, line: 3 },
 +                     end: { column: 23, line: 3 },
                     },
                   },
