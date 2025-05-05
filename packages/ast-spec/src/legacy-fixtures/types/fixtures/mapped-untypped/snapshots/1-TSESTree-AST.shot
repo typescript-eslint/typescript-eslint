@@ -38,6 +38,7 @@ Program {
                   },
                 },
                 nameType: null,
+                optional: false,
 
                 range: [82, 99],
                 loc: {
