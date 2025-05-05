@@ -1,6 +1,6 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
-import tseslint from '../src/index';
+import tseslint from '../src/index.js';
 
 describe('config helper', () => {
   it('works without extends', () => {
@@ -10,7 +10,7 @@ describe('config helper', () => {
         ignores: ['ignored'],
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       {
         files: ['file'],
         ignores: ['ignored'],
@@ -25,7 +25,7 @@ describe('config helper', () => {
         extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       { rules: { rule1: 'error' } },
       { rules: { rule2: 'error' } },
       { rules: { rule: 'error' } },
@@ -40,7 +40,7 @@ describe('config helper', () => {
         ignores: ['common-ignored'],
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       {
         files: ['common-file'],
         ignores: ['common-ignored'],
@@ -121,7 +121,7 @@ describe('config helper', () => {
         name: 'my-config',
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       {
         files: ['common-file'],
         ignores: ['common-ignored'],
@@ -154,7 +154,7 @@ describe('config helper', () => {
         ignores: ['common-ignored'],
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       {
         files: ['common-file'],
         ignores: ['common-ignored'],
@@ -186,7 +186,7 @@ describe('config helper', () => {
         name: 'my-config',
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       {
         files: ['common-file'],
         ignores: ['common-ignored'],
@@ -217,7 +217,7 @@ describe('config helper', () => {
         [[[{ rules: { rule4: 'error' } }]]],
         [[[[{ rules: { rule5: 'error' } }]]]],
       ),
-    ).toEqual([
+    ).toStrictEqual([
       { rules: { rule1: 'error' } },
       { rules: { rule2: 'error' } },
       { rules: { rule3: 'error' } },
@@ -238,7 +238,7 @@ describe('config helper', () => {
         ],
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       { rules: { rule1: 'error' } },
       { rules: { rule2: 'error' } },
       { rules: { rule3: 'error' } },
@@ -254,7 +254,7 @@ describe('config helper', () => {
       ignores: ['ignored'],
     });
 
-    expect(configWithIgnores).toEqual([
+    expect(configWithIgnores).toStrictEqual([
       { ignores: ['ignored'], rules: { rule1: 'error' } },
       { ignores: ['ignored'], rules: { rule2: 'error' } },
     ]);
@@ -272,7 +272,7 @@ describe('config helper', () => {
       name: 'my-config',
     });
 
-    expect(configWithMetadata).toEqual([
+    expect(configWithMetadata).toStrictEqual([
       {
         files: ['file'],
         ignores: ['ignored'],
@@ -301,7 +301,7 @@ describe('config helper', () => {
         extends: [{ rules: { rule1: 'error' } }, {}],
         ignores: ['ignored'],
       }),
-    ).toEqual([
+    ).toStrictEqual([
       { ignores: ['ignored'], rules: { rule1: 'error' } },
       // Should not create global ignores
       {},
@@ -314,7 +314,7 @@ describe('config helper', () => {
         extends: [{ ignores: ['files/**/*'], name: 'global-ignore-stuff' }],
         ignores: ['ignored'],
       }),
-    ).toEqual([{ ignores: ['files/**/*'], name: 'global-ignore-stuff' }]);
+    ).toStrictEqual([{ ignores: ['files/**/*'], name: 'global-ignore-stuff' }]);
   });
 
   it('throws error when extends is not an array', () => {
@@ -328,9 +328,9 @@ describe('config helper', () => {
     );
   });
 
-  it.each([undefined, null, 'not a config object', 42])(
+  it.for([[undefined], [null], ['not a config object'], [42]] as const)(
     'passes invalid arguments through unchanged',
-    config => {
+    ([config], { expect }) => {
       expect(
         tseslint.config(
           // @ts-expect-error purposely testing invalid values
@@ -360,7 +360,7 @@ describe('config helper', () => {
         extends: null,
         files: ['files'],
       }),
-    ).toEqual([{ files: ['files'] }]);
+    ).toStrictEqual([{ files: ['files'] }]);
   });
 
   it('complains when given an object with an invalid name', () => {
