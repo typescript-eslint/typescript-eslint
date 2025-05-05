@@ -238,7 +238,6 @@ describe('Validating rule docs', () => {
           `🛑 This file is source code, not the primary documentation location! 🛑`,
           ``,
           `See **https://typescript-eslint.io/rules/${ruleName}** for documentation.`,
-          ``,
         ].join('\n'),
         type: 'blockquote',
       });
@@ -361,7 +360,9 @@ describe('Validating rule docs', () => {
       });
     });
 
-    const codeTokens = tokens.filter(token => tokenIs(token, 'code'));
+    const codeTokens = tokens.filter((token): token is Tokens.Code =>
+      tokenIs(token, 'code'),
+    );
 
     const codeTokensWithTSLanguage = codeTokens.filter(codeToken => {
       const lang = codeToken.lang?.trim();
