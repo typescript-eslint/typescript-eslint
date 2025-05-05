@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures > type > TSMappedType > _error_ > with-member > TSESTree - Error`]
+exports[`AST Fixtures > type > TSMappedType > _error_ > with-member-after > TSESTree - Error`]
 TSError
   1 | type Mapped = {
   2 |   [key in keyof O]: number;

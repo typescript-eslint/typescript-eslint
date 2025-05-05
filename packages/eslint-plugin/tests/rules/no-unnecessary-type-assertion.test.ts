@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 
-const rootDir = path.resolve(__dirname, '../fixtures/');
+const rootDir = path.join(__dirname, '..', 'fixtures');
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
