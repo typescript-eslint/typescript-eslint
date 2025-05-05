@@ -5567,7 +5567,7 @@ __metadata:
     eslint-plugin-regexp: ^2.7.0
     eslint-plugin-unicorn: ^59.0.0
     execa: 7.2.0
-    globals: ^15.0.0
+    globals: ^16.0.0
     husky: ^9.1.4
     jiti: 2.4.2
     knip: ^5.41.1
@@ -10721,13 +10721,6 @@ __metadata:
   version: 14.0.0
   resolution: "globals@npm:14.0.0"
   checksum: 534b8216736a5425737f59f6e6a5c7f386254560c9f41d24a9227d60ee3ad4a9e82c5b85def0e212e9d92162f83a92544be4c7fd4c902cb913736c10e08237ac
-  languageName: node
-  linkType: hard
-
-"globals@npm:^15.0.0":
-  version: 15.15.0
-  resolution: "globals@npm:15.15.0"
-  checksum: a2a92199a112db00562a2f85eeef2a7e3943e171f7f7d9b17dfa9231e35fd612588f3c199d1509ab1757273467e413b08c80424cf6e399e96acdaf93deb3ee88
   languageName: node
   linkType: hard
 
