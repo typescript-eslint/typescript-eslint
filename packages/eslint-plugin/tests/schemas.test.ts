@@ -50,10 +50,9 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
 
   describe.for(ruleEntries)('%s', ([ruleName, ruleDef]) => {
     // skip for documentation purposes
-    it.skipIf(SKIPPED_RULES_FOR_TYPE_GENERATION.has(ruleName))(
-      ruleName,
-      () => {},
-    );
+    it.skipIf(SKIPPED_RULES_FOR_TYPE_GENERATION.has(ruleName))(ruleName, () => {
+      expect(SKIPPED_RULES_FOR_TYPE_GENERATION).not.toContain(ruleName);
+    });
 
     it(ruleName, { only: ruleName === ONLY }, async ({ expect }) => {
       const schemaString = await prettier.format(
@@ -157,7 +156,8 @@ const VALID_SCHEMA_PROPS = new Set([
   'title',
   'type',
   'uniqueItems',
-]);
+] as const);
+
 describe('Rules should only define valid keys on schemas', () => {
   describe.for(ruleEntries)('%s', ([ruleName, ruleDef]) => {
     it(ruleName, { only: ruleName === ONLY }, () => {

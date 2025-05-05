@@ -1,3 +1,7 @@
+import type {
+  JSONSchema4,
+  JSONSchema4ObjectSchema,
+} from '@typescript-eslint/utils/json-schema';
 import type * as mdast from 'mdast';
 
 import * as tseslintParser from '@typescript-eslint/parser';
@@ -199,7 +203,8 @@ describe('Validating rule docs', () => {
     const files = (await fs.readdir(docsRoot, { encoding: 'utf-8' }))
       .filter(rule => !ignoredFiles.has(rule))
       .sort();
-    const ruleFiles = rulesData.map(([rule]) => `${rule}.mdx`).sort();
+
+    const ruleFiles = rulesData.map(([ruleName]) => `${ruleName}.mdx`).sort();
 
     expect(files).toStrictEqual(ruleFiles);
   });
@@ -210,6 +215,7 @@ describe('Validating rule docs', () => {
     const { description } = rule.meta.docs;
 
     const filePath = path.join(docsRoot, `${ruleName}.mdx`);
+
     const { fullText, tokens } = await parseMarkdownFile(filePath);
 
     test(`${ruleName}.mdx must start with frontmatter description`, () => {
@@ -238,23 +244,25 @@ describe('Validating rule docs', () => {
       });
     });
 
+    const headings = tokens.filter(tokenIsHeading);
+
     // Get all H2 headings objects as the other levels are variable by design.
-    const h2headings = tokens.filter(tokenIsH2);
+    const h2headings = headings.filter(tokenIsH2);
+
+    const h2headingTexts = new Set(h2headings.map(token => token.text));
 
     describe.runIf(h2headings.length > 0)(
-      `headings must be title-cased`,
+      'headings must be title-cased',
       () => {
-        const testCases = h2headings.map(heading =>
-          heading.text.replaceAll(/`[^`]*`/g, ''),
+        const sanitizedHeadingTexts = [...new Set(h2headingTexts)].map(text =>
+          text.replaceAll(/`[^`]*`/g, ''),
         );
 
-        test.for(testCases)('$text', (nonCodeText, { expect }) => {
+        test.for(sanitizedHeadingTexts)('%s', (nonCodeText, { expect }) => {
           expect(nonCodeText).toBe(titleCase(nonCodeText));
         });
       },
     );
-
-    const headings = tokens.filter(tokenIsHeading);
 
     const requiredHeadings = ['When Not To Use It'];
 
@@ -262,97 +270,114 @@ describe('Validating rule docs', () => {
       'How to Use',
       'Options',
       'Related To',
-      'When Not To Use It',
       ...requiredHeadings,
     ]);
 
-    const testCases = headings.filter(heading =>
+    const importantHeadingsList = headings.filter(heading =>
       importantHeadings.has(heading.raw.replaceAll('#', '').trim()),
     );
 
-    describe.runIf(testCases.length > 0)(
+    describe.runIf(importantHeadingsList.length > 0)(
       'important headings must be h2s',
       () => {
-        test.for(testCases)('$text', (heading, { expect }) => {
+        test.for(importantHeadingsList)('$text', (heading, { expect }) => {
           expect(heading.depth).toBe(2);
         });
       },
     );
 
-    describe.runIf(
-      !rules[ruleName as keyof typeof rules].meta.docs?.extendsBaseRule,
-    )('must include required headings', () => {
-      test.for(requiredHeadings)('%s', (requiredHeading, { expect }) => {
-        const headingTexts = new Set(
-          tokens.filter(tokenIsH2).map(token => token.text),
+    const doesNotExtendBaseRule = !rule.meta.docs.extendsBaseRule;
+
+    describe.runIf(doesNotExtendBaseRule)(
+      'must include required headings',
+      () => {
+        test.for(requiredHeadings)('%s', (requiredHeading, { expect }) => {
+          const omissionComment = `{/* Intentionally Omitted: ${requiredHeading} */}`;
+
+          expect(
+            !h2headingTexts.has(requiredHeading) &&
+              !fullText.includes(omissionComment),
+          ).toBe(false);
+        });
+      },
+    );
+
+    const { schema } = rule.meta;
+
+    const getObjectSchemaPropertyKeys = (): string[] => {
+      if (
+        !rulesWithComplexOptions.has(ruleName) &&
+        Array.isArray(schema) &&
+        doesNotExtendBaseRule &&
+        !rulesWithComplexOptionHeadings.has(ruleName)
+      ) {
+        const objectSchemaPropertyKeys = schema
+          .filter((schemaItem: JSONSchema4) => schemaItem.type === 'object')
+          .flatMap((schemaItem: JSONSchema4ObjectSchema) =>
+            Object.keys(schemaItem.properties as object),
+          );
+
+        return objectSchemaPropertyKeys;
+      }
+
+      return [];
+    };
+
+    const objectSchemaPropertyKeys = getObjectSchemaPropertyKeys();
+
+    describe.runIf(objectSchemaPropertyKeys.length > 0)('rule options', () => {
+      const headingsAfterOptions = headings.slice(
+        headings.findIndex(header => header.text === 'Options'),
+      );
+
+      it.for(objectSchemaPropertyKeys)('%s', (property, { expect }) => {
+        const correspondingHeadingIndex = headingsAfterOptions.findIndex(
+          heading => heading.text.includes(`\`${property}\``),
         );
 
-        const omissionComment = `{/* Intentionally Omitted: ${requiredHeading} */}`;
+        expect(correspondingHeadingIndex).not.toBe(-1);
 
-        expect(
-          !headingTexts.has(requiredHeading) &&
-            !fullText.includes(omissionComment),
-        ).toBe(false);
+        const relevantChildren = tokens.slice(
+          tokens.indexOf(headingsAfterOptions[correspondingHeadingIndex]),
+          tokens.indexOf(headingsAfterOptions[correspondingHeadingIndex + 1]),
+        );
+
+        const htmlTokens = relevantChildren.filter(token =>
+          tokenIs(token, 'html'),
+        );
+
+        const rawTabs = [
+          `<TabItem value="✅ Correct">`,
+          `<TabItem value="❌ Incorrect">`,
+        ] as const;
+
+        expect(htmlTokens).toContainEqual(
+          expect.objectContaining({
+            raw: expect.toSatisfy((raw: string) =>
+              rawTabs.some(rawTab => raw.includes(rawTab)),
+            ),
+          }),
+        );
       });
     });
 
-    const { schema } = rule.meta;
-    if (
-      !rulesWithComplexOptions.has(ruleName) &&
-      Array.isArray(schema) &&
-      !rule.meta.docs.extendsBaseRule
-    ) {
-      const testCases = schema
-        .filter(schemaItem => schemaItem.type === 'object')
-        .flatMap(schemaItem => Object.keys(schemaItem.properties as object));
-
-      describe.runIf(testCases.length > 0)('rule options', () => {
-        const headingsAfterOptions = headings.slice(
-          headings.findIndex(header => header.text === 'Options'),
-        );
-
-        it.for(testCases)('%s', (property, { expect }) => {
-          const correspondingHeadingIndex = headingsAfterOptions.findIndex(
-            heading => heading.text.includes(`\`${property}\``),
-          );
-
-          expect(correspondingHeadingIndex).not.toBe(-1);
-
-          if (rulesWithComplexOptionHeadings.has(ruleName)) {
-            return;
-          }
-
-          const relevantChildren = tokens.slice(
-            tokens.indexOf(headingsAfterOptions[correspondingHeadingIndex]),
-            tokens.indexOf(headingsAfterOptions[correspondingHeadingIndex + 1]),
-          );
-
-          for (const rawTab of [
-            `<TabItem value="✅ Correct">`,
-            `<TabItem value="❌ Incorrect">`,
-          ]) {
-            expect(
-              relevantChildren.some(
-                child => child.type === 'html' && child.raw.includes(rawTab),
-              ),
-            ).toBe(true);
-          }
-        });
-      });
-    }
-
     const codeTokens = tokens.filter(token => tokenIs(token, 'code'));
 
-    describe.runIf(codeTokens.length > 0)(
+    const codeTokensWithTSLanguage = codeTokens.filter(codeToken => {
+      const lang = codeToken.lang?.trim();
+
+      return lang && /^tsx?\b/i.test(lang);
+    });
+
+    describe.runIf(codeTokensWithTSLanguage.length > 0)(
       'must include only valid code samples',
       () => {
-        test.for(codeTokens)('$text', (token, { expect }) => {
+        test.for(codeTokensWithTSLanguage)('$text', (token, { expect }) => {
           const lang = token.lang?.trim();
-          if (!lang || !/^tsx?\b/i.test(lang)) {
-            return;
-          }
 
-          expect(() =>
+          assert.isDefined(lang);
+
+          expect(() => {
             parseForESLint(token.text, {
               ecmaFeatures: {
                 jsx: /^tsx\b/i.test(lang),
@@ -360,13 +385,95 @@ describe('Validating rule docs', () => {
               ecmaVersion: 'latest',
               range: true,
               sourceType: 'module',
-            }),
-          ).not.toThrow();
+            });
+          }).not.toThrow();
         });
       },
     );
 
-    test('code examples ESLint output', async ({ expect }) => {
+    function lintCodeBlock(
+      token: mdast.Code,
+      shouldContainLintErrors: boolean | 'skip-check',
+    ): string | undefined {
+      const lang = token.lang?.trim();
+      if (!lang || !/^tsx?\b/i.test(lang)) {
+        return;
+      }
+
+      const optionRegex = /option='(?<option>.*?)'/;
+
+      const option = token.meta?.match(optionRegex)?.groups?.option;
+      let ruleConfig: Linter.RuleEntry;
+      if (option) {
+        const [, ...options] = (ruleConfig = JSON.parse(
+          `["error", ${option}]`,
+        ));
+
+        expect(areOptionsValid(rule, options)).toBe(true);
+      } else {
+        ruleConfig = 'error';
+      }
+
+      const messages = linter.verify(
+        token.value,
+        {
+          parser: '@typescript-eslint/parser',
+          parserOptions: {
+            disallowAutomaticSingleRunInference: true,
+            project: './tsconfig.json',
+            tsconfigRootDir: FIXTURES_DIR,
+          },
+          rules: {
+            [ruleName]: ruleConfig,
+          },
+        },
+        /^tsx\b/i.test(lang) ? 'react.tsx' : 'file.ts',
+      );
+
+      const testCaption: string[] = [];
+      if (shouldContainLintErrors !== 'skip-check') {
+        if (shouldContainLintErrors) {
+          testCaption.push('Incorrect');
+          if (token.meta?.includes('skipValidation')) {
+            assert.isEmpty(
+              messages,
+              `Expected not to contain lint errors (with skipValidation):
+${token.value}`,
+            );
+          } else {
+            assert.isNotEmpty(
+              messages,
+              `Expected to contain at least 1 lint error:\n${token.value}`,
+            );
+          }
+        } else {
+          testCaption.push('Correct');
+          if (token.meta?.includes('skipValidation')) {
+            assert.isNotEmpty(
+              messages,
+              `Expected to contain at least 1 lint error (with skipValidation):\n${
+                token.value
+              }`,
+            );
+          } else {
+            assert.isEmpty(
+              messages,
+              `Expected not to contain lint errors:\n${token.value}`,
+            );
+          }
+        }
+      }
+      if (option) {
+        testCaption.push(`Options: ${option}`);
+      }
+
+      return `${testCaption.filter(Boolean).join('\n')}\n\n${renderLintResults(
+        token.value,
+        messages,
+      )}`;
+    }
+
+    const getSnapshotContents = () => {
       // TypeScript can't infer type arguments unless we provide them explicitly
       linter.defineRule<
         keyof (typeof rule)['meta']['messages'],
@@ -424,96 +531,19 @@ describe('Validating rule docs', () => {
         return unistUtilVisit.CONTINUE;
       });
 
-      if (snapshotContents.length === 0) {
-        return;
-      }
+      return snapshotContents;
+    };
 
-      await expect(snapshotContents.join('\n')).toMatchFileSnapshot(
-        path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
-      );
+    const snapshotContents = getSnapshotContents();
 
-      function lintCodeBlock(
-        token: mdast.Code,
-        shouldContainLintErrors: boolean | 'skip-check',
-      ): string | undefined {
-        const lang = token.lang?.trim();
-        if (!lang || !/^tsx?\b/i.test(lang)) {
-          return;
-        }
-
-        const optionRegex = /option='(?<option>.*?)'/;
-
-        const option = token.meta?.match(optionRegex)?.groups?.option;
-        let ruleConfig: Linter.RuleEntry;
-        if (option) {
-          const [, ...options] = (ruleConfig = JSON.parse(
-            `["error", ${option}]`,
-          ));
-
-          expect(areOptionsValid(rule, options)).toBe(true);
-        } else {
-          ruleConfig = 'error';
-        }
-
-        const messages = linter.verify(
-          token.value,
-          {
-            parser: '@typescript-eslint/parser',
-            parserOptions: {
-              disallowAutomaticSingleRunInference: true,
-              project: './tsconfig.json',
-              tsconfigRootDir: FIXTURES_DIR,
-            },
-            rules: {
-              [ruleName]: ruleConfig,
-            },
-          },
-          /^tsx\b/i.test(lang) ? 'react.tsx' : 'file.ts',
+    test.runIf(snapshotContents.length > 0)(
+      'code examples ESLint output',
+      async ({ expect }) => {
+        await expect(snapshotContents.join('\n')).toMatchFileSnapshot(
+          path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
         );
-
-        const testCaption: string[] = [];
-        if (shouldContainLintErrors !== 'skip-check') {
-          if (shouldContainLintErrors) {
-            testCaption.push('Incorrect');
-            if (token.meta?.includes('skipValidation')) {
-              assert.isEmpty(
-                messages,
-                `Expected not to contain lint errors (with skipValidation):
-${token.value}`,
-              );
-            } else {
-              assert.isNotEmpty(
-                messages,
-                `Expected to contain at least 1 lint error:\n${token.value}`,
-              );
-            }
-          } else {
-            testCaption.push('Correct');
-            if (token.meta?.includes('skipValidation')) {
-              assert.isNotEmpty(
-                messages,
-                `Expected to contain at least 1 lint error (with skipValidation):\n${
-                  token.value
-                }`,
-              );
-            } else {
-              assert.isEmpty(
-                messages,
-                `Expected not to contain lint errors:\n${token.value}`,
-              );
-            }
-          }
-        }
-        if (option) {
-          testCaption.push(`Options: ${option}`);
-        }
-
-        return `${testCaption.filter(Boolean).join('\n')}\n\n${renderLintResults(
-          token.value,
-          messages,
-        )}`;
-      }
-    });
+      },
+    );
   });
 });
 
@@ -521,10 +551,13 @@ describe('There should be no obsolete ESLint output snapshots', async () => {
   const files = await fs.readdir(eslintOutputSnapshotFolder, {
     encoding: 'utf-8',
   });
-  const names = new Set(rulesData.map(([k]) => `${k}.shot`));
+
+  const ruleSnapshotFileNames = new Set(
+    rulesData.map(([ruleName]) => `${ruleName}.shot`),
+  );
 
   test.for(files)('%s', (file, { expect }) => {
-    expect(names).toContain(file);
+    expect(ruleSnapshotFileNames).toContain(file);
   });
 });
 
@@ -546,24 +579,36 @@ describe('Validating rule metadata', () => {
       );
     });
 
-    it('`requiresTypeChecking` should be set if the rule uses type information', async () => {
-      if (
-        rulesThatRequireTypeInformationInAWayThatsHardToDetect.has(ruleName)
-      ) {
+    const isTypeInfoDifficultToDetect =
+      rulesThatRequireTypeInformationInAWayThatsHardToDetect.has(ruleName);
+
+    it.runIf(isTypeInfoDifficultToDetect)(
+      '`requiresTypeChecking` should be set if the rule uses type information (in a way that is hard to detect)',
+      () => {
         expect(true).toBe(rule.meta.docs?.requiresTypeChecking ?? false);
-        return;
-      }
+      },
+    );
 
-      // quick-and-dirty check to see if it uses parserServices
-      // not perfect but should be good enough
-      const ruleFileContents = await fs.readFile(
-        path.join(import.meta.dirname, '..', 'src', 'rules', `${ruleName}.ts`),
-        { encoding: 'utf-8' },
-      );
+    it.runIf(!isTypeInfoDifficultToDetect)(
+      '`requiresTypeChecking` should be set if the rule uses type information',
+      async () => {
+        // quick-and-dirty check to see if it uses parserServices
+        // not perfect but should be good enough
+        const ruleFileContents = await fs.readFile(
+          path.join(
+            import.meta.dirname,
+            '..',
+            'src',
+            'rules',
+            `${ruleName}.ts`,
+          ),
+          { encoding: 'utf-8' },
+        );
 
-      expect(requiresFullTypeInformation(ruleFileContents)).toBe(
-        rule.meta.docs?.requiresTypeChecking ?? false,
-      );
-    });
+        expect(requiresFullTypeInformation(ruleFileContents)).toBe(
+          rule.meta.docs?.requiresTypeChecking ?? false,
+        );
+      },
+    );
   });
 });
