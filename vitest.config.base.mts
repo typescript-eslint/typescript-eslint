@@ -19,7 +19,7 @@ export const vitestBaseConfig = {
 
     reporters: process.env.GITHUB_ACTIONS
       ? [['default', { summary: false }], ['github-actions']]
-      : [['verbose']],
+      : [['default']],
 
     setupFiles: ['console-fail-test/setup'],
 
