@@ -5061,15 +5061,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/marked@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "@types/marked@npm:6.0.0"
-  dependencies:
-    marked: "*"
-  checksum: ad4cd5a405604b27efb4d3979b05869f3069529d1f5b2a38039de7c96e57270f03e7580efe327ca1c136ec22a355d0a7d8578346bd2af8397fdd6bb76ca1b084
-  languageName: node
-  linkType: hard
-
 "@types/mdast@npm:^4.0.0, @types/mdast@npm:^4.0.2, @types/mdast@npm:^4.0.3":
   version: 4.0.4
   resolution: "@types/mdast@npm:4.0.4"
@@ -5349,7 +5340,6 @@ __metadata:
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
     "@eslint-community/regexpp": ^4.10.0
-    "@types/marked": ^6.0.0
     "@types/mdast": ^4.0.3
     "@types/natural-compare": "*"
     "@typescript-eslint/rule-schema-to-typescript-types": 8.32.0
@@ -13081,7 +13071,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:*, marked@npm:^15.0.0":
+"marked@npm:^15.0.0":
   version: 15.0.11
   resolution: "marked@npm:15.0.11"
   bin:
