@@ -13,9 +13,12 @@ Program {
             MethodDefinition {
               type: "MethodDefinition",
               computed: false,
+              decorators: [],
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "createSocket",
+                optional: false,
 
                 range: [114, 126],
                 loc: {
@@ -25,10 +28,12 @@ Program {
               },
               kind: "method",
               optional: true,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: "FunctionExpression",
                 async: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -39,7 +44,9 @@ Program {
                     type: "TSTypeReference",
                     typeName: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "Promise",
+                      optional: false,
 
                       range: [131, 138],
                       loc: {
@@ -103,9 +110,13 @@ Program {
             end: { column: 1, line: 5 },
           },
         },
+        declare: false,
+        decorators: [],
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "AbstractSocket",
+          optional: false,
 
           range: [95, 109],
           loc: {
@@ -113,6 +124,7 @@ Program {
             end: { column: 36, line: 3 },
           },
         },
+        implements: [],
         superClass: null,
 
         range: [80, 149],

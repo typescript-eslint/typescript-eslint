@@ -3,6 +3,7 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -13,9 +14,13 @@ Program {
           end: { column: 30, line: 1 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [6, 9],
         loc: {
@@ -28,7 +33,9 @@ Program {
           type: "TSExpressionWithTypeArguments",
           expression: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "Object",
+            optional: false,
 
             range: [21, 27],
             loc: {

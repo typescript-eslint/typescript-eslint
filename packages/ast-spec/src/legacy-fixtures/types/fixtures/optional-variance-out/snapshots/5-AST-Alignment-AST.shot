@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Provider',
--         optional: false,
+          optional: false,
 
           range: [78, 86],
           loc: {
@@ -34,9 +34,9 @@ Snapshot Diff:
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'T',
--               optional: false,
+                optional: false,
 
                 range: [102, 103],
                 loc: {
@@ -70,8 +70,8 @@ Snapshot Diff:
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],

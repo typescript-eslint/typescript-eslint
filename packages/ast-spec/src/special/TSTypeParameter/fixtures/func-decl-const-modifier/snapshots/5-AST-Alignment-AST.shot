@@ -21,14 +21,14 @@ Snapshot Diff:
             end: { column: 24, line: 1 },
           },
         },
--       declare: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'a',
--         optional: false,
+          optional: false,
 
           range: [9, 10],
           loc: {
@@ -43,7 +43,7 @@ Snapshot Diff:
             TSTypeParameter {
               type: 'TSTypeParameter',
               const: true,
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -56,8 +56,8 @@ Snapshot Diff:
 -                 end: { column: 18, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [11, 18],
               loc: {

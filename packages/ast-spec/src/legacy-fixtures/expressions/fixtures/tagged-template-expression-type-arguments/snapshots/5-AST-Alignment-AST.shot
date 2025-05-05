@@ -40,9 +40,9 @@ Snapshot Diff:
           },
           tag: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'foo',
--           optional: false,
+            optional: false,
 
             range: [73, 76],
             loc: {
@@ -58,9 +58,9 @@ Snapshot Diff:
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'bar',
--                 optional: false,
+                  optional: false,
 
                   range: [77, 80],
                   loc: {

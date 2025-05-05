@@ -21,14 +21,14 @@ Snapshot Diff:
             end: { column: 48, line: 3 },
           },
         },
--       declare: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'M',
--         optional: false,
+          optional: false,
 
           range: [82, 83],
           loc: {
@@ -39,18 +39,18 @@ Snapshot Diff:
         params: Array [
           Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'Base',
--           optional: false,
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'T',
--                 optional: false,
+                  optional: false,
 
                   range: [116, 117],
                   loc: {
@@ -85,13 +85,15 @@ Snapshot Diff:
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
+              const: false,
               constraint: TSTypeReference {
                 type: 'TSTypeReference',
 -               typeArguments: TSTypeParameterInstantiation {
 +               typeName: Identifier {
 +                 type: 'Identifier',
++                 decorators: Array [],
 +                 name: 'Constructor',
++                 optional: false,
 +
 +                 range: [94, 105],
 +                 loc: {
@@ -106,9 +108,9 @@ Snapshot Diff:
                       type: 'TSTypeReference',
                       typeName: Identifier {
                         type: 'Identifier',
--                       decorators: Array [],
+                        decorators: Array [],
                         name: 'M',
--                       optional: false,
+                        optional: false,
 
                         range: [106, 107],
                         loc: {
@@ -136,21 +138,21 @@ Snapshot Diff:
 -                 decorators: Array [],
 -                 name: 'Constructor',
 -                 optional: false,
--
+
 -                 range: [94, 105],
 -                 loc: {
 -                   start: { column: 21, line: 3 },
 -                   end: { column: 32, line: 3 },
 -                 },
 -               },
-
+-
                 range: [94, 108],
                 loc: {
                   start: { column: 21, line: 3 },
                   end: { column: 35, line: 3 },
                 },
               },
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -163,8 +165,8 @@ Snapshot Diff:
 -                 end: { column: 12, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [84, 108],
               loc: {
