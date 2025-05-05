@@ -402,16 +402,12 @@ export default createRule<Options, MessageIds>({
 
       const propertyType = services.getTypeAtLocation(node.property);
 
-      if (propertyType.isStringLiteral() || propertyType.isLiteral()) {
+      if (propertyType.isLiteral()) {
         const objectType = services.getTypeAtLocation(node.object);
 
-        let propertyName: string;
-
-        if (propertyType.isStringLiteral()) {
-          propertyName = propertyType.value;
-        } else {
-          propertyName = String(propertyType.value as number);
-        }
+        const propertyName = propertyType.isStringLiteral()
+          ? propertyType.value
+          : String(propertyType.value as number);
 
         const property = objectType.getProperty(propertyName);
 
