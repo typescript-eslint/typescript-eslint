@@ -66,7 +66,7 @@
     "@typescript-eslint/types": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/utils": "workspace:*",
-    "copy-webpack-plugin": "^12.0.0",
+    "copy-webpack-plugin": "^13.0.0",
     "cross-fetch": "*",
     "history": "^4.9.0",
     "make-dir": "*",
