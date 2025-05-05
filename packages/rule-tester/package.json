@@ -66,7 +66,7 @@
     "eslint-visitor-keys": "^4.2.0",
     "espree": "^10.3.0",
     "esprima": "^4.0.1",
-    "mocha": "^10.4.0",
+    "mocha": "^11.0.0",
     "sinon": "^20.0.0",
     "source-map-support": "^0.5.21",
     "typescript": "*",
