@@ -5572,7 +5572,7 @@ __metadata:
     jiti: 2.4.2
     knip: ^5.41.1
     lint-staged: ^15.2.2
-    make-dir: ^4.0.0
+    make-dir: ^5.0.0
     markdownlint-cli: ^0.44.0
     nx: 20.7.2
     prettier: 3.5.0
@@ -12981,7 +12981,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"make-dir@npm:*":
+"make-dir@npm:*, make-dir@npm:^5.0.0":
   version: 5.0.0
   resolution: "make-dir@npm:5.0.0"
   checksum: 9f40f4756af5138ca3b138f9e8af144b0420516e96b0e079d816a173d2f69b2ef3425abf20e25764d222c0939a9fd2bce91dd26c22002a559cd6beaea5c994d2
