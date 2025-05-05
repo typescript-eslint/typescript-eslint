@@ -201,7 +201,6 @@ export default createRule<Options, MessageIds>({
 
           // If the mapped type is circular, we can't convert it to a Record.
           const parentId = findParentDeclaration(node)?.id;
-
           if (parentId) {
             const scope = context.sourceCode.getScope(key);
             const superVar = ASTUtils.findVariable(scope, parentId.name);
