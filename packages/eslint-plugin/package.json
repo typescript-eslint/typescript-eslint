@@ -82,7 +82,7 @@
     "eslint": "*",
     "json-schema": "*",
     "markdown-table": "^3.0.3",
-    "marked": "^5.1.2",
+    "marked": "^15.0.0",
     "mdast-util-from-markdown": "^2.0.0",
     "mdast-util-mdx": "^3.0.0",
     "micromark-extension-mdxjs": "^3.0.0",
