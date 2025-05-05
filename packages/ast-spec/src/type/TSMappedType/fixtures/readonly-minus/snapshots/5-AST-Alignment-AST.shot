@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures > type > TSMappedType > with-modifiers-readonly-minus > AST Alignment - AST`]
+exports[`AST Fixtures > type > TSMappedType > readonly-minus > AST Alignment - AST`]
 Snapshot Diff:
 - TSESTree
 + Babel

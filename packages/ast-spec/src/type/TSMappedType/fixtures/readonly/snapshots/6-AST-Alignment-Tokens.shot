@@ -1,5 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures > type > TSMappedType > with-modifiers-readonly > AST Alignment - Token`]
+exports[`AST Fixtures > type > TSMappedType > readonly > AST Alignment - Token`]
 Snapshot Diff:
 Compared values have no visual difference.

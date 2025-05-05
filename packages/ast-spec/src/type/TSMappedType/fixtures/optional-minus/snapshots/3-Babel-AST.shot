@@ -16,14 +16,14 @@ Program {
       typeAnnotation: TSMappedType {
         type: "TSMappedType",
         nameType: null,
-        optional: true,
+        optional: "-",
         typeAnnotation: TSAnyKeyword {
           type: "TSAnyKeyword",
 
-          range: [26, 29],
+          range: [27, 30],
           loc: {
-            start: { column: 15, line: 2 },
-            end: { column: 18, line: 2 },
+            start: { column: 16, line: 2 },
+            end: { column: 19, line: 2 },
           },
         },
         typeParameter: TSTypeParameter {
@@ -46,14 +46,14 @@ Program {
           },
         },
 
-        range: [9, 32],
+        range: [9, 33],
         loc: {
           start: { column: 9, line: 1 },
           end: { column: 1, line: 3 },
         },
       },
 
-      range: [0, 33],
+      range: [0, 34],
       loc: {
         start: { column: 0, line: 1 },
         end: { column: 2, line: 3 },
@@ -62,7 +62,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [0, 34],
+  range: [0, 35],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },

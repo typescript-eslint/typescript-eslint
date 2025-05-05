@@ -101,7 +101,7 @@
   },
   Punctuator {
     type: "Punctuator",
-    value: "?",
+    value: ":",
 
     range: [50, 51],
     loc: {
@@ -109,41 +109,31 @@
       end: { column: 25, line: 2 },
     },
   },
-  Punctuator {
-    type: "Punctuator",
-    value: ":",
-
-    range: [51, 52],
-    loc: {
-      start: { column: 25, line: 2 },
-      end: { column: 26, line: 2 },
-    },
-  },
   Identifier {
     type: "Identifier",
     value: "number",
 
-    range: [53, 59],
+    range: [52, 58],
     loc: {
-      start: { column: 27, line: 2 },
-      end: { column: 33, line: 2 },
+      start: { column: 26, line: 2 },
+      end: { column: 32, line: 2 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [59, 60],
+    range: [58, 59],
     loc: {
-      start: { column: 33, line: 2 },
-      end: { column: 34, line: 2 },
+      start: { column: 32, line: 2 },
+      end: { column: 33, line: 2 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [61, 62],
+    range: [60, 61],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 1, line: 3 },
@@ -153,7 +143,7 @@
     type: "Punctuator",
     value: ";",
 
-    range: [62, 63],
+    range: [61, 62],
     loc: {
       start: { column: 1, line: 3 },
       end: { column: 2, line: 3 },

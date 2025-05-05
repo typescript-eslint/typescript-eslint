@@ -91,7 +91,7 @@
   },
   Punctuator {
     type: "Punctuator",
-    value: "?",
+    value: "-",
 
     range: [23, 24],
     loc: {
@@ -101,7 +101,7 @@
   },
   Punctuator {
     type: "Punctuator",
-    value: ":",
+    value: "?",
 
     range: [24, 25],
     loc: {
@@ -109,31 +109,41 @@
       end: { column: 14, line: 2 },
     },
   },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [25, 26],
+    loc: {
+      start: { column: 14, line: 2 },
+      end: { column: 15, line: 2 },
+    },
+  },
   Identifier {
     type: "Identifier",
     value: "any",
 
-    range: [26, 29],
+    range: [27, 30],
     loc: {
-      start: { column: 15, line: 2 },
-      end: { column: 18, line: 2 },
+      start: { column: 16, line: 2 },
+      end: { column: 19, line: 2 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [29, 30],
+    range: [30, 31],
     loc: {
-      start: { column: 18, line: 2 },
-      end: { column: 19, line: 2 },
+      start: { column: 19, line: 2 },
+      end: { column: 20, line: 2 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [31, 32],
+    range: [32, 33],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 1, line: 3 },
@@ -143,7 +153,7 @@
     type: "Punctuator",
     value: ";",
 
-    range: [32, 33],
+    range: [33, 34],
     loc: {
       start: { column: 1, line: 3 },
       end: { column: 2, line: 3 },
