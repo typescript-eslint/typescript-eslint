@@ -1,6 +1,6 @@
 import { ESLintUtils } from '../../src';
 
-describe('applyDefault', () => {
+describe(ESLintUtils.applyDefault, () => {
   it('returns a clone of the default if no options given', () => {
     const defaults = [{ prop: 'setting' }];
     const user = null;

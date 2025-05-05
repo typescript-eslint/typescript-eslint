@@ -1,13 +1,13 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.29.1",
+  "version": "8.31.1",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
     "!*.tsbuildinfo",
     "docs",
-    "eslint-recommended-raw.d.ts",
     "index.d.ts",
+    "raw-plugin.d.ts",
     "rules.d.ts",
     "package.json",
     "README.md",
@@ -24,9 +24,9 @@
       "types": "./rules.d.ts",
       "default": "./dist/rules/index.js"
     },
-    "./use-at-your-own-risk/eslint-recommended-raw": {
-      "types": "./eslint-recommended-raw.d.ts",
-      "default": "./dist/configs/eslint-recommended-raw.js"
+    "./use-at-your-own-risk/raw-plugin": {
+      "types": "./raw-plugin.d.ts",
+      "default": "./dist/raw-plugin.js"
     }
   },
   "engines": {
@@ -50,40 +50,36 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf coverage",
+    "clean": "rimraf dist/ coverage/",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate:breaking-changes": "tsx tools/generate-breaking-changes.mts",
     "generate:configs": "npx nx generate-configs repo",
     "lint": "npx nx lint",
-    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --logHeapUsage",
-    "test-single": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --no-coverage",
+    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
+    "test-single": "vitest --run --config=$INIT_CWD/vitest.config.mts --no-coverage",
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",
-    "@typescript-eslint/scope-manager": "8.29.1",
-    "@typescript-eslint/type-utils": "8.29.1",
-    "@typescript-eslint/utils": "8.29.1",
-    "@typescript-eslint/visitor-keys": "8.29.1",
+    "@typescript-eslint/scope-manager": "8.31.1",
+    "@typescript-eslint/type-utils": "8.31.1",
+    "@typescript-eslint/utils": "8.31.1",
+    "@typescript-eslint/visitor-keys": "8.31.1",
     "graphemer": "^1.4.0",
     "ignore": "^5.3.1",
     "natural-compare": "^1.4.0",
-    "ts-api-utils": "^2.0.1"
+    "ts-api-utils": "^2.1.0"
   },
   "devDependencies": {
-    "@jest/types": "29.6.3",
     "@types/marked": "^5.0.2",
     "@types/mdast": "^4.0.3",
     "@types/natural-compare": "*",
-    "@typescript-eslint/rule-schema-to-typescript-types": "8.29.1",
-    "@typescript-eslint/rule-tester": "8.29.1",
+    "@typescript-eslint/rule-schema-to-typescript-types": "8.31.1",
+    "@typescript-eslint/rule-tester": "8.31.1",
+    "@vitest/coverage-v8": "^3.1.2",
     "ajv": "^6.12.6",
-    "cross-env": "^7.0.3",
     "cross-fetch": "*",
     "eslint": "*",
-    "jest": "29.7.0",
-    "jest-specific-snapshot": "^8.0.0",
     "json-schema": "*",
     "markdown-table": "^3.0.3",
     "marked": "^5.1.2",
@@ -95,7 +91,8 @@
     "title-case": "^3.0.3",
     "tsx": "*",
     "typescript": "*",
-    "unist-util-visit": "^5.0.0"
+    "unist-util-visit": "^5.0.0",
+    "vitest": "^3.1.2"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^8.0.0 || ^8.0.0-alpha.0",

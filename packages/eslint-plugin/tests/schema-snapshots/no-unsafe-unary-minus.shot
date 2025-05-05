@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-unsafe-unary-minus 1`] = `
-"
 # SCHEMA:
 
 []
@@ -10,5 +7,4 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 /** No options declared */
-type Options = [];"
-`;
+type Options = [];

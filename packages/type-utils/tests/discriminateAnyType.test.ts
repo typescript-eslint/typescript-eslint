@@ -1,30 +1,19 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
 
-import { parseForESLint } from '@typescript-eslint/parser';
-import path from 'node:path';
-
-import { AnyType, discriminateAnyType } from '../src';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
+import { AnyType, discriminateAnyType } from '../src/index.js';
+import { parseCodeForEslint } from './test-utils/custom-matchers/custom-matchers.js';
 
 type GetNode = (ast: TSESTree.Program) => TSESTree.Node;
 
-describe('discriminateAnyType', () => {
-  const rootDir = path.join(__dirname, 'fixtures');
-
+describe(discriminateAnyType, () => {
   function getDeclarationId(ast: TSESTree.Program): TSESTree.Node {
     const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;
-    const id = declaration.declarations[0].id;
+    const { id } = declaration.declarations[0];
     return id;
   }
 
   function getTypes(code: string, getNode: GetNode) {
-    const { ast, services } = parseForESLint(code, {
-      disallowAutomaticSingleRunInference: true,
-      filePath: path.join(rootDir, 'file.ts'),
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    });
-    expectToHaveParserServices(services);
+    const { ast, services } = parseCodeForEslint(code);
     const node = getNode(ast);
     const type = services.getTypeAtLocation(getNode(ast));
     return {
@@ -35,22 +24,22 @@ describe('discriminateAnyType', () => {
     };
   }
 
-  function runTest(
-    code: string,
-    expected: AnyType,
-    getNode: GetNode = getDeclarationId,
-  ): void {
-    const { checker, program, tsNode, type } = getTypes(code, getNode);
-    const result = discriminateAnyType(type, checker, program, tsNode);
-    expect(result).toBe(expected);
-  }
-
   describe('returns Safe', () => {
-    it.each([
+    it.for([
       ['const foo = "foo";', AnyType.Safe],
       ['const foo = 1;', AnyType.Safe],
       ['const foo = [1, 2];', AnyType.Safe],
-    ])('when code is %s, returns %s', runTest);
+    ] as const satisfies [string, AnyType.Safe][])(
+      'when code is %s, returns %s',
+      ([code, expected], { expect }) => {
+        const { checker, program, tsNode, type } = getTypes(
+          code,
+          getDeclarationId,
+        );
+        const result = discriminateAnyType(type, checker, program, tsNode);
+        expect(result).toBe(expected);
+      },
+    );
 
     it('should returns Safe for a recursive thenable.', () => {
       const code = `
@@ -63,39 +52,75 @@ class Foo {
   }
 };
         `;
-      runTest(code, AnyType.Safe, ast => {
+
+      const { checker, program, tsNode, type } = getTypes(code, ast => {
         const classDeclration = ast.body[0] as TSESTree.ClassDeclaration;
         const method = classDeclration.body
           .body[0] as TSESTree.MethodDefinition;
         const returnStatement = method.value.body?.body.at(
           -1,
         ) as TSESTree.ReturnStatement;
-        return returnStatement.argument!;
+
+        assert.isNotNull(returnStatement.argument);
+
+        return returnStatement.argument;
       });
+      const result = discriminateAnyType(type, checker, program, tsNode);
+      expect(result).toBe(AnyType.Safe);
     });
   });
 
   describe('returns Any', () => {
-    it.each([
+    it.for([
       ['const foo = 1 as any;', AnyType.Any],
       ['let foo;', AnyType.Any],
-    ])('when code is %s, returns %s', runTest);
+    ] as const satisfies [string, AnyType.Any][])(
+      'when code is %s, returns %s',
+      ([code, expected], { expect }) => {
+        const { checker, program, tsNode, type } = getTypes(
+          code,
+          getDeclarationId,
+        );
+        const result = discriminateAnyType(type, checker, program, tsNode);
+        expect(result).toBe(expected);
+      },
+    );
   });
 
   describe('returns PromiseAny', () => {
-    it.each([
+    it.for([
       ['const foo = Promise.resolve({} as any);', AnyType.PromiseAny],
       [
         'const foo = Promise.resolve(Promise.resolve({} as any));',
         AnyType.PromiseAny,
       ],
-    ])('when code is %s, returns %s', runTest);
+    ] as const satisfies [string, AnyType.PromiseAny][])(
+      'when code is %s, returns %s',
+      ([code, expected], { expect }) => {
+        const { checker, program, tsNode, type } = getTypes(
+          code,
+          getDeclarationId,
+        );
+        const result = discriminateAnyType(type, checker, program, tsNode);
+        expect(result).toBe(expected);
+      },
+    );
   });
 
   describe('returns AnyArray', () => {
-    it.each([
+    it.for([
       ['const foo = [{} as any];', AnyType.AnyArray],
       ['const foo = [{} as any, 2];', AnyType.AnyArray],
-    ])('when code is %s, returns %s', runTest);
+    ] as const satisfies [string, AnyType.AnyArray][])(
+      'when code is %s, returns %s',
+      ([code, expected], { expect }) => {
+        const { checker, program, tsNode, type } = getTypes(
+          code,
+          getDeclarationId,
+        );
+        const result = discriminateAnyType(type, checker, program, tsNode);
+        expect(result).toBe(expected);
+      },
+    );
   });
 });

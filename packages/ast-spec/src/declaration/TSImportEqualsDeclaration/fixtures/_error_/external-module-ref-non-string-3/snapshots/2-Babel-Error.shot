@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSImportEqualsDeclaration _error_ external-module-ref-non-string-3 Babel - Error 1`] = `[SyntaxError: Unexpected token (1:19)]`;
+exports[`AST Fixtures > declaration > TSImportEqualsDeclaration > _error_ > external-module-ref-non-string-3 > Babel - Error`]
+SyntaxError: Unexpected token (1:19)

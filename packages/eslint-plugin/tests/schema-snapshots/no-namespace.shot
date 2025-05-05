@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-namespace 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,11 +6,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowDeclarations": {
-        "description": "Whether to allow \`declare\` with custom TypeScript namespaces.",
+        "description": "Whether to allow `declare` with custom TypeScript namespaces.",
         "type": "boolean"
       },
       "allowDefinitionFiles": {
-        "description": "Whether to allow \`declare\` with custom TypeScript namespaces inside definition files.",
+        "description": "Whether to allow `declare` with custom TypeScript namespaces inside definition files.",
         "type": "boolean"
       }
     },
@@ -26,11 +23,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to allow \`declare\` with custom TypeScript namespaces. */
+    /** Whether to allow `declare` with custom TypeScript namespaces. */
     allowDeclarations?: boolean;
-    /** Whether to allow \`declare\` with custom TypeScript namespaces inside definition files. */
+    /** Whether to allow `declare` with custom TypeScript namespaces inside definition files. */
     allowDefinitionFiles?: boolean;
   },
 ];
-"
-`;

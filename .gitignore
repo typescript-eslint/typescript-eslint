@@ -73,16 +73,9 @@ jspm_packages/
 .DS_Store
 .idea
 dist
-_ts3.4
-_ts4.2
 *.tsbuildinfo
 .watchmanconfig
 .rollup.cache
-
-# the downlevel-dts output folders
-_ts3.4
-_ts4.2
-_ts4.3
 
 # Files copied as part of the build
 packages/types/src/generated/**/*.ts
@@ -99,3 +92,6 @@ packages/**/.yarn
 
 .nx/cache
 .nx/workspace-data
+
+# Vitest type tests
+tsconfig*.vitest-temp.json

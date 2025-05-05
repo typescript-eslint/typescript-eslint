@@ -172,7 +172,7 @@ function describeLiteralTypeNode(typeNode: TSESTree.TypeNode): string {
 }
 
 function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
-  return !!(
+  return (
     node.parent.type === AST_NODE_TYPES.TSTypeAnnotation &&
     isFunctionOrFunctionType(node.parent.parent)
   );

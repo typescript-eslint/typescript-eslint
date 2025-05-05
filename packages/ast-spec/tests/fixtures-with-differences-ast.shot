@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures List fixtures with AST differences 1`] = `
+exports[`AST Fixtures > List fixtures with AST differences`]
 [
   "declaration/ClassDeclaration/fixtures/abstract/fixture.ts",
   "declaration/ClassDeclaration/fixtures/declare/fixture.ts",
@@ -525,5 +525,12 @@ exports[`AST Fixtures List fixtures with AST differences 1`] = `
   "statement/ForOfStatement/fixtures/expr-init/fixture.ts",
   "statement/ForOfStatement/fixtures/using-declaration/fixture.ts",
   "type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts",
+  "type/TSMappedType/fixtures/no-modifiers/fixture.ts",
+  "type/TSMappedType/fixtures/optional-minus/fixture.ts",
+  "type/TSMappedType/fixtures/optional-plus/fixture.ts",
+  "type/TSMappedType/fixtures/optional/fixture.ts",
+  "type/TSMappedType/fixtures/readonly-minus/fixture.ts",
+  "type/TSMappedType/fixtures/readonly-optional/fixture.ts",
+  "type/TSMappedType/fixtures/readonly-plus/fixture.ts",
+  "type/TSMappedType/fixtures/readonly/fixture.ts"
 ]
-`;

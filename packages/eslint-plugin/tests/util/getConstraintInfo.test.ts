@@ -1,35 +1,35 @@
-import type {
-  TSESTree,
-  ParserServicesWithTypeInformation,
-} from '@typescript-eslint/utils';
+import type { ParserOptions } from '@typescript-eslint/parser';
+import type { TSESTree } from '@typescript-eslint/utils';
 
 import { parseForESLint } from '@typescript-eslint/parser';
-import path from 'node:path';
+import * as path from 'node:path';
 import * as tsutils from 'ts-api-utils';
 
-import { getConstraintInfo } from '../../src/util/getConstraintInfo';
+import { getConstraintInfo } from '../../src/util/getConstraintInfo.js';
+import { getFixturesRootDir } from '../RuleTester.js';
 
-function parseCodeForEslint(code: string): ReturnType<typeof parseForESLint> & {
-  services: ParserServicesWithTypeInformation;
-} {
-  const fixturesDir = path.join(__dirname, '../fixtures/');
+const FIXTURES_DIR = getFixturesRootDir();
 
-  // @ts-expect-error -- services will have type information.
-  return parseForESLint(code, {
-    disallowAutomaticSingleRunInference: true,
-    filePath: path.join(fixturesDir, 'file.ts'),
-    project: './tsconfig.json',
-    tsconfigRootDir: fixturesDir,
-  });
-}
+const DEFAULT_PARSER_OPTIONS = {
+  disallowAutomaticSingleRunInference: true,
+  filePath: path.join(FIXTURES_DIR, 'file.ts'),
+  project: './tsconfig.json',
+  tsconfigRootDir: FIXTURES_DIR,
+} as const satisfies ParserOptions;
 
-describe('getConstraintInfo', () => {
+describe(getConstraintInfo, () => {
   it('returns undefined for unconstrained generic', () => {
     const sourceCode = `
 function foo<T>(x: T);
     `;
 
-    const { ast, services } = parseCodeForEslint(sourceCode);
+    const { ast, services } = parseForESLint(
+      sourceCode,
+      DEFAULT_PARSER_OPTIONS,
+    );
+
+    assert.isNotNull(services.program);
+
     const checker = services.program.getTypeChecker();
 
     const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
@@ -44,7 +44,7 @@ function foo<T>(x: T);
     expect(isTypeParameter).toBe(true);
     // ideally one day we'll be able to change this to assert that it be the intrinsic unknown type.
     // Requires https://github.com/microsoft/TypeScript/issues/60475
-    expect(constraintType).toBeUndefined();
+    assert.isUndefined(constraintType);
   });
 
   it('returns unknown for extends unknown', () => {
@@ -52,7 +52,13 @@ function foo<T>(x: T);
 function foo<T extends unknown>(x: T);
     `;
 
-    const { ast, services } = parseCodeForEslint(sourceCode);
+    const { ast, services } = parseForESLint(
+      sourceCode,
+      DEFAULT_PARSER_OPTIONS,
+    );
+
+    assert.isNotNull(services.program);
+
     const checker = services.program.getTypeChecker();
 
     const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
@@ -65,9 +71,11 @@ function foo<T extends unknown>(x: T);
     );
 
     expect(isTypeParameter).toBe(true);
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(tsutils.isIntrinsicUnknownType(constraintType!)).toBe(true);
+
+    assert.isDefined(constraintType);
+
+    expect(tsutils.isTypeParameter(constraintType)).toBe(false);
+    expect(tsutils.isIntrinsicUnknownType(constraintType)).toBe(true);
   });
 
   it('returns unknown for extends any', () => {
@@ -75,7 +83,13 @@ function foo<T extends unknown>(x: T);
 function foo<T extends any>(x: T);
     `;
 
-    const { ast, services } = parseCodeForEslint(sourceCode);
+    const { ast, services } = parseForESLint(
+      sourceCode,
+      DEFAULT_PARSER_OPTIONS,
+    );
+
+    assert.isNotNull(services.program);
+
     const checker = services.program.getTypeChecker();
 
     const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
@@ -88,9 +102,11 @@ function foo<T extends any>(x: T);
     );
 
     expect(isTypeParameter).toBe(true);
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(tsutils.isIntrinsicUnknownType(constraintType!)).toBe(true);
+
+    assert.isDefined(constraintType);
+
+    expect(tsutils.isTypeParameter(constraintType)).toBe(false);
+    expect(tsutils.isIntrinsicUnknownType(constraintType)).toBe(true);
   });
 
   it('returns string for extends string', () => {
@@ -98,7 +114,13 @@ function foo<T extends any>(x: T);
 function foo<T extends string>(x: T);
     `;
 
-    const { ast, services } = parseCodeForEslint(sourceCode);
+    const { ast, services } = parseForESLint(
+      sourceCode,
+      DEFAULT_PARSER_OPTIONS,
+    );
+
+    assert.isNotNull(services.program);
+
     const checker = services.program.getTypeChecker();
 
     const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
@@ -111,9 +133,11 @@ function foo<T extends string>(x: T);
     );
 
     expect(isTypeParameter).toBe(true);
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(tsutils.isIntrinsicStringType(constraintType!)).toBe(true);
+
+    assert.isDefined(constraintType);
+
+    expect(tsutils.isTypeParameter(constraintType)).toBe(false);
+    expect(tsutils.isIntrinsicStringType(constraintType)).toBe(true);
   });
 
   it('returns string for non-generic string', () => {
@@ -121,7 +145,13 @@ function foo<T extends string>(x: T);
 function foo(x: string);
     `;
 
-    const { ast, services } = parseCodeForEslint(sourceCode);
+    const { ast, services } = parseForESLint(
+      sourceCode,
+      DEFAULT_PARSER_OPTIONS,
+    );
+
+    assert.isNotNull(services.program);
+
     const checker = services.program.getTypeChecker();
 
     const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
@@ -134,9 +164,11 @@ function foo(x: string);
     );
 
     expect(isTypeParameter).toBe(false);
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(tsutils.isIntrinsicStringType(constraintType!)).toBe(true);
+
+    assert.isDefined(constraintType);
+
+    expect(tsutils.isTypeParameter(constraintType)).toBe(false);
+    expect(tsutils.isIntrinsicStringType(constraintType)).toBe(true);
     expect(constraintType).toBe(parameterType);
   });
 
@@ -148,7 +180,13 @@ function foo<T extends string>() {
 }
     `;
 
-    const { ast, services } = parseCodeForEslint(sourceCode);
+    const { ast, services } = parseForESLint(
+      sourceCode,
+      DEFAULT_PARSER_OPTIONS,
+    );
+
+    assert.isNotNull(services.program);
+
     const checker = services.program.getTypeChecker();
 
     const outerFunctionNode = ast.body[0] as TSESTree.FunctionDeclaration;
@@ -162,9 +200,10 @@ function foo<T extends string>() {
       parameterType,
     );
 
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(tsutils.isIntrinsicStringType(constraintType!)).toBe(true);
+    assert.isDefined(constraintType);
+
+    expect(tsutils.isTypeParameter(constraintType)).toBe(false);
+    expect(tsutils.isIntrinsicStringType(constraintType)).toBe(true);
     expect(isTypeParameter).toBe(true);
   });
 
@@ -176,7 +215,13 @@ function foo<T>() {
 }
     `;
 
-    const { ast, services } = parseCodeForEslint(sourceCode);
+    const { ast, services } = parseForESLint(
+      sourceCode,
+      DEFAULT_PARSER_OPTIONS,
+    );
+
+    assert.isNotNull(services.program);
+
     const checker = services.program.getTypeChecker();
 
     const outerFunctionNode = ast.body[0] as TSESTree.FunctionDeclaration;
@@ -191,6 +236,7 @@ function foo<T>() {
     );
 
     expect(isTypeParameter).toBe(true);
-    expect(constraintType).toBeUndefined();
+
+    assert.isUndefined(constraintType);
   });
 });

@@ -8,7 +8,6 @@ import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
 import vitestPlugin from '@vitest/eslint-plugin';
 import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
-import jestPlugin from 'eslint-plugin-jest';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import perfectionistPlugin from 'eslint-plugin-perfectionist';
@@ -29,11 +28,6 @@ const restrictNamedDeclarations = {
   selector: 'ExportNamedDeclaration[declaration=null][source=null]',
 };
 
-const vitestFiles = [
-  'packages/eslint-plugin-internal/tests/**/*.test.{ts,tsx,cts,mts}',
-  'packages/typescript-eslint/tests/**/*.test.{ts,tsx,cts,mts}',
-];
-
 export default tseslint.config(
   // register all of the plugins up-front
   {
@@ -44,7 +38,6 @@ export default tseslint.config(
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
       ['import']: importPlugin,
-      ['jest']: jestPlugin,
       ['jsdoc']: jsdocPlugin,
       // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
       ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
@@ -72,7 +65,6 @@ export default tseslint.config(
     ignores: [
       '.nx/',
       '.yarn/',
-      '**/jest.config.js',
       '**/node_modules/**',
       '**/dist/**',
       '**/fixtures/**',
@@ -156,6 +148,7 @@ export default tseslint.config(
         'error',
         { allowConstantLoopConditions: true, checkTypePredicates: true },
       ],
+      '@typescript-eslint/no-unnecessary-type-conversion': 'error',
       '@typescript-eslint/no-unnecessary-type-parameters': 'error',
       '@typescript-eslint/no-unused-expressions': 'error',
       '@typescript-eslint/no-unused-vars': [
@@ -365,64 +358,13 @@ export default tseslint.config(
   // test file linting
   //
 
-  // define the jest globals for all test files
-  {
-    files: ['packages/*/tests/**/*.{ts,tsx,cts,mts}'],
-    ignores: vitestFiles,
-    languageOptions: {
-      globals: {
-        ...jestPlugin.environments.globals.globals,
-      },
-    },
-  },
-  // define the vitest globals for all test files
-  {
-    files: vitestFiles,
-    languageOptions: {
-      globals: {
-        ...vitestPlugin.environments.env.globals,
-      },
-    },
-  },
   // test file specific configuration
   {
     files: [
-      'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
-      'packages/*/tests/**/test.{ts,tsx,cts,mts}',
-      'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
-      'packages/integration-tests/tools/integration-test-base.ts',
-      'packages/integration-tests/tools/pack-packages.ts',
+      'packages/*/tests/**/*.{ts,tsx,cts,mts}',
+      'packages/integration-tests/tools/**/*.ts',
     ],
-    ignores: vitestFiles,
-    rules: {
-      '@typescript-eslint/no-empty-function': [
-        'error',
-        { allow: ['arrowFunctions'] },
-      ],
-      '@typescript-eslint/no-non-null-assertion': 'off',
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-return': 'off',
-      'jest/no-alias-methods': 'error',
-      'jest/no-deprecated-functions': 'error',
-      'jest/no-disabled-tests': 'error',
-      'jest/no-done-callback': 'error',
-      'jest/no-focused-tests': 'error',
-      'jest/no-identical-title': 'error',
-      'jest/no-jasmine-globals': 'error',
-      'jest/no-test-prefixes': 'error',
-      'jest/no-test-return-statement': 'error',
-      'jest/prefer-spy-on': 'error',
-      'jest/prefer-to-be': 'error',
-      'jest/prefer-to-contain': 'error',
-      'jest/prefer-to-have-length': 'error',
-      'jest/valid-expect': 'error',
-    },
-  },
-  // test file specific configuration
-  {
-    files: vitestFiles,
+    ...vitestPlugin.configs.env,
     rules: {
       '@typescript-eslint/no-empty-function': [
         'error',
@@ -439,6 +381,7 @@ export default tseslint.config(
       'vitest/no-identical-title': 'error',
       'vitest/no-test-prefixes': 'error',
       'vitest/no-test-return-statement': 'error',
+      'vitest/prefer-describe-function-title': 'error',
       'vitest/prefer-each': 'error',
       'vitest/prefer-spy-on': 'error',
       'vitest/prefer-to-be': 'error',
@@ -447,6 +390,18 @@ export default tseslint.config(
       'vitest/valid-expect': 'error',
     },
     settings: { vitest: { typecheck: true } },
+  },
+  {
+    files: ['packages/*/tests/**/vitest-custom-matchers.d.ts'],
+    name: 'vitest-custom-matchers-declaration-files',
+    rules: {
+      '@typescript-eslint/no-empty-object-type': [
+        'error',
+        { allowInterfaces: 'with-single-extends' },
+      ],
+
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
   },
   // plugin rule tests
   {
@@ -645,9 +600,9 @@ export default tseslint.config(
   {
     files: ['**/*'],
     ignores: [
-      'packages/eslint-plugin/src/configs/*',
+      'packages/eslint-plugin/src/configs/eslintrc/*',
+      'packages/eslint-plugin/src/configs/flat/*',
       'packages/scope-manager/src/configs/*',
-      'packages/typescript-eslint/src/configs/*',
     ],
     rules: {
       '@typescript-eslint/sort-type-constituents': 'off',

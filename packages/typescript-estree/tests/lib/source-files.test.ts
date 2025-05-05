@@ -2,13 +2,15 @@ import * as ts from 'typescript';
 
 import { getCodeText, isSourceFile } from '../../src/source-files';
 
-describe('isSourceFile', () => {
-  it.each([null, undefined, {}, { getFullText: (): string => '', text: '' }])(
-    `returns false when given %j`,
-    input => {
-      expect(isSourceFile(input)).toBe(false);
-    },
-  );
+describe(isSourceFile, () => {
+  it.for([
+    [null],
+    [undefined],
+    [{}],
+    [{ getFullText: (): string => '', text: '' }],
+  ] as const)('returns false when given %o', ([input], { expect }) => {
+    expect(isSourceFile(input)).toBe(false);
+  });
 
   it('returns true when given a real source file', () => {
     const input = ts.createSourceFile('test.ts', '', ts.ScriptTarget.ESNext);
@@ -18,7 +20,7 @@ describe('isSourceFile', () => {
   });
 });
 
-describe('getCodeText', () => {
+describe(getCodeText, () => {
   it('returns the code when code is provided as a string', () => {
     const code = '// Hello world';
 
