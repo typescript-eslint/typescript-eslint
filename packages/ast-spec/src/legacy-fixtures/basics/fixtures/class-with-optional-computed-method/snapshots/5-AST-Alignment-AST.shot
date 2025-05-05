@@ -13,12 +13,12 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'computed1',
--             optional: false,
+              optional: false,
 
               range: [79, 88],
               loc: {
@@ -45,7 +45,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'const',
 
         range: [73, 98],
@@ -59,12 +59,12 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'computed2',
--             optional: false,
+              optional: false,
 
               range: [105, 114],
               loc: {
@@ -91,7 +91,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'const',
 
         range: [99, 124],
@@ -105,12 +105,12 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'obj',
--             optional: false,
+              optional: false,
 
               range: [131, 134],
               loc: {
@@ -126,9 +126,9 @@ Snapshot Diff:
                   computed: false,
                   key: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'member',
--                   optional: false,
+                    optional: false,
 
                     range: [141, 147],
                     loc: {
@@ -138,7 +138,7 @@ Snapshot Diff:
                   },
                   kind: 'init',
                   method: false,
--                 optional: false,
+                  optional: false,
                   shorthand: false,
                   value: Literal {
                     type: 'Literal',
@@ -163,9 +163,9 @@ Snapshot Diff:
                   computed: false,
                   key: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'member2',
--                   optional: false,
+                    optional: false,
 
                     range: [161, 168],
                     loc: {
@@ -175,7 +175,7 @@ Snapshot Diff:
                   },
                   kind: 'init',
                   method: false,
--                 optional: false,
+                  optional: false,
                   shorthand: false,
                   value: Literal {
                     type: 'Literal',
@@ -211,7 +211,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'const',
 
         range: [125, 183],
@@ -222,19 +222,19 @@ Snapshot Diff:
       },
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'computed1',
--               optional: false,
+                optional: false,
 
                 range: [197, 206],
                 loc: {
@@ -244,7 +244,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -252,7 +252,7 @@ Snapshot Diff:
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -274,12 +274,12 @@ Snapshot Diff:
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'computed2',
--               optional: false,
+                optional: false,
 
                 range: [215, 224],
                 loc: {
@@ -289,7 +289,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -304,7 +304,7 @@ Snapshot Diff:
                     end: { column: 19, line: 11 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -326,7 +326,7 @@ Snapshot Diff:
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: Literal {
                 type: 'Literal',
                 raw: '1',
@@ -340,7 +340,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -348,7 +348,7 @@ Snapshot Diff:
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -370,7 +370,7 @@ Snapshot Diff:
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: Literal {
                 type: 'Literal',
                 raw: '2',
@@ -384,7 +384,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -399,7 +399,7 @@ Snapshot Diff:
                     end: { column: 11, line: 13 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -421,7 +421,7 @@ Snapshot Diff:
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: Literal {
                 type: 'Literal',
                 raw: '\'literal1\'',
@@ -435,7 +435,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -443,7 +443,7 @@ Snapshot Diff:
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -465,7 +465,7 @@ Snapshot Diff:
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: Literal {
                 type: 'Literal',
                 raw: '\'literal2\'',
@@ -479,7 +479,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -494,7 +494,7 @@ Snapshot Diff:
                     end: { column: 20, line: 15 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -516,15 +516,15 @@ Snapshot Diff:
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: MemberExpression {
                 type: 'MemberExpression',
                 computed: false,
                 object: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'obj',
--                 optional: false,
+                  optional: false,
 
                   range: [297, 300],
                   loc: {
@@ -535,9 +535,9 @@ Snapshot Diff:
                 optional: false,
                 property: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'member',
--                 optional: false,
+                  optional: false,
 
                   range: [301, 307],
                   loc: {
@@ -554,7 +554,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -569,7 +569,7 @@ Snapshot Diff:
                     end: { column: 20, line: 16 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -591,15 +591,15 @@ Snapshot Diff:
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: MemberExpression {
                 type: 'MemberExpression',
                 computed: false,
                 object: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'obj',
--                 optional: false,
+                  optional: false,
 
                   range: [318, 321],
                   loc: {
@@ -610,9 +610,9 @@ Snapshot Diff:
                 optional: false,
                 property: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'member2',
--                 optional: false,
+                  optional: false,
 
                   range: [322, 329],
                   loc: {
@@ -629,7 +629,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -637,7 +637,7 @@ Snapshot Diff:
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -659,15 +659,15 @@ Snapshot Diff:
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: CallExpression {
                 type: 'CallExpression',
                 arguments: Array [],
                 callee: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'f',
--                 optional: false,
+                  optional: false,
 
                   range: [338, 339],
                   loc: {
@@ -685,7 +685,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -700,7 +700,7 @@ Snapshot Diff:
                     end: { column: 13, line: 18 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -727,13 +727,13 @@ Snapshot Diff:
             end: { column: 1, line: 19 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'X',
--         optional: false,
+          optional: false,
 
           range: [190, 191],
           loc: {
@@ -741,7 +741,7 @@ Snapshot Diff:
             end: { column: 7, line: 9 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
 
         range: [184, 350],

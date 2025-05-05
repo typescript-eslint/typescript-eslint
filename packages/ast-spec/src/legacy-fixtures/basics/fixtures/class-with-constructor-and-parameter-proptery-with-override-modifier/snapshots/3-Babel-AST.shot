@@ -3,15 +3,19 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "constructor",
+              optional: false,
 
               range: [126, 137],
               loc: {
@@ -20,6 +24,8 @@ Program {
               },
             },
             kind: "constructor",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -64,16 +70,20 @@ Program {
                   end: { column: 3, line: 6 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
               params: [
                 TSParameterProperty {
                   type: "TSParameterProperty",
+                  decorators: [],
                   override: true,
                   parameter: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "param",
+                    optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: "TSTypeAnnotation",
                       typeAnnotation: TSStringKeyword {
@@ -99,6 +109,8 @@ Program {
                       end: { column: 36, line: 4 },
                     },
                   },
+                  readonly: false,
+                  static: false,
 
                   range: [138, 160],
                   loc: {
@@ -129,9 +141,13 @@ Program {
           end: { column: 1, line: 7 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "SpecializedComponent",
+        optional: false,
 
         range: [79, 99],
         loc: {
@@ -139,9 +155,12 @@ Program {
           end: { column: 26, line: 3 },
         },
       },
+      implements: [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "SomeComponent",
+        optional: false,
 
         range: [108, 121],
         loc: {

@@ -3,6 +3,7 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -14,9 +15,12 @@ Program {
         },
       },
       declare: true,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [87, 90],
         loc: {
@@ -24,6 +28,7 @@ Program {
           end: { column: 17, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 93],

@@ -73,7 +73,6 @@ exports[`AST Fixtures > List fixtures with Error differences`]
     "declaration/VariableDeclaration/fixtures/_error_/var-id-definite-type-init/fixture.ts",
     "element/AccessorProperty/fixtures/_error_/modifier-abstract-accessor-with-value/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/abstract-class-with-abstract-constructor/fixture.ts",
-    "legacy-fixtures/expressions/fixtures/_error_/instantiation-expression/fixture.ts",
     "statement/ForOfStatement/fixtures/_error_/decl-definite-using/fixture.ts",
     "statement/ForOfStatement/fixtures/_error_/decl-definite/fixture.ts",
     "statement/ForOfStatement/fixtures/_error_/decl-type/fixture.ts"

@@ -16,6 +16,9 @@
       },
       "enforceForJSX": {
         "type": "boolean"
+      },
+      "ignoreDirectives": {
+        "type": "boolean"
       }
     },
     "type": "object"
@@ -31,5 +34,6 @@ type Options = [
     allowTaggedTemplates?: boolean;
     allowTernary?: boolean;
     enforceForJSX?: boolean;
+    ignoreDirectives?: boolean;
   },
 ];

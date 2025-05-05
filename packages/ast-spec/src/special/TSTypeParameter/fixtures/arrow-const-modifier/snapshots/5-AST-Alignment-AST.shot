@@ -33,7 +33,7 @@ Snapshot Diff:
               TSTypeParameter {
                 type: 'TSTypeParameter',
                 const: true,
--               in: false,
+                in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
 -                 decorators: Array [],
@@ -46,8 +46,8 @@ Snapshot Diff:
 -                   end: { column: 8, line: 1 },
 -                 },
 -               },
--               out: false,
 +               name: 'T',
+                out: false,
 
                 range: [1, 8],
                 loc: {

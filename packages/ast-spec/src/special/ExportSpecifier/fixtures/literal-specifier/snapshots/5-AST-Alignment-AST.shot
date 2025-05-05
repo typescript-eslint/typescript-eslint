@@ -42,9 +42,9 @@ Snapshot Diff:
             exportKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'A',
--             optional: false,
+              optional: false,
 
               range: [9, 10],
               loc: {

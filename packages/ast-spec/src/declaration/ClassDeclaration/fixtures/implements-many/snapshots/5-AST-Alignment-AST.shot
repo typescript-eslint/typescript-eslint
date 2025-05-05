@@ -10,7 +10,7 @@ Snapshot Diff:
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -21,13 +21,13 @@ Snapshot Diff:
             end: { column: 48, line: 1 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [6, 9],
           loc: {
@@ -42,9 +42,9 @@ Snapshot Diff:
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'Object',
--             optional: false,
+              optional: false,
 
               range: [21, 27],
               loc: {
@@ -65,9 +65,9 @@ Snapshot Diff:
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'Function',
--             optional: false,
+              optional: false,
 
               range: [29, 37],
               loc: {
@@ -88,9 +88,9 @@ Snapshot Diff:
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'RegExp',
--             optional: false,
+              optional: false,
 
               range: [39, 45],
               loc: {

@@ -13,12 +13,12 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'f',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSFunctionType {
@@ -27,18 +27,18 @@ Snapshot Diff:
 +                 parameters: Array [
                     Identifier {
                       type: 'Identifier',
--                     decorators: Array [],
+                      decorators: Array [],
                       name: 'a',
--                     optional: false,
+                      optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: 'TSTypeAnnotation',
                         typeAnnotation: TSTypeReference {
                           type: 'TSTypeReference',
                           typeName: Identifier {
                             type: 'Identifier',
--                           decorators: Array [],
+                            decorators: Array [],
                             name: 'T',
--                           optional: false,
+                            optional: false,
 
                             range: [87, 88],
                             loc: {
@@ -75,9 +75,9 @@ Snapshot Diff:
                       type: 'TSTypeReference',
                       typeName: Identifier {
                         type: 'Identifier',
--                       decorators: Array [],
+                        decorators: Array [],
                         name: 'T',
--                       optional: false,
+                        optional: false,
 
                         range: [93, 94],
                         loc: {
@@ -104,8 +104,8 @@ Snapshot Diff:
                     params: Array [
                       TSTypeParameter {
                         type: 'TSTypeParameter',
--                       const: false,
--                       in: false,
+                        const: false,
+                        in: false,
 -                       name: Identifier {
 -                         type: 'Identifier',
 -                         decorators: Array [],
@@ -118,8 +118,8 @@ Snapshot Diff:
 -                           end: { column: 9, line: 3 },
 -                         },
 -                       },
--                       out: false,
 +                       name: 'T',
+                        out: false,
 
                         range: [81, 82],
                         loc: {
@@ -165,7 +165,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'let',
 
         range: [73, 95],

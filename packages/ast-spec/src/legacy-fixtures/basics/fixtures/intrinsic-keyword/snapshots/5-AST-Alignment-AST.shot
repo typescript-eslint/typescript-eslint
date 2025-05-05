@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Uppercase',
--         optional: false,
+          optional: false,
 
           range: [78, 87],
           loc: {
@@ -37,7 +37,7 @@ Snapshot Diff:
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
+              const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 
@@ -47,7 +47,7 @@ Snapshot Diff:
                   end: { column: 31, line: 3 },
                 },
               },
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -60,8 +60,8 @@ Snapshot Diff:
 -                 end: { column: 16, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'S',
+              out: false,
 
               range: [88, 104],
               loc: {
@@ -86,12 +86,12 @@ Snapshot Diff:
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Lowercase',
--         optional: false,
+          optional: false,
 
           range: [124, 133],
           loc: {
@@ -113,7 +113,7 @@ Snapshot Diff:
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
+              const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 
@@ -123,7 +123,7 @@ Snapshot Diff:
                   end: { column: 31, line: 4 },
                 },
               },
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -136,8 +136,8 @@ Snapshot Diff:
 -                 end: { column: 16, line: 4 },
 -               },
 -             },
--             out: false,
 +             name: 'S',
+              out: false,
 
               range: [134, 150],
               loc: {
@@ -162,12 +162,12 @@ Snapshot Diff:
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Capitalize',
--         optional: false,
+          optional: false,
 
           range: [170, 180],
           loc: {
@@ -189,7 +189,7 @@ Snapshot Diff:
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
+              const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 
@@ -199,7 +199,7 @@ Snapshot Diff:
                   end: { column: 32, line: 5 },
                 },
               },
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -212,8 +212,8 @@ Snapshot Diff:
 -                 end: { column: 17, line: 5 },
 -               },
 -             },
--             out: false,
 +             name: 'S',
+              out: false,
 
               range: [181, 197],
               loc: {
@@ -238,12 +238,12 @@ Snapshot Diff:
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Uncapitalize',
--         optional: false,
+          optional: false,
 
           range: [217, 229],
           loc: {
@@ -265,7 +265,7 @@ Snapshot Diff:
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
+              const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 
@@ -275,7 +275,7 @@ Snapshot Diff:
                   end: { column: 34, line: 6 },
                 },
               },
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -288,8 +288,8 @@ Snapshot Diff:
 -                 end: { column: 19, line: 6 },
 -               },
 -             },
--             out: false,
 +             name: 'S',
+              out: false,
 
               range: [230, 246],
               loc: {

@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'T',
--         optional: false,
+          optional: false,
 
           range: [5, 6],
           loc: {
@@ -26,39 +26,26 @@ Snapshot Diff:
         typeAnnotation: TSMappedType {
           type: 'TSMappedType',
 -         constraint: TSAnyKeyword {
--           type: 'TSAnyKeyword',
--
++         nameType: null,
++         optional: '+',
++         typeAnnotation: TSAnyKeyword {
+            type: 'TSAnyKeyword',
+
 -           range: [19, 22],
--           loc: {
++           range: [27, 30],
+            loc: {
 -             start: { column: 8, line: 2 },
 -             end: { column: 11, line: 2 },
--           },
--         },
++             start: { column: 16, line: 2 },
++             end: { column: 19, line: 2 },
+            },
+          },
 -         key: Identifier {
 -           type: 'Identifier',
 -           decorators: Array [],
--           name: 'K',
--           optional: false,
--
--           range: [14, 15],
--           loc: {
--             start: { column: 3, line: 2 },
--             end: { column: 4, line: 2 },
--           },
--         },
-          nameType: null,
-          optional: '+',
-          typeAnnotation: TSAnyKeyword {
-            type: 'TSAnyKeyword',
-
-            range: [27, 30],
-            loc: {
-              start: { column: 16, line: 2 },
-              end: { column: 19, line: 2 },
-+           },
-+         },
 +         typeParameter: TSTypeParameter {
 +           type: 'TSTypeParameter',
++           const: false,
 +           constraint: TSAnyKeyword {
 +             type: 'TSAnyKeyword',
 +
@@ -68,11 +55,27 @@ Snapshot Diff:
 +               end: { column: 11, line: 2 },
 +             },
 +           },
-+           name: 'K',
-+
++           in: false,
+            name: 'K',
+-           optional: false,
++           out: false,
+
+-           range: [14, 15],
 +           range: [14, 22],
-+           loc: {
-+             start: { column: 3, line: 2 },
+            loc: {
+              start: { column: 3, line: 2 },
+-             end: { column: 4, line: 2 },
+-           },
+-         },
+-         nameType: null,
+-         optional: '+',
+-         typeAnnotation: TSAnyKeyword {
+-           type: 'TSAnyKeyword',
+-
+-           range: [27, 30],
+-           loc: {
+-             start: { column: 16, line: 2 },
+-             end: { column: 19, line: 2 },
 +             end: { column: 11, line: 2 },
             },
           },

@@ -6,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "foo",
+            optional: false,
 
             range: [79, 82],
             loc: {
@@ -24,7 +27,9 @@ Program {
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "constructor",
+                  optional: false,
 
                   range: [89, 100],
                   loc: {
@@ -34,28 +39,8 @@ Program {
                 },
                 kind: "init",
                 method: true,
+                optional: false,
                 shorthand: false,
-                typeParameters: TSTypeParameterDeclaration {
-                  type: "TSTypeParameterDeclaration",
-                  params: [
-                    TSTypeParameter {
-                      type: "TSTypeParameter",
-                      name: "T",
-
-                      range: [101, 102],
-                      loc: {
-                        start: { column: 14, line: 4 },
-                        end: { column: 15, line: 4 },
-                      },
-                    },
-                  ],
-
-                  range: [100, 103],
-                  loc: {
-                    start: { column: 13, line: 4 },
-                    end: { column: 16, line: 4 },
-                  },
-                },
                 value: FunctionExpression {
                   type: "FunctionExpression",
                   async: false,
@@ -90,6 +75,7 @@ Program {
                       end: { column: 3, line: 6 },
                     },
                   },
+                  declare: false,
                   expression: false,
                   generator: false,
                   id: null,
@@ -112,10 +98,34 @@ Program {
                       end: { column: 26, line: 4 },
                     },
                   },
+                  typeParameters: TSTypeParameterDeclaration {
+                    type: "TSTypeParameterDeclaration",
+                    params: [
+                      TSTypeParameter {
+                        type: "TSTypeParameter",
+                        const: false,
+                        in: false,
+                        name: "T",
+                        out: false,
 
-                  range: [103, 133],
+                        range: [101, 102],
+                        loc: {
+                          start: { column: 14, line: 4 },
+                          end: { column: 15, line: 4 },
+                        },
+                      },
+                    ],
+
+                    range: [100, 103],
+                    loc: {
+                      start: { column: 13, line: 4 },
+                      end: { column: 16, line: 4 },
+                    },
+                  },
+
+                  range: [100, 133],
                   loc: {
-                    start: { column: 16, line: 4 },
+                    start: { column: 13, line: 4 },
                     end: { column: 3, line: 6 },
                   },
                 },
@@ -131,7 +141,9 @@ Program {
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "foo",
+                  optional: false,
 
                   range: [137, 140],
                   loc: {
@@ -141,28 +153,8 @@ Program {
                 },
                 kind: "init",
                 method: true,
+                optional: false,
                 shorthand: false,
-                typeParameters: TSTypeParameterDeclaration {
-                  type: "TSTypeParameterDeclaration",
-                  params: [
-                    TSTypeParameter {
-                      type: "TSTypeParameter",
-                      name: "T",
-
-                      range: [141, 142],
-                      loc: {
-                        start: { column: 6, line: 7 },
-                        end: { column: 7, line: 7 },
-                      },
-                    },
-                  ],
-
-                  range: [140, 143],
-                  loc: {
-                    start: { column: 5, line: 7 },
-                    end: { column: 8, line: 7 },
-                  },
-                },
                 value: FunctionExpression {
                   type: "FunctionExpression",
                   async: false,
@@ -197,6 +189,7 @@ Program {
                       end: { column: 3, line: 9 },
                     },
                   },
+                  declare: false,
                   expression: false,
                   generator: false,
                   id: null,
@@ -219,10 +212,34 @@ Program {
                       end: { column: 18, line: 7 },
                     },
                   },
+                  typeParameters: TSTypeParameterDeclaration {
+                    type: "TSTypeParameterDeclaration",
+                    params: [
+                      TSTypeParameter {
+                        type: "TSTypeParameter",
+                        const: false,
+                        in: false,
+                        name: "T",
+                        out: false,
 
-                  range: [143, 173],
+                        range: [141, 142],
+                        loc: {
+                          start: { column: 6, line: 7 },
+                          end: { column: 7, line: 7 },
+                        },
+                      },
+                    ],
+
+                    range: [140, 143],
+                    loc: {
+                      start: { column: 5, line: 7 },
+                      end: { column: 8, line: 7 },
+                    },
+                  },
+
+                  range: [140, 173],
                   loc: {
-                    start: { column: 8, line: 7 },
+                    start: { column: 5, line: 7 },
                     end: { column: 3, line: 9 },
                   },
                 },
@@ -238,7 +255,9 @@ Program {
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "a",
+                  optional: false,
 
                   range: [181, 182],
                   loc: {
@@ -248,6 +267,7 @@ Program {
                 },
                 kind: "get",
                 method: false,
+                optional: false,
                 shorthand: false,
                 value: FunctionExpression {
                   type: "FunctionExpression",
@@ -283,6 +303,7 @@ Program {
                       end: { column: 3, line: 12 },
                     },
                   },
+                  declare: false,
                   expression: false,
                   generator: false,
                   id: null,
@@ -324,7 +345,9 @@ Program {
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "a",
+                  optional: false,
 
                   range: [220, 221],
                   loc: {
@@ -334,6 +357,7 @@ Program {
                 },
                 kind: "set",
                 method: false,
+                optional: false,
                 shorthand: false,
                 value: FunctionExpression {
                   type: "FunctionExpression",
@@ -348,13 +372,16 @@ Program {
                       end: { column: 29, line: 13 },
                     },
                   },
+                  declare: false,
                   expression: false,
                   generator: false,
                   id: null,
                   params: [
                     Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "x",
+                      optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: "TSTypeAnnotation",
                         typeAnnotation: TSNumberKeyword {
@@ -429,6 +456,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [73, 247],

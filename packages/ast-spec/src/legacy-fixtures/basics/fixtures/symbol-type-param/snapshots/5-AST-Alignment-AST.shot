@@ -21,14 +21,14 @@ Snapshot Diff:
             end: { column: 42, line: 3 },
           },
         },
--       declare: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'test',
--         optional: false,
+          optional: false,
 
           range: [82, 86],
           loc: {
@@ -39,9 +39,9 @@ Snapshot Diff:
         params: Array [
           Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'abc',
--           optional: false,
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
@@ -49,7 +49,9 @@ Snapshot Diff:
 -               typeArguments: TSTypeParameterInstantiation {
 +               typeName: Identifier {
 +                 type: 'Identifier',
++                 decorators: Array [],
 +                 name: 'Map',
++                 optional: false,
 +
 +                 range: [92, 95],
 +                 loc: {

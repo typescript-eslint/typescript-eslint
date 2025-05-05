@@ -16,9 +16,9 @@ Snapshot Diff:
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'foo',
--         optional: false,
+          optional: false,
 
           range: [17, 20],
           loc: {
@@ -32,8 +32,8 @@ Snapshot Diff:
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -46,8 +46,8 @@ Snapshot Diff:
 -                 end: { column: 22, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [21, 22],
               loc: {
@@ -57,23 +57,23 @@ Snapshot Diff:
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
 -               name: 'U',
 -               optional: false,
-+             name: 'U',
-
+-
 -               range: [24, 25],
 -               loc: {
 -                 start: { column: 24, line: 1 },
 -                 end: { column: 25, line: 1 },
 -               },
 -             },
--             out: false,
--
++             name: 'U',
+              out: false,
+
               range: [24, 25],
               loc: {
                 start: { column: 24, line: 1 },
@@ -82,8 +82,8 @@ Snapshot Diff:
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -96,8 +96,8 @@ Snapshot Diff:
 -                 end: { column: 28, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'V',
+              out: false,
 
               range: [27, 28],
               loc: {
