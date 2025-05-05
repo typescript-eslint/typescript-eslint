@@ -186,6 +186,24 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
+          if (node.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration) {
+            const parentId = node.parent.id;
+
+            const scope = context.sourceCode.getScope(parentId);
+            const superVar = ASTUtils.findVariable(scope, parentId.name);
+
+            if (
+              superVar &&
+              isDeeplyReferencingType(
+                node.parent,
+                superVar,
+                new Set([parentId]),
+              )
+            ) {
+              return;
+            }
+          }
+
           const constraint = node.constraint;
 
           if (
@@ -290,6 +308,10 @@ function isDeeplyReferencingType(
     case AST_NODE_TYPES.TSIndexedAccessType:
       return [node.indexType, node.objectType].some(type =>
         isDeeplyReferencingType(type, superVar, visited),
+      );
+    case AST_NODE_TYPES.TSMappedType:
+      return [node.constraint, node.typeAnnotation].some(
+        type => type && isDeeplyReferencingType(type, superVar, visited),
       );
     case AST_NODE_TYPES.TSConditionalType:
       return [

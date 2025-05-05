@@ -174,6 +174,13 @@ interface ExampleObject {
   [key: string]: ExampleRoot;
 }
     `,
+    `
+type Bar<K extends string = never> = {
+  [k in K]: Foo;
+};
+
+type Foo = Bar;
+    `,
 
     // Type literal
     'type Foo = {};',
