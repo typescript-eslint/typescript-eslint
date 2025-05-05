@@ -128,14 +128,13 @@ export default createRule<Options, MessageIds>({
         if (parsedPromiseHandlingCall != null) {
           const { object, onRejected } = parsedPromiseHandlingCall;
           if (onRejected === def.node) {
-            const tsObjectNode = services.esTreeNodeToTSNodeMap.get(object);
+            const tsObjectNode = services.esTreeNodeToTSNodeMap.get(
+              object,
+            ) as ts.Expression;
 
             // make sure we're actually dealing with a promise
             if (
-              isThenableType(
-                services.program.getTypeChecker(),
-                tsObjectNode satisfies TSESTreeToTSNode<TSESTree.Expression> as ts.Expression,
-              )
+              isThenableType(services.program.getTypeChecker(), tsObjectNode)
             ) {
               return true;
             }
