@@ -5605,7 +5605,7 @@ __metadata:
     fast-glob: ^3.3.2
     glob: "*"
     is-glob: ^4.0.3
-    minimatch: ^9.0.4
+    minimatch: ^10.0.0
     prettier: ^3.2.5
     rimraf: "*"
     semver: ^7.6.0
