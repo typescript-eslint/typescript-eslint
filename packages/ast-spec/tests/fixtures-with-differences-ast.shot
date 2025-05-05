@@ -527,5 +527,7 @@ exports[`AST Fixtures > List fixtures with AST differences`]
   "type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts",
   "type/TSMappedType/fixtures/base/fixture.ts",
   "type/TSMappedType/fixtures/no-modifiers/fixture.ts",
-  "type/TSMappedType/fixtures/with-modifiers/fixture.ts"
+  "type/TSMappedType/fixtures/with-modifiers-readonly-minus/fixture.ts",
+  "type/TSMappedType/fixtures/with-modifiers-readonly-plus/fixture.ts",
+  "type/TSMappedType/fixtures/with-modifiers-readonly/fixture.ts"
 ]
