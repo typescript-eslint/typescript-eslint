@@ -88,7 +88,7 @@
     "micromark-extension-mdxjs": "^3.0.0",
     "prettier": "^3.2.5",
     "rimraf": "*",
-    "title-case": "^3.0.3",
+    "title-case": "^4.0.0",
     "tsx": "*",
     "typescript": "*",
     "unist-util-visit": "^5.0.0",

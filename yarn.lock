@@ -5373,7 +5373,7 @@ __metadata:
     natural-compare: ^1.4.0
     prettier: ^3.2.5
     rimraf: "*"
-    title-case: ^3.0.3
+    title-case: ^4.0.0
     ts-api-utils: ^2.1.0
     tsx: "*"
     typescript: "*"
@@ -18407,12 +18407,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"title-case@npm:^3.0.3":
-  version: 3.0.3
-  resolution: "title-case@npm:3.0.3"
-  dependencies:
-    tslib: ^2.0.3
-  checksum: e8b7ea006b53cf3208d278455d9f1e22c409459d7f9878da324fa3b18cc0aef8560924c19c744e870394a5d9cddfdbe029ebae9875909ee7f4fc562e7cbfc53e
+"title-case@npm:^4.0.0":
+  version: 4.3.2
+  resolution: "title-case@npm:4.3.2"
+  checksum: 33037afaa4e7ad285108610aa096ae377646d2c993867ea6063e384d022cd9ebd995afb258287313297584eaf4fc9e236ddd0f4ab8d95c814ae9f14aca03750b
   languageName: node
   linkType: hard
 
