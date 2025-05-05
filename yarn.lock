@@ -16257,13 +16257,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-resizable-panels@npm:^0.0.63":
-  version: 0.0.63
-  resolution: "react-resizable-panels@npm:0.0.63"
+"react-resizable-panels@npm:^2.0.0":
+  version: 2.1.9
+  resolution: "react-resizable-panels@npm:2.1.9"
   peerDependencies:
-    react: ^16.14.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.14.0 || ^17.0.0 || ^18.0.0
-  checksum: 76ae0c0d5a565bc4900048e57000d153266f456c783fe950aa0041f1d16c01b3a1fa1016b383305b6889972f9e1eb63bac197ac1969b22a68b1a075bcb71dae3
+    react: ^16.14.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+    react-dom: ^16.14.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+  checksum: a807d6cd572c1323e21cea896cb27ae1544219dd813c746607ecb05d4f3a81a166921f86720481ac07b7e37e7812e0a24abbb7a3237b8e11cf69d29f7022a2cb
   languageName: node
   linkType: hard
 
@@ -19654,7 +19654,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-markdown: ^9.0.1
-    react-resizable-panels: ^0.0.63
+    react-resizable-panels: ^2.0.0
     rimraf: "*"
     semver: ^7.6.0
     stylelint: ^16.3.1
