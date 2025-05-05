@@ -1,0 +1,91 @@
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "map",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSMappedType {
+                type: "TSMappedType",
+                nameType: null,
+                typeAnnotation: TSNumberKeyword {
+                  type: "TSNumberKeyword",
+
+                  range: [26, 32],
+                  loc: {
+                    start: { column: 26, line: 1 },
+                    end: { column: 32, line: 1 },
+                  },
+                },
+                typeParameter: TSTypeParameter {
+                  type: "TSTypeParameter",
+                  constraint: TSStringKeyword {
+                    type: "TSStringKeyword",
+
+                    range: [17, 23],
+                    loc: {
+                      start: { column: 17, line: 1 },
+                      end: { column: 23, line: 1 },
+                    },
+                  },
+                  name: "P",
+
+                  range: [12, 23],
+                  loc: {
+                    start: { column: 12, line: 1 },
+                    end: { column: 23, line: 1 },
+                  },
+                },
+
+                range: [9, 34],
+                loc: {
+                  start: { column: 9, line: 1 },
+                  end: { column: 34, line: 1 },
+                },
+              },
+
+              range: [7, 34],
+              loc: {
+                start: { column: 7, line: 1 },
+                end: { column: 34, line: 1 },
+              },
+            },
+
+            range: [4, 34],
+            loc: {
+              start: { column: 4, line: 1 },
+              end: { column: 34, line: 1 },
+            },
+          },
+          init: null,
+
+          range: [4, 34],
+          loc: {
+            start: { column: 4, line: 1 },
+            end: { column: 34, line: 1 },
+          },
+        },
+      ],
+      kind: "let",
+
+      range: [0, 35],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 35, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 36],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

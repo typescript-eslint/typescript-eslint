@@ -1,0 +1,188 @@
+Program {
+  type: "Program",
+  body: [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "ReadonlyOptional",
+
+        range: [5, 21],
+        loc: {
+          start: { column: 5, line: 1 },
+          end: { column: 21, line: 1 },
+        },
+      },
+      typeAnnotation: TSMappedType {
+        type: "TSMappedType",
+        nameType: null,
+        optional: true,
+        readonly: true,
+        typeAnnotation: TSNumberKeyword {
+          type: "TSNumberKeyword",
+
+          range: [53, 59],
+          loc: {
+            start: { column: 27, line: 2 },
+            end: { column: 33, line: 2 },
+          },
+        },
+        typeParameter: TSTypeParameter {
+          type: "TSTypeParameter",
+          constraint: TSStringKeyword {
+            type: "TSStringKeyword",
+
+            range: [43, 49],
+            loc: {
+              start: { column: 17, line: 2 },
+              end: { column: 23, line: 2 },
+            },
+          },
+          name: "P",
+
+          range: [38, 49],
+          loc: {
+            start: { column: 12, line: 2 },
+            end: { column: 23, line: 2 },
+          },
+        },
+
+        range: [24, 62],
+        loc: {
+          start: { column: 24, line: 1 },
+          end: { column: 1, line: 3 },
+        },
+      },
+
+      range: [0, 63],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 2, line: 3 },
+      },
+    },
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "PlusReadonly",
+
+        range: [70, 82],
+        loc: {
+          start: { column: 5, line: 5 },
+          end: { column: 17, line: 5 },
+        },
+      },
+      typeAnnotation: TSMappedType {
+        type: "TSMappedType",
+        nameType: null,
+        readonly: "+",
+        typeAnnotation: TSNumberKeyword {
+          type: "TSNumberKeyword",
+
+          range: [114, 120],
+          loc: {
+            start: { column: 27, line: 6 },
+            end: { column: 33, line: 6 },
+          },
+        },
+        typeParameter: TSTypeParameter {
+          type: "TSTypeParameter",
+          constraint: TSStringKeyword {
+            type: "TSStringKeyword",
+
+            range: [105, 111],
+            loc: {
+              start: { column: 18, line: 6 },
+              end: { column: 24, line: 6 },
+            },
+          },
+          name: "P",
+
+          range: [100, 111],
+          loc: {
+            start: { column: 13, line: 6 },
+            end: { column: 24, line: 6 },
+          },
+        },
+
+        range: [85, 123],
+        loc: {
+          start: { column: 20, line: 5 },
+          end: { column: 1, line: 7 },
+        },
+      },
+
+      range: [65, 124],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 2, line: 7 },
+      },
+    },
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "MinusReadonlyOptional",
+
+        range: [131, 152],
+        loc: {
+          start: { column: 5, line: 9 },
+          end: { column: 26, line: 9 },
+        },
+      },
+      typeAnnotation: TSMappedType {
+        type: "TSMappedType",
+        nameType: null,
+        optional: "-",
+        readonly: "-",
+        typeAnnotation: TSNumberKeyword {
+          type: "TSNumberKeyword",
+
+          range: [186, 192],
+          loc: {
+            start: { column: 29, line: 10 },
+            end: { column: 35, line: 10 },
+          },
+        },
+        typeParameter: TSTypeParameter {
+          type: "TSTypeParameter",
+          constraint: TSStringKeyword {
+            type: "TSStringKeyword",
+
+            range: [175, 181],
+            loc: {
+              start: { column: 18, line: 10 },
+              end: { column: 24, line: 10 },
+            },
+          },
+          name: "P",
+
+          range: [170, 181],
+          loc: {
+            start: { column: 13, line: 10 },
+            end: { column: 24, line: 10 },
+          },
+        },
+
+        range: [155, 195],
+        loc: {
+          start: { column: 29, line: 9 },
+          end: { column: 1, line: 11 },
+        },
+      },
+
+      range: [126, 196],
+      loc: {
+        start: { column: 0, line: 9 },
+        end: { column: 2, line: 11 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 197],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 12 },
+  },
+}
