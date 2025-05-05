@@ -1,11 +1,7 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import {
-  expectToBeFunctionScope,
-  expectToBeGlobalScope,
-  getRealVariables,
-  parseAndAnalyze,
-} from '../test-utils';
+import { ScopeType } from '../../src/index.js';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('typescript', () => {
   describe('multiple call signatures', () => {
@@ -25,7 +21,7 @@ describe('typescript', () => {
 
       let scope = scopeManager.scopes[0];
       let variables = getRealVariables(scope.variables);
-      expectToBeGlobalScope(scope);
+      assert.isScopeOfType(scope, ScopeType.global);
       expect(scope.references).toHaveLength(0);
       expect(variables).toHaveLength(1);
       expect(variables[0].defs).toHaveLength(3);
@@ -33,7 +29,7 @@ describe('typescript', () => {
       for (let i = 1; i < 4; i += 1) {
         scope = scopeManager.scopes[i];
         variables = getRealVariables(scope.variables);
-        expectToBeFunctionScope(scope);
+        assert.isScopeOfType(scope, ScopeType.function);
         expect(variables).toHaveLength(2);
         expect(variables[0].name).toBe('arguments');
         if (scope.block.type === AST_NODE_TYPES.TSDeclareFunction) {
