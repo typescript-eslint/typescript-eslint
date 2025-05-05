@@ -148,6 +148,7 @@ export default tseslint.config(
         'error',
         { allowConstantLoopConditions: true, checkTypePredicates: true },
       ],
+      '@typescript-eslint/no-unnecessary-type-conversion': 'error',
       '@typescript-eslint/no-unnecessary-type-parameters': 'error',
       '@typescript-eslint/no-unused-expressions': 'error',
       '@typescript-eslint/no-unused-vars': [
