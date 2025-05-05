@@ -1,13 +1,34 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import type { TSESTree } from '@typescript-eslint/types';
 
-import { getSpecificNode, parseAndAnalyze } from '../test-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import { simpleTraverse } from '@typescript-eslint/typescript-estree';
+
+import { parseAndAnalyze } from '../test-utils/index.js';
 
 describe('variable definition', () => {
   it('defines a variable for a type declaration', () => {
     const { ast, scopeManager } = parseAndAnalyze(`
       type TypeDecl = string;
     `);
-    const node = getSpecificNode(ast, AST_NODE_TYPES.TSTypeAliasDeclaration);
+
+    const nodes: TSESTree.Node[] = [];
+
+    simpleTraverse(
+      ast,
+      {
+        visitors: {
+          [AST_NODE_TYPES.TSTypeAliasDeclaration](node) {
+            nodes.push(node);
+          },
+        },
+      },
+      true,
+    );
+
+    const node = nodes[0];
+
+    assert.isNodeOfType(node, AST_NODE_TYPES.TSTypeAliasDeclaration);
+
     expect(scopeManager.getDeclaredVariables(node)).toMatchInlineSnapshot(`
       [
         Variable$2 {
@@ -32,7 +53,25 @@ describe('variable definition', () => {
         prop: string;
       }
     `);
-    const node = getSpecificNode(ast, AST_NODE_TYPES.TSInterfaceDeclaration);
+
+    const nodes: TSESTree.Node[] = [];
+
+    simpleTraverse(
+      ast,
+      {
+        visitors: {
+          [AST_NODE_TYPES.TSInterfaceDeclaration](node) {
+            nodes.push(node);
+          },
+        },
+      },
+      true,
+    );
+
+    const node = nodes[0];
+
+    assert.isNodeOfType(node, AST_NODE_TYPES.TSInterfaceDeclaration);
+
     expect(scopeManager.getDeclaredVariables(node)).toMatchInlineSnapshot(`
       [
         Variable$2 {
@@ -55,7 +94,25 @@ describe('variable definition', () => {
     const { ast, scopeManager } = parseAndAnalyze(`
       type TypeDecl<TypeParam> = string;
     `);
-    const node = getSpecificNode(ast, AST_NODE_TYPES.TSTypeParameter);
+
+    const nodes: TSESTree.Node[] = [];
+
+    simpleTraverse(
+      ast,
+      {
+        visitors: {
+          [AST_NODE_TYPES.TSTypeParameter](node) {
+            nodes.push(node);
+          },
+        },
+      },
+      true,
+    );
+
+    const node = nodes[0];
+
+    assert.isNodeOfType(node, AST_NODE_TYPES.TSTypeParameter);
+
     expect(scopeManager.getDeclaredVariables(node)).toMatchInlineSnapshot(`
       [
         Variable$3 {
@@ -78,11 +135,27 @@ describe('variable definition', () => {
     const { ast, scopeManager } = parseAndAnalyze(`
       type TypeDecl<TypeParam> = TypeParam extends Foo<infer Inferred> ? Inferred : never;
     `);
-    const node = getSpecificNode(
+
+    const nodes: TSESTree.Node[] = [];
+
+    simpleTraverse(
       ast,
-      AST_NODE_TYPES.TSInferType,
-      n => n.typeParameter,
+      {
+        visitors: {
+          [AST_NODE_TYPES.TSInferType](node) {
+            assert.isNodeOfType(node, AST_NODE_TYPES.TSInferType);
+
+            nodes.push(node.typeParameter);
+          },
+        },
+      },
+      true,
     );
+
+    const node = nodes[0];
+
+    assert.isNodeOfType(node, AST_NODE_TYPES.TSTypeParameter);
+
     expect(scopeManager.getDeclaredVariables(node)).toMatchInlineSnapshot(`
       [
         Variable$4 {

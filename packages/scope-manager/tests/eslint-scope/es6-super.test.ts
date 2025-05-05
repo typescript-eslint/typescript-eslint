@@ -1,10 +1,5 @@
-import {
-  expectToBeClassScope,
-  expectToBeFunctionScope,
-  expectToBeGlobalScope,
-  getRealVariables,
-  parseAndAnalyze,
-} from '../test-utils';
+import { ScopeType } from '../../src/index.js';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('ES6 super', () => {
   it('is not handled as reference', () => {
@@ -24,14 +19,14 @@ describe('ES6 super', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('Foo');
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeClassScope(scope);
+    assert.isScopeOfType(scope, ScopeType.class);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('Foo');
     expect(scope.references).toHaveLength(1);
@@ -39,14 +34,14 @@ describe('ES6 super', () => {
 
     scope = scopeManager.scopes[2];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0); // super is specially handled like `this`.
 
     scope = scopeManager.scopes[3];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0); // super is specially handled like `this`.

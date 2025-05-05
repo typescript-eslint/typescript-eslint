@@ -28,7 +28,7 @@ export function isTypeArrayTypeOrUnionOfArrayTypes(
   type: ts.Type,
   checker: ts.TypeChecker,
 ): boolean {
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tsutils.unionConstituents(type)) {
     if (!checker.isArrayType(t)) {
       return false;
     }

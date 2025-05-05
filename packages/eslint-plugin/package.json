@@ -68,7 +68,7 @@
     "graphemer": "^1.4.0",
     "ignore": "^5.3.1",
     "natural-compare": "^1.4.0",
-    "ts-api-utils": "^2.0.1"
+    "ts-api-utils": "^2.1.0"
   },
   "devDependencies": {
     "@types/marked": "^5.0.2",

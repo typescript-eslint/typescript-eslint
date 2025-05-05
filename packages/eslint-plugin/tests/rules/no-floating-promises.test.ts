@@ -5497,5 +5497,101 @@ await (<Promise<number>>{});
         },
       ],
     },
+    {
+      code: `
+Promise.reject('foo').then();
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('foo').then();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('foo').then();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').finally();
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('foo').finally();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('foo').finally();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').finally(...[], () => {});
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('foo').finally(...[], () => {});
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('foo').finally(...[], () => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').then(...[], () => {});
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('foo').then(...[], () => {});
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('foo').then(...[], () => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

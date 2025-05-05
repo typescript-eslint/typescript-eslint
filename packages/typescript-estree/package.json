@@ -45,8 +45,7 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist/ coverage/",
+    "clean": "rimraf dist/ coverage/",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
@@ -60,9 +59,10 @@
     "is-glob": "^4.0.3",
     "minimatch": "^9.0.4",
     "semver": "^7.6.0",
-    "ts-api-utils": "^2.0.1"
+    "ts-api-utils": "^2.1.0"
   },
   "devDependencies": {
+    "@types/is-glob": "^4.0.4",
     "@vitest/coverage-v8": "^3.1.2",
     "glob": "*",
     "prettier": "^3.2.5",

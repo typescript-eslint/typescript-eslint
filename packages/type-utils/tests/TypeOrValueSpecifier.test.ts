@@ -1,13 +1,8 @@
-import type { TSESTree } from '@typescript-eslint/utils';
-import type { TestContext } from 'vitest';
+import * as path from 'node:path';
 
-import { parseForESLint } from '@typescript-eslint/parser';
-import Ajv from 'ajv';
-import path from 'node:path';
+import type { TypeOrValueSpecifier } from '../src/index.js';
 
-import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
-
-import { typeMatchesSpecifier, typeOrValueSpecifiersSchema } from '../src';
+import { typeMatchesSpecifier } from '../src/index.js';
 
 const ROOT_DIR = path.posix.join(
   ...path.relative(process.cwd(), path.join(__dirname, '..')).split(path.sep),
@@ -15,26 +10,11 @@ const ROOT_DIR = path.posix.join(
 
 describe('TypeOrValueSpecifier', () => {
   describe('Schema', () => {
-    const ajv = new Ajv();
-    const validate = ajv.compile(typeOrValueSpecifiersSchema);
-
-    function runTestPositive(
-      [typeOrValueSpecifier]: readonly [typeOrValueSpecifier: unknown],
-      { expect }: TestContext,
-    ): void {
-      expect(validate([typeOrValueSpecifier])).toBe(true);
-    }
-
-    function runTestNegative(
-      [typeOrValueSpecifier]: readonly [typeOrValueSpecifier: unknown],
-      { expect }: TestContext,
-    ): void {
-      expect(validate([typeOrValueSpecifier])).toBe(false);
-    }
-
     it.for([['MyType'], ['myValue'], ['any'], ['void'], ['never']] as const)(
-      'matches a simple string specifier %s',
-      runTestPositive,
+      'matches a simple string specifier: %s',
+      ([typeOrValueSpecifier], { expect }) => {
+        expect([typeOrValueSpecifier]).toBeValidSpecifier();
+      },
     );
 
     it.for([
@@ -44,41 +24,64 @@ describe('TypeOrValueSpecifier', () => {
       [undefined],
       [['MyType']],
       [(): void => {}],
-    ] as const)("doesn't match any non-string basic type: %s", runTestNegative);
+    ] as const)(
+      "doesn't match any non-string basic type: %s",
+      ([typeOrValueSpecifier], { expect }) => {
+        expect([typeOrValueSpecifier]).not.toBeValidSpecifier();
+      },
+    );
 
     it.for([
       [{ from: 'file', name: 'MyType' }],
       [{ from: 'file', name: ['MyType', 'myValue'] }],
       [{ from: 'file', name: 'MyType', path: './filename.js' }],
       [{ from: 'file', name: ['MyType', 'myValue'], path: './filename.js' }],
-    ] as const)('matches a file specifier: %s', runTestPositive);
+    ] as const)(
+      'matches a file specifier: %s',
+      ([typeOrValueSpecifier], { expect }) => {
+        expect([typeOrValueSpecifier]).toBeValidSpecifier();
+      },
+    );
 
     it.for([
       [{ from: 'file', name: 42 }],
       [{ from: 'file', name: ['MyType', 42] }],
       [{ from: 'file', name: ['MyType', 'MyType'] }],
       [{ from: 'file', name: [] }],
-      [{ from: 'file', path: './filename.js' }],
+      [{ from: 'file', path: `${ROOT_DIR}/filename.js` }],
       [{ from: 'file', name: 'MyType', path: 42 }],
-      [{ from: 'file', name: ['MyType', 'MyType'], path: './filename.js' }],
-      [{ from: 'file', name: [], path: './filename.js' }],
+      [
+        {
+          from: 'file',
+          name: ['MyType', 'MyType'],
+          path: `${ROOT_DIR}/filename.js`,
+        },
+      ],
+      [{ from: 'file', name: [], path: `${ROOT_DIR}/filename.js` }],
       [
         {
           from: 'file',
           name: ['MyType', 'myValue'],
-          path: ['./filename.js', './another-file.js'],
+          path: [`${ROOT_DIR}/filename.js`, `${ROOT_DIR}/another-file.js`],
         },
       ],
       [{ from: 'file', name: 'MyType', unrelatedProperty: '' }],
     ] as const)(
       "doesn't match a malformed file specifier: %s",
-      runTestNegative,
+      ([typeOrValueSpecifier], { expect }) => {
+        expect([typeOrValueSpecifier]).not.toBeValidSpecifier();
+      },
     );
 
     it.for([
       [{ from: 'lib', name: 'MyType' }],
       [{ from: 'lib', name: ['MyType', 'myValue'] }],
-    ] as const)('matches a lib specifier: %s', runTestPositive);
+    ] as const)(
+      'matches a lib specifier: %s',
+      ([typeOrValueSpecifier], { expect }) => {
+        expect([typeOrValueSpecifier]).toBeValidSpecifier();
+      },
+    );
 
     it.for([
       [{ from: 'lib', name: 42 }],
@@ -87,7 +90,12 @@ describe('TypeOrValueSpecifier', () => {
       [{ from: 'lib', name: [] }],
       [{ from: 'lib' }],
       [{ from: 'lib', name: 'MyType', unrelatedProperty: '' }],
-    ] as const)("doesn't match a malformed lib specifier: %s", runTestNegative);
+    ] as const)(
+      "doesn't match a malformed lib specifier: %s",
+      ([typeOrValueSpecifier], { expect }) => {
+        expect([typeOrValueSpecifier]).not.toBeValidSpecifier();
+      },
+    );
 
     it.for([
       [{ from: 'package', name: 'MyType', package: 'jquery' }],
@@ -98,7 +106,12 @@ describe('TypeOrValueSpecifier', () => {
           package: 'jquery',
         },
       ],
-    ] as const)('matches a package specifier: %s', runTestPositive);
+    ] as const)(
+      'matches a package specifier: %s',
+      ([typeOrValueSpecifier], { expect }) => {
+        expect([typeOrValueSpecifier]).toBeValidSpecifier();
+      },
+    );
 
     it.for([
       [{ from: 'package', name: 42, package: 'jquery' }],
@@ -122,7 +135,7 @@ describe('TypeOrValueSpecifier', () => {
         {
           from: 'package',
           name: ['MyType', 'myValue'],
-          package: ['jquery', './another-file.js'],
+          package: ['jquery', `${ROOT_DIR}/another-file.js`],
         },
       ],
       [
@@ -135,67 +148,21 @@ describe('TypeOrValueSpecifier', () => {
       ],
     ] as const)(
       "doesn't match a malformed package specifier: %s",
-      runTestNegative,
+      ([typeOrValueSpecifier], { expect }) => {
+        expect([typeOrValueSpecifier]).not.toBeValidSpecifier();
+      },
     );
   });
 
   describe(typeMatchesSpecifier, () => {
-    function runTests(
-      code: string,
-      specifier: TypeOrValueSpecifier,
-      expected: boolean,
-      expect: TestContext['expect'],
-    ): void {
-      const rootDir = path.join(__dirname, 'fixtures');
-      const { ast, services } = parseForESLint(code, {
-        disallowAutomaticSingleRunInference: true,
-        filePath: path.join(rootDir, 'file.ts'),
-        project: './tsconfig.json',
-        tsconfigRootDir: rootDir,
-      });
-      const type = services
-        .program!.getTypeChecker()
-        .getTypeAtLocation(
-          services.esTreeNodeToTSNodeMap.get(
-            (ast.body[ast.body.length - 1] as TSESTree.TSTypeAliasDeclaration)
-              .id,
-          ),
-        );
-      expect(typeMatchesSpecifier(type, specifier, services.program!)).toBe(
-        expected,
-      );
-    }
-
-    function runTestPositive(
-      [code, specifier]: readonly [
-        code: string,
-        specifier: TypeOrValueSpecifier,
-      ],
-      testContext: Partial<TestContext> & Pick<TestContext, 'expect'> = {
-        expect,
-      },
-    ): void {
-      runTests(code, specifier, true, testContext.expect);
-    }
-
-    function runTestNegative(
-      [code, specifier]: readonly [
-        code: string,
-        specifier: TypeOrValueSpecifier,
-      ],
-      testContext: Partial<TestContext> & Pick<TestContext, 'expect'> = {
-        expect,
-      },
-    ): void {
-      runTests(code, specifier, false, testContext.expect);
-    }
-
     it.for([
       ['interface Foo {prop: string}; type Test = Foo;', 'Foo'],
       ['type Test = RegExp;', 'RegExp'],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching universal string specifier',
-      runTestPositive,
+      'matches a matching universal string specifier: %s\n\t%s',
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
@@ -204,8 +171,10 @@ describe('TypeOrValueSpecifier', () => {
       ['type Test = RegExp;', 'Foo'],
       ['type Test = RegExp;', 'BigInt'],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched universal string specifier",
-      runTestNegative,
+      "doesn't match a mismatched universal string specifier: %s\n\t%s",
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
@@ -278,8 +247,10 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching file specifier: %s',
-      runTestPositive,
+      'matches a matching file specifier: %s\n\t%s',
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
@@ -293,51 +264,65 @@ describe('TypeOrValueSpecifier', () => {
       ],
       [
         'interface Foo {prop: string}; type Test = Foo;',
-        { from: 'file', name: 'Foo', path: 'tests/fixtures/wrong-file.ts' },
+        {
+          from: 'file',
+          name: 'Foo',
+          path: `${ROOT_DIR}/tests/fixtures/wrong-file.ts`,
+        },
       ],
       [
         'interface Foo {prop: string}; type Test = Foo;',
         {
           from: 'file',
           name: ['Foo', 'Bar'],
-          path: 'tests/fixtures/wrong-file.ts',
+          path: `${ROOT_DIR}/tests/fixtures/wrong-file.ts`,
         },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched file specifier: %s",
-      runTestNegative,
+      "doesn't match a mismatched file specifier: %s\n\t%s",
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
       ['type Test = RegExp;', { from: 'lib', name: 'RegExp' }],
       ['type Test = RegExp;', { from: 'lib', name: ['RegExp', 'BigInt'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching lib specifier: %s',
-      runTestPositive,
+      'matches a matching lib specifier: %s\n\t%s',
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
       ['type Test = RegExp;', { from: 'lib', name: 'BigInt' }],
       ['type Test = RegExp;', { from: 'lib', name: ['BigInt', 'Date'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched lib specifier: %s",
-      runTestNegative,
+      "doesn't match a mismatched lib specifier: %s\n\t%s",
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
       ['type Test = string;', { from: 'lib', name: 'string' }],
       ['type Test = string;', { from: 'lib', name: ['string', 'number'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching intrinsic type specifier: %s',
-      runTestPositive,
+      'matches a matching intrinsic type specifier: %s\n\t%s',
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
       ['type Test = string;', { from: 'lib', name: 'number' }],
       ['type Test = string;', { from: 'lib', name: ['number', 'boolean'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched intrinsic type specifier: %s",
-      runTestNegative,
+      "doesn't match a mismatched intrinsic type specifier: %s\n\t%s",
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
@@ -421,8 +406,10 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching package specifier: %s',
-      runTestPositive,
+      'matches a matching package specifier: %s\n\t%s',
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
@@ -444,8 +431,10 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'file', name: ['SafePromise'] },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched type specifier for an intersection type: %s",
-      runTestNegative,
+      "doesn't match a mismatched type specifier for an intersection type: %s\n\t%s",
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
@@ -458,8 +447,10 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'file', name: ['ResultType'] },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching type specifier for an intersection type: %s',
-      runTestPositive,
+      'matches a matching type specifier for an intersection type: %s\n\t%s',
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
@@ -483,8 +474,10 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      'matches a matching package specifier for an intersection type: %s',
-      runTestPositive,
+      'matches a matching package specifier for an intersection type: %s\n\t%s',
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
@@ -508,25 +501,24 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched package specifier for an intersection type: %s",
-      runTestNegative,
+      "doesn't match a mismatched package specifier for an intersection type: %s\n\t%s",
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it("does not match a `declare global` with the 'global' package name", () => {
-      runTestNegative([
-        `
+      expect(`
           declare global {
             export type URL = {};
           }
 
           type Test = URL;
-        `,
-        {
-          from: 'package',
-          name: 'URL',
-          package: 'global',
-        },
-      ]);
+        `).not.toMatchSpecifier({
+        from: 'package',
+        name: 'URL',
+        package: 'global',
+      });
     });
 
     it.for([
@@ -555,8 +547,10 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'package', name: 'TsNode', package: 'typescript' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched package specifier: %s",
-      runTestNegative,
+      "doesn't match a mismatched package specifier: %s\n\t%s",
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
@@ -618,16 +612,20 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'package', name: ['RegExp', 'BigInt'], package: 'foo-package' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match a mismatched specifier type: %s",
-      runTestNegative,
+      "doesn't match a mismatched specifier type: %s\n\t%s",
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
 
     it.for([
       ['type Test = Foo;', { from: 'lib', name: 'Foo' }],
       ['type Test = Foo;', { from: 'lib', name: ['Foo', 'number'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
-      "doesn't match an error type: %s",
-      runTestNegative,
+      "doesn't match an error type: %s\n\t%s",
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
+      },
     );
   });
 });
