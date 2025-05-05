@@ -223,6 +223,7 @@ describe('Validating rule docs', () => {
         raw: '---\n',
         type: 'hr',
       });
+
       expect(tokens[1]).toMatchObject({
         depth: 2,
         text: description.includes("'")
@@ -403,15 +404,21 @@ describe('Validating rule docs', () => {
       const optionRegex = /option='(?<option>.*?)'/;
 
       const option = token.meta?.match(optionRegex)?.groups?.option;
-      let ruleConfig: Linter.RuleEntry;
+
+      const ruleEntries: [string, Linter.RuleEntry][] = option
+        ? []
+        : ([[ruleName, 'error']] as const);
+
       if (option) {
-        const [, ...options] = (ruleConfig = JSON.parse(
+        const ruleEntry: Linter.RuleLevelAndOptions = JSON.parse(
           `["error", ${option}]`,
-        ));
+        );
+
+        const [, ...options] = ruleEntry;
+
+        ruleEntries.push([ruleName, ruleEntry]);
 
         expect(areOptionsValid(rule, options)).toBe(true);
-      } else {
-        ruleConfig = 'error';
       }
 
       const messages = linter.verify(
@@ -423,17 +430,17 @@ describe('Validating rule docs', () => {
             project: './tsconfig.json',
             tsconfigRootDir: FIXTURES_DIR,
           },
-          rules: {
-            [ruleName]: ruleConfig,
-          },
+          rules: Object.fromEntries(ruleEntries),
         },
         /^tsx\b/i.test(lang) ? 'react.tsx' : 'file.ts',
       );
 
       const testCaption: string[] = [];
+
       if (shouldContainLintErrors !== 'skip-check') {
         if (shouldContainLintErrors) {
           testCaption.push('Incorrect');
+
           if (token.meta?.includes('skipValidation')) {
             assert.isEmpty(
               messages,
@@ -448,6 +455,7 @@ ${token.value}`,
           }
         } else {
           testCaption.push('Correct');
+
           if (token.meta?.includes('skipValidation')) {
             assert.isNotEmpty(
               messages,
@@ -463,6 +471,7 @@ ${token.value}`,
           }
         }
       }
+
       if (option) {
         testCaption.push(`Options: ${option}`);
       }
