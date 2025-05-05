@@ -3244,10 +3244,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/config-helpers@npm:^0.2.0":
-  version: 0.2.1
-  resolution: "@eslint/config-helpers@npm:0.2.1"
-  checksum: b463805bc319608436a8b19c94fd533d8196b326c03361db54c0f3ec59d7bd6337c9764bc945ef15df94f50443973241dc265f661b07aceed4938f7d1cf2e822
+"@eslint/config-helpers@npm:^0.2.1":
+  version: 0.2.2
+  resolution: "@eslint/config-helpers@npm:0.2.2"
+  checksum: 8a4091a2c8af5366513647ccad720f184c1b723f04c086755797a3a5cac69dc9013bc8a75453d9fc188fc4364460f0eae9f1584b77b28082e0d26bf48356ae8f
   languageName: node
   linkType: hard
 
