@@ -49,6 +49,20 @@ console.log(woah);
 const ruleTester = new RuleTester();
 
 ruleTester.run('ban-tslint-comment', rule, {
+  invalid: [...PALANTIR_EXAMPLES, ...MORE_EXAMPLES].map(
+    ({ code, column, line, output, text }) => ({
+      code,
+      errors: [
+        {
+          column: column ?? 1,
+          data: { text: text ?? code },
+          line: line ?? 1,
+          messageId: 'commentDetected' as const,
+        },
+      ],
+      output: output ?? '',
+    }),
+  ),
   valid: [
     {
       code: 'let a: readonly any[] = [];',
@@ -66,18 +80,4 @@ ruleTester.run('ban-tslint-comment', rule, {
       code: '/* another comment that mentions tslint */',
     },
   ],
-  invalid: [...PALANTIR_EXAMPLES, ...MORE_EXAMPLES].map(
-    ({ code, column, line, output, text }) => ({
-      code,
-      errors: [
-        {
-          column: column ?? 1,
-          data: { text: text ?? code },
-          line: line ?? 1,
-          messageId: 'commentDetected' as const,
-        },
-      ],
-      output: output ?? '',
-    }),
-  ),
 });

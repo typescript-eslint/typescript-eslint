@@ -8,15 +8,15 @@ export default createRule({
   name: 'consistent-type-definitions',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'stylistic',
       description:
         'Enforce type definitions to consistently use either `interface` or `type`',
-      recommended: 'stylistic',
     },
-    fixable: 'code',
     messages: {
-      interfaceOverType: 'Use an `interface` instead of a `type`.',
       typeOverInterface: 'Use a `type` instead of an `interface`.',
+      interfaceOverType: 'Use an `interface` instead of a `type`.',
     },
     schema: [
       {

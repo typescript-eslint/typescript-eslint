@@ -18,10 +18,10 @@ export default createRule<Options, MessageIds>({
   name: 'method-signature-style',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description: 'Enforce using a particular method signature syntax',
     },
-    fixable: 'code',
     messages: {
       errorMethod:
         'Shorthand method signature is forbidden. Use a function property instead.',

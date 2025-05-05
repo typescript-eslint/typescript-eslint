@@ -24,8 +24,8 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforce that class methods utilize `this`',
       extendsBaseRule: true,
+      description: 'Enforce that class methods utilize `this`',
       requiresTypeChecking: false,
     },
     messages: {

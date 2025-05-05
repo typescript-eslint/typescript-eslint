@@ -15,96 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('prefer-reduce-type-parameter', rule, {
-  valid: [
-    `
-      new (class Mine {
-        reduce() {}
-      })().reduce(() => {}, 1 as any);
-    `,
-    `
-      class Mine {
-        reduce() {}
-      }
-
-      new Mine().reduce(() => {}, 1 as any);
-    `,
-    `
-      import { Reducable } from './class';
-
-      new Reducable().reduce(() => {}, 1 as any);
-    `,
-    "[1, 2, 3]['reduce']((sum, num) => sum + num, 0);",
-    '[1, 2, 3][null]((sum, num) => sum + num, 0);',
-    '[1, 2, 3]?.[null]((sum, num) => sum + num, 0);',
-    '[1, 2, 3].reduce((sum, num) => sum + num, 0);',
-    '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
-    '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
-    `
-      declare const tuple: [number, number, number];
-      tuple.reduce<number[]>((a, s) => a.concat(s * 2), []);
-    `,
-    `
-      type Reducer = { reduce: (callback: (arg: any) => any, arg: any) => any };
-      declare const tuple: [number, number, number] | Reducer;
-      tuple.reduce(a => {
-        return a.concat(1);
-      }, [] as number[]);
-    `,
-    `
-      type Reducer = { reduce: (callback: (arg: any) => any, arg: any) => any };
-      declare const arrayOrReducer: number[] & Reducer;
-      arrayOrReducer.reduce(a => {
-        return a.concat(1);
-      }, [] as number[]);
-    `,
-    `
-      ['a', 'b'].reduce(
-        (accum, name) => ({
-          ...accum,
-          [name]: true,
-        }),
-        {} as Record<'a' | 'b', boolean>,
-      );
-    `,
-    // Object literal may only specify known properties, and 'c' does not exist in
-    // type 'Record<"a" | "b", boolean>'.
-    `
-      ['a', 'b'].reduce(
-        (accum, name) => ({
-          ...accum,
-          [name]: true,
-        }),
-        { a: true, b: false, c: true } as Record<'a' | 'b', boolean>,
-      );
-    `,
-    // '{}' is assignable to the constraint of type 'T', but 'T' could be
-    // instantiated with a different subtype of constraint 'Record<string, boolean>'.
-    `
-      function f<T extends Record<string, boolean>>() {
-        ['a', 'b'].reduce(
-          (accum, name) => ({
-            ...accum,
-            [name]: true,
-          }),
-          {} as T,
-        );
-      }
-    `,
-    `
-      function f<T>() {
-        ['a', 'b'].reduce(
-          (accum, name) => ({
-            ...accum,
-            [name]: true,
-          }),
-          {} as T,
-        );
-      }
-    `,
-    `
-      ['a', 'b'].reduce((accum, name) => \`\${accum} | hello \${name}!\`);
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -380,5 +290,95 @@ function f<T extends Record<string, boolean>>(t: T) {
 }
       `,
     },
+  ],
+  valid: [
+    `
+      new (class Mine {
+        reduce() {}
+      })().reduce(() => {}, 1 as any);
+    `,
+    `
+      class Mine {
+        reduce() {}
+      }
+
+      new Mine().reduce(() => {}, 1 as any);
+    `,
+    `
+      import { Reducable } from './class';
+
+      new Reducable().reduce(() => {}, 1 as any);
+    `,
+    "[1, 2, 3]['reduce']((sum, num) => sum + num, 0);",
+    '[1, 2, 3][null]((sum, num) => sum + num, 0);',
+    '[1, 2, 3]?.[null]((sum, num) => sum + num, 0);',
+    '[1, 2, 3].reduce((sum, num) => sum + num, 0);',
+    '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
+    '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
+    `
+      declare const tuple: [number, number, number];
+      tuple.reduce<number[]>((a, s) => a.concat(s * 2), []);
+    `,
+    `
+      type Reducer = { reduce: (callback: (arg: any) => any, arg: any) => any };
+      declare const tuple: [number, number, number] | Reducer;
+      tuple.reduce(a => {
+        return a.concat(1);
+      }, [] as number[]);
+    `,
+    `
+      type Reducer = { reduce: (callback: (arg: any) => any, arg: any) => any };
+      declare const arrayOrReducer: number[] & Reducer;
+      arrayOrReducer.reduce(a => {
+        return a.concat(1);
+      }, [] as number[]);
+    `,
+    `
+      ['a', 'b'].reduce(
+        (accum, name) => ({
+          ...accum,
+          [name]: true,
+        }),
+        {} as Record<'a' | 'b', boolean>,
+      );
+    `,
+    // Object literal may only specify known properties, and 'c' does not exist in
+    // type 'Record<"a" | "b", boolean>'.
+    `
+      ['a', 'b'].reduce(
+        (accum, name) => ({
+          ...accum,
+          [name]: true,
+        }),
+        { a: true, b: false, c: true } as Record<'a' | 'b', boolean>,
+      );
+    `,
+    // '{}' is assignable to the constraint of type 'T', but 'T' could be
+    // instantiated with a different subtype of constraint 'Record<string, boolean>'.
+    `
+      function f<T extends Record<string, boolean>>() {
+        ['a', 'b'].reduce(
+          (accum, name) => ({
+            ...accum,
+            [name]: true,
+          }),
+          {} as T,
+        );
+      }
+    `,
+    `
+      function f<T>() {
+        ['a', 'b'].reduce(
+          (accum, name) => ({
+            ...accum,
+            [name]: true,
+          }),
+          {} as T,
+        );
+      }
+    `,
+    `
+      ['a', 'b'].reduce((accum, name) => \`\${accum} | hello \${name}!\`);
+    `,
   ],
 });

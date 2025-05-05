@@ -55,1494 +55,6 @@ const nullishTypeTest = <
   );
 
 ruleTester.run('prefer-nullish-coalescing', rule, {
-  valid: [
-    ...typeValidTest(
-      (type, equals) => `
-declare let x: ${type};
-(x ||${equals} 'foo');
-      `,
-    ),
-    ...nullishTypeTest(
-      (nullish, type, equals) => `
-declare let x: ${type} | ${nullish};
-x ??${equals} 'foo';
-      `,
-    ),
-
-    {
-      code: 'x !== undefined && x !== null ? x : y;',
-      options: [{ ignoreTernaryTests: true }],
-    },
-
-    ...[
-      'x !== undefined && x !== null ? "foo" : "bar";',
-      'x !== null && x !== undefined && x !== 5 ? x : y',
-      'x === null || x === undefined || x === 5 ? x : y',
-      'x === undefined && x !== null ? x : y;',
-      'x === undefined && x === null ? x : y;',
-      'x !== undefined && x === null ? x : y;',
-      'x === undefined || x !== null ? x : y;',
-      'x === undefined || x === null ? x : y;',
-      'x !== undefined || x === null ? x : y;',
-      'x !== undefined || x === null ? y : x;',
-      'x === null || x === null ? y : x;',
-      'x === undefined || x === undefined ? y : x;',
-      'x == null ? x : y;',
-      'undefined == null ? x : y;',
-      'undefined != z ? x : y;',
-      'x == undefined ? x : y;',
-      'x != null ? y : x;',
-      'x != undefined ? y : x;',
-      'null == x ? x : y;',
-      'undefined == x ? x : y;',
-      'null != x ? y : x;',
-      'undefined != x ? y : x;',
-      `
-declare let x: number | undefined;
-x !== 15 && x !== undefined ? x : y;
-      `,
-      `
-declare let x: number | undefined;
-x !== undefined && x !== 15 ? x : y;
-      `,
-      `
-declare let x: number | undefined;
-15 !== x && undefined !== x ? x : y;
-      `,
-      `
-declare let x: number | undefined;
-undefined !== x && 15 !== x ? x : y;
-      `,
-      `
-declare let x: number | undefined;
-15 !== x && x !== undefined ? x : y;
-      `,
-      `
-declare let x: number | undefined;
-undefined !== x && x !== 15 ? x : y;
-      `,
-      `
-declare let x: string | undefined;
-x !== 'foo' && x !== undefined ? x : y;
-      `,
-      `
-function test(value: number | undefined): number {
-  return value !== foo() && value !== undefined ? value : 1;
-}
-      `,
-      `
-const test = (value: boolean | undefined): boolean => value !== undefined && value !== false ? value : false;
-      `,
-      `
-declare let x: string;
-x === null ? x : y;
-      `,
-      `
-declare let x: string | undefined;
-x === null ? x : y;
-      `,
-      `
-declare let x: string | null;
-x === undefined ? x : y;
-      `,
-      `
-declare let x: string | undefined | null;
-x !== undefined ? x : y;
-      `,
-      `
-declare let x: string | undefined | null;
-x !== null ? x : y;
-      `,
-      `
-declare let x: any;
-x === null ? x : y;
-      `,
-      `
-declare let x: unknown;
-x === null ? x : y;
-      `,
-      `
-declare let x: string;
-x ? x : y;
-      `,
-      `
-declare let x: string;
-!x ? y : x;
-      `,
-      `
-declare let x: string | object;
-x ? x : y;
-      `,
-      `
-declare let x: string | object;
-!x ? y : x;
-      `,
-      `
-declare let x: number;
-x ? x : y;
-      `,
-      `
-declare let x: number;
-!x ? y : x;
-      `,
-      `
-declare let x: bigint;
-x ? x : y;
-      `,
-      `
-declare let x: bigint;
-!x ? y : x;
-      `,
-      `
-declare let x: boolean;
-x ? x : y;
-      `,
-      `
-declare let x: boolean;
-!x ? y : x;
-      `,
-      `
-declare let x: object;
-x ? x : y;
-      `,
-      `
-declare let x: object;
-!x ? y : x;
-      `,
-      `
-declare let x: string[];
-x ? x : y;
-      `,
-      `
-declare let x: string[];
-!x ? y : x;
-      `,
-      `
-declare let x: Function;
-x ? x : y;
-      `,
-      `
-declare let x: Function;
-!x ? y : x;
-      `,
-      `
-declare let x: () => string;
-x ? x : y;
-      `,
-      `
-declare let x: () => string;
-!x ? y : x;
-      `,
-      `
-declare let x: () => string | null;
-x ? x : y;
-      `,
-      `
-declare let x: () => string | null;
-!x ? y : x;
-      `,
-      `
-declare let x: () => string | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: () => string | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: () => string | null | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: () => string | null | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: () => string | null;
-x() ? x() : y;
-      `,
-      `
-declare let x: () => string | null;
-!x() ? y : x();
-      `,
-      `
-const a = 'foo';
-declare let x: (a: string | null) => string | null;
-x(a) ? x(a) : y;
-      `,
-      `
-const a = 'foo';
-declare let x: (a: string | null) => string | null;
-!x(a) ? y : x(a);
-      `,
-      `
-declare let x: { n: string };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: string };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: string | object };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: string | object };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: number };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: number };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: bigint };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: bigint };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: boolean };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: boolean };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: object };
-x ? x : y;
-      `,
-      `
-declare let x: { n: object };
-!x ? y : x;
-      `,
-      `
-declare let x: { n: string[] };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: string[] };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: Function };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: Function };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: () => string };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: () => string };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: () => string | null };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: () => string | null };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: () => string | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: () => string | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: () => string | null | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: () => string | null | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let foo: string;
-declare function makeFoo(): string;
-
-function lazyInitialize() {
-  if (!foo) {
-    foo = makeFoo();
-  }
-}
-      `,
-      `
-declare let foo: { a: string } | null;
-declare function makeFoo(): { a: string };
-
-function lazyInitialize() {
-  if (foo) {
-    foo = makeFoo();
-  }
-}
-      `,
-      `
-declare let foo: { a: string } | null;
-declare function makeFoo(): { a: string };
-
-function lazyInitialize() {
-  if (foo != null) {
-    foo = makeFoo();
-  }
-}
-      `,
-      `
-declare let foo: { a: string } | null;
-declare function makeFoo(): { a: string };
-
-function lazyInitialize() {
-  if (foo == null) {
-    foo = makeFoo();
-    return foo;
-  }
-}
-      `,
-      `
-declare let foo: { a: string } | null;
-declare function makeFoo(): { a: string };
-
-function lazyInitialize() {
-  if (foo == null) {
-    foo = makeFoo();
-  } else {
-    return 'bar';
-  }
-}
-      `,
-      `
-declare let foo: { a: string } | null;
-declare function makeFoo(): { a: string };
-
-function lazyInitialize() {
-  if (foo == null) {
-    foo = makeFoo();
-  } else if (foo.a) {
-    return 'bar';
-  }
-}
-      `,
-      `
-declare let foo: { a: string } | null;
-declare function makeFoo(): { a: string };
-function shadowed() {
-  if (foo == null) {
-    const foo = makeFoo();
-  }
-}
-      `,
-      `
-declare let foo: { foo: string } | null;
-declare function makeFoo(): { foo: { foo: string } };
-function weirdDestructuringAssignment() {
-  if (foo == null) {
-    ({ foo } = makeFoo());
-  }
-}
-      `,
-      `
-declare const nullOrObject: null | { a: string };
-
-const test = nullOrObject !== undefined && null !== null
-  ? nullOrObject
-  : 42;
-      `,
-      `
-declare const nullOrObject: null | { a: string };
-
-const test = nullOrObject !== undefined && null != null
-  ? nullOrObject
-  : 42;
-      `,
-      `
-declare const nullOrObject: null | { a: string };
-
-const test = nullOrObject !== undefined && null != undefined
-  ? nullOrObject
-  : 42;
-      `,
-      `
-declare const nullOrObject: null | { a: string };
-
-const test = nullOrObject === undefined || null === null
-  ? 42
-  : nullOrObject;
-      `,
-      `
-declare const nullOrObject: null | { a: string };
-
-const test = nullOrObject === undefined || null == null
-  ? 42
-  : nullOrObject;
-      `,
-      `
-declare const nullOrObject: null | { a: string };
-
-const test = nullOrObject === undefined || null == undefined
-  ? 42
-  : nullOrObject;
-      `,
-      `
-const a = 'b';
-declare let x: { a: string, b: string } | null
-
-x?.a != null ? x[a] : 'foo'
-      `,
-      `
-const a = 'b';
-declare let x: { a: string, b: string } | null
-
-x?.[a] != null ? x.a : 'foo'
-      `,
-      `
-declare let x: { a: string } | null
-declare let y: { a: string } | null
-
-x?.a ? y?.a : 'foo'
-      `,
-    ].map(code => ({
-      code,
-      options: [{ ignoreTernaryTests: false }] as const,
-    })),
-    {
-      code: `
-declare let foo: { a: string } | null;
-declare function makeFoo(): { a: string };
-
-function lazyInitialize() {
-  if (!foo) {
-    foo = makeFoo();
-  }
-}
-      `,
-      options: [{ ignoreIfStatements: true }],
-    },
-    {
-      code: `
-declare let foo: { a: string } | null;
-declare function makeFoo(): { a: string };
-
-function lazyInitialize() {
-  if (!foo) foo = makeFoo();
-}
-      `,
-      options: [{ ignoreIfStatements: true }],
-    },
-
-    // ignoreConditionalTests
-    ...nullishTypeTest((nullish, type, equals) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-(x ||${equals} 'foo') ? null : null;
-      `,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-if ((x ||${equals} 'foo')) {}
-      `,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-do {} while ((x ||${equals} 'foo'))
-      `,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-for (;(x ||${equals} 'foo');) {}
-      `,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-while ((x ||${equals} 'foo')) {}
-      `,
-    })),
-
-    // ignoreMixedLogicalExpressions
-    ...nullishTypeTest((nullish, type) => ({
-      code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-a || b && c;
-      `,
-      options: [{ ignoreMixedLogicalExpressions: true }],
-    })),
-    ...nullishTypeTest((nullish, type) => ({
-      code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a || b || c && d;
-      `,
-      options: [{ ignoreMixedLogicalExpressions: true }],
-    })),
-    ...nullishTypeTest((nullish, type) => ({
-      code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a && b || c || d;
-      `,
-      options: [{ ignoreMixedLogicalExpressions: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: ${type} | undefined;
-x || y;
-      `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: ${type} | undefined;
-x || y;
-      `,
-      options: [{ ignorePrimitives: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: (${type} & { __brand?: any }) | undefined;
-x || y;
-      `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: (${type} & { __brand?: any }) | undefined;
-x || y;
-      `,
-      options: [{ ignorePrimitives: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: ${type} | undefined;
-x ? x : y;
-      `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: ${type} | undefined;
-!x ? y : x;
-      `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: ${type} | undefined;
-x ? x : y;
-      `,
-      options: [{ ignorePrimitives: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: ${type} | undefined;
-!x ? y : x;
-      `,
-      options: [{ ignorePrimitives: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: (${type} & { __brand?: any }) | undefined;
-x ? x : y;
-      `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: (${type} & { __brand?: any }) | undefined;
-!x ? y : x;
-      `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: (${type} & { __brand?: any }) | undefined;
-x ? x : y;
-      `,
-      options: [{ ignorePrimitives: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: (${type} & { __brand?: any }) | undefined;
-!x ? y : x;
-      `,
-      options: [{ ignorePrimitives: true }],
-    })),
-    `
-      declare let x: never;
-      declare let y: number;
-      x || y;
-    `,
-    `
-      declare let x: never;
-      declare let y: number;
-      x ? x : y;
-    `,
-    `
-      declare let x: never;
-      declare let y: number;
-      !x ? y : x;
-    `,
-    `
-interface Box {
-  value: string;
-}
-declare function getFallbackBox(): Box;
-declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
-
-defaultBoxOptional.a?.b !== null ? defaultBoxOptional.a?.b : getFallbackBox();
-    `,
-    `
-interface Box {
-  value: string;
-}
-declare function getFallbackBox(): Box;
-declare const defaultBoxOptional: { a?: { b?: Box | null } };
-
-defaultBoxOptional.a?.b !== null ? defaultBoxOptional.a?.b : getFallbackBox();
-    `,
-    `
-interface Box {
-  value: string;
-}
-declare function getFallbackBox(): Box;
-declare const defaultBoxOptional: { a?: { b?: Box | null } };
-
-defaultBoxOptional.a?.b !== undefined
-  ? defaultBoxOptional.a?.b
-  : getFallbackBox();
-    `,
-    `
-interface Box {
-  value: string;
-}
-declare function getFallbackBox(): Box;
-declare const defaultBoxOptional: { a?: { b?: Box | null } };
-
-defaultBoxOptional.a?.b !== undefined
-  ? defaultBoxOptional.a.b
-  : getFallbackBox();
-    `,
-    {
-      code: `
-declare let x: 0 | 1 | 0n | 1n | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: false,
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare let x: 0 | 1 | 0n | 1n | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: false,
-            boolean: true,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare let x: 0 | 'foo' | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare let x: 0 | 'foo' | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: false,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 0,
-  B = 1,
-  C = 2,
-}
-declare let x: Enum | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 0,
-  B = 1,
-  C = 2,
-}
-declare let x: Enum.A | Enum.B | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 'a',
-  B = 'b',
-  C = 'c',
-}
-declare let x: Enum | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 'a',
-  B = 'b',
-  C = 'c',
-}
-declare let x: Enum.A | Enum.B | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare let x: 0 | 1 | 0n | 1n | undefined;
-x ? x : y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: false,
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare let x: 0 | 1 | 0n | 1n | undefined;
-!x ? y : x;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: false,
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare let x: 0 | 1 | 0n | 1n | undefined;
-x ? x : y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: false,
-            boolean: true,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare let x: 0 | 1 | 0n | 1n | undefined;
-!x ? y : x;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: false,
-            boolean: true,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare let x: 0 | 'foo' | undefined;
-x ? x : y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare let x: 0 | 'foo' | undefined;
-!x ? y : x;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare let x: 0 | 'foo' | undefined;
-x ? x : y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: false,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare let x: 0 | 'foo' | undefined;
-!x ? y : x;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: false,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 0,
-  B = 1,
-  C = 2,
-}
-declare let x: Enum | undefined;
-x ? x : y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 0,
-  B = 1,
-  C = 2,
-}
-declare let x: Enum | undefined;
-!x ? y : x;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 0,
-  B = 1,
-  C = 2,
-}
-declare let x: Enum.A | Enum.B | undefined;
-x ? x : y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 0,
-  B = 1,
-  C = 2,
-}
-declare let x: Enum.A | Enum.B | undefined;
-!x ? y : x;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 'a',
-  B = 'b',
-  C = 'c',
-}
-declare let x: Enum | undefined;
-x ? x : y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 'a',
-  B = 'b',
-  C = 'c',
-}
-declare let x: Enum | undefined;
-!x ? y : x;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 'a',
-  B = 'b',
-  C = 'c',
-}
-declare let x: Enum.A | Enum.B | undefined;
-x ? x : y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 'a',
-  B = 'b',
-  C = 'c',
-}
-declare let x: Enum.A | Enum.B | undefined;
-!x ? y : x;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | true | undefined;
-let b: string | boolean | undefined;
-
-const x = Boolean(a || b);
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-const test = Boolean(a || b || c);
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-const test = Boolean(a || (b && c));
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-const test = Boolean((a || b) ?? c);
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-const test = Boolean(a ?? (b || c));
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-const test = Boolean(a ? b || c : 'fail');
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-const test = Boolean(a ? 'success' : b || c);
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-const test = Boolean(((a = b), b || c));
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | true | undefined;
-let b: string | boolean | undefined;
-
-const x = Boolean(a ? a : b);
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-
-const test = Boolean(!a ? b : a);
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-const test = Boolean((a ? a : b) || c);
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-const test = Boolean(c || (!a ? b : a));
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-if (a || b || c) {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-if (a || (b && c)) {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-if ((a || b) ?? c) {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-if (a ?? (b || c)) {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-if (a ? b || c : 'fail') {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-if (a ? 'success' : b || c) {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-if (((a = b), b || c)) {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | undefined;
-let b: string | undefined;
-
-if (!(a || b)) {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | undefined;
-let b: string | undefined;
-
-if (!!(a || b)) {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | true | undefined;
-let b: string | boolean | undefined;
-
-if (a ? a : b) {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-
-if (!a ? b : a) {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-if ((a ? a : b) || c) {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-if (c || (!a ? b : a)) {
-}
-      `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const a: any;
-declare const b: any;
-a ? a : b;
-      `,
-      options: [
-        {
-          ignorePrimitives: true,
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const a: any;
-declare const b: any;
-a ? a : b;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-          },
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const a: unknown;
-const b = a || 'bar';
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: false,
-            number: false,
-            string: false,
-          },
-        },
-      ],
-    },
-  ],
-
   invalid: [
     ...nullishTypeTest((nullish, type, equals) => ({
       code: `
@@ -6318,6 +4830,1494 @@ c ?? (c ? 1 : 2);
         },
       ],
       output: null,
+    },
+  ],
+
+  valid: [
+    ...typeValidTest(
+      (type, equals) => `
+declare let x: ${type};
+(x ||${equals} 'foo');
+      `,
+    ),
+    ...nullishTypeTest(
+      (nullish, type, equals) => `
+declare let x: ${type} | ${nullish};
+x ??${equals} 'foo';
+      `,
+    ),
+
+    {
+      code: 'x !== undefined && x !== null ? x : y;',
+      options: [{ ignoreTernaryTests: true }],
+    },
+
+    ...[
+      'x !== undefined && x !== null ? "foo" : "bar";',
+      'x !== null && x !== undefined && x !== 5 ? x : y',
+      'x === null || x === undefined || x === 5 ? x : y',
+      'x === undefined && x !== null ? x : y;',
+      'x === undefined && x === null ? x : y;',
+      'x !== undefined && x === null ? x : y;',
+      'x === undefined || x !== null ? x : y;',
+      'x === undefined || x === null ? x : y;',
+      'x !== undefined || x === null ? x : y;',
+      'x !== undefined || x === null ? y : x;',
+      'x === null || x === null ? y : x;',
+      'x === undefined || x === undefined ? y : x;',
+      'x == null ? x : y;',
+      'undefined == null ? x : y;',
+      'undefined != z ? x : y;',
+      'x == undefined ? x : y;',
+      'x != null ? y : x;',
+      'x != undefined ? y : x;',
+      'null == x ? x : y;',
+      'undefined == x ? x : y;',
+      'null != x ? y : x;',
+      'undefined != x ? y : x;',
+      `
+declare let x: number | undefined;
+x !== 15 && x !== undefined ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+x !== undefined && x !== 15 ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+15 !== x && undefined !== x ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+undefined !== x && 15 !== x ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+15 !== x && x !== undefined ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+undefined !== x && x !== 15 ? x : y;
+      `,
+      `
+declare let x: string | undefined;
+x !== 'foo' && x !== undefined ? x : y;
+      `,
+      `
+function test(value: number | undefined): number {
+  return value !== foo() && value !== undefined ? value : 1;
+}
+      `,
+      `
+const test = (value: boolean | undefined): boolean => value !== undefined && value !== false ? value : false;
+      `,
+      `
+declare let x: string;
+x === null ? x : y;
+      `,
+      `
+declare let x: string | undefined;
+x === null ? x : y;
+      `,
+      `
+declare let x: string | null;
+x === undefined ? x : y;
+      `,
+      `
+declare let x: string | undefined | null;
+x !== undefined ? x : y;
+      `,
+      `
+declare let x: string | undefined | null;
+x !== null ? x : y;
+      `,
+      `
+declare let x: any;
+x === null ? x : y;
+      `,
+      `
+declare let x: unknown;
+x === null ? x : y;
+      `,
+      `
+declare let x: string;
+x ? x : y;
+      `,
+      `
+declare let x: string;
+!x ? y : x;
+      `,
+      `
+declare let x: string | object;
+x ? x : y;
+      `,
+      `
+declare let x: string | object;
+!x ? y : x;
+      `,
+      `
+declare let x: number;
+x ? x : y;
+      `,
+      `
+declare let x: number;
+!x ? y : x;
+      `,
+      `
+declare let x: bigint;
+x ? x : y;
+      `,
+      `
+declare let x: bigint;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean;
+x ? x : y;
+      `,
+      `
+declare let x: boolean;
+!x ? y : x;
+      `,
+      `
+declare let x: object;
+x ? x : y;
+      `,
+      `
+declare let x: object;
+!x ? y : x;
+      `,
+      `
+declare let x: string[];
+x ? x : y;
+      `,
+      `
+declare let x: string[];
+!x ? y : x;
+      `,
+      `
+declare let x: Function;
+x ? x : y;
+      `,
+      `
+declare let x: Function;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string;
+x ? x : y;
+      `,
+      `
+declare let x: () => string;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | null;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | null;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | null;
+x() ? x() : y;
+      `,
+      `
+declare let x: () => string | null;
+!x() ? y : x();
+      `,
+      `
+const a = 'foo';
+declare let x: (a: string | null) => string | null;
+x(a) ? x(a) : y;
+      `,
+      `
+const a = 'foo';
+declare let x: (a: string | null) => string | null;
+!x(a) ? y : x(a);
+      `,
+      `
+declare let x: { n: string };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: string | object };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string | object };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: number };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: number };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: bigint };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: bigint };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: boolean };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: boolean };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: object };
+x ? x : y;
+      `,
+      `
+declare let x: { n: object };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: string[] };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string[] };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: Function };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: Function };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: () => string };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: () => string };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: () => string | null };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: () => string | null };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: () => string | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: () => string | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: () => string | null | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: () => string | null | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let foo: string;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  if (!foo) {
+    foo = makeFoo();
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo) {
+    foo = makeFoo();
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo != null) {
+    foo = makeFoo();
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo = makeFoo();
+    return foo;
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo = makeFoo();
+  } else {
+    return 'bar';
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo = makeFoo();
+  } else if (foo.a) {
+    return 'bar';
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+function shadowed() {
+  if (foo == null) {
+    const foo = makeFoo();
+  }
+}
+      `,
+      `
+declare let foo: { foo: string } | null;
+declare function makeFoo(): { foo: { foo: string } };
+function weirdDestructuringAssignment() {
+  if (foo == null) {
+    ({ foo } = makeFoo());
+  }
+}
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject !== undefined && null !== null
+  ? nullOrObject
+  : 42;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject !== undefined && null != null
+  ? nullOrObject
+  : 42;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject !== undefined && null != undefined
+  ? nullOrObject
+  : 42;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject === undefined || null === null
+  ? 42
+  : nullOrObject;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject === undefined || null == null
+  ? 42
+  : nullOrObject;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject === undefined || null == undefined
+  ? 42
+  : nullOrObject;
+      `,
+      `
+const a = 'b';
+declare let x: { a: string, b: string } | null
+
+x?.a != null ? x[a] : 'foo'
+      `,
+      `
+const a = 'b';
+declare let x: { a: string, b: string } | null
+
+x?.[a] != null ? x.a : 'foo'
+      `,
+      `
+declare let x: { a: string } | null
+declare let y: { a: string } | null
+
+x?.a ? y?.a : 'foo'
+      `,
+    ].map(code => ({
+      code,
+      options: [{ ignoreTernaryTests: false }] as const,
+    })),
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (!foo) {
+    foo = makeFoo();
+  }
+}
+      `,
+      options: [{ ignoreIfStatements: true }],
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (!foo) foo = makeFoo();
+}
+      `,
+      options: [{ ignoreIfStatements: true }],
+    },
+
+    // ignoreConditionalTests
+    ...nullishTypeTest((nullish, type, equals) => ({
+      code: `
+declare let x: ${type} | ${nullish};
+(x ||${equals} 'foo') ? null : null;
+      `,
+    })),
+    ...nullishTypeTest((nullish, type, equals) => ({
+      code: `
+declare let x: ${type} | ${nullish};
+if ((x ||${equals} 'foo')) {}
+      `,
+    })),
+    ...nullishTypeTest((nullish, type, equals) => ({
+      code: `
+declare let x: ${type} | ${nullish};
+do {} while ((x ||${equals} 'foo'))
+      `,
+    })),
+    ...nullishTypeTest((nullish, type, equals) => ({
+      code: `
+declare let x: ${type} | ${nullish};
+for (;(x ||${equals} 'foo');) {}
+      `,
+    })),
+    ...nullishTypeTest((nullish, type, equals) => ({
+      code: `
+declare let x: ${type} | ${nullish};
+while ((x ||${equals} 'foo')) {}
+      `,
+    })),
+
+    // ignoreMixedLogicalExpressions
+    ...nullishTypeTest((nullish, type) => ({
+      code: `
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+a || b && c;
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    })),
+    ...nullishTypeTest((nullish, type) => ({
+      code: `
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
+a || b || c && d;
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    })),
+    ...nullishTypeTest((nullish, type) => ({
+      code: `
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
+a && b || c || d;
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: ${type} | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: ${type} | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: (${type} & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: (${type} & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: ${type} | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: ${type} | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: ${type} | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: ${type} | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: (${type} & { __brand?: any }) | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: (${type} & { __brand?: any }) | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: (${type} & { __brand?: any }) | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: (${type} & { __brand?: any }) | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
+    `
+      declare let x: never;
+      declare let y: number;
+      x || y;
+    `,
+    `
+      declare let x: never;
+      declare let y: number;
+      x ? x : y;
+    `,
+    `
+      declare let x: never;
+      declare let y: number;
+      !x ? y : x;
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== null ? defaultBoxOptional.a?.b : getFallbackBox();
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | null } };
+
+defaultBoxOptional.a?.b !== null ? defaultBoxOptional.a?.b : getFallbackBox();
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | null } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a?.b
+  : getFallbackBox();
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | null } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a.b
+  : getFallbackBox();
+    `,
+    {
+      code: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 'foo' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 'foo' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare let x: Enum | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare let x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare let x: Enum | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare let x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 'foo' | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 'foo' | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 'foo' | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 'foo' | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare let x: Enum | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare let x: Enum | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare let x: Enum.A | Enum.B | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare let x: Enum.A | Enum.B | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare let x: Enum | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare let x: Enum | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare let x: Enum.A | Enum.B | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare let x: Enum.A | Enum.B | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a || b);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(a || b || c);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(a || (b && c));
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean((a || b) ?? c);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(a ?? (b || c));
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(a ? b || c : 'fail');
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(a ? 'success' : b || c);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(((a = b), b || c));
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a ? a : b);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+
+const test = Boolean(!a ? b : a);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean((a ? a : b) || c);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(c || (!a ? b : a));
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (a || b || c) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (a || (b && c)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if ((a || b) ?? c) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (a ?? (b || c)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (a ? b || c : 'fail') {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (a ? 'success' : b || c) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (((a = b), b || c)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | undefined;
+let b: string | undefined;
+
+if (!(a || b)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | undefined;
+let b: string | undefined;
+
+if (!!(a || b)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+if (a ? a : b) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+
+if (!a ? b : a) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if ((a ? a : b) || c) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (c || (!a ? b : a)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const a: any;
+declare const b: any;
+a ? a : b;
+      `,
+      options: [
+        {
+          ignorePrimitives: true,
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const a: any;
+declare const b: any;
+a ? a : b;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const a: unknown;
+const b = a || 'bar';
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: false,
+            string: false,
+          },
+        },
+      ],
     },
   ],
 });

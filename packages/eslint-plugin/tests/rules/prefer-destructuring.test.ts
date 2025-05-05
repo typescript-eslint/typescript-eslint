@@ -16,464 +16,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('prefer-destructuring', rule, {
-  valid: [
-    // type annotated
-    `
-      declare const object: { foo: string };
-      var foo: string = object.foo;
-    `,
-    `
-      declare const array: number[];
-      const bar: number = array[0];
-    `,
-    // enforceForDeclarationWithTypeAnnotation: true
-    {
-      code: `
-        declare const object: { foo: string };
-        var { foo } = object;
-      `,
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: `
-        declare const object: { foo: string };
-        var { foo }: { foo: number } = object;
-      `,
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: `
-        declare const array: number[];
-        var [foo] = array;
-      `,
-      options: [
-        { array: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: `
-        declare const array: number[];
-        var [foo]: [foo: number] = array;
-      `,
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: `
-        declare const object: { bar: string };
-        var foo: unknown = object.bar;
-      `,
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: `
-        declare const object: { foo: string };
-        var { foo: bar } = object;
-      `,
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: `
-        declare const object: { foo: boolean };
-        var { foo: bar }: { foo: boolean } = object;
-      `,
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: `
-        declare class Foo {
-          foo: string;
-        }
-
-        class Bar extends Foo {
-          static foo() {
-            var foo: any = super.foo;
-          }
-        }
-      `,
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-
-    // numeric property for iterable / non-iterable
-    `
-      let x: { 0: unknown };
-      let y = x[0];
-    `,
-    `
-      let x: { 0: unknown };
-      y = x[0];
-    `,
-    `
-      let x: unknown;
-      let y = x[0];
-    `,
-    `
-      let x: unknown;
-      y = x[0];
-    `,
-    `
-      let x: { 0: unknown } | unknown[];
-      let y = x[0];
-    `,
-    `
-      let x: { 0: unknown } | unknown[];
-      y = x[0];
-    `,
-    `
-      let x: { 0: unknown } & (() => void);
-      let y = x[0];
-    `,
-    `
-      let x: { 0: unknown } & (() => void);
-      y = x[0];
-    `,
-    `
-      let x: Record<number, unknown>;
-      let y = x[0];
-    `,
-    `
-      let x: Record<number, unknown>;
-      y = x[0];
-    `,
-    {
-      code: `
-        let x: { 0: unknown };
-        let { 0: y } = x;
-      `,
-      options: [
-        { array: true, object: true },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-    {
-      code: `
-        let x: { 0: unknown };
-        ({ 0: y } = x);
-      `,
-      options: [
-        { array: true, object: true },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-    {
-      code: `
-        let x: { 0: unknown };
-        let y = x[0];
-      `,
-      options: [{ array: true }, { enforceForRenamedProperties: true }],
-    },
-    {
-      code: `
-        let x: { 0: unknown };
-        y = x[0];
-      `,
-      options: [{ array: true }, { enforceForRenamedProperties: true }],
-    },
-    {
-      code: `
-        let x: { 0: unknown };
-        let y = x[0];
-      `,
-      options: [
-        {
-          AssignmentExpression: { array: true, object: true },
-          VariableDeclarator: { array: true, object: false },
-        },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-    {
-      code: `
-        let x: { 0: unknown };
-        y = x[0];
-      `,
-      options: [
-        {
-          AssignmentExpression: { array: true, object: false },
-          VariableDeclarator: { array: true, object: true },
-        },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-    {
-      code: `
-        let x: Record<number, unknown>;
-        let i: number = 0;
-        y = x[i];
-      `,
-      options: [
-        { array: true, object: false },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-    {
-      code: `
-        let x: Record<number, unknown>;
-        let i: 0 = 0;
-        y = x[i];
-      `,
-      options: [
-        { array: true, object: false },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-    {
-      code: `
-        let x: Record<number, unknown>;
-        let i: 0 | 1 | 2 = 0;
-        y = x[i];
-      `,
-      options: [
-        { array: true, object: false },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-    {
-      code: `
-        let x: unknown[];
-        let i: number = 0;
-        y = x[i];
-      `,
-      options: [
-        { array: true, object: false },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-    {
-      code: `
-        let x: unknown[];
-        let i: 0 = 0;
-        y = x[i];
-      `,
-      options: [
-        { array: true, object: false },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-    {
-      code: `
-        let x: unknown[];
-        let i: 0 | 1 | 2 = 0;
-        y = x[i];
-      `,
-      options: [
-        { array: true, object: false },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-    {
-      code: `
-        let x: unknown[];
-        let i: number = 0;
-        y = x[i];
-      `,
-      options: [
-        { array: true, object: true },
-        { enforceForRenamedProperties: false },
-      ],
-    },
-    {
-      code: `
-        let x: { 0: unknown };
-        y += x[0];
-      `,
-      options: [
-        { array: true, object: true },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-    {
-      code: `
-        class Bar {
-          public [0]: unknown;
-        }
-        class Foo extends Bar {
-          static foo() {
-            let y = super[0];
-          }
-        }
-      `,
-      options: [
-        { array: true, object: true },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-    {
-      code: `
-        class Bar {
-          public [0]: unknown;
-        }
-        class Foo extends Bar {
-          static foo() {
-            y = super[0];
-          }
-        }
-      `,
-      options: [
-        { array: true, object: true },
-        { enforceForRenamedProperties: true },
-      ],
-    },
-
-    // already destructured
-    `
-      let xs: unknown[] = [1];
-      let [x] = xs;
-    `,
-    `
-      const obj: { x: unknown } = { x: 1 };
-      const { x } = obj;
-    `,
-    `
-      var obj: { x: unknown } = { x: 1 };
-      var { x: y } = obj;
-    `,
-    `
-      let obj: { x: unknown } = { x: 1 };
-      let key: 'x' = 'x';
-      let { [key]: foo } = obj;
-    `,
-    `
-      const obj: { x: unknown } = { x: 1 };
-      let x: unknown;
-      ({ x } = obj);
-    `,
-
-    // valid unless enforceForRenamedProperties is true
-    `
-      let obj: { x: unknown } = { x: 1 };
-      let y = obj.x;
-    `,
-    `
-      var obj: { x: unknown } = { x: 1 };
-      var y: unknown;
-      y = obj.x;
-    `,
-    `
-      const obj: { x: unknown } = { x: 1 };
-      const y = obj['x'];
-    `,
-    `
-      let obj: Record<string, unknown> = {};
-      let key = 'abc';
-      var y = obj[key];
-    `,
-
-    // shorthand operators shouldn't be reported;
-    `
-      let obj: { x: number } = { x: 1 };
-      let x = 10;
-      x += obj.x;
-    `,
-    `
-      let obj: { x: boolean } = { x: false };
-      let x = true;
-      x ||= obj.x;
-    `,
-    `
-      const xs: number[] = [1];
-      let x = 3;
-      x *= xs[0];
-    `,
-
-    // optional chaining shouldn't be reported
-    `
-      let xs: unknown[] | undefined;
-      let x = xs?.[0];
-    `,
-    `
-      let obj: Record<string, unknown> | undefined;
-      let x = obj?.x;
-    `,
-
-    // private identifiers
-    `
-      class C {
-        #foo: string;
-
-        method() {
-          const foo: unknown = this.#foo;
-        }
-      }
-    `,
-    `
-      class C {
-        #foo: string;
-
-        method() {
-          let foo: unknown;
-          foo = this.#foo;
-        }
-      }
-    `,
-    {
-      code: `
-        class C {
-          #foo: string;
-
-          method() {
-            const bar: unknown = this.#foo;
-          }
-        }
-      `,
-      options: [
-        { array: true, object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: `
-        class C {
-          #foo: string;
-
-          method(another: C) {
-            let bar: unknown;
-            bar: unknown = another.#foo;
-          }
-        }
-      `,
-      options: [
-        { array: true, object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: `
-        class C {
-          #foo: string;
-
-          method() {
-            const foo: unknown = this.#foo;
-          }
-        }
-      `,
-      options: [
-        { array: true, object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-  ],
   invalid: [
     // enforceForDeclarationWithTypeAnnotation: true
     {
@@ -1081,6 +623,464 @@ ruleTester.run('prefer-destructuring', rule, {
       ],
       options: [{ object: true }, { enforceForRenamedProperties: true }],
       output: null,
+    },
+  ],
+  valid: [
+    // type annotated
+    `
+      declare const object: { foo: string };
+      var foo: string = object.foo;
+    `,
+    `
+      declare const array: number[];
+      const bar: number = array[0];
+    `,
+    // enforceForDeclarationWithTypeAnnotation: true
+    {
+      code: `
+        declare const object: { foo: string };
+        var { foo } = object;
+      `,
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare const object: { foo: string };
+        var { foo }: { foo: number } = object;
+      `,
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare const array: number[];
+        var [foo] = array;
+      `,
+      options: [
+        { array: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare const array: number[];
+        var [foo]: [foo: number] = array;
+      `,
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare const object: { bar: string };
+        var foo: unknown = object.bar;
+      `,
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare const object: { foo: string };
+        var { foo: bar } = object;
+      `,
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare const object: { foo: boolean };
+        var { foo: bar }: { foo: boolean } = object;
+      `,
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare class Foo {
+          foo: string;
+        }
+
+        class Bar extends Foo {
+          static foo() {
+            var foo: any = super.foo;
+          }
+        }
+      `,
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+
+    // numeric property for iterable / non-iterable
+    `
+      let x: { 0: unknown };
+      let y = x[0];
+    `,
+    `
+      let x: { 0: unknown };
+      y = x[0];
+    `,
+    `
+      let x: unknown;
+      let y = x[0];
+    `,
+    `
+      let x: unknown;
+      y = x[0];
+    `,
+    `
+      let x: { 0: unknown } | unknown[];
+      let y = x[0];
+    `,
+    `
+      let x: { 0: unknown } | unknown[];
+      y = x[0];
+    `,
+    `
+      let x: { 0: unknown } & (() => void);
+      let y = x[0];
+    `,
+    `
+      let x: { 0: unknown } & (() => void);
+      y = x[0];
+    `,
+    `
+      let x: Record<number, unknown>;
+      let y = x[0];
+    `,
+    `
+      let x: Record<number, unknown>;
+      y = x[0];
+    `,
+    {
+      code: `
+        let x: { 0: unknown };
+        let { 0: y } = x;
+      `,
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: { 0: unknown };
+        ({ 0: y } = x);
+      `,
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: { 0: unknown };
+        let y = x[0];
+      `,
+      options: [{ array: true }, { enforceForRenamedProperties: true }],
+    },
+    {
+      code: `
+        let x: { 0: unknown };
+        y = x[0];
+      `,
+      options: [{ array: true }, { enforceForRenamedProperties: true }],
+    },
+    {
+      code: `
+        let x: { 0: unknown };
+        let y = x[0];
+      `,
+      options: [
+        {
+          AssignmentExpression: { array: true, object: true },
+          VariableDeclarator: { array: true, object: false },
+        },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: { 0: unknown };
+        y = x[0];
+      `,
+      options: [
+        {
+          AssignmentExpression: { array: true, object: false },
+          VariableDeclarator: { array: true, object: true },
+        },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: Record<number, unknown>;
+        let i: number = 0;
+        y = x[i];
+      `,
+      options: [
+        { array: true, object: false },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: Record<number, unknown>;
+        let i: 0 = 0;
+        y = x[i];
+      `,
+      options: [
+        { array: true, object: false },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: Record<number, unknown>;
+        let i: 0 | 1 | 2 = 0;
+        y = x[i];
+      `,
+      options: [
+        { array: true, object: false },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: unknown[];
+        let i: number = 0;
+        y = x[i];
+      `,
+      options: [
+        { array: true, object: false },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: unknown[];
+        let i: 0 = 0;
+        y = x[i];
+      `,
+      options: [
+        { array: true, object: false },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: unknown[];
+        let i: 0 | 1 | 2 = 0;
+        y = x[i];
+      `,
+      options: [
+        { array: true, object: false },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: unknown[];
+        let i: number = 0;
+        y = x[i];
+      `,
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: false },
+      ],
+    },
+    {
+      code: `
+        let x: { 0: unknown };
+        y += x[0];
+      `,
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        class Bar {
+          public [0]: unknown;
+        }
+        class Foo extends Bar {
+          static foo() {
+            let y = super[0];
+          }
+        }
+      `,
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        class Bar {
+          public [0]: unknown;
+        }
+        class Foo extends Bar {
+          static foo() {
+            y = super[0];
+          }
+        }
+      `,
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+
+    // already destructured
+    `
+      let xs: unknown[] = [1];
+      let [x] = xs;
+    `,
+    `
+      const obj: { x: unknown } = { x: 1 };
+      const { x } = obj;
+    `,
+    `
+      var obj: { x: unknown } = { x: 1 };
+      var { x: y } = obj;
+    `,
+    `
+      let obj: { x: unknown } = { x: 1 };
+      let key: 'x' = 'x';
+      let { [key]: foo } = obj;
+    `,
+    `
+      const obj: { x: unknown } = { x: 1 };
+      let x: unknown;
+      ({ x } = obj);
+    `,
+
+    // valid unless enforceForRenamedProperties is true
+    `
+      let obj: { x: unknown } = { x: 1 };
+      let y = obj.x;
+    `,
+    `
+      var obj: { x: unknown } = { x: 1 };
+      var y: unknown;
+      y = obj.x;
+    `,
+    `
+      const obj: { x: unknown } = { x: 1 };
+      const y = obj['x'];
+    `,
+    `
+      let obj: Record<string, unknown> = {};
+      let key = 'abc';
+      var y = obj[key];
+    `,
+
+    // shorthand operators shouldn't be reported;
+    `
+      let obj: { x: number } = { x: 1 };
+      let x = 10;
+      x += obj.x;
+    `,
+    `
+      let obj: { x: boolean } = { x: false };
+      let x = true;
+      x ||= obj.x;
+    `,
+    `
+      const xs: number[] = [1];
+      let x = 3;
+      x *= xs[0];
+    `,
+
+    // optional chaining shouldn't be reported
+    `
+      let xs: unknown[] | undefined;
+      let x = xs?.[0];
+    `,
+    `
+      let obj: Record<string, unknown> | undefined;
+      let x = obj?.x;
+    `,
+
+    // private identifiers
+    `
+      class C {
+        #foo: string;
+
+        method() {
+          const foo: unknown = this.#foo;
+        }
+      }
+    `,
+    `
+      class C {
+        #foo: string;
+
+        method() {
+          let foo: unknown;
+          foo = this.#foo;
+        }
+      }
+    `,
+    {
+      code: `
+        class C {
+          #foo: string;
+
+          method() {
+            const bar: unknown = this.#foo;
+          }
+        }
+      `,
+      options: [
+        { array: true, object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        class C {
+          #foo: string;
+
+          method(another: C) {
+            let bar: unknown;
+            bar: unknown = another.#foo;
+          }
+        }
+      `,
+      options: [
+        { array: true, object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        class C {
+          #foo: string;
+
+          method() {
+            const foo: unknown = this.#foo;
+          }
+        }
+      `,
+      options: [
+        { array: true, object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
     },
   ],
 });

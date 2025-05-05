@@ -18,485 +18,6 @@ const ruleTester = new RuleTester({
 
 // default rule is in-try-catch
 ruleTester.run('return-await', rule, {
-  valid: [
-    'return;', // No function in scope, so behave like return in a commonjs module
-    `
-      function test() {
-        return;
-      }
-    `,
-    `
-      function test() {
-        return 1;
-      }
-    `,
-    `
-      async function test() {
-        return;
-      }
-    `,
-    `
-      async function test() {
-        return 1;
-      }
-    `,
-    'const test = () => 1;',
-    'const test = async () => 1;',
-    `
-      async function test() {
-        return Promise.resolve(1);
-      }
-    `,
-    `
-      async function test() {
-        try {
-          return await Promise.resolve(1);
-        } catch (e) {
-          return await Promise.resolve(2);
-        } finally {
-          console.log('cleanup');
-        }
-      }
-    `,
-    `
-const fn = (): any => null;
-async function test() {
-  return await fn();
-}
-    `,
-    `
-const fn = (): unknown => null;
-async function test() {
-  return await fn();
-}
-    `,
-    `
-async function test(unknownParam: unknown) {
-  try {
-    return await unknownParam;
-  } finally {
-    console.log('In finally block');
-  }
-}
-    `,
-    {
-      code: `
-        async function test() {
-          if (Math.random() < 0.33) {
-            return await Promise.resolve(1);
-          } else if (Math.random() < 0.5) {
-            return Promise.resolve(2);
-          }
-
-          try {
-          } catch (e) {
-            return await Promise.resolve(3);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-      options: ['error-handling-correctness-only'],
-    },
-    `
-      async function test() {
-        try {
-          const one = await Promise.resolve(1);
-          return one;
-        } catch (e) {
-          const two = await Promise.resolve(2);
-          return two;
-        } finally {
-          console.log('cleanup');
-        }
-      }
-    `,
-    {
-      code: `
-        function test() {
-          return 1;
-        }
-      `,
-      options: ['in-try-catch'],
-    },
-    {
-      code: `
-        async function test() {
-          return 1;
-        }
-      `,
-      options: ['in-try-catch'],
-    },
-    {
-      code: 'const test = () => 1;',
-      options: ['in-try-catch'],
-    },
-    {
-      code: 'const test = async () => 1;',
-      options: ['in-try-catch'],
-    },
-    {
-      code: `
-        async function test() {
-          return Promise.resolve(1);
-        }
-      `,
-      options: ['in-try-catch'],
-    },
-    {
-      code: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-      options: ['in-try-catch'],
-    },
-    {
-      code: `
-        async function test() {
-          try {
-            throw 'foo';
-          } catch (e) {
-            return Promise.resolve(1);
-          }
-        }
-      `,
-      options: ['in-try-catch'],
-    },
-    {
-      code: `
-        async function test() {
-          try {
-            throw 'foo';
-          } catch (e) {
-            throw 'foo2';
-          } finally {
-            return Promise.resolve(1);
-          }
-        }
-      `,
-      options: ['in-try-catch'],
-    },
-    {
-      code: `
-        async function test() {
-          try {
-            const one = await Promise.resolve(1);
-            return one;
-          } catch (e) {
-            const two = await Promise.resolve(2);
-            return two;
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-      options: ['in-try-catch'],
-    },
-    {
-      code: `
-        async function test() {
-          return Promise.resolve(1);
-        }
-      `,
-      options: ['never'],
-    },
-    {
-      code: 'const test = async () => Promise.resolve(1);',
-      options: ['never'],
-    },
-    {
-      code: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-      options: ['never'],
-    },
-    {
-      code: `
-        async function test() {
-          return await Promise.resolve(1);
-        }
-      `,
-      options: ['always'],
-    },
-    {
-      code: 'const test = async () => await Promise.resolve(1);',
-      options: ['always'],
-    },
-    {
-      code: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-      options: ['always'],
-    },
-    {
-      code: `
-        declare function foo(): Promise<boolean>;
-
-        function bar(baz: boolean): Promise<boolean> | boolean {
-          if (baz) {
-            return true;
-          } else {
-            return foo();
-          }
-        }
-      `,
-      options: ['always'],
-    },
-    {
-      code: `
-        async function test(): Promise<string> {
-          const res = await Promise.resolve('{}');
-          try {
-            return JSON.parse(res);
-          } catch (error) {
-            return res;
-          }
-        }
-      `,
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/8663
-    {
-      code: `
-        async function test() {
-          const res = await Promise.resolve('{}');
-          try {
-            async function nested() {
-              return Promise.resolve('ok');
-            }
-            return await nested();
-          } catch (error) {
-            return Promise.resolve('error');
-          }
-        }
-      `,
-    },
-    {
-      code: `
-async function f() {
-  try {
-  } catch {
-    try {
-    } catch {
-      return Promise.reject();
-    }
-  }
-}
-      `,
-    },
-    {
-      code: `
-async function f() {
-  try {
-  } finally {
-    try {
-    } catch {
-      return Promise.reject();
-    }
-  }
-}
-      `,
-    },
-    {
-      code: `
-async function f() {
-  try {
-  } finally {
-    try {
-    } finally {
-      try {
-      } catch {
-        return Promise.reject();
-      }
-    }
-  }
-}
-      `,
-    },
-    {
-      code: `
-declare const bleh: any;
-async function f() {
-  using something = bleh;
-  return await Promise.resolve(2);
-}
-      `,
-    },
-    {
-      code: `
-declare const bleh: any;
-async function f() {
-  await using something = bleh;
-  return await Promise.resolve(2);
-}
-      `,
-    },
-    {
-      code: `
-declare const bleh: any;
-async function f() {
-  using something = bleh;
-  {
-    return await Promise.resolve(2);
-  }
-}
-      `,
-    },
-    {
-      code: `
-declare const bleh: any;
-async function f() {
-  return Promise.resolve(2);
-  using something = bleh;
-}
-      `,
-    },
-    {
-      code: `
-declare const bleh: any;
-async function f() {
-  return await Promise.resolve(2);
-  using something = bleh;
-}
-      `,
-      options: ['always'],
-    },
-    {
-      code: `
-declare function asyncFn(): Promise<unknown>;
-async function returnAwait() {
-  using _ = {
-    [Symbol.dispose]: () => {
-      console.log('dispose');
-    },
-  };
-
-  return await asyncFn();
-}
-      `,
-      options: ['in-try-catch'],
-    },
-    {
-      code: `
-declare function asyncFn(): Promise<unknown>;
-async function outerFunction() {
-  using _ = {
-    [Symbol.dispose]: () => {
-      console.log('dispose');
-    },
-  };
-
-  async function innerFunction() {
-    return asyncFn();
-  }
-}
-      `,
-      options: ['in-try-catch'],
-    },
-    {
-      code: `
-declare function asyncFn(): Promise<unknown>;
-async function outerFunction() {
-  using _ = {
-    [Symbol.dispose]: () => {
-      console.log('dispose');
-    },
-  };
-
-  const innerFunction = async () => asyncFn();
-}
-      `,
-      options: ['in-try-catch'],
-    },
-    {
-      // intentionally invalid AST - return is outside a function.
-      // We just want to be sure this doesn't crash.
-      code: `
-using foo = 1 as any;
-return Promise.resolve(42);
-      `,
-    },
-    {
-      // intentionally invalid AST - return is outside a function.
-      // We just want to be sure this doesn't crash.
-      code: `
-{
-  using foo = 1 as any;
-  return Promise.resolve(42);
-}
-      `,
-    },
-    {
-      code: `
-async function wrapper<T>(value: T) {
-  return await value;
-}
-      `,
-    },
-    {
-      code: `
-async function wrapper<T extends unknown>(value: T) {
-  return await value;
-}
-      `,
-    },
-    {
-      code: `
-async function wrapper<T extends any>(value: T) {
-  return await value;
-}
-      `,
-    },
-    {
-      code: `
-class C<T> {
-  async wrapper<T>(value: T) {
-    return await value;
-  }
-}
-      `,
-    },
-    {
-      code: `
-class C<R> {
-  async wrapper<T extends R>(value: T) {
-    return await value;
-  }
-}
-      `,
-    },
-    {
-      code: `
-class C<R extends unknown> {
-  async wrapper<T extends R>(value: T) {
-    return await value;
-  }
-}
-      `,
-    },
-  ],
   invalid: [
     {
       code: `
@@ -1676,6 +1197,485 @@ class C<R extends number> {
 class C<R extends number> {
   async wrapper<T extends R>(value: T) {
     return value;
+  }
+}
+      `,
+    },
+  ],
+  valid: [
+    'return;', // No function in scope, so behave like return in a commonjs module
+    `
+      function test() {
+        return;
+      }
+    `,
+    `
+      function test() {
+        return 1;
+      }
+    `,
+    `
+      async function test() {
+        return;
+      }
+    `,
+    `
+      async function test() {
+        return 1;
+      }
+    `,
+    'const test = () => 1;',
+    'const test = async () => 1;',
+    `
+      async function test() {
+        return Promise.resolve(1);
+      }
+    `,
+    `
+      async function test() {
+        try {
+          return await Promise.resolve(1);
+        } catch (e) {
+          return await Promise.resolve(2);
+        } finally {
+          console.log('cleanup');
+        }
+      }
+    `,
+    `
+const fn = (): any => null;
+async function test() {
+  return await fn();
+}
+    `,
+    `
+const fn = (): unknown => null;
+async function test() {
+  return await fn();
+}
+    `,
+    `
+async function test(unknownParam: unknown) {
+  try {
+    return await unknownParam;
+  } finally {
+    console.log('In finally block');
+  }
+}
+    `,
+    {
+      code: `
+        async function test() {
+          if (Math.random() < 0.33) {
+            return await Promise.resolve(1);
+          } else if (Math.random() < 0.5) {
+            return Promise.resolve(2);
+          }
+
+          try {
+          } catch (e) {
+            return await Promise.resolve(3);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+      options: ['error-handling-correctness-only'],
+    },
+    `
+      async function test() {
+        try {
+          const one = await Promise.resolve(1);
+          return one;
+        } catch (e) {
+          const two = await Promise.resolve(2);
+          return two;
+        } finally {
+          console.log('cleanup');
+        }
+      }
+    `,
+    {
+      code: `
+        function test() {
+          return 1;
+        }
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+        async function test() {
+          return 1;
+        }
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: 'const test = () => 1;',
+      options: ['in-try-catch'],
+    },
+    {
+      code: 'const test = async () => 1;',
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+        async function test() {
+          return Promise.resolve(1);
+        }
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+        async function test() {
+          try {
+            return await Promise.resolve(1);
+          } catch (e) {
+            return await Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+        async function test() {
+          try {
+            throw 'foo';
+          } catch (e) {
+            return Promise.resolve(1);
+          }
+        }
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+        async function test() {
+          try {
+            throw 'foo';
+          } catch (e) {
+            throw 'foo2';
+          } finally {
+            return Promise.resolve(1);
+          }
+        }
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+        async function test() {
+          try {
+            const one = await Promise.resolve(1);
+            return one;
+          } catch (e) {
+            const two = await Promise.resolve(2);
+            return two;
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+        async function test() {
+          return Promise.resolve(1);
+        }
+      `,
+      options: ['never'],
+    },
+    {
+      code: 'const test = async () => Promise.resolve(1);',
+      options: ['never'],
+    },
+    {
+      code: `
+        async function test() {
+          try {
+            return Promise.resolve(1);
+          } catch (e) {
+            return Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+      options: ['never'],
+    },
+    {
+      code: `
+        async function test() {
+          return await Promise.resolve(1);
+        }
+      `,
+      options: ['always'],
+    },
+    {
+      code: 'const test = async () => await Promise.resolve(1);',
+      options: ['always'],
+    },
+    {
+      code: `
+        async function test() {
+          try {
+            return await Promise.resolve(1);
+          } catch (e) {
+            return await Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+      options: ['always'],
+    },
+    {
+      code: `
+        declare function foo(): Promise<boolean>;
+
+        function bar(baz: boolean): Promise<boolean> | boolean {
+          if (baz) {
+            return true;
+          } else {
+            return foo();
+          }
+        }
+      `,
+      options: ['always'],
+    },
+    {
+      code: `
+        async function test(): Promise<string> {
+          const res = await Promise.resolve('{}');
+          try {
+            return JSON.parse(res);
+          } catch (error) {
+            return res;
+          }
+        }
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8663
+    {
+      code: `
+        async function test() {
+          const res = await Promise.resolve('{}');
+          try {
+            async function nested() {
+              return Promise.resolve('ok');
+            }
+            return await nested();
+          } catch (error) {
+            return Promise.resolve('error');
+          }
+        }
+      `,
+    },
+    {
+      code: `
+async function f() {
+  try {
+  } catch {
+    try {
+    } catch {
+      return Promise.reject();
+    }
+  }
+}
+      `,
+    },
+    {
+      code: `
+async function f() {
+  try {
+  } finally {
+    try {
+    } catch {
+      return Promise.reject();
+    }
+  }
+}
+      `,
+    },
+    {
+      code: `
+async function f() {
+  try {
+  } finally {
+    try {
+    } finally {
+      try {
+      } catch {
+        return Promise.reject();
+      }
+    }
+  }
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  using something = bleh;
+  return await Promise.resolve(2);
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  await using something = bleh;
+  return await Promise.resolve(2);
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  using something = bleh;
+  {
+    return await Promise.resolve(2);
+  }
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  return Promise.resolve(2);
+  using something = bleh;
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  return await Promise.resolve(2);
+  using something = bleh;
+}
+      `,
+      options: ['always'],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function returnAwait() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  return await asyncFn();
+}
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  async function innerFunction() {
+    return asyncFn();
+  }
+}
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  const innerFunction = async () => asyncFn();
+}
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      // intentionally invalid AST - return is outside a function.
+      // We just want to be sure this doesn't crash.
+      code: `
+using foo = 1 as any;
+return Promise.resolve(42);
+      `,
+    },
+    {
+      // intentionally invalid AST - return is outside a function.
+      // We just want to be sure this doesn't crash.
+      code: `
+{
+  using foo = 1 as any;
+  return Promise.resolve(42);
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends unknown>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends any>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+class C<T> {
+  async wrapper<T>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class C<R> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class C<R extends unknown> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
   }
 }
       `,

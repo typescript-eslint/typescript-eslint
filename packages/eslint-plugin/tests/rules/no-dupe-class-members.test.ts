@@ -5,81 +5,6 @@ import rule from '../../src/rules/no-dupe-class-members';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-dupe-class-members', rule, {
-  valid: [
-    `
-class A {
-  foo() {}
-  bar() {}
-}
-    `,
-    `
-class A {
-  static foo() {}
-  foo() {}
-}
-    `,
-    `
-class A {
-  get foo() {}
-  set foo(value) {}
-}
-    `,
-    `
-class A {
-  static foo() {}
-  get foo() {}
-  set foo(value) {}
-}
-    `,
-    `
-class A {
-  foo() {}
-}
-class B {
-  foo() {}
-}
-    `,
-    `
-class A {
-  [foo]() {}
-  foo() {}
-}
-    `,
-    `
-class A {
-  foo() {}
-  bar() {}
-  baz() {}
-}
-    `,
-    `
-class A {
-  *foo() {}
-  *bar() {}
-  *baz() {}
-}
-    `,
-    `
-class A {
-  get foo() {}
-  get bar() {}
-  get baz() {}
-}
-    `,
-    `
-class A {
-  1() {}
-  2() {}
-}
-    `,
-    `
-      class Foo {
-        foo(a: string): string;
-        foo(a: number): number;
-        foo(a: any): any {}
-      }
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -193,5 +118,80 @@ class A {
         { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
+  ],
+  valid: [
+    `
+class A {
+  foo() {}
+  bar() {}
+}
+    `,
+    `
+class A {
+  static foo() {}
+  foo() {}
+}
+    `,
+    `
+class A {
+  get foo() {}
+  set foo(value) {}
+}
+    `,
+    `
+class A {
+  static foo() {}
+  get foo() {}
+  set foo(value) {}
+}
+    `,
+    `
+class A {
+  foo() {}
+}
+class B {
+  foo() {}
+}
+    `,
+    `
+class A {
+  [foo]() {}
+  foo() {}
+}
+    `,
+    `
+class A {
+  foo() {}
+  bar() {}
+  baz() {}
+}
+    `,
+    `
+class A {
+  *foo() {}
+  *bar() {}
+  *baz() {}
+}
+    `,
+    `
+class A {
+  get foo() {}
+  get bar() {}
+  get baz() {}
+}
+    `,
+    `
+class A {
+  1() {}
+  2() {}
+}
+    `,
+    `
+      class Foo {
+        foo(a: string): string;
+        foo(a: number): number;
+        foo(a: any): any {}
+      }
+    `,
   ],
 });

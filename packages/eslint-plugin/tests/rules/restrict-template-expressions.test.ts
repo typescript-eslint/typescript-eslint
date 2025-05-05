@@ -15,6 +15,276 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('restrict-template-expressions', rule, {
+  invalid: [
+    {
+      code: `
+        const msg = \`arg = \${123}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: '123' },
+          line: 2,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
+    {
+      code: `
+        const msg = \`arg = \${false}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'false' },
+          line: 2,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowBoolean: false }],
+    },
+    {
+      code: `
+        const msg = \`arg = \${null}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'null' },
+          line: 2,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowNullish: false }],
+    },
+    {
+      code: `
+        declare const arg: number[];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'number[]' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+    },
+    {
+      code: `
+        const msg = \`arg = \${[, 2]}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: '(number | undefined)[]' },
+          line: 2,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowArray: true, allowNullish: false }],
+    },
+    {
+      code: 'const msg = `arg = ${Promise.resolve()}`;',
+      errors: [{ messageId: 'invalidType' }],
+    },
+    {
+      code: 'const msg = `arg = ${new Error()}`;',
+      errors: [{ messageId: 'invalidType' }],
+      options: [{ allow: [] }],
+    },
+    {
+      code: `
+        declare const arg: [number | undefined, string];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: '[number | undefined, string]' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowArray: true, allowNullish: false }],
+    },
+    {
+      code: `
+        declare const arg: number;
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'number' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
+    {
+      code: `
+        declare const arg: boolean;
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'boolean' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowBoolean: false }],
+    },
+    {
+      code: `
+        const arg = {};
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        { column: 30, data: { type: '{}' }, line: 3, messageId: 'invalidType' },
+      ],
+      options: [{ allowBoolean: true, allowNullish: true, allowNumber: true }],
+    },
+    {
+      code: `
+        declare const arg: { a: string } & { b: string };
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: '{ a: string; } & { b: string; }' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+    },
+    {
+      code: `
+        function test<T extends {}>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+      errors: [
+        { column: 27, data: { type: '{}' }, line: 3, messageId: 'invalidType' },
+      ],
+      options: [{ allowBoolean: true, allowNullish: true, allowNumber: true }],
+    },
+    {
+      code: `
+        function test<TWithNoConstraint>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { type: 'T' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [
+        {
+          allowAny: false,
+          allowBoolean: true,
+          allowNullish: true,
+          allowNumber: true,
+        },
+      ],
+    },
+    {
+      code: `
+        function test(arg: any) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { type: 'any' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [
+        {
+          allowAny: false,
+          allowBoolean: true,
+          allowNullish: true,
+          allowNumber: true,
+        },
+      ],
+    },
+    {
+      code: `
+        const arg = new RegExp('foo');
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'RegExp' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowRegExp: false }],
+    },
+    {
+      code: `
+        const arg = /foo/;
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'RegExp' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowRegExp: false }],
+    },
+    {
+      code: `
+        declare const value: never;
+        const stringy = \`\${value}\`;
+      `,
+      errors: [
+        {
+          column: 28,
+          data: { type: 'never' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowNever: false }],
+    },
+    // TS 3.9 change
+    {
+      code: `
+        function test<T extends any>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { type: 'unknown' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowAny: true }],
+    },
+  ],
+
   valid: [
     // Base case
     `
@@ -355,275 +625,5 @@ ruleTester.run('restrict-template-expressions', rule, {
     'const msg = `arg = ${undefined}`;',
     'const msg = `arg = ${123}`;',
     "const msg = `arg = ${'abc'}`;",
-  ],
-
-  invalid: [
-    {
-      code: `
-        const msg = \`arg = \${123}\`;
-      `,
-      errors: [
-        {
-          column: 30,
-          data: { type: '123' },
-          line: 2,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [{ allowNumber: false }],
-    },
-    {
-      code: `
-        const msg = \`arg = \${false}\`;
-      `,
-      errors: [
-        {
-          column: 30,
-          data: { type: 'false' },
-          line: 2,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [{ allowBoolean: false }],
-    },
-    {
-      code: `
-        const msg = \`arg = \${null}\`;
-      `,
-      errors: [
-        {
-          column: 30,
-          data: { type: 'null' },
-          line: 2,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [{ allowNullish: false }],
-    },
-    {
-      code: `
-        declare const arg: number[];
-        const msg = \`arg = \${arg}\`;
-      `,
-      errors: [
-        {
-          column: 30,
-          data: { type: 'number[]' },
-          line: 3,
-          messageId: 'invalidType',
-        },
-      ],
-    },
-    {
-      code: `
-        const msg = \`arg = \${[, 2]}\`;
-      `,
-      errors: [
-        {
-          column: 30,
-          data: { type: '(number | undefined)[]' },
-          line: 2,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [{ allowArray: true, allowNullish: false }],
-    },
-    {
-      code: 'const msg = `arg = ${Promise.resolve()}`;',
-      errors: [{ messageId: 'invalidType' }],
-    },
-    {
-      code: 'const msg = `arg = ${new Error()}`;',
-      errors: [{ messageId: 'invalidType' }],
-      options: [{ allow: [] }],
-    },
-    {
-      code: `
-        declare const arg: [number | undefined, string];
-        const msg = \`arg = \${arg}\`;
-      `,
-      errors: [
-        {
-          column: 30,
-          data: { type: '[number | undefined, string]' },
-          line: 3,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [{ allowArray: true, allowNullish: false }],
-    },
-    {
-      code: `
-        declare const arg: number;
-        const msg = \`arg = \${arg}\`;
-      `,
-      errors: [
-        {
-          column: 30,
-          data: { type: 'number' },
-          line: 3,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [{ allowNumber: false }],
-    },
-    {
-      code: `
-        declare const arg: boolean;
-        const msg = \`arg = \${arg}\`;
-      `,
-      errors: [
-        {
-          column: 30,
-          data: { type: 'boolean' },
-          line: 3,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [{ allowBoolean: false }],
-    },
-    {
-      code: `
-        const arg = {};
-        const msg = \`arg = \${arg}\`;
-      `,
-      errors: [
-        { column: 30, data: { type: '{}' }, line: 3, messageId: 'invalidType' },
-      ],
-      options: [{ allowBoolean: true, allowNullish: true, allowNumber: true }],
-    },
-    {
-      code: `
-        declare const arg: { a: string } & { b: string };
-        const msg = \`arg = \${arg}\`;
-      `,
-      errors: [
-        {
-          column: 30,
-          data: { type: '{ a: string; } & { b: string; }' },
-          line: 3,
-          messageId: 'invalidType',
-        },
-      ],
-    },
-    {
-      code: `
-        function test<T extends {}>(arg: T) {
-          return \`arg = \${arg}\`;
-        }
-      `,
-      errors: [
-        { column: 27, data: { type: '{}' }, line: 3, messageId: 'invalidType' },
-      ],
-      options: [{ allowBoolean: true, allowNullish: true, allowNumber: true }],
-    },
-    {
-      code: `
-        function test<TWithNoConstraint>(arg: T) {
-          return \`arg = \${arg}\`;
-        }
-      `,
-      errors: [
-        {
-          column: 27,
-          data: { type: 'T' },
-          line: 3,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [
-        {
-          allowAny: false,
-          allowBoolean: true,
-          allowNullish: true,
-          allowNumber: true,
-        },
-      ],
-    },
-    {
-      code: `
-        function test(arg: any) {
-          return \`arg = \${arg}\`;
-        }
-      `,
-      errors: [
-        {
-          column: 27,
-          data: { type: 'any' },
-          line: 3,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [
-        {
-          allowAny: false,
-          allowBoolean: true,
-          allowNullish: true,
-          allowNumber: true,
-        },
-      ],
-    },
-    {
-      code: `
-        const arg = new RegExp('foo');
-        const msg = \`arg = \${arg}\`;
-      `,
-      errors: [
-        {
-          column: 30,
-          data: { type: 'RegExp' },
-          line: 3,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [{ allowRegExp: false }],
-    },
-    {
-      code: `
-        const arg = /foo/;
-        const msg = \`arg = \${arg}\`;
-      `,
-      errors: [
-        {
-          column: 30,
-          data: { type: 'RegExp' },
-          line: 3,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [{ allowRegExp: false }],
-    },
-    {
-      code: `
-        declare const value: never;
-        const stringy = \`\${value}\`;
-      `,
-      errors: [
-        {
-          column: 28,
-          data: { type: 'never' },
-          line: 3,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [{ allowNever: false }],
-    },
-    // TS 3.9 change
-    {
-      code: `
-        function test<T extends any>(arg: T) {
-          return \`arg = \${arg}\`;
-        }
-      `,
-      errors: [
-        {
-          column: 27,
-          data: { type: 'unknown' },
-          line: 3,
-          messageId: 'invalidType',
-        },
-      ],
-      options: [{ allowAny: true }],
-    },
   ],
 });

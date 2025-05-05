@@ -9,8 +9,8 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Require all enum members to be literal values',
       recommended: 'strict',
+      description: 'Require all enum members to be literal values',
       requiresTypeChecking: false,
     },
     messages: {

@@ -13,56 +13,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('non-nullable-type-assertion-style', rule, {
-  valid: [
-    `
-declare const original: number | string;
-const cast = original as string;
-    `,
-    `
-declare const original: number | undefined;
-const cast = original as string | number | undefined;
-    `,
-    `
-declare const original: number | any;
-const cast = original as string | number | undefined;
-    `,
-    `
-declare const original: number | undefined;
-const cast = original as any;
-    `,
-    `
-declare const original: number | null | undefined;
-const cast = original as number | null;
-    `,
-    `
-type Type = { value: string };
-declare const original: Type | number;
-const cast = original as Type;
-    `,
-    `
-type T = string;
-declare const x: T | number;
-
-const y = x as NonNullable<T>;
-    `,
-    `
-type T = string | null;
-declare const x: T | number;
-
-const y = x as NonNullable<T>;
-    `,
-    `
-const foo = [] as const;
-    `,
-    `
-const x = 1 as 1;
-    `,
-    `
-declare function foo<T = any>(): T;
-const bar = foo() as number;
-    `,
-  ],
-
   invalid: [
     {
       code: `
@@ -242,6 +192,56 @@ const b = (a || undefined)!;
       `,
     },
   ],
+
+  valid: [
+    `
+declare const original: number | string;
+const cast = original as string;
+    `,
+    `
+declare const original: number | undefined;
+const cast = original as string | number | undefined;
+    `,
+    `
+declare const original: number | any;
+const cast = original as string | number | undefined;
+    `,
+    `
+declare const original: number | undefined;
+const cast = original as any;
+    `,
+    `
+declare const original: number | null | undefined;
+const cast = original as number | null;
+    `,
+    `
+type Type = { value: string };
+declare const original: Type | number;
+const cast = original as Type;
+    `,
+    `
+type T = string;
+declare const x: T | number;
+
+const y = x as NonNullable<T>;
+    `,
+    `
+type T = string | null;
+declare const x: T | number;
+
+const y = x as NonNullable<T>;
+    `,
+    `
+const foo = [] as const;
+    `,
+    `
+const x = 1 as 1;
+    `,
+    `
+declare function foo<T = any>(): T;
+const bar = foo() as number;
+    `,
+  ],
 });
 
 const ruleTesterWithNoUncheckedIndexAccess = new RuleTester({
@@ -259,6 +259,27 @@ ruleTesterWithNoUncheckedIndexAccess.run(
   'non-nullable-type-assertion-style - noUncheckedIndexedAccess',
   rule,
   {
+    invalid: [
+      {
+        code: `
+function first<T extends string | number>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0] as T) : null;
+}
+        `,
+        errors: [
+          {
+            column: 30,
+            line: 3,
+            messageId: 'preferNonNullAssertion',
+          },
+        ],
+        output: `
+function first<T extends string | number>(array: ArrayLike<T>): T | null {
+  return array.length > 0 ? (array[0]!) : null;
+}
+        `,
+      },
+    ],
     valid: [
       `
 function first<T>(array: ArrayLike<T>): T | null {
@@ -289,27 +310,6 @@ function first<T extends A | B | null>(array: ArrayLike<T>): T | null {
   return array.length > 0 ? (array[0] as T) : null;
 }
       `,
-    ],
-    invalid: [
-      {
-        code: `
-function first<T extends string | number>(array: ArrayLike<T>): T | null {
-  return array.length > 0 ? (array[0] as T) : null;
-}
-        `,
-        errors: [
-          {
-            column: 30,
-            line: 3,
-            messageId: 'preferNonNullAssertion',
-          },
-        ],
-        output: `
-function first<T extends string | number>(array: ArrayLike<T>): T | null {
-  return array.length > 0 ? (array[0]!) : null;
-}
-        `,
-      },
     ],
   },
 );

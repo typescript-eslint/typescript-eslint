@@ -320,6 +320,72 @@ type T =
 };
 
 ruleTester.run('sort-type-constituents', rule, {
+  invalid: [
+    ...invalid('|'),
+    ...invalid('&'),
+    {
+      code: 'type T = (B | C) & A;',
+      errors: [
+        {
+          data: {
+            name: 'T',
+            type: 'Intersection',
+          },
+          messageId: 'notSortedNamed',
+        },
+      ],
+      output: `type T = A & (B | C);`,
+    },
+    {
+      code: "type A<T> = (T extends number ? 'hi' : 'there') | string;",
+      errors: [
+        {
+          data: {
+            name: 'A',
+            type: 'Union',
+          },
+          messageId: 'notSortedNamed',
+        },
+      ],
+      output: "type A<T> = string | (T extends number ? 'hi' : 'there');",
+    },
+    {
+      code: "type T = 'DeletedAt' | 'DeleteForever';",
+      errors: [
+        {
+          data: {
+            name: 'T',
+            type: 'Union',
+          },
+          messageId: 'notSortedNamed',
+        },
+      ],
+      options: [
+        {
+          caseSensitive: true,
+        },
+      ],
+      output: "type T = 'DeleteForever' | 'DeletedAt';",
+    },
+    {
+      code: 'type T = { a: string } | { A: string } | { B: string };',
+      errors: [
+        {
+          data: {
+            name: 'T',
+            type: 'Union',
+          },
+          messageId: 'notSortedNamed',
+        },
+      ],
+      options: [
+        {
+          caseSensitive: true,
+        },
+      ],
+      output: 'type T = { A: string } | { B: string } | { a: string };',
+    },
+  ],
   valid: [
     ...valid('|'),
     {
@@ -387,71 +453,5 @@ type T = 1 | string | {} | A;
       ],
     },
     "type A<T> = string | (T extends number ? 'hi' : 'there');",
-  ],
-  invalid: [
-    ...invalid('|'),
-    ...invalid('&'),
-    {
-      code: 'type T = (B | C) & A;',
-      errors: [
-        {
-          data: {
-            name: 'T',
-            type: 'Intersection',
-          },
-          messageId: 'notSortedNamed',
-        },
-      ],
-      output: `type T = A & (B | C);`,
-    },
-    {
-      code: "type A<T> = (T extends number ? 'hi' : 'there') | string;",
-      errors: [
-        {
-          data: {
-            name: 'A',
-            type: 'Union',
-          },
-          messageId: 'notSortedNamed',
-        },
-      ],
-      output: "type A<T> = string | (T extends number ? 'hi' : 'there');",
-    },
-    {
-      code: "type T = 'DeletedAt' | 'DeleteForever';",
-      errors: [
-        {
-          data: {
-            name: 'T',
-            type: 'Union',
-          },
-          messageId: 'notSortedNamed',
-        },
-      ],
-      options: [
-        {
-          caseSensitive: true,
-        },
-      ],
-      output: "type T = 'DeleteForever' | 'DeletedAt';",
-    },
-    {
-      code: 'type T = { a: string } | { A: string } | { B: string };',
-      errors: [
-        {
-          data: {
-            name: 'T',
-            type: 'Union',
-          },
-          messageId: 'notSortedNamed',
-        },
-      ],
-      options: [
-        {
-          caseSensitive: true,
-        },
-      ],
-      output: 'type T = { A: string } | { B: string } | { a: string };',
-    },
   ],
 });

@@ -10,424 +10,6 @@ const errors = [
 ];
 
 ruleTester.run('no-invalid-this', rule, {
-  valid: [
-    `
-describe('foo', () => {
-  it('does something', function (this: Mocha.Context) {
-    this.timeout(100);
-    // done
-  });
-});
-    `,
-    `
-      interface SomeType {
-        prop: string;
-      }
-      function foo(this: SomeType) {
-        this.prop;
-      }
-    `,
-    `
-function foo(this: prop) {
-  this.propMethod();
-}
-    `,
-    `
-z(function (x, this: context) {
-  console.log(x, this);
-});
-    `,
-    // https://github.com/eslint/eslint/issues/3287
-
-    `
-function foo() {
-  /** @this Obj*/ return function bar() {
-    console.log(this);
-    z(x => console.log(x, this));
-  };
-}
-    `,
-
-    // https://github.com/eslint/eslint/issues/6824
-
-    `
-var Ctor = function () {
-  console.log(this);
-  z(x => console.log(x, this));
-};
-    `,
-    // Constructors.
-    {
-      code: `
-function Foo() {
-  console.log(this);
-  z(x => console.log(x, this));
-}
-      `,
-    },
-    {
-      code: `
-function Foo() {
-  console.log(this);
-  z(x => console.log(x, this));
-}
-      `,
-      options: [{}], // test the default value in schema
-    },
-    {
-      code: `
-function Foo() {
-  console.log(this);
-  z(x => console.log(x, this));
-}
-      `,
-      options: [{ capIsConstructor: true }], // test explicitly set option to the default value
-    },
-    {
-      code: `
-var Foo = function Foo() {
-  console.log(this);
-  z(x => console.log(x, this));
-};
-      `,
-    },
-    {
-      code: `
-class A {
-  constructor() {
-    console.log(this);
-    z(x => console.log(x, this));
-  }
-}
-      `,
-    },
-
-    // On a property.
-    {
-      code: `
-var obj = {
-  foo: function () {
-    console.log(this);
-    z(x => console.log(x, this));
-  },
-};
-      `,
-    },
-    {
-      code: `
-var obj = {
-  foo() {
-    console.log(this);
-    z(x => console.log(x, this));
-  },
-};
-      `,
-    },
-    {
-      code: `
-var obj = {
-  foo:
-    foo ||
-    function () {
-      console.log(this);
-      z(x => console.log(x, this));
-    },
-};
-      `,
-    },
-    {
-      code: `
-var obj = {
-  foo: hasNative
-    ? foo
-    : function () {
-        console.log(this);
-        z(x => console.log(x, this));
-      },
-};
-      `,
-    },
-    {
-      code: `
-var obj = {
-  foo: (function () {
-    return function () {
-      console.log(this);
-      z(x => console.log(x, this));
-    };
-  })(),
-};
-      `,
-    },
-    {
-      code: `
-Object.defineProperty(obj, 'foo', {
-  value: function () {
-    console.log(this);
-    z(x => console.log(x, this));
-  },
-});
-      `,
-    },
-    {
-      code: `
-Object.defineProperties(obj, {
-  foo: {
-    value: function () {
-      console.log(this);
-      z(x => console.log(x, this));
-    },
-  },
-});
-      `,
-    },
-
-    // Assigns to a property.
-    {
-      code: `
-obj.foo = function () {
-  console.log(this);
-  z(x => console.log(x, this));
-};
-      `,
-    },
-    {
-      code: `
-obj.foo =
-  foo ||
-  function () {
-    console.log(this);
-    z(x => console.log(x, this));
-  };
-      `,
-    },
-    {
-      code: `
-obj.foo = foo
-  ? bar
-  : function () {
-      console.log(this);
-      z(x => console.log(x, this));
-    };
-      `,
-    },
-    {
-      code: `
-obj.foo = (function () {
-  return function () {
-    console.log(this);
-    z(x => console.log(x, this));
-  };
-})();
-      `,
-    },
-    {
-      code: `
-obj.foo = (() =>
-  function () {
-    console.log(this);
-    z(x => console.log(x, this));
-  })();
-      `,
-    },
-
-    // Bind/Call/Apply
-    `
-(function () {
-  console.log(this);
-  z(x => console.log(x, this));
-}).call(obj);
-    `,
-    `
-var foo = function () {
-  console.log(this);
-  z(x => console.log(x, this));
-}.bind(obj);
-    `,
-    `
-Reflect.apply(
-  function () {
-    console.log(this);
-    z(x => console.log(x, this));
-  },
-  obj,
-  [],
-);
-    `,
-    `
-(function () {
-  console.log(this);
-  z(x => console.log(x, this));
-}).apply(obj);
-    `,
-
-    // Class Instance Methods.
-    `
-class A {
-  foo() {
-    console.log(this);
-    z(x => console.log(x, this));
-  }
-}
-    `,
-
-    // Class Properties.
-    `
-class A {
-  b = 0;
-  c = this.b;
-}
-    `,
-
-    `
-class A {
-  b = new Array(this, 1, 2, 3);
-}
-    `,
-
-    `
-class A {
-  b = () => {
-    console.log(this);
-  };
-}
-    `,
-
-    // Array methods.
-
-    `
-Array.from(
-  [],
-  function () {
-    console.log(this);
-    z(x => console.log(x, this));
-  },
-  obj,
-);
-    `,
-
-    `
-foo.every(function () {
-  console.log(this);
-  z(x => console.log(x, this));
-}, obj);
-    `,
-
-    `
-foo.filter(function () {
-  console.log(this);
-  z(x => console.log(x, this));
-}, obj);
-    `,
-
-    `
-foo.find(function () {
-  console.log(this);
-  z(x => console.log(x, this));
-}, obj);
-    `,
-
-    `
-foo.findIndex(function () {
-  console.log(this);
-  z(x => console.log(x, this));
-}, obj);
-    `,
-
-    `
-foo.forEach(function () {
-  console.log(this);
-  z(x => console.log(x, this));
-}, obj);
-    `,
-
-    `
-foo.map(function () {
-  console.log(this);
-  z(x => console.log(x, this));
-}, obj);
-    `,
-
-    `
-foo.some(function () {
-  console.log(this);
-  z(x => console.log(x, this));
-}, obj);
-    `,
-
-    // @this tag.
-
-    `
-/** @this Obj */ function foo() {
-  console.log(this);
-  z(x => console.log(x, this));
-}
-    `,
-
-    `
-foo(
-  /* @this Obj */ function () {
-    console.log(this);
-    z(x => console.log(x, this));
-  },
-);
-    `,
-
-    `
-/**
- * @returns {void}
- * @this Obj
- */
-function foo() {
-  console.log(this);
-  z(x => console.log(x, this));
-}
-    `,
-
-    `
-Ctor = function () {
-  console.log(this);
-  z(x => console.log(x, this));
-};
-    `,
-
-    `
-function foo(
-  Ctor = function () {
-    console.log(this);
-    z(x => console.log(x, this));
-  },
-) {}
-    `,
-
-    `
-[
-  obj.method = function () {
-    console.log(this);
-    z(x => console.log(x, this));
-  },
-] = a;
-    `,
-
-    // Static
-
-    `
-class A {
-  static foo() {
-    console.log(this);
-    z(x => console.log(x, this));
-  }
-}
-    `,
-    `
-class A {
-  a = 5;
-  b = this.a;
-  accessor c = this.a;
-}
-    `,
-  ],
-
   invalid: [
     {
       code: `
@@ -913,5 +495,423 @@ function foo(
       `,
       errors,
     },
+  ],
+
+  valid: [
+    `
+describe('foo', () => {
+  it('does something', function (this: Mocha.Context) {
+    this.timeout(100);
+    // done
+  });
+});
+    `,
+    `
+      interface SomeType {
+        prop: string;
+      }
+      function foo(this: SomeType) {
+        this.prop;
+      }
+    `,
+    `
+function foo(this: prop) {
+  this.propMethod();
+}
+    `,
+    `
+z(function (x, this: context) {
+  console.log(x, this);
+});
+    `,
+    // https://github.com/eslint/eslint/issues/3287
+
+    `
+function foo() {
+  /** @this Obj*/ return function bar() {
+    console.log(this);
+    z(x => console.log(x, this));
+  };
+}
+    `,
+
+    // https://github.com/eslint/eslint/issues/6824
+
+    `
+var Ctor = function () {
+  console.log(this);
+  z(x => console.log(x, this));
+};
+    `,
+    // Constructors.
+    {
+      code: `
+function Foo() {
+  console.log(this);
+  z(x => console.log(x, this));
+}
+      `,
+    },
+    {
+      code: `
+function Foo() {
+  console.log(this);
+  z(x => console.log(x, this));
+}
+      `,
+      options: [{}], // test the default value in schema
+    },
+    {
+      code: `
+function Foo() {
+  console.log(this);
+  z(x => console.log(x, this));
+}
+      `,
+      options: [{ capIsConstructor: true }], // test explicitly set option to the default value
+    },
+    {
+      code: `
+var Foo = function Foo() {
+  console.log(this);
+  z(x => console.log(x, this));
+};
+      `,
+    },
+    {
+      code: `
+class A {
+  constructor() {
+    console.log(this);
+    z(x => console.log(x, this));
+  }
+}
+      `,
+    },
+
+    // On a property.
+    {
+      code: `
+var obj = {
+  foo: function () {
+    console.log(this);
+    z(x => console.log(x, this));
+  },
+};
+      `,
+    },
+    {
+      code: `
+var obj = {
+  foo() {
+    console.log(this);
+    z(x => console.log(x, this));
+  },
+};
+      `,
+    },
+    {
+      code: `
+var obj = {
+  foo:
+    foo ||
+    function () {
+      console.log(this);
+      z(x => console.log(x, this));
+    },
+};
+      `,
+    },
+    {
+      code: `
+var obj = {
+  foo: hasNative
+    ? foo
+    : function () {
+        console.log(this);
+        z(x => console.log(x, this));
+      },
+};
+      `,
+    },
+    {
+      code: `
+var obj = {
+  foo: (function () {
+    return function () {
+      console.log(this);
+      z(x => console.log(x, this));
+    };
+  })(),
+};
+      `,
+    },
+    {
+      code: `
+Object.defineProperty(obj, 'foo', {
+  value: function () {
+    console.log(this);
+    z(x => console.log(x, this));
+  },
+});
+      `,
+    },
+    {
+      code: `
+Object.defineProperties(obj, {
+  foo: {
+    value: function () {
+      console.log(this);
+      z(x => console.log(x, this));
+    },
+  },
+});
+      `,
+    },
+
+    // Assigns to a property.
+    {
+      code: `
+obj.foo = function () {
+  console.log(this);
+  z(x => console.log(x, this));
+};
+      `,
+    },
+    {
+      code: `
+obj.foo =
+  foo ||
+  function () {
+    console.log(this);
+    z(x => console.log(x, this));
+  };
+      `,
+    },
+    {
+      code: `
+obj.foo = foo
+  ? bar
+  : function () {
+      console.log(this);
+      z(x => console.log(x, this));
+    };
+      `,
+    },
+    {
+      code: `
+obj.foo = (function () {
+  return function () {
+    console.log(this);
+    z(x => console.log(x, this));
+  };
+})();
+      `,
+    },
+    {
+      code: `
+obj.foo = (() =>
+  function () {
+    console.log(this);
+    z(x => console.log(x, this));
+  })();
+      `,
+    },
+
+    // Bind/Call/Apply
+    `
+(function () {
+  console.log(this);
+  z(x => console.log(x, this));
+}).call(obj);
+    `,
+    `
+var foo = function () {
+  console.log(this);
+  z(x => console.log(x, this));
+}.bind(obj);
+    `,
+    `
+Reflect.apply(
+  function () {
+    console.log(this);
+    z(x => console.log(x, this));
+  },
+  obj,
+  [],
+);
+    `,
+    `
+(function () {
+  console.log(this);
+  z(x => console.log(x, this));
+}).apply(obj);
+    `,
+
+    // Class Instance Methods.
+    `
+class A {
+  foo() {
+    console.log(this);
+    z(x => console.log(x, this));
+  }
+}
+    `,
+
+    // Class Properties.
+    `
+class A {
+  b = 0;
+  c = this.b;
+}
+    `,
+
+    `
+class A {
+  b = new Array(this, 1, 2, 3);
+}
+    `,
+
+    `
+class A {
+  b = () => {
+    console.log(this);
+  };
+}
+    `,
+
+    // Array methods.
+
+    `
+Array.from(
+  [],
+  function () {
+    console.log(this);
+    z(x => console.log(x, this));
+  },
+  obj,
+);
+    `,
+
+    `
+foo.every(function () {
+  console.log(this);
+  z(x => console.log(x, this));
+}, obj);
+    `,
+
+    `
+foo.filter(function () {
+  console.log(this);
+  z(x => console.log(x, this));
+}, obj);
+    `,
+
+    `
+foo.find(function () {
+  console.log(this);
+  z(x => console.log(x, this));
+}, obj);
+    `,
+
+    `
+foo.findIndex(function () {
+  console.log(this);
+  z(x => console.log(x, this));
+}, obj);
+    `,
+
+    `
+foo.forEach(function () {
+  console.log(this);
+  z(x => console.log(x, this));
+}, obj);
+    `,
+
+    `
+foo.map(function () {
+  console.log(this);
+  z(x => console.log(x, this));
+}, obj);
+    `,
+
+    `
+foo.some(function () {
+  console.log(this);
+  z(x => console.log(x, this));
+}, obj);
+    `,
+
+    // @this tag.
+
+    `
+/** @this Obj */ function foo() {
+  console.log(this);
+  z(x => console.log(x, this));
+}
+    `,
+
+    `
+foo(
+  /* @this Obj */ function () {
+    console.log(this);
+    z(x => console.log(x, this));
+  },
+);
+    `,
+
+    `
+/**
+ * @returns {void}
+ * @this Obj
+ */
+function foo() {
+  console.log(this);
+  z(x => console.log(x, this));
+}
+    `,
+
+    `
+Ctor = function () {
+  console.log(this);
+  z(x => console.log(x, this));
+};
+    `,
+
+    `
+function foo(
+  Ctor = function () {
+    console.log(this);
+    z(x => console.log(x, this));
+  },
+) {}
+    `,
+
+    `
+[
+  obj.method = function () {
+    console.log(this);
+    z(x => console.log(x, this));
+  },
+] = a;
+    `,
+
+    // Static
+
+    `
+class A {
+  static foo() {
+    console.log(this);
+    z(x => console.log(x, this));
+  }
+}
+    `,
+    `
+class A {
+  a = 5;
+  b = this.a;
+  accessor c = this.a;
+}
+    `,
   ],
 });

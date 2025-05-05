@@ -5,13 +5,6 @@ import rule from '../../src/rules/prefer-namespace-keyword';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-namespace-keyword', rule, {
-  valid: [
-    "declare module 'foo';",
-    "declare module 'foo' {}",
-    'namespace foo {}',
-    'declare namespace foo {}',
-    'declare global {}',
-  ],
   invalid: [
     {
       code: 'module foo {}',
@@ -59,5 +52,12 @@ declare namespace foo {
 }
       `,
     },
+  ],
+  valid: [
+    "declare module 'foo';",
+    "declare module 'foo' {}",
+    'namespace foo {}',
+    'declare namespace foo {}',
+    'declare global {}',
   ],
 });

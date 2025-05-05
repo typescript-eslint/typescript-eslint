@@ -13,12 +13,12 @@ export default createRule({
   name: 'prefer-function-type',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'stylistic',
       description:
         'Enforce using function types instead of interfaces with call signatures',
-      recommended: 'stylistic',
     },
-    fixable: 'code',
     messages: {
       functionTypeOverCallableType:
         '{{ literalOrInterface }} only has a call signature, you should use a function type instead.',

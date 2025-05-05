@@ -25,9 +25,9 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow the use of `eval()`-like functions',
       extendsBaseRule: true,
       recommended: 'recommended',
+      description: 'Disallow the use of `eval()`-like functions',
       requiresTypeChecking: true,
     },
     messages: {

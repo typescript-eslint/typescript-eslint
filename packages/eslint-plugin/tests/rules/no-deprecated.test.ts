@@ -17,362 +17,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-deprecated', rule, {
-  valid: [
-    '/** @deprecated */ var a;',
-    '/** @deprecated */ var a = 1;',
-    '/** @deprecated */ let a;',
-    '/** @deprecated */ let a = 1;',
-    '/** @deprecated */ const a = 1;',
-    '/** @deprecated */ declare var a: number;',
-    '/** @deprecated */ declare let a: number;',
-    '/** @deprecated */ declare const a: number;',
-    '/** @deprecated */ export var a = 1;',
-    '/** @deprecated */ export let a = 1;',
-    '/** @deprecated */ export const a = 1;',
-    'const [/** @deprecated */ a] = [b];',
-    'const [/** @deprecated */ a] = b;',
-    `
-      const a = {
-        b: 1,
-        /** @deprecated */ c: 2,
-      };
-
-      a.b;
-    `,
-    `
-      const a = {
-        b: 1,
-        /** @deprecated */ c: 2,
-      };
-
-      a?.b;
-    `,
-    `
-      declare const a: {
-        b: 1;
-        /** @deprecated */ c: 2;
-      };
-
-      a.b;
-    `,
-    `
-      class A {
-        b: 1;
-        /** @deprecated */ c: 2;
-      }
-
-      new A().b;
-    `,
-    `
-      class A {
-        accessor b: 1;
-        /** @deprecated */ accessor c: 2;
-      }
-
-      new A().b;
-    `,
-    `
-      declare class A {
-        /** @deprecated */
-        static b: string;
-        static c: string;
-      }
-
-      A.c;
-    `,
-    `
-      declare class A {
-        /** @deprecated */
-        static accessor b: string;
-        static accessor c: string;
-      }
-
-      A.c;
-    `,
-    `
-      namespace A {
-        /** @deprecated */
-        export const b = '';
-        export const c = '';
-      }
-
-      A.c;
-    `,
-    `
-      enum A {
-        /** @deprecated */
-        b = 'b',
-        c = 'c',
-      }
-
-      A.c;
-    `,
-    `
-      function a(value: 'b' | undefined): void;
-      /** @deprecated */
-      function a(value: 'c' | undefined): void;
-      function a(value: string | undefined): void {
-        // ...
-      }
-
-      a('b');
-    `,
-    `
-      function a(value: 'b' | undefined): void;
-      /** @deprecated */
-      function a(value: 'c' | undefined): void;
-      function a(value: string | undefined): void {
-        // ...
-      }
-
-      export default a('b');
-    `,
-    `
-      function notDeprecated(): object {
-        return {};
-      }
-
-      export default notDeprecated();
-    `,
-    `
-      import { deprecatedFunctionWithOverloads } from './deprecated';
-
-      const foo = deprecatedFunctionWithOverloads();
-    `,
-    `
-      import * as imported from './deprecated';
-
-      const foo = imported.deprecatedFunctionWithOverloads();
-    `,
-    `
-      import { ClassWithDeprecatedConstructor } from './deprecated';
-
-      const foo = new ClassWithDeprecatedConstructor();
-    `,
-    `
-      import * as imported from './deprecated';
-
-      const foo = new imported.ClassWithDeprecatedConstructor();
-    `,
-    `
-      class A {
-        a(value: 'b'): void;
-        /** @deprecated */
-        a(value: 'c'): void;
-      }
-      declare const foo: A;
-      foo.a('b');
-    `,
-    `
-      const A = class {
-        /** @deprecated */
-        constructor();
-        constructor(arg: string);
-        constructor(arg?: string) {}
-      };
-
-      new A('a');
-    `,
-    `
-      type A = {
-        (value: 'b'): void;
-        /** @deprecated */
-        (value: 'c'): void;
-      };
-      declare const foo: A;
-      foo('b');
-    `,
-    `
-      declare const a: {
-        new (value: 'b'): void;
-        /** @deprecated */
-        new (value: 'c'): void;
-      };
-      new a('b');
-    `,
-    `
-      namespace assert {
-        export function fail(message?: string | Error): never;
-        /** @deprecated since v10.0.0 - use fail([message]) or other assert functions instead. */
-        export function fail(actual: unknown, expected: unknown): never;
-      }
-
-      assert.fail('');
-    `,
-    `
-      import assert from 'node:assert';
-
-      assert.fail('');
-    `,
-    `
-      declare module 'deprecations' {
-        /** @deprecated */
-        export const value = true;
-      }
-
-      import { value } from 'deprecations';
-    `,
-    `
-      /** @deprecated Use ts directly. */
-      export * as ts from 'typescript';
-    `,
-    `
-      export {
-        /** @deprecated Use ts directly. */
-        default as ts,
-      } from 'typescript';
-    `,
-    `
-      namespace A {
-        /** @deprecated */
-        export type B = string;
-        export type C = string;
-        export type D = string;
-      }
-
-      export type D = A.C | A.D;
-    `,
-    `
-      interface Props {
-        anchor: 'foo';
-      }
-      declare const x: Props;
-      const { anchor = '' } = x;
-    `,
-    `
-      interface Props {
-        anchor: 'foo';
-      }
-      declare const x: { bar: Props };
-      const {
-        bar: { anchor = '' },
-      } = x;
-    `,
-    `
-      interface Props {
-        anchor: 'foo';
-      }
-      declare const x: [item: Props];
-      const [{ anchor = 'bar' }] = x;
-    `,
-    'function fn(/** @deprecated */ foo = 4) {}',
-    {
-      code: `
-        async function fn() {
-          const d = await import('./deprecated.js');
-          d.default;
-        }
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.moduleResolution-node16.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
-        },
-      },
-    },
-    'call();',
-
-    // this test is to ensure the rule doesn't crash when class implements itself
-    // https://github.com/typescript-eslint/typescript-eslint/issues/10031
-    `
-      class Foo implements Foo {
-        get bar(): number {
-          return 42;
-        }
-
-        baz(): number {
-          return this.bar;
-        }
-      }
-    `,
-    `
-      declare namespace JSX {}
-
-      <foo bar={1} />;
-    `,
-    `
-      declare namespace JSX {
-        interface IntrinsicElements {
-          foo: any;
-        }
-      }
-
-      <foo bar={1} />;
-    `,
-    `
-      declare namespace JSX {
-        interface IntrinsicElements {
-          foo: unknown;
-        }
-      }
-
-      <foo bar={1} />;
-    `,
-    `
-      declare namespace JSX {
-        interface IntrinsicElements {
-          foo: {
-            bar: any;
-          };
-        }
-      }
-      <foo bar={1} />;
-    `,
-    `
-      declare namespace JSX {
-        interface IntrinsicElements {
-          foo: {
-            bar: unknown;
-          };
-        }
-      }
-      <foo bar={1} />;
-    `,
-    {
-      code: `
-/** @deprecated */
-declare class A {}
-
-new A();
-      `,
-      options: [
-        {
-          allow: [{ from: 'file', name: 'A' }],
-        },
-      ],
-    },
-    {
-      code: `
-import { exists } from 'fs';
-exists('/foo');
-      `,
-      options: [
-        {
-          allow: [
-            {
-              from: 'package',
-              name: 'exists',
-              package: 'fs',
-            },
-          ],
-        },
-      ],
-    },
-    `
-      declare const test: string;
-      const bar = { test };
-    `,
-    `
-      class A {
-        #b = () => {};
-
-        c() {
-          this.#b();
-        }
-      }
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -2912,5 +2556,361 @@ class B extends A {
         },
       ],
     },
+  ],
+  valid: [
+    '/** @deprecated */ var a;',
+    '/** @deprecated */ var a = 1;',
+    '/** @deprecated */ let a;',
+    '/** @deprecated */ let a = 1;',
+    '/** @deprecated */ const a = 1;',
+    '/** @deprecated */ declare var a: number;',
+    '/** @deprecated */ declare let a: number;',
+    '/** @deprecated */ declare const a: number;',
+    '/** @deprecated */ export var a = 1;',
+    '/** @deprecated */ export let a = 1;',
+    '/** @deprecated */ export const a = 1;',
+    'const [/** @deprecated */ a] = [b];',
+    'const [/** @deprecated */ a] = b;',
+    `
+      const a = {
+        b: 1,
+        /** @deprecated */ c: 2,
+      };
+
+      a.b;
+    `,
+    `
+      const a = {
+        b: 1,
+        /** @deprecated */ c: 2,
+      };
+
+      a?.b;
+    `,
+    `
+      declare const a: {
+        b: 1;
+        /** @deprecated */ c: 2;
+      };
+
+      a.b;
+    `,
+    `
+      class A {
+        b: 1;
+        /** @deprecated */ c: 2;
+      }
+
+      new A().b;
+    `,
+    `
+      class A {
+        accessor b: 1;
+        /** @deprecated */ accessor c: 2;
+      }
+
+      new A().b;
+    `,
+    `
+      declare class A {
+        /** @deprecated */
+        static b: string;
+        static c: string;
+      }
+
+      A.c;
+    `,
+    `
+      declare class A {
+        /** @deprecated */
+        static accessor b: string;
+        static accessor c: string;
+      }
+
+      A.c;
+    `,
+    `
+      namespace A {
+        /** @deprecated */
+        export const b = '';
+        export const c = '';
+      }
+
+      A.c;
+    `,
+    `
+      enum A {
+        /** @deprecated */
+        b = 'b',
+        c = 'c',
+      }
+
+      A.c;
+    `,
+    `
+      function a(value: 'b' | undefined): void;
+      /** @deprecated */
+      function a(value: 'c' | undefined): void;
+      function a(value: string | undefined): void {
+        // ...
+      }
+
+      a('b');
+    `,
+    `
+      function a(value: 'b' | undefined): void;
+      /** @deprecated */
+      function a(value: 'c' | undefined): void;
+      function a(value: string | undefined): void {
+        // ...
+      }
+
+      export default a('b');
+    `,
+    `
+      function notDeprecated(): object {
+        return {};
+      }
+
+      export default notDeprecated();
+    `,
+    `
+      import { deprecatedFunctionWithOverloads } from './deprecated';
+
+      const foo = deprecatedFunctionWithOverloads();
+    `,
+    `
+      import * as imported from './deprecated';
+
+      const foo = imported.deprecatedFunctionWithOverloads();
+    `,
+    `
+      import { ClassWithDeprecatedConstructor } from './deprecated';
+
+      const foo = new ClassWithDeprecatedConstructor();
+    `,
+    `
+      import * as imported from './deprecated';
+
+      const foo = new imported.ClassWithDeprecatedConstructor();
+    `,
+    `
+      class A {
+        a(value: 'b'): void;
+        /** @deprecated */
+        a(value: 'c'): void;
+      }
+      declare const foo: A;
+      foo.a('b');
+    `,
+    `
+      const A = class {
+        /** @deprecated */
+        constructor();
+        constructor(arg: string);
+        constructor(arg?: string) {}
+      };
+
+      new A('a');
+    `,
+    `
+      type A = {
+        (value: 'b'): void;
+        /** @deprecated */
+        (value: 'c'): void;
+      };
+      declare const foo: A;
+      foo('b');
+    `,
+    `
+      declare const a: {
+        new (value: 'b'): void;
+        /** @deprecated */
+        new (value: 'c'): void;
+      };
+      new a('b');
+    `,
+    `
+      namespace assert {
+        export function fail(message?: string | Error): never;
+        /** @deprecated since v10.0.0 - use fail([message]) or other assert functions instead. */
+        export function fail(actual: unknown, expected: unknown): never;
+      }
+
+      assert.fail('');
+    `,
+    `
+      import assert from 'node:assert';
+
+      assert.fail('');
+    `,
+    `
+      declare module 'deprecations' {
+        /** @deprecated */
+        export const value = true;
+      }
+
+      import { value } from 'deprecations';
+    `,
+    `
+      /** @deprecated Use ts directly. */
+      export * as ts from 'typescript';
+    `,
+    `
+      export {
+        /** @deprecated Use ts directly. */
+        default as ts,
+      } from 'typescript';
+    `,
+    `
+      namespace A {
+        /** @deprecated */
+        export type B = string;
+        export type C = string;
+        export type D = string;
+      }
+
+      export type D = A.C | A.D;
+    `,
+    `
+      interface Props {
+        anchor: 'foo';
+      }
+      declare const x: Props;
+      const { anchor = '' } = x;
+    `,
+    `
+      interface Props {
+        anchor: 'foo';
+      }
+      declare const x: { bar: Props };
+      const {
+        bar: { anchor = '' },
+      } = x;
+    `,
+    `
+      interface Props {
+        anchor: 'foo';
+      }
+      declare const x: [item: Props];
+      const [{ anchor = 'bar' }] = x;
+    `,
+    'function fn(/** @deprecated */ foo = 4) {}',
+    {
+      code: `
+        async function fn() {
+          const d = await import('./deprecated.js');
+          d.default;
+        }
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.moduleResolution-node16.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
+        },
+      },
+    },
+    'call();',
+
+    // this test is to ensure the rule doesn't crash when class implements itself
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10031
+    `
+      class Foo implements Foo {
+        get bar(): number {
+          return 42;
+        }
+
+        baz(): number {
+          return this.bar;
+        }
+      }
+    `,
+    `
+      declare namespace JSX {}
+
+      <foo bar={1} />;
+    `,
+    `
+      declare namespace JSX {
+        interface IntrinsicElements {
+          foo: any;
+        }
+      }
+
+      <foo bar={1} />;
+    `,
+    `
+      declare namespace JSX {
+        interface IntrinsicElements {
+          foo: unknown;
+        }
+      }
+
+      <foo bar={1} />;
+    `,
+    `
+      declare namespace JSX {
+        interface IntrinsicElements {
+          foo: {
+            bar: any;
+          };
+        }
+      }
+      <foo bar={1} />;
+    `,
+    `
+      declare namespace JSX {
+        interface IntrinsicElements {
+          foo: {
+            bar: unknown;
+          };
+        }
+      }
+      <foo bar={1} />;
+    `,
+    {
+      code: `
+/** @deprecated */
+declare class A {}
+
+new A();
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'A' }],
+        },
+      ],
+    },
+    {
+      code: `
+import { exists } from 'fs';
+exists('/foo');
+      `,
+      options: [
+        {
+          allow: [
+            {
+              from: 'package',
+              name: 'exists',
+              package: 'fs',
+            },
+          ],
+        },
+      ],
+    },
+    `
+      declare const test: string;
+      const bar = { test };
+    `,
+    `
+      class A {
+        #b = () => {};
+
+        c() {
+          this.#b();
+        }
+      }
+    `,
   ],
 });

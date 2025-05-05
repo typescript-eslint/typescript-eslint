@@ -80,9 +80,9 @@ class FunctionSignature {
           };
         } else if (checker.isTupleType(type)) {
           restType = {
+            typeArguments: checker.getTypeArguments(type),
             index: i,
             kind: RestTypeKind.Tuple,
-            typeArguments: checker.getTypeArguments(type),
           };
         } else {
           restType = {
@@ -146,8 +146,8 @@ export default createRule<[], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow calling a function with a value with type `any`',
       recommended: 'recommended',
+      description: 'Disallow calling a function with a value with type `any`',
       requiresTypeChecking: true,
     },
     messages: {
@@ -264,8 +264,8 @@ export default createRule<[], MessageIds>({
                     node: argument,
                     messageId: 'unsafeTupleSpread',
                     data: {
-                      receiver: describeType(parameterType),
                       sender: describeTypeForTuple(tupleType),
+                      receiver: describeType(parameterType),
                     },
                   });
                 }
@@ -303,8 +303,8 @@ export default createRule<[], MessageIds>({
                 node: argument,
                 messageId: 'unsafeArgument',
                 data: {
-                  receiver: describeType(parameterType),
                   sender: describeType(argumentType),
+                  receiver: describeType(parameterType),
                 },
               });
             }

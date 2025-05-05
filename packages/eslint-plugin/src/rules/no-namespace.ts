@@ -17,8 +17,8 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow TypeScript namespaces',
       recommended: 'recommended',
+      description: 'Disallow TypeScript namespaces',
     },
     messages: {
       moduleSyntaxIsPreferred:

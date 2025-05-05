@@ -9,8 +9,8 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforce default parameters to be last',
       extendsBaseRule: true,
+      description: 'Enforce default parameters to be last',
     },
     messages: {
       shouldBeLast: 'Default parameters should be last.',

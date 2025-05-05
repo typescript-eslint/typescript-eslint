@@ -144,13 +144,13 @@ export default createRule<Options, MessageIds>({
               node: p1,
               messageId: 'singleParameterDifference',
               data: {
-                failureStringStart: failureStringStart(lineOfOtherOverload),
                 type1: context.sourceCode.getText(
                   typeAnnotation0?.typeAnnotation,
                 ),
                 type2: context.sourceCode.getText(
                   typeAnnotation1?.typeAnnotation,
                 ),
+                failureStringStart: failureStringStart(lineOfOtherOverload),
               },
             });
             break;
@@ -559,9 +559,9 @@ export default createRule<Options, MessageIds>({
         scopes.push(currentScope);
       }
       currentScope = {
+        typeParameters,
         overloads: new Map<string, OverloadNode[]>(),
         parent,
-        typeParameters,
       };
     }
 
@@ -614,6 +614,7 @@ export default createRule<Options, MessageIds>({
     //----------------------------------------------------------------------
 
     return {
+      TSModuleBlock: createScope,
       ClassDeclaration(node): void {
         createScope(node.body, node.typeParameters);
       },
@@ -621,7 +622,6 @@ export default createRule<Options, MessageIds>({
       TSInterfaceDeclaration(node): void {
         createScope(node.body, node.typeParameters);
       },
-      TSModuleBlock: createScope,
       TSTypeLiteral: createScope,
 
       // collect overloads
@@ -648,10 +648,10 @@ export default createRule<Options, MessageIds>({
       },
 
       // validate scopes
+      'TSModuleBlock:exit': checkScope,
       'ClassDeclaration:exit': checkScope,
       'Program:exit': checkScope,
       'TSInterfaceDeclaration:exit': checkScope,
-      'TSModuleBlock:exit': checkScope,
       'TSTypeLiteral:exit': checkScope,
     };
   },

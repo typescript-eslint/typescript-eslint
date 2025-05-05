@@ -28,12 +28,12 @@ export default createRule<[], MessageIds>({
   name: 'no-unnecessary-type-arguments',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
-      description: 'Disallow type arguments that are equal to the default',
       recommended: 'strict',
+      description: 'Disallow type arguments that are equal to the default',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       unnecessaryTypeParameter:
         'This is the default value for this type parameter, so it can be omitted.',

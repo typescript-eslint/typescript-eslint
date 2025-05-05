@@ -14,164 +14,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-return', rule, {
-  valid: [
-    `
-function foo() {
-  return;
-}
-    `,
-    `
-function foo() {
-  return 1;
-}
-    `,
-    `
-function foo() {
-  return '';
-}
-    `,
-    `
-function foo() {
-  return true;
-}
-    `,
-    // this actually types as `never[]`
-    `
-function foo() {
-  return [];
-}
-    `,
-    // explicit any return type is allowed, if you want to be unsafe like that
-    `
-function foo(): any {
-  return {} as any;
-}
-    `,
-    `
-declare function foo(arg: () => any): void;
-foo((): any => 'foo' as any);
-    `,
-    `
-declare function foo(arg: null | (() => any)): void;
-foo((): any => 'foo' as any);
-    `,
-    // explicit any array return type is allowed, if you want to be unsafe like that
-    `
-function foo(): any[] {
-  return [] as any[];
-}
-    `,
-    // explicit any generic return type is allowed, if you want to be unsafe like that
-    `
-function foo(): Set<any> {
-  return new Set<any>();
-}
-    `,
-    `
-async function foo(): Promise<any> {
-  return Promise.resolve({} as any);
-}
-    `,
-    `
-async function foo(): Promise<any> {
-  return {} as any;
-}
-    `,
-    `
-function foo(): object {
-  return Promise.resolve({} as any);
-}
-    `,
-    // TODO - this should error, but it's hard to detect, as the type references are different
-    `
-function foo(): ReadonlySet<number> {
-  return new Set<any>();
-}
-    `,
-    `
-function foo(): Set<number> {
-  return new Set([1]);
-}
-    `,
-    `
-      type Foo<T = number> = { prop: T };
-      function foo(): Foo {
-        return { prop: 1 } as Foo<number>;
-      }
-    `,
-    `
-      type Foo = { prop: any };
-      function foo(): Foo {
-        return { prop: '' } as Foo;
-      }
-    `,
-    // TS 3.9 changed this to be safe
-    `
-      function fn<T extends any>(x: T) {
-        return x;
-      }
-    `,
-    `
-      function fn<T extends any>(x: T): unknown {
-        return x as any;
-      }
-    `,
-    `
-      function fn<T extends any>(x: T): unknown[] {
-        return x as any[];
-      }
-    `,
-    `
-      function fn<T extends any>(x: T): Set<unknown> {
-        return x as Set<any>;
-      }
-    `,
-    `
-      async function fn<T extends any>(x: T): Promise<unknown> {
-        return x as any;
-      }
-    `,
-    `
-      function fn<T extends any>(x: T): Promise<unknown> {
-        return Promise.resolve(x as any);
-      }
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
-    `
-      function test(): Map<string, string> {
-        return new Map();
-      }
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/3549
-    `
-      function foo(): any {
-        return [] as any[];
-      }
-    `,
-    `
-      function foo(): unknown {
-        return [] as any[];
-      }
-    `,
-    `
-      declare const value: Promise<any>;
-      function foo() {
-        return value;
-      }
-    `,
-    'const foo: (() => void) | undefined = () => 1;',
-    `
-      class Foo {
-        public foo(): this {
-          return this;
-        }
-
-        protected then(resolve: () => void): void {
-          resolve();
-        }
-      }
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -731,5 +573,163 @@ async function foo() {
         },
       ],
     },
+  ],
+  valid: [
+    `
+function foo() {
+  return;
+}
+    `,
+    `
+function foo() {
+  return 1;
+}
+    `,
+    `
+function foo() {
+  return '';
+}
+    `,
+    `
+function foo() {
+  return true;
+}
+    `,
+    // this actually types as `never[]`
+    `
+function foo() {
+  return [];
+}
+    `,
+    // explicit any return type is allowed, if you want to be unsafe like that
+    `
+function foo(): any {
+  return {} as any;
+}
+    `,
+    `
+declare function foo(arg: () => any): void;
+foo((): any => 'foo' as any);
+    `,
+    `
+declare function foo(arg: null | (() => any)): void;
+foo((): any => 'foo' as any);
+    `,
+    // explicit any array return type is allowed, if you want to be unsafe like that
+    `
+function foo(): any[] {
+  return [] as any[];
+}
+    `,
+    // explicit any generic return type is allowed, if you want to be unsafe like that
+    `
+function foo(): Set<any> {
+  return new Set<any>();
+}
+    `,
+    `
+async function foo(): Promise<any> {
+  return Promise.resolve({} as any);
+}
+    `,
+    `
+async function foo(): Promise<any> {
+  return {} as any;
+}
+    `,
+    `
+function foo(): object {
+  return Promise.resolve({} as any);
+}
+    `,
+    // TODO - this should error, but it's hard to detect, as the type references are different
+    `
+function foo(): ReadonlySet<number> {
+  return new Set<any>();
+}
+    `,
+    `
+function foo(): Set<number> {
+  return new Set([1]);
+}
+    `,
+    `
+      type Foo<T = number> = { prop: T };
+      function foo(): Foo {
+        return { prop: 1 } as Foo<number>;
+      }
+    `,
+    `
+      type Foo = { prop: any };
+      function foo(): Foo {
+        return { prop: '' } as Foo;
+      }
+    `,
+    // TS 3.9 changed this to be safe
+    `
+      function fn<T extends any>(x: T) {
+        return x;
+      }
+    `,
+    `
+      function fn<T extends any>(x: T): unknown {
+        return x as any;
+      }
+    `,
+    `
+      function fn<T extends any>(x: T): unknown[] {
+        return x as any[];
+      }
+    `,
+    `
+      function fn<T extends any>(x: T): Set<unknown> {
+        return x as Set<any>;
+      }
+    `,
+    `
+      async function fn<T extends any>(x: T): Promise<unknown> {
+        return x as any;
+      }
+    `,
+    `
+      function fn<T extends any>(x: T): Promise<unknown> {
+        return Promise.resolve(x as any);
+      }
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
+    `
+      function test(): Map<string, string> {
+        return new Map();
+      }
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3549
+    `
+      function foo(): any {
+        return [] as any[];
+      }
+    `,
+    `
+      function foo(): unknown {
+        return [] as any[];
+      }
+    `,
+    `
+      declare const value: Promise<any>;
+      function foo() {
+        return value;
+      }
+    `,
+    'const foo: (() => void) | undefined = () => 1;',
+    `
+      class Foo {
+        public foo(): this {
+          return this;
+        }
+
+        protected then(resolve: () => void): void {
+          resolve();
+        }
+      }
+    `,
   ],
 });

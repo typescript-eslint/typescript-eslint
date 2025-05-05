@@ -5,15 +5,6 @@ import rule from '../../src/rules/no-non-null-assertion';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-non-null-assertion', rule, {
-  valid: [
-    //
-    'x;',
-    'x.y;',
-    'x.y.z;',
-    'x?.y.z;',
-    'x?.y?.z;',
-    '!x;',
-  ],
   invalid: [
     {
       code: 'x!;',
@@ -387,5 +378,14 @@ x?.
         },
       ],
     },
+  ],
+  valid: [
+    //
+    'x;',
+    'x.y;',
+    'x.y.z;',
+    'x?.y.z;',
+    'x?.y?.z;',
+    '!x;',
   ],
 });

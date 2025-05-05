@@ -14,83 +14,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-call', rule, {
-  valid: [
-    `
-function foo(x: () => void) {
-  x();
-}
-    `,
-    `
-function foo(x?: { a: () => void }) {
-  x?.a();
-}
-    `,
-    `
-function foo(x: { a?: () => void }) {
-  x.a?.();
-}
-    `,
-    'new Map();',
-    'String.raw`foo`;',
-    "const x = import('./foo');",
-    // https://github.com/typescript-eslint/typescript-eslint/issues/1825
-    `
-      let foo: any = 23;
-      String(foo); // ERROR: Unsafe call of an any typed value
-    `,
-    // TS 3.9 changed this to be safe
-    `
-      function foo<T extends any>(x: T) {
-        x();
-      }
-    `,
-    `
-      // create a scope since it's illegal to declare a duplicate identifier
-      // 'Function' in the global script scope.
-      {
-        type Function = () => void;
-        const notGlobalFunctionType: Function = (() => {}) as Function;
-        notGlobalFunctionType();
-      }
-    `,
-    `
-interface SurprisinglySafe extends Function {
-  (): string;
-}
-declare const safe: SurprisinglySafe;
-safe();
-    `,
-    `
-interface CallGoodConstructBad extends Function {
-  (): void;
-}
-declare const safe: CallGoodConstructBad;
-safe();
-    `,
-    `
-interface ConstructSignatureMakesSafe extends Function {
-  new (): ConstructSignatureMakesSafe;
-}
-declare const safe: ConstructSignatureMakesSafe;
-new safe();
-    `,
-    `
-interface SafeWithNonVoidCallSignature extends Function {
-  (): void;
-  (x: string): string;
-}
-declare const safe: SafeWithNonVoidCallSignature;
-safe();
-    `,
-    // Function has type FunctionConstructor, so it's not within this rule's purview
-    `
-      new Function('lol');
-    `,
-    // Function has type FunctionConstructor, so it's not within this rule's purview
-    `
-      Function('lol');
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -428,5 +351,82 @@ unsafe();
         },
       ],
     },
+  ],
+  valid: [
+    `
+function foo(x: () => void) {
+  x();
+}
+    `,
+    `
+function foo(x?: { a: () => void }) {
+  x?.a();
+}
+    `,
+    `
+function foo(x: { a?: () => void }) {
+  x.a?.();
+}
+    `,
+    'new Map();',
+    'String.raw`foo`;',
+    "const x = import('./foo');",
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1825
+    `
+      let foo: any = 23;
+      String(foo); // ERROR: Unsafe call of an any typed value
+    `,
+    // TS 3.9 changed this to be safe
+    `
+      function foo<T extends any>(x: T) {
+        x();
+      }
+    `,
+    `
+      // create a scope since it's illegal to declare a duplicate identifier
+      // 'Function' in the global script scope.
+      {
+        type Function = () => void;
+        const notGlobalFunctionType: Function = (() => {}) as Function;
+        notGlobalFunctionType();
+      }
+    `,
+    `
+interface SurprisinglySafe extends Function {
+  (): string;
+}
+declare const safe: SurprisinglySafe;
+safe();
+    `,
+    `
+interface CallGoodConstructBad extends Function {
+  (): void;
+}
+declare const safe: CallGoodConstructBad;
+safe();
+    `,
+    `
+interface ConstructSignatureMakesSafe extends Function {
+  new (): ConstructSignatureMakesSafe;
+}
+declare const safe: ConstructSignatureMakesSafe;
+new safe();
+    `,
+    `
+interface SafeWithNonVoidCallSignature extends Function {
+  (): void;
+  (x: string): string;
+}
+declare const safe: SafeWithNonVoidCallSignature;
+safe();
+    `,
+    // Function has type FunctionConstructor, so it's not within this rule's purview
+    `
+      new Function('lol');
+    `,
+    // Function has type FunctionConstructor, so it's not within this rule's purview
+    `
+      Function('lol');
+    `,
   ],
 });

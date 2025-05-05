@@ -7,9 +7,9 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
+      recommended: 'recommended',
       description:
         'Disallow non-null assertions after an optional chain expression',
-      recommended: 'recommended',
     },
     hasSuggestions: true,
     messages: {

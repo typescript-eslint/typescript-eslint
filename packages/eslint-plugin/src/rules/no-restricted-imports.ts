@@ -234,11 +234,11 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     // defaultOptions, -- base rule does not use defaultOptions
-    docs: {
-      description: 'Disallow specified modules when loaded by `import`',
-      extendsBaseRule: true,
-    },
     fixable: baseRule.meta.fixable,
+    docs: {
+      extendsBaseRule: true,
+      description: 'Disallow specified modules when loaded by `import`',
+    },
     messages: baseRule.meta.messages,
     schema,
   },
@@ -363,8 +363,8 @@ export default createRule<Options, MessageIds>({
             specifiers: [
               {
                 ...node.id,
-                type: AST_NODE_TYPES.ImportDefaultSpecifier,
                 local: node.id,
+                type: AST_NODE_TYPES.ImportDefaultSpecifier,
                 // @ts-expect-error -- parent types are incompatible but it's fine for the purposes of this extension
                 parent: node.id.parent,
               },

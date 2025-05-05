@@ -24,8 +24,8 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow returning a value with type `any` from a function',
       recommended: 'recommended',
+      description: 'Disallow returning a value with type `any` from a function',
       requiresTypeChecking: true,
     },
     messages: {
@@ -193,13 +193,13 @@ export default createRule({
           return;
         }
 
-        const { receiver, sender } = result;
+        const { sender, receiver } = result;
         return context.report({
           node: reportingNode,
           messageId: 'unsafeReturnAssignment',
           data: {
-            receiver: checker.typeToString(receiver),
             sender: checker.typeToString(sender),
+            receiver: checker.typeToString(receiver),
           },
         });
       }

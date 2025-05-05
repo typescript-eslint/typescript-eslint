@@ -28,11 +28,11 @@ export default createRule({
   name: 'no-useless-empty-export',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description:
         "Disallow empty exports that don't change anything in a module file",
     },
-    fixable: 'code',
     hasSuggestions: false,
     messages: {
       uselessExport: 'Empty export does nothing and can be removed.',

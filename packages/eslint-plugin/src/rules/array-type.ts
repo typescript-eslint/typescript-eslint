@@ -92,12 +92,12 @@ export default createRule<Options, MessageIds>({
   name: 'array-type',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'stylistic',
       description:
         'Require consistently using either `T[]` or `Array<T>` for arrays',
-      recommended: 'stylistic',
     },
-    fixable: 'code',
     messages: {
       errorStringArray:
         "Array type using '{{className}}<{{type}}>' is forbidden. Use '{{readonlyPrefix}}{{type}}[]' instead.",
@@ -181,8 +181,8 @@ export default createRule<Options, MessageIds>({
           messageId,
           data: {
             type: getMessageType(node.elementType),
-            className: isReadonly ? 'ReadonlyArray' : 'Array',
             readonlyPrefix: isReadonly ? 'readonly ' : '',
+            className: isReadonly ? 'ReadonlyArray' : 'Array',
           },
           fix(fixer) {
             const typeNode = node.elementType;
@@ -249,8 +249,8 @@ export default createRule<Options, MessageIds>({
             messageId,
             data: {
               type: 'any',
-              className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
               readonlyPrefix,
+              className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
             },
             fix(fixer) {
               return fixer.replaceText(node, `${readonlyPrefix}any[]`);
@@ -283,8 +283,8 @@ export default createRule<Options, MessageIds>({
           messageId,
           data: {
             type: getMessageType(type),
-            className: isReadonlyArrayType ? node.typeName.name : 'Array',
             readonlyPrefix,
+            className: isReadonlyArrayType ? node.typeName.name : 'Array',
           },
           fix(fixer) {
             return [

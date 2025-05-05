@@ -42,12 +42,12 @@ export default createRule<[], MessageId>({
   name: 'no-unnecessary-template-expression',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
-      description: 'Disallow unnecessary template expressions',
       recommended: 'strict',
+      description: 'Disallow unnecessary template expressions',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       noUnnecessaryTemplateExpression:
         'Template literal expression is unnecessary and can be simplified.',
@@ -183,8 +183,8 @@ export default createRule<[], MessageId>({
         messageId: 'noUnnecessaryTemplateExpression',
         fix(fixer): TSESLint.RuleFix | null {
           const wrappingCode = getMovedNodeCode({
-            destinationNode: node,
             nodeToMove: interpolations[0],
+            destinationNode: node,
             sourceCode: context.sourceCode,
           });
 

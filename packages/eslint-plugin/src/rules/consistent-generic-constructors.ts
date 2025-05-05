@@ -11,12 +11,12 @@ export default createRule<Options, MessageIds>({
   name: 'consistent-generic-constructors',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'stylistic',
       description:
         'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
-      recommended: 'stylistic',
     },
-    fixable: 'code',
     messages: {
       preferConstructor:
         'The generic type arguments should be specified as part of the constructor type arguments.',
@@ -83,7 +83,7 @@ export default createRule<Options, MessageIds>({
         }
         if (mode === 'type-annotation') {
           if (!lhs && rhs.typeArguments) {
-            const { callee, typeArguments } = rhs;
+            const { typeArguments, callee } = rhs;
             const typeAnnotation =
               context.sourceCode.getText(callee) +
               context.sourceCode.getText(typeArguments);

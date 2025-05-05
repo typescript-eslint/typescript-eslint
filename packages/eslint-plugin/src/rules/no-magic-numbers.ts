@@ -51,8 +51,8 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     // defaultOptions, -- base rule does not use defaultOptions
     docs: {
-      description: 'Disallow magic numbers',
       extendsBaseRule: true,
+      description: 'Disallow magic numbers',
     },
     messages: baseRule.meta.messages,
     schema: [schema],

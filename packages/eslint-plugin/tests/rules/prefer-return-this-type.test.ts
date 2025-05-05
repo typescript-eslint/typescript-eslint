@@ -15,92 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('prefer-return-this-type', rule, {
-  valid: [
-    `
-class Foo {
-  f1() {}
-  f2(): Foo {
-    return new Foo();
-  }
-  f3() {
-    return this;
-  }
-  f4(): this {
-    return this;
-  }
-  f5(): any {
-    return this;
-  }
-  f6(): unknown {
-    return this;
-  }
-  f7(foo: Foo): Foo {
-    return Math.random() > 0.5 ? foo : this;
-  }
-  f10(this: Foo, that: Foo): Foo;
-  f11(): Foo {
-    return;
-  }
-  f13(this: Foo): Foo {
-    return this;
-  }
-  f14(): { f14: Function } {
-    return this;
-  }
-  f15(): Foo | this {
-    return Math.random() > 0.5 ? new Foo() : this;
-  }
-}
-    `,
-    `
-class Foo {
-  f1 = () => {};
-  f2 = (): Foo => {
-    return new Foo();
-  };
-  f3 = () => this;
-  f4 = (): this => {
-    return this;
-  };
-  f5 = (): Foo => new Foo();
-  f6 = '';
-}
-    `,
-    `
-const Foo = class {
-  bar() {
-    return this;
-  }
-};
-    `,
-    `
-class Base {}
-class Derived extends Base {
-  f(): Base {
-    return this;
-  }
-}
-    `,
-    `
-class Foo {
-  accessor f = () => {
-    return this;
-  };
-}
-    `,
-    `
-class Foo {
-  accessor f = (): this => {
-    return this;
-  };
-}
-    `,
-    `
-class Foo {
-  f?: string;
-}
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -398,5 +312,91 @@ class Animal<T> {
 }
       `,
     },
+  ],
+  valid: [
+    `
+class Foo {
+  f1() {}
+  f2(): Foo {
+    return new Foo();
+  }
+  f3() {
+    return this;
+  }
+  f4(): this {
+    return this;
+  }
+  f5(): any {
+    return this;
+  }
+  f6(): unknown {
+    return this;
+  }
+  f7(foo: Foo): Foo {
+    return Math.random() > 0.5 ? foo : this;
+  }
+  f10(this: Foo, that: Foo): Foo;
+  f11(): Foo {
+    return;
+  }
+  f13(this: Foo): Foo {
+    return this;
+  }
+  f14(): { f14: Function } {
+    return this;
+  }
+  f15(): Foo | this {
+    return Math.random() > 0.5 ? new Foo() : this;
+  }
+}
+    `,
+    `
+class Foo {
+  f1 = () => {};
+  f2 = (): Foo => {
+    return new Foo();
+  };
+  f3 = () => this;
+  f4 = (): this => {
+    return this;
+  };
+  f5 = (): Foo => new Foo();
+  f6 = '';
+}
+    `,
+    `
+const Foo = class {
+  bar() {
+    return this;
+  }
+};
+    `,
+    `
+class Base {}
+class Derived extends Base {
+  f(): Base {
+    return this;
+  }
+}
+    `,
+    `
+class Foo {
+  accessor f = () => {
+    return this;
+  };
+}
+    `,
+    `
+class Foo {
+  accessor f = (): this => {
+    return this;
+  };
+}
+    `,
+    `
+class Foo {
+  f?: string;
+}
+    `,
   ],
 });

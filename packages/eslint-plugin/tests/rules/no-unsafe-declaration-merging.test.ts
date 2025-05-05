@@ -15,52 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-declaration-merging', rule, {
-  valid: [
-    `
-interface Foo {}
-class Bar implements Foo {}
-    `,
-    `
-namespace Foo {}
-namespace Foo {}
-    `,
-    `
-enum Foo {}
-namespace Foo {}
-    `,
-    `
-namespace Fooo {}
-function Foo() {}
-    `,
-    `
-const Foo = class {};
-    `,
-    `
-interface Foo {
-  props: string;
-}
-
-function bar() {
-  return class Foo {};
-}
-    `,
-    `
-interface Foo {
-  props: string;
-}
-
-(function bar() {
-  class Foo {}
-})();
-    `,
-    `
-declare global {
-  interface Foo {}
-}
-
-class Foo {}
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -118,5 +72,51 @@ declare global {
         },
       ],
     },
+  ],
+  valid: [
+    `
+interface Foo {}
+class Bar implements Foo {}
+    `,
+    `
+namespace Foo {}
+namespace Foo {}
+    `,
+    `
+enum Foo {}
+namespace Foo {}
+    `,
+    `
+namespace Fooo {}
+function Foo() {}
+    `,
+    `
+const Foo = class {};
+    `,
+    `
+interface Foo {
+  props: string;
+}
+
+function bar() {
+  return class Foo {};
+}
+    `,
+    `
+interface Foo {
+  props: string;
+}
+
+(function bar() {
+  class Foo {}
+})();
+    `,
+    `
+declare global {
+  interface Foo {}
+}
+
+class Foo {}
+    `,
   ],
 });

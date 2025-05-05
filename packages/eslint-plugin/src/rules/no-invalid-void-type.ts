@@ -22,8 +22,8 @@ export default createRule<[Options], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow `void` type outside of generic or return types',
       recommended: 'strict',
+      description: 'Disallow `void` type outside of generic or return types',
     },
     messages: {
       invalidVoidForGeneric:

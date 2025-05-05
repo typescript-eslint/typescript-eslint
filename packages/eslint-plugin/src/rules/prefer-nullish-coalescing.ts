@@ -47,13 +47,13 @@ export type Options = [
     ignoreIfStatements?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
     ignorePrimitives?:
+      | true
       | {
           bigint?: boolean;
           boolean?: boolean;
           number?: boolean;
           string?: boolean;
-        }
-      | true;
+        };
     ignoreTernaryTests?: boolean;
   },
 ];
@@ -70,9 +70,9 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
+      recommended: 'stylistic',
       description:
         'Enforce using the nullish coalescing operator instead of logical assignments or chaining',
-      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

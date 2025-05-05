@@ -37,8 +37,8 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow accidentally using the "empty object" type',
       recommended: 'recommended',
+      description: 'Disallow accidentally using the "empty object" type',
     },
     hasSuggestions: true,
     messages: {

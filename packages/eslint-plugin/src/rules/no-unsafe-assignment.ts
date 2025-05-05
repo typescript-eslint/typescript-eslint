@@ -32,9 +32,9 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
+      recommended: 'recommended',
       description:
         'Disallow assigning a value with type `any` to variables and properties',
-      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -300,7 +300,7 @@ export default createRule({
         return false;
       }
 
-      const { receiver, sender } = result;
+      const { sender, receiver } = result;
       context.report({
         node: reportingNode,
         messageId: 'unsafeAssignment',
@@ -325,8 +325,8 @@ export default createRule({
     ): Readonly<Record<string, unknown>> | undefined {
       if (receiverType) {
         return {
-          receiver: `\`${checker.typeToString(receiverType)}\``,
           sender: `\`${checker.typeToString(senderType)}\``,
+          receiver: `\`${checker.typeToString(receiverType)}\``,
         };
       }
       return {

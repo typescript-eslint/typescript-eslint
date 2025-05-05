@@ -15,171 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
-  valid: [
-    `
-      Promise.resolve().catch((err: unknown) => {
-        throw err;
-      });
-    `,
-    `
-      let x = Math.random() ? 'ca' + 'tch' : 'catch';
-      Promise.resolve()[x]((err: Error) => {});
-    `,
-    `
-      Promise.resolve().then(
-        () => {},
-        (err: unknown) => {
-          throw err;
-        },
-      );
-    `,
-    `
-      Promise.resolve().catch(() => {
-        throw new Error();
-      });
-    `,
-    `
-      Promise.reject(new Error()).catch("not this rule's problem");
-    `,
-    `
-      declare const crappyHandler: (() => void) | 2;
-      Promise.reject(new Error()).catch(crappyHandler);
-    `,
-
-    `
-      Promise.resolve().catch((...args: [unknown]) => {
-        throw args[0];
-      });
-    `,
-    `
-      Promise.resolve().catch((...args: [a: unknown]) => {
-        const err = args[0];
-      });
-    `,
-
-    `
-      Promise.resolve().catch((...args: readonly unknown[]) => {
-        throw args[0];
-      });
-    `,
-
-    `
-      declare const notAPromise: { catch: (f: Function) => void };
-      notAPromise.catch((...args: [a: string, string]) => {
-        throw args[0];
-      });
-    `,
-    `
-      declare const catchArgs: [(x: unknown) => void];
-      Promise.reject(new Error()).catch(...catchArgs);
-    `,
-
-    `
-      declare const catchArgs: [
-        string | (() => never),
-        (shouldntFlag: string) => void,
-        number,
-      ];
-      Promise.reject(new Error()).catch(...catchArgs);
-    `,
-    `
-      declare const catchArgs: ['not callable'];
-      Promise.reject(new Error()).catch(...catchArgs);
-    `,
-    `
-      declare const emptySpread: [];
-      Promise.reject(new Error()).catch(...emptySpread);
-    `,
-    `
-      Promise.resolve().catch(
-        (
-          ...err: [unknown, string | ((number | unknown) & { b: () => void }), string]
-        ) => {
-          throw err;
-        },
-      );
-    `,
-    `
-      declare const notAMemberExpression: (...args: any[]) => {};
-      notAMemberExpression(
-        'This helps get 100% code cov',
-        "but doesn't test anything useful related to the rule.",
-      );
-    `,
-    `
-      Promise.resolve().catch((...[args]: [unknown]) => {
-        console.log(args);
-      });
-    `,
-    `
-      Promise.resolve().catch((...{ find }: [unknown]) => {
-        console.log(find);
-      });
-    `,
-    'Promise.resolve.then();',
-    'Promise.resolve().then(() => {});',
-    `
-      declare const singleTupleArg: [() => void];
-      Promise.resolve().then(...singleTupleArg, (error: unknown) => {});
-    `,
-    `
-      declare const arrayArg: (() => void)[];
-      Promise.resolve().then(...arrayArg, error => {});
-    `,
-    `
-declare let iPromiseImAPromise: Promise<any>;
-declare const catchArgs: [(x: any) => void];
-iPromiseImAPromise.catch(...catchArgs);
-    `,
-    `
-declare const catchArgs: [
-  string | (() => never) | ((x: string) => void),
-  number,
-];
-Promise.reject(new Error()).catch(...catchArgs);
-    `,
-    `
-declare const you: [];
-declare const cannot: [];
-declare const fool: [];
-declare const me: [(x: Error) => void] | undefined;
-Promise.resolve(undefined).catch(...you, ...cannot, ...fool, ...me!);
-    `,
-    `
-declare const really: undefined[];
-declare const dumb: [];
-declare const code: (x: Error) => void;
-Promise.resolve(undefined).catch(...really, ...dumb, code);
-    `,
-    `
-declare const x: ((x: any) => string)[];
-Promise.resolve('string promise').catch(...x);
-    `,
-    `
-declare const x: any;
-Promise.resolve().catch(...x);
-    `,
-    `
-declare const thenArgs: [() => {}, (err: any) => {}];
-Promise.resolve().then(...thenArgs);
-    `,
-    // this is valid, because the `any` is a passed-in handler, not a function literal.
-    // https://github.com/typescript-eslint/typescript-eslint/issues/9057
-    `
-declare const yoloHandler: (x: any) => void;
-Promise.reject(new Error('I will reject!')).catch(yoloHandler);
-    `,
-    // type assertion is not a function literal.
-    `
-type InvalidHandler = (arg: any) => void;
-Promise.resolve().catch(<InvalidHandler>(
-  function (err /* awkward spot for comment */) {
-    throw err;
-  }
-));
-    `,
-  ],
-
   invalid: [
     {
       code: `
@@ -858,5 +693,170 @@ Promise.resolve('foo').catch(
         },
       ],
     },
+  ],
+
+  valid: [
+    `
+      Promise.resolve().catch((err: unknown) => {
+        throw err;
+      });
+    `,
+    `
+      let x = Math.random() ? 'ca' + 'tch' : 'catch';
+      Promise.resolve()[x]((err: Error) => {});
+    `,
+    `
+      Promise.resolve().then(
+        () => {},
+        (err: unknown) => {
+          throw err;
+        },
+      );
+    `,
+    `
+      Promise.resolve().catch(() => {
+        throw new Error();
+      });
+    `,
+    `
+      Promise.reject(new Error()).catch("not this rule's problem");
+    `,
+    `
+      declare const crappyHandler: (() => void) | 2;
+      Promise.reject(new Error()).catch(crappyHandler);
+    `,
+
+    `
+      Promise.resolve().catch((...args: [unknown]) => {
+        throw args[0];
+      });
+    `,
+    `
+      Promise.resolve().catch((...args: [a: unknown]) => {
+        const err = args[0];
+      });
+    `,
+
+    `
+      Promise.resolve().catch((...args: readonly unknown[]) => {
+        throw args[0];
+      });
+    `,
+
+    `
+      declare const notAPromise: { catch: (f: Function) => void };
+      notAPromise.catch((...args: [a: string, string]) => {
+        throw args[0];
+      });
+    `,
+    `
+      declare const catchArgs: [(x: unknown) => void];
+      Promise.reject(new Error()).catch(...catchArgs);
+    `,
+
+    `
+      declare const catchArgs: [
+        string | (() => never),
+        (shouldntFlag: string) => void,
+        number,
+      ];
+      Promise.reject(new Error()).catch(...catchArgs);
+    `,
+    `
+      declare const catchArgs: ['not callable'];
+      Promise.reject(new Error()).catch(...catchArgs);
+    `,
+    `
+      declare const emptySpread: [];
+      Promise.reject(new Error()).catch(...emptySpread);
+    `,
+    `
+      Promise.resolve().catch(
+        (
+          ...err: [unknown, string | ((number | unknown) & { b: () => void }), string]
+        ) => {
+          throw err;
+        },
+      );
+    `,
+    `
+      declare const notAMemberExpression: (...args: any[]) => {};
+      notAMemberExpression(
+        'This helps get 100% code cov',
+        "but doesn't test anything useful related to the rule.",
+      );
+    `,
+    `
+      Promise.resolve().catch((...[args]: [unknown]) => {
+        console.log(args);
+      });
+    `,
+    `
+      Promise.resolve().catch((...{ find }: [unknown]) => {
+        console.log(find);
+      });
+    `,
+    'Promise.resolve.then();',
+    'Promise.resolve().then(() => {});',
+    `
+      declare const singleTupleArg: [() => void];
+      Promise.resolve().then(...singleTupleArg, (error: unknown) => {});
+    `,
+    `
+      declare const arrayArg: (() => void)[];
+      Promise.resolve().then(...arrayArg, error => {});
+    `,
+    `
+declare let iPromiseImAPromise: Promise<any>;
+declare const catchArgs: [(x: any) => void];
+iPromiseImAPromise.catch(...catchArgs);
+    `,
+    `
+declare const catchArgs: [
+  string | (() => never) | ((x: string) => void),
+  number,
+];
+Promise.reject(new Error()).catch(...catchArgs);
+    `,
+    `
+declare const you: [];
+declare const cannot: [];
+declare const fool: [];
+declare const me: [(x: Error) => void] | undefined;
+Promise.resolve(undefined).catch(...you, ...cannot, ...fool, ...me!);
+    `,
+    `
+declare const really: undefined[];
+declare const dumb: [];
+declare const code: (x: Error) => void;
+Promise.resolve(undefined).catch(...really, ...dumb, code);
+    `,
+    `
+declare const x: ((x: any) => string)[];
+Promise.resolve('string promise').catch(...x);
+    `,
+    `
+declare const x: any;
+Promise.resolve().catch(...x);
+    `,
+    `
+declare const thenArgs: [() => {}, (err: any) => {}];
+Promise.resolve().then(...thenArgs);
+    `,
+    // this is valid, because the `any` is a passed-in handler, not a function literal.
+    // https://github.com/typescript-eslint/typescript-eslint/issues/9057
+    `
+declare const yoloHandler: (x: any) => void;
+Promise.reject(new Error('I will reject!')).catch(yoloHandler);
+    `,
+    // type assertion is not a function literal.
+    `
+type InvalidHandler = (arg: any) => void;
+Promise.resolve().catch(<InvalidHandler>(
+  function (err /* awkward spot for comment */) {
+    throw err;
+  }
+));
+    `,
   ],
 });

@@ -31,13 +31,13 @@ export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'recommended',
       description:
         'Disallow type assertions that do not change the type of an expression',
-      recommended: 'recommended',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       contextuallyUnnecessary:
         'This assertion is unnecessary since the receiver accepts the original type of the expression.',
@@ -49,16 +49,16 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          checkLiteralConstAssertions: {
-            type: 'boolean',
-            description: 'Whether to check literal const assertions.',
-          },
           typesToIgnore: {
             type: 'array',
             description: 'A list of type names to ignore.',
             items: {
               type: 'string',
             },
+          },
+          checkLiteralConstAssertions: {
+            type: 'boolean',
+            description: 'Whether to check literal const assertions.',
           },
         },
       },

@@ -35,9 +35,9 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow throwing non-`Error` values as exceptions',
       extendsBaseRule: 'no-throw-literal',
       recommended: 'recommended',
+      description: 'Disallow throwing non-`Error` values as exceptions',
       requiresTypeChecking: true,
     },
     messages: {

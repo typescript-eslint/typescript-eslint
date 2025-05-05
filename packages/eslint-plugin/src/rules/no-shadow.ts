@@ -40,9 +40,9 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
+      extendsBaseRule: true,
       description:
         'Disallow variable declarations from shadowing variables declared in the outer scope',
-      extendsBaseRule: true,
     },
     messages: {
       noShadow:

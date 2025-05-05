@@ -33,12 +33,12 @@ export default createRule<Options, MessageIds>({
   name: 'prefer-readonly',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description:
         "Require private members to be marked as `readonly` if they're never modified outside of the constructor",
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       preferReadonly:
         "Member '{{name}}' is never reassigned; mark it as `readonly`.",
@@ -168,8 +168,8 @@ export default createRule<Options, MessageIds>({
       violatingNode: ParameterOrPropertyDeclaration,
     ): { esNode: TSESTree.Node; nameNode: TSESTree.Node } {
       return {
-        esNode: services.tsNodeToESTreeNodeMap.get(violatingNode),
         nameNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
+        esNode: services.tsNodeToESTreeNodeMap.get(violatingNode),
       };
     }
 
@@ -237,7 +237,7 @@ export default createRule<Options, MessageIds>({
         );
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
-          const { esNode, nameNode } =
+          const { nameNode, esNode } =
             getEsNodesFromViolatingNode(violatingNode);
 
           const reportNodeOrLoc:

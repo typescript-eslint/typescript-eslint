@@ -43,11 +43,11 @@ export default createRule<Options, MessageIds>({
   name: 'consistent-type-assertions',
   meta: {
     type: 'suggestion',
-    docs: {
-      description: 'Enforce consistent usage of type assertions',
-      recommended: 'stylistic',
-    },
     fixable: 'code',
+    docs: {
+      recommended: 'stylistic',
+      description: 'Enforce consistent usage of type assertions',
+    },
     hasSuggestions: true,
     messages: {
       'angle-bracket': "Use '<{{cast}}>' instead of 'as {{cast}}'.",

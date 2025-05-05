@@ -5,293 +5,6 @@ import rule from '../../src/rules/consistent-indexed-object-style';
 const ruleTester = new RuleTester();
 
 ruleTester.run('consistent-indexed-object-style', rule, {
-  valid: [
-    // 'record' (default)
-    // Record
-    'type Foo = Record<string, any>;',
-
-    // Interface
-    'interface Foo {}',
-    `
-interface Foo {
-  bar: string;
-}
-    `,
-    `
-interface Foo {
-  bar: string;
-  [key: string]: any;
-}
-    `,
-    `
-interface Foo {
-  [key: string]: any;
-  bar: string;
-}
-    `,
-    // circular
-    'type Foo = { [key: string]: string | Foo };',
-    'type Foo = { [key: string]: Foo };',
-    'type Foo = { [key: string]: Foo } | Foo;',
-    'type Foo = { [key in string]: Foo };',
-    `
-interface Foo {
-  [key: string]: Foo;
-}
-    `,
-    `
-interface Foo<T> {
-  [key: string]: Foo<T>;
-}
-    `,
-    `
-interface Foo<T> {
-  [key: string]: Foo<T> | string;
-}
-    `,
-    `
-interface Foo {
-  [s: string]: Foo & {};
-}
-    `,
-    `
-interface Foo {
-  [s: string]: Foo | string;
-}
-    `,
-    `
-interface Foo<T> {
-  [s: string]: Foo extends T ? string : number;
-}
-    `,
-    `
-interface Foo<T> {
-  [s: string]: T extends Foo ? string : number;
-}
-    `,
-    `
-interface Foo<T> {
-  [s: string]: T extends true ? Foo : number;
-}
-    `,
-    `
-interface Foo<T> {
-  [s: string]: T extends true ? string : Foo;
-}
-    `,
-    `
-interface Foo {
-  [s: string]: Foo[number];
-}
-    `,
-    `
-interface Foo {
-  [s: string]: {}[Foo];
-}
-    `,
-
-    // circular (indirect)
-    `
-interface Foo1 {
-  [key: string]: Foo2;
-}
-
-interface Foo2 {
-  [key: string]: Foo1;
-}
-    `,
-    `
-interface Foo1 {
-  [key: string]: Foo2;
-}
-
-interface Foo2 {
-  [key: string]: Foo3;
-}
-
-interface Foo3 {
-  [key: string]: Foo1;
-}
-    `,
-    `
-interface Foo1 {
-  [key: string]: Foo2;
-}
-
-interface Foo2 {
-  [key: string]: Foo3;
-}
-
-interface Foo3 {
-  [key: string]: Record<string, Foo1>;
-}
-    `,
-    `
-type Foo1 = {
-  [key: string]: Foo2;
-};
-
-type Foo2 = {
-  [key: string]: Foo3;
-};
-
-type Foo3 = {
-  [key: string]: Foo1;
-};
-    `,
-    `
-interface Foo1 {
-  [key: string]: Foo2;
-}
-
-type Foo2 = {
-  [key: string]: Foo3;
-};
-
-interface Foo3 {
-  [key: string]: Foo1;
-}
-    `,
-    `
-type Foo1 = {
-  [key: string]: Foo2;
-};
-
-interface Foo2 {
-  [key: string]: Foo3;
-}
-
-interface Foo3 {
-  [key: string]: Foo1;
-}
-    `,
-    `
-type ExampleUnion = boolean | number;
-
-type ExampleRoot = ExampleUnion | ExampleObject;
-
-interface ExampleObject {
-  [key: string]: ExampleRoot;
-}
-    `,
-
-    // Type literal
-    'type Foo = {};',
-    `
-type Foo = {
-  bar: string;
-  [key: string]: any;
-};
-    `,
-    `
-type Foo = {
-  bar: string;
-};
-    `,
-    `
-type Foo = {
-  [key: string]: any;
-  bar: string;
-};
-    `,
-
-    // Generic
-    `
-type Foo = Generic<{
-  [key: string]: any;
-  bar: string;
-}>;
-    `,
-
-    // Function types
-    'function foo(arg: { [key: string]: any; bar: string }) {}',
-    'function foo(): { [key: string]: any; bar: string } {}',
-
-    // Invalid syntax allowed by the parser
-    'type Foo = { [key: string] };',
-    'type Foo = { [] };',
-    `
-interface Foo {
-  [key: string];
-}
-    `,
-    `
-interface Foo {
-  [];
-}
-    `,
-
-    // 'index-signature'
-    // Unhandled type
-    {
-      code: 'type Foo = Misc<string, unknown>;',
-      options: ['index-signature'],
-    },
-
-    // Invalid record
-    {
-      code: 'type Foo = Record;',
-      options: ['index-signature'],
-    },
-    {
-      code: 'type Foo = Record<string>;',
-      options: ['index-signature'],
-    },
-    {
-      code: 'type Foo = Record<string, number, unknown>;',
-      options: ['index-signature'],
-    },
-
-    // Type literal
-    {
-      code: 'type Foo = { [key: string]: any };',
-      options: ['index-signature'],
-    },
-
-    // Generic
-    {
-      code: 'type Foo = Generic<{ [key: string]: any }>;',
-      options: ['index-signature'],
-    },
-
-    // Function types
-    {
-      code: 'function foo(arg: { [key: string]: any }) {}',
-      options: ['index-signature'],
-    },
-    {
-      code: 'function foo(): { [key: string]: any } {}',
-      options: ['index-signature'],
-    },
-
-    // Namespace
-    {
-      code: 'type T = A.B;',
-      options: ['index-signature'],
-    },
-
-    {
-      // mapped type that uses the key cannot be converted to record
-      code: 'type T = { [key in Foo]: key | number };',
-    },
-    {
-      code: `
-function foo(e: { readonly [key in PropertyKey]-?: key }) {}
-      `,
-    },
-
-    {
-      // `in keyof` mapped types are not convertible to Record.
-      code: `
-function f(): {
-  // intentionally not using a Record to preserve optionals
-  [k in keyof ParseResult]: unknown;
-} {
-  return {};
-}
-      `,
-    },
-  ],
   invalid: [
     // Interface
     {
@@ -901,6 +614,293 @@ type Foo = Record<string, Bar>;
 
 interface Bar {
   [key: string];
+}
+      `,
+    },
+  ],
+  valid: [
+    // 'record' (default)
+    // Record
+    'type Foo = Record<string, any>;',
+
+    // Interface
+    'interface Foo {}',
+    `
+interface Foo {
+  bar: string;
+}
+    `,
+    `
+interface Foo {
+  bar: string;
+  [key: string]: any;
+}
+    `,
+    `
+interface Foo {
+  [key: string]: any;
+  bar: string;
+}
+    `,
+    // circular
+    'type Foo = { [key: string]: string | Foo };',
+    'type Foo = { [key: string]: Foo };',
+    'type Foo = { [key: string]: Foo } | Foo;',
+    'type Foo = { [key in string]: Foo };',
+    `
+interface Foo {
+  [key: string]: Foo;
+}
+    `,
+    `
+interface Foo<T> {
+  [key: string]: Foo<T>;
+}
+    `,
+    `
+interface Foo<T> {
+  [key: string]: Foo<T> | string;
+}
+    `,
+    `
+interface Foo {
+  [s: string]: Foo & {};
+}
+    `,
+    `
+interface Foo {
+  [s: string]: Foo | string;
+}
+    `,
+    `
+interface Foo<T> {
+  [s: string]: Foo extends T ? string : number;
+}
+    `,
+    `
+interface Foo<T> {
+  [s: string]: T extends Foo ? string : number;
+}
+    `,
+    `
+interface Foo<T> {
+  [s: string]: T extends true ? Foo : number;
+}
+    `,
+    `
+interface Foo<T> {
+  [s: string]: T extends true ? string : Foo;
+}
+    `,
+    `
+interface Foo {
+  [s: string]: Foo[number];
+}
+    `,
+    `
+interface Foo {
+  [s: string]: {}[Foo];
+}
+    `,
+
+    // circular (indirect)
+    `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+interface Foo2 {
+  [key: string]: Foo1;
+}
+    `,
+    `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo1;
+}
+    `,
+    `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Record<string, Foo1>;
+}
+    `,
+    `
+type Foo1 = {
+  [key: string]: Foo2;
+};
+
+type Foo2 = {
+  [key: string]: Foo3;
+};
+
+type Foo3 = {
+  [key: string]: Foo1;
+};
+    `,
+    `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+type Foo2 = {
+  [key: string]: Foo3;
+};
+
+interface Foo3 {
+  [key: string]: Foo1;
+}
+    `,
+    `
+type Foo1 = {
+  [key: string]: Foo2;
+};
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo1;
+}
+    `,
+    `
+type ExampleUnion = boolean | number;
+
+type ExampleRoot = ExampleUnion | ExampleObject;
+
+interface ExampleObject {
+  [key: string]: ExampleRoot;
+}
+    `,
+
+    // Type literal
+    'type Foo = {};',
+    `
+type Foo = {
+  bar: string;
+  [key: string]: any;
+};
+    `,
+    `
+type Foo = {
+  bar: string;
+};
+    `,
+    `
+type Foo = {
+  [key: string]: any;
+  bar: string;
+};
+    `,
+
+    // Generic
+    `
+type Foo = Generic<{
+  [key: string]: any;
+  bar: string;
+}>;
+    `,
+
+    // Function types
+    'function foo(arg: { [key: string]: any; bar: string }) {}',
+    'function foo(): { [key: string]: any; bar: string } {}',
+
+    // Invalid syntax allowed by the parser
+    'type Foo = { [key: string] };',
+    'type Foo = { [] };',
+    `
+interface Foo {
+  [key: string];
+}
+    `,
+    `
+interface Foo {
+  [];
+}
+    `,
+
+    // 'index-signature'
+    // Unhandled type
+    {
+      code: 'type Foo = Misc<string, unknown>;',
+      options: ['index-signature'],
+    },
+
+    // Invalid record
+    {
+      code: 'type Foo = Record;',
+      options: ['index-signature'],
+    },
+    {
+      code: 'type Foo = Record<string>;',
+      options: ['index-signature'],
+    },
+    {
+      code: 'type Foo = Record<string, number, unknown>;',
+      options: ['index-signature'],
+    },
+
+    // Type literal
+    {
+      code: 'type Foo = { [key: string]: any };',
+      options: ['index-signature'],
+    },
+
+    // Generic
+    {
+      code: 'type Foo = Generic<{ [key: string]: any }>;',
+      options: ['index-signature'],
+    },
+
+    // Function types
+    {
+      code: 'function foo(arg: { [key: string]: any }) {}',
+      options: ['index-signature'],
+    },
+    {
+      code: 'function foo(): { [key: string]: any } {}',
+      options: ['index-signature'],
+    },
+
+    // Namespace
+    {
+      code: 'type T = A.B;',
+      options: ['index-signature'],
+    },
+
+    {
+      // mapped type that uses the key cannot be converted to record
+      code: 'type T = { [key in Foo]: key | number };',
+    },
+    {
+      code: `
+function foo(e: { readonly [key in PropertyKey]-?: key }) {}
+      `,
+    },
+
+    {
+      // `in keyof` mapped types are not convertible to Record.
+      code: `
+function f(): {
+  // intentionally not using a Record to preserve optionals
+  [k in keyof ParseResult]: unknown;
+} {
+  return {};
 }
       `,
     },

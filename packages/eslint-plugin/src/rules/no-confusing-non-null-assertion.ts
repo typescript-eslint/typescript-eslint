@@ -36,9 +36,9 @@ export default createRule<[], MessageId>({
   meta: {
     type: 'problem',
     docs: {
+      recommended: 'stylistic',
       description:
         'Disallow non-null assertion in locations that may be confusing',
-      recommended: 'stylistic',
     },
     hasSuggestions: true,
     messages: {

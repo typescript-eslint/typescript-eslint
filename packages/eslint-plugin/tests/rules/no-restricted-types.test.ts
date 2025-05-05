@@ -5,34 +5,6 @@ import rule from '../../src/rules/no-restricted-types';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-restricted-types', rule, {
-  valid: [
-    'let f = Object();',
-    'let f: { x: number; y: number } = { x: 1, y: 1 };',
-    {
-      code: 'let f = Object();',
-      options: [{ types: { Object: true } }],
-    },
-    {
-      code: 'let f = Object(false);',
-      options: [{ types: { Object: true } }],
-    },
-    {
-      code: 'let g = Object.create(null);',
-      options: [{ types: { Object: true } }],
-    },
-    {
-      code: 'let e: namespace.Object;',
-      options: [{ types: { Object: true } }],
-    },
-    {
-      code: 'let value: _.NS.Banned;',
-      options: [{ types: { 'NS.Banned': true } }],
-    },
-    {
-      code: 'let value: NS.Banned._;',
-      options: [{ types: { 'NS.Banned': true } }],
-    },
-  ],
   invalid: [
     {
       code: 'let value: bigint;',
@@ -621,6 +593,34 @@ ruleTester.run('no-restricted-types', rule, {
         },
       ],
       output: null,
+    },
+  ],
+  valid: [
+    'let f = Object();',
+    'let f: { x: number; y: number } = { x: 1, y: 1 };',
+    {
+      code: 'let f = Object();',
+      options: [{ types: { Object: true } }],
+    },
+    {
+      code: 'let f = Object(false);',
+      options: [{ types: { Object: true } }],
+    },
+    {
+      code: 'let g = Object.create(null);',
+      options: [{ types: { Object: true } }],
+    },
+    {
+      code: 'let e: namespace.Object;',
+      options: [{ types: { Object: true } }],
+    },
+    {
+      code: 'let value: _.NS.Banned;',
+      options: [{ types: { 'NS.Banned': true } }],
+    },
+    {
+      code: 'let value: NS.Banned._;',
+      options: [{ types: { 'NS.Banned': true } }],
     },
   ],
 });

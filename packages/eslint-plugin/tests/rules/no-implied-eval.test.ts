@@ -14,301 +14,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-implied-eval', rule, {
-  valid: [
-    'foo.setImmediate(null);',
-    'foo.setInterval(null);',
-    'foo.execScript(null);',
-    'foo.setTimeout(null);',
-    'foo();',
-    '(function () {})();',
-
-    'setTimeout(() => {}, 0);',
-    'window.setTimeout(() => {}, 0);',
-    "window['setTimeout'](() => {}, 0);",
-
-    'setInterval(() => {}, 0);',
-    'window.setInterval(() => {}, 0);',
-    "window['setInterval'](() => {}, 0);",
-
-    'setImmediate(() => {});',
-    'window.setImmediate(() => {});',
-    "window['setImmediate'](() => {});",
-
-    'execScript(() => {});',
-    'window.execScript(() => {});',
-    "window['execScript'](() => {});",
-
-    `
-const foo = () => {};
-
-setTimeout(foo, 0);
-setInterval(foo, 0);
-setImmediate(foo);
-execScript(foo);
-    `,
-    `
-const foo = function () {};
-
-setTimeout(foo, 0);
-setInterval(foo, 0);
-setImmediate(foo);
-execScript(foo);
-    `,
-    `
-function foo() {}
-
-setTimeout(foo, 0);
-setInterval(foo, 0);
-setImmediate(foo);
-execScript(foo);
-    `,
-    `
-const foo = {
-  fn: () => {},
-};
-
-setTimeout(foo.fn, 0);
-setInterval(foo.fn, 0);
-setImmediate(foo.fn);
-execScript(foo.fn);
-    `,
-    `
-const foo = {
-  fn: function () {},
-};
-
-setTimeout(foo.fn, 0);
-setInterval(foo.fn, 0);
-setImmediate(foo.fn);
-execScript(foo.fn);
-    `,
-    `
-const foo = {
-  fn: function foo() {},
-};
-
-setTimeout(foo.fn, 0);
-setInterval(foo.fn, 0);
-setImmediate(foo.fn);
-execScript(foo.fn);
-    `,
-    `
-const foo = {
-  fn() {},
-};
-
-setTimeout(foo.fn, 0);
-setInterval(foo.fn, 0);
-setImmediate(foo.fn);
-execScript(foo.fn);
-    `,
-    `
-const foo = {
-  fn: () => {},
-};
-const fn = 'fn';
-
-setTimeout(foo[fn], 0);
-setInterval(foo[fn], 0);
-setImmediate(foo[fn]);
-execScript(foo[fn]);
-    `,
-    `
-const foo = {
-  fn: () => {},
-};
-
-setTimeout(foo['fn'], 0);
-setInterval(foo['fn'], 0);
-setImmediate(foo['fn']);
-execScript(foo['fn']);
-    `,
-    `
-const foo: () => void = () => {};
-
-setTimeout(foo, 0);
-setInterval(foo, 0);
-setImmediate(foo);
-execScript(foo);
-    `,
-    `
-const foo: () => () => void = () => {
-  return () => {};
-};
-
-setTimeout(foo(), 0);
-setInterval(foo(), 0);
-setImmediate(foo());
-execScript(foo());
-    `,
-    `
-const foo: () => () => void = () => () => {};
-
-setTimeout(foo(), 0);
-setInterval(foo(), 0);
-setImmediate(foo());
-execScript(foo());
-    `,
-    `
-const foo = () => () => {};
-
-setTimeout(foo(), 0);
-setInterval(foo(), 0);
-setImmediate(foo());
-execScript(foo());
-    `,
-    `
-const foo = function foo() {
-  return function foo() {};
-};
-
-setTimeout(foo(), 0);
-setInterval(foo(), 0);
-setImmediate(foo());
-execScript(foo());
-    `,
-    `
-const foo = function () {
-  return function () {
-    return '';
-  };
-};
-
-setTimeout(foo(), 0);
-setInterval(foo(), 0);
-setImmediate(foo());
-execScript(foo());
-    `,
-    `
-const foo: () => () => void = function foo() {
-  return function foo() {};
-};
-
-setTimeout(foo(), 0);
-setInterval(foo(), 0);
-setImmediate(foo());
-execScript(foo());
-    `,
-    `
-function foo() {
-  return function foo() {
-    return () => {};
-  };
-}
-
-setTimeout(foo()(), 0);
-setInterval(foo()(), 0);
-setImmediate(foo()());
-execScript(foo()());
-    `,
-    `
-class Foo {
-  static fn = () => {};
-}
-
-setTimeout(Foo.fn, 0);
-setInterval(Foo.fn, 0);
-setImmediate(Foo.fn);
-execScript(Foo.fn);
-    `,
-    `
-class Foo {
-  fn() {}
-}
-
-const foo = new Foo();
-
-setTimeout(foo.fn, 0);
-setInterval(foo.fn, 0);
-setImmediate(foo.fn);
-execScript(foo.fn);
-    `,
-    `
-class Foo {
-  fn() {}
-}
-const foo = new Foo();
-const fn = foo.fn;
-
-setTimeout(fn.bind(null), 0);
-setInterval(fn.bind(null), 0);
-setImmediate(fn.bind(null));
-execScript(fn.bind(null));
-    `,
-    `
-const fn = (foo: () => void) => {
-  setTimeout(foo, 0);
-  setInterval(foo, 0);
-  setImmediate(foo);
-  execScript(foo);
-};
-    `,
-    `
-import { Function } from './class';
-new Function('foo');
-    `,
-    `
-const foo = (callback: Function) => {
-  setTimeout(callback, 0);
-};
-    `,
-    `
-const foo = () => {};
-const bar = () => {};
-
-setTimeout(Math.radom() > 0.5 ? foo : bar, 0);
-setTimeout(foo || bar, 500);
-    `,
-    `
-class Foo {
-  func1() {}
-  func2(): void {
-    setTimeout(this.func1.bind(this), 1);
-  }
-}
-    `,
-    `
-class Foo {
-  private a = {
-    b: {
-      c: function () {},
-    },
-  };
-  funcw(): void {
-    setTimeout(this.a.b.c.bind(this), 1);
-  }
-}
-    `,
-    `
-function setTimeout(input: string, value: number) {}
-
-setTimeout('', 0);
-    `,
-    `
-declare module 'my-timers-promises' {
-  export function setTimeout(ms: number): void;
-}
-
-import { setTimeout } from 'my-timers-promises';
-
-setTimeout(1000);
-    `,
-    `
-function setTimeout() {}
-
-{
-  setTimeout(100);
-}
-    `,
-    `
-function setTimeout() {}
-
-{
-  setTimeout("alert('evil!')");
-}
-    `,
-  ],
-
   invalid: [
     {
       code: `
@@ -921,5 +626,300 @@ setTimeout(foo || bar, 500);
         },
       ],
     },
+  ],
+
+  valid: [
+    'foo.setImmediate(null);',
+    'foo.setInterval(null);',
+    'foo.execScript(null);',
+    'foo.setTimeout(null);',
+    'foo();',
+    '(function () {})();',
+
+    'setTimeout(() => {}, 0);',
+    'window.setTimeout(() => {}, 0);',
+    "window['setTimeout'](() => {}, 0);",
+
+    'setInterval(() => {}, 0);',
+    'window.setInterval(() => {}, 0);',
+    "window['setInterval'](() => {}, 0);",
+
+    'setImmediate(() => {});',
+    'window.setImmediate(() => {});',
+    "window['setImmediate'](() => {});",
+
+    'execScript(() => {});',
+    'window.execScript(() => {});',
+    "window['execScript'](() => {});",
+
+    `
+const foo = () => {};
+
+setTimeout(foo, 0);
+setInterval(foo, 0);
+setImmediate(foo);
+execScript(foo);
+    `,
+    `
+const foo = function () {};
+
+setTimeout(foo, 0);
+setInterval(foo, 0);
+setImmediate(foo);
+execScript(foo);
+    `,
+    `
+function foo() {}
+
+setTimeout(foo, 0);
+setInterval(foo, 0);
+setImmediate(foo);
+execScript(foo);
+    `,
+    `
+const foo = {
+  fn: () => {},
+};
+
+setTimeout(foo.fn, 0);
+setInterval(foo.fn, 0);
+setImmediate(foo.fn);
+execScript(foo.fn);
+    `,
+    `
+const foo = {
+  fn: function () {},
+};
+
+setTimeout(foo.fn, 0);
+setInterval(foo.fn, 0);
+setImmediate(foo.fn);
+execScript(foo.fn);
+    `,
+    `
+const foo = {
+  fn: function foo() {},
+};
+
+setTimeout(foo.fn, 0);
+setInterval(foo.fn, 0);
+setImmediate(foo.fn);
+execScript(foo.fn);
+    `,
+    `
+const foo = {
+  fn() {},
+};
+
+setTimeout(foo.fn, 0);
+setInterval(foo.fn, 0);
+setImmediate(foo.fn);
+execScript(foo.fn);
+    `,
+    `
+const foo = {
+  fn: () => {},
+};
+const fn = 'fn';
+
+setTimeout(foo[fn], 0);
+setInterval(foo[fn], 0);
+setImmediate(foo[fn]);
+execScript(foo[fn]);
+    `,
+    `
+const foo = {
+  fn: () => {},
+};
+
+setTimeout(foo['fn'], 0);
+setInterval(foo['fn'], 0);
+setImmediate(foo['fn']);
+execScript(foo['fn']);
+    `,
+    `
+const foo: () => void = () => {};
+
+setTimeout(foo, 0);
+setInterval(foo, 0);
+setImmediate(foo);
+execScript(foo);
+    `,
+    `
+const foo: () => () => void = () => {
+  return () => {};
+};
+
+setTimeout(foo(), 0);
+setInterval(foo(), 0);
+setImmediate(foo());
+execScript(foo());
+    `,
+    `
+const foo: () => () => void = () => () => {};
+
+setTimeout(foo(), 0);
+setInterval(foo(), 0);
+setImmediate(foo());
+execScript(foo());
+    `,
+    `
+const foo = () => () => {};
+
+setTimeout(foo(), 0);
+setInterval(foo(), 0);
+setImmediate(foo());
+execScript(foo());
+    `,
+    `
+const foo = function foo() {
+  return function foo() {};
+};
+
+setTimeout(foo(), 0);
+setInterval(foo(), 0);
+setImmediate(foo());
+execScript(foo());
+    `,
+    `
+const foo = function () {
+  return function () {
+    return '';
+  };
+};
+
+setTimeout(foo(), 0);
+setInterval(foo(), 0);
+setImmediate(foo());
+execScript(foo());
+    `,
+    `
+const foo: () => () => void = function foo() {
+  return function foo() {};
+};
+
+setTimeout(foo(), 0);
+setInterval(foo(), 0);
+setImmediate(foo());
+execScript(foo());
+    `,
+    `
+function foo() {
+  return function foo() {
+    return () => {};
+  };
+}
+
+setTimeout(foo()(), 0);
+setInterval(foo()(), 0);
+setImmediate(foo()());
+execScript(foo()());
+    `,
+    `
+class Foo {
+  static fn = () => {};
+}
+
+setTimeout(Foo.fn, 0);
+setInterval(Foo.fn, 0);
+setImmediate(Foo.fn);
+execScript(Foo.fn);
+    `,
+    `
+class Foo {
+  fn() {}
+}
+
+const foo = new Foo();
+
+setTimeout(foo.fn, 0);
+setInterval(foo.fn, 0);
+setImmediate(foo.fn);
+execScript(foo.fn);
+    `,
+    `
+class Foo {
+  fn() {}
+}
+const foo = new Foo();
+const fn = foo.fn;
+
+setTimeout(fn.bind(null), 0);
+setInterval(fn.bind(null), 0);
+setImmediate(fn.bind(null));
+execScript(fn.bind(null));
+    `,
+    `
+const fn = (foo: () => void) => {
+  setTimeout(foo, 0);
+  setInterval(foo, 0);
+  setImmediate(foo);
+  execScript(foo);
+};
+    `,
+    `
+import { Function } from './class';
+new Function('foo');
+    `,
+    `
+const foo = (callback: Function) => {
+  setTimeout(callback, 0);
+};
+    `,
+    `
+const foo = () => {};
+const bar = () => {};
+
+setTimeout(Math.radom() > 0.5 ? foo : bar, 0);
+setTimeout(foo || bar, 500);
+    `,
+    `
+class Foo {
+  func1() {}
+  func2(): void {
+    setTimeout(this.func1.bind(this), 1);
+  }
+}
+    `,
+    `
+class Foo {
+  private a = {
+    b: {
+      c: function () {},
+    },
+  };
+  funcw(): void {
+    setTimeout(this.a.b.c.bind(this), 1);
+  }
+}
+    `,
+    `
+function setTimeout(input: string, value: number) {}
+
+setTimeout('', 0);
+    `,
+    `
+declare module 'my-timers-promises' {
+  export function setTimeout(ms: number): void;
+}
+
+import { setTimeout } from 'my-timers-promises';
+
+setTimeout(1000);
+    `,
+    `
+function setTimeout() {}
+
+{
+  setTimeout(100);
+}
+    `,
+    `
+function setTimeout() {}
+
+{
+  setTimeout("alert('evil!')");
+}
+    `,
   ],
 });

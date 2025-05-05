@@ -9,8 +9,8 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow duplicate enum member values',
       recommended: 'recommended',
+      description: 'Disallow duplicate enum member values',
     },
     hasSuggestions: false,
     messages: {

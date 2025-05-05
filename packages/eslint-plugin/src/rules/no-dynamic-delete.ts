@@ -8,12 +8,12 @@ export default createRule({
   name: 'no-dynamic-delete',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'strict',
       description:
         'Disallow using the `delete` operator on computed key expressions',
-      recommended: 'strict',
     },
-    fixable: 'code',
     messages: {
       dynamicDelete: 'Do not delete dynamically computed property keys.',
     },

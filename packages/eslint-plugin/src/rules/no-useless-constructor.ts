@@ -49,9 +49,9 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     // defaultOptions, -- base rule does not use defaultOptions
     docs: {
-      description: 'Disallow unnecessary constructors',
       extendsBaseRule: true,
       recommended: 'strict',
+      description: 'Disallow unnecessary constructors',
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,

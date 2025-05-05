@@ -15,52 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-dynamic-delete', rule, {
-  valid: [
-    `
-const container: { [i: string]: 0 } = {};
-delete container.aaa;
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container.delete;
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container[7];
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container[-7];
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container['-Infinity'];
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container['+Infinity'];
-    `,
-    `
-const value = 1;
-delete value;
-    `,
-    `
-const value = 1;
-delete -value;
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container['aaa'];
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container['delete'];
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container['NaN'];
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -145,5 +99,51 @@ delete container[typeof 1];
       errors: [{ messageId: 'dynamicDelete' }],
       output: null,
     },
+  ],
+  valid: [
+    `
+const container: { [i: string]: 0 } = {};
+delete container.aaa;
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container.delete;
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container[7];
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container[-7];
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container['-Infinity'];
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container['+Infinity'];
+    `,
+    `
+const value = 1;
+delete value;
+    `,
+    `
+const value = 1;
+delete -value;
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container['aaa'];
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container['delete'];
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container['NaN'];
+    `,
   ],
 });

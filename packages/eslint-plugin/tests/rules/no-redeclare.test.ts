@@ -13,136 +13,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-redeclare', rule, {
-  valid: [
-    `
-var a = 3;
-var b = function () {
-  var a = 10;
-};
-    `,
-    `
-var a = 3;
-a = 10;
-    `,
-    {
-      code: `
-if (true) {
-  let b = 2;
-} else {
-  let b = 3;
-}
-      `,
-      languageOptions: {
-        parserOptions: {
-          ecmaVersion: 6,
-        },
-      },
-    },
-    { code: 'var Object = 0;', options: [{ builtinGlobals: false }] },
-    {
-      code: 'var Object = 0;',
-      languageOptions: { parserOptions: { sourceType: 'module' } },
-      options: [{ builtinGlobals: true }],
-    },
-    {
-      code: 'var Object = 0;',
-      languageOptions: {
-        parserOptions: { ecmaFeatures: { globalReturn: true } },
-      },
-      options: [{ builtinGlobals: true }],
-    },
-    {
-      code: 'var top = 0;',
-      options: [{ builtinGlobals: false }],
-    },
-    { code: 'var top = 0;', options: [{ builtinGlobals: true }] },
-    {
-      code: 'var top = 0;',
-      languageOptions: {
-        parserOptions: { ecmaFeatures: { globalReturn: true } },
-      },
-      options: [{ builtinGlobals: true }],
-    },
-    {
-      code: 'var top = 0;',
-      languageOptions: { parserOptions: { sourceType: 'module' } },
-      options: [{ builtinGlobals: true }],
-    },
-    {
-      code: 'var self = 1;',
-      options: [{ builtinGlobals: true }],
-    },
-    // https://github.com/eslint/typescript-eslint-parser/issues/535
-    `
-function foo({ bar }: { bar: string }) {
-  console.log(bar);
-}
-    `,
-    `
-type AST<T extends ParserOptions> = TSESTree.Program &
-  (T['range'] extends true ? { range: [number, number] } : {}) &
-  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
-  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
-interface ParseAndGenerateServicesResult<T extends ParserOptions> {
-  ast: AST<T>;
-  services: ParserServices;
-}
-    `,
-    `
-function A<T>() {}
-interface B<T> {}
-type C<T> = Array<T>;
-class D<T> {}
-    `,
-    `
-function a(): string;
-function a(): number;
-function a() {}
-    `,
-    {
-      code: `
-interface A {}
-interface A {}
-      `,
-      options: [{ ignoreDeclarationMerge: true }],
-    },
-    {
-      code: `
-interface A {}
-class A {}
-      `,
-      options: [{ ignoreDeclarationMerge: true }],
-    },
-    {
-      code: `
-class A {}
-namespace A {}
-      `,
-      options: [{ ignoreDeclarationMerge: true }],
-    },
-    {
-      code: `
-interface A {}
-class A {}
-namespace A {}
-      `,
-      options: [{ ignoreDeclarationMerge: true }],
-    },
-    {
-      code: `
-enum A {}
-namespace A {}
-      `,
-      options: [{ ignoreDeclarationMerge: true }],
-    },
-    {
-      code: `
-function A() {}
-namespace A {}
-      `,
-      options: [{ ignoreDeclarationMerge: true }],
-    },
-  ],
   invalid: [
     {
       code: `
@@ -676,6 +546,136 @@ const something = 2;
           messageId: 'redeclared',
         },
       ],
+    },
+  ],
+  valid: [
+    `
+var a = 3;
+var b = function () {
+  var a = 10;
+};
+    `,
+    `
+var a = 3;
+a = 10;
+    `,
+    {
+      code: `
+if (true) {
+  let b = 2;
+} else {
+  let b = 3;
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 6,
+        },
+      },
+    },
+    { code: 'var Object = 0;', options: [{ builtinGlobals: false }] },
+    {
+      code: 'var Object = 0;',
+      languageOptions: { parserOptions: { sourceType: 'module' } },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: 'var Object = 0;',
+      languageOptions: {
+        parserOptions: { ecmaFeatures: { globalReturn: true } },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: 'var top = 0;',
+      options: [{ builtinGlobals: false }],
+    },
+    { code: 'var top = 0;', options: [{ builtinGlobals: true }] },
+    {
+      code: 'var top = 0;',
+      languageOptions: {
+        parserOptions: { ecmaFeatures: { globalReturn: true } },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: 'var top = 0;',
+      languageOptions: { parserOptions: { sourceType: 'module' } },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: 'var self = 1;',
+      options: [{ builtinGlobals: true }],
+    },
+    // https://github.com/eslint/typescript-eslint-parser/issues/535
+    `
+function foo({ bar }: { bar: string }) {
+  console.log(bar);
+}
+    `,
+    `
+type AST<T extends ParserOptions> = TSESTree.Program &
+  (T['range'] extends true ? { range: [number, number] } : {}) &
+  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
+  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {});
+interface ParseAndGenerateServicesResult<T extends ParserOptions> {
+  ast: AST<T>;
+  services: ParserServices;
+}
+    `,
+    `
+function A<T>() {}
+interface B<T> {}
+type C<T> = Array<T>;
+class D<T> {}
+    `,
+    `
+function a(): string;
+function a(): number;
+function a() {}
+    `,
+    {
+      code: `
+interface A {}
+interface A {}
+      `,
+      options: [{ ignoreDeclarationMerge: true }],
+    },
+    {
+      code: `
+interface A {}
+class A {}
+      `,
+      options: [{ ignoreDeclarationMerge: true }],
+    },
+    {
+      code: `
+class A {}
+namespace A {}
+      `,
+      options: [{ ignoreDeclarationMerge: true }],
+    },
+    {
+      code: `
+interface A {}
+class A {}
+namespace A {}
+      `,
+      options: [{ ignoreDeclarationMerge: true }],
+    },
+    {
+      code: `
+enum A {}
+namespace A {}
+      `,
+      options: [{ ignoreDeclarationMerge: true }],
+    },
+    {
+      code: `
+function A() {}
+namespace A {}
+      `,
+      options: [{ ignoreDeclarationMerge: true }],
     },
   ],
 });

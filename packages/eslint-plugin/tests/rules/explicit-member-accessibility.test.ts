@@ -5,333 +5,6 @@ import rule from '../../src/rules/explicit-member-accessibility';
 const ruleTester = new RuleTester();
 
 ruleTester.run('explicit-member-accessibility', rule, {
-  valid: [
-    {
-      code: `
-class Test {
-  public constructor(private foo: string) {}
-}
-      `,
-      options: [
-        {
-          accessibility: 'explicit',
-          overrides: { parameterProperties: 'explicit' },
-        },
-      ],
-    },
-    {
-      code: `
-class Test {
-  public constructor(private readonly foo: string) {}
-}
-      `,
-      options: [
-        {
-          accessibility: 'explicit',
-          overrides: { parameterProperties: 'explicit' },
-        },
-      ],
-    },
-    {
-      code: `
-class Test {
-  public constructor(private foo: string) {}
-}
-      `,
-      options: [
-        {
-          accessibility: 'explicit',
-          overrides: { parameterProperties: 'off' },
-        },
-      ],
-    },
-    {
-      code: `
-class Test {
-  public constructor(protected foo: string) {}
-}
-      `,
-      options: [
-        {
-          accessibility: 'explicit',
-          overrides: { parameterProperties: 'off' },
-        },
-      ],
-    },
-    {
-      code: `
-class Test {
-  public constructor(public foo: string) {}
-}
-      `,
-      options: [
-        {
-          accessibility: 'explicit',
-          overrides: { parameterProperties: 'off' },
-        },
-      ],
-    },
-    {
-      code: `
-class Test {
-  public constructor(readonly foo: string) {}
-}
-      `,
-      options: [
-        {
-          accessibility: 'explicit',
-          overrides: { parameterProperties: 'off' },
-        },
-      ],
-    },
-    {
-      code: `
-class Test {
-  public constructor(private readonly foo: string) {}
-}
-      `,
-      options: [
-        {
-          accessibility: 'explicit',
-          overrides: { parameterProperties: 'off' },
-        },
-      ],
-    },
-    {
-      code: `
-class Test {
-  protected name: string;
-  private x: number;
-  public getX() {
-    return this.x;
-  }
-}
-      `,
-    },
-    {
-      code: `
-class Test {
-  protected name: string;
-  protected foo?: string;
-  public 'foo-bar'?: string;
-}
-      `,
-    },
-    {
-      code: `
-class Test {
-  public constructor({ x, y }: { x: number; y: number }) {}
-}
-      `,
-    },
-    {
-      code: `
-class Test {
-  protected name: string;
-  protected foo?: string;
-  public getX() {
-    return this.x;
-  }
-}
-      `,
-      options: [{ accessibility: 'explicit' }],
-    },
-    {
-      code: `
-class Test {
-  protected name: string;
-  protected foo?: string;
-  getX() {
-    return this.x;
-  }
-}
-      `,
-      options: [{ accessibility: 'no-public' }],
-    },
-    {
-      code: `
-class Test {
-  name: string;
-  foo?: string;
-  getX() {
-    return this.x;
-  }
-  get fooName(): string {
-    return this.foo + ' ' + this.name;
-  }
-}
-      `,
-      options: [{ accessibility: 'no-public' }],
-    },
-    {
-      code: `
-class Test {
-  private x: number;
-  constructor(x: number) {
-    this.x = x;
-  }
-  get internalValue() {
-    return this.x;
-  }
-  private set internalValue(value: number) {
-    this.x = value;
-  }
-  public square(): number {
-    return this.x * this.x;
-  }
-}
-      `,
-      options: [{ overrides: { accessors: 'off', constructors: 'off' } }],
-    },
-    {
-      code: `
-class Test {
-  private x: number;
-  public constructor(x: number) {
-    this.x = x;
-  }
-  public get internalValue() {
-    return this.x;
-  }
-  public set internalValue(value: number) {
-    this.x = value;
-  }
-  public square(): number {
-    return this.x * this.x;
-  }
-  half(): number {
-    return this.x / 2;
-  }
-}
-      `,
-      options: [{ overrides: { methods: 'off' } }],
-    },
-    {
-      code: `
-class Test {
-  constructor(private x: number) {}
-}
-      `,
-      options: [{ accessibility: 'no-public' }],
-    },
-    {
-      code: `
-class Test {
-  constructor(public x: number) {}
-}
-      `,
-      options: [
-        {
-          accessibility: 'no-public',
-          overrides: { parameterProperties: 'off' },
-        },
-      ],
-    },
-    {
-      code: `
-class Test {
-  constructor(public foo: number) {}
-}
-      `,
-      options: [{ accessibility: 'no-public' }],
-    },
-    {
-      code: `
-class Test {
-  public getX() {
-    return this.x;
-  }
-}
-      `,
-      options: [{ ignoredMethodNames: ['getX'] }],
-    },
-    {
-      code: `
-class Test {
-  public static getX() {
-    return this.x;
-  }
-}
-      `,
-      options: [{ ignoredMethodNames: ['getX'] }],
-    },
-    {
-      code: `
-class Test {
-  get getX() {
-    return this.x;
-  }
-}
-      `,
-      options: [{ ignoredMethodNames: ['getX'] }],
-    },
-    {
-      code: `
-class Test {
-  getX() {
-    return this.x;
-  }
-}
-      `,
-      options: [{ ignoredMethodNames: ['getX'] }],
-    },
-    {
-      code: `
-class Test {
-  x = 2;
-}
-      `,
-      options: [{ overrides: { properties: 'off' } }],
-    },
-    {
-      code: `
-class Test {
-  private x = 2;
-}
-      `,
-      options: [{ overrides: { properties: 'explicit' } }],
-    },
-    {
-      code: `
-class Test {
-  x = 2;
-  private x = 2;
-}
-      `,
-      options: [{ overrides: { properties: 'no-public' } }],
-    },
-    {
-      code: `
-class Test {
-  constructor(private { x }: any[]) {}
-}
-      `,
-      options: [{ accessibility: 'no-public' }],
-    },
-    {
-      code: `
-class Test {
-  #foo = 1;
-  #bar() {}
-}
-      `,
-      options: [{ accessibility: 'explicit' }],
-    },
-    {
-      code: `
-class Test {
-  private accessor foo = 1;
-}
-      `,
-    },
-    {
-      code: `
-abstract class Test {
-  private abstract accessor foo: number;
-}
-      `,
-    },
-  ],
   invalid: [
     {
       code: `
@@ -2522,6 +2195,333 @@ abstract class SomeClass {
       ],
       options: [{ accessibility: 'explicit' }],
       output: null,
+    },
+  ],
+  valid: [
+    {
+      code: `
+class Test {
+  public constructor(private foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'explicit' },
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  public constructor(private readonly foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'explicit' },
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  public constructor(private foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'off' },
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  public constructor(protected foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'off' },
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  public constructor(public foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'off' },
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  public constructor(readonly foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'off' },
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  public constructor(private readonly foo: string) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'explicit',
+          overrides: { parameterProperties: 'off' },
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  protected name: string;
+  private x: number;
+  public getX() {
+    return this.x;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  protected name: string;
+  protected foo?: string;
+  public 'foo-bar'?: string;
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  public constructor({ x, y }: { x: number; y: number }) {}
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  protected name: string;
+  protected foo?: string;
+  public getX() {
+    return this.x;
+  }
+}
+      `,
+      options: [{ accessibility: 'explicit' }],
+    },
+    {
+      code: `
+class Test {
+  protected name: string;
+  protected foo?: string;
+  getX() {
+    return this.x;
+  }
+}
+      `,
+      options: [{ accessibility: 'no-public' }],
+    },
+    {
+      code: `
+class Test {
+  name: string;
+  foo?: string;
+  getX() {
+    return this.x;
+  }
+  get fooName(): string {
+    return this.foo + ' ' + this.name;
+  }
+}
+      `,
+      options: [{ accessibility: 'no-public' }],
+    },
+    {
+      code: `
+class Test {
+  private x: number;
+  constructor(x: number) {
+    this.x = x;
+  }
+  get internalValue() {
+    return this.x;
+  }
+  private set internalValue(value: number) {
+    this.x = value;
+  }
+  public square(): number {
+    return this.x * this.x;
+  }
+}
+      `,
+      options: [{ overrides: { accessors: 'off', constructors: 'off' } }],
+    },
+    {
+      code: `
+class Test {
+  private x: number;
+  public constructor(x: number) {
+    this.x = x;
+  }
+  public get internalValue() {
+    return this.x;
+  }
+  public set internalValue(value: number) {
+    this.x = value;
+  }
+  public square(): number {
+    return this.x * this.x;
+  }
+  half(): number {
+    return this.x / 2;
+  }
+}
+      `,
+      options: [{ overrides: { methods: 'off' } }],
+    },
+    {
+      code: `
+class Test {
+  constructor(private x: number) {}
+}
+      `,
+      options: [{ accessibility: 'no-public' }],
+    },
+    {
+      code: `
+class Test {
+  constructor(public x: number) {}
+}
+      `,
+      options: [
+        {
+          accessibility: 'no-public',
+          overrides: { parameterProperties: 'off' },
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  constructor(public foo: number) {}
+}
+      `,
+      options: [{ accessibility: 'no-public' }],
+    },
+    {
+      code: `
+class Test {
+  public getX() {
+    return this.x;
+  }
+}
+      `,
+      options: [{ ignoredMethodNames: ['getX'] }],
+    },
+    {
+      code: `
+class Test {
+  public static getX() {
+    return this.x;
+  }
+}
+      `,
+      options: [{ ignoredMethodNames: ['getX'] }],
+    },
+    {
+      code: `
+class Test {
+  get getX() {
+    return this.x;
+  }
+}
+      `,
+      options: [{ ignoredMethodNames: ['getX'] }],
+    },
+    {
+      code: `
+class Test {
+  getX() {
+    return this.x;
+  }
+}
+      `,
+      options: [{ ignoredMethodNames: ['getX'] }],
+    },
+    {
+      code: `
+class Test {
+  x = 2;
+}
+      `,
+      options: [{ overrides: { properties: 'off' } }],
+    },
+    {
+      code: `
+class Test {
+  private x = 2;
+}
+      `,
+      options: [{ overrides: { properties: 'explicit' } }],
+    },
+    {
+      code: `
+class Test {
+  x = 2;
+  private x = 2;
+}
+      `,
+      options: [{ overrides: { properties: 'no-public' } }],
+    },
+    {
+      code: `
+class Test {
+  constructor(private { x }: any[]) {}
+}
+      `,
+      options: [{ accessibility: 'no-public' }],
+    },
+    {
+      code: `
+class Test {
+  #foo = 1;
+  #bar() {}
+}
+      `,
+      options: [{ accessibility: 'explicit' }],
+    },
+    {
+      code: `
+class Test {
+  private accessor foo = 1;
+}
+      `,
+    },
+    {
+      code: `
+abstract class Test {
+  private abstract accessor foo: number;
+}
+      `,
     },
   ],
 });

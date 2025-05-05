@@ -21,8 +21,8 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow variable redeclaration',
       extendsBaseRule: true,
+      description: 'Disallow variable redeclaration',
     },
     messages: {
       redeclared: "'{{id}}' is already defined.",
@@ -254,9 +254,9 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      ArrowFunctionExpression: checkForBlock,
-
       BlockStatement: checkForBlock,
+
+      ArrowFunctionExpression: checkForBlock,
       ForInStatement: checkForBlock,
       ForOfStatement: checkForBlock,
 

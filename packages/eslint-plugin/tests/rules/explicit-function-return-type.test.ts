@@ -5,852 +5,6 @@ import rule from '../../src/rules/explicit-function-return-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('explicit-function-return-type', rule, {
-  valid: [
-    'return;',
-    {
-      code: `
-function test(): void {
-  return;
-}
-      `,
-    },
-    {
-      code: `
-var fn = function (): number {
-  return 1;
-};
-      `,
-    },
-    {
-      code: `
-var arrowFn = (): string => 'test';
-      `,
-    },
-    {
-      code: `
-class Test {
-  constructor() {}
-  get prop(): number {
-    return 1;
-  }
-  set prop() {}
-  method(): void {
-    return;
-  }
-  arrow = (): string => 'arrow';
-}
-      `,
-    },
-    {
-      code: 'fn(() => {});',
-      options: [
-        {
-          allowExpressions: true,
-        },
-      ],
-    },
-    {
-      code: 'fn(function () {});',
-      options: [
-        {
-          allowExpressions: true,
-        },
-      ],
-    },
-    {
-      code: '[function () {}, () => {}];',
-      options: [
-        {
-          allowExpressions: true,
-        },
-      ],
-    },
-    {
-      code: '(function () {});',
-      options: [
-        {
-          allowExpressions: true,
-        },
-      ],
-    },
-    {
-      code: '(() => {})();',
-      options: [
-        {
-          allowExpressions: true,
-        },
-      ],
-    },
-    {
-      code: 'export default (): void => {};',
-      options: [
-        {
-          allowExpressions: true,
-        },
-      ],
-    },
-    {
-      code: `
-var arrowFn: Foo = () => 'test';
-      `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
-    },
-    {
-      code: `
-var funcExpr: Foo = function () {
-  return 'test';
-};
-      `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
-    },
-    {
-      code: 'const x = (() => {}) as Foo;',
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    {
-      code: 'const x = <Foo>(() => {});',
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    {
-      code: `
-const x = {
-  foo: () => {},
-} as Foo;
-      `,
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    {
-      code: `
-const x = <Foo>{
-  foo: () => {},
-};
-      `,
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    {
-      code: `
-const x: Foo = {
-  foo: () => {},
-};
-      `,
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2864
-    {
-      code: `
-const x = {
-  foo: { bar: () => {} },
-} as Foo;
-      `,
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    {
-      code: `
-const x = <Foo>{
-  foo: { bar: () => {} },
-};
-      `,
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    {
-      code: `
-const x: Foo = {
-  foo: { bar: () => {} },
-};
-      `,
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/484
-    {
-      code: `
-type MethodType = () => void;
-
-class App {
-  private method: MethodType = () => {};
-}
-      `,
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/7552
-    {
-      code: 'const foo = <button onClick={() => {}} />;',
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    {
-      code: 'const foo = <button on={{ click: () => {} }} />;',
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    {
-      code: 'const foo = <Bar>{() => {}}</Bar>;',
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    {
-      code: 'const foo = <Bar>{{ on: () => {} }}</Bar>;',
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    {
-      code: 'const foo = <button {...{ onClick: () => {} }} />;',
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-
-    // https://github.com/typescript-eslint/typescript-eslint/issues/525
-    {
-      code: `
-const myObj = {
-  set myProp(val) {
-    this.myProp = val;
-  },
-};
-      `,
-    },
-    {
-      code: `
-() => (): void => {};
-      `,
-      options: [{ allowHigherOrderFunctions: true }],
-    },
-    {
-      code: `
-() => function (): void {};
-      `,
-      options: [{ allowHigherOrderFunctions: true }],
-    },
-    {
-      code: `
-() => {
-  return (): void => {};
-};
-      `,
-      options: [{ allowHigherOrderFunctions: true }],
-    },
-    {
-      code: `
-() => {
-  return function (): void {};
-};
-      `,
-      options: [{ allowHigherOrderFunctions: true }],
-    },
-    {
-      code: `
-() => {
-  const foo = 'foo';
-  return function (): string {
-    return foo;
-  };
-};
-      `,
-      options: [{ allowHigherOrderFunctions: true }],
-    },
-    {
-      code: `
-function fn() {
-  return (): void => {};
-}
-      `,
-      options: [{ allowHigherOrderFunctions: true }],
-    },
-    {
-      code: `
-function fn() {
-  return function (): void {};
-}
-      `,
-      options: [{ allowHigherOrderFunctions: true }],
-    },
-    {
-      code: `
-function fn() {
-  const bar = () => (): number => 1;
-  return function (): void {};
-}
-      `,
-      options: [{ allowHigherOrderFunctions: true }],
-    },
-    {
-      code: `
-function fn(arg: boolean) {
-  if (arg) {
-    return () => (): number => 1;
-  } else {
-    return function (): string {
-      return 'foo';
-    };
-  }
-
-  return function (): void {};
-}
-      `,
-      options: [{ allowHigherOrderFunctions: true }],
-    },
-    {
-      code: `
-function FunctionDeclaration() {
-  return function FunctionExpression_Within_FunctionDeclaration() {
-    return function FunctionExpression_Within_FunctionExpression() {
-      return () => {
-        // ArrowFunctionExpression_Within_FunctionExpression
-        return () =>
-          // ArrowFunctionExpression_Within_ArrowFunctionExpression
-          (): number =>
-            1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
-      };
-    };
-  };
-}
-      `,
-      options: [{ allowHigherOrderFunctions: true }],
-    },
-    {
-      code: `
-() => () => {
-  return (): void => {
-    return;
-  };
-};
-      `,
-      options: [{ allowHigherOrderFunctions: true }],
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/679
-    {
-      code: `
-declare function foo(arg: () => void): void;
-foo(() => 1);
-foo(() => {});
-foo(() => null);
-foo(() => true);
-foo(() => '');
-      `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare function foo(arg: () => void): void;
-foo?.(() => 1);
-foo?.bar(() => {});
-foo?.bar?.(() => null);
-foo.bar?.(() => true);
-foo?.(() => '');
-      `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
-    },
-    {
-      code: `
-class Accumulator {
-  private count: number = 0;
-
-  public accumulate(fn: () => number): void {
-    this.count += fn();
-  }
-}
-
-new Accumulator().accumulate(() => 1);
-      `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare function foo(arg: { meth: () => number }): void;
-foo({
-  meth() {
-    return 1;
-  },
-});
-foo({
-  meth: function () {
-    return 1;
-  },
-});
-foo({
-  meth: () => {
-    return 1;
-  },
-});
-      `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
-    },
-    {
-      code: `
-const func = (value: number) => ({ type: 'X', value }) as const;
-const func = (value: number) => ({ type: 'X', value }) as const;
-const func = (value: number) => x as const;
-const func = (value: number) => x as const;
-      `,
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
-    },
-    {
-      code: `
-interface R {
-  type: string;
-  value: number;
-}
-
-const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
-      `,
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
-    },
-    {
-      code: `
-interface R {
-  type: string;
-  value: number;
-}
-
-const func = (value: number) =>
-  ({ type: 'X', value }) as const satisfies R satisfies R;
-      `,
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
-    },
-    {
-      code: `
-interface R {
-  type: string;
-  value: number;
-}
-
-const func = (value: number) =>
-  ({ type: 'X', value }) as const satisfies R satisfies R satisfies R;
-      `,
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
-    },
-    {
-      code: `
-new Promise(resolve => {});
-new Foo(1, () => {});
-      `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
-    },
-    {
-      code: 'const log = (message: string) => void console.log(message);',
-      options: [{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }],
-    },
-    {
-      code: 'const log = (a: string) => a;',
-      options: [{ allowFunctionsWithoutTypeParameters: true }],
-    },
-    {
-      code: 'const log = <A,>(a: A): A => a;',
-      options: [{ allowFunctionsWithoutTypeParameters: true }],
-    },
-    {
-      code: `
-function log<A>(a: A): A {
-  return a;
-}
-      `,
-      options: [{ allowFunctionsWithoutTypeParameters: true }],
-    },
-    {
-      code: `
-function log(a: string) {
-  return a;
-}
-      `,
-      options: [{ allowFunctionsWithoutTypeParameters: true }],
-    },
-    {
-      code: `
-const log = function <A>(a: A): A {
-  return a;
-};
-      `,
-      options: [{ allowFunctionsWithoutTypeParameters: true }],
-    },
-    {
-      code: `
-const log = function (a: A): string {
-  return a;
-};
-      `,
-      options: [{ allowFunctionsWithoutTypeParameters: true }],
-    },
-    {
-      code: `
-function test1() {
-  return;
-}
-
-const foo = function test2() {
-  return;
-};
-      `,
-      options: [
-        {
-          allowedNames: ['test1', 'test2'],
-        },
-      ],
-    },
-    {
-      code: `
-const test1 = function () {
-  return;
-};
-const foo = function () {
-  return function test2() {};
-};
-      `,
-      options: [
-        {
-          allowedNames: ['test1', 'test2'],
-        },
-      ],
-    },
-    {
-      code: `
-const test1 = () => {
-  return;
-};
-export const foo = {
-  test2() {
-    return 0;
-  },
-};
-      `,
-      options: [
-        {
-          allowedNames: ['test1', 'test2'],
-        },
-      ],
-    },
-    {
-      code: `
-class Test {
-  constructor() {}
-  get prop() {
-    return 1;
-  }
-  set prop() {}
-  method() {
-    return;
-  }
-  arrow = () => 'arrow';
-  private method() {
-    return;
-  }
-}
-      `,
-      options: [
-        {
-          allowedNames: ['prop', 'method', 'arrow'],
-        },
-      ],
-    },
-    {
-      code: `
-const x = {
-  arrowFn: () => {
-    return;
-  },
-  fn: function () {
-    return;
-  },
-};
-      `,
-      options: [
-        {
-          allowedNames: ['arrowFn', 'fn'],
-        },
-      ],
-    },
-    {
-      code: `
-type HigherOrderType = () => (arg1: string) => (arg2: number) => string;
-const x: HigherOrderType = () => arg1 => arg2 => 'foo';
-      `,
-      options: [
-        {
-          allowHigherOrderFunctions: true,
-          allowTypedFunctionExpressions: true,
-        },
-      ],
-    },
-    {
-      code: `
-type HigherOrderType = () => (arg1: string) => (arg2: number) => string;
-const x: HigherOrderType = () => arg1 => arg2 => 'foo';
-      `,
-      options: [
-        {
-          allowHigherOrderFunctions: false,
-          allowTypedFunctionExpressions: true,
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  foo: string;
-  arrowFn: () => string;
-}
-
-function foo(): Foo {
-  return {
-    foo: 'foo',
-    arrowFn: () => 'test',
-  };
-}
-      `,
-      options: [
-        {
-          allowHigherOrderFunctions: true,
-          allowTypedFunctionExpressions: true,
-        },
-      ],
-    },
-    {
-      code: `
-type Foo = (arg1: string) => string;
-type Bar<T> = (arg2: string) => T;
-const x: Bar<Foo> = arg1 => arg2 => arg1 + arg2;
-      `,
-      options: [
-        {
-          allowHigherOrderFunctions: true,
-          allowTypedFunctionExpressions: true,
-        },
-      ],
-    },
-    {
-      code: `
-let foo = function (): number {
-  return 1;
-};
-      `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = (function () {
-  return 1;
-})();
-      `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = (() => {
-  return 1;
-})();
-      `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = ((arg: number): number => {
-  return arg;
-})(0);
-      `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = (() => (() => 'foo')())();
-      `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
-    },
-    {
-      code: `
-let foo = (() => (): string => {
-  return 'foo';
-})()();
-      `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
-    },
-    {
-      code: `
-let foo = (() => (): string => {
-  return 'foo';
-})();
-      `,
-      options: [
-        {
-          allowHigherOrderFunctions: false,
-          allowIIFEs: true,
-        },
-      ],
-    },
-    {
-      code: `
-let foo = (() => (): string => {
-  return 'foo';
-})()();
-      `,
-      options: [
-        {
-          allowHigherOrderFunctions: true,
-          allowIIFEs: true,
-        },
-      ],
-    },
-    {
-      code: `
-let foo = (() => (): void => {})()();
-      `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
-    },
-    {
-      code: `
-let foo = (() => (() => {})())();
-      `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
-    },
-    {
-      code: `
-class Bar {
-  bar: Foo = {
-    foo: x => x + 1,
-  };
-}
-      `,
-    },
-    {
-      code: `
-class Bar {
-  bar: Foo[] = [
-    {
-      foo: x => x + 1,
-    },
-  ];
-}
-      `,
-    },
-    {
-      code: `
-type CallBack = () => void;
-
-function f(gotcha: CallBack = () => {}): void {}
-      `,
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    {
-      code: `
-type CallBack = () => void;
-
-const f = (gotcha: CallBack = () => {}): void => {};
-      `,
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-    {
-      code: `
-type ObjectWithCallback = { callback: () => void };
-
-const f = (gotcha: ObjectWithCallback = { callback: () => {} }): void => {};
-      `,
-      options: [{ allowTypedFunctionExpressions: true }],
-    },
-  ],
-
   invalid: [
     {
       code: `
@@ -2102,6 +1256,852 @@ const f = (gotcha: ObjectWithCallback = { callback: () => {} }): void => {};
         },
       ],
       options: [{ allowTypedFunctionExpressions: false }],
+    },
+  ],
+
+  valid: [
+    'return;',
+    {
+      code: `
+function test(): void {
+  return;
+}
+      `,
+    },
+    {
+      code: `
+var fn = function (): number {
+  return 1;
+};
+      `,
+    },
+    {
+      code: `
+var arrowFn = (): string => 'test';
+      `,
+    },
+    {
+      code: `
+class Test {
+  constructor() {}
+  get prop(): number {
+    return 1;
+  }
+  set prop() {}
+  method(): void {
+    return;
+  }
+  arrow = (): string => 'arrow';
+}
+      `,
+    },
+    {
+      code: 'fn(() => {});',
+      options: [
+        {
+          allowExpressions: true,
+        },
+      ],
+    },
+    {
+      code: 'fn(function () {});',
+      options: [
+        {
+          allowExpressions: true,
+        },
+      ],
+    },
+    {
+      code: '[function () {}, () => {}];',
+      options: [
+        {
+          allowExpressions: true,
+        },
+      ],
+    },
+    {
+      code: '(function () {});',
+      options: [
+        {
+          allowExpressions: true,
+        },
+      ],
+    },
+    {
+      code: '(() => {})();',
+      options: [
+        {
+          allowExpressions: true,
+        },
+      ],
+    },
+    {
+      code: 'export default (): void => {};',
+      options: [
+        {
+          allowExpressions: true,
+        },
+      ],
+    },
+    {
+      code: `
+var arrowFn: Foo = () => 'test';
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      code: `
+var funcExpr: Foo = function () {
+  return 'test';
+};
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      code: 'const x = (() => {}) as Foo;',
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: 'const x = <Foo>(() => {});',
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: `
+const x = {
+  foo: () => {},
+} as Foo;
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: `
+const x = <Foo>{
+  foo: () => {},
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: `
+const x: Foo = {
+  foo: () => {},
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2864
+    {
+      code: `
+const x = {
+  foo: { bar: () => {} },
+} as Foo;
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: `
+const x = <Foo>{
+  foo: { bar: () => {} },
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: `
+const x: Foo = {
+  foo: { bar: () => {} },
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/484
+    {
+      code: `
+type MethodType = () => void;
+
+class App {
+  private method: MethodType = () => {};
+}
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7552
+    {
+      code: 'const foo = <button onClick={() => {}} />;',
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: 'const foo = <button on={{ click: () => {} }} />;',
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: 'const foo = <Bar>{() => {}}</Bar>;',
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: 'const foo = <Bar>{{ on: () => {} }}</Bar>;',
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: 'const foo = <button {...{ onClick: () => {} }} />;',
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/525
+    {
+      code: `
+const myObj = {
+  set myProp(val) {
+    this.myProp = val;
+  },
+};
+      `,
+    },
+    {
+      code: `
+() => (): void => {};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+() => function (): void {};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+() => {
+  return (): void => {};
+};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+() => {
+  return function (): void {};
+};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+() => {
+  const foo = 'foo';
+  return function (): string {
+    return foo;
+  };
+};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+function fn() {
+  return (): void => {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+function fn() {
+  return function (): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+function fn() {
+  const bar = () => (): number => 1;
+  return function (): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+function fn(arg: boolean) {
+  if (arg) {
+    return () => (): number => 1;
+  } else {
+    return function (): string {
+      return 'foo';
+    };
+  }
+
+  return function (): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+function FunctionDeclaration() {
+  return function FunctionExpression_Within_FunctionDeclaration() {
+    return function FunctionExpression_Within_FunctionExpression() {
+      return () => {
+        // ArrowFunctionExpression_Within_FunctionExpression
+        return () =>
+          // ArrowFunctionExpression_Within_ArrowFunctionExpression
+          (): number =>
+            1; // ArrowFunctionExpression_Within_ArrowFunctionExpression_WithNoBody
+      };
+    };
+  };
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+() => () => {
+  return (): void => {
+    return;
+  };
+};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/679
+    {
+      code: `
+declare function foo(arg: () => void): void;
+foo(() => 1);
+foo(() => {});
+foo(() => null);
+foo(() => true);
+foo(() => '');
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: () => void): void;
+foo?.(() => 1);
+foo?.bar(() => {});
+foo?.bar?.(() => null);
+foo.bar?.(() => true);
+foo?.(() => '');
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Accumulator {
+  private count: number = 0;
+
+  public accumulate(fn: () => number): void {
+    this.count += fn();
+  }
+}
+
+new Accumulator().accumulate(() => 1);
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: { meth: () => number }): void;
+foo({
+  meth() {
+    return 1;
+  },
+});
+foo({
+  meth: function () {
+    return 1;
+  },
+});
+foo({
+  meth: () => {
+    return 1;
+  },
+});
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      code: `
+const func = (value: number) => ({ type: 'X', value }) as const;
+const func = (value: number) => ({ type: 'X', value }) as const;
+const func = (value: number) => x as const;
+const func = (value: number) => x as const;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+interface R {
+  type: string;
+  value: number;
+}
+
+const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+interface R {
+  type: string;
+  value: number;
+}
+
+const func = (value: number) =>
+  ({ type: 'X', value }) as const satisfies R satisfies R;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+interface R {
+  type: string;
+  value: number;
+}
+
+const func = (value: number) =>
+  ({ type: 'X', value }) as const satisfies R satisfies R satisfies R;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+new Promise(resolve => {});
+new Foo(1, () => {});
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      code: 'const log = (message: string) => void console.log(message);',
+      options: [{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }],
+    },
+    {
+      code: 'const log = (a: string) => a;',
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: 'const log = <A,>(a: A): A => a;',
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+function log<A>(a: A): A {
+  return a;
+}
+      `,
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+function log(a: string) {
+  return a;
+}
+      `,
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+const log = function <A>(a: A): A {
+  return a;
+};
+      `,
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+const log = function (a: A): string {
+  return a;
+};
+      `,
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+function test1() {
+  return;
+}
+
+const foo = function test2() {
+  return;
+};
+      `,
+      options: [
+        {
+          allowedNames: ['test1', 'test2'],
+        },
+      ],
+    },
+    {
+      code: `
+const test1 = function () {
+  return;
+};
+const foo = function () {
+  return function test2() {};
+};
+      `,
+      options: [
+        {
+          allowedNames: ['test1', 'test2'],
+        },
+      ],
+    },
+    {
+      code: `
+const test1 = () => {
+  return;
+};
+export const foo = {
+  test2() {
+    return 0;
+  },
+};
+      `,
+      options: [
+        {
+          allowedNames: ['test1', 'test2'],
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  constructor() {}
+  get prop() {
+    return 1;
+  }
+  set prop() {}
+  method() {
+    return;
+  }
+  arrow = () => 'arrow';
+  private method() {
+    return;
+  }
+}
+      `,
+      options: [
+        {
+          allowedNames: ['prop', 'method', 'arrow'],
+        },
+      ],
+    },
+    {
+      code: `
+const x = {
+  arrowFn: () => {
+    return;
+  },
+  fn: function () {
+    return;
+  },
+};
+      `,
+      options: [
+        {
+          allowedNames: ['arrowFn', 'fn'],
+        },
+      ],
+    },
+    {
+      code: `
+type HigherOrderType = () => (arg1: string) => (arg2: number) => string;
+const x: HigherOrderType = () => arg1 => arg2 => 'foo';
+      `,
+      options: [
+        {
+          allowHigherOrderFunctions: true,
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      code: `
+type HigherOrderType = () => (arg1: string) => (arg2: number) => string;
+const x: HigherOrderType = () => arg1 => arg2 => 'foo';
+      `,
+      options: [
+        {
+          allowHigherOrderFunctions: false,
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  foo: string;
+  arrowFn: () => string;
+}
+
+function foo(): Foo {
+  return {
+    foo: 'foo',
+    arrowFn: () => 'test',
+  };
+}
+      `,
+      options: [
+        {
+          allowHigherOrderFunctions: true,
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = (arg1: string) => string;
+type Bar<T> = (arg2: string) => T;
+const x: Bar<Foo> = arg1 => arg2 => arg1 + arg2;
+      `,
+      options: [
+        {
+          allowHigherOrderFunctions: true,
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+    {
+      code: `
+let foo = function (): number {
+  return 1;
+};
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = (function () {
+  return 1;
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = (() => {
+  return 1;
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = ((arg: number): number => {
+  return arg;
+})(0);
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = (() => (() => 'foo')())();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      code: `
+let foo = (() => (): string => {
+  return 'foo';
+})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      code: `
+let foo = (() => (): string => {
+  return 'foo';
+})();
+      `,
+      options: [
+        {
+          allowHigherOrderFunctions: false,
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      code: `
+let foo = (() => (): string => {
+  return 'foo';
+})()();
+      `,
+      options: [
+        {
+          allowHigherOrderFunctions: true,
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      code: `
+let foo = (() => (): void => {})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      code: `
+let foo = (() => (() => {})())();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Bar {
+  bar: Foo = {
+    foo: x => x + 1,
+  };
+}
+      `,
+    },
+    {
+      code: `
+class Bar {
+  bar: Foo[] = [
+    {
+      foo: x => x + 1,
+    },
+  ];
+}
+      `,
+    },
+    {
+      code: `
+type CallBack = () => void;
+
+function f(gotcha: CallBack = () => {}): void {}
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: `
+type CallBack = () => void;
+
+const f = (gotcha: CallBack = () => {}): void => {};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: `
+type ObjectWithCallback = { callback: () => void };
+
+const f = (gotcha: ObjectWithCallback = { callback: () => {} }): void => {};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
     },
   ],
 });

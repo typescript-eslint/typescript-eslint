@@ -65,9 +65,9 @@ export default createRule<Options, MessageId>({
   meta: {
     type: 'problem',
     docs: {
+      recommended: 'recommended',
       description:
         'Require Promise-like statements to be handled appropriately',
-      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

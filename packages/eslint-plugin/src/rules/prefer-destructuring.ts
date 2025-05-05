@@ -53,15 +53,15 @@ const schema: readonly JSONSchema4[] = [
   {
     type: 'object',
     properties: {
-      enforceForDeclarationWithTypeAnnotation: {
-        type: 'boolean',
-        description:
-          'Whether to enforce destructuring on variable declarations with type annotations.',
-      },
       enforceForRenamedProperties: {
         type: 'boolean',
         description:
           'Whether to enforce destructuring that use a different variable name than the property name.',
+      },
+      enforceForDeclarationWithTypeAnnotation: {
+        type: 'boolean',
+        description:
+          'Whether to enforce destructuring on variable declarations with type annotations.',
       },
     },
   },
@@ -72,12 +72,12 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     // defaultOptions, -- base rule does not use defaultOptions
+    fixable: baseRule.meta.fixable,
     docs: {
-      description: 'Require destructuring from arrays and/or objects',
       extendsBaseRule: true,
+      description: 'Require destructuring from arrays and/or objects',
       requiresTypeChecking: true,
     },
-    fixable: baseRule.meta.fixable,
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
     schema,
@@ -97,8 +97,8 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [enabledTypes, options]) {
     const {
-      enforceForDeclarationWithTypeAnnotation = false,
       enforceForRenamedProperties = false,
+      enforceForDeclarationWithTypeAnnotation = false,
     } = options;
     const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
     const typeChecker = program.getTypeChecker();

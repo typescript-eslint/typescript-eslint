@@ -93,83 +93,6 @@ const invalidTestCases: InvalidTestCase<MessageIds, Options>[] =
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-inferrable-types', rule, {
-  valid: [
-    ...validTestCases,
-
-    "const fn = (a = 5, b = true, c = 'foo') => {};",
-    "const fn = function (a = 5, b = true, c = 'foo') {};",
-    "function fn(a = 5, b = true, c = 'foo') {}",
-    'function fn(a: number, b: boolean, c: string) {}',
-
-    `
-class Foo {
-  a = 5;
-  b = true;
-  c = 'foo';
-}
-    `,
-    `
-class Foo {
-  readonly a: number = 5;
-}
-    `,
-    `
-class Foo {
-  accessor a = 5;
-}
-    `,
-
-    'const a: any = 5;',
-    "const fn = function (a: any = 5, b: any = true, c: any = 'foo') {};",
-
-    {
-      code: "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
-      options: [{ ignoreParameters: true }],
-    },
-    {
-      code: "function fn(a: number = 5, b: boolean = true, c: string = 'foo') {}",
-      options: [{ ignoreParameters: true }],
-    },
-    {
-      code: "const fn = function (a: number = 5, b: boolean = true, c: string = 'foo') {};",
-      options: [{ ignoreParameters: true }],
-    },
-    {
-      code: `
-class Foo {
-  a: number = 5;
-  b: boolean = true;
-  c: string = 'foo';
-}
-      `,
-      options: [{ ignoreProperties: true }],
-    },
-    {
-      code: `
-class Foo {
-  accessor a: number = 5;
-}
-      `,
-      options: [{ ignoreProperties: true }],
-    },
-    {
-      code: `
-class Foo {
-  a?: number = 5;
-  b?: boolean = true;
-  c?: string = 'foo';
-}
-      `,
-    },
-    {
-      code: `
-class Foo {
-  constructor(public a = true) {}
-}
-      `,
-    },
-  ],
-
   invalid: [
     ...invalidTestCases,
     {
@@ -351,6 +274,83 @@ class Foo {
       output: `
 class Foo {
   accessor a = 5;
+}
+      `,
+    },
+  ],
+
+  valid: [
+    ...validTestCases,
+
+    "const fn = (a = 5, b = true, c = 'foo') => {};",
+    "const fn = function (a = 5, b = true, c = 'foo') {};",
+    "function fn(a = 5, b = true, c = 'foo') {}",
+    'function fn(a: number, b: boolean, c: string) {}',
+
+    `
+class Foo {
+  a = 5;
+  b = true;
+  c = 'foo';
+}
+    `,
+    `
+class Foo {
+  readonly a: number = 5;
+}
+    `,
+    `
+class Foo {
+  accessor a = 5;
+}
+    `,
+
+    'const a: any = 5;',
+    "const fn = function (a: any = 5, b: any = true, c: any = 'foo') {};",
+
+    {
+      code: "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
+      options: [{ ignoreParameters: true }],
+    },
+    {
+      code: "function fn(a: number = 5, b: boolean = true, c: string = 'foo') {}",
+      options: [{ ignoreParameters: true }],
+    },
+    {
+      code: "const fn = function (a: number = 5, b: boolean = true, c: string = 'foo') {};",
+      options: [{ ignoreParameters: true }],
+    },
+    {
+      code: `
+class Foo {
+  a: number = 5;
+  b: boolean = true;
+  c: string = 'foo';
+}
+      `,
+      options: [{ ignoreProperties: true }],
+    },
+    {
+      code: `
+class Foo {
+  accessor a: number = 5;
+}
+      `,
+      options: [{ ignoreProperties: true }],
+    },
+    {
+      code: `
+class Foo {
+  a?: number = 5;
+  b?: boolean = true;
+  c?: string = 'foo';
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  constructor(public a = true) {}
 }
       `,
     },

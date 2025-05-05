@@ -6,12 +6,12 @@ export default createRule({
   name: 'prefer-namespace-keyword',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'recommended',
       description:
         'Require using `namespace` keyword over `module` keyword to declare custom TypeScript modules',
-      recommended: 'recommended',
     },
-    fixable: 'code',
     messages: {
       useNamespace:
         "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",

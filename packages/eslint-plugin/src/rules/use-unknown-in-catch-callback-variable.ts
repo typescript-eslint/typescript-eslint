@@ -31,9 +31,9 @@ export default createRule<[], MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
+      recommended: 'strict',
       description:
         'Enforce typing arguments in Promise rejection callbacks as `unknown`',
-      recommended: 'strict',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

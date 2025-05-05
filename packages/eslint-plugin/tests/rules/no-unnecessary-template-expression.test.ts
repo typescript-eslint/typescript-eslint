@@ -971,6 +971,222 @@ describe('fixer should not change runtime value', () => {
 });
 
 ruleTester.run('no-unnecessary-template-expression', rule, {
+  invalid: [
+    ...invalidCases,
+    {
+      code: `
+        function func<T extends string>(arg: T) {
+          \`\${arg}\`;
+        }
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+        function func<T extends string>(arg: T) {
+          arg;
+        }
+      `,
+    },
+    {
+      code: `
+        declare const b: 'b';
+        \`a\${b}\${'c'}\`;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 21,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+        declare const b: 'b';
+        \`a\${b}c\`;
+      `,
+    },
+    {
+      code: `
+declare const nested: string, interpolation: string;
+\`use\${\`less\${nested}\${interpolation}\`}\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+declare const nested: string, interpolation: string;
+\`useless\${nested}\${interpolation}\`;
+      `,
+    },
+    {
+      code: noFormat`
+        declare const string: 'a';
+        \`\${   string   }\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+        declare const string: 'a';
+        string;
+      `,
+    },
+    {
+      code: `
+        declare const string: 'a';
+        \`\${string}\`;
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 19,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+        declare const string: 'a';
+        string;
+      `,
+    },
+    {
+      code: `
+        declare const intersection: string & { _brand: 'test-brand' };
+        \`\${intersection}\`;
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 25,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+        declare const intersection: string & { _brand: 'test-brand' };
+        intersection;
+      `,
+    },
+    {
+      code: "true ? `${'test' || ''}`.trim() : undefined;",
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: "true ? ('test' || '').trim() : undefined;",
+    },
+    {
+      code: 'type Foo = `${1}`;',
+      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      output: 'type Foo = `1`;',
+    },
+    {
+      code: 'type Foo = `${null}`;',
+      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      output: 'type Foo = `null`;',
+    },
+    {
+      code: 'type Foo = `${undefined}`;',
+      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      output: 'type Foo = `undefined`;',
+    },
+    {
+      code: "type Foo = `${'foo'}`;",
+      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      output: "type Foo = 'foo';",
+    },
+    {
+      code: `
+type Foo = 'A' | 'B';
+type Bar = \`\${Foo}\`;
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+type Foo = 'A' | 'B';
+type Bar = Foo;
+      `,
+    },
+    {
+      code: `
+type Foo = 'A' | 'B';
+type Bar = \`\${\`\${Foo}\`}\`;
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 16,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: [
+        `
+type Foo = 'A' | 'B';
+type Bar = \`\${Foo}\`;
+      `,
+
+        `
+type Foo = 'A' | 'B';
+type Bar = Foo;
+      `,
+      ],
+    },
+    {
+      code: "type FooBarBaz = `foo${'bar'}baz`;",
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: 'type FooBarBaz = `foobarbaz`;',
+    },
+    {
+      code: 'type FooBar = `foo${`bar`}`;',
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: 'type FooBar = `foobar`;',
+    },
+    {
+      code: "type FooBar = `${'foo' | 'bar'}`;",
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: "type FooBar = 'foo' | 'bar';",
+    },
+  ],
+
   valid: [
     "const string = 'a';",
     'const string = `a`;',
@@ -1248,221 +1464,5 @@ function foo<T extends string>() {
 }
     `,
     'type T<A extends string> = `${A}`;',
-  ],
-
-  invalid: [
-    ...invalidCases,
-    {
-      code: `
-        function func<T extends string>(arg: T) {
-          \`\${arg}\`;
-        }
-      `,
-      errors: [
-        {
-          column: 12,
-          endColumn: 18,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-        function func<T extends string>(arg: T) {
-          arg;
-        }
-      `,
-    },
-    {
-      code: `
-        declare const b: 'b';
-        \`a\${b}\${'c'}\`;
-      `,
-      errors: [
-        {
-          column: 15,
-          endColumn: 21,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-        declare const b: 'b';
-        \`a\${b}c\`;
-      `,
-    },
-    {
-      code: `
-declare const nested: string, interpolation: string;
-\`use\${\`less\${nested}\${interpolation}\`}\`;
-      `,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-declare const nested: string, interpolation: string;
-\`useless\${nested}\${interpolation}\`;
-      `,
-    },
-    {
-      code: noFormat`
-        declare const string: 'a';
-        \`\${   string   }\`;
-      `,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-        declare const string: 'a';
-        string;
-      `,
-    },
-    {
-      code: `
-        declare const string: 'a';
-        \`\${string}\`;
-      `,
-      errors: [
-        {
-          column: 10,
-          endColumn: 19,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-        declare const string: 'a';
-        string;
-      `,
-    },
-    {
-      code: `
-        declare const intersection: string & { _brand: 'test-brand' };
-        \`\${intersection}\`;
-      `,
-      errors: [
-        {
-          column: 10,
-          endColumn: 25,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-        declare const intersection: string & { _brand: 'test-brand' };
-        intersection;
-      `,
-    },
-    {
-      code: "true ? `${'test' || ''}`.trim() : undefined;",
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: "true ? ('test' || '').trim() : undefined;",
-    },
-    {
-      code: 'type Foo = `${1}`;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
-      output: 'type Foo = `1`;',
-    },
-    {
-      code: 'type Foo = `${null}`;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
-      output: 'type Foo = `null`;',
-    },
-    {
-      code: 'type Foo = `${undefined}`;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
-      output: 'type Foo = `undefined`;',
-    },
-    {
-      code: "type Foo = `${'foo'}`;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
-      output: "type Foo = 'foo';",
-    },
-    {
-      code: `
-type Foo = 'A' | 'B';
-type Bar = \`\${Foo}\`;
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 19,
-          endLine: 3,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-type Foo = 'A' | 'B';
-type Bar = Foo;
-      `,
-    },
-    {
-      code: `
-type Foo = 'A' | 'B';
-type Bar = \`\${\`\${Foo}\`}\`;
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 24,
-          endLine: 3,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-        {
-          column: 16,
-          endColumn: 22,
-          endLine: 3,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: [
-        `
-type Foo = 'A' | 'B';
-type Bar = \`\${Foo}\`;
-      `,
-
-        `
-type Foo = 'A' | 'B';
-type Bar = Foo;
-      `,
-      ],
-    },
-    {
-      code: "type FooBarBaz = `foo${'bar'}baz`;",
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: 'type FooBarBaz = `foobarbaz`;',
-    },
-    {
-      code: 'type FooBar = `foo${`bar`}`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: 'type FooBar = `foobar`;',
-    },
-    {
-      code: "type FooBar = `${'foo' | 'bar'}`;",
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: "type FooBar = 'foo' | 'bar';",
-    },
   ],
 });

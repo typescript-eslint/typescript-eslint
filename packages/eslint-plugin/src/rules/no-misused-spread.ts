@@ -42,9 +42,9 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
+      recommended: 'strict',
       description:
         'Disallow using the spread operator when it might cause unexpected behavior',
-      recommended: 'strict',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

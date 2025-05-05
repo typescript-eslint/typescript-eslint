@@ -15,89 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('prefer-includes', rule, {
-  valid: [
-    `
-      function f(a: string): void {
-        a.indexOf(b);
-      }
-    `,
-    `
-      function f(a: string): void {
-        a.indexOf(b) + 0;
-      }
-    `,
-    `
-      function f(a: string | { value: string }): void {
-        a.indexOf(b) !== -1;
-      }
-    `,
-    `
-      type UserDefined = {
-        indexOf(x: any): number; // don't have 'includes'
-      };
-      function f(a: UserDefined): void {
-        a.indexOf(b) !== -1;
-      }
-    `,
-    `
-      type UserDefined = {
-        indexOf(x: any, fromIndex?: number): number;
-        includes(x: any): boolean; // different parameters
-      };
-      function f(a: UserDefined): void {
-        a.indexOf(b) !== -1;
-      }
-    `,
-    `
-      type UserDefined = {
-        indexOf(x: any, fromIndex?: number): number;
-        includes(x: any, fromIndex: number): boolean; // different parameters
-      };
-      function f(a: UserDefined): void {
-        a.indexOf(b) !== -1;
-      }
-    `,
-    `
-      type UserDefined = {
-        indexOf(x: any, fromIndex?: number): number;
-        includes: boolean; // different type
-      };
-      function f(a: UserDefined): void {
-        a.indexOf(b) !== -1;
-      }
-    `,
-    `
-      function f(a: string): void {
-        /bar/i.test(a);
-      }
-    `,
-    `
-      function f(a: string): void {
-        /ba[rz]/.test(a);
-      }
-    `,
-    `
-      function f(a: string): void {
-        /foo|bar/.test(a);
-      }
-    `,
-    `
-      function f(a: string): void {
-        /bar/.test();
-      }
-    `,
-    `
-      function f(a: string): void {
-        something.test(a);
-      }
-    `,
-    `
-      const pattern = new RegExp('bar');
-      function f(a) {
-        return pattern.test(a);
-      }
-    `,
-  ],
   invalid: [
     // positive
     {
@@ -514,5 +431,88 @@ ruleTester.run('prefer-includes', rule, {
         }
       `,
     },
+  ],
+  valid: [
+    `
+      function f(a: string): void {
+        a.indexOf(b);
+      }
+    `,
+    `
+      function f(a: string): void {
+        a.indexOf(b) + 0;
+      }
+    `,
+    `
+      function f(a: string | { value: string }): void {
+        a.indexOf(b) !== -1;
+      }
+    `,
+    `
+      type UserDefined = {
+        indexOf(x: any): number; // don't have 'includes'
+      };
+      function f(a: UserDefined): void {
+        a.indexOf(b) !== -1;
+      }
+    `,
+    `
+      type UserDefined = {
+        indexOf(x: any, fromIndex?: number): number;
+        includes(x: any): boolean; // different parameters
+      };
+      function f(a: UserDefined): void {
+        a.indexOf(b) !== -1;
+      }
+    `,
+    `
+      type UserDefined = {
+        indexOf(x: any, fromIndex?: number): number;
+        includes(x: any, fromIndex: number): boolean; // different parameters
+      };
+      function f(a: UserDefined): void {
+        a.indexOf(b) !== -1;
+      }
+    `,
+    `
+      type UserDefined = {
+        indexOf(x: any, fromIndex?: number): number;
+        includes: boolean; // different type
+      };
+      function f(a: UserDefined): void {
+        a.indexOf(b) !== -1;
+      }
+    `,
+    `
+      function f(a: string): void {
+        /bar/i.test(a);
+      }
+    `,
+    `
+      function f(a: string): void {
+        /ba[rz]/.test(a);
+      }
+    `,
+    `
+      function f(a: string): void {
+        /foo|bar/.test(a);
+      }
+    `,
+    `
+      function f(a: string): void {
+        /bar/.test();
+      }
+    `,
+    `
+      function f(a: string): void {
+        something.test(a);
+      }
+    `,
+    `
+      const pattern = new RegExp('bar');
+      function f(a) {
+        return pattern.test(a);
+      }
+    `,
   ],
 });

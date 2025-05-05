@@ -70,9 +70,9 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow unused variables',
       extendsBaseRule: true,
       recommended: 'recommended',
+      description: 'Disallow unused variables',
     },
     messages: {
       unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
@@ -92,6 +92,11 @@ export default createRule<Options, MessageIds>({
             type: 'object',
             additionalProperties: false,
             properties: {
+              ignoreClassWithStaticInitBlock: {
+                type: 'boolean',
+                description:
+                  'Whether to ignore classes with at least one static initialization block.',
+              },
               args: {
                 type: 'string',
                 description: 'Whether to check all, some, or no arguments.',
@@ -116,11 +121,6 @@ export default createRule<Options, MessageIds>({
                 type: 'string',
                 description:
                   'Regular expressions of destructured array variable names to not check for usage.',
-              },
-              ignoreClassWithStaticInitBlock: {
-                type: 'boolean',
-                description:
-                  'Whether to ignore classes with at least one static initialization block.',
               },
               ignoreRestSiblings: {
                 type: 'boolean',
@@ -158,9 +158,9 @@ export default createRule<Options, MessageIds>({
 
     const options = ((): TranslatedOptions => {
       const options: TranslatedOptions = {
+        ignoreClassWithStaticInitBlock: false,
         args: 'after-used',
         caughtErrors: 'all',
-        ignoreClassWithStaticInitBlock: false,
         ignoreRestSiblings: false,
         reportUsedIgnorePattern: false,
         vars: 'all',

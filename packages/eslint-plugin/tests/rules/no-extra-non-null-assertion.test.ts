@@ -5,43 +5,6 @@ import rule from '../../src/rules/no-extra-non-null-assertion';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-extra-non-null-assertion', rule, {
-  valid: [
-    {
-      code: `
-const foo: { bar: number } | null = null;
-const bar = foo!.bar;
-      `,
-    },
-    {
-      code: `
-function foo(bar: number | undefined) {
-  const bar: number = bar!;
-}
-      `,
-    },
-    {
-      code: `
-function foo(bar?: { n: number }) {
-  return bar?.n;
-}
-      `,
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2166
-    {
-      code: `
-checksCounter?.textContent!.trim();
-      `,
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2732
-    {
-      code: `
-function foo(key: string | null) {
-  const obj = {};
-  return obj?.[key!];
-}
-      `,
-    },
-  ],
   invalid: [
     {
       code: `
@@ -197,6 +160,43 @@ function foo(bar?: { n: number }) {
       output: `
 function foo(bar?: { n: number }) {
   return (bar)?.();
+}
+      `,
+    },
+  ],
+  valid: [
+    {
+      code: `
+const foo: { bar: number } | null = null;
+const bar = foo!.bar;
+      `,
+    },
+    {
+      code: `
+function foo(bar: number | undefined) {
+  const bar: number = bar!;
+}
+      `,
+    },
+    {
+      code: `
+function foo(bar?: { n: number }) {
+  return bar?.n;
+}
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2166
+    {
+      code: `
+checksCounter?.textContent!.trim();
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2732
+    {
+      code: `
+function foo(key: string | null) {
+  const obj = {};
+  return obj?.[key!];
 }
       `,
     },

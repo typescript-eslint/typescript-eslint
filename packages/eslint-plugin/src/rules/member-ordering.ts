@@ -740,6 +740,17 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         $defs: {
+          typeItems: {
+            type: 'string',
+            enum: [
+              'readonly-signature',
+              'signature',
+              'readonly-field',
+              'field',
+              'method',
+              'constructor',
+            ],
+          },
           allItems: {
             type: 'string',
             enum: allMemberTypes as string[],
@@ -758,25 +769,7 @@ export default createRule<Options, MessageIds>({
               'natural-case-insensitive',
             ],
           },
-          typeItems: {
-            type: 'string',
-            enum: [
-              'readonly-signature',
-              'signature',
-              'readonly-field',
-              'field',
-              'method',
-              'constructor',
-            ],
-          },
           // ajv is order-dependent; these configs must come last
-          baseConfig: {
-            oneOf: [
-              neverConfig,
-              arrayConfig('#/items/0/$defs/allItems'),
-              objectConfig('#/items/0/$defs/allItems'),
-            ],
-          },
           typesConfig: {
             oneOf: [
               neverConfig,
@@ -784,9 +777,19 @@ export default createRule<Options, MessageIds>({
               objectConfig('#/items/0/$defs/typeItems'),
             ],
           },
+          baseConfig: {
+            oneOf: [
+              neverConfig,
+              arrayConfig('#/items/0/$defs/allItems'),
+              objectConfig('#/items/0/$defs/allItems'),
+            ],
+          },
         },
         additionalProperties: false,
         properties: {
+          typeLiterals: {
+            $ref: '#/items/0/$defs/typesConfig',
+          },
           classes: {
             $ref: '#/items/0/$defs/baseConfig',
           },
@@ -797,9 +800,6 @@ export default createRule<Options, MessageIds>({
             $ref: '#/items/0/$defs/baseConfig',
           },
           interfaces: {
-            $ref: '#/items/0/$defs/typesConfig',
-          },
-          typeLiterals: {
             $ref: '#/items/0/$defs/typesConfig',
           },
         },

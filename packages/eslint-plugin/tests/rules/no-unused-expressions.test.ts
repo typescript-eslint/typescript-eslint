@@ -27,68 +27,6 @@ function error(
 }
 
 ruleTester.run('no-unused-expressions', rule, {
-  valid: [
-    `
-      test.age?.toLocaleString();
-    `,
-    `
-      let a = (a?.b).c;
-    `,
-    `
-      let b = a?.['b'];
-    `,
-    `
-      let c = one[2]?.[3][4];
-    `,
-    `
-      one[2]?.[3][4]?.();
-    `,
-    `
-      a?.['b']?.c();
-    `,
-    `
-      module Foo {
-        'use strict';
-      }
-    `,
-    `
-      namespace Foo {
-        'use strict';
-
-        export class Foo {}
-        export class Bar {}
-      }
-    `,
-    `
-      function foo() {
-        'use strict';
-
-        return null;
-      }
-    `,
-    `
-      import('./foo');
-    `,
-    `
-      import('./foo').then(() => {});
-    `,
-    `
-      class Foo<T> {}
-      new Foo<string>();
-    `,
-    {
-      code: 'foo && foo?.();',
-      options: [{ allowShortCircuit: true }],
-    },
-    {
-      code: "foo && import('./foo');",
-      options: [{ allowShortCircuit: true }],
-    },
-    {
-      code: "foo ? import('./foo') : import('./bar');",
-      options: [{ allowTernary: true }],
-    },
-  ],
   invalid: [
     {
       code: `
@@ -380,6 +318,68 @@ foo!;
           line: 3,
         },
       ]),
+    },
+  ],
+  valid: [
+    `
+      test.age?.toLocaleString();
+    `,
+    `
+      let a = (a?.b).c;
+    `,
+    `
+      let b = a?.['b'];
+    `,
+    `
+      let c = one[2]?.[3][4];
+    `,
+    `
+      one[2]?.[3][4]?.();
+    `,
+    `
+      a?.['b']?.c();
+    `,
+    `
+      module Foo {
+        'use strict';
+      }
+    `,
+    `
+      namespace Foo {
+        'use strict';
+
+        export class Foo {}
+        export class Bar {}
+      }
+    `,
+    `
+      function foo() {
+        'use strict';
+
+        return null;
+      }
+    `,
+    `
+      import('./foo');
+    `,
+    `
+      import('./foo').then(() => {});
+    `,
+    `
+      class Foo<T> {}
+      new Foo<string>();
+    `,
+    {
+      code: 'foo && foo?.();',
+      options: [{ allowShortCircuit: true }],
+    },
+    {
+      code: "foo && import('./foo');",
+      options: [{ allowShortCircuit: true }],
+    },
+    {
+      code: "foo ? import('./foo') : import('./bar');",
+      options: [{ allowTernary: true }],
     },
   ],
 });

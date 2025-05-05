@@ -27,9 +27,9 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
+      recommended: 'strict',
       description:
         'Enforce that `get()` types should be assignable to their equivalent `set()` type',
-      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {

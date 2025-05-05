@@ -19,8 +19,8 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow enums from having both number and string members',
       recommended: 'strict',
+      description: 'Disallow enums from having both number and string members',
       requiresTypeChecking: true,
     },
     messages: {

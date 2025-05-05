@@ -5,268 +5,6 @@ import rule from '../../src/rules/adjacent-overload-signatures';
 const ruleTester = new RuleTester();
 
 ruleTester.run('adjacent-overload-signatures', rule, {
-  valid: [
-    {
-      code: `
-function error(a: string);
-function error(b: number);
-function error(ab: string | number) {}
-export { error };
-      `,
-      languageOptions: { parserOptions: { sourceType: 'module' } },
-    },
-    {
-      code: `
-import { connect } from 'react-redux';
-export interface ErrorMessageModel {
-  message: string;
-}
-function mapStateToProps() {}
-function mapDispatchToProps() {}
-export default connect(mapStateToProps, mapDispatchToProps)(ErrorMessage);
-      `,
-      languageOptions: { parserOptions: { sourceType: 'module' } },
-    },
-    `
-export const foo = 'a',
-  bar = 'b';
-export interface Foo {}
-export class Foo {}
-    `,
-    `
-export interface Foo {}
-export const foo = 'a',
-  bar = 'b';
-export class Foo {}
-    `,
-    `
-const foo = 'a',
-  bar = 'b';
-interface Foo {}
-class Foo {}
-    `,
-    `
-interface Foo {}
-const foo = 'a',
-  bar = 'b';
-class Foo {}
-    `,
-    `
-export class Foo {}
-export class Bar {}
-export type FooBar = Foo | Bar;
-    `,
-    `
-export interface Foo {}
-export class Foo {}
-export class Bar {}
-export type FooBar = Foo | Bar;
-    `,
-    `
-export function foo(s: string);
-export function foo(n: number);
-export function foo(sn: string | number) {}
-export function bar(): void {}
-export function baz(): void {}
-    `,
-    `
-function foo(s: string);
-function foo(n: number);
-function foo(sn: string | number) {}
-function bar(): void {}
-function baz(): void {}
-    `,
-    `
-declare function foo(s: string);
-declare function foo(n: number);
-declare function foo(sn: string | number);
-declare function bar(): void;
-declare function baz(): void;
-    `,
-    `
-declare module 'Foo' {
-  export function foo(s: string): void;
-  export function foo(n: number): void;
-  export function foo(sn: string | number): void;
-  export function bar(): void;
-  export function baz(): void;
-}
-    `,
-    `
-declare namespace Foo {
-  export function foo(s: string): void;
-  export function foo(n: number): void;
-  export function foo(sn: string | number): void;
-  export function bar(): void;
-  export function baz(): void;
-}
-    `,
-    `
-type Foo = {
-  foo(s: string): void;
-  foo(n: number): void;
-  foo(sn: string | number): void;
-  bar(): void;
-  baz(): void;
-};
-    `,
-    `
-type Foo = {
-  foo(s: string): void;
-  ['foo'](n: number): void;
-  foo(sn: string | number): void;
-  bar(): void;
-  baz(): void;
-};
-    `,
-    `
-interface Foo {
-  (s: string): void;
-  (n: number): void;
-  (sn: string | number): void;
-  foo(n: number): void;
-  bar(): void;
-  baz(): void;
-}
-    `,
-    `
-interface Foo {
-  (s: string): void;
-  (n: number): void;
-  (sn: string | number): void;
-  foo(n: number): void;
-  bar(): void;
-  baz(): void;
-  call(): void;
-}
-    `,
-    `
-interface Foo {
-  foo(s: string): void;
-  foo(n: number): void;
-  foo(sn: string | number): void;
-  bar(): void;
-  baz(): void;
-}
-    `,
-    `
-interface Foo {
-  foo(s: string): void;
-  ['foo'](n: number): void;
-  foo(sn: string | number): void;
-  bar(): void;
-  baz(): void;
-}
-    `,
-    `
-interface Foo {
-  foo(): void;
-  bar: {
-    baz(s: string): void;
-    baz(n: number): void;
-    baz(sn: string | number): void;
-  };
-}
-    `,
-    `
-interface Foo {
-  new (s: string);
-  new (n: number);
-  new (sn: string | number);
-  foo(): void;
-}
-    `,
-    `
-class Foo {
-  constructor(s: string);
-  constructor(n: number);
-  constructor(sn: string | number) {}
-  bar(): void {}
-  baz(): void {}
-}
-    `,
-    `
-class Foo {
-  foo(s: string): void;
-  foo(n: number): void;
-  foo(sn: string | number): void {}
-  bar(): void {}
-  baz(): void {}
-}
-    `,
-    `
-class Foo {
-  foo(s: string): void;
-  ['foo'](n: number): void;
-  foo(sn: string | number): void {}
-  bar(): void {}
-  baz(): void {}
-}
-    `,
-    `
-class Foo {
-  name: string;
-  foo(s: string): void;
-  foo(n: number): void;
-  foo(sn: string | number): void {}
-  bar(): void {}
-  baz(): void {}
-}
-    `,
-    `
-class Foo {
-  name: string;
-  static foo(s: string): void;
-  static foo(n: number): void;
-  static foo(sn: string | number): void {}
-  bar(): void {}
-  baz(): void {}
-}
-    `,
-    `
-class Test {
-  static test() {}
-  untest() {}
-  test() {}
-}
-    `,
-    // examples from https://github.com/nzakas/eslint-plugin-typescript/issues/138
-    'export default function <T>(foo: T) {}',
-    'export default function named<T>(foo: T) {}',
-    `
-interface Foo {
-  [Symbol.toStringTag](): void;
-  [Symbol.iterator](): void;
-}
-    `,
-    // private members
-    `
-class Test {
-  #private(): void;
-  #private(arg: number): void {}
-
-  bar() {}
-
-  '#private'(): void;
-  '#private'(arg: number): void {}
-}
-    `,
-    // block statement
-    `
-function wrap() {
-  function foo(s: string);
-  function foo(n: number);
-  function foo(sn: string | number) {}
-}
-    `,
-    `
-if (true) {
-  function foo(s: string);
-  function foo(n: number);
-  function foo(sn: string | number) {}
-}
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -924,5 +662,267 @@ class Test {
         },
       ],
     },
+  ],
+  valid: [
+    {
+      code: `
+function error(a: string);
+function error(b: number);
+function error(ab: string | number) {}
+export { error };
+      `,
+      languageOptions: { parserOptions: { sourceType: 'module' } },
+    },
+    {
+      code: `
+import { connect } from 'react-redux';
+export interface ErrorMessageModel {
+  message: string;
+}
+function mapStateToProps() {}
+function mapDispatchToProps() {}
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorMessage);
+      `,
+      languageOptions: { parserOptions: { sourceType: 'module' } },
+    },
+    `
+export const foo = 'a',
+  bar = 'b';
+export interface Foo {}
+export class Foo {}
+    `,
+    `
+export interface Foo {}
+export const foo = 'a',
+  bar = 'b';
+export class Foo {}
+    `,
+    `
+const foo = 'a',
+  bar = 'b';
+interface Foo {}
+class Foo {}
+    `,
+    `
+interface Foo {}
+const foo = 'a',
+  bar = 'b';
+class Foo {}
+    `,
+    `
+export class Foo {}
+export class Bar {}
+export type FooBar = Foo | Bar;
+    `,
+    `
+export interface Foo {}
+export class Foo {}
+export class Bar {}
+export type FooBar = Foo | Bar;
+    `,
+    `
+export function foo(s: string);
+export function foo(n: number);
+export function foo(sn: string | number) {}
+export function bar(): void {}
+export function baz(): void {}
+    `,
+    `
+function foo(s: string);
+function foo(n: number);
+function foo(sn: string | number) {}
+function bar(): void {}
+function baz(): void {}
+    `,
+    `
+declare function foo(s: string);
+declare function foo(n: number);
+declare function foo(sn: string | number);
+declare function bar(): void;
+declare function baz(): void;
+    `,
+    `
+declare module 'Foo' {
+  export function foo(s: string): void;
+  export function foo(n: number): void;
+  export function foo(sn: string | number): void;
+  export function bar(): void;
+  export function baz(): void;
+}
+    `,
+    `
+declare namespace Foo {
+  export function foo(s: string): void;
+  export function foo(n: number): void;
+  export function foo(sn: string | number): void;
+  export function bar(): void;
+  export function baz(): void;
+}
+    `,
+    `
+type Foo = {
+  foo(s: string): void;
+  foo(n: number): void;
+  foo(sn: string | number): void;
+  bar(): void;
+  baz(): void;
+};
+    `,
+    `
+type Foo = {
+  foo(s: string): void;
+  ['foo'](n: number): void;
+  foo(sn: string | number): void;
+  bar(): void;
+  baz(): void;
+};
+    `,
+    `
+interface Foo {
+  (s: string): void;
+  (n: number): void;
+  (sn: string | number): void;
+  foo(n: number): void;
+  bar(): void;
+  baz(): void;
+}
+    `,
+    `
+interface Foo {
+  (s: string): void;
+  (n: number): void;
+  (sn: string | number): void;
+  foo(n: number): void;
+  bar(): void;
+  baz(): void;
+  call(): void;
+}
+    `,
+    `
+interface Foo {
+  foo(s: string): void;
+  foo(n: number): void;
+  foo(sn: string | number): void;
+  bar(): void;
+  baz(): void;
+}
+    `,
+    `
+interface Foo {
+  foo(s: string): void;
+  ['foo'](n: number): void;
+  foo(sn: string | number): void;
+  bar(): void;
+  baz(): void;
+}
+    `,
+    `
+interface Foo {
+  foo(): void;
+  bar: {
+    baz(s: string): void;
+    baz(n: number): void;
+    baz(sn: string | number): void;
+  };
+}
+    `,
+    `
+interface Foo {
+  new (s: string);
+  new (n: number);
+  new (sn: string | number);
+  foo(): void;
+}
+    `,
+    `
+class Foo {
+  constructor(s: string);
+  constructor(n: number);
+  constructor(sn: string | number) {}
+  bar(): void {}
+  baz(): void {}
+}
+    `,
+    `
+class Foo {
+  foo(s: string): void;
+  foo(n: number): void;
+  foo(sn: string | number): void {}
+  bar(): void {}
+  baz(): void {}
+}
+    `,
+    `
+class Foo {
+  foo(s: string): void;
+  ['foo'](n: number): void;
+  foo(sn: string | number): void {}
+  bar(): void {}
+  baz(): void {}
+}
+    `,
+    `
+class Foo {
+  name: string;
+  foo(s: string): void;
+  foo(n: number): void;
+  foo(sn: string | number): void {}
+  bar(): void {}
+  baz(): void {}
+}
+    `,
+    `
+class Foo {
+  name: string;
+  static foo(s: string): void;
+  static foo(n: number): void;
+  static foo(sn: string | number): void {}
+  bar(): void {}
+  baz(): void {}
+}
+    `,
+    `
+class Test {
+  static test() {}
+  untest() {}
+  test() {}
+}
+    `,
+    // examples from https://github.com/nzakas/eslint-plugin-typescript/issues/138
+    'export default function <T>(foo: T) {}',
+    'export default function named<T>(foo: T) {}',
+    `
+interface Foo {
+  [Symbol.toStringTag](): void;
+  [Symbol.iterator](): void;
+}
+    `,
+    // private members
+    `
+class Test {
+  #private(): void;
+  #private(arg: number): void {}
+
+  bar() {}
+
+  '#private'(): void;
+  '#private'(arg: number): void {}
+}
+    `,
+    // block statement
+    `
+function wrap() {
+  function foo(s: string);
+  function foo(n: number);
+  function foo(sn: string | number) {}
+}
+    `,
+    `
+if (true) {
+  function foo(s: string);
+  function foo(n: number);
+  function foo(sn: string | number) {}
+}
+    `,
   ],
 });

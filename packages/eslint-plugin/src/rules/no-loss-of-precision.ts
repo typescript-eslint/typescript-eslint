@@ -33,8 +33,8 @@ export default createRule<Options, MessageIds>({
       url: 'https://github.com/typescript-eslint/typescript-eslint/pull/8832',
     },
     docs: {
-      description: 'Disallow literal numbers that lose precision',
       extendsBaseRule: true,
+      description: 'Disallow literal numbers that lose precision',
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,

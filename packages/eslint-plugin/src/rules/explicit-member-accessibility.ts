@@ -42,12 +42,12 @@ export default createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
       description:
         'Require explicit accessibility modifiers on class properties and methods',
       // too opinionated to be recommended
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       addExplicitAccessibility: "Add '{{ type }}' accessibility modifier",

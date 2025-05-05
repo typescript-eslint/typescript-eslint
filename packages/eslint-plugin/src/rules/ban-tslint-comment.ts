@@ -19,11 +19,11 @@ export default createRule({
   name: 'ban-tslint-comment',
   meta: {
     type: 'suggestion',
-    docs: {
-      description: 'Disallow `// tslint:<rule-flag>` comments',
-      recommended: 'stylistic',
-    },
     fixable: 'code',
+    docs: {
+      recommended: 'stylistic',
+      description: 'Disallow `// tslint:<rule-flag>` comments',
+    },
     messages: {
       commentDetected: 'tslint comment detected: "{{ text }}"',
     },

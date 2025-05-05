@@ -23,9 +23,9 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     defaultOptions,
     docs: {
+      extendsBaseRule: true,
       description:
         'Disallow `this` keywords outside of classes or class-like objects',
-      extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,

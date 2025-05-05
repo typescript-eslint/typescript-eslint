@@ -78,8 +78,8 @@ export default createRule<Options, MessageId>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow Promises in places not designed to handle them',
       recommended: 'recommended',
+      description: 'Disallow Promises in places not designed to handle them',
       requiresTypeChecking: true,
     },
     messages: {

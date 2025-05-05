@@ -27,9 +27,9 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     defaultOptions,
     docs: {
-      description: 'Disallow unused expressions',
       extendsBaseRule: true,
       recommended: 'recommended',
+      description: 'Disallow unused expressions',
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,

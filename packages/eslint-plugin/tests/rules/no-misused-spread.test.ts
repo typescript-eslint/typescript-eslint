@@ -15,288 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-misused-spread', rule, {
-  valid: [
-    'const a = [...[1, 2, 3]];',
-    'const a = [...([1, 2, 3] as const)];',
-    `
-      declare const data: any;
-      const a = [...data];
-    `,
-    `
-      declare const data: unknown;
-      const a = [...data];
-    `,
-    `
-      const a = [1, 2, 3];
-      const b = [...a];
-    `,
-    `
-      const a = [1, 2, 3] as const;
-      const b = [...a];
-    `,
-    `
-      declare function getArray(): number[];
-      const a = [...getArray()];
-    `,
-    `
-      declare function getTuple(): readonly number[];
-      const a = [...getTuple()];
-    `,
-    `
-      const iterator = {
-        *[Symbol.iterator]() {
-          yield 1;
-          yield 2;
-          yield 3;
-        },
-      };
-
-      const a = [...iterator];
-    `,
-    `
-      declare const data: Iterable<number> | number[];
-
-      const a = [...data];
-    `,
-    `
-      declare const data: Iterable<number> & number[];
-
-      const a = [...data];
-    `,
-    `
-      declare function getIterable(): Iterable<number>;
-
-      const a = [...getIterable()];
-    `,
-    `
-      declare const data: Uint8Array;
-
-      const a = [...data];
-    `,
-    `
-      declare const data: TypedArray;
-
-      const a = [...data];
-    `,
-    'const o = { ...{ a: 1, b: 2 } };',
-    'const o = { ...({ a: 1, b: 2 } as const) };',
-    `
-      declare const obj: any;
-
-      const o = { ...obj };
-    `,
-    `
-      declare const obj: { a: number; b: number } | any;
-
-      const o = { ...obj };
-    `,
-    `
-      declare const obj: { a: number; b: number } & any;
-
-      const o = { ...obj };
-    `,
-    `
-      const obj = { a: 1, b: 2 };
-      const o = { ...obj };
-    `,
-    `
-      declare const obj: { a: number; b: number };
-      const o = { ...obj };
-    `,
-    `
-      declare function getObject(): { a: number; b: number };
-      const o = { ...getObject() };
-    `,
-    `
-      function f() {}
-
-      f.prop = 1;
-
-      const o = { ...f };
-    `,
-    `
-      const f = () => {};
-
-      f.prop = 1;
-
-      const o = { ...f };
-    `,
-    `
-      function* generator() {}
-
-      generator.prop = 1;
-
-      const o = { ...generator };
-    `,
-    `
-      declare const promiseLike: PromiseLike<number>;
-
-      const o = { ...promiseLike };
-    `,
-    {
-      code: `
-        const obj = { a: 1, b: 2 };
-        const o = <div {...x} />;
-      `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-    },
-    {
-      code: `
-        declare const obj: { a: number; b: number } | any;
-        const o = <div {...x} />;
-      `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-    },
-
-    {
-      code: `
-        const promise = new Promise(() => {});
-        const o = { ...promise };
-      `,
-      options: [{ allow: ['Promise'] }],
-    },
-    `
-      interface A {}
-
-      declare const a: A;
-
-      const o = { ...a };
-    `,
-
-    // This case is being flagged by TS already, but since we check in the code
-    // for `Iterable`s, it catches string as well, so this test exists to ensure
-    // we don't flag it.
-    `
-      const o = { ...'test' };
-    `,
-
-    {
-      code: `
-        const str: string = 'test';
-        const a = [...str];
-      `,
-      options: [{ allow: ['string'] }],
-    },
-    {
-      code: `
-        function f() {}
-
-        const a = { ...f };
-      `,
-      options: [{ allow: ['f'] }],
-    },
-    {
-      code: `
-        declare const iterator: Iterable<string>;
-
-        const a = { ...iterator };
-      `,
-      options: [
-        {
-          allow: [{ from: 'lib', name: 'Iterable' }],
-        },
-      ],
-    },
-    {
-      code: `
-        type BrandedString = string & { __brand: 'safe' };
-
-        declare const brandedString: BrandedString;
-
-        const spreadBrandedString = [...brandedString];
-      `,
-      options: [
-        {
-          allow: [{ from: 'file', name: 'BrandedString' }],
-        },
-      ],
-    },
-    {
-      code: `
-        type CustomIterable = {
-          [Symbol.iterator]: () => Generator<string>;
-        };
-
-        declare const iterator: CustomIterable;
-
-        const a = { ...iterator };
-      `,
-      options: [{ allow: ['CustomIterable'] }],
-    },
-    {
-      code: `
-        type CustomIterable = {
-          [Symbol.iterator]: () => string;
-        };
-
-        declare const iterator: CustomIterable;
-
-        const a = { ...iterator };
-      `,
-      options: [
-        {
-          allow: [{ from: 'file', name: 'CustomIterable' }],
-        },
-      ],
-    },
-    {
-      code: `
-        declare module 'module' {
-          export type CustomIterable = {
-            [Symbol.iterator]: () => string;
-          };
-        }
-
-        import { CustomIterable } from 'module';
-
-        declare const iterator: CustomIterable;
-
-        const a = { ...iterator };
-      `,
-      options: [
-        {
-          allow: [
-            { from: 'package', name: 'CustomIterable', package: 'module' },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-        class A {
-          a = 1;
-        }
-
-        const a = new A();
-
-        const o = { ...a };
-      `,
-      options: [{ allow: ['A'] }],
-    },
-    {
-      code: `
-        const a = {
-          ...class A {
-            static value = 1;
-          },
-        };
-      `,
-      options: [{ allow: ['A'] }],
-    },
-  ],
-
   invalid: [
     {
       code: "const a = [...'test'];",
@@ -1959,6 +1677,288 @@ ruleTester.run('no-misused-spread', rule, {
           },
         },
       },
+    },
+  ],
+
+  valid: [
+    'const a = [...[1, 2, 3]];',
+    'const a = [...([1, 2, 3] as const)];',
+    `
+      declare const data: any;
+      const a = [...data];
+    `,
+    `
+      declare const data: unknown;
+      const a = [...data];
+    `,
+    `
+      const a = [1, 2, 3];
+      const b = [...a];
+    `,
+    `
+      const a = [1, 2, 3] as const;
+      const b = [...a];
+    `,
+    `
+      declare function getArray(): number[];
+      const a = [...getArray()];
+    `,
+    `
+      declare function getTuple(): readonly number[];
+      const a = [...getTuple()];
+    `,
+    `
+      const iterator = {
+        *[Symbol.iterator]() {
+          yield 1;
+          yield 2;
+          yield 3;
+        },
+      };
+
+      const a = [...iterator];
+    `,
+    `
+      declare const data: Iterable<number> | number[];
+
+      const a = [...data];
+    `,
+    `
+      declare const data: Iterable<number> & number[];
+
+      const a = [...data];
+    `,
+    `
+      declare function getIterable(): Iterable<number>;
+
+      const a = [...getIterable()];
+    `,
+    `
+      declare const data: Uint8Array;
+
+      const a = [...data];
+    `,
+    `
+      declare const data: TypedArray;
+
+      const a = [...data];
+    `,
+    'const o = { ...{ a: 1, b: 2 } };',
+    'const o = { ...({ a: 1, b: 2 } as const) };',
+    `
+      declare const obj: any;
+
+      const o = { ...obj };
+    `,
+    `
+      declare const obj: { a: number; b: number } | any;
+
+      const o = { ...obj };
+    `,
+    `
+      declare const obj: { a: number; b: number } & any;
+
+      const o = { ...obj };
+    `,
+    `
+      const obj = { a: 1, b: 2 };
+      const o = { ...obj };
+    `,
+    `
+      declare const obj: { a: number; b: number };
+      const o = { ...obj };
+    `,
+    `
+      declare function getObject(): { a: number; b: number };
+      const o = { ...getObject() };
+    `,
+    `
+      function f() {}
+
+      f.prop = 1;
+
+      const o = { ...f };
+    `,
+    `
+      const f = () => {};
+
+      f.prop = 1;
+
+      const o = { ...f };
+    `,
+    `
+      function* generator() {}
+
+      generator.prop = 1;
+
+      const o = { ...generator };
+    `,
+    `
+      declare const promiseLike: PromiseLike<number>;
+
+      const o = { ...promiseLike };
+    `,
+    {
+      code: `
+        const obj = { a: 1, b: 2 };
+        const o = <div {...x} />;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+        declare const obj: { a: number; b: number } | any;
+        const o = <div {...x} />;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+
+    {
+      code: `
+        const promise = new Promise(() => {});
+        const o = { ...promise };
+      `,
+      options: [{ allow: ['Promise'] }],
+    },
+    `
+      interface A {}
+
+      declare const a: A;
+
+      const o = { ...a };
+    `,
+
+    // This case is being flagged by TS already, but since we check in the code
+    // for `Iterable`s, it catches string as well, so this test exists to ensure
+    // we don't flag it.
+    `
+      const o = { ...'test' };
+    `,
+
+    {
+      code: `
+        const str: string = 'test';
+        const a = [...str];
+      `,
+      options: [{ allow: ['string'] }],
+    },
+    {
+      code: `
+        function f() {}
+
+        const a = { ...f };
+      `,
+      options: [{ allow: ['f'] }],
+    },
+    {
+      code: `
+        declare const iterator: Iterable<string>;
+
+        const a = { ...iterator };
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'Iterable' }],
+        },
+      ],
+    },
+    {
+      code: `
+        type BrandedString = string & { __brand: 'safe' };
+
+        declare const brandedString: BrandedString;
+
+        const spreadBrandedString = [...brandedString];
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'BrandedString' }],
+        },
+      ],
+    },
+    {
+      code: `
+        type CustomIterable = {
+          [Symbol.iterator]: () => Generator<string>;
+        };
+
+        declare const iterator: CustomIterable;
+
+        const a = { ...iterator };
+      `,
+      options: [{ allow: ['CustomIterable'] }],
+    },
+    {
+      code: `
+        type CustomIterable = {
+          [Symbol.iterator]: () => string;
+        };
+
+        declare const iterator: CustomIterable;
+
+        const a = { ...iterator };
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'CustomIterable' }],
+        },
+      ],
+    },
+    {
+      code: `
+        declare module 'module' {
+          export type CustomIterable = {
+            [Symbol.iterator]: () => string;
+          };
+        }
+
+        import { CustomIterable } from 'module';
+
+        declare const iterator: CustomIterable;
+
+        const a = { ...iterator };
+      `,
+      options: [
+        {
+          allow: [
+            { from: 'package', name: 'CustomIterable', package: 'module' },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        class A {
+          a = 1;
+        }
+
+        const a = new A();
+
+        const o = { ...a };
+      `,
+      options: [{ allow: ['A'] }],
+    },
+    {
+      code: `
+        const a = {
+          ...class A {
+            static value = 1;
+          },
+        };
+      `,
+      options: [{ allow: ['A'] }],
     },
   ],
 });

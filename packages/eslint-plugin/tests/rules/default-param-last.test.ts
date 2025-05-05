@@ -5,112 +5,6 @@ import rule from '../../src/rules/default-param-last';
 const ruleTester = new RuleTester();
 
 ruleTester.run('default-param-last', rule, {
-  valid: [
-    'function foo() {}',
-    'function foo(a: number) {}',
-    'function foo(a = 1) {}',
-    'function foo(a?: number) {}',
-    'function foo(a: number, b: number) {}',
-    'function foo(a: number, b: number, c?: number) {}',
-    'function foo(a: number, b = 1) {}',
-    'function foo(a: number, b = 1, c = 1) {}',
-    'function foo(a: number, b = 1, c?: number) {}',
-    'function foo(a: number, b?: number, c = 1) {}',
-    'function foo(a: number, b = 1, ...c) {}',
-
-    'const foo = function () {};',
-    'const foo = function (a: number) {};',
-    'const foo = function (a = 1) {};',
-    'const foo = function (a?: number) {};',
-    'const foo = function (a: number, b: number) {};',
-    'const foo = function (a: number, b: number, c?: number) {};',
-    'const foo = function (a: number, b = 1) {};',
-    'const foo = function (a: number, b = 1, c = 1) {};',
-    'const foo = function (a: number, b = 1, c?: number) {};',
-    'const foo = function (a: number, b?: number, c = 1) {};',
-    'const foo = function (a: number, b = 1, ...c) {};',
-
-    'const foo = () => {};',
-    'const foo = (a: number) => {};',
-    'const foo = (a = 1) => {};',
-    'const foo = (a?: number) => {};',
-    'const foo = (a: number, b: number) => {};',
-    'const foo = (a: number, b: number, c?: number) => {};',
-    'const foo = (a: number, b = 1) => {};',
-    'const foo = (a: number, b = 1, c = 1) => {};',
-    'const foo = (a: number, b = 1, c?: number) => {};',
-    'const foo = (a: number, b?: number, c = 1) => {};',
-    'const foo = (a: number, b = 1, ...c) => {};',
-    `
-class Foo {
-  constructor(a: number, b: number, c: number) {}
-}
-    `,
-    `
-class Foo {
-  constructor(a: number, b?: number, c = 1) {}
-}
-    `,
-    `
-class Foo {
-  constructor(a: number, b = 1, c?: number) {}
-}
-    `,
-    `
-class Foo {
-  constructor(
-    public a: number,
-    protected b: number,
-    private c: number,
-  ) {}
-}
-    `,
-    `
-class Foo {
-  constructor(
-    public a: number,
-    protected b?: number,
-    private c = 10,
-  ) {}
-}
-    `,
-    `
-class Foo {
-  constructor(
-    public a: number,
-    protected b = 10,
-    private c?: number,
-  ) {}
-}
-    `,
-    `
-class Foo {
-  constructor(
-    a: number,
-    protected b?: number,
-    private c = 0,
-  ) {}
-}
-    `,
-    `
-class Foo {
-  constructor(
-    a: number,
-    b?: number,
-    private c = 0,
-  ) {}
-}
-    `,
-    `
-class Foo {
-  constructor(
-    a: number,
-    private b?: number,
-    c = 0,
-  ) {}
-}
-    `,
-  ],
   invalid: [
     {
       code: 'function foo(a = 1, b: number) {}',
@@ -699,5 +593,111 @@ class Foo {
         },
       ],
     },
+  ],
+  valid: [
+    'function foo() {}',
+    'function foo(a: number) {}',
+    'function foo(a = 1) {}',
+    'function foo(a?: number) {}',
+    'function foo(a: number, b: number) {}',
+    'function foo(a: number, b: number, c?: number) {}',
+    'function foo(a: number, b = 1) {}',
+    'function foo(a: number, b = 1, c = 1) {}',
+    'function foo(a: number, b = 1, c?: number) {}',
+    'function foo(a: number, b?: number, c = 1) {}',
+    'function foo(a: number, b = 1, ...c) {}',
+
+    'const foo = function () {};',
+    'const foo = function (a: number) {};',
+    'const foo = function (a = 1) {};',
+    'const foo = function (a?: number) {};',
+    'const foo = function (a: number, b: number) {};',
+    'const foo = function (a: number, b: number, c?: number) {};',
+    'const foo = function (a: number, b = 1) {};',
+    'const foo = function (a: number, b = 1, c = 1) {};',
+    'const foo = function (a: number, b = 1, c?: number) {};',
+    'const foo = function (a: number, b?: number, c = 1) {};',
+    'const foo = function (a: number, b = 1, ...c) {};',
+
+    'const foo = () => {};',
+    'const foo = (a: number) => {};',
+    'const foo = (a = 1) => {};',
+    'const foo = (a?: number) => {};',
+    'const foo = (a: number, b: number) => {};',
+    'const foo = (a: number, b: number, c?: number) => {};',
+    'const foo = (a: number, b = 1) => {};',
+    'const foo = (a: number, b = 1, c = 1) => {};',
+    'const foo = (a: number, b = 1, c?: number) => {};',
+    'const foo = (a: number, b?: number, c = 1) => {};',
+    'const foo = (a: number, b = 1, ...c) => {};',
+    `
+class Foo {
+  constructor(a: number, b: number, c: number) {}
+}
+    `,
+    `
+class Foo {
+  constructor(a: number, b?: number, c = 1) {}
+}
+    `,
+    `
+class Foo {
+  constructor(a: number, b = 1, c?: number) {}
+}
+    `,
+    `
+class Foo {
+  constructor(
+    public a: number,
+    protected b: number,
+    private c: number,
+  ) {}
+}
+    `,
+    `
+class Foo {
+  constructor(
+    public a: number,
+    protected b?: number,
+    private c = 10,
+  ) {}
+}
+    `,
+    `
+class Foo {
+  constructor(
+    public a: number,
+    protected b = 10,
+    private c?: number,
+  ) {}
+}
+    `,
+    `
+class Foo {
+  constructor(
+    a: number,
+    protected b?: number,
+    private c = 0,
+  ) {}
+}
+    `,
+    `
+class Foo {
+  constructor(
+    a: number,
+    b?: number,
+    private c = 0,
+  ) {}
+}
+    `,
+    `
+class Foo {
+  constructor(
+    a: number,
+    private b?: number,
+    c = 0,
+  ) {}
+}
+    `,
   ],
 });

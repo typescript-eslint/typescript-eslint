@@ -80,13 +80,13 @@ export default createRule<Options, MessageIds>({
   name: 'no-duplicate-type-constituents',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'recommended',
       description:
         'Disallow duplicate constituents of union or intersection types',
-      recommended: 'recommended',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       duplicate: '{{type}} type constituent is duplicated with {{previous}}.',
       unnecessary:

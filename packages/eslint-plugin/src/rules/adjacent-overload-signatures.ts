@@ -26,8 +26,8 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Require that function overload signatures be consecutive',
       recommended: 'stylistic',
+      description: 'Require that function overload signatures be consecutive',
     },
     messages: {
       adjacentSignature: 'All {{name}} signatures should be adjacent.',
@@ -156,10 +156,10 @@ export default createRule({
 
     return {
       BlockStatement: checkBodyForOverloadMethods,
+      TSModuleBlock: checkBodyForOverloadMethods,
       ClassBody: checkBodyForOverloadMethods,
       Program: checkBodyForOverloadMethods,
       TSInterfaceBody: checkBodyForOverloadMethods,
-      TSModuleBlock: checkBodyForOverloadMethods,
       TSTypeLiteral: checkBodyForOverloadMethods,
     };
   },

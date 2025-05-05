@@ -9,393 +9,6 @@ import rule from '../../src/rules/unified-signatures';
 const ruleTester = new RuleTester();
 
 ruleTester.run('unified-signatures', rule, {
-  valid: [
-    `
-function g(): void;
-function g(a: number, b: number): void;
-function g(a?: number, b?: number): void {}
-    `,
-    `
-function rest(...xs: number[]): void;
-function rest(xs: number[], y: string): void;
-function rest(...args: any[]) {}
-    `,
-    `
-class C {
-  constructor();
-  constructor(a: number, b: number);
-  constructor(a?: number, b?: number) {}
-
-  a(): void;
-  a(a: number, b: number): void;
-  a(a?: number, b?: number): void {}
-}
-    `,
-    `
-declare class Example {
-  privateMethod(a: number): void;
-  #privateMethod(a: number, b?: string): void;
-}
-    `,
-    `
-declare class Example {
-  #privateMethod1(a: number): void;
-  #privateMethod2(a: number, b?: string): void;
-}
-    `,
-    // No error for arity difference greater than 1.
-    `
-interface I {
-  a2(): void;
-  a2(x: number, y: number): void;
-}
-    `,
-    // No error for different return types.
-    `
-interface I {
-  a4(): void;
-  a4(x: number): number;
-}
-    `,
-    // No error if one takes a type parameter and the other doesn't.
-    `
-interface I {
-  a5<T>(x: T): T;
-  a5(x: number): number;
-}
-    `,
-    // No error if one is a rest parameter and other isn't.
-    `
-interface I {
-  b2(x: string): void;
-  b2(...x: number[]): void;
-}
-    `,
-    // No error if both are rest parameters. (https://github.com/Microsoft/TypeScript/issues/5077)
-    `
-interface I {
-  b3(...x: number[]): void;
-  b3(...x: string[]): void;
-}
-    `,
-    // No error if one is optional and the other isn't.
-    `
-interface I {
-  c3(x: number): void;
-  c3(x?: string): void;
-}
-    `,
-    // No error if they differ by 2 or more parameters.
-    `
-interface I {
-  d2(x: string, y: number): void;
-  d2(x: number, y: string): void;
-}
-    `,
-    // No conflict between static/non-static members.
-    `
-declare class D {
-  static a();
-  a(x: number);
-}
-    `,
-    // Allow separate overloads if one is generic and the other isn't.
-    `
-interface Generic<T> {
-  x(): void;
-  x(x: T[]): void;
-}
-    `,
-    // Allow signatures if the type is not equal.
-    `
-interface I {
-  f(x1: number): void;
-  f(x1: boolean, x2?: number): void;
-}
-    `,
-    // AllowType parameters that are not equal
-    `
-function f<T extends number>(x: T[]): void;
-function f<T extends string>(x: T): void;
-    `,
-    // Same name, different scopes
-    `
-declare function foo(n: number): number;
-
-declare module 'hello' {
-  function foo(n: number, s: string): number;
-}
-    `,
-    // children of block not checked to match TSLint
-    `
-{
-  function block(): number;
-  function block(n: number): number;
-  function block(n?: number): number {
-    return 3;
-  }
-}
-    `,
-    `
-export interface Foo {
-  bar(baz: string): number[];
-  bar(): string[];
-}
-    `,
-    `
-declare module 'foo' {
-  export default function (foo: number): string[];
-}
-    `,
-    `
-export default function (foo: number): string[];
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/740
-    `
-function p(key: string): Promise<string | undefined>;
-function p(key: string, defaultValue: string): Promise<string>;
-function p(key: string, defaultValue?: string): Promise<string | undefined> {
-  const obj: Record<string, string> = {};
-  return obj[key] || defaultValue;
-}
-    `,
-    `
-interface I {
-  p<T>(x: T): Promise<T>;
-  p(x: number): Promise<number>;
-}
-    `,
-    `
-function rest(...xs: number[]): Promise<number[]>;
-function rest(xs: number[], y: string): Promise<string>;
-async function rest(...args: any[], y?: string): Promise<number[] | string> {
-  return y || args;
-}
-    `,
-    `
-declare class Foo {
-  get bar();
-  set bar(x: number);
-}
-    `,
-    `
-interface Foo {
-  get bar();
-  set bar(x: number);
-}
-    `,
-    `
-abstract class Foo {
-  abstract get bar();
-  abstract set bar(a: unknown);
-}
-    `,
-    {
-      code: `
-function f(a: number): void;
-function f(b: string): void;
-function f(a: number | string): void {}
-      `,
-      options: [{ ignoreDifferentlyNamedParameters: true }],
-    },
-    {
-      code: `
-function f(m: number): void;
-function f(v: number, u: string): void;
-function f(v: number, u?: string): void {}
-      `,
-      options: [{ ignoreDifferentlyNamedParameters: true }],
-    },
-    {
-      code: `
-function f(v: boolean): number;
-function f(): string;
-      `,
-      options: [{ ignoreDifferentlyNamedParameters: true }],
-    },
-    {
-      code: `
-function f(v: boolean, u: boolean): number;
-function f(v: boolean): string;
-      `,
-      options: [{ ignoreDifferentlyNamedParameters: true }],
-    },
-    {
-      code: `
-function f(v: number, u?: string): void {}
-function f(v: number): void;
-function f(): string;
-      `,
-      options: [{ ignoreDifferentlyNamedParameters: true }],
-    },
-    {
-      code: `
-function f(a: boolean, ...c: number[]): void;
-function f(a: boolean, ...d: string[]): void;
-function f(a: boolean, ...c: (number | string)[]): void {}
-      `,
-      options: [{ ignoreDifferentlyNamedParameters: true }],
-    },
-    {
-      code: `
-class C {
-  constructor();
-  constructor(a: number, b: number);
-  constructor(c?: number, b?: number) {}
-
-  a(): void;
-  a(a: number, b: number): void;
-  a(a?: number, d?: number): void {}
-}
-      `,
-      options: [{ ignoreDifferentlyNamedParameters: true }],
-    },
-    {
-      code: `
-/** @deprecated */
-declare function f(x: number): unknown;
-declare function f(x: boolean): unknown;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-declare function f(x: number): unknown;
-/** @deprecated */
-declare function f(x: boolean): unknown;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-declare function f(x: number): unknown;
-/** @deprecated */ declare function f(x: boolean): unknown;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-declare function f(x: string): void;
-/**
- * @async
- */
-declare function f(x: boolean): void;
-/**
- * @deprecate
- */
-declare function f(x: number): void;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-/**
- * @deprecate
- */
-declare function f(x: string): void;
-/**
- * @async
- */
-declare function f(x: boolean): void;
-declare function f(x: number): void;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-/**
- * This signature does something.
- */
-declare function f(x: number): void;
-
-/**
- * This signature does something else.
- */
-declare function f(x: string): void;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-/** @deprecated */
-export function f(x: number): unknown;
-export function f(x: boolean): unknown;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-/**
- * This signature does something.
- */
-
-// some other comment
-export function f(x: number): void;
-
-/**
- * This signature does something else.
- */
-export function f(x: string): void;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-interface I {
-  /**
-   * This signature does something else.
-   */
-  f(x: number): void;
-  f(x: string): void;
-}
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    // invalid jsdoc comments
-    {
-      code: `
-/* @deprecated */
-declare function f(x: number): unknown;
-declare function f(x: boolean): unknown;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-/*
- * This signature does something.
- */
-declare function f(x: number): unknown;
-declare function f(x: boolean): unknown;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-/**
- * This signature does something.
- **/
-declare function f(x: number): unknown;
-declare function f(x: boolean): unknown;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    `
-function f(): void;
-function f(this: {}): void;
-function f(this: void | {}): void {}
-    `,
-    `
-function f(a: boolean): void;
-function f(this: {}, a: boolean): void;
-function f(this: void | {}, a: boolean): void {}
-    `,
-    `
-function f(this: void, a: boolean): void;
-function f(this: {}, a: boolean): void;
-function f(this: void | {}, a: boolean): void {}
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -1219,5 +832,392 @@ function f(this: string | number, a: boolean): void {}
         },
       ],
     },
+  ],
+  valid: [
+    `
+function g(): void;
+function g(a: number, b: number): void;
+function g(a?: number, b?: number): void {}
+    `,
+    `
+function rest(...xs: number[]): void;
+function rest(xs: number[], y: string): void;
+function rest(...args: any[]) {}
+    `,
+    `
+class C {
+  constructor();
+  constructor(a: number, b: number);
+  constructor(a?: number, b?: number) {}
+
+  a(): void;
+  a(a: number, b: number): void;
+  a(a?: number, b?: number): void {}
+}
+    `,
+    `
+declare class Example {
+  privateMethod(a: number): void;
+  #privateMethod(a: number, b?: string): void;
+}
+    `,
+    `
+declare class Example {
+  #privateMethod1(a: number): void;
+  #privateMethod2(a: number, b?: string): void;
+}
+    `,
+    // No error for arity difference greater than 1.
+    `
+interface I {
+  a2(): void;
+  a2(x: number, y: number): void;
+}
+    `,
+    // No error for different return types.
+    `
+interface I {
+  a4(): void;
+  a4(x: number): number;
+}
+    `,
+    // No error if one takes a type parameter and the other doesn't.
+    `
+interface I {
+  a5<T>(x: T): T;
+  a5(x: number): number;
+}
+    `,
+    // No error if one is a rest parameter and other isn't.
+    `
+interface I {
+  b2(x: string): void;
+  b2(...x: number[]): void;
+}
+    `,
+    // No error if both are rest parameters. (https://github.com/Microsoft/TypeScript/issues/5077)
+    `
+interface I {
+  b3(...x: number[]): void;
+  b3(...x: string[]): void;
+}
+    `,
+    // No error if one is optional and the other isn't.
+    `
+interface I {
+  c3(x: number): void;
+  c3(x?: string): void;
+}
+    `,
+    // No error if they differ by 2 or more parameters.
+    `
+interface I {
+  d2(x: string, y: number): void;
+  d2(x: number, y: string): void;
+}
+    `,
+    // No conflict between static/non-static members.
+    `
+declare class D {
+  static a();
+  a(x: number);
+}
+    `,
+    // Allow separate overloads if one is generic and the other isn't.
+    `
+interface Generic<T> {
+  x(): void;
+  x(x: T[]): void;
+}
+    `,
+    // Allow signatures if the type is not equal.
+    `
+interface I {
+  f(x1: number): void;
+  f(x1: boolean, x2?: number): void;
+}
+    `,
+    // AllowType parameters that are not equal
+    `
+function f<T extends number>(x: T[]): void;
+function f<T extends string>(x: T): void;
+    `,
+    // Same name, different scopes
+    `
+declare function foo(n: number): number;
+
+declare module 'hello' {
+  function foo(n: number, s: string): number;
+}
+    `,
+    // children of block not checked to match TSLint
+    `
+{
+  function block(): number;
+  function block(n: number): number;
+  function block(n?: number): number {
+    return 3;
+  }
+}
+    `,
+    `
+export interface Foo {
+  bar(baz: string): number[];
+  bar(): string[];
+}
+    `,
+    `
+declare module 'foo' {
+  export default function (foo: number): string[];
+}
+    `,
+    `
+export default function (foo: number): string[];
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/740
+    `
+function p(key: string): Promise<string | undefined>;
+function p(key: string, defaultValue: string): Promise<string>;
+function p(key: string, defaultValue?: string): Promise<string | undefined> {
+  const obj: Record<string, string> = {};
+  return obj[key] || defaultValue;
+}
+    `,
+    `
+interface I {
+  p<T>(x: T): Promise<T>;
+  p(x: number): Promise<number>;
+}
+    `,
+    `
+function rest(...xs: number[]): Promise<number[]>;
+function rest(xs: number[], y: string): Promise<string>;
+async function rest(...args: any[], y?: string): Promise<number[] | string> {
+  return y || args;
+}
+    `,
+    `
+declare class Foo {
+  get bar();
+  set bar(x: number);
+}
+    `,
+    `
+interface Foo {
+  get bar();
+  set bar(x: number);
+}
+    `,
+    `
+abstract class Foo {
+  abstract get bar();
+  abstract set bar(a: unknown);
+}
+    `,
+    {
+      code: `
+function f(a: number): void;
+function f(b: string): void;
+function f(a: number | string): void {}
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(m: number): void;
+function f(v: number, u: string): void;
+function f(v: number, u?: string): void {}
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(v: boolean): number;
+function f(): string;
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(v: boolean, u: boolean): number;
+function f(v: boolean): string;
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(v: number, u?: string): void {}
+function f(v: number): void;
+function f(): string;
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(a: boolean, ...c: number[]): void;
+function f(a: boolean, ...d: string[]): void;
+function f(a: boolean, ...c: (number | string)[]): void {}
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+class C {
+  constructor();
+  constructor(a: number, b: number);
+  constructor(c?: number, b?: number) {}
+
+  a(): void;
+  a(a: number, b: number): void;
+  a(a?: number, d?: number): void {}
+}
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+/** @deprecated */
+declare function f(x: number): unknown;
+declare function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+declare function f(x: number): unknown;
+/** @deprecated */
+declare function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+declare function f(x: number): unknown;
+/** @deprecated */ declare function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+declare function f(x: string): void;
+/**
+ * @async
+ */
+declare function f(x: boolean): void;
+/**
+ * @deprecate
+ */
+declare function f(x: number): void;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * @deprecate
+ */
+declare function f(x: string): void;
+/**
+ * @async
+ */
+declare function f(x: boolean): void;
+declare function f(x: number): void;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * This signature does something.
+ */
+declare function f(x: number): void;
+
+/**
+ * This signature does something else.
+ */
+declare function f(x: string): void;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/** @deprecated */
+export function f(x: number): unknown;
+export function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * This signature does something.
+ */
+
+// some other comment
+export function f(x: number): void;
+
+/**
+ * This signature does something else.
+ */
+export function f(x: string): void;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+interface I {
+  /**
+   * This signature does something else.
+   */
+  f(x: number): void;
+  f(x: string): void;
+}
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    // invalid jsdoc comments
+    {
+      code: `
+/* @deprecated */
+declare function f(x: number): unknown;
+declare function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/*
+ * This signature does something.
+ */
+declare function f(x: number): unknown;
+declare function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * This signature does something.
+ **/
+declare function f(x: number): unknown;
+declare function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    `
+function f(): void;
+function f(this: {}): void;
+function f(this: void | {}): void {}
+    `,
+    `
+function f(a: boolean): void;
+function f(this: {}, a: boolean): void;
+function f(this: void | {}, a: boolean): void {}
+    `,
+    `
+function f(this: void, a: boolean): void;
+function f(this: {}, a: boolean): void;
+function f(this: void | {}, a: boolean): void {}
+    `,
   ],
 });

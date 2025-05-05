@@ -8,11 +8,11 @@ export default createRule({
   name: 'prefer-as-const',
   meta: {
     type: 'suggestion',
-    docs: {
-      description: 'Enforce the use of `as const` over literal type',
-      recommended: 'recommended',
-    },
     fixable: 'code',
+    docs: {
+      recommended: 'recommended',
+      description: 'Enforce the use of `as const` over literal type',
+    },
     hasSuggestions: true,
     messages: {
       preferConstAssertion:

@@ -5,60 +5,6 @@ import rule from '../../src/rules/consistent-type-definitions';
 const ruleTester = new RuleTester();
 
 ruleTester.run('consistent-type-definitions', rule, {
-  valid: [
-    {
-      code: 'var foo = {};',
-      options: ['interface'],
-    },
-    {
-      code: 'interface A {}',
-      options: ['interface'],
-    },
-    {
-      code: `
-interface A extends B {
-  x: number;
-}
-      `,
-      options: ['interface'],
-    },
-    {
-      code: 'type U = string;',
-      options: ['interface'],
-    },
-    {
-      code: 'type V = { x: number } | { y: string };',
-      options: ['interface'],
-    },
-    {
-      code: `
-type Record<T, U> = {
-  [K in T]: U;
-};
-      `,
-      options: ['interface'],
-    },
-    {
-      code: 'type T = { x: number };',
-      options: ['type'],
-    },
-    {
-      code: 'type A = { x: number } & B & C;',
-      options: ['type'],
-    },
-    {
-      code: 'type A = { x: number } & B<T1> & C<T2>;',
-      options: ['type'],
-    },
-    {
-      code: `
-export type W<T> = {
-  x: T;
-};
-      `,
-      options: ['type'],
-    },
-  ],
   invalid: [
     {
       code: noFormat`type T = { x: number; };`,
@@ -460,6 +406,60 @@ interface Foo {
 
 const bar = 1;
       `,
+    },
+  ],
+  valid: [
+    {
+      code: 'var foo = {};',
+      options: ['interface'],
+    },
+    {
+      code: 'interface A {}',
+      options: ['interface'],
+    },
+    {
+      code: `
+interface A extends B {
+  x: number;
+}
+      `,
+      options: ['interface'],
+    },
+    {
+      code: 'type U = string;',
+      options: ['interface'],
+    },
+    {
+      code: 'type V = { x: number } | { y: string };',
+      options: ['interface'],
+    },
+    {
+      code: `
+type Record<T, U> = {
+  [K in T]: U;
+};
+      `,
+      options: ['interface'],
+    },
+    {
+      code: 'type T = { x: number };',
+      options: ['type'],
+    },
+    {
+      code: 'type A = { x: number } & B & C;',
+      options: ['type'],
+    },
+    {
+      code: 'type A = { x: number } & B<T1> & C<T2>;',
+      options: ['type'],
+    },
+    {
+      code: `
+export type W<T> = {
+  x: T;
+};
+      `,
+      options: ['type'],
     },
   ],
 });

@@ -16,12 +16,12 @@ export default createRule({
   name: 'prefer-includes',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
-      description: 'Enforce `includes` method over `indexOf` method',
       recommended: 'stylistic',
+      description: 'Enforce `includes` method over `indexOf` method',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       preferIncludes: "Use 'includes()' method instead.",
       preferStringIncludes:

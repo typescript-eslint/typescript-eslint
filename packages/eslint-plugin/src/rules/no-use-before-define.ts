@@ -34,12 +34,12 @@ function parseOptions(options: string | Config | null): Required<Config> {
   }
 
   return {
+    typedefs,
     allowNamedExports,
     classes,
     enums,
     functions,
     ignoreTypeReferences,
-    typedefs,
     variables,
   };
 }
@@ -220,8 +220,8 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow the use of variables before they are defined',
       extendsBaseRule: true,
+      description: 'Disallow the use of variables before they are defined',
     },
     messages: {
       noUseBeforeDefine: "'{{name}}' was used before it was defined.",
@@ -237,6 +237,10 @@ export default createRule<Options, MessageIds>({
             type: 'object',
             additionalProperties: false,
             properties: {
+              typedefs: {
+                type: 'boolean',
+                description: 'Whether to check references to types.',
+              },
               allowNamedExports: {
                 type: 'boolean',
                 description: 'Whether to ignore named exports.',
@@ -260,10 +264,6 @@ export default createRule<Options, MessageIds>({
                 description:
                   'Whether to ignore type references, such as in type annotations and assertions.',
               },
-              typedefs: {
-                type: 'boolean',
-                description: 'Whether to check references to types.',
-              },
               variables: {
                 type: 'boolean',
                 description: 'Whether to ignore references to variables.',
@@ -276,12 +276,12 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      typedefs: true,
       allowNamedExports: false,
       classes: true,
       enums: true,
       functions: true,
       ignoreTypeReferences: true,
-      typedefs: true,
       variables: true,
     },
   ],

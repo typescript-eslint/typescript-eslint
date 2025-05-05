@@ -71,109 +71,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-assignment', rule, {
-  valid: [
-    'const x = 1;',
-    'const x: number = 1;',
-    `
-const x = 1,
-  y = 1;
-    `,
-    'let x;',
-    `
-let x = 1,
-  y;
-    `,
-    'function foo(a = 1) {}',
-    `
-class Foo {
-  constructor(private a = 1) {}
-}
-    `,
-    `
-class Foo {
-  private a = 1;
-}
-    `,
-    `
-class Foo {
-  accessor a = 1;
-}
-    `,
-    'const x: Set<string> = new Set();',
-    'const x: Set<string> = new Set<string>();',
-    'const [x] = [1];',
-    'const [x, y] = [1, 2] as number[];',
-    'const [x, ...y] = [1, 2, 3, 4, 5];',
-    'const [x, ...y] = [1];',
-    'const [{ ...x }] = [{ x: 1 }] as [{ x: any }];',
-    'function foo(x = 1) {}',
-    'function foo([x] = [1]) {}',
-    'function foo([x, ...y] = [1, 2, 3, 4, 5]) {}',
-    'function foo([x, ...y] = [1]) {}',
-    // this is not checked, because there's no annotation to compare it with
-    'const x = new Set<any>();',
-    'const x = { y: 1 };',
-    'const x = { y = 1 };',
-    noFormat`const x = { y(){} };`,
-    'const x: { y: number } = { y: 1 };',
-    'const x = [...[1, 2, 3]];',
-    'const [{ [`x${1}`]: x }] = [{ [`x`]: 1 }] as [{ [`x`]: any }];',
-    `
-type T = [string, T[]];
-const test: T = ['string', []] as T;
-    `,
-    {
-      code: `
-type Props = { a: string };
-declare function Foo(props: Props): never;
-<Foo a={'foo'} />;
-      `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-    },
-
-    {
-      code: `
-declare function Foo(props: { a: string }): never;
-<Foo a="foo" />;
-      `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-    },
-    {
-      code: `
-declare function Foo(props: { a: string }): never;
-<Foo a={} />;
-      `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-    },
-    'const x: unknown = y as any;',
-    'const x: unknown[] = y as any[];',
-    'const x: Set<unknown> = y as Set<any>;',
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
-    'const x: Map<string, string> = new Map();',
-    `
-type Foo = { bar: unknown };
-const bar: any = 1;
-const foo: Foo = { bar };
-    `,
-  ],
   invalid: [
     {
       code: 'const x = 1 as any;',
@@ -483,5 +380,108 @@ const foo: Foo = { bar };
         },
       ],
     },
+  ],
+  valid: [
+    'const x = 1;',
+    'const x: number = 1;',
+    `
+const x = 1,
+  y = 1;
+    `,
+    'let x;',
+    `
+let x = 1,
+  y;
+    `,
+    'function foo(a = 1) {}',
+    `
+class Foo {
+  constructor(private a = 1) {}
+}
+    `,
+    `
+class Foo {
+  private a = 1;
+}
+    `,
+    `
+class Foo {
+  accessor a = 1;
+}
+    `,
+    'const x: Set<string> = new Set();',
+    'const x: Set<string> = new Set<string>();',
+    'const [x] = [1];',
+    'const [x, y] = [1, 2] as number[];',
+    'const [x, ...y] = [1, 2, 3, 4, 5];',
+    'const [x, ...y] = [1];',
+    'const [{ ...x }] = [{ x: 1 }] as [{ x: any }];',
+    'function foo(x = 1) {}',
+    'function foo([x] = [1]) {}',
+    'function foo([x, ...y] = [1, 2, 3, 4, 5]) {}',
+    'function foo([x, ...y] = [1]) {}',
+    // this is not checked, because there's no annotation to compare it with
+    'const x = new Set<any>();',
+    'const x = { y: 1 };',
+    'const x = { y = 1 };',
+    noFormat`const x = { y(){} };`,
+    'const x: { y: number } = { y: 1 };',
+    'const x = [...[1, 2, 3]];',
+    'const [{ [`x${1}`]: x }] = [{ [`x`]: 1 }] as [{ [`x`]: any }];',
+    `
+type T = [string, T[]];
+const test: T = ['string', []] as T;
+    `,
+    {
+      code: `
+type Props = { a: string };
+declare function Foo(props: Props): never;
+<Foo a={'foo'} />;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+
+    {
+      code: `
+declare function Foo(props: { a: string }): never;
+<Foo a="foo" />;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+declare function Foo(props: { a: string }): never;
+<Foo a={} />;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    'const x: unknown = y as any;',
+    'const x: unknown[] = y as any[];',
+    'const x: Set<unknown> = y as Set<any>;',
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
+    'const x: Map<string, string> = new Map();',
+    `
+type Foo = { bar: unknown };
+const bar: any = 1;
+const foo: Foo = { bar };
+    `,
   ],
 });

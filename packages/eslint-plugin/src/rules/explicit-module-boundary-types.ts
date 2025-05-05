@@ -49,11 +49,11 @@ export default createRule<Options, MessageIds>({
         "Require explicit return and argument types on exported functions' and classes' public class methods",
     },
     messages: {
-      anyTypedArg: "Argument '{{name}}' should be typed with a non-any type.",
       anyTypedArgUnnamed:
         '{{type}} argument should be typed with a non-any type.',
-      missingArgType: "Argument '{{name}}' should be typed.",
       missingArgTypeUnnamed: '{{type}} argument should be typed.',
+      anyTypedArg: "Argument '{{name}}' should be typed with a non-any type.",
+      missingArgType: "Argument '{{name}}' should be typed.",
       missingReturnType: 'Missing return type on function.',
     },
     schema: [

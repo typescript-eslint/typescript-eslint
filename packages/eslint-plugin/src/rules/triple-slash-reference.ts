@@ -18,9 +18,9 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
+      recommended: 'recommended',
       description:
         'Disallow certain triple slash directives in favor of ES6-style import declarations',
-      recommended: 'recommended',
     },
     messages: {
       tripleSlashReference:
@@ -31,6 +31,12 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          types: {
+            type: 'string',
+            description:
+              'What to enforce for `/// <reference types="..." />` references.',
+            enum: ['always', 'never', 'prefer-import'],
+          },
           lib: {
             type: 'string',
             description:
@@ -43,24 +49,18 @@ export default createRule<Options, MessageIds>({
               'What to enforce for `/// <reference path="..." />` references.',
             enum: ['always', 'never'],
           },
-          types: {
-            type: 'string',
-            description:
-              'What to enforce for `/// <reference types="..." />` references.',
-            enum: ['always', 'never', 'prefer-import'],
-          },
         },
       },
     ],
   },
   defaultOptions: [
     {
+      types: 'prefer-import',
       lib: 'always',
       path: 'never',
-      types: 'prefer-import',
     },
   ],
-  create(context, [{ lib, path, types }]) {
+  create(context, [{ types, lib, path }]) {
     let programNode: TSESTree.Node | undefined;
 
     const references: {

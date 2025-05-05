@@ -29,12 +29,12 @@ export default createRule<Options, MessageIds>({
   name: 'promise-function-async',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description:
         'Require any function or method that returns a Promise to be marked async',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       missingAsync: 'Functions that return promises must be async.',
       missingAsyncHybridReturn:

@@ -19,8 +19,8 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow classes used as namespaces',
       recommended: 'strict',
+      description: 'Disallow classes used as namespaces',
     },
     messages: {
       empty: 'Unexpected empty class.',

@@ -8,17 +8,6 @@ import rule from '../../src/rules/no-confusing-non-null-assertion';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-confusing-non-null-assertion', rule, {
-  valid: [
-    //
-    'a == b!;',
-    'a = b!;',
-    'a !== b;',
-    'a != b;',
-    '(a + b!) == c;',
-    '(a + b!) = c;',
-    '(a + b!) in c;',
-    '(a || b!) instanceof c;',
-  ],
   invalid: [
     {
       code: 'a! == b;',
@@ -217,5 +206,16 @@ a in b;
         },
       ],
     },
+  ],
+  valid: [
+    //
+    'a == b!;',
+    'a = b!;',
+    'a !== b;',
+    'a != b;',
+    '(a + b!) == c;',
+    '(a + b!) = c;',
+    '(a + b!) in c;',
+    '(a || b!) instanceof c;',
   ],
 });

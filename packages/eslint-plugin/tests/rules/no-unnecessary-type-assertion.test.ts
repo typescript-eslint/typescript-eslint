@@ -25,438 +25,6 @@ const optionsWithExactOptionalPropertyTypes = {
 };
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
-  valid: [
-    `
-import { TSESTree } from '@typescript-eslint/utils';
-declare const member: TSESTree.TSEnumMember;
-if (
-  member.id.type === AST_NODE_TYPES.Literal &&
-  typeof member.id.value === 'string'
-) {
-  const name = member.id as TSESTree.StringLiteral;
-}
-    `,
-    `
-      const c = 1;
-      let z = c as number;
-    `,
-    `
-      const c = 1;
-      let z = c as const;
-    `,
-    `
-      const c = 1;
-      let z = c as 1;
-    `,
-    `
-      type Bar = 'bar';
-      const data = {
-        x: 'foo' as 'foo',
-        y: 'bar' as Bar,
-      };
-    `,
-    "[1, 2, 3, 4, 5].map(x => [x, 'A' + x] as [number, string]);",
-    `
-      let x: Array<[number, string]> = [1, 2, 3, 4, 5].map(
-        x => [x, 'A' + x] as [number, string],
-      );
-    `,
-    'let y = 1 as 1;',
-    'const foo = 3 as number;',
-    'const foo = <number>3;',
-    `
-type Tuple = [3, 'hi', 'bye'];
-const foo = [3, 'hi', 'bye'] as Tuple;
-    `,
-    `
-type PossibleTuple = {};
-const foo = {} as PossibleTuple;
-    `,
-    `
-type PossibleTuple = { hello: 'hello' };
-const foo = { hello: 'hello' } as PossibleTuple;
-    `,
-    `
-type PossibleTuple = { 0: 'hello'; 5: 'hello' };
-const foo = { 0: 'hello', 5: 'hello' } as PossibleTuple;
-    `,
-    `
-let bar: number | undefined = x;
-let foo: number = bar!;
-    `,
-    `
-declare const a: { data?: unknown };
-
-const x = a.data!;
-    `,
-    `
-declare function foo(arg?: number): number | void;
-const bar: number = foo()!;
-    `,
-    {
-      code: `
-type Foo = number;
-const foo = (3 + 5) as Foo;
-      `,
-      options: [{ typesToIgnore: ['Foo'] }],
-    },
-    {
-      code: 'const foo = (3 + 5) as any;',
-      options: [{ typesToIgnore: ['any'] }],
-    },
-    {
-      code: "(Syntax as any).ArrayExpression = 'foo';",
-      options: [{ typesToIgnore: ['any'] }],
-    },
-    {
-      code: 'const foo = (3 + 5) as string;',
-      options: [{ typesToIgnore: ['string'] }],
-    },
-    {
-      code: `
-type Foo = number;
-const foo = <Foo>(3 + 5);
-      `,
-      options: [{ typesToIgnore: ['Foo'] }],
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/453
-    // the ol' use-before-assign-is-okay-trust-me assertion
-    `
-let bar: number;
-bar! + 1;
-    `,
-    `
-let bar: undefined | number;
-bar! + 1;
-    `,
-    `
-let bar: number, baz: number;
-bar! + 1;
-    `,
-    `
-function foo<T extends string | undefined>(bar: T) {
-  return bar!;
-}
-    `,
-    `
-declare function nonNull(s: string);
-let s: string | null = null;
-nonNull(s!);
-    `,
-    `
-const x: number | null = null;
-const y: number = x!;
-    `,
-    `
-const x: number | null = null;
-class Foo {
-  prop: number = x!;
-}
-    `,
-    `
-class T {
-  a = 'a' as const;
-}
-    `,
-    `
-class T {
-  a = 3 as 3;
-}
-    `,
-    `
-const foo = 'foo';
-
-class T {
-  readonly test = \`\${foo}\` as const;
-}
-    `,
-    `
-class T {
-  readonly a = { foo: 'foo' } as const;
-}
-    `,
-    `
-      declare const y: number | null;
-      console.log(y!);
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/529
-    `
-declare function foo(str?: string): void;
-declare const str: string | null;
-
-foo(str!);
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/532
-    `
-declare function a(a: string): any;
-declare const b: string | null;
-class Mx {
-  @a(b!)
-  private prop = 1;
-}
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/1199
-    `
-function testFunction(_param: string | undefined): void {
-  /* noop */
-}
-const value = 'test' as string | null | undefined;
-testFunction(value!);
-    `,
-    `
-function testFunction(_param: string | null): void {
-  /* noop */
-}
-const value = 'test' as string | null | undefined;
-testFunction(value!);
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/982
-    {
-      code: `
-declare namespace JSX {
-  interface IntrinsicElements {
-    div: { key?: string | number };
-  }
-}
-
-function Test(props: { id?: null | string | number }) {
-  return <div key={props.id!} />;
-}
-      `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-    },
-    {
-      code: `
-const a = [1, 2];
-const b = [3, 4];
-const c = [...a, ...b] as const;
-      `,
-    },
-    {
-      code: 'const a = [1, 2] as const;',
-    },
-    {
-      code: "const a = { foo: 'foo' } as const;",
-    },
-    {
-      code: `
-const a = [1, 2];
-const b = [3, 4];
-const c = <const>[...a, ...b];
-      `,
-    },
-    {
-      code: 'const a = <const>[1, 2];',
-    },
-    {
-      code: "const a = <const>{ foo: 'foo' };",
-    },
-    {
-      code: `
-let a: number | undefined;
-let b: number | undefined;
-let c: number;
-a = b;
-c = b!;
-a! -= 1;
-      `,
-    },
-    {
-      code: `
-let a: { b?: string } | undefined;
-a!.b = '';
-      `,
-    },
-    `
-let value: number | undefined;
-let values: number[] = [];
-
-value = values.pop()!;
-    `,
-    `
-declare function foo(): number | undefined;
-const a = foo()!;
-    `,
-    `
-declare function foo(): number | undefined;
-const a = foo() as number;
-    `,
-    `
-declare function foo(): number | undefined;
-const a = <number>foo();
-    `,
-    `
-declare const arr: (object | undefined)[];
-const item = arr[0]!;
-    `,
-    `
-declare const arr: (object | undefined)[];
-const item = arr[0] as object;
-    `,
-    `
-declare const arr: (object | undefined)[];
-const item = <object>arr[0];
-    `,
-    {
-      code: `
-function foo(item: string) {}
-function bar(items: string[]) {
-  for (let i = 0; i < items.length; i++) {
-    foo(items[i]!);
-  }
-}
-      `,
-      languageOptions: { parserOptions: optionsWithOnUncheckedIndexedAccess },
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
-    `
-declare const myString: 'foo';
-const templateLiteral = \`\${myString}-somethingElse\` as const;
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
-    `
-declare const myString: 'foo';
-const templateLiteral = <const>\`\${myString}-somethingElse\`;
-    `,
-    `
-const myString = 'foo';
-const templateLiteral = \`\${myString}-somethingElse\` as const;
-    `,
-    'let a = `a` as const;',
-    {
-      code: `
-declare const foo: {
-  a?: string;
-};
-const bar = foo.a as string;
-      `,
-      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
-    },
-    {
-      code: `
-declare const foo: {
-  a?: string | undefined;
-};
-const bar = foo.a as string;
-      `,
-      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
-    },
-    {
-      code: `
-declare const foo: {
-  a: string;
-};
-const bar = foo.a as string | undefined;
-      `,
-      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
-    },
-    {
-      code: `
-declare const foo: {
-  a?: string | null | number;
-};
-const bar = foo.a as string | undefined;
-      `,
-      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
-    },
-    {
-      code: `
-declare const foo: {
-  a?: string | number;
-};
-const bar = foo.a as string | undefined | bigint;
-      `,
-      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
-    },
-    {
-      code: `
-if (Math.random()) {
-  {
-    var x = 1;
-  }
-}
-x!;
-      `,
-    },
-    {
-      code: `
-enum T {
-  Value1,
-  Value2,
-}
-
-declare const a: T.Value1;
-const b = a as T.Value2;
-      `,
-    },
-    {
-      code: `
-enum T {
-  Value1,
-  Value2,
-}
-
-declare const a: T.Value1;
-const b = a as T;
-      `,
-    },
-    {
-      code: `
-enum T {
-  Value1 = 0,
-  Value2 = 1,
-}
-
-const b = 1 as T.Value2;
-      `,
-    },
-    `
-const foo: unknown = {};
-const baz: {} = foo!;
-    `,
-    `
-const foo: unknown = {};
-const bar: object = foo!;
-    `,
-    `
-declare function foo<T extends unknown>(bar: T): T;
-const baz: unknown = {};
-foo(baz!);
-    `,
-    {
-      code: 'const a = `a` as const;',
-    },
-    {
-      code: "const a = 'a' as const;",
-    },
-    {
-      code: "const a = <const>'a';",
-    },
-    {
-      code: `
-class T {
-  readonly a = 'a' as const;
-}
-      `,
-    },
-    {
-      code: `
-enum T {
-  Value1,
-  Value2,
-}
-declare const a: T.Value1;
-const b = a as const;
-      `,
-    },
-  ],
-
   invalid: [
     {
       code: 'const foo = <3>3;',
@@ -1445,6 +1013,438 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+  ],
+
+  valid: [
+    `
+import { TSESTree } from '@typescript-eslint/utils';
+declare const member: TSESTree.TSEnumMember;
+if (
+  member.id.type === AST_NODE_TYPES.Literal &&
+  typeof member.id.value === 'string'
+) {
+  const name = member.id as TSESTree.StringLiteral;
+}
+    `,
+    `
+      const c = 1;
+      let z = c as number;
+    `,
+    `
+      const c = 1;
+      let z = c as const;
+    `,
+    `
+      const c = 1;
+      let z = c as 1;
+    `,
+    `
+      type Bar = 'bar';
+      const data = {
+        x: 'foo' as 'foo',
+        y: 'bar' as Bar,
+      };
+    `,
+    "[1, 2, 3, 4, 5].map(x => [x, 'A' + x] as [number, string]);",
+    `
+      let x: Array<[number, string]> = [1, 2, 3, 4, 5].map(
+        x => [x, 'A' + x] as [number, string],
+      );
+    `,
+    'let y = 1 as 1;',
+    'const foo = 3 as number;',
+    'const foo = <number>3;',
+    `
+type Tuple = [3, 'hi', 'bye'];
+const foo = [3, 'hi', 'bye'] as Tuple;
+    `,
+    `
+type PossibleTuple = {};
+const foo = {} as PossibleTuple;
+    `,
+    `
+type PossibleTuple = { hello: 'hello' };
+const foo = { hello: 'hello' } as PossibleTuple;
+    `,
+    `
+type PossibleTuple = { 0: 'hello'; 5: 'hello' };
+const foo = { 0: 'hello', 5: 'hello' } as PossibleTuple;
+    `,
+    `
+let bar: number | undefined = x;
+let foo: number = bar!;
+    `,
+    `
+declare const a: { data?: unknown };
+
+const x = a.data!;
+    `,
+    `
+declare function foo(arg?: number): number | void;
+const bar: number = foo()!;
+    `,
+    {
+      code: `
+type Foo = number;
+const foo = (3 + 5) as Foo;
+      `,
+      options: [{ typesToIgnore: ['Foo'] }],
+    },
+    {
+      code: 'const foo = (3 + 5) as any;',
+      options: [{ typesToIgnore: ['any'] }],
+    },
+    {
+      code: "(Syntax as any).ArrayExpression = 'foo';",
+      options: [{ typesToIgnore: ['any'] }],
+    },
+    {
+      code: 'const foo = (3 + 5) as string;',
+      options: [{ typesToIgnore: ['string'] }],
+    },
+    {
+      code: `
+type Foo = number;
+const foo = <Foo>(3 + 5);
+      `,
+      options: [{ typesToIgnore: ['Foo'] }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/453
+    // the ol' use-before-assign-is-okay-trust-me assertion
+    `
+let bar: number;
+bar! + 1;
+    `,
+    `
+let bar: undefined | number;
+bar! + 1;
+    `,
+    `
+let bar: number, baz: number;
+bar! + 1;
+    `,
+    `
+function foo<T extends string | undefined>(bar: T) {
+  return bar!;
+}
+    `,
+    `
+declare function nonNull(s: string);
+let s: string | null = null;
+nonNull(s!);
+    `,
+    `
+const x: number | null = null;
+const y: number = x!;
+    `,
+    `
+const x: number | null = null;
+class Foo {
+  prop: number = x!;
+}
+    `,
+    `
+class T {
+  a = 'a' as const;
+}
+    `,
+    `
+class T {
+  a = 3 as 3;
+}
+    `,
+    `
+const foo = 'foo';
+
+class T {
+  readonly test = \`\${foo}\` as const;
+}
+    `,
+    `
+class T {
+  readonly a = { foo: 'foo' } as const;
+}
+    `,
+    `
+      declare const y: number | null;
+      console.log(y!);
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/529
+    `
+declare function foo(str?: string): void;
+declare const str: string | null;
+
+foo(str!);
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/532
+    `
+declare function a(a: string): any;
+declare const b: string | null;
+class Mx {
+  @a(b!)
+  private prop = 1;
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1199
+    `
+function testFunction(_param: string | undefined): void {
+  /* noop */
+}
+const value = 'test' as string | null | undefined;
+testFunction(value!);
+    `,
+    `
+function testFunction(_param: string | null): void {
+  /* noop */
+}
+const value = 'test' as string | null | undefined;
+testFunction(value!);
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/982
+    {
+      code: `
+declare namespace JSX {
+  interface IntrinsicElements {
+    div: { key?: string | number };
+  }
+}
+
+function Test(props: { id?: null | string | number }) {
+  return <div key={props.id!} />;
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+const a = [1, 2];
+const b = [3, 4];
+const c = [...a, ...b] as const;
+      `,
+    },
+    {
+      code: 'const a = [1, 2] as const;',
+    },
+    {
+      code: "const a = { foo: 'foo' } as const;",
+    },
+    {
+      code: `
+const a = [1, 2];
+const b = [3, 4];
+const c = <const>[...a, ...b];
+      `,
+    },
+    {
+      code: 'const a = <const>[1, 2];',
+    },
+    {
+      code: "const a = <const>{ foo: 'foo' };",
+    },
+    {
+      code: `
+let a: number | undefined;
+let b: number | undefined;
+let c: number;
+a = b;
+c = b!;
+a! -= 1;
+      `,
+    },
+    {
+      code: `
+let a: { b?: string } | undefined;
+a!.b = '';
+      `,
+    },
+    `
+let value: number | undefined;
+let values: number[] = [];
+
+value = values.pop()!;
+    `,
+    `
+declare function foo(): number | undefined;
+const a = foo()!;
+    `,
+    `
+declare function foo(): number | undefined;
+const a = foo() as number;
+    `,
+    `
+declare function foo(): number | undefined;
+const a = <number>foo();
+    `,
+    `
+declare const arr: (object | undefined)[];
+const item = arr[0]!;
+    `,
+    `
+declare const arr: (object | undefined)[];
+const item = arr[0] as object;
+    `,
+    `
+declare const arr: (object | undefined)[];
+const item = <object>arr[0];
+    `,
+    {
+      code: `
+function foo(item: string) {}
+function bar(items: string[]) {
+  for (let i = 0; i < items.length; i++) {
+    foo(items[i]!);
+  }
+}
+      `,
+      languageOptions: { parserOptions: optionsWithOnUncheckedIndexedAccess },
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    `
+declare const myString: 'foo';
+const templateLiteral = \`\${myString}-somethingElse\` as const;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    `
+declare const myString: 'foo';
+const templateLiteral = <const>\`\${myString}-somethingElse\`;
+    `,
+    `
+const myString = 'foo';
+const templateLiteral = \`\${myString}-somethingElse\` as const;
+    `,
+    'let a = `a` as const;',
+    {
+      code: `
+declare const foo: {
+  a?: string;
+};
+const bar = foo.a as string;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | undefined;
+};
+const bar = foo.a as string;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const foo: {
+  a: string;
+};
+const bar = foo.a as string | undefined;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | null | number;
+};
+const bar = foo.a as string | undefined;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | number;
+};
+const bar = foo.a as string | undefined | bigint;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+if (Math.random()) {
+  {
+    var x = 1;
+  }
+}
+x!;
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as T.Value2;
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as T;
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1 = 0,
+  Value2 = 1,
+}
+
+const b = 1 as T.Value2;
+      `,
+    },
+    `
+const foo: unknown = {};
+const baz: {} = foo!;
+    `,
+    `
+const foo: unknown = {};
+const bar: object = foo!;
+    `,
+    `
+declare function foo<T extends unknown>(bar: T): T;
+const baz: unknown = {};
+foo(baz!);
+    `,
+    {
+      code: 'const a = `a` as const;',
+    },
+    {
+      code: "const a = 'a' as const;",
+    },
+    {
+      code: "const a = <const>'a';",
+    },
+    {
+      code: `
+class T {
+  readonly a = 'a' as const;
+}
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+declare const a: T.Value1;
+const b = a as const;
       `,
     },
   ],

@@ -9,8 +9,8 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Enforce valid definition of `new` and `constructor`',
       recommended: 'recommended',
+      description: 'Enforce valid definition of `new` and `constructor`',
     },
     messages: {
       errorMessageClass: 'Class cannot have method named `new`.',
@@ -85,6 +85,14 @@ export default createRule({
           });
         }
       },
+      "TSMethodSignature[key.name='constructor']"(
+        node: TSESTree.TSMethodSignature,
+      ): void {
+        context.report({
+          node,
+          messageId: 'errorMessageInterface',
+        });
+      },
       'TSInterfaceBody > TSConstructSignatureDeclaration'(
         node: TSESTree.TSConstructSignatureDeclaration,
       ): void {
@@ -100,14 +108,6 @@ export default createRule({
             messageId: 'errorMessageInterface',
           });
         }
-      },
-      "TSMethodSignature[key.name='constructor']"(
-        node: TSESTree.TSMethodSignature,
-      ): void {
-        context.report({
-          node,
-          messageId: 'errorMessageInterface',
-        });
       },
     };
   },

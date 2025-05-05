@@ -54,32 +54,32 @@ export default createRule<Options, MessageIds>({
   name: 'consistent-type-imports',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description: 'Enforce consistent usage of type imports',
     },
-    fixable: 'code',
     messages: {
+      typeOverValue:
+        'All imports in the declaration are only used as types. Use `import type`.',
       avoidImportType: 'Use an `import` instead of an `import type`.',
       noImportTypeAnnotations: '`import()` type annotations are forbidden.',
       someImportsAreOnlyTypes: 'Imports {{typeImports}} are only used as type.',
-      typeOverValue:
-        'All imports in the declaration are only used as types. Use `import type`.',
     },
     schema: [
       {
         type: 'object',
         additionalProperties: false,
         properties: {
-          disallowTypeAnnotations: {
-            type: 'boolean',
-            description:
-              'Whether to disallow type imports in type annotations (`import()`).',
-          },
           fixStyle: {
             type: 'string',
             description:
               'The expected type modifier to be added when an import is detected as used only in the type position.',
             enum: ['separate-type-imports', 'inline-type-imports'],
+          },
+          disallowTypeAnnotations: {
+            type: 'boolean',
+            description:
+              'Whether to disallow type imports in type annotations (`import()`).',
           },
           prefer: {
             type: 'string',
@@ -93,8 +93,8 @@ export default createRule<Options, MessageIds>({
 
   defaultOptions: [
     {
-      disallowTypeAnnotations: true,
       fixStyle: 'separate-type-imports',
+      disallowTypeAnnotations: true,
       prefer: 'type-imports',
     },
   ],
@@ -165,9 +165,9 @@ export default createRule<Options, MessageIds>({
         const source = node.source.value;
         // sourceImports is the object containing all the specifics for a particular import source, type or value
         sourceImportsMap[source] ??= {
+          typeOnlyNamedImport: null, // if only type imports
           reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
           source,
-          typeOnlyNamedImport: null, // if only type imports
           valueImport: null, // if only value imports
           valueOnlyNamedImport: null, // if only value imports with named specifiers
         };
@@ -295,8 +295,8 @@ export default createRule<Options, MessageIds>({
         if (node.importKind === 'value' && typeSpecifiers.length) {
           sourceImports.reportValueImports.push({
             node,
-            inlineTypeSpecifiers,
             typeSpecifiers,
+            inlineTypeSpecifiers,
             unusedSpecifiers,
             valueSpecifiers,
           });
@@ -438,9 +438,9 @@ export default createRule<Options, MessageIds>({
           specifier.type === AST_NODE_TYPES.ImportSpecifier,
       );
       return {
-        defaultSpecifier,
         namedSpecifiers,
         namespaceSpecifier,
+        defaultSpecifier,
       };
     }
 
@@ -458,8 +458,8 @@ export default createRule<Options, MessageIds>({
     } {
       if (allNamedSpecifiers.length === 0) {
         return {
-          removeTypeNamedSpecifiers: [],
           typeNamedSpecifiersText: '',
+          removeTypeNamedSpecifiers: [],
         };
       }
       const typeNamedSpecifiersTexts: string[] = [];
@@ -526,8 +526,8 @@ export default createRule<Options, MessageIds>({
         }
       }
       return {
-        removeTypeNamedSpecifiers,
         typeNamedSpecifiersText: typeNamedSpecifiersTexts.join(','),
+        removeTypeNamedSpecifiers,
       };
     }
 
@@ -658,7 +658,7 @@ export default createRule<Options, MessageIds>({
     ): IterableIterator<TSESLint.RuleFix> {
       const { node } = report;
 
-      const { defaultSpecifier, namedSpecifiers, namespaceSpecifier } =
+      const { namedSpecifiers, namespaceSpecifier, defaultSpecifier } =
         classifySpecifier(node);
 
       if (namespaceSpecifier && !defaultSpecifier) {

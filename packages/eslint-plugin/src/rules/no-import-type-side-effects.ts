@@ -17,11 +17,11 @@ export default createRule<Options, MessageIds>({
   name: 'no-import-type-side-effects',
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
       description:
         'Enforce the use of top-level import type qualifier when an import only has specifiers with inline type qualifiers',
     },
-    fixable: 'code',
     messages: {
       useTopLevelQualifier:
         'TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.',

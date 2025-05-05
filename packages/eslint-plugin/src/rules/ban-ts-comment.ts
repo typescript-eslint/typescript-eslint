@@ -38,12 +38,12 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description:
-        'Disallow `@ts-<directive>` comments or require descriptions after directives',
       recommended: {
         recommended: true,
         strict: [{ minimumDescriptionLength: 10 }],
       },
+      description:
+        'Disallow `@ts-<directive>` comments or require descriptions after directives',
     },
     hasSuggestions: true,
     messages: {

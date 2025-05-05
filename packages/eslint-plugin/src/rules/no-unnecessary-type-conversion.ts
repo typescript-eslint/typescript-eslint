@@ -23,12 +23,12 @@ export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-conversion',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description:
         'Disallow conversion idioms when they do not change the type or value of the expression',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       suggestRemove: 'Remove the type conversion.',
@@ -97,6 +97,45 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
+      'CallExpression > MemberExpression.callee > Identifier[name = "toString"].property'(
+        node: TSESTree.Expression,
+      ): void {
+        const memberExpr = node.parent as TSESTree.MemberExpression;
+        const type = getConstrainedTypeAtLocation(services, memberExpr.object);
+        if (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.StringLike)) {
+          const wrappingFixerParams = {
+            node: memberExpr.parent,
+            innerNode: [memberExpr.object],
+            sourceCode: context.sourceCode,
+          };
+
+          context.report({
+            loc: {
+              start: memberExpr.property.loc.start,
+              end: memberExpr.parent.loc.end,
+            },
+            messageId: 'unnecessaryTypeConversion',
+            data: {
+              type: 'string',
+              violation: "Calling a string's .toString() method",
+            },
+            suggest: [
+              {
+                messageId: 'suggestRemove',
+                fix: getWrappingFixer(wrappingFixerParams),
+              },
+              {
+                messageId: 'suggestSatisfies',
+                data: { type: 'string' },
+                fix: getWrappingFixer({
+                  ...wrappingFixerParams,
+                  wrap: expr => `${expr} satisfies string`,
+                }),
+              },
+            ],
+          });
+        }
+      },
       'AssignmentExpression[operator = "+="]'(
         node: TSESTree.AssignmentExpression,
       ): void {
@@ -288,45 +327,6 @@ export default createRule<Options, MessageIds>({
             },
           ],
         });
-      },
-      'CallExpression > MemberExpression.callee > Identifier[name = "toString"].property'(
-        node: TSESTree.Expression,
-      ): void {
-        const memberExpr = node.parent as TSESTree.MemberExpression;
-        const type = getConstrainedTypeAtLocation(services, memberExpr.object);
-        if (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.StringLike)) {
-          const wrappingFixerParams = {
-            node: memberExpr.parent,
-            innerNode: [memberExpr.object],
-            sourceCode: context.sourceCode,
-          };
-
-          context.report({
-            loc: {
-              start: memberExpr.property.loc.start,
-              end: memberExpr.parent.loc.end,
-            },
-            messageId: 'unnecessaryTypeConversion',
-            data: {
-              type: 'string',
-              violation: "Calling a string's .toString() method",
-            },
-            suggest: [
-              {
-                messageId: 'suggestRemove',
-                fix: getWrappingFixer(wrappingFixerParams),
-              },
-              {
-                messageId: 'suggestSatisfies',
-                data: { type: 'string' },
-                fix: getWrappingFixer({
-                  ...wrappingFixerParams,
-                  wrap: expr => `${expr} satisfies string`,
-                }),
-              },
-            ],
-          });
-        }
       },
       'UnaryExpression[operator = "!"] > UnaryExpression[operator = "!"]'(
         node: TSESTree.UnaryExpression,

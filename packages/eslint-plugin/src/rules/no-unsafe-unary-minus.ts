@@ -11,8 +11,8 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Require unary negation to take a number',
       recommended: 'recommended',
+      description: 'Require unary negation to take a number',
       requiresTypeChecking: true,
     },
     messages: {

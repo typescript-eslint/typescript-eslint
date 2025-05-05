@@ -14,36 +14,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-for-in-array', rule, {
-  valid: [
-    `
-for (const x of [3, 4, 5]) {
-  console.log(x);
-}
-    `,
-    `
-for (const x in { a: 1, b: 2, c: 3 }) {
-  console.log(x);
-}
-    `,
-    // this is normally a type error, this test is here to make sure the rule
-    // doesn't include an "extra" report for it
-    `
-declare const nullish: null | undefined;
-// @ts-expect-error
-for (const k in nullish) {
-}
-    `,
-    `
-declare const obj: {
-  [key: number]: number;
-};
-
-for (const key in obj) {
-  console.log(key);
-}
-    `,
-  ],
-
   invalid: [
     {
       code: `
@@ -449,5 +419,35 @@ for (const key in obj) {
         },
       ],
     },
+  ],
+
+  valid: [
+    `
+for (const x of [3, 4, 5]) {
+  console.log(x);
+}
+    `,
+    `
+for (const x in { a: 1, b: 2, c: 3 }) {
+  console.log(x);
+}
+    `,
+    // this is normally a type error, this test is here to make sure the rule
+    // doesn't include an "extra" report for it
+    `
+declare const nullish: null | undefined;
+// @ts-expect-error
+for (const k in nullish) {
+}
+    `,
+    `
+declare const obj: {
+  [key: number]: number;
+};
+
+for (const key in obj) {
+  console.log(key);
+}
+    `,
   ],
 });

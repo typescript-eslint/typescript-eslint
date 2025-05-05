@@ -73,12 +73,12 @@ export default createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
+      missingAffix:
+        '{{type}} name `{{name}}` must have one of the following {{position}}es: {{affixes}}',
       doesNotMatchFormat:
         '{{type}} name `{{name}}` must match one of the following formats: {{formats}}',
       doesNotMatchFormatTrimmed:
         '{{type}} name `{{name}}` trimmed as `{{processedName}}` must match one of the following formats: {{formats}}',
-      missingAffix:
-        '{{type}} name `{{name}}` must have one of the following {{position}}es: {{affixes}}',
       missingUnderscore:
         '{{type}} name `{{name}}` must have {{count}} {{position}} underscore(s).',
       satisfyCustom:
@@ -418,20 +418,6 @@ export default createRule<Options, MessageIds>({
       },
 
       [[
-        'MethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])',
-        'TSAbstractMethodDefinition[computed = false]:matches([kind="get"], [kind="set"])',
-      ].join(', ')]: {
-        handler: (
-          node: TSESTree.MethodDefinitionNonComputedName,
-          validator,
-        ): void => {
-          const modifiers = getMemberModifiers(node);
-          handleMember(validator, node, modifiers);
-        },
-        validator: validators.classicAccessor,
-      },
-
-      [[
         'Property[computed = false][kind = "init"][value.type = "ArrowFunctionExpression"]',
         'Property[computed = false][kind = "init"][value.type = "FunctionExpression"]',
         'Property[computed = false][kind = "init"][value.type = "TSEmptyBodyFunctionExpression"]',
@@ -451,6 +437,20 @@ export default createRule<Options, MessageIds>({
           handleMember(validator, node, modifiers);
         },
         validator: validators.objectLiteralMethod,
+      },
+
+      [[
+        'MethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])',
+        'TSAbstractMethodDefinition[computed = false]:matches([kind="get"], [kind="set"])',
+      ].join(', ')]: {
+        handler: (
+          node: TSESTree.MethodDefinitionNonComputedName,
+          validator,
+        ): void => {
+          const modifiers = getMemberModifiers(node);
+          handleMember(validator, node, modifiers);
+        },
+        validator: validators.classicAccessor,
       },
 
       // #endregion property

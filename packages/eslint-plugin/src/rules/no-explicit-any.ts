@@ -20,11 +20,11 @@ export default createRule<Options, MessageIds>({
   name: 'no-explicit-any',
   meta: {
     type: 'suggestion',
-    docs: {
-      description: 'Disallow the `any` type',
-      recommended: 'recommended',
-    },
     fixable: 'code',
+    docs: {
+      recommended: 'recommended',
+      description: 'Disallow the `any` type',
+    },
     hasSuggestions: true,
     messages: {
       suggestNever:

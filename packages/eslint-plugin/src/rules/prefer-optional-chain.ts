@@ -29,13 +29,13 @@ export default createRule<
   name: 'prefer-optional-chain',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'stylistic',
       description:
         'Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects',
-      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       optionalChainSuggest: 'Change to an optional chain.',

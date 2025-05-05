@@ -13,112 +13,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-argument', rule, {
-  valid: [
-    // unknown function should be ignored
-    `
-doesNotExist(1 as any);
-    `,
-    // non-function call should be ignored
-    `
-const foo = 1;
-foo(1 as any);
-    `,
-    // too many arguments should be ignored as this is a TS error
-    `
-declare function foo(arg: number): void;
-foo(1, 1 as any, 2 as any);
-    `,
-    `
-declare function foo(arg: number, arg2: string): void;
-foo(1, 'a');
-    `,
-    `
-declare function foo(arg: any): void;
-foo(1 as any);
-    `,
-    `
-declare function foo(arg: unknown): void;
-foo(1 as any);
-    `,
-    `
-declare function foo(...arg: number[]): void;
-foo(1, 2, 3);
-    `,
-    `
-declare function foo(...arg: any[]): void;
-foo(1, 2, 3, 4 as any);
-    `,
-    `
-declare function foo(arg: number, arg2: number): void;
-const x = [1, 2] as const;
-foo(...x);
-    `,
-    `
-declare function foo(arg: any, arg2: number): void;
-const x = [1 as any, 2] as const;
-foo(...x);
-    `,
-    `
-declare function foo(arg1: string, arg2: string): void;
-const x: string[] = [];
-foo(...x);
-    `,
-    `
-function foo(arg1: number, arg2: number) {}
-foo(...([1, 1, 1] as [number, number, number]));
-    `,
-    `
-declare function foo(arg1: Set<string>, arg2: Map<string, string>): void;
-
-const x = [new Map<string, string>()] as const;
-foo(new Set<string>(), ...x);
-    `,
-    `
-declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
-foo(1 as any, new Set<any>(), [] as any[]);
-    `,
-    `
-declare function foo(...params: [number, string, any]): void;
-foo(1, 'a', 1 as any);
-    `,
-    // Unfortunately - we cannot handle this case because TS infers `params` to be a tuple type
-    // that tuple type is the same as the type of
-    `
-declare function foo<E extends string[]>(...params: E): void;
-
-foo('a', 'b', 1 as any);
-    `,
-    `
-declare function toHaveBeenCalledWith<E extends any[]>(...params: E): void;
-toHaveBeenCalledWith(1 as any);
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
-    `
-declare function acceptsMap(arg: Map<string, string>): void;
-acceptsMap(new Map());
-    `,
-    `
-type T = [number, T[]];
-declare function foo(t: T): void;
-declare const t: T;
-
-foo(t);
-    `,
-    `
-type T = Array<T>;
-declare function foo<T>(t: T): T;
-const t: T = [];
-foo(t);
-    `,
-    `
-function foo(templates: TemplateStringsArray) {}
-foo\`\`;
-    `,
-    `
-function foo(templates: TemplateStringsArray, arg: any) {}
-foo\`\${1 as any}\`;
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -546,5 +440,111 @@ foo\`\${arg}\`;
         },
       ],
     },
+  ],
+  valid: [
+    // unknown function should be ignored
+    `
+doesNotExist(1 as any);
+    `,
+    // non-function call should be ignored
+    `
+const foo = 1;
+foo(1 as any);
+    `,
+    // too many arguments should be ignored as this is a TS error
+    `
+declare function foo(arg: number): void;
+foo(1, 1 as any, 2 as any);
+    `,
+    `
+declare function foo(arg: number, arg2: string): void;
+foo(1, 'a');
+    `,
+    `
+declare function foo(arg: any): void;
+foo(1 as any);
+    `,
+    `
+declare function foo(arg: unknown): void;
+foo(1 as any);
+    `,
+    `
+declare function foo(...arg: number[]): void;
+foo(1, 2, 3);
+    `,
+    `
+declare function foo(...arg: any[]): void;
+foo(1, 2, 3, 4 as any);
+    `,
+    `
+declare function foo(arg: number, arg2: number): void;
+const x = [1, 2] as const;
+foo(...x);
+    `,
+    `
+declare function foo(arg: any, arg2: number): void;
+const x = [1 as any, 2] as const;
+foo(...x);
+    `,
+    `
+declare function foo(arg1: string, arg2: string): void;
+const x: string[] = [];
+foo(...x);
+    `,
+    `
+function foo(arg1: number, arg2: number) {}
+foo(...([1, 1, 1] as [number, number, number]));
+    `,
+    `
+declare function foo(arg1: Set<string>, arg2: Map<string, string>): void;
+
+const x = [new Map<string, string>()] as const;
+foo(new Set<string>(), ...x);
+    `,
+    `
+declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
+foo(1 as any, new Set<any>(), [] as any[]);
+    `,
+    `
+declare function foo(...params: [number, string, any]): void;
+foo(1, 'a', 1 as any);
+    `,
+    // Unfortunately - we cannot handle this case because TS infers `params` to be a tuple type
+    // that tuple type is the same as the type of
+    `
+declare function foo<E extends string[]>(...params: E): void;
+
+foo('a', 'b', 1 as any);
+    `,
+    `
+declare function toHaveBeenCalledWith<E extends any[]>(...params: E): void;
+toHaveBeenCalledWith(1 as any);
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2109
+    `
+declare function acceptsMap(arg: Map<string, string>): void;
+acceptsMap(new Map());
+    `,
+    `
+type T = [number, T[]];
+declare function foo(t: T): void;
+declare const t: T;
+
+foo(t);
+    `,
+    `
+type T = Array<T>;
+declare function foo<T>(t: T): T;
+const t: T = [];
+foo(t);
+    `,
+    `
+function foo(templates: TemplateStringsArray) {}
+foo\`\`;
+    `,
+    `
+function foo(templates: TemplateStringsArray, arg: any) {}
+foo\`\${1 as any}\`;
+    `,
   ],
 });

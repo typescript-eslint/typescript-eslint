@@ -11,6 +11,7 @@ export default createRule<[], MessageIds>({
   name: 'prefer-ts-expect-error',
   meta: {
     type: 'problem',
+    fixable: 'code',
     deprecated: {
       deprecatedSince: '7.11.0',
       replacedBy: [
@@ -26,7 +27,6 @@ export default createRule<[], MessageIds>({
     docs: {
       description: 'Enforce using `@ts-expect-error` over `@ts-ignore`',
     },
-    fixable: 'code',
     messages: {
       preferExpectErrorComment:
         'Use "@ts-expect-error" to ensure an error is actually being suppressed.',

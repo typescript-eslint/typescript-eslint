@@ -12,12 +12,12 @@ export default createRule({
   name: 'no-array-constructor',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
-      description: 'Disallow generic `Array` constructors',
       extendsBaseRule: true,
       recommended: 'recommended',
+      description: 'Disallow generic `Array` constructors',
     },
-    fixable: 'code',
     messages: {
       useLiteral: 'The array literal notation [] is preferable.',
     },

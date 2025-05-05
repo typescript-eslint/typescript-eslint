@@ -15,97 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('prefer-regexp-exec', rule, {
-  valid: [
-    "'something'.match();",
-    "'something'.match(/thing/g);",
-    `
-const text = 'something';
-const search = /thing/g;
-text.match(search);
-    `,
-    `
-const match = (s: RegExp) => 'something';
-match(/thing/);
-    `,
-    `
-const a = { match: (s: RegExp) => 'something' };
-a.match(/thing/);
-    `,
-    `
-function f(s: string | string[]) {
-  s.match(/e/);
-}
-    `,
-    "(Math.random() > 0.5 ? 'abc' : 123).match(2);",
-    "'212'.match(2);",
-    "'212'.match(+2);",
-    "'oNaNo'.match(NaN);",
-    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(Infinity);",
-    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(+Infinity);",
-    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(-Infinity);",
-    "'void and null'.match(null);",
-    `
-const matchers = ['package-lock.json', /regexp/];
-const file = '';
-matchers.some(matcher => !!file.match(matcher));
-    `,
-    `
-const matchers = [/regexp/, 'package-lock.json'];
-const file = '';
-matchers.some(matcher => !!file.match(matcher));
-    `,
-    `
-const matchers = [{ match: (s: RegExp) => false }];
-const file = '';
-matchers.some(matcher => !!file.match(matcher));
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/3477
-    `
-function test(pattern: string) {
-  'hello hello'.match(RegExp(pattern, 'g'))?.reduce(() => []);
-}
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/3477
-    `
-function test(pattern: string) {
-  'hello hello'.match(new RegExp(pattern, 'gi'))?.reduce(() => []);
-}
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/3477
-    `
-const matchCount = (str: string, re: RegExp) => {
-  return (str.match(re) || []).length;
-};
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/6928
-    `
-function test(str: string) {
-  str.match('[a-z');
-}
-    `,
-    {
-      code: `
-const text = 'something';
-declare const search: RegExp;
-text.match(search);
-      `,
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/8614
-    {
-      code: `
-const text = 'something';
-declare const obj: { search: RegExp };
-text.match(obj.search);
-      `,
-    },
-    {
-      code: `
-const text = 'something';
-declare function returnsRegexp(): RegExp;
-text.match(returnsRegexp());
-      `,
-    },
-  ],
   invalid: [
     {
       code: "'something'.match(/thing/);",
@@ -289,6 +198,97 @@ function temp(text: string): void {
   new RegExp(\`\${'hello'}\`).exec(text);
   new RegExp(\`\${'hello'.toString()}\`).exec(text);
 }
+      `,
+    },
+  ],
+  valid: [
+    "'something'.match();",
+    "'something'.match(/thing/g);",
+    `
+const text = 'something';
+const search = /thing/g;
+text.match(search);
+    `,
+    `
+const match = (s: RegExp) => 'something';
+match(/thing/);
+    `,
+    `
+const a = { match: (s: RegExp) => 'something' };
+a.match(/thing/);
+    `,
+    `
+function f(s: string | string[]) {
+  s.match(/e/);
+}
+    `,
+    "(Math.random() > 0.5 ? 'abc' : 123).match(2);",
+    "'212'.match(2);",
+    "'212'.match(+2);",
+    "'oNaNo'.match(NaN);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(Infinity);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(+Infinity);",
+    "'Infinity contains -Infinity and +Infinity in JavaScript.'.match(-Infinity);",
+    "'void and null'.match(null);",
+    `
+const matchers = ['package-lock.json', /regexp/];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
+    `
+const matchers = [/regexp/, 'package-lock.json'];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
+    `
+const matchers = [{ match: (s: RegExp) => false }];
+const file = '';
+matchers.some(matcher => !!file.match(matcher));
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3477
+    `
+function test(pattern: string) {
+  'hello hello'.match(RegExp(pattern, 'g'))?.reduce(() => []);
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3477
+    `
+function test(pattern: string) {
+  'hello hello'.match(new RegExp(pattern, 'gi'))?.reduce(() => []);
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3477
+    `
+const matchCount = (str: string, re: RegExp) => {
+  return (str.match(re) || []).length;
+};
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6928
+    `
+function test(str: string) {
+  str.match('[a-z');
+}
+    `,
+    {
+      code: `
+const text = 'something';
+declare const search: RegExp;
+text.match(search);
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8614
+    {
+      code: `
+const text = 'something';
+declare const obj: { search: RegExp };
+text.match(obj.search);
+      `,
+    },
+    {
+      code: `
+const text = 'something';
+declare function returnsRegexp(): RegExp;
+text.match(returnsRegexp());
       `,
     },
   ],

@@ -6,61 +6,6 @@ import rule from '../../src/rules/no-wrapper-object-types';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-wrapper-object-types', rule, {
-  valid: [
-    'let value: NumberLike;',
-    'let value: Other;',
-    'let value: bigint;',
-    'let value: boolean;',
-    'let value: never;',
-    'let value: null;',
-    'let value: number;',
-    'let value: symbol;',
-    'let value: undefined;',
-    'let value: unknown;',
-    'let value: void;',
-    'let value: () => void;',
-    'let value: () => () => void;',
-    'let Bigint;',
-    'let Boolean;',
-    'let Never;',
-    'let Null;',
-    'let Number;',
-    'let Symbol;',
-    'let Undefined;',
-    'let Unknown;',
-    'let Void;',
-    'interface Bigint {}',
-    'interface Boolean {}',
-    'interface Never {}',
-    'interface Null {}',
-    'interface Number {}',
-    'interface Symbol {}',
-    'interface Undefined {}',
-    'interface Unknown {}',
-    'interface Void {}',
-    'type Bigint = {};',
-    'type Boolean = {};',
-    'type Never = {};',
-    'type Null = {};',
-    'type Number = {};',
-    'type Symbol = {};',
-    'type Undefined = {};',
-    'type Unknown = {};',
-    'type Void = {};',
-    'class MyClass extends Number {}',
-    `
-      type Number = 0 | 1;
-      let value: Number;
-    `,
-    `
-      type Bigint = 0 | 1;
-      let value: Bigint;
-    `,
-    `
-      type T<Symbol> = Symbol;
-      type U<UU> = UU extends T<infer Function> ? Function : never;
-    `,
-  ],
   invalid: [
     {
       code: 'let value: BigInt;',
@@ -236,5 +181,60 @@ ruleTester.run('no-wrapper-object-types', rule, {
       ],
       output: 'type MyType = number & string;',
     },
+  ],
+  valid: [
+    'let value: NumberLike;',
+    'let value: Other;',
+    'let value: bigint;',
+    'let value: boolean;',
+    'let value: never;',
+    'let value: null;',
+    'let value: number;',
+    'let value: symbol;',
+    'let value: undefined;',
+    'let value: unknown;',
+    'let value: void;',
+    'let value: () => void;',
+    'let value: () => () => void;',
+    'let Bigint;',
+    'let Boolean;',
+    'let Never;',
+    'let Null;',
+    'let Number;',
+    'let Symbol;',
+    'let Undefined;',
+    'let Unknown;',
+    'let Void;',
+    'interface Bigint {}',
+    'interface Boolean {}',
+    'interface Never {}',
+    'interface Null {}',
+    'interface Number {}',
+    'interface Symbol {}',
+    'interface Undefined {}',
+    'interface Unknown {}',
+    'interface Void {}',
+    'type Bigint = {};',
+    'type Boolean = {};',
+    'type Never = {};',
+    'type Null = {};',
+    'type Number = {};',
+    'type Symbol = {};',
+    'type Undefined = {};',
+    'type Unknown = {};',
+    'type Void = {};',
+    'class MyClass extends Number {}',
+    `
+      type Number = 0 | 1;
+      let value: Number;
+    `,
+    `
+      type Bigint = 0 | 1;
+      let value: Bigint;
+    `,
+    `
+      type T<Symbol> = Symbol;
+      type U<UU> = UU extends T<infer Function> ? Function : never;
+    `,
   ],
 });

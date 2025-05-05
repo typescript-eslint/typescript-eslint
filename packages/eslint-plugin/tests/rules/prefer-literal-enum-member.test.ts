@@ -5,160 +5,6 @@ import rule from '../../src/rules/prefer-literal-enum-member';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-literal-enum-member', rule, {
-  valid: [
-    `
-enum ValidRegex {
-  A = /test/,
-}
-    `,
-    `
-enum ValidString {
-  A = 'test',
-}
-    `,
-    `
-enum ValidLiteral {
-  A = \`test\`,
-}
-    `,
-    `
-enum ValidNumber {
-  A = 42,
-}
-    `,
-    `
-enum ValidNumber {
-  A = -42,
-}
-    `,
-    `
-enum ValidNumber {
-  A = +42,
-}
-    `,
-    `
-enum ValidNull {
-  A = null,
-}
-    `,
-    `
-enum ValidPlain {
-  A,
-}
-    `,
-    `
-enum ValidQuotedKey {
-  'a',
-}
-    `,
-    `
-enum ValidQuotedKeyWithAssignment {
-  'a' = 1,
-}
-    `,
-    `
-enum ValidKeyWithComputedSyntaxButNoComputedKey {
-  ['a'],
-}
-    `,
-    {
-      code: `
-enum Foo {
-  A = 1 << 0,
-  B = 1 >> 0,
-  C = 1 >>> 0,
-  D = 1 | 0,
-  E = 1 & 0,
-  F = 1 ^ 0,
-  G = ~1,
-}
-      `,
-      options: [{ allowBitwiseExpressions: true }],
-    },
-    {
-      code: `
-enum Foo {
-  A = 1 << 0,
-  B = 1 >> 0,
-  C = A | B,
-}
-      `,
-      options: [{ allowBitwiseExpressions: true }],
-    },
-    {
-      code: `
-enum Foo {
-  A = 1 << 0,
-  B = 1 >> 0,
-  C = Foo.A | Foo.B,
-}
-      `,
-      options: [{ allowBitwiseExpressions: true }],
-    },
-    {
-      code: `
-enum Foo {
-  A = 1 << 0,
-  B = 1 >> 0,
-  C = Foo['A'] | B,
-}
-      `,
-      options: [{ allowBitwiseExpressions: true }],
-    },
-    {
-      code: `
-enum Foo {
-  ['A-1'] = 1 << 0,
-  C = ~Foo['A-1'],
-}
-      `,
-      options: [{ allowBitwiseExpressions: true }],
-    },
-    {
-      code: `
-enum Foo {
-  A = 1 << 0,
-  B = 1 << 1,
-  C = 1 << 2,
-  D = A | B | C,
-}
-      `,
-      options: [{ allowBitwiseExpressions: true }],
-    },
-    {
-      code: `
-enum Foo {
-  A = 1 << 0,
-  B = 1 << 1,
-  C = 1 << 2,
-  D = Foo.A | Foo.B | Foo.C,
-}
-      `,
-      options: [{ allowBitwiseExpressions: true }],
-    },
-    {
-      code: `
-enum Foo {
-  A = 1 << 0,
-  B = 1 << 1,
-  C = 1 << 2,
-  D = Foo.A | (Foo.B & ~Foo.C),
-}
-      `,
-      options: [{ allowBitwiseExpressions: true }],
-    },
-    {
-      code: `
-enum Foo {
-  A = 1 << 0,
-  B = 1 << 1,
-  C = 1 << 2,
-  D = Foo.A | -Foo.B,
-}
-      `,
-      options: [{ allowBitwiseExpressions: true }],
-    },
-  ],
   invalid: [
     {
       code: `
@@ -490,6 +336,160 @@ enum Foo {
           messageId: 'notLiteral',
         },
       ],
+    },
+  ],
+  valid: [
+    `
+enum ValidRegex {
+  A = /test/,
+}
+    `,
+    `
+enum ValidString {
+  A = 'test',
+}
+    `,
+    `
+enum ValidLiteral {
+  A = \`test\`,
+}
+    `,
+    `
+enum ValidNumber {
+  A = 42,
+}
+    `,
+    `
+enum ValidNumber {
+  A = -42,
+}
+    `,
+    `
+enum ValidNumber {
+  A = +42,
+}
+    `,
+    `
+enum ValidNull {
+  A = null,
+}
+    `,
+    `
+enum ValidPlain {
+  A,
+}
+    `,
+    `
+enum ValidQuotedKey {
+  'a',
+}
+    `,
+    `
+enum ValidQuotedKeyWithAssignment {
+  'a' = 1,
+}
+    `,
+    `
+enum ValidKeyWithComputedSyntaxButNoComputedKey {
+  ['a'],
+}
+    `,
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = 1 >>> 0,
+  D = 1 | 0,
+  E = 1 & 0,
+  F = 1 ^ 0,
+  G = ~1,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = A | B,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = Foo.A | Foo.B,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = Foo['A'] | B,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  ['A-1'] = 1 << 0,
+  C = ~Foo['A-1'],
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = A | B | C,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | Foo.B | Foo.C,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | (Foo.B & ~Foo.C),
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | -Foo.B,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
     },
   ],
 });

@@ -27,8 +27,8 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow member access on a value with type `any`',
       recommended: 'recommended',
+      description: 'Disallow member access on a value with type `any`',
       requiresTypeChecking: true,
     },
     messages: {

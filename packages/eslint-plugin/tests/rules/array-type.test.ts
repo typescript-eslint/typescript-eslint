@@ -10,401 +10,6 @@ import { areOptionsValid } from '../areOptionsValid';
 const ruleTester = new RuleTester();
 
 ruleTester.run('array-type', rule, {
-  valid: [
-    // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
-    {
-      code: 'let a: number[] = [];',
-      options: [{ default: 'array' }],
-    },
-    {
-      code: 'let a: (string | number)[] = [];',
-      options: [{ default: 'array' }],
-    },
-    {
-      code: 'let a: readonly number[] = [];',
-      options: [{ default: 'array' }],
-    },
-    {
-      code: 'let a: readonly (string | number)[] = [];',
-      options: [{ default: 'array' }],
-    },
-    {
-      code: 'let a: number[] = [];',
-      options: [{ default: 'array', readonly: 'array' }],
-    },
-    {
-      code: 'let a: (string | number)[] = [];',
-      options: [{ default: 'array', readonly: 'array' }],
-    },
-    {
-      code: 'let a: readonly number[] = [];',
-      options: [{ default: 'array', readonly: 'array' }],
-    },
-    {
-      code: 'let a: readonly (string | number)[] = [];',
-      options: [{ default: 'array', readonly: 'array' }],
-    },
-    {
-      code: 'let a: number[] = [];',
-      options: [{ default: 'array', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: (string | number)[] = [];',
-      options: [{ default: 'array', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: readonly number[] = [];',
-      options: [{ default: 'array', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'array', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: number[] = [];',
-      options: [{ default: 'array', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: (string | number)[] = [];',
-      options: [{ default: 'array', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<number> = [];',
-      options: [{ default: 'array', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'array', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: number[] = [];',
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: 'let a: Array<string | number> = [];',
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: 'let a: readonly number[] = [];',
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: 'let a: number[] = [];',
-      options: [{ default: 'array-simple', readonly: 'array' }],
-    },
-    {
-      code: 'let a: Array<string | number> = [];',
-      options: [{ default: 'array-simple', readonly: 'array' }],
-    },
-    {
-      code: 'let a: readonly number[] = [];',
-      options: [{ default: 'array-simple', readonly: 'array' }],
-    },
-    {
-      code: 'let a: readonly (string | number)[] = [];',
-      options: [{ default: 'array-simple', readonly: 'array' }],
-    },
-    {
-      code: 'let a: number[] = [];',
-      options: [{ default: 'array-simple', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: Array<string | number> = [];',
-      options: [{ default: 'array-simple', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: readonly number[] = [];',
-      options: [{ default: 'array-simple', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'array-simple', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: number[] = [];',
-      options: [{ default: 'array-simple', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: Array<string | number> = [];',
-      options: [{ default: 'array-simple', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<number> = [];',
-      options: [{ default: 'array-simple', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'array-simple', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: Array<number> = [];',
-      options: [{ default: 'generic' }],
-    },
-    {
-      code: 'let a: Array<string | number> = [];',
-      options: [{ default: 'generic' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<number> = [];',
-      options: [{ default: 'generic' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'generic' }],
-    },
-    {
-      code: 'let a: Array<number> = [];',
-      options: [{ default: 'generic', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: Array<string | number> = [];',
-      options: [{ default: 'generic', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<number> = [];',
-      options: [{ default: 'generic', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'generic', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: Array<number> = [];',
-      options: [{ default: 'generic', readonly: 'array' }],
-    },
-    {
-      code: 'let a: Array<string | number> = [];',
-      options: [{ default: 'generic', readonly: 'array' }],
-    },
-    {
-      code: 'let a: readonly number[] = [];',
-      options: [{ default: 'generic', readonly: 'array' }],
-    },
-    {
-      code: 'let a: readonly (string | number)[] = [];',
-      options: [{ default: 'generic', readonly: 'array' }],
-    },
-    {
-      code: 'let a: Array<number> = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: Array<string | number> = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: readonly number[] = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: Array<bigint> = [];',
-      options: [{ default: 'generic', readonly: 'array' }],
-    },
-    {
-      code: 'let a: readonly bigint[] = [];',
-      options: [{ default: 'generic', readonly: 'array' }],
-    },
-    {
-      code: 'let a: readonly (string | bigint)[] = [];',
-      options: [{ default: 'generic', readonly: 'array' }],
-    },
-    {
-      code: 'let a: Array<bigint> = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: Array<string | bigint> = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: readonly bigint[] = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
-    },
-    {
-      code: 'let a: ReadonlyArray<string | bigint> = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
-    },
-
-    // End of base cases
-
-    {
-      code: 'let a = new Array();',
-      options: [{ default: 'array' }],
-    },
-    {
-      code: 'let a: { foo: Bar[] }[] = [];',
-      options: [{ default: 'array' }],
-    },
-    {
-      code: 'function foo(a: Array<Bar>): Array<Bar> {}',
-      options: [{ default: 'generic' }],
-    },
-    {
-      code: 'let yy: number[][] = [[4, 5], [6]];',
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: `
-function fooFunction(foo: Array<ArrayClass<string>>) {
-  return foo.map(e => e.foo);
-}
-      `,
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: `
-function bazFunction(baz: Arr<ArrayClass<String>>) {
-  return baz.map(e => e.baz);
-}
-      `,
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: 'let fooVar: Array<(c: number) => number>;',
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: 'type fooUnion = Array<string | number | boolean>;',
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: 'type fooIntersection = Array<string & number>;',
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: `
-namespace fooName {
-  type BarType = { bar: string };
-  type BazType<T> = Arr<T>;
-}
-      `,
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: `
-interface FooInterface {
-  '.bar': { baz: string[] };
-}
-      `,
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: 'let yy: number[][] = [[4, 5], [6]];',
-      options: [{ default: 'array' }],
-    },
-    {
-      code: "let ya = [[1, '2']] as [number, string][];",
-      options: [{ default: 'array' }],
-    },
-    {
-      code: `
-function barFunction(bar: ArrayClass<String>[]) {
-  return bar.map(e => e.bar);
-}
-      `,
-      options: [{ default: 'array' }],
-    },
-    {
-      code: `
-function bazFunction(baz: Arr<ArrayClass<String>>) {
-  return baz.map(e => e.baz);
-}
-      `,
-      options: [{ default: 'array' }],
-    },
-    {
-      code: 'let barVar: ((c: number) => number)[];',
-      options: [{ default: 'array' }],
-    },
-    {
-      code: 'type barUnion = (string | number | boolean)[];',
-      options: [{ default: 'array' }],
-    },
-    {
-      code: 'type barIntersection = (string & number)[];',
-      options: [{ default: 'array' }],
-    },
-    {
-      code: `
-interface FooInterface {
-  '.bar': { baz: string[] };
-}
-      `,
-      options: [{ default: 'array' }],
-    },
-    {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/172
-      code: 'type Unwrap<T> = T extends (infer E)[] ? E : T;',
-      options: [{ default: 'array' }],
-    },
-    {
-      code: 'let xx: Array<Array<number>> = [[1, 2], [3]];',
-      options: [{ default: 'generic' }],
-    },
-    {
-      code: 'type Arr<T> = Array<T>;',
-      options: [{ default: 'generic' }],
-    },
-    {
-      code: `
-function fooFunction(foo: Array<ArrayClass<string>>) {
-  return foo.map(e => e.foo);
-}
-      `,
-      options: [{ default: 'generic' }],
-    },
-    {
-      code: `
-function bazFunction(baz: Arr<ArrayClass<String>>) {
-  return baz.map(e => e.baz);
-}
-      `,
-      options: [{ default: 'generic' }],
-    },
-    {
-      code: 'let fooVar: Array<(c: number) => number>;',
-      options: [{ default: 'generic' }],
-    },
-    {
-      code: 'type fooUnion = Array<string | number | boolean>;',
-      options: [{ default: 'generic' }],
-    },
-    {
-      code: 'type fooIntersection = Array<string & number>;',
-      options: [{ default: 'generic' }],
-    },
-    {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/172
-      code: 'type Unwrap<T> = T extends Array<infer E> ? E : T;',
-      options: [{ default: 'generic' }],
-    },
-
-    // nested readonly
-    {
-      code: 'let a: ReadonlyArray<number[]> = [[]];',
-      options: [{ default: 'array', readonly: 'generic' }],
-    },
-    {
-      code: 'let a: readonly Array<number>[] = [[]];',
-      options: [{ default: 'generic', readonly: 'array' }],
-    },
-    {
-      code: 'let a: Readonly = [];',
-      options: [{ default: 'generic', readonly: 'array' }],
-    },
-    {
-      code: "const x: Readonly<string> = 'a';",
-      options: [{ default: 'array' }],
-    },
-  ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
     {
@@ -1989,6 +1594,401 @@ interface FooInterface {
       options: [{ default: 'generic' }],
       output:
         'type Conditional<T> = Array<T extends string ? string : number>;',
+    },
+  ],
+  valid: [
+    // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
+    {
+      code: 'let a: number[] = [];',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: 'let a: (string | number)[] = [];',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: 'let a: readonly number[] = [];',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: 'let a: readonly (string | number)[] = [];',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: 'let a: number[] = [];',
+      options: [{ default: 'array', readonly: 'array' }],
+    },
+    {
+      code: 'let a: (string | number)[] = [];',
+      options: [{ default: 'array', readonly: 'array' }],
+    },
+    {
+      code: 'let a: readonly number[] = [];',
+      options: [{ default: 'array', readonly: 'array' }],
+    },
+    {
+      code: 'let a: readonly (string | number)[] = [];',
+      options: [{ default: 'array', readonly: 'array' }],
+    },
+    {
+      code: 'let a: number[] = [];',
+      options: [{ default: 'array', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: (string | number)[] = [];',
+      options: [{ default: 'array', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: readonly number[] = [];',
+      options: [{ default: 'array', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<string | number> = [];',
+      options: [{ default: 'array', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: number[] = [];',
+      options: [{ default: 'array', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: (string | number)[] = [];',
+      options: [{ default: 'array', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<number> = [];',
+      options: [{ default: 'array', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<string | number> = [];',
+      options: [{ default: 'array', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: number[] = [];',
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: 'let a: Array<string | number> = [];',
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: 'let a: readonly number[] = [];',
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<string | number> = [];',
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: 'let a: number[] = [];',
+      options: [{ default: 'array-simple', readonly: 'array' }],
+    },
+    {
+      code: 'let a: Array<string | number> = [];',
+      options: [{ default: 'array-simple', readonly: 'array' }],
+    },
+    {
+      code: 'let a: readonly number[] = [];',
+      options: [{ default: 'array-simple', readonly: 'array' }],
+    },
+    {
+      code: 'let a: readonly (string | number)[] = [];',
+      options: [{ default: 'array-simple', readonly: 'array' }],
+    },
+    {
+      code: 'let a: number[] = [];',
+      options: [{ default: 'array-simple', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: Array<string | number> = [];',
+      options: [{ default: 'array-simple', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: readonly number[] = [];',
+      options: [{ default: 'array-simple', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<string | number> = [];',
+      options: [{ default: 'array-simple', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: number[] = [];',
+      options: [{ default: 'array-simple', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: Array<string | number> = [];',
+      options: [{ default: 'array-simple', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<number> = [];',
+      options: [{ default: 'array-simple', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<string | number> = [];',
+      options: [{ default: 'array-simple', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: Array<number> = [];',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'let a: Array<string | number> = [];',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<number> = [];',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<string | number> = [];',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'let a: Array<number> = [];',
+      options: [{ default: 'generic', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: Array<string | number> = [];',
+      options: [{ default: 'generic', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<number> = [];',
+      options: [{ default: 'generic', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<string | number> = [];',
+      options: [{ default: 'generic', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: Array<number> = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: 'let a: Array<string | number> = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: 'let a: readonly number[] = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: 'let a: readonly (string | number)[] = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: 'let a: Array<number> = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: Array<string | number> = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: readonly number[] = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<string | number> = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: Array<bigint> = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: 'let a: readonly bigint[] = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: 'let a: readonly (string | bigint)[] = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: 'let a: Array<bigint> = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: Array<string | bigint> = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: readonly bigint[] = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+    },
+    {
+      code: 'let a: ReadonlyArray<string | bigint> = [];',
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+    },
+
+    // End of base cases
+
+    {
+      code: 'let a = new Array();',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: 'let a: { foo: Bar[] }[] = [];',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: 'function foo(a: Array<Bar>): Array<Bar> {}',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'let yy: number[][] = [[4, 5], [6]];',
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: `
+function fooFunction(foo: Array<ArrayClass<string>>) {
+  return foo.map(e => e.foo);
+}
+      `,
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: `
+function bazFunction(baz: Arr<ArrayClass<String>>) {
+  return baz.map(e => e.baz);
+}
+      `,
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: 'let fooVar: Array<(c: number) => number>;',
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: 'type fooUnion = Array<string | number | boolean>;',
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: 'type fooIntersection = Array<string & number>;',
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: `
+namespace fooName {
+  type BarType = { bar: string };
+  type BazType<T> = Arr<T>;
+}
+      `,
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: `
+interface FooInterface {
+  '.bar': { baz: string[] };
+}
+      `,
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: 'let yy: number[][] = [[4, 5], [6]];',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: "let ya = [[1, '2']] as [number, string][];",
+      options: [{ default: 'array' }],
+    },
+    {
+      code: `
+function barFunction(bar: ArrayClass<String>[]) {
+  return bar.map(e => e.bar);
+}
+      `,
+      options: [{ default: 'array' }],
+    },
+    {
+      code: `
+function bazFunction(baz: Arr<ArrayClass<String>>) {
+  return baz.map(e => e.baz);
+}
+      `,
+      options: [{ default: 'array' }],
+    },
+    {
+      code: 'let barVar: ((c: number) => number)[];',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: 'type barUnion = (string | number | boolean)[];',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: 'type barIntersection = (string & number)[];',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: `
+interface FooInterface {
+  '.bar': { baz: string[] };
+}
+      `,
+      options: [{ default: 'array' }],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/172
+      code: 'type Unwrap<T> = T extends (infer E)[] ? E : T;',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: 'let xx: Array<Array<number>> = [[1, 2], [3]];',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'type Arr<T> = Array<T>;',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+function fooFunction(foo: Array<ArrayClass<string>>) {
+  return foo.map(e => e.foo);
+}
+      `,
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: `
+function bazFunction(baz: Arr<ArrayClass<String>>) {
+  return baz.map(e => e.baz);
+}
+      `,
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'let fooVar: Array<(c: number) => number>;',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'type fooUnion = Array<string | number | boolean>;',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'type fooIntersection = Array<string & number>;',
+      options: [{ default: 'generic' }],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/172
+      code: 'type Unwrap<T> = T extends Array<infer E> ? E : T;',
+      options: [{ default: 'generic' }],
+    },
+
+    // nested readonly
+    {
+      code: 'let a: ReadonlyArray<number[]> = [[]];',
+      options: [{ default: 'array', readonly: 'generic' }],
+    },
+    {
+      code: 'let a: readonly Array<number>[] = [[]];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: 'let a: Readonly = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: "const x: Readonly<string> = 'a';",
+      options: [{ default: 'array' }],
     },
   ],
 });

@@ -35,14 +35,14 @@ export default createRule({
   name: 'return-await',
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
-      description: 'Enforce consistent awaiting of returned promises',
       recommended: {
         strict: ['error-handling-correctness-only'],
       },
+      description: 'Enforce consistent awaiting of returned promises',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     // eslint-disable-next-line eslint-plugin/require-meta-has-suggestions -- suggestions are exposed through a helper.
     hasSuggestions: true,
     messages: {

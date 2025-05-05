@@ -33,8 +33,8 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow using code marked as `@deprecated`',
       recommended: 'strict',
+      description: 'Disallow using code marked as `@deprecated`',
       requiresTypeChecking: true,
     },
     messages: {

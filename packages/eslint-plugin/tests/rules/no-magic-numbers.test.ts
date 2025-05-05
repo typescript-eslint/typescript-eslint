@@ -5,237 +5,6 @@ import rule from '../../src/rules/no-magic-numbers';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-magic-numbers', rule, {
-  valid: [
-    {
-      code: 'const FOO = 10;',
-      options: [{ ignoreNumericLiteralTypes: true }],
-    },
-    {
-      code: "type Foo = 'bar';",
-    },
-    {
-      code: 'type Foo = true;',
-    },
-    {
-      code: 'type Foo = 1;',
-      options: [{ ignoreNumericLiteralTypes: true }],
-    },
-    {
-      code: 'type Foo = -1;',
-      options: [{ ignoreNumericLiteralTypes: true }],
-    },
-    {
-      code: 'type Foo = 1 | 2 | 3;',
-      options: [{ ignoreNumericLiteralTypes: true }],
-    },
-    {
-      code: 'type Foo = 1 | -1;',
-      options: [{ ignoreNumericLiteralTypes: true }],
-    },
-    {
-      code: `
-        enum foo {
-          SECOND = 1000,
-          NUM = '0123456789',
-          NEG = -1,
-          POS = +1,
-        }
-      `,
-      options: [{ ignoreEnums: true }],
-    },
-    {
-      code: `
-class Foo {
-  readonly A = 1;
-  readonly B = 2;
-  public static readonly C = 1;
-  static readonly D = 1;
-  readonly E = -1;
-  readonly F = +1;
-  private readonly G = 100n;
-}
-      `,
-      options: [{ ignoreReadonlyClassProperties: true }],
-    },
-    {
-      code: 'type Foo = Bar[0];',
-      options: [{ ignoreTypeIndexes: true }],
-    },
-    {
-      code: 'type Foo = Bar[-1];',
-      options: [{ ignoreTypeIndexes: true }],
-    },
-    {
-      code: 'type Foo = Bar[0xab];',
-      options: [{ ignoreTypeIndexes: true }],
-    },
-    {
-      code: 'type Foo = Bar[5.6e1];',
-      options: [{ ignoreTypeIndexes: true }],
-    },
-    {
-      code: 'type Foo = Bar[10n];',
-      options: [{ ignoreTypeIndexes: true }],
-    },
-    {
-      code: 'type Foo = Bar[1 | -2];',
-      options: [{ ignoreTypeIndexes: true }],
-    },
-    {
-      code: 'type Foo = Bar[1 & -2];',
-      options: [{ ignoreTypeIndexes: true }],
-    },
-    {
-      code: 'type Foo = Bar[1 & number];',
-      options: [{ ignoreTypeIndexes: true }],
-    },
-    {
-      code: 'type Foo = Bar[((1 & -2) | 3) | 4];',
-      options: [{ ignoreTypeIndexes: true }],
-    },
-    {
-      code: 'type Foo = Parameters<Bar>[2];',
-      options: [{ ignoreTypeIndexes: true }],
-    },
-    {
-      code: "type Foo = Bar['baz'];",
-      options: [{ ignoreTypeIndexes: true }],
-    },
-    {
-      code: "type Foo = Bar['baz'];",
-      options: [{ ignoreTypeIndexes: false }],
-    },
-    {
-      code: `
-type Others = [['a'], ['b']];
-
-type Foo = {
-  [K in keyof Others[0]]: Others[K];
-};
-      `,
-      options: [{ ignoreTypeIndexes: true }],
-    },
-    {
-      code: 'type Foo = 1;',
-      options: [{ ignore: [1] }],
-    },
-    {
-      code: 'type Foo = -2;',
-      options: [{ ignore: [-2] }],
-    },
-    {
-      code: 'type Foo = 3n;',
-      options: [{ ignore: ['3n'] }],
-    },
-    {
-      code: 'type Foo = -4n;',
-      options: [{ ignore: ['-4n'] }],
-    },
-    {
-      code: 'type Foo = 5.6;',
-      options: [{ ignore: [5.6] }],
-    },
-    {
-      code: 'type Foo = -7.8;',
-      options: [{ ignore: [-7.8] }],
-    },
-    {
-      code: 'type Foo = 0x0a;',
-      options: [{ ignore: [0x0a] }],
-    },
-    {
-      code: 'type Foo = -0xbc;',
-      options: [{ ignore: [-0xbc] }],
-    },
-    {
-      code: 'type Foo = 1e2;',
-      options: [{ ignore: [1e2] }],
-    },
-    {
-      code: 'type Foo = -3e4;',
-      options: [{ ignore: [-3e4] }],
-    },
-    {
-      code: 'type Foo = 5e-6;',
-      options: [{ ignore: [5e-6] }],
-    },
-    {
-      code: 'type Foo = -7e-8;',
-      options: [{ ignore: [-7e-8] }],
-    },
-    {
-      code: 'type Foo = 1.1e2;',
-      options: [{ ignore: [1.1e2] }],
-    },
-    {
-      code: 'type Foo = -3.1e4;',
-      options: [{ ignore: [-3.1e4] }],
-    },
-    {
-      code: 'type Foo = 5.1e-6;',
-      options: [{ ignore: [5.1e-6] }],
-    },
-    {
-      code: 'type Foo = -7.1e-8;',
-      options: [{ ignore: [-7.1e-8] }],
-    },
-    {
-      code: `
-interface Foo {
-  bar: 1;
-}
-      `,
-      options: [{ ignore: [1], ignoreNumericLiteralTypes: true }],
-    },
-    {
-      code: `
-enum foo {
-  SECOND = 1000,
-  NUM = '0123456789',
-  NEG = -1,
-  POS = +2,
-}
-      `,
-      options: [{ ignore: [1000, -1, 2], ignoreEnums: false }],
-    },
-    {
-      code: `
-class Foo {
-  readonly A = 1;
-  readonly B = 2;
-  public static readonly C = 3;
-  static readonly D = 4;
-  readonly E = -5;
-  readonly F = +6;
-  private readonly G = 100n;
-  private static readonly H = -2000n;
-}
-      `,
-      options: [
-        {
-          ignore: [1, 2, 3, 4, -5, 6, '100n', '-2000n'],
-          ignoreReadonlyClassProperties: false,
-        },
-      ],
-    },
-    {
-      code: 'type Foo = Bar[0];',
-      options: [{ ignore: [0], ignoreTypeIndexes: false }],
-    },
-    {
-      code: `
-type Other = {
-  [0]: 3;
-};
-
-type Foo = {
-  [K in keyof Other]: \`\${K & number}\`;
-};
-      `,
-      options: [{ ignore: [0, 3], ignoreTypeIndexes: true }],
-    },
-  ],
-
   invalid: [
     {
       code: 'type Foo = 1;',
@@ -939,6 +708,237 @@ type Foo = {
         },
       ],
       options: [{ ignore: [7.1e-8] }],
+    },
+  ],
+
+  valid: [
+    {
+      code: 'const FOO = 10;',
+      options: [{ ignoreNumericLiteralTypes: true }],
+    },
+    {
+      code: "type Foo = 'bar';",
+    },
+    {
+      code: 'type Foo = true;',
+    },
+    {
+      code: 'type Foo = 1;',
+      options: [{ ignoreNumericLiteralTypes: true }],
+    },
+    {
+      code: 'type Foo = -1;',
+      options: [{ ignoreNumericLiteralTypes: true }],
+    },
+    {
+      code: 'type Foo = 1 | 2 | 3;',
+      options: [{ ignoreNumericLiteralTypes: true }],
+    },
+    {
+      code: 'type Foo = 1 | -1;',
+      options: [{ ignoreNumericLiteralTypes: true }],
+    },
+    {
+      code: `
+        enum foo {
+          SECOND = 1000,
+          NUM = '0123456789',
+          NEG = -1,
+          POS = +1,
+        }
+      `,
+      options: [{ ignoreEnums: true }],
+    },
+    {
+      code: `
+class Foo {
+  readonly A = 1;
+  readonly B = 2;
+  public static readonly C = 1;
+  static readonly D = 1;
+  readonly E = -1;
+  readonly F = +1;
+  private readonly G = 100n;
+}
+      `,
+      options: [{ ignoreReadonlyClassProperties: true }],
+    },
+    {
+      code: 'type Foo = Bar[0];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[-1];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[0xab];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[5.6e1];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[10n];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[1 | -2];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[1 & -2];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[1 & number];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Bar[((1 & -2) | 3) | 4];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = Parameters<Bar>[2];',
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: "type Foo = Bar['baz'];",
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: "type Foo = Bar['baz'];",
+      options: [{ ignoreTypeIndexes: false }],
+    },
+    {
+      code: `
+type Others = [['a'], ['b']];
+
+type Foo = {
+  [K in keyof Others[0]]: Others[K];
+};
+      `,
+      options: [{ ignoreTypeIndexes: true }],
+    },
+    {
+      code: 'type Foo = 1;',
+      options: [{ ignore: [1] }],
+    },
+    {
+      code: 'type Foo = -2;',
+      options: [{ ignore: [-2] }],
+    },
+    {
+      code: 'type Foo = 3n;',
+      options: [{ ignore: ['3n'] }],
+    },
+    {
+      code: 'type Foo = -4n;',
+      options: [{ ignore: ['-4n'] }],
+    },
+    {
+      code: 'type Foo = 5.6;',
+      options: [{ ignore: [5.6] }],
+    },
+    {
+      code: 'type Foo = -7.8;',
+      options: [{ ignore: [-7.8] }],
+    },
+    {
+      code: 'type Foo = 0x0a;',
+      options: [{ ignore: [0x0a] }],
+    },
+    {
+      code: 'type Foo = -0xbc;',
+      options: [{ ignore: [-0xbc] }],
+    },
+    {
+      code: 'type Foo = 1e2;',
+      options: [{ ignore: [1e2] }],
+    },
+    {
+      code: 'type Foo = -3e4;',
+      options: [{ ignore: [-3e4] }],
+    },
+    {
+      code: 'type Foo = 5e-6;',
+      options: [{ ignore: [5e-6] }],
+    },
+    {
+      code: 'type Foo = -7e-8;',
+      options: [{ ignore: [-7e-8] }],
+    },
+    {
+      code: 'type Foo = 1.1e2;',
+      options: [{ ignore: [1.1e2] }],
+    },
+    {
+      code: 'type Foo = -3.1e4;',
+      options: [{ ignore: [-3.1e4] }],
+    },
+    {
+      code: 'type Foo = 5.1e-6;',
+      options: [{ ignore: [5.1e-6] }],
+    },
+    {
+      code: 'type Foo = -7.1e-8;',
+      options: [{ ignore: [-7.1e-8] }],
+    },
+    {
+      code: `
+interface Foo {
+  bar: 1;
+}
+      `,
+      options: [{ ignore: [1], ignoreNumericLiteralTypes: true }],
+    },
+    {
+      code: `
+enum foo {
+  SECOND = 1000,
+  NUM = '0123456789',
+  NEG = -1,
+  POS = +2,
+}
+      `,
+      options: [{ ignore: [1000, -1, 2], ignoreEnums: false }],
+    },
+    {
+      code: `
+class Foo {
+  readonly A = 1;
+  readonly B = 2;
+  public static readonly C = 3;
+  static readonly D = 4;
+  readonly E = -5;
+  readonly F = +6;
+  private readonly G = 100n;
+  private static readonly H = -2000n;
+}
+      `,
+      options: [
+        {
+          ignore: [1, 2, 3, 4, -5, 6, '100n', '-2000n'],
+          ignoreReadonlyClassProperties: false,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[0];',
+      options: [{ ignore: [0], ignoreTypeIndexes: false }],
+    },
+    {
+      code: `
+type Other = {
+  [0]: 3;
+};
+
+type Foo = {
+  [K in keyof Other]: \`\${K & number}\`;
+};
+      `,
+      options: [{ ignore: [0, 3], ignoreTypeIndexes: true }],
     },
   ],
 });

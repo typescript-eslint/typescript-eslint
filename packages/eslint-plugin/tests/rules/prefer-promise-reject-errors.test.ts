@@ -15,301 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('prefer-promise-reject-errors', rule, {
-  valid: [
-    'Promise.resolve(5);',
-    {
-      code: 'Promise.reject();',
-      options: [
-        {
-          allowEmptyReject: true,
-        },
-      ],
-    },
-    {
-      code: `
-        declare const someAnyValue: any;
-        Promise.reject(someAnyValue);
-      `,
-      options: [{ allowThrowingAny: true, allowThrowingUnknown: false }],
-    },
-    {
-      code: `
-        declare const someUnknownValue: unknown;
-        Promise.reject(someUnknownValue);
-      `,
-      options: [{ allowThrowingAny: false, allowThrowingUnknown: true }],
-    },
-    'Promise.reject(new Error());',
-    'Promise.reject(new TypeError());',
-    "Promise.reject(new Error('foo'));",
-    `
-      class CustomError extends Error {}
-      Promise.reject(new CustomError());
-    `,
-    `
-      declare const foo: () => { err: SyntaxError };
-      Promise.reject(foo().err);
-    `,
-    `
-      declare const foo: () => Promise<Error>;
-      Promise.reject(await foo());
-    `,
-    'Promise.reject((foo = new Error()));',
-    `
-      const foo = Promise;
-      foo.reject(new Error());
-    `,
-    "Promise['reject'](new Error());",
-    'Promise.reject(true && new Error());',
-    `
-      const foo = false;
-      Promise.reject(false || new Error());
-    `,
-    `
-      declare const foo: Readonly<Error>;
-      Promise.reject(foo);
-    `,
-    `
-      declare const foo: Readonly<Error> | Readonly<TypeError>;
-      Promise.reject(foo);
-    `,
-    `
-      declare const foo: Readonly<Error> & Readonly<TypeError>;
-      Promise.reject(foo);
-    `,
-    `
-      declare const foo: Readonly<Error> & { foo: 'bar' };
-      Promise.reject(foo);
-    `,
-    `
-      declare const foo: Readonly<Error & { bar: 'foo' }> & { foo: 'bar' };
-      Promise.reject(foo);
-    `,
-    `
-      declare const foo: Readonly<Readonly<Error>>;
-      Promise.reject(foo);
-    `,
-    `
-      declare const foo: Readonly<Readonly<Readonly<Error>>>;
-      Promise.reject(foo);
-    `,
-    `
-      declare const foo: Readonly<
-        Readonly<Readonly<Error & { bar: 'foo' }> & { foo: 'bar' }> & {
-          fooBar: 'barFoo';
-        }
-      > & { barFoo: 'fooBar' };
-      Promise.reject(foo);
-    `,
-    `
-      declare const foo:
-        | Readonly<Readonly<Error> | Readonly<TypeError & string>>
-        | Readonly<Error>;
-      Promise.reject(foo);
-    `,
-    `
-      type Wrapper<T> = { foo: Readonly<T>[] };
-      declare const foo: Wrapper<Error>['foo'][5];
-      Promise.reject(foo);
-    `,
-    `
-      declare const foo: Error[];
-      Promise.reject(foo[5]);
-    `,
-    `
-      declare const foo: ReadonlyArray<Error>;
-      Promise.reject(foo[5]);
-    `,
-    `
-      declare const foo: [Error];
-      Promise.reject(foo[0]);
-    `,
-
-    `
-      new Promise(function (resolve, reject) {
-        resolve(5);
-      });
-    `,
-    `
-      new Promise(function (resolve, reject) {
-        reject(new Error());
-      });
-    `,
-    `
-      new Promise((resolve, reject) => {
-        reject(new Error());
-      });
-    `,
-    'new Promise((resolve, reject) => reject(new Error()));',
-    {
-      code: `
-        new Promise(function (resolve, reject) {
-          reject();
-        });
-      `,
-      options: [
-        {
-          allowEmptyReject: true,
-        },
-      ],
-    },
-    'new Promise((yes, no) => no(new Error()));',
-    'new Promise();',
-    'new Promise(5);',
-    'new Promise((resolve, { apply }) => {});',
-    'new Promise((resolve, reject) => {});',
-    'new Promise((resolve, reject) => reject);',
-    `
-      class CustomError extends Error {}
-      new Promise(function (resolve, reject) {
-        reject(new CustomError());
-      });
-    `,
-    `
-      declare const foo: () => { err: SyntaxError };
-      new Promise(function (resolve, reject) {
-        reject(foo().err);
-      });
-    `,
-    'new Promise((resolve, reject) => reject((foo = new Error())));',
-    `
-      new Foo((resolve, reject) => reject(5));
-    `,
-    `
-      class Foo {
-        constructor(
-          executor: (resolve: () => void, reject: (reason?: any) => void) => void,
-        ): Promise<any> {}
-      }
-      new Foo((resolve, reject) => reject(5));
-    `,
-    `
-      new Promise((resolve, reject) => {
-        return function (reject) {
-          reject(5);
-        };
-      });
-    `,
-    'new Promise((resolve, reject) => resolve(5, reject));',
-    `
-      class C {
-        #error: Error;
-        foo() {
-          Promise.reject(this.#error);
-        }
-      }
-    `,
-    `
-      const foo = Promise;
-      new foo((resolve, reject) => reject(new Error()));
-    `,
-    `
-      declare const foo: Readonly<Error>;
-      new Promise((resolve, reject) => reject(foo));
-    `,
-    `
-      declare const foo: Readonly<Error> | Readonly<TypeError>;
-      new Promise((resolve, reject) => reject(foo));
-    `,
-    `
-      declare const foo: Readonly<Error> & Readonly<TypeError>;
-      new Promise((resolve, reject) => reject(foo));
-    `,
-    `
-      declare const foo: Readonly<Error> & { foo: 'bar' };
-      new Promise((resolve, reject) => reject(foo));
-    `,
-    `
-      declare const foo: Readonly<Error & { bar: 'foo' }> & { foo: 'bar' };
-      new Promise((resolve, reject) => reject(foo));
-    `,
-    `
-      declare const foo: Readonly<Readonly<Error>>;
-      new Promise((resolve, reject) => reject(foo));
-    `,
-    `
-      declare const foo: Readonly<Readonly<Readonly<Error>>>;
-      new Promise((resolve, reject) => reject(foo));
-    `,
-    `
-      declare const foo: Readonly<
-        Readonly<Readonly<Error & { bar: 'foo' }> & { foo: 'bar' }> & {
-          fooBar: 'barFoo';
-        }
-      > & { barFoo: 'fooBar' };
-      new Promise((resolve, reject) => reject(foo));
-    `,
-    `
-      declare const foo:
-        | Readonly<Readonly<Error> | Readonly<TypeError & string>>
-        | Readonly<Error>;
-      new Promise((resolve, reject) => reject(foo));
-    `,
-    `
-      type Wrapper<T> = { foo: Readonly<T>[] };
-      declare const foo: Wrapper<Error>['foo'][5];
-      new Promise((resolve, reject) => reject(foo));
-    `,
-    `
-      declare const foo: Error[];
-      new Promise((resolve, reject) => reject(foo[5]));
-    `,
-    `
-      declare const foo: ReadonlyArray<Error>;
-      new Promise((resolve, reject) => reject(foo[5]));
-    `,
-    `
-      declare const foo: [Error];
-      new Promise((resolve, reject) => reject(foo[0]));
-    `,
-    `
-      class Foo extends Promise<number> {}
-      Foo.reject(new Error());
-    `,
-    `
-      class Foo extends Promise<number> {}
-      new Foo((resolve, reject) => reject(new Error()));
-    `,
-    `
-      declare const someRandomCall: {
-        reject(arg: any): void;
-      };
-      someRandomCall.reject(5);
-    `,
-    `
-      declare const foo: PromiseConstructor;
-      foo.reject(new Error());
-    `,
-    'console[Symbol.iterator]();',
-    `
-      class A {
-        a = [];
-        [Symbol.iterator]() {
-          return this.a[Symbol.iterator]();
-        }
-      }
-    `,
-    `
-      declare const foo: PromiseConstructor;
-      function fun<T extends Error>(t: T): void {
-        foo.reject(t);
-      }
-    `,
-    {
-      code: `
-        declare const someAnyValue: any;
-        Promise.reject(someAnyValue);
-      `,
-      options: [{ allowThrowingAny: true, allowThrowingUnknown: true }],
-    },
-    {
-      code: `
-        declare const someUnknownValue: unknown;
-        Promise.reject(someUnknownValue);
-      `,
-      options: [{ allowThrowingAny: true, allowThrowingUnknown: true }],
-    },
-  ],
   invalid: [
     {
       code: 'Promise.reject(5);',
@@ -1544,6 +1249,301 @@ function fun<T extends number>(t: T): void {
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
+    },
+  ],
+  valid: [
+    'Promise.resolve(5);',
+    {
+      code: 'Promise.reject();',
+      options: [
+        {
+          allowEmptyReject: true,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const someAnyValue: any;
+        Promise.reject(someAnyValue);
+      `,
+      options: [{ allowThrowingAny: true, allowThrowingUnknown: false }],
+    },
+    {
+      code: `
+        declare const someUnknownValue: unknown;
+        Promise.reject(someUnknownValue);
+      `,
+      options: [{ allowThrowingAny: false, allowThrowingUnknown: true }],
+    },
+    'Promise.reject(new Error());',
+    'Promise.reject(new TypeError());',
+    "Promise.reject(new Error('foo'));",
+    `
+      class CustomError extends Error {}
+      Promise.reject(new CustomError());
+    `,
+    `
+      declare const foo: () => { err: SyntaxError };
+      Promise.reject(foo().err);
+    `,
+    `
+      declare const foo: () => Promise<Error>;
+      Promise.reject(await foo());
+    `,
+    'Promise.reject((foo = new Error()));',
+    `
+      const foo = Promise;
+      foo.reject(new Error());
+    `,
+    "Promise['reject'](new Error());",
+    'Promise.reject(true && new Error());',
+    `
+      const foo = false;
+      Promise.reject(false || new Error());
+    `,
+    `
+      declare const foo: Readonly<Error>;
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<Error> | Readonly<TypeError>;
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<Error> & Readonly<TypeError>;
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<Error> & { foo: 'bar' };
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<Error & { bar: 'foo' }> & { foo: 'bar' };
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<Readonly<Error>>;
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<Readonly<Readonly<Error>>>;
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<
+        Readonly<Readonly<Error & { bar: 'foo' }> & { foo: 'bar' }> & {
+          fooBar: 'barFoo';
+        }
+      > & { barFoo: 'fooBar' };
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo:
+        | Readonly<Readonly<Error> | Readonly<TypeError & string>>
+        | Readonly<Error>;
+      Promise.reject(foo);
+    `,
+    `
+      type Wrapper<T> = { foo: Readonly<T>[] };
+      declare const foo: Wrapper<Error>['foo'][5];
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Error[];
+      Promise.reject(foo[5]);
+    `,
+    `
+      declare const foo: ReadonlyArray<Error>;
+      Promise.reject(foo[5]);
+    `,
+    `
+      declare const foo: [Error];
+      Promise.reject(foo[0]);
+    `,
+
+    `
+      new Promise(function (resolve, reject) {
+        resolve(5);
+      });
+    `,
+    `
+      new Promise(function (resolve, reject) {
+        reject(new Error());
+      });
+    `,
+    `
+      new Promise((resolve, reject) => {
+        reject(new Error());
+      });
+    `,
+    'new Promise((resolve, reject) => reject(new Error()));',
+    {
+      code: `
+        new Promise(function (resolve, reject) {
+          reject();
+        });
+      `,
+      options: [
+        {
+          allowEmptyReject: true,
+        },
+      ],
+    },
+    'new Promise((yes, no) => no(new Error()));',
+    'new Promise();',
+    'new Promise(5);',
+    'new Promise((resolve, { apply }) => {});',
+    'new Promise((resolve, reject) => {});',
+    'new Promise((resolve, reject) => reject);',
+    `
+      class CustomError extends Error {}
+      new Promise(function (resolve, reject) {
+        reject(new CustomError());
+      });
+    `,
+    `
+      declare const foo: () => { err: SyntaxError };
+      new Promise(function (resolve, reject) {
+        reject(foo().err);
+      });
+    `,
+    'new Promise((resolve, reject) => reject((foo = new Error())));',
+    `
+      new Foo((resolve, reject) => reject(5));
+    `,
+    `
+      class Foo {
+        constructor(
+          executor: (resolve: () => void, reject: (reason?: any) => void) => void,
+        ): Promise<any> {}
+      }
+      new Foo((resolve, reject) => reject(5));
+    `,
+    `
+      new Promise((resolve, reject) => {
+        return function (reject) {
+          reject(5);
+        };
+      });
+    `,
+    'new Promise((resolve, reject) => resolve(5, reject));',
+    `
+      class C {
+        #error: Error;
+        foo() {
+          Promise.reject(this.#error);
+        }
+      }
+    `,
+    `
+      const foo = Promise;
+      new foo((resolve, reject) => reject(new Error()));
+    `,
+    `
+      declare const foo: Readonly<Error>;
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<Error> | Readonly<TypeError>;
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<Error> & Readonly<TypeError>;
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<Error> & { foo: 'bar' };
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<Error & { bar: 'foo' }> & { foo: 'bar' };
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<Readonly<Error>>;
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<Readonly<Readonly<Error>>>;
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<
+        Readonly<Readonly<Error & { bar: 'foo' }> & { foo: 'bar' }> & {
+          fooBar: 'barFoo';
+        }
+      > & { barFoo: 'fooBar' };
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo:
+        | Readonly<Readonly<Error> | Readonly<TypeError & string>>
+        | Readonly<Error>;
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      type Wrapper<T> = { foo: Readonly<T>[] };
+      declare const foo: Wrapper<Error>['foo'][5];
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Error[];
+      new Promise((resolve, reject) => reject(foo[5]));
+    `,
+    `
+      declare const foo: ReadonlyArray<Error>;
+      new Promise((resolve, reject) => reject(foo[5]));
+    `,
+    `
+      declare const foo: [Error];
+      new Promise((resolve, reject) => reject(foo[0]));
+    `,
+    `
+      class Foo extends Promise<number> {}
+      Foo.reject(new Error());
+    `,
+    `
+      class Foo extends Promise<number> {}
+      new Foo((resolve, reject) => reject(new Error()));
+    `,
+    `
+      declare const someRandomCall: {
+        reject(arg: any): void;
+      };
+      someRandomCall.reject(5);
+    `,
+    `
+      declare const foo: PromiseConstructor;
+      foo.reject(new Error());
+    `,
+    'console[Symbol.iterator]();',
+    `
+      class A {
+        a = [];
+        [Symbol.iterator]() {
+          return this.a[Symbol.iterator]();
+        }
+      }
+    `,
+    `
+      declare const foo: PromiseConstructor;
+      function fun<T extends Error>(t: T): void {
+        foo.reject(t);
+      }
+    `,
+    {
+      code: `
+        declare const someAnyValue: any;
+        Promise.reject(someAnyValue);
+      `,
+      options: [{ allowThrowingAny: true, allowThrowingUnknown: true }],
+    },
+    {
+      code: `
+        declare const someUnknownValue: unknown;
+        Promise.reject(someUnknownValue);
+      `,
+      options: [{ allowThrowingAny: true, allowThrowingUnknown: true }],
     },
   ],
 });

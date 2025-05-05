@@ -16,9 +16,9 @@ export default createRule<[], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
+      recommended: 'strict',
       description:
         'Disallow non-null assertions using the `!` postfix operator',
-      recommended: 'strict',
     },
     hasSuggestions: true,
     messages: {

@@ -5,6 +5,215 @@ import rule from '../../src/rules/prefer-for-of';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-for-of', rule, {
+  invalid: [
+    {
+      code: `
+for (var a = 0; a < obj.arr.length; a++) {
+  console.log(obj.arr[a]);
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (var b = 0; b < arr.length; b++) console.log(arr[b]);
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let a = 0; a < arr.length; a++) {
+  console.log(arr[a]);
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (var b = 0; b < arr.length; b++) console?.log(arr[b]);
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let a = 0; a < arr.length; a++) {
+  console?.log(arr[a]);
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let a = 0; a < arr.length; ++a) {
+  arr[a].whatever();
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let x = 0; x < arr.length; x++) {}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let x = 0; x < arr.length; x += 1) {}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let x = 0; x < arr.length; x = x + 1) {}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let x = 0; x < arr.length; x = 1 + x) {}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let shadow = 0; shadow < arr.length; shadow++) {
+  for (let shadow = 0; shadow < arr.length; shadow++) {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  obj[arr[i]] = 1;
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  delete obj[arr[i]];
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  [obj[arr[i]]] = [1];
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  [...obj[arr[i]]] = [1];
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  ({ foo: obj[arr[i]] } = { foo: 1 });
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < this.item.length; ++i) {
+  this.item[i];
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+    {
+      code: `
+for (let i = 0; i < this.array.length; ++i) {
+  yield this.array[i];
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
+    },
+  ],
   valid: [
     `
 for (let i = 0; i < arr1.length; i++) {
@@ -234,214 +443,5 @@ for (let i = 0; i < this.length; ++i) {
   yield this[i];
 }
     `,
-  ],
-  invalid: [
-    {
-      code: `
-for (var a = 0; a < obj.arr.length; a++) {
-  console.log(obj.arr[a]);
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (var b = 0; b < arr.length; b++) console.log(arr[b]);
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let a = 0; a < arr.length; a++) {
-  console.log(arr[a]);
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (var b = 0; b < arr.length; b++) console?.log(arr[b]);
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let a = 0; a < arr.length; a++) {
-  console?.log(arr[a]);
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let a = 0; a < arr.length; ++a) {
-  arr[a].whatever();
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let x = 0; x < arr.length; x++) {}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let x = 0; x < arr.length; x += 1) {}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let x = 0; x < arr.length; x = x + 1) {}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let x = 0; x < arr.length; x = 1 + x) {}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let shadow = 0; shadow < arr.length; shadow++) {
-  for (let shadow = 0; shadow < arr.length; shadow++) {}
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let i = 0; i < arr.length; i++) {
-  obj[arr[i]] = 1;
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let i = 0; i < arr.length; i++) {
-  delete obj[arr[i]];
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let i = 0; i < arr.length; i++) {
-  [obj[arr[i]]] = [1];
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let i = 0; i < arr.length; i++) {
-  [...obj[arr[i]]] = [1];
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let i = 0; i < arr.length; i++) {
-  ({ foo: obj[arr[i]] } = { foo: 1 });
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let i = 0; i < this.item.length; ++i) {
-  this.item[i];
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
-    {
-      code: `
-for (let i = 0; i < this.array.length; ++i) {
-  yield this.array[i];
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
-    },
   ],
 });

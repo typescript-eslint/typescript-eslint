@@ -14,106 +14,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('related-getter-setter-pairs', rule, {
-  valid: [
-    `
-interface Example {
-  get value(): string;
-  set value(newValue: string);
-}
-    `,
-    `
-interface Example {
-  get value(): string | undefined;
-  set value();
-}
-    `,
-    `
-interface Example {
-  get value(): string | undefined;
-  set value(newValue: string, invalid: string);
-}
-    `,
-    `
-interface Example {
-  get value(): string;
-  set value(newValue: string | undefined);
-}
-    `,
-    `
-interface Example {
-  get value(): number;
-}
-    `,
-    `
-interface Example {
-  get value(): number;
-  set value();
-}
-    `,
-    `
-interface Example {
-  set value(newValue: string);
-}
-    `,
-    `
-interface Example {
-  set value();
-}
-    `,
-    `
-type Example = {
-  get value();
-};
-    `,
-    `
-type Example = {
-  set value();
-};
-    `,
-    `
-class Example {
-  get value() {
-    return '';
-  }
-}
-    `,
-    `
-class Example {
-  get value() {
-    return '';
-  }
-  set value() {}
-}
-    `,
-    `
-class Example {
-  get value() {
-    return '';
-  }
-  set value(param) {}
-}
-    `,
-    `
-class Example {
-  get value() {
-    return '';
-  }
-  set value(param: number) {}
-}
-    `,
-    `
-class Example {
-  set value() {}
-}
-    `,
-    `
-type Example = {
-  get value(): number;
-  set value(newValue: number);
-};
-    `,
-  ],
-
   invalid: [
     {
       code: `
@@ -249,5 +149,105 @@ declare class Foo {
         },
       ],
     },
+  ],
+
+  valid: [
+    `
+interface Example {
+  get value(): string;
+  set value(newValue: string);
+}
+    `,
+    `
+interface Example {
+  get value(): string | undefined;
+  set value();
+}
+    `,
+    `
+interface Example {
+  get value(): string | undefined;
+  set value(newValue: string, invalid: string);
+}
+    `,
+    `
+interface Example {
+  get value(): string;
+  set value(newValue: string | undefined);
+}
+    `,
+    `
+interface Example {
+  get value(): number;
+}
+    `,
+    `
+interface Example {
+  get value(): number;
+  set value();
+}
+    `,
+    `
+interface Example {
+  set value(newValue: string);
+}
+    `,
+    `
+interface Example {
+  set value();
+}
+    `,
+    `
+type Example = {
+  get value();
+};
+    `,
+    `
+type Example = {
+  set value();
+};
+    `,
+    `
+class Example {
+  get value() {
+    return '';
+  }
+}
+    `,
+    `
+class Example {
+  get value() {
+    return '';
+  }
+  set value() {}
+}
+    `,
+    `
+class Example {
+  get value() {
+    return '';
+  }
+  set value(param) {}
+}
+    `,
+    `
+class Example {
+  get value() {
+    return '';
+  }
+  set value(param: number) {}
+}
+    `,
+    `
+class Example {
+  set value() {}
+}
+    `,
+    `
+type Example = {
+  get value(): number;
+  set value(newValue: number);
+};
+    `,
   ],
 });

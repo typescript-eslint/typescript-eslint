@@ -30,9 +30,9 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     // defaultOptions, -- base rule does not use defaultOptions
     docs: {
+      extendsBaseRule: true,
       description:
         'Enforce a maximum number of parameters in function definitions',
-      extendsBaseRule: true,
     },
     messages: baseRule.meta.messages,
     schema: [

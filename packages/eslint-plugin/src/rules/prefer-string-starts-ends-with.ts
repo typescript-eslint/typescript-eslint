@@ -33,13 +33,13 @@ export default createRule<Options, MessageIds>({
   name: 'prefer-string-starts-ends-with',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'stylistic',
       description:
         'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings',
-      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       preferEndsWith: "Use the 'String#endsWith' method instead.",
       preferStartsWith: "Use 'String#startsWith' method instead.",

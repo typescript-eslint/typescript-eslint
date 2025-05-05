@@ -87,265 +87,6 @@ print\`\${<Foo>{ bar: 5 }}\`
 `;
 
 ruleTester.run('consistent-type-assertions', rule, {
-  valid: [
-    ...dedupeTestCases(
-      batchedSingleLineTests<Options>({
-        code: AS_TESTS,
-        options: [
-          { assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' },
-        ],
-      }),
-    ),
-    ...batchedSingleLineTests<Options>({
-      code: ANGLE_BRACKET_TESTS,
-      options: [
-        {
-          assertionStyle: 'angle-bracket',
-          objectLiteralTypeAssertions: 'allow',
-        },
-      ],
-    }),
-    ...batchedSingleLineTests<Options>({
-      code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
-      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
-    }),
-    ...batchedSingleLineTests<Options>({
-      code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
-      options: [
-        {
-          assertionStyle: 'angle-bracket',
-          objectLiteralTypeAssertions: 'allow',
-        },
-      ],
-    }),
-    ...batchedSingleLineTests<Options>({
-      code: OBJECT_LITERAL_ARGUMENT_AS_CASTS,
-      options: [
-        {
-          assertionStyle: 'as',
-          objectLiteralTypeAssertions: 'allow-as-parameter',
-        },
-      ],
-    }),
-    ...batchedSingleLineTests<Options>({
-      code: OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS,
-      options: [
-        {
-          assertionStyle: 'angle-bracket',
-          objectLiteralTypeAssertions: 'allow-as-parameter',
-        },
-      ],
-    }),
-    {
-      code: 'const x = [] as string[];',
-      options: [
-        {
-          assertionStyle: 'as',
-        },
-      ],
-    },
-    {
-      code: "const x = ['a'] as Array<string>;",
-      options: [
-        {
-          assertionStyle: 'as',
-        },
-      ],
-    },
-    {
-      code: 'const x = <string[]>[];',
-      options: [
-        {
-          assertionStyle: 'angle-bracket',
-        },
-      ],
-    },
-    {
-      code: 'const x = <Array<string>>[];',
-      options: [
-        {
-          assertionStyle: 'angle-bracket',
-        },
-      ],
-    },
-    {
-      code: 'print([5] as Foo);',
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'as',
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  throw [5] as Foo;
-}
-      `,
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'as',
-        },
-      ],
-    },
-    {
-      code: 'function b(x = [5] as Foo.Bar) {}',
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'as',
-        },
-      ],
-    },
-    {
-      code: 'print?.([5] as Foo);',
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'as',
-        },
-      ],
-    },
-    {
-      code: 'print?.call([5] as Foo);',
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'as',
-        },
-      ],
-    },
-    {
-      code: 'print`${[5] as Foo}`;',
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'as',
-        },
-      ],
-    },
-    {
-      code: 'new Print([5] as Foo);',
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'as',
-        },
-      ],
-    },
-    {
-      code: 'const bar = <Foo style={[5] as Bar} />;',
-      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'as',
-        },
-      ],
-    },
-    {
-      code: 'print(<Foo>[5]);',
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'angle-bracket',
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  throw <Foo>[5];
-}
-      `,
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'angle-bracket',
-        },
-      ],
-    },
-    {
-      code: 'function b(x = <Foo.Bar>[5]) {}',
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'angle-bracket',
-        },
-      ],
-    },
-    {
-      code: 'print?.(<Foo>[5]);',
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'angle-bracket',
-        },
-      ],
-    },
-    {
-      code: 'print?.call(<Foo>[5]);',
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'angle-bracket',
-        },
-      ],
-    },
-    {
-      code: 'print`${<Foo>[5]}`;',
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'angle-bracket',
-        },
-      ],
-    },
-    {
-      code: 'new Print(<Foo>[5]);',
-      options: [
-        {
-          arrayLiteralTypeAssertions: 'allow-as-parameter',
-          assertionStyle: 'angle-bracket',
-        },
-      ],
-    },
-    { code: 'const x = <const>[1];', options: [{ assertionStyle: 'never' }] },
-    { code: 'const x = [1] as const;', options: [{ assertionStyle: 'never' }] },
-    {
-      code: 'const bar = <Foo style={{ bar: 5 } as Bar} />;',
-      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
-      options: [
-        {
-          assertionStyle: 'as',
-          objectLiteralTypeAssertions: 'allow-as-parameter',
-        },
-      ],
-    },
-    {
-      code: '123;',
-      languageOptions: {
-        // simulate a 3rd party parser that doesn't provide parser services
-        parser: {
-          parse: (): TSESTree.Program => parser.parse('123;'),
-        },
-      },
-    },
-    {
-      code: `
-const x = { key: 'value' } as any;
-      `,
-      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
-    },
-    {
-      code: `
-const x = { key: 'value' } as unknown;
-      `,
-      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
-    },
-  ],
   invalid: [
     ...dedupeTestCases(
       (
@@ -1215,6 +956,265 @@ function foo() {
           assertionStyle: 'angle-bracket',
         },
       ],
+    },
+  ],
+  valid: [
+    ...dedupeTestCases(
+      batchedSingleLineTests<Options>({
+        code: AS_TESTS,
+        options: [
+          { assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' },
+        ],
+      }),
+    ),
+    ...batchedSingleLineTests<Options>({
+      code: ANGLE_BRACKET_TESTS,
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<Options>({
+      code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
+    }),
+    ...batchedSingleLineTests<Options>({
+      code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<Options>({
+      code: OBJECT_LITERAL_ARGUMENT_AS_CASTS,
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<Options>({
+      code: OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS,
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    }),
+    {
+      code: 'const x = [] as string[];',
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: "const x = ['a'] as Array<string>;",
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'const x = <string[]>[];',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'const x = <Array<string>>[];',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'print([5] as Foo);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  throw [5] as Foo;
+}
+      `,
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'function b(x = [5] as Foo.Bar) {}',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'print?.([5] as Foo);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'print?.call([5] as Foo);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'print`${[5] as Foo}`;',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'new Print([5] as Foo);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'const bar = <Foo style={[5] as Bar} />;',
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'print(<Foo>[5]);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  throw <Foo>[5];
+}
+      `,
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'function b(x = <Foo.Bar>[5]) {}',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'print?.(<Foo>[5]);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'print?.call(<Foo>[5]);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'print`${<Foo>[5]}`;',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'new Print(<Foo>[5]);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    { code: 'const x = <const>[1];', options: [{ assertionStyle: 'never' }] },
+    { code: 'const x = [1] as const;', options: [{ assertionStyle: 'never' }] },
+    {
+      code: 'const bar = <Foo style={{ bar: 5 } as Bar} />;',
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: '123;',
+      languageOptions: {
+        // simulate a 3rd party parser that doesn't provide parser services
+        parser: {
+          parse: (): TSESTree.Program => parser.parse('123;'),
+        },
+      },
+    },
+    {
+      code: `
+const x = { key: 'value' } as any;
+      `,
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: `
+const x = { key: 'value' } as unknown;
+      `,
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
     },
   ],
 });

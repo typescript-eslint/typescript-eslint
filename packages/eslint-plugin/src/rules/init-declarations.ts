@@ -21,9 +21,9 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     // defaultOptions, -- base rule does not use defaultOptions
     docs: {
+      extendsBaseRule: true,
       description:
         'Require or disallow initialization in variable declarations',
-      extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,

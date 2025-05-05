@@ -16,8 +16,8 @@ export default createRule<[], MessageId>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow using the `delete` operator on array values',
       recommended: 'recommended',
+      description: 'Disallow using the `delete` operator on array values',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

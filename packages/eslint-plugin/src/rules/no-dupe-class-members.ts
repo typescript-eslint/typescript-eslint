@@ -21,8 +21,8 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     // defaultOptions, -- base rule does not use defaultOptions
     docs: {
-      description: 'Disallow duplicate class members',
       extendsBaseRule: true,
+      description: 'Disallow duplicate class members',
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,

@@ -5,543 +5,6 @@ import rule from '../../src/rules/no-type-alias';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-type-alias', rule, {
-  valid: [
-    {
-      code: "type A = 'a' & ('b' | 'c');",
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: "type Foo = 'a';",
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: "type Foo = 'a' | 'b';",
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: "type Foo = 'a' | 'b';",
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: "type Foo = 'a' | 'b';",
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: "type Foo = 'a' | 'b' | 'c';",
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: "type Foo = 'a' | 'b' | 'c';",
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: "type Foo = 'a' | 'b' | 'c';",
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: "type Foo = 'a' & 'b';",
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: "type Foo = 'a' & 'b';",
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: "type Foo = 'a' & 'b';",
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: "type Foo = 'a' & 'b' & 'c';",
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: "type Foo = 'a' & 'b' & 'c';",
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: "type Foo = 'a' & 'b' & 'c';",
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: "type Foo = 'a' | ('b' & 'c');",
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: "type Foo = 'a' | ('b' & 'c');",
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = 1;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = 1 | 2;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = 1 | 2;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = 1 | 2;',
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = 1 | 2 | 3;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = 1 | 2 | 3;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = 1 | 2 | 3;',
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = 1 & 2;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = 1 & 2;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = 1 & 2;',
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = 1 & 2 & 3;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = 1 & 2 & 3;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = 1 & 2 & 3;',
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = 1 | (2 & 3);',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = 1 | (2 & 3);',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}`;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | `b-${number}`;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | `b-${number}`;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | `b-${number}`;',
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` & `b-${number}`;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` & `b-${number}`;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` & `b-${number}`;',
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | (`b-${number}` & `c-${number}`);',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = `a-${number}` | (`b-${number}` & `c-${number}`);',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = true;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = true | false;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = true | false;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = true | false;',
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = true & false;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = true & false;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = true & false;',
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: `
-interface Bar {}
-type Foo = Bar | string;
-      `,
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: `
-interface Bar {}
-type Foo = Bar | string;
-      `,
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: `
-interface Bar {}
-type Foo = Bar | string;
-      `,
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: `
-interface Bar {}
-type Foo = Bar & string;
-      `,
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: `
-interface Bar {}
-type Foo = Bar & string;
-      `,
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: `
-interface Bar {}
-type Foo = Bar & string;
-      `,
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = string;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = string | string[];',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = string | string[];',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = string | readonly string[];',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = string | string[];',
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = string | string[] | number;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = string | string[] | number;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = string | string[] | number;',
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = string & string[];',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = string & string[];',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = string & string[];',
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = string & string[] & number;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = string & string[] & number;',
-      options: [{ allowAliases: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = string & string[] & number;',
-      options: [{ allowAliases: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = () => void;',
-      options: [{ allowCallbacks: 'always' }],
-    },
-    {
-      code: 'type Foo = () => void | string;',
-      options: [{ allowCallbacks: 'always' }],
-    },
-    {
-      code: 'type Foo = {};',
-      options: [{ allowLiterals: 'always' }],
-    },
-    {
-      code: 'type Foo = {} | {};',
-      options: [{ allowLiterals: 'always' }],
-    },
-    {
-      code: 'type Foo = {} | {};',
-      options: [{ allowLiterals: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = {} | {};',
-      options: [{ allowLiterals: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = {} & {};',
-      options: [{ allowLiterals: 'always' }],
-    },
-    {
-      code: 'type Foo = {} & {};',
-      options: [{ allowLiterals: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = {} & {};',
-      options: [{ allowLiterals: 'in-intersections' }],
-    },
-    {
-      code: `
-type Foo<T> = {
-  readonly [P in keyof T]: T[P];
-};
-      `,
-      options: [{ allowMappedTypes: 'always' }],
-    },
-    {
-      code: `
-type Foo<T> =
-  | {
-      readonly [P in keyof T]: T[P];
-    }
-  | {
-      readonly [P in keyof T]: T[P];
-    };
-      `,
-      options: [{ allowMappedTypes: 'always' }],
-    },
-    {
-      code: `
-type Foo<T> =
-  | {
-      readonly [P in keyof T]: T[P];
-    }
-  | {
-      readonly [P in keyof T]: T[P];
-    };
-      `,
-      options: [{ allowMappedTypes: 'in-unions-and-intersections' }],
-    },
-    {
-      code: `
-type Foo<T> =
-  | {
-      readonly [P in keyof T]: T[P];
-    }
-  | {
-      readonly [P in keyof T]: T[P];
-    };
-      `,
-      options: [{ allowMappedTypes: 'in-unions' }],
-    },
-    {
-      code: `
-type Foo<T> = {
-  readonly [P in keyof T]: T[P];
-} & {
-  readonly [P in keyof T]: T[P];
-};
-      `,
-      options: [{ allowMappedTypes: 'always' }],
-    },
-    {
-      code: `
-type Foo<T> = {
-  readonly [P in keyof T]: T[P];
-} & {
-  readonly [P in keyof T]: T[P];
-};
-      `,
-      options: [{ allowMappedTypes: 'in-unions-and-intersections' }],
-    },
-    {
-      code: `
-type Foo<T> = {
-  readonly [P in keyof T]: T[P];
-} & {
-  readonly [P in keyof T]: T[P];
-};
-      `,
-      options: [{ allowMappedTypes: 'in-intersections' }],
-    },
-    {
-      code: `
-export type ClassValue =
-  | string
-  | number
-  | ClassDictionary
-  | ClassArray
-  | undefined
-  | null
-  | false;
-      `,
-      options: [
-        {
-          allowAliases: 'in-unions-and-intersections',
-          allowCallbacks: 'always',
-          allowLiterals: 'in-unions-and-intersections',
-          allowMappedTypes: 'in-unions-and-intersections',
-        },
-      ],
-    },
-    {
-      code: 'type Foo = typeof bar;',
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: "type Foo = typeof import('foo');",
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: `
-const WithAKey = { AKey: true };
-type KeyNames = keyof typeof SCALARS;
-      `,
-      options: [{ allowAliases: 'always' }],
-    },
-    {
-      code: 'type Foo = typeof bar | typeof baz;',
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: "type Foo = typeof bar | typeof import('foo');",
-      options: [{ allowAliases: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = keyof [string];',
-      options: [{ allowTupleTypes: 'always' }],
-    },
-    {
-      code: 'type Foo = [string] | [number, number];',
-      options: [{ allowTupleTypes: 'always' }],
-    },
-    {
-      code: 'type Foo = [string] | [number, number];',
-      options: [{ allowTupleTypes: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = [string] & [number, number];',
-      options: [{ allowTupleTypes: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = ([string] & [number, number]) | [number, number, number];',
-      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = readonly [string] | [number, number];',
-      options: [{ allowTupleTypes: 'always' }],
-    },
-    {
-      code: 'type Foo = readonly [string] | readonly [number, number];',
-      options: [{ allowTupleTypes: 'always' }],
-    },
-    {
-      code: 'type Foo = readonly [string] | [number, number];',
-      options: [{ allowTupleTypes: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = [string] & readonly [number, number];',
-      options: [{ allowTupleTypes: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = ([string] & [number, number]) | readonly [number, number, number];',
-      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type Foo = keyof [string] | [number, number];',
-      options: [{ allowTupleTypes: 'always' }],
-    },
-    {
-      code: 'type Foo = keyof [string] | keyof [number, number];',
-      options: [{ allowTupleTypes: 'always' }],
-    },
-    {
-      code: 'type Foo = keyof [string] | [number, number];',
-      options: [{ allowTupleTypes: 'in-unions' }],
-    },
-    {
-      code: 'type Foo = [string] & keyof [number, number];',
-      options: [{ allowTupleTypes: 'in-intersections' }],
-    },
-    {
-      code: 'type Foo = ([string] & [number, number]) | keyof [number, number, number];',
-      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
-    },
-    {
-      code: 'type MyType<T> = T extends number ? number : null;',
-      options: [{ allowConditionalTypes: 'always' }],
-    },
-    {
-      code: 'type Foo = new (bar: number) => string | null;',
-      options: [{ allowConstructors: 'always' }],
-    },
-    {
-      code: 'type Foo = Record<string, number>;',
-      options: [{ allowGenerics: 'always' }],
-    },
-  ],
   invalid: [
     {
       code: "type Foo = 'a';",
@@ -3459,6 +2922,543 @@ type Foo<T> = {
         },
       ],
       options: [{ allowAliases: 'never' }],
+    },
+  ],
+  valid: [
+    {
+      code: "type A = 'a' & ('b' | 'c');",
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: "type Foo = 'a';",
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: "type Foo = 'a' | 'b';",
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: "type Foo = 'a' | 'b';",
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: "type Foo = 'a' | 'b';",
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: "type Foo = 'a' | 'b' | 'c';",
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: "type Foo = 'a' | 'b' | 'c';",
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: "type Foo = 'a' | 'b' | 'c';",
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: "type Foo = 'a' & 'b';",
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: "type Foo = 'a' & 'b';",
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: "type Foo = 'a' & 'b';",
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: "type Foo = 'a' & 'b' & 'c';",
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: "type Foo = 'a' & 'b' & 'c';",
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: "type Foo = 'a' & 'b' & 'c';",
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: "type Foo = 'a' | ('b' & 'c');",
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: "type Foo = 'a' | ('b' & 'c');",
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = 1;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = 1 | 2;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = 1 | 2;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = 1 | 2;',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = 1 | 2 | 3;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = 1 | 2 | 3;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = 1 | 2 | 3;',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = 1 & 2;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = 1 & 2;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = 1 & 2;',
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = 1 & 2 & 3;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = 1 & 2 & 3;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = 1 & 2 & 3;',
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = 1 | (2 & 3);',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = 1 | (2 & 3);',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}`;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}`;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}`;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}`;',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}`;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}`;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}`;',
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | (`b-${number}` & `c-${number}`);',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = `a-${number}` | (`b-${number}` & `c-${number}`);',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = true;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = true | false;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = true | false;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = true | false;',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = true & false;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = true & false;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = true & false;',
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: `
+interface Bar {}
+type Foo = Bar | string;
+      `,
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: `
+interface Bar {}
+type Foo = Bar | string;
+      `,
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: `
+interface Bar {}
+type Foo = Bar | string;
+      `,
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: `
+interface Bar {}
+type Foo = Bar & string;
+      `,
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: `
+interface Bar {}
+type Foo = Bar & string;
+      `,
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: `
+interface Bar {}
+type Foo = Bar & string;
+      `,
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = string;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = string | string[];',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = string | string[];',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = string | readonly string[];',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = string | string[];',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = string | string[] | number;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = string | string[] | number;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = string | string[] | number;',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = string & string[];',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = string & string[];',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = string & string[];',
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = string & string[] & number;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = string & string[] & number;',
+      options: [{ allowAliases: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = string & string[] & number;',
+      options: [{ allowAliases: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = () => void;',
+      options: [{ allowCallbacks: 'always' }],
+    },
+    {
+      code: 'type Foo = () => void | string;',
+      options: [{ allowCallbacks: 'always' }],
+    },
+    {
+      code: 'type Foo = {};',
+      options: [{ allowLiterals: 'always' }],
+    },
+    {
+      code: 'type Foo = {} | {};',
+      options: [{ allowLiterals: 'always' }],
+    },
+    {
+      code: 'type Foo = {} | {};',
+      options: [{ allowLiterals: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = {} | {};',
+      options: [{ allowLiterals: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = {} & {};',
+      options: [{ allowLiterals: 'always' }],
+    },
+    {
+      code: 'type Foo = {} & {};',
+      options: [{ allowLiterals: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = {} & {};',
+      options: [{ allowLiterals: 'in-intersections' }],
+    },
+    {
+      code: `
+type Foo<T> = {
+  readonly [P in keyof T]: T[P];
+};
+      `,
+      options: [{ allowMappedTypes: 'always' }],
+    },
+    {
+      code: `
+type Foo<T> =
+  | {
+      readonly [P in keyof T]: T[P];
+    }
+  | {
+      readonly [P in keyof T]: T[P];
+    };
+      `,
+      options: [{ allowMappedTypes: 'always' }],
+    },
+    {
+      code: `
+type Foo<T> =
+  | {
+      readonly [P in keyof T]: T[P];
+    }
+  | {
+      readonly [P in keyof T]: T[P];
+    };
+      `,
+      options: [{ allowMappedTypes: 'in-unions-and-intersections' }],
+    },
+    {
+      code: `
+type Foo<T> =
+  | {
+      readonly [P in keyof T]: T[P];
+    }
+  | {
+      readonly [P in keyof T]: T[P];
+    };
+      `,
+      options: [{ allowMappedTypes: 'in-unions' }],
+    },
+    {
+      code: `
+type Foo<T> = {
+  readonly [P in keyof T]: T[P];
+} & {
+  readonly [P in keyof T]: T[P];
+};
+      `,
+      options: [{ allowMappedTypes: 'always' }],
+    },
+    {
+      code: `
+type Foo<T> = {
+  readonly [P in keyof T]: T[P];
+} & {
+  readonly [P in keyof T]: T[P];
+};
+      `,
+      options: [{ allowMappedTypes: 'in-unions-and-intersections' }],
+    },
+    {
+      code: `
+type Foo<T> = {
+  readonly [P in keyof T]: T[P];
+} & {
+  readonly [P in keyof T]: T[P];
+};
+      `,
+      options: [{ allowMappedTypes: 'in-intersections' }],
+    },
+    {
+      code: `
+export type ClassValue =
+  | string
+  | number
+  | ClassDictionary
+  | ClassArray
+  | undefined
+  | null
+  | false;
+      `,
+      options: [
+        {
+          allowAliases: 'in-unions-and-intersections',
+          allowCallbacks: 'always',
+          allowLiterals: 'in-unions-and-intersections',
+          allowMappedTypes: 'in-unions-and-intersections',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = typeof bar;',
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: "type Foo = typeof import('foo');",
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: `
+const WithAKey = { AKey: true };
+type KeyNames = keyof typeof SCALARS;
+      `,
+      options: [{ allowAliases: 'always' }],
+    },
+    {
+      code: 'type Foo = typeof bar | typeof baz;',
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: "type Foo = typeof bar | typeof import('foo');",
+      options: [{ allowAliases: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = keyof [string];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = [string] | [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = [string] | [number, number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = [string] & [number, number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = ([string] & [number, number]) | [number, number, number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = readonly [string] | [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = readonly [string] | readonly [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = readonly [string] | [number, number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = [string] & readonly [number, number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = ([string] & [number, number]) | readonly [number, number, number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type Foo = keyof [string] | [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = keyof [string] | keyof [number, number];',
+      options: [{ allowTupleTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = keyof [string] | [number, number];',
+      options: [{ allowTupleTypes: 'in-unions' }],
+    },
+    {
+      code: 'type Foo = [string] & keyof [number, number];',
+      options: [{ allowTupleTypes: 'in-intersections' }],
+    },
+    {
+      code: 'type Foo = ([string] & [number, number]) | keyof [number, number, number];',
+      options: [{ allowTupleTypes: 'in-unions-and-intersections' }],
+    },
+    {
+      code: 'type MyType<T> = T extends number ? number : null;',
+      options: [{ allowConditionalTypes: 'always' }],
+    },
+    {
+      code: 'type Foo = new (bar: number) => string | null;',
+      options: [{ allowConstructors: 'always' }],
+    },
+    {
+      code: 'type Foo = Record<string, number>;',
+      options: [{ allowGenerics: 'always' }],
     },
   ],
 });

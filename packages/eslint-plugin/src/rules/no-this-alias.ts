@@ -17,8 +17,8 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow aliasing `this`',
       recommended: 'recommended',
+      description: 'Disallow aliasing `this`',
     },
     messages: {
       thisAssignment: "Unexpected aliasing of 'this' to local variable.",

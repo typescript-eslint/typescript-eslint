@@ -23,190 +23,6 @@ function q(str: string): string {
 }
 
 ruleTester.run('dot-notation', rule, {
-  valid: [
-    //  baseRule
-    'a.b;',
-    'a.b.c;',
-    "a['12'];",
-    'a[b];',
-    'a[0];',
-    { code: 'a.b.c;', options: [{ allowKeywords: false }] },
-    { code: 'a.arguments;', options: [{ allowKeywords: false }] },
-    { code: 'a.let;', options: [{ allowKeywords: false }] },
-    { code: 'a.yield;', options: [{ allowKeywords: false }] },
-    { code: 'a.eval;', options: [{ allowKeywords: false }] },
-    { code: 'a[0];', options: [{ allowKeywords: false }] },
-    { code: "a['while'];", options: [{ allowKeywords: false }] },
-    { code: "a['true'];", options: [{ allowKeywords: false }] },
-    { code: "a['null'];", options: [{ allowKeywords: false }] },
-    { code: 'a[true];', options: [{ allowKeywords: false }] },
-    { code: 'a[null];', options: [{ allowKeywords: false }] },
-    { code: 'a.true;', options: [{ allowKeywords: true }] },
-    { code: 'a.null;', options: [{ allowKeywords: true }] },
-    {
-      code: "a['snake_case'];",
-      options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
-    },
-    {
-      code: "a['lots_of_snake_case'];",
-      options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
-    },
-    {
-      code: 'a[`time${range}`];',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: 'a[`while`];',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ allowKeywords: false }],
-    },
-    {
-      code: 'a[`time range`];',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    'a.true;',
-    'a.null;',
-    'a[undefined];',
-    'a[void 0];',
-    'a[b()];',
-    {
-      code: 'a[/(?<zero>0)/];',
-      languageOptions: { parserOptions: { ecmaVersion: 2018 } },
-    },
-
-    {
-      code: `
-class X {
-  private priv_prop = 123;
-}
-
-const x = new X();
-x['priv_prop'] = 123;
-      `,
-      options: [{ allowPrivateClassPropertyAccess: true }],
-    },
-
-    {
-      code: `
-class X {
-  protected protected_prop = 123;
-}
-
-const x = new X();
-x['protected_prop'] = 123;
-      `,
-      options: [{ allowProtectedClassPropertyAccess: true }],
-    },
-    {
-      code: `
-class X {
-  prop: string;
-  [key: string]: number;
-}
-
-const x = new X();
-x['hello'] = 3;
-      `,
-      options: [{ allowIndexSignaturePropertyAccess: true }],
-    },
-    {
-      code: `
-interface Nested {
-  property: string;
-  [key: string]: number | string;
-}
-
-class Dingus {
-  nested: Nested;
-}
-
-let dingus: Dingus | undefined;
-
-dingus?.nested.property;
-dingus?.nested['hello'];
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2020 } },
-      options: [{ allowIndexSignaturePropertyAccess: true }],
-    },
-    {
-      code: `
-class X {
-  private priv_prop = 123;
-}
-
-let x: X | undefined;
-console.log(x?.['priv_prop']);
-      `,
-      options: [{ allowPrivateClassPropertyAccess: true }],
-    },
-    {
-      code: `
-class X {
-  protected priv_prop = 123;
-}
-
-let x: X | undefined;
-console.log(x?.['priv_prop']);
-      `,
-      options: [{ allowProtectedClassPropertyAccess: true }],
-    },
-    {
-      code: `
-type Foo = {
-  bar: boolean;
-  [key: \`key_\${string}\`]: number;
-};
-declare const foo: Foo;
-foo['key_baz'];
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
-          projectService: false,
-          tsconfigRootDir: rootPath,
-        },
-      },
-    },
-    {
-      code: `
-type Key = Lowercase<string>;
-type Foo = {
-  BAR: boolean;
-  [key: Lowercase<string>]: number;
-};
-declare const foo: Foo;
-foo['bar'];
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
-          projectService: false,
-          tsconfigRootDir: rootPath,
-        },
-      },
-    },
-    {
-      code: `
-type ExtraKey = \`extra\${string}\`;
-
-type Foo = {
-  foo: string;
-  [extraKey: ExtraKey]: number;
-};
-
-function f<T extends Foo>(x: T) {
-  x['extraKey'];
-}
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
-          projectService: false,
-          tsconfigRootDir: rootPath,
-        },
-      },
-    },
-  ],
   invalid: [
     {
       code: `
@@ -483,6 +299,190 @@ function f<T extends Foo>(x: T) {
   x.extraKey;
 }
       `,
+    },
+  ],
+  valid: [
+    //  baseRule
+    'a.b;',
+    'a.b.c;',
+    "a['12'];",
+    'a[b];',
+    'a[0];',
+    { code: 'a.b.c;', options: [{ allowKeywords: false }] },
+    { code: 'a.arguments;', options: [{ allowKeywords: false }] },
+    { code: 'a.let;', options: [{ allowKeywords: false }] },
+    { code: 'a.yield;', options: [{ allowKeywords: false }] },
+    { code: 'a.eval;', options: [{ allowKeywords: false }] },
+    { code: 'a[0];', options: [{ allowKeywords: false }] },
+    { code: "a['while'];", options: [{ allowKeywords: false }] },
+    { code: "a['true'];", options: [{ allowKeywords: false }] },
+    { code: "a['null'];", options: [{ allowKeywords: false }] },
+    { code: 'a[true];', options: [{ allowKeywords: false }] },
+    { code: 'a[null];', options: [{ allowKeywords: false }] },
+    { code: 'a.true;', options: [{ allowKeywords: true }] },
+    { code: 'a.null;', options: [{ allowKeywords: true }] },
+    {
+      code: "a['snake_case'];",
+      options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
+    },
+    {
+      code: "a['lots_of_snake_case'];",
+      options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
+    },
+    {
+      code: 'a[`time${range}`];',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: 'a[`while`];',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ allowKeywords: false }],
+    },
+    {
+      code: 'a[`time range`];',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    'a.true;',
+    'a.null;',
+    'a[undefined];',
+    'a[void 0];',
+    'a[b()];',
+    {
+      code: 'a[/(?<zero>0)/];',
+      languageOptions: { parserOptions: { ecmaVersion: 2018 } },
+    },
+
+    {
+      code: `
+class X {
+  private priv_prop = 123;
+}
+
+const x = new X();
+x['priv_prop'] = 123;
+      `,
+      options: [{ allowPrivateClassPropertyAccess: true }],
+    },
+
+    {
+      code: `
+class X {
+  protected protected_prop = 123;
+}
+
+const x = new X();
+x['protected_prop'] = 123;
+      `,
+      options: [{ allowProtectedClassPropertyAccess: true }],
+    },
+    {
+      code: `
+class X {
+  prop: string;
+  [key: string]: number;
+}
+
+const x = new X();
+x['hello'] = 3;
+      `,
+      options: [{ allowIndexSignaturePropertyAccess: true }],
+    },
+    {
+      code: `
+interface Nested {
+  property: string;
+  [key: string]: number | string;
+}
+
+class Dingus {
+  nested: Nested;
+}
+
+let dingus: Dingus | undefined;
+
+dingus?.nested.property;
+dingus?.nested['hello'];
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2020 } },
+      options: [{ allowIndexSignaturePropertyAccess: true }],
+    },
+    {
+      code: `
+class X {
+  private priv_prop = 123;
+}
+
+let x: X | undefined;
+console.log(x?.['priv_prop']);
+      `,
+      options: [{ allowPrivateClassPropertyAccess: true }],
+    },
+    {
+      code: `
+class X {
+  protected priv_prop = 123;
+}
+
+let x: X | undefined;
+console.log(x?.['priv_prop']);
+      `,
+      options: [{ allowProtectedClassPropertyAccess: true }],
+    },
+    {
+      code: `
+type Foo = {
+  bar: boolean;
+  [key: \`key_\${string}\`]: number;
+};
+declare const foo: Foo;
+foo['key_baz'];
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
+          projectService: false,
+          tsconfigRootDir: rootPath,
+        },
+      },
+    },
+    {
+      code: `
+type Key = Lowercase<string>;
+type Foo = {
+  BAR: boolean;
+  [key: Lowercase<string>]: number;
+};
+declare const foo: Foo;
+foo['bar'];
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
+          projectService: false,
+          tsconfigRootDir: rootPath,
+        },
+      },
+    },
+    {
+      code: `
+type ExtraKey = \`extra\${string}\`;
+
+type Foo = {
+  foo: string;
+  [extraKey: ExtraKey]: number;
+};
+
+function f<T extends Foo>(x: T) {
+  x['extraKey'];
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
+          projectService: false,
+          tsconfigRootDir: rootPath,
+        },
+      },
     },
   ],
 });

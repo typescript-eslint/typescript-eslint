@@ -18,54 +18,6 @@ const error = {
 } as const;
 
 ruleTester.run('no-useless-empty-export', rule, {
-  valid: [
-    "declare module '_'",
-    "import {} from '_';",
-    "import * as _ from '_';",
-    'export = {};',
-    'export = 3;',
-    'export const _ = {};',
-    `
-      const _ = {};
-      export default _;
-    `,
-    `
-      export * from '_';
-      export = {};
-    `,
-    `
-      export {};
-    `,
-    // https://github.com/microsoft/TypeScript/issues/38592
-    {
-      code: `
-        export type A = 1;
-        export {};
-      `,
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-        export declare const a = 2;
-        export {};
-      `,
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-        import type { A } from '_';
-        export {};
-      `,
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-        import { A } from '_';
-        export {};
-      `,
-      filename: 'foo.d.ts',
-    },
-  ],
   invalid: [
     {
       code: `
@@ -162,6 +114,54 @@ import _ = require('_');
 
 
       `,
+    },
+  ],
+  valid: [
+    "declare module '_'",
+    "import {} from '_';",
+    "import * as _ from '_';",
+    'export = {};',
+    'export = 3;',
+    'export const _ = {};',
+    `
+      const _ = {};
+      export default _;
+    `,
+    `
+      export * from '_';
+      export = {};
+    `,
+    `
+      export {};
+    `,
+    // https://github.com/microsoft/TypeScript/issues/38592
+    {
+      code: `
+        export type A = 1;
+        export {};
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+        export declare const a = 2;
+        export {};
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+        import type { A } from '_';
+        export {};
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+        import { A } from '_';
+        export {};
+      `,
+      filename: 'foo.d.ts',
     },
   ],
 });

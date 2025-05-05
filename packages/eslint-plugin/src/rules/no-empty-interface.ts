@@ -16,6 +16,7 @@ export default createRule<Options, MessageIds>({
   name: 'no-empty-interface',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     deprecated: {
       deprecatedSince: '8.0.0',
       replacedBy: [
@@ -31,7 +32,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow the declaration of empty interfaces',
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       noEmpty: 'An empty interface is equivalent to `{}`.',

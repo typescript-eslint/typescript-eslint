@@ -59,9 +59,9 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
+      recommended: 'stylistic',
       description:
         'Enforce that literals on classes are exposed in a consistent style',
-      recommended: 'stylistic',
     },
     hasSuggestions: true,
     messages: {

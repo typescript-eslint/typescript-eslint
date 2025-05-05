@@ -16,13 +16,13 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
   name: 'no-meaningless-void-operator',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'strict',
       description:
         'Disallow the `void` operator except when used to discard a value',
-      recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       meaninglessVoidOperator:

@@ -195,9 +195,9 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
+      recommended: 'recommended',
       description:
         'Disallow members of unions and intersections that do nothing or override type information',
-      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -298,8 +298,8 @@ export default createRule({
                     ? 'errorTypeOverrides'
                     : messageId,
                 data: {
-                  container: 'intersection',
                   typeName,
+                  container: 'intersection',
                 },
               });
               return true;
@@ -428,8 +428,8 @@ export default createRule({
                     ? 'errorTypeOverrides'
                     : 'overrides',
                 data: {
-                  container: 'union',
                   typeName,
+                  container: 'union',
                 },
               });
               return true;
@@ -444,8 +444,8 @@ export default createRule({
               node: typeNode,
               messageId: 'overridden',
               data: {
-                container: 'union',
                 typeName: 'never',
+                container: 'union',
               },
             });
             return true;
@@ -468,8 +468,8 @@ export default createRule({
                   seenLiteralTypes,
                   literalToPrimitiveTypeFlags[literalTypeFlag],
                   {
-                    literalValue: typePart.typeName,
                     typeNode,
+                    literalValue: typePart.typeName,
                   },
                 );
                 break;
@@ -499,7 +499,7 @@ export default createRule({
         // upsert the literal text and primitive type under the backing type node
         for (const [primitiveTypeFlag, typeNodesWithText] of seenLiteralTypes) {
           if (seenPrimitiveTypes.has(primitiveTypeFlag)) {
-            for (const { literalValue, typeNode } of typeNodesWithText) {
+            for (const { typeNode, literalValue } of typeNodesWithText) {
               addToMapGroup(overriddenTypeNodes, typeNode, {
                 literalValue,
                 primitiveTypeFlag,

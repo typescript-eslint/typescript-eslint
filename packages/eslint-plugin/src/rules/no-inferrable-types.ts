@@ -22,12 +22,12 @@ export default createRule<Options, MessageIds>({
   name: 'no-inferrable-types',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'stylistic',
       description:
         'Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean',
-      recommended: 'stylistic',
     },
-    fixable: 'code',
     messages: {
       noInferrableType:
         'Type {{type}} trivially inferred from a {{type}} literal, remove type annotation.',

@@ -10,8 +10,8 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow unsafe declaration merging',
       recommended: 'recommended',
+      description: 'Disallow unsafe declaration merging',
       requiresTypeChecking: false,
     },
     messages: {

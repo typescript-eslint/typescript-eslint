@@ -21,9 +21,9 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     // defaultOptions, -- base rule does not use defaultOptions
     docs: {
+      extendsBaseRule: true,
       description:
         'Disallow function declarations that contain unsafe references inside loop statements',
-      extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,

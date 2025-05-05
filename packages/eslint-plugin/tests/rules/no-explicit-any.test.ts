@@ -5,363 +5,6 @@ import rule from '../../src/rules/no-explicit-any';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-explicit-any', rule, {
-  valid: [
-    'const number: number = 1;',
-    'function greet(): string {}',
-    'function greet(): Array<string> {}',
-    'function greet(): string[] {}',
-    'function greet(): Array<Array<string>> {}',
-    'function greet(): Array<string[]> {}',
-    'function greet(param: Array<string>): Array<string> {}',
-    `
-class Greeter {
-  message: string;
-}
-    `,
-    `
-class Greeter {
-  message: Array<string>;
-}
-    `,
-    `
-class Greeter {
-  message: string[];
-}
-    `,
-    `
-class Greeter {
-  message: Array<Array<string>>;
-}
-    `,
-    `
-class Greeter {
-  message: Array<string[]>;
-}
-    `,
-    `
-interface Greeter {
-  message: string;
-}
-    `,
-    `
-interface Greeter {
-  message: Array<string>;
-}
-    `,
-    `
-interface Greeter {
-  message: string[];
-}
-    `,
-    `
-interface Greeter {
-  message: Array<Array<string>>;
-}
-    `,
-    `
-interface Greeter {
-  message: Array<string[]>;
-}
-    `,
-    `
-type obj = {
-  message: string;
-};
-    `,
-    `
-type obj = {
-  message: Array<string>;
-};
-    `,
-    `
-type obj = {
-  message: string[];
-};
-    `,
-    `
-type obj = {
-  message: Array<Array<string>>;
-};
-    `,
-    `
-type obj = {
-  message: Array<string[]>;
-};
-    `,
-    `
-type obj = {
-  message: string | number;
-};
-    `,
-    `
-type obj = {
-  message: string | Array<string>;
-};
-    `,
-    `
-type obj = {
-  message: string | string[];
-};
-    `,
-    `
-type obj = {
-  message: string | Array<Array<string>>;
-};
-    `,
-    `
-type obj = {
-  message: string & number;
-};
-    `,
-    `
-type obj = {
-  message: string & Array<string>;
-};
-    `,
-    `
-type obj = {
-  message: string & string[];
-};
-    `,
-    `
-type obj = {
-  message: string & Array<Array<string>>;
-};
-    `,
-    // https://github.com/eslint/typescript-eslint-parser/issues/397
-    {
-      code: `
-        function foo(a: number, ...rest: any[]): void {
-          return;
-        }
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'function foo1(...args: any[]) {}',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'const bar1 = function (...args: any[]) {};',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'const baz1 = (...args: any[]) => {};',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'function foo2(...args: readonly any[]) {}',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'const bar2 = function (...args: readonly any[]) {};',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'const baz2 = (...args: readonly any[]) => {};',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'function foo3(...args: Array<any>) {}',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'const bar3 = function (...args: Array<any>) {};',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'const baz3 = (...args: Array<any>) => {};',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'function foo4(...args: ReadonlyArray<any>) {}',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'const bar4 = function (...args: ReadonlyArray<any>) {};',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'const baz4 = (...args: ReadonlyArray<any>) => {};',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: `
-interface Qux1 {
-  (...args: any[]): void;
-}
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: `
-interface Qux2 {
-  (...args: readonly any[]): void;
-}
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: `
-interface Qux3 {
-  (...args: Array<any>): void;
-}
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: `
-interface Qux4 {
-  (...args: ReadonlyArray<any>): void;
-}
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'function quux1(fn: (...args: any[]) => void): void {}',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'function quux2(fn: (...args: readonly any[]) => void): void {}',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'function quux3(fn: (...args: Array<any>) => void): void {}',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'function quux4(fn: (...args: ReadonlyArray<any>) => void): void {}',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'function quuz1(): (...args: any[]) => void {}',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'function quuz2(): (...args: readonly any[]) => void {}',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'function quuz3(): (...args: Array<any>) => void {}',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'function quuz4(): (...args: ReadonlyArray<any>) => void {}',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'type Fred1 = (...args: any[]) => void;',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'type Fred2 = (...args: readonly any[]) => void;',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'type Fred3 = (...args: Array<any>) => void;',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'type Fred4 = (...args: ReadonlyArray<any>) => void;',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'type Corge1 = new (...args: any[]) => void;',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'type Corge2 = new (...args: readonly any[]) => void;',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'type Corge3 = new (...args: Array<any>) => void;',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'type Corge4 = new (...args: ReadonlyArray<any>) => void;',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: `
-interface Grault1 {
-  new (...args: any[]): void;
-}
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: `
-interface Grault2 {
-  new (...args: readonly any[]): void;
-}
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: `
-interface Grault3 {
-  new (...args: Array<any>): void;
-}
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: `
-interface Grault4 {
-  new (...args: ReadonlyArray<any>): void;
-}
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: `
-interface Garply1 {
-  f(...args: any[]): void;
-}
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: `
-interface Garply2 {
-  f(...args: readonly any[]): void;
-}
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: `
-interface Garply3 {
-  f(...args: Array<any>): void;
-}
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: `
-interface Garply4 {
-  f(...args: ReadonlyArray<any>): void;
-}
-      `,
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'declare function waldo1(...args: any[]): void;',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'declare function waldo2(...args: readonly any[]): void;',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'declare function waldo3(...args: Array<any>): void;',
-      options: [{ ignoreRestArgs: true }],
-    },
-    {
-      code: 'declare function waldo4(...args: ReadonlyArray<any>): void;',
-      options: [{ ignoreRestArgs: true }],
-    },
-  ],
   invalid: [
     {
       code: 'const number: any = 1;',
@@ -2081,6 +1724,363 @@ const number: never = 1;
 // fixToUnknown: true
 const number: unknown = 1;
       `,
+    },
+  ],
+  valid: [
+    'const number: number = 1;',
+    'function greet(): string {}',
+    'function greet(): Array<string> {}',
+    'function greet(): string[] {}',
+    'function greet(): Array<Array<string>> {}',
+    'function greet(): Array<string[]> {}',
+    'function greet(param: Array<string>): Array<string> {}',
+    `
+class Greeter {
+  message: string;
+}
+    `,
+    `
+class Greeter {
+  message: Array<string>;
+}
+    `,
+    `
+class Greeter {
+  message: string[];
+}
+    `,
+    `
+class Greeter {
+  message: Array<Array<string>>;
+}
+    `,
+    `
+class Greeter {
+  message: Array<string[]>;
+}
+    `,
+    `
+interface Greeter {
+  message: string;
+}
+    `,
+    `
+interface Greeter {
+  message: Array<string>;
+}
+    `,
+    `
+interface Greeter {
+  message: string[];
+}
+    `,
+    `
+interface Greeter {
+  message: Array<Array<string>>;
+}
+    `,
+    `
+interface Greeter {
+  message: Array<string[]>;
+}
+    `,
+    `
+type obj = {
+  message: string;
+};
+    `,
+    `
+type obj = {
+  message: Array<string>;
+};
+    `,
+    `
+type obj = {
+  message: string[];
+};
+    `,
+    `
+type obj = {
+  message: Array<Array<string>>;
+};
+    `,
+    `
+type obj = {
+  message: Array<string[]>;
+};
+    `,
+    `
+type obj = {
+  message: string | number;
+};
+    `,
+    `
+type obj = {
+  message: string | Array<string>;
+};
+    `,
+    `
+type obj = {
+  message: string | string[];
+};
+    `,
+    `
+type obj = {
+  message: string | Array<Array<string>>;
+};
+    `,
+    `
+type obj = {
+  message: string & number;
+};
+    `,
+    `
+type obj = {
+  message: string & Array<string>;
+};
+    `,
+    `
+type obj = {
+  message: string & string[];
+};
+    `,
+    `
+type obj = {
+  message: string & Array<Array<string>>;
+};
+    `,
+    // https://github.com/eslint/typescript-eslint-parser/issues/397
+    {
+      code: `
+        function foo(a: number, ...rest: any[]): void {
+          return;
+        }
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function foo1(...args: any[]) {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'const bar1 = function (...args: any[]) {};',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'const baz1 = (...args: any[]) => {};',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function foo2(...args: readonly any[]) {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'const bar2 = function (...args: readonly any[]) {};',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'const baz2 = (...args: readonly any[]) => {};',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function foo3(...args: Array<any>) {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'const bar3 = function (...args: Array<any>) {};',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'const baz3 = (...args: Array<any>) => {};',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function foo4(...args: ReadonlyArray<any>) {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'const bar4 = function (...args: ReadonlyArray<any>) {};',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'const baz4 = (...args: ReadonlyArray<any>) => {};',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Qux1 {
+  (...args: any[]): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Qux2 {
+  (...args: readonly any[]): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Qux3 {
+  (...args: Array<any>): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Qux4 {
+  (...args: ReadonlyArray<any>): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function quux1(fn: (...args: any[]) => void): void {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function quux2(fn: (...args: readonly any[]) => void): void {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function quux3(fn: (...args: Array<any>) => void): void {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function quux4(fn: (...args: ReadonlyArray<any>) => void): void {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function quuz1(): (...args: any[]) => void {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function quuz2(): (...args: readonly any[]) => void {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function quuz3(): (...args: Array<any>) => void {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'function quuz4(): (...args: ReadonlyArray<any>) => void {}',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Fred1 = (...args: any[]) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Fred2 = (...args: readonly any[]) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Fred3 = (...args: Array<any>) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Fred4 = (...args: ReadonlyArray<any>) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Corge1 = new (...args: any[]) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Corge2 = new (...args: readonly any[]) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Corge3 = new (...args: Array<any>) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'type Corge4 = new (...args: ReadonlyArray<any>) => void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Grault1 {
+  new (...args: any[]): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Grault2 {
+  new (...args: readonly any[]): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Grault3 {
+  new (...args: Array<any>): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Grault4 {
+  new (...args: ReadonlyArray<any>): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Garply1 {
+  f(...args: any[]): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Garply2 {
+  f(...args: readonly any[]): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Garply3 {
+  f(...args: Array<any>): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: `
+interface Garply4 {
+  f(...args: ReadonlyArray<any>): void;
+}
+      `,
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'declare function waldo1(...args: any[]): void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'declare function waldo2(...args: readonly any[]): void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'declare function waldo3(...args: Array<any>): void;',
+      options: [{ ignoreRestArgs: true }],
+    },
+    {
+      code: 'declare function waldo4(...args: ReadonlyArray<any>): void;',
+      options: [{ ignoreRestArgs: true }],
     },
   ],
 });

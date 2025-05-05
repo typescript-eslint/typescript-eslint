@@ -17,8 +17,8 @@ export default util.createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow invocation of `require()`',
       recommended: 'recommended',
+      description: 'Disallow invocation of `require()`',
     },
     messages: {
       noRequireImports: 'A `require()` style import is forbidden.',

@@ -5,40 +5,6 @@ import rule from '../../src/rules/no-var-requires';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-var-requires', rule, {
-  valid: [
-    "import foo = require('foo');",
-    "require('foo');",
-    "require?.('foo');",
-    `
-import { createRequire } from 'module';
-const require = createRequire('foo');
-const json = require('./some.json');
-    `,
-    {
-      code: "const pkg = require('./package.json');",
-      options: [{ allow: ['/package\\.json$'] }],
-    },
-    {
-      code: "const pkg = require('../package.json');",
-      options: [{ allow: ['/package\\.json$'] }],
-    },
-    {
-      code: "const pkg = require('../packages/package.json');",
-      options: [{ allow: ['/package\\.json$'] }],
-    },
-    {
-      code: "const pkg = require('data.json');",
-      options: [{ allow: ['\\.json$'] }],
-    },
-    {
-      code: "const pkg = require('some-package');",
-      options: [{ allow: ['^some-package$'] }],
-    },
-    {
-      code: 'const pkg = require(`some-package`);',
-      options: [{ allow: ['^some-package$'] }],
-    },
-  ],
   invalid: [
     {
       code: "var foo = require('foo');",
@@ -220,6 +186,40 @@ configValidator.addSchema(require('./a.json'));
           messageId: 'noVarReqs',
         },
       ],
+      options: [{ allow: ['^some-package$'] }],
+    },
+  ],
+  valid: [
+    "import foo = require('foo');",
+    "require('foo');",
+    "require?.('foo');",
+    `
+import { createRequire } from 'module';
+const require = createRequire('foo');
+const json = require('./some.json');
+    `,
+    {
+      code: "const pkg = require('./package.json');",
+      options: [{ allow: ['/package\\.json$'] }],
+    },
+    {
+      code: "const pkg = require('../package.json');",
+      options: [{ allow: ['/package\\.json$'] }],
+    },
+    {
+      code: "const pkg = require('../packages/package.json');",
+      options: [{ allow: ['/package\\.json$'] }],
+    },
+    {
+      code: "const pkg = require('data.json');",
+      options: [{ allow: ['\\.json$'] }],
+    },
+    {
+      code: "const pkg = require('some-package');",
+      options: [{ allow: ['^some-package$'] }],
+    },
+    {
+      code: 'const pkg = require(`some-package`);',
       options: [{ allow: ['^some-package$'] }],
     },
   ],

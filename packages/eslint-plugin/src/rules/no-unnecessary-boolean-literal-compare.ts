@@ -41,13 +41,13 @@ export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-boolean-literal-compare',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'strict',
       description:
         'Disallow unnecessary equality comparisons against boolean literals',
-      recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       comparingNullableToFalse:
         'This expression unnecessarily compares a nullable boolean value to false instead of using the ?? operator to provide a default.',

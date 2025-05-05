@@ -13,8 +13,8 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow iterating over an array with a for-in loop',
       recommended: 'recommended',
+      description: 'Disallow iterating over an array with a for-in loop',
       requiresTypeChecking: true,
     },
     messages: {

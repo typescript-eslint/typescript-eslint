@@ -25,8 +25,8 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: "Disallow type parameters that aren't used multiple times",
       recommended: 'strict',
+      description: "Disallow type parameters that aren't used multiple times",
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

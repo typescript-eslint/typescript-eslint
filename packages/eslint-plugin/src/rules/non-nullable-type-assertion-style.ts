@@ -15,12 +15,12 @@ export default createRule({
   name: 'non-nullable-type-assertion-style',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
-      description: 'Enforce non-null assertions over explicit type assertions',
       recommended: 'stylistic',
+      description: 'Enforce non-null assertions over explicit type assertions',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       preferNonNullAssertion:
         'Use a ! assertion to more succinctly remove null and undefined from the type.',

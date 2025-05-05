@@ -28,9 +28,9 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     defaultOptions,
     docs: {
+      extendsBaseRule: true,
       description:
         'Require `return` statements to either always or never specify values',
-      extendsBaseRule: true,
       requiresTypeChecking: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,

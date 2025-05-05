@@ -15,70 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('prefer-find', rule, {
-  valid: [
-    `
-      interface JerkCode<T> {
-        filter(predicate: (item: T) => boolean): JerkCode<T>;
-      }
-
-      declare const jerkCode: JerkCode<string>;
-
-      jerkCode.filter(item => item === 'aha')[0];
-    `,
-    `
-      declare const arr: readonly string[];
-      arr.filter(item => item === 'aha')[1];
-    `,
-    `
-      declare const arr: string[];
-      arr.filter(item => item === 'aha').at(1);
-    `,
-    `
-      declare const notNecessarilyAnArray: unknown[] | undefined | null | string;
-      notNecessarilyAnArray?.filter(item => true)[0];
-    `,
-    // Be sure that we don't try to mess with this case, since the member access
-    // should not need to be optional for the cases the rule is concerned with.
-    '[].filter(() => true)?.[0];',
-    // Be sure that we don't try to mess with this case, since the member access
-    // should not need to be optional for the cases the rule is concerned with.
-    '[].filter(() => true)?.at?.(0);',
-    // Be sure that we don't try to mess with this case, since the function call
-    // should not need to be optional for the cases the rule is concerned with.
-    '[].filter?.(() => true)[0];',
-    '[1, 2, 3].filter(x => x > 0).at(-Infinity);',
-    `
-      declare const arr: string[];
-      declare const cond: Parameters<Array<string>['filter']>[0];
-      const a = { arr };
-      a?.arr.filter(cond).at(1);
-    `,
-    "['Just', 'a', 'filter'].filter(x => x.length > 4);",
-    "['Just', 'a', 'find'].find(x => x.length > 4);",
-    'undefined.filter(x => x)[0];',
-    'null?.filter(x => x)[0];',
-    // Should not throw. See https://github.com/typescript-eslint/typescript-eslint/issues/8386
-    `
-      declare function foo(param: any): any;
-      foo(Symbol.for('foo'));
-    `,
-    // Specifically need to test Symbol.for(), not just Symbol(), since only
-    // Symbol.for() creates a static value that the rule inspects.
-    `
-      declare const arr: string[];
-      const s = Symbol.for("Don't throw!");
-      arr.filter(item => item === 'aha').at(s);
-    `,
-    "[1, 2, 3].filter(x => x)[Symbol('0')];",
-    "[1, 2, 3].filter(x => x)[Symbol.for('0')];",
-    '(Math.random() < 0.5 ? [1, 2, 3].filter(x => true) : [1, 2, 3])[0];',
-    `
-      (Math.random() < 0.5
-        ? [1, 2, 3].find(x => true)
-        : [1, 2, 3].filter(x => true))[0];
-    `,
-  ],
-
   invalid: [
     {
       code: `
@@ -728,5 +664,69 @@ declare const spreadArgs: [(x: unknown) => boolean];
         },
       ],
     },
+  ],
+
+  valid: [
+    `
+      interface JerkCode<T> {
+        filter(predicate: (item: T) => boolean): JerkCode<T>;
+      }
+
+      declare const jerkCode: JerkCode<string>;
+
+      jerkCode.filter(item => item === 'aha')[0];
+    `,
+    `
+      declare const arr: readonly string[];
+      arr.filter(item => item === 'aha')[1];
+    `,
+    `
+      declare const arr: string[];
+      arr.filter(item => item === 'aha').at(1);
+    `,
+    `
+      declare const notNecessarilyAnArray: unknown[] | undefined | null | string;
+      notNecessarilyAnArray?.filter(item => true)[0];
+    `,
+    // Be sure that we don't try to mess with this case, since the member access
+    // should not need to be optional for the cases the rule is concerned with.
+    '[].filter(() => true)?.[0];',
+    // Be sure that we don't try to mess with this case, since the member access
+    // should not need to be optional for the cases the rule is concerned with.
+    '[].filter(() => true)?.at?.(0);',
+    // Be sure that we don't try to mess with this case, since the function call
+    // should not need to be optional for the cases the rule is concerned with.
+    '[].filter?.(() => true)[0];',
+    '[1, 2, 3].filter(x => x > 0).at(-Infinity);',
+    `
+      declare const arr: string[];
+      declare const cond: Parameters<Array<string>['filter']>[0];
+      const a = { arr };
+      a?.arr.filter(cond).at(1);
+    `,
+    "['Just', 'a', 'filter'].filter(x => x.length > 4);",
+    "['Just', 'a', 'find'].find(x => x.length > 4);",
+    'undefined.filter(x => x)[0];',
+    'null?.filter(x => x)[0];',
+    // Should not throw. See https://github.com/typescript-eslint/typescript-eslint/issues/8386
+    `
+      declare function foo(param: any): any;
+      foo(Symbol.for('foo'));
+    `,
+    // Specifically need to test Symbol.for(), not just Symbol(), since only
+    // Symbol.for() creates a static value that the rule inspects.
+    `
+      declare const arr: string[];
+      const s = Symbol.for("Don't throw!");
+      arr.filter(item => item === 'aha').at(s);
+    `,
+    "[1, 2, 3].filter(x => x)[Symbol('0')];",
+    "[1, 2, 3].filter(x => x)[Symbol.for('0')];",
+    '(Math.random() < 0.5 ? [1, 2, 3].filter(x => true) : [1, 2, 3])[0];',
+    `
+      (Math.random() < 0.5
+        ? [1, 2, 3].find(x => true)
+        : [1, 2, 3].filter(x => true))[0];
+    `,
   ],
 });

@@ -5,82 +5,6 @@ import rule from '../../src/rules/no-empty-function';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-function', rule, {
-  valid: [
-    {
-      code: `
-class Person {
-  private name: string;
-  constructor(name: string) {
-    this.name = name;
-  }
-}
-      `,
-    },
-    {
-      code: `
-class Person {
-  constructor(private name: string) {}
-}
-      `,
-    },
-    {
-      code: `
-class Person {
-  constructor(name: string) {}
-}
-      `,
-      options: [{ allow: ['constructors'] }],
-    },
-    {
-      code: `
-class Person {
-  otherMethod(name: string) {}
-}
-      `,
-      options: [{ allow: ['methods'] }],
-    },
-    {
-      code: `
-class Foo {
-  private constructor() {}
-}
-      `,
-      options: [{ allow: ['private-constructors'] }],
-    },
-    {
-      code: `
-class Foo {
-  protected constructor() {}
-}
-      `,
-      options: [{ allow: ['protected-constructors'] }],
-    },
-    {
-      code: `
-function foo() {
-  const a = null;
-}
-      `,
-    },
-    {
-      code: `
-class Foo {
-  @decorator()
-  foo() {}
-}
-      `,
-      options: [{ allow: ['decoratedFunctions'] }],
-    },
-    {
-      code: `
-class Foo extends Base {
-  override foo() {}
-}
-      `,
-      options: [{ allow: ['overrideMethods'] }],
-    },
-  ],
-
   invalid: [
     {
       code: `
@@ -199,6 +123,82 @@ class Foo extends Base {
           messageId: 'unexpected',
         },
       ],
+    },
+  ],
+
+  valid: [
+    {
+      code: `
+class Person {
+  private name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Person {
+  constructor(private name: string) {}
+}
+      `,
+    },
+    {
+      code: `
+class Person {
+  constructor(name: string) {}
+}
+      `,
+      options: [{ allow: ['constructors'] }],
+    },
+    {
+      code: `
+class Person {
+  otherMethod(name: string) {}
+}
+      `,
+      options: [{ allow: ['methods'] }],
+    },
+    {
+      code: `
+class Foo {
+  private constructor() {}
+}
+      `,
+      options: [{ allow: ['private-constructors'] }],
+    },
+    {
+      code: `
+class Foo {
+  protected constructor() {}
+}
+      `,
+      options: [{ allow: ['protected-constructors'] }],
+    },
+    {
+      code: `
+function foo() {
+  const a = null;
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  @decorator()
+  foo() {}
+}
+      `,
+      options: [{ allow: ['decoratedFunctions'] }],
+    },
+    {
+      code: `
+class Foo extends Base {
+  override foo() {}
+}
+      `,
+      options: [{ allow: ['overrideMethods'] }],
     },
   ],
 });

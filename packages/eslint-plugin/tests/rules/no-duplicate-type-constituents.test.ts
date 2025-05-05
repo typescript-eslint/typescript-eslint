@@ -15,153 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-duplicate-type-constituents', rule, {
-  valid: [
-    {
-      code: 'type T = 1 | 2;',
-    },
-    {
-      code: "type T = 1 | '1';",
-    },
-    {
-      code: 'type T = true & boolean;',
-    },
-    {
-      code: 'type T = null | undefined;',
-    },
-    {
-      code: 'type T = any | unknown;',
-    },
-    {
-      code: 'type T = { a: string } | { b: string };',
-    },
-    {
-      code: 'type T = { a: string; b: number } | { b: number; a: string };',
-    },
-    {
-      code: 'type T = { a: string | number };',
-    },
-    {
-      code: 'type T = Set<string> | Set<number>;',
-    },
-    {
-      code: 'type T = Class<string> | Class<number>;',
-    },
-    {
-      code: 'type T = string[] | number[];',
-    },
-    {
-      code: 'type T = string[][] | string[];',
-    },
-    {
-      code: 'type T = [1, 2, 3] | [1, 2, 4];',
-    },
-    {
-      code: 'type T = [1, 2, 3] | [1, 2, 3, 4];',
-    },
-    {
-      code: "type T = 'A' | string[];",
-    },
-    {
-      code: 'type T = (() => string) | (() => void);',
-    },
-    {
-      code: 'type T = () => string | void;',
-    },
-    {
-      code: 'type T = () => null | undefined;',
-    },
-    {
-      code: 'type T = (arg: string | number) => void;',
-    },
-    {
-      code: 'type T = A | A;',
-    },
-    {
-      code: `
-type A = 'A';
-type B = 'B';
-type T = A | B;
-      `,
-    },
-    {
-      code: `
-type A = 'A';
-type B = 'B';
-const a: A | B = 'A';
-      `,
-    },
-    {
-      code: `
-type A = 'A';
-type B = 'B';
-type T = A | /* comment */ B;
-      `,
-    },
-    {
-      code: `
-type A = 'A';
-type B = 'B';
-type T = 'A' | 'B';
-      `,
-    },
-    {
-      code: `
-type A = 'A';
-type B = 'B';
-type C = 'C';
-type T = A | B | C;
-      `,
-    },
-    {
-      code: 'type T = readonly string[] | string[];',
-    },
-    {
-      code: `
-type A = 'A';
-type B = 'B';
-type C = 'C';
-type D = 'D';
-type T = (A | B) | (C | D);
-      `,
-    },
-    {
-      code: `
-type A = 'A';
-type B = 'B';
-type T = (A | B) | (A & B);
-      `,
-    },
-    {
-      code: `
-type A = 'A';
-type B = 'B';
-type T = Record<string, A | B>;
-      `,
-    },
-    {
-      code: 'type T = A | A;',
-      options: [
-        {
-          ignoreUnions: true,
-        },
-      ],
-    },
-    {
-      code: 'type T = A & A;',
-      options: [
-        {
-          ignoreIntersections: true,
-        },
-      ],
-    },
-    {
-      code: 'type T = Class<string> | Class<string>;',
-    },
-    {
-      code: 'type T = A | A | string;',
-    },
-    { code: '(a: string | undefined) => {};' },
-  ],
   invalid: [
     {
       code: 'type T = 1 | 1;',
@@ -895,5 +748,152 @@ type T = Record<string, A  >;
         }
       `,
     },
+  ],
+  valid: [
+    {
+      code: 'type T = 1 | 2;',
+    },
+    {
+      code: "type T = 1 | '1';",
+    },
+    {
+      code: 'type T = true & boolean;',
+    },
+    {
+      code: 'type T = null | undefined;',
+    },
+    {
+      code: 'type T = any | unknown;',
+    },
+    {
+      code: 'type T = { a: string } | { b: string };',
+    },
+    {
+      code: 'type T = { a: string; b: number } | { b: number; a: string };',
+    },
+    {
+      code: 'type T = { a: string | number };',
+    },
+    {
+      code: 'type T = Set<string> | Set<number>;',
+    },
+    {
+      code: 'type T = Class<string> | Class<number>;',
+    },
+    {
+      code: 'type T = string[] | number[];',
+    },
+    {
+      code: 'type T = string[][] | string[];',
+    },
+    {
+      code: 'type T = [1, 2, 3] | [1, 2, 4];',
+    },
+    {
+      code: 'type T = [1, 2, 3] | [1, 2, 3, 4];',
+    },
+    {
+      code: "type T = 'A' | string[];",
+    },
+    {
+      code: 'type T = (() => string) | (() => void);',
+    },
+    {
+      code: 'type T = () => string | void;',
+    },
+    {
+      code: 'type T = () => null | undefined;',
+    },
+    {
+      code: 'type T = (arg: string | number) => void;',
+    },
+    {
+      code: 'type T = A | A;',
+    },
+    {
+      code: `
+type A = 'A';
+type B = 'B';
+type T = A | B;
+      `,
+    },
+    {
+      code: `
+type A = 'A';
+type B = 'B';
+const a: A | B = 'A';
+      `,
+    },
+    {
+      code: `
+type A = 'A';
+type B = 'B';
+type T = A | /* comment */ B;
+      `,
+    },
+    {
+      code: `
+type A = 'A';
+type B = 'B';
+type T = 'A' | 'B';
+      `,
+    },
+    {
+      code: `
+type A = 'A';
+type B = 'B';
+type C = 'C';
+type T = A | B | C;
+      `,
+    },
+    {
+      code: 'type T = readonly string[] | string[];',
+    },
+    {
+      code: `
+type A = 'A';
+type B = 'B';
+type C = 'C';
+type D = 'D';
+type T = (A | B) | (C | D);
+      `,
+    },
+    {
+      code: `
+type A = 'A';
+type B = 'B';
+type T = (A | B) | (A & B);
+      `,
+    },
+    {
+      code: `
+type A = 'A';
+type B = 'B';
+type T = Record<string, A | B>;
+      `,
+    },
+    {
+      code: 'type T = A | A;',
+      options: [
+        {
+          ignoreUnions: true,
+        },
+      ],
+    },
+    {
+      code: 'type T = A & A;',
+      options: [
+        {
+          ignoreIntersections: true,
+        },
+      ],
+    },
+    {
+      code: 'type T = Class<string> | Class<string>;',
+    },
+    {
+      code: 'type T = A | A | string;',
+    },
+    { code: '(a: string | undefined) => {};' },
   ],
 });

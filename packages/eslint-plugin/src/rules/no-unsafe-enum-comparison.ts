@@ -60,8 +60,8 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow comparing an enum value with a non-enum value',
       recommended: 'recommended',
+      description: 'Disallow comparing an enum value with a non-enum value',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

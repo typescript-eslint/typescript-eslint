@@ -108,9 +108,9 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
+      recommended: 'recommended',
       description:
         'Enforce unbound methods are called with their expected scope',
-      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {

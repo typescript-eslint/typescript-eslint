@@ -62,9 +62,9 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     defaultOptions,
     docs: {
-      description: 'Disallow empty functions',
       extendsBaseRule: true,
       recommended: 'stylistic',
+      description: 'Disallow empty functions',
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,

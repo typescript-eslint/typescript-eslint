@@ -15,327 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-enum-comparison', rule, {
-  valid: [
-    "'a' > 'b';",
-    "'a' < 'b';",
-    "'a' == 'b';",
-    "'a' === 'b';",
-    '1 > 2;',
-    '1 < 2;',
-    '1 == 2;',
-    '1 === 2;',
-    `
-      enum Fruit {
-        Apple,
-      }
-      Fruit.Apple === ({} as any);
-    `,
-    `
-      enum Fruit {
-        Apple,
-      }
-      Fruit.Apple === undefined;
-    `,
-    `
-      enum Fruit {
-        Apple,
-      }
-      Fruit.Apple === null;
-    `,
-    `
-      enum Fruit {
-        Apple,
-      }
-      declare const fruit: Fruit | -1;
-      fruit === -1;
-    `,
-    `
-      enum Fruit {
-        Apple,
-      }
-      declare const fruit: Fruit | number;
-      fruit === -1;
-    `,
-    `
-      enum Fruit {
-        Apple,
-      }
-      declare const fruit: Fruit | 'apple';
-      fruit === 'apple';
-    `,
-    `
-      enum Fruit {
-        Apple,
-      }
-      declare const fruit: Fruit | string;
-      fruit === 'apple';
-    `,
-    `
-      enum Fruit {
-        Apple = 'apple',
-      }
-      declare const fruit: Fruit | 'apple';
-      fruit === 'apple';
-    `,
-    `
-      enum Fruit {
-        Apple = 'apple',
-      }
-      declare const fruit: Fruit | string;
-      fruit === 'apple';
-    `,
-    `
-      enum Fruit {
-        Apple = 'apple',
-      }
-      declare const fruit: Fruit | 0;
-      fruit === 0;
-    `,
-    `
-      enum Fruit {
-        Apple = 'apple',
-      }
-      declare const fruit: Fruit | number;
-      fruit === 0;
-    `,
-    `
-      enum Fruit {
-        Apple,
-      }
-      declare const fruit: Fruit | 'apple';
-      fruit === Math.random() > 0.5 ? 'apple' : Fruit.Apple;
-    `,
-    `
-      enum Fruit {
-        Apple = 'apple',
-      }
-      declare const fruit: Fruit | 'apple';
-      fruit === Math.random() > 0.5 ? 'apple' : Fruit.Apple;
-    `,
-    `
-      enum Fruit {
-        Apple = 'apple',
-      }
-      declare const fruit: Fruit | string;
-      fruit === Math.random() > 0.5 ? 'apple' : Fruit.Apple;
-    `,
-    `
-      enum Fruit {
-        Apple = 'apple',
-      }
-      declare const fruit: Fruit | 0;
-      fruit === Math.random() > 0.5 ? 0 : Fruit.Apple;
-    `,
-    `
-      enum Fruit {
-        Apple = 'apple',
-      }
-      declare const fruit: Fruit | number;
-      fruit === Math.random() > 0.5 ? 0 : Fruit.Apple;
-    `,
-    `
-      enum Fruit {
-        Apple,
-        Banana,
-      }
-      Fruit.Apple === Fruit.Banana;
-    `,
-    `
-      enum Fruit {
-        Apple = 0,
-        Banana = 1,
-      }
-      Fruit.Apple === Fruit.Banana;
-    `,
-    `
-      enum Fruit {
-        Apple = 'apple',
-        Banana = 'banana',
-      }
-      Fruit.Apple === Fruit.Banana;
-    `,
-    `
-      enum Fruit {
-        Apple,
-        Banana,
-      }
-      const fruit = Fruit.Apple;
-      fruit === Fruit.Banana;
-    `,
-    `
-      enum Vegetable {
-        Asparagus = 'asparagus',
-        Beet = 'beet',
-        Celery = 'celery',
-      }
-      const vegetable = Vegetable.Asparagus;
-      vegetable === Vegetable.Beet;
-    `,
-    `
-      enum Fruit {
-        Apple,
-        Banana,
-        Cherry,
-      }
-      const fruit1 = Fruit.Apple;
-      const fruit2 = Fruit.Banana;
-      fruit1 === fruit2;
-    `,
-    `
-      enum Vegetable {
-        Asparagus = 'asparagus',
-        Beet = 'beet',
-        Celery = 'celery',
-      }
-      const vegetable1 = Vegetable.Asparagus;
-      const vegetable2 = Vegetable.Beet;
-      vegetable1 === vegetable2;
-    `,
-    `
-      enum Fruit {
-        Apple,
-        Banana,
-        Cherry,
-      }
-      enum Fruit2 {
-        Apple2,
-        Banana2,
-        Cherry2,
-      }
-      declare const left: number | Fruit;
-      declare const right: number | Fruit2;
-      left === right;
-    `,
-    `
-      enum Vegetable {
-        Asparagus = 'asparagus',
-        Beet = 'beet',
-        Celery = 'celery',
-      }
-      enum Vegetable2 {
-        Asparagus2 = 'asparagus2',
-        Beet2 = 'beet2',
-        Celery2 = 'celery2',
-      }
-      declare const left: string | Vegetable;
-      declare const right: string | Vegetable2;
-      left === right;
-    `,
-    `
-      enum Vegetable {
-        Asparagus = 'asparagus',
-        Beet = 'beet',
-        Celery = 'celery',
-      }
-      const foo = {};
-      const vegetable = Vegetable.Asparagus;
-      vegetable in foo;
-    `,
-    `
-      enum Fruit {
-        Apple,
-        Banana,
-        Cherry,
-      }
-      declare const fruitOrBoolean: Fruit | boolean;
-      fruitOrBoolean === true;
-    `,
-    `
-      enum Str {
-        A = 'a',
-      }
-      enum Num {
-        B = 1,
-      }
-      enum Mixed {
-        A = 'a',
-        B = 1,
-      }
-
-      declare const str: Str;
-      declare const strOrString: Str | string;
-
-      declare const num: Num;
-      declare const numOrNumber: Num | number;
-
-      declare const mixed: Mixed;
-      declare const mixedOrStringOrNumber: Mixed | string | number;
-
-      function someFunction() {}
-
-      // following are all ignored due to the presence of "| string" or "| number"
-      strOrString === 'a';
-      numOrNumber === 1;
-      mixedOrStringOrNumber === 'a';
-      mixedOrStringOrNumber === 1;
-
-      // following are all ignored because the value can never be an enum value
-      str === 1;
-      num === 'a';
-      str === {};
-      num === {};
-      mixed === {};
-      str === true;
-      num === true;
-      mixed === true;
-      str === someFunction;
-      num === someFunction;
-      mixed === someFunction;
-    `,
-    `
-      enum Fruit {
-        Apple,
-      }
-
-      const bitShift = 1 << Fruit.Apple;
-    `,
-    `
-      enum Fruit {
-        Apple,
-      }
-
-      const bitShift = 1 >> Fruit.Apple;
-    `,
-    `
-      enum Fruit {
-        Apple,
-      }
-
-      declare const fruit: Fruit;
-
-      switch (fruit) {
-        case Fruit.Apple: {
-          break;
-        }
-      }
-    `,
-    `
-      enum Vegetable {
-        Asparagus = 'asparagus',
-      }
-
-      declare const vegetable: Vegetable;
-
-      switch (vegetable) {
-        case Vegetable.Asparagus: {
-          break;
-        }
-      }
-    `,
-    `
-      enum Vegetable {
-        Asparagus = 'asparagus',
-      }
-
-      declare const vegetable: Vegetable;
-
-      switch (vegetable) {
-        default: {
-          break;
-        }
-      }
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -1246,5 +925,326 @@ ruleTester.run('no-unsafe-enum-comparison', rule, {
       `,
       errors: [{ messageId: 'mismatchedCondition' }],
     },
+  ],
+  valid: [
+    "'a' > 'b';",
+    "'a' < 'b';",
+    "'a' == 'b';",
+    "'a' === 'b';",
+    '1 > 2;',
+    '1 < 2;',
+    '1 == 2;',
+    '1 === 2;',
+    `
+      enum Fruit {
+        Apple,
+      }
+      Fruit.Apple === ({} as any);
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      Fruit.Apple === undefined;
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      Fruit.Apple === null;
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      declare const fruit: Fruit | -1;
+      fruit === -1;
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      declare const fruit: Fruit | number;
+      fruit === -1;
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      declare const fruit: Fruit | 'apple';
+      fruit === 'apple';
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      declare const fruit: Fruit | string;
+      fruit === 'apple';
+    `,
+    `
+      enum Fruit {
+        Apple = 'apple',
+      }
+      declare const fruit: Fruit | 'apple';
+      fruit === 'apple';
+    `,
+    `
+      enum Fruit {
+        Apple = 'apple',
+      }
+      declare const fruit: Fruit | string;
+      fruit === 'apple';
+    `,
+    `
+      enum Fruit {
+        Apple = 'apple',
+      }
+      declare const fruit: Fruit | 0;
+      fruit === 0;
+    `,
+    `
+      enum Fruit {
+        Apple = 'apple',
+      }
+      declare const fruit: Fruit | number;
+      fruit === 0;
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+      declare const fruit: Fruit | 'apple';
+      fruit === Math.random() > 0.5 ? 'apple' : Fruit.Apple;
+    `,
+    `
+      enum Fruit {
+        Apple = 'apple',
+      }
+      declare const fruit: Fruit | 'apple';
+      fruit === Math.random() > 0.5 ? 'apple' : Fruit.Apple;
+    `,
+    `
+      enum Fruit {
+        Apple = 'apple',
+      }
+      declare const fruit: Fruit | string;
+      fruit === Math.random() > 0.5 ? 'apple' : Fruit.Apple;
+    `,
+    `
+      enum Fruit {
+        Apple = 'apple',
+      }
+      declare const fruit: Fruit | 0;
+      fruit === Math.random() > 0.5 ? 0 : Fruit.Apple;
+    `,
+    `
+      enum Fruit {
+        Apple = 'apple',
+      }
+      declare const fruit: Fruit | number;
+      fruit === Math.random() > 0.5 ? 0 : Fruit.Apple;
+    `,
+    `
+      enum Fruit {
+        Apple,
+        Banana,
+      }
+      Fruit.Apple === Fruit.Banana;
+    `,
+    `
+      enum Fruit {
+        Apple = 0,
+        Banana = 1,
+      }
+      Fruit.Apple === Fruit.Banana;
+    `,
+    `
+      enum Fruit {
+        Apple = 'apple',
+        Banana = 'banana',
+      }
+      Fruit.Apple === Fruit.Banana;
+    `,
+    `
+      enum Fruit {
+        Apple,
+        Banana,
+      }
+      const fruit = Fruit.Apple;
+      fruit === Fruit.Banana;
+    `,
+    `
+      enum Vegetable {
+        Asparagus = 'asparagus',
+        Beet = 'beet',
+        Celery = 'celery',
+      }
+      const vegetable = Vegetable.Asparagus;
+      vegetable === Vegetable.Beet;
+    `,
+    `
+      enum Fruit {
+        Apple,
+        Banana,
+        Cherry,
+      }
+      const fruit1 = Fruit.Apple;
+      const fruit2 = Fruit.Banana;
+      fruit1 === fruit2;
+    `,
+    `
+      enum Vegetable {
+        Asparagus = 'asparagus',
+        Beet = 'beet',
+        Celery = 'celery',
+      }
+      const vegetable1 = Vegetable.Asparagus;
+      const vegetable2 = Vegetable.Beet;
+      vegetable1 === vegetable2;
+    `,
+    `
+      enum Fruit {
+        Apple,
+        Banana,
+        Cherry,
+      }
+      enum Fruit2 {
+        Apple2,
+        Banana2,
+        Cherry2,
+      }
+      declare const left: number | Fruit;
+      declare const right: number | Fruit2;
+      left === right;
+    `,
+    `
+      enum Vegetable {
+        Asparagus = 'asparagus',
+        Beet = 'beet',
+        Celery = 'celery',
+      }
+      enum Vegetable2 {
+        Asparagus2 = 'asparagus2',
+        Beet2 = 'beet2',
+        Celery2 = 'celery2',
+      }
+      declare const left: string | Vegetable;
+      declare const right: string | Vegetable2;
+      left === right;
+    `,
+    `
+      enum Vegetable {
+        Asparagus = 'asparagus',
+        Beet = 'beet',
+        Celery = 'celery',
+      }
+      const foo = {};
+      const vegetable = Vegetable.Asparagus;
+      vegetable in foo;
+    `,
+    `
+      enum Fruit {
+        Apple,
+        Banana,
+        Cherry,
+      }
+      declare const fruitOrBoolean: Fruit | boolean;
+      fruitOrBoolean === true;
+    `,
+    `
+      enum Str {
+        A = 'a',
+      }
+      enum Num {
+        B = 1,
+      }
+      enum Mixed {
+        A = 'a',
+        B = 1,
+      }
+
+      declare const str: Str;
+      declare const strOrString: Str | string;
+
+      declare const num: Num;
+      declare const numOrNumber: Num | number;
+
+      declare const mixed: Mixed;
+      declare const mixedOrStringOrNumber: Mixed | string | number;
+
+      function someFunction() {}
+
+      // following are all ignored due to the presence of "| string" or "| number"
+      strOrString === 'a';
+      numOrNumber === 1;
+      mixedOrStringOrNumber === 'a';
+      mixedOrStringOrNumber === 1;
+
+      // following are all ignored because the value can never be an enum value
+      str === 1;
+      num === 'a';
+      str === {};
+      num === {};
+      mixed === {};
+      str === true;
+      num === true;
+      mixed === true;
+      str === someFunction;
+      num === someFunction;
+      mixed === someFunction;
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+
+      const bitShift = 1 << Fruit.Apple;
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+
+      const bitShift = 1 >> Fruit.Apple;
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+
+      declare const fruit: Fruit;
+
+      switch (fruit) {
+        case Fruit.Apple: {
+          break;
+        }
+      }
+    `,
+    `
+      enum Vegetable {
+        Asparagus = 'asparagus',
+      }
+
+      declare const vegetable: Vegetable;
+
+      switch (vegetable) {
+        case Vegetable.Asparagus: {
+          break;
+        }
+      }
+    `,
+    `
+      enum Vegetable {
+        Asparagus = 'asparagus',
+      }
+
+      declare const vegetable: Vegetable;
+
+      switch (vegetable) {
+        default: {
+          break;
+        }
+      }
+    `,
   ],
 });

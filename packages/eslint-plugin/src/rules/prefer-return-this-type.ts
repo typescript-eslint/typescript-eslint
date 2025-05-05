@@ -17,13 +17,13 @@ export default createRule({
   name: 'prefer-return-this-type',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'strict',
       description:
         'Enforce that `this` is used when only `this` type is returned',
-      recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       useThisType: 'Use `this` type instead.',
     },

@@ -70,8 +70,6 @@ export default createRule<Options, MessageId>({
   meta: {
     type: 'problem',
     docs: {
-      description:
-        'Enforce template literal expressions to be of `string` type',
       recommended: {
         recommended: true,
         strict: [
@@ -85,6 +83,8 @@ export default createRule<Options, MessageId>({
           },
         ],
       },
+      description:
+        'Enforce template literal expressions to be of `string` type',
       requiresTypeChecking: true,
     },
     messages: {

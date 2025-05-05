@@ -213,11 +213,11 @@ export default createRule<Options, MessageIds>({
         node,
         messageId: 'noCompositionAlias',
         data: {
+          typeName: type,
           compositionType:
             compositionType === AST_NODE_TYPES.TSUnionType
               ? 'union'
               : 'intersection',
-          typeName: type,
         },
       });
     }

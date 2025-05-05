@@ -6,11 +6,11 @@ export default createRule({
   name: 'no-extra-non-null-assertion',
   meta: {
     type: 'problem',
-    docs: {
-      description: 'Disallow extra non-null assertions',
-      recommended: 'recommended',
-    },
     fixable: 'code',
+    docs: {
+      recommended: 'recommended',
+      description: 'Disallow extra non-null assertions',
+    },
     messages: {
       noExtraNonNullAssertion: 'Forbidden extra non-null assertion.',
     },

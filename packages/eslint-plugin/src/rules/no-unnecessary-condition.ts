@@ -160,13 +160,15 @@ export default createRule<Options, MessageId>({
   meta: {
     type: 'suggestion',
     docs: {
+      recommended: 'strict',
       description:
         'Disallow conditionals where the type is always truthy or always falsy',
-      recommended: 'strict',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
     messages: {
+      typeGuardAlreadyIsType:
+        'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
       alwaysFalsyFunc:
         'This callback should return a conditional, but return is always falsy.',
@@ -186,8 +188,6 @@ export default createRule<Options, MessageId>({
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
       suggestRemoveOptionalChain: 'Remove unnecessary optional chain',
-      typeGuardAlreadyIsType:
-        'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
     },
     schema: [
       {

@@ -18,8 +18,8 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow unnecessary constraints on generic types',
       recommended: 'recommended',
+      description: 'Disallow unnecessary constraints on generic types',
     },
     hasSuggestions: true,
     messages: {

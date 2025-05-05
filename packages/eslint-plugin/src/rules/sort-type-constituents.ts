@@ -121,6 +121,7 @@ export default createRule<Options, MessageIds>({
   name: 'sort-type-constituents',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     deprecated: {
       deprecatedSince: '7.13.0',
       replacedBy: [
@@ -151,7 +152,6 @@ export default createRule<Options, MessageIds>({
       description:
         'Enforce constituents of a type union/intersection to be sorted alphabetically',
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       notSorted: '{{type}} type constituents must be sorted.',

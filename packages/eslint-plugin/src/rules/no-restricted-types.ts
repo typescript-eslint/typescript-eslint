@@ -36,7 +36,7 @@ function stringifyNode(
 }
 
 function getCustomMessage(
-  bannedType: string | { fixWith?: string; message?: string } | true | null,
+  bannedType: string | true | { fixWith?: string; message?: string } | null,
 ): string {
   if (!bannedType || bannedType === true) {
     return '';
@@ -71,10 +71,10 @@ export default createRule<Options, MessageIds>({
   name: 'no-restricted-types',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description: 'Disallow certain types',
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       bannedTypeMessage: "Don't use `{{name}}` as a type.{{customMessage}}",

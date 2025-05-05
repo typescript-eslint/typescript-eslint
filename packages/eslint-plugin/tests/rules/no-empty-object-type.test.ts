@@ -5,75 +5,6 @@ import rule from '../../src/rules/no-empty-object-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-object-type', rule, {
-  valid: [
-    `
-interface Base {
-  name: string;
-}
-    `,
-    `
-interface Base {
-  name: string;
-}
-
-interface Derived {
-  age: number;
-}
-
-// valid because extending multiple interfaces can be used instead of a union type
-interface Both extends Base, Derived {}
-    `,
-    {
-      code: 'interface Base {}',
-      options: [{ allowInterfaces: 'always' }],
-    },
-    {
-      code: `
-interface Base {
-  name: string;
-}
-
-interface Derived extends Base {}
-      `,
-      options: [{ allowInterfaces: 'with-single-extends' }],
-    },
-    {
-      code: `
-interface Base {
-  props: string;
-}
-
-interface Derived extends Base {}
-
-class Derived {}
-      `,
-      options: [{ allowInterfaces: 'with-single-extends' }],
-    },
-    'let value: object;',
-    'let value: Object;',
-    'let value: { inner: true };',
-    'type MyNonNullable<T> = T & {};',
-    {
-      code: 'type Base = {};',
-      options: [{ allowObjectTypes: 'always' }],
-    },
-    {
-      code: 'type Base = {};',
-      options: [{ allowWithName: 'Base' }],
-    },
-    {
-      code: 'type BaseProps = {};',
-      options: [{ allowWithName: 'Props$' }],
-    },
-    {
-      code: 'interface Base {}',
-      options: [{ allowWithName: 'Base' }],
-    },
-    {
-      code: 'interface BaseProps {}',
-      options: [{ allowWithName: 'Props$' }],
-    },
-  ],
   invalid: [
     {
       code: 'interface Base {}',
@@ -608,6 +539,75 @@ let value: unknown;
         },
       ],
       options: [{ allowWithName: '.*Props$' }],
+    },
+  ],
+  valid: [
+    `
+interface Base {
+  name: string;
+}
+    `,
+    `
+interface Base {
+  name: string;
+}
+
+interface Derived {
+  age: number;
+}
+
+// valid because extending multiple interfaces can be used instead of a union type
+interface Both extends Base, Derived {}
+    `,
+    {
+      code: 'interface Base {}',
+      options: [{ allowInterfaces: 'always' }],
+    },
+    {
+      code: `
+interface Base {
+  name: string;
+}
+
+interface Derived extends Base {}
+      `,
+      options: [{ allowInterfaces: 'with-single-extends' }],
+    },
+    {
+      code: `
+interface Base {
+  props: string;
+}
+
+interface Derived extends Base {}
+
+class Derived {}
+      `,
+      options: [{ allowInterfaces: 'with-single-extends' }],
+    },
+    'let value: object;',
+    'let value: Object;',
+    'let value: { inner: true };',
+    'type MyNonNullable<T> = T & {};',
+    {
+      code: 'type Base = {};',
+      options: [{ allowObjectTypes: 'always' }],
+    },
+    {
+      code: 'type Base = {};',
+      options: [{ allowWithName: 'Base' }],
+    },
+    {
+      code: 'type BaseProps = {};',
+      options: [{ allowWithName: 'Props$' }],
+    },
+    {
+      code: 'interface Base {}',
+      options: [{ allowWithName: 'Base' }],
+    },
+    {
+      code: 'interface BaseProps {}',
+      options: [{ allowWithName: 'Props$' }],
     },
   ],
 });

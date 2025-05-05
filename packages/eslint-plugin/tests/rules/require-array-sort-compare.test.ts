@@ -15,126 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('require-array-sort-compare', rule, {
-  valid: [
-    `
-      function f(a: any[]) {
-        a.sort(undefined);
-      }
-    `,
-    `
-      function f(a: any[]) {
-        a.sort((a, b) => a - b);
-      }
-    `,
-    `
-      function f(a: Array<string>) {
-        a.sort(undefined);
-      }
-    `,
-    `
-      function f(a: Array<number>) {
-        a.sort((a, b) => a - b);
-      }
-    `,
-    `
-      function f(a: { sort(): void }) {
-        a.sort();
-      }
-    `,
-    `
-      class A {
-        sort(): void {}
-      }
-      function f(a: A) {
-        a.sort();
-      }
-    `,
-    `
-      interface A {
-        sort(): void;
-      }
-      function f(a: A) {
-        a.sort();
-      }
-    `,
-    `
-      interface A {
-        sort(): void;
-      }
-      function f<T extends A>(a: T) {
-        a.sort();
-      }
-    `,
-    `
-      function f(a: any) {
-        a.sort();
-      }
-    `,
-    `
-      namespace UserDefined {
-        interface Array {
-          sort(): void;
-        }
-        function f(a: Array) {
-          a.sort();
-        }
-      }
-    `,
-    // optional chain
-    `
-      function f(a: any[]) {
-        a?.sort((a, b) => a - b);
-      }
-    `,
-    `
-      namespace UserDefined {
-        interface Array {
-          sort(): void;
-        }
-        function f(a: Array) {
-          a?.sort();
-        }
-      }
-    `,
-    {
-      code: `
-        ['foo', 'bar', 'baz'].sort();
-      `,
-      options: [{ ignoreStringArrays: true }],
-    },
-    {
-      code: `
-        function getString() {
-          return 'foo';
-        }
-        [getString(), getString()].sort();
-      `,
-      options: [{ ignoreStringArrays: true }],
-    },
-    {
-      code: `
-        const foo = 'foo';
-        const bar = 'bar';
-        const baz = 'baz';
-        [foo, bar, baz].sort();
-      `,
-      options: [{ ignoreStringArrays: true }],
-    },
-    {
-      code: `
-        declare const x: string[];
-        x.sort();
-      `,
-      options: [{ ignoreStringArrays: true }],
-    },
-    {
-      code: `
-        function f(a: number[]) {
-          a.toSorted((a, b) => a - b);
-        }
-      `,
-    },
-  ],
   invalid: [
     {
       code: `
@@ -269,6 +149,126 @@ ruleTester.run('require-array-sort-compare', rule, {
         }
       `,
       errors: [{ messageId: 'requireCompare' }],
+    },
+  ],
+  valid: [
+    `
+      function f(a: any[]) {
+        a.sort(undefined);
+      }
+    `,
+    `
+      function f(a: any[]) {
+        a.sort((a, b) => a - b);
+      }
+    `,
+    `
+      function f(a: Array<string>) {
+        a.sort(undefined);
+      }
+    `,
+    `
+      function f(a: Array<number>) {
+        a.sort((a, b) => a - b);
+      }
+    `,
+    `
+      function f(a: { sort(): void }) {
+        a.sort();
+      }
+    `,
+    `
+      class A {
+        sort(): void {}
+      }
+      function f(a: A) {
+        a.sort();
+      }
+    `,
+    `
+      interface A {
+        sort(): void;
+      }
+      function f(a: A) {
+        a.sort();
+      }
+    `,
+    `
+      interface A {
+        sort(): void;
+      }
+      function f<T extends A>(a: T) {
+        a.sort();
+      }
+    `,
+    `
+      function f(a: any) {
+        a.sort();
+      }
+    `,
+    `
+      namespace UserDefined {
+        interface Array {
+          sort(): void;
+        }
+        function f(a: Array) {
+          a.sort();
+        }
+      }
+    `,
+    // optional chain
+    `
+      function f(a: any[]) {
+        a?.sort((a, b) => a - b);
+      }
+    `,
+    `
+      namespace UserDefined {
+        interface Array {
+          sort(): void;
+        }
+        function f(a: Array) {
+          a?.sort();
+        }
+      }
+    `,
+    {
+      code: `
+        ['foo', 'bar', 'baz'].sort();
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+        function getString() {
+          return 'foo';
+        }
+        [getString(), getString()].sort();
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+        const foo = 'foo';
+        const bar = 'bar';
+        const baz = 'baz';
+        [foo, bar, baz].sort();
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+        declare const x: string[];
+        x.sort();
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+        function f(a: number[]) {
+          a.toSorted((a, b) => a - b);
+        }
+      `,
     },
   ],
 });

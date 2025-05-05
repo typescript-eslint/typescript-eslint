@@ -30,8 +30,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description:
-        'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`',
       recommended: {
         recommended: true,
         strict: [
@@ -44,6 +42,8 @@ export default createRule<Options, MessageIds>({
           },
         ],
       },
+      description:
+        'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`',
       requiresTypeChecking: true,
     },
     messages: {

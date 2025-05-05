@@ -19,13 +19,13 @@ export default createRule({
   name: 'prefer-reduce-type-parameter',
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
+      recommended: 'strict',
       description:
         'Enforce using type parameter when calling `Array#reduce` instead of using a type assertion',
-      recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       preferTypeParameter:
         'Unnecessary assertion: Array#reduce accepts a type parameter for the default value.',

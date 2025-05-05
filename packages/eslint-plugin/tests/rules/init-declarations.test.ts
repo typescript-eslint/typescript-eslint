@@ -5,365 +5,6 @@ import rule from '../../src/rules/init-declarations';
 const ruleTester = new RuleTester();
 
 ruleTester.run('init-declarations', rule, {
-  valid: [
-    // checking compatibility with base rule
-    'var foo = null;',
-    'foo = true;',
-    `
-var foo = 1,
-  bar = false,
-  baz = {};
-    `,
-    `
-function foo() {
-  var foo = 0;
-  var bar = [];
-}
-    `,
-    'var fn = function () {};',
-    'var foo = (bar = 2);',
-    'for (var i = 0; i < 1; i++) {}',
-    `
-for (var foo in []) {
-}
-    `,
-    {
-      code: `
-for (var foo of []) {
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: 'let a = true;',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['always'],
-    },
-    {
-      code: 'const a = {};',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['always'],
-    },
-    {
-      code: `
-function foo() {
-  let a = 1,
-    b = false;
-  if (a) {
-    let c = 3,
-      d = null;
-  }
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['always'],
-    },
-    {
-      code: `
-function foo() {
-  const a = 1,
-    b = true;
-  if (a) {
-    const c = 3,
-      d = null;
-  }
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['always'],
-    },
-    {
-      code: `
-function foo() {
-  let a = 1;
-  const b = false;
-  var c = true;
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['always'],
-    },
-    {
-      code: 'var foo;',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['never'],
-    },
-    {
-      code: 'var foo, bar, baz;',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['never'],
-    },
-    {
-      code: `
-function foo() {
-  var foo;
-  var bar;
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['never'],
-    },
-    {
-      code: 'let a;',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['never'],
-    },
-    {
-      code: 'const a = 1;',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['never'],
-    },
-    {
-      code: `
-function foo() {
-  let a, b;
-  if (a) {
-    let c, d;
-  }
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['never'],
-    },
-    {
-      code: `
-function foo() {
-  const a = 1,
-    b = true;
-  if (a) {
-    const c = 3,
-      d = null;
-  }
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['never'],
-    },
-    {
-      code: `
-function foo() {
-  let a;
-  const b = false;
-  var c;
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['never'],
-    },
-    {
-      code: 'for (var i = 0; i < 1; i++) {}',
-      options: ['never', { ignoreForLoopInit: true }],
-    },
-    {
-      code: `
-for (var foo in []) {
-}
-      `,
-      options: ['never', { ignoreForLoopInit: true }],
-    },
-    {
-      code: `
-for (var foo of []) {
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: ['never', { ignoreForLoopInit: true }],
-    },
-    {
-      code: `
-function foo() {
-  var bar = 1;
-  let baz = 2;
-  const qux = 3;
-}
-      `,
-      options: ['always'],
-    },
-
-    // typescript-eslint
-    {
-      code: 'declare const foo: number;',
-      options: ['always'],
-    },
-    {
-      code: 'declare const foo: number;',
-      options: ['never'],
-    },
-    {
-      code: `
-declare namespace myLib {
-  let numberOfGreetings: number;
-}
-      `,
-      options: ['always'],
-    },
-    {
-      code: `
-declare namespace myLib {
-  let numberOfGreetings: number;
-}
-      `,
-      options: ['never'],
-    },
-    {
-      code: `
-interface GreetingSettings {
-  greeting: string;
-  duration?: number;
-  color?: string;
-}
-      `,
-    },
-    {
-      code: `
-interface GreetingSettings {
-  greeting: string;
-  duration?: number;
-  color?: string;
-}
-      `,
-      options: ['never'],
-    },
-    'type GreetingLike = string | (() => string) | Greeter;',
-    {
-      code: 'type GreetingLike = string | (() => string) | Greeter;',
-      options: ['never'],
-    },
-    {
-      code: `
-function foo() {
-  var bar: string;
-}
-      `,
-      options: ['never'],
-    },
-    {
-      code: 'var bar: string;',
-      options: ['never'],
-    },
-    {
-      code: `
-var bar: string = function (): string {
-  return 'string';
-};
-      `,
-      options: ['always'],
-    },
-    {
-      code: `
-var bar: string = function (arg1: stirng): string {
-  return 'string';
-};
-      `,
-      options: ['always'],
-    },
-    {
-      code: "function foo(arg1: string = 'string'): void {}",
-      options: ['never'],
-    },
-    {
-      code: "const foo: string = 'hello';",
-      options: ['never'],
-    },
-    {
-      code: `
-const class1 = class NAME {
-  constructor() {
-    var name1: string = 'hello';
-  }
-};
-      `,
-    },
-    {
-      code: `
-const class1 = class NAME {
-  static pi: number = 3.14;
-};
-      `,
-    },
-    {
-      code: `
-const class1 = class NAME {
-  static pi: number = 3.14;
-};
-      `,
-      options: ['never'],
-    },
-    {
-      code: `
-interface IEmployee {
-  empCode: number;
-  empName: string;
-  getSalary: (number) => number; // arrow function
-  getManagerName(number): string;
-}
-      `,
-    },
-    {
-      code: `
-interface IEmployee {
-  empCode: number;
-  empName: string;
-  getSalary: (number) => number; // arrow function
-  getManagerName(number): string;
-}
-      `,
-      options: ['never'],
-    },
-    {
-      code: "const foo: number = 'asd';",
-      options: ['always'],
-    },
-    {
-      code: 'const foo: number;',
-      options: ['never'],
-    },
-    {
-      code: `
-namespace myLib {
-  let numberOfGreetings: number;
-}
-      `,
-      options: ['never'],
-    },
-    {
-      code: `
-namespace myLib {
-  let numberOfGreetings: number = 2;
-}
-      `,
-      options: ['always'],
-    },
-    {
-      code: `
-declare namespace myLib1 {
-  const foo: number;
-  namespace myLib2 {
-    let bar: string;
-    namespace myLib3 {
-      let baz: object;
-    }
-  }
-}
-      `,
-      options: ['always'],
-    },
-
-    {
-      code: `
-declare namespace myLib1 {
-  const foo: number;
-  namespace myLib2 {
-    let bar: string;
-    namespace myLib3 {
-      let baz: object;
-    }
-  }
-}
-      `,
-      options: ['never'],
-    },
-  ],
   invalid: [
     // checking compatibility with base rule
     {
@@ -857,6 +498,365 @@ namespace myLib1 {
         },
       ],
       options: ['always'],
+    },
+  ],
+  valid: [
+    // checking compatibility with base rule
+    'var foo = null;',
+    'foo = true;',
+    `
+var foo = 1,
+  bar = false,
+  baz = {};
+    `,
+    `
+function foo() {
+  var foo = 0;
+  var bar = [];
+}
+    `,
+    'var fn = function () {};',
+    'var foo = (bar = 2);',
+    'for (var i = 0; i < 1; i++) {}',
+    `
+for (var foo in []) {
+}
+    `,
+    {
+      code: `
+for (var foo of []) {
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: 'let a = true;',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['always'],
+    },
+    {
+      code: 'const a = {};',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['always'],
+    },
+    {
+      code: `
+function foo() {
+  let a = 1,
+    b = false;
+  if (a) {
+    let c = 3,
+      d = null;
+  }
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['always'],
+    },
+    {
+      code: `
+function foo() {
+  const a = 1,
+    b = true;
+  if (a) {
+    const c = 3,
+      d = null;
+  }
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['always'],
+    },
+    {
+      code: `
+function foo() {
+  let a = 1;
+  const b = false;
+  var c = true;
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['always'],
+    },
+    {
+      code: 'var foo;',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
+    },
+    {
+      code: 'var foo, bar, baz;',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
+    },
+    {
+      code: `
+function foo() {
+  var foo;
+  var bar;
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
+    },
+    {
+      code: 'let a;',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
+    },
+    {
+      code: 'const a = 1;',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
+    },
+    {
+      code: `
+function foo() {
+  let a, b;
+  if (a) {
+    let c, d;
+  }
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
+    },
+    {
+      code: `
+function foo() {
+  const a = 1,
+    b = true;
+  if (a) {
+    const c = 3,
+      d = null;
+  }
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
+    },
+    {
+      code: `
+function foo() {
+  let a;
+  const b = false;
+  var c;
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
+    },
+    {
+      code: 'for (var i = 0; i < 1; i++) {}',
+      options: ['never', { ignoreForLoopInit: true }],
+    },
+    {
+      code: `
+for (var foo in []) {
+}
+      `,
+      options: ['never', { ignoreForLoopInit: true }],
+    },
+    {
+      code: `
+for (var foo of []) {
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never', { ignoreForLoopInit: true }],
+    },
+    {
+      code: `
+function foo() {
+  var bar = 1;
+  let baz = 2;
+  const qux = 3;
+}
+      `,
+      options: ['always'],
+    },
+
+    // typescript-eslint
+    {
+      code: 'declare const foo: number;',
+      options: ['always'],
+    },
+    {
+      code: 'declare const foo: number;',
+      options: ['never'],
+    },
+    {
+      code: `
+declare namespace myLib {
+  let numberOfGreetings: number;
+}
+      `,
+      options: ['always'],
+    },
+    {
+      code: `
+declare namespace myLib {
+  let numberOfGreetings: number;
+}
+      `,
+      options: ['never'],
+    },
+    {
+      code: `
+interface GreetingSettings {
+  greeting: string;
+  duration?: number;
+  color?: string;
+}
+      `,
+    },
+    {
+      code: `
+interface GreetingSettings {
+  greeting: string;
+  duration?: number;
+  color?: string;
+}
+      `,
+      options: ['never'],
+    },
+    'type GreetingLike = string | (() => string) | Greeter;',
+    {
+      code: 'type GreetingLike = string | (() => string) | Greeter;',
+      options: ['never'],
+    },
+    {
+      code: `
+function foo() {
+  var bar: string;
+}
+      `,
+      options: ['never'],
+    },
+    {
+      code: 'var bar: string;',
+      options: ['never'],
+    },
+    {
+      code: `
+var bar: string = function (): string {
+  return 'string';
+};
+      `,
+      options: ['always'],
+    },
+    {
+      code: `
+var bar: string = function (arg1: stirng): string {
+  return 'string';
+};
+      `,
+      options: ['always'],
+    },
+    {
+      code: "function foo(arg1: string = 'string'): void {}",
+      options: ['never'],
+    },
+    {
+      code: "const foo: string = 'hello';",
+      options: ['never'],
+    },
+    {
+      code: `
+const class1 = class NAME {
+  constructor() {
+    var name1: string = 'hello';
+  }
+};
+      `,
+    },
+    {
+      code: `
+const class1 = class NAME {
+  static pi: number = 3.14;
+};
+      `,
+    },
+    {
+      code: `
+const class1 = class NAME {
+  static pi: number = 3.14;
+};
+      `,
+      options: ['never'],
+    },
+    {
+      code: `
+interface IEmployee {
+  empCode: number;
+  empName: string;
+  getSalary: (number) => number; // arrow function
+  getManagerName(number): string;
+}
+      `,
+    },
+    {
+      code: `
+interface IEmployee {
+  empCode: number;
+  empName: string;
+  getSalary: (number) => number; // arrow function
+  getManagerName(number): string;
+}
+      `,
+      options: ['never'],
+    },
+    {
+      code: "const foo: number = 'asd';",
+      options: ['always'],
+    },
+    {
+      code: 'const foo: number;',
+      options: ['never'],
+    },
+    {
+      code: `
+namespace myLib {
+  let numberOfGreetings: number;
+}
+      `,
+      options: ['never'],
+    },
+    {
+      code: `
+namespace myLib {
+  let numberOfGreetings: number = 2;
+}
+      `,
+      options: ['always'],
+    },
+    {
+      code: `
+declare namespace myLib1 {
+  const foo: number;
+  namespace myLib2 {
+    let bar: string;
+    namespace myLib3 {
+      let baz: object;
+    }
+  }
+}
+      `,
+      options: ['always'],
+    },
+
+    {
+      code: `
+declare namespace myLib1 {
+  const foo: number;
+  namespace myLib2 {
+    let bar: string;
+    namespace myLib3 {
+      let baz: object;
+    }
+  }
+}
+      `,
+      options: ['never'],
     },
   ],
 });

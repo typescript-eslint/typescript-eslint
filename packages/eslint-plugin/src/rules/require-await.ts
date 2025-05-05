@@ -33,10 +33,10 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description:
-        'Disallow async functions which do not return promises and have no `await` expression',
       extendsBaseRule: true,
       recommended: 'recommended',
+      description:
+        'Disallow async functions which do not return promises and have no `await` expression',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

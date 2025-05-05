@@ -15,995 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('switch-exhaustiveness-check', switchExhaustivenessCheck, {
-  valid: [
-    // All branches matched
-    `
-type Day =
-  | 'Monday'
-  | 'Tuesday'
-  | 'Wednesday'
-  | 'Thursday'
-  | 'Friday'
-  | 'Saturday'
-  | 'Sunday';
-
-const day = 'Monday' as Day;
-let result = 0;
-
-switch (day) {
-  case 'Monday': {
-    result = 1;
-    break;
-  }
-  case 'Tuesday': {
-    result = 2;
-    break;
-  }
-  case 'Wednesday': {
-    result = 3;
-    break;
-  }
-  case 'Thursday': {
-    result = 4;
-    break;
-  }
-  case 'Friday': {
-    result = 5;
-    break;
-  }
-  case 'Saturday': {
-    result = 6;
-    break;
-  }
-  case 'Sunday': {
-    result = 7;
-    break;
-  }
-}
-    `,
-    // Other primitive literals work too
-    `
-type Num = 0 | 1 | 2;
-
-function test(value: Num): number {
-  switch (value) {
-    case 0:
-      return 0;
-    case 1:
-      return 1;
-    case 2:
-      return 2;
-  }
-}
-    `,
-    `
-type Bool = true | false;
-
-function test(value: Bool): number {
-  switch (value) {
-    case true:
-      return 1;
-    case false:
-      return 0;
-  }
-}
-    `,
-    `
-type Mix = 0 | 1 | 'two' | 'three' | true;
-
-function test(value: Mix): number {
-  switch (value) {
-    case 0:
-      return 0;
-    case 1:
-      return 1;
-    case 'two':
-      return 2;
-    case 'three':
-      return 3;
-    case true:
-      return 4;
-  }
-}
-    `,
-    // Works with type references
-    `
-type A = 'a';
-type B = 'b';
-type C = 'c';
-type Union = A | B | C;
-
-function test(value: Union): number {
-  switch (value) {
-    case 'a':
-      return 1;
-    case 'b':
-      return 2;
-    case 'c':
-      return 3;
-  }
-}
-    `,
-    // Works with `typeof`
-    `
-const A = 'a';
-const B = 1;
-const C = true;
-
-type Union = typeof A | typeof B | typeof C;
-
-function test(value: Union): number {
-  switch (value) {
-    case 'a':
-      return 1;
-    case 1:
-      return 2;
-    case true:
-      return 3;
-  }
-}
-    `,
-    // Switch contains default clause.
-    {
-      code: `
-type Day =
-  | 'Monday'
-  | 'Tuesday'
-  | 'Wednesday'
-  | 'Thursday'
-  | 'Friday'
-  | 'Saturday'
-  | 'Sunday';
-
-const day = 'Monday' as Day;
-let result = 0;
-
-switch (day) {
-  case 'Monday': {
-    result = 1;
-    break;
-  }
-  default: {
-    result = 42;
-  }
-}
-      `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-        },
-      ],
-    },
-    // Exhaustiveness check only works for union types...
-    `
-const day = 'Monday' as string;
-let result = 0;
-
-switch (day) {
-  case 'Monday': {
-    result = 1;
-    break;
-  }
-  case 'Tuesday': {
-    result = 2;
-    break;
-  }
-}
-    `,
-    // ... and enums (at least for now).
-    `
-enum Enum {
-  A,
-  B,
-}
-
-function test(value: Enum): number {
-  switch (value) {
-    case Enum.A:
-      return 1;
-    case Enum.B:
-      return 2;
-  }
-}
-    `,
-    // Object union types won't work either, unless it's a discriminated union
-    `
-type ObjectUnion = { a: 1 } | { b: 2 };
-
-function test(value: ObjectUnion): number {
-  switch (value.a) {
-    case 1:
-      return 1;
-  }
-}
-    `,
-    // switch with default clause on non-union type
-    {
-      code: `
-declare const value: number;
-switch (value) {
-  case 0:
-    return 0;
-  case 1:
-    return 1;
-  default:
-    return -1;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    // switch with default clause on string type +
-    // "allowDefaultCaseForExhaustiveSwitch" option
-    {
-      code: `
-declare const value: string;
-switch (value) {
-  case 'foo':
-    return 0;
-  case 'bar':
-    return 1;
-  default:
-    return -1;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    // switch with default clause on number type +
-    // "allowDefaultCaseForExhaustiveSwitch" option
-    {
-      code: `
-declare const value: number;
-switch (value) {
-  case 0:
-    return 0;
-  case 1:
-    return 1;
-  default:
-    return -1;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    // switch with default clause on bigint type +
-    // "allowDefaultCaseForExhaustiveSwitch" option
-    {
-      code: `
-declare const value: bigint;
-switch (value) {
-  case 0:
-    return 0;
-  case 1:
-    return 1;
-  default:
-    return -1;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    // switch with default clause on symbol type +
-    // "allowDefaultCaseForExhaustiveSwitch" option
-    {
-      code: `
-declare const value: symbol;
-const foo = Symbol('foo');
-switch (value) {
-  case foo:
-    return 0;
-  default:
-    return -1;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    // switch with default clause on union with number +
-    // "allowDefaultCaseForExhaustiveSwitch" option
-    {
-      code: `
-declare const value: 0 | 1 | number;
-switch (value) {
-  case 0:
-    return 0;
-  case 1:
-    return 1;
-  default:
-    return -1;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: 'literal';
-switch (value) {
-  case 'literal':
-    return 0;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: null;
-switch (value) {
-  case null:
-    return 0;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: undefined;
-switch (value) {
-  case undefined:
-    return 0;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: null | undefined;
-switch (value) {
-  case null:
-    return 0;
-  case undefined:
-    return 0;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: 'literal' & { _brand: true };
-switch (value) {
-  case 'literal':
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: ('literal' & { _brand: true }) | 1;
-switch (value) {
-  case 'literal':
-    break;
-  case 1:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: (1 & { _brand: true }) | 'literal' | null;
-switch (value) {
-  case 'literal':
-    break;
-  case 1:
-    break;
-  case null:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: '1' | '2' | number;
-switch (value) {
-  case '1':
-    break;
-  case '2':
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: '1' | '2' | number;
-switch (value) {
-  case '1':
-    break;
-  case '2':
-    break;
-  default:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: '1' | '2' | number;
-switch (value) {
-  case '1':
-    break;
-  case '2':
-    break;
-  default:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: '1' | '2' | (number & { foo: 'bar' });
-switch (value) {
-  case '1':
-    break;
-  case '2':
-    break;
-  default:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: '1' | '2' | number;
-switch (value) {
-  case '1':
-    break;
-  case '2':
-    break;
-  default:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: number | null | undefined;
-switch (value) {
-  case null:
-    break;
-  case undefined:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          considerDefaultExhaustiveForUnions: true,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: '1' | '2' | number;
-switch (value) {
-  case '1':
-    break;
-  default:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          considerDefaultExhaustiveForUnions: true,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: (string & { foo: 'bar' }) | '1';
-switch (value) {
-  case '1':
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-const a = Symbol('a');
-declare const value: typeof a | 2;
-switch (value) {
-  case a:
-    break;
-  case 2:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: string | number;
-switch (value) {
-  case 1:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: string | number;
-switch (value) {
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: string | number;
-switch (value) {
-  default:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: number;
-declare const a: number;
-switch (value) {
-  case a:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: bigint;
-switch (value) {
-  case 10n:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: symbol;
-const a = Symbol('a');
-switch (value) {
-  case a:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: symbol;
-const a = Symbol('a');
-switch (value) {
-  case a:
-    break;
-  default:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-const a = Symbol('a');
-declare const value: typeof a | string;
-switch (value) {
-  case a:
-    break;
-  default:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-const a = Symbol('a');
-declare const value: typeof a | string;
-switch (value) {
-  default:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          considerDefaultExhaustiveForUnions: true,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: boolean | 1;
-switch (value) {
-  case 1:
-    break;
-  default:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          considerDefaultExhaustiveForUnions: true,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: boolean | 1;
-switch (value) {
-  case 1:
-    break;
-  case true:
-    break;
-  case false:
-    break;
-  default:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-enum Aaa {
-  Foo,
-  Bar,
-}
-declare const value: Aaa | 1;
-switch (value) {
-  case 1:
-    break;
-  case Aaa.Foo:
-    break;
-  case Aaa.Bar:
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const literal: 'a' | 'b';
-switch (literal) {
-  case 'a':
-    break;
-  case 'b':
-    break;
-}
-      `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const literal: 'a' | 'b';
-switch (literal) {
-  case 'a':
-    break;
-  default:
-    break;
-}
-      `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const literal: 'a' | 'b';
-switch (literal) {
-  case 'a':
-    break;
-  case 'b':
-    break;
-}
-      `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-        },
-      ],
-    },
-    {
-      code: `
-enum MyEnum {
-  Foo = 'Foo',
-  Bar = 'Bar',
-  Baz = 'Baz',
-}
-
-declare const myEnum: MyEnum;
-
-switch (myEnum) {
-  case MyEnum.Foo:
-    break;
-  case MyEnum.Bar:
-    break;
-  default: {
-    break;
-  }
-}
-      `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: boolean;
-switch (value) {
-  case false:
-    break;
-  default: {
-    break;
-  }
-}
-      `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-        },
-      ],
-    },
-    {
-      code: `
-function foo(x: string[]) {
-  switch (x[0]) {
-    case 'hi':
-      break;
-    case undefined:
-      break;
-  }
-}
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: rootPath,
-        },
-      },
-    },
-    {
-      code: `
-function foo(x: string[], y: string | undefined) {
-  const a = x[0];
-  if (typeof a === 'string') {
-    return;
-  }
-  switch (y) {
-    case 'hi':
-      break;
-    case a:
-      break;
-  }
-}
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: rootPath,
-        },
-      },
-    },
-    {
-      code: `
-declare const value: number;
-switch (value) {
-  case 0:
-    break;
-  case 1:
-    break;
-  // no default
-}
-      `,
-      options: [
-        {
-          requireDefaultForNonUnion: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: 'a' | 'b';
-switch (value) {
-  case 'a':
-    break;
-  // no default
-}
-      `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: 'a' | 'b';
-switch (value) {
-  case 'a':
-    break;
-  // skip default
-}
-      `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-          defaultCaseCommentPattern: '^skip\\sdefault',
-        },
-      ],
-    },
-  ],
   invalid: [
     {
       code: `
@@ -3026,6 +2037,995 @@ switch (literal) {
       `,
             },
           ],
+        },
+      ],
+    },
+  ],
+  valid: [
+    // All branches matched
+    `
+type Day =
+  | 'Monday'
+  | 'Tuesday'
+  | 'Wednesday'
+  | 'Thursday'
+  | 'Friday'
+  | 'Saturday'
+  | 'Sunday';
+
+const day = 'Monday' as Day;
+let result = 0;
+
+switch (day) {
+  case 'Monday': {
+    result = 1;
+    break;
+  }
+  case 'Tuesday': {
+    result = 2;
+    break;
+  }
+  case 'Wednesday': {
+    result = 3;
+    break;
+  }
+  case 'Thursday': {
+    result = 4;
+    break;
+  }
+  case 'Friday': {
+    result = 5;
+    break;
+  }
+  case 'Saturday': {
+    result = 6;
+    break;
+  }
+  case 'Sunday': {
+    result = 7;
+    break;
+  }
+}
+    `,
+    // Other primitive literals work too
+    `
+type Num = 0 | 1 | 2;
+
+function test(value: Num): number {
+  switch (value) {
+    case 0:
+      return 0;
+    case 1:
+      return 1;
+    case 2:
+      return 2;
+  }
+}
+    `,
+    `
+type Bool = true | false;
+
+function test(value: Bool): number {
+  switch (value) {
+    case true:
+      return 1;
+    case false:
+      return 0;
+  }
+}
+    `,
+    `
+type Mix = 0 | 1 | 'two' | 'three' | true;
+
+function test(value: Mix): number {
+  switch (value) {
+    case 0:
+      return 0;
+    case 1:
+      return 1;
+    case 'two':
+      return 2;
+    case 'three':
+      return 3;
+    case true:
+      return 4;
+  }
+}
+    `,
+    // Works with type references
+    `
+type A = 'a';
+type B = 'b';
+type C = 'c';
+type Union = A | B | C;
+
+function test(value: Union): number {
+  switch (value) {
+    case 'a':
+      return 1;
+    case 'b':
+      return 2;
+    case 'c':
+      return 3;
+  }
+}
+    `,
+    // Works with `typeof`
+    `
+const A = 'a';
+const B = 1;
+const C = true;
+
+type Union = typeof A | typeof B | typeof C;
+
+function test(value: Union): number {
+  switch (value) {
+    case 'a':
+      return 1;
+    case 1:
+      return 2;
+    case true:
+      return 3;
+  }
+}
+    `,
+    // Switch contains default clause.
+    {
+      code: `
+type Day =
+  | 'Monday'
+  | 'Tuesday'
+  | 'Wednesday'
+  | 'Thursday'
+  | 'Friday'
+  | 'Saturday'
+  | 'Sunday';
+
+const day = 'Monday' as Day;
+let result = 0;
+
+switch (day) {
+  case 'Monday': {
+    result = 1;
+    break;
+  }
+  default: {
+    result = 42;
+  }
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
+    },
+    // Exhaustiveness check only works for union types...
+    `
+const day = 'Monday' as string;
+let result = 0;
+
+switch (day) {
+  case 'Monday': {
+    result = 1;
+    break;
+  }
+  case 'Tuesday': {
+    result = 2;
+    break;
+  }
+}
+    `,
+    // ... and enums (at least for now).
+    `
+enum Enum {
+  A,
+  B,
+}
+
+function test(value: Enum): number {
+  switch (value) {
+    case Enum.A:
+      return 1;
+    case Enum.B:
+      return 2;
+  }
+}
+    `,
+    // Object union types won't work either, unless it's a discriminated union
+    `
+type ObjectUnion = { a: 1 } | { b: 2 };
+
+function test(value: ObjectUnion): number {
+  switch (value.a) {
+    case 1:
+      return 1;
+  }
+}
+    `,
+    // switch with default clause on non-union type
+    {
+      code: `
+declare const value: number;
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+  default:
+    return -1;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    // switch with default clause on string type +
+    // "allowDefaultCaseForExhaustiveSwitch" option
+    {
+      code: `
+declare const value: string;
+switch (value) {
+  case 'foo':
+    return 0;
+  case 'bar':
+    return 1;
+  default:
+    return -1;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    // switch with default clause on number type +
+    // "allowDefaultCaseForExhaustiveSwitch" option
+    {
+      code: `
+declare const value: number;
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+  default:
+    return -1;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    // switch with default clause on bigint type +
+    // "allowDefaultCaseForExhaustiveSwitch" option
+    {
+      code: `
+declare const value: bigint;
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+  default:
+    return -1;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    // switch with default clause on symbol type +
+    // "allowDefaultCaseForExhaustiveSwitch" option
+    {
+      code: `
+declare const value: symbol;
+const foo = Symbol('foo');
+switch (value) {
+  case foo:
+    return 0;
+  default:
+    return -1;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    // switch with default clause on union with number +
+    // "allowDefaultCaseForExhaustiveSwitch" option
+    {
+      code: `
+declare const value: 0 | 1 | number;
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+  default:
+    return -1;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 'literal';
+switch (value) {
+  case 'literal':
+    return 0;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: null;
+switch (value) {
+  case null:
+    return 0;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: undefined;
+switch (value) {
+  case undefined:
+    return 0;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: null | undefined;
+switch (value) {
+  case null:
+    return 0;
+  case undefined:
+    return 0;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 'literal' & { _brand: true };
+switch (value) {
+  case 'literal':
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: ('literal' & { _brand: true }) | 1;
+switch (value) {
+  case 'literal':
+    break;
+  case 1:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: (1 & { _brand: true }) | 'literal' | null;
+switch (value) {
+  case 'literal':
+    break;
+  case 1:
+    break;
+  case null:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  case '2':
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  case '2':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  case '2':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | (number & { foo: 'bar' });
+switch (value) {
+  case '1':
+    break;
+  case '2':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  case '2':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: number | null | undefined;
+switch (value) {
+  case null:
+    break;
+  case undefined:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          considerDefaultExhaustiveForUnions: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          considerDefaultExhaustiveForUnions: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: (string & { foo: 'bar' }) | '1';
+switch (value) {
+  case '1':
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+const a = Symbol('a');
+declare const value: typeof a | 2;
+switch (value) {
+  case a:
+    break;
+  case 2:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: string | number;
+switch (value) {
+  case 1:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: string | number;
+switch (value) {
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: string | number;
+switch (value) {
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: number;
+declare const a: number;
+switch (value) {
+  case a:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: bigint;
+switch (value) {
+  case 10n:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: symbol;
+const a = Symbol('a');
+switch (value) {
+  case a:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: symbol;
+const a = Symbol('a');
+switch (value) {
+  case a:
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+const a = Symbol('a');
+declare const value: typeof a | string;
+switch (value) {
+  case a:
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+const a = Symbol('a');
+declare const value: typeof a | string;
+switch (value) {
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          considerDefaultExhaustiveForUnions: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean | 1;
+switch (value) {
+  case 1:
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          considerDefaultExhaustiveForUnions: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean | 1;
+switch (value) {
+  case 1:
+    break;
+  case true:
+    break;
+  case false:
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+enum Aaa {
+  Foo,
+  Bar,
+}
+declare const value: Aaa | 1;
+switch (value) {
+  case 1:
+    break;
+  case Aaa.Foo:
+    break;
+  case Aaa.Bar:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+switch (literal) {
+  case 'a':
+    break;
+  case 'b':
+    break;
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+switch (literal) {
+  case 'a':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+switch (literal) {
+  case 'a':
+    break;
+  case 'b':
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+        },
+      ],
+    },
+    {
+      code: `
+enum MyEnum {
+  Foo = 'Foo',
+  Bar = 'Bar',
+  Baz = 'Baz',
+}
+
+declare const myEnum: MyEnum;
+
+switch (myEnum) {
+  case MyEnum.Foo:
+    break;
+  case MyEnum.Bar:
+    break;
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean;
+switch (value) {
+  case false:
+    break;
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+function foo(x: string[]) {
+  switch (x[0]) {
+    case 'hi':
+      break;
+    case undefined:
+      break;
+  }
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootPath,
+        },
+      },
+    },
+    {
+      code: `
+function foo(x: string[], y: string | undefined) {
+  const a = x[0];
+  if (typeof a === 'string') {
+    return;
+  }
+  switch (y) {
+    case 'hi':
+      break;
+    case a:
+      break;
+  }
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootPath,
+        },
+      },
+    },
+    {
+      code: `
+declare const value: number;
+switch (value) {
+  case 0:
+    break;
+  case 1:
+    break;
+  // no default
+}
+      `,
+      options: [
+        {
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 'a' | 'b';
+switch (value) {
+  case 'a':
+    break;
+  // no default
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 'a' | 'b';
+switch (value) {
+  case 'a':
+    break;
+  // skip default
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+          defaultCaseCommentPattern: '^skip\\sdefault',
         },
       ],
     },

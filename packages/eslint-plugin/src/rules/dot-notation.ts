@@ -32,13 +32,13 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     defaultOptions,
+    fixable: baseRule.meta.fixable,
     docs: {
-      description: 'Enforce dot notation whenever possible',
       extendsBaseRule: true,
       recommended: 'stylistic',
+      description: 'Enforce dot notation whenever possible',
       requiresTypeChecking: true,
     },
-    fixable: baseRule.meta.fixable,
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
     schema: [

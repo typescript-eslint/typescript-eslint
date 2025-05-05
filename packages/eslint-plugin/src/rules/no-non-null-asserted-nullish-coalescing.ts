@@ -35,9 +35,9 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
+      recommended: 'strict',
       description:
         'Disallow non-null assertions in the left operand of a nullish coalescing operator',
-      recommended: 'strict',
     },
     hasSuggestions: true,
     messages: {

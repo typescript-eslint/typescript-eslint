@@ -25,361 +25,6 @@ describe.for(PARSER_OPTION_COMBOS)(
     });
 
     ruleTester.run('consistent-type-imports', rule, {
-      valid: [
-        `
-          import Foo from 'foo';
-          const foo: Foo = new Foo();
-        `,
-        `
-          import foo from 'foo';
-          const foo: foo.Foo = foo.fn();
-        `,
-        `
-          import { A, B } from 'foo';
-          const foo: A = B();
-          const bar = new A();
-        `,
-        `
-          import Foo from 'foo';
-        `,
-        `
-          import Foo from 'foo';
-          type T<Foo> = Foo; // shadowing
-        `,
-        `
-          import Foo from 'foo';
-          function fn() {
-            type Foo = {}; // shadowing
-            let foo: Foo;
-          }
-        `,
-        `
-          import { A, B } from 'foo';
-          const b = B;
-        `,
-        `
-          import { A, B, C as c } from 'foo';
-          const d = c;
-        `,
-        `
-          import {} from 'foo'; // empty
-        `,
-        {
-          code: `
-let foo: import('foo');
-let bar: import('foo').Bar;
-          `,
-          options: [{ disallowTypeAnnotations: false }],
-        },
-        {
-          code: `
-import Foo from 'foo';
-let foo: Foo;
-          `,
-          options: [{ prefer: 'no-type-imports' }],
-        },
-        // type queries
-        `
-          import type Type from 'foo';
-
-          type T = typeof Type;
-          type T = typeof Type.foo;
-        `,
-        `
-          import type { Type } from 'foo';
-
-          type T = typeof Type;
-          type T = typeof Type.foo;
-        `,
-        `
-          import type * as Type from 'foo';
-
-          type T = typeof Type;
-          type T = typeof Type.foo;
-        `,
-        {
-          code: `
-import Type from 'foo';
-
-type T = typeof Type;
-type T = typeof Type.foo;
-          `,
-          options: [{ prefer: 'no-type-imports' }],
-        },
-        {
-          code: `
-import { Type } from 'foo';
-
-type T = typeof Type;
-type T = typeof Type.foo;
-          `,
-          options: [{ prefer: 'no-type-imports' }],
-        },
-        {
-          code: `
-import * as Type from 'foo';
-
-type T = typeof Type;
-type T = typeof Type.foo;
-          `,
-          options: [{ prefer: 'no-type-imports' }],
-        },
-        {
-          code: `
-import * as Type from 'foo' assert { type: 'json' };
-const a: typeof Type = Type;
-          `,
-          options: [{ prefer: 'no-type-imports' }],
-        },
-        `
-          import { type A } from 'foo';
-          type T = A;
-        `,
-        `
-          import { type A, B } from 'foo';
-          type T = A;
-          const b = B;
-        `,
-        `
-          import { type A, type B } from 'foo';
-          type T = A;
-          type Z = B;
-        `,
-        `
-          import { B } from 'foo';
-          import { type A } from 'foo';
-          type T = A;
-          const b = B;
-        `,
-        {
-          code: `
-import { B, type A } from 'foo';
-type T = A;
-const b = B;
-          `,
-          options: [{ fixStyle: 'inline-type-imports' }],
-        },
-        {
-          code: `
-import { B } from 'foo';
-import type A from 'baz';
-type T = A;
-const b = B;
-          `,
-          options: [{ fixStyle: 'inline-type-imports' }],
-        },
-        {
-          code: `
-import { type B } from 'foo';
-import type { A } from 'foo';
-type T = A;
-const b = B;
-          `,
-          options: [{ fixStyle: 'inline-type-imports' }],
-        },
-        {
-          code: `
-import { B, type C } from 'foo';
-import type A from 'baz';
-type T = A;
-type Z = C;
-const b = B;
-          `,
-          options: [
-            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
-          ],
-        },
-        {
-          code: `
-import { B } from 'foo';
-import type { A } from 'foo';
-type T = A;
-const b = B;
-          `,
-          options: [
-            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
-          ],
-        },
-        {
-          code: `
-import { B } from 'foo';
-import { A } from 'foo';
-type T = A;
-const b = B;
-          `,
-          options: [
-            { fixStyle: 'inline-type-imports', prefer: 'no-type-imports' },
-          ],
-        },
-        // exports
-        `
-          import Type from 'foo';
-
-          export { Type }; // is a value export
-          export default Type; // is a value export
-        `,
-        `
-          import type Type from 'foo';
-
-          export { Type }; // is a type-only export
-          export default Type; // is a type-only export
-          export type { Type }; // is a type-only export
-        `,
-        `
-          import { Type } from 'foo';
-
-          export { Type }; // is a value export
-          export default Type; // is a value export
-        `,
-        `
-          import type { Type } from 'foo';
-
-          export { Type }; // is a type-only export
-          export default Type; // is a type-only export
-          export type { Type }; // is a type-only export
-        `,
-        `
-          import * as Type from 'foo';
-
-          export { Type }; // is a value export
-          export default Type; // is a value export
-        `,
-        `
-          import type * as Type from 'foo';
-
-          export { Type }; // is a type-only export
-          export default Type; // is a type-only export
-          export type { Type }; // is a type-only export
-        `,
-
-        {
-          code: `
-import Type from 'foo';
-
-export { Type }; // is a type-only export
-export default Type; // is a type-only export
-export type { Type }; // is a type-only export
-          `,
-          options: [{ prefer: 'no-type-imports' }],
-        },
-        {
-          code: `
-import { Type } from 'foo';
-
-export { Type }; // is a type-only export
-export default Type; // is a type-only export
-export type { Type }; // is a type-only export
-          `,
-          options: [{ prefer: 'no-type-imports' }],
-        },
-        {
-          code: `
-import * as Type from 'foo';
-
-export { Type }; // is a type-only export
-export default Type; // is a type-only export
-export type { Type }; // is a type-only export
-          `,
-          options: [{ prefer: 'no-type-imports' }],
-        },
-        // https://github.com/typescript-eslint/typescript-eslint/issues/2455
-        {
-          code: `
-import React from 'react';
-
-export const ComponentFoo: React.FC = () => {
-  return <div>Foo Foo</div>;
-};
-          `,
-          languageOptions: {
-            parserOptions: {
-              ecmaFeatures: {
-                jsx: true,
-              },
-            },
-          },
-        },
-        {
-          code: `
-import { h } from 'some-other-jsx-lib';
-
-export const ComponentFoo: h.FC = () => {
-  return <div>Foo Foo</div>;
-};
-          `,
-          languageOptions: {
-            parserOptions: {
-              ecmaFeatures: {
-                jsx: true,
-              },
-              jsxPragma: 'h',
-            },
-          },
-        },
-        {
-          code: `
-import { Fragment } from 'react';
-
-export const ComponentFoo: Fragment = () => {
-  return <>Foo Foo</>;
-};
-          `,
-          languageOptions: {
-            parserOptions: {
-              ecmaFeatures: {
-                jsx: true,
-              },
-              jsxFragmentName: 'Fragment',
-            },
-          },
-        },
-        `
-          import Default, * as Rest from 'module';
-          const a: typeof Default = Default;
-          const b: typeof Rest = Rest;
-        `,
-
-        // https://github.com/typescript-eslint/typescript-eslint/issues/2989
-        `
-          import type * as constants from './constants';
-
-          export type Y = {
-            [constants.X]: ReadonlyArray<string>;
-          };
-        `,
-        `
-          import A from 'foo';
-          export = A;
-        `,
-        `
-          import type A from 'foo';
-          export = A;
-        `,
-        `
-          import type A from 'foo';
-          export = {} as A;
-        `,
-        `
-          import { type A } from 'foo';
-          export = {} as A;
-        `,
-
-        // semantically these are insane but syntactically they are valid
-        // we don't want to handle them because it means changing invalid code
-        // to valid code which is dangerous "undefined" behavior.
-        `
-import type T from 'mod';
-const x = T;
-        `,
-        `
-import type { T } from 'mod';
-const x = T;
-        `,
-        `
-import { type T } from 'mod';
-const x = T;
-        `,
-      ],
       invalid: [
         {
           code: `
@@ -1946,6 +1591,361 @@ function test(foo: Foo) {}
           `,
         },
       ],
+      valid: [
+        `
+          import Foo from 'foo';
+          const foo: Foo = new Foo();
+        `,
+        `
+          import foo from 'foo';
+          const foo: foo.Foo = foo.fn();
+        `,
+        `
+          import { A, B } from 'foo';
+          const foo: A = B();
+          const bar = new A();
+        `,
+        `
+          import Foo from 'foo';
+        `,
+        `
+          import Foo from 'foo';
+          type T<Foo> = Foo; // shadowing
+        `,
+        `
+          import Foo from 'foo';
+          function fn() {
+            type Foo = {}; // shadowing
+            let foo: Foo;
+          }
+        `,
+        `
+          import { A, B } from 'foo';
+          const b = B;
+        `,
+        `
+          import { A, B, C as c } from 'foo';
+          const d = c;
+        `,
+        `
+          import {} from 'foo'; // empty
+        `,
+        {
+          code: `
+let foo: import('foo');
+let bar: import('foo').Bar;
+          `,
+          options: [{ disallowTypeAnnotations: false }],
+        },
+        {
+          code: `
+import Foo from 'foo';
+let foo: Foo;
+          `,
+          options: [{ prefer: 'no-type-imports' }],
+        },
+        // type queries
+        `
+          import type Type from 'foo';
+
+          type T = typeof Type;
+          type T = typeof Type.foo;
+        `,
+        `
+          import type { Type } from 'foo';
+
+          type T = typeof Type;
+          type T = typeof Type.foo;
+        `,
+        `
+          import type * as Type from 'foo';
+
+          type T = typeof Type;
+          type T = typeof Type.foo;
+        `,
+        {
+          code: `
+import Type from 'foo';
+
+type T = typeof Type;
+type T = typeof Type.foo;
+          `,
+          options: [{ prefer: 'no-type-imports' }],
+        },
+        {
+          code: `
+import { Type } from 'foo';
+
+type T = typeof Type;
+type T = typeof Type.foo;
+          `,
+          options: [{ prefer: 'no-type-imports' }],
+        },
+        {
+          code: `
+import * as Type from 'foo';
+
+type T = typeof Type;
+type T = typeof Type.foo;
+          `,
+          options: [{ prefer: 'no-type-imports' }],
+        },
+        {
+          code: `
+import * as Type from 'foo' assert { type: 'json' };
+const a: typeof Type = Type;
+          `,
+          options: [{ prefer: 'no-type-imports' }],
+        },
+        `
+          import { type A } from 'foo';
+          type T = A;
+        `,
+        `
+          import { type A, B } from 'foo';
+          type T = A;
+          const b = B;
+        `,
+        `
+          import { type A, type B } from 'foo';
+          type T = A;
+          type Z = B;
+        `,
+        `
+          import { B } from 'foo';
+          import { type A } from 'foo';
+          type T = A;
+          const b = B;
+        `,
+        {
+          code: `
+import { B, type A } from 'foo';
+type T = A;
+const b = B;
+          `,
+          options: [{ fixStyle: 'inline-type-imports' }],
+        },
+        {
+          code: `
+import { B } from 'foo';
+import type A from 'baz';
+type T = A;
+const b = B;
+          `,
+          options: [{ fixStyle: 'inline-type-imports' }],
+        },
+        {
+          code: `
+import { type B } from 'foo';
+import type { A } from 'foo';
+type T = A;
+const b = B;
+          `,
+          options: [{ fixStyle: 'inline-type-imports' }],
+        },
+        {
+          code: `
+import { B, type C } from 'foo';
+import type A from 'baz';
+type T = A;
+type Z = C;
+const b = B;
+          `,
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
+        },
+        {
+          code: `
+import { B } from 'foo';
+import type { A } from 'foo';
+type T = A;
+const b = B;
+          `,
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
+        },
+        {
+          code: `
+import { B } from 'foo';
+import { A } from 'foo';
+type T = A;
+const b = B;
+          `,
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'no-type-imports' },
+          ],
+        },
+        // exports
+        `
+          import Type from 'foo';
+
+          export { Type }; // is a value export
+          export default Type; // is a value export
+        `,
+        `
+          import type Type from 'foo';
+
+          export { Type }; // is a type-only export
+          export default Type; // is a type-only export
+          export type { Type }; // is a type-only export
+        `,
+        `
+          import { Type } from 'foo';
+
+          export { Type }; // is a value export
+          export default Type; // is a value export
+        `,
+        `
+          import type { Type } from 'foo';
+
+          export { Type }; // is a type-only export
+          export default Type; // is a type-only export
+          export type { Type }; // is a type-only export
+        `,
+        `
+          import * as Type from 'foo';
+
+          export { Type }; // is a value export
+          export default Type; // is a value export
+        `,
+        `
+          import type * as Type from 'foo';
+
+          export { Type }; // is a type-only export
+          export default Type; // is a type-only export
+          export type { Type }; // is a type-only export
+        `,
+
+        {
+          code: `
+import Type from 'foo';
+
+export { Type }; // is a type-only export
+export default Type; // is a type-only export
+export type { Type }; // is a type-only export
+          `,
+          options: [{ prefer: 'no-type-imports' }],
+        },
+        {
+          code: `
+import { Type } from 'foo';
+
+export { Type }; // is a type-only export
+export default Type; // is a type-only export
+export type { Type }; // is a type-only export
+          `,
+          options: [{ prefer: 'no-type-imports' }],
+        },
+        {
+          code: `
+import * as Type from 'foo';
+
+export { Type }; // is a type-only export
+export default Type; // is a type-only export
+export type { Type }; // is a type-only export
+          `,
+          options: [{ prefer: 'no-type-imports' }],
+        },
+        // https://github.com/typescript-eslint/typescript-eslint/issues/2455
+        {
+          code: `
+import React from 'react';
+
+export const ComponentFoo: React.FC = () => {
+  return <div>Foo Foo</div>;
+};
+          `,
+          languageOptions: {
+            parserOptions: {
+              ecmaFeatures: {
+                jsx: true,
+              },
+            },
+          },
+        },
+        {
+          code: `
+import { h } from 'some-other-jsx-lib';
+
+export const ComponentFoo: h.FC = () => {
+  return <div>Foo Foo</div>;
+};
+          `,
+          languageOptions: {
+            parserOptions: {
+              ecmaFeatures: {
+                jsx: true,
+              },
+              jsxPragma: 'h',
+            },
+          },
+        },
+        {
+          code: `
+import { Fragment } from 'react';
+
+export const ComponentFoo: Fragment = () => {
+  return <>Foo Foo</>;
+};
+          `,
+          languageOptions: {
+            parserOptions: {
+              ecmaFeatures: {
+                jsx: true,
+              },
+              jsxFragmentName: 'Fragment',
+            },
+          },
+        },
+        `
+          import Default, * as Rest from 'module';
+          const a: typeof Default = Default;
+          const b: typeof Rest = Rest;
+        `,
+
+        // https://github.com/typescript-eslint/typescript-eslint/issues/2989
+        `
+          import type * as constants from './constants';
+
+          export type Y = {
+            [constants.X]: ReadonlyArray<string>;
+          };
+        `,
+        `
+          import A from 'foo';
+          export = A;
+        `,
+        `
+          import type A from 'foo';
+          export = A;
+        `,
+        `
+          import type A from 'foo';
+          export = {} as A;
+        `,
+        `
+          import { type A } from 'foo';
+          export = {} as A;
+        `,
+
+        // semantically these are insane but syntactically they are valid
+        // we don't want to handle them because it means changing invalid code
+        // to valid code which is dangerous "undefined" behavior.
+        `
+import type T from 'mod';
+const x = T;
+        `,
+        `
+import type { T } from 'mod';
+const x = T;
+        `,
+        `
+import { type T } from 'mod';
+const x = T;
+        `,
+      ],
     });
   },
 );
@@ -1962,6 +1962,24 @@ describe('experimentalDecorators: true + emitDecoratorMetadata: true', () => {
   });
 
   ruleTester.run('consistent-type-imports', rule, {
+    invalid: [
+      {
+        code: `
+          import Foo from 'foo';
+          export type T = Foo;
+        `,
+        errors: [
+          {
+            line: 2,
+            messageId: 'typeOverValue',
+          },
+        ],
+        output: `
+          import type Foo from 'foo';
+          export type T = Foo;
+        `,
+      },
+    ],
     valid: [
       `
         import Foo from 'foo';
@@ -2105,24 +2123,6 @@ describe('experimentalDecorators: true + emitDecoratorMetadata: true', () => {
           constructor(foo: Type.Foo) {}
         }
       `,
-    ],
-    invalid: [
-      {
-        code: `
-          import Foo from 'foo';
-          export type T = Foo;
-        `,
-        errors: [
-          {
-            line: 2,
-            messageId: 'typeOverValue',
-          },
-        ],
-        output: `
-          import type Foo from 'foo';
-          export type T = Foo;
-        `,
-      },
     ],
   });
 });

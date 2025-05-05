@@ -6,42 +6,6 @@ import rule, { phrases } from '../../src/rules/prefer-function-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-function-type', rule, {
-  valid: [
-    `
-interface Foo {
-  (): void;
-  bar: number;
-}
-    `,
-    `
-type Foo = {
-  (): void;
-  bar: number;
-};
-    `,
-    `
-function foo(bar: { (): string; baz: number }): string {
-  return bar();
-}
-    `,
-    `
-interface Foo {
-  bar: string;
-}
-interface Bar extends Foo {
-  (): void;
-}
-    `,
-    `
-interface Foo {
-  bar: string;
-}
-interface Bar extends Function, Foo {
-  (): void;
-}
-    `,
-  ],
-
   invalid: [
     {
       code: `
@@ -405,5 +369,41 @@ type X = {} & { (): void; };
 type X = {} & (() => void);
       `,
     },
+  ],
+
+  valid: [
+    `
+interface Foo {
+  (): void;
+  bar: number;
+}
+    `,
+    `
+type Foo = {
+  (): void;
+  bar: number;
+};
+    `,
+    `
+function foo(bar: { (): string; baz: number }): string {
+  return bar();
+}
+    `,
+    `
+interface Foo {
+  bar: string;
+}
+interface Bar extends Foo {
+  (): void;
+}
+    `,
+    `
+interface Foo {
+  bar: string;
+}
+interface Bar extends Function, Foo {
+  (): void;
+}
+    `,
   ],
 });

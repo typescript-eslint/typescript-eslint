@@ -5,47 +5,6 @@ import rule from '../../src/rules/no-empty-interface';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-interface', rule, {
-  valid: [
-    `
-interface Foo {
-  name: string;
-}
-    `,
-    `
-interface Foo {
-  name: string;
-}
-
-interface Bar {
-  age: number;
-}
-
-// valid because extending multiple interfaces can be used instead of a union type
-interface Baz extends Foo, Bar {}
-    `,
-    {
-      code: `
-interface Foo {
-  name: string;
-}
-
-interface Bar extends Foo {}
-      `,
-      options: [{ allowSingleExtends: true }],
-    },
-    {
-      code: `
-interface Foo {
-  props: string;
-}
-
-interface Bar extends Foo {}
-
-class Bar {}
-      `,
-      options: [{ allowSingleExtends: true }],
-    },
-  ],
   invalid: [
     {
       code: 'interface Foo {}',
@@ -274,6 +233,47 @@ declare module FooBar {
       filename: 'test.d.ts',
       // output matches input because a suggestion was made
       output: null,
+    },
+  ],
+  valid: [
+    `
+interface Foo {
+  name: string;
+}
+    `,
+    `
+interface Foo {
+  name: string;
+}
+
+interface Bar {
+  age: number;
+}
+
+// valid because extending multiple interfaces can be used instead of a union type
+interface Baz extends Foo, Bar {}
+    `,
+    {
+      code: `
+interface Foo {
+  name: string;
+}
+
+interface Bar extends Foo {}
+      `,
+      options: [{ allowSingleExtends: true }],
+    },
+    {
+      code: `
+interface Foo {
+  props: string;
+}
+
+interface Bar extends Foo {}
+
+class Bar {}
+      `,
+      options: [{ allowSingleExtends: true }],
     },
   ],
 });

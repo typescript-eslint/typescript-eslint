@@ -9,8 +9,8 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow using the unsafe built-in Function type',
       recommended: 'recommended',
+      description: 'Disallow using the unsafe built-in Function type',
     },
     messages: {
       bannedFunctionType: [

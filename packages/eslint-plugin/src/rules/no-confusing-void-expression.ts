@@ -40,13 +40,13 @@ export default createRule<Options, MessageId>({
   name: 'no-confusing-void-expression',
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
+      recommended: 'strict',
       description:
         'Require expressions of type void to appear in statement position',
-      recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       invalidVoidExpr:

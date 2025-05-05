@@ -70,413 +70,6 @@ const weirdIntersections = [
 ];
 
 ruleTester.run('prefer-readonly-parameter-types', rule, {
-  valid: [
-    'function foo() {}',
-
-    // primitives
-    ...primitives.map(type => `function foo(arg: ${type}) {}`),
-    `
-      const symb = Symbol('a');
-      function foo(arg: typeof symb) {}
-    `,
-    `
-      enum Enum {
-        a,
-        b,
-      }
-      function foo(arg: Enum) {}
-    `,
-
-    // arrays
-    ...arrays.map(type => `function foo(arg: ${type}) {}`),
-    // nested arrays
-    'function foo(arg: readonly (readonly string[])[]) {}',
-    'function foo(arg: Readonly<Readonly<string[]>[]>) {}',
-    'function foo(arg: ReadonlyArray<ReadonlyArray<string>>) {}',
-
-    // functions
-    'function foo(arg: () => void) {}',
-
-    // unions
-    'function foo(arg: string | null) {}',
-    'function foo(arg: string | ReadonlyArray<string>) {}',
-    'function foo(arg: string | (() => void)) {}',
-    'function foo(arg: ReadonlyArray<string> | ReadonlyArray<number>) {}',
-
-    // objects
-    ...objects.map(type => `function foo(arg: Readonly<${type}>) {}`),
-    `
-      function foo(arg: {
-        readonly foo: {
-          readonly bar: string;
-        };
-      }) {}
-    `,
-    `
-      function foo(arg: { readonly [k: string]: string }) {}
-    `,
-    `
-      function foo(arg: { readonly [k: number]: string }) {}
-    `,
-    `
-      interface Empty {}
-      function foo(arg: Empty) {}
-    `,
-
-    // weird other cases
-    ...weirdIntersections.map(code => code),
-    `
-      interface Test extends ReadonlyArray<string> {
-        readonly property: boolean;
-      }
-      function foo(arg: Readonly<Test>) {}
-    `,
-    `
-      type Test = readonly string[] & {
-        readonly property: boolean;
-      };
-      function foo(arg: Readonly<Test>) {}
-    `,
-    `
-      type Test = string & number;
-      function foo(arg: Test) {}
-    `,
-
-    // declaration merging
-    `
-      class Foo {
-        readonly bang = 1;
-      }
-      interface Foo {
-        readonly prop: string;
-      }
-      interface Foo {
-        readonly prop2: string;
-      }
-      function foo(arg: Foo) {}
-    `,
-    // method made readonly via Readonly<T>
-    `
-      class Foo {
-        method() {}
-      }
-      function foo(arg: Readonly<Foo>) {}
-    `,
-    // immutable methods
-    `
-      type MyType = Readonly<{
-        prop: string;
-        method(): string;
-      }>;
-      function foo(arg: MyType) {}
-    `,
-    `
-      type MyType = {
-        readonly prop: string;
-        readonly method: () => string;
-      };
-      function bar(arg: MyType) {}
-    `,
-    // PrivateIdentifier is exempt from this rule
-    {
-      code: `
-        class Foo {
-          #privateField = 'foo';
-          #privateMember() {}
-        }
-        function foo(arg: Foo) {}
-      `,
-    },
-    {
-      code: `
-        class HasText {
-          readonly #text: string;
-        }
-
-        export function onDone(task: HasText): void {}
-      `,
-    },
-    // methods treated as readonly
-    {
-      code: `
-        type MyType = {
-          readonly prop: string;
-          method(): string;
-        };
-        function foo(arg: MyType) {}
-      `,
-      options: [
-        {
-          treatMethodsAsReadonly: true,
-        },
-      ],
-    },
-    {
-      code: `
-        class Foo {
-          method() {}
-        }
-        function foo(arg: Foo) {}
-      `,
-      options: [
-        {
-          treatMethodsAsReadonly: true,
-        },
-      ],
-    },
-    {
-      code: `
-        interface Foo {
-          method(): void;
-        }
-        function foo(arg: Foo) {}
-      `,
-      options: [
-        {
-          treatMethodsAsReadonly: true,
-        },
-      ],
-    },
-    // ReadonlySet and ReadonlyMap are seen as readonly when methods are treated as readonly
-    {
-      code: `
-        function foo(arg: ReadonlySet<string>) {}
-        function bar(arg: ReadonlyMap<string, string>) {}
-      `,
-      options: [
-        {
-          treatMethodsAsReadonly: true,
-        },
-      ],
-    },
-    // parameter properties should work fine
-    {
-      code: `
-        class Foo {
-          constructor(
-            private arg1: readonly string[],
-            public arg2: readonly string[],
-            protected arg3: readonly string[],
-            readonly arg4: readonly string[],
-          ) {}
-        }
-      `,
-      options: [{ checkParameterProperties: true }],
-    },
-    {
-      code: `
-        class Foo {
-          constructor(
-            private arg1: string[],
-            public arg2: string[],
-            protected arg3: string[],
-            readonly arg4: string[],
-          ) {}
-        }
-      `,
-      options: [{ checkParameterProperties: false }],
-    },
-
-    // type functions
-    `
-      interface Foo {
-        (arg: readonly string[]): void;
-      }
-    `, // TSCallSignatureDeclaration
-    `
-      interface Foo {
-        new (arg: readonly string[]): void;
-      }
-    `, // TSConstructSignatureDeclaration
-    noFormat`class Foo { foo(arg: readonly string[]): void; };`, // TSEmptyBodyFunctionExpression
-    'function foo(arg: readonly string[]);', // TSDeclareFunction
-    'type Foo = (arg: readonly string[]) => void;', // TSFunctionType
-    `
-      interface Foo {
-        foo(arg: readonly string[]): void;
-      }
-    `, // TSMethodSignature
-
-    // https://github.com/typescript-eslint/typescript-eslint/issues/1665
-    // directly recursive interface
-    `
-      interface Foo {
-        readonly prop: Foo;
-      }
-      function foo(arg: Foo) {}
-    `,
-
-    // https://github.com/typescript-eslint/typescript-eslint/issues/3396
-    // directly recursive union type
-    `
-      type MyType = string | readonly MyType[];
-
-      function foo<A extends MyType[]>(a: A): MyType[] {
-        return [];
-      }
-    `,
-    // indirectly recursive
-    `
-      interface Foo {
-        readonly prop: Bar;
-      }
-      interface Bar {
-        readonly prop: Foo;
-      }
-      function foo(arg: Foo) {}
-    `,
-    `
-      interface Foo {
-        prop: Readonly<Bar>;
-      }
-      interface Bar {
-        prop: Readonly<Foo>;
-      }
-      function foo(arg: Readonly<Foo>) {}
-    `,
-    `
-      const sym = Symbol('sym');
-
-      interface WithSymbol {
-        [sym]: number;
-      }
-
-      const willNotCrash = (foo: Readonly<WithSymbol>) => {};
-    `,
-    {
-      code: `
-        type Callback<T> = (options: T) => void;
-
-        declare const acceptsCallback: <T>(callback: Callback<T>) => void;
-
-        interface CallbackOptions {
-          prop: string;
-        }
-
-        acceptsCallback<CallbackOptions>(options => {});
-      `,
-      options: [
-        {
-          ignoreInferredTypes: true,
-        },
-      ],
-    },
-    {
-      code: `
-        interface Obj {
-          readonly [K: string]: Obj;
-        }
-
-        function foo(event: Obj): void {}
-      `,
-      name: 'circular readonly types (Bug: #4476)',
-      options: [
-        {
-          checkParameterProperties: true,
-          ignoreInferredTypes: false,
-          ...readonlynessOptionsDefaults,
-        },
-      ],
-    },
-    {
-      code: `
-        interface Obj1 {
-          readonly [K: string]: Obj2;
-        }
-
-        interface Obj2 {
-          readonly [K: string]: Obj1;
-        }
-
-        function foo(event: Obj1): void {}
-      `,
-      name: 'circular readonly types (Bug: #5875)',
-      options: [
-        {
-          checkParameterProperties: true,
-          ignoreInferredTypes: false,
-          ...readonlynessOptionsDefaults,
-        },
-      ],
-    },
-    // Allowlist
-    {
-      code: `
-        interface Foo {
-          readonly prop: RegExp;
-        }
-
-        function foo(arg: Foo) {}
-      `,
-      options: [
-        {
-          allow: [{ from: 'lib', name: 'RegExp' }],
-        },
-      ],
-    },
-    {
-      code: `
-        interface Foo {
-          prop: RegExp;
-        }
-
-        function foo(arg: Readonly<Foo>) {}
-      `,
-      options: [
-        {
-          allow: [{ from: 'lib', name: 'RegExp' }],
-        },
-      ],
-    },
-    {
-      code: `
-        interface Foo {
-          prop: string;
-        }
-
-        function foo(arg: Foo) {}
-      `,
-      options: [
-        {
-          allow: [{ from: 'file', name: 'Foo' }],
-        },
-      ],
-    },
-    {
-      code: `
-        interface Bar {
-          prop: string;
-        }
-        interface Foo {
-          readonly prop: Bar;
-        }
-
-        function foo(arg: Foo) {}
-      `,
-      options: [
-        {
-          allow: [{ from: 'file', name: 'Foo' }],
-        },
-      ],
-    },
-    {
-      code: `
-        interface Bar {
-          prop: string;
-        }
-        interface Foo {
-          readonly prop: Bar;
-        }
-
-        function foo(arg: Foo) {}
-      `,
-      options: [
-        {
-          allow: [{ from: 'file', name: 'Bar' }],
-        },
-      ],
-    },
-  ],
   invalid: [
     // arrays
     // Removing readonly causes duplicates
@@ -1083,6 +676,413 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       options: [
         {
           allow: [{ from: 'package', name: 'RegExp', package: 'regexp-lib' }],
+        },
+      ],
+    },
+  ],
+  valid: [
+    'function foo() {}',
+
+    // primitives
+    ...primitives.map(type => `function foo(arg: ${type}) {}`),
+    `
+      const symb = Symbol('a');
+      function foo(arg: typeof symb) {}
+    `,
+    `
+      enum Enum {
+        a,
+        b,
+      }
+      function foo(arg: Enum) {}
+    `,
+
+    // arrays
+    ...arrays.map(type => `function foo(arg: ${type}) {}`),
+    // nested arrays
+    'function foo(arg: readonly (readonly string[])[]) {}',
+    'function foo(arg: Readonly<Readonly<string[]>[]>) {}',
+    'function foo(arg: ReadonlyArray<ReadonlyArray<string>>) {}',
+
+    // functions
+    'function foo(arg: () => void) {}',
+
+    // unions
+    'function foo(arg: string | null) {}',
+    'function foo(arg: string | ReadonlyArray<string>) {}',
+    'function foo(arg: string | (() => void)) {}',
+    'function foo(arg: ReadonlyArray<string> | ReadonlyArray<number>) {}',
+
+    // objects
+    ...objects.map(type => `function foo(arg: Readonly<${type}>) {}`),
+    `
+      function foo(arg: {
+        readonly foo: {
+          readonly bar: string;
+        };
+      }) {}
+    `,
+    `
+      function foo(arg: { readonly [k: string]: string }) {}
+    `,
+    `
+      function foo(arg: { readonly [k: number]: string }) {}
+    `,
+    `
+      interface Empty {}
+      function foo(arg: Empty) {}
+    `,
+
+    // weird other cases
+    ...weirdIntersections.map(code => code),
+    `
+      interface Test extends ReadonlyArray<string> {
+        readonly property: boolean;
+      }
+      function foo(arg: Readonly<Test>) {}
+    `,
+    `
+      type Test = readonly string[] & {
+        readonly property: boolean;
+      };
+      function foo(arg: Readonly<Test>) {}
+    `,
+    `
+      type Test = string & number;
+      function foo(arg: Test) {}
+    `,
+
+    // declaration merging
+    `
+      class Foo {
+        readonly bang = 1;
+      }
+      interface Foo {
+        readonly prop: string;
+      }
+      interface Foo {
+        readonly prop2: string;
+      }
+      function foo(arg: Foo) {}
+    `,
+    // method made readonly via Readonly<T>
+    `
+      class Foo {
+        method() {}
+      }
+      function foo(arg: Readonly<Foo>) {}
+    `,
+    // immutable methods
+    `
+      type MyType = Readonly<{
+        prop: string;
+        method(): string;
+      }>;
+      function foo(arg: MyType) {}
+    `,
+    `
+      type MyType = {
+        readonly prop: string;
+        readonly method: () => string;
+      };
+      function bar(arg: MyType) {}
+    `,
+    // PrivateIdentifier is exempt from this rule
+    {
+      code: `
+        class Foo {
+          #privateField = 'foo';
+          #privateMember() {}
+        }
+        function foo(arg: Foo) {}
+      `,
+    },
+    {
+      code: `
+        class HasText {
+          readonly #text: string;
+        }
+
+        export function onDone(task: HasText): void {}
+      `,
+    },
+    // methods treated as readonly
+    {
+      code: `
+        type MyType = {
+          readonly prop: string;
+          method(): string;
+        };
+        function foo(arg: MyType) {}
+      `,
+      options: [
+        {
+          treatMethodsAsReadonly: true,
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {
+          method() {}
+        }
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          treatMethodsAsReadonly: true,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          method(): void;
+        }
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          treatMethodsAsReadonly: true,
+        },
+      ],
+    },
+    // ReadonlySet and ReadonlyMap are seen as readonly when methods are treated as readonly
+    {
+      code: `
+        function foo(arg: ReadonlySet<string>) {}
+        function bar(arg: ReadonlyMap<string, string>) {}
+      `,
+      options: [
+        {
+          treatMethodsAsReadonly: true,
+        },
+      ],
+    },
+    // parameter properties should work fine
+    {
+      code: `
+        class Foo {
+          constructor(
+            private arg1: readonly string[],
+            public arg2: readonly string[],
+            protected arg3: readonly string[],
+            readonly arg4: readonly string[],
+          ) {}
+        }
+      `,
+      options: [{ checkParameterProperties: true }],
+    },
+    {
+      code: `
+        class Foo {
+          constructor(
+            private arg1: string[],
+            public arg2: string[],
+            protected arg3: string[],
+            readonly arg4: string[],
+          ) {}
+        }
+      `,
+      options: [{ checkParameterProperties: false }],
+    },
+
+    // type functions
+    `
+      interface Foo {
+        (arg: readonly string[]): void;
+      }
+    `, // TSCallSignatureDeclaration
+    `
+      interface Foo {
+        new (arg: readonly string[]): void;
+      }
+    `, // TSConstructSignatureDeclaration
+    noFormat`class Foo { foo(arg: readonly string[]): void; };`, // TSEmptyBodyFunctionExpression
+    'function foo(arg: readonly string[]);', // TSDeclareFunction
+    'type Foo = (arg: readonly string[]) => void;', // TSFunctionType
+    `
+      interface Foo {
+        foo(arg: readonly string[]): void;
+      }
+    `, // TSMethodSignature
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1665
+    // directly recursive interface
+    `
+      interface Foo {
+        readonly prop: Foo;
+      }
+      function foo(arg: Foo) {}
+    `,
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3396
+    // directly recursive union type
+    `
+      type MyType = string | readonly MyType[];
+
+      function foo<A extends MyType[]>(a: A): MyType[] {
+        return [];
+      }
+    `,
+    // indirectly recursive
+    `
+      interface Foo {
+        readonly prop: Bar;
+      }
+      interface Bar {
+        readonly prop: Foo;
+      }
+      function foo(arg: Foo) {}
+    `,
+    `
+      interface Foo {
+        prop: Readonly<Bar>;
+      }
+      interface Bar {
+        prop: Readonly<Foo>;
+      }
+      function foo(arg: Readonly<Foo>) {}
+    `,
+    `
+      const sym = Symbol('sym');
+
+      interface WithSymbol {
+        [sym]: number;
+      }
+
+      const willNotCrash = (foo: Readonly<WithSymbol>) => {};
+    `,
+    {
+      code: `
+        type Callback<T> = (options: T) => void;
+
+        declare const acceptsCallback: <T>(callback: Callback<T>) => void;
+
+        interface CallbackOptions {
+          prop: string;
+        }
+
+        acceptsCallback<CallbackOptions>(options => {});
+      `,
+      options: [
+        {
+          ignoreInferredTypes: true,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Obj {
+          readonly [K: string]: Obj;
+        }
+
+        function foo(event: Obj): void {}
+      `,
+      name: 'circular readonly types (Bug: #4476)',
+      options: [
+        {
+          checkParameterProperties: true,
+          ignoreInferredTypes: false,
+          ...readonlynessOptionsDefaults,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Obj1 {
+          readonly [K: string]: Obj2;
+        }
+
+        interface Obj2 {
+          readonly [K: string]: Obj1;
+        }
+
+        function foo(event: Obj1): void {}
+      `,
+      name: 'circular readonly types (Bug: #5875)',
+      options: [
+        {
+          checkParameterProperties: true,
+          ignoreInferredTypes: false,
+          ...readonlynessOptionsDefaults,
+        },
+      ],
+    },
+    // Allowlist
+    {
+      code: `
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'RegExp' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          prop: RegExp;
+        }
+
+        function foo(arg: Readonly<Foo>) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'RegExp' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          prop: string;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Foo' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Bar {
+          prop: string;
+        }
+        interface Foo {
+          readonly prop: Bar;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Foo' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Bar {
+          prop: string;
+        }
+        interface Foo {
+          readonly prop: Bar;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Bar' }],
         },
       ],
     },

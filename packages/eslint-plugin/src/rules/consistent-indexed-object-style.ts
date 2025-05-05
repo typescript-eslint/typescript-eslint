@@ -22,11 +22,11 @@ export default createRule<Options, MessageIds>({
   name: 'consistent-indexed-object-style',
   meta: {
     type: 'suggestion',
-    docs: {
-      description: 'Require or disallow the `Record` type',
-      recommended: 'stylistic',
-    },
     fixable: 'code',
+    docs: {
+      recommended: 'stylistic',
+      description: 'Require or disallow the `Record` type',
+    },
     // eslint-disable-next-line eslint-plugin/require-meta-has-suggestions -- suggestions are exposed through a helper.
     hasSuggestions: true,
     messages: {

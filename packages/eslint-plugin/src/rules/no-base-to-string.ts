@@ -30,9 +30,9 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
+      recommended: 'recommended',
       description:
         'Require `.toString()` and `.toLocaleString()` to only be called on objects which provide useful information when stringified',
-      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -290,6 +290,19 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
+      'CallExpression > MemberExpression.callee > Identifier[name = "join"].property'(
+        node: TSESTree.Expression,
+      ): void {
+        const memberExpr = node.parent as TSESTree.MemberExpression;
+        const type = getConstrainedTypeAtLocation(services, memberExpr.object);
+        checkExpressionForArrayJoin(memberExpr.object, type);
+      },
+      'CallExpression > MemberExpression.callee > Identifier[name = /^(toLocaleString|toString)$/].property'(
+        node: TSESTree.Expression,
+      ): void {
+        const memberExpr = node.parent as TSESTree.MemberExpression;
+        checkExpression(memberExpr.object);
+      },
       'AssignmentExpression[operator = "+="], BinaryExpression[operator = "+"]'(
         node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
       ): void {
@@ -312,19 +325,6 @@ export default createRule<Options, MessageIds>({
         ) {
           checkExpression(node.arguments[0]);
         }
-      },
-      'CallExpression > MemberExpression.callee > Identifier[name = "join"].property'(
-        node: TSESTree.Expression,
-      ): void {
-        const memberExpr = node.parent as TSESTree.MemberExpression;
-        const type = getConstrainedTypeAtLocation(services, memberExpr.object);
-        checkExpressionForArrayJoin(memberExpr.object, type);
-      },
-      'CallExpression > MemberExpression.callee > Identifier[name = /^(toLocaleString|toString)$/].property'(
-        node: TSESTree.Expression,
-      ): void {
-        const memberExpr = node.parent as TSESTree.MemberExpression;
-        checkExpression(memberExpr.object);
       },
 
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {

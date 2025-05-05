@@ -32,9 +32,9 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Require using Error objects as Promise rejection reasons',
       extendsBaseRule: true,
       recommended: 'recommended',
+      description: 'Require using Error objects as Promise rejection reasons',
       requiresTypeChecking: true,
     },
     messages: {

@@ -6,33 +6,6 @@ import rule from '../../src/rules/no-array-constructor';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-array-constructor', rule, {
-  valid: [
-    'new Array(x);',
-    'Array(x);',
-    'new Array(9);',
-    'Array(9);',
-    'new foo.Array();',
-    'foo.Array();',
-    'new Array.foo();',
-    'Array.foo();',
-
-    // TypeScript
-    'new Array<Foo>(1, 2, 3);',
-    'new Array<Foo>();',
-    'Array<Foo>(1, 2, 3);',
-    'Array<Foo>();',
-
-    // optional chain
-    'Array?.(x);',
-    'Array?.(9);',
-    'foo?.Array();',
-    'Array?.foo();',
-    'foo.Array?.();',
-    'Array.foo?.();',
-    'Array?.<Foo>(1, 2, 3);',
-    'Array?.<Foo>();',
-  ],
-
   invalid: [
     {
       code: 'new Array();',
@@ -180,5 +153,32 @@ new Array(0, 1, 2);
 [0, 1, 2];
       `,
     },
+  ],
+
+  valid: [
+    'new Array(x);',
+    'Array(x);',
+    'new Array(9);',
+    'Array(9);',
+    'new foo.Array();',
+    'foo.Array();',
+    'new Array.foo();',
+    'Array.foo();',
+
+    // TypeScript
+    'new Array<Foo>(1, 2, 3);',
+    'new Array<Foo>();',
+    'Array<Foo>(1, 2, 3);',
+    'Array<Foo>();',
+
+    // optional chain
+    'Array?.(x);',
+    'Array?.(9);',
+    'foo?.Array();',
+    'Array?.foo();',
+    'foo.Array?.();',
+    'Array.foo?.();',
+    'Array?.<Foo>(1, 2, 3);',
+    'Array?.<Foo>();',
   ],
 });

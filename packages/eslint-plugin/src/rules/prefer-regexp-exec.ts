@@ -24,13 +24,13 @@ export default createRule({
   name: 'prefer-regexp-exec',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
+      recommended: 'stylistic',
       description:
         'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
-      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       regExpExecOverStringMatch: 'Use the `RegExp#exec()` method instead.',
     },

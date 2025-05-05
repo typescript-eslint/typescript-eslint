@@ -27,8 +27,8 @@ export default createRule<[], MessageId>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow awaiting a value that is not a Thenable',
       recommended: 'recommended',
+      description: 'Disallow awaiting a value that is not a Thenable',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

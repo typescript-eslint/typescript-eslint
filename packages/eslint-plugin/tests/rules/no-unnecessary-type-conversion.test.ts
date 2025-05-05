@@ -15,86 +15,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unnecessary-type-conversion', rule, {
-  valid: [
-    // standard type conversions are valid
-    'String(1);',
-    '(1).toString();',
-    '`${1}`;',
-    "'' + 1;",
-    "1 + '';",
-    `
-      let str = 1;
-      str += '';
-    `,
-    "Number('2');",
-    "+'2';",
-    "~~'2';",
-    'Boolean(0);',
-    '!!0;',
-    'BigInt(3);',
-
-    // things that are not type conversion idioms (but look similar) are valid
-    "new String('asdf');",
-    'new Number(2);',
-    'new Boolean(true);',
-    '!false;',
-    '~2;',
-    `
-      function String(value: unknown) {
-        return value;
-      }
-      String('asdf');
-      export {};
-    `,
-    `
-      function Number(value: unknown) {
-        return value;
-      }
-      Number(2);
-      export {};
-    `,
-    `
-      function Boolean(value: unknown) {
-        return value;
-      }
-      Boolean(true);
-      export {};
-    `,
-    `
-      function BigInt(value: unknown) {
-        return value;
-      }
-      BigInt(3n);
-      export {};
-    `,
-    `
-      function toString(value: unknown) {
-        return value;
-      }
-      toString('asdf');
-    `,
-    `
-      export {};
-      declare const toString: string;
-      toString.toUpperCase();
-    `,
-
-    // using type conversion idioms to unbox boxed primitives is valid
-    'String(new String());',
-    'new String().toString();',
-    "'' + new String();",
-    "new String() + '';",
-    `
-      let str = new String();
-      str += '';
-    `,
-    'Number(new Number());',
-    '+new Number();',
-    '~~new Number();',
-    'Boolean(new Boolean());',
-    '!!new Boolean();',
-  ],
-
   invalid: [
     {
       code: "String('asdf');",
@@ -720,5 +640,85 @@ let str = 'asdf';
         },
       ],
     },
+  ],
+
+  valid: [
+    // standard type conversions are valid
+    'String(1);',
+    '(1).toString();',
+    '`${1}`;',
+    "'' + 1;",
+    "1 + '';",
+    `
+      let str = 1;
+      str += '';
+    `,
+    "Number('2');",
+    "+'2';",
+    "~~'2';",
+    'Boolean(0);',
+    '!!0;',
+    'BigInt(3);',
+
+    // things that are not type conversion idioms (but look similar) are valid
+    "new String('asdf');",
+    'new Number(2);',
+    'new Boolean(true);',
+    '!false;',
+    '~2;',
+    `
+      function String(value: unknown) {
+        return value;
+      }
+      String('asdf');
+      export {};
+    `,
+    `
+      function Number(value: unknown) {
+        return value;
+      }
+      Number(2);
+      export {};
+    `,
+    `
+      function Boolean(value: unknown) {
+        return value;
+      }
+      Boolean(true);
+      export {};
+    `,
+    `
+      function BigInt(value: unknown) {
+        return value;
+      }
+      BigInt(3n);
+      export {};
+    `,
+    `
+      function toString(value: unknown) {
+        return value;
+      }
+      toString('asdf');
+    `,
+    `
+      export {};
+      declare const toString: string;
+      toString.toUpperCase();
+    `,
+
+    // using type conversion idioms to unbox boxed primitives is valid
+    'String(new String());',
+    'new String().toString();',
+    "'' + new String();",
+    "new String() + '';",
+    `
+      let str = new String();
+      str += '';
+    `,
+    'Number(new Number());',
+    '+new Number();',
+    '~~new Number();',
+    'Boolean(new Boolean());',
+    '!!new Boolean();',
   ],
 });

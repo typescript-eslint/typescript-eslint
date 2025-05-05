@@ -43,18 +43,18 @@ export default createRule<Options, MessageIds>({
   name: 'consistent-type-exports',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description: 'Enforce consistent usage of type exports',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
+      typeOverValue:
+        'All exports in the declaration are only used as types. Use `export type`.',
       multipleExportsAreTypes:
         'Type exports {{exportNames}} are not values and should be exported using `export type`.',
       singleExportIsType:
         'Type export {{exportNames}} is not a value and should be exported using `export type`.',
-      typeOverValue:
-        'All exports in the declaration are only used as types. Use `export type`.',
     },
     schema: [
       {
@@ -194,9 +194,9 @@ export default createRule<Options, MessageIds>({
         const source = getSourceFromExport(node) ?? 'undefined';
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const sourceExports = (sourceExportsMap[source] ||= {
+          typeOnlyNamedExport: null,
           reportValueExports: [],
           source,
-          typeOnlyNamedExport: null,
           valueOnlyNamedExport: null,
         });
 
@@ -243,8 +243,8 @@ export default createRule<Options, MessageIds>({
         ) {
           sourceExports.reportValueExports.push({
             node,
-            inlineTypeSpecifiers,
             typeBasedSpecifiers,
+            inlineTypeSpecifiers,
             valueSpecifiers,
           });
         }
@@ -375,7 +375,7 @@ function* fixSeparateNamedExports(
   sourceCode: Readonly<TSESLint.SourceCode>,
   report: ReportValueExport,
 ): IterableIterator<TSESLint.RuleFix> {
-  const { node, inlineTypeSpecifiers, typeBasedSpecifiers, valueSpecifiers } =
+  const { node, typeBasedSpecifiers, inlineTypeSpecifiers, valueSpecifiers } =
     report;
   const typeSpecifiers = [...typeBasedSpecifiers, ...inlineTypeSpecifiers];
   const source = getSourceFromExport(node);

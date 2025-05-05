@@ -9,9 +9,9 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
+      recommended: 'stylistic',
       description:
         'Enforce the use of `for-of` loop over the standard `for` loop where possible',
-      recommended: 'stylistic',
     },
     messages: {
       preferForOf:

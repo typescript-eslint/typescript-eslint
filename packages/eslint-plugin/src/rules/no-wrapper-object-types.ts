@@ -19,11 +19,11 @@ export default createRule({
   name: 'no-wrapper-object-types',
   meta: {
     type: 'problem',
-    docs: {
-      description: 'Disallow using confusing built-in primitive class wrappers',
-      recommended: 'recommended',
-    },
     fixable: 'code',
+    docs: {
+      recommended: 'recommended',
+      description: 'Disallow using confusing built-in primitive class wrappers',
+    },
     messages: {
       bannedClassType:
         'Prefer using the primitive `{{preferred}}` as a type name, rather than the upper-cased `{{typeName}}`.',
@@ -50,7 +50,7 @@ export default createRule({
       context.report({
         node,
         messageId: 'bannedClassType',
-        data: { preferred, typeName },
+        data: { typeName, preferred },
         fix: includeFix
           ? (fixer): TSESLint.RuleFix => fixer.replaceText(node, preferred)
           : undefined,
