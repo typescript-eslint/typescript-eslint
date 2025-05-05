@@ -218,6 +218,64 @@ export abstract class ScopeBase<
    * For other scope types this is the *variableScope* value of the parent scope.
    * @public
    */
+  public readonly variableScope: VariableScope;
+
+  constructor(
+    scopeManager: ScopeManager,
+    type: Type,
+    upperScope: Upper,
+    block: Block,
+    isMethodDefinition: boolean,
+  ) {
+    const upperScopeAsScopeBase = upperScope;
+
+    this.type = type;
+    this.#dynamic =
+      this.type === ScopeType.global || this.type === ScopeType.with;
+    this.block = block;
+    this.variableScope = this.isVariableScope()
+      ? this
+      : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        upperScopeAsScopeBase!.variableScope;
+    this.upper = upperScope;
+
+    /**
+     * Whether 'use strict' is in effect in this scope.
+     * @member {boolean} Scope#isStrict
+     */
+    this.isStrict = isStrictScope(this as Scope, block, isMethodDefinition);
+
+    // this is guaranteed to be correct at runtime
+    upperScopeAsScopeBase?.childScopes.push(this as Scope);
+
+    this.#declaredVariables = scopeManager.declaredVariables;
+
+    registerScope(scopeManager, this as Scope);
+  }
+
+  public close(scopeManager: ScopeManager): Scope | null {
+    let closeRef: (ref: Reference, scopeManager: ScopeManager) => void;
+
+    if (this.shouldStaticallyClose()) {
+      closeRef = this.#staticCloseRef;
+    } else if (this.type !== 'global') {
+      closeRef = this.#dynamicCloseRef;
+    } else {
+      closeRef = this.#globalCloseRef;
+    }
+
+    // Try Resolving all references in this scope.
+    assert(this.leftToResolve);
+    this.leftToResolve.forEach(ref => closeRef(ref, scopeManager));
+    this.leftToResolve = null;
+
+    return this.upper;
+  }
+
+  public shouldStaticallyClose(): boolean {
+    return !this.#dynamic;
+  }
+
   #dynamicCloseRef = (ref: Reference): void => {
     // notify all names are through to global
     let current = this as Scope | null;
@@ -273,41 +331,6 @@ export abstract class ScopeBase<
     }
   };
 
-  public readonly variableScope: VariableScope;
-
-  constructor(
-    scopeManager: ScopeManager,
-    type: Type,
-    upperScope: Upper,
-    block: Block,
-    isMethodDefinition: boolean,
-  ) {
-    const upperScopeAsScopeBase = upperScope;
-
-    this.type = type;
-    this.#dynamic =
-      this.type === ScopeType.global || this.type === ScopeType.with;
-    this.block = block;
-    this.variableScope = this.isVariableScope()
-      ? this
-      : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        upperScopeAsScopeBase!.variableScope;
-    this.upper = upperScope;
-
-    /**
-     * Whether 'use strict' is in effect in this scope.
-     * @member {boolean} Scope#isStrict
-     */
-    this.isStrict = isStrictScope(this as Scope, block, isMethodDefinition);
-
-    // this is guaranteed to be correct at runtime
-    upperScopeAsScopeBase?.childScopes.push(this as Scope);
-
-    this.#declaredVariables = scopeManager.declaredVariables;
-
-    registerScope(scopeManager, this as Scope);
-  }
-
   private isVariableScope(): this is VariableScope {
     return VARIABLE_SCOPE_TYPES.has(this.type);
   }
@@ -346,90 +369,10 @@ export abstract class ScopeBase<
     );
   }
 
-  public close(scopeManager: ScopeManager): Scope | null {
-    let closeRef: (ref: Reference, scopeManager: ScopeManager) => void;
-
-    if (this.shouldStaticallyClose()) {
-      closeRef = this.#staticCloseRef;
-    } else if (this.type !== 'global') {
-      closeRef = this.#dynamicCloseRef;
-    } else {
-      closeRef = this.#globalCloseRef;
-    }
-
-    // Try Resolving all references in this scope.
-    assert(this.leftToResolve);
-    this.leftToResolve.forEach(ref => closeRef(ref, scopeManager));
-    this.leftToResolve = null;
-
-    return this.upper;
-  }
-
-  public shouldStaticallyClose(): boolean {
-    return !this.#dynamic;
-  }
-
   /**
    * To override by function scopes.
    * References in default parameters isn't resolved to variables which are in their function body.
    */
-  protected defineVariable(
-    nameOrVariable: string | Variable,
-    set: Map<string, Variable>,
-    variables: Variable[],
-    node: TSESTree.Identifier | null,
-    def: Definition | null,
-  ): void {
-    const name =
-      typeof nameOrVariable === 'string' ? nameOrVariable : nameOrVariable.name;
-    let variable = set.get(name);
-    if (!variable) {
-      variable =
-        typeof nameOrVariable === 'string'
-          ? new Variable(name, this as Scope)
-          : nameOrVariable;
-      set.set(name, variable);
-      variables.push(variable);
-    }
-
-    if (def) {
-      variable.defs.push(def);
-      this.addDeclaredVariablesOfNode(variable, def.node);
-      this.addDeclaredVariablesOfNode(variable, def.parent);
-    }
-    if (node) {
-      variable.identifiers.push(node);
-    }
-  }
-
-  protected delegateToUpperScope(ref: Reference): void {
-    (this.upper as AnyScope | undefined)?.leftToResolve?.push(ref);
-    this.through.push(ref);
-  }
-
-  protected isValidResolution(_ref: Reference, _variable: Variable): boolean {
-    return true;
-  }
-
-  private addDeclaredVariablesOfNode(
-    variable: Variable,
-    node: TSESTree.Node | null | undefined,
-  ): void {
-    if (node == null) {
-      return;
-    }
-
-    let variables = this.#declaredVariables.get(node);
-
-    if (variables == null) {
-      variables = [];
-      this.#declaredVariables.set(node, variables);
-    }
-    if (!variables.includes(variable)) {
-      variables.push(variable);
-    }
-  }
-
   public defineIdentifier(node: TSESTree.Identifier, def: Definition): void {
     this.defineVariable(node.name, this.set, this.variables, node, def);
   }
@@ -490,5 +433,62 @@ export abstract class ScopeBase<
 
     this.references.push(ref);
     this.leftToResolve?.push(ref);
+  }
+
+  protected defineVariable(
+    nameOrVariable: string | Variable,
+    set: Map<string, Variable>,
+    variables: Variable[],
+    node: TSESTree.Identifier | null,
+    def: Definition | null,
+  ): void {
+    const name =
+      typeof nameOrVariable === 'string' ? nameOrVariable : nameOrVariable.name;
+    let variable = set.get(name);
+    if (!variable) {
+      variable =
+        typeof nameOrVariable === 'string'
+          ? new Variable(name, this as Scope)
+          : nameOrVariable;
+      set.set(name, variable);
+      variables.push(variable);
+    }
+
+    if (def) {
+      variable.defs.push(def);
+      this.addDeclaredVariablesOfNode(variable, def.node);
+      this.addDeclaredVariablesOfNode(variable, def.parent);
+    }
+    if (node) {
+      variable.identifiers.push(node);
+    }
+  }
+
+  protected delegateToUpperScope(ref: Reference): void {
+    (this.upper as AnyScope | undefined)?.leftToResolve?.push(ref);
+    this.through.push(ref);
+  }
+
+  protected isValidResolution(_ref: Reference, _variable: Variable): boolean {
+    return true;
+  }
+
+  private addDeclaredVariablesOfNode(
+    variable: Variable,
+    node: TSESTree.Node | null | undefined,
+  ): void {
+    if (node == null) {
+      return;
+    }
+
+    let variables = this.#declaredVariables.get(node);
+
+    if (variables == null) {
+      variables = [];
+      this.#declaredVariables.set(node, variables);
+    }
+    if (!variables.includes(variable)) {
+      variables.push(variable);
+    }
   }
 }

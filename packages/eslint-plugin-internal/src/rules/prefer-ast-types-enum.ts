@@ -13,11 +13,11 @@ export default createRule({
   name: __filename,
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
       description:
         'Enforce consistent usage of `AST_NODE_TYPES`, `AST_TOKEN_TYPES` and `DefinitionType` enums',
     },
-    fixable: 'code',
     messages: {
       preferEnum: 'Prefer {{ enumName }}.{{ literal }} over raw literal',
     },

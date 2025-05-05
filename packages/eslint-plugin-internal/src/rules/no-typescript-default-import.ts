@@ -17,11 +17,11 @@ export default createRule({
   name: 'no-typescript-default-import',
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
       description:
         "Enforce that packages rules don't do `import ts from 'typescript';`",
     },
-    fixable: 'code',
     messages: {
       noTSDefaultImport: [
         "Do not use the default import for typescript. Doing so will cause the package's type definitions to do the same.",

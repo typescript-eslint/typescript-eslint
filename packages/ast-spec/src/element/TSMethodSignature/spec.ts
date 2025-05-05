@@ -12,6 +12,7 @@ import type {
 
 interface TSMethodSignatureBase extends BaseNode {
   type: AST_NODE_TYPES.TSMethodSignature;
+  typeParameters: TSTypeParameterDeclaration | undefined;
   accessibility: Accessibility | undefined;
   computed: boolean;
   key: PropertyName;
@@ -21,7 +22,6 @@ interface TSMethodSignatureBase extends BaseNode {
   readonly: boolean;
   returnType: TSTypeAnnotation | undefined;
   static: boolean;
-  typeParameters: TSTypeParameterDeclaration | undefined;
 }
 
 export interface TSMethodSignatureComputedName extends TSMethodSignatureBase {

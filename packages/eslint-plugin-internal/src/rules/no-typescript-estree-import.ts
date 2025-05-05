@@ -14,10 +14,10 @@ export default createRule({
   name: 'no-typescript-estree-import',
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
       description: `Enforce that eslint-plugin rules don't require anything from ${TSESTREE_NAME} or ${TYPES_NAME}`,
     },
-    fixable: 'code',
     messages: {
       dontImportPackage: [
         `Don't import from {{packageName}}. Everything you need should be available in ${UTILS_NAME}.`,

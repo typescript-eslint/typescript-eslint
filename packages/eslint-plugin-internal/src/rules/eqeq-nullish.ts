@@ -10,10 +10,10 @@ export default createRule({
   name: __filename,
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description: 'Enforce eqeqeq preferences around nullish comparisons',
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       unexpectedComparison:

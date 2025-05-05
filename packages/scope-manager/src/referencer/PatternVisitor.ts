@@ -17,15 +17,15 @@ export type PatternVisitorCallback = (
 
 export type PatternVisitorOptions = VisitorOptions;
 export class PatternVisitor extends VisitorBase {
+  public readonly rightHandNodes: TSESTree.Node[] = [];
   readonly #assignments: (
     | TSESTree.AssignmentExpression
     | TSESTree.AssignmentPattern
   )[] = [];
   readonly #callback: PatternVisitorCallback;
   readonly #restElements: TSESTree.RestElement[] = [];
-  readonly #rootPattern: TSESTree.Node;
 
-  public readonly rightHandNodes: TSESTree.Node[] = [];
+  readonly #rootPattern: TSESTree.Node;
 
   constructor(
     options: PatternVisitorOptions,

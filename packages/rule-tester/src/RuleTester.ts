@@ -309,6 +309,20 @@ export class RuleTester extends TestFramework {
   /**
    * Define a rule for one particular run of tests.
    */
+  defineRule(name: string, rule: AnyRuleModule): void {
+    this.#rules[name] = {
+      ...rule,
+      // Create a wrapper rule that freezes the `context` properties.
+      create(context): RuleListener {
+        freezeDeeply(context.options);
+        freezeDeeply(context.settings);
+        freezeDeeply(context.parserOptions);
+
+        return (typeof rule === 'function' ? rule : rule.create)(context);
+      },
+    };
+  }
+
   #normalizeTests<
     MessageIds extends string,
     Options extends readonly unknown[],
@@ -442,20 +456,6 @@ export class RuleTester extends TestFramework {
     normalizedTests.invalid = normalizedTests.invalid.map(maybeMarkAsOnly);
 
     return normalizedTests;
-  }
-
-  defineRule(name: string, rule: AnyRuleModule): void {
-    this.#rules[name] = {
-      ...rule,
-      // Create a wrapper rule that freezes the `context` properties.
-      create(context): RuleListener {
-        freezeDeeply(context.options);
-        freezeDeeply(context.settings);
-        freezeDeeply(context.parserOptions);
-
-        return (typeof rule === 'function' ? rule : rule.create)(context);
-      },
-    };
   }
 
   /**

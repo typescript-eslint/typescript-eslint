@@ -114,11 +114,11 @@ export default createRule<Options, MessageIds>({
   name: 'plugin-test-formatting',
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
       description: `Enforce that eslint-plugin test snippets are correctly formatted`,
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       invalidFormatting:
         'This snippet should be formatted correctly. Use the fixer to format the code.',

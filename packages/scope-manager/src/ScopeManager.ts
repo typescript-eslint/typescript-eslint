@@ -36,11 +36,11 @@ interface ScopeManagerOptions {
  * @see https://eslint.org/docs/latest/developer-guide/scope-manager-interface#scopemanager-interface
  */
 export class ScopeManager {
-  readonly #options: ScopeManagerOptions;
-
   public currentScope: Scope | null;
 
   public readonly declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
+
+  readonly #options: ScopeManagerOptions;
 
   /**
    * The root scope
@@ -54,6 +54,16 @@ export class ScopeManager {
    * @public
    */
   public readonly scopes: Scope[];
+
+  public get variables(): Variable[] {
+    const variables = new Set<Variable>();
+    function recurse(scope: Scope): void {
+      scope.variables.forEach(v => variables.add(v));
+      scope.childScopes.forEach(recurse);
+    }
+    this.scopes.forEach(recurse);
+    return [...variables].sort((a, b) => a.$id - b.$id);
+  }
 
   constructor(options: ScopeManagerOptions) {
     this.scopes = [];
@@ -82,16 +92,6 @@ export class ScopeManager {
 
   public isStrictModeSupported(): boolean {
     return true;
-  }
-
-  public get variables(): Variable[] {
-    const variables = new Set<Variable>();
-    function recurse(scope: Scope): void {
-      scope.variables.forEach(v => variables.add(v));
-      scope.childScopes.forEach(recurse);
-    }
-    this.scopes.forEach(recurse);
-    return [...variables].sort((a, b) => a.$id - b.$id);
   }
 
   /**

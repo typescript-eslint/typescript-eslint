@@ -9,10 +9,10 @@ export default createRule({
   name: __filename,
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
       description: 'Disallow relative paths to internal packages',
     },
-    fixable: 'code',
     messages: {
       noRelativePathsToInternalPackages:
         'Use absolute paths instead of relative paths to import modules in other internal packages.',

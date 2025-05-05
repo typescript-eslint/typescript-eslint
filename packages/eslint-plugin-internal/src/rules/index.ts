@@ -11,11 +11,11 @@ import preferASTTypesEnum from './prefer-ast-types-enum';
 
 export default {
   'debug-namespace': debugNamespace,
-  'eqeq-nullish': eqeqNullish,
   'no-poorly-typed-ts-props': noPoorlyTypedTsProps,
-  'no-relative-paths-to-internal-packages': noRelativePathsToInternalPackages,
   'no-typescript-default-import': noTypescriptDefaultImport,
   'no-typescript-estree-import': noTypescriptEstreeImport,
-  'plugin-test-formatting': pluginTestFormatting,
   'prefer-ast-types-enum': preferASTTypesEnum,
+  'eqeq-nullish': eqeqNullish,
+  'no-relative-paths-to-internal-packages': noRelativePathsToInternalPackages,
+  'plugin-test-formatting': pluginTestFormatting,
 } satisfies Linter.PluginRules;

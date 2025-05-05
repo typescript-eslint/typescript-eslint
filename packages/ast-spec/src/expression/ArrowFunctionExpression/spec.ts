@@ -8,6 +8,7 @@ import type { Parameter } from '../../unions/Parameter';
 
 export interface ArrowFunctionExpression extends BaseNode {
   type: AST_NODE_TYPES.ArrowFunctionExpression;
+  typeParameters: TSTypeParameterDeclaration | undefined;
   async: boolean;
   body: BlockStatement | Expression;
   expression: boolean;
@@ -15,5 +16,4 @@ export interface ArrowFunctionExpression extends BaseNode {
   id: null;
   params: Parameter[];
   returnType: TSTypeAnnotation | undefined;
-  typeParameters: TSTypeParameterDeclaration | undefined;
 }

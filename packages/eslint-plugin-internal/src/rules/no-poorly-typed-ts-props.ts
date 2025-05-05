@@ -29,12 +29,12 @@ export default createRule({
   name: 'no-poorly-typed-ts-props',
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
       description:
         "Enforce that rules don't use TS API properties with known bad type definitions",
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       doNotUse: 'Do not use {{type}}.{{property}} because it is poorly typed.',

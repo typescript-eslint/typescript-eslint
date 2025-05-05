@@ -11,6 +11,7 @@ import type { Accessibility } from './Accessibility';
 import type { BaseNode } from './BaseNode';
 
 interface PropertyDefinitionBase extends BaseNode {
+  typeAnnotation: TSTypeAnnotation | undefined;
   accessibility: Accessibility | undefined;
   computed: boolean;
   declare: boolean;
@@ -21,7 +22,6 @@ interface PropertyDefinitionBase extends BaseNode {
   override: boolean;
   readonly: boolean;
   static: boolean;
-  typeAnnotation: TSTypeAnnotation | undefined;
   value: Expression | null;
 }
 

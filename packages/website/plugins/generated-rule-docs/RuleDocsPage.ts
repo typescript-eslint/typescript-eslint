@@ -25,9 +25,25 @@ export const requiredHeadingNames = [
 export type HeadingName = (typeof requiredHeadingNames)[number];
 
 export class RuleDocsPage {
+  get children(): readonly unist.Node[] {
+    return this.#children;
+  }
+  get file(): Readonly<VFileWithStem> {
+    return this.#file;
+  }
+  get headingIndices(): Readonly<RequiredHeadingIndices> {
+    return this.#headingIndices;
+  }
+  get rule(): Readonly<ESLintPluginRuleModule> {
+    return this.#rule;
+  }
+
   #children: unist.Node[];
+
   #file: Readonly<VFileWithStem>;
+
   #headingIndices: RequiredHeadingIndices;
+
   #rule: Readonly<ESLintPluginRuleModule>;
 
   constructor(
@@ -39,18 +55,6 @@ export class RuleDocsPage {
     this.#file = file;
     this.#headingIndices = this.#recreateHeadingIndices();
     this.#rule = rule;
-  }
-
-  #recreateHeadingIndices(): RequiredHeadingIndices {
-    return {
-      howToUse: findHeadingIndex(this.#children, 2, requiredHeadingNames[0]),
-      options: findHeadingIndex(this.#children, 2, requiredHeadingNames[1]),
-      whenNotToUseIt: findHeadingIndex(
-        this.#children,
-        2,
-        requiredHeadingNames[2],
-      ),
-    };
   }
 
   spliceChildren(
@@ -68,19 +72,15 @@ export class RuleDocsPage {
     this.#headingIndices = this.#recreateHeadingIndices();
   }
 
-  get children(): readonly unist.Node[] {
-    return this.#children;
-  }
-
-  get file(): Readonly<VFileWithStem> {
-    return this.#file;
-  }
-
-  get headingIndices(): Readonly<RequiredHeadingIndices> {
-    return this.#headingIndices;
-  }
-
-  get rule(): Readonly<ESLintPluginRuleModule> {
-    return this.#rule;
+  #recreateHeadingIndices(): RequiredHeadingIndices {
+    return {
+      howToUse: findHeadingIndex(this.#children, 2, requiredHeadingNames[0]),
+      options: findHeadingIndex(this.#children, 2, requiredHeadingNames[1]),
+      whenNotToUseIt: findHeadingIndex(
+        this.#children,
+        2,
+        requiredHeadingNames[2],
+      ),
+    };
   }
 }

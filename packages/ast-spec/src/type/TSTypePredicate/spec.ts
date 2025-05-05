@@ -6,7 +6,7 @@ import type { TSThisType } from '../TSThisType/spec';
 
 export interface TSTypePredicate extends BaseNode {
   type: AST_NODE_TYPES.TSTypePredicate;
+  typeAnnotation: TSTypeAnnotation | null;
   asserts: boolean;
   parameterName: Identifier | TSThisType;
-  typeAnnotation: TSTypeAnnotation | null;
 }

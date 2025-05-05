@@ -8,7 +8,6 @@ export type DebugLevel =
 export type CacheDurationSeconds = number | 'Infinity';
 
 export type EcmaVersion =
-  | 'latest'
   | 3
   | 5
   | 6
@@ -33,6 +32,7 @@ export type EcmaVersion =
   | 2023
   | 2024
   | 2025
+  | 'latest'
   | undefined;
 
 export type SourceTypeClassic = 'module' | 'script';

@@ -23,11 +23,11 @@ export default createRule({
   name: __filename,
   meta: {
     type: 'problem',
+    fixable: 'code',
     docs: {
       description:
         'Enforce consistent debug() namespaces based on package name and file path',
     },
-    fixable: 'code',
     messages: {
       mismatched:
         'debug() namespace should match package and file. Use the fixer to update it.',

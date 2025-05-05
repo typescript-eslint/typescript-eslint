@@ -6,9 +6,9 @@ import type { Parameter } from '../../unions/Parameter';
 
 export interface TSIndexSignature extends BaseNode {
   type: AST_NODE_TYPES.TSIndexSignature;
+  typeAnnotation: TSTypeAnnotation | undefined;
   accessibility: Accessibility | undefined;
   parameters: Parameter[];
   readonly: boolean;
   static: boolean;
-  typeAnnotation: TSTypeAnnotation | undefined;
 }

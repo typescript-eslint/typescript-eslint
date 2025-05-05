@@ -4,6 +4,6 @@ import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSTypeOperator extends BaseNode {
   type: AST_NODE_TYPES.TSTypeOperator;
-  operator: 'keyof' | 'readonly' | 'unique';
   typeAnnotation: TypeNode | undefined;
+  operator: 'keyof' | 'readonly' | 'unique';
 }

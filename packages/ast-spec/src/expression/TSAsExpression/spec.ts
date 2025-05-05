@@ -5,6 +5,6 @@ import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSAsExpression extends BaseNode {
   type: AST_NODE_TYPES.TSAsExpression;
-  expression: Expression;
   typeAnnotation: TypeNode;
+  expression: Expression;
 }

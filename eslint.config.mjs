@@ -1,9 +1,9 @@
 // @ts-check
 
+import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
-import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
 import vitestPlugin from '@vitest/eslint-plugin';
 import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';

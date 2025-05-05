@@ -5,6 +5,6 @@ import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSTypeAssertion extends BaseNode {
   type: AST_NODE_TYPES.TSTypeAssertion;
-  expression: Expression;
   typeAnnotation: TypeNode;
+  expression: Expression;
 }

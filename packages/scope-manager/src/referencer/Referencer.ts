@@ -36,12 +36,12 @@ export interface ReferencerOptions extends VisitorOptions {
 
 // Referencing variables and creating bindings.
 export class Referencer extends Visitor {
+  public readonly scopeManager: ScopeManager;
   #hasReferencedJsxFactory = false;
   #hasReferencedJsxFragmentFactory = false;
   #jsxFragmentName: string | null;
   #jsxPragma: string | null;
   #lib: Lib[];
-  public readonly scopeManager: ScopeManager;
 
   constructor(options: ReferencerOptions, scopeManager: ScopeManager) {
     super(options);
@@ -49,6 +49,39 @@ export class Referencer extends Visitor {
     this.#jsxPragma = options.jsxPragma;
     this.#jsxFragmentName = options.jsxFragmentName;
     this.#lib = options.lib;
+  }
+
+  public close(node: TSESTree.Node): void {
+    while (this.currentScope(true) && node === this.currentScope().block) {
+      this.scopeManager.currentScope = this.currentScope().close(
+        this.scopeManager,
+      );
+    }
+  }
+  public currentScope(): Scope;
+  public currentScope(throwOnNull: true): Scope | null;
+  public currentScope(dontThrowOnNull?: true): Scope | null {
+    if (!dontThrowOnNull) {
+      assert(this.scopeManager.currentScope, 'aaa');
+    }
+    return this.scopeManager.currentScope;
+  }
+
+  public referencingDefaultValue(
+    pattern: TSESTree.Identifier,
+    assignments: (TSESTree.AssignmentExpression | TSESTree.AssignmentPattern)[],
+    maybeImplicitGlobal: ReferenceImplicitGlobal | null,
+    init: boolean,
+  ): void {
+    assignments.forEach(assignment => {
+      this.currentScope().referenceValue(
+        pattern,
+        ReferenceFlag.Write,
+        assignment.right,
+        maybeImplicitGlobal,
+        init,
+      );
+    });
   }
 
   private populateGlobalsFromLib(globalScope: GlobalScope): void {
@@ -80,40 +113,6 @@ export class Referencer extends Visitor {
       eslintImplicitGlobalSetting: 'readonly',
       isTypeVariable: true,
       isValueVariable: false,
-    });
-  }
-  public close(node: TSESTree.Node): void {
-    while (this.currentScope(true) && node === this.currentScope().block) {
-      this.scopeManager.currentScope = this.currentScope().close(
-        this.scopeManager,
-      );
-    }
-  }
-  public currentScope(): Scope;
-
-  public currentScope(throwOnNull: true): Scope | null;
-
-  public currentScope(dontThrowOnNull?: true): Scope | null {
-    if (!dontThrowOnNull) {
-      assert(this.scopeManager.currentScope, 'aaa');
-    }
-    return this.scopeManager.currentScope;
-  }
-
-  public referencingDefaultValue(
-    pattern: TSESTree.Identifier,
-    assignments: (TSESTree.AssignmentExpression | TSESTree.AssignmentPattern)[],
-    maybeImplicitGlobal: ReferenceImplicitGlobal | null,
-    init: boolean,
-  ): void {
-    assignments.forEach(assignment => {
-      this.currentScope().referenceValue(
-        pattern,
-        ReferenceFlag.Write,
-        assignment.right,
-        maybeImplicitGlobal,
-        init,
-      );
     });
   }
 

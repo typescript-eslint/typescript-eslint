@@ -5,6 +5,6 @@ import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSTemplateLiteralType extends BaseNode {
   type: AST_NODE_TYPES.TSTemplateLiteralType;
-  quasis: TemplateElement[];
   types: TypeNode[];
+  quasis: TemplateElement[];
 }
