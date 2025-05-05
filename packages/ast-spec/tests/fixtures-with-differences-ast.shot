@@ -525,8 +525,10 @@ exports[`AST Fixtures > List fixtures with AST differences`]
   "statement/ForOfStatement/fixtures/expr-init/fixture.ts",
   "statement/ForOfStatement/fixtures/using-declaration/fixture.ts",
   "type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts",
-  "type/TSMappedType/fixtures/base/fixture.ts",
   "type/TSMappedType/fixtures/no-modifiers/fixture.ts",
+  "type/TSMappedType/fixtures/optional-minus/fixture.ts",
+  "type/TSMappedType/fixtures/optional-plus/fixture.ts",
+  "type/TSMappedType/fixtures/optional/fixture.ts",
   "type/TSMappedType/fixtures/with-modifiers-readonly-minus/fixture.ts",
   "type/TSMappedType/fixtures/with-modifiers-readonly-plus/fixture.ts",
   "type/TSMappedType/fixtures/with-modifiers-readonly/fixture.ts"

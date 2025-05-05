@@ -134,6 +134,5 @@ exports[`AST Fixtures > List fixtures with Token differences`]
   "special/TSTypeParameter/fixtures/interface-const-modifier-multiple/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-const-modifier/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-in-const-modifier-multiple/fixture.ts",
-  "type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts",
-  "type/TSMappedType/fixtures/base/fixture.ts"
+  "type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts"
 ]
