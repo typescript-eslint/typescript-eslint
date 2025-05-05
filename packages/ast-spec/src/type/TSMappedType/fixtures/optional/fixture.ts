@@ -1,3 +1,3 @@
 type T = {
-  [K in any]-?: any;
+  [K in any]?: any;
 };
