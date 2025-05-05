@@ -291,9 +291,11 @@ function isDeeplyReferencingType(
         isDeeplyReferencingType(type, superVar, visited),
       );
     case AST_NODE_TYPES.TSMappedType:
-      return [node.constraint, node.typeAnnotation].some(
-        type => type && isDeeplyReferencingType(type, superVar, visited),
-      );
+      if (node.typeAnnotation) {
+        return isDeeplyReferencingType(node.typeAnnotation, superVar, visited);
+      }
+
+      break;
     case AST_NODE_TYPES.TSConditionalType:
       return [
         node.checkType,
