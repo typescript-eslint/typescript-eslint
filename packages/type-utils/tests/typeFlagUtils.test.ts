@@ -1,109 +1,70 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
-import type { TestContext } from 'vitest';
 
-import { parseForESLint } from '@typescript-eslint/parser';
-import path from 'node:path';
 import * as ts from 'typescript';
 
-import { getTypeFlags, isTypeFlagSet } from '../src';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
+import { getTypeFlags, isTypeFlagSet } from '../src/index.js';
+import { parseCodeForEslint } from './test-utils/custom-matchers/custom-matchers.js';
 
 describe('typeFlagUtils', () => {
-  const rootDir = path.join(__dirname, 'fixtures');
-
   function getType(code: string): ts.Type {
-    const { ast, services } = parseForESLint(code, {
-      disallowAutomaticSingleRunInference: true,
-      filePath: path.join(rootDir, 'file.ts'),
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    });
-    expectToHaveParserServices(services);
+    const { ast, services } = parseCodeForEslint(code);
     const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
 
     return services.getTypeAtLocation(declaration.id);
   }
 
   describe(getTypeFlags, () => {
-    function runTestForAliasDeclaration(
-      [code, expected]: readonly [code: string, expected: ts.TypeFlags],
-      { expect }: TestContext,
-    ): void {
-      const type = getType(code);
-      const result = getTypeFlags(type);
-      expect(result).toBe(expected);
-    }
-
     it.for([
-      ['type Test = any;', 1],
-      ['type Test = unknown;', 2],
-      ['type Test = string;', 4],
-      ['type Test = number;', 8],
-      ['type Test = "text";', 128],
-      ['type Test = 123;', 256],
+      ['type Test = any;', ts.TypeFlags.Any],
+      ['type Test = unknown;', ts.TypeFlags.Unknown],
+      ['type Test = string;', ts.TypeFlags.String],
+      ['type Test = number;', ts.TypeFlags.Number],
+      ['type Test = "text";', ts.TypeFlags.StringLiteral],
+      ['type Test = 123;', ts.TypeFlags.NumberLiteral],
       [
         'type Test = string | number',
         ts.TypeFlags.String | ts.TypeFlags.Number,
       ],
-      ['type Test = "text" | 123', 384],
-    ] as const)(
+      ['type Test = "text" | 123', ts.TypeFlags.StringOrNumberLiteral],
+    ] as const satisfies [string, ts.TypeFlags][])(
       'when code is "%s", type flags is %d',
-      runTestForAliasDeclaration,
+      ([code, expected], { expect }) => {
+        const type = getType(code);
+        const result = getTypeFlags(type);
+        expect(result).toBe(expected);
+      },
     );
   });
 
   describe(isTypeFlagSet, () => {
-    function runTestForAliasDeclaration(
-      code: string,
-      flagsToCheck: ts.TypeFlags,
-      expected: boolean,
-      { expect }: TestContext,
-    ): void {
-      const type = getType(code);
-      const result = isTypeFlagSet(type, flagsToCheck);
-      expect(result).toBe(expected);
-    }
-
     describe('is type flags set', () => {
-      function runTestIsTypeFlagSet(
-        [code, flagsToCheck]: readonly [
-          code: string,
-          flagsToCheck: ts.TypeFlags,
-        ],
-        testContext: TestContext,
-      ): void {
-        runTestForAliasDeclaration(code, flagsToCheck, true, testContext);
-      }
-
       it.for([
         ['type Test = any;', ts.TypeFlags.Any],
         ['type Test = string;', ts.TypeFlags.String],
         ['type Test = string | number;', ts.TypeFlags.String],
         ['type Test = string & { foo: string };', ts.TypeFlags.Intersection],
-      ] as const)(
+      ] as const satisfies [string, ts.TypeFlags][])(
         'when code is "%s" and flagsToCheck is %d , returns true',
-        runTestIsTypeFlagSet,
+        ([code, flagsToCheck], { expect }) => {
+          const type = getType(code);
+          const result = isTypeFlagSet(type, flagsToCheck);
+          expect(result).toBe(true);
+        },
       );
     });
 
     describe('is not type flags set', () => {
-      function runTestIsNotTypeFlagSet(
-        [code, flagsToCheck]: readonly [
-          code: string,
-          flagsToCheck: ts.TypeFlags,
-        ],
-        testContext: TestContext,
-      ): void {
-        runTestForAliasDeclaration(code, flagsToCheck, false, testContext);
-      }
-
       it.for([
         ['type Test = string', ts.TypeFlags.Any],
         ['type Test = string | number;', ts.TypeFlags.Any],
         ['type Test = string & { foo: string }', ts.TypeFlags.String],
-      ] as const)(
+      ] as const satisfies [string, ts.TypeFlags][])(
         'when code is "%s" and flagsToCheck is %d , returns false',
-        runTestIsNotTypeFlagSet,
+        ([code, flagsToCheck], { expect }) => {
+          const type = getType(code);
+          const result = isTypeFlagSet(type, flagsToCheck);
+          expect(result).toBe(false);
+        },
       );
     });
   });

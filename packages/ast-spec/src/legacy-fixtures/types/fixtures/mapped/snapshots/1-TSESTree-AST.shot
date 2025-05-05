@@ -38,6 +38,7 @@ Program {
                   },
                 },
                 nameType: null,
+                optional: false,
                 typeAnnotation: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
