@@ -21,7 +21,7 @@ enum Usefulness {
 export type Options = [
   {
     ignoredTypeNames?: string[];
-    restrictUnknown?: boolean;
+    checkUnknown?: boolean;
   },
 ];
 export type MessageIds = 'baseArrayJoin' | 'baseToString';
@@ -47,6 +47,12 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          checkUnknown: {
+            type: 'boolean',
+            default: false,
+            description:
+              'Checks the case where toString is applied to unknown type',
+          },
           ignoredTypeNames: {
             type: 'array',
             description:
@@ -55,19 +61,14 @@ export default createRule<Options, MessageIds>({
               type: 'string',
             },
           },
-          restrictUnknown: {
-            type: 'boolean',
-            default: false,
-            description: 'Restrict applying toString to unknown type',
-          },
         },
       },
     ],
   },
   defaultOptions: [
     {
+      checkUnknown: false,
       ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
-      restrictUnknown: false,
     },
   ],
   create(context, [option]) {
@@ -83,6 +84,7 @@ export default createRule<Options, MessageIds>({
         type ?? services.getTypeAtLocation(node),
         new Set(),
       );
+
       if (certainty === Usefulness.Always) {
         return;
       }
@@ -220,7 +222,7 @@ export default createRule<Options, MessageIds>({
           return collectToStringCertainty(constraint, visited);
         }
         // unconstrained generic means `unknown`
-        return Usefulness.Always;
+        return option.checkUnknown ? Usefulness.Sometimes : Usefulness.Always;
       }
 
       // the Boolean type definition missing toString()
@@ -258,8 +260,13 @@ export default createRule<Options, MessageIds>({
       const toString =
         checker.getPropertyOfType(type, 'toString') ??
         checker.getPropertyOfType(type, 'toLocaleString');
+
       if (!toString) {
-        // e.g. any/unknown
+        // unknown
+        if (option.checkUnknown && type.flags === ts.TypeFlags.Unknown) {
+          return Usefulness.Sometimes;
+        }
+        // e.g. any
         return Usefulness.Always;
       }
 
