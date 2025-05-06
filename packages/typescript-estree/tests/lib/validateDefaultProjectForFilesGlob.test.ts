@@ -1,4 +1,4 @@
-import { validateDefaultProjectForFilesGlob } from '../src/create-program/validateDefaultProjectForFilesGlob.js';
+import { validateDefaultProjectForFilesGlob } from '../../src/create-program/validateDefaultProjectForFilesGlob.js';
 
 describe(validateDefaultProjectForFilesGlob, () => {
   it('does not throw when options.allowDefaultProject is an empty array', () => {
