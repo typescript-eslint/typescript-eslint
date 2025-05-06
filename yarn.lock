@@ -5410,6 +5410,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/project-service@workspace:packages/project-service"
   dependencies:
+    "@typescript-eslint/tsconfig-utils": ^8.32.0
     "@typescript-eslint/types": ^8.32.0
     "@vitest/coverage-v8": ^3.1.2
     prettier: ^3.2.5
@@ -5479,7 +5480,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/tsconfig-utils@8.32.0, @typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils":
+"@typescript-eslint/tsconfig-utils@8.32.0, @typescript-eslint/tsconfig-utils@^8.32.0, @typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils"
   dependencies:
