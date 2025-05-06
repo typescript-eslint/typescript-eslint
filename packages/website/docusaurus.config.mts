@@ -22,10 +22,6 @@ const currentMajorVersion =
   process.env.CURRENT_MAJOR_VERSION &&
   Number(process.env.CURRENT_MAJOR_VERSION);
 
-// Testing out temporarily for deploys.
-// eslint-disable-next-line no-console
-console.log(currentMajorVersion, 'from', process.env.CURRENT_MAJOR_VERSION);
-
 const presetClassicOptions: PresetClassicOptions = {
   blog: {
     blogSidebarCount: 'ALL',
@@ -75,7 +71,7 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
           content: [
             'This documentation is for an older major version of typescript-eslint.',
             '<br />',
-            'It is no longer maintained.',
+            'It is no longer maintained or supported. It may crash with the latest versions of TypeScript.',
             '<hr />',
             'Using the latest version of typescript-eslint is strongly recommended for',
             'getting the latest rule features and fixes, ',
