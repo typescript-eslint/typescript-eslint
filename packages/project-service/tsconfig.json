@@ -4,19 +4,16 @@
   "include": [],
   "references": [
     {
-      "path": "../project-service"
-    },
-    {
       "path": "../tsconfig-utils"
-    },
-    {
-      "path": "../visitor-keys"
     },
     {
       "path": "../types"
     },
     {
       "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.tools.json"
     },
     {
       "path": "./tsconfig.spec.json"

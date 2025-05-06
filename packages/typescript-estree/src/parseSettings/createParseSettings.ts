@@ -1,12 +1,17 @@
+import type {
+  CreateProjectServiceSettings,
+  ProjectServiceAndMetadata,
+} from '@typescript-eslint/project-service';
+
+import { createProjectService } from '@typescript-eslint/project-service';
 import debug from 'debug';
 import path from 'node:path';
 import * as ts from 'typescript';
 
-import type { ProjectServiceSettings } from '../create-program/createProjectService';
+import { validateDefaultProjectForFilesGlob } from '../create-program/validateDefaultProjectForFilesGlob';
 import type { TSESTreeOptions } from '../parser-options';
 import type { MutableParseSettings } from './index';
 
-import { createProjectService } from '../create-program/createProjectService';
 import { ensureAbsolutePath } from '../create-program/shared';
 import { isSourceFile } from '../source-files';
 import {
@@ -17,13 +22,14 @@ import { getProjectConfigFiles } from './getProjectConfigFiles';
 import { inferSingleRun } from './inferSingleRun';
 import { resolveProjectList } from './resolveProjectList';
 import { warnAboutTSVersion } from './warnAboutTSVersion';
+import { ProjectServiceOptions } from '@typescript-eslint/types';
 
 const log = debug(
   'typescript-eslint:typescript-estree:parseSettings:createParseSettings',
 );
 
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
-let TSSERVER_PROJECT_SERVICE: ProjectServiceSettings | null = null;
+let TSSERVER_PROJECT_SERVICE: ProjectServiceAndMetadata | null = null;
 
 // NOTE - we intentionally use "unnecessary" `?.` here because in TS<5.3 this enum doesn't exist
 // This object exists so we can centralize these for tracking and so we don't proliferate these across the file
@@ -112,11 +118,10 @@ export function createParseSettings(
       (tsestreeOptions.project &&
         tsestreeOptions.projectService !== false &&
         process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')
-        ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(
-            tsestreeOptions.projectService,
+        ? populateProjectService(tsestreeOptions.projectService, {
             jsDocParsingMode,
             tsconfigRootDir,
-          ))
+          })
         : undefined,
     setExternalModuleIndicator:
       tsestreeOptions.sourceType === 'module' ||
@@ -222,4 +227,20 @@ function enforceCodeString(code: unknown): string {
  */
 function getFileName(jsx?: boolean): string {
   return jsx ? 'estree.tsx' : 'estree.ts';
+}
+
+function populateProjectService(
+  optionsRaw: ProjectServiceOptions | true | undefined,
+  settings: CreateProjectServiceSettings,
+) {
+  const options = typeof optionsRaw === 'object' ? optionsRaw : {};
+
+  validateDefaultProjectForFilesGlob(options.allowDefaultProject);
+
+  TSSERVER_PROJECT_SERVICE ??= createProjectService({
+    options,
+    ...settings,
+  });
+
+  return TSSERVER_PROJECT_SERVICE;
 }

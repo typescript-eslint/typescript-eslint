@@ -2,9 +2,9 @@ import path from 'node:path';
 import * as ts from 'typescript';
 
 import type {
-  ProjectServiceSettings,
+  ProjectServiceAndMetadata,
   TypeScriptProjectService,
-} from '../../src/create-program/createProjectService';
+} from '@typescript-eslint/project-service';
 import type { ParseSettings } from '../../src/parseSettings';
 
 import { useProgramFromProjectService } from '../../src/useProgramFromProjectService';
@@ -65,7 +65,7 @@ const mockParseSettings = {
 } as ParseSettings;
 
 const createProjectServiceSettings = <
-  T extends Partial<ProjectServiceSettings>,
+  T extends Partial<ProjectServiceAndMetadata>,
 >(
   settings: T,
 ) => ({

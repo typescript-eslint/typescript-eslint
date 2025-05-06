@@ -5406,6 +5406,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@typescript-eslint/project-service@8.32.0, @typescript-eslint/project-service@workspace:packages/project-service":
+  version: 0.0.0-use.local
+  resolution: "@typescript-eslint/project-service@workspace:packages/project-service"
+  dependencies:
+    "@typescript-eslint/types": ^8.32.0
+    "@vitest/coverage-v8": ^3.1.2
+    prettier: ^3.2.5
+    rimraf: "*"
+    tsx: "*"
+    typescript: "*"
+    vitest: ^3.1.2
+  languageName: unknown
+  linkType: soft
+
 "@typescript-eslint/rule-schema-to-typescript-types@8.32.0, @typescript-eslint/rule-schema-to-typescript-types@workspace:*, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
@@ -5465,6 +5479,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@typescript-eslint/tsconfig-utils@8.32.0, @typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils":
+  version: 0.0.0-use.local
+  resolution: "@typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils"
+  dependencies:
+    "@vitest/coverage-v8": ^3.1.2
+    eslint: "*"
+    prettier: ^3.2.5
+    rimraf: "*"
+    typescript: "*"
+    vitest: ^3.1.2
+  peerDependencies:
+    typescript: ">=4.8.4 <5.9.0"
+  languageName: unknown
+  linkType: soft
+
 "@typescript-eslint/type-utils@8.32.0, @typescript-eslint/type-utils@workspace:*, @typescript-eslint/type-utils@workspace:packages/type-utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/type-utils@workspace:packages/type-utils"
@@ -5487,7 +5516,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@8.32.0, @typescript-eslint/types@^8.9.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@8.32.0, @typescript-eslint/types@^8.32.0, @typescript-eslint/types@^8.9.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -5576,6 +5605,8 @@ __metadata:
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
     "@types/is-glob": ^4.0.4
+    "@typescript-eslint/project-service": 8.32.0
+    "@typescript-eslint/tsconfig-utils": 8.32.0
     "@typescript-eslint/types": 8.32.0
     "@typescript-eslint/visitor-keys": 8.32.0
     "@vitest/coverage-v8": ^3.1.2
