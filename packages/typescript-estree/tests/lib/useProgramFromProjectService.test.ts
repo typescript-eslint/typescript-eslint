@@ -1,10 +1,11 @@
-import path from 'node:path';
-import * as ts from 'typescript';
-
 import type {
   ProjectServiceAndMetadata,
   TypeScriptProjectService,
 } from '@typescript-eslint/project-service';
+
+import path from 'node:path';
+import * as ts from 'typescript';
+
 import type { ParseSettings } from '../../src/parseSettings';
 
 import { useProgramFromProjectService } from '../../src/useProgramFromProjectService';
