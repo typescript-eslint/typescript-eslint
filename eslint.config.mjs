@@ -568,10 +568,10 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
       'import/no-default-export': 'off',
+      'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
       'react/prop-types': 'off',
-      'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
     },
     settings: {
       react: {
