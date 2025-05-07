@@ -3,9 +3,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "foo",
+        optional: false,
 
         range: [78, 81],
         loc: {
@@ -21,7 +24,9 @@ Program {
             parameters: [
               Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "a",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSStringKeyword {
@@ -71,7 +76,10 @@ Program {
               params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
+                  in: false,
                   name: "T",
+                  out: false,
 
                   range: [89, 90],
                   loc: {
@@ -99,7 +107,9 @@ Program {
             parameters: [
               Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "a",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSStringKeyword {
@@ -149,7 +159,10 @@ Program {
               params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
+                  in: false,
                   name: "T",
+                  out: false,
 
                   range: [119, 120],
                   loc: {

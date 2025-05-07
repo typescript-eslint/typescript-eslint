@@ -3,6 +3,7 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
@@ -10,6 +11,9 @@ Program {
             type: "PropertyDefinition",
             accessibility: "private",
             computed: true,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Literal {
               type: "Literal",
               raw: "'foo'",
@@ -22,10 +26,14 @@ Program {
               },
             },
             optional: true,
+            override: false,
+            readonly: false,
             static: false,
             value: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "undefined",
+              optional: false,
 
               range: [104, 113],
               loc: {
@@ -48,9 +56,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X",
+        optional: false,
 
         range: [79, 80],
         loc: {
@@ -58,6 +70,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 116],

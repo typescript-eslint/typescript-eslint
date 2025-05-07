@@ -20,13 +20,13 @@ Snapshot Diff:
             end: { column: 23, line: 1 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'F',
--         optional: false,
+          optional: false,
 
           range: [10, 11],
           loc: {
@@ -39,8 +39,8 @@ Snapshot Diff:
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -53,8 +53,8 @@ Snapshot Diff:
 -                 end: { column: 13, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [12, 13],
               loc: {
@@ -64,8 +64,8 @@ Snapshot Diff:
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -78,8 +78,8 @@ Snapshot Diff:
 -                 end: { column: 16, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'U',
+              out: false,
 
               range: [15, 16],
               loc: {
@@ -89,8 +89,8 @@ Snapshot Diff:
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -103,8 +103,8 @@ Snapshot Diff:
 -                 end: { column: 19, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'V',
+              out: false,
 
               range: [18, 19],
               loc: {

@@ -12,7 +12,7 @@ Snapshot Diff:
         type: 'ExpressionStatement',
         expression: ClassExpression {
           type: 'ClassExpression',
--         abstract: false,
+          abstract: false,
           body: ClassBody {
             type: 'ClassBody',
             body: Array [],
@@ -23,10 +23,10 @@ Snapshot Diff:
               end: { column: 21, line: 1 },
             },
           },
--         declare: false,
--         decorators: Array [],
+          declare: false,
+          decorators: Array [],
           id: null,
--         implements: Array [],
+          implements: Array [],
           superClass: null,
           typeParameters: TSTypeParameterDeclaration {
             type: 'TSTypeParameterDeclaration',
@@ -47,8 +47,8 @@ Snapshot Diff:
 -                   end: { column: 17, line: 1 },
 -                 },
 -               },
--               out: false,
 +               name: 'T',
+                out: false,
 
                 range: [7, 17],
                 loc: {

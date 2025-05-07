@@ -15,9 +15,9 @@ Snapshot Diff:
           arguments: Array [],
           callee: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'foo',
--           optional: false,
+            optional: false,
 
             range: [73, 76],
             loc: {
@@ -34,9 +34,9 @@ Snapshot Diff:
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'A',
--                 optional: false,
+                  optional: false,
 
                   range: [77, 78],
                   loc: {
@@ -80,9 +80,9 @@ Snapshot Diff:
           arguments: Array [],
           callee: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'foo',
--           optional: false,
+            optional: false,
 
             range: [83, 86],
             loc: {

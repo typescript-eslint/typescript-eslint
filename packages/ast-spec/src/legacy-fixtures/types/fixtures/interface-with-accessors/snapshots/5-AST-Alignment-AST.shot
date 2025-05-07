@@ -18,9 +18,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'size',
--               optional: false,
+                optional: false,
 
                 range: [97, 101],
                 loc: {
@@ -29,11 +29,12 @@ Snapshot Diff:
                 },
               },
               kind: 'get',
--             optional: false,
+              optional: false,
 -             params: Array [],
--             readonly: false,
--             returnType: TSTypeAnnotation {
 +             parameters: Array [],
+              readonly: false,
+-             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSNumberKeyword {
@@ -65,9 +66,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'size',
--               optional: false,
+                optional: false,
 
                 range: [119, 123],
                 loc: {
@@ -76,14 +77,14 @@ Snapshot Diff:
                 },
               },
               kind: 'set',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'value',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSUnionType {
@@ -139,8 +140,8 @@ Snapshot Diff:
                   },
                 },
               ],
--             readonly: false,
--             static: false,
+              readonly: false,
+              static: false,
 
               range: [115, 158],
               loc: {
@@ -156,13 +157,13 @@ Snapshot Diff:
             end: { column: 1, line: 6 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Thing',
--         optional: false,
+          optional: false,
 
           range: [83, 88],
           loc: {

@@ -41,12 +41,12 @@ describe(getParsedConfigFile, () => {
     getParsedConfigFile(
       mockTsserver,
       './tsconfig.json',
-      path.relative('./', path.dirname(__filename)),
+      path.relative('./', __dirname),
     );
     expect(mockGetParsedCommandLineOfConfigFile).toHaveBeenCalledOnce();
     const [_configFileName, _optionsToExtend, host] =
       mockGetParsedCommandLineOfConfigFile.mock.calls[0];
-    expect(host.getCurrentDirectory()).toBe(path.dirname(__filename));
+    expect(host.getCurrentDirectory()).toBe(__dirname);
   });
 
   it('resolves an absolute project directory when passed', () => {
@@ -108,7 +108,7 @@ describe(getParsedConfigFile, () => {
       raw: { compilerOptions: { strict: true } },
     };
     mockGetParsedCommandLineOfConfigFile.mockReturnValue(parsedConfigFile);
-    expect(getParsedConfigFile(mockTsserver, 'tsconfig.json')).toEqual(
+    expect(getParsedConfigFile(mockTsserver, 'tsconfig.json')).toStrictEqual(
       expect.objectContaining(parsedConfigFile),
     );
   });

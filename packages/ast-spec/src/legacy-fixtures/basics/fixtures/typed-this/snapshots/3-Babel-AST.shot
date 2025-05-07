@@ -11,7 +11,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "addClickListener",
+              optional: false,
 
               range: [97, 113],
               loc: {
@@ -20,10 +22,13 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             parameters: [
               Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "onclick",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSFunctionType {
@@ -31,7 +36,9 @@ Program {
                     parameters: [
                       Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "this",
+                        optional: false,
                         typeAnnotation: TSTypeAnnotation {
                           type: "TSTypeAnnotation",
                           typeAnnotation: TSVoidKeyword {
@@ -59,14 +66,18 @@ Program {
                       },
                       Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "e",
+                        optional: false,
                         typeAnnotation: TSTypeAnnotation {
                           type: "TSTypeAnnotation",
                           typeAnnotation: TSTypeReference {
                             type: "TSTypeReference",
                             typeName: Identifier {
                               type: "Identifier",
+                              decorators: [],
                               name: "Event",
+                              optional: false,
 
                               range: [139, 144],
                               loc: {
@@ -136,6 +147,8 @@ Program {
                 },
               },
             ],
+            readonly: false,
+            static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
@@ -169,9 +182,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      extends: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "UIElement",
+        optional: false,
 
         range: [83, 92],
         loc: {

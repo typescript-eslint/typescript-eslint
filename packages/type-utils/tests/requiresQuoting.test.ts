@@ -1,4 +1,4 @@
-import { requiresQuoting } from '../src';
+import { requiresQuoting } from '../src/index.js';
 
 describe(requiresQuoting, () => {
   describe('valid identifier', () => {

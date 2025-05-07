@@ -114,10 +114,10 @@ describe(parser.parseAndGenerateServices, () => {
     it('should preserve node maps by default for parseAndGenerateServices()', () => {
       const noOptionSet = parser.parseAndGenerateServices(code, baseConfig);
 
-      expect(noOptionSet.services.esTreeNodeToTSNodeMap).toEqual(
+      expect(noOptionSet.services.esTreeNodeToTSNodeMap).toStrictEqual(
         expect.any(WeakMap),
       );
-      expect(noOptionSet.services.tsNodeToESTreeNodeMap).toEqual(
+      expect(noOptionSet.services.tsNodeToESTreeNodeMap).toStrictEqual(
         expect.any(WeakMap),
       );
 
@@ -126,12 +126,12 @@ describe(parser.parseAndGenerateServices, () => {
         projectConfig,
       );
 
-      expect(withProjectNoOptionSet.services.esTreeNodeToTSNodeMap).toEqual(
-        expect.any(WeakMap),
-      );
-      expect(withProjectNoOptionSet.services.tsNodeToESTreeNodeMap).toEqual(
-        expect.any(WeakMap),
-      );
+      expect(
+        withProjectNoOptionSet.services.esTreeNodeToTSNodeMap,
+      ).toStrictEqual(expect.any(WeakMap));
+      expect(
+        withProjectNoOptionSet.services.tsNodeToESTreeNodeMap,
+      ).toStrictEqual(expect.any(WeakMap));
     });
 
     function checkNodeMaps(setting: boolean): void {
@@ -218,16 +218,15 @@ describe(parser.parseAndGenerateServices, () => {
         }
 
         if (!shouldThrow) {
-          expect(result?.ast).toBeDefined();
+          assert.isDefined(result?.ast);
+
           expect({
             ...result,
             services: {
-              ...result?.services,
+              ...result.services,
               // Reduce noise in snapshot by not printing the TS program
               program:
-                result?.services.program == null
-                  ? 'No Program'
-                  : 'With Program',
+                result.services.program == null ? 'No Program' : 'With Program',
             },
           }).toMatchSnapshot();
         }

@@ -6,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "foo",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSAnyKeyword {
@@ -53,6 +56,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [0, 19],

@@ -71,8 +71,7 @@ const features: FeatureItem[] = [
         <div className="col col--offset-2 col--8">
           <p>
             <strong>
-              <code>typescript-eslint</code> enables ESLint to run on TypeScript
-              code.
+              typescript-eslint enables ESLint to run on TypeScript code.
             </strong>{' '}
             It brings in the best of both tools to help you write the best
             JavaScript or TypeScript code you possibly can.
@@ -87,7 +86,7 @@ const features: FeatureItem[] = [
           </p>
         </div>
         <div className="col col--offset-2 col--8">
-          <code>typescript-eslint</code>:
+          typescript-eslint:
           <ul>
             <li>allows ESLint to parse TypeScript syntax</li>
             <li>

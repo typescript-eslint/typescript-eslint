@@ -148,7 +148,7 @@ describe('semanticInfo - singleRun', () => {
 
       const resultProgram = parseAndGenerateServices(code, options).services
         .program;
-      expect(resultProgram).toEqual(mockProgram);
+      expect(resultProgram).toStrictEqual(mockProgram);
 
       // Call parseAndGenerateServices() again to ensure caching of Programs is working correctly...
       parseAndGenerateServices(code, options);
@@ -179,7 +179,7 @@ describe('semanticInfo - singleRun', () => {
 
       const resultProgram = parseAndGenerateServices(code, options).services
         .program;
-      expect(resultProgram).toEqual(mockProgram);
+      expect(resultProgram).toStrictEqual(mockProgram);
 
       // Call parseAndGenerateServices() again to ensure caching of Programs is working correctly...
       parseAndGenerateServices(code, options);
@@ -212,7 +212,7 @@ describe('semanticInfo - singleRun', () => {
 
       const resultProgram = parseAndGenerateServices(code, options).services
         .program;
-      expect(resultProgram).toEqual(mockProgram);
+      expect(resultProgram).toStrictEqual(mockProgram);
 
       // Call parseAndGenerateServices() again to ensure caching of Programs is working correctly...
       parseAndGenerateServices(code, options);
@@ -250,7 +250,7 @@ describe('semanticInfo - singleRun', () => {
         code,
         optionsWithReversedTsconfigs,
       ).services.program;
-      expect(resultProgram).toEqual(mockProgram);
+      expect(resultProgram).toStrictEqual(mockProgram);
 
       // Call parseAndGenerateServices() again to ensure caching of Programs is working correctly...
       parseAndGenerateServices(code, options);

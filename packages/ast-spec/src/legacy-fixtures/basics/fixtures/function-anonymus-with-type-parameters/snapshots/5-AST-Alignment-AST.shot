@@ -13,12 +13,12 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'obj',
--             optional: false,
+              optional: false,
 
               range: [77, 80],
               loc: {
@@ -36,9 +36,9 @@ Snapshot Diff:
                     type: 'ReturnStatement',
                     argument: Identifier {
                       type: 'Identifier',
--                     decorators: Array [],
+                      decorators: Array [],
                       name: 'a',
--                     optional: false,
+                      optional: false,
 
                       range: [118, 119],
                       loc: {
@@ -61,16 +61,16 @@ Snapshot Diff:
                   end: { column: 1, line: 5 },
                 },
               },
--             declare: false,
+              declare: false,
               expression: false,
               generator: false,
               id: null,
               params: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'a',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSStringKeyword {
@@ -102,8 +102,8 @@ Snapshot Diff:
                 params: Array [
                   TSTypeParameter {
                     type: 'TSTypeParameter',
--                   const: false,
--                   in: false,
+                    const: false,
+                    in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
 -                     decorators: Array [],
@@ -116,8 +116,8 @@ Snapshot Diff:
 -                       end: { column: 21, line: 3 },
 -                     },
 -                   },
--                   out: false,
 +                   name: 'T',
+                    out: false,
 
                     range: [93, 94],
                     loc: {
@@ -148,7 +148,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'var',
 
         range: [73, 123],

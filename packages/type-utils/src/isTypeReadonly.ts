@@ -238,7 +238,7 @@ function isTypeReadonlyRecurser(
   if (tsutils.isUnionType(type)) {
     // all types in the union must be readonly
     const result = tsutils
-      .unionTypeParts(type)
+      .unionConstituents(type)
       .every(
         t =>
           seenTypes.has(t) ||
