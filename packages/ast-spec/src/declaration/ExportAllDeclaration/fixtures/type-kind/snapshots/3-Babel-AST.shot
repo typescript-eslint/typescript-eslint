@@ -25,7 +25,7 @@ Program {
       },
     },
   ],
-  sourceType: "script",
+  sourceType: "module",
 
   range: [0, 24],
   loc: {

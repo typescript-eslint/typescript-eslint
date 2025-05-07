@@ -13,36 +13,51 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'map',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSMappedType {
                   type: 'TSMappedType',
 -                 constraint: TSStringKeyword {
 -                   type: 'TSStringKeyword',
-+                 nameType: null,
-+                 typeAnnotation: TSNumberKeyword {
-+                   type: 'TSNumberKeyword',
-
+-
 -                   range: [90, 96],
-+                   range: [99, 105],
-                    loc: {
+-                   loc: {
 -                     start: { column: 17, line: 3 },
 -                     end: { column: 23, line: 3 },
-+                     start: { column: 26, line: 3 },
-+                     end: { column: 32, line: 3 },
-                    },
-                  },
+-                   },
+-                 },
 -                 key: Identifier {
 -                   type: 'Identifier',
 -                   decorators: Array [],
+-                   name: 'P',
+-                   optional: false,
+-
+-                   range: [85, 86],
+-                   loc: {
+-                     start: { column: 12, line: 3 },
+-                     end: { column: 13, line: 3 },
+-                   },
+-                 },
+                  nameType: null,
+-                 optional: false,
+                  typeAnnotation: TSNumberKeyword {
+                    type: 'TSNumberKeyword',
+
+                    range: [99, 105],
+                    loc: {
+                      start: { column: 26, line: 3 },
+                      end: { column: 32, line: 3 },
++                   },
++                 },
 +                 typeParameter: TSTypeParameter {
 +                   type: 'TSTypeParameter',
++                   const: false,
 +                   constraint: TSStringKeyword {
 +                     type: 'TSStringKeyword',
 +
@@ -52,24 +67,13 @@ Snapshot Diff:
 +                       end: { column: 23, line: 3 },
 +                     },
 +                   },
-                    name: 'P',
--                   optional: false,
-
--                   range: [85, 86],
++                   in: false,
++                   name: 'P',
++                   out: false,
++
 +                   range: [85, 96],
-                    loc: {
-                      start: { column: 12, line: 3 },
--                     end: { column: 13, line: 3 },
--                   },
--                 },
--                 nameType: null,
--                 typeAnnotation: TSNumberKeyword {
--                   type: 'TSNumberKeyword',
--
--                   range: [99, 105],
--                   loc: {
--                     start: { column: 26, line: 3 },
--                     end: { column: 32, line: 3 },
++                   loc: {
++                     start: { column: 12, line: 3 },
 +                     end: { column: 23, line: 3 },
                     },
                   },
@@ -103,7 +107,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'let',
 
         range: [73, 108],

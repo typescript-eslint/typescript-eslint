@@ -3,15 +3,19 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "bar",
+              optional: false,
 
               range: [95, 98],
               loc: {
@@ -21,10 +25,12 @@ Program {
             },
             kind: "method",
             optional: true,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
               async: false,
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -70,9 +76,12 @@ Program {
         },
       },
       declare: true,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [87, 90],
         loc: {
@@ -80,6 +89,7 @@ Program {
           end: { column: 17, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 109],

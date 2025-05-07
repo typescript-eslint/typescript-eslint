@@ -6,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "obj",
+            optional: false,
 
             range: [77, 80],
             loc: {
@@ -26,7 +29,9 @@ Program {
                   type: "ReturnStatement",
                   argument: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "a",
+                    optional: false,
 
                     range: [118, 119],
                     loc: {
@@ -49,13 +54,16 @@ Program {
                 end: { column: 1, line: 5 },
               },
             },
+            declare: false,
             expression: false,
             generator: false,
             id: null,
             params: [
               Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "a",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSStringKeyword {
@@ -87,7 +95,10 @@ Program {
               params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
+                  in: false,
                   name: "T",
+                  out: false,
 
                   range: [93, 94],
                   loc: {
@@ -118,6 +129,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "var",
 
       range: [73, 123],

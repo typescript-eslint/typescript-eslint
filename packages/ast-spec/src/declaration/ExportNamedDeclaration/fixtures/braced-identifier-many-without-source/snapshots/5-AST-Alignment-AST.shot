@@ -20,9 +20,9 @@ Snapshot Diff:
             type: 'ExportSpecifier',
             exported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'a',
--             optional: false,
+              optional: false,
 
               range: [9, 10],
               loc: {
@@ -33,9 +33,9 @@ Snapshot Diff:
             exportKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'a',
--             optional: false,
+              optional: false,
 
               range: [9, 10],
               loc: {
@@ -54,9 +54,9 @@ Snapshot Diff:
             type: 'ExportSpecifier',
             exported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'b',
--             optional: false,
+              optional: false,
 
               range: [12, 13],
               loc: {
@@ -67,9 +67,9 @@ Snapshot Diff:
             exportKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'b',
--             optional: false,
+              optional: false,
 
               range: [12, 13],
               loc: {

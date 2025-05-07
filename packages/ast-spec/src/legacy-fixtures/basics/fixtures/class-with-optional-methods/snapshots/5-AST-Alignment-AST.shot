@@ -10,19 +10,19 @@ Snapshot Diff:
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'foo',
--               optional: false,
+                optional: false,
 
                 range: [87, 90],
                 loc: {
@@ -32,7 +32,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -40,7 +40,7 @@ Snapshot Diff:
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -62,12 +62,12 @@ Snapshot Diff:
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'bar',
--               optional: false,
+                optional: false,
 
                 range: [97, 100],
                 loc: {
@@ -77,7 +77,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -85,7 +85,7 @@ Snapshot Diff:
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -126,12 +126,12 @@ Snapshot Diff:
               type: 'MethodDefinition',
               accessibility: 'private',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'baz',
--               optional: false,
+                optional: false,
 
                 range: [123, 126],
                 loc: {
@@ -141,7 +141,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -149,7 +149,7 @@ Snapshot Diff:
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -194,13 +194,13 @@ Snapshot Diff:
             end: { column: 1, line: 7 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [79, 82],
           loc: {
@@ -208,7 +208,7 @@ Snapshot Diff:
             end: { column: 9, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
 
         range: [73, 140],

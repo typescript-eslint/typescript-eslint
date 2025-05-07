@@ -13,6 +13,7 @@ Program {
           end: { column: 32, line: 3 },
         },
       },
+      declare: false,
       extends: [
         TSExpressionWithTypeArguments {
           type: "TSExpressionWithTypeArguments",
@@ -20,7 +21,9 @@ Program {
             type: "TSQualifiedName",
             left: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "bar",
+              optional: false,
 
               range: [95, 98],
               loc: {
@@ -30,7 +33,9 @@ Program {
             },
             right: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "baz",
+              optional: false,
 
               range: [99, 102],
               loc: {
@@ -55,7 +60,9 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "foo",
+        optional: false,
 
         range: [83, 86],
         loc: {

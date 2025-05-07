@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Color',
--         optional: false,
+          optional: false,
 
           range: [78, 83],
           loc: {
@@ -83,12 +83,12 @@ Snapshot Diff:
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Quantity',
--         optional: false,
+          optional: false,
 
           range: [107, 115],
           loc: {
@@ -156,12 +156,12 @@ Snapshot Diff:
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'SeussFish',
--         optional: false,
+          optional: false,
 
           range: [138, 147],
           loc: {
@@ -179,7 +179,22 @@ Snapshot Diff:
 -               'cooked': '',
 -               'raw': '',
 -             },
--
++       typeAnnotation: TSLiteralType {
++         type: 'TSLiteralType',
++         literal: TemplateLiteral {
++           type: 'TemplateLiteral',
++           expressions: Array [
++             TSUnionType {
++               type: 'TSUnionType',
++               types: Array [
++                 TSTypeReference {
++                   type: 'TSTypeReference',
++                   typeName: Identifier {
++                     type: 'Identifier',
++                     decorators: Array [],
++                     name: 'Quantity',
++                     optional: false,
+
 -             range: [150, 153],
 -             loc: {
 -               start: { column: 17, line: 5 },
@@ -193,20 +208,7 @@ Snapshot Diff:
 -               'cooked': ' fish',
 -               'raw': ' fish',
 -             },
-+       typeAnnotation: TSLiteralType {
-+         type: 'TSLiteralType',
-+         literal: TemplateLiteral {
-+           type: 'TemplateLiteral',
-+           expressions: Array [
-+             TSUnionType {
-+               type: 'TSUnionType',
-+               types: Array [
-+                 TSTypeReference {
-+                   type: 'TSTypeReference',
-+                   typeName: Identifier {
-+                     type: 'Identifier',
-+                     name: 'Quantity',
-
+-
 -             range: [169, 176],
 -             loc: {
 -               start: { column: 36, line: 5 },
@@ -242,7 +244,9 @@ Snapshot Diff:
 +                   type: 'TSTypeReference',
 +                   typeName: Identifier {
 +                     type: 'Identifier',
++                     decorators: Array [],
 +                     name: 'Color',
++                     optional: false,
 
 -                 range: [153, 161],
 -                 loc: {

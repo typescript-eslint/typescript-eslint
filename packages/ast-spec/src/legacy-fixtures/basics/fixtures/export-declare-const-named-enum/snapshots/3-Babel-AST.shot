@@ -10,7 +10,9 @@ Program {
         declare: true,
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "Foo",
+          optional: false,
 
           range: [99, 102],
           loc: {
@@ -21,9 +23,12 @@ Program {
         members: [
           TSEnumMember {
             type: "TSEnumMember",
+            computed: false,
             id: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "foo",
+              optional: false,
 
               range: [107, 110],
               loc: {
@@ -51,9 +56,12 @@ Program {
           },
           TSEnumMember {
             type: "TSEnumMember",
+            computed: false,
             id: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "bar",
+              optional: false,
 
               range: [118, 121],
               loc: {
@@ -87,7 +95,7 @@ Program {
       },
     },
   ],
-  sourceType: "script",
+  sourceType: "module",
 
   range: [73, 125],
   loc: {

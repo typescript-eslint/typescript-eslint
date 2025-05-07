@@ -39,10 +39,10 @@ export default createRule({
 
     function isArrayType(type: ts.Type): boolean {
       return tsutils
-        .unionTypeParts(type)
+        .unionConstituents(type)
         .every(unionPart =>
           tsutils
-            .intersectionTypeParts(unionPart)
+            .intersectionConstituents(unionPart)
             .every(t => checker.isArrayType(t) || checker.isTupleType(t)),
         );
     }

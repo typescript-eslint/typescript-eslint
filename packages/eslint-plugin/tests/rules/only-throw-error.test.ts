@@ -189,6 +189,60 @@ throw new Map();
         },
       ],
     },
+    {
+      code: `
+try {
+} catch (e) {
+  throw e;
+}
+      `,
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+try {
+} catch (eOuter) {
+  try {
+    if (Math.random() > 0.5) {
+      throw eOuter;
+    }
+  } catch (eInner) {
+    if (Math.random() > 0.5) {
+      throw eOuter;
+    } else {
+      throw eInner;
+    }
+  }
+}
+      `,
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').catch(e => {
+  throw e;
+});
+      `,
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -548,6 +602,144 @@ throw new UnknownError();
       options: [
         {
           allow: [{ from: 'file', name: 'CustomError' }],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+let x = 1;
+Promise.reject('foo').catch(e => {
+  throw x;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').catch((...e) => {
+  throw e;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any[];
+Promise.reject('foo').catch(...x, e => {
+  throw e;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any[];
+Promise.reject('foo').then(...x, e => {
+  throw e;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const onFulfilled: any;
+declare const x: any[];
+Promise.reject('foo').then(onFulfilled, ...x, e => {
+  throw e;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').then((...e) => {
+  throw e;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').then(e => {
+  throw globalThis;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
           allowThrowingAny: false,
           allowThrowingUnknown: false,
         },

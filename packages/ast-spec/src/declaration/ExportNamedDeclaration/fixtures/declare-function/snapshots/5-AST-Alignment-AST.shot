@@ -20,9 +20,9 @@ Snapshot Diff:
           generator: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'foo',
--           optional: false,
+            optional: false,
 
             range: [24, 27],
             loc: {
@@ -67,8 +67,7 @@ Snapshot Diff:
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [0, 37],
     loc: {

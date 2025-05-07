@@ -1,0 +1,182 @@
+[
+  Identifier {
+    type: "Identifier",
+    value: "type",
+
+    range: [0, 4],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 4, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "A",
+
+    range: [5, 6],
+    loc: {
+      start: { column: 5, line: 1 },
+      end: { column: 6, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [7, 8],
+    loc: {
+      start: { column: 7, line: 1 },
+      end: { column: 8, line: 1 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "import",
+
+    range: [9, 15],
+    loc: {
+      start: { column: 9, line: 1 },
+      end: { column: 15, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [15, 16],
+    loc: {
+      start: { column: 15, line: 1 },
+      end: { column: 16, line: 1 },
+    },
+  },
+  String {
+    type: "String",
+    value: ""A"",
+
+    range: [16, 19],
+    loc: {
+      start: { column: 16, line: 1 },
+      end: { column: 19, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ",",
+
+    range: [19, 20],
+    loc: {
+      start: { column: 19, line: 1 },
+      end: { column: 20, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [21, 22],
+    loc: {
+      start: { column: 21, line: 1 },
+      end: { column: 22, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "with",
+
+    range: [23, 27],
+    loc: {
+      start: { column: 23, line: 1 },
+      end: { column: 27, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [27, 28],
+    loc: {
+      start: { column: 27, line: 1 },
+      end: { column: 28, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [29, 30],
+    loc: {
+      start: { column: 29, line: 1 },
+      end: { column: 30, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "type",
+
+    range: [31, 35],
+    loc: {
+      start: { column: 31, line: 1 },
+      end: { column: 35, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [35, 36],
+    loc: {
+      start: { column: 35, line: 1 },
+      end: { column: 36, line: 1 },
+    },
+  },
+  String {
+    type: "String",
+    value: ""json"",
+
+    range: [37, 43],
+    loc: {
+      start: { column: 37, line: 1 },
+      end: { column: 43, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [44, 45],
+    loc: {
+      start: { column: 44, line: 1 },
+      end: { column: 45, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [46, 47],
+    loc: {
+      start: { column: 46, line: 1 },
+      end: { column: 47, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [47, 48],
+    loc: {
+      start: { column: 47, line: 1 },
+      end: { column: 48, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [48, 49],
+    loc: {
+      start: { column: 48, line: 1 },
+      end: { column: 49, line: 1 },
+    },
+  },
+]

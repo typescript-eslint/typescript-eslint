@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "8.31.1",
+  "version": "8.32.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
@@ -38,7 +38,7 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "clean": "rimraf dist/ _ts4.3/ coverage/",
+    "clean": "rimraf dist/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-lib": "npx nx generate-lib repo",
@@ -47,17 +47,18 @@
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "8.31.1",
-    "@typescript-eslint/visitor-keys": "8.31.1"
+    "@typescript-eslint/types": "8.32.0",
+    "@typescript-eslint/visitor-keys": "8.32.0"
   },
   "devDependencies": {
-    "@typescript-eslint/typescript-estree": "8.31.1",
-    "@vitest/coverage-v8": "^3.1.1",
+    "@typescript-eslint/typescript-estree": "8.32.0",
+    "@vitest/coverage-v8": "^3.1.2",
+    "@vitest/pretty-format": "^3.1.2",
     "glob": "*",
     "prettier": "^3.2.5",
-    "pretty-format": "*",
+    "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.2"
   },
   "funding": {
     "type": "opencollective",

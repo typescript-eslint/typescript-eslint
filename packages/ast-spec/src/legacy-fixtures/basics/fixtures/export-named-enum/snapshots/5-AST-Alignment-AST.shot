@@ -25,9 +25,13 @@ Snapshot Diff:
 -                 decorators: Array [],
 -                 name: 'foo',
 -                 optional: false,
++         const: false,
++         declare: false,
 +         id: Identifier {
 +           type: 'Identifier',
++           decorators: Array [],
 +           name: 'Foo',
++           optional: false,
 
 -                 range: [93, 96],
 -                 loc: {
@@ -48,9 +52,12 @@ Snapshot Diff:
 +         members: Array [
 +           TSEnumMember {
 +             type: 'TSEnumMember',
++             computed: false,
 +             id: Identifier {
 +               type: 'Identifier',
++               decorators: Array [],
 +               name: 'foo',
++               optional: false,
 
 -                 range: [99, 100],
 -                 loc: {
@@ -99,9 +106,12 @@ Snapshot Diff:
 +           },
 +           TSEnumMember {
 +             type: 'TSEnumMember',
++             computed: false,
 +             id: Identifier {
 +               type: 'Identifier',
++               decorators: Array [],
 +               name: 'bar',
++               optional: false,
 
                 range: [104, 107],
                 loc: {
