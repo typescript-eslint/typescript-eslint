@@ -12,7 +12,7 @@ Snapshot Diff:
         type: 'ExportDefaultDeclaration',
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
--         abstract: false,
+          abstract: false,
           body: ClassBody {
             type: 'ClassBody',
             body: Array [],
@@ -23,15 +23,15 @@ Snapshot Diff:
               end: { column: 27, line: 4 },
             },
           },
--         declare: false,
+          declare: false,
           decorators: Array [
             Decorator {
               type: 'Decorator',
               expression: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'sealed',
--               optional: false,
+                optional: false,
 
                 range: [74, 80],
                 loc: {
@@ -49,9 +49,9 @@ Snapshot Diff:
           ],
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'Qux',
--           optional: false,
+            optional: false,
 
             range: [102, 105],
             loc: {
@@ -59,7 +59,7 @@ Snapshot Diff:
               end: { column: 24, line: 4 },
             },
           },
--         implements: Array [],
+          implements: Array [],
           superClass: null,
 
 -         range: [96, 108],

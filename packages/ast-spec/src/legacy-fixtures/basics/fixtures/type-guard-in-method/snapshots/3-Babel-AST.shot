@@ -3,15 +3,19 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "isBar",
+              optional: false,
 
               range: [87, 92],
               loc: {
@@ -20,6 +24,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -43,7 +49,9 @@ Program {
                       operator: "instanceof",
                       right: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "Foo",
+                        optional: false,
 
                         range: [140, 143],
                         loc: {
@@ -73,6 +81,7 @@ Program {
                   end: { column: 3, line: 6 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -140,9 +149,14 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "isBaz",
+              optional: false,
 
               range: [151, 156],
               loc: {
@@ -150,6 +164,9 @@ Program {
                 end: { column: 7, line: 7 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             value: ArrowFunctionExpression {
               type: "ArrowFunctionExpression",
@@ -173,7 +190,9 @@ Program {
                       operator: "instanceof",
                       right: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "Foo",
+                        optional: false,
 
                         range: [210, 213],
                         loc: {
@@ -275,9 +294,13 @@ Program {
           end: { column: 1, line: 10 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -285,6 +308,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 221],

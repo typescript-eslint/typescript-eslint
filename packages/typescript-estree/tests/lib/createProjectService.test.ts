@@ -88,7 +88,7 @@ describe(createProjectService, () => {
   it('does not set allowDefaultProject when options.allowDefaultProject is not defined', () => {
     const settings = createProjectService(undefined, undefined, undefined);
 
-    expect(settings.allowDefaultProject).toBeUndefined();
+    assert.isUndefined(settings.allowDefaultProject);
   });
 
   it('does not throw an error when options.defaultProject is not provided and getParsedConfigFile throws a diagnostic error', () => {
@@ -308,7 +308,7 @@ describe(createProjectService, () => {
   it('does not return a log filename with the default projects logger', () => {
     const { service } = createProjectService(undefined, undefined, undefined);
 
-    expect(service.logger.getLogFileName()).toBeUndefined();
+    assert.isUndefined(service.logger.getLogFileName());
   });
 
   it('uses the default projects event debugger for event handling when enabled', () => {
@@ -334,7 +334,7 @@ describe(createProjectService, () => {
 
     const required = service.host.require?.('', '');
 
-    expect(required).toEqual({
+    expect(required).toStrictEqual({
       error: {
         message:
           'TypeScript plugins are not required when using parserOptions.projectService.',

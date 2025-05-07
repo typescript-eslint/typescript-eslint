@@ -20,7 +20,9 @@ Snapshot Diff:
 +               computed: false,
 +               key: Identifier {
 +                 type: 'Identifier',
++                 decorators: Array [],
 +                 name: 'assert',
++                 optional: false,
 +
 +                 range: [89, 95],
 +                 loc: {
@@ -30,6 +32,7 @@ Snapshot Diff:
 +               },
 +               kind: 'init',
 +               method: false,
++               optional: false,
 +               shorthand: false,
 +               value: ObjectExpression {
 +                 type: 'ObjectExpression',
@@ -39,7 +42,9 @@ Snapshot Diff:
 +                     computed: false,
 +                     key: Identifier {
 +                       type: 'Identifier',
++                       decorators: Array [],
 +                       name: 'type',
++                       optional: false,
 +
 +                       range: [99, 103],
 +                       loc: {
@@ -49,6 +54,7 @@ Snapshot Diff:
 +                     },
 +                     kind: 'init',
 +                     method: false,
++                     optional: false,
 +                     shorthand: false,
 +                     value: Literal {
 +                       type: 'Literal',
@@ -99,9 +105,9 @@ Snapshot Diff:
                 computed: false,
                 key: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'assert',
--                 optional: false,
+                  optional: false,
 
                   range: [89, 95],
                   loc: {
@@ -111,7 +117,7 @@ Snapshot Diff:
                 },
                 kind: 'init',
                 method: false,
--               optional: false,
+                optional: false,
                 shorthand: false,
                 value: ObjectExpression {
                   type: 'ObjectExpression',
@@ -121,9 +127,9 @@ Snapshot Diff:
                       computed: false,
                       key: Identifier {
                         type: 'Identifier',
--                       decorators: Array [],
+                        decorators: Array [],
                         name: 'type',
--                       optional: false,
+                        optional: false,
 
                         range: [99, 103],
                         loc: {
@@ -133,7 +139,7 @@ Snapshot Diff:
                       },
                       kind: 'init',
                       method: false,
--                     optional: false,
+                      optional: false,
                       shorthand: false,
                       value: Literal {
                         type: 'Literal',

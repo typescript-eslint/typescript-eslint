@@ -5,6 +5,7 @@ Program {
       type: "ExpressionStatement",
       expression: ClassExpression {
         type: "ClassExpression",
+        abstract: false,
         body: ClassBody {
           type: "ClassBody",
           body: [],
@@ -15,7 +16,10 @@ Program {
             end: { column: 28, line: 1 },
           },
         },
+        declare: false,
+        decorators: [],
         id: null,
+        implements: [],
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: "TSTypeParameterDeclaration",
@@ -27,7 +31,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [23, 24],
                   loc: {
@@ -42,7 +48,9 @@ Program {
                   end: { column: 24, line: 1 },
                 },
               },
+              in: false,
               name: "T",
+              out: false,
 
               range: [7, 24],
               loc: {

@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'T',
--         optional: false,
+          optional: false,
 
           range: [78, 79],
           loc: {
@@ -33,7 +33,18 @@ Snapshot Diff:
 -               'cooked': 'foo',
 -               'raw': 'foo',
 -             },
--
++       typeAnnotation: TSLiteralType {
++         type: 'TSLiteralType',
++         literal: TemplateLiteral {
++           type: 'TemplateLiteral',
++           expressions: Array [
++             TSLiteralType {
++               type: 'TSLiteralType',
++               literal: Literal {
++                 type: 'Literal',
++                 raw: '\'bar\'',
++                 value: 'bar',
+
 -             range: [82, 88],
 -             loc: {
 -               start: { column: 9, line: 3 },
@@ -47,17 +58,12 @@ Snapshot Diff:
 -               'cooked': '',
 -               'raw': '',
 -             },
-+       typeAnnotation: TSLiteralType {
-+         type: 'TSLiteralType',
-+         literal: TemplateLiteral {
-+           type: 'TemplateLiteral',
-+           expressions: Array [
-+             TSLiteralType {
-+               type: 'TSLiteralType',
-+               literal: Literal {
-+                 type: 'Literal',
-+                 raw: '\'bar\'',
-+                 value: 'bar',
++                 range: [88, 93],
++                 loc: {
++                   start: { column: 15, line: 3 },
++                   end: { column: 20, line: 3 },
++                 },
++               },
 
 -             range: [93, 95],
 -             loc: {
@@ -73,13 +79,7 @@ Snapshot Diff:
 -               type: 'Literal',
 -               raw: '\'bar\'',
 -               value: 'bar',
-+                 range: [88, 93],
-+                 loc: {
-+                   start: { column: 15, line: 3 },
-+                   end: { column: 20, line: 3 },
-+                 },
-+               },
-
+-
                 range: [88, 93],
                 loc: {
                   start: { column: 15, line: 3 },
@@ -105,7 +105,7 @@ Snapshot Diff:
 +                 start: { column: 9, line: 3 },
 +                 end: { column: 15, line: 3 },
 +               },
-              },
++             },
 +             TemplateElement {
 +               type: 'TemplateElement',
 +               tail: true,
@@ -119,7 +119,7 @@ Snapshot Diff:
 +                 start: { column: 20, line: 3 },
 +                 end: { column: 22, line: 3 },
 +               },
-+             },
+              },
 +           ],
 +
 +           range: [82, 95],

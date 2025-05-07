@@ -16,12 +16,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'abstract',
--                 optional: false,
+                  optional: false,
 
                   range: [83, 91],
                   loc: {
@@ -48,7 +48,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [77, 96],
@@ -62,12 +62,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'as',
--                 optional: false,
+                  optional: false,
 
                   range: [105, 107],
                   loc: {
@@ -94,7 +94,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [99, 112],
@@ -108,12 +108,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'asserts',
--                 optional: false,
+                  optional: false,
 
                   range: [121, 128],
                   loc: {
@@ -140,7 +140,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [115, 133],
@@ -154,12 +154,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'any',
--                 optional: false,
+                  optional: false,
 
                   range: [142, 145],
                   loc: {
@@ -186,7 +186,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [136, 150],
@@ -200,12 +200,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'async',
--                 optional: false,
+                  optional: false,
 
                   range: [159, 164],
                   loc: {
@@ -232,7 +232,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [153, 169],
@@ -246,12 +246,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'await',
--                 optional: false,
+                  optional: false,
 
                   range: [178, 183],
                   loc: {
@@ -278,7 +278,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [172, 188],
@@ -292,12 +292,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'boolean',
--                 optional: false,
+                  optional: false,
 
                   range: [197, 204],
                   loc: {
@@ -324,7 +324,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [191, 209],
@@ -338,12 +338,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'constructor',
--                 optional: false,
+                  optional: false,
 
                   range: [218, 229],
                   loc: {
@@ -370,7 +370,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [212, 234],
@@ -384,12 +384,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'declare',
--                 optional: false,
+                  optional: false,
 
                   range: [243, 250],
                   loc: {
@@ -416,7 +416,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [237, 255],
@@ -430,12 +430,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'get',
--                 optional: false,
+                  optional: false,
 
                   range: [264, 267],
                   loc: {
@@ -462,7 +462,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [258, 272],
@@ -476,12 +476,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'infer',
--                 optional: false,
+                  optional: false,
 
                   range: [281, 286],
                   loc: {
@@ -508,7 +508,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [275, 291],
@@ -522,12 +522,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'is',
--                 optional: false,
+                  optional: false,
 
                   range: [300, 302],
                   loc: {
@@ -554,7 +554,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [294, 307],
@@ -568,12 +568,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'keyof',
--                 optional: false,
+                  optional: false,
 
                   range: [316, 321],
                   loc: {
@@ -600,7 +600,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [310, 326],
@@ -614,12 +614,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'module',
--                 optional: false,
+                  optional: false,
 
                   range: [335, 341],
                   loc: {
@@ -646,7 +646,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [329, 346],
@@ -660,12 +660,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'namespace',
--                 optional: false,
+                  optional: false,
 
                   range: [355, 364],
                   loc: {
@@ -692,7 +692,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [349, 369],
@@ -706,12 +706,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'never',
--                 optional: false,
+                  optional: false,
 
                   range: [378, 383],
                   loc: {
@@ -738,7 +738,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [372, 388],
@@ -752,12 +752,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'readonly',
--                 optional: false,
+                  optional: false,
 
                   range: [397, 405],
                   loc: {
@@ -784,7 +784,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [391, 410],
@@ -798,12 +798,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'require',
--                 optional: false,
+                  optional: false,
 
                   range: [419, 426],
                   loc: {
@@ -830,7 +830,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [413, 431],
@@ -844,12 +844,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'number',
--                 optional: false,
+                  optional: false,
 
                   range: [440, 446],
                   loc: {
@@ -876,7 +876,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [434, 451],
@@ -890,12 +890,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'object',
--                 optional: false,
+                  optional: false,
 
                   range: [460, 466],
                   loc: {
@@ -922,7 +922,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [454, 471],
@@ -936,12 +936,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'set',
--                 optional: false,
+                  optional: false,
 
                   range: [480, 483],
                   loc: {
@@ -968,7 +968,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [474, 488],
@@ -982,12 +982,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'string',
--                 optional: false,
+                  optional: false,
 
                   range: [497, 503],
                   loc: {
@@ -1014,7 +1014,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [491, 508],
@@ -1028,12 +1028,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'symbol',
--                 optional: false,
+                  optional: false,
 
                   range: [517, 523],
                   loc: {
@@ -1060,7 +1060,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [511, 528],
@@ -1074,12 +1074,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'type',
--                 optional: false,
+                  optional: false,
 
                   range: [537, 541],
                   loc: {
@@ -1106,7 +1106,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [531, 546],
@@ -1120,12 +1120,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'undefined',
--                 optional: false,
+                  optional: false,
 
                   range: [555, 564],
                   loc: {
@@ -1152,7 +1152,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [549, 569],
@@ -1166,12 +1166,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'unique',
--                 optional: false,
+                  optional: false,
 
                   range: [578, 584],
                   loc: {
@@ -1198,7 +1198,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [572, 589],
@@ -1212,12 +1212,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'unknown',
--                 optional: false,
+                  optional: false,
 
                   range: [598, 605],
                   loc: {
@@ -1244,7 +1244,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [592, 610],
@@ -1258,12 +1258,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'from',
--                 optional: false,
+                  optional: false,
 
                   range: [619, 623],
                   loc: {
@@ -1290,7 +1290,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [613, 628],
@@ -1304,12 +1304,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'global',
--                 optional: false,
+                  optional: false,
 
                   range: [637, 643],
                   loc: {
@@ -1336,7 +1336,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [631, 648],
@@ -1350,12 +1350,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'bigint',
--                 optional: false,
+                  optional: false,
 
                   range: [657, 663],
                   loc: {
@@ -1382,7 +1382,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [651, 668],
@@ -1396,12 +1396,12 @@ Snapshot Diff:
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
--               definite: false,
+                definite: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'of',
--                 optional: false,
+                  optional: false,
 
                   range: [677, 679],
                   loc: {
@@ -1428,7 +1428,7 @@ Snapshot Diff:
                 },
               },
             ],
--           declare: false,
+            declare: false,
             kind: 'const',
 
             range: [671, 684],
@@ -1466,9 +1466,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'abstract',
--             optional: false,
+              optional: false,
 
               range: [699, 707],
               loc: {
@@ -1479,9 +1479,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'abstract',
--             optional: false,
+              optional: false,
 
               range: [699, 707],
               loc: {
@@ -1500,9 +1500,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'as',
--             optional: false,
+              optional: false,
 
               range: [711, 713],
               loc: {
@@ -1513,9 +1513,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'as',
--             optional: false,
+              optional: false,
 
               range: [711, 713],
               loc: {
@@ -1534,9 +1534,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'asserts',
--             optional: false,
+              optional: false,
 
               range: [717, 724],
               loc: {
@@ -1547,9 +1547,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'asserts',
--             optional: false,
+              optional: false,
 
               range: [717, 724],
               loc: {
@@ -1568,9 +1568,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'any',
--             optional: false,
+              optional: false,
 
               range: [728, 731],
               loc: {
@@ -1581,9 +1581,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'any',
--             optional: false,
+              optional: false,
 
               range: [728, 731],
               loc: {
@@ -1602,9 +1602,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'async',
--             optional: false,
+              optional: false,
 
               range: [735, 740],
               loc: {
@@ -1615,9 +1615,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'async',
--             optional: false,
+              optional: false,
 
               range: [735, 740],
               loc: {
@@ -1636,9 +1636,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'await',
--             optional: false,
+              optional: false,
 
               range: [744, 749],
               loc: {
@@ -1649,9 +1649,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'await',
--             optional: false,
+              optional: false,
 
               range: [744, 749],
               loc: {
@@ -1670,9 +1670,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'boolean',
--             optional: false,
+              optional: false,
 
               range: [753, 760],
               loc: {
@@ -1683,9 +1683,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'boolean',
--             optional: false,
+              optional: false,
 
               range: [753, 760],
               loc: {
@@ -1704,9 +1704,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'constructor',
--             optional: false,
+              optional: false,
 
               range: [764, 775],
               loc: {
@@ -1717,9 +1717,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'constructor',
--             optional: false,
+              optional: false,
 
               range: [764, 775],
               loc: {
@@ -1738,9 +1738,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'declare',
--             optional: false,
+              optional: false,
 
               range: [779, 786],
               loc: {
@@ -1751,9 +1751,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'declare',
--             optional: false,
+              optional: false,
 
               range: [779, 786],
               loc: {
@@ -1772,9 +1772,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'get',
--             optional: false,
+              optional: false,
 
               range: [790, 793],
               loc: {
@@ -1785,9 +1785,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'get',
--             optional: false,
+              optional: false,
 
               range: [790, 793],
               loc: {
@@ -1806,9 +1806,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'infer',
--             optional: false,
+              optional: false,
 
               range: [797, 802],
               loc: {
@@ -1819,9 +1819,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'infer',
--             optional: false,
+              optional: false,
 
               range: [797, 802],
               loc: {
@@ -1840,9 +1840,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'is',
--             optional: false,
+              optional: false,
 
               range: [806, 808],
               loc: {
@@ -1853,9 +1853,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'is',
--             optional: false,
+              optional: false,
 
               range: [806, 808],
               loc: {
@@ -1874,9 +1874,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'keyof',
--             optional: false,
+              optional: false,
 
               range: [812, 817],
               loc: {
@@ -1887,9 +1887,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'keyof',
--             optional: false,
+              optional: false,
 
               range: [812, 817],
               loc: {
@@ -1908,9 +1908,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'module',
--             optional: false,
+              optional: false,
 
               range: [821, 827],
               loc: {
@@ -1921,9 +1921,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'module',
--             optional: false,
+              optional: false,
 
               range: [821, 827],
               loc: {
@@ -1942,9 +1942,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'namespace',
--             optional: false,
+              optional: false,
 
               range: [831, 840],
               loc: {
@@ -1955,9 +1955,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'namespace',
--             optional: false,
+              optional: false,
 
               range: [831, 840],
               loc: {
@@ -1976,9 +1976,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'never',
--             optional: false,
+              optional: false,
 
               range: [844, 849],
               loc: {
@@ -1989,9 +1989,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'never',
--             optional: false,
+              optional: false,
 
               range: [844, 849],
               loc: {
@@ -2010,9 +2010,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'readonly',
--             optional: false,
+              optional: false,
 
               range: [853, 861],
               loc: {
@@ -2023,9 +2023,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'readonly',
--             optional: false,
+              optional: false,
 
               range: [853, 861],
               loc: {
@@ -2044,9 +2044,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'require',
--             optional: false,
+              optional: false,
 
               range: [865, 872],
               loc: {
@@ -2057,9 +2057,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'require',
--             optional: false,
+              optional: false,
 
               range: [865, 872],
               loc: {
@@ -2078,9 +2078,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'number',
--             optional: false,
+              optional: false,
 
               range: [876, 882],
               loc: {
@@ -2091,9 +2091,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'number',
--             optional: false,
+              optional: false,
 
               range: [876, 882],
               loc: {
@@ -2112,9 +2112,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'object',
--             optional: false,
+              optional: false,
 
               range: [886, 892],
               loc: {
@@ -2125,9 +2125,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'object',
--             optional: false,
+              optional: false,
 
               range: [886, 892],
               loc: {
@@ -2146,9 +2146,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'set',
--             optional: false,
+              optional: false,
 
               range: [896, 899],
               loc: {
@@ -2159,9 +2159,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'set',
--             optional: false,
+              optional: false,
 
               range: [896, 899],
               loc: {
@@ -2180,9 +2180,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'string',
--             optional: false,
+              optional: false,
 
               range: [903, 909],
               loc: {
@@ -2193,9 +2193,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'string',
--             optional: false,
+              optional: false,
 
               range: [903, 909],
               loc: {
@@ -2214,9 +2214,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'symbol',
--             optional: false,
+              optional: false,
 
               range: [913, 919],
               loc: {
@@ -2227,9 +2227,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'symbol',
--             optional: false,
+              optional: false,
 
               range: [913, 919],
               loc: {
@@ -2248,9 +2248,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'type',
--             optional: false,
+              optional: false,
 
               range: [923, 927],
               loc: {
@@ -2261,9 +2261,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'type',
--             optional: false,
+              optional: false,
 
               range: [923, 927],
               loc: {
@@ -2282,9 +2282,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'undefined',
--             optional: false,
+              optional: false,
 
               range: [931, 940],
               loc: {
@@ -2295,9 +2295,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'undefined',
--             optional: false,
+              optional: false,
 
               range: [931, 940],
               loc: {
@@ -2316,9 +2316,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'unique',
--             optional: false,
+              optional: false,
 
               range: [944, 950],
               loc: {
@@ -2329,9 +2329,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'unique',
--             optional: false,
+              optional: false,
 
               range: [944, 950],
               loc: {
@@ -2350,9 +2350,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'unknown',
--             optional: false,
+              optional: false,
 
               range: [954, 961],
               loc: {
@@ -2363,9 +2363,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'unknown',
--             optional: false,
+              optional: false,
 
               range: [954, 961],
               loc: {
@@ -2384,9 +2384,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'from',
--             optional: false,
+              optional: false,
 
               range: [965, 969],
               loc: {
@@ -2397,9 +2397,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'from',
--             optional: false,
+              optional: false,
 
               range: [965, 969],
               loc: {
@@ -2418,9 +2418,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'global',
--             optional: false,
+              optional: false,
 
               range: [973, 979],
               loc: {
@@ -2431,9 +2431,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'global',
--             optional: false,
+              optional: false,
 
               range: [973, 979],
               loc: {
@@ -2452,9 +2452,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'bigint',
--             optional: false,
+              optional: false,
 
               range: [983, 989],
               loc: {
@@ -2465,9 +2465,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'bigint',
--             optional: false,
+              optional: false,
 
               range: [983, 989],
               loc: {
@@ -2486,9 +2486,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'of',
--             optional: false,
+              optional: false,
 
               range: [993, 995],
               loc: {
@@ -2499,9 +2499,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'of',
--             optional: false,
+              optional: false,
 
               range: [993, 995],
               loc: {
@@ -2536,13 +2536,13 @@ Snapshot Diff:
             end: { column: 14, line: 71 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'X',
--         optional: false,
+          optional: false,
 
           range: [1030, 1031],
           loc: {
@@ -2559,19 +2559,19 @@ Snapshot Diff:
       },
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'a',
--               optional: false,
+                optional: false,
 
                 range: [1067, 1068],
                 loc: {
@@ -2580,8 +2580,8 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
--             override: false,
+              optional: false,
+              override: false,
               static: true,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -2596,7 +2596,7 @@ Snapshot Diff:
                     end: { column: 15, line: 73 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -2619,12 +2619,12 @@ Snapshot Diff:
               type: 'MethodDefinition',
               accessibility: 'private',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'b',
--               optional: false,
+                optional: false,
 
                 range: [1084, 1085],
                 loc: {
@@ -2633,8 +2633,8 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
--             override: false,
+              optional: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -2649,7 +2649,7 @@ Snapshot Diff:
                     end: { column: 16, line: 74 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -2672,12 +2672,12 @@ Snapshot Diff:
               type: 'MethodDefinition',
               accessibility: 'public',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'c',
--               optional: false,
+                optional: false,
 
                 range: [1100, 1101],
                 loc: {
@@ -2686,8 +2686,8 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
--             override: false,
+              optional: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -2702,7 +2702,7 @@ Snapshot Diff:
                     end: { column: 15, line: 75 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -2725,12 +2725,12 @@ Snapshot Diff:
               type: 'MethodDefinition',
               accessibility: 'protected',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'd',
--               optional: false,
+                optional: false,
 
                 range: [1120, 1121],
                 loc: {
@@ -2739,8 +2739,8 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
--             override: false,
+              optional: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -2753,12 +2753,12 @@ Snapshot Diff:
                       declarations: Array [
                         VariableDeclarator {
                           type: 'VariableDeclarator',
--                         definite: false,
+                          definite: false,
                           id: Identifier {
                             type: 'Identifier',
--                           decorators: Array [],
+                            decorators: Array [],
                             name: 'x',
--                           optional: false,
+                            optional: false,
 
                             range: [1134, 1135],
                             loc: {
@@ -2785,7 +2785,7 @@ Snapshot Diff:
                           },
                         },
                       ],
--                     declare: false,
+                      declare: false,
                       kind: 'let',
 
                       range: [1130, 1144],
@@ -2802,7 +2802,7 @@ Snapshot Diff:
                     end: { column: 3, line: 78 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: true,
                 id: null,
@@ -2829,13 +2829,13 @@ Snapshot Diff:
             end: { column: 1, line: 79 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'C',
--         optional: false,
+          optional: false,
 
           range: [1041, 1042],
           loc: {
@@ -2850,9 +2850,9 @@ Snapshot Diff:
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'X',
--             optional: false,
+              optional: false,
 
               range: [1054, 1055],
               loc: {

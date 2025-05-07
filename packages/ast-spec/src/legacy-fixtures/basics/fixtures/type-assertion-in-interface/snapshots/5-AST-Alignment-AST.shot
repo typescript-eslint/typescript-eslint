@@ -18,9 +18,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'isString',
--               optional: false,
+                optional: false,
 
                 range: [97, 105],
                 loc: {
@@ -29,14 +29,14 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'node',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSAnyKeyword {
@@ -63,8 +63,9 @@ Snapshot Diff:
                   },
                 },
               ],
--             readonly: false,
+              readonly: false,
 -             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypePredicate {
@@ -72,9 +73,9 @@ Snapshot Diff:
                   asserts: true,
                   parameterName: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'node',
--                   optional: false,
+                    optional: false,
 
                     range: [126, 130],
                     loc: {
@@ -113,13 +114,13 @@ Snapshot Diff:
             end: { column: 1, line: 5 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'AssertFoo',
--         optional: false,
+          optional: false,
 
           range: [83, 92],
           loc: {

@@ -30,9 +30,9 @@ Snapshot Diff:
             type: 'ExportSpecifier',
             exported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'C',
--             optional: false,
+              optional: false,
 
               range: [92, 93],
               loc: {
@@ -43,9 +43,9 @@ Snapshot Diff:
             exportKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'B',
--             optional: false,
+              optional: false,
 
               range: [87, 88],
               loc: {
@@ -69,8 +69,7 @@ Snapshot Diff:
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [73, 108],
     loc: {

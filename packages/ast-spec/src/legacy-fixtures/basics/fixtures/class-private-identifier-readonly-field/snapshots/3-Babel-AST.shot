@@ -3,12 +3,16 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: PrivateIdentifier {
               type: "PrivateIdentifier",
               name: "priv",
@@ -19,6 +23,8 @@ Program {
                 end: { column: 16, line: 4 },
               },
             },
+            optional: false,
+            override: false,
             readonly: true,
             static: false,
             typeAnnotation: TSTypeAnnotation {
@@ -55,9 +61,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -65,6 +75,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 112],

@@ -2870,14 +2870,14 @@ export class Converter {
               constraint: this.convertChild(node.typeParameter.constraint),
               key: this.convertChild(node.typeParameter.name),
               nameType: this.convertChild(node.nameType) ?? null,
-              optional:
-                node.questionToken &&
-                (node.questionToken.kind === SyntaxKind.QuestionToken ||
-                  getTextForTokenKind(node.questionToken.kind)),
-              readonly:
-                node.readonlyToken &&
-                (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword ||
-                  getTextForTokenKind(node.readonlyToken.kind)),
+              optional: node.questionToken
+                ? node.questionToken.kind === SyntaxKind.QuestionToken ||
+                  getTextForTokenKind(node.questionToken.kind)
+                : false,
+              readonly: node.readonlyToken
+                ? node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword ||
+                  getTextForTokenKind(node.readonlyToken.kind)
+                : undefined,
               typeAnnotation: node.type && this.convertChild(node.type),
             },
             'typeParameter',
@@ -3118,8 +3118,16 @@ export class Converter {
             node,
             this.ast,
           )!;
-          const withToken = findNextToken(openBraceToken, node, this.ast)!;
-          const withTokenRange = getRange(withToken, this.ast);
+          const withOrAssertToken = findNextToken(
+            openBraceToken,
+            node,
+            this.ast,
+          )!;
+          const withOrAssertTokenRange = getRange(withOrAssertToken, this.ast);
+          const withOrAssertName =
+            withOrAssertToken.kind === ts.SyntaxKind.AssertKeyword
+              ? 'assert'
+              : 'with';
 
           options = this.createNode<TSESTree.ObjectExpression>(node, {
             type: AST_NODE_TYPES.ObjectExpression,
@@ -3127,13 +3135,13 @@ export class Converter {
             properties: [
               this.createNode<TSESTree.Property>(node, {
                 type: AST_NODE_TYPES.Property,
-                range: [withTokenRange[0], node.attributes.end],
+                range: [withOrAssertTokenRange[0], node.attributes.end],
                 computed: false,
                 key: this.createNode<TSESTree.Identifier>(node, {
                   type: AST_NODE_TYPES.Identifier,
-                  range: withTokenRange,
+                  range: withOrAssertTokenRange,
                   decorators: [],
-                  name: 'with',
+                  name: withOrAssertName,
                   optional: false,
                   typeAnnotation: undefined,
                 }),

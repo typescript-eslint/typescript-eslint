@@ -190,7 +190,6 @@ describe('convert', () => {
       maps.esTreeNodeToTSNodeMap.get(maps.tsNodeToESTreeNodeMap.get(ast)),
     );
 
-    expect(maps.esTreeNodeToTSNodeMap.get(program.body[0])).toBeDefined();
     expect(program.body[0]).not.toBe(
       maps.tsNodeToESTreeNodeMap.get(ast.statements[0] as TSNode),
     );
@@ -224,7 +223,7 @@ describe('convert', () => {
         range: [0, 20],
         type: AST_NODE_TYPES.TSAbstractKeyword,
       });
-      expect(convertedNode).toEqual({
+      expect(convertedNode).toStrictEqual({
         loc: {
           end: {
             column: 25,
@@ -382,7 +381,7 @@ describe('convert', () => {
       esTsEnumDeclaration.members = [];
 
       // eslint-disable-next-line @typescript-eslint/no-deprecated
-      expect(esTsEnumDeclaration.members).toEqual([]);
+      expect(esTsEnumDeclaration.members).toStrictEqual([]);
       expect(Object.keys(esTsEnumDeclaration)).toContain('members');
     });
 

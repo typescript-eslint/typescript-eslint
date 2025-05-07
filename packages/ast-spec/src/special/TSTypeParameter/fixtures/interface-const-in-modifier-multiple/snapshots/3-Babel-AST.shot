@@ -13,9 +13,13 @@ Program {
           end: { column: 26, line: 1 },
         },
       },
+      declare: false,
+      extends: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "M",
+        optional: false,
 
         range: [10, 11],
         loc: {
@@ -31,6 +35,7 @@ Program {
             const: true,
             in: true,
             name: "T",
+            out: false,
 
             range: [12, 22],
             loc: {

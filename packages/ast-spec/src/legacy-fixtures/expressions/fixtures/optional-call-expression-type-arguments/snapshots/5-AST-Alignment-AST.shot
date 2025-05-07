@@ -20,9 +20,9 @@ Snapshot Diff:
               computed: false,
               object: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'foo',
--               optional: false,
+                optional: false,
 
                 range: [73, 76],
                 loc: {
@@ -33,9 +33,9 @@ Snapshot Diff:
               optional: true,
               property: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'bar',
--               optional: false,
+                optional: false,
 
                 range: [78, 81],
                 loc: {
@@ -59,9 +59,9 @@ Snapshot Diff:
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'A',
--                   optional: false,
+                    optional: false,
 
                     range: [82, 83],
                     loc: {
@@ -117,9 +117,9 @@ Snapshot Diff:
               computed: false,
               object: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'foo',
--               optional: false,
+                optional: false,
 
                 range: [88, 91],
                 loc: {
@@ -130,9 +130,9 @@ Snapshot Diff:
               optional: true,
               property: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'bar',
--               optional: false,
+                optional: false,
 
                 range: [93, 96],
                 loc: {

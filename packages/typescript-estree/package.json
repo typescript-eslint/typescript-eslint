@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "8.31.1",
+  "version": "8.32.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -45,30 +45,30 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist/ coverage/",
+    "clean": "rimraf dist/ coverage/",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "8.31.1",
-    "@typescript-eslint/visitor-keys": "8.31.1",
+    "@typescript-eslint/types": "8.32.0",
+    "@typescript-eslint/visitor-keys": "8.32.0",
     "debug": "^4.3.4",
     "fast-glob": "^3.3.2",
     "is-glob": "^4.0.3",
     "minimatch": "^9.0.4",
     "semver": "^7.6.0",
-    "ts-api-utils": "^2.0.1"
+    "ts-api-utils": "^2.1.0"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^3.1.1",
+    "@types/is-glob": "^4.0.4",
+    "@vitest/coverage-v8": "^3.1.2",
     "glob": "*",
     "prettier": "^3.2.5",
     "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.2"
   },
   "peerDependencies": {
     "typescript": ">=4.8.4 <5.9.0"

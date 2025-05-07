@@ -13,7 +13,12 @@ Snapshot Diff:
 -       body: TSModuleBlock {
 -         type: 'TSModuleBlock',
 -         body: Array [],
--
++       body: TSModuleDeclaration {
++         type: 'TSModuleDeclaration',
++         body: TSModuleBlock {
++           type: 'TSModuleBlock',
++           body: Array [],
+
 -         range: [26, 28],
 -         loc: {
 -           start: { column: 26, line: 1 },
@@ -29,12 +34,7 @@ Snapshot Diff:
 -           decorators: Array [],
 -           name: 'abd',
 -           optional: false,
-+       body: TSModuleDeclaration {
-+         type: 'TSModuleDeclaration',
-+         body: TSModuleBlock {
-+           type: 'TSModuleBlock',
-+           body: Array [],
-
+-
 -           range: [18, 21],
 +           range: [26, 28],
             loc: {
@@ -45,11 +45,13 @@ Snapshot Diff:
             },
           },
 -         right: Identifier {
++         declare: false,
++         global: false,
 +         id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'def',
--           optional: false,
+            optional: false,
 
             range: [22, 25],
             loc: {
@@ -66,9 +68,12 @@ Snapshot Diff:
 +         },
 +       },
 +       declare: true,
++       global: false,
 +       id: Identifier {
 +         type: 'Identifier',
++         decorators: Array [],
 +         name: 'abd',
++         optional: false,
 +
 +         range: [18, 21],
           loc: {

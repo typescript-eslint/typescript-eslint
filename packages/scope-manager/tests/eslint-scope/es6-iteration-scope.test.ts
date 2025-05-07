@@ -1,12 +1,5 @@
-import {
-  expectToBeBlockScope,
-  expectToBeForScope,
-  expectToBeFunctionScope,
-  expectToBeGlobalScope,
-  expectToBeVariableDefinition,
-  getRealVariables,
-  parseAndAnalyze,
-} from '../test-utils';
+import { DefinitionType, ScopeType } from '../../src/index.js';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('ES6 iteration scope', () => {
   it('let materialize iteration scope for ForInStatement#1', () => {
@@ -23,12 +16,12 @@ describe('ES6 iteration scope', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(variables).toHaveLength(2);
     expect(variables[0].name).toBe('arguments');
     expect(variables[1].name).toBe('i');
@@ -39,7 +32,7 @@ describe('ES6 iteration scope', () => {
     const iterScope = (scope = scopeManager.scopes[2]);
     variables = getRealVariables(scope.variables);
     const iterVariables = getRealVariables(iterScope.variables);
-    expectToBeForScope(scope);
+    assert.isScopeOfType(scope, ScopeType.for);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('i');
     expect(scope.references).toHaveLength(2);
@@ -50,11 +43,13 @@ describe('ES6 iteration scope', () => {
 
     scope = scopeManager.scopes[3];
     variables = getRealVariables(scope.variables);
-    expectToBeBlockScope(scope);
+    assert.isScopeOfType(scope, ScopeType.block);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(2);
     expect(scope.references[0].identifier.name).toBe('console');
-    expect(scope.references[0].resolved).toBeNull();
+
+    assert.isNull(scope.references[0].resolved);
+
     expect(scope.references[1].identifier.name).toBe('i');
     expect(scope.references[1].resolved).toBe(iterVariables[0]);
   });
@@ -74,12 +69,12 @@ describe('ES6 iteration scope', () => {
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
 
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(variables).toHaveLength(2);
     expect(variables[0].name).toBe('arguments');
     expect(variables[1].name).toBe('i');
@@ -91,7 +86,7 @@ describe('ES6 iteration scope', () => {
     variables = getRealVariables(scope.variables);
     const iterVariables = getRealVariables(iterScope.variables);
 
-    expectToBeForScope(scope);
+    assert.isScopeOfType(scope, ScopeType.for);
     expect(variables).toHaveLength(3);
     expect(variables[0].name).toBe('i');
     expect(variables[1].name).toBe('j');
@@ -108,11 +103,13 @@ describe('ES6 iteration scope', () => {
 
     scope = scopeManager.scopes[3];
     variables = getRealVariables(scope.variables);
-    expectToBeBlockScope(scope);
+    assert.isScopeOfType(scope, ScopeType.block);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(2);
     expect(scope.references[0].identifier.name).toBe('console');
-    expect(scope.references[0].resolved).toBeNull();
+
+    assert.isNull(scope.references[0].resolved);
+
     expect(scope.references[1].identifier.name).toBe('i');
     expect(scope.references[1].resolved).toBe(iterVariables[0]);
   });
@@ -133,14 +130,14 @@ describe('ES6 iteration scope', () => {
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
 
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
 
     const functionScope = (scope = scopeManager.scopes[1]);
     variables = getRealVariables(scope.variables);
     const functionVariables = getRealVariables(functionScope.variables);
 
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(variables).toHaveLength(3);
     expect(variables[0].name).toBe('arguments');
     expect(variables[1].name).toBe('i');
@@ -155,14 +152,14 @@ describe('ES6 iteration scope', () => {
     variables = getRealVariables(scope.variables);
     const iterVariables = getRealVariables(iterScope.variables);
 
-    expectToBeForScope(scope);
+    assert.isScopeOfType(scope, ScopeType.for);
     expect(variables).toHaveLength(3);
     expect(variables[0].name).toBe('i');
-    expectToBeVariableDefinition(variables[0].defs[0]);
+    assert.isDefinitionOfType(variables[0].defs[0], DefinitionType.Variable);
     expect(variables[1].name).toBe('j');
-    expectToBeVariableDefinition(variables[1].defs[0]);
+    assert.isDefinitionOfType(variables[1].defs[0], DefinitionType.Variable);
     expect(variables[2].name).toBe('k');
-    expectToBeVariableDefinition(variables[2].defs[0]);
+    assert.isDefinitionOfType(variables[2].defs[0], DefinitionType.Variable);
     expect(scope.references).toHaveLength(7);
     expect(scope.references[0].identifier.name).toBe('i');
     expect(scope.references[0].resolved).toBe(variables[0]);
@@ -175,17 +172,21 @@ describe('ES6 iteration scope', () => {
     expect(scope.references[4].identifier.name).toBe('i');
     expect(scope.references[4].resolved).toBe(variables[0]);
     expect(scope.references[5].identifier.name).toBe('okok');
-    expect(scope.references[5].resolved).toBeNull();
+
+    assert.isNull(scope.references[5].resolved);
+
     expect(scope.references[6].identifier.name).toBe('i');
     expect(scope.references[6].resolved).toBe(variables[0]);
 
     scope = scopeManager.scopes[3];
     variables = getRealVariables(scope.variables);
-    expectToBeBlockScope(scope);
+    assert.isScopeOfType(scope, ScopeType.block);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(4);
     expect(scope.references[0].identifier.name).toBe('console');
-    expect(scope.references[0].resolved).toBeNull();
+
+    assert.isNull(scope.references[0].resolved);
+
     expect(scope.references[1].identifier.name).toBe('i');
     expect(scope.references[1].resolved).toBe(iterVariables[0]);
     expect(scope.references[2].identifier.name).toBe('j');

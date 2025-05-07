@@ -16,7 +16,9 @@ Program {
                   computed: false,
                   key: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "foo",
+                    optional: false,
 
                     range: [60, 63],
                     loc: {
@@ -24,6 +26,9 @@ Program {
                       end: { column: 7, line: 3 },
                     },
                   },
+                  optional: false,
+                  readonly: false,
+                  static: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSAnyKeyword {
@@ -63,6 +68,9 @@ Program {
                       end: { column: 21, line: 4 },
                     },
                   },
+                  optional: false,
+                  readonly: false,
+                  static: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSAnyKeyword {
@@ -96,9 +104,13 @@ Program {
                 end: { column: 3, line: 5 },
               },
             },
+            declare: false,
+            extends: [],
             id: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "IntrinsicElements",
+              optional: false,
 
               range: [36, 53],
               loc: {
@@ -122,9 +134,12 @@ Program {
         },
       },
       declare: true,
+      global: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "JSX",
+        optional: false,
 
         range: [18, 21],
         loc: {
@@ -145,9 +160,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "componentBasic",
+            optional: false,
 
             range: [111, 125],
             loc: {
@@ -195,6 +213,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [105, 136],
@@ -208,9 +227,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "componentDashed",
+            optional: false,
 
             range: [143, 158],
             loc: {
@@ -277,6 +299,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [137, 181],

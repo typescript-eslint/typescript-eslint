@@ -6,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "computed",
+            optional: false,
 
             range: [79, 87],
             loc: {
@@ -35,6 +38,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [73, 97],
@@ -48,9 +52,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "computed2",
+            optional: false,
 
             range: [104, 113],
             loc: {
@@ -77,6 +84,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [98, 123],
@@ -87,15 +95,21 @@ Program {
     },
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "foo",
+              optional: false,
 
               range: [138, 141],
               loc: {
@@ -104,6 +118,8 @@ Program {
               },
             },
             optional: true,
+            override: false,
+            readonly: false,
             static: false,
             value: null,
 
@@ -116,9 +132,14 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "bar",
+              optional: false,
 
               range: [146, 149],
               loc: {
@@ -127,6 +148,8 @@ Program {
               },
             },
             optional: true,
+            override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -158,9 +181,14 @@ Program {
             type: "PropertyDefinition",
             accessibility: "private",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "baz",
+              optional: false,
 
               range: [170, 173],
               loc: {
@@ -169,6 +197,8 @@ Program {
               },
             },
             optional: true,
+            override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -199,9 +229,14 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: true,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "computed",
+              optional: false,
 
               range: [187, 195],
               loc: {
@@ -210,6 +245,8 @@ Program {
               },
             },
             optional: true,
+            override: false,
+            readonly: false,
             static: false,
             value: null,
 
@@ -222,6 +259,9 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: true,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Literal {
               type: "Literal",
               raw: "'literal'",
@@ -234,6 +274,8 @@ Program {
               },
             },
             optional: true,
+            override: false,
+            readonly: false,
             static: false,
             value: null,
 
@@ -246,6 +288,9 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: true,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Literal {
               type: "Literal",
               raw: "1",
@@ -258,6 +303,8 @@ Program {
               },
             },
             optional: true,
+            override: false,
+            readonly: false,
             static: false,
             value: null,
 
@@ -270,9 +317,14 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: true,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "computed2",
+              optional: false,
 
               range: [226, 235],
               loc: {
@@ -281,6 +333,8 @@ Program {
               },
             },
             optional: true,
+            override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -311,6 +365,9 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: true,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Literal {
               type: "Literal",
               raw: "'literal2'",
@@ -323,6 +380,8 @@ Program {
               },
             },
             optional: true,
+            override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -353,6 +412,9 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: true,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Literal {
               type: "Literal",
               raw: "2",
@@ -365,6 +427,8 @@ Program {
               },
             },
             optional: true,
+            override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -400,9 +464,13 @@ Program {
           end: { column: 1, line: 15 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [130, 133],
         loc: {
@@ -410,6 +478,7 @@ Program {
           end: { column: 9, line: 5 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [124, 289],

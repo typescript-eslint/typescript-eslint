@@ -6,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "asserted2",
+            optional: false,
 
             range: [77, 86],
             loc: {
@@ -28,7 +31,9 @@ Program {
                     type: "ReturnStatement",
                     argument: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "n",
+                      optional: false,
 
                       range: [111, 112],
                       loc: {
@@ -57,7 +62,9 @@ Program {
               params: [
                 Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "n",
+                  optional: false,
 
                   range: [95, 96],
                   loc: {
@@ -97,6 +104,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "var",
 
       range: [73, 117],

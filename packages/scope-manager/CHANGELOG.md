@@ -1,3 +1,9 @@
+## 8.32.0 (2025-05-05)
+
+This was a version bump only for scope-manager to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.31.1 (2025-04-28)
 
 This was a version bump only for scope-manager to align it with other projects, there were no code changes.

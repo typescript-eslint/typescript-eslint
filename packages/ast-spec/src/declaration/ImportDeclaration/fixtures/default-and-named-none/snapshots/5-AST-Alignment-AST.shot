@@ -29,9 +29,9 @@ Snapshot Diff:
             type: 'ImportDefaultSpecifier',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'a',
--             optional: false,
+              optional: false,
 
               range: [26, 27],
               loc: {
