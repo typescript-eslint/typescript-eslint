@@ -28,13 +28,19 @@ export interface ASTFixtureConfig {
 
 export interface Fixture {
   readonly absolute: string;
+  readonly babelParsed: ParserResponse;
   readonly config: ASTFixtureConfig;
+  readonly contents: string;
+  readonly errorLabel: ErrorLabel;
   readonly ext: string;
+  readonly isBabelError: boolean;
   readonly isError: boolean;
   readonly isJSX: boolean;
+  readonly isTSESTreeError: boolean;
   readonly name: string;
   readonly relative: string;
   readonly segments: string[];
+  readonly TSESTreeParsed: ParserResponse;
   readonly snapshotFiles: {
     readonly error: {
       readonly alignment: SnapshotPathFn;
@@ -48,6 +54,14 @@ export interface Fixture {
     };
   };
   readonly snapshotPath: string;
+  readonly vitestSnapshotHeader: string;
+}
+
+export enum ErrorLabel {
+  Babel = "Babel errored but TSESTree didn't",
+  Both = 'Both errored',
+  None = 'No errors',
+  TSESTree = "TSESTree errored but Babel didn't",
 }
 
 export enum ParserResponseType {

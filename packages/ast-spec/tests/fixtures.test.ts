@@ -1,18 +1,19 @@
 import * as glob from 'glob';
 import * as fs from 'node:fs/promises';
-import path from 'node:path';
+import * as path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { VitestSnapshotEnvironment } from 'vitest/snapshot';
 
-import type { ASTFixtureConfig, Fixture } from './util/parsers/parser-types';
+import type { ASTFixtureConfig, Fixture } from './util/parsers/parser-types.js';
 
-import { parseBabel } from './util/parsers/babel';
-import { ParserResponseType } from './util/parsers/parser-types';
-import { parseTSESTree } from './util/parsers/typescript-estree';
-import { serializeError } from './util/serialize-error';
-import { diffHasChanges, snapshotDiff } from './util/snapshot-diff';
+import { parseBabel } from './util/parsers/babel.js';
+import { ErrorLabel, ParserResponseType } from './util/parsers/parser-types.js';
+import { parseTSESTree } from './util/parsers/typescript-estree.js';
+import { serializeError } from './util/serialize-error.js';
+import { diffHasChanges, snapshotDiff } from './util/snapshot-diff.js';
 
-const PACKAGE_ROOT = path.resolve(__dirname, '..');
-const SRC_DIR = path.resolve(PACKAGE_ROOT, 'src');
+const PACKAGE_ROOT = path.join(__dirname, '..');
+const SRC_DIR = path.join(PACKAGE_ROOT, 'src');
 
 // Assign a segment set to this variable to limit the test to only this segment
 // This is super helpful if you need to debug why a specific fixture isn't producing the correct output
@@ -23,12 +24,7 @@ const ONLY = [].join(path.sep);
 const fixturesWithASTDifferences = new Set<string>();
 const fixturesWithTokenDifferences = new Set<string>();
 const fixturesConfiguredToExpectBabelToNotSupport = new Map<string, string>();
-enum ErrorLabel {
-  Babel = "Babel errored but TSESTree didn't",
-  Both = 'Both errored',
-  None = 'No errors',
-  TSESTree = "TSESTree errored but Babel didn't",
-}
+
 const fixturesWithErrorDifferences = {
   [ErrorLabel.Babel]: new Set<string>(),
   [ErrorLabel.TSESTree]: new Set<string>(),
@@ -49,202 +45,277 @@ const ERROR_FIXTURES: readonly string[] = glob.sync(
   },
 );
 
-const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
-  absolute => {
-    const relativeToSrc = path.relative(SRC_DIR, absolute);
-    const { dir, ext } = path.parse(relativeToSrc);
-    const segments = dir.split(path.sep).filter(s => s !== 'fixtures');
-    const name = segments.pop();
+describe('AST Fixtures', async () => {
+  const FIXTURES: readonly Fixture[] = await Promise.all(
+    [...VALID_FIXTURES, ...ERROR_FIXTURES].map(async absolute => {
+      const relativeToSrc = path.relative(SRC_DIR, absolute);
+      const { base, dir, ext } = path.parse(relativeToSrc);
+      const directorySegments = dir.split(path.sep);
+      const segments = directorySegments.filter(s => s !== 'fixtures');
+      const name = segments.pop();
 
-    assert.isDefined(name);
+      assert.isDefined(name);
 
-    const fixtureDir = path.join(SRC_DIR, dir);
-    const configPath = path.join(fixtureDir, 'config' /* .ts */);
-    const snapshotPath = path.join(fixtureDir, 'snapshots');
-    return {
-      absolute,
-      config: ((): ASTFixtureConfig => {
+      const fixtureDir = path.join(SRC_DIR, dir);
+      const configPath = path.join(fixtureDir, 'config.js');
+      const snapshotPath = path.join(fixtureDir, 'snapshots');
+
+      const config = await (async (): Promise<ASTFixtureConfig> => {
         try {
-          // eslint-disable-next-line @typescript-eslint/no-require-imports
-          return require(configPath).default;
+          const configModule = await import(pathToFileURL(configPath).href);
+          return configModule.default;
         } catch {
           return {};
         }
-      })(),
-      ext,
-      isError: /[\\/]_error_[\\/]/.test(absolute),
-      isJSX: ext.endsWith('x'),
-      name,
-      relative: path.relative(SRC_DIR, absolute).replaceAll('\\', '/'),
-      segments,
-      snapshotFiles: {
-        error: {
-          alignment: (i: number) =>
-            path.join(snapshotPath, `${i}-Alignment-Error.shot`),
-          babel: (i: number) =>
-            path.join(snapshotPath, `${i}-Babel-Error.shot`),
-          tsestree: (i: number) =>
-            path.join(snapshotPath, `${i}-TSESTree-Error.shot`),
-        },
-        success: {
-          alignment: {
-            ast: (i: number) =>
-              path.join(snapshotPath, `${i}-AST-Alignment-AST.shot`),
-            tokens: (i: number) =>
-              path.join(snapshotPath, `${i}-AST-Alignment-Tokens.shot`),
-          },
-          babel: {
-            ast: (i: number) => path.join(snapshotPath, `${i}-Babel-AST.shot`),
-            tokens: (i: number) =>
-              path.join(snapshotPath, `${i}-Babel-Tokens.shot`),
-          },
-          tsestree: {
-            ast: (i: number) =>
-              path.join(snapshotPath, `${i}-TSESTree-AST.shot`),
-            tokens: (i: number) =>
-              path.join(snapshotPath, `${i}-TSESTree-Tokens.shot`),
-          },
-        },
-      },
-      snapshotPath,
-    };
-  },
-);
+      })();
 
-function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
-  if (segments.length > 0) {
-    describe(segments[0], () => {
-      nestDescribe(fixture, segments.slice(1));
-    });
-  } else {
-    const test = async (): Promise<void> => {
-      const vitestSnapshotHeader = new VitestSnapshotEnvironment({
-        snapshotsDirName: fixture.snapshotPath,
-      }).getHeader();
+      const isJSX = ext.endsWith('x');
+      const isError = directorySegments.includes('_error_');
+      const relative = path.posix.join(...directorySegments, base);
 
-      const contents = await fs.readFile(fixture.absolute, {
+      const vitestSnapshotEnvironment = new VitestSnapshotEnvironment({
+        snapshotsDirName: snapshotPath,
+      });
+
+      const vitestSnapshotHeader = vitestSnapshotEnvironment.getHeader();
+
+      const contents = await fs.readFile(absolute, {
         encoding: 'utf-8',
       });
 
-      await fs.mkdir(fixture.snapshotPath, { recursive: true });
+      await fs.mkdir(snapshotPath, { recursive: true });
 
-      const tsestreeParsed = parseTSESTree(fixture, contents);
-      const babelParsed = parseBabel(fixture, contents);
-      const babelError = babelParsed.type === ParserResponseType.Error;
-      const tsestreeError = tsestreeParsed.type === ParserResponseType.Error;
+      const TSESTreeParsed = parseTSESTree({ config, contents, isJSX });
+      const babelParsed = parseBabel({ contents, isJSX });
+      const isBabelError = babelParsed.type === ParserResponseType.Error;
+      const isTSESTreeError = TSESTreeParsed.type === ParserResponseType.Error;
 
-      let errorLabel: ErrorLabel;
-      if (!babelError && tsestreeError) {
-        errorLabel = ErrorLabel.TSESTree;
-      } else if (babelError && !tsestreeError) {
-        errorLabel = ErrorLabel.Babel;
-      } else if (babelError && tsestreeError) {
-        errorLabel = ErrorLabel.Both;
-      } else {
-        errorLabel = ErrorLabel.None;
+      const getErrorLabel = (): ErrorLabel => {
+        if (!isBabelError && isTSESTreeError) {
+          return ErrorLabel.TSESTree;
+        }
+        if (isBabelError && !isTSESTreeError) {
+          return ErrorLabel.Babel;
+        }
+        if (isBabelError && isTSESTreeError) {
+          return ErrorLabel.Both;
+        }
+        return ErrorLabel.None;
+      };
+
+      const errorLabel = getErrorLabel();
+
+      if (
+        errorLabel === ErrorLabel.TSESTree ||
+        errorLabel === ErrorLabel.Babel
+      ) {
+        fixturesWithErrorDifferences[errorLabel].add(relative);
       }
 
-      if (fixture.isError) {
-        if (
-          errorLabel === ErrorLabel.TSESTree ||
-          errorLabel === ErrorLabel.Babel
-        ) {
-          fixturesWithErrorDifferences[errorLabel].add(fixture.relative);
+      if (config.expectBabelToNotSupport != null) {
+        fixturesConfiguredToExpectBabelToNotSupport.set(
+          relative,
+          config.expectBabelToNotSupport,
+        );
+      }
+
+      if (
+        TSESTreeParsed.type === ParserResponseType.NoError &&
+        babelParsed.type === ParserResponseType.NoError
+      ) {
+        const diffAstResult = snapshotDiff(
+          'TSESTree',
+          TSESTreeParsed.ast,
+          'Babel',
+          babelParsed.ast,
+        );
+
+        const diffTokensResult = snapshotDiff(
+          'TSESTree',
+          TSESTreeParsed.tokens,
+          'Babel',
+          babelParsed.tokens,
+        );
+
+        if (diffHasChanges(diffAstResult)) {
+          fixturesWithASTDifferences.add(relative);
         }
 
-        it('TSESTree - Error', async () => {
+        if (diffHasChanges(diffTokensResult)) {
+          fixturesWithTokenDifferences.add(relative);
+        }
+      }
+
+      return {
+        absolute,
+        babelParsed,
+        config,
+        contents,
+        errorLabel,
+        ext,
+        isBabelError,
+        isError,
+        isJSX,
+        isTSESTreeError,
+        name,
+        relative,
+        segments,
+        snapshotFiles: {
+          error: {
+            alignment: (i: number) =>
+              path.join(snapshotPath, `${i}-Alignment-Error.shot`),
+            babel: (i: number) =>
+              path.join(snapshotPath, `${i}-Babel-Error.shot`),
+            tsestree: (i: number) =>
+              path.join(snapshotPath, `${i}-TSESTree-Error.shot`),
+          },
+          success: {
+            alignment: {
+              ast: (i: number) =>
+                path.join(snapshotPath, `${i}-AST-Alignment-AST.shot`),
+              tokens: (i: number) =>
+                path.join(snapshotPath, `${i}-AST-Alignment-Tokens.shot`),
+            },
+            babel: {
+              ast: (i: number) =>
+                path.join(snapshotPath, `${i}-Babel-AST.shot`),
+              tokens: (i: number) =>
+                path.join(snapshotPath, `${i}-Babel-Tokens.shot`),
+            },
+            tsestree: {
+              ast: (i: number) =>
+                path.join(snapshotPath, `${i}-TSESTree-AST.shot`),
+              tokens: (i: number) =>
+                path.join(snapshotPath, `${i}-TSESTree-Tokens.shot`),
+            },
+          },
+        },
+        snapshotPath,
+        TSESTreeParsed,
+        vitestSnapshotHeader,
+      } satisfies Fixture;
+    }),
+  );
+
+  const FIXTURES_WITH_TEST_TITLES = FIXTURES.map(
+    fixture => [fixture.segments.join(' > '), fixture] as const,
+  );
+
+  describe.for(FIXTURES_WITH_TEST_TITLES)('%s', ([, fixture]) => {
+    describe(
+      fixture.name,
+      { only: [...fixture.segments, fixture.name].join(path.sep) === ONLY },
+      () => {
+        const {
+          babelParsed,
+          config,
+          contents,
+          errorLabel,
+          isError,
+          snapshotFiles,
+          TSESTreeParsed,
+          vitestSnapshotHeader,
+        } = fixture;
+
+        it.runIf(isError)('TSESTree - Error', async () => {
           await expect(
             [
               `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
-              serializeError(tsestreeParsed.error, contents),
+              serializeError(TSESTreeParsed.error, contents),
               '',
             ].join('\n'),
-          ).toMatchFileSnapshot(
-            fixture.snapshotFiles.error.tsestree(segments.length + 1),
-          );
+          ).toMatchFileSnapshot(snapshotFiles.error.tsestree(1));
         });
-        it('Babel - Error', async () => {
+
+        it.runIf(isError)('Babel - Error', async () => {
           await expect(
             [
               `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
               babelParsed.error,
               '',
             ].join('\n'),
-          ).toMatchFileSnapshot(
-            fixture.snapshotFiles.error.babel(segments.length + 2),
-          );
+          ).toMatchFileSnapshot(snapshotFiles.error.babel(2));
         });
-        it('Error Alignment', async () => {
+
+        it.runIf(isError)('Error Alignment', async () => {
           await expect(
             [
               `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
               errorLabel,
               '',
             ].join('\n'),
-          ).toMatchFileSnapshot(
-            fixture.snapshotFiles.error.alignment(segments.length + 3),
-          );
+          ).toMatchFileSnapshot(snapshotFiles.error.alignment(3));
         });
-        it('Should parse with errors', () => {
+
+        it.runIf(isError)('Should parse with errors', () => {
           // if this fails and you WEREN'T expecting a parser error, then your fixture should not be in the `_error_` subfolder
           // if this fails and you WERE expecting a parser error - then something is broken.
           expect(errorLabel).not.toBe(ErrorLabel.None);
         });
-      } else {
-        it('TSESTree - AST', async () => {
-          assert.isSuccessResponse(tsestreeParsed);
-          await expect(tsestreeParsed.ast).toMatchFileSnapshot(
-            fixture.snapshotFiles.success.tsestree.ast(segments.length + 1),
-          );
-        });
-        it('TSESTree - Tokens', async () => {
-          assert.isSuccessResponse(tsestreeParsed);
-          await expect(tsestreeParsed.tokens).toMatchFileSnapshot(
-            fixture.snapshotFiles.success.tsestree.tokens(segments.length + 2),
+
+        it.skipIf(isError)('TSESTree - AST', async () => {
+          assert.isSuccessResponse(TSESTreeParsed);
+          await expect(TSESTreeParsed.ast).toMatchFileSnapshot(
+            snapshotFiles.success.tsestree.ast(1),
           );
         });
 
-        if (fixture.config.expectBabelToNotSupport != null) {
-          fixturesConfiguredToExpectBabelToNotSupport.set(
-            fixture.relative,
-            fixture.config.expectBabelToNotSupport,
+        it.skipIf(isError)('TSESTree - Tokens', async () => {
+          assert.isSuccessResponse(TSESTreeParsed);
+          await expect(TSESTreeParsed.tokens).toMatchFileSnapshot(
+            snapshotFiles.success.tsestree.tokens(2),
           );
+        });
 
-          // eslint-disable-next-line vitest/no-identical-title -- intentional duplication that won't ever happen due to exclusionary conditions
-          it('Babel - Error', async () => {
+        const hasExpectBabelToNotSupport =
+          config.expectBabelToNotSupport != null;
+
+        // eslint-disable-next-line vitest/no-identical-title -- intentional duplication that won't ever happen due to exclusionary conditions
+        it.skipIf(isError || !hasExpectBabelToNotSupport)(
+          'Babel - Error',
+          async () => {
             await expect(
               [
                 `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
                 babelParsed.error,
                 '',
               ].join('\n'),
-            ).toMatchFileSnapshot(
-              fixture.snapshotFiles.error.babel(segments.length + 3),
-            );
-          });
-          // eslint-disable-next-line vitest/no-disabled-tests -- intentional skip for CLI documentation purposes
-          it.skip('Babel - Skipped as this fixture is configured to expect babel to error', () => {});
-          // eslint-disable-next-line vitest/no-disabled-tests -- intentional skip for CLI documentation purposes
-          it.skip('AST Alignment - Skipped as this fixture is configured to expect babel to error', () => {});
-        } else {
-          it('Babel - AST', async () => {
+            ).toMatchFileSnapshot(snapshotFiles.error.babel(3));
+          },
+        );
+
+        // eslint-disable-next-line vitest/no-disabled-tests -- intentional skip for CLI documentation purposes
+        it.skip('Babel - Skipped as this fixture is configured to expect babel to error', () => {});
+        // eslint-disable-next-line vitest/no-disabled-tests -- intentional skip for CLI documentation purposes
+        it.skip('AST Alignment - Skipped as this fixture is configured to expect babel to error', () => {});
+        it.skipIf(isError || hasExpectBabelToNotSupport)(
+          'Babel - AST',
+          async () => {
             assert.isSuccessResponse(babelParsed);
             await expect(babelParsed.ast).toMatchFileSnapshot(
-              fixture.snapshotFiles.success.babel.ast(segments.length + 3),
+              snapshotFiles.success.babel.ast(3),
             );
-          });
-          it('Babel - Tokens', async () => {
+          },
+        );
+
+        it.skipIf(isError || hasExpectBabelToNotSupport)(
+          'Babel - Tokens',
+          async () => {
             assert.isSuccessResponse(babelParsed);
             await expect(babelParsed.tokens).toMatchFileSnapshot(
-              fixture.snapshotFiles.success.babel.tokens(segments.length + 4),
+              snapshotFiles.success.babel.tokens(4),
             );
-          });
-          it('AST Alignment - AST', async () => {
-            assert.isSuccessResponse(tsestreeParsed);
+          },
+        );
+
+        it.skipIf(isError || hasExpectBabelToNotSupport)(
+          'AST Alignment - AST',
+          async () => {
+            assert.isSuccessResponse(TSESTreeParsed);
             assert.isSuccessResponse(babelParsed);
             const diffResult = snapshotDiff(
               'TSESTree',
-              tsestreeParsed.ast,
+              TSESTreeParsed.ast,
               'Babel',
               babelParsed.ast,
             );
@@ -254,20 +325,18 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
                 diffResult,
                 '',
               ].join('\n'),
-            ).toMatchFileSnapshot(
-              fixture.snapshotFiles.success.alignment.ast(segments.length + 5),
-            );
+            ).toMatchFileSnapshot(snapshotFiles.success.alignment.ast(5));
+          },
+        );
 
-            if (diffHasChanges(diffResult)) {
-              fixturesWithASTDifferences.add(fixture.relative);
-            }
-          });
-          it('AST Alignment - Token', async () => {
-            assert.isSuccessResponse(tsestreeParsed);
+        it.skipIf(isError || hasExpectBabelToNotSupport)(
+          'AST Alignment - Token',
+          async () => {
+            assert.isSuccessResponse(TSESTreeParsed);
             assert.isSuccessResponse(babelParsed);
             const diffResult = snapshotDiff(
               'TSESTree',
-              tsestreeParsed.tokens,
+              TSESTreeParsed.tokens,
               'Babel',
               babelParsed.tokens,
             );
@@ -277,41 +346,33 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
                 diffResult,
                 '',
               ].join('\n'),
-            ).toMatchFileSnapshot(
-              fixture.snapshotFiles.success.alignment.tokens(
-                segments.length + 6,
-              ),
-            );
+            ).toMatchFileSnapshot(snapshotFiles.success.alignment.tokens(6));
+          },
+        );
 
-            if (diffHasChanges(diffResult)) {
-              fixturesWithTokenDifferences.add(fixture.relative);
-            }
-          });
-        }
-
-        it('Should parse with no errors', () => {
+        it.skipIf(isError)('Should parse with no errors', () => {
           // log the error for debug purposes in case there wasn't supposed to be an error
           switch (errorLabel) {
             case ErrorLabel.Babel:
               assert.isErrorResponse(babelParsed);
-              if (fixture.config.expectBabelToNotSupport == null) {
+              if (config.expectBabelToNotSupport == null) {
                 console.error('Babel:\n', babelParsed.error);
               }
               break;
 
             case ErrorLabel.Both:
               assert.isErrorResponse(babelParsed);
-              assert.isErrorResponse(tsestreeParsed);
+              assert.isErrorResponse(TSESTreeParsed);
               console.error('Babel:\n', babelParsed.error);
-              console.error('TSESTree:\n', tsestreeParsed.error);
+              console.error('TSESTree:\n', TSESTreeParsed.error);
               break;
 
             case ErrorLabel.None:
               return;
 
             case ErrorLabel.TSESTree:
-              assert.isErrorResponse(tsestreeParsed);
-              console.error('TSESTree:\n', tsestreeParsed.error);
+              assert.isErrorResponse(TSESTreeParsed);
+              console.error('TSESTree:\n', TSESTreeParsed.error);
               break;
           }
 
@@ -328,28 +389,12 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
           // if this fails and you WEREN'T expecting a parser error - then something is broken.
           expect(errorLabel).not.toBe(ErrorLabel.Both);
 
-          if (fixture.config.expectBabelToNotSupport != null) {
-            // if this fails and you WERE expecting a parser error, then Babel parsed without error and you should remove the `expectBabelToNotSupport` config.
-            expect(errorLabel).toBe(ErrorLabel.Babel);
-          } else {
-            // if this fails and you WERE expecting a parser error, then your fixture should be in the `_error_` subfolder
-            // if this fails and you WEREN'T expecting a parser error - then something is broken.
-            expect(errorLabel).not.toBe(ErrorLabel.Babel);
-          }
+          // if this fails and you WERE expecting a parser error, then Babel parsed without error and you should remove the `expectBabelToNotSupport` config.
+          expect(errorLabel).toBe(ErrorLabel.Babel);
         });
-      }
-    };
-
-    describe(
-      fixture.name,
-      { only: [...fixture.segments, fixture.name].join(path.sep) === ONLY },
-      test,
+      },
     );
-  }
-}
-
-describe('AST Fixtures', async () => {
-  await Promise.all(FIXTURES.map(f => nestDescribe(f)));
+  });
 
   const vitestSnapshotHeader = new VitestSnapshotEnvironment({
     snapshotsDirName: __dirname,
@@ -364,9 +409,10 @@ describe('AST Fixtures', async () => {
         '',
       ].join('\n'),
     ).toMatchFileSnapshot(
-      path.resolve(__dirname, 'fixtures-with-differences-ast.shot'),
+      path.join(__dirname, 'fixtures-with-differences-ast.shot'),
     );
   });
+
   it('List fixtures with Token differences', async () => {
     await expect(
       [
@@ -375,9 +421,10 @@ describe('AST Fixtures', async () => {
         '',
       ].join('\n'),
     ).toMatchFileSnapshot(
-      path.resolve(__dirname, 'fixtures-with-differences-tokens.shot'),
+      path.join(__dirname, 'fixtures-with-differences-tokens.shot'),
     );
   });
+
   it('List fixtures with Error differences', async () => {
     await expect(
       [
@@ -395,9 +442,10 @@ describe('AST Fixtures', async () => {
         '',
       ].join('\n'),
     ).toMatchFileSnapshot(
-      path.resolve(__dirname, 'fixtures-with-differences-errors.shot'),
+      path.join(__dirname, 'fixtures-with-differences-errors.shot'),
     );
   });
+
   it('List fixtures we expect babel to not support', async () => {
     await expect(
       [
@@ -410,7 +458,7 @@ describe('AST Fixtures', async () => {
         '',
       ].join('\n'),
     ).toMatchFileSnapshot(
-      path.resolve(__dirname, 'fixtures-without-babel-support.shot'),
+      path.join(__dirname, 'fixtures-without-babel-support.shot'),
     );
   });
 });

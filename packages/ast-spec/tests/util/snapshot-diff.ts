@@ -1,8 +1,8 @@
 import { format } from '@vitest/pretty-format';
 import { diff } from '@vitest/utils/diff';
 
-import * as NodeSerializer from './serializers/Node';
-import * as StringSerializer from './serializers/string';
+import * as NodeSerializer from './serializers/Node.js';
+import * as StringSerializer from './serializers/string.js';
 
 function identity<T>(value: T): T {
   return value;

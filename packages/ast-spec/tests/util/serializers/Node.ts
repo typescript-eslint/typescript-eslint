@@ -1,8 +1,8 @@
 import type { NewPlugin } from '@vitest/pretty-format';
 
-import type * as TSESTree from '../../../src';
+import type * as TSESTree from '../../../src/index.js';
 
-import { AST_NODE_TYPES } from '../../../src';
+import { AST_NODE_TYPES } from '../../../src/index.js';
 
 function sortKeys<Node extends TSESTree.Node>(
   node: Node,
@@ -48,9 +48,7 @@ export const serializer: NewPlugin = {
     printer,
   ) {
     const keys = sortKeys(node);
-    const type = node.type;
-    const loc = node.loc;
-    const range = node.range;
+    const { loc, range, type } = node;
 
     const outputLines = [];
     const childIndentation = indentation + config.indent;
