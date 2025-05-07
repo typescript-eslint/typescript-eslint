@@ -2,17 +2,18 @@ import type {
   CreateProjectServiceSettings,
   ProjectServiceAndMetadata,
 } from '@typescript-eslint/project-service';
+import type { ProjectServiceOptions } from '@typescript-eslint/types';
 
 import { createProjectService } from '@typescript-eslint/project-service';
 import debug from 'debug';
 import path from 'node:path';
 import * as ts from 'typescript';
 
-import { validateDefaultProjectForFilesGlob } from '../create-program/validateDefaultProjectForFilesGlob';
 import type { TSESTreeOptions } from '../parser-options';
 import type { MutableParseSettings } from './index';
 
 import { ensureAbsolutePath } from '../create-program/shared';
+import { validateDefaultProjectForFilesGlob } from '../create-program/validateDefaultProjectForFilesGlob';
 import { isSourceFile } from '../source-files';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
@@ -22,7 +23,6 @@ import { getProjectConfigFiles } from './getProjectConfigFiles';
 import { inferSingleRun } from './inferSingleRun';
 import { resolveProjectList } from './resolveProjectList';
 import { warnAboutTSVersion } from './warnAboutTSVersion';
-import { ProjectServiceOptions } from '@typescript-eslint/types';
 
 const log = debug(
   'typescript-eslint:typescript-estree:parseSettings:createParseSettings',
