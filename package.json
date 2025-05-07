@@ -91,7 +91,7 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsdoc": "^50.5.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-perfectionist": "^3.9.1",
+    "eslint-plugin-perfectionist": "^4.12.3",
     "eslint-plugin-react": "^7.37.3",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-regexp": "^2.7.0",
