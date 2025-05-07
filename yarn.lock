@@ -548,13 +548,13 @@ __metadata:
   linkType: hard
 
 "@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.25.9, @babel/parser@npm:^7.26.0, @babel/parser@npm:^7.26.2":
-  version: 7.26.2
-  resolution: "@babel/parser@npm:7.26.2"
+  version: 7.27.2
+  resolution: "@babel/parser@npm:7.27.2"
   dependencies:
     "@babel/types": ^7.27.1
   bin:
     parser: ./bin/babel-parser.js
-  checksum: c88b5ea0adf357ef909cdc2c31e284a154943edc59f63f6e8a4c20bf773a1b2f3d8c2205e59c09ca7cdad91e7466300114548876529277a80651b6436a48d5d9
+  checksum: 1ac70a75028f1cc10eefb10ed2d83cf700ca3e1ddb4cf556a003fc5c4ca53ae83350bbb8065020fcc70d476fcf7bf1c17191b72384f719614ae18397142289cf
   languageName: node
   linkType: hard
 
