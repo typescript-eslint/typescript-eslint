@@ -606,7 +606,26 @@ export default tseslint.config(
     ],
     rules: {
       '@typescript-eslint/sort-type-constituents': 'off',
-      'perfectionist/sort-classes': 'error',
+      'perfectionist/sort-classes': [
+        'error',
+        {
+          groups: [
+            'index-signature',
+            'static-property',
+            'static-block',
+            ['protected-property', 'protected-accessor-property'],
+            ['private-property', 'private-accessor-property'],
+            ['property', 'accessor-property'],
+            'constructor',
+            'static-method',
+            'protected-method',
+            'private-method',
+            'method',
+            ['get-method', 'set-method'],
+            'unknown',
+          ],
+        },
+      ],
       'perfectionist/sort-enums': 'off',
       'perfectionist/sort-objects': 'error',
       'perfectionist/sort-union-types': [
