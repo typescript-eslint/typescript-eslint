@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import debug from 'debug';
 import * as ts from 'typescript';
 
@@ -139,7 +140,7 @@ describe(createProjectService, () => {
       );
     });
 
-    it('uses the default project compiler options when options.defaultProject is set and getParsedConfigFile succeeds', async () => {
+    it('uses the default project compiler options when options.defaultProject is set and getParsedConfigFile succeeds', () => {
       const compilerOptions: ts.CompilerOptions = { strict: true };
       mockGetParsedConfigFile.mockReturnValueOnce({
         errors: [],

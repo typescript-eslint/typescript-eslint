@@ -1,17 +1,12 @@
-/* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
+import type { ProjectServiceOptions } from '@typescript-eslint/types';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
-import debug from 'debug';
-
-import type { ProjectServiceOptions } from '@typescript-eslint/types';
-
 import { getParsedConfigFile } from '@typescript-eslint/tsconfig-utils';
+import debug from 'debug';
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
 
-const log = debug(
-  'typescript-eslint:project-service:create-program:createProjectService',
-);
+const log = debug('typescript-eslint:project-service:createProjectService');
 const logTsserverErr = debug('typescript-eslint:project-service:tsserver:err');
 const logTsserverInfo = debug(
   'typescript-eslint:project-service:tsserver:info',
@@ -23,13 +18,13 @@ const logTsserverEvent = debug(
   'typescript-eslint:project-service:tsserver:event',
 );
 
+// For TypeScript APIs that expect a function to be passed in
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const doNothing = (): void => {};
 
 const createStubFileWatcher = (): ts.FileWatcher => ({
   close: doNothing,
 });
-
-export type { ProjectServiceOptions };
 
 export type TypeScriptProjectService = ts.server.ProjectService;
 
@@ -73,12 +68,12 @@ export interface CreateProjectServiceSettings {
  *
  * const { service } = createProjectService();
  *
- * service.openClientFile('index.ts);
+ * service.openClientFile('index.ts');
  * ```
  */
 export function createProjectService({
-  options: optionsRaw,
   jsDocParsingMode,
+  options: optionsRaw,
   tsconfigRootDir,
 }: CreateProjectServiceSettings = {}): ProjectServiceAndMetadata {
   const options = {
@@ -211,3 +206,5 @@ export function createProjectService({
     service,
   };
 }
+
+export { type ProjectServiceOptions } from '@typescript-eslint/types';
