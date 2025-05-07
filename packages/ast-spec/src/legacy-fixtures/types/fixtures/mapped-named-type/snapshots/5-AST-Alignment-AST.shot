@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Test',
--         optional: false,
+          optional: false,
 
           range: [78, 82],
           loc: {
@@ -88,15 +88,16 @@ Snapshot Diff:
               end: { column: 22, line: 4 },
             },
           },
+-         optional: false,
           typeAnnotation: TSIndexedAccessType {
             type: 'TSIndexedAccessType',
             indexType: TSTypeReference {
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'P',
--               optional: false,
+                optional: false,
 
                 range: [117, 118],
                 loc: {
@@ -115,9 +116,9 @@ Snapshot Diff:
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'T',
--               optional: false,
+                optional: false,
 
                 range: [115, 116],
                 loc: {
@@ -141,6 +142,7 @@ Snapshot Diff:
           },
 +         typeParameter: TSTypeParameter {
 +           type: 'TSTypeParameter',
++           const: false,
 +           constraint: TSTypeOperator {
 +             type: 'TSTypeOperator',
 +             operator: 'keyof',
@@ -148,7 +150,9 @@ Snapshot Diff:
 +               type: 'TSTypeReference',
 +               typeName: Identifier {
 +                 type: 'Identifier',
++                 decorators: Array [],
 +                 name: 'T',
++                 optional: false,
 +
 +                 range: [104, 105],
 +                 loc: {
@@ -170,7 +174,9 @@ Snapshot Diff:
 +               end: { column: 15, line: 4 },
 +             },
 +           },
++           in: false,
 +           name: 'P',
++           out: false,
 +
 +           range: [93, 105],
 +           loc: {
@@ -190,8 +196,8 @@ Snapshot Diff:
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -204,8 +210,8 @@ Snapshot Diff:
 -                 end: { column: 11, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [83, 84],
               loc: {

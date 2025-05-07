@@ -14,11 +14,14 @@ Program {
           end: { column: 42, line: 3 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "test",
+        optional: false,
 
         range: [82, 86],
         loc: {
@@ -29,14 +32,18 @@ Program {
       params: [
         Identifier {
           type: "Identifier",
+          decorators: [],
           name: "abc",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "Map",
+                optional: false,
 
                 range: [92, 95],
                 loc: {

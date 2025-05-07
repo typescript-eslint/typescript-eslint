@@ -3,6 +3,7 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -13,9 +14,13 @@ Program {
           end: { column: 22, line: 1 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "E",
+        optional: false,
 
         range: [6, 7],
         loc: {
@@ -23,6 +28,7 @@ Program {
           end: { column: 7, line: 1 },
         },
       },
+      implements: [],
       superClass: null,
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
@@ -32,6 +38,7 @@ Program {
             const: true,
             in: true,
             name: "T",
+            out: false,
 
             range: [8, 18],
             loc: {

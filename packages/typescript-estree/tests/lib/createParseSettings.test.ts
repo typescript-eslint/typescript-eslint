@@ -36,7 +36,7 @@ describe(createParseSettings, () => {
         projectService: undefined,
       });
 
-      expect(parseSettings.projectService).toBeUndefined();
+      assert.isUndefined(parseSettings.projectService);
     });
 
     it('is not created when options.projectService is false, options.project is true, and process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE is true', () => {
@@ -47,7 +47,7 @@ describe(createParseSettings, () => {
         projectService: false,
       });
 
-      expect(parseSettings.projectService).toBeUndefined();
+      assert.isUndefined(parseSettings.projectService);
     });
   });
 

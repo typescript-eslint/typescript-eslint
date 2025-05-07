@@ -33,7 +33,9 @@ Program {
         },
         tag: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "foo",
+          optional: false,
 
           range: [73, 76],
           loc: {
@@ -48,7 +50,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "bar",
+                optional: false,
 
                 range: [77, 80],
                 loc: {

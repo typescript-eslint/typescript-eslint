@@ -17,9 +17,13 @@ Program {
               end: { column: 32, line: 1 },
             },
           },
+          declare: false,
+          global: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "ghi",
+            optional: false,
 
             range: [26, 29],
             loc: {
@@ -34,9 +38,13 @@ Program {
             end: { column: 32, line: 1 },
           },
         },
+        declare: false,
+        global: false,
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "def",
+          optional: false,
 
           range: [22, 25],
           loc: {
@@ -52,9 +60,12 @@ Program {
         },
       },
       declare: true,
+      global: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "abc",
+        optional: false,
 
         range: [18, 21],
         loc: {

@@ -9,8 +9,8 @@
       "executor": "@nx/eslint:lint"
     },
     "test-single": {
-      "cache": false,
       "executor": "@nx/vite:test",
+      "cache": false,
       "options": {
         "coverage": false
       }

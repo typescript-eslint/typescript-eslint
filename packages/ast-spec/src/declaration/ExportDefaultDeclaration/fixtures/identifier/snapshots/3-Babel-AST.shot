@@ -5,7 +5,9 @@ Program {
       type: "ExportDefaultDeclaration",
       declaration: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "x",
+        optional: false,
 
         range: [15, 16],
         loc: {

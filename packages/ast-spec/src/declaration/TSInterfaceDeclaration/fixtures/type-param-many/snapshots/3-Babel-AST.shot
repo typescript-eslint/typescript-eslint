@@ -13,9 +13,13 @@ Program {
           end: { column: 23, line: 1 },
         },
       },
+      declare: false,
+      extends: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "F",
+        optional: false,
 
         range: [10, 11],
         loc: {
@@ -28,7 +32,10 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "T",
+            out: false,
 
             range: [12, 13],
             loc: {
@@ -38,7 +45,10 @@ Program {
           },
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "U",
+            out: false,
 
             range: [15, 16],
             loc: {
@@ -48,7 +58,10 @@ Program {
           },
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "V",
+            out: false,
 
             range: [18, 19],
             loc: {

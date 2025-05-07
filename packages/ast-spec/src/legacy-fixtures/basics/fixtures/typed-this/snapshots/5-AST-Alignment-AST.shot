@@ -18,9 +18,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'addClickListener',
--               optional: false,
+                optional: false,
 
                 range: [97, 113],
                 loc: {
@@ -29,14 +29,14 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'onclick',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSFunctionType {
@@ -45,9 +45,9 @@ Snapshot Diff:
 +                     parameters: Array [
                         Identifier {
                           type: 'Identifier',
--                         decorators: Array [],
+                          decorators: Array [],
                           name: 'this',
--                         optional: false,
+                          optional: false,
                           typeAnnotation: TSTypeAnnotation {
                             type: 'TSTypeAnnotation',
                             typeAnnotation: TSVoidKeyword {
@@ -75,18 +75,18 @@ Snapshot Diff:
                         },
                         Identifier {
                           type: 'Identifier',
--                         decorators: Array [],
+                          decorators: Array [],
                           name: 'e',
--                         optional: false,
+                          optional: false,
                           typeAnnotation: TSTypeAnnotation {
                             type: 'TSTypeAnnotation',
                             typeAnnotation: TSTypeReference {
                               type: 'TSTypeReference',
                               typeName: Identifier {
                                 type: 'Identifier',
--                               decorators: Array [],
+                                decorators: Array [],
                                 name: 'Event',
--                               optional: false,
+                                optional: false,
 
                                 range: [139, 144],
                                 loc: {
@@ -157,8 +157,9 @@ Snapshot Diff:
                   },
                 },
               ],
--             readonly: false,
+              readonly: false,
 -             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSVoidKeyword {
@@ -193,13 +194,13 @@ Snapshot Diff:
             end: { column: 1, line: 5 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'UIElement',
--         optional: false,
+          optional: false,
 
           range: [83, 92],
           loc: {

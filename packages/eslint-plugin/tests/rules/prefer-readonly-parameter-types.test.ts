@@ -1058,9 +1058,10 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
             {
               from: 'file',
               name: 'RegExp',
-              path: path.relative(
-                process.cwd(),
-                path.join(__dirname, '..', '..'),
+              path: path.posix.join(
+                ...path
+                  .relative(process.cwd(), path.join(__dirname, '..', '..'))
+                  .split(path.sep),
               ),
             },
           ],

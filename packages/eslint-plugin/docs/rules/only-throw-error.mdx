@@ -124,6 +124,11 @@ interface Options {
   )[];
 
   /**
+   * Whether to allow rethrowing caught values that are not `Error` objects.
+   */
+  allowRethrowing?: boolean;
+
+  /**
    * Whether to always allow throwing values typed as `any`.
    */
   allowThrowingAny?: boolean;
@@ -136,6 +141,7 @@ interface Options {
 
 const defaultOptions: Options = {
   allow: [],
+  allowRethrowing: false,
   allowThrowingAny: true,
   allowThrowingUnknown: true,
 };

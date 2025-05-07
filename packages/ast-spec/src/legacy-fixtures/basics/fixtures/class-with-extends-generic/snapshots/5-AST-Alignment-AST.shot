@@ -10,7 +10,7 @@ Snapshot Diff:
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -21,13 +21,13 @@ Snapshot Diff:
             end: { column: 30, line: 3 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [79, 82],
           loc: {
@@ -35,12 +35,12 @@ Snapshot Diff:
             end: { column: 9, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Bar',
--         optional: false,
+          optional: false,
 
           range: [94, 97],
           loc: {
@@ -56,9 +56,9 @@ Snapshot Diff:
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'B',
--               optional: false,
+                optional: false,
 
                 range: [98, 99],
                 loc: {
@@ -86,8 +86,8 @@ Snapshot Diff:
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -100,8 +100,8 @@ Snapshot Diff:
 -                 end: { column: 11, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'A',
+              out: false,
 
               range: [83, 84],
               loc: {
