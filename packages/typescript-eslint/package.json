@@ -51,6 +51,7 @@
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
+    "@eslint/config-helpers": "^0.2",
     "@typescript-eslint/eslint-plugin": "8.32.0",
     "@typescript-eslint/parser": "8.32.0",
     "@typescript-eslint/utils": "8.32.0"
