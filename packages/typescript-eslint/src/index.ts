@@ -1,3 +1,5 @@
+import type * as eslintConfigHelpers from '@eslint/config-helpers';
+
 // see the comment in config-helper.ts for why this doesn't use /ts-eslint
 import type { TSESLint } from '@typescript-eslint/utils';
 
@@ -5,8 +7,6 @@ import pluginBase from '@typescript-eslint/eslint-plugin';
 import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw-plugin';
 
 import { config } from './config-helper';
-
-import type * as eslintConfigHelpers from '@eslint/config-helpers';
 
 export const parser: TSESLint.FlatConfig.Parser = rawPlugin.parser;
 
@@ -35,14 +35,13 @@ from using them.
 */
 export const plugin = pluginBase as unknown as eslintConfigHelpers.Plugin;
 
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion -- These "unnecessary" assertions work around "requires explicit type annotation" errors. */
 export const configs = {
   /**
    * Enables each the rules provided as a part of typescript-eslint. Note that many rules are not applicable in all codebases, or are meant to be configured.
    * @see {@link https://typescript-eslint.io/users/configs#all}
    */
-  all: rawPlugin.flatConfigs[
-    'flat/all'
-  ] as eslintConfigHelpers.ConfigWithExtendsArray,
+  all: rawPlugin.flatConfigs['flat/all'] as eslintConfigHelpers.Config[],
 
   /**
    * A minimal ruleset that sets only the required parser and plugin options needed to run typescript-eslint.
@@ -75,7 +74,7 @@ export const configs = {
    */
   recommended: rawPlugin.flatConfigs[
     'flat/recommended'
-  ] as eslintConfigHelpers.ConfigWithExtendsArray,
+  ] as eslintConfigHelpers.Config[],
 
   /**
    * Contains all of `recommended` along with additional recommended rules that require type information.
@@ -83,7 +82,7 @@ export const configs = {
    */
   recommendedTypeChecked: rawPlugin.flatConfigs[
     'flat/recommended-type-checked'
-  ] as eslintConfigHelpers.ConfigWithExtendsArray,
+  ] as eslintConfigHelpers.Config[],
 
   /**
    * A version of `recommended` that only contains type-checked rules and disables of any corresponding core ESLint rules.
@@ -91,15 +90,13 @@ export const configs = {
    */
   recommendedTypeCheckedOnly: rawPlugin.flatConfigs[
     'flat/recommended-type-checked-only'
-  ] as eslintConfigHelpers.ConfigWithExtendsArray,
+  ] as eslintConfigHelpers.Config[],
 
   /**
    * Contains all of `recommended`, as well as additional strict rules that can also catch bugs.
    * @see {@link https://typescript-eslint.io/users/configs#strict}
    */
-  strict: rawPlugin.flatConfigs[
-    'flat/strict'
-  ] as eslintConfigHelpers.ConfigWithExtendsArray,
+  strict: rawPlugin.flatConfigs['flat/strict'] as eslintConfigHelpers.Config[],
 
   /**
    * Contains all of `recommended`, `recommended-type-checked`, and `strict`, along with additional strict rules that require type information.
@@ -107,7 +104,7 @@ export const configs = {
    */
   strictTypeChecked: rawPlugin.flatConfigs[
     'flat/strict-type-checked'
-  ] as eslintConfigHelpers.ConfigWithExtendsArray,
+  ] as eslintConfigHelpers.Config[],
 
   /**
    * A version of `strict` that only contains type-checked rules and disables of any corresponding core ESLint rules.
@@ -115,7 +112,7 @@ export const configs = {
    */
   strictTypeCheckedOnly: rawPlugin.flatConfigs[
     'flat/strict-type-checked-only'
-  ] as eslintConfigHelpers.ConfigWithExtendsArray,
+  ] as eslintConfigHelpers.Config[],
 
   /**
    * Rules considered to be best practice for modern TypeScript codebases, but that do not impact program logic.
@@ -123,7 +120,7 @@ export const configs = {
    */
   stylistic: rawPlugin.flatConfigs[
     'flat/stylistic'
-  ] as eslintConfigHelpers.ConfigWithExtendsArray,
+  ] as eslintConfigHelpers.Config[],
 
   /**
    * Contains all of `stylistic`, along with additional stylistic rules that require type information.
@@ -131,7 +128,7 @@ export const configs = {
    */
   stylisticTypeChecked: rawPlugin.flatConfigs[
     'flat/stylistic-type-checked'
-  ] as eslintConfigHelpers.ConfigWithExtendsArray,
+  ] as eslintConfigHelpers.Config[],
 
   /**
    * A version of `stylistic` that only contains type-checked rules and disables of any corresponding core ESLint rules.
@@ -139,8 +136,9 @@ export const configs = {
    */
   stylisticTypeCheckedOnly: rawPlugin.flatConfigs[
     'flat/stylistic-type-checked-only'
-  ] as eslintConfigHelpers.ConfigWithExtendsArray,
+  ] as eslintConfigHelpers.Config[],
 };
+/* eslint-enable @typescript-eslint/no-unnecessary-type-assertion */
 
 export type Config = TSESLint.FlatConfig.ConfigFile;
 
