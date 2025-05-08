@@ -62,7 +62,7 @@ describe('config helper', () => {
   it('throws error containing config name when some extensions are undefined', () => {
     const extension: TSESLint.FlatConfig.Config = { rules: { rule1: 'error' } };
 
-    expect(() =>
+    expect(() => {
       tseslint.config(
         {
           extends: [extension],
@@ -79,8 +79,8 @@ describe('config helper', () => {
           name: 'my-config-2',
           rules: { rule: 'error' },
         },
-      ),
-    ).toThrow(
+      );
+    }).toThrow(
       'tseslint.config(): Config at index 1, named "my-config-2", contains non-object ' +
         'extensions at the following indices: 0, 2',
     );
@@ -89,7 +89,7 @@ describe('config helper', () => {
   it('throws error without config name when some extensions are undefined', () => {
     const extension: TSESLint.FlatConfig.Config = { rules: { rule1: 'error' } };
 
-    expect(() =>
+    expect(() => {
       tseslint.config(
         {
           extends: [extension],
@@ -105,8 +105,8 @@ describe('config helper', () => {
           ignores: ['common-ignored'],
           rules: { rule: 'error' },
         },
-      ),
-    ).toThrow(
+      );
+    }).toThrow(
       'tseslint.config(): Config at index 1 (anonymous) contains non-object extensions at ' +
         'the following indices: 0, 2',
     );
@@ -318,12 +318,12 @@ describe('config helper', () => {
   });
 
   it('throws error when extends is not an array', () => {
-    expect(() =>
+    expect(() => {
       tseslint.config({
         // @ts-expect-error purposely testing invalid values
         extends: 42,
-      }),
-    ).toThrow(
+      });
+    }).toThrow(
       "tseslint.config(): Config at index 0 (anonymous) has an 'extends' property that is not an array.",
     );
   });
@@ -341,12 +341,12 @@ describe('config helper', () => {
   );
 
   it('gives a special error message for string extends', () => {
-    expect(() =>
+    expect(() => {
       tseslint.config({
         // @ts-expect-error purposely testing invalid values
         extends: ['some-string'],
-      }),
-    ).toThrow(
+      });
+    }).toThrow(
       'tseslint.config(): Config at index 0 (anonymous) has an \'extends\' array that contains a string ("some-string") at index 0. ' +
         "This is a feature of eslint's `defineConfig()` helper and is not supported by typescript-eslint. " +
         'Please provide a config object instead.',
@@ -364,13 +364,13 @@ describe('config helper', () => {
   });
 
   it('complains when given an object with an invalid name', () => {
-    expect(() =>
+    expect(() => {
       tseslint.config({
         extends: [],
         // @ts-expect-error purposely testing invalid values
         name: 42,
-      }),
-    ).toThrow(
+      });
+    }).toThrow(
       "tseslint.config(): Config at index 0 has a 'name' property that is not a string.",
     );
   });
