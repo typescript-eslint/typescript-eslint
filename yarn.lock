@@ -5745,7 +5745,6 @@ __metadata:
     markdownlint-cli: ^0.44.0
     nx: 20.7.2
     prettier: 3.5.0
-    pretty-format: ^29.7.0
     rimraf: ^5.0.5
     semver: 7.7.0
     tsx: "*"
@@ -16053,7 +16052,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^29":
+"pretty-format@npm:*, pretty-format@npm:^29.7.0":
   version: 29.7.0
   resolution: "pretty-format@npm:29.7.0"
   dependencies:
