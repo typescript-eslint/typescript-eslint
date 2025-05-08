@@ -1,4 +1,5 @@
 import { defineConfig } from 'eslint/config';
+
 import * as tseslint from '../src/index';
 
 describe('tseslint.config() should be replaceable with defineConfig()', () => {
