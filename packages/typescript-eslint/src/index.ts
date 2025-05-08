@@ -6,6 +6,8 @@ import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw
 
 import { config } from './config-helper';
 
+import type * as eslintConfigHelpers from '@eslint/config-helpers';
+
 export const parser: TSESLint.FlatConfig.Parser = rawPlugin.parser;
 
 /*
@@ -31,30 +33,31 @@ use our new package); however legacy configs consumed via `@eslint/eslintrc`
 would never be able to satisfy this constraint and thus users would be blocked
 from using them.
 */
-export const plugin: TSESLint.FlatConfig.Plugin = pluginBase as Omit<
-  typeof pluginBase,
-  'configs'
->;
+export const plugin = pluginBase as unknown as eslintConfigHelpers.Plugin;
 
 export const configs = {
   /**
    * Enables each the rules provided as a part of typescript-eslint. Note that many rules are not applicable in all codebases, or are meant to be configured.
    * @see {@link https://typescript-eslint.io/users/configs#all}
    */
-  all: rawPlugin.flatConfigs['flat/all'],
+  all: rawPlugin.flatConfigs[
+    'flat/all'
+  ] as eslintConfigHelpers.ConfigWithExtendsArray,
 
   /**
    * A minimal ruleset that sets only the required parser and plugin options needed to run typescript-eslint.
    * We don't recommend using this directly; instead, extend from an earlier recommended rule.
    * @see {@link https://typescript-eslint.io/users/configs#base}
    */
-  base: rawPlugin.flatConfigs['flat/base'],
+  base: rawPlugin.flatConfigs['flat/base'] as eslintConfigHelpers.Config,
 
   /**
    * A utility ruleset that will disable type-aware linting and all type-aware rules available in our project.
    * @see {@link https://typescript-eslint.io/users/configs#disable-type-checked}
    */
-  disableTypeChecked: rawPlugin.flatConfigs['flat/disable-type-checked'],
+  disableTypeChecked: rawPlugin.flatConfigs[
+    'flat/disable-type-checked'
+  ] as eslintConfigHelpers.Config,
 
   /**
    * This is a compatibility ruleset that:
@@ -62,64 +65,81 @@ export const configs = {
    * - enables rules that make sense due to TS's typechecking / transpilation.
    * @see {@link https://typescript-eslint.io/users/configs/#eslint-recommended}
    */
-  eslintRecommended: rawPlugin.flatConfigs['flat/eslint-recommended'],
+  eslintRecommended: rawPlugin.flatConfigs[
+    'flat/eslint-recommended'
+  ] as eslintConfigHelpers.Config,
 
   /**
    * Recommended rules for code correctness that you can drop in without additional configuration.
    * @see {@link https://typescript-eslint.io/users/configs#recommended}
    */
-  recommended: rawPlugin.flatConfigs['flat/recommended'],
+  recommended: rawPlugin.flatConfigs[
+    'flat/recommended'
+  ] as eslintConfigHelpers.ConfigWithExtendsArray,
 
   /**
    * Contains all of `recommended` along with additional recommended rules that require type information.
    * @see {@link https://typescript-eslint.io/users/configs#recommended-type-checked}
    */
-  recommendedTypeChecked:
-    rawPlugin.flatConfigs['flat/recommended-type-checked'],
+  recommendedTypeChecked: rawPlugin.flatConfigs[
+    'flat/recommended-type-checked'
+  ] as eslintConfigHelpers.ConfigWithExtendsArray,
 
   /**
    * A version of `recommended` that only contains type-checked rules and disables of any corresponding core ESLint rules.
    * @see {@link https://typescript-eslint.io/users/configs#recommended-type-checked-only}
    */
-  recommendedTypeCheckedOnly:
-    rawPlugin.flatConfigs['flat/recommended-type-checked-only'],
+  recommendedTypeCheckedOnly: rawPlugin.flatConfigs[
+    'flat/recommended-type-checked-only'
+  ] as eslintConfigHelpers.ConfigWithExtendsArray,
 
   /**
    * Contains all of `recommended`, as well as additional strict rules that can also catch bugs.
    * @see {@link https://typescript-eslint.io/users/configs#strict}
    */
-  strict: rawPlugin.flatConfigs['flat/strict'],
+  strict: rawPlugin.flatConfigs[
+    'flat/strict'
+  ] as eslintConfigHelpers.ConfigWithExtendsArray,
 
   /**
    * Contains all of `recommended`, `recommended-type-checked`, and `strict`, along with additional strict rules that require type information.
    * @see {@link https://typescript-eslint.io/users/configs#strict-type-checked}
    */
-  strictTypeChecked: rawPlugin.flatConfigs['flat/strict-type-checked'],
+  strictTypeChecked: rawPlugin.flatConfigs[
+    'flat/strict-type-checked'
+  ] as eslintConfigHelpers.ConfigWithExtendsArray,
 
   /**
    * A version of `strict` that only contains type-checked rules and disables of any corresponding core ESLint rules.
    * @see {@link https://typescript-eslint.io/users/configs#strict-type-checked-only}
    */
-  strictTypeCheckedOnly: rawPlugin.flatConfigs['flat/strict-type-checked-only'],
+  strictTypeCheckedOnly: rawPlugin.flatConfigs[
+    'flat/strict-type-checked-only'
+  ] as eslintConfigHelpers.ConfigWithExtendsArray,
 
   /**
    * Rules considered to be best practice for modern TypeScript codebases, but that do not impact program logic.
    * @see {@link https://typescript-eslint.io/users/configs#stylistic}
    */
-  stylistic: rawPlugin.flatConfigs['flat/stylistic'],
+  stylistic: rawPlugin.flatConfigs[
+    'flat/stylistic'
+  ] as eslintConfigHelpers.ConfigWithExtendsArray,
 
   /**
    * Contains all of `stylistic`, along with additional stylistic rules that require type information.
    * @see {@link https://typescript-eslint.io/users/configs#stylistic-type-checked}
    */
-  stylisticTypeChecked: rawPlugin.flatConfigs['flat/stylistic-type-checked'],
+  stylisticTypeChecked: rawPlugin.flatConfigs[
+    'flat/stylistic-type-checked'
+  ] as eslintConfigHelpers.ConfigWithExtendsArray,
 
   /**
    * A version of `stylistic` that only contains type-checked rules and disables of any corresponding core ESLint rules.
    * @see {@link https://typescript-eslint.io/users/configs#stylistic-type-checked-only}
    */
-  stylisticTypeCheckedOnly:
-    rawPlugin.flatConfigs['flat/stylistic-type-checked-only'],
+  stylisticTypeCheckedOnly: rawPlugin.flatConfigs[
+    'flat/stylistic-type-checked-only'
+  ] as eslintConfigHelpers.ConfigWithExtendsArray,
 };
 
 export type Config = TSESLint.FlatConfig.ConfigFile;
