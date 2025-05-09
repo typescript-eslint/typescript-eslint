@@ -14,4 +14,12 @@ describe('tseslint.config() should be replaceable with defineConfig()', () => {
       },
     });
   });
+
+  it('should allow manual assignment of the parser', () => {
+    defineConfig({
+      languageOptions: {
+        parser: tseslint.parser,
+      },
+    });
+  });
 });
