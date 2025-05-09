@@ -5,7 +5,7 @@ import type {
 
 import rules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 
-import plugin from '../src/index.js';
+import tseslint from '../src/index.js';
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
 const EXTENSION_RULES = Object.entries(rules)
@@ -122,7 +122,7 @@ const localTest = test.extend<{
     { auto: false },
   ],
 
-  unfilteredConfigRules: [plugin.configs.all[2]?.rules, { auto: true }],
+  unfilteredConfigRules: [tseslint.configs.all[2]?.rules, { auto: true }],
 });
 
 describe('all.ts', () => {
@@ -145,7 +145,7 @@ describe('all.ts', () => {
 
 describe('disable-type-checked.ts', () => {
   localTest.scoped({
-    unfilteredConfigRules: plugin.configs.disableTypeChecked.rules,
+    unfilteredConfigRules: tseslint.configs.disableTypeChecked.rules,
   });
 
   localTest('disables all type checked rules', ({ configRulesObject }) => {
@@ -159,7 +159,7 @@ describe('disable-type-checked.ts', () => {
 
 describe('recommended.ts', () => {
   localTest.scoped({
-    unfilteredConfigRules: plugin.configs.recommended[2]?.rules,
+    unfilteredConfigRules: tseslint.configs.recommended[2]?.rules,
   });
 
   localTest(
@@ -185,7 +185,7 @@ describe('recommended.ts', () => {
 
 describe('recommended-type-checked.ts', () => {
   localTest.scoped({
-    unfilteredConfigRules: plugin.configs.recommendedTypeChecked[2]?.rules,
+    unfilteredConfigRules: tseslint.configs.recommendedTypeChecked[2]?.rules,
   });
 
   localTest('contains all recommended rules', ({ configRulesObject }) => {
@@ -207,7 +207,8 @@ describe('recommended-type-checked.ts', () => {
 
 describe('recommended-type-checked-only.ts', () => {
   localTest.scoped({
-    unfilteredConfigRules: plugin.configs.recommendedTypeCheckedOnly[2]?.rules,
+    unfilteredConfigRules:
+      tseslint.configs.recommendedTypeCheckedOnly[2]?.rules,
   });
 
   localTest(
@@ -232,7 +233,9 @@ describe('recommended-type-checked-only.ts', () => {
 });
 
 describe('strict.ts', () => {
-  localTest.scoped({ unfilteredConfigRules: plugin.configs.strict[2]?.rules });
+  localTest.scoped({
+    unfilteredConfigRules: tseslint.configs.strict[2]?.rules,
+  });
 
   localTest(
     'contains all strict rules, excluding type checked ones',
@@ -258,7 +261,7 @@ describe('strict.ts', () => {
 
 describe('strict-type-checked.ts', () => {
   localTest.scoped({
-    unfilteredConfigRules: plugin.configs.strictTypeChecked[2]?.rules,
+    unfilteredConfigRules: tseslint.configs.strictTypeChecked[2]?.rules,
   });
 
   localTest('contains all strict rules', ({ configRulesObject }) => {
@@ -280,7 +283,7 @@ describe('strict-type-checked.ts', () => {
 
 describe('strict-type-checked-only.ts', () => {
   localTest.scoped({
-    unfilteredConfigRules: plugin.configs.strictTypeCheckedOnly[2]?.rules,
+    unfilteredConfigRules: tseslint.configs.strictTypeCheckedOnly[2]?.rules,
   });
 
   localTest(
@@ -307,7 +310,7 @@ describe('strict-type-checked-only.ts', () => {
 
 describe('stylistic.ts', () => {
   localTest.scoped({
-    unfilteredConfigRules: plugin.configs.stylistic[2]?.rules,
+    unfilteredConfigRules: tseslint.configs.stylistic[2]?.rules,
   });
 
   localTest(
@@ -333,7 +336,7 @@ describe('stylistic.ts', () => {
 
 describe('stylistic-type-checked.ts', () => {
   localTest.scoped({
-    unfilteredConfigRules: plugin.configs.stylisticTypeChecked[2]?.rules,
+    unfilteredConfigRules: tseslint.configs.stylisticTypeChecked[2]?.rules,
   });
 
   localTest(
@@ -358,7 +361,7 @@ describe('stylistic-type-checked.ts', () => {
 
 describe('stylistic-type-checked-only.ts', () => {
   localTest.scoped({
-    unfilteredConfigRules: plugin.configs.stylisticTypeCheckedOnly[2]?.rules,
+    unfilteredConfigRules: tseslint.configs.stylisticTypeCheckedOnly[2]?.rules,
   });
 
   localTest(
