@@ -10,8 +10,8 @@ export interface SemverVersionConstraint {
   readonly range: string;
 }
 export type AtLeastVersionConstraint =
-  | `${number}.${number}.${number}`
   | `${number}.${number}.${number}-${string}`
+  | `${number}.${number}.${number}`
   | `${number}.${number}`
   | `${number}`;
 export type VersionConstraint =

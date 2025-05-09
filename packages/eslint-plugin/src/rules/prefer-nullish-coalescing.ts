@@ -47,13 +47,13 @@ export type Options = [
     ignoreIfStatements?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
     ignorePrimitives?:
+      | true
       | {
           bigint?: boolean;
           boolean?: boolean;
           number?: boolean;
           string?: boolean;
-        }
-      | true;
+        };
     ignoreTernaryTests?: boolean;
   },
 ];

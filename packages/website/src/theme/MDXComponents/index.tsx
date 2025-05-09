@@ -1,5 +1,5 @@
-import Admonition from '@theme/Admonition';
 import MDXComponents from '@theme-original/MDXComponents';
+import Admonition from '@theme/Admonition';
 
 import { BaseRuleReference } from './BaseRuleReference';
 import { HiddenHeading } from './HiddenHeading';

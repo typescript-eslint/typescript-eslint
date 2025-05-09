@@ -10,7 +10,7 @@ export interface EditorTabsProps<T extends boolean | string> {
   readonly change: (name: T) => void;
   readonly showModal?: (name: T) => void;
   readonly showVisualEditor?: boolean;
-  readonly tabs: ({ label: string; value: T } | T)[];
+  readonly tabs: (T | { label: string; value: T })[];
 }
 
 function EditorTabs<T extends boolean | string>({
