@@ -23,7 +23,9 @@ describe('parser', () => {
 
   it('parseForESLint() should work if options are `null`', () => {
     const code = 'const valid = true;';
-    expect(() => parseForESLint(code, null)).not.toThrow();
+    expect(() => {
+      parseForESLint(code, null);
+    }).not.toThrow();
   });
 
   it('parseAndGenerateServices() should be called with options', () => {
