@@ -1,3 +1,5 @@
+import type * as eslintConfigHelpers from '@eslint/config-helpers';
+
 // see the comment in config-helper.ts for why this doesn't use /ts-eslint
 import type { TSESLint } from '@typescript-eslint/utils';
 
@@ -6,7 +8,15 @@ import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw
 
 import { config } from './config-helper';
 
-export const parser: TSESLint.FlatConfig.Parser = rawPlugin.parser;
+// Couldn't find a way to directly get to the eslint Linter.Parser type...
+// We don't want to get it directly from eslint, since the supported eslint versions include eslint 8.x as well.
+// '@eslint/config-helpers' doesn't re-export the Linter namespace, just some of its contents.
+// So this is a bit yucky but it should get the type we want.
+type ESLintParserType = NonNullable<
+  NonNullable<eslintConfigHelpers.Config['languageOptions']>['parser']
+>;
+
+export const parser = rawPlugin.parser as ESLintParserType;
 
 /*
 we could build a plugin object here without the `configs` key - but if we do
@@ -31,10 +41,7 @@ use our new package); however legacy configs consumed via `@eslint/eslintrc`
 would never be able to satisfy this constraint and thus users would be blocked
 from using them.
 */
-export const plugin: TSESLint.FlatConfig.Plugin = pluginBase as Omit<
-  typeof pluginBase,
-  'configs'
->;
+export const plugin = pluginBase as unknown as eslintConfigHelpers.Plugin;
 
 export const configs = {
   /**
@@ -120,8 +127,18 @@ export const configs = {
    */
   stylisticTypeCheckedOnly:
     rawPlugin.flatConfigs['flat/stylistic-type-checked-only'],
-};
+} satisfies Record<
+  string,
+  eslintConfigHelpers.Config | eslintConfigHelpers.Config[]
+>;
 
+/**
+ * The expected shape of the default export of an eslint flat config file.
+ *
+ * @deprecated ESLint core provides their own config types, and we now recommend using them instead.
+ * @see {@link https://github.com/typescript-eslint/typescript-eslint/issues/10899}
+ * @see {@link https://github.com/eslint/eslint/pull/19487}
+ */
 export type Config = TSESLint.FlatConfig.ConfigFile;
 
 /*
