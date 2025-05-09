@@ -1,5 +1,5 @@
-import { parseForESLint } from '../../src/parser';
-import { serializer } from '../test-utils/ts-error-serializer';
+import { parseForESLint } from '../../src/index.js';
+import { serializer } from '../test-utils/ts-error-serializer.js';
 
 //------------------------------------------------------------------------------
 // Tests
@@ -12,7 +12,9 @@ describe('TSX', () => {
     it('filePath was not provided', () => {
       const code = 'const element = <T/>';
 
-      expect(() => parseForESLint(code)).toThrowErrorMatchingInlineSnapshot(`
+      expect(() => {
+        parseForESLint(code);
+      }).toThrowErrorMatchingInlineSnapshot(`
         TSError {
           "column": 18,
           "index": 18,
@@ -24,22 +26,22 @@ describe('TSX', () => {
 
     it("filePath was not provided and 'jsx:true' option", () => {
       const code = 'const element = <T/>';
-      expect(() =>
+      expect(() => {
         parseForESLint(code, {
           ecmaFeatures: {
             jsx: true,
           },
-        }),
-      ).not.toThrow();
+        });
+      }).not.toThrow();
     });
 
     it('test.ts', () => {
       const code = 'const element = <T/>';
-      expect(() =>
+      expect(() => {
         parseForESLint(code, {
           filePath: 'test.ts',
-        }),
-      ).toThrowErrorMatchingInlineSnapshot(`
+        });
+      }).toThrowErrorMatchingInlineSnapshot(`
         TSError {
           "column": 18,
           "index": 18,
@@ -52,14 +54,14 @@ describe('TSX', () => {
     it("test.ts with 'jsx:true' option", () => {
       const code = 'const element = <T/>';
 
-      expect(() =>
+      expect(() => {
         parseForESLint(code, {
           ecmaFeatures: {
             jsx: true,
           },
           filePath: 'test.ts',
-        }),
-      ).toThrowErrorMatchingInlineSnapshot(`
+        });
+      }).toThrowErrorMatchingInlineSnapshot(`
         TSError {
           "column": 18,
           "index": 18,
@@ -71,23 +73,23 @@ describe('TSX', () => {
 
     it('test.tsx', () => {
       const code = 'const element = <T/>';
-      expect(() =>
+      expect(() => {
         parseForESLint(code, {
           filePath: 'test.tsx',
-        }),
-      ).not.toThrow();
+        });
+      }).not.toThrow();
     });
 
     it("test.tsx with 'jsx:false' option", () => {
       const code = 'const element = <T/>';
-      expect(() =>
+      expect(() => {
         parseForESLint(code, {
           ecmaFeatures: {
             jsx: false,
           },
           filePath: 'test.tsx',
-        }),
-      ).not.toThrow();
+        });
+      }).not.toThrow();
     });
   });
 });

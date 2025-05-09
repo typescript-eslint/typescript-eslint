@@ -2,24 +2,30 @@ import type { ParserOptions } from '@typescript-eslint/types';
 
 import * as scopeManager from '@typescript-eslint/scope-manager';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree';
-import path from 'node:path';
 import { ScriptTarget } from 'typescript';
 
-import { parse, parseForESLint } from '../../src/parser';
+import { parse, parseForESLint } from '../../src/parser.js';
+import { FIXTURES_DIR } from '../test-utils/test-utils.js';
 
 describe('parser', () => {
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterAll(() => {
+    vi.restoreAllMocks();
   });
 
   it('parse() should return just the AST from parseForESLint()', () => {
     const code = 'const valid = true;';
-    expect(parse(code)).toEqual(parseForESLint(code).ast);
+    expect(parse(code)).toStrictEqual(parseForESLint(code).ast);
   });
 
   it('parseForESLint() should work if options are `null`', () => {
     const code = 'const valid = true;';
-    expect(() => parseForESLint(code, null)).not.toThrow();
+    expect(() => {
+      parseForESLint(code, null);
+    }).not.toThrow();
   });
 
   it('parseAndGenerateServices() should be called with options', () => {
@@ -36,7 +42,7 @@ describe('parser', () => {
       extraFileExtensions: ['.foo'],
       filePath: './isolated-file.src.ts',
       project: 'tsconfig.json',
-      tsconfigRootDir: path.join(__dirname, '..', 'fixtures', 'services'),
+      tsconfigRootDir: FIXTURES_DIR,
     };
     parseForESLint(code, config);
     expect(spy).toHaveBeenCalledExactlyOnceWith(code, {
@@ -107,7 +113,7 @@ describe('parser', () => {
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       filePath: 'isolated-file.src.ts',
       project: 'tsconfig.json',
-      tsconfigRootDir: path.join(__dirname, '..', 'fixtures', 'services'),
+      tsconfigRootDir: FIXTURES_DIR,
     };
 
     parseForESLint(code, config);
@@ -141,7 +147,7 @@ describe('parser', () => {
       const config: ParserOptions = {
         filePath: 'isolated-file.src.ts',
         project: 'tsconfig.json',
-        tsconfigRootDir: path.join(__dirname, '..', 'fixtures', 'services'),
+        tsconfigRootDir: FIXTURES_DIR,
       };
 
       vi.spyOn(
@@ -185,7 +191,7 @@ describe('parser', () => {
       extraFileExtensions: ['.foo'],
       filePath: 'isolated-file.src.ts',
       project: 'tsconfig.json',
-      tsconfigRootDir: path.join(__dirname, '..', 'fixtures', 'services'),
+      tsconfigRootDir: FIXTURES_DIR,
     };
 
     parseForESLint(code, config);

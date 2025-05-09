@@ -391,6 +391,7 @@ export default tseslint.config(
     },
     settings: { vitest: { typecheck: true } },
   },
+
   {
     files: ['packages/*/tests/**/vitest-custom-matchers.d.ts'],
     name: 'vitest-custom-matchers-declaration-files',
@@ -403,6 +404,7 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },
+
   // plugin rule tests
   {
     files: [
