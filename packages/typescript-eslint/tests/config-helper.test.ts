@@ -1,6 +1,6 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
-import tseslint from '../src/index';
+import tseslint from '../src/index.js';
 
 describe('config helper', () => {
   it('works without extends', () => {
@@ -10,7 +10,7 @@ describe('config helper', () => {
         ignores: ['ignored'],
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       {
         files: ['file'],
         ignores: ['ignored'],
@@ -25,7 +25,7 @@ describe('config helper', () => {
         extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       { rules: { rule1: 'error' } },
       { rules: { rule2: 'error' } },
       { rules: { rule: 'error' } },
@@ -40,7 +40,7 @@ describe('config helper', () => {
         ignores: ['common-ignored'],
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       {
         files: ['common-file'],
         ignores: ['common-ignored'],
@@ -62,7 +62,7 @@ describe('config helper', () => {
   it('throws error containing config name when some extensions are undefined', () => {
     const extension: TSESLint.FlatConfig.Config = { rules: { rule1: 'error' } };
 
-    expect(() =>
+    expect(() => {
       tseslint.config(
         {
           extends: [extension],
@@ -79,8 +79,8 @@ describe('config helper', () => {
           name: 'my-config-2',
           rules: { rule: 'error' },
         },
-      ),
-    ).toThrow(
+      );
+    }).toThrow(
       'tseslint.config(): Config at index 1, named "my-config-2", contains non-object ' +
         'extensions at the following indices: 0, 2',
     );
@@ -89,7 +89,7 @@ describe('config helper', () => {
   it('throws error without config name when some extensions are undefined', () => {
     const extension: TSESLint.FlatConfig.Config = { rules: { rule1: 'error' } };
 
-    expect(() =>
+    expect(() => {
       tseslint.config(
         {
           extends: [extension],
@@ -105,8 +105,8 @@ describe('config helper', () => {
           ignores: ['common-ignored'],
           rules: { rule: 'error' },
         },
-      ),
-    ).toThrow(
+      );
+    }).toThrow(
       'tseslint.config(): Config at index 1 (anonymous) contains non-object extensions at ' +
         'the following indices: 0, 2',
     );
@@ -121,7 +121,7 @@ describe('config helper', () => {
         name: 'my-config',
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       {
         files: ['common-file'],
         ignores: ['common-ignored'],
@@ -154,7 +154,7 @@ describe('config helper', () => {
         ignores: ['common-ignored'],
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       {
         files: ['common-file'],
         ignores: ['common-ignored'],
@@ -186,7 +186,7 @@ describe('config helper', () => {
         name: 'my-config',
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       {
         files: ['common-file'],
         ignores: ['common-ignored'],
@@ -217,7 +217,7 @@ describe('config helper', () => {
         [[[{ rules: { rule4: 'error' } }]]],
         [[[[{ rules: { rule5: 'error' } }]]]],
       ),
-    ).toEqual([
+    ).toStrictEqual([
       { rules: { rule1: 'error' } },
       { rules: { rule2: 'error' } },
       { rules: { rule3: 'error' } },
@@ -238,7 +238,7 @@ describe('config helper', () => {
         ],
         rules: { rule: 'error' },
       }),
-    ).toEqual([
+    ).toStrictEqual([
       { rules: { rule1: 'error' } },
       { rules: { rule2: 'error' } },
       { rules: { rule3: 'error' } },
@@ -254,7 +254,7 @@ describe('config helper', () => {
       ignores: ['ignored'],
     });
 
-    expect(configWithIgnores).toEqual([
+    expect(configWithIgnores).toStrictEqual([
       { ignores: ['ignored'], rules: { rule1: 'error' } },
       { ignores: ['ignored'], rules: { rule2: 'error' } },
     ]);
@@ -272,7 +272,7 @@ describe('config helper', () => {
       name: 'my-config',
     });
 
-    expect(configWithMetadata).toEqual([
+    expect(configWithMetadata).toStrictEqual([
       {
         files: ['file'],
         ignores: ['ignored'],
@@ -301,7 +301,7 @@ describe('config helper', () => {
         extends: [{ rules: { rule1: 'error' } }, {}],
         ignores: ['ignored'],
       }),
-    ).toEqual([
+    ).toStrictEqual([
       { ignores: ['ignored'], rules: { rule1: 'error' } },
       // Should not create global ignores
       {},
@@ -314,23 +314,23 @@ describe('config helper', () => {
         extends: [{ ignores: ['files/**/*'], name: 'global-ignore-stuff' }],
         ignores: ['ignored'],
       }),
-    ).toEqual([{ ignores: ['files/**/*'], name: 'global-ignore-stuff' }]);
+    ).toStrictEqual([{ ignores: ['files/**/*'], name: 'global-ignore-stuff' }]);
   });
 
   it('throws error when extends is not an array', () => {
-    expect(() =>
+    expect(() => {
       tseslint.config({
         // @ts-expect-error purposely testing invalid values
         extends: 42,
-      }),
-    ).toThrow(
+      });
+    }).toThrow(
       "tseslint.config(): Config at index 0 (anonymous) has an 'extends' property that is not an array.",
     );
   });
 
-  it.each([undefined, null, 'not a config object', 42])(
+  it.for([[undefined], [null], ['not a config object'], [42]] as const)(
     'passes invalid arguments through unchanged',
-    config => {
+    ([config], { expect }) => {
       expect(
         tseslint.config(
           // @ts-expect-error purposely testing invalid values
@@ -341,12 +341,12 @@ describe('config helper', () => {
   );
 
   it('gives a special error message for string extends', () => {
-    expect(() =>
+    expect(() => {
       tseslint.config({
         // @ts-expect-error purposely testing invalid values
         extends: ['some-string'],
-      }),
-    ).toThrow(
+      });
+    }).toThrow(
       'tseslint.config(): Config at index 0 (anonymous) has an \'extends\' array that contains a string ("some-string") at index 0. ' +
         "This is a feature of eslint's `defineConfig()` helper and is not supported by typescript-eslint. " +
         'Please provide a config object instead.',
@@ -360,17 +360,17 @@ describe('config helper', () => {
         extends: null,
         files: ['files'],
       }),
-    ).toEqual([{ files: ['files'] }]);
+    ).toStrictEqual([{ files: ['files'] }]);
   });
 
   it('complains when given an object with an invalid name', () => {
-    expect(() =>
+    expect(() => {
       tseslint.config({
         extends: [],
         // @ts-expect-error purposely testing invalid values
         name: 42,
-      }),
-    ).toThrow(
+      });
+    }).toThrow(
       "tseslint.config(): Config at index 0 has a 'name' property that is not a string.",
     );
   });
