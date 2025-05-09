@@ -1,8 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "./dist/out-tsc/root/vitest",
-    "resolveJsonModule": true
+    "outDir": "./dist"
   },
   "include": ["package.json", "vitest.config.base.mts", "vitest.config.mts"]
 }

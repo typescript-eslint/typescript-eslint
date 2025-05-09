@@ -1,8 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist/out-tsc/root/eslint",
-    "types": ["@types/node"],
+    "outDir": "./dist",
     "allowJs": true,
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true

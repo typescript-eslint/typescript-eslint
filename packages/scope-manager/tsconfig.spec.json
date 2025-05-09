@@ -1,20 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/scope-manager",
-    "module": "NodeNext",
-    "resolveJsonModule": true,
-    "types": ["node", "vitest/globals", "vitest/importMeta"]
+    "outDir": "../../dist/packages/scope-manager"
   },
-  "include": [
-    "vitest.config.mts",
-    "package.json",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts",
-    "tests"
-  ],
-  "exclude": ["**/fixtures/**"],
   "references": [
     {
       "path": "./tsconfig.build.json"

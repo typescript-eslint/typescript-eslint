@@ -1,19 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/visitor-keys",
-    "module": "NodeNext",
-    "resolveJsonModule": true,
-    "types": ["node", "vitest/globals", "vitest/importMeta"]
+    "outDir": "../../dist/packages/visitor-keys"
   },
-  "include": [
-    "vitest.config.mts",
-    "package.json",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts",
-    "tests"
-  ],
   "references": [
     {
       "path": "./tsconfig.build.json"
