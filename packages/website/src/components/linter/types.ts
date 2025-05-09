@@ -30,6 +30,7 @@ export interface WebLinterModule {
 export type PlaygroundSystem = {
   removeFile: (fileName: string) => void;
   searchFiles: (path: string) => string[];
+  getScriptFileNames: () => string[];
 } & Required<Pick<ts.System, 'deleteFile' | 'watchFile'>> &
   ts.System;
 

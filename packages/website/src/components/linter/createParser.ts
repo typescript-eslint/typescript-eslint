@@ -28,7 +28,7 @@ export function createParser(
   ): tsvfs.VirtualTypeScriptEnvironment => {
     return vfs.createVirtualTypeScriptEnvironment(
       system,
-      [...registeredFiles],
+      [...registeredFiles, ...system.getScriptFileNames()],
       window.ts,
       compilerOptions,
     );
