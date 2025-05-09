@@ -19,9 +19,10 @@
       "executor": "@nx/vite:test"
     },
     "generate-breaking-changes": {
+      "dependsOn": ["type-utils:build"],
       "executor": "nx:run-script",
       "options": {
-        "script": "generate:breaking-changes"
+        "script": "generate-breaking-changes"
       }
     }
   }

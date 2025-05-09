@@ -66,6 +66,16 @@
       "outputs": ["{projectRoot}/coverage"],
       "cache": true
     },
+    "@nx/eslint:lint": {
+      "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
+      "options": {
+        "noEslintrc": true,
+        "cache": true,
+        "eslintConfig": "{workspaceRoot}/eslint.config.mjs"
+      },
+      "outputs": ["{options.outputFile}"],
+      "cache": true
+    },
     "@nx/vite:test": {
       "dependsOn": ["^build"],
       "inputs": [
@@ -84,14 +94,9 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "dependsOn": [
-        "eslint-plugin:build",
-        "eslint-plugin-internal:build",
-        "typescript-eslint:build"
-      ],
+      "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
       "inputs": [
         "default",
-        "{workspaceRoot}/eslint.config.js",
         "{workspaceRoot}/eslint.config.mjs",
         {
           "dependentTasksOutputFiles": "**/*.js",
@@ -124,9 +129,10 @@
     ],
     "production": [
       "default",
-      "!{projectRoot}/**/?(*.)+(test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/**/?(*.)+(test).?(m|c)[jt]s?(x)?(.snap|.shot)",
+      "!{projectRoot}/tests",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/vitest.config.m[jt]s",
+      "!{projectRoot}/vitest.config.mts",
       "!{projectRoot}/src/test-setup.[jt]s"
     ]
   }
