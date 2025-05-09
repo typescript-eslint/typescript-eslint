@@ -28,7 +28,7 @@ function sortKeys<Node extends TSESTree.Node>(
 }
 
 function stringifyLineAndColumn(loc: TSESTree.Position): string {
-  return `{ column: ${loc.column}, line: ${loc.line} }`;
+  return `{ column: ${loc.column.toString()}, line: ${loc.line.toString()} }`;
 }
 
 function isObject(val: unknown): val is Record<string, unknown> {

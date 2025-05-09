@@ -6,6 +6,7 @@ import { VitestSnapshotEnvironment } from 'vitest/snapshot';
 
 import type { ASTFixtureConfig, Fixture } from './util/parsers/parser-types.js';
 
+import { getErrorLabel } from './util/getErrorLabel.js';
 import { parseBabel } from './util/parsers/babel.js';
 import { ErrorLabel, ParserResponseType } from './util/parsers/parser-types.js';
 import { parseTSESTree } from './util/parsers/typescript-estree.js';
@@ -86,20 +87,7 @@ describe('AST Fixtures', async () => {
       const isBabelError = babelParsed.type === ParserResponseType.Error;
       const isTSESTreeError = TSESTreeParsed.type === ParserResponseType.Error;
 
-      const getErrorLabel = (): ErrorLabel => {
-        if (!isBabelError && isTSESTreeError) {
-          return ErrorLabel.TSESTree;
-        }
-        if (isBabelError && !isTSESTreeError) {
-          return ErrorLabel.Babel;
-        }
-        if (isBabelError && isTSESTreeError) {
-          return ErrorLabel.Both;
-        }
-        return ErrorLabel.None;
-      };
-
-      const errorLabel = getErrorLabel();
+      const errorLabel = getErrorLabel(isBabelError, isTSESTreeError);
 
       if (
         errorLabel === ErrorLabel.TSESTree ||
@@ -159,33 +147,48 @@ describe('AST Fixtures', async () => {
         snapshotFiles: {
           error: {
             alignment: (i: number) =>
-              path.join(snapshotPath, `${i}-Alignment-Error.shot`),
+              path.join(snapshotPath, `${i.toString()}-Alignment-Error.shot`),
+
             babel: (i: number) =>
-              path.join(snapshotPath, `${i}-Babel-Error.shot`),
+              path.join(snapshotPath, `${i.toString()}-Babel-Error.shot`),
+
             tsestree: (i: number) =>
-              path.join(snapshotPath, `${i}-TSESTree-Error.shot`),
+              path.join(snapshotPath, `${i.toString()}-TSESTree-Error.shot`),
           },
+
           success: {
             alignment: {
               ast: (i: number) =>
-                path.join(snapshotPath, `${i}-AST-Alignment-AST.shot`),
+                path.join(
+                  snapshotPath,
+                  `${i.toString()}-AST-Alignment-AST.shot`,
+                ),
+
               tokens: (i: number) =>
-                path.join(snapshotPath, `${i}-AST-Alignment-Tokens.shot`),
+                path.join(
+                  snapshotPath,
+                  `${i.toString()}-AST-Alignment-Tokens.shot`,
+                ),
             },
+
             babel: {
               ast: (i: number) =>
-                path.join(snapshotPath, `${i}-Babel-AST.shot`),
+                path.join(snapshotPath, `${i.toString()}-Babel-AST.shot`),
+
               tokens: (i: number) =>
-                path.join(snapshotPath, `${i}-Babel-Tokens.shot`),
+                path.join(snapshotPath, `${i.toString()}-Babel-Tokens.shot`),
             },
+
             tsestree: {
               ast: (i: number) =>
-                path.join(snapshotPath, `${i}-TSESTree-AST.shot`),
+                path.join(snapshotPath, `${i.toString()}-TSESTree-AST.shot`),
+
               tokens: (i: number) =>
-                path.join(snapshotPath, `${i}-TSESTree-Tokens.shot`),
+                path.join(snapshotPath, `${i.toString()}-TSESTree-Tokens.shot`),
             },
           },
         },
+
         snapshotPath,
         TSESTreeParsed,
         vitestSnapshotHeader,
@@ -346,20 +349,17 @@ describe('AST Fixtures', async () => {
         });
 
         it.skipIf(isError)('Should parse with no errors', () => {
-          // log the error for debug purposes in case there wasn't supposed to be an error
           switch (errorLabel) {
             case ErrorLabel.Babel:
               assert.isErrorResponse(babelParsed);
-              if (config.expectBabelToNotSupport == null) {
-                console.error('Babel:\n', babelParsed.error);
-              }
+
               break;
 
             case ErrorLabel.Both:
               assert.isErrorResponse(babelParsed);
+
               assert.isErrorResponse(TSESTreeParsed);
-              console.error('Babel:\n', babelParsed.error);
-              console.error('TSESTree:\n', TSESTreeParsed.error);
+
               break;
 
             case ErrorLabel.None:
@@ -367,7 +367,7 @@ describe('AST Fixtures', async () => {
 
             case ErrorLabel.TSESTree:
               assert.isErrorResponse(TSESTreeParsed);
-              console.error('TSESTree:\n', TSESTreeParsed.error);
+
               break;
           }
 
