@@ -219,3 +219,18 @@ td > p:last-child {
 h5 {
   font-weight: bold;
 }
+
+/* stylelint-disable-next-line selector-id-pattern */
+#__docusaurus > div[role='banner'] {
+  font-size: 150%;
+  height: initial;
+  position: sticky;
+  padding: 1rem 1.5rem;
+  margin: auto;
+  max-width: max(60%, 70rem);
+}
+
+/* stylelint-disable-next-line selector-id-pattern */
+#__docusaurus > div[role='banner'] a {
+  font-weight: bold;
+}
