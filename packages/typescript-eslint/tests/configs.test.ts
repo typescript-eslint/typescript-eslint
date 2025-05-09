@@ -5,7 +5,7 @@ import type {
 
 import rules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 
-import plugin from '../src/index';
+import tseslint from '../src/index';
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
 const EXTENSION_RULES = Object.entries(rules)
@@ -107,7 +107,7 @@ function itHasBaseRulesOverriden(
 }
 
 describe('all.ts', () => {
-  const unfilteredConfigRules = plugin.configs.all[2]?.rules;
+  const unfilteredConfigRules = tseslint.configs.all[2]?.rules;
 
   it('contains all of the rules', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -125,7 +125,7 @@ describe('all.ts', () => {
 });
 
 describe('disable-type-checked.ts', () => {
-  const unfilteredConfigRules = plugin.configs.disableTypeChecked.rules;
+  const unfilteredConfigRules = tseslint.configs.disableTypeChecked.rules;
 
   it('disables all type checked rules', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -141,7 +141,7 @@ describe('disable-type-checked.ts', () => {
 });
 
 describe('recommended.ts', () => {
-  const unfilteredConfigRules = plugin.configs.recommended[2]?.rules;
+  const unfilteredConfigRules = tseslint.configs.recommended[2]?.rules;
 
   it('contains all recommended rules, excluding type checked ones', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -160,7 +160,8 @@ describe('recommended.ts', () => {
 });
 
 describe('recommended-type-checked.ts', () => {
-  const unfilteredConfigRules = plugin.configs.recommendedTypeChecked[2]?.rules;
+  const unfilteredConfigRules =
+    tseslint.configs.recommendedTypeChecked[2]?.rules;
 
   it('contains all recommended rules', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -179,7 +180,7 @@ describe('recommended-type-checked.ts', () => {
 
 describe('recommended-type-checked-only.ts', () => {
   const unfilteredConfigRules =
-    plugin.configs.recommendedTypeCheckedOnly[2]?.rules;
+    tseslint.configs.recommendedTypeCheckedOnly[2]?.rules;
 
   it('contains only type-checked recommended rules', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -198,7 +199,7 @@ describe('recommended-type-checked-only.ts', () => {
 });
 
 describe('strict.ts', () => {
-  const unfilteredConfigRules = plugin.configs.strict[2]?.rules;
+  const unfilteredConfigRules = tseslint.configs.strict[2]?.rules;
 
   it('contains all strict rules, excluding type checked ones', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -218,7 +219,7 @@ describe('strict.ts', () => {
 });
 
 describe('strict-type-checked.ts', () => {
-  const unfilteredConfigRules = plugin.configs.strictTypeChecked[2]?.rules;
+  const unfilteredConfigRules = tseslint.configs.strictTypeChecked[2]?.rules;
 
   it('contains all strict rules', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -236,7 +237,8 @@ describe('strict-type-checked.ts', () => {
 });
 
 describe('strict-type-checked-only.ts', () => {
-  const unfilteredConfigRules = plugin.configs.strictTypeCheckedOnly[2]?.rules;
+  const unfilteredConfigRules =
+    tseslint.configs.strictTypeCheckedOnly[2]?.rules;
 
   it('contains only type-checked strict rules', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -256,7 +258,7 @@ describe('strict-type-checked-only.ts', () => {
 });
 
 describe('stylistic.ts', () => {
-  const unfilteredConfigRules = plugin.configs.stylistic[2]?.rules;
+  const unfilteredConfigRules = tseslint.configs.stylistic[2]?.rules;
 
   it('contains all stylistic rules, excluding deprecated or type checked ones', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -275,7 +277,7 @@ describe('stylistic.ts', () => {
 });
 
 describe('stylistic-type-checked.ts', () => {
-  const unfilteredConfigRules = plugin.configs.stylisticTypeChecked[2]?.rules;
+  const unfilteredConfigRules = tseslint.configs.stylisticTypeChecked[2]?.rules;
   const configRules = filterRules(unfilteredConfigRules);
   // note: include deprecated rules so that the config doesn't change between major bumps
   const ruleConfigs = filterAndMapRuleConfigs({
@@ -293,7 +295,7 @@ describe('stylistic-type-checked.ts', () => {
 
 describe('stylistic-type-checked-only.ts', () => {
   const unfilteredConfigRules =
-    plugin.configs.stylisticTypeCheckedOnly[2]?.rules;
+    tseslint.configs.stylisticTypeCheckedOnly[2]?.rules;
 
   it('contains only type-checked stylistic rules', () => {
     const configRules = filterRules(unfilteredConfigRules);
