@@ -395,6 +395,46 @@ export default createRule<Options, MessageIds>({
       });
     }
 
+    function checkMemberExpression(node: TSESTree.MemberExpression): void {
+      if (!node.computed) {
+        return;
+      }
+
+      const propertyType = services.getTypeAtLocation(node.property);
+
+      if (propertyType.isLiteral()) {
+        const objectType = services.getTypeAtLocation(node.object);
+
+        const propertyName = propertyType.isStringLiteral()
+          ? propertyType.value
+          : String(propertyType.value as number);
+
+        const property = objectType.getProperty(propertyName);
+
+        const reason = getJsDocDeprecation(property);
+        if (reason == null) {
+          return;
+        }
+
+        if (typeMatchesSomeSpecifier(objectType, allow, services.program)) {
+          return;
+        }
+
+        context.report({
+          ...(reason
+            ? {
+                messageId: 'deprecatedWithReason',
+                data: { name: propertyName, reason },
+              }
+            : {
+                messageId: 'deprecated',
+                data: { name: propertyName },
+              }),
+          node: node.property,
+        });
+      }
+    }
+
     return {
       Identifier: checkIdentifier,
       JSXIdentifier(node): void {
@@ -402,6 +442,7 @@ export default createRule<Options, MessageIds>({
           checkIdentifier(node);
         }
       },
+      MemberExpression: checkMemberExpression,
       PrivateIdentifier: checkIdentifier,
       Super: checkIdentifier,
     };
