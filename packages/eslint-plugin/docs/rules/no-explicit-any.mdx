@@ -145,6 +145,36 @@ interface Garply {
 }
 ```
 
+## Alternatives to `any`
+
+Which type(s) to use instead of `any` depends on the context.
+
+### Type Parameter Constraints
+
+"Generic" type parameters are often used to represent a value of an unknown type.
+It can be tempting to use `any` as a type parameter constraint, but this is not recommended.
+
+First, `extends any` on its own does nothing: `<T extends any>` is equivalent to `<T>`.
+See [`@typescript-eslint/no-unnecessary-type-constraint`](./no-unnecessary-type-constraint.mdx) for more information.
+
+Within type parameters, `never` and `unknown` otherwise can generally be used instead.
+For example, the following code uses those two types in `AnyFunction` instead of `any`s to constrain `Callback` to any function type:
+
+```ts
+type AnyFunction = (...args: never[]) => unknown;
+
+function curry<Greeter extends AnyFunction>(greeter: Greeter, prefix: string) {
+  return (...args: Parameters<Greeter>) => `${prefix}: ${greeter(...args)}`;
+}
+
+const greet = (name: string) => `Hello, ${name}!`;
+const greetWithDate = curry(greet, 'Logged: ');
+
+greetWithDate('linter'); // => "Logged: Hello, linter!"
+```
+
+See [When to use `never` and `unknown` in TypeScript](https://blog.logrocket.com/when-to-use-never-unknown-typescript) for more information on those types.
+
 ## When Not To Use It
 
 `any` is always a dangerous escape hatch.
