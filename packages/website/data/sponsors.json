@@ -31,7 +31,7 @@
     "id": "Cybozu",
     "image": "https://images.opencollective.com/cybozu/933e46d/logo.png",
     "name": "Cybozu",
-    "totalDonations": 660000,
+    "totalDonations": 685000,
     "website": "https://cybozu.co.jp/"
   },
   {
@@ -56,6 +56,13 @@
     "website": "https://about.sourcegraph.com"
   },
   {
+    "id": "Vite",
+    "image": "https://images.opencollective.com/vite/e6d15e1/logo.png",
+    "name": "Vite",
+    "totalDonations": 300000,
+    "website": "https://vite.dev/"
+  },
+  {
     "id": "Canva",
     "image": "https://images.opencollective.com/canvaofficial/7217c4d/logo.png",
     "name": "Canva",
@@ -77,17 +84,10 @@
     "website": "https://www.airbnb.com/"
   },
   {
-    "id": "Vite",
-    "image": "https://images.opencollective.com/vite/e6d15e1/logo.png",
-    "name": "Vite",
-    "totalDonations": 240000,
-    "website": "https://vite.dev/"
-  },
-  {
     "id": "GitBook",
     "image": "https://images.opencollective.com/gitbook/820419f/logo.png",
     "name": "GitBook",
-    "totalDonations": 220000,
+    "totalDonations": 230000,
     "website": "https://www.gitbook.com"
   },
   {
@@ -182,6 +182,13 @@
     "website": "https://skunk.team"
   },
   {
+    "id": "Torutek",
+    "image": "https://images.opencollective.com/torutek/logo.png",
+    "name": "Torutek",
+    "totalDonations": 50000,
+    "website": "https://torutek.com"
+  },
+  {
     "id": "vlt",
     "image": "https://images.opencollective.com/vlt/33d4066/logo.png",
     "name": "vlt",
@@ -201,13 +208,6 @@
     "name": "Defined Networking",
     "totalDonations": 47500,
     "website": "https://www.defined.net"
-  },
-  {
-    "id": "Torutek",
-    "image": "https://images.opencollective.com/torutek/logo.png",
-    "name": "Torutek",
-    "totalDonations": 45000,
-    "website": "https://torutek.com"
   },
   {
     "id": "Quicko",
