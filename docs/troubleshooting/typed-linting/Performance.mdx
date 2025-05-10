@@ -38,6 +38,14 @@ In particular for typed linting:
   - [Performance Tracing](https://github.com/microsoft/TypeScript/wiki/Performance#performance-tracing) can spotlight specific slow types within your project.
 - [Using Project References](https://github.com/microsoft/TypeScript/wiki/Performance#using-project-references) -which requires enabling the [new "project service" (`parserOptions.projectService`) in v8](/blog/announcing-typescript-eslint-v8-beta#project-service)- can be helpful to speed up type checking on larger projects.
 
+If none of the above work, you can try adjusting the `--max-semi-space-size` of Node. Increasing the max size of a semi-space can improve performance at the cost of more memory consumption. You can read more about [the setting here](https://nodejs.org/api/cli.html#--max-semi-space-sizesize-in-mib).
+
+You can enable the setting by prepending your ESLint command like:
+
+```bash
+NODE_OPTIONS=--max-semi-space-size=256 eslint <rest of your command>
+```
+
 ## Wide includes in your `tsconfig`
 
 When using type-aware linting, you provide us with one or more tsconfigs.
