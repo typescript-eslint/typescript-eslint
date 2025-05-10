@@ -8,17 +8,10 @@
     "emitDeclarationOnly": false,
     "types": ["node"]
   },
-  "include": ["src/**/*.ts", "typings"],
-  "exclude": ["vitest.config.mts", "src/**/*.spec.ts", "src/**/*.test.ts"],
+  "include": ["src/**/*.ts"],
   "references": [
     {
-      "path": "../project-service/tsconfig.build.json"
-    },
-    {
       "path": "../tsconfig-utils/tsconfig.build.json"
-    },
-    {
-      "path": "../visitor-keys/tsconfig.build.json"
     },
     {
       "path": "../types/tsconfig.build.json"

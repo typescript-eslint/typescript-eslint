@@ -3,10 +3,10 @@ import type * as ts from 'typescript/lib/tsserverlibrary';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-import { CORE_COMPILER_OPTIONS } from './shared';
+import { CORE_COMPILER_OPTIONS } from './compilerOptions';
 
 /**
- * Utility offered by parser to help consumers parse a config file.
+ * Parses a TSConfig file using the same logic as tsserver.
  *
  * @param configFile the path to the tsconfig.json file, relative to `projectDirectory`
  * @param projectDirectory the project directory to use as the CWD, defaults to `process.cwd()`
