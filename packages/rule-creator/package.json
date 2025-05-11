@@ -1,7 +1,7 @@
 {
-  "name": "@typescript-eslint/utils",
+  "name": "@typescript-eslint/rule-creator",
   "version": "8.32.0",
-  "description": "Utilities for working with TypeScript + ESLint together",
+  "description": "TODO",
   "files": [
     "dist",
     "!*.tsbuildinfo",
@@ -15,22 +15,6 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./ast-utils": {
-      "types": "./dist/ast-utils/index.d.ts",
-      "default": "./dist/ast-utils/index.js"
-    },
-    "./eslint-utils": {
-      "types": "./dist/eslint-utils/index.d.ts",
-      "default": "./dist/eslint-utils/index.js"
-    },
-    "./json-schema": {
-      "types": "./dist/json-schema.d.ts",
-      "default": "./dist/json-schema.js"
-    },
-    "./ts-eslint": {
-      "types": "./dist/ts-eslint/index.d.ts",
-      "default": "./dist/ts-eslint/index.js"
-    },
     "./package.json": "./package.json"
   },
   "types": "./dist/index.d.ts",
@@ -40,12 +24,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
-    "directory": "packages/utils"
+    "directory": "packages/rule-creator"
   },
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
-  "homepage": "https://typescript-eslint.io/packages/utils",
+  "homepage": "https://typescript-eslint.io/packages/rule-creator",
   "license": "MIT",
   "keywords": [
     "eslint",
@@ -54,32 +38,27 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist/ coverage/",
+    "clean": "rimraf dist/ coverage/",
+    "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
+    "generate-lib": "npx nx generate-lib repo",
     "lint": "npx nx lint",
     "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
-    "@eslint-community/eslint-utils": "^4.7.0",
-    "@typescript-eslint/parser-services": "8.32.0",
-    "@typescript-eslint/rule-creator": "8.32.0",
-    "@typescript-eslint/scope-manager": "8.32.0",
     "@typescript-eslint/types": "8.32.0",
-    "@typescript-eslint/types-eslint": "8.32.0",
-    "@typescript-eslint/typescript-estree": "8.32.0"
-  },
-  "peerDependencies": {
-    "eslint": "^8.57.0 || ^9.0.0",
-    "typescript": ">=4.8.4 <5.9.0"
+    "@typescript-eslint/visitor-keys": "8.32.0"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^3.1.3",
+    "@typescript-eslint/typescript-estree": "8.32.0",
+    "@vitest/coverage-v8": "^3.1.2",
+    "@vitest/pretty-format": "^3.1.2",
+    "glob": "*",
     "prettier": "^3.2.5",
     "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.1.3"
+    "vitest": "^3.1.2"
   },
   "funding": {
     "type": "opencollective",

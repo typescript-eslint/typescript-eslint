@@ -34,7 +34,6 @@ export * from './truthinessUtils';
 export * from '@typescript-eslint/type-utils';
 
 export const {
-  applyDefault,
   deepMerge,
   getParserServices,
   isObjectNotArray,
