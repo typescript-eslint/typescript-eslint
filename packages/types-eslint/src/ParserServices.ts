@@ -4,6 +4,10 @@ import {
 } from '@typescript-eslint/typescript-estree';
 import ts from 'typescript';
 
+// NOTE: These types are intentionally in types-eslint, not parser-services,
+// so that packages such as rule-creator can refer to them without taking a full
+// dependency on all the runtime logic & dependencies of parser-services.
+
 export interface ParserServicesBase {
   emitDecoratorMetadata: boolean | undefined;
   experimentalDecorators: boolean | undefined;

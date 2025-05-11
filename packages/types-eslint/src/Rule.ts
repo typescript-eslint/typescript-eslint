@@ -1,10 +1,11 @@
-import type { JSONSchema4 } from '../json-schema';
-import type { ParserServices, TSESTree } from '../ts-estree';
+import type { TSESTree } from '@typescript-eslint/typescript-estree';
 import type { AST } from './AST';
 import type { FlatConfig } from './Config';
 import type { Linter } from './Linter';
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
+import { JSONSchema4 } from './JSONSchema4';
+import { ParserServices } from './ParserServices';
 
 export type RuleRecommendation = 'recommended' | 'strict' | 'stylistic';
 

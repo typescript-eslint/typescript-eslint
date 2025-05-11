@@ -11,4 +11,4 @@ export type {
   ParserServices,
   ParserServicesWithoutTypeInformation,
   ParserServicesWithTypeInformation,
-} from '@typescript-eslint/parser-services';
+} from '@typescript-eslint/types-eslint';

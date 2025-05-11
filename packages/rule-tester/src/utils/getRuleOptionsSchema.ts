@@ -1,6 +1,6 @@
 // Forked from https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/lib/shared/config-validator.js#LL50-L82C2
 
-import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+import type { JSONSchema4 } from '@typescript-eslint/types-eslint';
 import type { AnyRuleModule } from '@typescript-eslint/utils/ts-eslint';
 
 import { isReadonlyArray } from './isReadonlyArray';

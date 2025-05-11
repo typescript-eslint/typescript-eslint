@@ -316,6 +316,7 @@ namespace Linter {
  * simply parses and reports on the code. In particular, the Linter object does not process configuration objects
  * or files.
  */
+// @ts-expect-error -- TODO: I don't know why this is now needed...
 class Linter extends (ESLintLinter as typeof LinterBase) {}
 
 export { Linter };

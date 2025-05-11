@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import type { ParserServices, TSESTree } from '../ts-estree';
+import type { TSESTree } from '@typescript-eslint/typescript-estree';
 import type { ParserOptions } from './ParserOptions';
 import type { Scope } from './Scope';
+import { ParserServices } from './ParserServices';
 
 export namespace Parser {
   export interface ParserMeta {

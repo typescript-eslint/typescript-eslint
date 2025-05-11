@@ -28,7 +28,7 @@ import type {
   TSESTree,
   TSESTreeOptions,
 } from '@typescript-eslint/typescript-estree';
-import { ParserServices } from './types';
+import { ParserServices } from '@typescript-eslint/types-eslint';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 
 const log = debug('typescript-eslint:parser-services:parser');

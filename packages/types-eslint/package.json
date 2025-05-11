@@ -1,5 +1,5 @@
 {
-  "name": "@typescript-eslint/parser-services",
+  "name": "@typescript-eslint/types-eslint",
   "version": "8.32.0",
   "description": "TODO",
   "files": [
@@ -24,12 +24,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
-    "directory": "packages/parser-services"
+    "directory": "packages/types-eslint"
   },
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
-  "homepage": "https://typescript-eslint.io",
+  "homepage": "https://typescript-eslint.io/packages/types-eslint",
   "license": "MIT",
   "keywords": [
     "eslint",
@@ -38,22 +38,23 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist/ coverage/",
+    "clean": "rimraf dist/ coverage/",
+    "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
+    "generate-lib": "npx nx generate-lib repo",
     "lint": "npx nx lint",
     "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types-eslint": "^8.32.0",
-    "@typescript-eslint/typescript-estree": "^8.32.0",
-    "debug": "^4.3.4",
-    "fast-glob": "^3.3.2",
-    "is-glob": "^4.0.3"
+    "@typescript-eslint/types": "8.32.0",
+    "@typescript-eslint/visitor-keys": "8.32.0"
   },
   "devDependencies": {
+    "@typescript-eslint/typescript-estree": "8.32.0",
     "@vitest/coverage-v8": "^3.1.2",
+    "@vitest/pretty-format": "^3.1.2",
+    "glob": "*",
     "prettier": "^3.2.5",
     "rimraf": "*",
     "typescript": "*",

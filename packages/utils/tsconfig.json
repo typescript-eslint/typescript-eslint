@@ -13,6 +13,9 @@
       "path": "../types"
     },
     {
+      "path": "../types-eslint"
+    },
+    {
       "path": "../scope-manager"
     },
     {

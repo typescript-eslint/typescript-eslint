@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { RuleTester as ESLintRuleTester } from 'eslint';
 
-import type { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
 import type { ClassicConfig } from './Config';
 import type { Linter } from './Linter';
 import type { ParserOptions } from './ParserOptions';
@@ -11,6 +10,10 @@ import type {
   RuleModule,
   SharedConfigurationSettings,
 } from './Rule';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+} from '@typescript-eslint/typescript-estree';
 
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
@@ -226,4 +229,5 @@ declare class RuleTesterBase {
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
+// @ts-expect-error -- TODO: I don't know why this is now needed...
 export class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}

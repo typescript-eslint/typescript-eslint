@@ -8,11 +8,9 @@
     "emitDeclarationOnly": false,
     "types": ["node"]
   },
-  "include": ["src/**/*.ts", "typings"],
+  "include": ["src/**/*.ts"],
+  "exclude": ["vitest.config.mts", "src/**/*.spec.ts", "src/**/*.test.ts"],
   "references": [
-    {
-      "path": "../types-eslint/tsconfig.build.json"
-    },
     {
       "path": "../typescript-estree/tsconfig.build.json"
     }

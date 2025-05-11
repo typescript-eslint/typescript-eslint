@@ -1,4 +1,4 @@
-import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+import type { JSONSchema4 } from '@typescript-eslint/types-eslint';
 import type * as ts from 'typescript';
 
 import * as tsutils from 'ts-api-utils';

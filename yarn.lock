@@ -5577,6 +5577,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/parser-services@workspace:packages/parser-services"
   dependencies:
+    "@typescript-eslint/types-eslint": ^8.32.0
     "@typescript-eslint/typescript-estree": ^8.32.0
     "@vitest/coverage-v8": ^3.1.2
     debug: ^4.3.4
@@ -5608,6 +5609,35 @@ __metadata:
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
     typescript: ">=4.8.4 <5.9.0"
+  languageName: unknown
+  linkType: soft
+
+"@typescript-eslint/rule-creator@workspace:packages/rule-creator":
+  version: 0.0.0-use.local
+  resolution: "@typescript-eslint/rule-creator@workspace:packages/rule-creator"
+  dependencies:
+    "@types/json-stable-stringify-without-jsonify": ^1.0.2
+    "@types/lodash.merge": 4.6.9
+    "@typescript-eslint/parser": 8.32.0
+    "@typescript-eslint/types-eslint": 8.32.0
+    "@typescript-eslint/typescript-estree": 8.32.0
+    "@typescript-eslint/utils": 8.32.0
+    "@vitest/coverage-v8": ^3.1.2
+    ajv: ^6.12.6
+    chai: ^5.2.0
+    eslint-visitor-keys: ^4.2.0
+    espree: ^10.3.0
+    esprima: ^4.0.1
+    json-stable-stringify-without-jsonify: ^1.0.1
+    lodash.merge: 4.6.2
+    mocha: ^11.0.0
+    semver: ^7.6.0
+    sinon: ^20.0.0
+    source-map-support: ^0.5.21
+    typescript: "*"
+    vitest: ^3.1.2
+  peerDependencies:
+    eslint: ^8.57.0 || ^9.0.0
   languageName: unknown
   linkType: soft
 
@@ -5689,6 +5719,23 @@ __metadata:
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
     typescript: ">=4.8.4 <5.9.0"
+  languageName: unknown
+  linkType: soft
+
+"@typescript-eslint/types-eslint@8.32.0, @typescript-eslint/types-eslint@^8.32.0, @typescript-eslint/types-eslint@workspace:packages/types-eslint":
+  version: 0.0.0-use.local
+  resolution: "@typescript-eslint/types-eslint@workspace:packages/types-eslint"
+  dependencies:
+    "@typescript-eslint/types": 8.32.0
+    "@typescript-eslint/typescript-estree": 8.32.0
+    "@typescript-eslint/visitor-keys": 8.32.0
+    "@vitest/coverage-v8": ^3.1.2
+    "@vitest/pretty-format": ^3.1.2
+    glob: "*"
+    prettier: ^3.2.5
+    rimraf: "*"
+    typescript: "*"
+    vitest: ^3.1.2
   languageName: unknown
   linkType: soft
 
@@ -5796,6 +5843,7 @@ __metadata:
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
     "@eslint-community/eslint-utils": ^4.7.0
+    "@typescript-eslint/parser-services": 8.32.0
     "@typescript-eslint/scope-manager": 8.32.0
     "@typescript-eslint/types": 8.32.0
     "@typescript-eslint/typescript-estree": 8.32.0

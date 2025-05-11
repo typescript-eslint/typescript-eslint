@@ -1,7 +1,8 @@
+import type { ParserServices } from '@typescript-eslint/types-eslint';
+
 import {
   AST,
   parseAndGenerateServices,
-  type ParserServices,
 } from '@typescript-eslint/parser-services';
 import type {
   AnalyzeOptions,

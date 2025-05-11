@@ -1,8 +1,10 @@
+export type {
+  ParserServices,
+  ParserServicesWithoutTypeInformation,
+  ParserServicesWithTypeInformation,
+} from '@typescript-eslint/types-eslint';
 export { parse, parseForESLint, type ParserOptions } from './parser';
 export {
-  type ParserServices,
-  type ParserServicesWithoutTypeInformation,
-  type ParserServicesWithTypeInformation,
   clearCaches,
   createProgram,
   withoutProjectParserOptions,

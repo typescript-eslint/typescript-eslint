@@ -12,6 +12,9 @@
       "path": "../types/tsconfig.build.json"
     },
     {
+      "path": "../types-eslint/tsconfig.build.json"
+    },
+    {
       "path": "../scope-manager/tsconfig.build.json"
     }
   ]

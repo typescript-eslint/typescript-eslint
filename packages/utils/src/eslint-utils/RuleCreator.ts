@@ -4,7 +4,7 @@ import type {
   RuleMetaData,
   RuleMetaDataDocs,
   RuleModule,
-} from '../ts-eslint/Rule';
+} from '@typescript-eslint/types-eslint';
 
 import { applyDefault } from './applyDefault';
 
@@ -119,4 +119,7 @@ RuleCreator.withoutDocs = function withoutDocs<
   return createRule(args);
 };
 
-export { type RuleListener, type RuleModule } from '../ts-eslint/Rule';
+export {
+  type RuleListener,
+  type RuleModule,
+} from '@typescript-eslint/types-eslint';

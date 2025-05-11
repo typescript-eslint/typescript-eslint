@@ -1,8 +1,8 @@
-import type * as TSESLint from '../ts-eslint';
+import type * as TSESLint from '@typescript-eslint/types-eslint';
 import type {
   ParserServices,
   ParserServicesWithTypeInformation,
-} from '@typescript-eslint/parser-services';
+} from '@typescript-eslint/types-eslint';
 
 import { parserSeemsToBeTSESLint } from './parserSeemsToBeTSESLint';
 

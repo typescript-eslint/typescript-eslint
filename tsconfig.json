@@ -18,6 +18,7 @@
     { "path": "./packages/types" },
     { "path": "./packages/typescript-eslint" },
     { "path": "./packages/typescript-estree" },
+    { "path": "./packages/types-eslint" },
     { "path": "./packages/type-utils" },
     { "path": "./packages/utils" },
     { "path": "./packages/visitor-keys" },

@@ -20,6 +20,7 @@ declare class LegacyESLintBase extends Shared.ESLintBase<
  *
  * If you want to lint code on browsers, use the Linter class instead.
  */
+// @ts-expect-error -- TODO: I don't know why this is now needed...
 export class LegacyESLint extends (ESLintLegacyESLint as typeof LegacyESLintBase) {}
 export namespace LegacyESLint {
   export interface ESLintOptions

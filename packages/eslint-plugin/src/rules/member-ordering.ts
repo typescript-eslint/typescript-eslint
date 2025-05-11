@@ -1,7 +1,7 @@
 // This rule was feature-frozen before we enabled no-property-in-node.
 /* eslint-disable eslint-plugin/no-property-in-node */
 
-import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import naturalCompare from 'natural-compare';
@@ -12,6 +12,7 @@ import {
   getNameFromMember,
   MemberNameType,
 } from '../util';
+import { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 export type MessageIds =
   | 'incorrectGroupOrder'
@@ -91,12 +92,12 @@ export type Options = [
   },
 ];
 
-const neverConfig: JSONSchema.JSONSchema4 = {
+const neverConfig: JSONSchema4 = {
   type: 'string',
   enum: ['never'],
 };
 
-const arrayConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
+const arrayConfig = (memberTypes: string): JSONSchema4 => ({
   type: 'array',
   items: {
     oneOf: [
@@ -113,7 +114,7 @@ const arrayConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
   },
 });
 
-const objectConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
+const objectConfig = (memberTypes: string): JSONSchema4 => ({
   type: 'object',
   additionalProperties: false,
   properties: {

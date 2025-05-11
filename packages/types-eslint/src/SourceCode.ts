@@ -2,9 +2,10 @@
 
 import { SourceCode as ESLintSourceCode } from 'eslint';
 
-import type { ParserServices, TSESTree } from '../ts-estree';
+import type { TSESTree } from '@typescript-eslint/typescript-estree';
 import type { Parser } from './Parser';
 import type { Scope } from './Scope';
+import { ParserServices } from './ParserServices';
 
 declare class TokenStore {
   /**
@@ -451,6 +452,7 @@ namespace SourceCode {
     | FilterPredicate;
 }
 
+// @ts-expect-error -- TODO: I don't know why this is now needed...
 class SourceCode extends (ESLintSourceCode as typeof SourceCodeBase) {}
 
 export { SourceCode };

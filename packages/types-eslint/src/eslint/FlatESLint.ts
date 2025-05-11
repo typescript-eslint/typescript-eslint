@@ -34,6 +34,7 @@ declare class FlatESLintBase extends Shared.ESLintBase<
  *
  * If you want to lint code on browsers, use the Linter class instead.
  */
+// @ts-expect-error -- TODO: I don't know why this is now needed...
 export class FlatESLint extends (ESLintFlatESLint as typeof FlatESLintBase) {}
 export namespace FlatESLint {
   export interface ESLintOptions

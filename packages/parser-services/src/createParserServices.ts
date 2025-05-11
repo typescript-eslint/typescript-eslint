@@ -1,6 +1,6 @@
+import { ParserServices } from '@typescript-eslint/types-eslint';
 import { ASTMaps } from '@typescript-eslint/typescript-estree';
 import type * as ts from 'typescript';
-import { ParserServices } from './types';
 
 export function createParserServices(
   astMaps: ASTMaps,
