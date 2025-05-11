@@ -2,18 +2,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unnecessary-condition, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 import * as ts from 'typescript';
 
-import type { TSError } from './node-utils';
-import type {
-  ParserWeakMap,
-  ParserWeakMapESTreeToTSNode,
-} from './parser-options';
-import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
+import type { ParserWeakMap, ParserWeakMapESTreeToTSNode } from './node-maps';
 import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 
 import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
-  createError,
   findNextToken,
   getBinaryExpressionType,
   getContainingFunction,
@@ -40,6 +34,7 @@ import {
   unescapeStringLiteralText,
 } from './node-utils';
 import { AST_NODE_TYPES } from './ts-estree';
+import { createTSESTreeError } from './errors';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -48,21 +43,6 @@ export interface ConverterOptions {
   errorOnUnknownASTType?: boolean;
   shouldPreserveNodeMaps?: boolean;
   suppressDeprecatedPropertyWarnings?: boolean;
-}
-
-/**
- * Extends and formats a given error object
- * @param error the error object
- * @returns converted error object
- */
-export function convertError(
-  error: SemanticOrSyntacticError | ts.DiagnosticWithLocation,
-): TSError {
-  return createError(
-    ('message' in error && error.message) || (error.messageText as string),
-    error.file!,
-    error.start!,
-  );
 }
 
 export interface ASTMaps {
@@ -392,7 +372,7 @@ export class Converter {
       end = node.getEnd();
     }
 
-    throw createError(message, this.ast, start, end);
+    throw createTSESTreeError(message, this.ast, start, end);
   }
 
   #throwUnlessAllowInvalidAST(

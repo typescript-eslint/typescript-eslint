@@ -63,6 +63,7 @@
   },
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.7.0",
+    "@typescript-eslint/parser-services": "8.32.0",
     "@typescript-eslint/scope-manager": "8.32.0",
     "@typescript-eslint/types": "8.32.0",
     "@typescript-eslint/typescript-estree": "8.32.0"

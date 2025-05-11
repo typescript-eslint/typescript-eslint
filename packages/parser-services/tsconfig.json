@@ -4,16 +4,7 @@
   "include": [],
   "references": [
     {
-      "path": "../parser-services"
-    },
-    {
       "path": "../typescript-estree"
-    },
-    {
-      "path": "../types"
-    },
-    {
-      "path": "../scope-manager"
     },
     {
       "path": "./tsconfig.build.json"

@@ -11,6 +11,7 @@
     { "path": "./packages/eslint-plugin-internal" },
     { "path": "./packages/integration-tests" },
     { "path": "./packages/parser" },
+    { "path": "./packages/parser-services" },
     { "path": "./packages/rule-schema-to-typescript-types" },
     { "path": "./packages/rule-tester" },
     { "path": "./packages/scope-manager" },

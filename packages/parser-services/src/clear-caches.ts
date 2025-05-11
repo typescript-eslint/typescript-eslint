@@ -24,6 +24,3 @@ export function clearCaches(): void {
   clearTSServerProjectService();
   clearGlobCache();
 }
-
-// TODO - delete this in next major
-export const clearProgramCache = clearCaches;

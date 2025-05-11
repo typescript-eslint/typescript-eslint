@@ -1,17 +1,28 @@
 import type { SourceFile } from 'typescript';
 
 import type { ASTMaps } from './convert';
-import type { ParseSettings } from './parseSettings';
 import type { TSESTree } from './ts-estree';
 
-import { Converter, convertError } from './convert';
+import { Converter } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
 import { simpleTraverse } from './simple-traverse';
+import { convertTSErrorToTSESTreeError } from './errors';
+
+export interface AstConverterSettings {
+  allowInvalidAST?: boolean | undefined;
+  codeFullText: string;
+  comment?: boolean;
+  errorOnUnknownASTType?: boolean | undefined;
+  loc?: boolean;
+  range?: boolean;
+  suppressDeprecatedPropertyWarnings?: boolean | undefined;
+  tokens?: TSESTree.Token[] | null;
+}
 
 export function astConverter(
   ast: SourceFile,
-  parseSettings: ParseSettings,
+  settings: AstConverterSettings,
   shouldPreserveNodeMaps: boolean,
 ): { astMaps: ASTMaps; estree: TSESTree.Program } {
   /**
@@ -20,18 +31,18 @@ export function astConverter(
    */
   const { parseDiagnostics } = ast;
   if (parseDiagnostics.length) {
-    throw convertError(parseDiagnostics[0]);
+    throw convertTSErrorToTSESTreeError(parseDiagnostics[0]);
   }
 
   /**
    * Recursively convert the TypeScript AST into an ESTree-compatible AST
    */
   const instance = new Converter(ast, {
-    allowInvalidAST: parseSettings.allowInvalidAST,
-    errorOnUnknownASTType: parseSettings.errorOnUnknownASTType,
+    allowInvalidAST: settings.allowInvalidAST,
+    errorOnUnknownASTType: settings.errorOnUnknownASTType,
     shouldPreserveNodeMaps,
     suppressDeprecatedPropertyWarnings:
-      parseSettings.suppressDeprecatedPropertyWarnings,
+      settings.suppressDeprecatedPropertyWarnings,
   });
 
   const estree = instance.convertProgram();
@@ -39,15 +50,15 @@ export function astConverter(
   /**
    * Optionally remove range and loc if specified
    */
-  if (!parseSettings.range || !parseSettings.loc) {
+  if (!settings.range || !settings.loc) {
     simpleTraverse(estree, {
       enter: node => {
-        if (!parseSettings.range) {
+        if (!settings.range) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TS 4.0 made this an error because the types aren't optional
           // @ts-expect-error
           delete node.range;
         }
-        if (!parseSettings.loc) {
+        if (!settings.loc) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TS 4.0 made this an error because the types aren't optional
           // @ts-expect-error
           delete node.loc;
@@ -59,15 +70,15 @@ export function astConverter(
   /**
    * Optionally convert and include all tokens in the AST
    */
-  if (parseSettings.tokens) {
+  if (settings.tokens) {
     estree.tokens = convertTokens(ast);
   }
 
   /**
    * Optionally convert and include all comments in the AST
    */
-  if (parseSettings.comment) {
-    estree.comments = convertComments(ast, parseSettings.codeFullText);
+  if (settings.comment) {
+    estree.comments = convertComments(ast, settings.codeFullText);
   }
 
   const astMaps = instance.getASTMaps();

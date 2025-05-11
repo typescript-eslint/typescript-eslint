@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 
 import type { ParseSettings } from './index';
 
-import { version as TYPESCRIPT_ESTREE_VERSION } from '../version';
+import { version as PARSER_SERVICES_VERSION } from '../version';
 
 /**
  * This needs to be kept in sync with package.json in the typescript-eslint monorepo
@@ -43,7 +43,7 @@ export function warnAboutTSVersion(
       '\n',
       'WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.',
       '\n',
-      `* @typescript-eslint/typescript-estree version: ${TYPESCRIPT_ESTREE_VERSION}`,
+      `* @typescript-eslint/parser-services version: ${PARSER_SERVICES_VERSION}`,
       `* Supported TypeScript versions: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
       `* Your TypeScript version: ${ACTIVE_TYPESCRIPT_VERSION}`,
       '\n',

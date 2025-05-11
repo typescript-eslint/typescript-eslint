@@ -1,18 +1,14 @@
 import type * as ts from 'typescript';
 
+import {
+  astConverter,
+  convertTSErrorToTSESTreeError,
+} from '@typescript-eslint/typescript-estree';
 import debug from 'debug';
 
 import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
-import type {
-  ParserServices,
-  ParserServicesNodeMaps,
-  TSESTreeOptions,
-} from './parser-options';
 import type { ParseSettings } from './parseSettings';
-import type { TSESTree } from './ts-estree';
 
-import { astConverter } from './ast-converter';
-import { convertError } from './convert';
 import { createIsolatedProgram } from './create-program/createIsolatedProgram';
 import { createProjectProgram } from './create-program/createProjectProgram';
 import {
@@ -26,10 +22,16 @@ import {
 } from './create-program/useProvidedPrograms';
 import { createParserServices } from './createParserServices';
 import { createParseSettings } from './parseSettings/createParseSettings';
-import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { useProgramFromProjectService } from './useProgramFromProjectService';
+import type {
+  ParserServicesNodeMaps,
+  TSESTree,
+  TSESTreeOptions,
+} from '@typescript-eslint/typescript-estree';
+import { ParserServices } from './types';
+import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 
-const log = debug('typescript-eslint:typescript-estree:parser');
+const log = debug('typescript-eslint:parser-services:parser');
 
 /**
  * Cache existing programs for the single run use-case.
@@ -101,6 +103,7 @@ export interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
   services: ParserServices;
 }
+
 interface ParseWithNodeMapsResult<T extends TSESTreeOptions>
   extends ParserServicesNodeMaps {
   ast: AST<T>;
@@ -148,7 +151,8 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   );
 
   return {
-    ast: estree as AST<T>,
+    // @ts-expect-error -- TODO: I don't know why this is no longer working...
+    ast: estree,
     esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
     tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
   };
@@ -265,7 +269,7 @@ export function parseAndGenerateServices<
   if (program && parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues) {
     const error = getFirstSemanticOrSyntacticError(program, ast);
     if (error) {
-      throw convertError(error);
+      throw convertTSErrorToTSESTreeError(error);
     }
   }
 
@@ -273,7 +277,8 @@ export function parseAndGenerateServices<
    * Return the converted AST and additional parser services
    */
   return {
-    ast: estree as AST<T>,
+    // @ts-expect-error -- TODO: I don't know why this is no longer working...
+    ast: estree,
     services: createParserServices(astMaps, program),
   };
 }

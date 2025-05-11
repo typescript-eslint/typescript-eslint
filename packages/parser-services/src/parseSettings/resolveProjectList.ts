@@ -1,22 +1,23 @@
+import type { TSESTreeOptions } from '@typescript-eslint/typescript-estree';
+
 import debug from 'debug';
 import { sync as globSync } from 'fast-glob';
 import isGlob from 'is-glob';
 
-import type { CanonicalPath } from '../create-program/shared';
-import type { TSESTreeOptions } from '../parser-options';
+import type { CanonicalPath } from '../../../parser-services/src/create-program/shared';
 
 import {
   createHash,
   ensureAbsolutePath,
   getCanonicalFileName,
-} from '../create-program/shared';
+} from '../../../parser-services/src/create-program/shared';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
   ExpiringCache,
 } from './ExpiringCache';
 
 const log = debug(
-  'typescript-eslint:typescript-estree:parseSettings:resolveProjectList',
+  'typescript-eslint:parser-services:parseSettings:resolveProjectList',
 );
 
 let RESOLUTION_CACHE: ExpiringCache<

@@ -3,10 +3,9 @@ import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import debug from 'debug';
 
-import type { ProjectServiceOptions } from '../parser-options';
-
 import { getParsedConfigFile } from './getParsedConfigFile';
 import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForFilesGlob';
+import { ProjectServiceOptions } from '@typescript-eslint/types';
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
 

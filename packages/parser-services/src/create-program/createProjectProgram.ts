@@ -2,12 +2,12 @@ import type * as ts from 'typescript';
 
 import debug from 'debug';
 
-import type { ParseSettings } from '../parseSettings';
 import type { ASTAndDefiniteProgram } from './shared';
 
-import { firstDefined } from '../node-utils';
 import { createProjectProgramError } from './createProjectProgramError';
 import { getAstFromProgram } from './shared';
+import { ParseSettings } from '../parseSettings';
+import { firstDefined } from './utils';
 
 const log = debug(
   'typescript-eslint:typescript-estree:create-program:createProjectProgram',
@@ -23,6 +23,7 @@ export function createProjectProgram(
 ): ASTAndDefiniteProgram {
   log('Creating project program for: %s', parseSettings.filePath);
 
+  // TODO: switch to .find()?
   const astAndProgram = firstDefined(programsForProjects, currentProgram =>
     getAstFromProgram(currentProgram, parseSettings.filePath),
   );

@@ -1,4 +1,6 @@
 {
+  "eslint.rules.customizations": [{ "rule": "*", "severity": "warn" }],
+
   // This matches the value configured on the autoformatter
   "editor.rulers": [80],
 

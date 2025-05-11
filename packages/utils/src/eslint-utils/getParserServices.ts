@@ -2,7 +2,7 @@ import type * as TSESLint from '../ts-eslint';
 import type {
   ParserServices,
   ParserServicesWithTypeInformation,
-} from '../ts-estree';
+} from '@typescript-eslint/parser-services';
 
 import { parserSeemsToBeTSESLint } from './parserSeemsToBeTSESLint';
 

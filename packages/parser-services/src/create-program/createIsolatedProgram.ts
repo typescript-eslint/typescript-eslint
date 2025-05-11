@@ -8,7 +8,7 @@ import { getScriptKind } from './getScriptKind';
 import { createDefaultCompilerOptionsFromExtra } from './shared';
 
 const log = debug(
-  'typescript-eslint:typescript-estree:create-program:createIsolatedProgram',
+  'typescript-eslint:parser-services:create-program:createIsolatedProgram',
 );
 
 /**

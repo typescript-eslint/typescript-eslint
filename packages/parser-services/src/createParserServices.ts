@@ -1,7 +1,6 @@
+import { ASTMaps } from '@typescript-eslint/typescript-estree';
 import type * as ts from 'typescript';
-
-import type { ASTMaps } from './convert';
-import type { ParserServices } from './parser-options';
+import { ParserServices } from './types';
 
 export function createParserServices(
   astMaps: ASTMaps,

@@ -1,8 +1,8 @@
+import type { TSESTree } from '@typescript-eslint/typescript-estree';
 import type * as ts from 'typescript';
 
-import type { ProjectServiceSettings } from '../create-program/createProjectService';
-import type { CanonicalPath } from '../create-program/shared';
-import type { TSESTree } from '../ts-estree';
+import type { ProjectServiceSettings } from '../../../parser-services/src/create-program/createProjectService';
+import type { CanonicalPath } from '../../../parser-services/src/create-program/shared';
 import type { CacheLike } from './ExpiringCache';
 
 type DebugModule = 'eslint' | 'typescript' | 'typescript-eslint';

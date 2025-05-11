@@ -3,6 +3,9 @@
   "compilerOptions": {},
   "references": [
     {
+      "path": "../parser-services/tsconfig.build.json"
+    },
+    {
       "path": "../typescript-estree/tsconfig.build.json"
     },
     {

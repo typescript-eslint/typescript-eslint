@@ -7,8 +7,6 @@ import type {
 } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
-import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
-
 export type { ProjectServiceOptions } from '@typescript-eslint/types';
 
 //////////////////////////////////////////////////////////
@@ -220,44 +218,3 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;
-
-// This lets us use generics to type the return value, and removes the need to
-// handle the undefined type in the get method
-export interface ParserWeakMap<Key, ValueBase> {
-  // This is unsafe internally, so it should only be exposed via safe wrappers.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
-  get<Value extends ValueBase>(key: Key): Value;
-  has(key: unknown): boolean;
-}
-
-export interface ParserWeakMapESTreeToTSNode<
-  Key extends TSESTree.Node = TSESTree.Node,
-> {
-  get<KeyBase extends Key>(key: KeyBase): TSESTreeToTSNode<KeyBase>;
-  has(key: unknown): boolean;
-}
-
-export interface ParserServicesBase {
-  emitDecoratorMetadata: boolean | undefined;
-  experimentalDecorators: boolean | undefined;
-  isolatedDeclarations: boolean | undefined;
-}
-export interface ParserServicesNodeMaps {
-  esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
-  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
-}
-export interface ParserServicesWithTypeInformation
-  extends ParserServicesNodeMaps,
-    ParserServicesBase {
-  getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
-  getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
-  program: ts.Program;
-}
-export interface ParserServicesWithoutTypeInformation
-  extends ParserServicesNodeMaps,
-    ParserServicesBase {
-  program: null;
-}
-export type ParserServices =
-  | ParserServicesWithoutTypeInformation
-  | ParserServicesWithTypeInformation;

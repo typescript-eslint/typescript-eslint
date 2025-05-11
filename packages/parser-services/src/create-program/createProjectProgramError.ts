@@ -2,10 +2,9 @@ import type * as ts from 'typescript';
 
 import path from 'node:path';
 
-import type { ParseSettings } from '../parseSettings';
-
 import { describeFilePath } from './describeFilePath';
 import { DEFAULT_EXTRA_FILE_EXTENSIONS } from './shared';
+import { ParseSettings } from '../parseSettings';
 
 export function createProjectProgramError(
   parseSettings: ParseSettings,

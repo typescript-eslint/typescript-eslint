@@ -2,7 +2,6 @@ import debug from 'debug';
 import fs from 'node:fs';
 import * as ts from 'typescript';
 
-import type { ParseSettings } from '../parseSettings';
 import type { CanonicalPath } from './shared';
 import type { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 
@@ -13,6 +12,7 @@ import {
   createHash,
   getCanonicalFileName,
 } from './shared';
+import { ParseSettings } from '../parseSettings';
 
 const log = debug(
   'typescript-eslint:typescript-estree:create-program:getWatchProgramsForProjects',
