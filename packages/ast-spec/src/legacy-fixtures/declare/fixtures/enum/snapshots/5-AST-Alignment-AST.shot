@@ -21,10 +21,13 @@ Snapshot Diff:
 -               decorators: Array [],
 -               name: 'Bar',
 -               optional: false,
++       const: false,
 +       declare: true,
 +       id: Identifier {
 +         type: 'Identifier',
++         decorators: Array [],
 +         name: 'Foo',
++         optional: false,
 
 -               range: [94, 97],
 -               loc: {
@@ -41,9 +44,12 @@ Snapshot Diff:
 +       members: Array [
 +         TSEnumMember {
 +           type: 'TSEnumMember',
++           computed: false,
 +           id: Identifier {
 +             type: 'Identifier',
++             decorators: Array [],
 +             name: 'Bar',
++             optional: false,
 
               range: [94, 97],
               loc: {
@@ -74,9 +80,12 @@ Snapshot Diff:
 +         },
 +         TSEnumMember {
 +           type: 'TSEnumMember',
++           computed: false,
 +           id: Identifier {
 +             type: 'Identifier',
++             decorators: Array [],
 +             name: 'Baz',
++             optional: false,
 
               range: [101, 104],
               loc: {
@@ -90,7 +99,12 @@ Snapshot Diff:
 -         loc: {
 -           start: { column: 17, line: 3 },
 -           end: { column: 1, line: 6 },
--         },
++           range: [101, 104],
++           loc: {
++             start: { column: 2, line: 5 },
++             end: { column: 5, line: 5 },
++           },
+          },
 -       },
 -       const: false,
 -       declare: true,
@@ -104,12 +118,7 @@ Snapshot Diff:
 -         loc: {
 -           start: { column: 13, line: 3 },
 -           end: { column: 16, line: 3 },
-+           range: [101, 104],
-+           loc: {
-+             start: { column: 2, line: 5 },
-+             end: { column: 5, line: 5 },
-+           },
-          },
+-         },
 -       },
 +       ],
 

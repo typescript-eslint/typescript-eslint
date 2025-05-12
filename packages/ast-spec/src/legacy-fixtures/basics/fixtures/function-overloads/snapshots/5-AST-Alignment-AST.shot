@@ -15,14 +15,14 @@ Snapshot Diff:
         declaration: TSDeclareFunction {
           type: 'TSDeclareFunction',
           async: false,
--         declare: false,
+          declare: false,
           expression: false,
           generator: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'f',
--           optional: false,
+            optional: false,
 
             range: [89, 90],
             loc: {
@@ -33,9 +33,9 @@ Snapshot Diff:
           params: Array [
             Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'x',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSNumberKeyword {
@@ -104,14 +104,14 @@ Snapshot Diff:
         declaration: TSDeclareFunction {
           type: 'TSDeclareFunction',
           async: false,
--         declare: false,
+          declare: false,
           expression: false,
           generator: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'f',
--           optional: false,
+            optional: false,
 
             range: [127, 128],
             loc: {
@@ -122,9 +122,9 @@ Snapshot Diff:
           params: Array [
             Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'x',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSStringKeyword {
@@ -200,9 +200,9 @@ Snapshot Diff:
                 type: 'ReturnStatement',
                 argument: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'x',
--                 optional: false,
+                  optional: false,
 
                   range: [215, 216],
                   loc: {
@@ -225,14 +225,14 @@ Snapshot Diff:
               end: { column: 1, line: 7 },
             },
           },
--         declare: false,
+          declare: false,
           expression: false,
           generator: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'f',
--           optional: false,
+            optional: false,
 
             range: [165, 166],
             loc: {
@@ -243,9 +243,9 @@ Snapshot Diff:
           params: Array [
             Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'x',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSUnionType {

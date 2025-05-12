@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import type { RuleFix, RuleFixer } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { unionTypeParts } from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -28,7 +28,6 @@ export default createRule<Options, MessageIds>({
         'Disallow conversion idioms when they do not change the type or value of the expression',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       suggestRemove: 'Remove the type conversion.',
@@ -45,7 +44,9 @@ export default createRule<Options, MessageIds>({
       type: ts.Type,
       typeFlag: ts.TypeFlags,
     ): boolean {
-      return unionTypeParts(type).every(t => isTypeFlagSet(t, typeFlag));
+      return tsutils
+        .unionConstituents(type)
+        .every(t => isTypeFlagSet(t, typeFlag));
     }
 
     const services = getParserServices(context);

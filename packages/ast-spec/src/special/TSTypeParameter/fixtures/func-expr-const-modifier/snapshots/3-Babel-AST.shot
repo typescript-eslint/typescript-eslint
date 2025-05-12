@@ -16,6 +16,7 @@ Program {
             end: { column: 24, line: 1 },
           },
         },
+        declare: false,
         expression: false,
         generator: false,
         id: null,
@@ -26,7 +27,9 @@ Program {
             TSTypeParameter {
               type: "TSTypeParameter",
               const: true,
+              in: false,
               name: "T",
+              out: false,
 
               range: [11, 18],
               loc: {

@@ -16,6 +16,7 @@ Program {
             end: { column: 34, line: 1 },
           },
         },
+        declare: false,
         expression: false,
         generator: false,
         id: null,
@@ -30,7 +31,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [27, 28],
                   loc: {
@@ -45,7 +48,9 @@ Program {
                   end: { column: 28, line: 1 },
                 },
               },
+              in: false,
               name: "T",
+              out: false,
 
               range: [11, 28],
               loc: {

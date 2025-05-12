@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'foo',
--         optional: false,
+          optional: false,
 
           range: [78, 81],
           loc: {
@@ -29,17 +29,17 @@ Snapshot Diff:
 +         parameters: Array [
             ObjectPattern {
               type: 'ObjectPattern',
--             decorators: Array [],
--             optional: false,
+              decorators: Array [],
+              optional: false,
               properties: Array [
                 Property {
                   type: 'Property',
                   computed: false,
                   key: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'a',
--                   optional: false,
+                    optional: false,
 
                     range: [87, 88],
                     loc: {
@@ -49,13 +49,13 @@ Snapshot Diff:
                   },
                   kind: 'init',
                   method: false,
--                 optional: false,
+                  optional: false,
                   shorthand: true,
                   value: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'a',
--                   optional: false,
+                    optional: false,
 
                     range: [87, 88],
                     loc: {

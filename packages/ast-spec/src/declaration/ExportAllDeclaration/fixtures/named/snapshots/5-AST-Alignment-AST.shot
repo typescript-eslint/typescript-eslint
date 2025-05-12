@@ -14,9 +14,9 @@ Snapshot Diff:
 +       assertions: Array [],
         exported: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'mod',
--         optional: false,
+          optional: false,
 
           range: [12, 15],
           loc: {

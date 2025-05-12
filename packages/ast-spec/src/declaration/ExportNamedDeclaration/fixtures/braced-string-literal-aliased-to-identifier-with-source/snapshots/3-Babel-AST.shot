@@ -22,7 +22,9 @@ Program {
           type: "ExportSpecifier",
           exported: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "b",
+            optional: false,
 
             range: [18, 19],
             loc: {

@@ -8,7 +8,9 @@ Program {
           type: "ImportAttribute",
           key: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "type",
+            optional: false,
 
             range: [34, 38],
             loc: {
@@ -52,7 +54,9 @@ Program {
           type: "ImportNamespaceSpecifier",
           local: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "a",
+            optional: false,
 
             range: [12, 13],
             loc: {

@@ -12,9 +12,9 @@ Snapshot Diff:
         type: 'TSImportEqualsDeclaration',
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'foo',
--         optional: false,
+          optional: false,
 
           range: [80, 83],
           loc: {

@@ -10,19 +10,19 @@ Snapshot Diff:
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'method',
--               optional: false,
+                optional: false,
 
                 range: [12, 18],
                 loc: {
@@ -31,8 +31,8 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
--             override: false,
+              optional: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -47,7 +47,7 @@ Snapshot Diff:
                     end: { column: 22, line: 2 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -58,22 +58,22 @@ Snapshot Diff:
                     TSTypeParameter {
                       type: 'TSTypeParameter',
                       const: true,
--                     in: false,
+                      in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',
 -                       decorators: Array [],
 -                       name: 'T',
 -                       optional: false,
-+                     name: 'T',
-
+-
 -                       range: [25, 26],
 -                       loc: {
 -                         start: { column: 15, line: 2 },
 -                         end: { column: 16, line: 2 },
 -                       },
 -                     },
--                     out: false,
--
++                     name: 'T',
+                      out: false,
+
                       range: [19, 26],
                       loc: {
                         start: { column: 9, line: 2 },
@@ -89,11 +89,9 @@ Snapshot Diff:
                   },
                 },
 
--               range: [18, 32],
-+               range: [27, 32],
+                range: [18, 32],
                 loc: {
--                 start: { column: 8, line: 2 },
-+                 start: { column: 17, line: 2 },
+                  start: { column: 8, line: 2 },
                   end: { column: 22, line: 2 },
                 },
               },
@@ -107,12 +105,12 @@ Snapshot Diff:
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'method',
--               optional: false,
+                optional: false,
 
                 range: [35, 41],
                 loc: {
@@ -121,8 +119,8 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
--             override: false,
+              optional: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -137,7 +135,7 @@ Snapshot Diff:
                     end: { column: 32, line: 3 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -152,9 +150,9 @@ Snapshot Diff:
                         type: 'TSTypeReference',
                         typeName: Identifier {
                           type: 'Identifier',
--                         decorators: Array [],
+                          decorators: Array [],
                           name: 'U',
--                         optional: false,
+                          optional: false,
 
                           range: [58, 59],
                           loc: {
@@ -169,7 +167,7 @@ Snapshot Diff:
                           end: { column: 26, line: 3 },
                         },
                       },
--                     in: false,
+                      in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',
 -                       decorators: Array [],
@@ -182,8 +180,8 @@ Snapshot Diff:
 -                         end: { column: 16, line: 3 },
 -                       },
 -                     },
--                     out: false,
 +                     name: 'T',
+                      out: false,
 
                       range: [42, 59],
                       loc: {
@@ -200,11 +198,9 @@ Snapshot Diff:
                   },
                 },
 
--               range: [41, 65],
-+               range: [60, 65],
+                range: [41, 65],
                 loc: {
--                 start: { column: 8, line: 3 },
-+                 start: { column: 27, line: 3 },
+                  start: { column: 8, line: 3 },
                   end: { column: 32, line: 3 },
                 },
               },
@@ -218,12 +214,12 @@ Snapshot Diff:
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'method',
--               optional: false,
+                optional: false,
 
                 range: [68, 74],
                 loc: {
@@ -232,8 +228,8 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
--             override: false,
+              optional: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -248,7 +244,7 @@ Snapshot Diff:
                     end: { column: 25, line: 4 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -258,23 +254,23 @@ Snapshot Diff:
                   params: Array [
                     TSTypeParameter {
                       type: 'TSTypeParameter',
--                     const: false,
--                     in: false,
+                      const: false,
+                      in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',
 -                       decorators: Array [],
 -                       name: 'T',
 -                       optional: false,
-+                     name: 'T',
-
+-
 -                       range: [75, 76],
 -                       loc: {
 -                         start: { column: 9, line: 4 },
 -                         end: { column: 10, line: 4 },
 -                       },
 -                     },
--                     out: false,
--
++                     name: 'T',
+                      out: false,
+
                       range: [75, 76],
                       loc: {
                         start: { column: 9, line: 4 },
@@ -284,7 +280,7 @@ Snapshot Diff:
                     TSTypeParameter {
                       type: 'TSTypeParameter',
                       const: true,
--                     in: false,
+                      in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',
 -                       decorators: Array [],
@@ -297,8 +293,8 @@ Snapshot Diff:
 -                         end: { column: 19, line: 4 },
 -                       },
 -                     },
--                     out: false,
 +                     name: 'U',
+                      out: false,
 
                       range: [78, 85],
                       loc: {
@@ -315,11 +311,9 @@ Snapshot Diff:
                   },
                 },
 
--               range: [74, 91],
-+               range: [86, 91],
+                range: [74, 91],
                 loc: {
--                 start: { column: 8, line: 4 },
-+                 start: { column: 20, line: 4 },
+                  start: { column: 8, line: 4 },
                   end: { column: 25, line: 4 },
                 },
               },
@@ -338,13 +332,13 @@ Snapshot Diff:
             end: { column: 1, line: 5 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: '_',
--         optional: false,
+          optional: false,
 
           range: [6, 7],
           loc: {
@@ -352,7 +346,7 @@ Snapshot Diff:
             end: { column: 7, line: 1 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
 
         range: [0, 93],

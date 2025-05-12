@@ -14,9 +14,9 @@ Snapshot Diff:
 +       assertions: Array [],
         exported: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'x',
--         optional: false,
+          optional: false,
 
           range: [17, 18],
           loc: {
@@ -44,8 +44,7 @@ Snapshot Diff:
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [0, 29],
     loc: {

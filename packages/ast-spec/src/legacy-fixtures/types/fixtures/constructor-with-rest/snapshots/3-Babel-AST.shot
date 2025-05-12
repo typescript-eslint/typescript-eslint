@@ -6,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "f",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSConstructorType {
@@ -19,7 +22,9 @@ Program {
                     type: "RestElement",
                     argument: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "a",
+                      optional: false,
 
                       range: [88, 89],
                       loc: {
@@ -27,6 +32,8 @@ Program {
                         end: { column: 16, line: 3 },
                       },
                     },
+                    decorators: [],
+                    optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: "TSTypeAnnotation",
                       typeAnnotation: TSArrayType {
@@ -110,6 +117,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [73, 109],

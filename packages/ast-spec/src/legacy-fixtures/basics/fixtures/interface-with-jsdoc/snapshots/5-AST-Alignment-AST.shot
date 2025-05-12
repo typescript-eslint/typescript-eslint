@@ -18,9 +18,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'foo',
--               optional: false,
+                optional: false,
 
                 range: [138, 141],
                 loc: {
@@ -29,14 +29,14 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'bar',
--                 optional: false,
+                  optional: false,
 
                   range: [142, 145],
                   loc: {
@@ -45,8 +45,8 @@ Snapshot Diff:
                   },
                 },
               ],
--             readonly: false,
--             static: false,
+              readonly: false,
+              static: false,
 
               range: [138, 147],
               loc: {
@@ -62,13 +62,13 @@ Snapshot Diff:
             end: { column: 1, line: 9 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Test',
--         optional: false,
+          optional: false,
 
           range: [83, 87],
           loc: {

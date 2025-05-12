@@ -22,7 +22,9 @@ Program {
           type: "ExportSpecifier",
           exported: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "C",
+            optional: false,
 
             range: [92, 93],
             loc: {
@@ -33,7 +35,9 @@ Program {
           exportKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "B",
+            optional: false,
 
             range: [87, 88],
             loc: {
@@ -57,7 +61,7 @@ Program {
       },
     },
   ],
-  sourceType: "script",
+  sourceType: "module",
 
   range: [73, 108],
   loc: {
