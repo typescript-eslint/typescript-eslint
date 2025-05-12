@@ -5878,7 +5878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/coverage-v8@npm:^3.1.3":
+"@vitest/coverage-v8@npm:^3.1.2, @vitest/coverage-v8@npm:^3.1.3":
   version: 3.1.3
   resolution: "@vitest/coverage-v8@npm:3.1.3"
   dependencies:
@@ -19475,7 +19475,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^3.1.3":
+"vitest@npm:^3.1.2, vitest@npm:^3.1.3":
   version: 3.1.3
   resolution: "vitest@npm:3.1.3"
   dependencies:

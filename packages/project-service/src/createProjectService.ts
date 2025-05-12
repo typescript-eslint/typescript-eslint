@@ -26,10 +26,13 @@ const createStubFileWatcher = (): ts.FileWatcher => ({
   close: doNothing,
 });
 
+/**
+ * Shortcut type to refer to TypeScript's server ProjectService.
+ */
 export type TypeScriptProjectService = ts.server.ProjectService;
 
 /**
- * A created Project Service instances, as well as metadata on its creation.
+ * A created Project Service instance, as well as metadata on its creation.
  */
 export interface ProjectServiceAndMetadata {
   /**
@@ -53,13 +56,28 @@ export interface ProjectServiceAndMetadata {
   service: TypeScriptProjectService;
 }
 
+/**
+ * Settings to create a new Project Service instance with {@link createProjectService}.
+ */
 export interface CreateProjectServiceSettings {
+  /**
+   * Granular options to configure the project service.
+   */
   options?: ProjectServiceOptions;
+
+  /**
+   * How aggressively (and slowly) to parse JSDoc comments.
+   */
   jsDocParsingMode?: ts.JSDocParsingMode;
+
+  /**
+   * Root directory for the tsconfig.json file, if not the current directory.
+   */
   tsconfigRootDir?: string;
 }
 
 /**
+ * Creates a new Project Service instance, as well as metadata on its creation.
  * @param settings Settings to create a new Project Service instance.
  * @returns A new Project Service instance, as well as metadata on its creation.
  * @example
