@@ -4,11 +4,11 @@ import * as ts from 'typescript';
 
 import { createProjectService } from '../src/createProjectService.js';
 
-const mockGetParsedConfigFile = vi.fn();
+const mockGetParsedConfigFileFromTSServer = vi.fn();
 
-vi.mock('@typescript-eslint/tsconfig-utils', () => ({
-  get getParsedConfigFile() {
-    return mockGetParsedConfigFile;
+vi.mock('../src/getParsedConfigFileFromTSServer.js', () => ({
+  get getParsedConfigFileFromTSServer() {
+    return mockGetParsedConfigFileFromTSServer;
   },
 }));
 
@@ -75,74 +75,9 @@ describe(createProjectService, () => {
       assert.isUndefined(settings.allowDefaultProject);
     });
 
-    it('does not throw an error when options.defaultProject is not provided and getParsedConfigFile throws a diagnostic error', () => {
-      mockGetParsedConfigFile.mockImplementation(() => {
-        throw new Error('tsconfig.json(1,1): error TS1234: Oh no!');
-      });
-
-      expect(() =>
-        createProjectService({
-          options: { allowDefaultProject: ['file.js'] },
-        }),
-      ).not.toThrow();
-    });
-
-    it('throws an error with a relative path when options.defaultProject is set to a relative path and getParsedConfigFile throws a diagnostic error', () => {
-      mockGetParsedConfigFile.mockImplementation(() => {
-        throw new Error('./tsconfig.eslint.json(1,1): error TS1234: Oh no!');
-      });
-
-      expect(() =>
-        createProjectService({
-          options: {
-            allowDefaultProject: ['file.js'],
-            defaultProject: './tsconfig.eslint.json',
-          },
-        }),
-      ).toThrow(
-        /Could not read project service default project '\.\/tsconfig.eslint.json': .+ error TS1234: Oh no!/,
-      );
-    });
-
-    it('throws an error with a local path when options.defaultProject is set to a local path and getParsedConfigFile throws a diagnostic error', () => {
-      mockGetParsedConfigFile.mockImplementation(() => {
-        throw new Error('./tsconfig.eslint.json(1,1): error TS1234: Oh no!');
-      });
-
-      expect(() =>
-        createProjectService({
-          options: {
-            allowDefaultProject: ['file.js'],
-            defaultProject: 'tsconfig.eslint.json',
-          },
-        }),
-      ).toThrow(
-        /Could not read project service default project 'tsconfig.eslint.json': .+ error TS1234: Oh no!/,
-      );
-    });
-
-    it('throws an error when options.defaultProject is set and getParsedConfigFile throws an environment error', () => {
-      mockGetParsedConfigFile.mockImplementation(() => {
-        throw new Error(
-          '`getParsedConfigFile` is only supported in a Node-like environment.',
-        );
-      });
-
-      expect(() =>
-        createProjectService({
-          options: {
-            allowDefaultProject: ['file.js'],
-            defaultProject: 'tsconfig.json',
-          },
-        }),
-      ).toThrow(
-        "Could not read project service default project 'tsconfig.json': `getParsedConfigFile` is only supported in a Node-like environment.",
-      );
-    });
-
-    it('uses the default project compiler options when options.defaultProject is set and getParsedConfigFile succeeds', () => {
+    it('uses the default project compiler options when options.defaultProject is set', () => {
       const compilerOptions: ts.CompilerOptions = { strict: true };
-      mockGetParsedConfigFile.mockReturnValueOnce({
+      mockGetParsedConfigFileFromTSServer.mockReturnValueOnce({
         errors: [],
         fileNames: [],
         options: compilerOptions,
@@ -161,9 +96,10 @@ describe(createProjectService, () => {
         compilerOptions,
       );
 
-      expect(mockGetParsedConfigFile).toHaveBeenCalledWith(
+      expect(mockGetParsedConfigFileFromTSServer).toHaveBeenCalledWith(
         expect.any(Object),
         defaultProject,
+        true,
         undefined,
       );
     });
@@ -172,7 +108,7 @@ describe(createProjectService, () => {
   it('uses tsconfigRootDir as getParsedConfigFile projectDirectory when provided', async () => {
     const compilerOptions: ts.CompilerOptions = { strict: true };
     const tsconfigRootDir = 'path/to/repo';
-    mockGetParsedConfigFile.mockReturnValueOnce({
+    mockGetParsedConfigFileFromTSServer.mockReturnValueOnce({
       errors: [],
       fileNames: [],
       options: compilerOptions,
@@ -187,9 +123,10 @@ describe(createProjectService, () => {
       compilerOptions,
     );
 
-    expect(mockGetParsedConfigFile).toHaveBeenCalledWith(
+    expect(mockGetParsedConfigFileFromTSServer).toHaveBeenCalledWith(
       (await import('typescript/lib/tsserverlibrary.js')).default,
       'tsconfig.json',
+      false,
       tsconfigRootDir,
     );
   });

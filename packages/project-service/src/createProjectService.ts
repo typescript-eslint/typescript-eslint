@@ -1,8 +1,8 @@
 import type { ProjectServiceOptions } from '@typescript-eslint/types';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
-import { getParsedConfigFile } from '@typescript-eslint/tsconfig-utils';
 import debug from 'debug';
+import { getParsedConfigFileFromTSServer } from './getParsedConfigFileFromTSServer.js';
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
 
@@ -91,7 +91,7 @@ export interface CreateProjectServiceSettings {
  */
 export function createProjectService({
   jsDocParsingMode,
-  options: optionsRaw,
+  options: optionsRaw = {},
   tsconfigRootDir,
 }: CreateProjectServiceSettings = {}): ProjectServiceAndMetadata {
   const options = {
@@ -189,21 +189,13 @@ export function createProjectService({
   });
 
   log('Enabling default project: %s', options.defaultProject);
-  let configFile: ts.ParsedCommandLine | undefined;
 
-  try {
-    configFile = getParsedConfigFile(
-      tsserver,
-      options.defaultProject,
-      tsconfigRootDir,
-    );
-  } catch (error) {
-    if (options.defaultProject) {
-      throw new Error(
-        `Could not read Project Service default project '${options.defaultProject}': ${(error as Error).message}`,
-      );
-    }
-  }
+  const configFile = getParsedConfigFileFromTSServer(
+    tsserver,
+    options.defaultProject,
+    !!optionsRaw.defaultProject,
+    tsconfigRootDir,
+  );
 
   if (configFile) {
     service.setCompilerOptionsForInferredProjects(
