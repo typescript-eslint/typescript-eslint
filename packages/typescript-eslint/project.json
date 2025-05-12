@@ -10,7 +10,8 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nx/vite:test"
+      "executor": "@nx/vite:test",
+      "dependsOn": ["^build", "typecheck"]
     }
   }
 }
