@@ -225,9 +225,9 @@ export default createRule<Options, MessageIds>({
             ...(canFix && {
               fix: (fixer): ReturnType<ReportFixFunction> => {
                 const keyType = context.sourceCode.getText(constraint);
-                const valueType = context.sourceCode.getText(
-                  node.typeAnnotation,
-                );
+                const valueType = node.typeAnnotation
+                  ? context.sourceCode.getText(node.typeAnnotation)
+                  : 'any';
 
                 let recordText = `Record<${keyType}, ${valueType}>`;
 
