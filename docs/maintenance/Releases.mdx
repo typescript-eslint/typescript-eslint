@@ -78,6 +78,7 @@ These should only be done for feedback that consistently comes up in community t
    - It is important to note that when merged the commit message must also include `BREAKING CHANGE:` as the first line in order for `nx release` to recognize it as a breaking change in the release notes. If you miss this it just means more manual work when writing the release documentation.
 1. Write and share out a blog post announcing the new beta [example: [Docs: Blog post describing changes & migration strategy for v5->v6](https://github.com/typescript-eslint/typescript-eslint/issues/6466)].
    - Keep this post up-to-date as changes land in the `v${major}` branch.
+1. Send a PR to the `v${major}` branch that adds the old major version to [Users > Releases > Old Release Documentation](../users/Releases.mdx#old-release-documentation)
 1. Wait until all required PRs have been merged
 1. Write a blog post announcing the new release [example: [Docs: Release blog post for v6](https://github.com/typescript-eslint/typescript-eslint/issues/7153)], and land it in the `v${major}` branch.
 1. Let the release wait for **at least 1 week** to allow time for early adopters to help test it and discuss the changes.
@@ -94,6 +95,9 @@ They don't need any special treatment.
 1. Discuss with the maintainers to be ready for an [out-of-band](#out-of-band-releases) release. Doing this manually helps ensure someone is on-hand to action any issues that might arise from the major release.
 1. Prepare the release notes. `nx release` will automatically generate the release notes on GitHub, however this will be disorganized and unhelpful for users. We need to reorganize the release notes so that breaking changes are placed at the top to make them most visible. If any migrations are required, we must list the steps to make it easy for users.
    - Example release notes: [`v6.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v6.0.0), [`v5.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v5.0.0)
+1. Update Netlify deploys for old sites:
+   1. Update the `CURRENT_MAJOR_VERSION` environment variable to the new major version integer, such as `9`
+   2. Re-deploy the `v${major}` branches listed in [Users > Releases > Old Release Documentation](../users/Releases.mdx#old-release-documentation)
 1. Finally, post the release on social media with a link to the GitHub release. Make sure you include additional information about the highlights of the release!
 
 ## Out-of-Band Releases
