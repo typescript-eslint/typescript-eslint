@@ -1,7 +1,5 @@
-import type {
-  ParserServicesWithTypeInformation,
-  TSESTree,
-} from '@typescript-eslint/typescript-estree';
+import type { TSESTree } from '@typescript-eslint/typescript-estree';
+import { ParserServicesWithTypeInformation } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
 /**

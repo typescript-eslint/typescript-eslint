@@ -1,4 +1,7 @@
-import type { RuleCreateFunction, RuleModule } from '../ts-eslint';
+import type {
+  RuleCreateFunction,
+  RuleModule,
+} from '@typescript-eslint/types-eslint';
 
 /**
  * Uses type inference to fetch the Options type from the given RuleModule

@@ -1,6 +1,7 @@
+import type * as TSESLint from '@typescript-eslint/types-eslint';
+
 import * as eslintUtils from '@eslint-community/eslint-utils';
 
-import type * as TSESLint from '../../ts-eslint';
 import type { TSESTree } from '../../ts-estree';
 
 /**

@@ -4,10 +4,19 @@
   "include": [],
   "references": [
     {
+      "path": "../parser-services"
+    },
+    {
+      "path": "../rule-creator"
+    },
+    {
       "path": "../typescript-estree"
     },
     {
       "path": "../types"
+    },
+    {
+      "path": "../types-eslint"
     },
     {
       "path": "../scope-manager"

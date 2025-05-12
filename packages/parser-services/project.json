@@ -1,0 +1,16 @@
+{
+  "name": "parser-services",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "root": "packages/parser-services",
+  "sourceRoot": "packages/parser-services/src",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/vite:test"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import type { JSONSchema } from '@typescript-eslint/utils';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import type {
   IndividualAndMetaSelectorsString,
@@ -15,7 +15,7 @@ import {
   UnderscoreOptions,
 } from './enums';
 
-const $DEFS: Record<string, JSONSchema.JSONSchema4> = {
+const $DEFS: Record<string, JSONSchema4> = {
   // enums
   predefinedFormats: {
     enum: getEnumNames(PredefinedFormats),
@@ -64,16 +64,16 @@ const $DEFS: Record<string, JSONSchema.JSONSchema4> = {
   },
 };
 
-const UNDERSCORE_SCHEMA: JSONSchema.JSONSchema4 = {
+const UNDERSCORE_SCHEMA: JSONSchema4 = {
   $ref: '#/$defs/underscoreOptions',
 };
-const PREFIX_SUFFIX_SCHEMA: JSONSchema.JSONSchema4 = {
+const PREFIX_SUFFIX_SCHEMA: JSONSchema4 = {
   $ref: '#/$defs/prefixSuffixConfig',
 };
-const MATCH_REGEX_SCHEMA: JSONSchema.JSONSchema4 = {
+const MATCH_REGEX_SCHEMA: JSONSchema4 = {
   $ref: '#/$defs/matchRegexConfig',
 };
-type JSONSchemaProperties = Record<string, JSONSchema.JSONSchema4>;
+type JSONSchemaProperties = Record<string, JSONSchema4>;
 const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
   custom: MATCH_REGEX_SCHEMA,
   failureMessage: {
@@ -91,7 +91,7 @@ function selectorSchema(
   selectorString: IndividualAndMetaSelectorsString,
   allowType: boolean,
   modifiers?: ModifiersString[],
-): JSONSchema.JSONSchema4[] {
+): JSONSchema4[] {
   const selector: JSONSchemaProperties = {
     filter: {
       oneOf: [
@@ -141,7 +141,7 @@ function selectorSchema(
   ];
 }
 
-function selectorsSchema(): JSONSchema.JSONSchema4 {
+function selectorsSchema(): JSONSchema4 {
   return {
     additionalProperties: false,
     description: 'Multiple selectors in one config',
@@ -185,7 +185,7 @@ function selectorsSchema(): JSONSchema.JSONSchema4 {
   };
 }
 
-export const SCHEMA: JSONSchema.JSONSchema4 = {
+export const SCHEMA: JSONSchema4 = {
   $defs: $DEFS,
   additionalItems: false,
   items: {

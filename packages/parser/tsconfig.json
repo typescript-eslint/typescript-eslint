@@ -4,6 +4,9 @@
   "include": [],
   "references": [
     {
+      "path": "../parser-services"
+    },
+    {
       "path": "../visitor-keys"
     },
     {

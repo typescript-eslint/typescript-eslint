@@ -11,4 +11,4 @@ export type {
   ParserServices,
   ParserServicesWithoutTypeInformation,
   ParserServicesWithTypeInformation,
-} from '@typescript-eslint/typescript-estree';
+} from '@typescript-eslint/types-eslint';

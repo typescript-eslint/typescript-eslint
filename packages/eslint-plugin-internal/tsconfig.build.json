@@ -6,6 +6,9 @@
       "path": "../type-utils/tsconfig.build.json"
     },
     {
+      "path": "../rule-creator/tsconfig.build.json"
+    },
+    {
       "path": "../scope-manager/tsconfig.build.json"
     },
     {
