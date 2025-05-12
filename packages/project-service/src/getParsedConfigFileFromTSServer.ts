@@ -7,7 +7,7 @@ export function getParsedConfigFileFromTSServer(
   defaultProject: string,
   throwOnFailure: boolean,
   tsconfigRootDir?: string,
-) {
+): ts.ParsedCommandLine | undefined {
   try {
     return getParsedConfigFile(tsserver, defaultProject, tsconfigRootDir);
   } catch (error) {

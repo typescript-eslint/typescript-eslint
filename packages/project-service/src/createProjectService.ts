@@ -2,6 +2,7 @@ import type { ProjectServiceOptions } from '@typescript-eslint/types';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import debug from 'debug';
+
 import { getParsedConfigFileFromTSServer } from './getParsedConfigFileFromTSServer.js';
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;

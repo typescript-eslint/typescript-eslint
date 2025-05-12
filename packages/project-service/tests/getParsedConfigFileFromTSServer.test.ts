@@ -1,3 +1,4 @@
+import type * as ts from 'typescript/lib/tsserverlibrary';
 import { getParsedConfigFileFromTSServer } from '../src/getParsedConfigFileFromTSServer';
 
 const mockGetParsedConfigFile = vi.fn();
@@ -12,12 +13,10 @@ const mockConfigFile = {
   fileNames: [],
 };
 
-const mockTSServer =
-  {} as unknown as typeof import('typescript/lib/tsserverlibrary');
-
+const mockTSServer = {} as unknown as typeof ts;
 const mockTSConfigRootDir = '/mock/tsconfig/root/dir';
 
-describe('getParsedConfigFileFromTSServer', () => {
+describe(getParsedConfigFileFromTSServer, () => {
   it('returns the parsed config file when getParsedConfigFile succeeds', () => {
     mockGetParsedConfigFile.mockReturnValueOnce(mockConfigFile);
 
