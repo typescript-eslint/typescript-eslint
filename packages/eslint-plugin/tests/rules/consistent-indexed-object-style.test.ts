@@ -904,5 +904,17 @@ interface Bar {
 }
       `,
     },
+
+    {
+      code: `
+type Foo = {
+  [k in string];
+};
+      `,
+      errors: [{ column: 12, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo = Record<string, any>;
+      `,
+    },
   ],
 });
