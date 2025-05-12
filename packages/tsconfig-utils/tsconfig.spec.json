@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/type-utils",
+    "outDir": "../../dist/out-tsc/packages/tsconfig-utils",
     "module": "NodeNext",
     "resolveJsonModule": true,
     "types": ["node", "vitest/globals", "vitest/importMeta"]

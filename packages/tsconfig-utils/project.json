@@ -1,9 +1,9 @@
 {
-  "name": "type-utils",
+  "name": "tsconfig-utils",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
-  "root": "packages/type-utils",
-  "sourceRoot": "packages/type-utils/src",
+  "root": "packages/tsconfig-utils",
+  "sourceRoot": "packages/tsconfig-utils/src",
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
