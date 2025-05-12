@@ -45,6 +45,6 @@ type Options = [
      */
     | boolean
       /** Allowlist of types that may accept `void` as a generic type parameter. */
-      | [string, ...string[]];
+      | string[];
   },
 ];
