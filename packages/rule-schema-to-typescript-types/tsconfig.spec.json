@@ -1,12 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/rule-schema-to-typescript-types/vitest",
-    "resolveJsonModule": true,
-    "types": ["vitest/globals", "vitest/importMeta"]
+    "outDir": "../../dist/packages/rule-schema-to-typescript-types"
   },
-  "include": ["vitest.config.mts", "package.json", "tests"],
-  "exclude": ["**/fixtures/**"],
   "references": [
     {
       "path": "./tsconfig.build.json"
