@@ -594,7 +594,7 @@ export default tseslint.config(
     name: 'website',
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
-      'import/no-default-export': 'off',
+      'import-x/no-default-export': 'off',
       'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
@@ -607,10 +607,9 @@ export default tseslint.config(
     },
   },
   {
-    files: ['packages/website/src/**/*.?(m|c)ts?(x)'],
+    files: ['packages/website/src/**/*.?(m|c)[tj]s?(x)'],
     name: 'website/source-files',
     rules: {
-      'import-x/no-default-export': 'off',
       // allow console logs in the website to help with debugging things in production
       'no-console': 'off',
     },
