@@ -154,40 +154,33 @@ function writeTable(contributors: User[], perLine = 5): void {
   fs.writeFileSync(path.join(REPO_ROOT, 'CONTRIBUTORS.md'), lines.join('\n'));
 }
 
-async function main(): Promise<void> {
-  const githubContributors: Contributor[] = [];
+const githubContributors: Contributor[] = [];
 
-  // fetch all of the contributor info
-  for await (const lastUsers of fetchUsers()) {
-    githubContributors.push(...lastUsers);
-  }
-
-  // fetch the user info
-  console.log(`Fetching user information...`);
-  const users = await Promise.allSettled(
-    githubContributors
-      // remove ignored users and bots
-      .filter(
-        usr => usr.login && usr.type !== 'Bot' && !IGNORED_USERS.has(usr.login),
-      )
-      // fetch the in-depth information for each user
-      .map(c => getData<User>(c.url)),
-  );
-
-  writeTable(
-    users
-      .map(result => {
-        if (result.status === 'fulfilled') {
-          return result.value?.body;
-        }
-        return null;
-      })
-      .filter((c): c is User => c?.login != null),
-    5,
-  );
+// fetch all of the contributor info
+for await (const lastUsers of fetchUsers()) {
+  githubContributors.push(...lastUsers);
 }
 
-main().catch((error: unknown) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+// fetch the user info
+console.log(`Fetching user information...`);
+const users = await Promise.allSettled(
+  githubContributors
+    // remove ignored users and bots
+    .filter(
+      usr => usr.login && usr.type !== 'Bot' && !IGNORED_USERS.has(usr.login),
+    )
+    // fetch the in-depth information for each user
+    .map(c => getData<User>(c.url)),
+);
+
+writeTable(
+  users
+    .map(result => {
+      if (result.status === 'fulfilled') {
+        return result.value?.body;
+      }
+      return null;
+    })
+    .filter((c): c is User => c?.login != null),
+  5,
+);
