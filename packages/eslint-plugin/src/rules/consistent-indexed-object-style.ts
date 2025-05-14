@@ -205,11 +205,10 @@ export default createRule<Options, MessageIds>({
             const scope = context.sourceCode.getScope(key);
             const superVar = ASTUtils.findVariable(scope, parentId.name);
             if (superVar) {
-              const isCircular = superVar.references.some(
-                item =>
-                  item.isTypeReference &&
-                  node.range[0] <= item.identifier.range[0] &&
-                  node.range[1] >= item.identifier.range[1],
+              const isCircular = isDeeplyReferencingType(
+                node.parent,
+                superVar,
+                new Set([parentId]),
               );
               if (isCircular) {
                 return;
@@ -226,9 +225,9 @@ export default createRule<Options, MessageIds>({
             ...(canFix && {
               fix: (fixer): ReturnType<ReportFixFunction> => {
                 const keyType = context.sourceCode.getText(constraint);
-                const valueType = context.sourceCode.getText(
-                  node.typeAnnotation,
-                );
+                const valueType = node.typeAnnotation
+                  ? context.sourceCode.getText(node.typeAnnotation)
+                  : 'any';
 
                 let recordText = `Record<${keyType}, ${valueType}>`;
 
@@ -291,6 +290,12 @@ function isDeeplyReferencingType(
       return [node.indexType, node.objectType].some(type =>
         isDeeplyReferencingType(type, superVar, visited),
       );
+    case AST_NODE_TYPES.TSMappedType:
+      if (node.typeAnnotation) {
+        return isDeeplyReferencingType(node.typeAnnotation, superVar, visited);
+      }
+
+      break;
     case AST_NODE_TYPES.TSConditionalType:
       return [
         node.checkType,
