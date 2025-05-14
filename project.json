@@ -9,7 +9,12 @@
       "outputs": ["{workspaceRoot}/dist"]
     },
     "lint": {
-      "command": "eslint . --ignore-pattern=packages --cache"
+      "command": "eslint . --ignore-pattern=packages --cache",
+      "dependsOn": [
+        "eslint-plugin:build",
+        "eslint-plugin-internal:build",
+        "typescript-eslint:build"
+      ]
     },
     "generate-configs": {
       "command": "tsx tools/scripts/generate-configs.mts",
