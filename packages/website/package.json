@@ -30,6 +30,7 @@
     "@babel/runtime": "^7.24.4",
     "@docusaurus/core": "^3.2.1",
     "@docusaurus/plugin-client-redirects": "^3.2.1",
+    "@docusaurus/plugin-content-blog": "^3.2.1",
     "@docusaurus/plugin-pwa": "^3.2.1",
     "@docusaurus/preset-classic": "^3.2.1",
     "@docusaurus/remark-plugin-npm2yarn": "^3.2.1",
