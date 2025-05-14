@@ -12,7 +12,8 @@
       "command": "eslint . --ignore-pattern=packages --cache"
     },
     "generate-configs": {
-      "command": "tsx tools/scripts/generate-configs.mts"
+      "command": "tsx tools/scripts/generate-configs.mts",
+      "dependsOn": ["eslint-plugin:build"]
     },
     "generate-contributors": {
       "command": "tsx tools/scripts/generate-contributors.mts"
