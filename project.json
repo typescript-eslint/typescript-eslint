@@ -6,7 +6,7 @@
     "typecheck": {
       "command": "tsc -b ./tsconfig.repo-config-files.json",
       "dependsOn": ["types:copy-ast-spec"],
-      "outputs": ["{workspaceRoot}/dist/out-tsc/root"]
+      "outputs": ["{workspaceRoot}/dist"]
     },
     "lint": {
       "executor": "@nx/eslint:lint",
