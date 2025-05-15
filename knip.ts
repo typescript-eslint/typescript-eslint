@@ -23,7 +23,6 @@ export default {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
       ignoreDependencies: [
-        '@nx/js',
         '@nx/workspace',
         // imported for type purposes only
         'website',
