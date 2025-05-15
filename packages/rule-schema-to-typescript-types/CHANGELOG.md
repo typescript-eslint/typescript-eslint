@@ -1,3 +1,9 @@
+## 8.32.1 (2025-05-12)
+
+This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.32.0 (2025-05-05)
 
 This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.
