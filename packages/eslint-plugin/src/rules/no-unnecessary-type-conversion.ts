@@ -28,7 +28,6 @@ export default createRule<Options, MessageIds>({
         'Disallow conversion idioms when they do not change the type or value of the expression',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       suggestRemove: 'Remove the type conversion.',

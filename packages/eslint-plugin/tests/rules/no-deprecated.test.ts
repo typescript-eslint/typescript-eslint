@@ -364,13 +364,126 @@ exists('/foo');
       const bar = { test };
     `,
     `
-      class A {
-        #b = () => {};
+      const a = {
+        /** @deprecated */
+        b: 'string',
+      };
 
-        c() {
-          this.#b();
+      const complex = Symbol() as any;
+      const c = a[complex];
+    `,
+    `
+      const a = {
+        b: 'string',
+      };
+
+      const c = a['b'];
+    `,
+    {
+      code: `
+        interface AllowedType {
+          /** @deprecated */
+          prop: string;
         }
+
+        const obj: AllowedType = {
+          prop: 'test',
+        };
+
+        const value = obj['prop'];
+      `,
+      options: [
+        {
+          allow: [
+            {
+              from: 'file',
+              name: 'AllowedType',
+            },
+          ],
+        },
+      ],
+    },
+    `
+      const a = {
+        /** @deprecated */
+        b: 'string',
+      };
+
+      const key = {};
+      const c = a[key as any];
+    `,
+    `
+      const a = {
+        /** @deprecated */
+        b: 'string',
+      };
+
+      const key = Symbol();
+      const c = a[key as any];
+    `,
+    `
+      const a = {
+        /** @deprecated */
+        b: 'string',
+      };
+
+      const key = undefined;
+      const c = a[key as any];
+    `,
+    `
+      const a = {
+        /** @deprecated */
+        b: 'string',
+      };
+
+      const c = a['nonExistentProperty'];
+    `,
+    `
+      const a = {
+        /** @deprecated */
+        b: 'string',
+      };
+
+      function getKey() {
+        return 'c';
       }
+
+      const c = a[getKey()];
+    `,
+    `
+      const a = {
+        /** @deprecated */
+        b: 'string',
+      };
+
+      const key = {};
+      const c = a[key];
+    `,
+    `
+      const stringObj = new String('b');
+      const a = {
+        /** @deprecated */
+        b: 'string',
+      };
+      const c = a[stringObj];
+    `,
+    `
+      const a = {
+        /** @deprecated */
+        b: 'string',
+      };
+
+      const key = Symbol('key');
+      const c = a[key];
+    `,
+    `
+      const a = {
+        /** @deprecated */
+        b: 'string',
+      };
+
+      const key = null;
+      const c = a[key as any];
     `,
   ],
   invalid: [
@@ -2906,6 +3019,154 @@ class B extends A {
           column: 18,
           data: { name: '#b' },
           endColumn: 20,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        const a = {
+          /** @deprecated */
+          b: 'string',
+        };
+
+        const c = a['b'];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: 'b' },
+          endColumn: 24,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        const a = {
+          /** @deprecated */
+          b: 'string',
+        };
+        const x = 'b';
+        const c = a[x];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: 'b' },
+          endColumn: 22,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        const a = {
+          /** @deprecated */
+          [2]: 'string',
+        };
+        const x = 'b';
+        const c = a[2];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: '2' },
+          endColumn: 22,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        const a = {
+          /** @deprecated reason for deprecation */
+          b: 'string',
+        };
+
+        const key = 'b';
+        const stringKey = key as const;
+        const c = a[stringKey];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: 'b', reason: 'reason for deprecation' },
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Keys {
+          B = 'b',
+        }
+
+        const a = {
+          /** @deprecated reason for deprecation */
+          b: 'string',
+        };
+
+        const key = Keys.B;
+        const c = a[key];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: 'b', reason: 'reason for deprecation' },
+          endColumn: 24,
+          endLine: 12,
+          line: 12,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        const a = {
+          /** @deprecated */
+          b: 'string',
+        };
+
+        const key = \`b\`;
+        const c = a[key];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: 'b' },
+          endColumn: 24,
+          endLine: 8,
+          line: 8,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        const stringObj = 'b';
+        const a = {
+          /** @deprecated */
+          b: 'string',
+        };
+        const c = a[stringObj];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: 'b' },
+          endColumn: 30,
           endLine: 7,
           line: 7,
           messageId: 'deprecated',
