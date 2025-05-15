@@ -23,6 +23,7 @@ export default {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
       ignoreDependencies: [
+        '@nx/js',
         '@nx/workspace',
         // imported for type purposes only
         'website',
@@ -39,7 +40,6 @@ export default {
         // @typescript-eslint/typescript-estree is not listed in dependencies to avoid circular dependency errors
         // You can check a more detailed explanation in this file
         'tests/util/parsers/typescript-estree-import.ts',
-        'typings/global.d.ts',
       ],
 
       project: ['src/**/*.ts', 'tests/util/**/*.ts', '!src/**/fixtures/**'],
@@ -49,6 +49,8 @@ export default {
         entry: [
           'tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
           'tests/util/setupVitest.mts',
+          'tests/util/custom-matchers/custom-matchers.ts',
+          'tests/util/custom-matchers/vitest-custom-matchers.d.ts',
         ],
       },
     },
