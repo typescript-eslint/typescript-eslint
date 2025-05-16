@@ -634,7 +634,7 @@ describe('TypeOrValueSpecifier', () => {
     );
   });
 
-  describe('valueMatchesSpecifier', () => {
+  describe(valueMatchesSpecifier, () => {
     function parseCode(code: string) {
       const rootDir = path.join(__dirname, 'fixtures');
       const { ast, services } = parseForESLint(code, {
@@ -837,7 +837,7 @@ describe('TypeOrValueSpecifier', () => {
     });
   });
 
-  describe('typeMatchesSomeSpecifier', () => {
+  describe(typeMatchesSomeSpecifier, () => {
     function runTests(
       code: string,
       specifiers: TypeOrValueSpecifier[],
@@ -891,7 +891,7 @@ describe('TypeOrValueSpecifier', () => {
     );
   });
 
-  describe('valueMatchesSomeSpecifier', () => {
+  describe(valueMatchesSomeSpecifier, () => {
     function runTests(
       code: string,
       specifiers: TypeOrValueSpecifier[] | undefined,
