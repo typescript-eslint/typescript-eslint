@@ -29,6 +29,13 @@
         "buildDepsTargetName": "vite:build-deps",
         "watchDepsTargetName": "vite:watch-deps"
       }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "include": ["packages/*"],
+      "options": {
+        "targetName": "lint"
+      }
     }
   ],
   "release": {
@@ -66,16 +73,6 @@
       "outputs": ["{projectRoot}/coverage"],
       "cache": true
     },
-    "@nx/eslint:lint": {
-      "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
-      "options": {
-        "noEslintrc": true,
-        "cache": true,
-        "eslintConfig": "{workspaceRoot}/eslint.config.mjs"
-      },
-      "outputs": ["{options.outputFile}"],
-      "cache": true
-    },
     "@nx/vite:test": {
       "dependsOn": ["^build"],
       "inputs": [
@@ -91,6 +88,16 @@
         "config": "{projectRoot}/vitest.config.mts",
         "watch": false
       }
+    },
+    "@nx/eslint:lint": {
+      "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
+      "options": {
+        "noEslintrc": true,
+        "cache": true,
+        "eslintConfig": "{workspaceRoot}/eslint.config.mjs"
+      },
+      "outputs": ["{options.outputFile}"],
+      "cache": true
     },
     "lint": {
       "executor": "@nx/eslint:lint",
