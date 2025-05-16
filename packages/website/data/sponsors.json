@@ -227,7 +227,7 @@
     "id": "syntaxfm",
     "image": "https://avatars.githubusercontent.com/u/130389858?v=4",
     "name": "Syntax",
-    "totalDonations": 34399,
+    "totalDonations": 37639,
     "website": "https://syntax.fm"
   },
   {
@@ -329,6 +329,13 @@
     "website": "https://paddn.com/"
   },
   {
+    "id": "getsentry",
+    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
+    "name": "Sentry",
+    "totalDonations": 14729,
+    "website": "https://sentry.io"
+  },
+  {
     "id": "Now4real",
     "image": "https://images.opencollective.com/now4real/54ca7d9/logo.png",
     "name": "Now4real",
@@ -339,15 +346,8 @@
     "id": "codecov",
     "image": "https://avatars.githubusercontent.com/u/8226205?v=4",
     "name": "Codecov",
-    "totalDonations": 13431,
+    "totalDonations": 14456,
     "website": "https://codecov.io/"
-  },
-  {
-    "id": "getsentry",
-    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
-    "name": "Sentry",
-    "totalDonations": 13394,
-    "website": "https://sentry.io"
   },
   {
     "id": "gitbutlerapp",
@@ -362,6 +362,13 @@
     "name": "Knowledge Work",
     "totalDonations": 11200,
     "website": "https://kwork.studio/"
+  },
+  {
+    "id": "charmed-kubernetes",
+    "image": "https://avatars.githubusercontent.com/u/49082977?v=4",
+    "name": "Charmed Kubernetes",
+    "totalDonations": 10488,
+    "website": "https://www.ubuntu.com/kubernetes"
   },
   {
     "id": "Gianfranco Palumbo",

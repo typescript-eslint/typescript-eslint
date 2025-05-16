@@ -29,6 +29,13 @@
         "buildDepsTargetName": "vite:build-deps",
         "watchDepsTargetName": "vite:watch-deps"
       }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "include": ["packages/*"],
+      "options": {
+        "targetName": "lint"
+      }
     }
   ],
   "release": {
@@ -82,16 +89,20 @@
         "watch": false
       }
     },
+    "@nx/eslint:lint": {
+      "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
+      "options": {
+        "noEslintrc": true,
+        "cache": true,
+        "eslintConfig": "{workspaceRoot}/eslint.config.mjs"
+      },
+      "outputs": ["{options.outputFile}"],
+      "cache": true
+    },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "dependsOn": [
-        "eslint-plugin:build",
-        "eslint-plugin-internal:build",
-        "typescript-eslint:build"
-      ],
+      "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
       "inputs": [
         "default",
-        "{workspaceRoot}/eslint.config.js",
         "{workspaceRoot}/eslint.config.mjs",
         {
           "dependentTasksOutputFiles": "**/*.js",
