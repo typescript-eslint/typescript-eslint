@@ -1,4 +1,4 @@
-/* eslint-disable no-process-exit, no-console */
+/* eslint-disable no-console */
 
 import * as esbuild from 'esbuild';
 import * as fs from 'node:fs/promises';
@@ -171,12 +171,5 @@ async function buildPackage(name: string, file: string): Promise<void> {
 }
 
 console.time('building eslint for web');
-
-buildPackage('index', './src/index.js')
-  .then(() => {
-    console.timeEnd('building eslint for web');
-  })
-  .catch((e: unknown) => {
-    console.error(String(e));
-    process.exit(1);
-  });
+await buildPackage('index', './src/index.js');
+console.timeEnd('building eslint for web');

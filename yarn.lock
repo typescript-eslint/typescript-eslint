@@ -5704,7 +5704,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@8.32.1, @typescript-eslint/types@^8.32.1, @typescript-eslint/types@^8.9.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@8.32.1, @typescript-eslint/types@^8.32.1, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -5754,7 +5754,7 @@ __metadata:
     eslint-plugin-import: ^2.31.0
     eslint-plugin-jsdoc: ^50.5.0
     eslint-plugin-jsx-a11y: ^6.10.2
-    eslint-plugin-perfectionist: ^3.9.1
+    eslint-plugin-perfectionist: ^4.12.3
     eslint-plugin-react: ^7.37.3
     eslint-plugin-react-hooks: ^5.0.0
     eslint-plugin-regexp: ^2.7.0
@@ -5762,14 +5762,12 @@ __metadata:
     execa: 7.2.0
     globals: ^16.0.0
     husky: ^9.1.4
-    jiti: 2.4.2
     knip: ^5.41.1
     lint-staged: ^15.2.2
     make-dir: ^4.0.0
     markdownlint-cli: ^0.44.0
     nx: 20.7.2
     prettier: 3.5.0
-    pretty-format: ^29.7.0
     rimraf: ^5.0.5
     semver: 7.7.0
     tsx: "*"
@@ -5807,7 +5805,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/utils@8.32.1, @typescript-eslint/utils@^8.9.0, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/utils@8.32.1, @typescript-eslint/utils@^8.32.1, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
@@ -9675,30 +9673,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-perfectionist@npm:^3.9.1":
-  version: 3.9.1
-  resolution: "eslint-plugin-perfectionist@npm:3.9.1"
+"eslint-plugin-perfectionist@npm:^4.12.3":
+  version: 4.13.0
+  resolution: "eslint-plugin-perfectionist@npm:4.13.0"
   dependencies:
-    "@typescript-eslint/types": ^8.9.0
-    "@typescript-eslint/utils": ^8.9.0
-    minimatch: ^9.0.5
-    natural-compare-lite: ^1.4.0
+    "@typescript-eslint/types": ^8.32.1
+    "@typescript-eslint/utils": ^8.32.1
+    natural-orderby: ^5.0.0
   peerDependencies:
-    astro-eslint-parser: ^1.0.2
-    eslint: ">=8.0.0"
-    svelte: ">=3.0.0"
-    svelte-eslint-parser: ^0.41.1
-    vue-eslint-parser: ">=9.0.0"
-  peerDependenciesMeta:
-    astro-eslint-parser:
-      optional: true
-    svelte:
-      optional: true
-    svelte-eslint-parser:
-      optional: true
-    vue-eslint-parser:
-      optional: true
-  checksum: 12bdc52586dd379bb174cb90c11d280173da88c079a3100eb2676ba9e8abf02e3989706fb06fc774331dc61909be27a0ba5c7ac591e9a777c793d7f8e5eb187d
+    eslint: ">=8.45.0"
+  checksum: 8dacb19fcd1cb1c5362c8715f72946aaed91be4f35c3cf4465d8e82a0a1b436bd6e7c36973cfc8e25221413d3a9a0d1e73901d40cca295e91a0d61dcdb0f9aa6
   languageName: node
   linkType: hard
 
@@ -12580,21 +12564,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiti@npm:2.4.2, jiti@npm:^2.4.2":
-  version: 2.4.2
-  resolution: "jiti@npm:2.4.2"
-  bin:
-    jiti: lib/jiti-cli.mjs
-  checksum: c6c30c7b6b293e9f26addfb332b63d964a9f143cdd2cf5e946dbe5143db89f7c1b50ad9223b77fb1f6ddb0b9c5ecef995fea024ecf7d2861d285d779cde66e1e
-  languageName: node
-  linkType: hard
-
 "jiti@npm:^1.20.0":
   version: 1.21.6
   resolution: "jiti@npm:1.21.6"
   bin:
     jiti: bin/jiti.js
   checksum: 9ea4a70a7bb950794824683ed1c632e2ede26949fbd348e2ba5ec8dc5efa54dc42022d85ae229cadaa60d4b95012e80ea07d625797199b688cc22ab0e8891d32
+  languageName: node
+  linkType: hard
+
+"jiti@npm:^2.4.2":
+  version: 2.4.2
+  resolution: "jiti@npm:2.4.2"
+  bin:
+    jiti: lib/jiti-cli.mjs
+  checksum: c6c30c7b6b293e9f26addfb332b63d964a9f143cdd2cf5e946dbe5143db89f7c1b50ad9223b77fb1f6ddb0b9c5ecef995fea024ecf7d2861d285d779cde66e1e
   languageName: node
   linkType: hard
 
@@ -14638,17 +14622,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"natural-compare-lite@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "natural-compare-lite@npm:1.4.0"
-  checksum: 5222ac3986a2b78dd6069ac62cbb52a7bf8ffc90d972ab76dfe7b01892485d229530ed20d0c62e79a6b363a663b273db3bde195a1358ce9e5f779d4453887225
-  languageName: node
-  linkType: hard
-
 "natural-compare@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
   checksum: 23ad088b08f898fc9b53011d7bb78ec48e79de7627e01ab5518e806033861bef68d5b0cd0e2205c2f36690ac9571ff6bcb05eb777ced2eeda8d4ac5b44592c3d
+  languageName: node
+  linkType: hard
+
+"natural-orderby@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "natural-orderby@npm:5.0.0"
+  checksum: bfdc62b91fb1b08bd3a8a9b66ec3476c17f867544f34778ce85344ffcff257342d632e94bc125c97f02b89c746479edd62c8727a310c94cab1a1d4a016eeeb46
   languageName: node
   linkType: hard
 
@@ -16079,7 +16063,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^29":
+"pretty-format@npm:^29.7.0":
   version: 29.7.0
   resolution: "pretty-format@npm:29.7.0"
   dependencies:

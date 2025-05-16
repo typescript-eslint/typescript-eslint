@@ -90,9 +90,7 @@ export class Referencer extends Visitor {
     }
   }
   public currentScope(): Scope;
-
   public currentScope(throwOnNull: true): Scope | null;
-
   public currentScope(dontThrowOnNull?: true): Scope | null {
     if (!dontThrowOnNull) {
       assert(this.scopeManager.currentScope, 'aaa');
