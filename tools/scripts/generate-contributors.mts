@@ -70,7 +70,7 @@ async function getData<T>(
 async function* fetchUsers(page = 1): AsyncIterableIterator<Contributor[]> {
   while (page <= MATCH_PAGE_NUMBER) {
     console.log(`Fetching page ${page} of contributors...`);
-    const contributors = await getData<{ message: string } | Contributor[]>(
+    const contributors = await getData<Contributor[] | { message: string }>(
       `${contributorsApiUrl}&page=${page}`,
     );
 

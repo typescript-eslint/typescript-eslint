@@ -1,9 +1,9 @@
 // @ts-check
 
+import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
-import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
 import vitestPlugin from '@vitest/eslint-plugin';
 import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
@@ -594,10 +594,10 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
       'import/no-default-export': 'off',
+      'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
       'react/prop-types': 'off',
-      'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
     },
     settings: {
       react: {
@@ -632,7 +632,26 @@ export default tseslint.config(
     name: 'all-files',
     rules: {
       '@typescript-eslint/sort-type-constituents': 'off',
-      'perfectionist/sort-classes': 'error',
+      'perfectionist/sort-classes': [
+        'error',
+        {
+          groups: [
+            'index-signature',
+            'static-property',
+            'static-block',
+            ['protected-property', 'protected-accessor-property'],
+            ['private-property', 'private-accessor-property'],
+            ['property', 'accessor-property'],
+            'constructor',
+            'static-method',
+            'protected-method',
+            'private-method',
+            'method',
+            ['get-method', 'set-method'],
+            'unknown',
+          ],
+        },
+      ],
       'perfectionist/sort-enums': 'off',
       'perfectionist/sort-objects': 'error',
       'perfectionist/sort-union-types': [
@@ -640,6 +659,20 @@ export default tseslint.config(
         {
           groups: ['keyword', 'unknown', 'nullish'],
           type: 'natural',
+        },
+      ],
+    },
+  },
+  {
+    files: ['packages/ast-spec/src/**/*.ts'],
+    rules: {
+      'perfectionist/sort-interfaces': [
+        'error',
+        {
+          customGroups: {
+            first: ['^type$'],
+          },
+          groups: ['first', 'unknown'],
         },
       ],
     },
@@ -655,10 +688,10 @@ export default tseslint.config(
         'error',
         {
           customGroups: {
-            first: ['loc', 'name', 'node', 'type'],
-            fourth: ['fix'],
-            second: ['meta', 'messageId', 'start'],
-            third: ['defaultOptions', 'data', 'end'],
+            first: ['^loc$', '^name$', '^node$', '^type$'],
+            fourth: ['^fix$'],
+            second: ['^meta$', '^messageId$', '^start$'],
+            third: ['^defaultOptions$', '^data$', '^end$'],
           },
           groups: ['first', 'second', 'third', 'fourth', 'unknown'],
         },
@@ -672,7 +705,7 @@ export default tseslint.config(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: { top: ['valid'] },
+          customGroups: { top: ['^valid$'] },
           groups: ['top', 'unknown'],
         },
       ],
@@ -686,8 +719,8 @@ export default tseslint.config(
         'error',
         {
           customGroups: {
-            first: ['type'],
-            second: ['loc', 'range'],
+            first: ['^type$'],
+            second: ['^loc$', '^range$'],
           },
           groups: ['first', 'second'],
         },
