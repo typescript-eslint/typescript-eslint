@@ -766,11 +766,11 @@ export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<
  */
 export type LooseRuleDefinition =
   // TODO - remove RuleCreateFunction once we no longer support ESLint 8
+  | LooseRuleCreateFunction
   | {
       create: LooseRuleCreateFunction;
       meta?: object | undefined;
-    }
-  | LooseRuleCreateFunction;
+    };
 /*
 eslint-disable-next-line @typescript-eslint/no-explicit-any --
 intentionally using `any` to allow bi-directional assignment (unknown and
