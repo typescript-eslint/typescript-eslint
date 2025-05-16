@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-export-declare Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -23,9 +20,13 @@ Program {
                 end: { column: 39, line: 1 },
               },
             },
+            declare: false,
+            global: false,
             id: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "ghi",
+              optional: false,
 
               range: [33, 36],
               loc: {
@@ -40,9 +41,13 @@ Program {
               end: { column: 39, line: 1 },
             },
           },
+          declare: false,
+          global: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "def",
+            optional: false,
 
             range: [29, 32],
             loc: {
@@ -58,9 +63,12 @@ Program {
           },
         },
         declare: true,
+        global: false,
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "abc",
+          optional: false,
 
           range: [25, 28],
           loc: {
@@ -87,7 +95,7 @@ Program {
       },
     },
   ],
-  sourceType: "script",
+  sourceType: "module",
 
   range: [0, 40],
   loc: {
@@ -95,4 +103,3 @@ Program {
     end: { column: 0, line: 2 },
   },
 }
-`;

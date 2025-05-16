@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration TSImportEqualsDeclaration external-module-ref-string Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -8,7 +5,9 @@ Program {
       type: "TSImportEqualsDeclaration",
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "F",
+        optional: false,
 
         range: [7, 8],
         loc: {
@@ -54,4 +53,3 @@ Program {
     end: { column: 0, line: 2 },
   },
 }
-`;

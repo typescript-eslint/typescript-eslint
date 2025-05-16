@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-var-requires.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 var foo = require('foo');
           ~~~~~~~~~~~~~~ Require statement not part of import statement.
@@ -9,31 +6,20 @@ const foo = require('foo');
             ~~~~~~~~~~~~~~ Require statement not part of import statement.
 let foo = require('foo');
           ~~~~~~~~~~~~~~ Require statement not part of import statement.
-"
-`;
 
-exports[`Validating rule docs no-var-requires.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 import foo = require('foo');
 require('foo');
 import foo from 'foo';
-"
-`;
 
-exports[`Validating rule docs no-var-requires.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: { "allow": ["/package.json$"] }
 
 const foo = require('../data.json');
             ~~~~~~~~~~~~~~~~~~~~~~~ Require statement not part of import statement.
-"
-`;
 
-exports[`Validating rule docs no-var-requires.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 Options: { "allow": ["/package.json$"] }
 
 const foo = require('../package.json');
-"
-`;

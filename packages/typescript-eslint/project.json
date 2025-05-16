@@ -1,12 +1,16 @@
 {
   "name": "typescript-eslint",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "type": "library",
-  "implicitDependencies": [],
+  "projectType": "library",
+  "root": "packages/typescript-eslint",
+  "sourceRoot": "packages/typescript-eslint/src",
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/vite:test"
     }
   }
 }

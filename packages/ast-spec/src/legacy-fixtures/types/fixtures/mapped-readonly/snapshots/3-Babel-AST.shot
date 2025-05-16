@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types mapped-readonly Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -9,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "map",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSMappedType {
@@ -30,6 +30,7 @@ Program {
                 },
                 typeParameter: TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
                   constraint: TSStringKeyword {
                     type: "TSStringKeyword",
 
@@ -39,7 +40,9 @@ Program {
                       end: { column: 32, line: 3 },
                     },
                   },
+                  in: false,
                   name: "P",
+                  out: false,
 
                   range: [94, 105],
                   loc: {
@@ -77,6 +80,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [73, 118],
@@ -94,4 +98,3 @@ Program {
     end: { column: 0, line: 4 },
   },
 }
-`;

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export-object-type AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > type-alias-declaration-export-object-type > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -14,12 +14,12 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export-objec
 +       assertions: Array [],
         declaration: TSTypeAliasDeclaration {
           type: 'TSTypeAliasDeclaration',
--         declare: false,
+          declare: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'TestClassProps',
--           optional: false,
+            optional: false,
 
             range: [85, 99],
             loc: {
@@ -35,9 +35,9 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export-objec
                 computed: false,
                 key: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'count',
--                 optional: false,
+                  optional: false,
 
                   range: [106, 111],
                   loc: {
@@ -45,9 +45,9 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export-objec
                     end: { column: 7, line: 4 },
                   },
                 },
--               optional: false,
--               readonly: false,
--               static: false,
+                optional: false,
+                readonly: false,
+                static: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: 'TSTypeAnnotation',
                   typeAnnotation: TSNumberKeyword {
@@ -99,13 +99,11 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export-objec
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [73, 124],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

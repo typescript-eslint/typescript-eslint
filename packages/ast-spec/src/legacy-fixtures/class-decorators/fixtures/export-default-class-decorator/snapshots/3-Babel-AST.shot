@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures class-decorators export-default-class-decorator Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -8,6 +5,7 @@ Program {
       type: "ExportDefaultDeclaration",
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
+        abstract: false,
         body: ClassBody {
           type: "ClassBody",
           body: [],
@@ -18,12 +16,15 @@ Program {
             end: { column: 27, line: 4 },
           },
         },
+        declare: false,
         decorators: [
           Decorator {
             type: "Decorator",
             expression: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "sealed",
+              optional: false,
 
               range: [74, 80],
               loc: {
@@ -41,7 +42,9 @@ Program {
         ],
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "Qux",
+          optional: false,
 
           range: [102, 105],
           loc: {
@@ -49,6 +52,7 @@ Program {
             end: { column: 24, line: 4 },
           },
         },
+        implements: [],
         superClass: null,
 
         range: [73, 108],
@@ -74,4 +78,3 @@ Program {
     end: { column: 0, line: 5 },
   },
 }
-`;

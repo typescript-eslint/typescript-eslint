@@ -1,3 +1,162 @@
+## 8.32.1 (2025-05-12)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [consistent-indexed-object-style] check for indirect circular types in aliased mapped types ([#11177](https://github.com/typescript-eslint/typescript-eslint/pull/11177))
+- **eslint-plugin:** [consistent-indexed-object-style] adjust auto-fixer to generate valid syntax for `TSMappedType` with no type annotation ([#11180](https://github.com/typescript-eslint/typescript-eslint/pull/11180))
+- **eslint-plugin:** [no-deprecated] support computed member access ([#10867](https://github.com/typescript-eslint/typescript-eslint/pull/10867))
+- **eslint-plugin:** [no-unnecessary-type-conversion] shouldn't have fixable property ([#11194](https://github.com/typescript-eslint/typescript-eslint/pull/11194))
+
+### ❤️ Thank You
+
+- Azat S. @azat-io
+- Dima Barabash @dbarabashh
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.32.0 (2025-05-05)
+
+### 🚀 Features
+
+- **eslint-plugin:** [only-throw-error] add option `allowRethrowing` ([#11075](https://github.com/typescript-eslint/typescript-eslint/pull/11075))
+- **eslint-plugin:** [no-unnecessary-type-conversion] add rule ([#10182](https://github.com/typescript-eslint/typescript-eslint/pull/10182))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-nullish-coalescing] fix parenthesization bug in suggestion ([#11098](https://github.com/typescript-eslint/typescript-eslint/pull/11098))
+- **eslint-plugin:** [unified-signatures] exempt `this` from optional parameter overload check ([#11005](https://github.com/typescript-eslint/typescript-eslint/pull/11005))
+- **eslint-plugin:** [no-unnecessary-type-parameters] should parenthesize type in suggestion fixer if necessary ([#10907](https://github.com/typescript-eslint/typescript-eslint/pull/10907))
+
+### ❤️ Thank You
+
+- Andy Edwards
+- Kirk Waiblinger @kirkwaiblinger
+- mdm317
+- Sasha Kondrashov
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.31.1 (2025-04-28)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-condition] downgrade fix to suggestion ([#11081](https://github.com/typescript-eslint/typescript-eslint/pull/11081))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.31.0 (2025-04-21)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] add option to ignore string const assertions ([#10979](https://github.com/typescript-eslint/typescript-eslint/pull/10979))
+
+### ❤️ Thank You
+
+- Nicolas Le Cam
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.30.1 (2025-04-14)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** fix mistake with eslintrc config generation ([#11072](https://github.com/typescript-eslint/typescript-eslint/pull/11072))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.30.0 (2025-04-14)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-explicit-any] suggest to replace keyof any with PropertyKey ([#11032](https://github.com/typescript-eslint/typescript-eslint/pull/11032))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [promise-function-async] use a different error message for functions with promise and non-promise types ([#10950](https://github.com/typescript-eslint/typescript-eslint/pull/10950))
+
+### ❤️ Thank You
+
+- Dima Barabash @dbarabashh
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.29.1 (2025-04-07)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] report on deprecated imported variable used as property ([#10998](https://github.com/typescript-eslint/typescript-eslint/pull/10998))
+
+### ❤️ Thank You
+
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.29.0 (2025-03-31)
+
+### 🚀 Features
+
+- **eslint-plugin:** [prefer-nullish-coalescing] create `ignoreIfStatements` option ([#11000](https://github.com/typescript-eslint/typescript-eslint/pull/11000))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-array-constructor] remove optional chaining exemption ([#10963](https://github.com/typescript-eslint/typescript-eslint/pull/10963))
+- **eslint-plugin:** support arbitrary extensions in definition files ([#10957](https://github.com/typescript-eslint/typescript-eslint/pull/10957))
+- **eslint-plugin:** [prefer-for-of] fix false positive when using erasable type syntax within update expressions ([#10981](https://github.com/typescript-eslint/typescript-eslint/pull/10981))
+- **eslint-plugin:** [use-unknown-in-catch-callback-variable] remove fixable property ([#10993](https://github.com/typescript-eslint/typescript-eslint/pull/10993))
+- **eslint-plugin:** [no-unnecessary-condition] don't report on unnecessary optional array index access when `noUncheckedIndexedAccess` is enabled ([#10961](https://github.com/typescript-eslint/typescript-eslint/pull/10961))
+
+### ❤️ Thank You
+
+- Dima Barabash @dbarabashh
+- Kim Sang Du @developer-bandi
+- Olivier Zalmanski @OlivierZal
+- Ronen Amiel
+- Yannick Decat @mho22
+- zyoshoka @zyoshoka
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.28.0 (2025-03-24)
+
+### 🚀 Features
+
+- **eslint-plugin:** [prefer-nullish-coalescing] support `if` statement assignment (`??=`) and fix several minor bugs ([#10861](https://github.com/typescript-eslint/typescript-eslint/pull/10861))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-function-type] remove fixable property ([#10986](https://github.com/typescript-eslint/typescript-eslint/pull/10986))
+
+### ❤️ Thank You
+
+- Olivier Zalmanski @OlivierZal
+- Yannick Decat @mho22
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.27.0 (2025-03-17)
+
+### 🚀 Features
+
+- **utils:** support `DeprecatedInfo` for `rule.meta.deprecated` ([#10932](https://github.com/typescript-eslint/typescript-eslint/pull/10932))
+
+### ❤️ Thank You
+
+- ntnyq @ntnyq
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.26.1 (2025-03-10)
 
 ### 🩹 Fixes

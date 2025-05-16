@@ -206,7 +206,7 @@ export function typeMatchesSpecifier(
   if (
     tsutils.isIntersectionType(type) &&
     tsutils
-      .intersectionTypeParts(type)
+      .intersectionConstituents(type)
       .some(part => typeMatchesSpecifier(part, specifier, program))
   ) {
     return true;

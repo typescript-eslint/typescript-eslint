@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-optional-computed-method > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -13,12 +13,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'computed1',
--             optional: false,
+              optional: false,
 
               range: [79, 88],
               loc: {
@@ -28,7 +28,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             },
             init: Literal {
               type: 'Literal',
-              raw: '\\'buzz\\'',
+              raw: '\'buzz\'',
               value: 'buzz',
 
               range: [91, 97],
@@ -45,7 +45,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'const',
 
         range: [73, 98],
@@ -59,12 +59,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'computed2',
--             optional: false,
+              optional: false,
 
               range: [105, 114],
               loc: {
@@ -74,7 +74,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             },
             init: Literal {
               type: 'Literal',
-              raw: '\\'bazz\\'',
+              raw: '\'bazz\'',
               value: 'bazz',
 
               range: [117, 123],
@@ -91,7 +91,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'const',
 
         range: [99, 124],
@@ -105,12 +105,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'obj',
--             optional: false,
+              optional: false,
 
               range: [131, 134],
               loc: {
@@ -126,9 +126,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                   computed: false,
                   key: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'member',
--                   optional: false,
+                    optional: false,
 
                     range: [141, 147],
                     loc: {
@@ -138,11 +138,11 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                   },
                   kind: 'init',
                   method: false,
--                 optional: false,
+                  optional: false,
                   shorthand: false,
                   value: Literal {
                     type: 'Literal',
-                    raw: '\\'member\\'',
+                    raw: '\'member\'',
                     value: 'member',
 
                     range: [149, 157],
@@ -163,9 +163,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                   computed: false,
                   key: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'member2',
--                   optional: false,
+                    optional: false,
 
                     range: [161, 168],
                     loc: {
@@ -175,11 +175,11 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                   },
                   kind: 'init',
                   method: false,
--                 optional: false,
+                  optional: false,
                   shorthand: false,
                   value: Literal {
                     type: 'Literal',
-                    raw: '\\'member2\\'',
+                    raw: '\'member2\'',
                     value: 'member2',
 
                     range: [170, 179],
@@ -211,7 +211,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'const',
 
         range: [125, 183],
@@ -222,19 +222,19 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
       },
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'computed1',
--               optional: false,
+                optional: false,
 
                 range: [197, 206],
                 loc: {
@@ -244,7 +244,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -252,7 +252,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -274,12 +274,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'computed2',
--               optional: false,
+                optional: false,
 
                 range: [215, 224],
                 loc: {
@@ -289,7 +289,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -304,7 +304,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                     end: { column: 19, line: 11 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -326,7 +326,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: Literal {
                 type: 'Literal',
                 raw: '1',
@@ -340,7 +340,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -348,7 +348,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -370,7 +370,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: Literal {
                 type: 'Literal',
                 raw: '2',
@@ -384,7 +384,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -399,7 +399,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                     end: { column: 11, line: 13 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -421,10 +421,10 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: Literal {
                 type: 'Literal',
-                raw: '\\'literal1\\'',
+                raw: '\'literal1\'',
                 value: 'literal1',
 
                 range: [257, 267],
@@ -435,7 +435,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -443,7 +443,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -465,10 +465,10 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: Literal {
                 type: 'Literal',
-                raw: '\\'literal2\\'',
+                raw: '\'literal2\'',
                 value: 'literal2',
 
                 range: [276, 286],
@@ -479,7 +479,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -494,7 +494,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                     end: { column: 20, line: 15 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -516,15 +516,15 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: MemberExpression {
                 type: 'MemberExpression',
                 computed: false,
                 object: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'obj',
--                 optional: false,
+                  optional: false,
 
                   range: [297, 300],
                   loc: {
@@ -535,9 +535,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                 optional: false,
                 property: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'member',
--                 optional: false,
+                  optional: false,
 
                   range: [301, 307],
                   loc: {
@@ -554,7 +554,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -569,7 +569,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                     end: { column: 20, line: 16 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -591,15 +591,15 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: MemberExpression {
                 type: 'MemberExpression',
                 computed: false,
                 object: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'obj',
--                 optional: false,
+                  optional: false,
 
                   range: [318, 321],
                   loc: {
@@ -610,9 +610,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                 optional: false,
                 property: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'member2',
--                 optional: false,
+                  optional: false,
 
                   range: [322, 329],
                   loc: {
@@ -629,7 +629,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -637,7 +637,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -659,15 +659,15 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
--             decorators: Array [],
+              decorators: Array [],
               key: CallExpression {
                 type: 'CallExpression',
                 arguments: Array [],
                 callee: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'f',
--                 optional: false,
+                  optional: false,
 
                   range: [338, 339],
                   loc: {
@@ -685,7 +685,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -700,7 +700,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                     end: { column: 13, line: 18 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -727,13 +727,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             end: { column: 1, line: 19 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'X',
--         optional: false,
+          optional: false,
 
           range: [190, 191],
           loc: {
@@ -741,7 +741,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             end: { column: 7, line: 9 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
 
         range: [184, 350],
@@ -758,5 +758,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
       start: { column: 0, line: 3 },
       end: { column: 0, line: 20 },
     },
-  }"
-`;
+  }

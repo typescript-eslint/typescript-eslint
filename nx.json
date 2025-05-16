@@ -14,6 +14,21 @@
           "configName": "tsconfig.build.json"
         }
       }
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "include": ["packages/*"],
+      "options": {
+        "buildTargetName": "vite:build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "devTargetName": "dev",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "vite:typecheck",
+        "buildDepsTargetName": "vite:build-deps",
+        "watchDepsTargetName": "vite:watch-deps"
+      }
     }
   ],
   "release": {
@@ -40,39 +55,35 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"],
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "cwd": "{projectRoot}"
+      },
       "cache": true
     },
     "test": {
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/jest.config.js",
-        "{workspaceRoot}/jest.config.base.js"
-      ],
+      "dependsOn": ["^build"],
       "outputs": ["{projectRoot}/coverage"],
       "cache": true
     },
-    "@nx/jest:jest": {
+    "@nx/vite:test": {
+      "dependsOn": ["^build"],
       "inputs": [
         "default",
         "^production",
-        "{workspaceRoot}/jest.config.js",
-        "{workspaceRoot}/jest.config.base.js"
+        "{workspaceRoot}/vitest.config.mts",
+        "{workspaceRoot}/vitest.config.base.mts",
+        "{projectRoot}/vitest.config.mts"
       ],
       "outputs": ["{projectRoot}/coverage"],
       "cache": true,
       "options": {
-        "jestConfig": "{projectRoot}/jest.config.js",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
+        "config": "{projectRoot}/vitest.config.mts",
+        "watch": false
       }
     },
     "lint": {
+      "executor": "@nx/eslint:lint",
       "dependsOn": [
         "eslint-plugin:build",
         "eslint-plugin-internal:build",
@@ -87,6 +98,12 @@
           "transitive": false
         }
       ],
+      "outputs": ["{options.outputFile}"],
+      "cache": true
+    },
+    "typecheck": {
+      "dependsOn": ["types:copy-ast-spec"],
+      "outputs": ["{workspaceRoot}/dist"],
       "cache": true
     }
   },
@@ -109,7 +126,7 @@
       "default",
       "!{projectRoot}/**/?(*.)+(test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/vitest.config.m[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s"
     ]
   }

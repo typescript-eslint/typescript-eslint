@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-name AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > TSModuleDeclaration > namespace-id-qualified-name > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -49,12 +49,14 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
               },
             },
 -           right: Identifier {
++           declare: false,
++           global: false,
 +           id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
 -             name: 'B',
--             optional: false,
 +             name: 'C',
+              optional: false,
 
 -             range: [12, 13],
 +             range: [14, 15],
@@ -76,12 +78,14 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
             },
           },
 -         right: Identifier {
++         declare: false,
++         global: false,
 +         id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
 -           name: 'C',
--           optional: false,
 +           name: 'B',
+            optional: false,
 
 -           range: [14, 15],
 +           range: [12, 13],
@@ -100,9 +104,13 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
 +           end: { column: 18, line: 1 },
 +         },
 +       },
++       declare: false,
++       global: false,
 +       id: Identifier {
 +         type: 'Identifier',
++         decorators: Array [],
 +         name: 'A',
++         optional: false,
 +
 +         range: [10, 11],
           loc: {
@@ -127,5 +135,4 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

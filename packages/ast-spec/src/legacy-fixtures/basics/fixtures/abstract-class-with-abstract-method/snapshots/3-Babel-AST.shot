@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-method Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -17,9 +14,12 @@ Program {
               type: "MethodDefinition",
               abstract: true,
               computed: false,
+              decorators: [],
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "createSocket",
+                optional: false,
 
                 range: [123, 135],
                 loc: {
@@ -28,10 +28,13 @@ Program {
                 },
               },
               kind: "method",
+              optional: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: "FunctionExpression",
                 async: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -42,7 +45,9 @@ Program {
                     type: "TSTypeReference",
                     typeName: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "Promise",
+                      optional: false,
 
                       range: [139, 146],
                       loc: {
@@ -106,9 +111,13 @@ Program {
             end: { column: 1, line: 5 },
           },
         },
+        declare: false,
+        decorators: [],
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "AbstractSocket",
+          optional: false,
 
           range: [95, 109],
           loc: {
@@ -116,6 +125,7 @@ Program {
             end: { column: 36, line: 3 },
           },
         },
+        implements: [],
         superClass: null,
 
         range: [80, 157],
@@ -143,4 +153,3 @@ Program {
     end: { column: 0, line: 6 },
   },
 }
-`;

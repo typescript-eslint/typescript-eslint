@@ -4,7 +4,9 @@
   "// These targets are used for repo level utils and checking repo files which do not belong to specific published packages": {},
   "targets": {
     "typecheck": {
-      "command": "tsc -b ./tsconfig.repo-config-files.json"
+      "command": "tsc -b ./tsconfig.repo-config-files.json",
+      "dependsOn": ["types:copy-ast-spec"],
+      "outputs": ["{workspaceRoot}/dist"]
     },
     "lint": {
       "command": "eslint . --ignore-pattern=packages --cache"

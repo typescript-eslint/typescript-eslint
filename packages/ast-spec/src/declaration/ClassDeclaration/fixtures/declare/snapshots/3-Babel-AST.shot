@@ -1,11 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration ClassDeclaration declare Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -17,9 +15,12 @@ Program {
         },
       },
       declare: true,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [14, 17],
         loc: {
@@ -27,6 +28,7 @@ Program {
           end: { column: 17, line: 1 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [0, 20],
@@ -44,4 +46,3 @@ Program {
     end: { column: 0, line: 2 },
   },
 }
-`;

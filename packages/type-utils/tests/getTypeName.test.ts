@@ -1,37 +1,19 @@
-import type { TSESTree } from '@typescript-eslint/typescript-estree';
+import type { TSESTree } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
-import { parseForESLint } from '@typescript-eslint/parser';
-import path from 'node:path';
+import { getTypeName } from '../src/index.js';
+import { parseCodeForEslint } from './test-utils/custom-matchers/custom-matchers.js';
 
-import { getTypeName } from '../src';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
-
-describe('getTypeName', () => {
+describe(getTypeName, () => {
   function getTypes(code: string): { checker: ts.TypeChecker; type: ts.Type } {
-    const rootDir = path.join(__dirname, 'fixtures');
-
-    const { ast, services } = parseForESLint(code, {
-      disallowAutomaticSingleRunInference: true,
-      filePath: path.join(rootDir, 'file.ts'),
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    });
-    expectToHaveParserServices(services);
+    const { ast, services } = parseCodeForEslint(code);
     const checker = services.program.getTypeChecker();
     const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
 
     return { checker, type: services.getTypeAtLocation(declaration.id) };
   }
-
-  function runTest(code: string, expected: string): void {
-    const { checker, type } = getTypes(code);
-    const result = getTypeName(checker, type);
-    expect(result).toBe(expected);
-  }
-
   describe('returns primitive type', () => {
-    it.each([
+    it.for([
       ['type Test = string;', 'string'],
       ['type Test = "text";', 'string'],
       ['type Test = string | "text";', 'string'],
@@ -45,11 +27,18 @@ describe('getTypeName', () => {
       ['type Test = undefined;', 'undefined'],
       ['type Test = null;', 'null'],
       ['type Test = symbol;', 'symbol'],
-    ])('when code is %s, returns %s', runTest);
+    ] as const)(
+      'when code is %s, returns %s',
+      ([code, expected], { expect }) => {
+        const { checker, type } = getTypes(code);
+        const result = getTypeName(checker, type);
+        expect(result).toBe(expected);
+      },
+    );
   });
 
   describe('returns non-primitive type', () => {
-    it.each([
+    it.for([
       ['type Test = 123;', '123'],
       ['type Test = true;', 'true'],
       ['type Test = false;', 'false'],
@@ -57,6 +46,13 @@ describe('getTypeName', () => {
       ['type Test<T = number> = T & boolean;', 'Test<T>'],
       ['type Test = string | number;', 'Test'],
       ['type Test = string | string[];', 'Test'],
-    ])('when code is %s, returns %s', runTest);
+    ] as const)(
+      'when code is %s, returns %s',
+      ([code, expected], { expect }) => {
+        const { checker, type } = getTypes(code);
+        const result = getTypeName(checker, type);
+        expect(result).toBe(expected);
+      },
+    );
   });
 });

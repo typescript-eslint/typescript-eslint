@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration ImportDeclaration default AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > ImportDeclaration > default > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -15,7 +15,7 @@ exports[`AST Fixtures declaration ImportDeclaration default AST Alignment - AST 
         importKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\'mod\\'',
+          raw: '\'mod\'',
           value: 'mod',
 
           range: [14, 19],
@@ -29,9 +29,9 @@ exports[`AST Fixtures declaration ImportDeclaration default AST Alignment - AST 
             type: 'ImportDefaultSpecifier',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'a',
--             optional: false,
+              optional: false,
 
               range: [7, 8],
               loc: {
@@ -62,5 +62,4 @@ exports[`AST Fixtures declaration ImportDeclaration default AST Alignment - AST 
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

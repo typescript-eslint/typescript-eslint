@@ -1,20 +1,21 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures special TSTypeParameter method-const-modifiers Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "method",
+              optional: false,
 
               range: [12, 18],
               loc: {
@@ -23,6 +24,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -37,6 +40,7 @@ Program {
                   end: { column: 22, line: 2 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -47,7 +51,9 @@ Program {
                   TSTypeParameter {
                     type: "TSTypeParameter",
                     const: true,
+                    in: false,
                     name: "T",
+                    out: false,
 
                     range: [19, 26],
                     loc: {
@@ -64,9 +70,9 @@ Program {
                 },
               },
 
-              range: [27, 32],
+              range: [18, 32],
               loc: {
-                start: { column: 17, line: 2 },
+                start: { column: 8, line: 2 },
                 end: { column: 22, line: 2 },
               },
             },
@@ -80,9 +86,12 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "method",
+              optional: false,
 
               range: [35, 41],
               loc: {
@@ -91,6 +100,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -105,6 +116,7 @@ Program {
                   end: { column: 32, line: 3 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -119,7 +131,9 @@ Program {
                       type: "TSTypeReference",
                       typeName: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "U",
+                        optional: false,
 
                         range: [58, 59],
                         loc: {
@@ -134,7 +148,9 @@ Program {
                         end: { column: 26, line: 3 },
                       },
                     },
+                    in: false,
                     name: "T",
+                    out: false,
 
                     range: [42, 59],
                     loc: {
@@ -151,9 +167,9 @@ Program {
                 },
               },
 
-              range: [60, 65],
+              range: [41, 65],
               loc: {
-                start: { column: 27, line: 3 },
+                start: { column: 8, line: 3 },
                 end: { column: 32, line: 3 },
               },
             },
@@ -167,9 +183,12 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "method",
+              optional: false,
 
               range: [68, 74],
               loc: {
@@ -178,6 +197,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -192,6 +213,7 @@ Program {
                   end: { column: 25, line: 4 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -201,7 +223,10 @@ Program {
                 params: [
                   TSTypeParameter {
                     type: "TSTypeParameter",
+                    const: false,
+                    in: false,
                     name: "T",
+                    out: false,
 
                     range: [75, 76],
                     loc: {
@@ -212,7 +237,9 @@ Program {
                   TSTypeParameter {
                     type: "TSTypeParameter",
                     const: true,
+                    in: false,
                     name: "U",
+                    out: false,
 
                     range: [78, 85],
                     loc: {
@@ -229,9 +256,9 @@ Program {
                 },
               },
 
-              range: [86, 91],
+              range: [74, 91],
               loc: {
-                start: { column: 20, line: 4 },
+                start: { column: 8, line: 4 },
                 end: { column: 25, line: 4 },
               },
             },
@@ -250,9 +277,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "_",
+        optional: false,
 
         range: [6, 7],
         loc: {
@@ -260,6 +291,7 @@ Program {
           end: { column: 7, line: 1 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [0, 93],
@@ -277,4 +309,3 @@ Program {
     end: { column: 0, line: 6 },
   },
 }
-`;

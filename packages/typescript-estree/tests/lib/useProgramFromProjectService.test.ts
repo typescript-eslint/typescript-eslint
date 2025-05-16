@@ -9,30 +9,30 @@ import type { ParseSettings } from '../../src/parseSettings';
 
 import { useProgramFromProjectService } from '../../src/useProgramFromProjectService';
 
-const mockCreateNoProgram = jest.fn();
+const mockCreateNoProgram = vi.fn();
 
-jest.mock('../../src/create-program/createSourceFile', () => ({
+vi.mock('../../src/create-program/createSourceFile', () => ({
   get createNoProgram() {
     return mockCreateNoProgram;
   },
 }));
 
-const mockCreateProjectProgram = jest.fn();
+const mockCreateProjectProgram = vi.fn();
 
-jest.mock('../../src/create-program/createProjectProgram', () => ({
+vi.mock('../../src/create-program/createProjectProgram', () => ({
   get createProjectProgram() {
     return mockCreateProjectProgram;
   },
 }));
 
-const mockGetProgram = jest.fn();
+const mockGetProgram = vi.fn();
 
 const currentDirectory = '/repos/repo';
 
 function createMockProjectService() {
-  const openClientFile = jest.fn();
-  const setHostConfiguration = jest.fn();
-  const reloadProjects = jest.fn();
+  const openClientFile = vi.fn();
+  const setHostConfiguration = vi.fn();
+  const reloadProjects = vi.fn();
   const service = {
     getDefaultProjectForFile: () => ({
       getLanguageService: () => ({
@@ -74,7 +74,7 @@ const createProjectServiceSettings = <
   ...settings,
 });
 
-describe('useProgramFromProjectService', () => {
+describe(useProgramFromProjectService, () => {
   it('creates a standalone AST with no program when hasFullTypeInformation is false and allowDefaultProject is falsy', () => {
     const { service } = createMockProjectService();
 
@@ -111,7 +111,7 @@ describe('useProgramFromProjectService', () => {
       new Set(),
     );
 
-    expect(service.openClientFile).toHaveBeenCalledWith(
+    expect(service.openClientFile).toHaveBeenCalledExactlyOnceWith(
       path.normalize(
         `${currentDirectory}/path/PascalCaseDirectory/camelCaseFile.ts`,
       ),
@@ -185,12 +185,12 @@ describe('useProgramFromProjectService', () => {
     ).toThrow(
       `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
     );
-    expect(service.reloadProjects).toHaveBeenCalledTimes(1);
+    expect(service.reloadProjects).toHaveBeenCalledOnce();
   });
 
   it('returns a created program after reloading projects when hasFullTypeInformation is enabled, the file is only in the project service after reload, and the last reload was recent', () => {
     const { service } = createMockProjectService();
-    const program = { getSourceFile: jest.fn() };
+    const program = { getSourceFile: vi.fn() };
 
     service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({
       configFileName: 'tsconfig.json',
@@ -211,12 +211,12 @@ describe('useProgramFromProjectService', () => {
     );
 
     expect(actual).toBe(program);
-    expect(service.reloadProjects).toHaveBeenCalledTimes(1);
+    expect(service.reloadProjects).toHaveBeenCalledOnce();
   });
 
   it('throws an error when more than the maximum allowed file count is matched to the default project', () => {
     const { service } = createMockProjectService();
-    const program = { getSourceFile: jest.fn() };
+    const program = { getSourceFile: vi.fn() };
 
     mockGetProgram.mockReturnValueOnce(program);
 
@@ -250,7 +250,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
   it('truncates the files printed by the maximum allowed files error when they exceed the print limit', () => {
     const { service } = createMockProjectService();
-    const program = { getSourceFile: jest.fn() };
+    const program = { getSourceFile: vi.fn() };
 
     mockGetProgram.mockReturnValueOnce(program);
 
@@ -319,12 +319,12 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(actual).toBeUndefined();
+    assert.isUndefined(actual);
   });
 
   it('returns a created program when hasFullTypeInformation is disabled, the file is both in the project service and allowDefaultProject, and the service has a matching program', () => {
     const { service } = createMockProjectService();
-    const program = { getSourceFile: jest.fn() };
+    const program = { getSourceFile: vi.fn() };
 
     mockGetProgram.mockReturnValueOnce(program);
 
@@ -348,7 +348,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
   it('returns undefined when hasFullTypeInformation is disabled, the file is neither in the project service nor allowDefaultProject, and the service has a matching program', () => {
     const { service } = createMockProjectService();
-    const program = { getSourceFile: jest.fn() };
+    const program = { getSourceFile: vi.fn() };
 
     mockGetProgram.mockReturnValueOnce(program);
 
@@ -365,12 +365,12 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(actual).toBeUndefined();
+    assert.isUndefined(actual);
   });
 
   it('returns undefined when hasFullTypeInformation is disabled, the file is in the project service, the service has a matching program, and no out', () => {
     const { service } = createMockProjectService();
-    const program = { getSourceFile: jest.fn() };
+    const program = { getSourceFile: vi.fn() };
 
     mockGetProgram.mockReturnValueOnce(program);
 
@@ -390,7 +390,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(actual).toBeUndefined();
+    assert.isUndefined(actual);
   });
 
   it('does not call setHostConfiguration on the service with default extensions if extraFileExtensions are not provided', () => {
@@ -444,7 +444,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+    expect(service.setHostConfiguration).toHaveBeenCalledExactlyOnceWith({
       extraFileExtensions: [
         {
           extension: '.vue',
@@ -472,8 +472,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+    expect(service.setHostConfiguration).toHaveBeenCalledExactlyOnceWith({
       extraFileExtensions: [
         {
           extension: '.vue',
@@ -492,7 +491,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       false,
       new Set(),
     );
-    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
+    expect(service.setHostConfiguration).toHaveBeenCalledOnce();
   });
 
   it('calls setHostConfiguration on the service to use extraFileExtensions when changed', () => {
@@ -512,8 +511,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+    expect(service.setHostConfiguration).toHaveBeenCalledExactlyOnceWith({
       extraFileExtensions: [
         {
           extension: '.vue',
@@ -534,7 +532,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
     );
 
     expect(service.setHostConfiguration).toHaveBeenCalledTimes(2);
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+    expect(service.setHostConfiguration).toHaveBeenLastCalledWith({
       extraFileExtensions: [],
     });
   });
@@ -556,8 +554,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+    expect(service.setHostConfiguration).toHaveBeenCalledExactlyOnceWith({
       extraFileExtensions: [
         {
           extension: '.vue',
@@ -570,7 +567,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
     useProgramFromProjectService(settings, mockParseSettings, false, new Set());
 
     expect(service.setHostConfiguration).toHaveBeenCalledTimes(2);
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+    expect(service.setHostConfiguration).toHaveBeenLastCalledWith({
       extraFileExtensions: [],
     });
   });

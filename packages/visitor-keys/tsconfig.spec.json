@@ -1,20 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/visitor-keys",
-    "module": "NodeNext",
-    "types": ["jest", "node"]
+    "outDir": "../../dist/packages/visitor-keys"
   },
-  "include": [
-    "jest.config.js",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts",
-    "tests"
-  ],
   "references": [
     {
       "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "../../tsconfig.spec.json"
     }
   ]
 }

@@ -1,15 +1,15 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration TSEnumDeclaration declare Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
+      const: false,
       declare: true,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [13, 16],
         loc: {
@@ -34,4 +34,3 @@ Program {
     end: { column: 0, line: 2 },
   },
 }
-`;

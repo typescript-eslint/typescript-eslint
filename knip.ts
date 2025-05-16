@@ -11,36 +11,44 @@ export default {
     types: 'off',
     unresolved: 'off',
   },
+
+  vite: false,
+
+  vitest: {
+    config: ['vitest.config.mts'],
+    entry: ['tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+  },
+
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
       ignore: ['tools/scripts/typings/typescript.d.ts', 'typings/*.d.ts'],
       ignoreDependencies: [
-        '@babel/code-frame',
-        '@babel/core',
-        '@babel/eslint-parser',
-        '@babel/parser',
-        '@babel/types',
         '@nx/js',
         '@nx/workspace',
-        'glob',
-        'jest-specific-snapshot',
         'make-dir',
-        'ncp',
-        'tmp',
         // imported for type purposes only
         'website',
       ],
     },
     'packages/ast-spec': {
       ignore: [
-        'src/**/fixtures/**',
-        'tests/*.type-test.ts',
         // @typescript-eslint/typescript-estree is not listed in dependencies to avoid circular dependency errors
         // You can check a more detailed explanation in this file
         'tests/util/parsers/typescript-estree-import.ts',
-        'typings/global.d.ts',
       ],
+
+      project: ['src/**/*.ts', 'tests/util/**/*.ts', '!src/**/fixtures/**'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: [
+          'tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
+          'tests/util/setupVitest.mts',
+          'tests/util/custom-matchers/custom-matchers.ts',
+          'tests/util/custom-matchers/vitest-custom-matchers.d.ts',
+        ],
+      },
     },
     'packages/eslint-plugin': {
       ignore: [
@@ -53,27 +61,63 @@ export default {
       ignore: ['tests/fixtures/**'],
     },
     'packages/integration-tests': {
-      ignore: ['fixtures/**', 'typings/global.d.ts'],
+      ignore: ['fixtures/**'],
     },
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: ['tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+      },
     },
     'packages/rule-tester': {
       ignore: ['typings/eslint.d.ts'],
+
+      mocha: {
+        entry: ['tests/eslint-base/eslint-base.test.js'],
+      },
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: [
+          'tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
+          'tests/test-utils/serializers/index.ts',
+          'tests/test-utils/custom-matchers/custom-matchers.ts',
+          'tests/test-utils/custom-matchers/vitest-custom-matchers.d.ts',
+        ],
+      },
     },
     'packages/type-utils': {
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: [
+          'tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
+          'tests/test-utils/custom-matchers/custom-matchers.ts',
+          'tests/test-utils/custom-matchers/vitest-custom-matchers.d.ts',
+        ],
+      },
     },
     'packages/typescript-estree': {
       entry: ['src/use-at-your-own-risk.ts'],
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: [
+          'tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
+          'tests/test-utils/custom-matchers/custom-matchers.ts',
+          'tests/test-utils/custom-matchers/vitest-custom-matchers.d.ts',
+        ],
+      },
     },
     'packages/utils': {
       ignore: [
-        'tests/**/*.type-test.ts',
         'typings/eslint.d.ts',
         'typings/eslint-community-eslint-utils.d.ts',
       ],
@@ -131,6 +175,7 @@ export default {
         'src/mock/eslint-rules.js',
         'src/mock/eslint.js',
         'src/mock/lru-cache.js',
+        'src/mock/parser.js',
         'src/mock/path.js',
         'src/mock/typescript.js',
         'src/mock/util.js',

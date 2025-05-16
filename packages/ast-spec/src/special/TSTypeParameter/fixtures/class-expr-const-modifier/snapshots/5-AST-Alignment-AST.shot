@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > special > TSTypeParameter > class-expr-const-modifier > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -12,7 +12,7 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier AST Alig
         type: 'ExpressionStatement',
         expression: ClassExpression {
           type: 'ClassExpression',
--         abstract: false,
+          abstract: false,
           body: ClassBody {
             type: 'ClassBody',
             body: Array [],
@@ -23,10 +23,10 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier AST Alig
               end: { column: 18, line: 1 },
             },
           },
--         declare: false,
--         decorators: Array [],
+          declare: false,
+          decorators: Array [],
           id: null,
--         implements: Array [],
+          implements: Array [],
           superClass: null,
           typeParameters: TSTypeParameterDeclaration {
             type: 'TSTypeParameterDeclaration',
@@ -34,7 +34,7 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier AST Alig
               TSTypeParameter {
                 type: 'TSTypeParameter',
                 const: true,
--               in: false,
+                in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
 -                 decorators: Array [],
@@ -47,8 +47,8 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier AST Alig
 -                   end: { column: 14, line: 1 },
 -                 },
 -               },
--               out: false,
 +               name: 'T',
+                out: false,
 
                 range: [7, 14],
                 loc: {
@@ -86,5 +86,4 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier AST Alig
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

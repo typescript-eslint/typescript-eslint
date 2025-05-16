@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > ImportDeclaration > default-and-named-many > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -15,7 +15,7 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
         importKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\'mod\\'',
+          raw: '\'mod\'',
           value: 'mod',
 
           range: [27, 32],
@@ -29,9 +29,9 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             type: 'ImportDefaultSpecifier',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'a',
--             optional: false,
+              optional: false,
 
               range: [7, 8],
               loc: {
@@ -50,9 +50,9 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'b',
--             optional: false,
+              optional: false,
 
               range: [12, 13],
               loc: {
@@ -63,9 +63,9 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'b',
--             optional: false,
+              optional: false,
 
               range: [12, 13],
               loc: {
@@ -84,9 +84,9 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'c',
--             optional: false,
+              optional: false,
 
               range: [15, 16],
               loc: {
@@ -97,9 +97,9 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'c',
--             optional: false,
+              optional: false,
 
               range: [15, 16],
               loc: {
@@ -118,9 +118,9 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'd',
--             optional: false,
+              optional: false,
 
               range: [18, 19],
               loc: {
@@ -131,9 +131,9 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'd',
--             optional: false,
+              optional: false,
 
               range: [18, 19],
               loc: {
@@ -164,5 +164,4 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
+const rootPath = path.join(__dirname, '..', 'fixtures');
 
 const ruleTester = new RuleTester({
   languageOptions: {
