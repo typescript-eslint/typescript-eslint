@@ -9,10 +9,16 @@
       "outputs": ["{workspaceRoot}/dist"]
     },
     "lint": {
-      "command": "eslint . --ignore-pattern=packages --cache"
+      "command": "eslint . --ignore-pattern=packages --cache",
+      "dependsOn": [
+        "eslint-plugin:build",
+        "eslint-plugin-internal:build",
+        "typescript-eslint:build"
+      ]
     },
     "generate-configs": {
-      "command": "tsx tools/scripts/generate-configs.mts"
+      "command": "tsx tools/scripts/generate-configs.mts",
+      "dependsOn": ["eslint-plugin:build"]
     },
     "generate-contributors": {
       "command": "tsx tools/scripts/generate-contributors.mts"
