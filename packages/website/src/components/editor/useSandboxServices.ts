@@ -116,6 +116,7 @@ export const useSandboxServices = (
           system,
           lintUtils,
           sandboxInstance.tsvfs,
+          props.onMarkersChange,
         );
 
         onLoaded(

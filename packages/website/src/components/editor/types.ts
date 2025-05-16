@@ -5,7 +5,9 @@ export interface CommonEditorProps extends ConfigModel {
   readonly activeTab: TabType;
   readonly onASTChange: (value: UpdateModel | undefined) => void;
   readonly onChange: (cfg: Partial<ConfigModel>) => void;
-  readonly onMarkersChange: (value: ErrorGroup[]) => void;
+  readonly onMarkersChange: React.Dispatch<
+    React.SetStateAction<Record<TabType, ErrorGroup[]>>
+  >;
   readonly onSelect: (position?: number) => void;
   readonly selectedRange?: SelectedRange;
 }
