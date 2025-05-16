@@ -31,6 +31,7 @@ const restrictNamedDeclarations = {
 export default tseslint.config(
   // register all of the plugins up-front
   {
+    name: 'register-all-plugins',
     // note - intentionally uses computed syntax to make it easy to sort the keys
     /* eslint-disable no-useless-computed-key */
     plugins: {
@@ -85,11 +86,12 @@ export default tseslint.config(
       // see the file header in eslint-base.test.js for more info
       'packages/rule-tester/tests/eslint-base/',
     ],
+    name: 'global-ignores',
   },
 
   // extends ...
   eslintCommentsPlugin.recommended,
-  eslint.configs.recommended,
+  { name: `${eslint.meta.name}/recommended`, ...eslint.configs.recommended },
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   jsdocPlugin.configs['flat/recommended-typescript-error'],
@@ -108,6 +110,7 @@ export default tseslint.config(
       },
     },
     linterOptions: { reportUnusedDisableDirectives: 'error' },
+    name: 'base-config',
     rules: {
       //
       // our plugin :D
@@ -345,6 +348,7 @@ export default tseslint.config(
   {
     extends: [tseslint.configs.disableTypeChecked],
     files: ['**/*.js'],
+    name: 'js-files-only',
     rules: {
       // turn off other type-aware rules
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
@@ -361,7 +365,7 @@ export default tseslint.config(
   // test file specific configuration
   {
     files: [
-      'packages/*/tests/**/*.{ts,tsx,cts,mts}',
+      'packages/*/tests/**/*.?(m|c)ts?(x)',
       'packages/integration-tests/tools/**/*.ts',
     ],
     ...vitestPlugin.configs.env,
@@ -391,6 +395,7 @@ export default tseslint.config(
     },
     settings: { vitest: { typecheck: true } },
   },
+
   {
     files: ['packages/*/tests/**/vitest-custom-matchers.d.ts'],
     name: 'vitest-custom-matchers-declaration-files',
@@ -403,14 +408,15 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },
+
   // plugin rule tests
   {
     files: [
-      'packages/eslint-plugin-internal/tests/rules/**/*.test.{ts,tsx,cts,mts}',
-      'packages/eslint-plugin-tslint/tests/rules/**/*.test.{ts,tsx,cts,mts}',
-      'packages/eslint-plugin/tests/rules/**/*.test.{ts,tsx,cts,mts}',
-      'packages/eslint-plugin/tests/eslint-rules/**/*.test.{ts,tsx,cts,mts}',
+      'packages/eslint-plugin-internal/tests/rules/**/*.test.?(m|c)ts?(x)',
+      'packages/eslint-plugin/tests/rules/**/*.test.?(m|c)ts?(x)',
+      'packages/eslint-plugin/tests/eslint-rules/**/*.test.?(m|c)ts?(x)',
     ],
+    name: 'eslint-plugin-and-eslint-plugin-internal/test-files/rules',
     rules: {
       '@typescript-eslint/internal/plugin-test-formatting': 'error',
     },
@@ -421,10 +427,11 @@ export default tseslint.config(
   //
   {
     files: [
-      '**/tools/**/*.{ts,tsx,cts,mts}',
-      '**/tests/**/*.{ts,tsx,cts,mts}',
-      'packages/integration-tests/**/*.{ts,tsx,cts,mts}',
+      '**/tools/**/*.?(m|c)ts?(x)',
+      '**/tests/**/*.?(m|c)ts?(x)',
+      'packages/integration-tests/**/*.?(m|c)ts?(x)',
     ],
+    name: 'tools-and-test-files',
     rules: {
       // allow console logs in tools and tests
       'no-console': 'off',
@@ -432,12 +439,13 @@ export default tseslint.config(
   },
   {
     files: [
-      'eslint.config.{js,cjs,mjs}',
+      'eslint.config.mjs',
       'knip.ts',
       'packages/*/src/index.ts',
       'vitest.config.mts',
       'packages/*/vitest.config.mts',
     ],
+    name: 'no-default-export',
     rules: {
       // requirement
       'import/no-default-export': 'off',
@@ -451,10 +459,10 @@ export default tseslint.config(
   {
     extends: [eslintPluginPlugin.configs['flat/recommended']],
     files: [
-      'packages/eslint-plugin-internal/**/*.{ts,tsx,cts,mts}',
-      'packages/eslint-plugin-tslint/**/*.{ts,tsx,cts,mts}',
-      'packages/eslint-plugin/**/*.{ts,tsx,cts,mts}',
+      'packages/eslint-plugin-internal/**/*.?(m|c)ts?(x)',
+      'packages/eslint-plugin/**/*.?(m|c)ts?(x)',
     ],
+    name: 'eslint-plugin-and-eslint-plugin-internal',
 
     rules: {
       '@typescript-eslint/internal/no-typescript-estree-import': 'error',
@@ -462,13 +470,12 @@ export default tseslint.config(
   },
   {
     files: [
-      'packages/eslint-plugin-internal/src/rules/**/*.{ts,tsx,cts,mts}',
-      'packages/eslint-plugin-tslint/src/rules/**/*.{ts,tsx,cts,mts}',
-      'packages/eslint-plugin/src/configs/**/*.{ts,tsx,cts,mts}',
-      'packages/typescript-eslint/src/configs/**/*.{ts,tsx,cts,mts}',
-      'packages/core/src/configs/**/*.{ts,tsx,cts,mts}',
-      'packages/eslint-plugin/src/rules/**/*.{ts,tsx,cts,mts}',
+      'packages/eslint-plugin-internal/src/rules/**/*.?(m|c)ts?(x)',
+      'packages/eslint-plugin/src/configs/**/*.?(m|c)ts?(x)',
+      'packages/typescript-eslint/src/configs/**/*.?(m|c)ts?(x)',
+      'packages/eslint-plugin/src/rules/**/*.?(m|c)ts?(x)',
     ],
+    name: 'configs-and-rules',
     rules: {
       'eslint-plugin/no-property-in-node': [
         'error',
@@ -500,6 +507,7 @@ export default tseslint.config(
   },
   {
     files: ['packages/eslint-plugin/src/rules/index.ts'],
+    name: 'eslint-plugin/source-files/rules-index-file',
     rules: {
       // enforce alphabetical ordering
       'import/order': ['error', { alphabetize: { order: 'asc' } }],
@@ -513,10 +521,10 @@ export default tseslint.config(
 
   {
     files: [
-      'packages/scope-manager/src/lib/*.{ts,tsx,cts,mts}',
-      'packages/eslint-plugin/src/configs/*.{ts,tsx,cts,mts}',
-      'packages/core/src/configs/*.{ts,tsx,cts,mts}',
+      'packages/scope-manager/src/lib/*.?(m|c)ts?(x)',
+      'packages/eslint-plugin/src/configs/*.?(m|c)ts?(x)',
     ],
+    name: 'generated-files',
     rules: {
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
       '@typescript-eslint/internal/no-typescript-default-import': 'off',
@@ -529,15 +537,27 @@ export default tseslint.config(
   //
 
   {
-    files: ['packages/ast-spec/src/**/*.{ts,tsx,cts,mts}'],
+    files: ['packages/ast-spec/src/**/*.?(m|c)ts?(x)'],
+    name: 'ast-spec/source-files',
     rules: {
       // disallow ALL unused vars
       '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'all' }],
       '@typescript-eslint/sort-type-constituents': 'error',
+
+      'perfectionist/sort-interfaces': [
+        'error',
+        {
+          customGroups: {
+            first: ['type'],
+          },
+          groups: ['first', 'unknown'],
+        },
+      ],
     },
   },
   {
-    files: ['packages/ast-spec/**/*.{ts,tsx,cts,mts}'],
+    files: ['packages/ast-spec/**/*.?(m|c)ts?(x)'],
+    name: 'ast-spec',
     rules: {
       'no-restricted-imports': [
         'error',
@@ -559,12 +579,18 @@ export default tseslint.config(
       jsxA11yPlugin.flatConfigs.recommended,
       // https://github.com/facebook/react/pull/30774
       // @ts-expect-error -- Temporary types incompatibility pending flat config support
-      reactPlugin.configs.flat.recommended,
-      // https://github.com/facebook/react/pull/30774
-      // @ts-expect-error -- Temporary types incompatibility pending flat config support
-      fixupConfigRules(compat.config(reactHooksPlugin.configs.recommended)),
+      { name: 'react/recommended', ...reactPlugin.configs.flat.recommended },
+      fixupConfigRules([
+        {
+          name: 'react-hooks/recommended',
+          // https://github.com/facebook/react/pull/30774
+          // @ts-expect-error -- Temporary types incompatibility pending flat config support
+          ...compat.config(reactHooksPlugin.configs.recommended)[0],
+        },
+      ]),
     ],
-    files: ['packages/website/**/*.{ts,tsx,mts,cts,js,jsx}'],
+    files: ['packages/website/**/*.?(c|m)[tj]s?(x)'],
+    name: 'website',
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
       'import/no-default-export': 'off',
@@ -580,7 +606,8 @@ export default tseslint.config(
     },
   },
   {
-    files: ['packages/website/src/**/*.{ts,tsx,cts,mts}'],
+    files: ['packages/website/src/**/*.?(m|c)ts?(x)'],
+    name: 'website/source-files',
     rules: {
       'import/no-default-export': 'off',
       // allow console logs in the website to help with debugging things in production
@@ -588,10 +615,8 @@ export default tseslint.config(
     },
   },
   {
-    files: [
-      'packages/website-eslint/src/mock/**/*.js',
-      '**/*.d.{ts,tsx,cts,mts}',
-    ],
+    files: ['packages/website-eslint/src/mock/**/*.js', '**/*.d.?(m|c)ts?(x)'],
+    name: 'website/source-files/mocks-and-declaration-files',
     rules: {
       // mocks and declaration files have to mirror their original package
       'import/no-default-export': 'off',
@@ -604,6 +629,7 @@ export default tseslint.config(
       'packages/eslint-plugin/src/configs/flat/*',
       'packages/scope-manager/src/configs/*',
     ],
+    name: 'all-files',
     rules: {
       '@typescript-eslint/sort-type-constituents': 'off',
       'perfectionist/sort-classes': 'error',
@@ -619,24 +645,11 @@ export default tseslint.config(
     },
   },
   {
-    files: ['packages/ast-spec/src/**/*.ts'],
-    rules: {
-      'perfectionist/sort-interfaces': [
-        'error',
-        {
-          customGroups: {
-            first: ['type'],
-          },
-          groups: ['first', 'unknown'],
-        },
-      ],
-    },
-  },
-  {
     files: [
       'packages/eslint-plugin/src/rules/*.ts',
       'packages/eslint-plugin-internal/src/rules/*.ts',
     ],
+    name: 'eslint-plugin-and-eslint-plugin-internal/source-files/rules',
     rules: {
       'perfectionist/sort-objects': [
         'error',
@@ -654,6 +667,7 @@ export default tseslint.config(
   },
   {
     files: ['packages/eslint-plugin/tests/rules/*.test.ts'],
+    name: 'eslint-plugin-rules-test-files',
     rules: {
       'perfectionist/sort-objects': [
         'error',
@@ -666,6 +680,7 @@ export default tseslint.config(
   },
   {
     files: ['packages/typescript-estree/src/**/*.ts'],
+    name: 'typescript-estree/source-files',
     rules: {
       'perfectionist/sort-objects': [
         'error',
