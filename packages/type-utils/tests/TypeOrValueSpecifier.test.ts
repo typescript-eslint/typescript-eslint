@@ -1,8 +1,12 @@
-import * as path from 'node:path';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import { parseForESLint } from '@typescript-eslint/parser';
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as path from 'node:path';
+
+import type { TypeOrValueSpecifier } from '../src/index.js';
+
 import {
-  type TypeOrValueSpecifier,
   typeMatchesSomeSpecifier,
   typeMatchesSpecifier,
   valueMatchesSomeSpecifier,
