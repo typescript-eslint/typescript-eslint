@@ -170,7 +170,6 @@ export default (
       '@typescript-eslint/strict-boolean-expressions': 'error',
       '@typescript-eslint/switch-exhaustiveness-check': 'error',
       '@typescript-eslint/triple-slash-reference': 'error',
-      '@typescript-eslint/typedef': 'error',
       '@typescript-eslint/unbound-method': 'error',
       '@typescript-eslint/unified-signatures': 'error',
       '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
