@@ -16052,7 +16052,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^29":
+"pretty-format@npm:^29.7.0":
   version: 29.7.0
   resolution: "pretty-format@npm:29.7.0"
   dependencies:

@@ -116,7 +116,6 @@
     "@types/react": "^18.2.14",
     "eslint-plugin-eslint-plugin@^5.5.0": "patch:eslint-plugin-eslint-plugin@npm%3A5.5.1#./.yarn/patches/eslint-plugin-eslint-plugin-npm-5.5.1-4206c2506d.patch",
     "prettier": "3.5.0",
-    "pretty-format": "^29",
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tsx": "^4.7.2",
     "typescript": "5.8.2"
