@@ -31,7 +31,7 @@
     "id": "Cybozu",
     "image": "https://images.opencollective.com/cybozu/933e46d/logo.png",
     "name": "Cybozu",
-    "totalDonations": 660000,
+    "totalDonations": 685000,
     "website": "https://cybozu.co.jp/"
   },
   {
@@ -56,6 +56,13 @@
     "website": "https://about.sourcegraph.com"
   },
   {
+    "id": "Vite",
+    "image": "https://images.opencollective.com/vite/e6d15e1/logo.png",
+    "name": "Vite",
+    "totalDonations": 300000,
+    "website": "https://vite.dev/"
+  },
+  {
     "id": "Canva",
     "image": "https://images.opencollective.com/canvaofficial/7217c4d/logo.png",
     "name": "Canva",
@@ -77,17 +84,10 @@
     "website": "https://www.airbnb.com/"
   },
   {
-    "id": "Vite",
-    "image": "https://images.opencollective.com/vite/e6d15e1/logo.png",
-    "name": "Vite",
-    "totalDonations": 240000,
-    "website": "https://vite.dev/"
-  },
-  {
     "id": "GitBook",
     "image": "https://images.opencollective.com/gitbook/820419f/logo.png",
     "name": "GitBook",
-    "totalDonations": 220000,
+    "totalDonations": 230000,
     "website": "https://www.gitbook.com"
   },
   {
@@ -182,6 +182,13 @@
     "website": "https://skunk.team"
   },
   {
+    "id": "Torutek",
+    "image": "https://images.opencollective.com/torutek/logo.png",
+    "name": "Torutek",
+    "totalDonations": 50000,
+    "website": "https://torutek.com"
+  },
+  {
     "id": "vlt",
     "image": "https://images.opencollective.com/vlt/33d4066/logo.png",
     "name": "vlt",
@@ -203,13 +210,6 @@
     "website": "https://www.defined.net"
   },
   {
-    "id": "Torutek",
-    "image": "https://images.opencollective.com/torutek/logo.png",
-    "name": "Torutek",
-    "totalDonations": 45000,
-    "website": "https://torutek.com"
-  },
-  {
     "id": "Quicko",
     "image": "https://images.opencollective.com/quicko/7bd1dc9/logo.png",
     "name": "Quicko",
@@ -227,7 +227,7 @@
     "id": "syntaxfm",
     "image": "https://avatars.githubusercontent.com/u/130389858?v=4",
     "name": "Syntax",
-    "totalDonations": 34399,
+    "totalDonations": 37639,
     "website": "https://syntax.fm"
   },
   {
@@ -329,6 +329,13 @@
     "website": "https://paddn.com/"
   },
   {
+    "id": "getsentry",
+    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
+    "name": "Sentry",
+    "totalDonations": 14729,
+    "website": "https://sentry.io"
+  },
+  {
     "id": "Now4real",
     "image": "https://images.opencollective.com/now4real/54ca7d9/logo.png",
     "name": "Now4real",
@@ -339,15 +346,8 @@
     "id": "codecov",
     "image": "https://avatars.githubusercontent.com/u/8226205?v=4",
     "name": "Codecov",
-    "totalDonations": 13431,
+    "totalDonations": 14456,
     "website": "https://codecov.io/"
-  },
-  {
-    "id": "getsentry",
-    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
-    "name": "Sentry",
-    "totalDonations": 13394,
-    "website": "https://sentry.io"
   },
   {
     "id": "gitbutlerapp",
@@ -362,6 +362,13 @@
     "name": "Knowledge Work",
     "totalDonations": 11200,
     "website": "https://kwork.studio/"
+  },
+  {
+    "id": "charmed-kubernetes",
+    "image": "https://avatars.githubusercontent.com/u/49082977?v=4",
+    "name": "Charmed Kubernetes",
+    "totalDonations": 10488,
+    "website": "https://www.ubuntu.com/kubernetes"
   },
   {
     "id": "Gianfranco Palumbo",

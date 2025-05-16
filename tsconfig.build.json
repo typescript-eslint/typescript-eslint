@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "${configDir}/dist",
+    "rootDir": "${configDir}/src",
+    "emitDeclarationOnly": false,
+    "tsBuildInfoFile": "${configDir}/dist/tsconfig.build.tsbuildinfo"
+  },
+  "include": [
+    "${configDir}/src/**/*.ts",
+    "${configDir}/typings",
+    "${configDir}/index.d.ts",
+    "${configDir}/*.d.ts"
+  ],
+  "exclude": [
+    "${configDir}/vitest.config.mts",
+    "${configDir}/src/**/*.spec.ts",
+    "${configDir}/src/**/*.test.ts",
+    "${configDir}/**/fixtures/**"
+  ]
+}

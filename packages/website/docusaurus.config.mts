@@ -18,6 +18,10 @@ const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
 
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
+const currentMajorVersion =
+  process.env.CURRENT_MAJOR_VERSION &&
+  Number(process.env.CURRENT_MAJOR_VERSION);
+
 const presetClassicOptions: PresetClassicOptions = {
   blog: {
     blogSidebarCount: 'ALL',
@@ -60,6 +64,26 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
     appId: 'N1HUB2TU6A',
     indexName: 'typescript-eslint',
   },
+  announcementBar:
+    currentMajorVersion &&
+    Number(version[0].split('.')[0]) < currentMajorVersion
+      ? {
+          content: [
+            'This documentation is for an older major version of typescript-eslint.',
+            '<br />',
+            'It is no longer maintained or supported. It may crash with the latest versions of TypeScript.',
+            '<hr />',
+            'Using the latest version of typescript-eslint is strongly recommended for',
+            'getting the latest rule features and fixes, ',
+            'supporting the latest TypeScript features and syntax, and',
+            'continuous performance and stability improvements.',
+            '<hr />',
+            'Please visit <a href="https://typescript-eslint.io">typescript-eslint.io</a> for the latest version\'s documentation.',
+          ].join('\n'),
+          id: 'old-version-announcement',
+          isCloseable: false,
+        }
+      : undefined,
   colorMode: {
     respectPrefersColorScheme: true,
   },

@@ -6,10 +6,13 @@
     "typecheck": {
       "command": "tsc -b ./tsconfig.repo-config-files.json",
       "dependsOn": ["types:copy-ast-spec"],
-      "outputs": ["{workspaceRoot}/dist/out-tsc/root"]
+      "outputs": ["{workspaceRoot}/dist"]
     },
     "lint": {
-      "command": "eslint . --ignore-pattern=packages --cache"
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["{workspaceRoot}/!packages"]
+      }
     },
     "generate-configs": {
       "command": "tsx tools/scripts/generate-configs.mts"
