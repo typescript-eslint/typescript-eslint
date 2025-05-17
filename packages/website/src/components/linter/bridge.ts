@@ -78,6 +78,8 @@ export function createFileSystem(
     const expPath = getPathRegExp(path);
     return [...files.keys()].filter(fileName => expPath.test(fileName));
   };
-
+  system.getScriptFileNames = (): string[] => {
+    return [...files.keys()].filter(f => f.endsWith('.ts'));
+  };
   return system;
 }
