@@ -49,15 +49,15 @@
     "typescript"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
+    "build": "yarn run -BT nx build",
     "clean": "rimraf dist/ coverage/",
     "format": "yarn run -T format",
-    "generate-breaking-changes": "tsx tools/generate-breaking-changes.mts",
+    "generate-breaking-changes": "yarn run -BT nx generate-breaking-changes",
     "generate-configs": "yarn run -T generate-configs",
     "lint": "yarn run -BT nx lint",
-    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
-    "test-single": "vitest --run --config=$INIT_CWD/vitest.config.mts --no-coverage",
-    "check-types": "yarn run -BT nx typecheck"
+    "test": "yarn run -BT nx test",
+    "typecheck": "yarn run -BT nx typecheck"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",
@@ -101,5 +101,22 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
+  },
+  "nx": {
+    "name": "eslint-plugin",
+    "includedScripts": [
+      "clean"
+    ],
+    "targets": {
+      "generate-breaking-changes": {
+        "command": "tsx tools/generate-breaking-changes.mts",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "type-utils:build"
+        ]
+      }
+    }
   }
 }
