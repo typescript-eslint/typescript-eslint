@@ -39,12 +39,13 @@
     "eslint"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
+    "build": "yarn run -BT nx build",
     "clean": "rimraf dist/ coverage/",
     "format": "yarn run -T format",
     "lint": "yarn run -BT nx lint",
-    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
-    "check-types": "yarn run -BT nx typecheck"
+    "test": "yarn run -BT nx test",
+    "typecheck": "yarn run -BT nx typecheck"
   },
   "peerDependencies": {
     "eslint": "^8.57.0 || ^9.0.0",
@@ -67,5 +68,11 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
+  },
+  "nx": {
+    "name": "parser",
+    "includedScripts": [
+      "clean"
+    ]
   }
 }
