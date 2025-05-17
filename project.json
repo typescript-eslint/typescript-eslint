@@ -1,10 +1,16 @@
 {
-  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "$schema": "./node_modules/nx/schemas/project-schema.json",
   "name": "repo",
+  "projectType": "library",
+  "root": ".",
+  "sourceRoot": ".",
   "// These targets are used for repo level utils and checking repo files which do not belong to specific published packages": {},
   "targets": {
+    "clean": {
+      "command": "rimraf dist/ coverage/ .eslintcache"
+    },
     "typecheck": {
-      "command": "tsc -b ./tsconfig.repo-config-files.json",
+      "command": "tsc -b tsconfig.repo-config-files.json",
       "dependsOn": ["types:copy-ast-spec"],
       "outputs": ["{workspaceRoot}/dist"]
     },
@@ -15,13 +21,15 @@
       }
     },
     "generate-configs": {
-      "command": "tsx tools/scripts/generate-configs.mts"
+      "command": "tsx tools/scripts/generate-configs.mts",
+      "dependsOn": ["eslint-plugin:build"]
     },
     "generate-contributors": {
       "command": "tsx tools/scripts/generate-contributors.mts"
     },
     "generate-lib": {
-      "command": "tsx tools/scripts/generate-lib.mts"
+      "command": "tsx tools/scripts/generate-lib.mts",
+      "dependsOn": ["typescript-eslint:build", "eslint-plugin-internal:build"]
     },
     "generate-sponsors": {
       "command": "tsx tools/scripts/generate-sponsors.mts"

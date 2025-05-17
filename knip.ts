@@ -22,13 +22,16 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignore: ['tools/scripts/typings/typescript.d.ts', 'typings/*.d.ts'],
       ignoreDependencies: [
-        '@nx/js',
         '@nx/workspace',
-        'make-dir',
         // imported for type purposes only
         'website',
+      ],
+
+      project: [
+        'tools/scripts/**/*.mts',
+        '!tools/scripts/typings/typescript.d.ts',
+        '!typings/*.d.ts',
       ],
     },
     'packages/ast-spec': {

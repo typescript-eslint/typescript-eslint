@@ -25,10 +25,11 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "npx nx lint",
+    "clean": "rimraf dist/ coverage/",
+    "format": "yarn run -T format",
+    "lint": "yarn run -BT nx lint",
     "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
-    "check-types": "npx nx typecheck"
+    "check-types": "yarn run -BT nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/type-utils": "8.32.1",

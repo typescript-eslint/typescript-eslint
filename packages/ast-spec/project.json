@@ -10,8 +10,7 @@
       "outputs": ["{projectRoot}/dist/**/*.ts"]
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     },
     "test": {
       "executor": "@nx/vite:test",

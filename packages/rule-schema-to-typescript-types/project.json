@@ -6,8 +6,7 @@
   "sourceRoot": "packages/rule-schema-to-typescript-types/src",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     }
   }
 }
