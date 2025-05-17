@@ -1,7 +1,7 @@
 import path from 'node:path';
 import * as ts from 'typescript';
 
-import { getParsedConfigFile } from '../../src/create-program/getParsedConfigFile';
+import { getParsedConfigFile } from '../../src/getParsedConfigFile';
 
 const mockGetParsedCommandLineOfConfigFile = vi.fn();
 

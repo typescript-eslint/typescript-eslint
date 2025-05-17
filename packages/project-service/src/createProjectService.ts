@@ -1,57 +1,104 @@
-/* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
+import type { ProjectServiceOptions } from '@typescript-eslint/types';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import debug from 'debug';
 
-import type { ProjectServiceOptions } from '../parser-options';
-
-import { getParsedConfigFile } from './getParsedConfigFile';
-import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForFilesGlob';
+import { getParsedConfigFileFromTSServer } from './getParsedConfigFileFromTSServer.js';
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
 
-const log = debug(
-  'typescript-eslint:typescript-estree:create-program:createProjectService',
-);
-const logTsserverErr = debug(
-  'typescript-eslint:typescript-estree:tsserver:err',
-);
+const log = debug('typescript-eslint:project-service:createProjectService');
+const logTsserverErr = debug('typescript-eslint:project-service:tsserver:err');
 const logTsserverInfo = debug(
-  'typescript-eslint:typescript-estree:tsserver:info',
+  'typescript-eslint:project-service:tsserver:info',
 );
 const logTsserverPerf = debug(
-  'typescript-eslint:typescript-estree:tsserver:perf',
+  'typescript-eslint:project-service:tsserver:perf',
 );
 const logTsserverEvent = debug(
-  'typescript-eslint:typescript-estree:tsserver:event',
+  'typescript-eslint:project-service:tsserver:event',
 );
 
+// For TypeScript APIs that expect a function to be passed in
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const doNothing = (): void => {};
 
 const createStubFileWatcher = (): ts.FileWatcher => ({
   close: doNothing,
 });
 
+/**
+ * Shortcut type to refer to TypeScript's server ProjectService.
+ */
 export type TypeScriptProjectService = ts.server.ProjectService;
 
-export interface ProjectServiceSettings {
+/**
+ * A created Project Service instance, as well as metadata on its creation.
+ */
+export interface ProjectServiceAndMetadata {
+  /**
+   * Files allowed to be loaded from the default project, if any were specified.
+   */
   allowDefaultProject: string[] | undefined;
+
+  /**
+   * The performance.now() timestamp of the last reload of the project service.
+   */
   lastReloadTimestamp: number;
+
+  /**
+   * The maximum number of files that can be matched by the default project.
+   */
   maximumDefaultProjectFileMatchCount: number;
+
+  /**
+   * The created TypeScript Project Service instance.
+   */
   service: TypeScriptProjectService;
 }
 
-export function createProjectService(
-  optionsRaw: boolean | ProjectServiceOptions | undefined,
-  jsDocParsingMode: ts.JSDocParsingMode | undefined,
-  tsconfigRootDir: string | undefined,
-): ProjectServiceSettings {
-  const optionsRawObject = typeof optionsRaw === 'object' ? optionsRaw : {};
+/**
+ * Settings to create a new Project Service instance with {@link createProjectService}.
+ */
+export interface CreateProjectServiceSettings {
+  /**
+   * Granular options to configure the project service.
+   */
+  options?: ProjectServiceOptions;
+
+  /**
+   * How aggressively (and slowly) to parse JSDoc comments.
+   */
+  jsDocParsingMode?: ts.JSDocParsingMode;
+
+  /**
+   * Root directory for the tsconfig.json file, if not the current directory.
+   */
+  tsconfigRootDir?: string;
+}
+
+/**
+ * Creates a new Project Service instance, as well as metadata on its creation.
+ * @param settings Settings to create a new Project Service instance.
+ * @returns A new Project Service instance, as well as metadata on its creation.
+ * @example
+ * ```ts
+ * import { createProjectService } from '@typescript-eslint/project-service';
+ *
+ * const { service } = createProjectService();
+ *
+ * service.openClientFile('index.ts');
+ * ```
+ */
+export function createProjectService({
+  jsDocParsingMode,
+  options: optionsRaw = {},
+  tsconfigRootDir,
+}: CreateProjectServiceSettings = {}): ProjectServiceAndMetadata {
   const options = {
     defaultProject: 'tsconfig.json',
-    ...optionsRawObject,
+    ...optionsRaw,
   };
-  validateDefaultProjectForFilesGlob(options.allowDefaultProject);
 
   // We import this lazily to avoid its cost for users who don't use the service
   // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
@@ -119,7 +166,7 @@ export function createProjectService(
     startGroup: doNothing,
   };
 
-  log('Creating project service with: %o', options);
+  log('Creating Project Service with: %o', options);
 
   const service = new tsserver.server.ProjectService({
     cancellationToken: { isCancellationRequested: (): boolean => false },
@@ -143,26 +190,18 @@ export function createProjectService(
   });
 
   log('Enabling default project: %s', options.defaultProject);
-  let configFile: ts.ParsedCommandLine | undefined;
 
-  try {
-    configFile = getParsedConfigFile(
-      tsserver,
-      options.defaultProject,
-      tsconfigRootDir,
-    );
-  } catch (error) {
-    if (optionsRawObject.defaultProject) {
-      throw new Error(
-        `Could not read project service default project '${options.defaultProject}': ${(error as Error).message}`,
-      );
-    }
-  }
+  const configFile = getParsedConfigFileFromTSServer(
+    tsserver,
+    options.defaultProject,
+    !!optionsRaw.defaultProject,
+    tsconfigRootDir,
+  );
 
   if (configFile) {
     service.setCompilerOptionsForInferredProjects(
       // NOTE: The inferred projects API is not intended for source files when a tsconfig
-      // exists.  There is no API that generates an InferredProjectCompilerOptions suggesting
+      // exists. There is no API that generates an InferredProjectCompilerOptions suggesting
       // it is meant for hard coded options passed in. Hard asserting as a work around.
       // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
       configFile.options as ts.server.protocol.InferredProjectCompilerOptions,
@@ -178,3 +217,5 @@ export function createProjectService(
     service,
   };
 }
+
+export { type ProjectServiceOptions } from '@typescript-eslint/types';

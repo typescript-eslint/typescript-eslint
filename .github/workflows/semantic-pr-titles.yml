@@ -30,8 +30,10 @@ jobs:
             eslint-plugin
             eslint-plugin-internal
             parser
+            project-service
             rule-tester
             scope-manager
+            tsconfig-utils
             type-utils
             types
             typescript-eslint

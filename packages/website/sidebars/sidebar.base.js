@@ -103,8 +103,10 @@ module.exports = {
         'packages/eslint-plugin',
         'packages/eslint-plugin-tslint',
         'packages/parser',
+        'packages/project-service',
         'packages/rule-tester',
         'packages/scope-manager',
+        'packages/tsconfig-utils',
         {
           collapsible: false,
           items: ['packages/type-utils/type-or-value-specifier'],

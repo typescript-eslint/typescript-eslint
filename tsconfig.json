@@ -11,6 +11,7 @@
     { "path": "./packages/eslint-plugin-internal" },
     { "path": "./packages/integration-tests" },
     { "path": "./packages/parser" },
+    { "path": "./packages/project-service" },
     { "path": "./packages/rule-schema-to-typescript-types" },
     { "path": "./packages/rule-tester" },
     { "path": "./packages/scope-manager" },
@@ -22,6 +23,7 @@
     { "path": "./packages/visitor-keys" },
     { "path": "./packages/website" },
     { "path": "./packages/website-eslint" },
+    { "path": "./packages/tsconfig-utils" },
     { "path": "./tsconfig.repo-config-files.json" }
   ]
 }

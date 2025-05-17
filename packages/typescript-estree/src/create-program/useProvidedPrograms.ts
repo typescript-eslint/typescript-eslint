@@ -1,3 +1,4 @@
+import { getParsedConfigFile } from '@typescript-eslint/tsconfig-utils';
 import debug from 'debug';
 import * as path from 'node:path';
 import * as ts from 'typescript';
@@ -5,7 +6,6 @@ import * as ts from 'typescript';
 import type { ParseSettings } from '../parseSettings';
 import type { ASTAndDefiniteProgram } from './shared';
 
-import { getParsedConfigFile } from './getParsedConfigFile';
 import { getAstFromProgram } from './shared';
 
 const log = debug(
