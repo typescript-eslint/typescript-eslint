@@ -37,14 +37,15 @@
     "estree"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
+    "build": "yarn run -BT nx build",
     "clean": "rimraf dist/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "yarn run -T format",
     "generate-lib": "yarn run -BT nx generate-lib repo",
     "lint": "yarn run -BT nx lint",
-    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
-    "check-types": "yarn run -BT nx typecheck"
+    "test": "yarn run -BT nx test",
+    "typecheck": "yarn run -BT nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/types": "8.32.1",
@@ -62,5 +63,12 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
+  },
+  "nx": {
+    "name": "scope-manager",
+    "includedScripts": [
+      "clean",
+      "clean-fixtures"
+    ]
   }
 }
