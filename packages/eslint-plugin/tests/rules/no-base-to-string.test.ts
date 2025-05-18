@@ -505,32 +505,32 @@ String(v);
     `
 declare const x: unknown;
 \`\${x})\`;
-      `,
+    `,
     `
 declare const x: unknown;
 x.toString();
-      `,
+    `,
     `
 declare const x: unknown;
 x.toLocaleString();
-      `,
+    `,
     `
 declare const x: unknown;
 '' + x;
-      `,
+    `,
     `
 declare const x: unknown;
 String(x);
-      `,
+    `,
     `
-      declare const x: unknown;
-      '' += x;
-            `,
+declare const x: unknown;
+'' += x;
+    `,
     `
-    function foo<T>(x: T) {
-      String(x);
-    }
-      `,
+function foo<T>(x: T) {
+  String(x);
+}
+    `,
   ],
   invalid: [
     {
@@ -655,9 +655,9 @@ declare const x: unknown;
     },
     {
       code: `
-    function foo<T>(x: T) {
-      String(x);
-    }
+function foo<T>(x: T) {
+  String(x);
+}
       `,
       errors: [
         {

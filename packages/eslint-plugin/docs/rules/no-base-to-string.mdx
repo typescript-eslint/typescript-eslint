@@ -99,6 +99,17 @@ let text = `${value}`;
 String(/regex/);
 ```
 
+### `checkUnknown`
+
+{/* insert option description */}
+
+The following patterns are considered incorrect with the options `{ checkUnknown: true }`:
+
+```ts option='{ "checkUnknown": true }' showPlaygroundButton
+declare const x: unknown;
+x.toString();
+```
+
 ## When Not To Use It
 
 If you don't mind a risk of `"[object Object]"` or incorrect type coercions in your values, then you will not need this rule.
