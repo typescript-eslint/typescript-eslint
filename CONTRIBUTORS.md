@@ -4,7 +4,7 @@
  | THIS FILE HAS BEEN AUTOMATICALLY GENERATED |
  |                                            |
  |     YOU CAN REGENERATE THIS FILE USING     |
- |         yarn generate-contributors         |
+ |         pnpm run generate-contributors     |
  ------------------------------------------- -->
 
 # Contributors
@@ -96,4 +96,4 @@ Thanks goes to these wonderful people:
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
-<sup>This list is auto-generated using `yarn generate-contributors`. It shows the top 100 contributors with > 3 contributions.</sup>
+<sup>This list is auto-generated using `pnpm run generate-contributors`. It shows the top 100 contributors with > 3 contributions.</sup>

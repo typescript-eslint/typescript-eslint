@@ -41,7 +41,7 @@ const HEADER = `\
  * ANY CHANGES WILL BE LOST ON THE NEXT BUILD *
  *                                            *
  *   MAKE CHANGES TO ast-spec AND THEN RUN    *
- *                 yarn build                 *
+ *                 pnpm run build             *
  **********************************************/
 
 `;

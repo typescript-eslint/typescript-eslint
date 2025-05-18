@@ -1,0 +1,12 @@
+packages:
+  - packages/*
+
+overrides:
+  "@types/eslint-scope": "file:./tools/dummypkg"
+  "@types/eslint": "file:./tools/dummypkg"
+  "@types/estree": "file:./tools/dummypkg"
+  "@types/node": "^22.0.0"
+  "@types/react": "^18.2.14"
+  prettier: "3.5.0"
+  tsx: "^4.7.2"
+  typescript: "5.8.2"

@@ -128,11 +128,7 @@
       },
       {
         "runtime": "echo $NETLIFY"
-      },
-      {
-        "runtime": "yarn -v"
-      },
-      "{workspaceRoot}/yarn.lock"
+      }
     ],
     "production": [
       "default",

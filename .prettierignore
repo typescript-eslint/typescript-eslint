@@ -5,9 +5,6 @@
 **/.vs
 CONTRIBUTORS.md
 
-.yarn/plugins
-.yarn/releases
-
 packages/eslint-plugin/tests/fixtures/indent/
 
 # ignore all error fixtures cos they often have intentional syntax errors
