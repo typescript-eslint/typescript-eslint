@@ -21,14 +21,12 @@ export function createParser(
 ): {
   updateConfig: (compilerOptions: ts.CompilerOptions) => void;
 } & Parser.ParserModule {
-  const registeredFiles = new Set<string>();
-
   const createEnv = (
     compilerOptions: ts.CompilerOptions,
   ): tsvfs.VirtualTypeScriptEnvironment => {
     return vfs.createVirtualTypeScriptEnvironment(
       system,
-      [...registeredFiles, ...system.getScriptFileNames()],
+      system.getScriptFileNames(),
       window.ts,
       compilerOptions,
     );
@@ -46,10 +44,10 @@ export function createParser(
       // if text is empty use empty line to avoid error
       const code = text || '\n';
 
-      if (registeredFiles.has(filePath)) {
+      if (system.fileExists(filePath)) {
         compilerHost.updateFile(filePath, code);
       } else {
-        registeredFiles.add(filePath);
+        system.writeFile(filePath, code);
         compilerHost.createFile(filePath, code);
       }
 

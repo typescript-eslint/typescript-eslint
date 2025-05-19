@@ -14,7 +14,9 @@ export function createFileSystem(
   const files = new Map<string, string>();
   files.set(`/.eslintrc`, config.eslintrc);
   files.set(`/tsconfig.json`, config.tsconfig);
-  files.set(`/input${config.fileType}`, config.code);
+  if (config.code !== '') {
+    files.set(`/input${config.fileType}`, config.code);
+  }
 
   const fileWatcherCallbacks = new Map<RegExp, Set<ts.FileWatcherCallback>>();
 
@@ -79,7 +81,9 @@ export function createFileSystem(
     return [...files.keys()].filter(fileName => expPath.test(fileName));
   };
   system.getScriptFileNames = (): string[] => {
-    return [...files.keys()].filter(f => f.endsWith('.ts'));
+    return [...files.keys()]
+      .filter(fileName => !fileName.startsWith('/lib.'))
+      .filter(f => !f.endsWith('/.eslintrc') && !f.endsWith('.json'));
   };
   return system;
 }
