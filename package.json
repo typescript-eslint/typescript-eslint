@@ -27,7 +27,7 @@
     "check-format": "prettier --check .",
     "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\" --no-progress --show-context --show-suggestions",
     "clean": "nx run-many --target=clean --parallel=20",
-    "format": "prettier --ignore-path=$PROJECT_CWD/.prettierignore --config=$PROJECT_CWD/.prettierrc.json --write $INIT_CWD",
+    "format": "prettier --ignore-path .prettierignore --config .prettierrc.json --write \"tools/**/*.{ts,tsx,mts,cts,js,jsx}\" \"packages/**/*.{ts,tsx,mts,cts,js,jsx}\"",
     "generate-breaking-changes": "nx run eslint-plugin:generate-breaking-changes",
     "generate-configs": "nx generate-configs",
     "generate-contributors": "nx generate-contributors",
