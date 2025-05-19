@@ -28,7 +28,7 @@
     "clean": "rimraf dist/ coverage/",
     "format": "yarn run -T format",
     "lint": "yarn run -BT nx lint",
-    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
+    "test": "vitest --run --config=./vitest.config.mts",
     "check-types": "yarn run -BT nx typecheck"
   },
   "dependencies": {
