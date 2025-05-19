@@ -25,10 +25,6 @@ export const vitestBaseConfig = {
 
     testTimeout: 10_000,
 
-    typecheck: {
-      include: ['**/*.test-d.?(c|m)ts?(x)'],
-    },
-
     watch: false,
   },
 } as const satisfies ViteUserConfig;

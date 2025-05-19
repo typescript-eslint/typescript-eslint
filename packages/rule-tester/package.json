@@ -35,14 +35,13 @@
     "estree"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
+    "build": "yarn run -BT nx build",
     "clean": "rimraf dist/ coverage/",
     "format": "yarn run -T format",
     "lint": "yarn run -BT nx lint",
-    "pretest-eslint-base": "tsc -b tsconfig.build.json",
-    "test-eslint-base": "mocha --require source-map-support/register ./tests/eslint-base/eslint-base.test.js",
-    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
-    "check-types": "yarn run -BT nx typecheck"
+    "test": "yarn run -BT nx test",
+    "typecheck": "yarn run -BT nx typecheck"
   },
   "//": "NOTE - AJV is out-of-date, but it's intentionally synced with ESLint - https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/package.json#L70",
   "dependencies": {
@@ -61,15 +60,8 @@
     "@types/json-stable-stringify-without-jsonify": "^1.0.2",
     "@types/lodash.merge": "4.6.9",
     "@vitest/coverage-v8": "^3.1.3",
-    "chai": "^5.2.0",
     "eslint": "*",
-    "eslint-visitor-keys": "^4.2.0",
-    "espree": "^10.3.0",
-    "esprima": "^4.0.1",
-    "mocha": "^11.0.0",
     "rimraf": "*",
-    "sinon": "^20.0.0",
-    "source-map-support": "^0.5.21",
     "typescript": "*",
     "vitest": "^3.1.3"
   },
@@ -79,5 +71,11 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "nx": {
+    "name": "rule-tester",
+    "includedScripts": [
+      "clean"
+    ]
   }
 }
