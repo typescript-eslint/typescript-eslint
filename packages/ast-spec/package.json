@@ -34,10 +34,10 @@
     "build": "tsc -b tsconfig.build.json && api-extractor run --local --config=./api-extractor.json",
     "clean": "rimraf dist/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
-    "format": "yarn run -T format",
-    "lint": "yarn run -BT nx lint",
+    "format": "pnpm --workspace-root run format",
+    "lint": "pnpm --workspace-root exec nx lint",
     "test": "vitest --run --config=./vitest.config.mts",
-    "check-types": "yarn run -BT nx typecheck"
+    "check-types": "pnpm --workspace-root exec nx typecheck"
   },
   "funding": {
     "type": "opencollective",
