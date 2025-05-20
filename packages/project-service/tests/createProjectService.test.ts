@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 import debug from 'debug';
 import * as ts from 'typescript';
 
@@ -46,6 +45,7 @@ describe(createProjectService, () => {
     .mockImplementation(() => true);
 
   beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { ProjectService } = require('typescript/lib/tsserverlibrary').server;
 
     ProjectService.prototype.setCompilerOptionsForInferredProjects =
