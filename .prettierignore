@@ -5,6 +5,9 @@
 **/.vs
 CONTRIBUTORS.md
 
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
 packages/eslint-plugin/tests/fixtures/indent/
 
 # ignore all error fixtures cos they often have intentional syntax errors
