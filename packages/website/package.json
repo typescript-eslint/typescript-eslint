@@ -12,8 +12,7 @@
   "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
-    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
-    "build": "docusaurus build",
+    "build": "yarn run -BT nx build",
     "clear": "docusaurus clear",
     "clean": "rimraf dist/ build/ .docusaurus/ && yarn run clear",
     "format": "yarn run -T format",
@@ -98,23 +97,29 @@
   "nx": {
     "name": "website",
     "includedScripts": [
-      "clean",
-      "build"
+      "clean"
     ],
     "targets": {
       "build": {
+        "command": "docusaurus build",
         "dependsOn": [
           "^build"
-        ]
+        ],
+        "options": {
+          "cwd": "{projectRoot}"
+        }
+      },
+      "lint": {
+        "command": "eslint"
       },
       "start": {
         "command": "docusaurus start",
-        "options": {
-          "cwd": "{projectRoot}"
-        },
         "dependsOn": [
           "^build"
-        ]
+        ],
+        "options": {
+          "cwd": "{projectRoot}"
+        }
       }
     }
   }

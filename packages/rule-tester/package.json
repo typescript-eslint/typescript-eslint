@@ -35,7 +35,6 @@
     "estree"
   ],
   "scripts": {
-    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
     "build": "yarn run -BT nx build",
     "clean": "rimraf dist/ coverage/",
     "format": "yarn run -T format",
@@ -76,6 +75,11 @@
     "name": "rule-tester",
     "includedScripts": [
       "clean"
-    ]
+    ],
+    "targets": {
+      "lint": {
+        "command": "eslint"
+      }
+    }
   }
 }

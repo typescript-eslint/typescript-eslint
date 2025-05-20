@@ -58,7 +58,6 @@
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.26.0",
     "@nx/devkit": "21.0.3",
-    "@nx/eslint": "21.0.3",
     "@nx/js": "21.0.3",
     "@nx/vite": "21.0.3",
     "@nx/workspace": "21.0.3",
@@ -153,11 +152,11 @@
         "cache": true
       },
       "lint": {
-        "command": "eslint . --ignore-pattern=packages --cache",
-        "dependsOn": [
-          "typescript-eslint:build",
-          "eslint-plugin-internal:build"
-        ],
+        "command": "eslint",
+        "options": {
+          "cache": true,
+          "ignore-pattern": "packages"
+        },
         "cache": false
       },
       "clean": {
