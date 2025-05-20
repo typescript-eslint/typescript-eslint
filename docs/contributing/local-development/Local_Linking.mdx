@@ -36,7 +36,7 @@ The command to put instead of that `#` comment, depends on the local downstream 
 Additionally, if you haven't yet built the typescript-eslint repository, do so now:
 
 ```shell
-yarn build
+pnpm build
 ```
 
 ## Repository Linking
@@ -73,8 +73,8 @@ After that, you need to run your repository's `lint` script and your changes sho
 
 :::note
 Changes to `@typescript-eslint/` packages will not be reflected inside your linked repository until they're built locally.
-To re-build all packages, run `yarn build` from the root.
-To start a watch mode builder on just the ESLint plugin, run `yarn build --watch` from `./packages/eslint-plugin`.
+To re-build all packages, run `pnpm run build` from the root.
+To start a watch mode builder on just the ESLint plugin, run `pnpm run build --watch` from `./packages/eslint-plugin`.
 :::
 
 ## Troubleshooting
@@ -92,17 +92,17 @@ Require stack:
 In this case, you can manually install any missing packages in the local downstream repository as dev dependencies (`--save-dev`).
 
 ```shell
-yarn add ts-api-utils -D
+pnpm add ts-api-utils -D
 ```
 
 ### Rules Not Found (`Definition for rule ... was not found`)
 
 Packages need to be built.
-First try re-running `yarn build` from the typescript-eslint repository root.
+First try re-running `pnpm run build` from the typescript-eslint repository root.
 
 If you're adding new rules, you'll need to also modify [`packages/eslint-plugin/src/rules/index.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/index.ts) to export the rule object, then re-build.
 
-If you're modifying preset configurations, you'll also need to run `yarn generate-configs`, then re-build.
+If you're modifying preset configurations, you'll also need to run `pnpm run generate-configs`, then re-build.
 
 ### Yarn Link Failures (`Cannot link ... conflicts with parent dependency`)
 

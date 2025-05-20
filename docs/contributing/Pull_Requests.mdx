@@ -30,7 +30,7 @@ Please don't:
 ### Code Coverage
 
 We aim for 100% code coverage in all PRs when possible, except in the `website/` package.
-Coverage reports are generated locally whenever `yarn test` is run.
+Coverage reports are generated locally whenever `pnpm run test` is run.
 
 The `codecov` bot also comments on each PR with its percentage, as well as links to the line-by-line coverage of each file touched by the PR.
 
@@ -54,8 +54,8 @@ AST tests belong in the `ast-spec` package, within `fixtures/` subfolders alongs
 
 ```bash
 cd packages/eslint-plugin
-yarn test docs -u
-yarn test schemas -u
+pnpm run test docs -u
+pnpm run test schemas -u
 ```
 
 ## Raising the PR
