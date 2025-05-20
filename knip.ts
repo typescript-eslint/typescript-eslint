@@ -2,6 +2,7 @@ import type { KnipConfig } from 'knip' with { 'resolution-mode': 'import' };
 
 export default {
   rules: {
+    binaries: 'off',
     classMembers: 'off',
     duplicates: 'off',
     enumMembers: 'off',
@@ -22,13 +23,16 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignore: ['tools/scripts/typings/typescript.d.ts', 'typings/*.d.ts'],
       ignoreDependencies: [
-        '@nx/js',
         '@nx/workspace',
-        'make-dir',
         // imported for type purposes only
         'website',
+      ],
+
+      project: [
+        'tools/scripts/**/*.mts',
+        '!tools/scripts/typings/typescript.d.ts',
+        '!typings/*.d.ts',
       ],
     },
     'packages/ast-spec': {
@@ -51,11 +55,13 @@ export default {
       },
     },
     'packages/eslint-plugin': {
+      entry: ['tools/**'],
       ignore: [
         'tests/fixtures/**',
         'typings/eslint-rules.d.ts',
         'typings/typescript.d.ts',
       ],
+      ignoreDependencies: ['tsx'], // used in nx target definitions
     },
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],

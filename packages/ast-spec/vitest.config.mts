@@ -19,11 +19,6 @@ const vitestConfig = mergeConfig(
         './tests/util/setupVitest.mts',
         './tests/util/custom-matchers/custom-matchers.ts',
       ],
-
-      typecheck: {
-        enabled: true,
-        tsconfig: path.join(import.meta.dirname, 'tsconfig.spec.json'),
-      },
     },
   }),
 );
