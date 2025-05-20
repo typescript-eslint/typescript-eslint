@@ -29,9 +29,9 @@
   "scripts": {
     "build": "tsx ./build.mts",
     "clean": "rimraf dist/",
-    "format": "yarn run -T format",
-    "lint": "yarn run -BT nx lint",
-    "check-types": "yarn run -BT nx typecheck"
+    "format": "pnpm --workspace-root run format",
+    "lint": "pnpm --workspace-root exec nx lint",
+    "check-types": "pnpm --workspace-root exec nx typecheck"
   },
   "devDependencies": {
     "@eslint/js": "*",

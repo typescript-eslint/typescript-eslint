@@ -43,9 +43,7 @@
     enabled: false,
   },
 
-  postUpdateOptions: [
-    'pnpmDedupe',
-  ],
+  postUpdateOptions: ['pnpmDedupe'],
 
   // By default renovate will auto-rebase whenever the dep pranch falls behind main.
   // This is annoying as it spams notifications and creates unnecessary action runs.

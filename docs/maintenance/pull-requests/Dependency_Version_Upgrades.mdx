@@ -37,17 +37,17 @@ You should generally avoid clicking the "Update branch" button in the Github UI 
 Occasionally it will be desirable to manually bump the dependencies in one commit rather than relying on renovate's many PRs. Doing so is just a matter of:
 
 1. `git checkout main && git pull`
-1. `yarn install`
-1. `yarn update-interactive` - this will start yarn's prompt to update the deps.
+1. `pnpm install`
+1. `pnpm update --interactive` - this will start pnpm's prompt to update the deps.
    1. Ignore the lines with `*` deps as these are intentionally set as such.
    1. Avoid changing the dep ranges like the complex range we have for TypeScript (eg `>=4.7.4 <5.5.0`).
-   1. Once you're ready, hit `enter` and yarn will make the changes and rerun the install.
+   1. Once you're ready, hit `enter` and pnpm will make the changes and rerun the install.
 1. Run all of the relevant checks locally so you can action any failures before raising a PR:
-   1. `yarn build`
-   1. `yarn typecheck`
-   1. `yarn lint`
-   1. `yarn test`
-   1. `yarn integration-test`
+   1. `pnpm run build`
+   1. `pnpm run typecheck`
+   1. `pnpm run lint`
+   1. `pnpm run test`
+   1. `pnpm run test-integration`
 1. Create a new branch (a name like `update-deps-20231201` is good just to keep it unique), create, and land a PR.
 
 ### Babel
@@ -55,8 +55,8 @@ Occasionally it will be desirable to manually bump the dependencies in one commi
 Our published packages only depend on `@babel/*` packages as devDependencies.
 You can generally upgrade those dependencies with:
 
-1. `yarn add -D @babel/code-frame @babel/core @babel/eslint-parser @babel/parser @babel/types`
-2. `npx nx run ast-spec:test -u`
+1. `pnpm add -D @babel/code-frame @babel/core @babel/eslint-parser @babel/parser @babel/types`
+2. `pnpx nx run ast-spec:test -u`
 
 The fixtures under `packages/ast-spec/` describe how the files are parsed under both Babel and our (TSESTree) parser.
 
@@ -137,7 +137,7 @@ We generally start the process of supporting a new TypeScript version just after
    - In the parser's `getLib`, update the `switch (target)` and its preceding comment as needed (see [#6782](https://github.com/typescript-eslint/typescript-eslint/pull/6782))
    - Change the `SUPPORTED_TYPESCRIPT_VERSIONS` constant's `<` version to the next version of TypeScript
    - Change the `SUPPORTED_PRERELEASE_RANGES` constant to equal `['X.Y.1-rc']`
-   - Run `yarn generate-lib` to update `scope-manager`
+   - Run `pnpm run generate-lib` to update `scope-manager`
 1. Once all PRs needed for the RC update PR are merged, merge the RC update PR
 1. Once TypeScript releases the stable X.Y version, create and merge a PR with a title like `chore: bump TypeScript from X.YRC to X.Y` and the following changes:
    - In the root `package.json`, remove `|| X.Y.1-rc2` from the `dependency` on `typescript`, and bump its `<` version to the next version of TypeScript
