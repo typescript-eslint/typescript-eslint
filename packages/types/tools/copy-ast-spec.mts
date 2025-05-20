@@ -63,18 +63,14 @@ async function copyFile(
     encoding: 'utf-8',
   });
 
-  await execAsync(
-    'yarn',
-    ['run', '--top-level', 'prettier', '--write', outpath],
-    {},
-  );
+  await execAsync('pnpx', ['prettier', '--write', outpath], {});
 
   console.log('Copied', fileName);
 }
 
 if (process.env.SKIP_AST_SPEC_REBUILD) {
   // ensure the package is built
-  await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH });
+  await execAsync('pnpm run', ['build'], { cwd: AST_SPEC_PATH });
 }
 
 await copyFile('dist', 'ast-spec.ts', code =>

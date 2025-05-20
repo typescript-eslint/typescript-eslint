@@ -14,7 +14,7 @@
   "scripts": {
     "build": "docusaurus build",
     "clear": "docusaurus clear",
-    "clean": "rimraf dist/ build/ .docusaurus/ && yarn run clear",
+    "clean": "rimraf dist/ build/ .docusaurus/ && pnpm run clear",
     "format": "yarn run -T format",
     "generate-website-dts": "tsx ./tools/generate-website-dts.mts",
     "stylelint": "stylelint \"src/**/*.css\"",

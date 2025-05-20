@@ -2,6 +2,7 @@ import { $ as $_config } from 'execa';
 
 const $ = $_config({
   env: {
+    // TODO!: Check it out and, if necessary, rewrite it
     /**
      * Do not apply the special GitHub Actions group markers within the
      * postinstall logging, it cannot work correctly when nested within
@@ -29,19 +30,17 @@ if (process.env.SKIP_POSTINSTALL) {
 }
 
 // make sure we're running from the workspace root
-const {
-  default: { workspaceRoot },
-} = await import('@nx/devkit');
+const { workspaceRoot } = await import('@nx/devkit');
 process.chdir(workspaceRoot);
 
 // Install git hooks
-await $`yarn husky`;
+await $`pnpx husky`;
 
 if (!process.env.SKIP_POSTINSTALL_BUILD) {
   // Clean any caches that may be invalid now
-  await $`yarn clean`;
+  await $`pnpm run clean`;
 
   // Build all the packages ready for use
-  await $`yarn build`;
-  await $`yarn nx typecheck ast-spec`;
+  await $`pnpm run build`;
+  await $`pnpx nx typecheck ast-spec`;
 }

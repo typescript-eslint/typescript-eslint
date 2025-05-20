@@ -44,8 +44,7 @@
   },
 
   postUpdateOptions: [
-    // Run yarn dedupe to cleanup the lockfile after updates.
-    'yarnDedupeHighest',
+    'pnpmDedupe',
   ],
 
   // By default renovate will auto-rebase whenever the dep pranch falls behind main.
