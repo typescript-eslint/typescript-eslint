@@ -2,8 +2,8 @@
 
 > Standalone TypeScript project service wrapper for linting.
 
-[![NPM Version](https://img.shields.io/npm/v/@typescript-eslint/utils.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/utils)
-[![NPM Downloads](https://img.shields.io/npm/dm/@typescript-eslint/utils.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/utils)
+[![NPM Version](https://img.shields.io/npm/v/@typescript-eslint/project-service.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/project-service)
+[![NPM Downloads](https://img.shields.io/npm/dm/@typescript-eslint/project-service.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/project-service)
 
 A standalone export of the "Project Service" that powers typed linting for typescript-eslint.
 
