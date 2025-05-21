@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > named-number-literal-aliased-to-number-literal > Babel - Error`]
-SyntaxError: Unexpected token (1:9)
+BabelError
+> 1 | import { 1 as 1 } from 'mod';
+    |          ^ Unexpected token (1:9)
+  2 |
+  

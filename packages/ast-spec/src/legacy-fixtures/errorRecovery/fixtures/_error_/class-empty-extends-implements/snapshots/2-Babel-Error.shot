@@ -1,4 +1,12 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > class-empty-extends-implements > Babel - Error`]
-SyntaxError: Unexpected reserved word 'implements'. (3:18)
+BabelError
+  1 | // TODO: This fixture might be too large, and if so should be split up.
+  2 |
+> 3 | class Foo extends implements Bar {
+    |                   ^ Unexpected reserved word 'implements'. (3:18)
+  4 |
+  5 | }
+  6 |
+  

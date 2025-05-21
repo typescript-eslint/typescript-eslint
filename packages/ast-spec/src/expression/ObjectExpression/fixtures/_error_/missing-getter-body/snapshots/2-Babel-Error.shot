@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > expression > ObjectExpression > _error_ > missing-getter-body > Babel - Error`]
-SyntaxError: Unexpected token, expected "{" (1:11)
+BabelError
+> 1 | ({get foo();})
+    |            ^ Unexpected token, expected "{" (1:11)
+  2 |
+  

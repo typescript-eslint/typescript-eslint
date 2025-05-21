@@ -231,7 +231,7 @@ describe('AST Fixtures', async () => {
           await expect(
             [
               `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
-              babelParsed.error,
+              serializeError(babelParsed.error, contents),
               '',
             ].join('\n'),
           ).toMatchFileSnapshot(snapshotFiles.error.babel(2));

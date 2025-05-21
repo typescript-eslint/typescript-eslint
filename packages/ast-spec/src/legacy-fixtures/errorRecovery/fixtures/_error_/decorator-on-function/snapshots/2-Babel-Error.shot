@@ -1,4 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > decorator-on-function > Babel - Error`]
-SyntaxError: Leading decorators must be attached to a class declaration. (4:0)
+BabelError
+  2 |
+  3 | @dec
+> 4 | function b(){}
+    | ^ Leading decorators must be attached to a class declaration. (4:0)
+  5 |
+  

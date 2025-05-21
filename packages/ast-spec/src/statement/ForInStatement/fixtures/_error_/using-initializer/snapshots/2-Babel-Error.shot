@@ -1,4 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > statement > ForInStatement > _error_ > using-initializer > Babel - Error`]
-SyntaxError: For-in loop may not start with 'using' declaration. (1:4)
+BabelError
+> 1 | for(using foo in {});
+    |     ^ For-in loop may not start with 'using' declaration. (1:4)
+  

@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > ExportNamedDeclaration > _error_ > identifier-direct > Babel - Error`]
-SyntaxError: Unexpected token, expected "{" (1:7)
+BabelError
+> 1 | export a;
+    |        ^ Unexpected token, expected "{" (1:7)
+  2 |
+  

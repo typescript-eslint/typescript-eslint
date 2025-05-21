@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSInterfaceDeclaration > _error_ > non-identifier-name > Babel - Error`]
-SyntaxError: 'interface' declarations must be followed by an identifier. (1:10)
+BabelError
+> 1 | interface 1 {}
+    |           ^ 'interface' declarations must be followed by an identifier. (1:10)
+  2 |
+  

@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSDeclareFunction > _error_ > async > Babel - Error`]
-SyntaxError: Missing semicolon. (1:7)
+BabelError
+> 1 | declare async function foo();
+    |        ^ Missing semicolon. (1:7)
+  2 |
+  

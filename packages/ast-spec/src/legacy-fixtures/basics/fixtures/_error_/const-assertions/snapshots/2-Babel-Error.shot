@@ -1,4 +1,12 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > basics > _error_ > const-assertions > Babel - Error`]
-SyntaxError: Identifier 'x' has already been declared. (13:4)
+BabelError
+  11 |
+  12 | // Type '10'
+> 13 | let x = <const>10;
+     |     ^ Identifier 'x' has already been declared. (13:4)
+  14 |
+  15 | // Type 'readonly [10, 20]'
+  16 | let y = <const>[10, 20];
+  

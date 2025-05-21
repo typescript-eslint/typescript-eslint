@@ -1,4 +1,12 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > basics > _error_ > class-with-two-methods-computed-constructor > Babel - Error`]
-SyntaxError: Type parameters cannot appear on a constructor declaration. (4:15)
+BabelError
+  2 |
+  3 | class A {
+> 4 |   "constructor"<T>(): number {
+    |                ^ Type parameters cannot appear on a constructor declaration. (4:15)
+  5 |   }
+  6 |
+  7 |   ["constructor"]<T>(): number {
+  

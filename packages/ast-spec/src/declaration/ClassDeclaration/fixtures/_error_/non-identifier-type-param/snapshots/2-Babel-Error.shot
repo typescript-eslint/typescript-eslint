@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > ClassDeclaration > _error_ > non-identifier-type-param > Babel - Error`]
-SyntaxError: Unexpected token (1:8)
+BabelError
+> 1 | class C<1> {}
+    |         ^ Unexpected token (1:8)
+  2 |
+  

@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > ExportDefaultDeclaration > _error_ > namespace > Babel - Error`]
-SyntaxError: Missing semicolon. (1:24)
+BabelError
+> 1 | export default namespace Foo {}
+    |                         ^ Missing semicolon. (1:24)
+  2 |
+  
