@@ -13,7 +13,8 @@ import TabItem from '@theme/TabItem';
 It enables a slew of more powerful lint rules that check for nuanced bugs, best practice violations, and other code issues.
 
 Typed linting hasn't always been straightforward to configure or performant at runtime.
-Some projects in previously had to even use separate `tsconfig.eslint.json` files to enable type information for linting.
+We've seen user have to manage separate `tsconfig.eslint.json` files to enable typed linting — sometimes with different compiler options than the rest of the project.
+Not ideal.
 
 In typescript-eslint 8.0, we stabilized a **`parserOptions.projectService`** option that uses more powerful, streamlined TypeScript APIs than before.
 The "Project Service" brings several benefits:
@@ -22,7 +23,7 @@ The "Project Service" brings several benefits:
 - 🧠 **Predictability**: uses the same type information services as editors, including more reliability
 - 🚀 **Scalability**: supporting TypeScript project references for larger repositories (i.e. monorepos)
 
-This blog post will cover how `parserOptions.projectService` simplifies configurations and brings linting type information much closer to what editors such as VS Code run with.
+This blog post will cover how `parserOptions.projectService` simplifies configurations and aligns linting type information to what editors such as VS Code run with.
 
 :::tip
 See [Getting Started](/getting-started) to learn how to lint JavaScript and TypeScript code with typescript-eslint, then [Linting with Type Information](/linting/typed-linting) to onboard to typed linting.
@@ -205,13 +206,12 @@ The new Project Service API is a great step towards making typed linting easier 
 Our priority for the next year will be to improve the new Project Service API so that it works in all places the traditional Program API does.
 We won't remove the traditional project program behavior unless and until the new Project Service API is able to fully replace it.
 
-typescript-eslint@8.33.0 also provides a standalone [`@typescript-eslint/project-service`](/packages/project-service) package.
-It contains the the wrappers around TypeScript's Project Service APIs that typescript-eslint uses for typed linting.
-If you're working on your own linter, you can use this package to set up typed linting without taking a dependency on ESLint.
+As of typescript-eslint@8.33.0, we've also extracted most of the Project Service code into a standalone [`@typescript-eslint/project-service`](/packages/project-service) package.
+It has no dependencies on ESLint or typescript-eslint, and is designed to be used by other projects that want to use TypeScript's Project Service API for typed linting.
 See [Packages > Project Service](/packages/project-service) for more details.
 
 We're also looking forward to investigating support for [TypeScript's 10x faster Go port](https://github.com/typescript-eslint/typescript-eslint/issues/10940).
-Abstracting configuration details into the Project Service API means it will be much easier for us to support typed linting with Go without any additional user configuration.
+Abstracting configuration details into the Project Service API means it will be much easier for typescript-eslint to support typed linting using "tsgo" without any additional user configuration.
 
 So, please, try out the new Project Service API.
 We're excited to hear how it works for you and what we can do to improve it. 💜
