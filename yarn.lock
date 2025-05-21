@@ -547,7 +547,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.25.9, @babel/parser@npm:^7.26.0, @babel/parser@npm:^7.26.2":
+"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.24.1, @babel/parser@npm:^7.25.9, @babel/parser@npm:^7.26.0, @babel/parser@npm:^7.26.2":
   version: 7.27.2
   resolution: "@babel/parser@npm:7.27.2"
   dependencies:
@@ -5392,6 +5392,7 @@ __metadata:
     "@babel/code-frame": ^7.24.2
     "@babel/core": ^7.24.4
     "@babel/eslint-parser": ^7.24.1
+    "@babel/parser": ^7.24.1
     "@microsoft/api-extractor": ^7.47.11
     "@types/babel__code-frame": ^7.0.6
     "@types/babel__core": ^7.20.5
