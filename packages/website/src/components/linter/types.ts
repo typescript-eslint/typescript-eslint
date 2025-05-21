@@ -40,3 +40,5 @@ export type LinterOnLint = (
 ) => void;
 
 export type LinterOnParse = (fileName: string, model: UpdateModel) => void;
+
+export type RegisterFile = (fileName: string, code: string) => void;

@@ -6,6 +6,7 @@ import type * as ts from 'typescript';
 import type {
   ParseSettings,
   PlaygroundSystem,
+  RegisterFile,
   UpdateModel,
   WebLinterModule,
 } from './types';
@@ -20,6 +21,7 @@ export function createParser(
   vfs: typeof tsvfs,
 ): {
   updateConfig: (compilerOptions: ts.CompilerOptions) => void;
+  registerFile: RegisterFile;
 } & Parser.ParserModule {
   const createEnv = (
     compilerOptions: ts.CompilerOptions,
@@ -47,7 +49,6 @@ export function createParser(
       if (system.fileExists(filePath)) {
         compilerHost.updateFile(filePath, code);
       } else {
-        system.writeFile(filePath, code);
         compilerHost.createFile(filePath, code);
       }
 
@@ -105,6 +106,9 @@ export function createParser(
         },
         visitorKeys: utils.visitorKeys,
       };
+    },
+    registerFile(filePath: string, code: string): void {
+      compilerHost.createFile(filePath, code);
     },
     updateConfig(compilerOptions): void {
       compilerHost = createEnv(compilerOptions);
