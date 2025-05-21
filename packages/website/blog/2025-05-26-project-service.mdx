@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: https://www.joshuakgoldberg.com/img/josh.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
+authors: joshuakgoldberg
 description: How typescript-eslint's new "Project Service" makes typed linting easier to configure, especially for large projects.
 slug: project-service
 tags: [parser, parser options, project, project service, tsconfig]
@@ -22,11 +18,15 @@ Some projects in previously had to even use separate `tsconfig.eslint.json` file
 In typescript-eslint 8.0, we stabilized a **`parserOptions.projectService`** option that uses more powerful, streamlined TypeScript APIs than before.
 The "Project Service" brings several benefits:
 
-- ✍️ **Configuration**: simpler ESLint configs for typed linting and no ESLint-specific TSConfig file
+- ✍️ **Configuration**: simpler ESLint configs for typed linting with no ESLint-specific TSConfig files
 - 🧠 **Predictability**: uses the same type information services as editors, including more reliability
 - 🚀 **Scalability**: supporting TypeScript project references for larger repositories (i.e. monorepos)
 
 This blog post will cover how `parserOptions.projectService` simplifies configurations and brings linting type information much closer to what editors such as VS Code run with.
+
+:::tip
+See [Getting Started](/getting-started) to learn how to lint JavaScript and TypeScript code with typescript-eslint, then [Linting with Type Information](/linting/typed-linting) to onboard to typed linting.
+:::
 
 <!-- truncate -->
 
@@ -43,7 +43,7 @@ Back in [Relative TSConfig Projects with `parserOptions.project = true` > Projec
 Following a year of discussion and beta testing in typescript-eslint v6 and v7, we believe the new Project Service API is ready to be used by real-world projects.
 We therefore promoted the `parserOptions.EXPERIMENTAL_useProjectService` option to the stable name **`parserOptions.projectService`** in typescript-eslint v8.
 
-## ✍️ Onboarding to the Project Service
+## Configuration
 
 You can change over to the new Project Service API by replacing `project` with `projectService` in your ESLint configuration:
 
@@ -90,7 +90,7 @@ That's it!
 Other settings, including how you run ESLint and configure rules, should work the same.
 [Packages > Parser > `projectService`](/packages/parser#projectservice) has more details on granular configuration options.
 
-### Including Additional Files
+### Additional Files
 
 One long-standing pain point of typed linting was enabling typed linting for files not included in the project's `tsconfig.json`.
 Common solutions in the traditional Program API were to either skip typed linting for those files or to create a `tsconfig.eslint.json` enabling the `allowJs` compiler option.
@@ -141,7 +141,7 @@ This means most projects should be able to remove lint-only `tsconfig.eslint.jso
 
 [Packages > Parser > `projectService` > `ProjectServiceOptions`](/packages/parser#projectserviceOptions) has more details on out-of-project files and other granular configuration options.
 
-## 🧠 Predictability and Reliability
+## Predictability
 
 Without separate `tsconfig.eslint.json` files, you can be more confident that the type information used for linting is the same as the one used for type checking.
 We've round this to be a common source of confusion for users, as well as an annoying extra file to maintain.
@@ -156,7 +156,7 @@ For example:
 `parserOptions.projectService` does not suffer from the same bugs as `parserOptions.project` with single-run mode.
 It supports extra file extensions out-of-the-box and does not slow down when used with ESLint's `--fix`.
 
-## 🚀 Scalability with Project References
+## Scalability
 
 [TypeScript's project references](https://www.typescriptlang.org/docs/handbook/project-references.html) are how many larger projects, such as monorepos, are able to scale TypeScript type checking.
 They allow delineating discrete projects with their own `tsconfig.json` files and annotating which projects depend on which other projects.
