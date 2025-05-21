@@ -3249,6 +3249,13 @@ export class Converter {
           );
         }
 
+        if (node.name.kind === SyntaxKind.NumericLiteral) {
+          this.#throwUnlessAllowInvalidAST(
+            node.name,
+            'An enum member cannot have a numeric name.',
+          );
+        }
+
         return this.createNode<TSESTree.TSEnumMember>(
           node,
           this.#withDeprecatedGetter(
