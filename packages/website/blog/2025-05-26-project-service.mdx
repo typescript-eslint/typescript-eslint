@@ -162,9 +162,9 @@ It supports extra file extensions out-of-the-box and does not slow down when use
 
 ## Scalability
 
-[TypeScript's project references](https://www.typescriptlang.org/docs/handbook/project-references.html) are how many larger projects, such as monorepos, are able to scale TypeScript type checking.
+[TypeScript's project references](https://www.typescriptlang.org/docs/handbook/project-references.html) are how many larger projects, in particular monorepos, scale TypeScript type checking.
 They allow delineating discrete projects with their own `tsconfig.json` files and annotating which projects depend on which other projects.
-Project references allow TypeScript to cache type information and only recheck projects that have changed in builds.
+TypeScript is able to cache type information and only recheck projects that have changed in builds based on those project references.
 
 The traditional `parserOptions.project` API did not support project references for typed linting.
 We had experimented with adding support, but using the manual built-in TypeScript APIs would have been a significant maintenance investment with an unclear payoff.
