@@ -489,7 +489,7 @@ export class Converter {
             if (!warned) {
               let message = `The '${deprecatedKey}' property is deprecated on ${node.type} nodes.`;
               if (preferredKey) {
-                message += ' Use ${preferredKey} instead.';
+                message += ` Use ${preferredKey} instead.`;
               }
               message +=
                 ' See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.';
@@ -3251,7 +3251,6 @@ export class Converter {
 
         return this.createNode<TSESTree.TSEnumMember>(
           node,
-
           this.#withDeprecatedGetter(
             {
               type: AST_NODE_TYPES.TSEnumMember,
