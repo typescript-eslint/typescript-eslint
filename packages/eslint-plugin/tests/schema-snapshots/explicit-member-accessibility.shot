@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes explicit-member-accessibility 1`] = `
-"
 # SCHEMA:
 
 [
@@ -30,9 +27,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "accessibility": {
-        "$ref": "#/items/0/$defs/accessibilityLevel"
+        "$ref": "#/items/0/$defs/accessibilityLevel",
+        "description": "Which accessibility modifier is required to exist or not exist."
       },
       "ignoredMethodNames": {
+        "description": "Specific method names that may be ignored.",
         "items": {
           "type": "string"
         },
@@ -40,6 +39,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       },
       "overrides": {
         "additionalProperties": false,
+        "description": "Changes to required accessibility modifiers for specific kinds of class members.",
         "properties": {
           "accessors": {
             "$ref": "#/items/0/$defs/accessibilityLevel"
@@ -77,8 +77,11 @@ type AccessibilityLevel =
 
 type Options = [
   {
+    /** Which accessibility modifier is required to exist or not exist. */
     accessibility?: AccessibilityLevel;
+    /** Specific method names that may be ignored. */
     ignoredMethodNames?: string[];
+    /** Changes to required accessibility modifiers for specific kinds of class members. */
     overrides?: {
       accessors?: AccessibilityLevel;
       constructors?: AccessibilityLevel;
@@ -88,5 +91,3 @@ type Options = [
     };
   },
 ];
-"
-`;

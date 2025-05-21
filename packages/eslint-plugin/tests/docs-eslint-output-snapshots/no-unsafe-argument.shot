@@ -1,41 +1,37 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-unsafe-argument.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 declare function foo(arg1: string, arg2: number, arg3: string): void;
 
 const anyTyped = 1 as any;
 
 foo(...anyTyped);
-    ~~~~~~~~~~~ Unsafe spread of an \`any\` type.
+    ~~~~~~~~~~~ Unsafe spread of an `any` type.
 foo(anyTyped, 1, 'a');
-    ~~~~~~~~ Unsafe argument of type \`any\` assigned to a parameter of type \`string\`.
+    ~~~~~~~~ Unsafe argument of type `any` assigned to a parameter of type `string`.
 
 const anyArray: any[] = [];
 foo(...anyArray);
-    ~~~~~~~~~~~ Unsafe spread of an \`any\` array type.
+    ~~~~~~~~~~~ Unsafe spread of an `any[]` array type.
 
 const tuple1 = ['a', anyTyped, 'b'] as const;
 foo(...tuple1);
-    ~~~~~~~~~ Unsafe spread of a tuple type. The argument is of type \`any\` and is assigned to a parameter of type \`number\`.
+    ~~~~~~~~~ Unsafe spread of a tuple type. The argument is of type `any` and is assigned to a parameter of type `number`.
 
 const tuple2 = [1] as const;
-foo('a', ...tuple, anyTyped);
-         ~~~~~~~~ Unsafe spread of an \`any\` type.
-                   ~~~~~~~~ Unsafe argument of type \`any\` assigned to a parameter of type \`number\`.
+foo('a', ...tuple2, anyTyped);
+                    ~~~~~~~~ Unsafe argument of type `any` assigned to a parameter of type `string`.
 
 declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
 const x = [1, 2] as [number, ...number[]];
-foo('a', ...x, anyTyped);
+bar('a', ...x, anyTyped);
+               ~~~~~~~~ Unsafe argument of type `any` assigned to a parameter of type `string`.
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
-foo(new Set<any>(), new Map<any, string>());
-"
-`;
+baz(new Set<any>(), new Map<any, string>());
+    ~~~~~~~~~~~~~~ Unsafe argument of type `Set<any>` assigned to a parameter of type `Set<string>`.
+                    ~~~~~~~~~~~~~~~~~~~~~~ Unsafe argument of type `Map<any, string>` assigned to a parameter of type `Map<string, string>`.
 
-exports[`Validating rule docs no-unsafe-argument.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 declare function foo(arg1: string, arg2: number, arg3: string): void;
 
@@ -49,14 +45,9 @@ const array: string[] = ['a'];
 bar('a', 1, ...array);
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
-foo(new Set<string>(), new Map<string, string>());
-"
-`;
+baz(new Set<string>(), new Map<string, string>());
 
-exports[`Validating rule docs no-unsafe-argument.mdx code examples ESLint output 3`] = `
-"
+
 
 declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
 foo(1 as any, new Set<any>(), [] as any[]);
-"
-`;

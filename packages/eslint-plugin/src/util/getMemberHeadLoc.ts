@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import {
   nullThrows,
   NullThrowsReasons,
@@ -29,9 +30,11 @@ import {
 export function getMemberHeadLoc(
   sourceCode: Readonly<TSESLint.SourceCode>,
   node:
+    | TSESTree.AccessorProperty
     | TSESTree.MethodDefinition
-    | TSESTree.TSAbstractMethodDefinition
     | TSESTree.PropertyDefinition
+    | TSESTree.TSAbstractAccessorProperty
+    | TSESTree.TSAbstractMethodDefinition
     | TSESTree.TSAbstractPropertyDefinition,
 ): TSESTree.SourceLocation {
   let start: TSESTree.Position;
@@ -60,8 +63,8 @@ export function getMemberHeadLoc(
   }
 
   return {
-    start: structuredClone(start),
     end: structuredClone(end),
+    start: structuredClone(start),
   };
 }
 
@@ -102,7 +105,7 @@ export function getParameterPropertyHeadLoc(
   );
 
   return {
-    start,
     end,
+    start,
   };
 }

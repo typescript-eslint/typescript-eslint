@@ -97,6 +97,8 @@ if (false) {
 </Tabs>
 ### `descriptionFormat`
 
+{/* insert option description */}
+
 For each directive type, you can specify a custom format in the form of a regular expression. Only description that matches the pattern will be allowed.
 
 For example, with `{ 'ts-expect-error': { descriptionFormat: '^: TS\\d+ because .+$' } }`:
@@ -123,6 +125,8 @@ const a = doSomething('hello');
 </Tabs>
 
 ### `minimumDescriptionLength`
+
+{/* insert option description */}
 
 Use `minimumDescriptionLength` to set a minimum length for descriptions when using the `allow-with-description` option for a directive.
 
@@ -153,7 +157,7 @@ if (false) {
 
 ## When Not To Use It
 
-If your project or its dependencies were not architected with strong type safety in mind, it can be difficult to always adhere to proper TypeScript semantics.
+If your project or its dependencies were not architected with strong type safety in mind, it can be difficult to always adhere to proper TypeScript semantics.
 You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Further Reading

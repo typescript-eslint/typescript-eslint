@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -9,7 +10,11 @@ export type Options = [
     ignoreRestArgs?: boolean;
   },
 ];
-export type MessageIds = 'suggestNever' | 'suggestUnknown' | 'unexpectedAny';
+export type MessageIds =
+  | 'suggestNever'
+  | 'suggestPropertyKey'
+  | 'suggestUnknown'
+  | 'unexpectedAny';
 
 export default createRule<Options, MessageIds>({
   name: 'no-explicit-any',
@@ -22,11 +27,13 @@ export default createRule<Options, MessageIds>({
     fixable: 'code',
     hasSuggestions: true,
     messages: {
-      unexpectedAny: 'Unexpected any. Specify a different type.',
-      suggestUnknown:
-        'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
       suggestNever:
         "Use `never` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+      suggestPropertyKey:
+        'Use `PropertyKey` instead, this is more explicit than `keyof any`.',
+      suggestUnknown:
+        'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
+      unexpectedAny: 'Unexpected any. Specify a different type.',
     },
     schema: [
       {
@@ -34,13 +41,13 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           fixToUnknown: {
+            type: 'boolean',
             description:
               'Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type.',
-            type: 'boolean',
           },
           ignoreRestArgs: {
-            description: 'Whether to ignore rest parameter arrays.',
             type: 'boolean',
+            description: 'Whether to ignore rest parameter arrays.',
           },
         },
       },
@@ -52,7 +59,7 @@ export default createRule<Options, MessageIds>({
       ignoreRestArgs: false,
     },
   ],
-  create(context, [{ ignoreRestArgs, fixToUnknown }]) {
+  create(context, [{ fixToUnknown, ignoreRestArgs }]) {
     /**
      * Checks if the node is an arrow function, function/constructor declaration or function expression
      * @param node the node to be validated.
@@ -64,13 +71,13 @@ export default createRule<Options, MessageIds>({
         AST_NODE_TYPES.ArrowFunctionExpression, // const x = (...args: any[]) => {};
         AST_NODE_TYPES.FunctionDeclaration, // function f(...args: any[]) {}
         AST_NODE_TYPES.FunctionExpression, // const x = function(...args: any[]) {};
+        AST_NODE_TYPES.TSCallSignatureDeclaration, // type T = {(...args: any[]): unknown};
+        AST_NODE_TYPES.TSConstructorType, // type T = new (...args: any[]) => unknown
+        AST_NODE_TYPES.TSConstructSignatureDeclaration, // type T = {new (...args: any[]): unknown};
+        AST_NODE_TYPES.TSDeclareFunction, // declare function _8(...args: any[]): unknown;
         AST_NODE_TYPES.TSEmptyBodyFunctionExpression, // declare class A { f(...args: any[]): unknown; }
         AST_NODE_TYPES.TSFunctionType, // type T = (...args: any[]) => unknown;
-        AST_NODE_TYPES.TSConstructorType, // type T = new (...args: any[]) => unknown
-        AST_NODE_TYPES.TSCallSignatureDeclaration, // type T = {(...args: any[]): unknown};
-        AST_NODE_TYPES.TSConstructSignatureDeclaration, // type T = {new (...args: any[]): unknown};
         AST_NODE_TYPES.TSMethodSignature, // type T = {f(...args: any[]): unknown};
-        AST_NODE_TYPES.TSDeclareFunction, // declare function _8(...args: any[]): unknown;
       ].includes(node.type);
     }
 
@@ -169,8 +176,35 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    /**
+     * Checks if the node is within a keyof any expression
+     * @param node the node to be validated.
+     * @returns true if the node is within a keyof any expression, false otherwise
+     * @private
+     */
+    function isNodeWithinKeyofAny(node: TSESTree.TSAnyKeyword): boolean {
+      return (
+        node.parent.type === AST_NODE_TYPES.TSTypeOperator &&
+        node.parent.operator === 'keyof'
+      );
+    }
+
+    /**
+     * Creates a fixer that replaces a keyof any with PropertyKey
+     * @param node the node to be fixed.
+     * @returns a function that will fix the node.
+     * @private
+     */
+    function createPropertyKeyFixer(node: TSESTree.TSAnyKeyword) {
+      return (fixer: TSESLint.RuleFixer) => {
+        return fixer.replaceText(node.parent, 'PropertyKey');
+      };
+    }
+
     return {
       TSAnyKeyword(node): void {
+        const isKeyofAny = isNodeWithinKeyofAny(node);
+
         if (ignoreRestArgs && isNodeDescendantOfRestElementInFunction(node)) {
           return;
         }
@@ -180,25 +214,29 @@ export default createRule<Options, MessageIds>({
           suggest: TSESLint.ReportSuggestionArray<MessageIds> | null;
         } = {
           fix: null,
-          suggest: [
-            {
-              messageId: 'suggestUnknown',
-              fix(fixer): TSESLint.RuleFix {
-                return fixer.replaceText(node, 'unknown');
-              },
-            },
-            {
-              messageId: 'suggestNever',
-              fix(fixer): TSESLint.RuleFix {
-                return fixer.replaceText(node, 'never');
-              },
-            },
-          ],
+          suggest: isKeyofAny
+            ? [
+                {
+                  messageId: 'suggestPropertyKey',
+                  fix: createPropertyKeyFixer(node),
+                },
+              ]
+            : [
+                {
+                  messageId: 'suggestUnknown',
+                  fix: fixer => fixer.replaceText(node, 'unknown'),
+                },
+                {
+                  messageId: 'suggestNever',
+                  fix: fixer => fixer.replaceText(node, 'never'),
+                },
+              ],
         };
 
         if (fixToUnknown) {
-          fixOrSuggest.fix = (fixer): TSESLint.RuleFix =>
-            fixer.replaceText(node, 'unknown');
+          fixOrSuggest.fix = isKeyofAny
+            ? createPropertyKeyFixer(node)
+            : fixer => fixer.replaceText(node, 'unknown');
         }
 
         context.report({

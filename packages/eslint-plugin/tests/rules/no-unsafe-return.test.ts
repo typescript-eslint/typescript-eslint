@@ -160,6 +160,17 @@ function foo(): Set<number> {
       }
     `,
     'const foo: (() => void) | undefined = () => 1;',
+    `
+      class Foo {
+        public foo(): this {
+          return this;
+        }
+
+        protected then(resolve: () => void): void {
+          resolve();
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -170,10 +181,10 @@ function foo() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
           data: {
             type: '`any`',
           },
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -185,10 +196,10 @@ function foo() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
           data: {
             type: '`any`',
           },
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -200,10 +211,10 @@ const foo = () => {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
           data: {
             type: '`any`',
           },
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -211,10 +222,10 @@ const foo = () => {
       code: 'const foo = () => Object.create(null);',
       errors: [
         {
-          messageId: 'unsafeReturn',
           data: {
             type: '`any`',
           },
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -226,10 +237,10 @@ function foo() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
           data: {
             type: '`any[]`',
           },
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -241,10 +252,10 @@ function foo() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
           data: {
             type: '`any[]`',
           },
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -256,10 +267,10 @@ function foo() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
           data: {
             type: '`any[]`',
           },
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -271,10 +282,10 @@ function foo() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
           data: {
             type: '`any[]`',
           },
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -286,10 +297,10 @@ const foo = () => {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
           data: {
             type: '`any[]`',
           },
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -297,10 +308,10 @@ const foo = () => {
       code: 'const foo = () => [] as any[];',
       errors: [
         {
-          messageId: 'unsafeReturn',
           data: {
             type: '`any[]`',
           },
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -312,11 +323,11 @@ function foo(): Set<string> {
       `,
       errors: [
         {
-          messageId: 'unsafeReturnAssignment',
           data: {
-            sender: 'Set<any>',
             receiver: 'Set<string>',
+            sender: 'Set<any>',
           },
+          messageId: 'unsafeReturnAssignment',
         },
       ],
     },
@@ -328,11 +339,11 @@ function foo(): Map<string, string> {
       `,
       errors: [
         {
-          messageId: 'unsafeReturnAssignment',
           data: {
-            sender: 'Map<string, any>',
             receiver: 'Map<string, string>',
+            sender: 'Map<string, any>',
           },
+          messageId: 'unsafeReturnAssignment',
         },
       ],
     },
@@ -344,11 +355,11 @@ function foo(): Set<string[]> {
       `,
       errors: [
         {
-          messageId: 'unsafeReturnAssignment',
           data: {
-            sender: 'Set<any[]>',
             receiver: 'Set<string[]>',
+            sender: 'Set<any[]>',
           },
+          messageId: 'unsafeReturnAssignment',
         },
       ],
     },
@@ -360,11 +371,11 @@ function foo(): Set<Set<Set<string>>> {
       `,
       errors: [
         {
-          messageId: 'unsafeReturnAssignment',
           data: {
-            sender: 'Set<Set<Set<any>>>',
             receiver: 'Set<Set<Set<string>>>',
+            sender: 'Set<Set<Set<any>>>',
           },
+          messageId: 'unsafeReturnAssignment',
         },
       ],
     },
@@ -379,20 +390,20 @@ const foo2: Fn = function test() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturnAssignment',
-          line: 3,
           data: {
-            sender: 'Set<any>',
             receiver: 'Set<string>',
+            sender: 'Set<any>',
           },
+          line: 3,
+          messageId: 'unsafeReturnAssignment',
         },
         {
-          messageId: 'unsafeReturnAssignment',
-          line: 5,
           data: {
-            sender: 'Set<any>',
             receiver: 'Set<string>',
+            sender: 'Set<any>',
           },
+          line: 5,
+          messageId: 'unsafeReturnAssignment',
         },
       ],
     },
@@ -407,20 +418,20 @@ receiver(function test() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturnAssignment',
-          line: 4,
           data: {
-            sender: 'Set<any>',
             receiver: 'Set<string>',
+            sender: 'Set<any>',
           },
+          line: 4,
+          messageId: 'unsafeReturnAssignment',
         },
         {
-          messageId: 'unsafeReturnAssignment',
-          line: 6,
           data: {
-            sender: 'Set<any>',
             receiver: 'Set<string>',
+            sender: 'Set<any>',
           },
+          line: 6,
+          messageId: 'unsafeReturnAssignment',
         },
       ],
     },
@@ -436,22 +447,22 @@ function bar() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturnThis',
-          line: 3,
           column: 3,
-          endColumn: 15,
           data: {
             type: '`any`',
           },
+          endColumn: 15,
+          line: 3,
+          messageId: 'unsafeReturnThis',
         },
         {
-          messageId: 'unsafeReturnThis',
-          line: 7,
           column: 16,
-          endColumn: 20,
           data: {
             type: '`any`',
           },
+          endColumn: 20,
+          line: 7,
+          messageId: 'unsafeReturnThis',
         },
       ],
     },
@@ -462,13 +473,13 @@ foo(() => 'foo' as any);
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 3,
           column: 11,
-          endColumn: 23,
           data: {
             type: '`any`',
           },
+          endColumn: 23,
+          line: 3,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -482,13 +493,13 @@ function example() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 5,
           column: 3,
-          endColumn: 16,
           data: {
             type: 'error',
           },
+          endColumn: 16,
+          line: 5,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -501,12 +512,12 @@ async function foo() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 4,
           column: 3,
           data: {
             type: '`any`',
           },
+          line: 4,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -519,12 +530,12 @@ async function foo(): Promise<number> {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 4,
           column: 3,
           data: {
             type: '`Promise<any>`',
           },
+          line: 4,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -536,12 +547,12 @@ async function foo(arg: number) {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 3,
           column: 3,
           data: {
             type: '`Promise<any>`',
           },
+          line: 3,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -553,12 +564,12 @@ function foo(): Promise<any> {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 3,
           column: 3,
           data: {
             type: '`any`',
           },
+          line: 3,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -570,12 +581,12 @@ function foo(): Promise<object> {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 3,
           column: 3,
           data: {
             type: '`any`',
           },
+          line: 3,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -587,12 +598,12 @@ async function foo(): Promise<object> {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 3,
           column: 3,
           data: {
             type: '`Promise<any>`',
           },
+          line: 3,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -604,12 +615,12 @@ async function foo(): Promise<object> {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 3,
           column: 3,
           data: {
             type: '`Promise<any>`',
           },
+          line: 3,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -621,12 +632,12 @@ async function foo(): Promise<object> {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 3,
           column: 3,
           data: {
             type: '`Promise<any>`',
           },
+          line: 3,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -638,12 +649,12 @@ async function foo() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 3,
           column: 3,
           data: {
             type: '`Promise<any>`',
           },
+          line: 3,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -655,12 +666,12 @@ async function foo() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 3,
           column: 3,
           data: {
             type: '`Promise<any>`',
           },
+          line: 3,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -672,12 +683,12 @@ async function foo() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 3,
           column: 3,
           data: {
             type: '`Promise<any>`',
           },
+          line: 3,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -689,12 +700,12 @@ async function foo() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 3,
           column: 3,
           data: {
             type: '`Promise<any>`',
           },
+          line: 3,
+          messageId: 'unsafeReturn',
         },
       ],
     },
@@ -711,12 +722,12 @@ async function foo() {
       `,
       errors: [
         {
-          messageId: 'unsafeReturn',
-          line: 8,
           column: 3,
           data: {
             type: '`Promise<any>`',
           },
+          line: 8,
+          messageId: 'unsafeReturn',
         },
       ],
     },

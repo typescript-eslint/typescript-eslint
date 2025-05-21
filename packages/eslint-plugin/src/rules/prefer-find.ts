@@ -1,33 +1,36 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import type { RuleFix, Scope } from '@typescript-eslint/utils/ts-eslint';
-import * as tsutils from 'ts-api-utils';
+import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
 import type { Type } from 'typescript';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
   getStaticValue,
+  isStaticMemberAccessOfValue,
   nullThrows,
+  skipChainExpression,
 } from '../util';
 
 export default createRule({
   name: 'prefer-find',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce the use of Array.prototype.find() over Array.prototype.filter() followed by [0] when looking for a single result',
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
       preferFind: 'Prefer .find(...) instead of .filter(...)[0].',
       preferFindSuggestion: 'Use .find(...) instead of .filter(...)[0].',
     },
     schema: [],
-    type: 'suggestion',
-    hasSuggestions: true,
   },
 
   defaultOptions: [],
@@ -38,39 +41,33 @@ export default createRule({
     const checker = services.program.getTypeChecker();
 
     interface FilterExpressionData {
-      isBracketSyntaxForFilter: boolean;
       filterNode: TSESTree.Node;
+      isBracketSyntaxForFilter: boolean;
     }
 
     function parseArrayFilterExpressions(
       expression: TSESTree.Expression,
     ): FilterExpressionData[] {
-      if (expression.type === AST_NODE_TYPES.SequenceExpression) {
+      const node = skipChainExpression(expression);
+
+      if (node.type === AST_NODE_TYPES.SequenceExpression) {
         // Only the last expression in (a, b, [1, 2, 3].filter(condition))[0] matters
         const lastExpression = nullThrows(
-          expression.expressions.at(-1),
+          node.expressions.at(-1),
           'Expected to have more than zero expressions in a sequence expression',
         );
         return parseArrayFilterExpressions(lastExpression);
       }
 
-      if (expression.type === AST_NODE_TYPES.ChainExpression) {
-        return parseArrayFilterExpressions(expression.expression);
-      }
-
       // This is the only reason we're returning a list rather than a single value.
-      if (expression.type === AST_NODE_TYPES.ConditionalExpression) {
+      if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // Both branches of the ternary _must_ return results.
-        const consequentResult = parseArrayFilterExpressions(
-          expression.consequent,
-        );
+        const consequentResult = parseArrayFilterExpressions(node.consequent);
         if (consequentResult.length === 0) {
           return [];
         }
 
-        const alternateResult = parseArrayFilterExpressions(
-          expression.alternate,
-        );
+        const alternateResult = parseArrayFilterExpressions(node.alternate);
         if (alternateResult.length === 0) {
           return [];
         }
@@ -80,16 +77,13 @@ export default createRule({
       }
 
       // Check if it looks like <<stuff>>(...), but not <<stuff>>?.(...)
-      if (
-        expression.type === AST_NODE_TYPES.CallExpression &&
-        !expression.optional
-      ) {
-        const callee = expression.callee;
+      if (node.type === AST_NODE_TYPES.CallExpression && !node.optional) {
+        const callee = node.callee;
         // Check if it looks like <<stuff>>.filter(...) or <<stuff>>['filter'](...),
         // or the optional chaining variants.
         if (callee.type === AST_NODE_TYPES.MemberExpression) {
           const isBracketSyntaxForFilter = callee.computed;
-          if (isStaticMemberAccessOfValue(callee, 'filter', globalScope)) {
+          if (isStaticMemberAccessOfValue(callee, context, 'filter')) {
             const filterNode = callee.property;
 
             const filteredObjectType = getConstrainedTypeAtLocation(
@@ -102,8 +96,8 @@ export default createRule({
             if (isArrayish(filteredObjectType)) {
               return [
                 {
-                  isBracketSyntaxForFilter,
                   filterNode,
+                  isBracketSyntaxForFilter,
                 },
               ];
             }
@@ -120,7 +114,7 @@ export default createRule({
      */
     function isArrayish(type: Type): boolean {
       let isAtLeastOneArrayishComponent = false;
-      for (const unionPart of tsutils.unionTypeParts(type)) {
+      for (const unionPart of tsutils.unionConstituents(type)) {
         if (
           tsutils.isIntrinsicNullType(unionPart) ||
           tsutils.isIntrinsicUndefinedType(unionPart)
@@ -131,7 +125,7 @@ export default createRule({
         // apparently checker.isArrayType(T[] & S[]) => false.
         // so we need to check the intersection parts individually.
         const isArrayOrIntersectionThereof = tsutils
-          .intersectionTypeParts(unionPart)
+          .intersectionConstituents(unionPart)
           .every(
             intersectionPart =>
               checker.isArrayType(intersectionPart) ||
@@ -162,7 +156,7 @@ export default createRule({
       if (
         callee.type === AST_NODE_TYPES.MemberExpression &&
         !callee.optional &&
-        isStaticMemberAccessOfValue(callee, 'at', globalScope)
+        isStaticMemberAccessOfValue(callee, context, 'at')
       ) {
         const atArgument = getStaticValue(node.arguments[0], globalScope);
         if (atArgument != null && isTreatedAsZeroByArrayAt(atArgument.value)) {
@@ -321,25 +315,3 @@ export default createRule({
     };
   },
 });
-
-/**
- * Answers whether the member expression looks like
- * `x.memberName`, `x['memberName']`,
- * or even `const mn = 'memberName'; x[mn]` (or optional variants thereof).
- */
-function isStaticMemberAccessOfValue(
-  memberExpression:
-    | TSESTree.MemberExpressionComputedName
-    | TSESTree.MemberExpressionNonComputedName,
-  value: string,
-  scope?: Scope.Scope | undefined,
-): boolean {
-  if (!memberExpression.computed) {
-    // x.memberName case.
-    return memberExpression.property.name === value;
-  }
-
-  // x['memberName'] cases.
-  const staticValueResult = getStaticValue(memberExpression.property, scope);
-  return staticValueResult != null && value === staticValueResult.value;
-}

@@ -182,9 +182,9 @@ const derived = class Derived {};
       `,
       errors: [
         {
-          messageId: 'noEmptyInterfaceWithSuper',
-          line: 6,
           column: 11,
+          line: 6,
+          messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
             {
               messageId: 'replaceEmptyInterfaceWithSuper',
@@ -212,9 +212,9 @@ interface Derived extends Base {}
       `,
       errors: [
         {
-          messageId: 'noEmptyInterfaceWithSuper',
-          line: 6,
           column: 11,
+          line: 6,
+          messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
             {
               messageId: 'replaceEmptyInterfaceWithSuper',
@@ -234,9 +234,9 @@ type Derived = Base
       code: 'interface Base extends Array<number> {}',
       errors: [
         {
-          messageId: 'noEmptyInterfaceWithSuper',
-          line: 1,
           column: 11,
+          line: 1,
+          messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
             {
               messageId: 'replaceEmptyInterfaceWithSuper',
@@ -250,10 +250,10 @@ type Derived = Base
       code: 'interface Base extends Array<number | {}> {}',
       errors: [
         {
-          messageId: 'noEmptyInterfaceWithSuper',
-          line: 1,
           column: 11,
           endColumn: 15,
+          line: 1,
+          messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
             {
               messageId: 'replaceEmptyInterfaceWithSuper',
@@ -262,11 +262,11 @@ type Derived = Base
           ],
         },
         {
-          data: { option: 'allowObjectTypes' },
-          messageId: 'noEmptyObject',
-          line: 1,
           column: 39,
+          data: { option: 'allowObjectTypes' },
           endColumn: 41,
+          line: 1,
+          messageId: 'noEmptyObject',
           suggestions: [
             {
               data: { replacement: 'object' },
@@ -291,9 +291,9 @@ interface Base extends Array<Derived> {}
       `,
       errors: [
         {
-          messageId: 'noEmptyInterfaceWithSuper',
-          line: 5,
           column: 11,
+          line: 5,
+          messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
             {
               messageId: 'replaceEmptyInterfaceWithSuper',
@@ -315,9 +315,9 @@ interface Base extends R {}
       `,
       errors: [
         {
-          messageId: 'noEmptyInterfaceWithSuper',
-          line: 3,
           column: 11,
+          line: 3,
+          messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
             {
               messageId: 'replaceEmptyInterfaceWithSuper',
@@ -334,9 +334,9 @@ type Base = R
       code: 'interface Base<T> extends Derived<T> {}',
       errors: [
         {
-          messageId: 'noEmptyInterfaceWithSuper',
-          line: 1,
           column: 11,
+          line: 1,
+          messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
             {
               messageId: 'replaceEmptyInterfaceWithSuper',
@@ -347,7 +347,6 @@ type Base = R
       ],
     },
     {
-      filename: 'test.d.ts',
       code: `
 declare namespace BaseAndDerived {
   type Base = typeof base;
@@ -356,11 +355,11 @@ declare namespace BaseAndDerived {
       `,
       errors: [
         {
-          messageId: 'noEmptyInterfaceWithSuper',
-          line: 4,
           column: 20,
-          endLine: 4,
           endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
             {
               messageId: 'replaceEmptyInterfaceWithSuper',
@@ -374,16 +373,17 @@ declare namespace BaseAndDerived {
           ],
         },
       ],
+      filename: 'test.d.ts',
     },
     {
       code: 'type Base = {};',
       errors: [
         {
           column: 13,
-          line: 1,
+          data: { option: 'allowObjectTypes' },
           endColumn: 15,
           endLine: 1,
-          data: { option: 'allowObjectTypes' },
+          line: 1,
           messageId: 'noEmptyObject',
           suggestions: [
             {
@@ -405,10 +405,10 @@ declare namespace BaseAndDerived {
       errors: [
         {
           column: 13,
-          line: 1,
+          data: { option: 'allowObjectTypes' },
           endColumn: 15,
           endLine: 1,
-          data: { option: 'allowObjectTypes' },
+          line: 1,
           messageId: 'noEmptyObject',
           suggestions: [
             {
@@ -431,10 +431,10 @@ declare namespace BaseAndDerived {
       errors: [
         {
           column: 12,
-          line: 1,
+          data: { option: 'allowObjectTypes' },
           endColumn: 14,
           endLine: 1,
-          data: { option: 'allowObjectTypes' },
+          line: 1,
           messageId: 'noEmptyObject',
           suggestions: [
             {
@@ -456,10 +456,10 @@ declare namespace BaseAndDerived {
       errors: [
         {
           column: 12,
-          line: 1,
+          data: { option: 'allowObjectTypes' },
           endColumn: 14,
           endLine: 1,
-          data: { option: 'allowObjectTypes' },
+          line: 1,
           messageId: 'noEmptyObject',
           suggestions: [
             {
@@ -485,11 +485,11 @@ let value: {
       `,
       errors: [
         {
-          line: 2,
-          endLine: 4,
           column: 12,
-          endColumn: 2,
           data: { option: 'allowObjectTypes' },
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'noEmptyObject',
           suggestions: [
             {
@@ -515,10 +515,10 @@ let value: unknown;
       errors: [
         {
           column: 23,
-          line: 1,
+          data: { option: 'allowObjectTypes' },
           endColumn: 25,
           endLine: 1,
-          data: { option: 'allowObjectTypes' },
+          line: 1,
           messageId: 'noEmptyObject',
           suggestions: [
             {
@@ -540,9 +540,9 @@ let value: unknown;
       errors: [
         {
           column: 13,
-          line: 1,
           endColumn: 15,
           endLine: 1,
+          line: 1,
           messageId: 'noEmptyObject',
           suggestions: [
             {
@@ -565,9 +565,9 @@ let value: unknown;
       errors: [
         {
           column: 13,
-          line: 1,
           endColumn: 15,
           endLine: 1,
+          line: 1,
           messageId: 'noEmptyObject',
           suggestions: [
             {
@@ -590,9 +590,9 @@ let value: unknown;
       errors: [
         {
           column: 11,
-          line: 1,
           endColumn: 15,
           endLine: 1,
+          line: 1,
           messageId: 'noEmptyInterface',
           suggestions: [
             {

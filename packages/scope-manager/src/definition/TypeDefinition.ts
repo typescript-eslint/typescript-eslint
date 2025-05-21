@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';
 
-class TypeDefinition extends DefinitionBase<
+export class TypeDefinition extends DefinitionBase<
   DefinitionType.Type,
   | TSESTree.TSInterfaceDeclaration
   | TSESTree.TSMappedType
@@ -12,12 +12,10 @@ class TypeDefinition extends DefinitionBase<
   null,
   TSESTree.Identifier
 > {
+  public readonly isTypeDefinition = true;
+  public readonly isVariableDefinition = false;
+
   constructor(name: TSESTree.Identifier, node: TypeDefinition['node']) {
     super(DefinitionType.Type, name, node, null);
   }
-
-  public readonly isTypeDefinition = true;
-  public readonly isVariableDefinition = false;
 }
-
-export { TypeDefinition };

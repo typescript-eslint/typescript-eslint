@@ -3,8 +3,8 @@ import * as ts from 'typescript';
 
 import * as util from '../util';
 
-type Options = [];
-type MessageIds = 'unaryMinus';
+export type Options = [];
+export type MessageIds = 'unaryMinus';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-unsafe-unary-minus',
@@ -36,7 +36,7 @@ export default util.createRule<Options, MessageIds>({
         const checker = services.program.getTypeChecker();
         if (
           tsutils
-            .unionTypeParts(argType)
+            .unionConstituents(argType)
             .some(
               type =>
                 !tsutils.isTypeFlagSet(
@@ -49,8 +49,8 @@ export default util.createRule<Options, MessageIds>({
             )
         ) {
           context.report({
-            messageId: 'unaryMinus',
             node,
+            messageId: 'unaryMinus',
             data: { type: checker.typeToString(argType) },
           });
         }

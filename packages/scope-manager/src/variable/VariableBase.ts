@@ -1,13 +1,14 @@
 import type { TSESTree } from '@typescript-eslint/types';
 
 import type { Definition } from '../definition';
-import { createIdGenerator } from '../ID';
 import type { Reference } from '../referencer/Reference';
 import type { Scope } from '../scope';
 
+import { createIdGenerator } from '../ID';
+
 const generator = createIdGenerator();
 
-class VariableBase {
+export class VariableBase {
   /**
    * A unique ID for this instance - primarily used to help debugging and testing
    */
@@ -50,5 +51,3 @@ class VariableBase {
     this.scope = scope;
   }
 }
-
-export { VariableBase };

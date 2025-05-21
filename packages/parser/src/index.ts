@@ -1,10 +1,10 @@
-export { parse, parseForESLint, ParserOptions } from './parser';
+export { parse, parseForESLint, type ParserOptions } from './parser';
 export {
-  ParserServices,
-  ParserServicesWithTypeInformation,
-  ParserServicesWithoutTypeInformation,
   clearCaches,
   createProgram,
+  type ParserServices,
+  type ParserServicesWithoutTypeInformation,
+  type ParserServicesWithTypeInformation,
   withoutProjectParserOptions,
 } from '@typescript-eslint/typescript-estree';
 

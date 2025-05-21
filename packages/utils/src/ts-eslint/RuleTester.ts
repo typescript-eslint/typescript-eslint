@@ -1,4 +1,4 @@
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { RuleTester as ESLintRuleTester } from 'eslint';
 
 import type { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
@@ -15,11 +15,7 @@ import type {
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-interface ValidTestCase<Options extends readonly unknown[]> {
-  /**
-   * Name for the test case.
-   */
-  readonly name?: string;
+export interface ValidTestCase<Options extends readonly unknown[]> {
   /**
    * Code for the test case.
    */
@@ -37,6 +33,14 @@ interface ValidTestCase<Options extends readonly unknown[]> {
    */
   readonly globals?: Readonly<Linter.GlobalsConfig>;
   /**
+   * Name for the test case.
+   */
+  readonly name?: string;
+  /**
+   * Run this case exclusively for debugging in supported test frameworks.
+   */
+  readonly only?: boolean;
+  /**
    * Options for the test case.
    */
   readonly options?: Readonly<Options>;
@@ -52,24 +56,20 @@ interface ValidTestCase<Options extends readonly unknown[]> {
    * Settings for the test case.
    */
   readonly settings?: Readonly<SharedConfigurationSettings>;
-  /**
-   * Run this case exclusively for debugging in supported test frameworks.
-   */
-  readonly only?: boolean;
 }
 
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-interface SuggestionOutput<MessageIds extends string> {
-  /**
-   * Reported message ID.
-   */
-  readonly messageId: MessageIds;
+export interface SuggestionOutput<MessageIds extends string> {
   /**
    * The data used to fill the message template.
    */
   readonly data?: ReportDescriptorMessageData;
+  /**
+   * Reported message ID.
+   */
+  readonly messageId: MessageIds;
   /**
    * NOTE: Suggestions will be applied as a stand-alone change, without triggering multi-pass fixes.
    * Each individual error has its own suggestion, so you have to show the correct, _isolated_ output for each suggestion.
@@ -83,7 +83,7 @@ interface SuggestionOutput<MessageIds extends string> {
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-interface InvalidTestCase<
+export interface InvalidTestCase<
   MessageIds extends string,
   Options extends readonly unknown[],
 > extends ValidTestCase<Options> {
@@ -100,7 +100,7 @@ interface InvalidTestCase<
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-interface TestCaseError<MessageIds extends string> {
+export interface TestCaseError<MessageIds extends string> {
   /**
    * The 1-based column number of the reported start location.
    */
@@ -142,7 +142,7 @@ interface TestCaseError<MessageIds extends string> {
  * @param text a string describing the rule
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-type RuleTesterTestFrameworkFunction = (
+export type RuleTesterTestFrameworkFunction = (
   text: string,
   callback: () => void,
 ) => void;
@@ -150,19 +150,19 @@ type RuleTesterTestFrameworkFunction = (
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-interface RunTests<
+export interface RunTests<
   MessageIds extends string,
   Options extends readonly unknown[],
 > {
   // RuleTester.run also accepts strings for valid cases
-  readonly valid: readonly (ValidTestCase<Options> | string)[];
   readonly invalid: readonly InvalidTestCase<MessageIds, Options>[];
+  readonly valid: readonly (string | ValidTestCase<Options>)[];
 }
 
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-interface RuleTesterConfig extends ClassicConfig.Config {
+export interface RuleTesterConfig extends ClassicConfig.Config {
   // should be require.resolve(parserPackageName)
   readonly parser: string;
   readonly parserOptions?: Readonly<ParserOptions>;
@@ -226,15 +226,4 @@ declare class RuleTesterBase {
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}
-
-export {
-  InvalidTestCase,
-  SuggestionOutput,
-  RuleTester,
-  RuleTesterConfig,
-  RuleTesterTestFrameworkFunction,
-  RunTests,
-  TestCaseError,
-  ValidTestCase,
-};
+export class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}

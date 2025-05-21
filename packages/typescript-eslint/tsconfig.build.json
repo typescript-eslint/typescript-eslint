@@ -1,11 +1,15 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "composite": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "resolveJsonModule": true
-  },
-  "include": ["src"],
-  "references": [{ "path": "../parser/tsconfig.build.json" }]
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {},
+  "references": [
+    {
+      "path": "../utils/tsconfig.build.json"
+    },
+    {
+      "path": "../parser/tsconfig.build.json"
+    },
+    {
+      "path": "../eslint-plugin/tsconfig.build.json"
+    }
+  ]
 }

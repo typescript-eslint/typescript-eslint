@@ -1,25 +1,26 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { Sponsor } from '../Sponsor';
 import type { SponsorData } from '../types';
+
+import { Sponsor } from '../Sponsor';
 import styles from './styles.module.css';
 
 interface SponsorsProps {
   className: string;
-  includeName?: boolean;
   expanded?: boolean;
+  includeName?: boolean;
   sponsors: SponsorData[];
-  title: string;
   tier: string;
+  title: string;
 }
 
 export function Sponsors({
   className,
   includeName,
-  title,
-  tier,
   sponsors,
+  tier,
+  title,
 }: SponsorsProps): React.JSX.Element {
   return (
     <div className={clsx(styles.tierArea, className)}>

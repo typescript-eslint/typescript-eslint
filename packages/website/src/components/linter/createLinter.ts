@@ -7,11 +7,6 @@ import type {
 } from '@typescript-eslint/utils/ts-eslint';
 import type * as ts from 'typescript';
 
-import { createCompilerOptions } from '../lib/createCompilerOptions';
-import { createEventsBinder } from '../lib/createEventsBinder';
-import { parseESLintRC, parseTSConfig } from '../lib/parseConfig';
-import { defaultEslintConfig, PARSER_NAME } from './config';
-import { createParser } from './createParser';
 import type {
   LinterOnLint,
   LinterOnParse,
@@ -19,21 +14,27 @@ import type {
   WebLinterModule,
 } from './types';
 
+import { createCompilerOptions } from '../lib/createCompilerOptions';
+import { createEventsBinder } from '../lib/createEventsBinder';
+import { parseESLintRC, parseTSConfig } from '../lib/parseConfig';
+import { defaultEslintConfig, PARSER_NAME } from './config';
+import { createParser } from './createParser';
+
 export interface CreateLinter {
+  configs: string[];
+  onLint(cb: LinterOnLint): () => void;
+  onParse(cb: LinterOnParse): () => void;
   rules: Map<
     string,
     {
-      name: string;
       description?: string;
-      url?: string;
+      name: string;
       schema: JSONSchema.JSONSchema4 | readonly JSONSchema.JSONSchema4[];
+      url?: string;
     }
   >;
-  configs: string[];
   triggerFix(filename: string): Linter.FixReport | undefined;
   triggerLint(filename: string): void;
-  onLint(cb: LinterOnLint): () => void;
-  onParse(cb: LinterOnParse): () => void;
   updateParserOptions(sourceType?: SourceType): void;
 }
 
@@ -66,10 +67,10 @@ export function createLinter(
 
   linter.getRules().forEach((item, name) => {
     rules.set(name, {
-      name: name,
       description: item.meta?.docs?.description,
-      url: item.meta?.docs?.url,
+      name,
       schema: item.meta?.schema ?? [],
+      url: item.meta?.docs?.url,
     });
   });
 
@@ -81,13 +82,13 @@ export function createLinter(
       onLint.trigger(filename, messages);
     } catch (e) {
       const lintMessage: Linter.LintMessage = {
-        source: 'eslint',
-        ruleId: '',
-        severity: 2,
-        nodeType: '',
         column: 1,
         line: 1,
         message: String(e instanceof Error ? e.stack : e),
+        nodeType: '',
+        ruleId: '',
+        severity: 2,
+        source: 'eslint',
       };
       if (typeof e === 'object' && e && 'currentNode' in e) {
         const node = e.currentNode as TSESTree.Node;
@@ -104,7 +105,7 @@ export function createLinter(
     const code = system.readFile(filename);
     if (code) {
       return linter.verifyAndFix(code, eslintConfig, {
-        filename: filename,
+        filename,
         fix: true,
       });
     }
@@ -181,12 +182,12 @@ export function createLinter(
   applyTSConfig('/tsconfig.json');
 
   return {
+    configs: [...configs.keys()],
+    onLint: onLint.register,
+    onParse: onParse.register,
     rules,
-    configs: Array.from(configs.keys()),
     triggerFix,
     triggerLint,
     updateParserOptions,
-    onParse: onParse.register,
-    onLint: onLint.register,
   };
 }

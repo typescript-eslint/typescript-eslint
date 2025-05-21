@@ -1,25 +1,27 @@
+import type * as ts from 'typescript';
+
 import clsx from 'clsx';
 import React, { useCallback, useMemo } from 'react';
-import type * as ts from 'typescript';
+
+import type { OnHoverNodeFn } from '../ast/types';
 
 import styles from '../ast/ASTViewer.module.css';
 import PropertyName from '../ast/PropertyName';
 import { tsEnumToString } from '../ast/tsUtils';
-import type { OnHoverNodeFn } from '../ast/types';
-import { getRange, isTSNode } from '../ast/utils';
+import { getRange } from '../ast/utils';
 
 export interface SimplifiedTreeViewProps {
-  readonly value: ts.Node;
-  readonly selectedNode: ts.Node | undefined;
-  readonly onSelect: (value: ts.Node) => void;
   readonly onHoverNode?: OnHoverNodeFn;
+  readonly onSelect: (value: ts.Node) => void;
+  readonly selectedNode: ts.Node | undefined;
+  readonly value: ts.Node;
 }
 
 function SimplifiedItem({
-  value,
+  onHoverNode,
   onSelect,
   selectedNode,
-  onHoverNode,
+  value,
 }: SimplifiedTreeViewProps): React.JSX.Element {
   const items = useMemo(() => {
     const result: ts.Node[] = [];
@@ -31,7 +33,7 @@ function SimplifiedItem({
 
   const onHover = useCallback(
     (v: boolean) => {
-      if (isTSNode(value) && onHoverNode) {
+      if (onHoverNode) {
         return onHoverNode(v ? getRange(value, 'tsNode') : undefined);
       }
     },
@@ -42,23 +44,23 @@ function SimplifiedItem({
     <div className={styles.nonExpand}>
       <span className={selectedNode === value ? styles.selected : ''}>
         <PropertyName
-          value={tsEnumToString('SyntaxKind', value.kind)}
           className={styles.propName}
-          onHover={onHover}
           onClick={(): void => {
             onSelect(value);
           }}
+          onHover={onHover}
+          value={tsEnumToString('SyntaxKind', value.kind)}
         />
       </span>
 
       <div className={clsx(styles.subList, 'padding-left--md')}>
         {items.map((item, index) => (
           <SimplifiedItem
+            key={index.toString()}
             onHoverNode={onHoverNode}
+            onSelect={onSelect}
             selectedNode={selectedNode}
             value={item}
-            onSelect={onSelect}
-            key={index.toString()}
           />
         ))}
       </div>

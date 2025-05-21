@@ -1,4 +1,5 @@
 import type { ConfigModel } from '../types';
+
 import { parseESLintRC } from './parseConfig';
 
 function createSummary(
@@ -61,12 +62,12 @@ export function createMarkdownParams(state: ConfigModel): string {
       : 'rule name here';
 
   const params = {
+    'eslint-config': `module.exports = ${state.eslintrc}`,
     labels: 'bug,package: eslint-plugin,triage',
-    template: '01-bug-report-plugin.yaml',
-    title: `Bug: [${onlyRuleName}] <short description of the issue>`,
     'playground-link': document.location.toString(),
     'repro-code': state.code,
-    'eslint-config': `module.exports = ${state.eslintrc}`,
+    template: '01-bug-report-plugin.yaml',
+    title: `Bug: [${onlyRuleName}] <short description of the issue>`,
     'typescript-config': state.tsconfig,
     versions: generateVersionsTable(state.ts),
   };

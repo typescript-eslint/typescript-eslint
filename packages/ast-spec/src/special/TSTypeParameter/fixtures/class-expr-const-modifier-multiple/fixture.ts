@@ -1,1 +1,1 @@
-(class <T, const U> {});
+(class<T, const U> {});

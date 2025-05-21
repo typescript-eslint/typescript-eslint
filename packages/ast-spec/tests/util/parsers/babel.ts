@@ -1,8 +1,10 @@
 import type { ParserOptions } from '@babel/core';
+
 import { parse } from '@babel/eslint-parser';
 
-import type { Fixture, ParserResponse } from './parser-types';
-import { ParserResponseType } from './parser-types';
+import type { Fixture, ParserResponse } from './parser-types.js';
+
+import { ParserResponseType } from './parser-types.js';
 
 const PLUGINS: NonNullable<ParserOptions['plugins']> = [
   'decoratorAutoAccessors',
@@ -15,14 +17,16 @@ const PLUGINS: NonNullable<ParserOptions['plugins']> = [
   'typescript',
 ];
 
-export function parseBabel(fixture: Fixture, contents: string): ParserResponse {
+export function parseBabel(
+  fixture: Pick<Fixture, 'contents' | 'isJSX'>,
+): ParserResponse {
   const plugins = [...PLUGINS];
   if (fixture.isJSX) {
     plugins.push('jsx');
   }
 
   try {
-    const result = parse(contents, {
+    const result = parse(fixture.contents, {
       allowImportExportEverywhere: true,
       babelOptions: {
         parserOpts: {
@@ -35,18 +39,18 @@ export function parseBabel(fixture: Fixture, contents: string): ParserResponse {
       requireConfigFile: false,
       sourceType: 'unambiguous',
     });
-    const { tokens: _, comments: __, ...program } = result;
+    const { comments: __, tokens, ...ast } = result;
 
     return {
-      type: ParserResponseType.NoError,
-      ast: program,
+      ast,
       error: 'NO ERROR',
-      tokens: result.tokens,
+      tokens,
+      type: ParserResponseType.NoError,
     };
   } catch (error: unknown) {
     return {
-      type: ParserResponseType.Error,
       error,
+      type: ParserResponseType.Error,
     };
   }
 }

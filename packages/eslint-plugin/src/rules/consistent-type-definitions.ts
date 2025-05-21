@@ -1,7 +1,8 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 export default createRule({
   name: 'consistent-type-definitions',
@@ -12,6 +13,7 @@ export default createRule({
         'Enforce type definitions to consistently use either `interface` or `type`',
       recommended: 'stylistic',
     },
+    fixable: 'code',
     messages: {
       interfaceOverType: 'Use an `interface` instead of a `type`.',
       typeOverInterface: 'Use a `type` instead of an `interface`.',
@@ -19,10 +21,10 @@ export default createRule({
     schema: [
       {
         type: 'string',
+        description: 'Which type definition syntax to prefer.',
         enum: ['interface', 'type'],
       },
     ],
-    fixable: 'code',
   },
   defaultOptions: ['interface'],
   create(context, [option]) {
@@ -52,32 +54,45 @@ export default createRule({
             node: node.id,
             messageId: 'interfaceOverType',
             fix(fixer) {
-              const typeNode = node.typeParameters ?? node.id;
-              const fixes: TSESLint.RuleFix[] = [];
-
-              const firstToken = context.sourceCode.getTokenBefore(node.id);
-              if (firstToken) {
-                fixes.push(fixer.replaceText(firstToken, 'interface'));
-                fixes.push(
-                  fixer.replaceTextRange(
-                    [typeNode.range[1], node.typeAnnotation.range[0]],
-                    ' ',
-                  ),
-                );
-              }
-
-              const afterToken = context.sourceCode.getTokenAfter(
-                node.typeAnnotation,
+              const typeToken = nullThrows(
+                context.sourceCode.getTokenBefore(
+                  node.id,
+                  token => token.value === 'type',
+                ),
+                NullThrowsReasons.MissingToken('type keyword', 'type alias'),
               );
-              if (
-                afterToken &&
-                afterToken.type === AST_TOKEN_TYPES.Punctuator &&
-                afterToken.value === ';'
-              ) {
-                fixes.push(fixer.remove(afterToken));
-              }
 
-              return fixes;
+              const equalsToken = nullThrows(
+                context.sourceCode.getTokenBefore(
+                  node.typeAnnotation,
+                  token => token.value === '=',
+                ),
+                NullThrowsReasons.MissingToken('=', 'type alias'),
+              );
+
+              const beforeEqualsToken = nullThrows(
+                context.sourceCode.getTokenBefore(equalsToken, {
+                  includeComments: true,
+                }),
+                NullThrowsReasons.MissingToken('before =', 'type alias'),
+              );
+
+              return [
+                // replace 'type' with 'interface'.
+                fixer.replaceText(typeToken, 'interface'),
+
+                // delete from the = to the { of the type, and put a space to be pretty.
+                fixer.replaceTextRange(
+                  [beforeEqualsToken.range[1], node.typeAnnotation.range[0]],
+                  ' ',
+                ),
+
+                // remove from the closing } through the end of the statement.
+                fixer.removeRange([
+                  node.typeAnnotation.range[1],
+                  node.range[1],
+                ]),
+              ];
             },
           });
         },

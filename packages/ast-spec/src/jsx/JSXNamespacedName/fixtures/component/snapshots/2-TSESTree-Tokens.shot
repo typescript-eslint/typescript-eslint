@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
 [
   Keyword {
     type: "Keyword",
@@ -196,45 +193,65 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     type: "Punctuator",
     value: ":",
 
-    range: [94, 95],
+    range: [93, 94],
     loc: {
-      start: { column: 36, line: 2 },
-      end: { column: 37, line: 2 },
+      start: { column: 35, line: 2 },
+      end: { column: 36, line: 2 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "b",
 
-    range: [96, 97],
+    range: [94, 95],
     loc: {
-      start: { column: 38, line: 2 },
-      end: { column: 39, line: 2 },
+      start: { column: 36, line: 2 },
+      end: { column: 37, line: 2 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "=",
 
-    range: [97, 98],
+    range: [95, 96],
     loc: {
-      start: { column: 39, line: 2 },
-      end: { column: 40, line: 2 },
+      start: { column: 37, line: 2 },
+      end: { column: 38, line: 2 },
     },
   },
   JSXText {
     type: "JSXText",
     value: ""loose spacing"",
 
-    range: [98, 113],
+    range: [96, 111],
     loc: {
-      start: { column: 40, line: 2 },
-      end: { column: 55, line: 2 },
+      start: { column: 38, line: 2 },
+      end: { column: 53, line: 2 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "/",
+
+    range: [112, 113],
+    loc: {
+      start: { column: 54, line: 2 },
+      end: { column: 55, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [113, 114],
+    loc: {
+      start: { column: 55, line: 2 },
+      end: { column: 56, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
 
     range: [114, 115],
     loc: {
@@ -242,31 +259,11 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
       end: { column: 57, line: 2 },
     },
   },
-  Punctuator {
-    type: "Punctuator",
-    value: ">",
-
-    range: [115, 116],
-    loc: {
-      start: { column: 57, line: 2 },
-      end: { column: 58, line: 2 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ";",
-
-    range: [116, 117],
-    loc: {
-      start: { column: 58, line: 2 },
-      end: { column: 59, line: 2 },
-    },
-  },
   Keyword {
     type: "Keyword",
     value: "interface",
 
-    range: [119, 128],
+    range: [117, 126],
     loc: {
       start: { column: 0, line: 4 },
       end: { column: 9, line: 4 },
@@ -276,7 +273,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     type: "Identifier",
     value: "NamespacePropComponentProps",
 
-    range: [129, 156],
+    range: [127, 154],
     loc: {
       start: { column: 10, line: 4 },
       end: { column: 37, line: 4 },
@@ -286,7 +283,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     type: "Punctuator",
     value: "{",
 
-    range: [157, 158],
+    range: [155, 156],
     loc: {
       start: { column: 38, line: 4 },
       end: { column: 39, line: 4 },
@@ -294,49 +291,49 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
   },
   String {
     type: "String",
-    value: ""a:b"",
+    value: "'a:b'",
 
-    range: [163, 168],
+    range: [159, 164],
     loc: {
-      start: { column: 4, line: 5 },
-      end: { column: 9, line: 5 },
+      start: { column: 2, line: 5 },
+      end: { column: 7, line: 5 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ":",
 
-    range: [168, 169],
+    range: [164, 165],
     loc: {
-      start: { column: 9, line: 5 },
-      end: { column: 10, line: 5 },
+      start: { column: 7, line: 5 },
+      end: { column: 8, line: 5 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "string",
 
-    range: [170, 176],
+    range: [166, 172],
     loc: {
-      start: { column: 11, line: 5 },
-      end: { column: 17, line: 5 },
+      start: { column: 9, line: 5 },
+      end: { column: 15, line: 5 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [176, 177],
+    range: [172, 173],
     loc: {
-      start: { column: 17, line: 5 },
-      end: { column: 18, line: 5 },
+      start: { column: 15, line: 5 },
+      end: { column: 16, line: 5 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [178, 179],
+    range: [174, 175],
     loc: {
       start: { column: 0, line: 6 },
       end: { column: 1, line: 6 },
@@ -346,7 +343,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     type: "Keyword",
     value: "function",
 
-    range: [181, 189],
+    range: [177, 185],
     loc: {
       start: { column: 0, line: 8 },
       end: { column: 8, line: 8 },
@@ -356,7 +353,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     type: "Identifier",
     value: "NamespacePropComponent",
 
-    range: [190, 212],
+    range: [186, 208],
     loc: {
       start: { column: 9, line: 8 },
       end: { column: 31, line: 8 },
@@ -366,7 +363,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     type: "Punctuator",
     value: "(",
 
-    range: [212, 213],
+    range: [208, 209],
     loc: {
       start: { column: 31, line: 8 },
       end: { column: 32, line: 8 },
@@ -376,7 +373,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     type: "Identifier",
     value: "props",
 
-    range: [213, 218],
+    range: [209, 214],
     loc: {
       start: { column: 32, line: 8 },
       end: { column: 37, line: 8 },
@@ -386,7 +383,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     type: "Punctuator",
     value: ":",
 
-    range: [218, 219],
+    range: [214, 215],
     loc: {
       start: { column: 37, line: 8 },
       end: { column: 38, line: 8 },
@@ -396,7 +393,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     type: "Identifier",
     value: "NamespacePropComponentProps",
 
-    range: [220, 247],
+    range: [216, 243],
     loc: {
       start: { column: 39, line: 8 },
       end: { column: 66, line: 8 },
@@ -406,7 +403,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     type: "Punctuator",
     value: ")",
 
-    range: [247, 248],
+    range: [243, 244],
     loc: {
       start: { column: 66, line: 8 },
       end: { column: 67, line: 8 },
@@ -416,7 +413,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     type: "Punctuator",
     value: "{",
 
-    range: [249, 250],
+    range: [245, 246],
     loc: {
       start: { column: 68, line: 8 },
       end: { column: 69, line: 8 },
@@ -426,87 +423,107 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     type: "Keyword",
     value: "return",
 
-    range: [255, 261],
+    range: [249, 255],
     loc: {
-      start: { column: 4, line: 9 },
-      end: { column: 10, line: 9 },
+      start: { column: 2, line: 9 },
+      end: { column: 8, line: 9 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "<",
 
-    range: [262, 263],
+    range: [256, 257],
     loc: {
-      start: { column: 11, line: 9 },
-      end: { column: 12, line: 9 },
+      start: { column: 9, line: 9 },
+      end: { column: 10, line: 9 },
     },
   },
   JSXIdentifier {
     type: "JSXIdentifier",
     value: "div",
 
-    range: [263, 266],
+    range: [257, 260],
     loc: {
-      start: { column: 12, line: 9 },
-      end: { column: 15, line: 9 },
+      start: { column: 10, line: 9 },
+      end: { column: 13, line: 9 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ">",
 
-    range: [266, 267],
+    range: [260, 261],
     loc: {
-      start: { column: 15, line: 9 },
-      end: { column: 16, line: 9 },
+      start: { column: 13, line: 9 },
+      end: { column: 14, line: 9 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "{",
 
-    range: [267, 268],
+    range: [261, 262],
     loc: {
-      start: { column: 16, line: 9 },
-      end: { column: 17, line: 9 },
+      start: { column: 14, line: 9 },
+      end: { column: 15, line: 9 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "props",
 
-    range: [268, 273],
+    range: [262, 267],
     loc: {
-      start: { column: 17, line: 9 },
-      end: { column: 22, line: 9 },
+      start: { column: 15, line: 9 },
+      end: { column: 20, line: 9 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "[",
 
-    range: [273, 274],
+    range: [267, 268],
     loc: {
-      start: { column: 22, line: 9 },
-      end: { column: 23, line: 9 },
+      start: { column: 20, line: 9 },
+      end: { column: 21, line: 9 },
     },
   },
   String {
     type: "String",
-    value: ""a:b"",
+    value: "'a:b'",
 
-    range: [274, 279],
+    range: [268, 273],
     loc: {
-      start: { column: 23, line: 9 },
-      end: { column: 28, line: 9 },
+      start: { column: 21, line: 9 },
+      end: { column: 26, line: 9 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "]",
 
-    range: [279, 280],
+    range: [273, 274],
+    loc: {
+      start: { column: 26, line: 9 },
+      end: { column: 27, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [274, 275],
+    loc: {
+      start: { column: 27, line: 9 },
+      end: { column: 28, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [275, 276],
     loc: {
       start: { column: 28, line: 9 },
       end: { column: 29, line: 9 },
@@ -514,73 +531,52 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
   },
   Punctuator {
     type: "Punctuator",
-    value: "}",
+    value: "/",
 
-    range: [280, 281],
+    range: [276, 277],
     loc: {
       start: { column: 29, line: 9 },
       end: { column: 30, line: 9 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "<",
-
-    range: [281, 282],
-    loc: {
-      start: { column: 30, line: 9 },
-      end: { column: 31, line: 9 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "/",
-
-    range: [282, 283],
-    loc: {
-      start: { column: 31, line: 9 },
-      end: { column: 32, line: 9 },
     },
   },
   JSXIdentifier {
     type: "JSXIdentifier",
     value: "div",
 
-    range: [283, 286],
+    range: [277, 280],
     loc: {
-      start: { column: 32, line: 9 },
-      end: { column: 35, line: 9 },
+      start: { column: 30, line: 9 },
+      end: { column: 33, line: 9 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ">",
 
-    range: [286, 287],
+    range: [280, 281],
     loc: {
-      start: { column: 35, line: 9 },
-      end: { column: 36, line: 9 },
+      start: { column: 33, line: 9 },
+      end: { column: 34, line: 9 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [287, 288],
+    range: [281, 282],
     loc: {
-      start: { column: 36, line: 9 },
-      end: { column: 37, line: 9 },
+      start: { column: 34, line: 9 },
+      end: { column: 35, line: 9 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [289, 290],
+    range: [283, 284],
     loc: {
       start: { column: 0, line: 10 },
       end: { column: 1, line: 10 },
     },
   },
 ]
-`;

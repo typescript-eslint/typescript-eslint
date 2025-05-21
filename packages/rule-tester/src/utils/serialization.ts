@@ -3,7 +3,7 @@
  */
 function isSerializablePrimitiveOrPlainObject(val: unknown): boolean {
   return (
-    // eslint-disable-next-line eqeqeq
+    // eslint-disable-next-line eqeqeq, @typescript-eslint/internal/eqeq-nullish
     val === null ||
     typeof val === 'string' ||
     typeof val === 'boolean' ||
@@ -29,10 +29,11 @@ export function isSerializable(val: unknown): boolean {
         if (!isSerializablePrimitiveOrPlainObject(valAsObj[property])) {
           return false;
         }
-        if (typeof valAsObj[property] === 'object') {
-          if (!isSerializable(valAsObj[property])) {
-            return false;
-          }
+        if (
+          typeof valAsObj[property] === 'object' &&
+          !isSerializable(valAsObj[property])
+        ) {
+          return false;
         }
       }
     }

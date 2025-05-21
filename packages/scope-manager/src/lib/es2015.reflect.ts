@@ -3,9 +3,11 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
+
 import { TYPE_VALUE } from './base-config';
 
-export const es2015_reflect = {
-  Reflect: TYPE_VALUE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const es2015_reflect: LibDefinition = {
+  libs: [],
+  variables: [['Reflect', TYPE_VALUE]],
+};

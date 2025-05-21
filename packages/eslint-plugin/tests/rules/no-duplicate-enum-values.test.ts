@@ -73,6 +73,13 @@ enum E {
   C = NaN,
 }
     `,
+    `
+const A = 'A';
+enum E {
+  A = 'A',
+  B = \`\${A}\`,
+}
+    `,
   ],
   invalid: [
     {
@@ -84,10 +91,10 @@ enum E {
       `,
       errors: [
         {
-          line: 4,
           column: 3,
-          messageId: 'duplicateValue',
           data: { value: 1 },
+          line: 4,
+          messageId: 'duplicateValue',
         },
       ],
     },
@@ -100,10 +107,10 @@ enum E {
       `,
       errors: [
         {
-          line: 4,
           column: 3,
-          messageId: 'duplicateValue',
           data: { value: 'A' },
+          line: 4,
+          messageId: 'duplicateValue',
         },
       ],
     },
@@ -118,16 +125,48 @@ enum E {
       `,
       errors: [
         {
-          line: 4,
           column: 3,
-          messageId: 'duplicateValue',
           data: { value: 'A' },
+          line: 4,
+          messageId: 'duplicateValue',
         },
         {
-          line: 6,
           column: 3,
-          messageId: 'duplicateValue',
           data: { value: 1 },
+          line: 6,
+          messageId: 'duplicateValue',
+        },
+      ],
+    },
+    {
+      code: `
+enum E {
+  A = 'A',
+  B = \`A\`,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { value: 'A' },
+          line: 4,
+          messageId: 'duplicateValue',
+        },
+      ],
+    },
+    {
+      code: `
+enum E {
+  A = \`A\`,
+  B = \`A\`,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { value: 'A' },
+          line: 4,
+          messageId: 'duplicateValue',
         },
       ],
     },

@@ -1,9 +1,9 @@
 import type {
   ParseAndGenerateServicesResult,
-  TSESTree,
   TSESTreeOptions,
 } from '../../src';
-import { parse as parserParse, parseAndGenerateServices } from '../../src';
+
+import { parseAndGenerateServices } from '../../src';
 
 export function parseCodeAndGenerateServices(
   code: string,
@@ -12,53 +12,13 @@ export function parseCodeAndGenerateServices(
   return parseAndGenerateServices(code, config);
 }
 
-/**
- * Returns a function which can be used as the callback of a Jest test() block,
- * and which performs an assertion on the snapshot for the given code and config.
- * @param code The source code to parse
- * @param config the parser configuration
- * @param generateServices Flag determining whether to generate ast maps and program or not
- * @returns callback for Jest it() block
- */
-export function createSnapshotTestBlock(
-  code: string,
-  config: TSESTreeOptions,
-  generateServices?: true,
-): jest.ProvidesCallback {
-  /**
-   * @returns the AST object
-   */
-  function parse(): TSESTree.Program {
-    const ast = generateServices
-      ? parseAndGenerateServices(code, config).ast
-      : parserParse(code, config);
-    return deeplyCopy(ast);
-  }
-
-  return (): void => {
-    try {
-      const result = parse();
-      expect(result).toMatchSnapshot();
-    } catch (error) {
-      /**
-       * If we are deliberately throwing because of encountering an unknown
-       * AST_NODE_TYPE, we rethrow to cause the test to fail
-       */
-      if ((error as Error).message.includes('Unknown AST_NODE_TYPE')) {
-        throw error;
-      }
-      expect(parse).toThrowErrorMatchingSnapshot();
-    }
-  };
-}
-
 export function formatSnapshotName(
   filename: string,
   fixturesDir: string,
   fileExtension = '.js',
 ): string {
   return `fixtures/${filename
-    .replace(fixturesDir + '/', '')
+    .replace(`${fixturesDir}/`, '')
     .replace(fileExtension, '')}`;
 }
 
@@ -83,7 +43,7 @@ export function deeplyCopy<T extends NonNullable<unknown>>(ast: T): T {
 
 type UnknownObject = Record<string, unknown>;
 
-function isObjectLike(value: unknown): value is UnknownObject {
+function isObjectLike(value: unknown): boolean {
   return (
     typeof value === 'object' && !(value instanceof RegExp) && value != null
   );
@@ -125,6 +85,7 @@ export function omitDeep(
 
     for (const prop in node) {
       if (Object.hasOwn(node, prop)) {
+        // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
         if (shouldOmit(prop, node[prop]) || node[prop] === undefined) {
           // Filter out omitted and undefined props from the node
           // eslint-disable-next-line @typescript-eslint/no-dynamic-delete

@@ -1,11 +1,11 @@
+import type { ProjectServiceAndMetadata } from '@typescript-eslint/project-service';
 import type * as ts from 'typescript';
 
-import type { ProjectServiceSettings } from '../create-program/createProjectService';
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
 import type { CacheLike } from './ExpiringCache';
 
-type DebugModule = 'eslint' | 'typescript-eslint' | 'typescript';
+type DebugModule = 'eslint' | 'typescript' | 'typescript-eslint';
 
 // Workaround to support new TS version features for consumers on old TS versions
 declare module 'typescript' {
@@ -30,7 +30,7 @@ export interface MutableParseSettings {
   /**
    * Code of the file being parsed, or raw source file containing it.
    */
-  code: ts.SourceFile | string;
+  code: string | ts.SourceFile;
 
   /**
    * Full text of the file being parsed.
@@ -73,6 +73,14 @@ export interface MutableParseSettings {
   filePath: string;
 
   /**
+   * Sets the external module indicator on the source file.
+   * Used by Typescript to determine if a sourceFile is an external module.
+   *
+   * needed to always parsing `mjs`/`mts` files as ESM
+   */
+  setExternalModuleIndicator?: (file: ts.SourceFile) => void;
+
+  /**
    * JSDoc parsing style to pass through to TypeScript
    */
   jsDocParsingMode: ts.JSDocParsingMode;
@@ -112,7 +120,7 @@ export interface MutableParseSettings {
   /**
    * TypeScript server to power program creation.
    */
-  projectService: ProjectServiceSettings | undefined;
+  projectService: ProjectServiceAndMetadata | undefined;
 
   /**
    * Whether to add the `range` property to AST nodes.

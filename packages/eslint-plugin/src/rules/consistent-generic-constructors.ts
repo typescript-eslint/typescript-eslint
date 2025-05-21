@@ -1,10 +1,11 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
-type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
-type Options = ['constructor' | 'type-annotation'];
+export type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
+export type Options = ['constructor' | 'type-annotation'];
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-generic-constructors',
@@ -15,16 +16,17 @@ export default createRule<Options, MessageIds>({
         'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
       recommended: 'stylistic',
     },
+    fixable: 'code',
     messages: {
-      preferTypeAnnotation:
-        'The generic type arguments should be specified as part of the type annotation.',
       preferConstructor:
         'The generic type arguments should be specified as part of the constructor type arguments.',
+      preferTypeAnnotation:
+        'The generic type arguments should be specified as part of the type annotation.',
     },
-    fixable: 'code',
     schema: [
       {
         type: 'string',
+        description: 'Which constructor call syntax to prefer.',
         enum: ['type-annotation', 'constructor'],
       },
     ],
@@ -32,20 +34,26 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['constructor'],
   create(context, [mode]) {
     return {
-      'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
+      'VariableDeclarator,PropertyDefinition,AccessorProperty,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
         node:
+          | TSESTree.AccessorProperty
           | TSESTree.AssignmentPattern
           | TSESTree.PropertyDefinition
           | TSESTree.VariableDeclarator,
       ): void {
         function getLHSRHS(): [
-          TSESTree.BindingName | TSESTree.PropertyDefinition,
+          (
+            | TSESTree.AccessorProperty
+            | TSESTree.BindingName
+            | TSESTree.PropertyDefinition
+          ),
           TSESTree.Expression | null,
         ] {
           switch (node.type) {
             case AST_NODE_TYPES.VariableDeclarator:
               return [node.id, node.init];
             case AST_NODE_TYPES.PropertyDefinition:
+            case AST_NODE_TYPES.AccessorProperty:
               return [node, node.value];
             case AST_NODE_TYPES.AssignmentPattern:
               return [node.left, node.right];
@@ -75,7 +83,7 @@ export default createRule<Options, MessageIds>({
         }
         if (mode === 'type-annotation') {
           if (!lhs && rhs.typeArguments) {
-            const { typeArguments, callee } = rhs;
+            const { callee, typeArguments } = rhs;
             const typeAnnotation =
               context.sourceCode.getText(callee) +
               context.sourceCode.getText(typeArguments);
@@ -86,7 +94,10 @@ export default createRule<Options, MessageIds>({
                 function getIDToAttachAnnotation():
                   | TSESTree.Node
                   | TSESTree.Token {
-                  if (node.type !== AST_NODE_TYPES.PropertyDefinition) {
+                  if (
+                    node.type !== AST_NODE_TYPES.PropertyDefinition &&
+                    node.type !== AST_NODE_TYPES.AccessorProperty
+                  ) {
                     return lhsName;
                   }
                   if (!node.computed) {
@@ -103,7 +114,7 @@ export default createRule<Options, MessageIds>({
                   fixer.remove(typeArguments),
                   fixer.insertTextAfter(
                     getIDToAttachAnnotation(),
-                    ': ' + typeAnnotation,
+                    `: ${typeAnnotation}`,
                   ),
                 ];
               },

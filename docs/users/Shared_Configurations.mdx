@@ -25,7 +25,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
+  tseslint.configs.recommended,
 );
 ```
 
@@ -39,8 +39,8 @@ If your project does not enable [typed linting](../getting-started/Typed_Linting
 ```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...tseslint.configs.stylistic,
+  tseslint.configs.recommended,
+  tseslint.configs.stylistic,
 );
 ```
 
@@ -72,8 +72,8 @@ If your project enables [typed linting](../getting-started/Typed_Linting.mdx), w
 ```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+  tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
 );
 ```
 
@@ -125,8 +125,11 @@ These rules are those whose reports are almost always for a bad practice and/or 
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
+{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default tseslint.config(...tseslint.configs.recommended);
+export default tseslint.config(
+  tseslint.configs.recommended,
+);
 ```
 
 </TabItem>
@@ -141,7 +144,7 @@ module.exports = {
 </TabItem>
 </Tabs>
 
-See [`configs/recommended.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/recommended.ts) for the exact contents of this config.
+See [`configs/recommended.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/recommended.ts) for the exact contents of this config.
 
 ### `recommended-type-checked`
 
@@ -151,8 +154,11 @@ Rules newly added in this configuration are similarly useful to those in `recomm
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
+{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default tseslint.config(...tseslint.configs.recommendedTypeChecked);
+export default tseslint.config(
+  tseslint.configs.recommendedTypeChecked,
+);
 ```
 
 </TabItem>
@@ -167,7 +173,7 @@ module.exports = {
 </TabItem>
 </Tabs>
 
-See [`configs/recommended-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/recommended-type-checked.ts) for the exact contents of this config.
+See [`configs/recommended-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/recommended-type-checked.ts) for the exact contents of this config.
 
 ### `strict`
 
@@ -177,8 +183,11 @@ Rules added in `strict` are more opinionated than recommended rules and might no
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
+{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default tseslint.config(...tseslint.configs.strict);
+export default tseslint.config(
+  tseslint.configs.strict,
+);
 ```
 
 </TabItem>
@@ -194,7 +203,7 @@ module.exports = {
 </Tabs>
 
 Some rules also enabled in `recommended` default to more strict settings in this configuration.
-See [`configs/strict.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict.ts) for the exact contents of this config.
+See [`configs/strict.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/strict.ts) for the exact contents of this config.
 
 :::tip
 We recommend a TypeScript project extend from `plugin:@typescript-eslint/strict` only if a nontrivial percentage of its developers are highly proficient in TypeScript.
@@ -213,8 +222,11 @@ Rules newly added in this configuration are similarly useful (and opinionated) t
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
+{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default tseslint.config(...tseslint.configs.strictTypeChecked);
+export default tseslint.config(
+  tseslint.configs.strictTypeChecked,
+);
 ```
 
 </TabItem>
@@ -230,7 +242,7 @@ module.exports = {
 </Tabs>
 
 Some rules also enabled in `recommended-type-checked` default to more strict settings in this configuration.
-See [`configs/strict-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict-type-checked.ts) for the exact contents of this config.
+See [`configs/strict-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/strict-type-checked.ts) for the exact contents of this config.
 
 :::tip
 We recommend a TypeScript project extend from `plugin:@typescript-eslint/strict-type-checked` only if a nontrivial percentage of its developers are highly proficient in TypeScript.
@@ -249,8 +261,11 @@ These rules are generally opinionated about enforcing simpler code patterns.
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
+{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default tseslint.config(...tseslint.configs.stylistic);
+export default tseslint.config(
+  tseslint.configs.stylistic,
+);
 ```
 
 </TabItem>
@@ -268,7 +283,7 @@ module.exports = {
 Note that `stylistic` does not replace `recommended` or `strict`.
 `stylistic` adds additional rules.
 
-See [`configs/stylistic.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/stylistic.ts) for the exact contents of this config.
+See [`configs/stylistic.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/stylistic.ts) for the exact contents of this config.
 
 ### `stylistic-type-checked`
 
@@ -278,8 +293,11 @@ Rules newly added in this configuration are similarly opinionated to those in `s
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
+{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default tseslint.config(...tseslint.configs.stylisticTypeChecked);
+export default tseslint.config(
+  tseslint.configs.stylisticTypeChecked,
+);
 ```
 
 </TabItem>
@@ -297,7 +315,7 @@ module.exports = {
 Note that `stylistic-type-checked` does not replace `recommended-type-checked` or `strict-type-checked`.
 `stylistic-type-checked` adds additional rules.
 
-See [`configs/stylistic-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/stylistic-type-checked.ts) for the exact contents of this config.
+See [`configs/stylistic-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/stylistic-type-checked.ts) for the exact contents of this config.
 
 ## Other Configurations
 
@@ -308,7 +326,7 @@ typescript-eslint includes a few utility configurations.
 Enables each the rules provided as a part of typescript-eslint.
 Note that many rules are not applicable in all codebases, or are meant to be configured.
 
-See [`configs/all.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/all.ts) for the exact contents of this config.
+See [`configs/all.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/all.ts) for the exact contents of this config.
 
 :::warning
 We do not recommend TypeScript projects extend from `plugin:@typescript-eslint/all`.
@@ -327,14 +345,14 @@ We don't recommend using this directly; instead, extend from an earlier recommen
 
 This config is automatically included if you use any of the recommended configurations.
 
-See [`configs/base.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/base.ts) for the exact contents of this config.
+See [`configs/base.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/base.ts) for the exact contents of this config.
 
 ### `disable-type-checked`
 
 A utility ruleset that will disable type-aware linting and all type-aware rules available in our project.
 This config is useful if you'd like to have your base config concerned with type-aware linting, and then conditionally use [overrides](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-based-on-glob-patterns) to disable type-aware linting on specific subsets of your codebase.
 
-See [`configs/disable-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/disable-type-checked.ts) for the exact contents of this config.
+See [`configs/disable-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/disable-type-checked.ts) for the exact contents of this config.
 
 :::info
 If you use type-aware rules from other plugins, you will need to manually disable these rules or use a premade config they provide to disable them.
@@ -346,19 +364,19 @@ If you use type-aware rules from other plugins, you will need to manually disabl
 ```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
       parserOptions: {
-        project: true,
-        tsconfigDirName: import.meta.dirname,
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
   },
   // Added lines start
   {
     files: ['**/*.js'],
-    ...tseslint.configs.disableTypeChecked,
+    extends: [tseslint.configs.disableTypeChecked],
   },
   // Added lines end
 );
@@ -375,7 +393,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint',
   parserOptions: {
-    project: true,
+    projectService: true,
     __tsconfigRootDir: __dirname,
   },
   root: true,
@@ -431,7 +449,7 @@ module.exports = {
 
 This config is automatically included if you use any of the recommended configurations.
 
-See [`configs/eslint-recommended.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslint-recommended.ts) for the exact contents of this config.
+See [`configs/eslint-recommended.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/eslint-recommended.ts) for the exact contents of this config.
 
 ### `recommended-type-checked-only`
 
@@ -444,7 +462,7 @@ module.exports = {
 };
 ```
 
-See [`configs/recommended-type-checked-only.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/recommended-type-checked-only.ts) for the exact contents of this config.
+See [`configs/recommended-type-checked-only.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/recommended-type-checked-only.ts) for the exact contents of this config.
 
 ### `strict-type-checked-only`
 
@@ -457,7 +475,7 @@ module.exports = {
 };
 ```
 
-See [`configs/strict-type-checked-only.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict-type-checked-only.ts) for the exact contents of this config.
+See [`configs/strict-type-checked-only.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/strict-type-checked-only.ts) for the exact contents of this config.
 
 :::warning
 This configuration is not considered "stable" under Semantic Versioning (semver).
@@ -475,7 +493,7 @@ module.exports = {
 };
 ```
 
-See [`configs/stylistic-type-checked-only.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/stylistic-type-checked-only.ts) for the exact contents of this config.
+See [`configs/stylistic-type-checked-only.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslintrc/stylistic-type-checked-only.ts) for the exact contents of this config.
 
 ## Suggesting Configuration Changes
 

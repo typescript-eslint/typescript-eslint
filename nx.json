@@ -1,8 +1,42 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
+  "plugins": [
+    {
+      "plugin": "@nx/js/typescript",
+      "exclude": ["packages/integration-tests/fixtures/**"],
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        },
+        "build": {
+          "targetName": "build",
+          "configName": "tsconfig.build.json"
+        }
+      }
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "exclude": ["*"],
+      "options": {
+        "testTargetName": "test"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "include": ["packages/*"],
+      "options": {
+        "targetName": "lint"
+      }
+    }
+  ],
   "release": {
-    "projects": ["*", "!repo"],
+    "projects": [
+      "!repo",
+      "!website*",
+      "!integration-tests",
+      "!eslint-plugin-internal"
+    ],
     "changelog": {
       "workspaceChangelog": {
         "createRelease": "github",
@@ -17,57 +51,8 @@
     }
   },
   "targetDefaults": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"],
-      "cache": true
-    },
     "test": {
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/jest.config.js",
-        "{workspaceRoot}/jest.config.base.js"
-      ],
-      "outputs": ["{projectRoot}/coverage"],
-      "cache": true
-    },
-    "@nx/jest:jest": {
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/jest.config.js",
-        "{workspaceRoot}/jest.config.base.js"
-      ],
-      "outputs": ["{projectRoot}/coverage"],
-      "cache": true,
-      "options": {
-        "jestConfig": "{projectRoot}/jest.config.js",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
-      }
-    },
-    "lint": {
-      "dependsOn": [
-        "eslint-plugin:build",
-        "eslint-plugin-internal:build",
-        "typescript-eslint:build"
-      ],
-      "inputs": [
-        "default",
-        "{workspaceRoot}/eslint.config.js",
-        "{workspaceRoot}/eslint.config.mjs",
-        {
-          "dependentTasksOutputFiles": "**/*.js",
-          "transitive": false
-        }
-      ],
-      "cache": true
+      "outputs": ["{projectRoot}/coverage"]
     }
   },
   "namedInputs": {
@@ -82,15 +67,15 @@
       },
       {
         "runtime": "yarn -v"
-      },
-      "{workspaceRoot}/yarn.lock"
+      }
     ],
     "production": [
       "default",
-      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/**/?(*.)+(test).?(m|c)[jt]s?(x)?(.snap|.shot)",
+      "!{projectRoot}/tests",
+      "!{projectRoot}/tools",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
-      "!{projectRoot}/src/test-setup.[jt]s"
+      "!{projectRoot}/vitest.config.mts"
     ]
   }
 }

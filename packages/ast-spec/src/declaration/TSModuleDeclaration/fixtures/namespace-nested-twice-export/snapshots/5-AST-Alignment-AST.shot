@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-export AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > TSModuleDeclaration > namespace-nested-twice-export > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -53,12 +53,14 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-exp
                 },
               },
 -             right: Identifier {
++             declare: false,
++             global: false,
 +             id: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
 -               name: 'def',
--               optional: false,
 +               name: 'ghi',
+                optional: false,
 
 -               range: [21, 24],
 +               range: [25, 28],
@@ -80,12 +82,14 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-exp
               },
             },
 -           right: Identifier {
++           declare: false,
++           global: false,
 +           id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
 -             name: 'ghi',
--             optional: false,
 +             name: 'def',
+              optional: false,
 
 -             range: [25, 28],
 +             range: [21, 24],
@@ -104,9 +108,13 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-exp
 +             end: { column: 31, line: 1 },
 +           },
 +         },
++         declare: false,
++         global: false,
 +         id: Identifier {
 +           type: 'Identifier',
++           decorators: Array [],
 +           name: 'abc',
++           optional: false,
 +
 +           range: [17, 20],
             loc: {
@@ -115,7 +123,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-exp
 +             end: { column: 20, line: 1 },
             },
           },
--         kind: 'namespace',
+          kind: 'namespace',
 
           range: [7, 31],
           loc: {
@@ -141,5 +149,4 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-exp
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

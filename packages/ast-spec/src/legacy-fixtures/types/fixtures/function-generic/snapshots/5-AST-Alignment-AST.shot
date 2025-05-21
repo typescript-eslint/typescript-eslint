@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > function-generic > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -13,12 +13,12 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'f',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSFunctionType {
@@ -27,18 +27,18 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
 +                 parameters: Array [
                     Identifier {
                       type: 'Identifier',
--                     decorators: Array [],
+                      decorators: Array [],
                       name: 'a',
--                     optional: false,
+                      optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: 'TSTypeAnnotation',
                         typeAnnotation: TSTypeReference {
                           type: 'TSTypeReference',
                           typeName: Identifier {
                             type: 'Identifier',
--                           decorators: Array [],
+                            decorators: Array [],
                             name: 'T',
--                           optional: false,
+                            optional: false,
 
                             range: [87, 88],
                             loc: {
@@ -75,9 +75,9 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
                       type: 'TSTypeReference',
                       typeName: Identifier {
                         type: 'Identifier',
--                       decorators: Array [],
+                        decorators: Array [],
                         name: 'T',
--                       optional: false,
+                        optional: false,
 
                         range: [93, 94],
                         loc: {
@@ -104,8 +104,8 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
                     params: Array [
                       TSTypeParameter {
                         type: 'TSTypeParameter',
--                       const: false,
--                       in: false,
+                        const: false,
+                        in: false,
 -                       name: Identifier {
 -                         type: 'Identifier',
 -                         decorators: Array [],
@@ -118,8 +118,8 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
 -                           end: { column: 9, line: 3 },
 -                         },
 -                       },
--                       out: false,
 +                       name: 'T',
+                        out: false,
 
                         range: [81, 82],
                         loc: {
@@ -165,7 +165,7 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'let',
 
         range: [73, 95],
@@ -182,5 +182,4 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

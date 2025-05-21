@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > abstract-class-with-optional-method > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -21,12 +21,12 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
               MethodDefinition {
                 type: 'MethodDefinition',
                 computed: false,
--               decorators: Array [],
+                decorators: Array [],
                 key: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'createSocket',
--                 optional: false,
+                  optional: false,
 
                   range: [114, 126],
                   loc: {
@@ -36,7 +36,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
                 },
                 kind: 'method',
                 optional: true,
--               override: false,
+                override: false,
                 static: false,
 -               value: TSEmptyBodyFunctionExpression {
 -                 type: 'TSEmptyBodyFunctionExpression',
@@ -44,7 +44,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
 +                 type: 'FunctionExpression',
                   async: false,
 -                 body: null,
--                 declare: false,
+                  declare: false,
                   expression: false,
                   generator: false,
                   id: null,
@@ -56,7 +56,9 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
 -                     typeArguments: TSTypeParameterInstantiation {
 +                     typeName: Identifier {
 +                       type: 'Identifier',
++                       decorators: Array [],
 +                       name: 'Promise',
++                       optional: false,
 +
 +                       range: [131, 138],
 +                       loc: {
@@ -132,13 +134,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
               end: { column: 1, line: 5 },
             },
           },
--         declare: false,
--         decorators: Array [],
+          declare: false,
+          decorators: Array [],
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'AbstractSocket',
--           optional: false,
+            optional: false,
 
             range: [95, 109],
             loc: {
@@ -146,7 +148,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
               end: { column: 36, line: 3 },
             },
           },
--         implements: Array [],
+          implements: Array [],
           superClass: null,
 
           range: [80, 149],
@@ -173,5 +175,4 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

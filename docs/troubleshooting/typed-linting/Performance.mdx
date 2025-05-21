@@ -7,9 +7,23 @@ title: Performance
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-As mentioned in the [type-aware linting doc](../../getting-started/Typed_Linting.mdx), if you're using type-aware linting, your lint times should be roughly the same as your build times.
+As mentioned in [Linting with Type Information](../../getting-started/Typed_Linting.mdx), if you're using type-aware linting, your lint times should be roughly the same as your build times.
+Most performance slowdowns in ESLint rules are from type-aware lint rules calling to TypeScript's type checking APIs.
 
-If you're experiencing times much slower than that, then there are a few common culprits.
+If you're experiencing lint times much slower than type-checking times, then there are a few common culprits.
+
+## Slow ESLint Rules
+
+ESLint includes a `TIMING=1` option documented in [Profile Rule Performance](https://eslint.org/docs/latest/extend/custom-rules#profile-rule-performance) that give a high-level overview of rule speeds.
+However, because TypeScript utilizes internal caching, a project's _first type-aware lint rule will almost always seem the slowest_.
+
+When investigating which lint rules are the slowest in your project, be sure to run them one at a time and compare those timing measurements separately.
+
+To enable more complete verbose logging, you can use any of:
+
+- [`eslint --debug`](https://eslint.org/docs/latest/use/command-line-interface#--debug): to enable all of ESLint's debug logs on the CLI
+- [`parserOptions.debugLevel`](https://github.com/typescript-eslint/typescript-eslint/blob/7ddadda10845bc53967eeec83ba6b7cdc71a079f/packages/typescript-estree/src/parser-options.ts#L36): a shortcut to set `eslint`, `typescript`, and/or `typescript-eslint`
+- Directly setting the `DEBUG` environment variable for [`debug`](https://github.com/debug-js/debug): e.g. `DEBUG=typescript-eslint:* eslint`
 
 ## Slow TypeScript Types
 
@@ -160,7 +174,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedRequiringTypeChecking,
+  tseslint.configs.recommendedRequiringTypeChecking,
   {
     languageOptions: {
       parserOptions: {
@@ -244,7 +258,7 @@ We recommend you do not use the following rules, as TypeScript provides the same
 - `import/namespace`
 - `import/default`
 - `import/no-named-as-default-member`
-- `import/no-unresolved` (as long as you are using [`import` over `require`](/rules/no-var-requires/))
+- `import/no-unresolved` (as long as you are using [`import` over `require`](/rules/no-require-imports))
 
 The following rules do not have equivalent checks in TypeScript, so we recommend that you only run them at CI/push time, to lessen the local performance burden.
 

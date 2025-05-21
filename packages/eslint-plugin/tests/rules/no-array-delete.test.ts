@@ -8,8 +8,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -55,6 +55,9 @@ ruleTester.run('no-array-delete', rule, {
       declare const test: never;
       delete test[0];
     `,
+    `
+      delete console.log();
+    `,
   ],
 
   invalid: [
@@ -65,10 +68,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 9,
           endColumn: 22,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -90,10 +93,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 4,
           column: 9,
           endColumn: 24,
+          line: 4,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -121,10 +124,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 9,
           column: 9,
           endColumn: 27,
+          line: 9,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -152,10 +155,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 4,
           column: 9,
           endColumn: 34,
+          line: 4,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -178,10 +181,10 @@ ruleTester.run('no-array-delete', rule, {
 
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 9,
           endColumn: 22,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -199,10 +202,10 @@ ruleTester.run('no-array-delete', rule, {
       code: 'delete [1, 2, 3][0];',
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 1,
           column: 1,
           endColumn: 20,
+          line: 1,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -220,10 +223,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 9,
           endColumn: 42,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -244,10 +247,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 9,
           endColumn: 22,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -268,10 +271,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 9,
           endColumn: 22,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -292,10 +295,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 9,
           endColumn: 22,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -316,10 +319,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 9,
           endColumn: 28,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -340,10 +343,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 9,
           endColumn: 29,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -364,10 +367,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 9,
           endColumn: 29,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -389,10 +392,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 11,
           endColumn: 22,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -415,10 +418,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 11,
           endColumn: 22,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -441,10 +444,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 11,
           endColumn: 22,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -466,10 +469,10 @@ ruleTester.run('no-array-delete', rule, {
       `,
       errors: [
         {
-          messageId: 'noArrayDelete',
-          line: 3,
           column: 9,
           endColumn: 24,
+          line: 3,
+          messageId: 'noArrayDelete',
           suggestions: [
             {
               messageId: 'useSplice',
@@ -590,6 +593,29 @@ ruleTester.run('no-array-delete', rule, {
         declare const b: number;
 
         a.splice((b + 1) * (b + 2), 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare const arr: string & Array<number>;
+        delete arr[0];
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 22,
+          line: 3,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const arr: string & Array<number>;
+        arr.splice(0, 1);
       `,
             },
           ],

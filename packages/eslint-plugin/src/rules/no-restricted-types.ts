@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, objectReduceKey } from '../util';
@@ -8,8 +9,8 @@ type Types = Record<
   | boolean
   | string
   | {
-      message: string;
       fixWith?: string;
+      message: string;
       suggest?: readonly string[];
     }
   | null
@@ -18,14 +19,13 @@ type Types = Record<
 export type Options = [
   {
     types?: Types;
-    extendDefaults?: boolean;
   },
 ];
 
 export type MessageIds = 'bannedTypeMessage' | 'bannedTypeReplacement';
 
 function removeSpaces(str: string): string {
-  return str.replace(/\s/g, '');
+  return str.replaceAll(/\s/g, '');
 }
 
 function stringifyNode(
@@ -36,7 +36,7 @@ function stringifyNode(
 }
 
 function getCustomMessage(
-  bannedType: string | true | { message?: string; fixWith?: string } | null,
+  bannedType: string | true | { fixWith?: string; message?: string } | null,
 ): string {
   if (!bannedType || bannedType === true) {
     return '';
@@ -82,52 +82,54 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         $defs: {
           banConfig: {
             oneOf: [
               {
                 type: 'boolean',
+                description: 'Bans the type with the default message.',
                 enum: [true],
-                description: 'Bans the type with the default message',
               },
               {
                 type: 'string',
-                description: 'Bans the type with a custom message',
+                description: 'Bans the type with a custom message.',
               },
               {
                 type: 'object',
-                description: 'Bans a type',
+                additionalProperties: false,
+                description: 'Bans a type.',
                 properties: {
-                  message: {
-                    type: 'string',
-                    description: 'Custom error message',
-                  },
                   fixWith: {
                     type: 'string',
                     description:
                       'Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option.',
                   },
+                  message: {
+                    type: 'string',
+                    description: 'Custom error message.',
+                  },
                   suggest: {
                     type: 'array',
-                    items: { type: 'string' },
                     description: 'Types to suggest replacing with.',
+                    items: { type: 'string' },
                   },
                 },
-                additionalProperties: false,
               },
             ],
           },
         },
-        type: 'object',
+        additionalProperties: false,
         properties: {
           types: {
             type: 'object',
             additionalProperties: {
               $ref: '#/items/0/$defs/banConfig',
             },
+            description:
+              'An object whose keys are the types you want to ban, and the values are error messages.',
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -143,7 +145,7 @@ export default createRule<Options, MessageIds>({
     ): void {
       const bannedType = bannedTypes.get(name);
 
-      if (bannedType === undefined || bannedType === false) {
+      if (bannedType == null || bannedType === false) {
         return;
       }
 

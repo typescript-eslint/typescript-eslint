@@ -1,37 +1,39 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type -- Fancy mocks */
-import path from 'path';
+import type {
+  ProjectServiceAndMetadata,
+  TypeScriptProjectService,
+} from '@typescript-eslint/project-service';
+
+import path from 'node:path';
 import * as ts from 'typescript';
 
-import type {
-  ProjectServiceSettings,
-  TypeScriptProjectService,
-} from '../../src/create-program/createProjectService';
 import type { ParseSettings } from '../../src/parseSettings';
+
 import { useProgramFromProjectService } from '../../src/useProgramFromProjectService';
 
-const mockCreateNoProgram = jest.fn();
+const mockCreateNoProgram = vi.fn();
 
-jest.mock('../../src/create-program/createSourceFile', () => ({
+vi.mock('../../src/create-program/createSourceFile', () => ({
   get createNoProgram() {
     return mockCreateNoProgram;
   },
 }));
 
-const mockCreateProjectProgram = jest.fn();
+const mockCreateProjectProgram = vi.fn();
 
-jest.mock('../../src/create-program/createProjectProgram', () => ({
+vi.mock('../../src/create-program/createProjectProgram', () => ({
   get createProjectProgram() {
     return mockCreateProjectProgram;
   },
 }));
 
-const mockGetProgram = jest.fn();
+const mockGetProgram = vi.fn();
 
 const currentDirectory = '/repos/repo';
 
 function createMockProjectService() {
-  const openClientFile = jest.fn();
-  const setHostConfiguration = jest.fn();
+  const openClientFile = vi.fn();
+  const setHostConfiguration = vi.fn();
+  const reloadProjects = vi.fn();
   const service = {
     getDefaultProjectForFile: () => ({
       getLanguageService: () => ({
@@ -43,33 +45,37 @@ function createMockProjectService() {
       getCurrentDirectory: () => currentDirectory,
     },
     openClientFile,
+    reloadProjects,
     setHostConfiguration,
   };
 
   return {
-    service: service as typeof service & TypeScriptProjectService,
     openClientFile,
+    reloadProjects,
+    service: service as typeof service & TypeScriptProjectService,
   };
 }
 
 const mockFileName = 'camelCaseFile.ts';
 
 const mockParseSettings = {
-  filePath: `path/PascalCaseDirectory/${mockFileName}`,
   extraFileExtensions: [] as readonly string[],
+  filePath: `path/PascalCaseDirectory/${mockFileName}`,
+  singleRun: false,
   tsconfigRootDir: currentDirectory,
 } as ParseSettings;
 
 const createProjectServiceSettings = <
-  T extends Partial<ProjectServiceSettings>,
+  T extends Partial<ProjectServiceAndMetadata>,
 >(
   settings: T,
 ) => ({
+  lastReloadTimestamp: 0,
   maximumDefaultProjectFileMatchCount: 8,
   ...settings,
 });
 
-describe('useProgramFromProjectService', () => {
+describe(useProgramFromProjectService, () => {
   it('creates a standalone AST with no program when hasFullTypeInformation is false and allowDefaultProject is falsy', () => {
     const { service } = createMockProjectService();
 
@@ -106,7 +112,7 @@ describe('useProgramFromProjectService', () => {
       new Set(),
     );
 
-    expect(service.openClientFile).toHaveBeenCalledWith(
+    expect(service.openClientFile).toHaveBeenCalledExactlyOnceWith(
       path.normalize(
         `${currentDirectory}/path/PascalCaseDirectory/camelCaseFile.ts`,
       ),
@@ -125,11 +131,11 @@ describe('useProgramFromProjectService', () => {
 
     expect(() =>
       useProgramFromProjectService(
-        {
+        createProjectServiceSettings({
           allowDefaultProject: [mockParseSettings.filePath],
           maximumDefaultProjectFileMatchCount: 8,
           service,
-        },
+        }),
         mockParseSettings,
         true,
         new Set(),
@@ -139,7 +145,7 @@ describe('useProgramFromProjectService', () => {
     );
   });
 
-  it('throws an error when hasFullTypeInformation is enabled and the file is neither in the project service nor allowDefaultProject', () => {
+  it('throws an error without reloading projects when hasFullTypeInformation is enabled, the file is neither in the project service nor allowDefaultProject, and the last reload was not a long time ago', () => {
     const { service } = createMockProjectService();
 
     service.openClientFile.mockReturnValueOnce({});
@@ -148,6 +154,7 @@ describe('useProgramFromProjectService', () => {
       useProgramFromProjectService(
         createProjectServiceSettings({
           allowDefaultProject: [],
+          lastReloadTimestamp: Infinity,
           service,
         }),
         mockParseSettings,
@@ -157,11 +164,60 @@ describe('useProgramFromProjectService', () => {
     ).toThrow(
       `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
     );
+    expect(service.reloadProjects).not.toHaveBeenCalled();
+  });
+
+  it('throws an error after reloading projects when hasFullTypeInformation is enabled, the file is neither in the project service nor allowDefaultProject, and the last reload was recent', () => {
+    const { service } = createMockProjectService();
+
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [],
+          lastReloadTimestamp: 0,
+          service,
+        }),
+        mockParseSettings,
+        true,
+        new Set(),
+      ),
+    ).toThrow(
+      `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
+    );
+    expect(service.reloadProjects).toHaveBeenCalledOnce();
+  });
+
+  it('returns a created program after reloading projects when hasFullTypeInformation is enabled, the file is only in the project service after reload, and the last reload was recent', () => {
+    const { service } = createMockProjectService();
+    const program = { getSourceFile: vi.fn() };
+
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({
+      configFileName: 'tsconfig.json',
+    });
+    mockCreateProjectProgram.mockReturnValueOnce(program);
+
+    mockGetProgram.mockReturnValueOnce(program);
+
+    const actual = useProgramFromProjectService(
+      createProjectServiceSettings({
+        allowDefaultProject: [],
+        lastReloadTimestamp: 0,
+        service,
+      }),
+      mockParseSettings,
+      true,
+      new Set(),
+    );
+
+    expect(actual).toBe(program);
+    expect(service.reloadProjects).toHaveBeenCalledOnce();
   });
 
   it('throws an error when more than the maximum allowed file count is matched to the default project', () => {
     const { service } = createMockProjectService();
-    const program = { getSourceFile: jest.fn() };
+    const program = { getSourceFile: vi.fn() };
 
     mockGetProgram.mockReturnValueOnce(program);
 
@@ -195,7 +251,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
   it('truncates the files printed by the maximum allowed files error when they exceed the print limit', () => {
     const { service } = createMockProjectService();
-    const program = { getSourceFile: jest.fn() };
+    const program = { getSourceFile: vi.fn() };
 
     mockGetProgram.mockReturnValueOnce(program);
 
@@ -264,12 +320,12 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(actual).toBeUndefined();
+    assert.isUndefined(actual);
   });
 
   it('returns a created program when hasFullTypeInformation is disabled, the file is both in the project service and allowDefaultProject, and the service has a matching program', () => {
     const { service } = createMockProjectService();
-    const program = { getSourceFile: jest.fn() };
+    const program = { getSourceFile: vi.fn() };
 
     mockGetProgram.mockReturnValueOnce(program);
 
@@ -293,7 +349,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
   it('returns undefined when hasFullTypeInformation is disabled, the file is neither in the project service nor allowDefaultProject, and the service has a matching program', () => {
     const { service } = createMockProjectService();
-    const program = { getSourceFile: jest.fn() };
+    const program = { getSourceFile: vi.fn() };
 
     mockGetProgram.mockReturnValueOnce(program);
 
@@ -310,12 +366,12 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(actual).toBeUndefined();
+    assert.isUndefined(actual);
   });
 
   it('returns undefined when hasFullTypeInformation is disabled, the file is in the project service, the service has a matching program, and no out', () => {
     const { service } = createMockProjectService();
-    const program = { getSourceFile: jest.fn() };
+    const program = { getSourceFile: vi.fn() };
 
     mockGetProgram.mockReturnValueOnce(program);
 
@@ -335,7 +391,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(actual).toBeUndefined();
+    assert.isUndefined(actual);
   });
 
   it('does not call setHostConfiguration on the service with default extensions if extraFileExtensions are not provided', () => {
@@ -389,7 +445,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+    expect(service.setHostConfiguration).toHaveBeenCalledExactlyOnceWith({
       extraFileExtensions: [
         {
           extension: '.vue',
@@ -417,8 +473,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+    expect(service.setHostConfiguration).toHaveBeenCalledExactlyOnceWith({
       extraFileExtensions: [
         {
           extension: '.vue',
@@ -437,7 +492,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       false,
       new Set(),
     );
-    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
+    expect(service.setHostConfiguration).toHaveBeenCalledOnce();
   });
 
   it('calls setHostConfiguration on the service to use extraFileExtensions when changed', () => {
@@ -457,8 +512,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+    expect(service.setHostConfiguration).toHaveBeenCalledExactlyOnceWith({
       extraFileExtensions: [
         {
           extension: '.vue',
@@ -479,7 +533,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
     );
 
     expect(service.setHostConfiguration).toHaveBeenCalledTimes(2);
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+    expect(service.setHostConfiguration).toHaveBeenLastCalledWith({
       extraFileExtensions: [],
     });
   });
@@ -501,8 +555,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+    expect(service.setHostConfiguration).toHaveBeenCalledExactlyOnceWith({
       extraFileExtensions: [
         {
           extension: '.vue',
@@ -515,8 +568,60 @@ If you absolutely need more files included, set parserOptions.projectService.max
     useProgramFromProjectService(settings, mockParseSettings, false, new Set());
 
     expect(service.setHostConfiguration).toHaveBeenCalledTimes(2);
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+    expect(service.setHostConfiguration).toHaveBeenLastCalledWith({
       extraFileExtensions: [],
     });
+  });
+
+  it('throws an error when a nonstandard file extension is used', () => {
+    const filePath = `path/PascalCaseDirectory/vue-component.vue`;
+    const { service } = createMockProjectService();
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [mockParseSettings.filePath],
+          service,
+        }),
+        {
+          ...mockParseSettings,
+          filePath,
+        },
+        true,
+        new Set(),
+      ),
+    ).toThrow(
+      `${filePath} was not found by the project service because the extension for the file (\`${path.extname(
+        filePath,
+      )}\`) is non-standard. You should add \`parserOptions.extraFileExtensions\` to your config.`,
+    );
+  });
+
+  it('throws an error when a nonstandard file extension is used but not included in extraFileExtensions', () => {
+    const filePath = `path/PascalCaseDirectory/vue-component.vue`;
+
+    const { service } = createMockProjectService();
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [],
+          service,
+        }),
+        {
+          ...mockParseSettings,
+          extraFileExtensions: ['.svelte'],
+          filePath,
+        },
+        true,
+        new Set(),
+      ),
+    ).toThrow(
+      `${filePath} was not found by the project service because the extension for the file (\`${path.extname(
+        filePath,
+      )}\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`.`,
+    );
   });
 });

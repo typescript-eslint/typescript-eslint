@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ExportNamedDeclaration > _error_ > braced-identifier-aliased-to-number-literal-without-source > TSESTree - Error`]
+TSError
+> 1 | export { a as 1 };
+    |               ^ Identifier expected.
+  2 |

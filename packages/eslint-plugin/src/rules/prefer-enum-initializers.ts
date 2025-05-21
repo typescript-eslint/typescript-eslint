@@ -2,7 +2,7 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
+export type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
 
 export default createRule<[], MessageIds>({
   name: 'prefer-enum-initializers',

@@ -1,14 +1,14 @@
 export type PreferOptionalChainMessageIds =
-  | 'preferOptionalChain'
-  | 'optionalChainSuggest';
+  | 'optionalChainSuggest'
+  | 'preferOptionalChain';
 
 export interface PreferOptionalChainOptions {
-  checkAny?: boolean;
-  checkUnknown?: boolean;
-  checkString?: boolean;
-  checkNumber?: boolean;
-  checkBoolean?: boolean;
-  checkBigInt?: boolean;
-  requireNullish?: boolean;
   allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing?: boolean;
+  checkAny?: boolean;
+  checkBigInt?: boolean;
+  checkBoolean?: boolean;
+  checkNumber?: boolean;
+  checkString?: boolean;
+  checkUnknown?: boolean;
+  requireNullish?: boolean;
 }

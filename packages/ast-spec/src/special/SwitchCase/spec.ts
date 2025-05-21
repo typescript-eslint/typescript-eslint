@@ -5,6 +5,6 @@ import type { Statement } from '../../unions/Statement';
 
 export interface SwitchCase extends BaseNode {
   type: AST_NODE_TYPES.SwitchCase;
-  test: Expression | null;
   consequent: Statement[];
+  test: Expression | null;
 }

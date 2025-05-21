@@ -1,7 +1,8 @@
-import type { NewPlugin } from 'pretty-format';
+import type { NewPlugin } from '@vitest/pretty-format';
 
-import type * as TSESTree from '../../../src';
-import { AST_NODE_TYPES } from '../../../src';
+import type * as TSESTree from '../../../src/index.js';
+
+import { AST_NODE_TYPES } from '../../../src/index.js';
 
 function sortKeys<Node extends TSESTree.Node>(
   node: Node,
@@ -21,13 +22,13 @@ function sortKeys<Node extends TSESTree.Node>(
     keySet.delete('interpreter');
   }
 
-  return Array.from(keySet).sort((a, b) =>
+  return [...keySet].sort((a, b) =>
     a.localeCompare(b),
   ) as (keyof typeof node)[];
 }
 
 function stringifyLineAndColumn(loc: TSESTree.Position): string {
-  return `{ column: ${loc.column}, line: ${loc.line} }`;
+  return `{ column: ${loc.column.toString()}, line: ${loc.line.toString()} }`;
 }
 
 function isObject(val: unknown): val is Record<string, unknown> {
@@ -37,12 +38,9 @@ function hasValidType(type: unknown): type is string {
   return typeof type === 'string';
 }
 
-const serializer: NewPlugin = {
-  test(val: unknown) {
-    return isObject(val) && hasValidType(val.type);
-  },
+export const serializer: NewPlugin = {
   serialize(
-    node: TSESTree.Node & Record<string, unknown>,
+    node: Record<string, unknown> & TSESTree.Node,
     config,
     indentation,
     depth,
@@ -50,9 +48,7 @@ const serializer: NewPlugin = {
     printer,
   ) {
     const keys = sortKeys(node);
-    const type = node.type;
-    const loc = node.loc;
-    const range = node.range;
+    const { loc, range, type } = node;
 
     const outputLines = [];
     const childIndentation = indentation + config.indent;
@@ -65,6 +61,7 @@ const serializer: NewPlugin = {
 
     for (const key of keys) {
       const value = node[key];
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish -- intentional strict equality
       if (value === undefined) {
         continue;
       }
@@ -88,6 +85,7 @@ const serializer: NewPlugin = {
 
     return outputLines.join('\n');
   },
+  test(val: unknown) {
+    return isObject(val) && hasValidType(val.type);
+  },
 };
-
-export { serializer };

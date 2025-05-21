@@ -13,16 +13,16 @@ const fileExtensionsSortedByLength = fileTypes
   });
 
 export function TryInPlayground({
-  eslintrcHash,
   children,
   className,
   codeHash,
+  eslintrcHash,
   language,
 }: {
-  eslintrcHash: string;
   children?: React.ReactNode;
   className?: string;
   codeHash?: string;
+  eslintrcHash: string;
   language?: string;
 }): React.ReactNode {
   const params = new URLSearchParams({ eslintrc: eslintrcHash });
@@ -45,8 +45,8 @@ export function TryInPlayground({
   return (
     <Link
       className={clsx(styles.tryInPlaygroundLink, className)}
-      to={`/play#${params.toString()}`}
       target="_blank"
+      to={`/play#${params.toString()}`}
     >
       {children}
     </Link>

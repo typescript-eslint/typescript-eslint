@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -14,8 +15,8 @@ import {
   getParameterPropertyHeadLoc,
 } from '../util/getMemberHeadLoc';
 
-type MessageIds = 'preferReadonly';
-type Options = [
+export type MessageIds = 'preferReadonly';
+export type Options = [
   {
     onlyInlineLambdas?: boolean;
   },
@@ -31,6 +32,7 @@ const functionScopeBoundaries = [
 export default createRule<Options, MessageIds>({
   name: 'prefer-readonly',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         "Require private members to be marked as `readonly` if they're never modified outside of the constructor",
@@ -43,16 +45,17 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           onlyInlineLambdas: {
             type: 'boolean',
+            description:
+              'Whether to restrict checking only to members immediately assigned a lambda value.',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   defaultOptions: [{ onlyInlineLambdas: false }],
   create(context, [{ onlyInlineLambdas }]) {
@@ -170,7 +173,52 @@ export default createRule<Options, MessageIds>({
       };
     }
 
+    function getTypeAnnotationForViolatingNode(
+      node: TSESTree.Node,
+      type: ts.Type,
+      initializerType: ts.Type,
+    ) {
+      const annotation = checker.typeToString(type);
+
+      // verify the about-to-be-added type annotation is in-scope
+      if (tsutils.isTypeFlagSet(initializerType, ts.TypeFlags.EnumLiteral)) {
+        const scope = context.sourceCode.getScope(node);
+        const variable = ASTUtils.findVariable(scope, annotation);
+
+        if (variable == null) {
+          return null;
+        }
+
+        const definition = variable.defs.find(def => def.isTypeDefinition);
+
+        if (definition == null) {
+          return null;
+        }
+
+        const definitionType = services.getTypeAtLocation(definition.node);
+
+        if (definitionType !== type) {
+          return null;
+        }
+      }
+
+      return annotation;
+    }
+
     return {
+      [`${functionScopeBoundaries}:exit`](
+        node:
+          | TSESTree.ArrowFunctionExpression
+          | TSESTree.FunctionDeclaration
+          | TSESTree.FunctionExpression
+          | TSESTree.MethodDefinition,
+      ): void {
+        if (ASTUtils.isConstructor(node)) {
+          classScopeStack[classScopeStack.length - 1].exitConstructor();
+        } else if (isFunctionScopeBoundaryInStack(node)) {
+          classScopeStack[classScopeStack.length - 1].exitNonConstructor();
+        }
+      },
       'ClassDeclaration, ClassExpression'(
         node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
       ): void {
@@ -193,8 +241,8 @@ export default createRule<Options, MessageIds>({
             getEsNodesFromViolatingNode(violatingNode);
 
           const reportNodeOrLoc:
-            | { node: TSESTree.Node }
-            | { loc: TSESTree.SourceLocation } = (() => {
+            | { loc: TSESTree.SourceLocation }
+            | { node: TSESTree.Node } = (() => {
             switch (esNode.type) {
               case AST_NODE_TYPES.MethodDefinition:
               case AST_NODE_TYPES.PropertyDefinition:
@@ -213,26 +261,63 @@ export default createRule<Options, MessageIds>({
             }
           })();
 
+          const typeAnnotation = (() => {
+            if (esNode.type !== AST_NODE_TYPES.PropertyDefinition) {
+              return null;
+            }
+
+            if (esNode.typeAnnotation || !esNode.value) {
+              return null;
+            }
+
+            if (nameNode.type !== AST_NODE_TYPES.Identifier) {
+              return null;
+            }
+
+            const hasConstructorModifications =
+              finalizedClassScope.memberHasConstructorModifications(
+                nameNode.name,
+              );
+
+            if (!hasConstructorModifications) {
+              return null;
+            }
+
+            const violatingType = services.getTypeAtLocation(esNode);
+            const initializerType = services.getTypeAtLocation(esNode.value);
+
+            // if the RHS is a literal, its type would be narrowed, while the
+            // type of the initializer (which isn't `readonly`) would be the
+            // widened type
+            if (initializerType === violatingType) {
+              return null;
+            }
+
+            if (!tsutils.isLiteralType(initializerType)) {
+              return null;
+            }
+
+            return getTypeAnnotationForViolatingNode(
+              esNode,
+              violatingType,
+              initializerType,
+            );
+          })();
+
           context.report({
             ...reportNodeOrLoc,
+            messageId: 'preferReadonly',
             data: {
               name: context.sourceCode.getText(nameNode),
             },
-            fix: fixer => fixer.insertTextBefore(nameNode, 'readonly '),
-            messageId: 'preferReadonly',
+            *fix(fixer) {
+              yield fixer.insertTextBefore(nameNode, 'readonly ');
+
+              if (typeAnnotation) {
+                yield fixer.insertTextAfter(nameNode, `: ${typeAnnotation}`);
+              }
+            },
           });
-        }
-      },
-      MemberExpression(node): void {
-        if (classScopeStack.length !== 0 && !node.computed) {
-          const tsNode = services.esTreeNodeToTSNodeMap.get(
-            node,
-          ) as ts.PropertyAccessExpression;
-          handlePropertyAccessExpression(
-            tsNode,
-            tsNode.parent,
-            classScopeStack[classScopeStack.length - 1],
-          );
         }
       },
       [functionScopeBoundaries](
@@ -250,17 +335,16 @@ export default createRule<Options, MessageIds>({
           classScopeStack[classScopeStack.length - 1].enterNonConstructor();
         }
       },
-      [`${functionScopeBoundaries}:exit`](
-        node:
-          | TSESTree.ArrowFunctionExpression
-          | TSESTree.FunctionDeclaration
-          | TSESTree.FunctionExpression
-          | TSESTree.MethodDefinition,
-      ): void {
-        if (ASTUtils.isConstructor(node)) {
-          classScopeStack[classScopeStack.length - 1].exitConstructor();
-        } else if (isFunctionScopeBoundaryInStack(node)) {
-          classScopeStack[classScopeStack.length - 1].exitNonConstructor();
+      MemberExpression(node): void {
+        if (classScopeStack.length !== 0 && !node.computed) {
+          const tsNode = services.esTreeNodeToTSNodeMap.get(
+            node,
+          ) as ts.PropertyAccessExpression;
+          handlePropertyAccessExpression(
+            tsNode,
+            tsNode.parent,
+            classScopeStack[classScopeStack.length - 1],
+          );
         }
       },
     };
@@ -282,20 +366,22 @@ enum TypeToClassRelation {
 }
 
 class ClassScope {
+  private readonly classType: ts.Type;
+  private constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
+  private readonly memberVariableModifications = new Set<string>();
+  private readonly memberVariableWithConstructorModifications =
+    new Set<string>();
   private readonly privateModifiableMembers = new Map<
     string,
     ParameterOrPropertyDeclaration
   >();
+
   private readonly privateModifiableStatics = new Map<
     string,
     ParameterOrPropertyDeclaration
   >();
-  private readonly memberVariableModifications = new Set<string>();
+
   private readonly staticVariableModifications = new Set<string>();
-
-  private readonly classType: ts.Type;
-
-  private constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
 
   public constructor(
     private readonly checker: ts.TypeChecker,
@@ -333,7 +419,7 @@ class ClassScope {
 
     if (
       this.onlyInlineLambdas &&
-      node.initializer !== undefined &&
+      node.initializer != null &&
       !ts.isArrowFunction(node.initializer)
     ) {
       return;
@@ -343,6 +429,81 @@ class ClassScope {
       ? this.privateModifiableStatics
       : this.privateModifiableMembers
     ).set(node.name.getText(), node);
+  }
+
+  public addVariableModification(node: ts.PropertyAccessExpression): void {
+    const modifierType = this.checker.getTypeAtLocation(node.expression);
+
+    const relationOfModifierTypeToClass =
+      this.getTypeToClassRelation(modifierType);
+
+    if (
+      relationOfModifierTypeToClass === TypeToClassRelation.Instance &&
+      this.constructorScopeDepth === DIRECTLY_INSIDE_CONSTRUCTOR
+    ) {
+      this.memberVariableWithConstructorModifications.add(node.name.text);
+      return;
+    }
+
+    if (
+      relationOfModifierTypeToClass === TypeToClassRelation.Instance ||
+      relationOfModifierTypeToClass === TypeToClassRelation.ClassAndInstance
+    ) {
+      this.memberVariableModifications.add(node.name.text);
+    }
+    if (
+      relationOfModifierTypeToClass === TypeToClassRelation.Class ||
+      relationOfModifierTypeToClass === TypeToClassRelation.ClassAndInstance
+    ) {
+      this.staticVariableModifications.add(node.name.text);
+    }
+  }
+
+  public enterConstructor(
+    node:
+      | ts.ConstructorDeclaration
+      | ts.GetAccessorDeclaration
+      | ts.MethodDeclaration
+      | ts.SetAccessorDeclaration,
+  ): void {
+    this.constructorScopeDepth = DIRECTLY_INSIDE_CONSTRUCTOR;
+
+    for (const parameter of node.parameters) {
+      if (tsutils.isModifierFlagSet(parameter, ts.ModifierFlags.Private)) {
+        this.addDeclaredVariable(parameter);
+      }
+    }
+  }
+
+  public enterNonConstructor(): void {
+    if (this.constructorScopeDepth !== OUTSIDE_CONSTRUCTOR) {
+      this.constructorScopeDepth += 1;
+    }
+  }
+
+  public exitConstructor(): void {
+    this.constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
+  }
+
+  public exitNonConstructor(): void {
+    if (this.constructorScopeDepth !== OUTSIDE_CONSTRUCTOR) {
+      this.constructorScopeDepth -= 1;
+    }
+  }
+
+  public finalizeUnmodifiedPrivateNonReadonlys(): ParameterOrPropertyDeclaration[] {
+    this.memberVariableModifications.forEach(variableName => {
+      this.privateModifiableMembers.delete(variableName);
+    });
+
+    this.staticVariableModifications.forEach(variableName => {
+      this.privateModifiableStatics.delete(variableName);
+    });
+
+    return [
+      ...this.privateModifiableMembers.values(),
+      ...this.privateModifiableStatics.values(),
+    ];
   }
 
   public getTypeToClassRelation(type: ts.Type): TypeToClassRelation {
@@ -389,77 +550,7 @@ class ClassScope {
     return TypeToClassRelation.Instance;
   }
 
-  public addVariableModification(node: ts.PropertyAccessExpression): void {
-    const modifierType = this.checker.getTypeAtLocation(node.expression);
-
-    const relationOfModifierTypeToClass =
-      this.getTypeToClassRelation(modifierType);
-
-    if (
-      relationOfModifierTypeToClass === TypeToClassRelation.Instance &&
-      this.constructorScopeDepth === DIRECTLY_INSIDE_CONSTRUCTOR
-    ) {
-      return;
-    }
-
-    if (
-      relationOfModifierTypeToClass === TypeToClassRelation.Instance ||
-      relationOfModifierTypeToClass === TypeToClassRelation.ClassAndInstance
-    ) {
-      this.memberVariableModifications.add(node.name.text);
-    }
-    if (
-      relationOfModifierTypeToClass === TypeToClassRelation.Class ||
-      relationOfModifierTypeToClass === TypeToClassRelation.ClassAndInstance
-    ) {
-      this.staticVariableModifications.add(node.name.text);
-    }
-  }
-
-  public enterConstructor(
-    node:
-      | ts.ConstructorDeclaration
-      | ts.GetAccessorDeclaration
-      | ts.MethodDeclaration
-      | ts.SetAccessorDeclaration,
-  ): void {
-    this.constructorScopeDepth = DIRECTLY_INSIDE_CONSTRUCTOR;
-
-    for (const parameter of node.parameters) {
-      if (tsutils.isModifierFlagSet(parameter, ts.ModifierFlags.Private)) {
-        this.addDeclaredVariable(parameter);
-      }
-    }
-  }
-
-  public exitConstructor(): void {
-    this.constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
-  }
-
-  public enterNonConstructor(): void {
-    if (this.constructorScopeDepth !== OUTSIDE_CONSTRUCTOR) {
-      this.constructorScopeDepth += 1;
-    }
-  }
-
-  public exitNonConstructor(): void {
-    if (this.constructorScopeDepth !== OUTSIDE_CONSTRUCTOR) {
-      this.constructorScopeDepth -= 1;
-    }
-  }
-
-  public finalizeUnmodifiedPrivateNonReadonlys(): ParameterOrPropertyDeclaration[] {
-    this.memberVariableModifications.forEach(variableName => {
-      this.privateModifiableMembers.delete(variableName);
-    });
-
-    this.staticVariableModifications.forEach(variableName => {
-      this.privateModifiableStatics.delete(variableName);
-    });
-
-    return [
-      ...Array.from(this.privateModifiableMembers.values()),
-      ...Array.from(this.privateModifiableStatics.values()),
-    ];
+  public memberHasConstructorModifications(name: string) {
+    return this.memberVariableWithConstructorModifications.has(name);
   }
 }

@@ -178,8 +178,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -194,8 +194,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -210,8 +210,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -226,8 +226,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -243,8 +243,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -259,8 +259,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -275,8 +275,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -291,8 +291,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -307,8 +307,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -326,8 +326,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 7,
           column: 5,
+          line: 7,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -345,8 +345,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 7,
           column: 5,
+          line: 7,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -366,13 +366,13 @@ class Foo {
       `,
       errors: [
         {
-          line: 6,
           column: 9,
+          line: 6,
           messageId: 'unnecessaryAssign',
         },
         {
-          line: 9,
           column: 5,
+          line: 9,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -390,8 +390,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -409,8 +409,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -430,13 +430,13 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
         {
-          line: 8,
           column: 7,
+          line: 8,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -453,8 +453,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 5,
           column: 7,
+          line: 5,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -471,8 +471,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 5,
           column: 7,
+          line: 5,
           messageId: 'unnecessaryAssign',
         },
       ],

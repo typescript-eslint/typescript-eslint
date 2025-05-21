@@ -36,8 +36,8 @@ export const defaultEslintConfig: ClassicConfig.Config = {
   parser: PARSER_NAME,
   parserOptions: {
     ecmaFeatures: {
-      jsx: true,
       globalReturn: false,
+      jsx: true,
     },
     ecmaVersion: 'latest',
     project: ['./tsconfig.json'],

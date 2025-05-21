@@ -1,12 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/types';
 
-import { assert } from '../assert';
 import type { ScopeManager } from '../ScopeManager';
 import type { Scope } from './Scope';
+
+import { assert } from '../assert';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class WithScope extends ScopeBase<
+export class WithScope extends ScopeBase<
   ScopeType.with,
   TSESTree.WithStatement,
   Scope
@@ -18,7 +19,8 @@ class WithScope extends ScopeBase<
   ) {
     super(scopeManager, ScopeType.with, upperScope, block, false);
   }
-  close(scopeManager: ScopeManager): Scope | null {
+
+  public override close(scopeManager: ScopeManager): Scope | null {
     if (this.shouldStaticallyClose()) {
       return super.close(scopeManager);
     }
@@ -28,5 +30,3 @@ class WithScope extends ScopeBase<
     return this.upper;
   }
 }
-
-export { WithScope };

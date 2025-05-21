@@ -1,19 +1,22 @@
 import debug from 'debug';
-import fs from 'fs';
+import fs from 'node:fs';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
-import { getCodeText } from '../source-files';
 import type { CanonicalPath } from './shared';
+import type { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
+
+import { getCodeText } from '../source-files';
 import {
   canonicalDirname,
   createDefaultCompilerOptionsFromExtra,
   createHash,
   getCanonicalFileName,
 } from './shared';
-import type { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 
-const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
+const log = debug(
+  'typescript-eslint:typescript-estree:create-program:getWatchProgramsForProjects',
+);
 
 /**
  * Maps tsconfig paths to their corresponding file contents and resulting watches
@@ -52,7 +55,7 @@ const parsedFilesSeenHash = new Map<CanonicalPath, string>();
  * Clear all of the parser caches.
  * This should only be used in testing to ensure the parser is clean between tests.
  */
-function clearWatchCaches(): void {
+export function clearWatchCaches(): void {
   knownWatchProgramMap.clear();
   fileWatchCallbackTrackingMap.clear();
   folderWatchCallbackTrackingMap.clear();
@@ -91,7 +94,7 @@ function saveWatchCallback(
  * Holds information about the file currently being linted
  */
 const currentLintOperationState: {
-  code: ts.SourceFile | string;
+  code: string | ts.SourceFile;
   filePath: CanonicalPath;
 } = {
   code: '',
@@ -124,7 +127,7 @@ function updateCachedFileList(
  * @param parseSettings Internal settings for parsing the file
  * @returns The programs corresponding to the supplied tsconfig paths
  */
-function getWatchProgramsForProjects(
+export function getWatchProgramsForProjects(
   parseSettings: ParseSettings,
 ): ts.Program[] {
   const filePath = getCanonicalFileName(parseSettings.filePath);
@@ -265,7 +268,7 @@ function createWatchProgram(
       filePath === currentLintOperationState.filePath
         ? getCodeText(currentLintOperationState.code)
         : oldReadFile(filePath, encoding);
-    if (fileContent !== undefined) {
+    if (fileContent != null) {
       parsedFilesSeenHash.set(filePath, createHash(fileContent));
     }
     return fileContent;
@@ -319,7 +322,7 @@ function createWatchProgram(
         path,
         !extensions
           ? undefined
-          : extensions.concat(parseSettings.extraFileExtensions),
+          : [...extensions, ...parseSettings.extraFileExtensions],
         exclude,
         include,
         depth,
@@ -351,7 +354,7 @@ function hasTSConfigChanged(tsconfigPath: CanonicalPath): boolean {
 
   tsconfigLastModifiedTimestampCache.set(tsconfigPath, lastModifiedAt);
 
-  if (cachedLastModifiedAt === undefined) {
+  if (cachedLastModifiedAt == null) {
     return false;
   }
 
@@ -488,5 +491,3 @@ function maybeInvalidateProgram(
   );
   return null;
 }
-
-export { clearWatchCaches, getWatchProgramsForProjects };

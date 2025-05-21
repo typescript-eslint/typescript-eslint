@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 export function isAssignee(node: TSESTree.Node): boolean {
@@ -48,6 +49,17 @@ export function isAssignee(node: TSESTree.Node): boolean {
     parent.value === node &&
     parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
     isAssignee(parent.parent)
+  ) {
+    return true;
+  }
+
+  // (a[i] as number)++, [...a[i]!] = [0], etc.
+  if (
+    (parent.type === AST_NODE_TYPES.TSNonNullExpression ||
+      parent.type === AST_NODE_TYPES.TSAsExpression ||
+      parent.type === AST_NODE_TYPES.TSTypeAssertion ||
+      parent.type === AST_NODE_TYPES.TSSatisfiesExpression) &&
+    isAssignee(parent)
   ) {
     return true;
   }

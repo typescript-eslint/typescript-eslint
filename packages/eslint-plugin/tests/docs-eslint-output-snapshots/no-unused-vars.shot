@@ -1,0 +1,35 @@
+
+
+const box = {
+      ~~~ 'box' is assigned a value but only used as a type.
+  //  ~~~
+  //  'box' is assigned a value but only used as a type.
+  value: 123,
+};
+
+export type Box = typeof box;
+
+
+
+export interface Box {
+  value: number;
+}
+
+
+
+import { z } from 'zod';
+
+const schema = z.object({
+      ~~~~~~ 'schema' is assigned a value but only used as a type.
+  //  ~~~~~~
+  //  'schema' is assigned a value but only used as a type.
+  value: z.number(),
+});
+
+export type Box = z.infer<typeof schema>;
+
+
+
+export interface Box {
+  value: number;
+}

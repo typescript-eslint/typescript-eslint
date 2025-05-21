@@ -1,9 +1,11 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
+
 import {
   createRule,
   getOperatorPrecedence,
@@ -12,28 +14,34 @@ import {
   OperatorPrecedence,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
-  typeMatchesSpecifier,
+  skipChainExpression,
+  typeMatchesSomeSpecifier,
 } from '../util';
+import {
+  parseCatchCall,
+  parseFinallyCall,
+  parseThenCall,
+} from '../util/promiseUtils';
 
-type Options = [
+export type Options = [
   {
-    allowForKnownSafePromises?: TypeOrValueSpecifier[];
     allowForKnownSafeCalls?: TypeOrValueSpecifier[];
+    allowForKnownSafePromises?: TypeOrValueSpecifier[];
     checkThenables?: boolean;
     ignoreIIFE?: boolean;
     ignoreVoid?: boolean;
   },
 ];
 
-type MessageId =
+export type MessageId =
   | 'floating'
-  | 'floatingVoid'
-  | 'floatingUselessRejectionHandler'
-  | 'floatingUselessRejectionHandlerVoid'
   | 'floatingFixAwait'
   | 'floatingFixVoid'
   | 'floatingPromiseArray'
-  | 'floatingPromiseArrayVoid';
+  | 'floatingPromiseArrayVoid'
+  | 'floatingUselessRejectionHandler'
+  | 'floatingUselessRejectionHandlerVoid'
+  | 'floatingVoid';
 
 const messageBase =
   'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.';
@@ -55,6 +63,7 @@ const messagePromiseArrayVoid =
 export default createRule<Options, MessageId>({
   name: 'no-floating-promises',
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Require Promise-like statements to be handled appropriately',
@@ -65,40 +74,44 @@ export default createRule<Options, MessageId>({
     messages: {
       floating: messageBase,
       floatingFixAwait: 'Add await operator.',
-      floatingVoid: messageBaseVoid,
       floatingFixVoid: 'Add void operator to ignore.',
-      floatingUselessRejectionHandler:
-        messageBase + ' ' + messageRejectionHandler,
-      floatingUselessRejectionHandlerVoid:
-        messageBaseVoid + ' ' + messageRejectionHandler,
       floatingPromiseArray: messagePromiseArray,
       floatingPromiseArrayVoid: messagePromiseArrayVoid,
+      floatingUselessRejectionHandler: `${messageBase} ${messageRejectionHandler}`,
+      floatingUselessRejectionHandlerVoid: `${messageBaseVoid} ${messageRejectionHandler}`,
+      floatingVoid: messageBaseVoid,
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
-          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
-          allowForKnownSafeCalls: readonlynessOptionsSchema.properties.allow,
+          allowForKnownSafeCalls: {
+            ...readonlynessOptionsSchema.properties.allow,
+            description:
+              'Type specifiers of functions whose calls are safe to float.',
+          },
+          allowForKnownSafePromises: {
+            ...readonlynessOptionsSchema.properties.allow,
+            description: 'Type specifiers that are known to be safe to float.',
+          },
           checkThenables: {
+            type: 'boolean',
             description:
               'Whether to check all "Thenable"s, not just the built-in Promise type.',
-            type: 'boolean',
-          },
-          ignoreVoid: {
-            description: 'Whether to ignore `void` expressions.',
-            type: 'boolean',
           },
           ignoreIIFE: {
+            type: 'boolean',
             description:
               'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
+          },
+          ignoreVoid: {
             type: 'boolean',
+            description: 'Whether to ignore `void` expressions.',
           },
         },
-        additionalProperties: false,
       },
     ],
-    type: 'problem',
   },
   defaultOptions: [
     {
@@ -127,11 +140,7 @@ export default createRule<Options, MessageId>({
           return;
         }
 
-        let expression = node.expression;
-
-        if (expression.type === AST_NODE_TYPES.ChainExpression) {
-          expression = expression.expression;
-        }
+        const expression = skipChainExpression(node.expression);
 
         if (isKnownSafePromiseReturn(expression)) {
           return;
@@ -233,8 +242,10 @@ export default createRule<Options, MessageId>({
 
       const type = services.getTypeAtLocation(node.callee);
 
-      return allowForKnownSafeCalls.some(allowedType =>
-        typeMatchesSpecifier(type, allowedType, services.program),
+      return typeMatchesSomeSpecifier(
+        type,
+        allowForKnownSafeCalls,
+        services.program,
       );
     }
 
@@ -329,32 +340,30 @@ export default createRule<Options, MessageId>({
         // If the outer expression is a call, a `.catch()` or `.then()` with
         // rejection handler handles the promise.
 
-        const catchRejectionHandler = getRejectionHandlerFromCatchCall(node);
-        if (catchRejectionHandler) {
-          if (isValidRejectionHandler(catchRejectionHandler)) {
-            return { isUnhandled: false };
+        const promiseHandlingMethodCall =
+          parseCatchCall(node, context) ?? parseThenCall(node, context);
+        if (promiseHandlingMethodCall != null) {
+          const onRejected = promiseHandlingMethodCall.onRejected;
+          if (onRejected != null) {
+            if (isValidRejectionHandler(onRejected)) {
+              return { isUnhandled: false };
+            }
+            return { isUnhandled: true, nonFunctionHandler: true };
           }
-          return { isUnhandled: true, nonFunctionHandler: true };
+          return { isUnhandled: true };
         }
 
-        const thenRejectionHandler = getRejectionHandlerFromThenCall(node);
-        if (thenRejectionHandler) {
-          if (isValidRejectionHandler(thenRejectionHandler)) {
-            return { isUnhandled: false };
-          }
-          return { isUnhandled: true, nonFunctionHandler: true };
-        }
+        const promiseFinallyCall = parseFinallyCall(node, context);
 
-        // `x.finally()` is transparent to resolution of the promise, so check `x`.
-        // ("object" in this context is the `x` in `x.finally()`)
-        const promiseFinallyObject = getObjectFromFinallyCall(node);
-        if (promiseFinallyObject) {
-          return isUnhandledPromise(checker, promiseFinallyObject);
+        if (promiseFinallyCall != null) {
+          return isUnhandledPromise(checker, promiseFinallyCall.object);
         }
 
         // All other cases are unhandled.
         return { isUnhandled: true };
-      } else if (node.type === AST_NODE_TYPES.ConditionalExpression) {
+      }
+
+      if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // We must be getting the promise-like value from one of the branches of the
         // ternary. Check them directly.
         const alternateResult = isUnhandledPromise(checker, node.alternate);
@@ -362,7 +371,9 @@ export default createRule<Options, MessageId>({
           return alternateResult;
         }
         return isUnhandledPromise(checker, node.consequent);
-      } else if (node.type === AST_NODE_TYPES.LogicalExpression) {
+      }
+
+      if (node.type === AST_NODE_TYPES.LogicalExpression) {
         const leftResult = isUnhandledPromise(checker, node.left);
         if (leftResult.isUnhandled) {
           return leftResult;
@@ -377,7 +388,7 @@ export default createRule<Options, MessageId>({
     function isPromiseArray(node: ts.Node): boolean {
       const type = checker.getTypeAtLocation(node);
       for (const ty of tsutils
-        .unionTypeParts(type)
+        .unionConstituents(type)
         .map(t => checker.getApparentType(t))) {
         if (checker.isArrayType(ty)) {
           const arrayType = checker.getTypeArguments(ty)[0];
@@ -402,15 +413,19 @@ export default createRule<Options, MessageId>({
 
       // The highest priority is to allow anything allowlisted
       if (
-        allowForKnownSafePromises.some(allowedType =>
-          typeMatchesSpecifier(type, allowedType, services.program),
+        typeMatchesSomeSpecifier(
+          type,
+          allowForKnownSafePromises,
+          services.program,
         )
       ) {
         return false;
       }
 
       // Otherwise, we always consider the built-in Promise to be Promise-like...
-      const typeParts = tsutils.unionTypeParts(checker.getApparentType(type));
+      const typeParts = tsutils.unionConstituents(
+        checker.getApparentType(type),
+      );
       if (
         typeParts.some(typePart =>
           isBuiltinSymbolLike(services.program, typePart, 'Promise'),
@@ -430,7 +445,7 @@ export default createRule<Options, MessageId>({
       //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
       for (const ty of typeParts) {
         const then = ty.getProperty('then');
-        if (then === undefined) {
+        if (then == null) {
           continue;
         }
 
@@ -456,7 +471,7 @@ function hasMatchingSignature(
   type: ts.Type,
   matcher: (signature: ts.Signature) => boolean,
 ): boolean {
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tsutils.unionConstituents(type)) {
     if (t.getCallSignatures().some(matcher)) {
       return true;
     }
@@ -473,48 +488,10 @@ function isFunctionParam(
   const type: ts.Type | undefined = checker.getApparentType(
     checker.getTypeOfSymbolAtLocation(param, node),
   );
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tsutils.unionConstituents(type)) {
     if (t.getCallSignatures().length !== 0) {
       return true;
     }
   }
   return false;
-}
-
-function getRejectionHandlerFromCatchCall(
-  expression: TSESTree.CallExpression,
-): TSESTree.CallExpressionArgument | undefined {
-  if (
-    expression.callee.type === AST_NODE_TYPES.MemberExpression &&
-    expression.callee.property.type === AST_NODE_TYPES.Identifier &&
-    expression.callee.property.name === 'catch' &&
-    expression.arguments.length >= 1
-  ) {
-    return expression.arguments[0];
-  }
-  return undefined;
-}
-
-function getRejectionHandlerFromThenCall(
-  expression: TSESTree.CallExpression,
-): TSESTree.CallExpressionArgument | undefined {
-  if (
-    expression.callee.type === AST_NODE_TYPES.MemberExpression &&
-    expression.callee.property.type === AST_NODE_TYPES.Identifier &&
-    expression.callee.property.name === 'then' &&
-    expression.arguments.length >= 2
-  ) {
-    return expression.arguments[1];
-  }
-  return undefined;
-}
-
-function getObjectFromFinallyCall(
-  expression: TSESTree.CallExpression,
-): TSESTree.Expression | undefined {
-  return expression.callee.type === AST_NODE_TYPES.MemberExpression &&
-    expression.callee.property.type === AST_NODE_TYPES.Identifier &&
-    expression.callee.property.name === 'finally'
-    ? expression.callee.object
-    : undefined;
 }

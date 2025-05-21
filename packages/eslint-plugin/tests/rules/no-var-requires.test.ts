@@ -44,9 +44,9 @@ const json = require('./some.json');
       code: "var foo = require('foo');",
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 1,
           column: 11,
+          line: 1,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -54,9 +54,9 @@ const json = require('./some.json');
       code: "const foo = require('foo');",
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 1,
           column: 13,
+          line: 1,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -64,9 +64,9 @@ const json = require('./some.json');
       code: "let foo = require('foo');",
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 1,
           column: 11,
+          line: 1,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -74,9 +74,9 @@ const json = require('./some.json');
       code: "let foo = trick(require('foo'));",
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 1,
           column: 17,
+          line: 1,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -84,9 +84,9 @@ const json = require('./some.json');
       code: "var foo = require?.('foo');",
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 1,
           column: 11,
+          line: 1,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -94,9 +94,9 @@ const json = require('./some.json');
       code: "const foo = require?.('foo');",
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 1,
           column: 13,
+          line: 1,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -104,9 +104,9 @@ const json = require('./some.json');
       code: "let foo = require?.('foo');",
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 1,
           column: 11,
+          line: 1,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -114,9 +114,9 @@ const json = require('./some.json');
       code: "let foo = trick(require?.('foo'));",
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 1,
           column: 17,
+          line: 1,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -124,9 +124,9 @@ const json = require('./some.json');
       code: "let foo = trick?.(require('foo'));",
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 1,
           column: 19,
+          line: 1,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -134,9 +134,9 @@ const json = require('./some.json');
       code: "const foo = require('./foo.json') as Foo;",
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 1,
           column: 13,
+          line: 1,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -144,9 +144,9 @@ const json = require('./some.json');
       code: "const foo = <Foo>require('./foo.json');",
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 1,
           column: 18,
+          line: 1,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -154,9 +154,9 @@ const json = require('./some.json');
       code: "const foo: Foo = require('./foo.json').default;",
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 1,
           column: 18,
+          line: 1,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -168,14 +168,14 @@ configValidator.addSchema(require('./a.json'));
       `,
       errors: [
         {
-          messageId: 'noVarReqs',
-          line: 2,
           column: 39,
+          line: 2,
+          messageId: 'noVarReqs',
         },
         {
-          messageId: 'noVarReqs',
-          line: 3,
           column: 27,
+          line: 3,
+          messageId: 'noVarReqs',
         },
       ],
     },
@@ -183,44 +183,44 @@ configValidator.addSchema(require('./a.json'));
       code: "const pkg = require('./package.json');",
       errors: [
         {
-          line: 1,
           column: 13,
+          line: 1,
           messageId: 'noVarReqs',
         },
       ],
     },
     {
       code: "const pkg = require('./package.jsonc');",
-      options: [{ allow: ['/package\\.json$'] }],
       errors: [
         {
-          line: 1,
           column: 13,
+          line: 1,
           messageId: 'noVarReqs',
         },
       ],
+      options: [{ allow: ['/package\\.json$'] }],
     },
     {
       code: "const pkg = require('./package.json');",
-      options: [{ allow: ['^some-package$'] }],
       errors: [
         {
-          line: 1,
           column: 13,
+          line: 1,
           messageId: 'noVarReqs',
         },
       ],
+      options: [{ allow: ['^some-package$'] }],
     },
     {
       code: 'const pkg = require(`./package.json`);',
-      options: [{ allow: ['^some-package$'] }],
       errors: [
         {
-          line: 1,
           column: 13,
+          line: 1,
           messageId: 'noVarReqs',
         },
       ],
+      options: [{ allow: ['^some-package$'] }],
     },
   ],
 });

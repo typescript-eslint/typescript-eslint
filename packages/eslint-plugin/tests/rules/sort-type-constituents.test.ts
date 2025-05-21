@@ -2,12 +2,14 @@ import type {
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
+
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import type {
   MessageIds,
   Options,
 } from '../../src/rules/sort-type-constituents';
+
 import rule from '../../src/rules/sort-type-constituents';
 
 const ruleTester = new RuleTester();
@@ -93,118 +95,118 @@ const invalid = (
   return [
     {
       code: `type T = B ${operator} A;`,
-      output: `type T = A ${operator} B;`,
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type,
             name: 'T',
+            type,
           },
+          messageId: 'notSortedNamed',
         },
       ],
+      output: `type T = A ${operator} B;`,
     },
     {
       code: `type T = 'B' ${operator} 'A';`,
-      output: `type T = 'A' ${operator} 'B';`,
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type,
             name: 'T',
+            type,
           },
+          messageId: 'notSortedNamed',
         },
       ],
+      output: `type T = 'A' ${operator} 'B';`,
     },
     {
       code: `type T = 2 ${operator} 1;`,
-      output: `type T = 1 ${operator} 2;`,
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type,
             name: 'T',
+            type,
           },
+          messageId: 'notSortedNamed',
         },
       ],
+      output: `type T = 1 ${operator} 2;`,
     },
     {
       code: noFormat`type T = (B) ${operator} (A);`,
-      output: `type T = A ${operator} B;`,
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type,
             name: 'T',
+            type,
           },
+          messageId: 'notSortedNamed',
         },
       ],
+      output: `type T = A ${operator} B;`,
     },
     {
       code: `type T = { b: string } ${operator} { a: string };`,
-      output: `type T = { a: string } ${operator} { b: string };`,
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type,
             name: 'T',
+            type,
           },
+          messageId: 'notSortedNamed',
         },
       ],
+      output: `type T = { a: string } ${operator} { b: string };`,
     },
     {
       code: `type T = [1, 2, 4] ${operator} [1, 2, 3];`,
-      output: `type T = [1, 2, 3] ${operator} [1, 2, 4];`,
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type,
             name: 'T',
+            type,
           },
+          messageId: 'notSortedNamed',
         },
       ],
+      output: `type T = [1, 2, 3] ${operator} [1, 2, 4];`,
     },
     {
       code: `type T = (() => void) ${operator} (() => string);`,
-      output: `type T = (() => string) ${operator} (() => void);`,
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type,
             name: 'T',
+            type,
           },
+          messageId: 'notSortedNamed',
         },
       ],
+      output: `type T = (() => string) ${operator} (() => void);`,
     },
     {
       code: `type T = () => void ${operator} string;`,
-      output: `type T = () => string ${operator} void;`,
       errors: [
         {
-          messageId: 'notSorted',
           data: {
             type,
           },
+          messageId: 'notSorted',
         },
       ],
+      output: `type T = () => string ${operator} void;`,
     },
     {
       code: `type T = () => undefined ${operator} null;`,
-      output: `type T = () => null ${operator} undefined;`,
       errors: [
         {
-          messageId: 'notSorted',
           data: {
             type,
           },
+          messageId: 'notSorted',
         },
       ],
+      output: `type T = () => null ${operator} undefined;`,
     },
     {
       code: noFormat`
@@ -232,30 +234,29 @@ type T =
   ${operator} string
   ${operator} any;
       `,
+      errors: [
+        {
+          data: {
+            name: 'T',
+            type,
+          },
+          messageId: 'notSortedNamed',
+        },
+      ],
       output: `
 type T =
   A ${operator} B ${operator} C.D ${operator} D.E ${operator} number[] ${operator} string[] ${operator} any ${operator} string ${operator} readonly number[] ${operator} readonly string[] ${operator} 'a' ${operator} 'b' ${operator} "a" ${operator} "b" ${operator} (() => string) ${operator} (() => void) ${operator} { a: string } ${operator} { b: string } ${operator} [1, 2, 3] ${operator} [1, 2, 4] ${operator} null ${operator} undefined;
       `,
-      errors: [
-        {
-          messageId: 'notSortedNamed',
-          data: {
-            type,
-            name: 'T',
-          },
-        },
-      ],
     },
     {
       code: `type T = B ${operator} /* comment */ A;`,
-      output: null,
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type,
             name: 'T',
+            type,
           },
+          messageId: 'notSortedNamed',
           suggestions: [
             {
               messageId: 'suggestFix',
@@ -264,55 +265,56 @@ type T =
           ],
         },
       ],
+      output: null,
     },
     {
       code: `type T = (() => /* comment */ A) ${operator} B;`,
-      output: `type T = B ${operator} (() => /* comment */ A);`,
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type,
             name: 'T',
+            type,
           },
+          messageId: 'notSortedNamed',
           suggestions: null,
         },
       ],
+      output: `type T = B ${operator} (() => /* comment */ A);`,
     },
     {
       code: `type Expected = (new (x: number) => boolean) ${operator} string;`,
-      output: `type Expected = string ${operator} (new (x: number) => boolean);`,
       errors: [
         {
           messageId: 'notSortedNamed',
         },
       ],
+      output: `type Expected = string ${operator} (new (x: number) => boolean);`,
     },
     {
       code: `type T = (| A) ${operator} B;`,
-      output: `type T = B ${operator} (| A);`,
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type,
             name: 'T',
+            type,
           },
+          messageId: 'notSortedNamed',
         },
       ],
+      output: `type T = B ${operator} (| A);`,
     },
     {
       code: `type T = (& A) ${operator} B;`,
-      output: `type T = B ${operator} (& A);`,
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type,
             name: 'T',
+            type,
           },
+          messageId: 'notSortedNamed',
         },
       ],
+      output: `type T = B ${operator} (& A);`,
     },
   ];
 };
@@ -391,40 +393,39 @@ type T = 1 | string | {} | A;
     ...invalid('&'),
     {
       code: 'type T = (B | C) & A;',
-      output: `type T = A & (B | C);`,
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type: 'Intersection',
             name: 'T',
+            type: 'Intersection',
           },
+          messageId: 'notSortedNamed',
         },
       ],
+      output: `type T = A & (B | C);`,
     },
     {
-      output: "type A<T> = string | (T extends number ? 'hi' : 'there');",
       code: "type A<T> = (T extends number ? 'hi' : 'there') | string;",
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type: 'Union',
             name: 'A',
+            type: 'Union',
           },
+          messageId: 'notSortedNamed',
         },
       ],
+      output: "type A<T> = string | (T extends number ? 'hi' : 'there');",
     },
     {
       code: "type T = 'DeletedAt' | 'DeleteForever';",
-      output: "type T = 'DeleteForever' | 'DeletedAt';",
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type: 'Union',
             name: 'T',
+            type: 'Union',
           },
+          messageId: 'notSortedNamed',
         },
       ],
       options: [
@@ -432,17 +433,17 @@ type T = 1 | string | {} | A;
           caseSensitive: true,
         },
       ],
+      output: "type T = 'DeleteForever' | 'DeletedAt';",
     },
     {
       code: 'type T = { a: string } | { A: string } | { B: string };',
-      output: 'type T = { A: string } | { B: string } | { a: string };',
       errors: [
         {
-          messageId: 'notSortedNamed',
           data: {
-            type: 'Union',
             name: 'T',
+            type: 'Union',
           },
+          messageId: 'notSortedNamed',
         },
       ],
       options: [
@@ -450,6 +451,7 @@ type T = 1 | string | {} | A;
           caseSensitive: true,
         },
       ],
+      output: 'type T = { A: string } | { B: string } | { a: string };',
     },
   ],
 });

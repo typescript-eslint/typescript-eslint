@@ -3,10 +3,12 @@ import * as ts from 'typescript';
 
 import type { ParseSettings } from './index';
 
+import { version as TYPESCRIPT_ESTREE_VERSION } from '../version';
+
 /**
  * This needs to be kept in sync with package.json in the typescript-eslint monorepo
  */
-const SUPPORTED_TYPESCRIPT_VERSIONS = '>=4.7.4 <5.6.0';
+export const SUPPORTED_TYPESCRIPT_VERSIONS = '>=4.8.4 <5.9.0';
 
 /*
  * The semver package will ignore prerelease ranges, and we don't want to explicitly document every one
@@ -16,9 +18,7 @@ const SUPPORTED_PRERELEASE_RANGES: string[] = [];
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
-  [SUPPORTED_TYPESCRIPT_VERSIONS]
-    .concat(SUPPORTED_PRERELEASE_RANGES)
-    .join(' || '),
+  [SUPPORTED_TYPESCRIPT_VERSIONS, ...SUPPORTED_PRERELEASE_RANGES].join(' || '),
 );
 
 let warnedAboutTSVersion = false;
@@ -40,13 +40,17 @@ export function warnAboutTSVersion(
     const border = '=============';
     const versionWarning = [
       border,
+      '\n',
       'WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.',
-      'You may find that it works just fine, or you may not.',
-      `SUPPORTED TYPESCRIPT VERSIONS: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
-      `YOUR TYPESCRIPT VERSION: ${ACTIVE_TYPESCRIPT_VERSION}`,
+      '\n',
+      `* @typescript-eslint/typescript-estree version: ${TYPESCRIPT_ESTREE_VERSION}`,
+      `* Supported TypeScript versions: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
+      `* Your TypeScript version: ${ACTIVE_TYPESCRIPT_VERSION}`,
+      '\n',
       'Please only submit bug reports when using the officially supported version.',
+      '\n',
       border,
-    ].join('\n\n');
+    ].join('\n');
 
     parseSettings.log(versionWarning);
   }

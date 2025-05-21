@@ -1,202 +1,161 @@
+import type { SponsorData } from 'website/src/components/FinancialContributors/types.ts';
+
 import fetch from 'cross-fetch';
-import * as fs from 'fs';
-import * as path from 'path';
-import prettier from 'prettier';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 import { PACKAGES_WEBSITE } from './paths.mts';
 
-const graphqlEndpoint = 'https://api.opencollective.com/graphql/v2';
-
-const queries = {
-  account: `{
-    account(slug: "typescript-eslint") {
-      orders(status: ACTIVE, limit: 1000) {
-        totalCount
-        nodes {
-          tier {
-            slug
-          }
-          fromAccount {
-            id
-            imageUrl
-            name
-            website
-          }
-        }
-      }
-    }
-  }`,
-  collective: `{
-    collective(slug: "typescript-eslint") {
-      members(limit: 1000, role: BACKER) {
-        nodes {
-          account {
-            id
-            imageUrl
-            name
-            website
-          }
-          tier {
-            amount {
-              valueInCents
-            }
-            orders(limit: 100) {
-              nodes {
-                amount {
-                  valueInCents
-                }
-              }
-            }
-          }
-          totalDonations {
-            valueInCents
-          }
-          updatedAt
-        }
-      }
-    }
-  }`,
-};
-
-interface AccountData {
-  orders: {
-    nodes: OrderNode[];
-  };
-}
-
-interface OrderNode {
-  fromAccount: MemberAccount;
-  tier?: Tier;
-}
-
-interface Tier {
-  slug: string;
-}
-
-interface CollectiveData {
-  members: {
-    nodes: MemberNode[];
-  };
-}
-
-interface MemberNode {
-  account: MemberAccount;
-  totalDonations: {
-    valueInCents: number;
-  };
-}
-
-interface MemberAccount {
-  id: string;
-  imageUrl: string;
-  name: string;
-  website: string;
-}
-
 const excludedNames = new Set([
-  'Guest', // Apparent anonymous donor equivalent without an avatar
   'Josh Goldberg', // Team member 💖
 ]);
 
 const filteredTerms = ['casino', 'deepnude', 'tiktok'];
 
-async function requestGraphql<Data>(key: keyof typeof queries): Promise<Data> {
-  const response = await fetch(graphqlEndpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query: queries[key] }),
-  });
+const jsonApiFetch = async <T,>(
+  api: string,
+  options?: RequestInit,
+): Promise<T> => {
+  const url = `https://api.${api}`;
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    console.error({
+      response: { body: await response.text(), status: response.status },
+      url,
+    });
+    throw new Error('API call failed.');
+  }
+  return (await response.json()) as T;
+};
 
-  const { data } = (await response.json()) as {
-    data: Record<typeof key, unknown>;
-  };
-  return data[key] as Data;
-}
-
-async function main(): Promise<void> {
-  const [account, collective] = await Promise.all([
-    requestGraphql<AccountData>('account'),
-    requestGraphql<CollectiveData>('collective'),
-  ]);
-
-  const accountsById = account.orders.nodes.reduce<
-    Record<string, MemberAccount>
-  >((accumulator, account) => {
-    const name = account.fromAccount.name || account.fromAccount.id;
-    accumulator[name] = {
-      ...accumulator[name],
-      ...account.fromAccount,
+const openCollectiveSponsorsPromise = jsonApiFetch<{
+  data: {
+    collective: {
+      members: {
+        nodes: {
+          account: {
+            id: string;
+            imageUrl: string;
+            name: string;
+            website: string | null;
+          };
+          totalDonations: { valueInCents: number };
+        }[];
+      };
     };
-    return accumulator;
-  }, {});
+  };
+}>('opencollective.com/graphql/v2', {
+  body: JSON.stringify({
+    query: `
+      {
+        collective(slug: "typescript-eslint") {
+          members(limit: 1000, role: BACKER) {
+            nodes {
+              account {
+                id
+                imageUrl
+                name
+                website
+              }
+              totalDonations {
+                valueInCents
+              }
+            }
+          }
+        }
+      }
+    `,
+  }),
+  headers: { 'Content-Type': 'application/json' },
+  method: 'POST',
+}).then(({ data }) => {
+  // TODO: remove polyfill in Node 22
+  const groupBy = <T,>(
+    arr: T[],
+    fn: (item: T) => string,
+  ): Record<string, T[]> => {
+    const grouped: Record<string, T[]> = {};
+    for (const item of arr) {
+      (grouped[fn(item)] ??= []).push(item);
+    }
+    return grouped;
+  };
+  return Object.entries(
+    groupBy(
+      data.collective.members.nodes,
+      ({ account }) => account.name || account.id,
+    ),
+  ).flatMap(([id, members]) => {
+    const [
+      {
+        account: { website, ...account },
+      },
+    ] = members;
+    return website
+      ? {
+          id,
+          image: account.imageUrl,
+          name: account.name,
+          totalDonations: members.reduce(
+            (sum, { totalDonations }) => sum + totalDonations.valueInCents,
+            0,
+          ),
+          website,
+        }
+      : [];
+  });
+});
 
-  const totalDonationsById = collective.members.nodes.reduce<
-    Record<string, number>
-  >((accumulator, member) => {
-    const name = member.account.name || member.account.id;
-    accumulator[name] ||= 0;
-    accumulator[name] += member.totalDonations.valueInCents;
-    return accumulator;
-  }, {});
+const thanksDevSponsorsPromise = jsonApiFetch<
+  Record<'dependers' | 'donors', ['gh' | 'gl', string, number][]>
+>('thanks.dev/v1/vip/dependee/gh/typescript-eslint').then(async ({ donors }) =>
+  (
+    await Promise.all(
+      donors
+        /* GitLab does not have an API to get a user's profile. At the time of writing, only 13% of donors
+             from thanks.dev came from GitLab rather than GitHub, and none of them met the contribution
+             threshold. */
+        .filter(([site]) => site === 'gh')
+        .map(async ([, id, totalDonations]) => {
+          const { name, ...github } = await jsonApiFetch<
+            Record<'avatar_url' | 'blog', string> & {
+              name: string | null;
+            }
+          >(`github.com/users/${id}`);
+          return name
+            ? {
+                id,
+                image: github.avatar_url,
+                name,
+                totalDonations,
+                website: github.blog || `https://github.com/${id}`,
+              }
+            : [];
+        }),
+    )
+  ).flat(),
+);
 
-  const uniqueNames = new Set<string>(excludedNames);
-  const allSponsorsConfig = collective.members.nodes
-    .map(member => {
-      const name = member.account.name || member.account.id;
-      const fromAccount = {
-        ...member.account,
-        ...accountsById[name],
-      };
-      const totalDonations = totalDonationsById[name];
-      const website = fromAccount.website;
-
-      return {
-        id: name,
-        image: fromAccount.imageUrl,
-        name: fromAccount.name,
-        totalDonations,
-        website,
-      };
-    })
-    .filter(({ id, name, totalDonations, website }) => {
-      if (
+const sponsors = (
+  await Promise.all<SponsorData[]>([
+    openCollectiveSponsorsPromise,
+    thanksDevSponsorsPromise,
+  ])
+)
+  .flat()
+  .filter(
+    ({ id, name, totalDonations }) =>
+      !(
         filteredTerms.some(filteredTerm =>
           name.toLowerCase().includes(filteredTerm),
         ) ||
-        uniqueNames.has(id) ||
-        totalDonations < 10000 ||
-        !website
-      ) {
-        return false;
-      }
+        excludedNames.has(id) ||
+        totalDonations < 10000
+      ),
+  )
+  .sort((a, b) => b.totalDonations - a.totalDonations);
 
-      uniqueNames.add(id);
-      return true;
-    })
-    .sort((a, b) => b.totalDonations - a.totalDonations);
-
-  const rcPath = path.join(PACKAGES_WEBSITE, 'data', 'sponsors.json');
-  fs.writeFileSync(rcPath, await stringifyObject(rcPath, allSponsorsConfig));
-}
-
-async function stringifyObject(
-  filePath: string,
-  data: unknown,
-): Promise<string> {
-  const config = await prettier.resolveConfig(filePath);
-  const text = JSON.stringify(
-    data,
-    (_, value: unknown) => value ?? undefined,
-    2,
-  );
-
-  return await prettier.format(text, {
-    ...config,
-    parser: 'json',
-  });
-}
-
-main().catch((error: unknown) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+fs.writeFileSync(
+  path.join(PACKAGES_WEBSITE, 'data', 'sponsors.json'),
+  `${JSON.stringify(sponsors, null, 2)}\n`,
+);

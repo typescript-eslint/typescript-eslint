@@ -5,9 +5,8 @@ import type {
   RuleMetaDataDocs,
   RuleModule,
 } from '../ts-eslint/Rule';
-import { applyDefault } from './applyDefault';
 
-export type { RuleListener, RuleModule };
+import { applyDefault } from './applyDefault';
 
 // we automatically add the url
 export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
@@ -15,9 +14,10 @@ export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
 export type NamedCreateRuleMeta<
   MessageIds extends string,
   PluginDocs = unknown,
-> = Omit<RuleMetaData<MessageIds, PluginDocs>, 'docs'> & {
-  docs: RuleMetaDataDocs & PluginDocs;
-};
+  Options extends readonly unknown[] = [],
+> = {
+  docs: PluginDocs & RuleMetaDataDocs;
+} & Omit<RuleMetaData<MessageIds, PluginDocs, Options>, 'docs'>;
 
 export interface RuleCreateAndOptions<
   Options extends readonly unknown[],
@@ -35,7 +35,7 @@ export interface RuleWithMeta<
   MessageIds extends string,
   Docs = unknown,
 > extends RuleCreateAndOptions<Options, MessageIds> {
-  meta: RuleMetaData<MessageIds, Docs>;
+  meta: RuleMetaData<MessageIds, Docs, Options>;
 }
 
 export interface RuleWithMetaAndName<
@@ -43,7 +43,7 @@ export interface RuleWithMetaAndName<
   MessageIds extends string,
   Docs = unknown,
 > extends RuleCreateAndOptions<Options, MessageIds> {
-  meta: NamedCreateRuleMeta<MessageIds, Docs>;
+  meta: NamedCreateRuleMeta<MessageIds, Docs, Options>;
   name: string;
 }
 
@@ -62,8 +62,8 @@ export function RuleCreator<PluginDocs = unknown>(
     Options extends readonly unknown[],
     MessageIds extends string,
   >({
-    name,
     meta,
+    name,
     ...rule
   }: Readonly<
     RuleWithMetaAndName<Options, MessageIds, PluginDocs>
@@ -118,3 +118,5 @@ RuleCreator.withoutDocs = function withoutDocs<
 ): RuleModule<MessageIds, Options> {
   return createRule(args);
 };
+
+export { type RuleListener, type RuleModule } from '../ts-eslint/Rule';

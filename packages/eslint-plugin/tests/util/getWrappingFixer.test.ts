@@ -1,5 +1,6 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import { createRule, getWrappingFixer } from '../../src/util';
 import { getFixturesRootDir } from '../RuleTester';
@@ -8,53 +9,52 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
 
 const voidEverythingRule = createRule({
-  name: 'void-everything',
-  defaultOptions: [],
-  meta: {
-    type: 'suggestion',
-    fixable: 'code',
-    docs: {
-      description: 'Add void operator in random places for test purposes.',
-    },
-    messages: {
-      addVoid: 'Please void this',
-    },
-    schema: [],
-  },
-
   create(context) {
     const report = (node: TSESTree.Node): void => {
       context.report({
-        node,
-        messageId: 'addVoid',
         fix: getWrappingFixer({
-          sourceCode: context.sourceCode,
           node,
+          sourceCode: context.sourceCode,
           wrap: code => `void ${code.replaceAll('wrap', 'wrapped')}`,
         }),
+        messageId: 'addVoid',
+        node,
       });
     };
 
     return {
+      'ArrayExpression[elements.0.value="wrapArray"]': report,
+      'ClassExpression[id.name="wrapClass"]': report,
+      'FunctionExpression[id.name="wrapFunction"]': report,
       'Identifier[name="wrapMe"]': report,
       'Literal[value="wrapMe"]': report,
-      'ArrayExpression[elements.0.value="wrapArray"]': report,
       'ObjectExpression[properties.0.value.value="wrapObject"]': report,
-      'FunctionExpression[id.name="wrapFunction"]': report,
-      'ClassExpression[id.name="wrapClass"]': report,
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Add void operator in random places for test purposes.',
+    },
+    fixable: 'code',
+    messages: {
+      addVoid: 'Please void this',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+
+  name: 'void-everything',
 });
 
 ruleTester.run('getWrappingFixer - voidEverythingRule', voidEverythingRule, {
-  valid: [],
   invalid: [
     // should add parens when inner expression might need them
     {
@@ -286,35 +286,21 @@ ruleTester.run('getWrappingFixer - voidEverythingRule', voidEverythingRule, {
       `,
     },
   ],
+  valid: [],
 });
 
 const removeFunctionRule = createRule({
-  name: 'remove-function',
-  defaultOptions: [],
-  meta: {
-    type: 'suggestion',
-    fixable: 'code',
-    docs: {
-      description:
-        'Remove function with first arg remaining in random places for test purposes.',
-    },
-    messages: {
-      removeFunction: 'Please remove this function',
-    },
-    schema: [],
-  },
-
   create(context) {
     const report = (node: TSESTree.CallExpression): void => {
       context.report({
-        node,
-        messageId: 'removeFunction',
         fix: getWrappingFixer({
-          sourceCode: context.sourceCode,
-          node,
           innerNode: [node.arguments[0]],
+          node,
+          sourceCode: context.sourceCode,
           wrap: code => code,
         }),
+        messageId: 'removeFunction',
+        node,
       });
     };
 
@@ -322,10 +308,24 @@ const removeFunctionRule = createRule({
       'CallExpression[callee.name="fn"]': report,
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Remove function with first arg remaining in random places for test purposes.',
+    },
+    fixable: 'code',
+    messages: {
+      removeFunction: 'Please remove this function',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+
+  name: 'remove-function',
 });
 
 ruleTester.run('getWrappingFixer - removeFunctionRule', removeFunctionRule, {
-  valid: [],
   invalid: [
     // should add parens when a inner node is a part of return body of node's parent
     {
@@ -346,4 +346,5 @@ ruleTester.run('getWrappingFixer - removeFunctionRule', removeFunctionRule, {
       output: '() => "string"',
     },
   ],
+  valid: [],
 });

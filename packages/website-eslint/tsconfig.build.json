@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    // Build is done by esbuild
+    "emitDeclarationOnly": true,
+    "allowJs": true,
+    "checkJs": true
+  },
+  "include": ["src/**/*.ts", "src/index.js", "build.mts"],
+  "references": [
+    {
+      "path": "../visitor-keys/tsconfig.build.json"
+    },
+    {
+      "path": "../typescript-estree/tsconfig.build.json"
+    },
+    {
+      "path": "../scope-manager/tsconfig.build.json"
+    },
+    {
+      "path": "../parser/tsconfig.build.json"
+    },
+    {
+      "path": "../eslint-plugin/tsconfig.build.json"
+    }
+  ]
+}

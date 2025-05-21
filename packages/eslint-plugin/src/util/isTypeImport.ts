@@ -2,6 +2,7 @@ import type {
   Definition,
   ImportBindingDefinition,
 } from '@typescript-eslint/scope-manager';
+
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 

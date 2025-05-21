@@ -16,3 +16,7 @@ body:
       placeholder: I want a new CI action that does X when Y ...
     validations:
       required: true
+  - type: textarea
+    attributes:
+      label: Additional Info
+      description: Any additional info you'd like to provide.

@@ -1,7 +1,6 @@
-import type * as mdast from 'mdast';
+import type { RuleDocsPage } from '../RuleDocsPage';
 
 import { nodeIsHeading } from '../../utils/nodes';
-import type { RuleDocsPage } from '../RuleDocsPage';
 
 export function insertWhenNotToUseIt(page: RuleDocsPage): void {
   if (!page.rule.meta.docs.requiresTypeChecking) {
@@ -23,48 +22,8 @@ export function insertWhenNotToUseIt(page: RuleDocsPage): void {
   page.spliceChildren(
     nextHeadingIndex === -1 ? page.children.length : nextHeadingIndex - 1,
     0,
-    {
-      children: [
-        ...(hasExistingText ? [{ type: 'thematicBreak' }] : []),
-        {
-          type: 'text',
-          value:
-            'Type checked lint rules are more powerful than traditional lint rules, but also require configuring ',
-        },
-        {
-          type: 'link',
-          title: null,
-          url: `/getting-started/typed-linting`,
-          children: [
-            {
-              type: 'text',
-              value: 'type checked linting',
-            },
-          ],
-        },
-        {
-          type: 'text',
-          value: '. See ',
-        },
-        {
-          type: 'link',
-          title: null,
-          url: `/troubleshooting/typed-linting/performance`,
-          children: [
-            {
-              type: 'text',
-              value:
-                'Troubleshooting > Linting with Type Information > Performance',
-            },
-          ],
-        },
-        {
-          type: 'text',
-          value:
-            ' if you experience performance degredations after enabling type checked rules.',
-        },
-      ],
-      type: 'paragraph',
-    } as mdast.Paragraph,
+    ...(hasExistingText ? ['---'] : []),
+    'Type checked lint rules are more powerful than traditional lint rules, but also require configuring [type checked linting](/getting-started/typed-linting).',
+    'See [Troubleshooting > Linting with Type Information > Performance](/troubleshooting/typed-linting/performance) if you experience performance degradations after enabling type checked rules.',
   );
 }

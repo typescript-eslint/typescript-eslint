@@ -3,9 +3,12 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
-import { TYPE } from './base-config';
+import type { LibDefinition } from '../variable';
 
-export const es2020_sharedmemory = {
-  Atomics: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+import { TYPE } from './base-config';
+import { es2020_bigint } from './es2020.bigint';
+
+export const es2020_sharedmemory: LibDefinition = {
+  libs: [es2020_bigint],
+  variables: [['Atomics', TYPE]],
+};

@@ -3,20 +3,24 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
+
 import { TYPE } from './base-config';
 
-export const decorators = {
-  ClassMemberDecoratorContext: TYPE,
-  DecoratorContext: TYPE,
-  DecoratorMetadataObject: TYPE,
-  DecoratorMetadata: TYPE,
-  ClassDecoratorContext: TYPE,
-  ClassMethodDecoratorContext: TYPE,
-  ClassGetterDecoratorContext: TYPE,
-  ClassSetterDecoratorContext: TYPE,
-  ClassAccessorDecoratorContext: TYPE,
-  ClassAccessorDecoratorTarget: TYPE,
-  ClassAccessorDecoratorResult: TYPE,
-  ClassFieldDecoratorContext: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const decorators: LibDefinition = {
+  libs: [],
+  variables: [
+    ['ClassMemberDecoratorContext', TYPE],
+    ['DecoratorContext', TYPE],
+    ['DecoratorMetadataObject', TYPE],
+    ['DecoratorMetadata', TYPE],
+    ['ClassDecoratorContext', TYPE],
+    ['ClassMethodDecoratorContext', TYPE],
+    ['ClassGetterDecoratorContext', TYPE],
+    ['ClassSetterDecoratorContext', TYPE],
+    ['ClassAccessorDecoratorContext', TYPE],
+    ['ClassAccessorDecoratorTarget', TYPE],
+    ['ClassAccessorDecoratorResult', TYPE],
+    ['ClassFieldDecoratorContext', TYPE],
+  ],
+};

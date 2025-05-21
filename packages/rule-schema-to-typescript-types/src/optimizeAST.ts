@@ -44,7 +44,7 @@ export function optimizeAST(ast: AST | null): void {
       for (const element of elements) {
         uniqueElementsMap.set(JSON.stringify(element), element);
       }
-      const uniqueElements = Array.from(uniqueElementsMap.values());
+      const uniqueElements = [...uniqueElementsMap.values()];
 
       // @ts-expect-error -- purposely overwriting the property with a flattened list
       ast.elements = uniqueElements;

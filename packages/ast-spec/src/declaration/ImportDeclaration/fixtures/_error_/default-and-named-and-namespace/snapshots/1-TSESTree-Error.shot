@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > default-and-named-and-namespace > TSESTree - Error`]
+TSError
+> 1 | import a, * as b, { c } from 'mod';
+    |                 ^ 'from' expected.
+  2 |

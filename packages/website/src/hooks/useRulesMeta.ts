@@ -1,5 +1,6 @@
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import type { RulesMeta } from '@site/rulesMeta';
+
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 export function useRulesMeta(): RulesMeta {
   const {

@@ -3,12 +3,15 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';
 
-class VariableDefinition extends DefinitionBase<
+export class VariableDefinition extends DefinitionBase<
   DefinitionType.Variable,
   TSESTree.VariableDeclarator,
   TSESTree.VariableDeclaration,
   TSESTree.Identifier
 > {
+  public readonly isTypeDefinition = false;
+  public readonly isVariableDefinition = true;
+
   constructor(
     name: TSESTree.Identifier,
     node: VariableDefinition['node'],
@@ -16,9 +19,4 @@ class VariableDefinition extends DefinitionBase<
   ) {
     super(DefinitionType.Variable, name, node, decl);
   }
-
-  public readonly isTypeDefinition = false;
-  public readonly isVariableDefinition = true;
 }
-
-export { VariableDefinition };

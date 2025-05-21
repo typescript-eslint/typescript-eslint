@@ -30,3 +30,7 @@ body:
       description: Which URL(s) on the website does this CRUD?
     validations:
       required: true
+  - type: textarea
+    attributes:
+      label: Additional Info
+      description: Any additional info you'd like to provide.

@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 
 import type { TSESTreeOptions } from '../parser-options';
 
@@ -50,8 +50,10 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
       // Default to single runs for CI processes. CI=true is set by most CI providers by default.
       process.env.CI === 'true' ||
       // This will be true for invocations such as `npx eslint ...` and `./node_modules/.bin/eslint ...`
-      possibleEslintBinPaths.some(binPath =>
-        process.argv[1].endsWith(path.normalize(binPath)),
+      possibleEslintBinPaths.some(
+        binPath =>
+          process.argv.length > 1 &&
+          process.argv[1].endsWith(path.normalize(binPath)),
       )
     ) {
       return !process.argv.includes('--fix');

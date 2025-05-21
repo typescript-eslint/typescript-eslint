@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -11,7 +12,7 @@ import {
   isTypeFlagSet,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowAny?: boolean;
     allowBoolean?: boolean;
@@ -22,7 +23,7 @@ type Options = [
   },
 ];
 
-type MessageIds = 'bigintAndNumber' | 'invalid' | 'mismatched';
+export type MessageIds = 'bigintAndNumber' | 'invalid' | 'mismatched';
 
 export default createRule<Options, MessageIds>({
   name: 'restrict-plus-operands',
@@ -59,30 +60,30 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowAny: {
-            description: 'Whether to allow `any` typed values.',
             type: 'boolean',
+            description: 'Whether to allow `any` typed values.',
           },
           allowBoolean: {
-            description: 'Whether to allow `boolean` typed values.',
             type: 'boolean',
+            description: 'Whether to allow `boolean` typed values.',
           },
           allowNullish: {
+            type: 'boolean',
             description:
               'Whether to allow potentially `null` or `undefined` typed values.',
-            type: 'boolean',
           },
           allowNumberAndString: {
+            type: 'boolean',
             description:
               'Whether to allow `bigint`/`number` typed values and `string` typed values to be added together.',
-            type: 'boolean',
           },
           allowRegExp: {
-            description: 'Whether to allow `regexp` typed values.',
             type: 'boolean',
+            description: 'Whether to allow `regexp` typed values.',
           },
           skipCompoundAssignments: {
-            description: 'Whether to skip compound assignments such as `+=`.',
             type: 'boolean',
+            description: 'Whether to skip compound assignments such as `+=`.',
           },
         },
       },
@@ -171,19 +172,19 @@ export default createRule<Options, MessageIds>({
             isTypeFlagSet(baseType, ts.TypeFlags.Null | ts.TypeFlags.Undefined))
         ) {
           context.report({
-            data: {
-              stringLike,
-              type: typeChecker.typeToString(baseType),
-            },
-            messageId: 'invalid',
             node: baseNode,
+            messageId: 'invalid',
+            data: {
+              type: typeChecker.typeToString(baseType),
+              stringLike,
+            },
           });
           hadIndividualComplaint = true;
           continue;
         }
 
         // RegExps also contain ts.TypeFlags.Any & ts.TypeFlags.Object
-        for (const subBaseType of tsutils.unionTypeParts(baseType)) {
+        for (const subBaseType of tsutils.unionConstituents(baseType)) {
           const typeName = getTypeName(typeChecker, subBaseType);
           if (
             typeName === 'RegExp'
@@ -193,12 +194,12 @@ export default createRule<Options, MessageIds>({
                 isDeeplyObjectType(subBaseType)
           ) {
             context.report({
-              data: {
-                stringLike,
-                type: typeChecker.typeToString(subBaseType),
-              },
-              messageId: 'invalid',
               node: baseNode,
+              messageId: 'invalid',
+              data: {
+                type: typeChecker.typeToString(subBaseType),
+                stringLike,
+              },
             });
             hadIndividualComplaint = true;
             continue;
@@ -217,16 +218,19 @@ export default createRule<Options, MessageIds>({
         if (
           !allowNumberAndString &&
           isTypeFlagSetInUnion(baseType, ts.TypeFlags.StringLike) &&
-          isTypeFlagSetInUnion(otherType, ts.TypeFlags.NumberLike)
+          isTypeFlagSetInUnion(
+            otherType,
+            ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
+          )
         ) {
           return context.report({
+            node,
+            messageId: 'mismatched',
             data: {
-              stringLike,
               left: typeChecker.typeToString(leftType),
               right: typeChecker.typeToString(rightType),
+              stringLike,
             },
-            messageId: 'mismatched',
-            node,
           });
         }
 
@@ -235,12 +239,12 @@ export default createRule<Options, MessageIds>({
           isTypeFlagSetInUnion(otherType, ts.TypeFlags.BigIntLike)
         ) {
           return context.report({
+            node,
+            messageId: 'bigintAndNumber',
             data: {
               left: typeChecker.typeToString(leftType),
               right: typeChecker.typeToString(rightType),
             },
-            messageId: 'bigintAndNumber',
-            node,
           });
         }
       }
@@ -259,12 +263,12 @@ export default createRule<Options, MessageIds>({
 
 function isDeeplyObjectType(type: ts.Type): boolean {
   return type.isIntersection()
-    ? tsutils.intersectionTypeParts(type).every(tsutils.isObjectType)
-    : tsutils.unionTypeParts(type).every(tsutils.isObjectType);
+    ? tsutils.intersectionConstituents(type).every(tsutils.isObjectType)
+    : tsutils.unionConstituents(type).every(tsutils.isObjectType);
 }
 
 function isTypeFlagSetInUnion(type: ts.Type, flag: ts.TypeFlags): boolean {
   return tsutils
-    .unionTypeParts(type)
+    .unionConstituents(type)
     .some(subType => tsutils.isTypeFlagSet(subType, flag));
 }

@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes dot-notation 1`] = `
-"
 # SCHEMA:
 
 [
@@ -10,22 +7,27 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "properties": {
       "allowIndexSignaturePropertyAccess": {
         "default": false,
+        "description": "Whether to allow accessing properties matching an index signature with array notation.",
         "type": "boolean"
       },
       "allowKeywords": {
         "default": true,
+        "description": "Whether to allow keywords such as [\"class\"]`.",
         "type": "boolean"
       },
       "allowPattern": {
         "default": "",
+        "description": "Regular expression of names to allow.",
         "type": "string"
       },
       "allowPrivateClassPropertyAccess": {
         "default": false,
+        "description": "Whether to allow accessing class members marked as `private` with array notation.",
         "type": "boolean"
       },
       "allowProtectedClassPropertyAccess": {
         "default": false,
+        "description": "Whether to allow accessing class members marked as `protected` with array notation.",
         "type": "boolean"
       }
     },
@@ -38,12 +40,15 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to allow accessing properties matching an index signature with array notation. */
     allowIndexSignaturePropertyAccess?: boolean;
+    /** Whether to allow keywords such as ["class"]`. */
     allowKeywords?: boolean;
+    /** Regular expression of names to allow. */
     allowPattern?: string;
+    /** Whether to allow accessing class members marked as `private` with array notation. */
     allowPrivateClassPropertyAccess?: boolean;
+    /** Whether to allow accessing class members marked as `protected` with array notation. */
     allowProtectedClassPropertyAccess?: boolean;
   },
 ];
-"
-`;

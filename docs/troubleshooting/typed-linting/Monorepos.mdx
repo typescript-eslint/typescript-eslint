@@ -58,7 +58,7 @@ For each file being linted, the first matching project path will be used as its 
 ```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
       parserOptions: {
@@ -110,7 +110,7 @@ Instead of globs that use `**` to recursively check all folders, prefer paths th
 ```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
       parserOptions: {

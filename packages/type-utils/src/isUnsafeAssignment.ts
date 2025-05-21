@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import type * as ts from 'typescript';
 
 import { isTypeAnyType, isTypeUnknownType } from './predicates';
 
@@ -20,7 +21,7 @@ export function isUnsafeAssignment(
   receiver: ts.Type,
   checker: ts.TypeChecker,
   senderNode: TSESTree.Node | null,
-): false | { sender: ts.Type; receiver: ts.Type } {
+): false | { receiver: ts.Type; sender: ts.Type } {
   return isUnsafeAssignmentWorker(
     type,
     receiver,
@@ -36,7 +37,7 @@ function isUnsafeAssignmentWorker(
   checker: ts.TypeChecker,
   senderNode: TSESTree.Node | null,
   visited: Map<ts.Type, Set<ts.Type>>,
-): false | { sender: ts.Type; receiver: ts.Type } {
+): false | { receiver: ts.Type; sender: ts.Type } {
   if (isTypeAnyType(type)) {
     // Allow assignment of any ==> unknown.
     if (isTypeUnknownType(receiver)) {
@@ -44,7 +45,7 @@ function isUnsafeAssignmentWorker(
     }
 
     if (!isTypeAnyType(receiver)) {
-      return { sender: type, receiver };
+      return { receiver, sender: type };
     }
   }
 
@@ -107,7 +108,7 @@ function isUnsafeAssignmentWorker(
         visited,
       );
       if (unsafe) {
-        return { sender: type, receiver };
+        return { receiver, sender: type };
       }
     }
 

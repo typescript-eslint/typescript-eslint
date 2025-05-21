@@ -1,12 +1,158 @@
 import type { RunTests } from '@typescript-eslint/rule-tester';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import type { MessageIds, Options } from '../../../src/rules/member-ordering';
+
 import rule, { defaultOrder } from '../../../src/rules/member-ordering';
 
 const ruleTester = new RuleTester();
 
 const sortedCiWithoutGrouping: RunTests<MessageIds, Options> = {
+  invalid: [
+    // default option + interface + wrong order (multiple)
+    {
+      code: `
+interface Foo {
+  c: string;
+  B: string;
+  a: string;
+}
+      `,
+      errors: [
+        {
+          data: {
+            beforeMember: 'c',
+            member: 'B',
+          },
+          messageId: 'incorrectOrder',
+        },
+        {
+          data: {
+            beforeMember: 'B',
+            member: 'a',
+          },
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + interface + lower/upper case wrong order
+    {
+      code: `
+interface Foo {
+  B: b;
+  a: b;
+}
+      `,
+      errors: [
+        {
+          data: {
+            beforeMember: 'B',
+            member: 'a',
+          },
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + type literal + lower/upper case wrong order
+    {
+      code: `
+type Foo = {
+  B: b;
+  a: b;
+};
+      `,
+      errors: [
+        {
+          data: {
+            beforeMember: 'B',
+            member: 'a',
+          },
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + class + lower/upper case wrong order
+    {
+      code: `
+class Foo {
+  public static B: string;
+  public static a: string;
+}
+      `,
+      errors: [
+        {
+          data: {
+            beforeMember: 'B',
+            member: 'a',
+          },
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + class expression + lower/upper case wrong order
+    {
+      code: `
+const foo = class Foo {
+  public static B: string;
+  public static a: string;
+};
+      `,
+      errors: [
+        {
+          data: {
+            beforeMember: 'B',
+            member: 'a',
+          },
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+  ],
   valid: [
     // default option + interface + lower/upper case
     {
@@ -99,153 +245,220 @@ class Foo {
       ],
     },
   ],
+};
+
+const sortedCiWithGrouping: RunTests<MessageIds, Options> = {
   invalid: [
-    // default option + interface + wrong order (multiple)
+    // default option + interface + wrong order within group and wrong group order + alphabetically
     {
       code: `
 interface Foo {
-  c: string;
-  B: string;
-  a: string;
+  [a: string]: number;
+
+  a: x;
+  B: x;
+  c: x;
+
+  c(): void;
+  B(): void;
+  a(): void;
+
+  (): Baz;
+
+  new (): Bar;
 }
       `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
       errors: [
         {
-          messageId: 'incorrectOrder',
           data: {
-            member: 'B',
             beforeMember: 'c',
+            member: 'B',
           },
+          messageId: 'incorrectOrder',
         },
         {
-          messageId: 'incorrectOrder',
           data: {
-            member: 'a',
             beforeMember: 'B',
+            member: 'a',
           },
+          messageId: 'incorrectOrder',
+        },
+        {
+          data: {
+            name: 'call',
+            rank: 'field',
+          },
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          data: {
+            name: 'new',
+            rank: 'method',
+          },
+          messageId: 'incorrectGroupOrder',
         },
       ],
-    },
-
-    // default option + interface + lower/upper case wrong order
-    {
-      code: `
-interface Foo {
-  B: b;
-  a: b;
-}
-      `,
       options: [
         {
           default: {
-            memberTypes: 'never',
+            memberTypes: defaultOrder,
             order: 'alphabetically-case-insensitive',
           },
         },
       ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'B',
-          },
-        },
-      ],
     },
 
-    // default option + type literal + lower/upper case wrong order
+    // default option + type literal + wrong order within group and wrong group order + alphabetically
     {
       code: `
 type Foo = {
-  B: b;
-  a: b;
+  [a: string]: number;
+
+  a: x;
+  B: x;
+  c: x;
+
+  c(): void;
+  B(): void;
+  a(): void;
+
+  (): Baz;
+
+  new (): Bar;
 };
       `,
+      errors: [
+        {
+          data: {
+            beforeMember: 'c',
+            member: 'B',
+          },
+          messageId: 'incorrectOrder',
+        },
+        {
+          data: {
+            beforeMember: 'B',
+            member: 'a',
+          },
+          messageId: 'incorrectOrder',
+        },
+        {
+          data: {
+            name: 'call',
+            rank: 'field',
+          },
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          data: {
+            name: 'new',
+            rank: 'method',
+          },
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
       options: [
         {
           default: {
-            memberTypes: 'never',
+            memberTypes: defaultOrder,
             order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'B',
           },
         },
       ],
     },
 
-    // default option + class + lower/upper case wrong order
+    // default option + class + wrong order within group and wrong group order + alphabetically
     {
       code: `
 class Foo {
-  public static B: string;
+  public static c: string = '';
+  public static B: string = '';
   public static a: string;
+
+  constructor() {}
+
+  public d: string = '';
 }
       `,
+      errors: [
+        {
+          data: {
+            beforeMember: 'c',
+            member: 'B',
+          },
+          messageId: 'incorrectOrder',
+        },
+        {
+          data: {
+            beforeMember: 'B',
+            member: 'a',
+          },
+          messageId: 'incorrectOrder',
+        },
+        {
+          data: {
+            name: 'd',
+            rank: 'public constructor',
+          },
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
       options: [
         {
           default: {
-            memberTypes: 'never',
+            memberTypes: defaultOrder,
             order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'B',
           },
         },
       ],
     },
 
-    // default option + class expression + lower/upper case wrong order
+    // default option + class expression + wrong order within group and wrong group order + alphabetically
     {
       code: `
 const foo = class Foo {
-  public static B: string;
+  public static c: string = '';
+  public static B: string = '';
   public static a: string;
+
+  constructor() {}
+
+  public d: string = '';
 };
       `,
+      errors: [
+        {
+          data: {
+            beforeMember: 'c',
+            member: 'B',
+          },
+          messageId: 'incorrectOrder',
+        },
+        {
+          data: {
+            beforeMember: 'B',
+            member: 'a',
+          },
+          messageId: 'incorrectOrder',
+        },
+        {
+          data: {
+            name: 'd',
+            rank: 'public constructor',
+          },
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
       options: [
         {
           default: {
-            memberTypes: 'never',
+            memberTypes: defaultOrder,
             order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'B',
           },
         },
       ],
     },
   ],
-};
-
-const sortedCiWithGrouping: RunTests<MessageIds, Options> = {
   valid: [
     // default option + interface + default order + alphabetically
     {
@@ -508,223 +721,12 @@ class Foo {
       ],
     },
   ],
-  invalid: [
-    // default option + interface + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-interface Foo {
-  [a: string]: number;
-
-  a: x;
-  B: x;
-  c: x;
-
-  c(): void;
-  B(): void;
-  a(): void;
-
-  (): Baz;
-
-  new (): Bar;
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: defaultOrder,
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'B',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'B',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-        },
-      ],
-    },
-
-    // default option + type literal + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-type Foo = {
-  [a: string]: number;
-
-  a: x;
-  B: x;
-  c: x;
-
-  c(): void;
-  B(): void;
-  a(): void;
-
-  (): Baz;
-
-  new (): Bar;
-};
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: defaultOrder,
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'B',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'B',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-        },
-      ],
-    },
-
-    // default option + class + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-class Foo {
-  public static c: string = '';
-  public static B: string = '';
-  public static a: string;
-
-  constructor() {}
-
-  public d: string = '';
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: defaultOrder,
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'B',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'B',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'd',
-            rank: 'public constructor',
-          },
-        },
-      ],
-    },
-
-    // default option + class expression + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-const foo = class Foo {
-  public static c: string = '';
-  public static B: string = '';
-  public static a: string;
-
-  constructor() {}
-
-  public d: string = '';
-};
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: defaultOrder,
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'B',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'B',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'd',
-            rank: 'public constructor',
-          },
-        },
-      ],
-    },
-  ],
 };
 
 ruleTester.run('member-ordering-alphabetically-case-insensitive-order', rule, {
-  valid: [...sortedCiWithoutGrouping.valid, ...sortedCiWithGrouping.valid],
   invalid: [
     ...sortedCiWithoutGrouping.invalid,
     ...sortedCiWithGrouping.invalid,
   ],
+  valid: [...sortedCiWithoutGrouping.valid, ...sortedCiWithGrouping.valid],
 });

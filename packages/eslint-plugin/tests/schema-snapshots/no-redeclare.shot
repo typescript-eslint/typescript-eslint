@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-redeclare 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,9 +6,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "builtinGlobals": {
+        "description": "Whether to report shadowing of built-in global variables.",
         "type": "boolean"
       },
       "ignoreDeclarationMerge": {
+        "description": "Whether to ignore declaration merges between certain TypeScript declaration types.",
         "type": "boolean"
       }
     },
@@ -24,9 +23,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to report shadowing of built-in global variables. */
     builtinGlobals?: boolean;
+    /** Whether to ignore declaration merges between certain TypeScript declaration types. */
     ignoreDeclarationMerge?: boolean;
   },
 ];
-"
-`;

@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isReferenceToGlobalFunction } from '../util';
@@ -11,7 +12,6 @@ export default createRule({
       description: 'Disallow using the unsafe built-in Function type',
       recommended: 'recommended',
     },
-    fixable: 'code',
     messages: {
       bannedFunctionType: [
         'The `Function` type accepts any function-like value.',

@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes prefer-readonly-parameter-types 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,6 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allow": {
+        "description": "An array of type specifiers to ignore.",
         "items": {
           "oneOf": [
             {
@@ -103,12 +101,15 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "array"
       },
       "checkParameterProperties": {
+        "description": "Whether to check class parameter properties.",
         "type": "boolean"
       },
       "ignoreInferredTypes": {
+        "description": "Whether to ignore parameters which don't explicitly specify a type.",
         "type": "boolean"
       },
       "treatMethodsAsReadonly": {
+        "description": "Whether to treat all mutable methods as though they are readonly.",
         "type": "boolean"
       }
     },
@@ -121,27 +122,29 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** An array of type specifiers to ignore. */
     allow?: (
       | {
           from: 'file';
-          name: [string, ...string[]] | string;
+          name: string | string[];
           path?: string;
         }
       | {
           from: 'lib';
-          name: [string, ...string[]] | string;
+          name: string | string[];
         }
       | {
           from: 'package';
-          name: [string, ...string[]] | string;
+          name: string | string[];
           package: string;
         }
       | string
     )[];
+    /** Whether to check class parameter properties. */
     checkParameterProperties?: boolean;
+    /** Whether to ignore parameters which don't explicitly specify a type. */
     ignoreInferredTypes?: boolean;
+    /** Whether to treat all mutable methods as though they are readonly. */
     treatMethodsAsReadonly?: boolean;
   },
 ];
-"
-`;

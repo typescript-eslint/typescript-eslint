@@ -16,7 +16,7 @@ export default function TypeScriptOverlap({
           rule if you prefer the ESLint error messages over the TypeScript
           compiler error messages.
         </p>
-        {strict === undefined ? (
+        {strict == null ? (
           <></>
         ) : (
           <p>

@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/packages/ast-spec"
+  },
+  "references": [
+    {
+      "path": "../typescript-estree/tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "../../tsconfig.spec.json"
+    }
+  ]
+}

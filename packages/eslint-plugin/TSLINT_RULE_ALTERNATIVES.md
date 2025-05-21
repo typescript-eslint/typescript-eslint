@@ -85,7 +85,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                                                                  |
 | [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                                                    |
 | [`no-string-literal`]                | 🌟  | [`dot-notation`][dot-notation]                                                                            |
-| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/only-throw-literal`]                                                                 |
+| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/only-throw-error`]                                                                   |
 | [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                                                       |
 | [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                                                        |
 | [`no-tautology-expression`]          | 🛑  | N/A                                                                                                       |
@@ -122,7 +122,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | TSLint rule                  |     | ESLint rule                                        |
 | ---------------------------- | :-: | -------------------------------------------------- |
 | [`cyclomatic-complexity`]    | 🌟  | [`complexity`][complexity]                         |
-| [`deprecation`]              | 🔌  | [`deprecation/deprecation`]                        |
+| [`deprecation`]              | ✅  | [`@typescript-eslint/no-deprecated`]               |
 | [`eofline`]                  | 🌟  | [`eol-last`][eol-last]                             |
 | [`indent`]                   | ✅  | [`@typescript-eslint/indent`] or [Prettier]        |
 | [`linebreak-style`]          | 🌟  | [`linebreak-style`][linebreak-style] or [Prettier] |
@@ -184,7 +184,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`object-literal-shorthand`]        | 🌟  | [`object-shorthand`][object-shorthand]                                              |
 | [`one-line`]                        | 🌟  | [`brace-style`][brace-style] or [Prettier]                                          |
 | [`one-variable-per-declaration`]    | 🌟  | [`one-var`][one-var]                                                                |
-| [`ordered-imports`]                 | 🌓  | [`import/order`]                                                                    |
+| [`ordered-imports`]                 | 🔌  | [`import/order`]                                                                    |
 | [`prefer-function-over-method`]     | 🌟  | [`@typescript-eslint/class-methods-use-this`]                                       |
 | [`prefer-method-signature`]         | ✅  | [`@typescript-eslint/method-signature-style`]                                       |
 | [`prefer-switch`]                   | 🛑  | N/A                                                                                 |
@@ -259,7 +259,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 | `no-unnecessary-override`             | 🛑  | N/A                                                                    |
 | `no-unnecessary-semicolons`           | 🌟  | [`no-extra-semi`][no-extra-semi] or [Prettier]                         |
 | `no-useless-files`                    | 🛑  | N/A                                                                    |
-| `no-with-statement`                   | 🌟  | [`no-with`][no-with]                                                   |
+| `no-with-statement`                   | 🌟  | [`no-with`][no-with] <sup>[6]</sup>                                    |
 | `promise-must-complete`               | 🛑  | N/A                                                                    |
 | `underscore-consistent-invocation`    | 🔌  | [`lodash/chaining`]                                                    |
 | `use-named-parameter`                 | 🛑  | N/A                                                                    |
@@ -270,6 +270,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 <sup>[3]</sup> Recommended config: `["error", "declaration", { "allowArrowFunctions": true }]`<br>
 <sup>[4]</sup> Recommended config: `["error", { "terms": ["BUG", "HACK", "FIXME", "LATER", "LATER2", "TODO"], "location": "anywhere" }]`<br>
 <sup>[5]</sup> Does not check class fields.
+<sup>[6]</sup> `with` statements are not allowed by the TypeScript compiler
 
 ### Security
 
@@ -622,7 +623,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/no-unnecessary-boolean-literal-compare`]: https://typescript-eslint.io/rules/no-unnecessary-boolean-literal-compare
 [`@typescript-eslint/no-misused-new`]: https://typescript-eslint.io/rules/no-misused-new
 [`@typescript-eslint/no-this-alias`]: https://typescript-eslint.io/rules/no-this-alias
-[`@typescript-eslint/only-throw-literal`]: https://typescript-eslint.io/rules/only-throw-literal
+[`@typescript-eslint/only-throw-error`]: https://typescript-eslint.io/rules/only-throw-error
 [`@typescript-eslint/no-extraneous-class`]: https://typescript-eslint.io/rules/no-extraneous-class
 [`@typescript-eslint/no-unused-vars`]: https://typescript-eslint.io/rules/no-unused-vars
 [`@typescript-eslint/no-use-before-define`]: https://typescript-eslint.io/rules/no-use-before-define
@@ -724,5 +725,4 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`jest/no-focused-tests`]: https://github.com/jest-community/eslint-plugin-jest/blob/main/docs/rules/no-focused-tests.md
 [`jsx-a11y/heading-has-content`]: https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/heading-has-content.md
 [`lodash/chaining`]: https://github.com/wix/eslint-plugin-lodash/blob/master/docs/rules/chaining.md
-[`deprecation/deprecation`]: https://github.com/gund/eslint-plugin-deprecation
 [`desktop/insecure-random`]: https://github.com/desktop/desktop/blob/development/eslint-rules/insecure-random.js

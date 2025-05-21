@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics interface-with-generic AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > interface-with-generic > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -20,13 +20,13 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-generic AST Alignmen
             end: { column: 20, line: 3 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Test',
--         optional: false,
+          optional: false,
 
           range: [83, 87],
           loc: {
@@ -39,8 +39,8 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-generic AST Alignmen
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -53,8 +53,8 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-generic AST Alignmen
 -                 end: { column: 16, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [88, 89],
               loc: {
@@ -85,5 +85,4 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-generic AST Alignmen
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration ExportNamedDeclaration enum AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > ExportNamedDeclaration > enum > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -24,13 +24,13 @@ exports[`AST Fixtures declaration ExportNamedDeclaration enum AST Alignment - AS
 -             end: { column: 18, line: 1 },
 -           },
 -         },
--         const: false,
--         declare: false,
+          const: false,
+          declare: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'Foo',
--           optional: false,
+            optional: false,
 
             range: [12, 15],
             loc: {
@@ -64,5 +64,4 @@ exports[`AST Fixtures declaration ExportNamedDeclaration enum AST Alignment - AS
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

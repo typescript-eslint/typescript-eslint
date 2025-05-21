@@ -11,14 +11,12 @@
     'ajv',
     // ESM only so we can't go higher until we natively run ESM internally.
     'globby',
-    // Blocked until we enable ESLint v9 locally in our own PR (#9119).
-    'eslint',
     // ESM only so we can't go higher until we natively run ESM internally.
     'execa',
   ],
   ignorePaths: [
     // Integration test package.json's should never be updated as they're purposely fixed tests.
-    'tests/integration/fixtures',
+    'packages/integration-tests/fixtures',
   ],
 
   labels: ['dependencies'],
@@ -37,11 +35,6 @@
       addLabels: ['github-actions'],
       description: 'Label GHA ecosystem PRs appropriately.',
       matchManagers: ['github-actions'],
-    },
-    {
-      description: 'Ignore Nrwl/Nx packages updated using the nx migrate CLI.',
-      enabled: false,
-      packagePatterns: ['^@nrwl/', '^@nx/', 'nx-cloud'],
     },
   ],
 

@@ -2,37 +2,30 @@ import type {
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import type {
   MessageIds,
   Options,
 } from '../../../../src/rules/naming-convention';
-import rule from '../../../../src/rules/naming-convention';
 import type {
   PredefinedFormatsString,
   Selector,
 } from '../../../../src/rules/naming-convention-utils';
+
+import rule from '../../../../src/rules/naming-convention';
 import { selectorTypeToMessageString } from '../../../../src/rules/naming-convention-utils';
 
 export const formatTestNames: Readonly<
   Record<PredefinedFormatsString, Record<'invalid' | 'valid', string[]>>
 > = {
   camelCase: {
-    valid: ['strictCamelCase', 'lower', 'camelCaseUNSTRICT'],
     invalid: ['snake_case', 'UPPER_CASE', 'UPPER', 'StrictPascalCase'],
-  },
-  strictCamelCase: {
-    valid: ['strictCamelCase', 'lower'],
-    invalid: [
-      'snake_case',
-      'UPPER_CASE',
-      'UPPER',
-      'StrictPascalCase',
-      'camelCaseUNSTRICT',
-    ],
+    valid: ['strictCamelCase', 'lower', 'camelCaseUNSTRICT'],
   },
   PascalCase: {
+    invalid: ['snake_case', 'UPPER_CASE', 'strictCamelCase'],
     valid: [
       'StrictPascalCase',
       'Pascal',
@@ -40,10 +33,27 @@ export const formatTestNames: Readonly<
       'PascalCaseUNSTRICT',
       'UPPER',
     ],
-    invalid: ['snake_case', 'UPPER_CASE', 'strictCamelCase'],
+  },
+  snake_case: {
+    invalid: [
+      'UPPER_CASE',
+      'SNAKE_case_UNSTRICT',
+      'strictCamelCase',
+      'StrictPascalCase',
+    ],
+    valid: ['snake_case', 'lower'],
+  },
+  strictCamelCase: {
+    invalid: [
+      'snake_case',
+      'UPPER_CASE',
+      'UPPER',
+      'StrictPascalCase',
+      'camelCaseUNSTRICT',
+    ],
+    valid: ['strictCamelCase', 'lower'],
   },
   StrictPascalCase: {
-    valid: ['StrictPascalCase', 'Pascal', 'I18n'],
     invalid: [
       'snake_case',
       'UPPER_CASE',
@@ -51,9 +61,9 @@ export const formatTestNames: Readonly<
       'strictCamelCase',
       'PascalCaseUNSTRICT',
     ],
+    valid: ['StrictPascalCase', 'Pascal', 'I18n'],
   },
   UPPER_CASE: {
-    valid: ['UPPER_CASE', 'UPPER'],
     invalid: [
       'lower',
       'snake_case',
@@ -61,15 +71,7 @@ export const formatTestNames: Readonly<
       'strictCamelCase',
       'StrictPascalCase',
     ],
-  },
-  snake_case: {
-    valid: ['snake_case', 'lower'],
-    invalid: [
-      'UPPER_CASE',
-      'SNAKE_case_UNSTRICT',
-      'strictCamelCase',
-      'StrictPascalCase',
-    ],
+    valid: ['UPPER_CASE', 'UPPER'],
   },
 };
 
@@ -92,10 +94,10 @@ export function createTestCases(cases: Cases): void {
             preparedName: string,
             options: Selector,
           ): ValidTestCase<Options> => ({
-            options: [{ ...options, filter: IGNORED_FILTER }],
             code: `// ${JSON.stringify(options)}\n${test.code
-              .map(code => code.replace(REPLACE_REGEX, preparedName))
+              .map(code => code.replaceAll(REPLACE_REGEX, preparedName))
               .join('\n')}`,
+            options: [{ ...options, filter: IGNORED_FILTER }],
           });
 
           return [
@@ -260,8 +262,8 @@ export function createTestCases(cases: Cases): void {
               selector !== 'accessor'
                 ? {
                     data: {
-                      type: selectorTypeToMessageString(selector),
                       name: preparedName,
+                      type: selectorTypeToMessageString(selector),
                       ...data,
                     },
                   }
@@ -270,22 +272,22 @@ export function createTestCases(cases: Cases): void {
             }));
 
             const errors: {
-              data?: { type: string; name: string };
+              data?: { name: string; type: string };
               messageId: MessageIds;
             }[] = [];
             test.code.forEach(() => errors.push(...errorsTemplate));
 
             return {
+              code: `// ${JSON.stringify(options)}\n${test.code
+                .map(code => code.replaceAll(REPLACE_REGEX, preparedName))
+                .join('\n')}`,
+              errors,
               options: [
                 {
                   ...options,
                   filter: IGNORED_FILTER,
                 },
               ],
-              code: `// ${JSON.stringify(options)}\n${test.code
-                .map(code => code.replace(REPLACE_REGEX, preparedName))
-                .join('\n')}`,
-              errors: errors,
             };
           };
 
@@ -324,7 +326,7 @@ export function createTestCases(cases: Cases): void {
                 leadingUnderscore: 'require',
               },
               'missingUnderscore',
-              { position: 'leading', count: 'one' },
+              { count: 'one', position: 'leading' },
             ),
             createCase(
               name,
@@ -334,7 +336,7 @@ export function createTestCases(cases: Cases): void {
                 leadingUnderscore: 'requireDouble',
               },
               'missingUnderscore',
-              { position: 'leading', count: 'two' },
+              { count: 'two', position: 'leading' },
             ),
             createCase(
               `_${name}`,
@@ -344,7 +346,7 @@ export function createTestCases(cases: Cases): void {
                 leadingUnderscore: 'requireDouble',
               },
               'missingUnderscore',
-              { position: 'leading', count: 'two' },
+              { count: 'two', position: 'leading' },
             ),
 
             // trailingUnderscore
@@ -366,7 +368,7 @@ export function createTestCases(cases: Cases): void {
                 trailingUnderscore: 'require',
               },
               'missingUnderscore',
-              { position: 'trailing', count: 'one' },
+              { count: 'one', position: 'trailing' },
             ),
             createCase(
               name,
@@ -376,7 +378,7 @@ export function createTestCases(cases: Cases): void {
                 trailingUnderscore: 'requireDouble',
               },
               'missingUnderscore',
-              { position: 'trailing', count: 'two' },
+              { count: 'two', position: 'trailing' },
             ),
             createCase(
               `${name}_`,
@@ -386,7 +388,7 @@ export function createTestCases(cases: Cases): void {
                 trailingUnderscore: 'requireDouble',
               },
               'missingUnderscore',
-              { position: 'trailing', count: 'two' },
+              { count: 'two', position: 'trailing' },
             ),
 
             // prefix
@@ -398,7 +400,7 @@ export function createTestCases(cases: Cases): void {
                 prefix: prefixSingle,
               },
               'missingAffix',
-              { position: 'prefix', affixes: prefixSingle.join(', ') },
+              { affixes: prefixSingle.join(', '), position: 'prefix' },
             ),
             createCase(
               name,
@@ -409,8 +411,8 @@ export function createTestCases(cases: Cases): void {
               },
               'missingAffix',
               {
-                position: 'prefix',
                 affixes: prefixMulti.join(', '),
+                position: 'prefix',
               },
             ),
 
@@ -423,7 +425,7 @@ export function createTestCases(cases: Cases): void {
                 suffix: suffixSingle,
               },
               'missingAffix',
-              { position: 'suffix', affixes: suffixSingle.join(', ') },
+              { affixes: suffixSingle.join(', '), position: 'suffix' },
             ),
             createCase(
               name,
@@ -434,8 +436,8 @@ export function createTestCases(cases: Cases): void {
               },
               'missingAffix',
               {
-                position: 'suffix',
                 affixes: suffixMulti.join(', '),
+                position: 'suffix',
               },
             ),
           );

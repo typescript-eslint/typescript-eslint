@@ -19,26 +19,6 @@ declare module './generated/ast-spec' {
   interface AccessorPropertyNonComputedName {
     parent: TSESTree.ClassBody;
   }
-
-  interface VariableDeclaratorDefiniteAssignment {
-    parent: TSESTree.VariableDeclaration;
-  }
-
-  interface VariableDeclaratorMaybeInit {
-    parent: TSESTree.VariableDeclaration;
-  }
-
-  interface VariableDeclaratorNoInit {
-    parent: TSESTree.VariableDeclaration;
-  }
-
-  interface UsingInForOfDeclarator {
-    parent: TSESTree.VariableDeclaration;
-  }
-
-  interface UsingInNormalContextDeclarator {
-    parent: TSESTree.VariableDeclaration;
-  }
   interface TSAbstractAccessorPropertyComputedName {
     parent: TSESTree.ClassBody;
   }
@@ -46,20 +26,36 @@ declare module './generated/ast-spec' {
     parent: TSESTree.ClassBody;
   }
 
+  interface VariableDeclaratorDefiniteAssignment {
+    parent: TSESTree.VariableDeclaration;
+  }
+  interface VariableDeclaratorMaybeInit {
+    parent: TSESTree.VariableDeclaration;
+  }
+  interface VariableDeclaratorNoInit {
+    parent: TSESTree.VariableDeclaration;
+  }
+  interface UsingInForOfDeclarator {
+    parent: TSESTree.VariableDeclaration;
+  }
+  interface UsingInNormalContextDeclarator {
+    parent: TSESTree.VariableDeclaration;
+  }
+
   interface CatchClause {
     parent: TSESTree.TryStatement;
   }
 
   interface ClassBody {
-    parent: TSESTree.ClassExpression | TSESTree.ClassDeclaration;
-  }
-
-  interface ExportSpecifier {
-    parent: TSESTree.ExportNamedDeclaration;
+    parent: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
   }
 
   interface ImportAttribute {
-    parent: TSESTree.ImportDeclaration | TSESTree.ImportExpression;
+    parent:
+      | TSESTree.ExportAllDeclaration
+      | TSESTree.ExportNamedDeclaration
+      | TSESTree.ImportDeclaration
+      | TSESTree.TSImportType;
   }
 
   interface ImportDefaultSpecifier {
@@ -75,6 +71,34 @@ declare module './generated/ast-spec' {
       | TSESTree.ExportAllDeclaration
       | TSESTree.ExportNamedDeclaration
       | TSESTree.ImportDeclaration;
+  }
+
+  interface ExportDefaultDeclaration {
+    parent: TSESTree.BlockStatement | TSESTree.Program | TSESTree.TSModuleBlock;
+  }
+
+  interface ExportNamedDeclarationWithoutSourceWithMultiple {
+    parent: TSESTree.BlockStatement | TSESTree.Program | TSESTree.TSModuleBlock;
+  }
+
+  interface ExportNamedDeclarationWithoutSourceWithSingle {
+    parent: TSESTree.BlockStatement | TSESTree.Program | TSESTree.TSModuleBlock;
+  }
+
+  interface ExportNamedDeclarationWithSource {
+    parent: TSESTree.BlockStatement | TSESTree.Program | TSESTree.TSModuleBlock;
+  }
+
+  interface FunctionDeclarationWithName {
+    parent:
+      | TSESTree.BlockStatement
+      | TSESTree.ExportDefaultDeclaration
+      | TSESTree.ExportNamedDeclaration
+      | TSESTree.Program;
+  }
+
+  interface FunctionDeclarationWithOptionalName {
+    parent: TSESTree.ExportDefaultDeclaration;
   }
 
   interface JSXAttribute {
@@ -138,6 +162,7 @@ declare module './generated/ast-spec' {
     parent:
       | TSESTree.ArrayExpression
       | TSESTree.CallExpression
+      | TSESTree.NewExpression
       | TSESTree.ObjectExpression;
   }
 
@@ -216,8 +241,15 @@ declare module './generated/ast-spec' {
   interface TSTypeParameter {
     parent:
       | TSESTree.TSInferType
-      | TSESTree.TSTypeParameterDeclaration
-      | TSESTree.TSMappedType;
+      | TSESTree.TSMappedType
+      | TSESTree.TSTypeParameterDeclaration;
+  }
+
+  interface ExportSpecifierWithIdentifierLocal {
+    parent: TSESTree.ExportNamedDeclaration;
+  }
+  interface ExportSpecifierWithStringOrLiteralLocal {
+    parent: TSESTree.ExportNamedDeclaration;
   }
 }
 

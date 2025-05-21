@@ -4,7 +4,7 @@ import { createSerializer } from './baseSerializer';
 // hacking around the fact that you can't use abstract classes generically
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 class ScopeInstance extends ScopeBase<any, any, any> {}
-const serializer = createSerializer(
+export const serializer = createSerializer(
   ScopeBase,
   [
     //
@@ -18,5 +18,3 @@ const serializer = createSerializer(
   ],
   ScopeInstance,
 );
-
-export { serializer };

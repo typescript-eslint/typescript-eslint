@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-floating-promises 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,6 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowForKnownSafeCalls": {
+        "description": "Type specifiers of functions whose calls are safe to float.",
         "items": {
           "oneOf": [
             {
@@ -103,6 +101,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "array"
       },
       "allowForKnownSafePromises": {
+        "description": "Type specifiers that are known to be safe to float.",
         "items": {
           "oneOf": [
             {
@@ -197,7 +196,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "array"
       },
       "checkThenables": {
-        "description": "Whether to check all \\"Thenable\\"s, not just the built-in Promise type.",
+        "description": "Whether to check all \"Thenable\"s, not just the built-in Promise type.",
         "type": "boolean"
       },
       "ignoreIIFE": {
@@ -205,7 +204,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       },
       "ignoreVoid": {
-        "description": "Whether to ignore \`void\` expressions.",
+        "description": "Whether to ignore `void` expressions.",
         "type": "boolean"
       }
     },
@@ -218,36 +217,38 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Type specifiers of functions whose calls are safe to float. */
     allowForKnownSafeCalls?: (
       | {
           from: 'file';
-          name: [string, ...string[]] | string;
+          name: string | string[];
           path?: string;
         }
       | {
           from: 'lib';
-          name: [string, ...string[]] | string;
+          name: string | string[];
         }
       | {
           from: 'package';
-          name: [string, ...string[]] | string;
+          name: string | string[];
           package: string;
         }
       | string
     )[];
+    /** Type specifiers that are known to be safe to float. */
     allowForKnownSafePromises?: (
       | {
           from: 'file';
-          name: [string, ...string[]] | string;
+          name: string | string[];
           path?: string;
         }
       | {
           from: 'lib';
-          name: [string, ...string[]] | string;
+          name: string | string[];
         }
       | {
           from: 'package';
-          name: [string, ...string[]] | string;
+          name: string | string[];
           package: string;
         }
       | string
@@ -256,9 +257,7 @@ type Options = [
     checkThenables?: boolean;
     /** Whether to ignore async IIFEs (Immediately Invoked Function Expressions). */
     ignoreIIFE?: boolean;
-    /** Whether to ignore \`void\` expressions. */
+    /** Whether to ignore `void` expressions. */
     ignoreVoid?: boolean;
   },
 ];
-"
-`;

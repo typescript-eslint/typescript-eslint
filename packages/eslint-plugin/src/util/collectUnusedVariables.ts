@@ -2,12 +2,13 @@ import type {
   ScopeManager,
   ScopeVariable,
 } from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import {
   ImplicitLibVariable,
   ScopeType,
   Visitor,
 } from '@typescript-eslint/scope-manager';
-import type { TSESTree } from '@typescript-eslint/utils';
 import {
   AST_NODE_TYPES,
   ASTUtils,
@@ -40,6 +41,41 @@ class UnusedVarsVisitor extends Visitor {
     VariableAnalysis
   >();
 
+  protected ClassDeclaration = this.visitClass;
+
+  protected ClassExpression = this.visitClass;
+
+  protected ForInStatement = this.visitForInForOf;
+
+  protected ForOfStatement = this.visitForInForOf;
+
+  //#region HELPERS
+
+  protected FunctionDeclaration = this.visitFunction;
+
+  protected FunctionExpression = this.visitFunction;
+  protected MethodDefinition = this.visitSetter;
+  protected Property = this.visitSetter;
+
+  protected TSCallSignatureDeclaration = this.visitFunctionTypeSignature;
+
+  protected TSConstructorType = this.visitFunctionTypeSignature;
+
+  protected TSConstructSignatureDeclaration = this.visitFunctionTypeSignature;
+
+  protected TSDeclareFunction = this.visitFunctionTypeSignature;
+
+  protected TSEmptyBodyFunctionExpression = this.visitFunctionTypeSignature;
+
+  //#endregion HELPERS
+
+  //#region VISITORS
+  // NOTE - This is a simple visitor - meaning it does not support selectors
+
+  protected TSFunctionType = this.visitFunctionTypeSignature;
+
+  protected TSMethodSignature = this.visitFunctionTypeSignature;
+
   readonly #scopeManager: TSESLint.Scope.ScopeManager;
 
   private constructor(scopeManager: ScopeManager) {
@@ -67,6 +103,60 @@ class UnusedVarsVisitor extends Visitor {
     );
     this.RESULTS_CACHE.set(program, unusedVars);
     return unusedVars;
+  }
+
+  protected Identifier(node: TSESTree.Identifier): void {
+    const scope = this.getScope(node);
+    if (
+      scope.type === TSESLint.Scope.ScopeType.function &&
+      node.name === 'this' &&
+      // this parameters should always be considered used as they're pseudo-parameters
+      'params' in scope.block &&
+      scope.block.params.includes(node)
+    ) {
+      this.markVariableAsUsed(node);
+    }
+  }
+
+  protected TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
+    // enum members create variables because they can be referenced within the enum,
+    // but they obviously aren't unused variables for the purposes of this rule.
+    const scope = this.getScope(node);
+    for (const variable of scope.variables) {
+      this.markVariableAsUsed(variable);
+    }
+  }
+
+  protected TSMappedType(node: TSESTree.TSMappedType): void {
+    // mapped types create a variable for their type name, but it's not necessary to reference it,
+    // so we shouldn't consider it as unused for the purpose of this rule.
+    this.markVariableAsUsed(node.key);
+  }
+
+  protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
+    // -- global augmentation can be in any file, and they do not need exports
+    if (node.kind === 'global') {
+      this.markVariableAsUsed('global', node.parent);
+    }
+  }
+
+  protected TSParameterProperty(node: TSESTree.TSParameterProperty): void {
+    let identifier: TSESTree.Identifier | null = null;
+    switch (node.parameter.type) {
+      case AST_NODE_TYPES.AssignmentPattern:
+        if (node.parameter.left.type === AST_NODE_TYPES.Identifier) {
+          identifier = node.parameter.left;
+        }
+        break;
+
+      case AST_NODE_TYPES.Identifier:
+        identifier = node.parameter;
+        break;
+    }
+
+    if (identifier) {
+      this.markVariableAsUsed(identifier);
+    }
   }
 
   private collectUnusedVariables(
@@ -116,8 +206,6 @@ class UnusedVarsVisitor extends Visitor {
     return variables;
   }
 
-  //#region HELPERS
-
   private getScope(currentNode: TSESTree.Node): TSESLint.Scope.Scope {
     // On Program node, get the outermost scope to avoid return Node.js special function scope or ES modules scope.
     const inner = currentNode.type !== AST_NODE_TYPES.Program;
@@ -144,7 +232,7 @@ class UnusedVarsVisitor extends Visitor {
   ): void;
   private markVariableAsUsed(name: string, parent: TSESTree.Node): void;
   private markVariableAsUsed(
-    variableOrIdentifierOrName: ScopeVariable | TSESTree.Identifier | string,
+    variableOrIdentifierOrName: string | ScopeVariable | TSESTree.Identifier,
     parent?: TSESTree.Node,
   ): void {
     if (
@@ -190,49 +278,6 @@ class UnusedVarsVisitor extends Visitor {
       if (variable.identifiers[0] === scope.block.id) {
         this.markVariableAsUsed(variable);
         return;
-      }
-    }
-  }
-
-  private visitFunction(
-    node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
-  ): void {
-    const scope = this.getScope(node);
-    // skip implicit "arguments" variable
-    const variable = scope.set.get('arguments');
-    if (variable?.defs.length === 0) {
-      this.markVariableAsUsed(variable);
-    }
-  }
-
-  private visitFunctionTypeSignature(
-    node:
-      | TSESTree.TSCallSignatureDeclaration
-      | TSESTree.TSConstructorType
-      | TSESTree.TSConstructSignatureDeclaration
-      | TSESTree.TSDeclareFunction
-      | TSESTree.TSEmptyBodyFunctionExpression
-      | TSESTree.TSFunctionType
-      | TSESTree.TSMethodSignature,
-  ): void {
-    // function type signature params create variables because they can be referenced within the signature,
-    // but they obviously aren't unused variables for the purposes of this rule.
-    for (const param of node.params) {
-      this.visitPattern(param, name => {
-        this.markVariableAsUsed(name);
-      });
-    }
-  }
-
-  private visitSetter(
-    node: TSESTree.MethodDefinition | TSESTree.Property,
-  ): void {
-    if (node.kind === 'set') {
-      // ignore setter parameters because they're syntactically required to exist
-      for (const param of (node.value as TSESTree.FunctionLike).params) {
-        this.visitPattern(param, id => {
-          this.markVariableAsUsed(id);
-        });
       }
     }
   }
@@ -288,92 +333,46 @@ class UnusedVarsVisitor extends Visitor {
     this.markVariableAsUsed(idOrVariable);
   }
 
-  //#endregion HELPERS
-
-  //#region VISITORS
-  // NOTE - This is a simple visitor - meaning it does not support selectors
-
-  protected ClassDeclaration = this.visitClass;
-
-  protected ClassExpression = this.visitClass;
-
-  protected FunctionDeclaration = this.visitFunction;
-
-  protected FunctionExpression = this.visitFunction;
-
-  protected ForInStatement = this.visitForInForOf;
-
-  protected ForOfStatement = this.visitForInForOf;
-
-  protected Identifier(node: TSESTree.Identifier): void {
+  private visitFunction(
+    node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
+  ): void {
     const scope = this.getScope(node);
-    if (
-      scope.type === TSESLint.Scope.ScopeType.function &&
-      node.name === 'this'
-    ) {
-      // this parameters should always be considered used as they're pseudo-parameters
-      if ('params' in scope.block && scope.block.params.includes(node)) {
-        this.markVariableAsUsed(node);
-      }
-    }
-  }
-
-  protected MethodDefinition = this.visitSetter;
-
-  protected Property = this.visitSetter;
-
-  protected TSCallSignatureDeclaration = this.visitFunctionTypeSignature;
-
-  protected TSConstructorType = this.visitFunctionTypeSignature;
-
-  protected TSConstructSignatureDeclaration = this.visitFunctionTypeSignature;
-
-  protected TSDeclareFunction = this.visitFunctionTypeSignature;
-
-  protected TSEmptyBodyFunctionExpression = this.visitFunctionTypeSignature;
-
-  protected TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
-    // enum members create variables because they can be referenced within the enum,
-    // but they obviously aren't unused variables for the purposes of this rule.
-    const scope = this.getScope(node);
-    for (const variable of scope.variables) {
+    // skip implicit "arguments" variable
+    const variable = scope.set.get('arguments');
+    if (variable?.defs.length === 0) {
       this.markVariableAsUsed(variable);
     }
   }
 
-  protected TSFunctionType = this.visitFunctionTypeSignature;
-
-  protected TSMappedType(node: TSESTree.TSMappedType): void {
-    // mapped types create a variable for their type name, but it's not necessary to reference it,
-    // so we shouldn't consider it as unused for the purpose of this rule.
-    this.markVariableAsUsed(node.key);
-  }
-
-  protected TSMethodSignature = this.visitFunctionTypeSignature;
-
-  protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
-    // -- global augmentation can be in any file, and they do not need exports
-    if (node.kind === 'global') {
-      this.markVariableAsUsed('global', node.parent);
+  private visitFunctionTypeSignature(
+    node:
+      | TSESTree.TSCallSignatureDeclaration
+      | TSESTree.TSConstructorType
+      | TSESTree.TSConstructSignatureDeclaration
+      | TSESTree.TSDeclareFunction
+      | TSESTree.TSEmptyBodyFunctionExpression
+      | TSESTree.TSFunctionType
+      | TSESTree.TSMethodSignature,
+  ): void {
+    // function type signature params create variables because they can be referenced within the signature,
+    // but they obviously aren't unused variables for the purposes of this rule.
+    for (const param of node.params) {
+      this.visitPattern(param, name => {
+        this.markVariableAsUsed(name);
+      });
     }
   }
 
-  protected TSParameterProperty(node: TSESTree.TSParameterProperty): void {
-    let identifier: TSESTree.Identifier | null = null;
-    switch (node.parameter.type) {
-      case AST_NODE_TYPES.AssignmentPattern:
-        if (node.parameter.left.type === AST_NODE_TYPES.Identifier) {
-          identifier = node.parameter.left;
-        }
-        break;
-
-      case AST_NODE_TYPES.Identifier:
-        identifier = node.parameter;
-        break;
-    }
-
-    if (identifier) {
-      this.markVariableAsUsed(identifier);
+  private visitSetter(
+    node: TSESTree.MethodDefinition | TSESTree.Property,
+  ): void {
+    if (node.kind === 'set') {
+      // ignore setter parameters because they're syntactically required to exist
+      for (const param of (node.value as TSESTree.FunctionLike).params) {
+        this.visitPattern(param, id => {
+          this.markVariableAsUsed(id);
+        });
+      }
     }
   }
 
@@ -417,11 +416,11 @@ function isSelfReference(
 }
 
 const MERGABLE_TYPES = new Set([
-  AST_NODE_TYPES.TSInterfaceDeclaration,
-  AST_NODE_TYPES.TSTypeAliasDeclaration,
-  AST_NODE_TYPES.TSModuleDeclaration,
   AST_NODE_TYPES.ClassDeclaration,
   AST_NODE_TYPES.FunctionDeclaration,
+  AST_NODE_TYPES.TSInterfaceDeclaration,
+  AST_NODE_TYPES.TSModuleDeclaration,
+  AST_NODE_TYPES.TSTypeAliasDeclaration,
 ]);
 /**
  * Determine if the variable is directly exported
@@ -470,7 +469,7 @@ function isExported(variable: ScopeVariable): boolean {
   });
 }
 
-const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['&&=', '||=', '??=']);
+const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['??=', '&&=', '||=']);
 
 /**
  * Determines if the variable is used.
@@ -817,7 +816,7 @@ function isUsedVariable(variable: ScopeVariable): boolean {
  * - variables within declaration files
  * - variables within ambient module declarations
  */
-function collectVariables<
+export function collectVariables<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
@@ -831,5 +830,3 @@ function collectVariables<
     ),
   );
 }
-
-export { collectVariables };

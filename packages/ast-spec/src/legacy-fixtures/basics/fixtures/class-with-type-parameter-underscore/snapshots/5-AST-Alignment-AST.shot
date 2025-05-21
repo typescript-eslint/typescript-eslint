@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter-underscore AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-type-parameter-underscore > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,7 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter-underscor
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -21,13 +21,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter-underscor
             end: { column: 15, line: 3 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'A',
--         optional: false,
+          optional: false,
 
           range: [79, 80],
           loc: {
@@ -35,15 +35,15 @@ exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter-underscor
             end: { column: 7, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: 'TSTypeParameterDeclaration',
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -56,8 +56,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter-underscor
 -                 end: { column: 11, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: '__P',
+              out: false,
 
               range: [81, 84],
               loc: {
@@ -88,5 +88,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter-underscor
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

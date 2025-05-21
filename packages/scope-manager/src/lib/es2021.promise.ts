@@ -3,11 +3,15 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
+
 import { TYPE, TYPE_VALUE } from './base-config';
 
-export const es2021_promise = {
-  AggregateError: TYPE_VALUE,
-  AggregateErrorConstructor: TYPE,
-  PromiseConstructor: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const es2021_promise: LibDefinition = {
+  libs: [],
+  variables: [
+    ['AggregateError', TYPE_VALUE],
+    ['AggregateErrorConstructor', TYPE],
+    ['PromiseConstructor', TYPE],
+  ],
+};

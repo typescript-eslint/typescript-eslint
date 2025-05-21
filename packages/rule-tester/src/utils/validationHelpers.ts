@@ -1,12 +1,15 @@
-import { simpleTraverse } from '@typescript-eslint/typescript-estree';
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { Parser, SourceCode } from '@typescript-eslint/utils/ts-eslint';
+
+import { simpleTraverse } from '@typescript-eslint/typescript-estree';
 
 /*
  * List every parameters possible on a test case that are not related to eslint
  * configuration
  */
 export const RULE_TESTER_PARAMETERS = [
+  'after',
+  'before',
   'code',
   'defaultFilenames',
   'dependencyConstraints',
@@ -61,7 +64,7 @@ export function sanitize(text: string): string {
   if (typeof text !== 'string') {
     return '';
   }
-  return text.replace(
+  return text.replaceAll(
     // eslint-disable-next-line no-control-regex
     /[\u0000-\u0009\u000b-\u001a]/gu,
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -91,30 +94,30 @@ export function wrapParser(
      */
     function defineStartEndAsError(objName: string, node: unknown): void {
       Object.defineProperties(node, {
-        start: {
-          get() {
-            throw new Error(
-              `Use ${objName}.range[0] instead of ${objName}.start`,
-            );
-          },
+        end: {
           configurable: true,
           enumerable: false,
-        },
-        end: {
           get() {
             throw new Error(
               `Use ${objName}.range[1] instead of ${objName}.end`,
             );
           },
+        },
+        start: {
           configurable: true,
           enumerable: false,
+          get() {
+            throw new Error(
+              `Use ${objName}.range[0] instead of ${objName}.start`,
+            );
+          },
         },
       });
     }
 
     simpleTraverse(ast, {
-      visitorKeys: visitorKeys,
       enter: node => defineStartEndAsError('node', node),
+      visitorKeys,
     });
     ast.tokens?.forEach(token => defineStartEndAsError('token', token));
     ast.comments?.forEach(comment => defineStartEndAsError('token', comment));
@@ -122,26 +125,28 @@ export function wrapParser(
 
   if ('parseForESLint' in parser) {
     return {
-      // @ts-expect-error -- see above
-      [parserSymbol]: parser,
       parseForESLint(...args): Parser.ParseResult {
         const parsed = parser.parseForESLint(...args) as Parser.ParseResult;
 
         defineStartEndAsErrorInTree(parsed.ast, parsed.visitorKeys);
         return parsed;
       },
+
+      // @ts-expect-error -- see above
+      [parserSymbol]: parser,
     };
   }
 
   return {
-    // @ts-expect-error -- see above
-    [parserSymbol]: parser,
     parse(...args): TSESTree.Program {
       const ast = parser.parse(...args) as TSESTree.Program;
 
       defineStartEndAsErrorInTree(ast);
       return ast;
     },
+
+    // @ts-expect-error -- see above
+    [parserSymbol]: parser,
   };
 }
 

@@ -2,19 +2,19 @@ import type {
   AnalyzeOptions,
   ScopeManager,
 } from '@typescript-eslint/scope-manager';
-import { analyze } from '@typescript-eslint/scope-manager';
-import type { Lib, TSESTree } from '@typescript-eslint/types';
-import { ParserOptions } from '@typescript-eslint/types';
+import type { Lib, ParserOptions, TSESTree } from '@typescript-eslint/types';
 import type {
   AST,
   ParserServices,
   TSESTreeOptions,
 } from '@typescript-eslint/typescript-estree';
-import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
 import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
+import type * as ts from 'typescript';
+
+import { analyze } from '@typescript-eslint/scope-manager';
+import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import debug from 'debug';
-import type * as ts from 'typescript';
 import { ScriptTarget } from 'typescript';
 
 const log = debug('typescript-eslint:parser:parser');
@@ -27,9 +27,9 @@ interface ESLintProgram extends AST<{ comment: true; tokens: true }> {
 
 interface ParseForESLintResult {
   ast: ESLintProgram;
+  scopeManager: ScopeManager;
   services: ParserServices;
   visitorKeys: VisitorKeys;
-  scopeManager: ScopeManager;
 }
 
 function validateBoolean(
@@ -45,51 +45,50 @@ function validateBoolean(
 const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.[cm]?ts$/;
 function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
   if (compilerOptions.lib) {
-    return compilerOptions.lib.reduce<Lib[]>((acc, lib) => {
-      const match = LIB_FILENAME_REGEX.exec(lib.toLowerCase());
-      if (match) {
-        acc.push(match[1] as Lib);
-      }
-
-      return acc;
-    }, []);
+    return compilerOptions.lib
+      .map(lib => LIB_FILENAME_REGEX.exec(lib.toLowerCase())?.[1])
+      .filter((lib): lib is Lib => !!lib);
   }
 
   const target = compilerOptions.target ?? ScriptTarget.ES5;
   // https://github.com/microsoft/TypeScript/blob/ae582a22ee1bb052e19b7c1bc4cac60509b574e0/src/compiler/utilitiesPublic.ts#L13-L36
   switch (target) {
-    case ScriptTarget.ESNext:
-      return ['esnext.full'];
-    case ScriptTarget.ES2022:
-      return ['es2022.full'];
-    case ScriptTarget.ES2021:
-      return ['es2021.full'];
-    case ScriptTarget.ES2020:
-      return ['es2020.full'];
-    case ScriptTarget.ES2019:
-      return ['es2019.full'];
-    case ScriptTarget.ES2018:
-      return ['es2018.full'];
-    case ScriptTarget.ES2017:
-      return ['es2017.full'];
-    case ScriptTarget.ES2016:
-      return ['es2016.full'];
     case ScriptTarget.ES2015:
       return ['es6'];
+    case ScriptTarget.ES2016:
+      return ['es2016.full'];
+    case ScriptTarget.ES2017:
+      return ['es2017.full'];
+    case ScriptTarget.ES2018:
+      return ['es2018.full'];
+    case ScriptTarget.ES2019:
+      return ['es2019.full'];
+    case ScriptTarget.ES2020:
+      return ['es2020.full'];
+    case ScriptTarget.ES2021:
+      return ['es2021.full'];
+    case ScriptTarget.ES2022:
+      return ['es2022.full'];
+    case ScriptTarget.ES2023:
+      return ['es2023.full'];
+    case ScriptTarget.ES2024:
+      return ['es2024.full'];
+    case ScriptTarget.ESNext:
+      return ['esnext.full'];
     default:
       return ['lib'];
   }
 }
 
-function parse(
-  code: ts.SourceFile | string,
+export function parse(
+  code: string | ts.SourceFile,
   options?: ParserOptions,
 ): ParseForESLintResult['ast'] {
   return parseForESLint(code, options).ast;
 }
 
-function parseForESLint(
-  code: ts.SourceFile | string,
+export function parseForESLint(
+  code: string | ts.SourceFile,
   parserOptions?: ParserOptions | null,
 ): ParseForESLintResult {
   if (!parserOptions || typeof parserOptions !== 'object') {
@@ -135,8 +134,8 @@ function parseForESLint(
 
   const analyzeOptions: AnalyzeOptions = {
     globalReturn: parserOptions.ecmaFeatures.globalReturn,
-    jsxPragma: parserOptions.jsxPragma,
     jsxFragmentName: parserOptions.jsxFragmentName,
+    jsxPragma: parserOptions.jsxPragma,
     lib: parserOptions.lib,
     sourceType: parserOptions.sourceType,
   };
@@ -152,6 +151,7 @@ function parseForESLint(
       log('Resolved libs from program: %o', analyzeOptions.lib);
     }
     if (
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
       analyzeOptions.jsxPragma === undefined &&
       compilerOptions.jsxFactory != null
     ) {
@@ -161,6 +161,7 @@ function parseForESLint(
       log('Resolved jsxPragma from program: %s', analyzeOptions.jsxPragma);
     }
     if (
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
       analyzeOptions.jsxFragmentName === undefined &&
       compilerOptions.jsxFragmentFactory != null
     ) {
@@ -183,8 +184,9 @@ function parseForESLint(
     parserOptions.emitDecoratorMetadata === true;
   services.experimentalDecorators ??=
     parserOptions.experimentalDecorators === true;
+  services.isolatedDeclarations ??= parserOptions.isolatedDeclarations === true;
 
-  return { ast, services, scopeManager, visitorKeys };
+  return { ast, scopeManager, services, visitorKeys };
 }
 
-export { parse, parseForESLint, ParserOptions };
+export type { ParserOptions } from '@typescript-eslint/types';

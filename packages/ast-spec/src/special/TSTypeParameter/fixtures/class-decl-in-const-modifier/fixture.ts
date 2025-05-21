@@ -1,1 +1,1 @@
-class D<in const T> {}
+class D<const in T> {}

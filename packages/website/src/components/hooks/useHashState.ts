@@ -2,11 +2,12 @@ import { useHistory } from '@docusaurus/router';
 import * as lz from 'lz-string';
 import { useCallback, useState } from 'react';
 
+import type { ConfigFileType, ConfigModel, ConfigShowAst } from '../types';
+
 import { hasOwnProperty } from '../lib/has-own-property';
 import { toJsonConfig } from '../lib/json';
 import { shallowEqual } from '../lib/shallowEqual';
 import { fileTypes } from '../options';
-import type { ConfigFileType, ConfigModel, ConfigShowAst } from '../types';
 
 function writeQueryParam(value: string | null): string {
   return (value && lz.compressToEncodedURIComponent(value)) ?? '';
@@ -19,8 +20,8 @@ function readQueryParam(value: string | null, fallback: string): string {
 function readShowAST(value: string | null): ConfigShowAst {
   switch (value) {
     case 'es':
-    case 'ts':
     case 'scope':
+    case 'ts':
     case 'types':
       return value;
   }
@@ -91,16 +92,16 @@ const parseStateFromUrl = (
       : '';
 
     return {
-      ts: searchParams.get('ts') ?? process.env.TS_VERSION,
+      code,
+      eslintrc: eslintrc ?? initialState.eslintrc,
+      esQuery,
+      fileType,
       showAST: readShowAST(searchParams.get('showAST')),
+      showTokens: searchParams.get('tokens') === 'true',
       sourceType:
         searchParams.get('sourceType') === 'script' ? 'script' : 'module',
-      code,
-      fileType,
-      eslintrc: eslintrc ?? initialState.eslintrc,
+      ts: searchParams.get('ts') ?? process.env.TS_VERSION,
       tsconfig: tsconfig ?? initialState.tsconfig,
-      showTokens: searchParams.get('tokens') === 'true',
-      esQuery,
     };
   } catch (e) {
     console.warn(e);
@@ -180,16 +181,16 @@ const retrieveStateFromLocalStorage = (): Partial<ConfigModel> | undefined => {
 
 const writeStateToLocalStorage = (newState: ConfigModel): void => {
   const config: Partial<ConfigModel> = {
-    ts: newState.ts,
     fileType: newState.fileType,
-    sourceType: newState.sourceType,
-    showAST: newState.showAST,
     scroll: newState.scroll,
+    showAST: newState.showAST,
+    sourceType: newState.sourceType,
+    ts: newState.ts,
   };
   window.localStorage.setItem('config', JSON.stringify(config));
 };
 
-function useHashState(
+export function useHashState(
   initialState: ConfigModel,
 ): [ConfigModel, (cfg: Partial<ConfigModel>) => void] {
   const history = useHistory();
@@ -228,5 +229,3 @@ function useHashState(
 
   return [state, updateState];
 }
-
-export default useHashState;

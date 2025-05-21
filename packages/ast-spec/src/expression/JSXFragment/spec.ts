@@ -6,7 +6,7 @@ import type { JSXChild } from '../../unions/JSXChild';
 
 export interface JSXFragment extends BaseNode {
   type: AST_NODE_TYPES.JSXFragment;
-  openingFragment: JSXOpeningFragment;
-  closingFragment: JSXClosingFragment;
   children: JSXChild[];
+  closingFragment: JSXClosingFragment;
+  openingFragment: JSXOpeningFragment;
 }

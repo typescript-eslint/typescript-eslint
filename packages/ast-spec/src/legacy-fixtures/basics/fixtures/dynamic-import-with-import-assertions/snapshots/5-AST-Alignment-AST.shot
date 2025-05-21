@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertions AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > dynamic-import-with-import-assertions > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -12,16 +12,17 @@ exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertio
         type: 'ExpressionStatement',
         expression: ImportExpression {
           type: 'ImportExpression',
-          attributes: ObjectExpression {
-            type: 'ObjectExpression',
-            properties: Array [
-              Property {
-                type: 'Property',
-                computed: false,
-                key: Identifier {
-                  type: 'Identifier',
--                 decorators: Array [],
++         attributes: ObjectExpression {
++           type: 'ObjectExpression',
++           properties: Array [
++             Property {
++               type: 'Property',
++               computed: false,
++               key: Identifier {
++                 type: 'Identifier',
++                 decorators: Array [],
 +                 name: 'assert',
++                 optional: false,
 +
 +                 range: [89, 95],
 +                 loc: {
@@ -31,6 +32,7 @@ exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertio
 +               },
 +               kind: 'init',
 +               method: false,
++               optional: false,
 +               shorthand: false,
 +               value: ObjectExpression {
 +                 type: 'ObjectExpression',
@@ -40,7 +42,9 @@ exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertio
 +                     computed: false,
 +                     key: Identifier {
 +                       type: 'Identifier',
++                       decorators: Array [],
 +                       name: 'type',
++                       optional: false,
 +
 +                       range: [99, 103],
 +                       loc: {
@@ -50,10 +54,11 @@ exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertio
 +                     },
 +                     kind: 'init',
 +                     method: false,
++                     optional: false,
 +                     shorthand: false,
 +                     value: Literal {
 +                       type: 'Literal',
-+                       raw: '\\'json\\'',
++                       raw: '\'json\'',
 +                       value: 'json',
 +
 +                       range: [105, 111],
@@ -92,16 +97,17 @@ exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertio
 +             end: { column: 42, line: 3 },
 +           },
 +         },
-+         options: ObjectExpression {
-+           type: 'ObjectExpression',
-+           properties: Array [
-+             Property {
-+               type: 'Property',
-+               computed: false,
-+               key: Identifier {
-+                 type: 'Identifier',
+          options: ObjectExpression {
+            type: 'ObjectExpression',
+            properties: Array [
+              Property {
+                type: 'Property',
+                computed: false,
+                key: Identifier {
+                  type: 'Identifier',
+                  decorators: Array [],
                   name: 'assert',
--                 optional: false,
+                  optional: false,
 
                   range: [89, 95],
                   loc: {
@@ -111,7 +117,7 @@ exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertio
                 },
                 kind: 'init',
                 method: false,
--               optional: false,
+                optional: false,
                 shorthand: false,
                 value: ObjectExpression {
                   type: 'ObjectExpression',
@@ -121,9 +127,9 @@ exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertio
                       computed: false,
                       key: Identifier {
                         type: 'Identifier',
--                       decorators: Array [],
+                        decorators: Array [],
                         name: 'type',
--                       optional: false,
+                        optional: false,
 
                         range: [99, 103],
                         loc: {
@@ -133,11 +139,11 @@ exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertio
                       },
                       kind: 'init',
                       method: false,
--                     optional: false,
+                      optional: false,
                       shorthand: false,
                       value: Literal {
                         type: 'Literal',
-                        raw: '\\'json\\'',
+                        raw: '\'json\'',
                         value: 'json',
 
                         range: [105, 111],
@@ -178,7 +184,7 @@ exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertio
           },
           source: Literal {
             type: 'Literal',
-            raw: '\\'foo\\'',
+            raw: '\'foo\'',
             value: 'foo',
 
             range: [80, 85],
@@ -209,5 +215,4 @@ exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertio
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

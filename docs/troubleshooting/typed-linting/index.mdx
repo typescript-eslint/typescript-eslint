@@ -61,6 +61,70 @@ module.exports = {
 
 Alternatively to disable type checking for files manually, you can set [`parserOptions: { project: false }`](../../packages/Parser.mdx#project) to an override for the files you wish to exclude.
 
+## How can I disable type-aware linting for a set of files?
+
+You can combine ESLint's [overrides](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-based-on-glob-patterns) config in conjunction with our [`disable-type-checked`](../../users/Shared_Configurations.mdx#disable-type-checked) config to turn off type-aware linting on specific subsets of files.
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.mjs"
+export default tseslint.config(
+  eslint.configs.recommended,
+  tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  // Added lines start
+  {
+    files: ['**/*.js'],
+    extends: [tseslint.configs.disableTypeChecked],
+  },
+  // Added lines end
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
+module.exports = {
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended-type-checked',
+    'plugin:@typescript-eslint/stylistic-type-checked',
+  ],
+  plugins: ['@typescript-eslint'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    projectService: true,
+    tsconfigRootDir: __dirname,
+  },
+  root: true,
+  // Added lines start
+  overrides: [
+    {
+      files: ['*.js'],
+      extends: ['plugin:@typescript-eslint/disable-type-checked'],
+    },
+  ],
+  // Added lines end
+};
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+If you use type-aware rules from other plugins, you will need to manually disable these rules or use a premade config they provide to disable them.
+:::
+
 ## typescript-eslint thinks my variable is never nullish / is `any` / etc., but that is clearly not the case to me
 
 Our type-aware rules almost always trust the type information provided by the TypeScript compiler. Therefore, an easy way to check if our rule is behaving correctly is to inspect the type of the variable in question, such as by hovering over it in your IDE.
@@ -78,24 +142,27 @@ if (condition) {
 }
 ```
 
-You can see that the type of `condition` is actually the literal type `false` by hovering over it in your IDE. In this case, typescript-eslint cannot possible know better than TypeScript itself, so you need to fix the report by fixing the type, such as through an assertion (`let condition = false as boolean`).
+You can see that the type of `condition` is actually the literal type `false` by hovering over it in your IDE. In this case, typescript-eslint cannot possibly know better than TypeScript itself, so you need to fix the report by fixing the type, such as through an assertion (`let condition = false as boolean`).
 
 If the IDE provides different type information from typescript-eslint's report, then make sure that the TypeScript setup used for your IDE, typescript-eslint, and `tsc` are the same: the same TypeScript version, the same type-checking compiler options, and the same files being included in the project. For example, if a type is declared in another file but that file is not included, the type will become `any`, and cause our `no-unsafe-*` rules to report.
 
 ## Are TypeScript project references supported?
 
-Yes, but only with [`EXPERIMENTAL_useProjectService`](../../packages/Parser.mdx#experimental_useprojectservice).
+Yes, but only with [`parserOptions.projectService`](../../packages/Parser.mdx#projectservice).
 
 See [issue #2094 discussing project references](https://github.com/typescript-eslint/typescript-eslint/issues/2094) for more details.
 
 ## Project Service Issues
 
-<HiddenHeading id="allowdefaultproject-glob-too-wide" />
-<HiddenHeading id="allowdefaultprojectforfiles-glob-too-wide" />
+[`parserOptions.projectService`](../../packages/Parser.mdx#projectservice) is the recommended parser option to enable typed linting as of typescript-eslint v8.
+It enforces projects generate type information for typed linting from the same `tsconfig.json` files used by editors such as VS Code.
 
-### I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
+### I get errors telling me "... was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject"
 
-These errors are caused by attempting to use the [`projectService`](../../packages/Parser.mdx#projectservice) to lint a file not explicitly included in a `tsconfig.json`.
+These errors are caused by attempting to use the project service to lint a file not explicitly included in its nearest `tsconfig.json`.
+
+The project service will attempt to build type information for each file being linted using the nearest `tsconfig.json` on disk to that file.
+If that `tsconfig.json` does not include the file, and the file isn't allowlisted in [`allowDefaultProject`](../../packages/parser#allowdefaultproject), then the project service will throw this error.
 
 For each file being reported:
 
@@ -111,13 +178,61 @@ For each file being reported:
        + "*.js"
        ]
        ```
-    2. Otherwise, consider setting [`parserOptions.createProjectService.allowDefaultProject`](../../packages/parser#allowdefaultproject).
+    2. Otherwise, if you have a small number of "out of project" files, try setting [`projectService.allowDefaultProject`](../../packages/parser#allowdefaultproject).
+    3. If not, you can switch to [`parserOptions.project`](../../packages/Parser.mdx#project) for more fine-grained control of projects.
+
+Note also:
+
+- TSConfigs don't include `.js` files by default.
+  Enabling [`allowJs`](https://www.typescriptlang.org/tsconfig/#allowJs) or [`checkJs`](https://www.typescriptlang.org/tsconfig/#checkJs) is required to do so.
+- The project service _only_ looks at `tsconfig.json` files.
+  It does not look at `tsconfig.eslint.json` or other coincidentally-similarly-named files.
+
+If these steps don't work for you, please [file an issue on typescript-eslint's typescript-estree package](https://github.com/typescript-eslint/typescript-eslint/issues/new?assignees=&labels=enhancement%2Ctriage&projects=&template=07-enhancement-other.yaml&title=Enhancement%3A+%3Ca+short+description+of+my+proposal%3E) telling us your use case and why you need more out-of-project files linted.
+Be sure to include a minimal reproduction we can work with to understand your use case!
+
+<HiddenHeading id="allowdefaultproject-glob-too-wide" />
+
+### I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
+
+These errors are caused by attempting to use the project service to lint too many files not explicitly included in a `tsconfig.json` with its [`allowDefaultProject`](../../packages/parser#allowdefaultproject) option.
 
 typescript-eslint allows up to 8 "out of project" files by default.
 Each file causes a new TypeScript "program" to be built for each file it includes, which incurs a performance overhead _for each file_.
 
-If you cannot do this, please [file an issue on typescript-eslint's typescript-estree package](https://github.com/typescript-eslint/typescript-eslint/issues/new?assignees=&labels=enhancement%2Ctriage&projects=&template=07-enhancement-other.yaml&title=Enhancement%3A+%3Ca+short+description+of+my+proposal%3E) telling us your use case and why you need more out-of-project files linted.
-Be sure to include a minimal reproduction we can work with to understand your use case!
+For each file being reported:
+
+- If you **do not** want to lint the file:
+  - Use [one of the options ESLint offers to ignore files](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code), such an `ignores` config key.
+- If you **do** want to lint the file:
+  - If you **do not** want to lint the file with [type-aware linting](../../getting-started/Typed_Linting.mdx): [disable type-checked linting for that file](#how-do-i-disable-type-checked-linting-for-a-file).
+  - If you **do** want to lint the file with [type-aware linting](../../getting-started/Typed_Linting.mdx):
+    1. If possible, add the file to the closest `tsconfig.json`'s `include` instead of adding it to `allowDefaultProject`. For example, allowing `.js` files:
+       ```diff title="tsconfig.json"
+       "include": [
+         "src",
+       + "*.js"
+       ]
+       ```
+    2. If not, you can switch to [`parserOptions.project`](../../packages/Parser.mdx#project) for more fine-grained control of projects.
+
+### I'd like to use TSConfigs other than `tsconfig.json`s for project service type information
+
+Only the TSConfig path used for "out of project" files in [`allowDefaultProject`](../../packages/Parser.mdx#allowdefaultproject) can be customized.
+Otherwise, only `tsconfig.json` files on disk will be read.
+
+For example, instead of:
+
+- `tsconfig.json`s for building (and, coincidentally, type information in editors)
+- Separate TSConfig(s) like `tsconfig.eslint.json` for linting
+
+Consider using:
+
+- `tsconfig.json`s for linting (and, intentionally, the same type information in editors)
+- Separate TSConfig(s) like `tsconfig.build.json` for building
+
+The project service uses the same underlying TypeScript logic as editors such as VS Code.
+Using only `tsconfig.json` for typed linting enforces that the types seen in your editor match what's used for linting.
 
 ## Traditional Project Issues
 
@@ -135,9 +250,9 @@ These errors are caused by an ESLint config requesting type information be gener
   - If you **do** want to lint the file with [type-aware linting](../../getting-started/Typed_Linting.mdx):
     - Check the `include` option of each of the TSConfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
       - If the file is a `.cjs`, `.js`, or `.mjs` file, make sure [`allowJs`](https://www.typescriptlang.org/tsconfig#allowJs) is enabled.
-    - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
-      - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
-      - [`eslint.config.mjs`](https://github.com/typescript-eslint/typescript-eslint/blob/main/eslint.config.mjs)
+    - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we previously used in this repo:
+      - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/958fecaef10a26792dc00e936e98cb19fd26d05f/tsconfig.eslint.json)
+      - [`eslint.config.mjs`](https://github.com/typescript-eslint/typescript-eslint/blob/958fecaef10a26792dc00e936e98cb19fd26d05f/.eslintrc.js)
 
 #### More Details
 
@@ -145,7 +260,7 @@ This error may appear from the combination of two things:
 
 - The ESLint configuration for the source file specifies at least one TSConfig file in `parserOptions.project`
 - None of those TSConfig files includes the source file being linted
-  - Note that files with the same name and different extension may not be recognized by TypeScript: see [`parserOptions.project` docs](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsproject)
+  - Note that files with the same name and different extension may not be recognized by TypeScript: see [`parserOptions.project` docs](../../packages/parser/#project)
 
 When TSConfig files are specified for parsing a source file, `@typescript-eslint/parser` will use the first TSConfig that is able to include that source file (per [aka.ms/tsconfig#include](https://www.typescriptlang.org/tsconfig#include)) to generate type information.
 However, if no specified TSConfig includes the source file, the parser won't be able to generate type information.
@@ -164,3 +279,55 @@ See our docs on [type aware linting](../../getting-started/Typed_Linting.mdx) fo
 
 You're using an outdated version of `@typescript-eslint/parser`.
 Update to the latest version to see a more informative version of this error message, explained [above](#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file 'backlink to I get errors telling me ESLint was configured to run ...').
+
+### Can I customize the TSConfig used for the project?
+
+Yes, but it's not recommended in most configurations.
+`parserOptions.projectService` uses the same "project service" APIs used by editors such as VS Code to generate TypeScript's type information.
+Using a different TSConfig runs the risk of providing different types for typed linting than what your editor or `tsc` see.
+
+If you absolutely must, the `parserOptions.project` option can be used instead of `parserOptions.projectService` with either:
+
+- `true`: to always use `tsconfig.json`s nearest to source files
+- `string | string[]`: any number of glob paths to match TSConfig files relative to `parserOptions.tsconfigRootDir`, or the current working directory if that is not provided
+
+For example, if you use a specific `tsconfig.eslint.json` for linting, you'd specify:
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.mjs"
+export default tseslint.config({
+  // ...
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.eslint.json',
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+  // ...
+});
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
+module.exports = {
+  // ...
+  parserOptions: {
+    project: './tsconfig.eslint.json',
+    tsconfigRootDir: __dirname,
+  },
+  // ...
+};
+```
+
+</TabItem>
+</Tabs>
+
+See [the `@typescript-eslint/parser` `project` docs for more details](../../packages/Parser.mdx#project).
+
+:::note
+If your project is a multi-package monorepo, see [Troubleshooting > Typed Linting > Monorepos](./Monorepos.mdx).
+:::

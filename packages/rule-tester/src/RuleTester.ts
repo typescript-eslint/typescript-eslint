@@ -1,14 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 // Forked from https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/lib/rule-tester/rule-tester.js
 
-import assert from 'node:assert';
-import path from 'node:path';
-import util from 'node:util';
-
 import type * as ParserType from '@typescript-eslint/parser';
-import * as parser from '@typescript-eslint/parser';
-import type { TSESTree } from '@typescript-eslint/utils';
-import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
+import type { TSESTree, TSUtils } from '@typescript-eslint/utils';
 import type {
   AnyRuleCreateFunction,
   AnyRuleModule,
@@ -16,14 +10,19 @@ import type {
   RuleListener,
   RuleModule,
 } from '@typescript-eslint/utils/ts-eslint';
+
+import * as parser from '@typescript-eslint/parser';
+import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
+import assert from 'node:assert';
+import path from 'node:path';
+import util from 'node:util';
 // we intentionally import from eslint here because we need to use the same class
 // that ESLint uses, not our custom override typed version
 import { SourceCode } from 'eslint';
 import stringify from 'json-stable-stringify-without-jsonify';
 import merge from 'lodash.merge';
 
-import { TestFramework } from './TestFramework';
 import type {
   InvalidTestCase,
   NormalizedRunTests,
@@ -33,6 +32,8 @@ import type {
   TesterConfigWithDefaults,
   ValidTestCase,
 } from './types';
+
+import { TestFramework } from './TestFramework';
 import { ajvBuilder } from './utils/ajv';
 import { cloneDeeplyExcludesParent } from './utils/cloneDeeplyExcludesParent';
 import { validate } from './utils/config-validator';
@@ -165,9 +166,9 @@ function getUnsubstitutedMessagePlaceholders(
 }
 
 export class RuleTester extends TestFramework {
-  readonly #testerConfig: TesterConfigWithDefaults;
+  readonly #lintersByBasePath: Map<string | undefined, Linter>;
   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
-  readonly #linter: Linter;
+  readonly #testerConfig: TesterConfigWithDefaults;
 
   /**
    * Creates a new instance of RuleTester.
@@ -183,10 +184,7 @@ export class RuleTester extends TestFramework {
       rules: { [`${RULE_TESTER_PLUGIN_PREFIX}validate-ast`]: 'error' },
     });
 
-    this.#linter = new Linter({
-      configType: 'flat',
-      cwd: this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir,
-    });
+    this.#lintersByBasePath = new Map();
 
     // make sure that the parser doesn't hold onto file handles between tests
     // on linux (i.e. our CI env), there can be very a limited number of watch handles available
@@ -198,6 +196,57 @@ export class RuleTester extends TestFramework {
         // ignored on purpose
       }
     });
+  }
+
+  #getLinterForFilename(filename: string | undefined): Linter {
+    let basePath: string | undefined =
+      this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir;
+    // For an absolute path (`/foo.ts`), or a path that steps
+    // up (`../foo.ts`), resolve the path relative to the base
+    // path (using the current working directory if the parser
+    // options did not specify a base path) and use the file's
+    // root as the base path so that the file is under the base
+    // path. For any other path, which would just be a plain
+    // file name (`foo.ts`), don't change the base path.
+    if (
+      filename != null &&
+      (path.isAbsolute(filename) || filename.startsWith('..'))
+    ) {
+      basePath = path.parse(
+        path.resolve(basePath ?? process.cwd(), filename),
+      ).root;
+    }
+
+    let linterForBasePath = this.#lintersByBasePath.get(basePath);
+    if (!linterForBasePath) {
+      linterForBasePath = (() => {
+        const linter = new Linter({
+          configType: 'flat',
+          cwd: basePath,
+        });
+
+        // This nonsense is a workaround for https://github.com/jestjs/jest/issues/14840
+        // see also https://github.com/typescript-eslint/typescript-eslint/issues/8942
+        //
+        // For some reason rethrowing exceptions skirts around the circular JSON error.
+        const oldVerify = linter.verify.bind(linter);
+        linter.verify = (
+          ...args: Parameters<Linter['verify']>
+        ): ReturnType<Linter['verify']> => {
+          try {
+            return oldVerify(...args);
+          } catch (error) {
+            throw new Error('Caught an error while linting', {
+              cause: error,
+            });
+          }
+        };
+
+        return linter;
+      })();
+      this.#lintersByBasePath.set(basePath, linterForBasePath);
+    }
+    return linterForBasePath;
   }
 
   /**
@@ -236,7 +285,7 @@ export class RuleTester extends TestFramework {
    * Adds the `only` property to a test to run it in isolation.
    */
   static only<Options extends readonly unknown[]>(
-    item: ValidTestCase<Options> | string,
+    item: string | ValidTestCase<Options>,
   ): ValidTestCase<Options>;
   /**
    * Adds the `only` property to a test to run it in isolation.
@@ -246,9 +295,9 @@ export class RuleTester extends TestFramework {
   ): InvalidTestCase<MessageIds, Options>;
   static only<MessageIds extends string, Options extends readonly unknown[]>(
     item:
+      | string
       | InvalidTestCase<MessageIds, Options>
-      | ValidTestCase<Options>
-      | string,
+      | ValidTestCase<Options>,
   ): InvalidTestCase<MessageIds, Options> | ValidTestCase<Options> {
     if (typeof item === 'string') {
       return { code: item, only: true };
@@ -260,20 +309,6 @@ export class RuleTester extends TestFramework {
   /**
    * Define a rule for one particular run of tests.
    */
-  defineRule(name: string, rule: AnyRuleModule): void {
-    this.#rules[name] = {
-      ...rule,
-      // Create a wrapper rule that freezes the `context` properties.
-      create(context): RuleListener {
-        freezeDeeply(context.options);
-        freezeDeeply(context.settings);
-        freezeDeeply(context.parserOptions);
-
-        return (typeof rule === 'function' ? rule : rule.create)(context);
-      },
-    };
-  }
-
   #normalizeTests<
     MessageIds extends string,
     Options extends readonly unknown[],
@@ -335,6 +370,7 @@ export class RuleTester extends TestFramework {
     };
 
     const normalizedTests = {
+      invalid: rawTests.invalid.map(normalizeTest),
       valid: rawTests.valid
         .map(test => {
           if (typeof test === 'string') {
@@ -343,7 +379,6 @@ export class RuleTester extends TestFramework {
           return test;
         })
         .map(normalizeTest),
-      invalid: rawTests.invalid.map(normalizeTest),
     };
 
     // convenience iterator to make it easy to loop all tests without a concat
@@ -409,13 +444,45 @@ export class RuleTester extends TestFramework {
     return normalizedTests;
   }
 
+  defineRule(name: string, rule: AnyRuleModule): void {
+    this.#rules[name] = {
+      ...rule,
+      // Create a wrapper rule that freezes the `context` properties.
+      create(context): RuleListener {
+        freezeDeeply(context.options);
+        freezeDeeply(context.settings);
+        freezeDeeply(context.parserOptions);
+
+        return (typeof rule === 'function' ? rule : rule.create)(context);
+      },
+    };
+  }
+
+  /**
+   * Runs a hook on the given item when it's assigned to the given property
+   * @throws {Error} If the property is not a function or that function throws an error
+   */
+  #runHook<MessageIds extends string, Options extends readonly unknown[]>(
+    item: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
+    prop: keyof Pick<typeof item, 'after' | 'before'>,
+  ): void {
+    if (hasOwnProperty(item, prop)) {
+      assert.strictEqual(
+        typeof item[prop],
+        'function',
+        `Optional test case property '${prop}' must be a function`,
+      );
+      item[prop]();
+    }
+  }
+
   /**
    * Adds a new rule test to execute.
    */
   run<MessageIds extends string, Options extends readonly unknown[]>(
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
-    test: RunTests<MessageIds, Options>,
+    test: RunTests<TSUtils.NoInfer<MessageIds>, TSUtils.NoInfer<Options>>,
   ): void {
     const constructor = this.constructor as typeof RuleTester;
 
@@ -470,7 +537,7 @@ export class RuleTester extends TestFramework {
     const normalizedTests = this.#normalizeTests(test);
 
     function getTestMethod(
-      test: ValidTestCase<Options>,
+      test: ValidTestCase<TSUtils.NoInfer<Options>>,
     ): 'it' | 'itOnly' | 'itSkip' {
       if (test.skip) {
         return 'itSkip';
@@ -496,12 +563,17 @@ export class RuleTester extends TestFramework {
               return valid.name;
             })();
             constructor[getTestMethod(valid)](sanitize(testName), () => {
-              this.#testValidTemplate(
-                ruleName,
-                rule,
-                valid,
-                seenValidTestCases,
-              );
+              try {
+                this.#runHook(valid, 'before');
+                this.#testValidTemplate(
+                  ruleName,
+                  rule,
+                  valid,
+                  seenValidTestCases,
+                );
+              } finally {
+                this.#runHook(valid, 'after');
+              }
             });
           });
         });
@@ -517,12 +589,18 @@ export class RuleTester extends TestFramework {
               return invalid.name;
             })();
             constructor[getTestMethod(invalid)](sanitize(name), () => {
-              this.#testInvalidTemplate(
-                ruleName,
-                rule,
-                invalid,
-                seenInvalidTestCases,
-              );
+              try {
+                this.#runHook(invalid, 'before');
+                this.#testInvalidTemplate(
+                  ruleName,
+                  rule,
+                  // no need to pass no infer type parameter down to private methods
+                  invalid as InvalidTestCase<MessageIds, Options>,
+                  seenInvalidTestCases,
+                );
+              } finally {
+                this.#runHook(invalid, 'after');
+              }
             });
           });
         });
@@ -543,12 +621,12 @@ export class RuleTester extends TestFramework {
     rule: RuleModule<MessageIds, Options>,
     item: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
   ): {
-    messages: Linter.LintMessage[];
-    outputs: string[];
-    beforeAST: TSESTree.Program;
     afterAST: TSESTree.Program;
+    beforeAST: TSESTree.Program;
     config: RuleTesterConfig;
     filename?: string;
+    messages: Linter.LintMessage[];
+    outputs: string[];
   } {
     this.defineRule(ruleName, rule);
 
@@ -688,23 +766,28 @@ export class RuleTester extends TestFramework {
     let passNumber = 0;
     const outputs: string[] = [];
     const configWithoutCustomKeys = omitCustomConfigProperties(config);
+    const linter = this.#getLinterForFilename(filename);
 
     do {
       passNumber++;
 
-      const { applyLanguageOptions, applyInlineConfig, finalize } =
-        SourceCode.prototype;
+      const SourceCodePrototype = SourceCode.prototype as Record<
+        ForbiddenMethodName,
+        ForbiddenFunction
+      >;
+
+      const { applyInlineConfig, applyLanguageOptions, finalize } =
+        SourceCodePrototype;
 
       try {
         forbiddenMethods.forEach(methodName => {
-          SourceCode.prototype[methodName] = throwForbiddenMethodError(
+          SourceCodePrototype[methodName] = throwForbiddenMethodError(
             methodName,
-            SourceCode.prototype,
+            SourceCodePrototype,
           );
         });
 
         const actualConfig = merge(configWithoutCustomKeys, {
-          linterOptions: { reportUnusedDisableDirectives: 1 },
           languageOptions: {
             ...configWithoutCustomKeys.languageOptions,
             parserOptions: {
@@ -713,12 +796,16 @@ export class RuleTester extends TestFramework {
               ...configWithoutCustomKeys.languageOptions?.parserOptions,
             },
           },
+          linterOptions: {
+            reportUnusedDisableDirectives: 1,
+            ...configWithoutCustomKeys.linterOptions,
+          },
         });
-        messages = this.#linter.verify(code, actualConfig, filename);
+        messages = linter.verify(code, actualConfig, filename);
       } finally {
-        SourceCode.prototype.applyInlineConfig = applyInlineConfig;
-        SourceCode.prototype.applyLanguageOptions = applyLanguageOptions;
-        SourceCode.prototype.finalize = finalize;
+        SourceCodePrototype.applyInlineConfig = applyInlineConfig;
+        SourceCodePrototype.applyLanguageOptions = applyLanguageOptions;
+        SourceCodePrototype.finalize = finalize;
       }
 
       initialMessages ??= messages;
@@ -741,7 +828,7 @@ export class RuleTester extends TestFramework {
       outputs.push(code);
 
       // Verify if autofix makes a syntax error or not.
-      const errorMessageInFix = this.#linter
+      const errorMessageInFix = linter
         .verify(fixedResult.output, configWithoutCustomKeys, filename)
         .find(m => m.fatal);
 
@@ -780,7 +867,7 @@ export class RuleTester extends TestFramework {
   >(
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
-    itemIn: ValidTestCase<Options> | string,
+    itemIn: string | ValidTestCase<Options>,
     seenValidTestCases: Set<string>,
   ): void {
     const item: ValidTestCase<Options> =
@@ -929,7 +1016,7 @@ export class RuleTester extends TestFramework {
           // Just an error message.
           assertMessageMatches(message.message, error);
           assert.ok(
-            message.suggestions === undefined,
+            message.suggestions == null,
             `Error at index ${i} has suggestions. Please convert the test error into an object and specify 'suggestions' property on it to test suggestions.`,
           );
         } else if (typeof error === 'object' && error != null) {
@@ -1064,7 +1151,7 @@ export class RuleTester extends TestFramework {
             const expectsSuggestions = Array.isArray(error.suggestions)
               ? error.suggestions.length > 0
               : Boolean(error.suggestions);
-            const hasSuggestions = message.suggestions !== undefined;
+            const hasSuggestions = message.suggestions != null;
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const messageSuggestions = message.suggestions!;
 
@@ -1194,7 +1281,9 @@ export class RuleTester extends TestFramework {
                       ]).output;
 
                     // Verify if suggestion fix makes a syntax error or not.
-                    const errorMessageInSuggestion = this.#linter
+                    const errorMessageInSuggestion = this.#getLinterForFilename(
+                      item.filename,
+                    )
                       .verify(
                         codeWithAppliedSuggestion,
                         omitCustomConfigProperties(result.config),
@@ -1321,7 +1410,7 @@ function checkDuplicateTestCase(
  * value is a regular expression, it is checked against the actual
  * value.
  */
-function assertMessageMatches(actual: string, expected: RegExp | string): void {
+function assertMessageMatches(actual: string, expected: string | RegExp): void {
   if (expected instanceof RegExp) {
     // assert.js doesn't have a built-in RegExp match function
     assert.ok(

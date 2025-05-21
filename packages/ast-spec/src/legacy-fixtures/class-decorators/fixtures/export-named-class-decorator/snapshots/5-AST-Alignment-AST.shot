@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures class-decorators export-named-class-decorator AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > class-decorators > export-named-class-decorator > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -14,7 +14,7 @@ exports[`AST Fixtures legacy-fixtures class-decorators export-named-class-decora
 +       assertions: Array [],
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
--         abstract: false,
+          abstract: false,
           body: ClassBody {
             type: 'ClassBody',
             body: Array [],
@@ -25,15 +25,15 @@ exports[`AST Fixtures legacy-fixtures class-decorators export-named-class-decora
               end: { column: 19, line: 4 },
             },
           },
--         declare: false,
+          declare: false,
           decorators: Array [
             Decorator {
               type: 'Decorator',
               expression: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'sealed',
--               optional: false,
+                optional: false,
 
                 range: [74, 80],
                 loc: {
@@ -51,9 +51,9 @@ exports[`AST Fixtures legacy-fixtures class-decorators export-named-class-decora
           ],
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'Qux',
--           optional: false,
+            optional: false,
 
             range: [94, 97],
             loc: {
@@ -61,7 +61,7 @@ exports[`AST Fixtures legacy-fixtures class-decorators export-named-class-decora
               end: { column: 16, line: 4 },
             },
           },
--         implements: Array [],
+          implements: Array [],
           superClass: null,
 
 -         range: [88, 100],
@@ -92,5 +92,4 @@ exports[`AST Fixtures legacy-fixtures class-decorators export-named-class-decora
 +     start: { column: 0, line: 4 },
       end: { column: 0, line: 5 },
     },
-  }"
-`;
+  }

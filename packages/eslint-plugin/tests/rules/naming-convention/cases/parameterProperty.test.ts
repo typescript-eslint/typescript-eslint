@@ -14,8 +14,8 @@ createTestCases([
   {
     code: ['class Ignored { constructor(private readonly %) {} }'],
     options: {
-      selector: 'parameterProperty',
       modifiers: ['readonly'],
+      selector: 'parameterProperty',
     },
   },
 ]);

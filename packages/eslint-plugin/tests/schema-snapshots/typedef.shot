@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes typedef 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,27 +6,35 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "arrayDestructuring": {
+        "description": "Whether to enforce type annotations on variables declared using array destructuring.",
         "type": "boolean"
       },
       "arrowParameter": {
+        "description": "Whether to enforce type annotations for parameters of arrow functions.",
         "type": "boolean"
       },
       "memberVariableDeclaration": {
+        "description": "Whether to enforce type annotations on member variables of classes.",
         "type": "boolean"
       },
       "objectDestructuring": {
+        "description": "Whether to enforce type annotations on variables declared using object destructuring.",
         "type": "boolean"
       },
       "parameter": {
+        "description": "Whether to enforce type annotations for parameters of functions and methods.",
         "type": "boolean"
       },
       "propertyDeclaration": {
+        "description": "Whether to enforce type annotations for properties of interfaces and types.",
         "type": "boolean"
       },
       "variableDeclaration": {
+        "description": "Whether to enforce type annotations for variable declarations, excluding array and object destructuring.",
         "type": "boolean"
       },
       "variableDeclarationIgnoreFunction": {
+        "description": "Whether to ignore variable declarations for non-arrow and arrow functions.",
         "type": "boolean"
       }
     },
@@ -42,15 +47,21 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to enforce type annotations on variables declared using array destructuring. */
     arrayDestructuring?: boolean;
+    /** Whether to enforce type annotations for parameters of arrow functions. */
     arrowParameter?: boolean;
+    /** Whether to enforce type annotations on member variables of classes. */
     memberVariableDeclaration?: boolean;
+    /** Whether to enforce type annotations on variables declared using object destructuring. */
     objectDestructuring?: boolean;
+    /** Whether to enforce type annotations for parameters of functions and methods. */
     parameter?: boolean;
+    /** Whether to enforce type annotations for properties of interfaces and types. */
     propertyDeclaration?: boolean;
+    /** Whether to enforce type annotations for variable declarations, excluding array and object destructuring. */
     variableDeclaration?: boolean;
+    /** Whether to ignore variable declarations for non-arrow and arrow functions. */
     variableDeclarationIgnoreFunction?: boolean;
   },
 ];
-"
-`;

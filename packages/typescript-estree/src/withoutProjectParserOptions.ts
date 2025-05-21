@@ -1,5 +1,3 @@
-import type { TSESTreeOptions } from './parser-options';
-
 /**
  * Removes options that prompt the parser to parse the project with type
  * information. In other words, you can use this if you are invoking the parser
@@ -8,12 +6,15 @@ import type { TSESTreeOptions } from './parser-options';
  *
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/8428
  */
-export function withoutProjectParserOptions(
-  opts: TSESTreeOptions,
-): TSESTreeOptions {
+export function withoutProjectParserOptions<Options extends object>(
+  opts: Options,
+): Omit<
+  Options,
+  'EXPERIMENTAL_useProjectService' | 'project' | 'projectService'
+> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The variables are meant to be omitted
   const { EXPERIMENTAL_useProjectService, project, projectService, ...rest } =
     opts as Record<string, unknown>;
 
-  return rest;
+  return rest as unknown as Options;
 }

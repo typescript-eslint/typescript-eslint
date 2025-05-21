@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration VariableDeclaration await-using-multiple-declarations TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -49,10 +46,10 @@ Program {
             name: "y",
             optional: false,
 
-            range: [19, 20],
+            range: [21, 22],
             loc: {
-              start: { column: 19, line: 1 },
-              end: { column: 20, line: 1 },
+              start: { column: 2, line: 2 },
+              end: { column: 3, line: 2 },
             },
           },
           init: Literal {
@@ -60,36 +57,35 @@ Program {
             raw: "2",
             value: 2,
 
-            range: [23, 24],
+            range: [25, 26],
             loc: {
-              start: { column: 23, line: 1 },
-              end: { column: 24, line: 1 },
+              start: { column: 6, line: 2 },
+              end: { column: 7, line: 2 },
             },
           },
 
-          range: [19, 24],
+          range: [21, 26],
           loc: {
-            start: { column: 19, line: 1 },
-            end: { column: 24, line: 1 },
+            start: { column: 2, line: 2 },
+            end: { column: 7, line: 2 },
           },
         },
       ],
       declare: false,
       kind: "await using",
 
-      range: [0, 25],
+      range: [0, 27],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 25, line: 1 },
+        end: { column: 8, line: 2 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 26],
+  range: [0, 28],
   loc: {
     start: { column: 0, line: 1 },
-    end: { column: 0, line: 2 },
+    end: { column: 0, line: 3 },
   },
 }
-`;

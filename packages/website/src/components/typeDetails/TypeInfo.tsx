@@ -1,36 +1,38 @@
-import React, { useMemo } from 'react';
 import type * as ts from 'typescript';
+
+import React, { useMemo } from 'react';
+
+import type { OnHoverNodeFn } from '../ast/types';
 
 import ASTViewer from '../ast/ASTViewer';
 import astStyles from '../ast/ASTViewer.module.css';
-import type { OnHoverNodeFn } from '../ast/types';
 
 export interface TypeInfoProps {
-  readonly value: ts.Node;
-  readonly typeChecker?: ts.TypeChecker;
   readonly onHoverNode?: OnHoverNodeFn;
+  readonly typeChecker?: ts.TypeChecker;
+  readonly value: ts.Node;
 }
 
 interface InfoModel {
-  type?: unknown;
-  typeString?: string;
   contextualType?: unknown;
   contextualTypeString?: string;
-  symbol?: unknown;
-  signature?: unknown;
   flowNode?: unknown;
+  signature?: unknown;
+  symbol?: unknown;
+  type?: unknown;
+  typeString?: string;
 }
 
 interface SimpleFieldProps {
-  readonly value: string | undefined;
   readonly label: string;
+  readonly value: string | undefined;
 }
 
 interface TypeGroupProps {
   readonly label: string;
-  readonly type?: unknown;
-  readonly string?: string;
   readonly onHoverNode?: OnHoverNodeFn;
+  readonly string?: string;
+  readonly type?: unknown;
 }
 
 function SimpleField(props: SimpleFieldProps): React.JSX.Element {
@@ -50,7 +52,7 @@ function TypeGroup(props: TypeGroupProps): React.JSX.Element {
       {props.type ? (
         <>
           {props.string && (
-            <SimpleField value={props.string} label="typeToString()" />
+            <SimpleField label="typeToString()" value={props.string} />
           )}
           <ASTViewer onHoverNode={props.onHoverNode} value={props.type} />
         </>
@@ -62,9 +64,9 @@ function TypeGroup(props: TypeGroupProps): React.JSX.Element {
 }
 
 export function TypeInfo({
-  value,
-  typeChecker,
   onHoverNode,
+  typeChecker,
+  value,
 }: TypeInfoProps): React.JSX.Element {
   const computed = useMemo(() => {
     if (!typeChecker) {
@@ -110,30 +112,30 @@ export function TypeInfo({
         <ASTViewer onHoverNode={onHoverNode} value={value} />
         <TypeGroup
           label="Type"
-          type={computed.type}
-          string={computed.typeString}
           onHoverNode={onHoverNode}
+          string={computed.typeString}
+          type={computed.type}
         />
         <TypeGroup
           label="Contextual Type"
-          type={computed.contextualType}
-          string={computed.contextualTypeString}
           onHoverNode={onHoverNode}
+          string={computed.contextualTypeString}
+          type={computed.contextualType}
         />
         <TypeGroup
           label="Symbol"
-          type={computed.symbol}
           onHoverNode={onHoverNode}
+          type={computed.symbol}
         />
         <TypeGroup
           label="Signature"
-          type={computed.signature}
           onHoverNode={onHoverNode}
+          type={computed.signature}
         />
         <TypeGroup
           label="FlowNode"
-          type={computed.flowNode}
           onHoverNode={onHoverNode}
+          type={computed.flowNode}
         />
       </>
     </div>

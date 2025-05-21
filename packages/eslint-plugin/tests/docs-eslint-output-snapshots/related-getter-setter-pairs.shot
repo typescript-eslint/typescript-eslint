@@ -1,0 +1,14 @@
+Incorrect
+
+interface Box {
+  get value(): string;
+               ~~~~~~ `get()` type should be assignable to its equivalent `set()` type.
+  set value(newValue: number);
+}
+
+Correct
+
+interface Box {
+  get value(): string;
+  set value(newValue: string);
+}

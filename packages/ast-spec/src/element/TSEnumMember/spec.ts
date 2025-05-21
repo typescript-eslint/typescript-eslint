@@ -8,11 +8,11 @@ import type {
 
 interface TSEnumMemberBase extends BaseNode {
   type: AST_NODE_TYPES.TSEnumMember;
+  computed: boolean;
   id:
     | PropertyNameComputed // this should only happen in semantically invalid code (ts error 1164)
     | PropertyNameNonComputed;
   initializer: Expression | undefined;
-  computed: boolean;
 }
 
 /**
@@ -30,13 +30,13 @@ interface TSEnumMemberBase extends BaseNode {
  * ```
  */
 export interface TSEnumMemberComputedName extends TSEnumMemberBase {
-  id: PropertyNameComputed;
   computed: true;
+  id: PropertyNameComputed;
 }
 
 export interface TSEnumMemberNonComputedName extends TSEnumMemberBase {
-  id: PropertyNameNonComputed;
   computed: false;
+  id: PropertyNameNonComputed;
 }
 
 export type TSEnumMember =

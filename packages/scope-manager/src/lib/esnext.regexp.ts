@@ -3,9 +3,11 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
+
 import { TYPE } from './base-config';
 
-export const esnext_regexp = {
-  RegExp: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const esnext_regexp: LibDefinition = {
+  libs: [],
+  variables: [['RegExp', TYPE]],
+};

@@ -2,11 +2,12 @@
 // Forked from: https://github.com/eslint/eslint/blob/f182114144ae0bb7187de34a1661f31fb70f1357/tests/lib/config/flat-config-schema.js
 
 import type { ObjectLike } from '../src/utils/flat-config-schema';
+
 import { flatConfigSchema } from '../src/utils/flat-config-schema';
 
-describe('merge', () => {
-  const { merge } = flatConfigSchema.settings;
+const { merge } = flatConfigSchema.settings;
 
+describe(merge, () => {
   it('merges two objects', () => {
     const first = { foo: 42 };
     const second = { bar: 'baz' };
@@ -15,14 +16,14 @@ describe('merge', () => {
     expect(result).toEqual({ ...first, ...second });
   });
 
-  it('returns an emtpy object if both values are undefined', () => {
+  it('returns an empty object if both values are undefined', () => {
     const result = merge(undefined, undefined);
 
     expect(result).toEqual({});
   });
 
   it('returns an object equal to the first one if the second one is undefined', () => {
-    const first = { foo: 42, bar: 'baz' };
+    const first = { bar: 'baz', foo: 42 };
     const result = merge(first, undefined);
 
     expect(result).toEqual(first);
@@ -30,7 +31,7 @@ describe('merge', () => {
   });
 
   it('returns an object equal to the second one if the first one is undefined', () => {
-    const second = { foo: 42, bar: 'baz' };
+    const second = { bar: 'baz', foo: 42 };
     const result = merge(undefined, second);
 
     expect(result).toEqual(second);
@@ -38,7 +39,7 @@ describe('merge', () => {
   });
 
   it('does not preserve the type of merged objects', () => {
-    const first = new Set(['foo', 'bar']);
+    const first = new Set(['bar', 'foo']);
     const second = new Set(['baz']);
     const result = merge(
       first as unknown as ObjectLike,
@@ -94,7 +95,7 @@ describe('merge', () => {
 
   it('does not change the prototype of a merged object', () => {
     const first = { foo: 42 };
-    const second = { bar: 'baz', ['__proto__']: { qux: true } };
+    const second = { ['__proto__']: { qux: true }, bar: 'baz' };
     const result = merge(first, second);
 
     expect(Object.getPrototypeOf(result)).toBe(Object.prototype);
@@ -154,11 +155,11 @@ describe('merge', () => {
   });
 
   it('sets properties to undefined', () => {
-    const first = { foo: undefined, bar: undefined };
-    const second = { foo: undefined, baz: undefined };
+    const first = { bar: undefined, foo: undefined };
+    const second = { baz: undefined, foo: undefined };
     const result = merge(first, second);
 
-    expect(result).toEqual({ foo: undefined, bar: undefined, baz: undefined });
+    expect(result).toEqual({ bar: undefined, baz: undefined, foo: undefined });
   });
 
   it('considers only own enumerable properties', () => {
@@ -205,7 +206,7 @@ describe('merge', () => {
     expect(result.first).toEqual(first);
     expect(result.second).toEqual(second);
 
-    const expected: ObjectLike = { foo: 42, bar: 'baz' };
+    const expected: ObjectLike = { bar: 'baz', foo: 42 };
 
     expected.first = first;
     expected.second = second;
@@ -224,7 +225,7 @@ describe('merge', () => {
 
     expect(result.reference).toEqual(result);
 
-    const expected: ObjectLike = { foo: 42, bar: 'baz' };
+    const expected: ObjectLike = { bar: 'baz', foo: 42 };
 
     expected.reference = expected;
     expect(result).toEqual(expected);
@@ -242,7 +243,7 @@ describe('merge', () => {
     expect(result.first).toEqual(first);
     expect(result.second).toEqual(second);
 
-    const expected: ObjectLike = { foo: 42, bar: 'baz' };
+    const expected: ObjectLike = { bar: 'baz', foo: 42 };
 
     expected.first = first;
     expected.second = second;
@@ -261,9 +262,9 @@ describe('merge', () => {
     expect(result).toEqual((result.reference as ObjectLike).reference);
 
     const expected = {
-      foo: 42,
       bar: 'baz',
-      reference: { foo: 42, bar: 'baz' },
+      foo: 42,
+      reference: { bar: 'baz', foo: 42 },
     };
 
     (expected.reference as ObjectLike).reference = expected;
@@ -290,10 +291,10 @@ describe('merge', () => {
     expect(result.a).toEqual(result.d);
 
     const expected = {
-      a: { foo: 42, bar: 'baz' },
-      b: { foo: 42, bar: 'something else' },
-      c: { foo: 'different', bar: 'baz' },
-      d: { foo: 42, bar: 'baz' },
+      a: { bar: 'baz', foo: 42 },
+      b: { bar: 'something else', foo: 42 },
+      c: { bar: 'baz', foo: 'different' },
+      d: { bar: 'baz', foo: 42 },
     };
 
     expect(result).toEqual(expected);

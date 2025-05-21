@@ -7,14 +7,15 @@ import { deepMerge, isObjectNotArray } from './deepMerge';
  * @param userOptions the user opts
  * @returns the options with defaults
  */
-function applyDefault<User extends readonly unknown[], Default extends User>(
+export function applyDefault<
+  User extends readonly unknown[],
+  Default extends User,
+>(
   defaultOptions: Readonly<Default>,
   userOptions: Readonly<User> | null,
 ): Default {
   // clone defaults
-  const options = JSON.parse(
-    JSON.stringify(defaultOptions),
-  ) as AsMutable<Default>;
+  const options = structuredClone(defaultOptions) as AsMutable<Default>;
 
   if (userOptions == null) {
     return options;
@@ -23,6 +24,7 @@ function applyDefault<User extends readonly unknown[], Default extends User>(
   // For avoiding the type error
   //   `This expression is not callable. Type 'unknown' has no call signatures.ts(2349)`
   (options as unknown[]).forEach((opt: unknown, i: number) => {
+    // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
     if (userOptions[i] !== undefined) {
       const userOpt = userOptions[i];
 
@@ -40,5 +42,3 @@ function applyDefault<User extends readonly unknown[], Default extends User>(
 type AsMutable<T extends readonly unknown[]> = {
   -readonly [Key in keyof T]: T[Key];
 };
-
-export { applyDefault };

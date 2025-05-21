@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -17,6 +17,7 @@ import {
   isTypeUnknownType,
   isUnsafeAssignment,
 } from '../util';
+import { getParentFunctionNode } from '../util/getParentFunctionNode';
 
 export default createRule({
   name: 'no-unsafe-return',
@@ -29,12 +30,12 @@ export default createRule({
     },
     messages: {
       unsafeReturn: 'Unsafe return of a value of type {{type}}.',
+      unsafeReturnAssignment:
+        'Unsafe return of type `{{sender}}` from function with return type `{{receiver}}`.',
       unsafeReturnThis: [
         'Unsafe return of a value of type `{{type}}`. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
-      unsafeReturnAssignment:
-        'Unsafe return of type `{{sender}}` from function with return type `{{receiver}}`.',
     },
     schema: [],
   },
@@ -47,31 +48,6 @@ export default createRule({
       compilerOptions,
       'noImplicitThis',
     );
-
-    function getParentFunctionNode(
-      node: TSESTree.Node,
-    ):
-      | TSESTree.ArrowFunctionExpression
-      | TSESTree.FunctionDeclaration
-      | TSESTree.FunctionExpression
-      | null {
-      let current = node.parent;
-      while (current) {
-        if (
-          current.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-          current.type === AST_NODE_TYPES.FunctionDeclaration ||
-          current.type === AST_NODE_TYPES.FunctionExpression
-        ) {
-          return current;
-        }
-
-        current = current.parent;
-      }
-
-      // this shouldn't happen in correct code, but someone may attempt to parse bad code
-      // the parser won't error, so we shouldn't throw here
-      /* istanbul ignore next */ return null;
-    }
 
     function checkReturn(
       returnNode: TSESTree.Node,
@@ -104,9 +80,7 @@ export default createRule({
         ts.isArrowFunction(functionTSNode)
           ? getContextualType(checker, functionTSNode)
           : services.getTypeAtLocation(functionNode);
-      if (!functionType) {
-        functionType = services.getTypeAtLocation(functionNode);
-      }
+      functionType ??= services.getTypeAtLocation(functionNode);
       const callSignatures = tsutils.getCallSignaturesOfType(functionType);
       // If there is an explicit type annotation *and* that type matches the actual
       // function return type, we shouldn't complain (it's intentional, even if unsafe)
@@ -219,19 +193,20 @@ export default createRule({
           return;
         }
 
-        const { sender, receiver } = result;
+        const { receiver, sender } = result;
         return context.report({
           node: reportingNode,
           messageId: 'unsafeReturnAssignment',
           data: {
-            sender: checker.typeToString(sender),
             receiver: checker.typeToString(receiver),
+            sender: checker.typeToString(sender),
           },
         });
       }
     }
 
     return {
+      'ArrowFunctionExpression > :not(BlockStatement).body': checkReturn,
       ReturnStatement(node): void {
         const argument = node.argument;
         if (!argument) {
@@ -240,7 +215,6 @@ export default createRule({
 
         checkReturn(argument, node);
       },
-      'ArrowFunctionExpression > :not(BlockStatement).body': checkReturn,
     };
   },
 });

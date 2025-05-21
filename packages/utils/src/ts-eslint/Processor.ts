@@ -17,7 +17,7 @@ export namespace Processor {
   export type PreProcess = (
     text: string,
     filename: string,
-  ) => (string | { text: string; filename: string })[];
+  ) => (string | { filename: string; text: string })[];
 
   export type PostProcess = (
     messagesList: Linter.LintMessage[][],
@@ -31,14 +31,14 @@ export namespace Processor {
     meta?: ProcessorMeta;
 
     /**
-     * The function to extract code blocks.
-     */
-    preprocess?: PreProcess;
-
-    /**
      * The function to merge messages.
      */
     postprocess?: PostProcess;
+
+    /**
+     * The function to extract code blocks.
+     */
+    preprocess?: PreProcess;
 
     /**
      * If `true` then it means the processor supports autofix.
@@ -60,16 +60,6 @@ export namespace Processor {
     meta?: { [K in keyof ProcessorMeta]?: ProcessorMeta[K] | undefined };
 
     /**
-     * The function to extract code blocks.
-     */
-    /*
-    eslint-disable-next-line @typescript-eslint/no-explicit-any --
-    intentionally using `any` to allow bi-directional assignment (unknown and
-    never only allow unidirectional)
-    */
-    preprocess?: (text: string, filename: string) => any;
-
-    /**
      * The function to merge messages.
      */
     /*
@@ -78,6 +68,16 @@ export namespace Processor {
     never only allow unidirectional)
     */
     postprocess?: (messagesList: any, filename: string) => any;
+
+    /**
+     * The function to extract code blocks.
+     */
+    /*
+    eslint-disable-next-line @typescript-eslint/no-explicit-any --
+    intentionally using `any` to allow bi-directional assignment (unknown and
+    never only allow unidirectional)
+    */
+    preprocess?: (text: string, filename: string) => any;
 
     /**
      * If `true` then it means the processor supports autofix.

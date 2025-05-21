@@ -1,3 +1,10 @@
+import type {
+  Context,
+  NormalizedSelector,
+  ParsedOptions,
+  Selector,
+} from './types';
+
 import { getEnumNames } from '../../util';
 import {
   MetaSelectors,
@@ -8,12 +15,6 @@ import {
   UnderscoreOptions,
 } from './enums';
 import { isMetaSelector } from './shared';
-import type {
-  Context,
-  NormalizedSelector,
-  ParsedOptions,
-  Selector,
-} from './types';
 import { createValidator } from './validator';
 
 function normalizeOption(option: Selector): NormalizedSelector[] {
@@ -32,37 +33,37 @@ function normalizeOption(option: Selector): NormalizedSelector[] {
 
   const normalizedOption = {
     // format options
-    format: option.format ? option.format.map(f => PredefinedFormats[f]) : null,
     custom: option.custom
       ? {
-          regex: new RegExp(option.custom.regex, 'u'),
           match: option.custom.match,
+          regex: new RegExp(option.custom.regex, 'u'),
         }
       : null,
-    leadingUnderscore:
-      option.leadingUnderscore !== undefined
-        ? UnderscoreOptions[option.leadingUnderscore]
-        : null,
-    trailingUnderscore:
-      option.trailingUnderscore !== undefined
-        ? UnderscoreOptions[option.trailingUnderscore]
-        : null,
-    prefix: option.prefix && option.prefix.length > 0 ? option.prefix : null,
-    suffix: option.suffix && option.suffix.length > 0 ? option.suffix : null,
-    modifiers: option.modifiers?.map(m => Modifiers[m]) ?? null,
-    types: option.types?.map(m => TypeModifiers[m]) ?? null,
     filter:
-      option.filter !== undefined
+      option.filter != null
         ? typeof option.filter === 'string'
           ? {
-              regex: new RegExp(option.filter, 'u'),
               match: true,
+              regex: new RegExp(option.filter, 'u'),
             }
           : {
-              regex: new RegExp(option.filter.regex, 'u'),
               match: option.filter.match,
+              regex: new RegExp(option.filter.regex, 'u'),
             }
         : null,
+    format: option.format ? option.format.map(f => PredefinedFormats[f]) : null,
+    leadingUnderscore:
+      option.leadingUnderscore != null
+        ? UnderscoreOptions[option.leadingUnderscore]
+        : null,
+    modifiers: option.modifiers?.map(m => Modifiers[m]) ?? null,
+    prefix: option.prefix && option.prefix.length > 0 ? option.prefix : null,
+    suffix: option.suffix && option.suffix.length > 0 ? option.suffix : null,
+    trailingUnderscore:
+      option.trailingUnderscore != null
+        ? UnderscoreOptions[option.trailingUnderscore]
+        : null,
+    types: option.types?.map(m => TypeModifiers[m]) ?? null,
     // calculated ordering weight based on modifiers
     modifierWeight: weight,
   };
@@ -79,16 +80,13 @@ function normalizeOption(option: Selector): NormalizedSelector[] {
   }));
 }
 
-function parseOptions(context: Context): ParsedOptions {
+export function parseOptions(context: Context): ParsedOptions {
   const normalizedOptions = context.options.flatMap(normalizeOption);
 
-  const result = getEnumNames(Selectors).reduce((acc, k) => {
-    acc[k] = createValidator(k, context, normalizedOptions);
-    return acc;
-    // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
-  }, {} as ParsedOptions);
-
-  return result;
+  return Object.fromEntries(
+    getEnumNames(Selectors).map(k => [
+      k,
+      createValidator(k, context, normalizedOptions),
+    ]),
+  ) as ParsedOptions;
 }
-
-export { parseOptions };

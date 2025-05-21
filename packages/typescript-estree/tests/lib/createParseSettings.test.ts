@@ -2,14 +2,14 @@ import { createParseSettings } from '../../src/parseSettings/createParseSettings
 
 const projectService = { service: true };
 
-jest.mock('../../src/create-program/createProjectService', () => ({
-  createProjectService: (): typeof projectService => projectService,
+vi.mock('@typescript-eslint/project-service', () => ({
+  createProjectService: () => projectService,
 }));
 
-describe('createParseSettings', () => {
+describe(createParseSettings, () => {
   describe('projectService', () => {
     it('is created when options.projectService is enabled', () => {
-      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE = 'false';
+      vi.stubEnv('TYPESCRIPT_ESLINT_PROJECT_SERVICE', 'false');
 
       const parseSettings = createParseSettings('', {
         projectService: true,
@@ -19,35 +19,35 @@ describe('createParseSettings', () => {
     });
 
     it('is created when options.projectService is undefined, options.project is true, and process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE is true', () => {
-      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE = 'true';
+      vi.stubEnv('TYPESCRIPT_ESLINT_PROJECT_SERVICE', 'true');
 
       const parseSettings = createParseSettings('', {
-        projectService: undefined,
         project: true,
+        projectService: undefined,
       });
 
       expect(parseSettings.projectService).toBe(projectService);
     });
 
     it('is not created when options.projectService is undefined, options.project is falsy, and process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE is true', () => {
-      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE = 'true';
+      vi.stubEnv('TYPESCRIPT_ESLINT_PROJECT_SERVICE', 'true');
 
       const parseSettings = createParseSettings('', {
         projectService: undefined,
       });
 
-      expect(parseSettings.projectService).toBeUndefined();
+      assert.isUndefined(parseSettings.projectService);
     });
 
     it('is not created when options.projectService is false, options.project is true, and process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE is true', () => {
-      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE = 'true';
+      vi.stubEnv('TYPESCRIPT_ESLINT_PROJECT_SERVICE', 'true');
 
       const parseSettings = createParseSettings('', {
-        projectService: false,
         project: true,
+        projectService: false,
       });
 
-      expect(parseSettings.projectService).toBeUndefined();
+      assert.isUndefined(parseSettings.projectService);
     });
   });
 

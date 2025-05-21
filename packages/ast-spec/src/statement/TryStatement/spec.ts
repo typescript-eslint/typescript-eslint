@@ -6,6 +6,6 @@ import type { BlockStatement } from '../BlockStatement/spec';
 export interface TryStatement extends BaseNode {
   type: AST_NODE_TYPES.TryStatement;
   block: BlockStatement;
-  handler: CatchClause | null;
   finalizer: BlockStatement | null;
+  handler: CatchClause | null;
 }

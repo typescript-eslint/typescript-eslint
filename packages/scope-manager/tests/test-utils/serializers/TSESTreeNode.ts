@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/types';
+import type { NewPlugin } from '@vitest/pretty-format';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
-import type { NewPlugin } from 'pretty-format';
 
 import { createIdGenerator } from '../../../src/ID';
 
@@ -10,26 +11,16 @@ const EXCLUDED_KEYS = new Set([
   // type is printed in front of the object
   'type',
   // locations are just noise
-  'range',
   'loc',
+  'range',
 ]);
 
 const generator = createIdGenerator();
-type Node = Record<string, unknown> & { type: AST_NODE_TYPES };
-type Identifier = Node & { name: string; type: AST_NODE_TYPES.Identifier };
+type Node = { type: AST_NODE_TYPES } & Record<string, unknown>;
+type Identifier = { name: string; type: AST_NODE_TYPES.Identifier } & Node;
 const SEEN_NODES = new Map<Node, number>();
 
-const serializer: NewPlugin = {
-  test(val): boolean {
-    return !!(
-      val &&
-      typeof val === 'object' &&
-      // make sure it's not one of the classes from the package
-      Object.getPrototypeOf(val) === Object.prototype &&
-      'type' in val &&
-      (val as TSESTree.Node).type in AST_NODE_TYPES
-    );
-  },
+export const serializer: NewPlugin = {
   serialize(node: Node): string {
     if (node.type === AST_NODE_TYPES.Identifier) {
       return `Identifier<"${(node as Identifier).name}">`;
@@ -48,6 +39,14 @@ const serializer: NewPlugin = {
     SEEN_NODES.set(node, id);
     return `${node.type}$${id}`;
   },
+  test(val): boolean {
+    return !!(
+      val &&
+      typeof val === 'object' &&
+      // make sure it's not one of the classes from the package
+      Object.getPrototypeOf(val) === Object.prototype &&
+      'type' in val &&
+      (val as TSESTree.Node).type in AST_NODE_TYPES
+    );
+  },
 };
-
-export { serializer };

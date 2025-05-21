@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: /img/team/joshuakgoldberg.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
+authors: joshuakgoldberg
 description: We're following ESLint's lead in moving our formatting lint rules to the ESLint Stylistic project.
 slug: deprecating-formatting-rules
 tags: [formatter, formatting, prettier, style, stylistic]

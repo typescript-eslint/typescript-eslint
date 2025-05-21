@@ -10,7 +10,11 @@ Many users are new to open source and/or typed linting.
 It's imperative we give them a positive, uplifting experience.
 
 :::tip
-If you're ever unsure on any part of PR reviews, don't hesitate to loop in a maintainer who has more context to help!
+If you're a new team member, we encourage you to review PRs as soon as you feel comfortable doing so!
+In addition to benefitting the project, it's a great way to learn more about the codebase and project in general.
+Consider starting with areas you're most familiar with, and work your way up to more unfamiliar and complex PRs as you gain experience.
+
+If you're ever unsure on any part of PR reviews, don't hesitate to loop in a team member who has more context to help!
 :::
 
 ## Governance
@@ -37,7 +41,7 @@ Open pull requests ideally switch between two states:
 - Ready for review: either newly created or after [review is re-requested](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews#re-requesting-a-review)
 - Waiting for author activity: either by virtue of [being a draft](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests) or having the [`awaiting response` label](https://github.com/typescript-eslint/typescript-eslint/pulls?q=is%3Apr+is%3Aopen+label%3A%22awaiting+response%22)
 
-Add the `awaiting response` label to a PR whenever you post a review.
+Add the `awaiting response` label to a PR and remove `1 approval` if it exists whenever you post a request for changes.
 It will be automatically removed if the author re-requests review.
 
 ### Be Kind
@@ -66,9 +70,6 @@ If there's no backing issue:
 - If the PR is a straightforward docs or tooling fix that doesn't impact users, it's ok to review it as-is
 - Otherwise, add the `please fill out the template` label and post a comment like the _Needs Issue_ template
 
-Upon completing your review, if the build is passing and you feel comfortable merging it in, go ahead and squash merge.
-Otherwise, add the `1 approval` label.
-
 #### Common Things to Look For
 
 - Style: that can you read through the code easily, there are comments for necessary tricky areas, and not unnecessary comments otherwise.
@@ -77,7 +78,7 @@ Otherwise, add the `1 approval` label.
 - Thoroughness: does it handle relevant edge cases? Commonly:
   - Generics and type parameters (see: `getConstrainedTypeAtLocation`).
   - Parenthesis and whitespace (see: `getWrappingFixer`).
-  - Unions and intersections (see: `unionTypeParts` and `intersectionTypeParts`).
+  - Unions and intersections (see: `unionConstituents` and `intersectionConstituents`).
 - Unit tests:
   - All lines are covered per the Codecov / `yarn jest path/to/impacted/file --coverage` report.
   - Both "positive" and "negative" ("valid" and "invalid") cases exist, if reasonably possible to test for.
@@ -110,6 +111,21 @@ For preliminary reviews, be clear with what scale you're reviewing at: _"Reviewi
 
 For repeat reviews, be clear when it's something you missed earlier and/or there's new information.
 Don't apologize if the missed information was only made clear because of requested changes - this is part of the review process!
+
+### Approvals
+
+If the PR addresses a time critical task, such as a security fix or `main` branch build break, go ahead and squash merge it.
+
+Otherwise, upon completing your review, if the build is passing and you have no blockers, approve it on GitHub.
+Then:
+
+- If there isn't a `1 approval` label or existing approval, add the `1 approval` label
+- If there's already `1 approval` and/or it's been a week since the last request for changes, go ahead and squash merge
+  - For straightforward PRs that don't impact users, you can wait 3 days instead
+
+There's no need to reset waiting periods for minor fixups from code reviews of otherwise approved code.
+
+We try to leave PRs open for at least a week to give reviewers who aren't active every day a chance to get to it.
 
 ### Other States
 

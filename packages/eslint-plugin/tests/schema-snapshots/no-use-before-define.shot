@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-use-before-define 1`] = `
-"
 # SCHEMA:
 
 [
@@ -15,24 +12,31 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "additionalProperties": false,
         "properties": {
           "allowNamedExports": {
+            "description": "Whether to ignore named exports.",
             "type": "boolean"
           },
           "classes": {
+            "description": "Whether to ignore references to class declarations.",
             "type": "boolean"
           },
           "enums": {
+            "description": "Whether to check references to enums.",
             "type": "boolean"
           },
           "functions": {
+            "description": "Whether to ignore references to function declarations.",
             "type": "boolean"
           },
           "ignoreTypeReferences": {
+            "description": "Whether to ignore type references, such as in type annotations and assertions.",
             "type": "boolean"
           },
           "typedefs": {
+            "description": "Whether to check references to types.",
             "type": "boolean"
           },
           "variables": {
+            "description": "Whether to ignore references to variables.",
             "type": "boolean"
           }
         },
@@ -48,14 +52,19 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   | 'nofunc'
   | {
+      /** Whether to ignore named exports. */
       allowNamedExports?: boolean;
+      /** Whether to ignore references to class declarations. */
       classes?: boolean;
+      /** Whether to check references to enums. */
       enums?: boolean;
+      /** Whether to ignore references to function declarations. */
       functions?: boolean;
+      /** Whether to ignore type references, such as in type annotations and assertions. */
       ignoreTypeReferences?: boolean;
+      /** Whether to check references to types. */
       typedefs?: boolean;
+      /** Whether to ignore references to variables. */
       variables?: boolean;
     },
 ];
-"
-`;

@@ -57,8 +57,8 @@ ruleTester.run('ts-expect-error', rule, {
       code: '// @ts-expect-error exactly 21 characters',
       options: [
         {
-          'ts-expect-error': 'allow-with-description',
           minimumDescriptionLength: 21,
+          'ts-expect-error': 'allow-with-description',
         },
       ],
     },
@@ -69,8 +69,8 @@ ruleTester.run('ts-expect-error', rule, {
       `,
       options: [
         {
-          'ts-expect-error': 'allow-with-description',
           minimumDescriptionLength: 21,
+          'ts-expect-error': 'allow-with-description',
         },
       ],
     },
@@ -78,10 +78,10 @@ ruleTester.run('ts-expect-error', rule, {
       code: '// @ts-expect-error: TS1234 because xyz',
       options: [
         {
+          minimumDescriptionLength: 10,
           'ts-expect-error': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-          minimumDescriptionLength: 10,
         },
       ],
     },
@@ -92,15 +92,15 @@ ruleTester.run('ts-expect-error', rule, {
       `,
       options: [
         {
+          minimumDescriptionLength: 10,
           'ts-expect-error': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-          minimumDescriptionLength: 10,
         },
       ],
     },
     {
-      code: noFormat`// @ts-expect-error 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      code: '// @ts-expect-error 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦',
       options: [
         {
           'ts-expect-error': 'allow-with-description',
@@ -111,90 +111,90 @@ ruleTester.run('ts-expect-error', rule, {
   invalid: [
     {
       code: '// @ts-expect-error',
-      options: [{ 'ts-expect-error': true }],
       errors: [
         {
-          data: { directive: 'expect-error' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
           column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-expect-error': true }],
     },
     {
       code: '/* @ts-expect-error */',
-      options: [{ 'ts-expect-error': true }],
       errors: [
         {
-          data: { directive: 'expect-error' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
           column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-expect-error': true }],
     },
     {
       code: `
 /*
 @ts-expect-error */
       `,
-      options: [{ 'ts-expect-error': true }],
       errors: [
         {
-          data: { directive: 'expect-error' },
-          messageId: 'tsDirectiveComment',
-          line: 2,
           column: 1,
+          data: { directive: 'expect-error' },
+          line: 2,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-expect-error': true }],
     },
     {
       code: `
 /** on the last line
   @ts-expect-error */
       `,
-      options: [{ 'ts-expect-error': true }],
       errors: [
         {
-          data: { directive: 'expect-error' },
-          messageId: 'tsDirectiveComment',
-          line: 2,
           column: 1,
+          data: { directive: 'expect-error' },
+          line: 2,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-expect-error': true }],
     },
     {
       code: `
 /** on the last line
  * @ts-expect-error */
       `,
-      options: [{ 'ts-expect-error': true }],
       errors: [
         {
-          data: { directive: 'expect-error' },
-          messageId: 'tsDirectiveComment',
-          line: 2,
           column: 1,
+          data: { directive: 'expect-error' },
+          line: 2,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-expect-error': true }],
     },
     {
       code: `
 /**
  * @ts-expect-error: TODO */
       `,
-      options: [
-        {
-          'ts-expect-error': 'allow-with-description',
-          minimumDescriptionLength: 10,
-        },
-      ],
       errors: [
         {
-          data: { directive: 'expect-error', minimumDescriptionLength: 10 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 2,
           column: 1,
+          data: { directive: 'expect-error', minimumDescriptionLength: 10 },
+          line: 2,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
+      options: [
+        {
+          minimumDescriptionLength: 10,
+          'ts-expect-error': 'allow-with-description',
         },
       ],
     },
@@ -203,20 +203,20 @@ ruleTester.run('ts-expect-error', rule, {
 /**
  * @ts-expect-error: TS1234 because xyz */
       `,
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error', minimumDescriptionLength: 25 },
+          line: 2,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
       options: [
         {
+          minimumDescriptionLength: 25,
           'ts-expect-error': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-          minimumDescriptionLength: 25,
-        },
-      ],
-      errors: [
-        {
-          data: { directive: 'expect-error', minimumDescriptionLength: 25 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 2,
-          column: 1,
         },
       ],
     },
@@ -225,19 +225,19 @@ ruleTester.run('ts-expect-error', rule, {
 /**
  * @ts-expect-error: TS1234 */
       `,
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
+          line: 2,
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+        },
+      ],
       options: [
         {
           'ts-expect-error': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-        },
-      ],
-      errors: [
-        {
-          data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
-          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
-          line: 2,
-          column: 1,
         },
       ],
     },
@@ -246,19 +246,19 @@ ruleTester.run('ts-expect-error', rule, {
 /**
  * @ts-expect-error    : TS1234 */
       `,
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
+          line: 2,
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+        },
+      ],
       options: [
         {
           'ts-expect-error': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-        },
-      ],
-      errors: [
-        {
-          data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
-          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
-          line: 2,
-          column: 1,
         },
       ],
     },
@@ -267,55 +267,55 @@ ruleTester.run('ts-expect-error', rule, {
 /**
  * @ts-expect-error 👨‍👩‍👧‍👦 */
       `,
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error', minimumDescriptionLength: 3 },
+          line: 2,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
       options: [
         {
           'ts-expect-error': 'allow-with-description',
         },
       ],
-      errors: [
-        {
-          data: { directive: 'expect-error', minimumDescriptionLength: 3 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 2,
-          column: 1,
-        },
-      ],
     },
     {
       code: '/** @ts-expect-error */',
-      options: [{ 'ts-expect-error': true }],
       errors: [
         {
-          data: { directive: 'expect-error' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
           column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-expect-error': true }],
     },
     {
       code: '// @ts-expect-error: Suppress next line',
-      options: [{ 'ts-expect-error': true }],
       errors: [
         {
-          data: { directive: 'expect-error' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
           column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-expect-error': true }],
     },
     {
       code: '/////@ts-expect-error: Suppress next line',
-      options: [{ 'ts-expect-error': true }],
       errors: [
         {
-          data: { directive: 'expect-error' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
           column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-expect-error': true }],
     },
     {
       code: `
@@ -324,70 +324,78 @@ if (false) {
   console.log('hello');
 }
       `,
-      options: [{ 'ts-expect-error': true }],
       errors: [
         {
-          data: { directive: 'expect-error' },
-          messageId: 'tsDirectiveComment',
-          line: 3,
           column: 3,
+          data: { directive: 'expect-error' },
+          line: 3,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-expect-error': true }],
     },
     {
       code: '// @ts-expect-error',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error', minimumDescriptionLength: 3 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
       options: [
         {
           'ts-expect-error': 'allow-with-description',
-        },
-      ],
-      errors: [
-        {
-          data: { directive: 'expect-error', minimumDescriptionLength: 3 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
-          column: 1,
         },
       ],
     },
     {
       code: '// @ts-expect-error: TODO',
-      options: [
-        {
-          'ts-expect-error': 'allow-with-description',
-          minimumDescriptionLength: 10,
-        },
-      ],
       errors: [
         {
-          data: { directive: 'expect-error', minimumDescriptionLength: 10 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
           column: 1,
+          data: { directive: 'expect-error', minimumDescriptionLength: 10 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
+      options: [
+        {
+          minimumDescriptionLength: 10,
+          'ts-expect-error': 'allow-with-description',
         },
       ],
     },
     {
       code: '// @ts-expect-error: TS1234 because xyz',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error', minimumDescriptionLength: 25 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
       options: [
         {
+          minimumDescriptionLength: 25,
           'ts-expect-error': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-          minimumDescriptionLength: 25,
-        },
-      ],
-      errors: [
-        {
-          data: { directive: 'expect-error', minimumDescriptionLength: 25 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
-          column: 1,
         },
       ],
     },
     {
       code: '// @ts-expect-error: TS1234',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
+          line: 1,
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+        },
+      ],
       options: [
         {
           'ts-expect-error': {
@@ -395,17 +403,17 @@ if (false) {
           },
         },
       ],
-      errors: [
-        {
-          data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
-          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
-          line: 1,
-          column: 1,
-        },
-      ],
     },
     {
-      code: noFormat`// @ts-expect-error    : TS1234 because xyz`,
+      code: '// @ts-expect-error    : TS1234 because xyz',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
+          line: 1,
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+        },
+      ],
       options: [
         {
           'ts-expect-error': {
@@ -413,28 +421,20 @@ if (false) {
           },
         },
       ],
-      errors: [
-        {
-          data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
-          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
-          line: 1,
-          column: 1,
-        },
-      ],
     },
     {
-      code: noFormat`// @ts-expect-error 👨‍👩‍👧‍👦`,
+      code: '// @ts-expect-error 👨‍👩‍👧‍👦',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error', minimumDescriptionLength: 3 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
       options: [
         {
           'ts-expect-error': 'allow-with-description',
-        },
-      ],
-      errors: [
-        {
-          data: { directive: 'expect-error', minimumDescriptionLength: 3 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
-          column: 1,
         },
       ],
     },
@@ -460,8 +460,8 @@ ruleTester.run('ts-ignore', rule, {
       `,
       options: [
         {
-          'ts-ignore': 'allow-with-description',
           minimumDescriptionLength: 21,
+          'ts-ignore': 'allow-with-description',
         },
       ],
     },
@@ -492,15 +492,15 @@ ruleTester.run('ts-ignore', rule, {
       code: '// @ts-ignore: TS1234 because xyz',
       options: [
         {
+          minimumDescriptionLength: 10,
           'ts-ignore': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-          minimumDescriptionLength: 10,
         },
       ],
     },
     {
-      code: noFormat`// @ts-ignore 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      code: '// @ts-ignore 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦',
       options: [
         {
           'ts-ignore': 'allow-with-description',
@@ -522,8 +522,8 @@ ruleTester.run('ts-ignore', rule, {
       code: '// @ts-ignore exactly 21 characters',
       options: [
         {
-          'ts-ignore': 'allow-with-description',
           minimumDescriptionLength: 21,
+          'ts-ignore': 'allow-with-description',
         },
       ],
     },
@@ -534,8 +534,8 @@ ruleTester.run('ts-ignore', rule, {
       `,
       options: [
         {
-          'ts-ignore': 'allow-with-description',
           minimumDescriptionLength: 21,
+          'ts-ignore': 'allow-with-description',
         },
       ],
     },
@@ -546,10 +546,10 @@ ruleTester.run('ts-ignore', rule, {
       `,
       options: [
         {
+          minimumDescriptionLength: 10,
           'ts-ignore': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-          minimumDescriptionLength: 10,
         },
       ],
     },
@@ -557,12 +557,11 @@ ruleTester.run('ts-ignore', rule, {
   invalid: [
     {
       code: '// @ts-ignore',
-      options: [{ 'ts-ignore': true, 'ts-expect-error': true }],
       errors: [
         {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
             {
               messageId: 'replaceTsIgnoreWithTsExpectError',
@@ -571,33 +570,34 @@ ruleTester.run('ts-ignore', rule, {
           ],
         },
       ],
+      options: [{ 'ts-expect-error': true, 'ts-ignore': true }],
     },
     {
       code: '// @ts-ignore',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'tsIgnoreInsteadOfExpectError',
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: '// @ts-expect-error',
+            },
+          ],
+        },
+      ],
       options: [
-        { 'ts-ignore': true, 'ts-expect-error': 'allow-with-description' },
-      ],
-      errors: [
-        {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 1,
-          column: 1,
-          suggestions: [
-            {
-              messageId: 'replaceTsIgnoreWithTsExpectError',
-              output: '// @ts-expect-error',
-            },
-          ],
-        },
+        { 'ts-expect-error': 'allow-with-description', 'ts-ignore': true },
       ],
     },
     {
       code: '// @ts-ignore',
       errors: [
         {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
             {
               messageId: 'replaceTsIgnoreWithTsExpectError',
@@ -609,12 +609,11 @@ ruleTester.run('ts-ignore', rule, {
     },
     {
       code: '/* @ts-ignore */',
-      options: [{ 'ts-ignore': true }],
       errors: [
         {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
             {
               messageId: 'replaceTsIgnoreWithTsExpectError',
@@ -623,18 +622,18 @@ ruleTester.run('ts-ignore', rule, {
           ],
         },
       ],
+      options: [{ 'ts-ignore': true }],
     },
     {
       code: `
 /*
  @ts-ignore */
       `,
-      options: [{ 'ts-ignore': true }],
       errors: [
         {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 2,
           column: 1,
+          line: 2,
+          messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
             {
               messageId: 'replaceTsIgnoreWithTsExpectError',
@@ -646,18 +645,18 @@ ruleTester.run('ts-ignore', rule, {
           ],
         },
       ],
+      options: [{ 'ts-ignore': true }],
     },
     {
       code: `
 /** on the last line
   @ts-ignore */
       `,
-      options: [{ 'ts-ignore': true }],
       errors: [
         {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 2,
           column: 1,
+          line: 2,
+          messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
             {
               messageId: 'replaceTsIgnoreWithTsExpectError',
@@ -669,18 +668,18 @@ ruleTester.run('ts-ignore', rule, {
           ],
         },
       ],
+      options: [{ 'ts-ignore': true }],
     },
     {
       code: `
 /** on the last line
  * @ts-ignore */
       `,
-      options: [{ 'ts-ignore': true }],
       errors: [
         {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 2,
           column: 1,
+          line: 2,
+          messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
             {
               messageId: 'replaceTsIgnoreWithTsExpectError',
@@ -692,15 +691,15 @@ ruleTester.run('ts-ignore', rule, {
           ],
         },
       ],
+      options: [{ 'ts-ignore': true }],
     },
     {
       code: '/** @ts-ignore */',
-      options: [{ 'ts-ignore': true, 'ts-expect-error': false }],
       errors: [
         {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
             {
               messageId: 'replaceTsIgnoreWithTsExpectError',
@@ -709,23 +708,18 @@ ruleTester.run('ts-ignore', rule, {
           ],
         },
       ],
+      options: [{ 'ts-expect-error': false, 'ts-ignore': true }],
     },
     {
       code: `
 /**
  * @ts-ignore: TODO */
       `,
-      options: [
-        {
-          'ts-expect-error': 'allow-with-description',
-          minimumDescriptionLength: 10,
-        },
-      ],
       errors: [
         {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 2,
           column: 1,
+          line: 2,
+          messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
             {
               messageId: 'replaceTsIgnoreWithTsExpectError',
@@ -737,25 +731,23 @@ ruleTester.run('ts-ignore', rule, {
           ],
         },
       ],
+      options: [
+        {
+          minimumDescriptionLength: 10,
+          'ts-expect-error': 'allow-with-description',
+        },
+      ],
     },
     {
       code: `
 /**
  * @ts-ignore: TS1234 because xyz */
       `,
-      options: [
-        {
-          'ts-expect-error': {
-            descriptionFormat: '^: TS\\d+ because .+$',
-          },
-          minimumDescriptionLength: 25,
-        },
-      ],
       errors: [
         {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 2,
           column: 1,
+          line: 2,
+          messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
             {
               messageId: 'replaceTsIgnoreWithTsExpectError',
@@ -767,14 +759,22 @@ ruleTester.run('ts-ignore', rule, {
           ],
         },
       ],
+      options: [
+        {
+          minimumDescriptionLength: 25,
+          'ts-expect-error': {
+            descriptionFormat: '^: TS\\d+ because .+$',
+          },
+        },
+      ],
     },
     {
       code: '// @ts-ignore: Suppress next line',
       errors: [
         {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
             {
               messageId: 'replaceTsIgnoreWithTsExpectError',
@@ -788,9 +788,9 @@ ruleTester.run('ts-ignore', rule, {
       code: '/////@ts-ignore: Suppress next line',
       errors: [
         {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
             {
               messageId: 'replaceTsIgnoreWithTsExpectError',
@@ -809,9 +809,9 @@ if (false) {
       `,
       errors: [
         {
-          messageId: 'tsIgnoreInsteadOfExpectError',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
             {
               messageId: 'replaceTsIgnoreWithTsExpectError',
@@ -828,61 +828,69 @@ if (false) {
     },
     {
       code: '// @ts-ignore',
-      options: [{ 'ts-ignore': 'allow-with-description' }],
       errors: [
         {
-          data: { directive: 'ignore', minimumDescriptionLength: 3 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
           column: 1,
+          data: { directive: 'ignore', minimumDescriptionLength: 3 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
         },
       ],
+      options: [{ 'ts-ignore': 'allow-with-description' }],
     },
     {
       code: noFormat`// @ts-ignore         `,
-      options: [{ 'ts-ignore': 'allow-with-description' }],
       errors: [
         {
-          data: { directive: 'ignore', minimumDescriptionLength: 3 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
           column: 1,
+          data: { directive: 'ignore', minimumDescriptionLength: 3 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
         },
       ],
+      options: [{ 'ts-ignore': 'allow-with-description' }],
     },
     {
       code: '// @ts-ignore    .',
-      options: [{ 'ts-ignore': 'allow-with-description' }],
       errors: [
         {
-          data: { directive: 'ignore', minimumDescriptionLength: 3 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
           column: 1,
+          data: { directive: 'ignore', minimumDescriptionLength: 3 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
         },
       ],
+      options: [{ 'ts-ignore': 'allow-with-description' }],
     },
     {
       code: '// @ts-ignore: TS1234 because xyz',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'ignore', minimumDescriptionLength: 25 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
       options: [
         {
+          minimumDescriptionLength: 25,
           'ts-ignore': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-          minimumDescriptionLength: 25,
-        },
-      ],
-      errors: [
-        {
-          data: { directive: 'ignore', minimumDescriptionLength: 25 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
-          column: 1,
         },
       ],
     },
     {
       code: '// @ts-ignore: TS1234',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'ignore', format: '^: TS\\d+ because .+$' },
+          line: 1,
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+        },
+      ],
       options: [
         {
           'ts-ignore': {
@@ -890,17 +898,17 @@ if (false) {
           },
         },
       ],
-      errors: [
-        {
-          data: { directive: 'ignore', format: '^: TS\\d+ because .+$' },
-          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
-          line: 1,
-          column: 1,
-        },
-      ],
     },
     {
-      code: noFormat`// @ts-ignore    : TS1234 because xyz`,
+      code: '// @ts-ignore    : TS1234 because xyz',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'ignore', format: '^: TS\\d+ because .+$' },
+          line: 1,
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+        },
+      ],
       options: [
         {
           'ts-ignore': {
@@ -908,28 +916,20 @@ if (false) {
           },
         },
       ],
-      errors: [
-        {
-          data: { directive: 'ignore', format: '^: TS\\d+ because .+$' },
-          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
-          line: 1,
-          column: 1,
-        },
-      ],
     },
     {
-      code: noFormat`// @ts-ignore 👨‍👩‍👧‍👦`,
+      code: '// @ts-ignore 👨‍👩‍👧‍👦',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'ignore', minimumDescriptionLength: 3 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
       options: [
         {
           'ts-ignore': 'allow-with-description',
-        },
-      ],
-      errors: [
-        {
-          data: { directive: 'ignore', minimumDescriptionLength: 3 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
-          column: 1,
         },
       ],
     },
@@ -955,8 +955,8 @@ ruleTester.run('ts-nocheck', rule, {
       `,
       options: [
         {
-          'ts-nocheck': 'allow-with-description',
           minimumDescriptionLength: 21,
+          'ts-nocheck': 'allow-with-description',
         },
       ],
     },
@@ -964,15 +964,15 @@ ruleTester.run('ts-nocheck', rule, {
       code: '// @ts-nocheck: TS1234 because xyz',
       options: [
         {
+          minimumDescriptionLength: 10,
           'ts-nocheck': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-          minimumDescriptionLength: 10,
         },
       ],
     },
     {
-      code: noFormat`// @ts-nocheck 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      code: '// @ts-nocheck 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦',
       options: [
         {
           'ts-nocheck': 'allow-with-description',
@@ -992,28 +992,36 @@ ruleTester.run('ts-nocheck', rule, {
     `,
     '/** @ts-nocheck */',
     '/* @ts-nocheck */',
+    `
+const a = 1;
+
+// @ts-nocheck - should not be reported
+
+// TS error is not actually suppressed
+const b: string = a;
+    `,
   ],
   invalid: [
     {
       code: '// @ts-nocheck',
-      options: [{ 'ts-nocheck': true }],
       errors: [
         {
-          data: { directive: 'nocheck' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
           column: 1,
+          data: { directive: 'nocheck' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-nocheck': true }],
     },
     {
       code: '// @ts-nocheck',
       errors: [
         {
-          data: { directive: 'nocheck' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
           column: 1,
+          data: { directive: 'nocheck' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
         },
       ],
     },
@@ -1021,62 +1029,54 @@ ruleTester.run('ts-nocheck', rule, {
       code: '// @ts-nocheck: Suppress next line',
       errors: [
         {
-          data: { directive: 'nocheck' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
           column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-if (false) {
-  // @ts-nocheck: Unreachable code error
-  console.log('hello');
-}
-      `,
-      errors: [
-        {
           data: { directive: 'nocheck' },
+          line: 1,
           messageId: 'tsDirectiveComment',
-          line: 3,
-          column: 3,
         },
       ],
     },
     {
       code: '// @ts-nocheck',
-      options: [{ 'ts-nocheck': 'allow-with-description' }],
       errors: [
         {
-          data: { directive: 'nocheck', minimumDescriptionLength: 3 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
           column: 1,
+          data: { directive: 'nocheck', minimumDescriptionLength: 3 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
         },
       ],
+      options: [{ 'ts-nocheck': 'allow-with-description' }],
     },
     {
       code: '// @ts-nocheck: TS1234 because xyz',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'nocheck', minimumDescriptionLength: 25 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
       options: [
         {
+          minimumDescriptionLength: 25,
           'ts-nocheck': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-          minimumDescriptionLength: 25,
-        },
-      ],
-      errors: [
-        {
-          data: { directive: 'nocheck', minimumDescriptionLength: 25 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
-          column: 1,
         },
       ],
     },
     {
       code: '// @ts-nocheck: TS1234',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'nocheck', format: '^: TS\\d+ because .+$' },
+          line: 1,
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+        },
+      ],
       options: [
         {
           'ts-nocheck': {
@@ -1084,17 +1084,17 @@ if (false) {
           },
         },
       ],
-      errors: [
-        {
-          data: { directive: 'nocheck', format: '^: TS\\d+ because .+$' },
-          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
-          line: 1,
-          column: 1,
-        },
-      ],
     },
     {
-      code: noFormat`// @ts-nocheck    : TS1234 because xyz`,
+      code: '// @ts-nocheck    : TS1234 because xyz',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'nocheck', format: '^: TS\\d+ because .+$' },
+          line: 1,
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+        },
+      ],
       options: [
         {
           'ts-nocheck': {
@@ -1102,28 +1102,36 @@ if (false) {
           },
         },
       ],
-      errors: [
-        {
-          data: { directive: 'nocheck', format: '^: TS\\d+ because .+$' },
-          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
-          line: 1,
-          column: 1,
-        },
-      ],
     },
     {
-      code: noFormat`// @ts-nocheck 👨‍👩‍👧‍👦`,
+      code: '// @ts-nocheck 👨‍👩‍👧‍👦',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'nocheck', minimumDescriptionLength: 3 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
       options: [
         {
           'ts-nocheck': 'allow-with-description',
         },
       ],
+    },
+    {
+      // comment's column > first statement's column
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+ // @ts-nocheck
+const a: true = false;
+      `,
       errors: [
         {
+          column: 2,
           data: { directive: 'nocheck', minimumDescriptionLength: 3 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
-          column: 1,
+          line: 2,
+          messageId: 'tsDirectiveComment',
         },
       ],
     },
@@ -1145,22 +1153,22 @@ ruleTester.run('ts-check', rule, {
     {
       code: '// @ts-check with a description and also with a no-op // @ts-ignore',
       options: [
-        { 'ts-check': 'allow-with-description', minimumDescriptionLength: 3 },
+        { minimumDescriptionLength: 3, 'ts-check': 'allow-with-description' },
       ],
     },
     {
       code: '// @ts-check: TS1234 because xyz',
       options: [
         {
+          minimumDescriptionLength: 10,
           'ts-check': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-          minimumDescriptionLength: 10,
         },
       ],
     },
     {
-      code: noFormat`// @ts-check 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      code: '// @ts-check 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦',
       options: [
         {
           'ts-check': 'allow-with-description',
@@ -1199,27 +1207,27 @@ ruleTester.run('ts-check', rule, {
   invalid: [
     {
       code: '// @ts-check',
-      options: [{ 'ts-check': true }],
       errors: [
         {
-          data: { directive: 'check' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
           column: 1,
+          data: { directive: 'check' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-check': true }],
     },
     {
       code: '// @ts-check: Suppress next line',
-      options: [{ 'ts-check': true }],
       errors: [
         {
-          data: { directive: 'check' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
           column: 1,
+          data: { directive: 'check' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-check': true }],
     },
     {
       code: `
@@ -1228,49 +1236,57 @@ if (false) {
   console.log('hello');
 }
       `,
-      options: [{ 'ts-check': true }],
       errors: [
         {
-          data: { directive: 'check' },
-          messageId: 'tsDirectiveComment',
-          line: 3,
           column: 3,
+          data: { directive: 'check' },
+          line: 3,
+          messageId: 'tsDirectiveComment',
         },
       ],
+      options: [{ 'ts-check': true }],
     },
     {
       code: '// @ts-check',
-      options: [{ 'ts-check': 'allow-with-description' }],
       errors: [
         {
-          data: { directive: 'check', minimumDescriptionLength: 3 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
           column: 1,
+          data: { directive: 'check', minimumDescriptionLength: 3 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
         },
       ],
+      options: [{ 'ts-check': 'allow-with-description' }],
     },
     {
       code: '// @ts-check: TS1234 because xyz',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'check', minimumDescriptionLength: 25 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
       options: [
         {
+          minimumDescriptionLength: 25,
           'ts-check': {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
-          minimumDescriptionLength: 25,
-        },
-      ],
-      errors: [
-        {
-          data: { directive: 'check', minimumDescriptionLength: 25 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
-          column: 1,
         },
       ],
     },
     {
       code: '// @ts-check: TS1234',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'check', format: '^: TS\\d+ because .+$' },
+          line: 1,
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+        },
+      ],
       options: [
         {
           'ts-check': {
@@ -1278,17 +1294,17 @@ if (false) {
           },
         },
       ],
-      errors: [
-        {
-          data: { directive: 'check', format: '^: TS\\d+ because .+$' },
-          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
-          line: 1,
-          column: 1,
-        },
-      ],
     },
     {
-      code: noFormat`// @ts-check    : TS1234 because xyz`,
+      code: '// @ts-check    : TS1234 because xyz',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'check', format: '^: TS\\d+ because .+$' },
+          line: 1,
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+        },
+      ],
       options: [
         {
           'ts-check': {
@@ -1296,28 +1312,20 @@ if (false) {
           },
         },
       ],
-      errors: [
-        {
-          data: { directive: 'check', format: '^: TS\\d+ because .+$' },
-          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
-          line: 1,
-          column: 1,
-        },
-      ],
     },
     {
-      code: noFormat`// @ts-check 👨‍👩‍👧‍👦`,
+      code: '// @ts-check 👨‍👩‍👧‍👦',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'check', minimumDescriptionLength: 3 },
+          line: 1,
+          messageId: 'tsDirectiveCommentRequiresDescription',
+        },
+      ],
       options: [
         {
           'ts-check': 'allow-with-description',
-        },
-      ],
-      errors: [
-        {
-          data: { directive: 'check', minimumDescriptionLength: 3 },
-          messageId: 'tsDirectiveCommentRequiresDescription',
-          line: 1,
-          column: 1,
         },
       ],
     },

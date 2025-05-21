@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures special CatchClause _error_ with-initializer Error Alignment 1`] = `"Both errored"`;
+exports[`AST Fixtures > special > CatchClause > _error_ > with-initializer > Error Alignment`]
+Both errored

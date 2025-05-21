@@ -1,48 +1,58 @@
 import { createProgram } from '@typescript-eslint/typescript-estree';
-import fs from 'fs';
 import * as glob from 'glob';
-import path from 'path';
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
 
-import type { ParserOptions } from '../../src/parser';
+import { parseForESLint } from '../../src/index.js';
 import {
-  createSnapshotTestBlock,
-  formatSnapshotName,
-  testServices,
-} from '../test-utils/test-utils';
+  createConfig,
+  FIXTURES_DIR,
+  getRaw,
+} from '../test-utils/test-utils.js';
 
 //------------------------------------------------------------------------------
 // Setup
 //------------------------------------------------------------------------------
 
-const FIXTURES_DIR = './tests/fixtures/services';
-const testFiles = glob.sync(`**/*.src.ts`, {
+const testFiles = glob.sync('**/*.src.ts', {
+  absolute: true,
   cwd: FIXTURES_DIR,
 });
-
-function createConfig(filename: string): ParserOptions {
-  return {
-    filePath: filename,
-    project: './tsconfig.json',
-    tsconfigRootDir: path.resolve(FIXTURES_DIR),
-  };
-}
 
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
-describe('services', () => {
-  const program = createProgram(path.resolve(FIXTURES_DIR, 'tsconfig.json'));
-  testFiles.forEach(filename => {
-    const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
-    const config = createConfig(filename);
-    const snapshotName = formatSnapshotName(filename, FIXTURES_DIR, '.ts');
-    it(snapshotName, createSnapshotTestBlock(code, config));
-    it(`${snapshotName} services`, () => {
-      testServices(code, config);
-    });
-    it(`${snapshotName} services with provided program`, () => {
-      testServices(code, { ...config, program });
-    });
+const program = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+
+describe.for(testFiles)('services', async filename => {
+  const code = await fs.readFile(filename, {
+    encoding: 'utf-8',
+  });
+
+  const { base, name } = path.parse(filename);
+
+  const config = createConfig(base);
+
+  const snapshotName = path.posix.join('fixtures', name);
+
+  it(snapshotName, () => {
+    const { ast } = parseForESLint(code, config);
+
+    const result = getRaw(ast);
+
+    expect(result).toMatchSnapshot();
+  });
+
+  it(`${snapshotName} services`, () => {
+    const { services } = parseForESLint(code, config);
+
+    assert.isNotNull(services.program);
+  });
+
+  it(`${snapshotName} services with provided program`, () => {
+    const { services } = parseForESLint(code, { ...config, program });
+
+    assert.isNotNull(services.program);
   });
 });

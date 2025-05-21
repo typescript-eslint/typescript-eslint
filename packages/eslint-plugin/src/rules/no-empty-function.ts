@@ -1,18 +1,26 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule, deepMerge } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-empty-function');
 
-type Options = InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+
+const defaultOptions: Options = [
+  {
+    allow: [],
+  },
+];
 
 const schema = deepMerge(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- https://github.com/microsoft/TypeScript/issues/17002
@@ -22,6 +30,8 @@ const schema = deepMerge(
   {
     properties: {
       allow: {
+        description:
+          'Locations and kinds of functions that are allowed to be empty.',
         items: {
           type: 'string',
           enum: [
@@ -50,20 +60,17 @@ export default createRule<Options, MessageIds>({
   name: 'no-empty-function',
   meta: {
     type: 'suggestion',
+    defaultOptions,
     docs: {
       description: 'Disallow empty functions',
-      recommended: 'stylistic',
       extendsBaseRule: true,
+      recommended: 'stylistic',
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: [schema],
     messages: baseRule.meta.messages,
+    schema: [schema],
   },
-  defaultOptions: [
-    {
-      allow: [],
-    },
-  ],
+  defaultOptions,
   create(context, [{ allow = [] }]) {
     const rules = baseRule.create(context);
 

@@ -1,14 +1,14 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X3",
+        optional: false,
 
         range: [78, 80],
         loc: {
@@ -22,7 +22,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "T",
+            optional: false,
 
             range: [86, 87],
             loc: {
@@ -44,6 +46,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -53,7 +56,9 @@ Program {
                     end: { column: 46, line: 3 },
                   },
                 },
+                in: false,
                 name: "U",
+                out: false,
 
                 range: [103, 119],
                 loc: {
@@ -89,7 +94,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "MustBeNumber",
+            optional: false,
 
             range: [123, 135],
             loc: {
@@ -104,7 +111,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [136, 137],
                   loc: {
@@ -146,7 +155,10 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "T",
+            out: false,
 
             range: [81, 82],
             loc: {
@@ -171,9 +183,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X4",
+        optional: false,
 
         range: [153, 155],
         loc: {
@@ -187,7 +202,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "T",
+            optional: false,
 
             range: [161, 162],
             loc: {
@@ -209,6 +226,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -218,7 +236,9 @@ Program {
                     end: { column: 46, line: 4 },
                   },
                 },
+                in: false,
                 name: "U",
+                out: false,
 
                 range: [178, 194],
                 loc: {
@@ -237,6 +257,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -246,7 +267,9 @@ Program {
                     end: { column: 70, line: 4 },
                   },
                 },
+                in: false,
                 name: "U",
+                out: false,
 
                 range: [202, 218],
                 loc: {
@@ -282,7 +305,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "MustBeNumber",
+            optional: false,
 
             range: [224, 236],
             loc: {
@@ -297,7 +322,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [237, 238],
                   loc: {
@@ -339,7 +366,10 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "T",
+            out: false,
 
             range: [156, 157],
             loc: {
@@ -364,9 +394,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X5",
+        optional: false,
 
         range: [256, 258],
         loc: {
@@ -380,7 +413,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "T",
+            optional: false,
 
             range: [264, 265],
             loc: {
@@ -402,6 +437,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -411,7 +447,9 @@ Program {
                     end: { column: 46, line: 7 },
                   },
                 },
+                in: false,
                 name: "U",
+                out: false,
 
                 range: [281, 297],
                 loc: {
@@ -430,7 +468,10 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
+                in: false,
                 name: "U",
+                out: false,
 
                 range: [305, 306],
                 loc: {
@@ -466,7 +507,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "MustBeNumber",
+            optional: false,
 
             range: [312, 324],
             loc: {
@@ -481,7 +524,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [325, 326],
                   loc: {
@@ -523,7 +568,10 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "T",
+            out: false,
 
             range: [259, 260],
             loc: {
@@ -548,9 +596,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X6",
+        optional: false,
 
         range: [344, 346],
         loc: {
@@ -564,7 +615,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "T",
+            optional: false,
 
             range: [352, 353],
             loc: {
@@ -586,7 +639,10 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
+                in: false,
                 name: "U",
+                out: false,
 
                 range: [369, 370],
                 loc: {
@@ -605,6 +661,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -614,7 +671,9 @@ Program {
                     end: { column: 55, line: 10 },
                   },
                 },
+                in: false,
                 name: "U",
+                out: false,
 
                 range: [378, 394],
                 loc: {
@@ -650,7 +709,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "MustBeNumber",
+            optional: false,
 
             range: [400, 412],
             loc: {
@@ -665,7 +726,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [413, 414],
                   loc: {
@@ -707,7 +770,10 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "T",
+            out: false,
 
             range: [347, 348],
             loc: {
@@ -732,9 +798,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X7",
+        optional: false,
 
         range: [432, 434],
         loc: {
@@ -748,7 +817,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "T",
+            optional: false,
 
             range: [440, 441],
             loc: {
@@ -770,6 +841,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSStringKeyword {
                   type: "TSStringKeyword",
 
@@ -779,7 +851,9 @@ Program {
                     end: { column: 46, line: 13 },
                   },
                 },
+                in: false,
                 name: "U",
+                out: false,
 
                 range: [457, 473],
                 loc: {
@@ -798,6 +872,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -807,7 +882,9 @@ Program {
                     end: { column: 70, line: 13 },
                   },
                 },
+                in: false,
                 name: "U",
+                out: false,
 
                 range: [481, 497],
                 loc: {
@@ -843,7 +920,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "U",
+            optional: false,
 
             range: [503, 504],
             loc: {
@@ -870,7 +949,10 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "T",
+            out: false,
 
             range: [435, 436],
             loc: {
@@ -902,4 +984,3 @@ Program {
     end: { column: 0, line: 16 },
   },
 }
-`;

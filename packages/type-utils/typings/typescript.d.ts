@@ -5,6 +5,17 @@ declare module 'typescript' {
     // internal TS APIs
 
     /**
+     * Return the awaited type of the given type.
+     *
+     * TODO: Remove when it's exposed as a public API.
+     * https://github.com/microsoft/TypeScript/issues/59256
+     */
+    getAwaitedType(type: Type): Type | undefined;
+    /**
+     * Return the type of the given property in the given type, or undefined if no such property exists
+     */
+    getTypeOfPropertyOfType(type: Type, propertyName: string): Type | undefined;
+    /**
      * @returns `true` if the given type is an array type:
      * - `Array<foo>`
      * - `ReadonlyArray<foo>`
@@ -18,17 +29,6 @@ declare module 'typescript' {
      * - `readonly [foo]`
      */
     isTupleType(type: Type): type is TupleTypeReference;
-    /**
-     * Return the type of the given property in the given type, or undefined if no such property exists
-     */
-    getTypeOfPropertyOfType(type: Type, propertyName: string): Type | undefined;
-    /**
-     * Return the awaited type of the given type.
-     *
-     * TODO: Remove when it's exposed as a public API.
-     * https://github.com/microsoft/TypeScript/issues/59256
-     */
-    getAwaitedType(type: Type): Type | undefined;
   }
 
   interface Type {

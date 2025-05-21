@@ -1,6 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { RuleListener } from '@typescript-eslint/utils/eslint-utils';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
@@ -18,37 +19,37 @@ import {
 type Prefer = 'no-type-imports' | 'type-imports';
 type FixStyle = 'inline-type-imports' | 'separate-type-imports';
 
-type Options = [
+export type Options = [
   {
-    prefer?: Prefer;
     disallowTypeAnnotations?: boolean;
     fixStyle?: FixStyle;
+    prefer?: Prefer;
   },
 ];
 
 interface SourceImports {
-  source: string;
   reportValueImports: ReportValueImport[];
+  source: string;
   // ImportDeclaration for type-only import only with named imports.
   typeOnlyNamedImport: TSESTree.ImportDeclaration | null;
-  // ImportDeclaration for value-only import only with named imports.
-  valueOnlyNamedImport: TSESTree.ImportDeclaration | null;
   // ImportDeclaration for value-only import only with default imports and/or named imports.
   valueImport: TSESTree.ImportDeclaration | null;
+  // ImportDeclaration for value-only import only with named imports.
+  valueOnlyNamedImport: TSESTree.ImportDeclaration | null;
 }
 interface ReportValueImport {
+  inlineTypeSpecifiers: TSESTree.ImportSpecifier[];
   node: TSESTree.ImportDeclaration;
   typeSpecifiers: TSESTree.ImportClause[]; // It has at least one element.
-  valueSpecifiers: TSESTree.ImportClause[];
   unusedSpecifiers: TSESTree.ImportClause[];
-  inlineTypeSpecifiers: TSESTree.ImportSpecifier[];
+  valueSpecifiers: TSESTree.ImportClause[];
 }
 
-type MessageIds =
-  | 'typeOverValue'
-  | 'someImportsAreOnlyTypes'
+export type MessageIds =
   | 'avoidImportType'
-  | 'noImportTypeAnnotations';
+  | 'noImportTypeAnnotations'
+  | 'someImportsAreOnlyTypes'
+  | 'typeOverValue';
 export default createRule<Options, MessageIds>({
   name: 'consistent-type-imports',
   meta: {
@@ -56,41 +57,45 @@ export default createRule<Options, MessageIds>({
     docs: {
       description: 'Enforce consistent usage of type imports',
     },
+    fixable: 'code',
     messages: {
-      typeOverValue:
-        'All imports in the declaration are only used as types. Use `import type`.',
-      someImportsAreOnlyTypes: 'Imports {{typeImports}} are only used as type.',
-
       avoidImportType: 'Use an `import` instead of an `import type`.',
       noImportTypeAnnotations: '`import()` type annotations are forbidden.',
+      someImportsAreOnlyTypes: 'Imports {{typeImports}} are only used as type.',
+      typeOverValue:
+        'All imports in the declaration are only used as types. Use `import type`.',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           disallowTypeAnnotations: {
             type: 'boolean',
+            description:
+              'Whether to disallow type imports in type annotations (`import()`).',
           },
           fixStyle: {
             type: 'string',
+            description:
+              'The expected type modifier to be added when an import is detected as used only in the type position.',
             enum: ['separate-type-imports', 'inline-type-imports'],
           },
           prefer: {
             type: 'string',
+            description: 'The expected import kind for type-only imports.',
             enum: ['type-imports', 'no-type-imports'],
           },
         },
-        additionalProperties: false,
       },
     ],
-    fixable: 'code',
   },
 
   defaultOptions: [
     {
-      prefer: 'type-imports',
       disallowTypeAnnotations: true,
       fixStyle: 'separate-type-imports',
+      prefer: 'type-imports',
     },
   ],
 
@@ -160,11 +165,11 @@ export default createRule<Options, MessageIds>({
         const source = node.source.value;
         // sourceImports is the object containing all the specifics for a particular import source, type or value
         sourceImportsMap[source] ??= {
-          source,
           reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
+          source,
           typeOnlyNamedImport: null, // if only type imports
-          valueOnlyNamedImport: null, // if only value imports with named specifiers
           valueImport: null, // if only value imports
+          valueOnlyNamedImport: null, // if only value imports with named specifiers
         };
         const sourceImports = sourceImportsMap[source];
         if (node.importKind === 'type') {
@@ -221,14 +226,16 @@ export default createRule<Options, MessageIds>({
                * export = Type;
                */
               if (
-                ref.identifier.parent.type === AST_NODE_TYPES.ExportSpecifier ||
-                ref.identifier.parent.type ===
-                  AST_NODE_TYPES.ExportDefaultDeclaration ||
-                ref.identifier.parent.type === AST_NODE_TYPES.TSExportAssignment
+                (ref.identifier.parent.type ===
+                  AST_NODE_TYPES.ExportSpecifier ||
+                  ref.identifier.parent.type ===
+                    AST_NODE_TYPES.ExportDefaultDeclaration ||
+                  ref.identifier.parent.type ===
+                    AST_NODE_TYPES.TSExportAssignment) &&
+                ref.isValueReference &&
+                ref.isTypeReference
               ) {
-                if (ref.isValueReference && ref.isTypeReference) {
-                  return node.importKind === 'type';
-                }
+                return node.importKind === 'type';
               }
               if (ref.isValueReference) {
                 let parent = ref.identifier.parent as TSESTree.Node | undefined;
@@ -288,10 +295,10 @@ export default createRule<Options, MessageIds>({
         if (node.importKind === 'value' && typeSpecifiers.length) {
           sourceImports.reportValueImports.push({
             node,
-            typeSpecifiers,
-            valueSpecifiers,
-            unusedSpecifiers,
             inlineTypeSpecifiers,
+            typeSpecifiers,
+            unusedSpecifiers,
+            valueSpecifiers,
           });
         }
       },
@@ -373,8 +380,8 @@ export default createRule<Options, MessageIds>({
               );
 
               const message = ((): {
-                messageId: MessageIds;
                 data: Record<string, unknown>;
+                messageId: MessageIds;
               } => {
                 const typeImports = formatWordList(importNames);
 
@@ -414,8 +421,8 @@ export default createRule<Options, MessageIds>({
 
     function classifySpecifier(node: TSESTree.ImportDeclaration): {
       defaultSpecifier: TSESTree.ImportDefaultSpecifier | null;
-      namespaceSpecifier: TSESTree.ImportNamespaceSpecifier | null;
       namedSpecifiers: TSESTree.ImportSpecifier[];
+      namespaceSpecifier: TSESTree.ImportNamespaceSpecifier | null;
     } {
       const defaultSpecifier =
         node.specifiers[0].type === AST_NODE_TYPES.ImportDefaultSpecifier
@@ -432,8 +439,8 @@ export default createRule<Options, MessageIds>({
       );
       return {
         defaultSpecifier,
-        namespaceSpecifier,
         namedSpecifiers,
+        namespaceSpecifier,
       };
     }
 
@@ -446,13 +453,13 @@ export default createRule<Options, MessageIds>({
       subsetNamedSpecifiers: TSESTree.ImportSpecifier[],
       allNamedSpecifiers: TSESTree.ImportSpecifier[],
     ): {
-      typeNamedSpecifiersText: string;
       removeTypeNamedSpecifiers: TSESLint.RuleFix[];
+      typeNamedSpecifiersText: string;
     } {
       if (allNamedSpecifiers.length === 0) {
         return {
-          typeNamedSpecifiersText: '',
           removeTypeNamedSpecifiers: [],
+          typeNamedSpecifiersText: '',
         };
       }
       const typeNamedSpecifiersTexts: string[] = [];
@@ -519,8 +526,8 @@ export default createRule<Options, MessageIds>({
         }
       }
       return {
-        typeNamedSpecifiersText: typeNamedSpecifiersTexts.join(','),
         removeTypeNamedSpecifiers,
+        typeNamedSpecifiersText: typeNamedSpecifiersTexts.join(','),
       };
     }
 
@@ -531,8 +538,8 @@ export default createRule<Options, MessageIds>({
       namedSpecifierGroup: TSESTree.ImportSpecifier[],
       allNamedSpecifiers: TSESTree.ImportSpecifier[],
     ): {
-      textRange: TSESTree.Range;
       removeRange: TSESTree.Range;
+      textRange: TSESTree.Range;
     } {
       const first = namedSpecifierGroup[0];
       const last = namedSpecifierGroup[namedSpecifierGroup.length - 1];
@@ -556,15 +563,13 @@ export default createRule<Options, MessageIds>({
         NullThrowsReasons.MissingToken('token', 'last specifier'),
       );
       textRange[1] = after.range[0];
-      if (isFirst || isLast) {
-        if (isCommaToken(after)) {
-          removeRange[1] = after.range[1];
-        }
+      if ((isFirst || isLast) && isCommaToken(after)) {
+        removeRange[1] = after.range[1];
       }
 
       return {
-        textRange,
         removeRange,
+        textRange,
       };
     }
 
@@ -653,7 +658,7 @@ export default createRule<Options, MessageIds>({
     ): IterableIterator<TSESLint.RuleFix> {
       const { node } = report;
 
-      const { defaultSpecifier, namespaceSpecifier, namedSpecifiers } =
+      const { defaultSpecifier, namedSpecifiers, namespaceSpecifier } =
         classifySpecifier(node);
 
       if (namespaceSpecifier && !defaultSpecifier) {
@@ -664,7 +669,9 @@ export default createRule<Options, MessageIds>({
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
         }
         return;
-      } else if (defaultSpecifier) {
+      }
+
+      if (defaultSpecifier) {
         if (
           report.typeSpecifiers.includes(defaultSpecifier) &&
           namedSpecifiers.length === 0 &&
@@ -673,7 +680,9 @@ export default createRule<Options, MessageIds>({
           // import Type from 'foo'
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, true);
           return;
-        } else if (
+        }
+
+        if (
           fixStyle === 'inline-type-imports' &&
           !report.typeSpecifiers.includes(defaultSpecifier) &&
           namedSpecifiers.length > 0 &&
@@ -694,7 +703,9 @@ export default createRule<Options, MessageIds>({
           // import {AValue, Type1, Type2} from 'foo'
           yield* fixInlineTypeImportDeclaration(fixer, report, sourceImports);
           return;
-        } else if (
+        }
+
+        if (
           namedSpecifiers.every(specifier =>
             report.typeSpecifiers.includes(specifier),
           )

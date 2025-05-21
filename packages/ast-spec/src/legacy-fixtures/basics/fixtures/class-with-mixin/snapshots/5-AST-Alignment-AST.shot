@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-mixin > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -18,7 +18,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
               type: 'ReturnStatement',
               argument: ClassExpression {
                 type: 'ClassExpression',
--               abstract: false,
+                abstract: false,
                 body: ClassBody {
                   type: 'ClassBody',
                   body: Array [],
@@ -29,15 +29,15 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
                     end: { column: 30, line: 4 },
                   },
                 },
--               declare: false,
--               decorators: Array [],
+                declare: false,
+                decorators: Array [],
                 id: null,
--               implements: Array [],
+                implements: Array [],
                 superClass: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'Base',
--                 optional: false,
+                  optional: false,
 
                   range: [145, 149],
                   loc: {
@@ -67,14 +67,14 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
             end: { column: 1, line: 5 },
           },
         },
--       declare: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'M',
--         optional: false,
+          optional: false,
 
           range: [82, 83],
           loc: {
@@ -85,18 +85,18 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
         params: Array [
           Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'Base',
--           optional: false,
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'T',
--                 optional: false,
+                  optional: false,
 
                   range: [117, 118],
                   loc: {
@@ -131,13 +131,15 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
+              const: false,
               constraint: TSTypeReference {
                 type: 'TSTypeReference',
 -               typeArguments: TSTypeParameterInstantiation {
 +               typeName: Identifier {
 +                 type: 'Identifier',
++                 decorators: Array [],
 +                 name: 'Constructor',
++                 optional: false,
 +
 +                 range: [94, 105],
 +                 loc: {
@@ -164,28 +166,28 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
                   loc: {
                     start: { column: 32, line: 3 },
                     end: { column: 36, line: 3 },
--                 },
--               },
+                  },
+                },
 -               typeName: Identifier {
 -                 type: 'Identifier',
 -                 decorators: Array [],
 -                 name: 'Constructor',
 -                 optional: false,
--
+
 -                 range: [94, 105],
 -                 loc: {
 -                   start: { column: 21, line: 3 },
 -                   end: { column: 32, line: 3 },
-                  },
-                },
-
+-                 },
+-               },
+-
                 range: [94, 109],
                 loc: {
                   start: { column: 21, line: 3 },
                   end: { column: 36, line: 3 },
                 },
               },
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -198,8 +200,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
 -                 end: { column: 12, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [84, 109],
               loc: {
@@ -224,7 +226,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
       },
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -235,13 +237,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
             end: { column: 41, line: 7 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'X',
--         optional: false,
+          optional: false,
 
           range: [163, 164],
           loc: {
@@ -256,9 +258,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'I',
--             optional: false,
+              optional: false,
 
               range: [194, 195],
               loc: {
@@ -279,9 +281,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
           arguments: Array [
             Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'C',
--             optional: false,
+              optional: false,
 
               range: [180, 181],
               loc: {
@@ -292,9 +294,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
           ],
           callee: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'M',
--           optional: false,
+            optional: false,
 
             range: [173, 174],
             loc: {
@@ -340,7 +342,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
       },
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -351,13 +353,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
             end: { column: 10, line: 9 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'C',
--         optional: false,
+          optional: false,
 
           range: [206, 207],
           loc: {
@@ -365,7 +367,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
             end: { column: 7, line: 9 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
 
         range: [200, 210],
@@ -386,13 +388,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
             end: { column: 14, line: 10 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'I',
--         optional: false,
+          optional: false,
 
           range: [221, 222],
           loc: {
@@ -409,12 +411,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Constructor',
--         optional: false,
+          optional: false,
 
           range: [231, 242],
           loc: {
@@ -431,9 +433,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
               type: 'RestElement',
               argument: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'args',
--               optional: false,
+                optional: false,
 
                 range: [256, 260],
                 loc: {
@@ -441,8 +443,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
                   end: { column: 34, line: 11 },
                 },
               },
--             decorators: Array [],
--             optional: false,
+              decorators: Array [],
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSArrayType {
@@ -485,9 +487,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'T',
--               optional: false,
+                optional: false,
 
                 range: [272, 273],
                 loc: {
@@ -521,8 +523,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -535,8 +537,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
 -                 end: { column: 18, line: 11 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [243, 244],
               loc: {
@@ -567,5 +569,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
       start: { column: 0, line: 3 },
       end: { column: 0, line: 12 },
     },
-  }"
-`;
+  }

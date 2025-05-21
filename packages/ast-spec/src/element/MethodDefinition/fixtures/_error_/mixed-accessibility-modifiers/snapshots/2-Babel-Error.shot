@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures element MethodDefinition _error_ mixed-accessibility-modifiers Babel - Error 1`] = `[SyntaxError: Accessibility modifier already seen. (2:9)]`;
+exports[`AST Fixtures > element > MethodDefinition > _error_ > mixed-accessibility-modifiers > Babel - Error`]
+SyntaxError: Accessibility modifier already seen. (2:9)

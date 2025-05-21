@@ -15,12 +15,12 @@ interface ObjectPropertySchema<T = unknown> {
 }
 
 const ruleSeverities = new Map<SharedConfig.RuleLevel, SharedConfig.Severity>([
-  [0, 0],
-  ['off', 0],
-  [1, 1],
-  ['warn', 1],
-  [2, 2],
   ['error', 2],
+  ['off', 0],
+  ['warn', 1],
+  [0, 0],
+  [1, 1],
+  [2, 2],
 ]);
 
 /**
@@ -29,7 +29,7 @@ const ruleSeverities = new Map<SharedConfig.RuleLevel, SharedConfig.Severity>([
  * @returns `true` if the value is a non-null object.
  */
 function isNonNullObject(value: unknown): boolean {
-  // eslint-disable-next-line eqeqeq
+  // eslint-disable-next-line eqeqeq, @typescript-eslint/internal/eqeq-nullish
   return typeof value === 'object' && value !== null;
 }
 
@@ -77,7 +77,7 @@ function deepMerge<First extends object, Second extends object>(
   const result = {
     ...first,
     ...second,
-  } as First & Second & ObjectLike;
+  } as First & ObjectLike & Second;
 
   delete (result as ObjectLike).__proto__; // don't merge own property "__proto__"
 
@@ -104,6 +104,7 @@ function deepMerge<First extends object, Second extends object>(
         secondValue!,
         mergeMap,
       );
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
     } else if (secondValue === undefined) {
       (result as ObjectLike)[key] = firstValue;
     }
@@ -122,7 +123,7 @@ function normalizeRuleOptions(
   ruleOptions: SharedConfig.RuleLevel | SharedConfig.RuleLevelAndOptions,
 ): SharedConfig.RuleLevelAndOptions {
   const finalOptions = Array.isArray(ruleOptions)
-    ? ruleOptions.slice(0)
+    ? [...ruleOptions]
     : [ruleOptions];
 
   finalOptions[0] = ruleSeverities.get(
@@ -151,8 +152,8 @@ function hasMethod(object: Record<string, unknown>): boolean {
  * The error type when a rule's options are configured with an invalid type.
  */
 class InvalidRuleOptionsError extends Error {
-  readonly messageTemplate: string;
   readonly messageData: { ruleId: string; value: unknown };
+  readonly messageTemplate: string;
 
   constructor(ruleId: string, value: unknown) {
     super(
@@ -183,8 +184,8 @@ function assertIsRuleOptions(ruleId: string, value: unknown): void {
  * The error type when a rule's severity is invalid.
  */
 class InvalidRuleSeverityError extends Error {
-  readonly messageTemplate: string;
   readonly messageData: { ruleId: string; value: unknown };
+  readonly messageTemplate: string;
 
   constructor(ruleId: string, value: unknown) {
     super(
@@ -204,7 +205,7 @@ class InvalidRuleSeverityError extends Error {
 function assertIsRuleSeverity(ruleId: string, value: unknown): void {
   const severity = ruleSeverities.get(value as SharedConfig.RuleLevel);
 
-  if (severity === undefined) {
+  if (severity == null) {
     throw new InvalidRuleSeverityError(ruleId, value);
   }
 }
@@ -216,10 +217,7 @@ function assertIsRuleSeverity(ruleId: string, value: unknown): void {
 function assertIsPluginMemberName(
   value: unknown,
 ): asserts value is PluginMemberName {
-  if (
-    typeof value !== 'string' ||
-    !/[@a-z0-9-_$]+(?:\/(?:[a-z0-9-_$]+))+$/iu.test(value)
-  ) {
+  if (typeof value !== 'string' || !/[@\w$-]+(?:\/[\w$-]+)+$/iu.test(value)) {
     throw new TypeError(
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       `Expected string in the form "pluginName/objectName" but found "${value}".`,
@@ -241,8 +239,8 @@ function assertIsObject(value: unknown): void {
  * The error type when there's an eslintrc-style options in a flat config.
  */
 class IncompatibleKeyError extends Error {
-  readonly messageTemplate: string;
   readonly messageData: { key: string };
+  readonly messageTemplate: string;
 
   /**
    * @param key The invalid key.
@@ -260,8 +258,8 @@ class IncompatibleKeyError extends Error {
  * The error type when there's an eslintrc-style plugins array found.
  */
 class IncompatiblePluginsError extends Error {
-  readonly messageTemplate: string;
   readonly messageData: { plugins: string[] };
+  readonly messageTemplate: string;
 
   constructor(plugins: string[]) {
     super(
@@ -277,13 +275,13 @@ const booleanSchema = {
   validate: 'boolean',
 } satisfies ObjectPropertySchema;
 
-const ALLOWED_SEVERITIES = new Set(['error', 'warn', 'off', 2, 1, 0]);
+const ALLOWED_SEVERITIES = new Set([0, 1, 2, 'error', 'off', 'warn']);
 
 const disableDirectiveSeveritySchema: ObjectPropertySchema<SharedConfig.RuleLevel> =
   {
     merge(
-      first: SharedConfig.RuleLevel | boolean | undefined,
-      second: SharedConfig.RuleLevel | boolean | undefined,
+      first: boolean | SharedConfig.RuleLevel | undefined,
+      second: boolean | SharedConfig.RuleLevel | undefined,
     ): SharedConfig.RuleLevel {
       const value = second ?? first;
 
@@ -297,7 +295,7 @@ const disableDirectiveSeveritySchema: ObjectPropertySchema<SharedConfig.RuleLeve
     validate(value: unknown) {
       if (
         !(
-          ALLOWED_SEVERITIES.has(value as string | number) ||
+          ALLOWED_SEVERITIES.has(value as number | string) ||
           typeof value === 'boolean'
         )
       ) {
@@ -547,37 +545,37 @@ export const flatConfigSchema = {
   ),
 
   // flat config keys
-  settings: deepObjectAssignSchema,
+  language: languageSchema,
+  languageOptions: languageOptionsSchema,
   linterOptions: {
     schema: {
       noInlineConfig: booleanSchema,
       reportUnusedDisableDirectives: disableDirectiveSeveritySchema,
     },
   },
-  language: languageSchema,
-  languageOptions: languageOptionsSchema,
-  processor: processorSchema,
   plugins: pluginsSchema,
+  processor: processorSchema,
   rules: rulesSchema,
+  settings: deepObjectAssignSchema,
 
   // not in ESLint source, but seemingly relevant?
-  files: { type: 'array', items: { type: 'string' } },
-
-  // @typescript-eslint/rule-tester extensions
-
   defaultFilenames: {
-    type: 'object',
+    additionalProperties: false,
     properties: {
       ts: { type: 'string' },
       tsx: { type: 'string' },
     },
     required: ['ts', 'tsx'],
-    additionalProperties: false,
-  },
-  dependencyConstraints: {
     type: 'object',
+  },
+
+  // @typescript-eslint/rule-tester extensions
+
+  dependencyConstraints: {
     additionalProperties: {
       type: 'string',
     },
+    type: 'object',
   },
+  files: { items: { type: 'string' }, type: 'array' },
 };

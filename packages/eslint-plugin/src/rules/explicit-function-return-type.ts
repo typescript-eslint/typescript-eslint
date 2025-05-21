@@ -1,27 +1,29 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, nullThrows } from '../util';
 import type { FunctionInfo } from '../util/explicitReturnTypeUtils';
+
+import { createRule, nullThrows } from '../util';
 import {
   ancestorHasReturnType,
   checkFunctionReturnType,
   isValidFunctionExpressionReturnType,
 } from '../util/explicitReturnTypeUtils';
 
-type Options = [
+export type Options = [
   {
-    allowExpressions?: boolean;
-    allowTypedFunctionExpressions?: boolean;
-    allowHigherOrderFunctions?: boolean;
-    allowDirectConstAssertionInArrowFunctions?: boolean;
     allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
-    allowFunctionsWithoutTypeParameters?: boolean;
+    allowDirectConstAssertionInArrowFunctions?: boolean;
     allowedNames?: string[];
+    allowExpressions?: boolean;
+    allowFunctionsWithoutTypeParameters?: boolean;
+    allowHigherOrderFunctions?: boolean;
     allowIIFEs?: boolean;
+    allowTypedFunctionExpressions?: boolean;
   },
 ];
-type MessageIds = 'missingReturnType';
+export type MessageIds = 'missingReturnType';
 
 type FunctionNode =
   | TSESTree.ArrowFunctionExpression
@@ -42,65 +44,65 @@ export default createRule<Options, MessageIds>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowConciseArrowFunctionExpressionsStartingWithVoid: {
+            type: 'boolean',
             description:
               'Whether to allow arrow functions that start with the `void` keyword.',
-            type: 'boolean',
-          },
-          allowExpressions: {
-            description:
-              'Whether to ignore function expressions (functions which are not part of a declaration).',
-            type: 'boolean',
-          },
-          allowHigherOrderFunctions: {
-            description:
-              'Whether to ignore functions immediately returning another function expression.',
-            type: 'boolean',
-          },
-          allowTypedFunctionExpressions: {
-            description:
-              'Whether to ignore type annotations on the variable of function expressions.',
-            type: 'boolean',
           },
           allowDirectConstAssertionInArrowFunctions: {
+            type: 'boolean',
             description:
               'Whether to ignore arrow functions immediately returning a `as const` value.',
-            type: 'boolean',
-          },
-          allowFunctionsWithoutTypeParameters: {
-            description:
-              "Whether to ignore functions that don't have generic type parameters.",
-            type: 'boolean',
           },
           allowedNames: {
+            type: 'array',
             description:
               'An array of function/method names that will not have their arguments or return values checked.',
             items: {
               type: 'string',
             },
-            type: 'array',
+          },
+          allowExpressions: {
+            type: 'boolean',
+            description:
+              'Whether to ignore function expressions (functions which are not part of a declaration).',
+          },
+          allowFunctionsWithoutTypeParameters: {
+            type: 'boolean',
+            description:
+              "Whether to ignore functions that don't have generic type parameters.",
+          },
+          allowHigherOrderFunctions: {
+            type: 'boolean',
+            description:
+              'Whether to ignore functions immediately returning another function expression.',
           },
           allowIIFEs: {
+            type: 'boolean',
             description:
               'Whether to ignore immediately invoked function expressions (IIFEs).',
+          },
+          allowTypedFunctionExpressions: {
             type: 'boolean',
+            description:
+              'Whether to ignore type annotations on the variable of function expressions.',
           },
         },
-        additionalProperties: false,
       },
     ],
   },
   defaultOptions: [
     {
-      allowExpressions: false,
-      allowTypedFunctionExpressions: true,
-      allowHigherOrderFunctions: true,
-      allowDirectConstAssertionInArrowFunctions: true,
       allowConciseArrowFunctionExpressionsStartingWithVoid: false,
-      allowFunctionsWithoutTypeParameters: false,
+      allowDirectConstAssertionInArrowFunctions: true,
       allowedNames: [],
+      allowExpressions: false,
+      allowFunctionsWithoutTypeParameters: false,
+      allowHigherOrderFunctions: true,
       allowIIFEs: false,
+      allowTypedFunctionExpressions: true,
     },
   ],
   create(context, [options]) {
@@ -167,14 +169,14 @@ export default createRule<Options, MessageIds>({
             }
           }
         }
-        if (!!funcName && !!options.allowedNames.includes(funcName)) {
+        if (!!funcName && options.allowedNames.includes(funcName)) {
           return true;
         }
       }
       if (
         node.type === AST_NODE_TYPES.FunctionDeclaration &&
         node.id &&
-        !!options.allowedNames.includes(node.id.name)
+        options.allowedNames.includes(node.id.name)
       ) {
         return true;
       }
@@ -219,8 +221,8 @@ export default createRule<Options, MessageIds>({
 
       checkFunctionReturnType(info, options, context.sourceCode, loc =>
         context.report({
-          node,
           loc,
+          node,
           messageId: 'missingReturnType',
         }),
       );
@@ -230,7 +232,6 @@ export default createRule<Options, MessageIds>({
       'ArrowFunctionExpression, FunctionExpression, FunctionDeclaration':
         enterFunction,
       'ArrowFunctionExpression:exit': exitFunctionExpression,
-      'FunctionExpression:exit': exitFunctionExpression,
       'FunctionDeclaration:exit'(node): void {
         const info = popFunctionInfo('function declaration');
         if (isAllowedFunction(node)) {
@@ -242,12 +243,13 @@ export default createRule<Options, MessageIds>({
 
         checkFunctionReturnType(info, options, context.sourceCode, loc =>
           context.report({
-            node,
             loc,
+            node,
             messageId: 'missingReturnType',
           }),
         );
       },
+      'FunctionExpression:exit': exitFunctionExpression,
       ReturnStatement(node): void {
         functionInfoStack.at(-1)?.returns.push(node);
       },

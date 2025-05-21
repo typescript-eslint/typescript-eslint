@@ -1,26 +1,28 @@
-import { TSUtils } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+
+import { TSUtils } from '@typescript-eslint/utils';
 import prettier from 'prettier';
+
+import type { AST } from './types';
 
 import { generateType } from './generateType';
 import { optimizeAST } from './optimizeAST';
 import { printTypeAlias } from './printAST';
-import type { AST } from './types';
 
 export async function compile(
   schemaIn: JSONSchema4 | readonly JSONSchema4[],
   prettierConfig: Promise<prettier.Options>,
 ): Promise<string> {
-  const { schema, isArraySchema } = (() => {
+  const { isArraySchema, schema } = (() => {
     if (TSUtils.isArray(schemaIn)) {
       return {
-        schema: schemaIn,
         isArraySchema: true,
+        schema: schemaIn,
       };
     }
     return {
-      schema: [schemaIn],
       isArraySchema: false,
+      schema: [schemaIn],
     };
   })();
 
@@ -38,10 +40,10 @@ export async function compile(
 
   const optionsType = isArraySchema
     ? printTypeAlias('Options', {
-        type: 'tuple',
+        commentLines: [],
         elements: types,
         spreadType: null,
-        commentLines: [],
+        type: 'tuple',
       })
     : printTypeAlias('Options', types[0]);
 
@@ -59,7 +61,7 @@ export async function compile(
 function compileSchema(
   schema: JSONSchema4,
   index: number,
-): { type: AST; refTypes: string[] } {
+): { refTypes: string[]; type: AST } {
   const refTypes: string[] = [];
 
   const refMap = new Map<string, string>();
@@ -81,8 +83,8 @@ function compileSchema(
   optimizeAST(type);
 
   return {
-    type,
     refTypes,
+    type,
   };
 }
 

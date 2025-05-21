@@ -42,7 +42,7 @@ export declare class ESLintBase<
    * @param patterns The lint target files. This can contain any of file paths, directory paths, and glob patterns.
    * @returns The promise that will be fulfilled with an array of LintResult objects.
    */
-  lintFiles(patterns: string[] | string): Promise<LintResult[]>;
+  lintFiles(patterns: string | string[]): Promise<LintResult[]>;
 
   /**
    * This method lints the given source code text and then returns the results.
@@ -133,7 +133,7 @@ export interface ESLintOptions<Config extends Linter.ConfigType> {
    * Strategy for the cache to use for detecting changed files.
    * @default 'metadata'
    */
-  cacheStrategy?: 'metadata' | 'content';
+  cacheStrategy?: 'content' | 'metadata';
   /**
    * The working directory. This must be an absolute path.
    * @default process.cwd()
@@ -182,13 +182,13 @@ export interface ESLintOptions<Config extends Linter.ConfigType> {
 
 export interface DeprecatedRuleInfo {
   /**
-   *  The rule ID.
-   */
-  ruleId: string;
-  /**
    *  The rule IDs that replace this deprecated rule.
    */
   replacedBy: string[];
+  /**
+   *  The rule ID.
+   */
+  ruleId: string;
 }
 
 /**
@@ -230,6 +230,13 @@ export interface LintResult {
    */
   source?: string;
   /**
+   * Timing information of the lint run.
+   * This exists if and only if the `--stats` CLI flag was added or the `stats: true`
+   * option was passed to the ESLint class
+   * @since 9.0.0
+   */
+  stats?: LintStats;
+  /**
    * The array of SuppressedLintMessage objects.
    */
   suppressedMessages: SuppressedLintMessage[];
@@ -241,13 +248,6 @@ export interface LintResult {
    * The number of warnings. This includes fixable warnings.
    */
   warningCount: number;
-  /**
-   * Timing information of the lint run.
-   * This exists if and only if the `--stats` CLI flag was added or the `stats: true`
-   * option was passed to the ESLint class
-   * @since 9.0.0
-   */
-  stats?: LintStats;
 }
 
 export interface LintStats {
@@ -264,6 +264,10 @@ export interface LintStats {
 }
 export interface LintStatsTimePass {
   /**
+   * The total time that is spent on applying fixes to the code.
+   */
+  fix: LintStatsFixTime;
+  /**
    * The total time that is spent when parsing a file.
    */
   parse: LintStatsParseTime;
@@ -271,10 +275,6 @@ export interface LintStatsTimePass {
    * The total time that is spent on a rule.
    */
   rules?: Record<string, LintStatsRuleTime>;
-  /**
-   * The total time that is spent on applying fixes to the code.
-   */
-  fix: LintStatsFixTime;
   /**
    * The cumulative total
    */
@@ -367,13 +367,13 @@ export interface SuppressedLintMessage extends LintMessage {
    */
   suppressions?: {
     /**
-     * Right now, this is always `directive`
-     */
-    kind: string;
-    /**
      * The free text description added after the `--` in the comment
      */
     justification: string;
+    /**
+     * Right now, this is always `directive`
+     */
+    kind: string;
   }[];
 }
 
@@ -404,5 +404,5 @@ export interface Formatter {
    * The method to convert the LintResult objects to text.
    * Promise return supported since 8.4.0
    */
-  format(results: LintResult[]): Promise<string> | string;
+  format(results: LintResult[]): string | Promise<string>;
 }

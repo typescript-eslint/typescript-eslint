@@ -30,6 +30,719 @@ ruleTester.run({
   `;
 }
 ruleTester.run('plugin-test-formatting', rule, {
+  invalid: [
+    // Literal
+    {
+      code: wrap`'const a=1;'`,
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: wrap`'const a = 1;'`,
+    },
+    {
+      code: wrap`'const a="1";'`,
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: wrap`"const a = '1';"`,
+    },
+    {
+      code: wrap`"const a='1';"`,
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: wrap`"const a = '1';"`,
+    },
+    {
+      code: wrap`'for (const x of y) {}'`,
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: [
+        wrap`\`for (const x of y) {
+}\``,
+        wrap`\`
+for (const x of y) {
+}
+\``,
+        wrap`\`
+for (const x of y) {
+}
+${PARENT_INDENT}\``,
+      ],
+    },
+    {
+      code: wrap`'for (const x of \`asdf\`) {}'`,
+      // make sure it escapes the backticks
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: [
+        wrap`\`for (const x of \\\`asdf\\\`) {
+}\``,
+        wrap`\`
+for (const x of \\\`asdf\\\`) {
+}
+\``,
+        wrap`\`
+for (const x of \\\`asdf\\\`) {
+}
+${PARENT_INDENT}\``,
+      ],
+    },
+    // TemplateLiteral
+    // singleLineQuotes
+    {
+      code: wrap`\`const a = 1;\``,
+      errors: [
+        {
+          messageId: 'singleLineQuotes',
+        },
+      ],
+      output: wrap`'const a = 1;'`,
+    },
+    {
+      code: wrap`\`const a = '1'\``,
+      errors: [
+        {
+          messageId: 'singleLineQuotes',
+        },
+      ],
+      output: [wrap`"const a = '1'"`, wrap`"const a = '1';"`],
+    },
+    {
+      code: wrap`\`const a = "1";\``,
+      errors: [
+        {
+          messageId: 'singleLineQuotes',
+        },
+      ],
+      output: [wrap`'const a = "1";'`, wrap`"const a = '1';"`],
+    },
+    // templateLiteralEmptyEnds
+    {
+      code: wrap`\`const a = "1";
+${PARENT_INDENT}\``,
+      errors: [
+        {
+          messageId: 'templateLiteralEmptyEnds',
+        },
+      ],
+      output: [
+        wrap`\`
+const a = "1";
+${PARENT_INDENT}\``,
+        wrap`\`
+const a = '1';
+${PARENT_INDENT}\``,
+      ],
+    },
+    {
+      code: wrap`\`
+${CODE_INDENT}const a = "1";\``,
+      errors: [
+        {
+          messageId: 'templateLiteralEmptyEnds',
+        },
+      ],
+      output: [
+        wrap`\`
+${CODE_INDENT}const a = "1";
+\``,
+        wrap`\`
+${CODE_INDENT}const a = "1";
+${PARENT_INDENT}\``,
+        wrap`\`
+${CODE_INDENT}const a = '1';
+${PARENT_INDENT}\``,
+      ],
+    },
+    {
+      code: wrap`\`const a = "1";
+${CODE_INDENT}const b = "2";\``,
+      errors: [
+        {
+          messageId: 'templateLiteralEmptyEnds',
+        },
+      ],
+      output: [
+        wrap`\`
+const a = "1";
+${CODE_INDENT}const b = "2";
+\``,
+        wrap`\`
+const a = "1";
+${CODE_INDENT}const b = "2";
+${PARENT_INDENT}\``,
+        wrap`\`
+const a = '1';
+const b = '2';
+${PARENT_INDENT}\``,
+      ],
+    },
+    // templateLiteralLastLineIndent
+    {
+      code: wrap`\`
+${CODE_INDENT}const a = "1";
+\``,
+      errors: [
+        {
+          messageId: 'templateLiteralLastLineIndent',
+        },
+      ],
+      output: [
+        wrap`\`
+${CODE_INDENT}const a = "1";
+${PARENT_INDENT}\``,
+        wrap`\`
+${CODE_INDENT}const a = '1';
+${PARENT_INDENT}\``,
+      ],
+    },
+    {
+      code: wrap`\`
+${CODE_INDENT}const a = "1";
+                      \``,
+      errors: [
+        {
+          messageId: 'templateLiteralLastLineIndent',
+        },
+      ],
+      output: [
+        wrap`\`
+${CODE_INDENT}const a = "1";
+${PARENT_INDENT}\``,
+        wrap`\`
+${CODE_INDENT}const a = '1';
+${PARENT_INDENT}\``,
+      ],
+    },
+    // templateStringRequiresIndent
+    {
+      code: wrap`\`
+  const a = "1";
+${PARENT_INDENT}\``,
+      errors: [
+        {
+          data: {
+            indent: CODE_INDENT.length,
+          },
+          messageId: 'templateStringRequiresIndent',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+ruleTester.run({
+  valid: [
+    \`
+    const a = "1";
+    \`,
+  ],
+});
+      `,
+      errors: [
+        {
+          data: {
+            indent: 6,
+          },
+          messageId: 'templateStringRequiresIndent',
+        },
+      ],
+      output: null,
+    },
+    // templateStringMinimumIndent
+    {
+      code: wrap`\`
+${CODE_INDENT}const a = "1";
+  const b = "2";
+${PARENT_INDENT}\``,
+      errors: [
+        {
+          data: {
+            indent: CODE_INDENT.length,
+          },
+          messageId: 'templateStringMinimumIndent',
+        },
+      ],
+      output: null,
+    },
+    // invalidFormatting
+    {
+      code: wrap`\`
+${CODE_INDENT}const a="1";
+${CODE_INDENT}          const b    =   "2";
+${PARENT_INDENT}\``,
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: wrap`\`
+${CODE_INDENT}const a = '1';
+${CODE_INDENT}const b = '2';
+${PARENT_INDENT}\``,
+    },
+    {
+      code: wrap`\`
+${CODE_INDENT}const a=\\\`\\\${a}\\\`;
+${PARENT_INDENT}\``,
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: wrap`\`
+${CODE_INDENT}const a = \\\`\\\${a}\\\`;
+${PARENT_INDENT}\``,
+    },
+    // noUnnecessaryNoFormat
+    {
+      code: wrap`noFormat\`const a = 1;\``,
+      errors: [
+        {
+          messageId: 'noUnnecessaryNoFormat',
+        },
+      ],
+      output: wrap`'const a = 1;'`,
+    },
+    {
+      code: wrap`
+noFormat\`
+async function foo() {}
+async function bar() {}
+\``,
+      errors: [
+        {
+          messageId: 'noUnnecessaryNoFormat',
+        },
+      ],
+      output: wrap`
+\`
+async function foo() {}
+async function bar() {}
+\``,
+    },
+    {
+      code: wrap`
+${PARENT_INDENT}noFormat\`
+${CODE_INDENT}async function bar() {}
+${CODE_INDENT}async function foo() {}
+${PARENT_INDENT}\``,
+      errors: [
+        {
+          messageId: 'noUnnecessaryNoFormat',
+        },
+      ],
+      output: wrap`
+${PARENT_INDENT}\`
+${CODE_INDENT}async function bar() {}
+${CODE_INDENT}async function foo() {}
+${PARENT_INDENT}\``,
+    },
+    // sanity check that it handles suggestion output
+    {
+      code: `
+ruleTester.run({
+  valid: [],
+  invalid: [
+    {
+      code: 'const x=1;',
+      errors: [
+        {
+          messageId: 'foo',
+          suggestions: [
+            {
+              messageId: 'bar',
+              output: 'const x=1;',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          messageId: 'invalidFormattingErrorTest',
+        },
+      ],
+      output: `
+ruleTester.run({
+  valid: [],
+  invalid: [
+    {
+      code: 'const x = 1;',
+      errors: [
+        {
+          messageId: 'foo',
+          suggestions: [
+            {
+              messageId: 'bar',
+              output: 'const x=1;',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+});
+      `,
+    },
+
+    // sanity check that it runs on all tests
+    {
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: \`foo\`,
+    },
+    {
+      code: \`foo
+\`,
+    },
+    {
+      code: \`
+      foo\`,
+    },
+  ],
+  invalid: [
+    {
+      code: \`foo\`,
+    },
+    {
+      code: \`foo
+\`,
+    },
+    {
+      code: \`
+      foo\`,
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          messageId: 'singleLineQuotes',
+        },
+        {
+          messageId: 'templateLiteralEmptyEnds',
+        },
+        {
+          messageId: 'templateLiteralEmptyEnds',
+        },
+        {
+          messageId: 'singleLineQuotes',
+        },
+        {
+          messageId: 'templateLiteralEmptyEnds',
+        },
+        {
+          messageId: 'templateLiteralEmptyEnds',
+        },
+      ],
+      output: [
+        `
+ruleTester.run({
+  valid: [
+    {
+      code: 'foo',
+    },
+    {
+      code: \`
+foo
+\`,
+    },
+    {
+      code: \`
+      foo
+\`,
+    },
+  ],
+  invalid: [
+    {
+      code: 'foo',
+    },
+    {
+      code: \`
+foo
+\`,
+    },
+    {
+      code: \`
+      foo
+\`,
+    },
+  ],
+});
+      `,
+        `
+ruleTester.run({
+  valid: [
+    {
+      code: 'foo;',
+    },
+    {
+      code: \`
+foo
+      \`,
+    },
+    {
+      code: \`
+      foo
+      \`,
+    },
+  ],
+  invalid: [
+    {
+      code: 'foo;',
+    },
+    {
+      code: \`
+foo
+      \`,
+    },
+    {
+      code: \`
+      foo
+      \`,
+    },
+  ],
+});
+      `,
+        `
+ruleTester.run({
+  valid: [
+    {
+      code: 'foo;',
+    },
+    {
+      code: \`
+foo;
+      \`,
+    },
+    {
+      code: \`
+      foo
+      \`,
+    },
+  ],
+  invalid: [
+    {
+      code: 'foo;',
+    },
+    {
+      code: \`
+foo;
+      \`,
+    },
+    {
+      code: \`
+      foo
+      \`,
+    },
+  ],
+});
+      `,
+      ],
+    },
+
+    // handles prettier errors
+    {
+      code: wrap`'const x = ";'`,
+      errors: [
+        {
+          data: {
+            message: 'Unterminated string literal.',
+          },
+          messageId: 'prettierException',
+        },
+      ],
+      output: null,
+    },
+
+    // annotated variables are checked
+    {
+      code: `
+const test: RunTests = {
+  valid: [
+    'const badlyFormatted         = "code"',
+    {
+      code: 'const badlyFormatted         = "code"',
+    },
+  ],
+  invalid: [
+    {
+      code: 'const badlyFormatted         = "code"',
+      errors: [],
+    },
+  ],
+};
+      `,
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+        {
+          messageId: 'invalidFormatting',
+        },
+        {
+          messageId: 'invalidFormattingErrorTest',
+        },
+      ],
+      output: `
+const test: RunTests = {
+  valid: [
+    "const badlyFormatted = 'code';",
+    {
+      code: "const badlyFormatted = 'code';",
+    },
+  ],
+  invalid: [
+    {
+      code: "const badlyFormatted = 'code';",
+      errors: [],
+    },
+  ],
+};
+      `,
+    },
+    {
+      code: `
+import { RunTests } from '@typescript-eslint/rule-tester';
+
+const test: RunTests<'', []> = {
+  valid: [
+    'const badlyFormatted         = "code"',
+    {
+      code: 'const badlyFormatted         = "code"',
+    },
+  ],
+  invalid: [
+    {
+      code: 'const badlyFormatted         = "code"',
+      errors: [],
+    },
+  ],
+};
+      `,
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+        {
+          messageId: 'invalidFormatting',
+        },
+        {
+          messageId: 'invalidFormattingErrorTest',
+        },
+      ],
+      output: `
+import { RunTests } from '@typescript-eslint/rule-tester';
+
+const test: RunTests<'', []> = {
+  valid: [
+    "const badlyFormatted = 'code';",
+    {
+      code: "const badlyFormatted = 'code';",
+    },
+  ],
+  invalid: [
+    {
+      code: "const badlyFormatted = 'code';",
+      errors: [],
+    },
+  ],
+};
+      `,
+    },
+    {
+      code: `
+import { ValidTestCase } from '@typescript-eslint/rule-tester';
+
+const test: ValidTestCase<[]> = {
+  code: 'const badlyFormatted         = "code"',
+};
+      `,
+      errors: [
+        {
+          messageId: 'invalidFormattingErrorTest',
+        },
+      ],
+      output: `
+import { ValidTestCase } from '@typescript-eslint/rule-tester';
+
+const test: ValidTestCase<[]> = {
+  code: "const badlyFormatted = 'code';",
+};
+      `,
+    },
+    {
+      code: `
+import { InvalidTestCase } from '@typescript-eslint/rule-tester';
+
+const test: InvalidTestCase<'', []> = {
+  code: 'const badlyFormatted         = "code1"',
+  errors: [
+    {
+      code: 'const badlyFormatted         = "code2"',
+      // shouldn't get fixed as per rule ignoring output
+      output: 'const badlyFormatted         = "code3"',
+      suggestions: [
+        {
+          messageId: '',
+          // shouldn't get fixed as per rule ignoring output
+          output: 'const badlyFormatted         = "code4"',
+        },
+      ],
+    },
+  ],
+};
+      `,
+      errors: [
+        {
+          messageId: 'invalidFormattingErrorTest',
+        },
+        {
+          messageId: 'invalidFormattingErrorTest',
+        },
+      ],
+      output: `
+import { InvalidTestCase } from '@typescript-eslint/rule-tester';
+
+const test: InvalidTestCase<'', []> = {
+  code: "const badlyFormatted = 'code1';",
+  errors: [
+    {
+      code: "const badlyFormatted = 'code2';",
+      // shouldn't get fixed as per rule ignoring output
+      output: 'const badlyFormatted         = "code3"',
+      suggestions: [
+        {
+          messageId: '',
+          // shouldn't get fixed as per rule ignoring output
+          output: 'const badlyFormatted         = "code4"',
+        },
+      ],
+    },
+  ],
+};
+      `,
+    },
+  ],
   valid: [
     // sanity check for valid tests non-object style
     `
@@ -53,7 +766,6 @@ ${PARENT_INDENT}\``,
     wrap`\`
 const a = 1;
 ${PARENT_INDENT}\``,
-    wrap`noFormat\`const a = 1;\``,
     // sanity check suggestion validation
     // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
     `
@@ -130,7 +842,7 @@ const a = 1;
       ],
     },
 
-    // empty linems are valid when everything else is indented
+    // empty lines are valid when everything else is indented
     wrap`\`
 ${CODE_INDENT}const a = 1;
 
@@ -174,675 +886,5 @@ const test = [
   errors: [],
 }));
     `,
-  ],
-  invalid: [
-    // Literal
-    {
-      code: wrap`'const a=1;'`,
-      output: wrap`'const a = 1;'`,
-      errors: [
-        {
-          messageId: 'invalidFormatting',
-        },
-      ],
-    },
-    {
-      code: wrap`'const a="1";'`,
-      output: wrap`"const a = '1';"`,
-      errors: [
-        {
-          messageId: 'invalidFormatting',
-        },
-      ],
-    },
-    {
-      code: wrap`"const a='1';"`,
-      output: wrap`"const a = '1';"`,
-      errors: [
-        {
-          messageId: 'invalidFormatting',
-        },
-      ],
-    },
-    {
-      code: wrap`'for (const x of y) {}'`,
-      output: [
-        wrap`\`for (const x of y) {
-}\``,
-        wrap`\`
-for (const x of y) {
-}
-\``,
-        wrap`\`
-for (const x of y) {
-}
-${PARENT_INDENT}\``,
-      ],
-      errors: [
-        {
-          messageId: 'invalidFormatting',
-        },
-      ],
-    },
-    {
-      code: wrap`'for (const x of \`asdf\`) {}'`,
-      // make sure it escapes the backticks
-      output: [
-        wrap`\`for (const x of \\\`asdf\\\`) {
-}\``,
-        wrap`\`
-for (const x of \\\`asdf\\\`) {
-}
-\``,
-        wrap`\`
-for (const x of \\\`asdf\\\`) {
-}
-${PARENT_INDENT}\``,
-      ],
-      errors: [
-        {
-          messageId: 'invalidFormatting',
-        },
-      ],
-    },
-    // TemplateLiteral
-    // singleLineQuotes
-    {
-      code: wrap`\`const a = 1;\``,
-      output: wrap`'const a = 1;'`,
-      errors: [
-        {
-          messageId: 'singleLineQuotes',
-        },
-      ],
-    },
-    {
-      code: wrap`\`const a = '1'\``,
-      output: [wrap`"const a = '1'"`, wrap`"const a = '1';"`],
-      errors: [
-        {
-          messageId: 'singleLineQuotes',
-        },
-      ],
-    },
-    {
-      code: wrap`\`const a = "1";\``,
-      output: [wrap`'const a = "1";'`, wrap`"const a = '1';"`],
-      errors: [
-        {
-          messageId: 'singleLineQuotes',
-        },
-      ],
-    },
-    // templateLiteralEmptyEnds
-    {
-      code: wrap`\`const a = "1";
-${PARENT_INDENT}\``,
-      output: [
-        wrap`\`
-const a = "1";
-${PARENT_INDENT}\``,
-        wrap`\`
-const a = '1';
-${PARENT_INDENT}\``,
-      ],
-      errors: [
-        {
-          messageId: 'templateLiteralEmptyEnds',
-        },
-      ],
-    },
-    {
-      code: wrap`\`
-${CODE_INDENT}const a = "1";\``,
-      output: [
-        wrap`\`
-${CODE_INDENT}const a = "1";
-\``,
-        wrap`\`
-${CODE_INDENT}const a = "1";
-${PARENT_INDENT}\``,
-        wrap`\`
-${CODE_INDENT}const a = '1';
-${PARENT_INDENT}\``,
-      ],
-      errors: [
-        {
-          messageId: 'templateLiteralEmptyEnds',
-        },
-      ],
-    },
-    {
-      code: wrap`\`const a = "1";
-${CODE_INDENT}const b = "2";\``,
-      output: [
-        wrap`\`
-const a = "1";
-${CODE_INDENT}const b = "2";
-\``,
-        wrap`\`
-const a = "1";
-${CODE_INDENT}const b = "2";
-${PARENT_INDENT}\``,
-        wrap`\`
-const a = '1';
-const b = '2';
-${PARENT_INDENT}\``,
-      ],
-      errors: [
-        {
-          messageId: 'templateLiteralEmptyEnds',
-        },
-      ],
-    },
-    // templateLiteralLastLineIndent
-    {
-      code: wrap`\`
-${CODE_INDENT}const a = "1";
-\``,
-      output: [
-        wrap`\`
-${CODE_INDENT}const a = "1";
-${PARENT_INDENT}\``,
-        wrap`\`
-${CODE_INDENT}const a = '1';
-${PARENT_INDENT}\``,
-      ],
-      errors: [
-        {
-          messageId: 'templateLiteralLastLineIndent',
-        },
-      ],
-    },
-    {
-      code: wrap`\`
-${CODE_INDENT}const a = "1";
-                      \``,
-      output: [
-        wrap`\`
-${CODE_INDENT}const a = "1";
-${PARENT_INDENT}\``,
-        wrap`\`
-${CODE_INDENT}const a = '1';
-${PARENT_INDENT}\``,
-      ],
-      errors: [
-        {
-          messageId: 'templateLiteralLastLineIndent',
-        },
-      ],
-    },
-    // templateStringRequiresIndent
-    {
-      code: wrap`\`
-  const a = "1";
-${PARENT_INDENT}\``,
-      output: null,
-      errors: [
-        {
-          messageId: 'templateStringRequiresIndent',
-          data: {
-            indent: CODE_INDENT.length,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-ruleTester.run({
-  valid: [
-    \`
-    const a = "1";
-    \`,
-  ],
-});
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'templateStringRequiresIndent',
-          data: {
-            indent: 6,
-          },
-        },
-      ],
-    },
-    // templateStringMinimumIndent
-    {
-      code: wrap`\`
-${CODE_INDENT}const a = "1";
-  const b = "2";
-${PARENT_INDENT}\``,
-      output: null,
-      errors: [
-        {
-          messageId: 'templateStringMinimumIndent',
-          data: {
-            indent: CODE_INDENT.length,
-          },
-        },
-      ],
-    },
-    // invalidFormatting
-    {
-      code: wrap`\`
-${CODE_INDENT}const a="1";
-${CODE_INDENT}          const b    =   "2";
-${PARENT_INDENT}\``,
-      output: wrap`\`
-${CODE_INDENT}const a = '1';
-${CODE_INDENT}const b = '2';
-${PARENT_INDENT}\``,
-      errors: [
-        {
-          messageId: 'invalidFormatting',
-        },
-      ],
-    },
-    {
-      code: wrap`\`
-${CODE_INDENT}const a=\\\`\\\${a}\\\`;
-${PARENT_INDENT}\``,
-      output: wrap`\`
-${CODE_INDENT}const a = \\\`\\\${a}\\\`;
-${PARENT_INDENT}\``,
-      errors: [
-        {
-          messageId: 'invalidFormatting',
-        },
-      ],
-    },
-
-    // sanity check that it handles suggestion output
-    {
-      code: `
-ruleTester.run({
-  valid: [],
-  invalid: [
-    {
-      code: 'const x=1;',
-      errors: [
-        {
-          messageId: 'foo',
-          suggestions: [
-            {
-              messageId: 'bar',
-              output: 'const x=1;',
-            },
-          ],
-        },
-      ],
-    },
-  ],
-});
-      `,
-      output: `
-ruleTester.run({
-  valid: [],
-  invalid: [
-    {
-      code: 'const x = 1;',
-      errors: [
-        {
-          messageId: 'foo',
-          suggestions: [
-            {
-              messageId: 'bar',
-              output: 'const x=1;',
-            },
-          ],
-        },
-      ],
-    },
-  ],
-});
-      `,
-      errors: [
-        {
-          messageId: 'invalidFormattingErrorTest',
-        },
-      ],
-    },
-
-    // sanity check that it runs on all tests
-    {
-      code: `
-ruleTester.run({
-  valid: [
-    {
-      code: \`foo\`,
-    },
-    {
-      code: \`foo
-\`,
-    },
-    {
-      code: \`
-      foo\`,
-    },
-  ],
-  invalid: [
-    {
-      code: \`foo\`,
-    },
-    {
-      code: \`foo
-\`,
-    },
-    {
-      code: \`
-      foo\`,
-    },
-  ],
-});
-      `,
-      output: [
-        `
-ruleTester.run({
-  valid: [
-    {
-      code: 'foo',
-    },
-    {
-      code: \`
-foo
-\`,
-    },
-    {
-      code: \`
-      foo
-\`,
-    },
-  ],
-  invalid: [
-    {
-      code: 'foo',
-    },
-    {
-      code: \`
-foo
-\`,
-    },
-    {
-      code: \`
-      foo
-\`,
-    },
-  ],
-});
-      `,
-        `
-ruleTester.run({
-  valid: [
-    {
-      code: 'foo;',
-    },
-    {
-      code: \`
-foo
-      \`,
-    },
-    {
-      code: \`
-      foo
-      \`,
-    },
-  ],
-  invalid: [
-    {
-      code: 'foo;',
-    },
-    {
-      code: \`
-foo
-      \`,
-    },
-    {
-      code: \`
-      foo
-      \`,
-    },
-  ],
-});
-      `,
-        `
-ruleTester.run({
-  valid: [
-    {
-      code: 'foo;',
-    },
-    {
-      code: \`
-foo;
-      \`,
-    },
-    {
-      code: \`
-      foo
-      \`,
-    },
-  ],
-  invalid: [
-    {
-      code: 'foo;',
-    },
-    {
-      code: \`
-foo;
-      \`,
-    },
-    {
-      code: \`
-      foo
-      \`,
-    },
-  ],
-});
-      `,
-      ],
-      errors: [
-        {
-          messageId: 'singleLineQuotes',
-        },
-        {
-          messageId: 'templateLiteralEmptyEnds',
-        },
-        {
-          messageId: 'templateLiteralEmptyEnds',
-        },
-        {
-          messageId: 'singleLineQuotes',
-        },
-        {
-          messageId: 'templateLiteralEmptyEnds',
-        },
-        {
-          messageId: 'templateLiteralEmptyEnds',
-        },
-      ],
-    },
-
-    // handles prettier errors
-    {
-      code: wrap`'const x = ";'`,
-      output: null,
-      errors: [
-        {
-          messageId: 'prettierException',
-          data: {
-            message: 'Unterminated string literal.',
-          },
-        },
-      ],
-    },
-
-    // annotated variables are checked
-    {
-      code: `
-const test: RunTests = {
-  valid: [
-    'const badlyFormatted         = "code"',
-    {
-      code: 'const badlyFormatted         = "code"',
-    },
-  ],
-  invalid: [
-    {
-      code: 'const badlyFormatted         = "code"',
-      errors: [],
-    },
-  ],
-};
-      `,
-      output: `
-const test: RunTests = {
-  valid: [
-    "const badlyFormatted = 'code';",
-    {
-      code: "const badlyFormatted = 'code';",
-    },
-  ],
-  invalid: [
-    {
-      code: "const badlyFormatted = 'code';",
-      errors: [],
-    },
-  ],
-};
-      `,
-      errors: [
-        {
-          messageId: 'invalidFormatting',
-        },
-        {
-          messageId: 'invalidFormatting',
-        },
-        {
-          messageId: 'invalidFormattingErrorTest',
-        },
-      ],
-    },
-    {
-      code: `
-import { RunTests } from '@typescript-eslint/rule-tester';
-
-const test: RunTests<'', []> = {
-  valid: [
-    'const badlyFormatted         = "code"',
-    {
-      code: 'const badlyFormatted         = "code"',
-    },
-  ],
-  invalid: [
-    {
-      code: 'const badlyFormatted         = "code"',
-      errors: [],
-    },
-  ],
-};
-      `,
-      output: `
-import { RunTests } from '@typescript-eslint/rule-tester';
-
-const test: RunTests<'', []> = {
-  valid: [
-    "const badlyFormatted = 'code';",
-    {
-      code: "const badlyFormatted = 'code';",
-    },
-  ],
-  invalid: [
-    {
-      code: "const badlyFormatted = 'code';",
-      errors: [],
-    },
-  ],
-};
-      `,
-      errors: [
-        {
-          messageId: 'invalidFormatting',
-        },
-        {
-          messageId: 'invalidFormatting',
-        },
-        {
-          messageId: 'invalidFormattingErrorTest',
-        },
-      ],
-    },
-    {
-      code: `
-import { ValidTestCase } from '@typescript-eslint/rule-tester';
-
-const test: ValidTestCase<[]> = {
-  code: 'const badlyFormatted         = "code"',
-};
-      `,
-      output: `
-import { ValidTestCase } from '@typescript-eslint/rule-tester';
-
-const test: ValidTestCase<[]> = {
-  code: "const badlyFormatted = 'code';",
-};
-      `,
-      errors: [
-        {
-          messageId: 'invalidFormattingErrorTest',
-        },
-      ],
-    },
-    {
-      code: `
-import { InvalidTestCase } from '@typescript-eslint/rule-tester';
-
-const test: InvalidTestCase<'', []> = {
-  code: 'const badlyFormatted         = "code1"',
-  errors: [
-    {
-      code: 'const badlyFormatted         = "code2"',
-      // shouldn't get fixed as per rule ignoring output
-      output: 'const badlyFormatted         = "code3"',
-      suggestions: [
-        {
-          messageId: '',
-          // shouldn't get fixed as per rule ignoring output
-          output: 'const badlyFormatted         = "code4"',
-        },
-      ],
-    },
-  ],
-};
-      `,
-      output: `
-import { InvalidTestCase } from '@typescript-eslint/rule-tester';
-
-const test: InvalidTestCase<'', []> = {
-  code: "const badlyFormatted = 'code1';",
-  errors: [
-    {
-      code: "const badlyFormatted = 'code2';",
-      // shouldn't get fixed as per rule ignoring output
-      output: 'const badlyFormatted         = "code3"',
-      suggestions: [
-        {
-          messageId: '',
-          // shouldn't get fixed as per rule ignoring output
-          output: 'const badlyFormatted         = "code4"',
-        },
-      ],
-    },
-  ],
-};
-      `,
-      errors: [
-        {
-          messageId: 'invalidFormattingErrorTest',
-        },
-        {
-          messageId: 'invalidFormattingErrorTest',
-        },
-      ],
-    },
   ],
 });

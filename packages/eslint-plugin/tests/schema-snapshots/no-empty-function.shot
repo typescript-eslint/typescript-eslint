@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-empty-function 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,6 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allow": {
+        "description": "Locations and kinds of functions that are allowed to be empty.",
         "items": {
           "enum": [
             "arrowFunctions",
@@ -41,6 +39,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Locations and kinds of functions that are allowed to be empty. */
     allow?: (
       | 'arrowFunctions'
       | 'asyncFunctions'
@@ -59,5 +58,3 @@ type Options = [
     )[];
   },
 ];
-"
-`;

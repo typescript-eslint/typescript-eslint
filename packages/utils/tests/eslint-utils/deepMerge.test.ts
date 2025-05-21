@@ -1,6 +1,6 @@
 import { ESLintUtils } from '../../src';
 
-describe('deepMerge', () => {
+describe(ESLintUtils.deepMerge, () => {
   it('creates a brand new object', () => {
     const a = {};
     const b = {};
@@ -12,30 +12,30 @@ describe('deepMerge', () => {
 
   it('deeply merges objects', () => {
     const a = {
-      stringA1: 'asdf',
-      numberA1: 1,
-      boolA1: true,
       arrayA1: [1, 2, 3],
+      boolA1: true,
+      numberA1: 1,
       objA1: {
-        stringA2: 'fsda',
-        numberA2: 2,
-        boolA2: false,
         arrayA2: [3, 2, 1],
+        boolA2: false,
+        numberA2: 2,
         objA2: {},
+        stringA2: 'fsda',
       },
+      stringA1: 'asdf',
     };
     const b = {
-      stringB1: 'asdf',
-      numberB1: 1,
-      boolB1: true,
       arrayB1: [1, 2, 3],
+      boolB1: true,
+      numberB1: 1,
       objB1: {
-        stringB2: 'fsda',
-        numberB2: 2,
-        boolB2: false,
         arrayB2: [3, 2, 1],
+        boolB2: false,
+        numberB2: 2,
         objB2: {},
+        stringB2: 'fsda',
       },
+      stringB1: 'asdf',
     };
 
     expect(ESLintUtils.deepMerge(a, b)).toStrictEqual({ ...a, ...b });

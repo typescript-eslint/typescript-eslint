@@ -34,6 +34,7 @@ The inferred type of 'default' cannot be named without a reference to
 This is likely not portable. A type annotation is necessary. ts(2742)
 ```
 */
+/* eslint-disable no-restricted-syntax */
 
 import type {
   RuleModuleWithMetaDocs,
@@ -41,7 +42,7 @@ import type {
   RuleRecommendationAcrossConfigs,
 } from '@typescript-eslint/utils/ts-eslint';
 
-export interface ESLintPluginDocs {
+interface ESLintPluginDocs {
   /**
    * Does the rule extend (or is it based off of) an ESLint code rule?
    * Alternately accepts the name of the base rule, in case the rule has been renamed.
@@ -62,16 +63,25 @@ export interface ESLintPluginDocs {
   requiresTypeChecking?: boolean;
 }
 
-export type ESLintPluginRuleModule = RuleModuleWithMetaDocs<
+type ESLintPluginRuleModule = RuleModuleWithMetaDocs<
   string,
   readonly unknown[],
   ESLintPluginDocs
 >;
 
-export type TypeScriptESLintRules = Record<
+type TypeScriptESLintRules = Record<
   string,
   RuleModuleWithMetaDocs<string, unknown[], ESLintPluginDocs>
 >;
 
 declare const rules: TypeScriptESLintRules;
-export default rules;
+
+declare namespace rules {
+  export type {
+    ESLintPluginDocs,
+    ESLintPluginRuleModule,
+    TypeScriptESLintRules,
+  };
+}
+
+export = rules;

@@ -1,21 +1,41 @@
 {
   "compilerOptions": {
+    "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
+    "composite": true,
     "declaration": true,
     "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "emitDecoratorMetadata": false,
     "esModuleInterop": true,
-    "lib": ["ES2023"],
-    "module": "Node16",
-    "moduleResolution": "Node16",
+    "experimentalDecorators": false,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": false,
+    "incremental": true,
+    "isolatedModules": true,
+    "lib": ["ES2022"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmitOnError": true,
+    "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "paths": {},
     "pretty": true,
+    "removeComments": false,
     "resolveJsonModule": true,
+    "rootDir": "${configDir}/",
+    "skipDefaultLibCheck": false,
     "skipLibCheck": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "strict": true,
-    "target": "ES2022"
-  }
+    "target": "ES2022",
+    "types": ["vitest/globals", "vitest/importMeta"],
+    "verbatimModuleSyntax": false
+  },
+  "include": [
+    "${configDir}/vitest.config.mts",
+    "${configDir}/package.json",
+    "${configDir}/tests",
+    "${configDir}/typings"
+  ],
+  "exclude": ["${configDir}/**/fixtures/**"]
 }

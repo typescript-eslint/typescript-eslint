@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes prefer-promise-reject-errors 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,6 +6,15 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowEmptyReject": {
+        "description": "Whether to allow calls to `Promise.reject()` with no arguments.",
+        "type": "boolean"
+      },
+      "allowThrowingAny": {
+        "description": "Whether to always allow throwing values typed as `any`.",
+        "type": "boolean"
+      },
+      "allowThrowingUnknown": {
+        "description": "Whether to always allow throwing values typed as `unknown`.",
         "type": "boolean"
       }
     },
@@ -21,8 +27,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to allow calls to `Promise.reject()` with no arguments. */
     allowEmptyReject?: boolean;
+    /** Whether to always allow throwing values typed as `any`. */
+    allowThrowingAny?: boolean;
+    /** Whether to always allow throwing values typed as `unknown`. */
+    allowThrowingUnknown?: boolean;
   },
 ];
-"
-`;

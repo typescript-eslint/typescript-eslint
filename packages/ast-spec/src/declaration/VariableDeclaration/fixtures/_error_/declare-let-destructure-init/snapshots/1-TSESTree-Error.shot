@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ declare-let-destructure-init TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-let-destructure-init > TSESTree - Error`]
+TSError
 > 1 | declare let { foo } = 1;
     |             ^^^^^^^^^^^ Initializers are not permitted in ambient contexts.
-  2 |"
-`;
+  2 |

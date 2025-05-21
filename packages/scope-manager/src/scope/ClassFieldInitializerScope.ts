@@ -2,10 +2,11 @@ import type { TSESTree } from '@typescript-eslint/types';
 
 import type { ScopeManager } from '../ScopeManager';
 import type { Scope } from './Scope';
+
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class ClassFieldInitializerScope extends ScopeBase<
+export class ClassFieldInitializerScope extends ScopeBase<
   ScopeType.classFieldInitializer,
   // the value expression itself is the block
   TSESTree.Expression,
@@ -25,5 +26,3 @@ class ClassFieldInitializerScope extends ScopeBase<
     );
   }
 }
-
-export { ClassFieldInitializerScope };

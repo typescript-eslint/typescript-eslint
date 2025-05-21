@@ -107,6 +107,8 @@ function greet(param: Array<string>): Array<string> {}
 
 ### `fixToUnknown`
 
+{/* insert option description */}
+
 By default, this rule will not provide automatic ESLint _fixes_: only opt-in _suggestions_.
 Switching types to `unknown` is safer but is likely to cause additional type errors.
 
@@ -114,7 +116,7 @@ Enabling `{ "fixToUnknown": true }` gives the rule an auto-fixer to replace `: a
 
 ### `ignoreRestArgs`
 
-A boolean to specify if arrays from the rest operator are considered okay. `false` by default.
+{/* insert option description */}
 
 The examples below are **incorrect** when `{ignoreRestArgs: false}`, but **correct** when `{ignoreRestArgs: true}`.
 
@@ -160,6 +162,7 @@ You might consider using [ESLint disable comments](https://eslint.org/docs/lates
 
 ## Related To
 
+- [Avoiding `any`s with Linting and TypeScript](/blog/avoiding-anys)
 - [`no-unsafe-argument`](./no-unsafe-argument.mdx)
 - [`no-unsafe-assignment`](./no-unsafe-assignment.mdx)
 - [`no-unsafe-call`](./no-unsafe-call.mdx)

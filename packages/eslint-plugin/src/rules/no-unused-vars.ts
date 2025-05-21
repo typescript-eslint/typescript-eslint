@@ -2,12 +2,15 @@ import type {
   Definition,
   ScopeVariable,
 } from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import {
   DefinitionType,
   PatternVisitor,
 } from '@typescript-eslint/scope-manager';
-import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
+
+import type { MakeRequired } from '../util';
 
 import {
   collectVariables,
@@ -25,30 +28,30 @@ export type Options = [
   | 'all'
   | 'local'
   | {
-      vars?: 'all' | 'local';
-      varsIgnorePattern?: string;
       args?: 'after-used' | 'all' | 'none';
-      ignoreRestSiblings?: boolean;
       argsIgnorePattern?: string;
       caughtErrors?: 'all' | 'none';
       caughtErrorsIgnorePattern?: string;
       destructuredArrayIgnorePattern?: string;
       ignoreClassWithStaticInitBlock?: boolean;
+      ignoreRestSiblings?: boolean;
       reportUsedIgnorePattern?: boolean;
+      vars?: 'all' | 'local';
+      varsIgnorePattern?: string;
     },
 ];
 
 interface TranslatedOptions {
-  vars: 'all' | 'local';
-  varsIgnorePattern?: RegExp;
   args: 'after-used' | 'all' | 'none';
-  ignoreRestSiblings: boolean;
   argsIgnorePattern?: RegExp;
   caughtErrors: 'all' | 'none';
   caughtErrorsIgnorePattern?: RegExp;
   destructuredArrayIgnorePattern?: RegExp;
   ignoreClassWithStaticInitBlock: boolean;
+  ignoreRestSiblings: boolean;
   reportUsedIgnorePattern: boolean;
+  vars: 'all' | 'local';
+  varsIgnorePattern?: RegExp;
 }
 
 type VariableType =
@@ -57,14 +60,26 @@ type VariableType =
   | 'parameter'
   | 'variable';
 
+type ModuleDeclarationWithBody = MakeRequired<
+  TSESTree.TSModuleDeclaration,
+  'body'
+>;
+
 export default createRule<Options, MessageIds>({
   name: 'no-unused-vars',
   meta: {
     type: 'problem',
     docs: {
       description: 'Disallow unused variables',
-      recommended: 'recommended',
       extendsBaseRule: true,
+      recommended: 'recommended',
+    },
+    messages: {
+      unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
+      usedIgnoredVar:
+        "'{{varName}}' is marked as ignored but is used{{additional}}.",
+      usedOnlyAsType:
+        "'{{varName}}' is {{action}} but only used as a type{{additional}}.",
     },
     schema: [
       {
@@ -75,66 +90,80 @@ export default createRule<Options, MessageIds>({
           },
           {
             type: 'object',
+            additionalProperties: false,
             properties: {
-              vars: {
-                type: 'string',
-                enum: ['all', 'local'],
-              },
-              varsIgnorePattern: {
-                type: 'string',
-              },
               args: {
                 type: 'string',
+                description: 'Whether to check all, some, or no arguments.',
                 enum: ['all', 'after-used', 'none'],
-              },
-              ignoreRestSiblings: {
-                type: 'boolean',
               },
               argsIgnorePattern: {
                 type: 'string',
+                description:
+                  'Regular expressions of argument names to not check for usage.',
               },
               caughtErrors: {
                 type: 'string',
+                description: 'Whether to check catch block arguments.',
                 enum: ['all', 'none'],
               },
               caughtErrorsIgnorePattern: {
                 type: 'string',
+                description:
+                  'Regular expressions of catch block argument names to not check for usage.',
               },
               destructuredArrayIgnorePattern: {
                 type: 'string',
+                description:
+                  'Regular expressions of destructured array variable names to not check for usage.',
               },
               ignoreClassWithStaticInitBlock: {
                 type: 'boolean',
+                description:
+                  'Whether to ignore classes with at least one static initialization block.',
+              },
+              ignoreRestSiblings: {
+                type: 'boolean',
+                description:
+                  'Whether to ignore sibling properties in `...` destructurings.',
               },
               reportUsedIgnorePattern: {
                 type: 'boolean',
+                description:
+                  'Whether to report variables that match any of the valid ignore pattern options if they have been used.',
+              },
+              vars: {
+                type: 'string',
+                description:
+                  'Whether to check all variables or only locally-declared variables.',
+                enum: ['all', 'local'],
+              },
+              varsIgnorePattern: {
+                type: 'string',
+                description:
+                  'Regular expressions of variable names to not check for usage.',
               },
             },
-            additionalProperties: false,
           },
         ],
       },
     ],
-    messages: {
-      unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
-      usedIgnoredVar:
-        "'{{varName}}' is marked as ignored but is used{{additional}}.",
-      usedOnlyAsType:
-        "'{{varName}}' is {{action}} but only used as a type{{additional}}.",
-    },
   },
   defaultOptions: [{}],
   create(context, [firstOption]) {
-    const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
+    const MODULE_DECL_CACHE = new Map<
+      ModuleDeclarationWithBody | TSESTree.Program,
+      boolean
+    >();
 
     const options = ((): TranslatedOptions => {
       const options: TranslatedOptions = {
-        vars: 'all',
         args: 'after-used',
-        ignoreRestSiblings: false,
         caughtErrors: 'all',
         ignoreClassWithStaticInitBlock: false,
+        ignoreRestSiblings: false,
         reportUsedIgnorePattern: false,
+        vars: 'all',
       };
 
       if (typeof firstOption === 'string') {
@@ -267,7 +296,7 @@ export default createRule<Options, MessageIds>({
       let additionalMessageData = '';
 
       if (def) {
-        const { variableDescription, pattern } = getVariableDescription(
+        const { pattern, variableDescription } = getVariableDescription(
           defToVariableType(def),
         );
 
@@ -277,9 +306,9 @@ export default createRule<Options, MessageIds>({
       }
 
       return {
-        varName: unusedVar.name,
         action: 'defined',
         additional: additionalMessageData,
+        varName: unusedVar.name,
       };
     }
 
@@ -296,7 +325,7 @@ export default createRule<Options, MessageIds>({
       let additionalMessageData = '';
 
       if (def) {
-        const { variableDescription, pattern } = getVariableDescription(
+        const { pattern, variableDescription } = getVariableDescription(
           defToVariableType(def),
         );
 
@@ -306,9 +335,9 @@ export default createRule<Options, MessageIds>({
       }
 
       return {
-        varName: unusedVar.name,
         action: 'assigned a value',
         additional: additionalMessageData,
+        varName: unusedVar.name,
       };
     }
 
@@ -323,7 +352,7 @@ export default createRule<Options, MessageIds>({
       variable: ScopeVariable,
       variableType: VariableType,
     ): Record<string, unknown> {
-      const { variableDescription, pattern } =
+      const { pattern, variableDescription } =
         getVariableDescription(variableType);
 
       let additionalMessageData = '';
@@ -333,8 +362,8 @@ export default createRule<Options, MessageIds>({
       }
 
       return {
-        varName: variable.name,
         additional: additionalMessageData,
+        varName: variable.name,
       };
     }
 
@@ -503,7 +532,13 @@ export default createRule<Options, MessageIds>({
           def.name.type === AST_NODE_TYPES.Identifier &&
           options.varsIgnorePattern?.test(def.name.name)
         ) {
-          if (options.reportUsedIgnorePattern && used) {
+          if (
+            options.reportUsedIgnorePattern &&
+            used &&
+            /* enum members are always marked as 'used' by `collectVariables`, but in reality they may be used or
+               unused. either way, don't complain about their naming. */
+            def.type !== TSESLint.Scope.DefinitionType.TSEnumMember
+          ) {
             context.report({
               node: def.name,
               messageId: 'usedIgnoredVar',
@@ -532,40 +567,71 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      // declaration file handling
-      [ambientDeclarationSelector(AST_NODE_TYPES.Program, true)](
+      // top-level declaration file handling
+      [ambientDeclarationSelector(AST_NODE_TYPES.Program)](
         node: DeclarationSelectorNode,
       ): void {
         if (!isDefinitionFile(context.filename)) {
           return;
         }
+
+        const moduleDecl = nullThrows(
+          node.parent,
+          NullThrowsReasons.MissingParent,
+        ) as TSESTree.Program;
+
+        if (checkForOverridingExportStatements(moduleDecl)) {
+          return;
+        }
+
         markDeclarationChildAsUsed(node);
       },
 
       // children of a namespace that is a child of a declared namespace are auto-exported
       [ambientDeclarationSelector(
         'TSModuleDeclaration[declare = true] > TSModuleBlock TSModuleDeclaration > TSModuleBlock',
-        false,
       )](node: DeclarationSelectorNode): void {
+        const moduleDecl = nullThrows(
+          node.parent.parent,
+          NullThrowsReasons.MissingParent,
+        ) as ModuleDeclarationWithBody;
+
+        if (checkForOverridingExportStatements(moduleDecl)) {
+          return;
+        }
+
         markDeclarationChildAsUsed(node);
       },
 
       // declared namespace handling
       [ambientDeclarationSelector(
         'TSModuleDeclaration[declare = true] > TSModuleBlock',
-        false,
       )](node: DeclarationSelectorNode): void {
         const moduleDecl = nullThrows(
           node.parent.parent,
           NullThrowsReasons.MissingParent,
-        ) as TSESTree.TSModuleDeclaration;
+        ) as ModuleDeclarationWithBody;
 
-        // declared ambient modules with an `export =` statement will only export that one thing
-        // all other statements are not automatically exported in this case
-        if (
-          moduleDecl.id.type === AST_NODE_TYPES.Literal &&
-          checkModuleDeclForExportEquals(moduleDecl)
-        ) {
+        if (checkForOverridingExportStatements(moduleDecl)) {
+          return;
+        }
+
+        markDeclarationChildAsUsed(node);
+      },
+
+      // namespace handling in definition files
+      [ambientDeclarationSelector('TSModuleDeclaration > TSModuleBlock')](
+        node: DeclarationSelectorNode,
+      ): void {
+        if (!isDefinitionFile(context.filename)) {
+          return;
+        }
+        const moduleDecl = nullThrows(
+          node.parent.parent,
+          NullThrowsReasons.MissingParent,
+        ) as ModuleDeclarationWithBody;
+
+        if (checkForOverridingExportStatements(moduleDecl)) {
           return;
         }
 
@@ -610,8 +676,8 @@ export default createRule<Options, MessageIds>({
             const loc = {
               start,
               end: {
-                line: start.line,
                 column: start.column + idLength,
+                line: start.line,
               },
             };
 
@@ -631,12 +697,12 @@ export default createRule<Options, MessageIds>({
             const directiveComment = unusedVar.eslintExplicitGlobalComments[0];
 
             context.report({
-              node: programNode,
               loc: getNameLocationInGlobalDirectiveComment(
                 context.sourceCode,
                 directiveComment,
                 unusedVar.name,
               ),
+              node: programNode,
               messageId: 'unusedVar',
               data: getDefinedMessageData(unusedVar),
             });
@@ -645,21 +711,19 @@ export default createRule<Options, MessageIds>({
       },
     };
 
-    function checkModuleDeclForExportEquals(
-      node: TSESTree.TSModuleDeclaration,
+    function checkForOverridingExportStatements(
+      node: ModuleDeclarationWithBody | TSESTree.Program,
     ): boolean {
       const cached = MODULE_DECL_CACHE.get(node);
       if (cached != null) {
         return cached;
       }
 
-      if (node.body) {
-        for (const statement of node.body.body) {
-          if (statement.type === AST_NODE_TYPES.TSExportAssignment) {
-            MODULE_DECL_CACHE.set(node, true);
-            return true;
-          }
-        }
+      const body = getStatementsOfNode(node);
+
+      if (hasOverridingExportStatement(body)) {
+        MODULE_DECL_CACHE.set(node, true);
+        return true;
       }
 
       MODULE_DECL_CACHE.set(node, false);
@@ -675,10 +739,7 @@ export default createRule<Options, MessageIds>({
       | TSESTree.TSModuleDeclaration
       | TSESTree.TSTypeAliasDeclaration
       | TSESTree.VariableDeclaration;
-    function ambientDeclarationSelector(
-      parent: string,
-      childDeclare: boolean,
-    ): string {
+    function ambientDeclarationSelector(parent: string): string {
       return [
         // Types are ambiently exported
         `${parent} > :matches(${[
@@ -692,7 +753,7 @@ export default createRule<Options, MessageIds>({
           AST_NODE_TYPES.TSEnumDeclaration,
           AST_NODE_TYPES.TSModuleDeclaration,
           AST_NODE_TYPES.VariableDeclaration,
-        ].join(', ')})${childDeclare ? '[declare = true]' : ''}`,
+        ].join(', ')})`,
       ].join(', ');
     }
     function markDeclarationChildAsUsed(node: DeclarationSelectorNode): void {
@@ -721,8 +782,8 @@ export default createRule<Options, MessageIds>({
 
       let scope = context.sourceCode.getScope(node);
       const shouldUseUpperScope = [
-        AST_NODE_TYPES.TSModuleDeclaration,
         AST_NODE_TYPES.TSDeclareFunction,
+        AST_NODE_TYPES.TSModuleDeclaration,
       ].includes(node.type);
 
       if (scope.variableScope !== scope) {
@@ -748,6 +809,40 @@ export default createRule<Options, MessageIds>({
     }
   },
 });
+
+function hasOverridingExportStatement(
+  body: TSESTree.ProgramStatement[],
+): boolean {
+  for (const statement of body) {
+    if (
+      (statement.type === AST_NODE_TYPES.ExportNamedDeclaration &&
+        statement.declaration == null) ||
+      statement.type === AST_NODE_TYPES.ExportAllDeclaration ||
+      statement.type === AST_NODE_TYPES.TSExportAssignment
+    ) {
+      return true;
+    }
+
+    if (
+      statement.type === AST_NODE_TYPES.ExportDefaultDeclaration &&
+      statement.declaration.type === AST_NODE_TYPES.Identifier
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function getStatementsOfNode(
+  block: ModuleDeclarationWithBody | TSESTree.Program,
+): TSESTree.ProgramStatement[] {
+  if (block.type === AST_NODE_TYPES.Program) {
+    return block.body;
+  }
+
+  return block.body.body;
+}
 
 /*
 

@@ -1,38 +1,50 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule, getStaticStringValue } from '../util';
 
-type Options = [
+export type Options = [
   {
     allow: string[];
   },
 ];
-type MessageIds = 'noVarReqs';
+export type MessageIds = 'noVarReqs';
 
 export default createRule<Options, MessageIds>({
   name: 'no-var-requires',
   meta: {
-    deprecated: true,
-    replacedBy: ['@typescript-eslint/no-require-imports'],
     type: 'problem',
+    deprecated: {
+      deprecatedSince: '8.0.0',
+      replacedBy: [
+        {
+          rule: {
+            name: '@typescript-eslint/no-require-imports',
+            url: 'https://typescript-eslint.io/rules/no-require-imports',
+          },
+        },
+      ],
+      url: 'https://github.com/typescript-eslint/typescript-eslint/pull/8334',
+    },
     docs: {
       description: 'Disallow `require` statements except in import statements',
     },
     messages: {
       noVarReqs: 'Require statement not part of import statement.',
     },
+    replacedBy: ['@typescript-eslint/no-require-imports'],
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allow: {
             type: 'array',
-            items: { type: 'string' },
             description: 'Patterns of import paths to allow requiring from.',
+            items: { type: 'string' },
           },
         },
-        additionalProperties: false,
       },
     ],
   },

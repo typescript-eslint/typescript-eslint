@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures special TSTypeParameter func-decl-const-modifier-multiple AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > special > TSTypeParameter > func-decl-const-modifier-multiple > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -21,14 +21,14 @@ exports[`AST Fixtures special TSTypeParameter func-decl-const-modifier-multiple 
             end: { column: 27, line: 1 },
           },
         },
--       declare: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'c',
--         optional: false,
+          optional: false,
 
           range: [9, 10],
           loc: {
@@ -42,8 +42,8 @@ exports[`AST Fixtures special TSTypeParameter func-decl-const-modifier-multiple 
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -56,8 +56,8 @@ exports[`AST Fixtures special TSTypeParameter func-decl-const-modifier-multiple 
 -                 end: { column: 12, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [11, 12],
               loc: {
@@ -68,7 +68,7 @@ exports[`AST Fixtures special TSTypeParameter func-decl-const-modifier-multiple 
             TSTypeParameter {
               type: 'TSTypeParameter',
               const: true,
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -81,8 +81,8 @@ exports[`AST Fixtures special TSTypeParameter func-decl-const-modifier-multiple 
 -                 end: { column: 21, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'U',
+              out: false,
 
               range: [14, 21],
               loc: {
@@ -113,5 +113,4 @@ exports[`AST Fixtures special TSTypeParameter func-decl-const-modifier-multiple 
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

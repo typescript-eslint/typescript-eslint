@@ -7,8 +7,8 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -264,8 +264,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 28,
           column: 20,
+          endColumn: 28,
           line: 4,
           messageId: 'mixed',
         },
@@ -281,8 +281,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 28,
           column: 20,
+          endColumn: 28,
           line: 4,
           messageId: 'mixed',
         },
@@ -298,8 +298,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 28,
           column: 20,
+          endColumn: 28,
           line: 5,
           messageId: 'mixed',
         },
@@ -314,8 +314,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 28,
           column: 20,
+          endColumn: 28,
           line: 4,
           messageId: 'mixed',
         },
@@ -331,8 +331,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 28,
           column: 20,
+          endColumn: 28,
           line: 5,
           messageId: 'mixed',
         },
@@ -348,8 +348,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 30,
           column: 20,
+          endColumn: 30,
           line: 5,
           messageId: 'mixed',
         },
@@ -365,8 +365,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 21,
           column: 20,
+          endColumn: 21,
           line: 5,
           messageId: 'mixed',
         },
@@ -385,8 +385,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 18,
           column: 15,
+          endColumn: 18,
           line: 8,
           messageId: 'mixed',
         },
@@ -405,8 +405,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 16,
           column: 15,
+          endColumn: 16,
           line: 8,
           messageId: 'mixed',
         },
@@ -423,8 +423,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 18,
           column: 15,
+          endColumn: 18,
           line: 6,
           messageId: 'mixed',
         },
@@ -441,8 +441,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 18,
           column: 15,
+          endColumn: 18,
           line: 6,
           messageId: 'mixed',
         },
@@ -459,8 +459,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 12,
           column: 11,
+          endColumn: 12,
           line: 6,
           messageId: 'mixed',
         },
@@ -477,8 +477,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 16,
           column: 15,
+          endColumn: 16,
           line: 6,
           messageId: 'mixed',
         },
@@ -498,14 +498,14 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 18,
           column: 15,
+          endColumn: 18,
           line: 6,
           messageId: 'mixed',
         },
         {
-          endColumn: 18,
           column: 15,
+          endColumn: 18,
           line: 9,
           messageId: 'mixed',
         },
@@ -525,8 +525,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 18,
           column: 15,
+          endColumn: 18,
           line: 6,
           messageId: 'mixed',
         },
@@ -546,8 +546,8 @@ namespace Different {
       `,
       errors: [
         {
-          endColumn: 18,
           column: 15,
+          endColumn: 18,
           line: 9,
           messageId: 'mixed',
         },
@@ -565,8 +565,8 @@ declare module './mixed-enums-decl' {
       `,
       errors: [
         {
-          endColumn: 16,
           column: 15,
+          endColumn: 16,
           line: 6,
           messageId: 'mixed',
         },
@@ -583,8 +583,8 @@ enum Foo {
       `,
       errors: [
         {
-          endColumn: 10,
           column: 7,
+          endColumn: 10,
           line: 6,
           messageId: 'mixed',
         },
@@ -605,8 +605,8 @@ namespace Test {
       `,
       errors: [
         {
-          endColumn: 12,
           column: 9,
+          endColumn: 12,
           line: 9,
           messageId: 'mixed',
         },
@@ -627,8 +627,8 @@ namespace Test {
       `,
       errors: [
         {
-          endColumn: 12,
           column: 9,
+          endColumn: 12,
           line: 9,
           messageId: 'mixed',
         },
@@ -653,8 +653,8 @@ namespace Outer {
       `,
       errors: [
         {
-          endColumn: 14,
           column: 11,
+          endColumn: 14,
           line: 12,
           messageId: 'mixed',
         },

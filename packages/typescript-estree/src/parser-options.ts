@@ -3,18 +3,23 @@ import type {
   DebugLevel,
   JSDocParsingMode,
   ProjectServiceOptions,
+  SourceType,
 } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
-
-export { ProjectServiceOptions } from '@typescript-eslint/types';
 
 //////////////////////////////////////////////////////////
 // MAKE SURE THIS IS KEPT IN SYNC WITH THE WEBSITE DOCS //
 //////////////////////////////////////////////////////////
 
 interface ParseOptions {
+  /**
+   * Specify the `sourceType`.
+   * For more details, see https://github.com/typescript-eslint/typescript-eslint/pull/9121
+   */
+  sourceType?: SourceType;
+
   /**
    * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
    * This case only usually occurs when attempting to lint invalid code.
@@ -84,7 +89,7 @@ interface ParseOptions {
    * When value is `false`, no logging will occur.
    * When value is not provided, `console.log()` will be used.
    */
-  loggerFn?: false | ((message: string) => void);
+  loggerFn?: ((message: string) => void) | false;
 
   /**
    * Controls whether the `range` property is included on AST nodes.
@@ -183,7 +188,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * Note that {@link projectService} is now preferred.
    */
-  project?: string[] | string | boolean | null;
+  project?: boolean | string | string[] | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -233,6 +238,7 @@ export interface ParserWeakMapESTreeToTSNode<
 export interface ParserServicesBase {
   emitDecoratorMetadata: boolean | undefined;
   experimentalDecorators: boolean | undefined;
+  isolatedDeclarations: boolean | undefined;
 }
 export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
@@ -241,9 +247,9 @@ export interface ParserServicesNodeMaps {
 export interface ParserServicesWithTypeInformation
   extends ParserServicesNodeMaps,
     ParserServicesBase {
-  program: ts.Program;
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
   getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
+  program: ts.Program;
 }
 export interface ParserServicesWithoutTypeInformation
   extends ParserServicesNodeMaps,

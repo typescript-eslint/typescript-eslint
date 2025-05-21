@@ -3,13 +3,16 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
+
 import { TYPE } from './base-config';
 import { es2015_iterable } from './es2015.iterable';
 
-export const es2015_generator = {
-  ...es2015_iterable,
-  Generator: TYPE,
-  GeneratorFunction: TYPE,
-  GeneratorFunctionConstructor: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const es2015_generator: LibDefinition = {
+  libs: [es2015_iterable],
+  variables: [
+    ['Generator', TYPE],
+    ['GeneratorFunction', TYPE],
+    ['GeneratorFunctionConstructor', TYPE],
+  ],
+};

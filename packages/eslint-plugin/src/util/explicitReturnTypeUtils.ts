@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import {
   AST_NODE_TYPES,
   ASTUtils,
@@ -8,10 +9,10 @@ import {
 import { isConstructor, isSetter, isTypeAssertion } from './astUtils';
 import { getFunctionHeadLoc } from './getFunctionHeadLoc';
 
-type FunctionExpression =
+export type FunctionExpression =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionExpression;
-type FunctionNode = FunctionExpression | TSESTree.FunctionDeclaration;
+export type FunctionNode = FunctionExpression | TSESTree.FunctionDeclaration;
 
 export interface FunctionInfo<T extends FunctionNode> {
   node: T;
@@ -152,7 +153,7 @@ function isPropertyOfObjectWithType(
  * function fn() { return function() { ... } }
  * ```
  */
-function doesImmediatelyReturnFunctionExpression({
+export function doesImmediatelyReturnFunctionExpression({
   node,
   returns,
 }: FunctionInfo<FunctionNode>): boolean {
@@ -175,15 +176,12 @@ function doesImmediatelyReturnFunctionExpression({
 /**
  * Checks if a function belongs to:
  * ```
- * () => ({ action: 'xxx' } as const)
+ * ({ action: 'xxx' } as const)
  * ```
  */
-function returnsConstAssertionDirectly(
-  node: TSESTree.ArrowFunctionExpression,
-): boolean {
-  const { body } = node;
-  if (isTypeAssertion(body)) {
-    const { typeAnnotation } = body;
+function isConstAssertion(node: TSESTree.Node): boolean {
+  if (isTypeAssertion(node)) {
+    const { typeAnnotation } = node;
     if (typeAnnotation.type === AST_NODE_TYPES.TSTypeReference) {
       const { typeName } = typeAnnotation;
       if (
@@ -199,16 +197,16 @@ function returnsConstAssertionDirectly(
 }
 
 interface Options {
-  allowExpressions?: boolean;
-  allowTypedFunctionExpressions?: boolean;
-  allowHigherOrderFunctions?: boolean;
   allowDirectConstAssertionInArrowFunctions?: boolean;
+  allowExpressions?: boolean;
+  allowHigherOrderFunctions?: boolean;
+  allowTypedFunctionExpressions?: boolean;
 }
 
 /**
  * True when the provided function expression is typed.
  */
-function isTypedFunctionExpression(
+export function isTypedFunctionExpression(
   node: FunctionExpression,
   options: Options,
 ): boolean {
@@ -232,7 +230,7 @@ function isTypedFunctionExpression(
  * Check whether the function expression return type is either typed or valid
  * with the provided options.
  */
-function isValidFunctionExpressionReturnType(
+export function isValidFunctionExpressionReturnType(
   node: FunctionExpression,
   options: Options,
 ): boolean {
@@ -255,11 +253,19 @@ function isValidFunctionExpressionReturnType(
   }
 
   // https://github.com/typescript-eslint/typescript-eslint/issues/653
-  return (
-    options.allowDirectConstAssertionInArrowFunctions === true &&
-    node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-    returnsConstAssertionDirectly(node)
-  );
+  if (
+    !options.allowDirectConstAssertionInArrowFunctions ||
+    node.type !== AST_NODE_TYPES.ArrowFunctionExpression
+  ) {
+    return false;
+  }
+
+  let body = node.body;
+  while (body.type === AST_NODE_TYPES.TSSatisfiesExpression) {
+    body = body.expression;
+  }
+
+  return isConstAssertion(body);
 }
 
 /**
@@ -286,7 +292,7 @@ function isValidFunctionReturnType(
 /**
  * Checks if a function declaration/expression has a return type.
  */
-function checkFunctionReturnType(
+export function checkFunctionReturnType(
   { node, returns }: FunctionInfo<FunctionNode>,
   options: Options,
   sourceCode: TSESLint.SourceCode,
@@ -302,7 +308,7 @@ function checkFunctionReturnType(
 /**
  * Checks if a function declaration/expression has a return type.
  */
-function checkFunctionExpressionReturnType(
+export function checkFunctionExpressionReturnType(
   info: FunctionInfo<FunctionExpression>,
   options: Options,
   sourceCode: TSESLint.SourceCode,
@@ -318,7 +324,7 @@ function checkFunctionExpressionReturnType(
 /**
  * Check whether any ancestor of the provided function has a valid return type.
  */
-function ancestorHasReturnType(node: FunctionNode): boolean {
+export function ancestorHasReturnType(node: FunctionNode): boolean {
   let ancestor: TSESTree.Node | undefined = node.parent;
 
   if (ancestor.type === AST_NODE_TYPES.Property) {
@@ -360,14 +366,3 @@ function ancestorHasReturnType(node: FunctionNode): boolean {
 
   return false;
 }
-
-export {
-  checkFunctionExpressionReturnType,
-  checkFunctionReturnType,
-  doesImmediatelyReturnFunctionExpression,
-  FunctionExpression,
-  FunctionNode,
-  isTypedFunctionExpression,
-  isValidFunctionExpressionReturnType,
-  ancestorHasReturnType,
-};

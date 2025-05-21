@@ -1,17 +1,16 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-factory-static-member Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
             decorators: [
               Decorator {
                 type: "Decorator",
@@ -32,7 +31,9 @@ Program {
                   ],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "configurable",
+                    optional: false,
 
                     range: [86, 98],
                     loc: {
@@ -56,9 +57,12 @@ Program {
                 },
               },
             ],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "prop1",
+              optional: false,
 
               range: [112, 117],
               loc: {
@@ -66,6 +70,9 @@ Program {
                 end: { column: 34, line: 4 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: true,
             value: null,
 
@@ -78,6 +85,7 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
             decorators: [
               Decorator {
                 type: "Decorator",
@@ -98,7 +106,9 @@ Program {
                   ],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "configurable",
+                    optional: false,
 
                     range: [123, 135],
                     loc: {
@@ -122,9 +132,12 @@ Program {
                 },
               },
             ],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "prop2",
+              optional: false,
 
               range: [152, 157],
               loc: {
@@ -132,6 +145,9 @@ Program {
                 end: { column: 14, line: 7 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: true,
             value: null,
 
@@ -149,9 +165,13 @@ Program {
           end: { column: 1, line: 8 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "A",
+        optional: false,
 
         range: [79, 80],
         loc: {
@@ -159,6 +179,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 160],
@@ -176,4 +197,3 @@ Program {
     end: { column: 0, line: 9 },
   },
 }
-`;

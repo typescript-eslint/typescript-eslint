@@ -1,6 +1,7 @@
 ---
 id: general
 title: General
+pagination_next: troubleshooting/faqs/eslint
 ---
 
 import Tabs from '@theme/Tabs';
@@ -14,7 +15,7 @@ First make sure you've read the docs and understand ESLint configuration files:
 - [Checkout ESLint's documentation on configuring rules](https://eslint.org/docs/latest/use/configure/rules) to ensure you understand how to configure rules.
 
 Our [rule docs](/rules) detail the options each rule supports under the "Options" heading.
-We use TypeScript types to describe an `Options` tuple type for the rule which you can use to configure the a rule.
+We use TypeScript types to describe an `Options` tuple type for the rule which you can use to configure the rule.
 In your config file the keys of the `rules` object are the names of the rules you wish to configure and the values follow the following form:
 
 ```ts
@@ -73,34 +74,118 @@ This generic rule allows you to specify a [selector](https://eslint.org/docs/dev
 
 You can use an AST visualization tool such as [typescript-eslint playground](/play#showAST=es) > _Options_ > _AST Explorer_ on its left sidebar by selecting _ESTree_ to help in figuring out the structure of the AST that you want to ban.
 
-For example, you can ban enums (or some variation of) using one of the following configs:
+<details>
+<summary>Banning confusing property uses</summary>
 
 ```jsonc
 {
   "rules": {
     "no-restricted-syntax": [
       "error",
-      // ban all enums
+
+      // Ban accessing `constructor.name`:
       {
-        "selector": "TSEnumDeclaration",
-        "message": "My reason for not using any enums at all",
+        "selector": "MemberExpression[object.property.name='constructor'][property.name='name']",
+        "message": "'constructor.name' is not reliable after code minifier usage.",
       },
 
-      // ban just const enums
+      // Ban get and set accessors:
       {
-        "selector": "TSEnumDeclaration[const=true]",
-        "message": "My reason for not using const enums",
-      },
-
-      // ban just non-const enums
-      {
-        "selector": "TSEnumDeclaration:not([const=true])",
-        "message": "My reason for not using non-const enums",
+        "selector": "Property:matches([kind = \"get\"], [kind = \"set\"]), MethodDefinition:matches([kind = \"get\"], [kind = \"set\"])",
+        "message": "Don't use get and set accessors.",
       },
     ],
   },
 }
 ```
+
+</details>
+
+<details>
+<summary>Banning specific uses of class properties</summary>
+
+```jsonc
+{
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+
+      // Ban `private` members:
+      {
+        "selector": ":matches(PropertyDefinition, MethodDefinition)[accessibility=\"private\"]",
+        "message": "Use `#private` members instead.",
+      },
+
+      // Ban `#private` members:
+      {
+        "selector": ":matches(PropertyDefinition, MethodDefinition) > PrivateIdentifier.key",
+        "message": "Use the `private` modifier instead.",
+      },
+
+      // Ban static `this`:
+      {
+        "selector": "MethodDefinition[static = true] ThisExpression",
+        "message": "Prefer using the class's name directly.",
+      },
+    ],
+  },
+}
+```
+
+</details>
+
+<details>
+<summary>Banning specific uses of TypeScript enums</summary>
+
+```jsonc
+{
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+
+      // Ban all enums:
+      {
+        "selector": "TSEnumDeclaration",
+        "message": "My reason for not using any enums at all.",
+      },
+
+      // Ban just `const` enums:
+      {
+        "selector": "TSEnumDeclaration[const=true]",
+        "message": "My reason for not using const enums.",
+      },
+
+      // Ban just non-`const` enums:
+      {
+        "selector": "TSEnumDeclaration:not([const=true])",
+        "message": "My reason for not using non-const enums.",
+      },
+    ],
+  },
+}
+```
+
+</details>
+
+<details>
+<summary>Banning specific uses of TypeScript tuples</summary>
+
+```jsonc
+{
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+      // enforce tuple members have labels
+      {
+        "selector": "TSTupleType > :not(TSNamedTupleMember)",
+        "message": "All tuples should have labels.",
+      },
+    ],
+  },
+}
+```
+
+</details>
 
 ## How do I check to see what versions are installed?
 
@@ -154,18 +239,22 @@ For example, the following config enables only the recommended config's type-che
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
+{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(...tseslint.configs.recommendedTypeCheckedOnly, {
-  languageOptions: {
-    parserOptions: {
-      project: true,
-      tsconfigRootDir: import.meta.dirname,
+export default tseslint.config(
+  tseslint.configs.recommendedTypeCheckedOnly,
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
   },
-});
+);
 ```
 
 </TabItem>
@@ -175,7 +264,7 @@ export default tseslint.config(...tseslint.configs.recommendedTypeCheckedOnly, {
 module.exports = {
   extends: ['plugin:@typescript-eslint/recommended-type-checked-only'],
   parserOptions: {
-    project: true,
+    projectService: true,
     tsconfigRootDir: __dirname,
   },
   root: true,
@@ -192,7 +281,7 @@ For example, [oxlint's Integration > ESLint documentation](https://oxc.rs/docs/g
 If you're seeing this warning, it's likely you're using an ESLint plugin (or other tooling) that hasn't been updated for typescript-eslint v6.
 Make sure you're using the latest versions of each of your ESLint plugins (and other tooling).
 
-If you've using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try either or both of:
+If you're using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try either or both of:
 
 - Running with [`--trace-deprecation`](https://nodejs.org/api/cli.html#--trace-deprecation) (e.g. `npx cross-env NODE_OPTIONS=--trace-deprecation npm run lint`)
 - Disabling half of them at a time to narrow down which plugin it is

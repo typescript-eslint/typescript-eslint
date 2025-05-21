@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-namespace, no-restricted-syntax */
 
 import { SourceCode as ESLintSourceCode } from 'eslint';
 
@@ -184,7 +184,7 @@ declare class TokenStore {
    */
   getTokensAfter<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: T | number,
+    options?: number | T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets the `count` tokens that precedes a given node or token.
@@ -193,7 +193,7 @@ declare class TokenStore {
    */
   getTokensBefore<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: T | number,
+    options?: number | T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets all of the tokens between two non-overlapping nodes.
@@ -205,7 +205,7 @@ declare class TokenStore {
   getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
     left: TSESTree.Node | TSESTree.Token,
     right: TSESTree.Node | TSESTree.Token,
-    options?: T | number,
+    options?: number | T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
 }
 
@@ -415,8 +415,8 @@ namespace SourceCode {
       >;
 
   export type CursorWithSkipOptions =
-    | FilterPredicate
     | number
+    | FilterPredicate
     | {
         /**
          * The predicate function to choose tokens.
@@ -433,9 +433,13 @@ namespace SourceCode {
       };
 
   export type CursorWithCountOptions =
-    | FilterPredicate
     | number
+    | FilterPredicate
     | {
+        /**
+         * The maximum count of tokens the cursor iterates.
+         */
+        count?: number;
         /**
          * The predicate function to choose tokens.
          */
@@ -444,10 +448,6 @@ namespace SourceCode {
          * The flag to iterate comments as well.
          */
         includeComments?: boolean;
-        /**
-         * The maximum count of tokens the cursor iterates.
-         */
-        count?: number;
       };
 }
 

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`vue-sfc eslint should work successfully 1`] = `
+exports[`vue-sfc > eslint > should work successfully 1`] = `
 [
   {
     "errorCount": 1,
@@ -60,7 +60,29 @@ export default Vue.extend({
     "suppressedMessages": [],
     "usedDeprecatedRules": [
       {
-        "replacedBy": [],
+        "info": {
+          "availableUntil": "10.0.0",
+          "deprecatedSince": "8.53.0",
+          "message": "Formatting rules are being moved out of ESLint core.",
+          "replacedBy": [
+            {
+              "message": "ESLint Stylistic now maintains deprecated stylistic core rules.",
+              "plugin": {
+                "name": "@stylistic/eslint-plugin-js",
+                "url": "https://eslint.style/packages/js",
+              },
+              "rule": {
+                "name": "semi-spacing",
+                "url": "https://eslint.style/rules/js/semi-spacing",
+              },
+              "url": "https://eslint.style/guide/migration",
+            },
+          ],
+          "url": "https://eslint.org/blog/2023/10/deprecating-formatting-rules/",
+        },
+        "replacedBy": [
+          "@stylistic/js/semi-spacing",
+        ],
         "ruleId": "semi-spacing",
       },
     ],
@@ -100,7 +122,29 @@ export default class Utility {
     "suppressedMessages": [],
     "usedDeprecatedRules": [
       {
-        "replacedBy": [],
+        "info": {
+          "availableUntil": "10.0.0",
+          "deprecatedSince": "8.53.0",
+          "message": "Formatting rules are being moved out of ESLint core.",
+          "replacedBy": [
+            {
+              "message": "ESLint Stylistic now maintains deprecated stylistic core rules.",
+              "plugin": {
+                "name": "@stylistic/eslint-plugin-js",
+                "url": "https://eslint.style/packages/js",
+              },
+              "rule": {
+                "name": "semi-spacing",
+                "url": "https://eslint.style/rules/js/semi-spacing",
+              },
+              "url": "https://eslint.style/guide/migration",
+            },
+          ],
+          "url": "https://eslint.org/blog/2023/10/deprecating-formatting-rules/",
+        },
+        "replacedBy": [
+          "@stylistic/js/semi-spacing",
+        ],
         "ruleId": "semi-spacing",
       },
     ],
@@ -157,7 +201,29 @@ export default Vue.extend({
     "suppressedMessages": [],
     "usedDeprecatedRules": [
       {
-        "replacedBy": [],
+        "info": {
+          "availableUntil": "10.0.0",
+          "deprecatedSince": "8.53.0",
+          "message": "Formatting rules are being moved out of ESLint core.",
+          "replacedBy": [
+            {
+              "message": "ESLint Stylistic now maintains deprecated stylistic core rules.",
+              "plugin": {
+                "name": "@stylistic/eslint-plugin-js",
+                "url": "https://eslint.style/packages/js",
+              },
+              "rule": {
+                "name": "semi-spacing",
+                "url": "https://eslint.style/rules/js/semi-spacing",
+              },
+              "url": "https://eslint.style/guide/migration",
+            },
+          ],
+          "url": "https://eslint.org/blog/2023/10/deprecating-formatting-rules/",
+        },
+        "replacedBy": [
+          "@stylistic/js/semi-spacing",
+        ],
         "ruleId": "semi-spacing",
       },
     ],

@@ -2,10 +2,9 @@
 // https://developer.github.com/v3/repos/#list-contributors
 // this endpoint returns a list of contributors sorted by number of contributions
 
+import fetch from 'cross-fetch';
 import fs from 'node:fs';
 import path from 'node:path';
-
-import fetch from 'cross-fetch';
 
 import { REPO_ROOT } from './paths.mts';
 
@@ -18,66 +17,84 @@ const IGNORED_USERS = new Set([
 
 const COMPLETELY_ARBITRARY_CONTRIBUTION_COUNT = 3;
 const PAGE_LIMIT = 100;
+// arbitrary limit -- this means we can only fetch 10*100=1000 contributors but it means we don't ever loop forever
+const MATCH_PAGE_NUMBER = 10;
 const contributorsApiUrl = `https://api.github.com/repos/typescript-eslint/typescript-eslint/contributors?per_page=${PAGE_LIMIT}`;
 
 interface Contributor {
-  contributions: number;
-  type: string;
-  login?: string;
-  url?: string;
   avatar_url?: string;
+  contributions: number;
   html_url?: string;
+  login?: string;
+  type: string;
+  url?: string;
 }
 interface User {
-  login: string;
-  name: string;
   avatar_url: string;
   html_url: string;
+  login: string;
+  name: string;
 }
 
-async function getData<T>(url: string | undefined): Promise<T | null> {
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters -- intentional 'unsafe' single generic in return type
+async function getData<T>(
+  url: string,
+): Promise<{ body: T; linkHeader: string | null }>;
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters -- intentional 'unsafe' single generic in return type
+async function getData<T>(
+  url: string | undefined,
+): Promise<{ body: T; linkHeader: string | null } | null>;
+async function getData<T>(
+  url: string | undefined,
+): Promise<{ body: T; linkHeader: string | null } | null> {
   if (url == null) {
     return null;
   }
 
   const response = await fetch(url, {
-    method: 'GET',
     headers: {
       Accept: 'application/vnd.github.v3+json',
-      // Authorization: 'token ghp_*', // if needed, replace this with your token
+      // Authorization: 'token ghp_xxxx', // if needed, replace this with your token
     },
+    method: 'GET',
   });
 
-  return (await response.json()) as Promise<T>;
+  const linkHeader = response.headers.get('link');
+
+  return {
+    body: (await response.json()) as T,
+    linkHeader,
+  };
 }
 
 async function* fetchUsers(page = 1): AsyncIterableIterator<Contributor[]> {
-  let lastLength = 0;
-  do {
+  while (page <= MATCH_PAGE_NUMBER) {
+    console.log(`Fetching page ${page} of contributors...`);
     const contributors = await getData<Contributor[] | { message: string }>(
       `${contributorsApiUrl}&page=${page}`,
     );
 
-    if (!Array.isArray(contributors)) {
-      throw new Error(contributors?.message ?? 'An error occurred');
+    if (!Array.isArray(contributors.body)) {
+      throw new Error(contributors.body.message);
     }
 
-    const thresholdedContributors = contributors.filter(
+    const thresholdedContributors = contributors.body.filter(
       user => user.contributions >= COMPLETELY_ARBITRARY_CONTRIBUTION_COUNT,
     );
     yield thresholdedContributors;
 
-    lastLength = thresholdedContributors.length;
-  } while (
-    /*
-      If the filtered list wasn't 100 long, that means that either:
-      - there wasn't 100 users in the page, or
-      - there wasn't 100 users with > threshold commits in the page.
+    if (
+      // https://docs.github.com/en/rest/using-the-rest-api/using-pagination-in-the-rest-api?apiVersion=2022-11-28#using-link-headers
+      // > The URL for the next page is followed by rel="next".
+      // > the link to the last page won't be included if it can't be calculated.
+      // i.e. if there's no "next" link then there's no next page and we're at the end
+      !contributors.linkHeader?.includes('rel="next"')
+    ) {
+      break;
+    }
 
-      In either case, it means that there's no need to fetch any more pages
-    */
-    lastLength === PAGE_LIMIT
-  );
+    page += 1;
+  }
 }
 
 function writeTable(contributors: User[], perLine = 5): void {
@@ -137,39 +154,33 @@ function writeTable(contributors: User[], perLine = 5): void {
   fs.writeFileSync(path.join(REPO_ROOT, 'CONTRIBUTORS.md'), lines.join('\n'));
 }
 
-async function main(): Promise<void> {
-  const githubContributors: Contributor[] = [];
+const githubContributors: Contributor[] = [];
 
-  // fetch all of the contributor info
-  for await (const lastUsers of fetchUsers()) {
-    githubContributors.push(...lastUsers);
-  }
-
-  // fetch the user info
-  const users = await Promise.allSettled(
-    githubContributors
-      // remove ignored users and bots
-      .filter(
-        usr => usr.login && usr.type !== 'Bot' && !IGNORED_USERS.has(usr.login),
-      )
-      // fetch the in-depth information for each user
-      .map(c => getData<User>(c.url)),
-  );
-
-  writeTable(
-    users
-      .map(result => {
-        if (result.status === 'fulfilled') {
-          return result.value;
-        }
-        return null;
-      })
-      .filter((c): c is User => c?.login != null),
-    5,
-  );
+// fetch all of the contributor info
+for await (const lastUsers of fetchUsers()) {
+  githubContributors.push(...lastUsers);
 }
 
-main().catch((error: unknown) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+// fetch the user info
+console.log(`Fetching user information...`);
+const users = await Promise.allSettled(
+  githubContributors
+    // remove ignored users and bots
+    .filter(
+      usr => usr.login && usr.type !== 'Bot' && !IGNORED_USERS.has(usr.login),
+    )
+    // fetch the in-depth information for each user
+    .map(c => getData<User>(c.url)),
+);
+
+writeTable(
+  users
+    .map(result => {
+      if (result.status === 'fulfilled') {
+        return result.value?.body;
+      }
+      return null;
+    })
+    .filter((c): c is User => c?.login != null),
+  5,
+);

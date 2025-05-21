@@ -77,14 +77,14 @@ function foo(x: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeMemberExpression',
-          line: 3,
           column: 5,
-          endColumn: 6,
           data: {
-            type: '`any`',
             property: '.a',
+            type: '`any`',
           },
+          endColumn: 6,
+          line: 3,
+          messageId: 'unsafeMemberExpression',
         },
       ],
     },
@@ -96,14 +96,14 @@ function foo(x: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeMemberExpression',
-          line: 3,
           column: 5,
-          endColumn: 6,
           data: {
-            type: '`any`',
             property: '.a',
+            type: '`any`',
           },
+          endColumn: 6,
+          line: 3,
+          messageId: 'unsafeMemberExpression',
         },
       ],
     },
@@ -115,14 +115,14 @@ function foo(x: { a: any }) {
       `,
       errors: [
         {
-          messageId: 'unsafeMemberExpression',
-          line: 3,
           column: 7,
-          endColumn: 8,
           data: {
-            type: '`any`',
             property: '.b',
+            type: '`any`',
           },
+          endColumn: 8,
+          line: 3,
+          messageId: 'unsafeMemberExpression',
         },
       ],
     },
@@ -134,14 +134,14 @@ function foo(x: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeMemberExpression',
-          line: 3,
           column: 5,
-          endColumn: 8,
           data: {
-            type: '`any`',
             property: "['a']",
+            type: '`any`',
           },
+          endColumn: 8,
+          line: 3,
+          messageId: 'unsafeMemberExpression',
         },
       ],
     },
@@ -153,14 +153,14 @@ function foo(x: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeMemberExpression',
-          line: 3,
           column: 5,
-          endColumn: 8,
           data: {
-            type: '`any`',
             property: "['a']",
+            type: '`any`',
           },
+          endColumn: 8,
+          line: 3,
+          messageId: 'unsafeMemberExpression',
         },
       ],
     },
@@ -172,14 +172,14 @@ value.property;
       `,
       errors: [
         {
-          messageId: 'unsafeMemberExpression',
-          line: 4,
           column: 7,
-          endColumn: 15,
           data: {
-            type: '`error` typed',
             property: '.property',
+            type: '`error` typed',
           },
+          endColumn: 15,
+          line: 4,
+          messageId: 'unsafeMemberExpression',
         },
       ],
     },
@@ -191,14 +191,14 @@ function foo(x: { a: number }, y: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeComputedMemberAccess',
-          line: 3,
           column: 5,
-          endColumn: 6,
           data: {
             property: '[y]',
             type: '`any`',
           },
+          endColumn: 6,
+          line: 3,
+          messageId: 'unsafeComputedMemberAccess',
         },
       ],
     },
@@ -210,14 +210,14 @@ function foo(x?: { a: number }, y: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeComputedMemberAccess',
-          line: 3,
           column: 7,
-          endColumn: 8,
           data: {
             property: '[y]',
             type: '`any`',
           },
+          endColumn: 8,
+          line: 3,
+          messageId: 'unsafeComputedMemberAccess',
         },
       ],
     },
@@ -229,14 +229,14 @@ function foo(x: { a: number }, y: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeComputedMemberAccess',
-          line: 3,
           column: 6,
-          endColumn: 12,
           data: {
             property: '[y += 1]',
             type: '`any`',
           },
+          endColumn: 12,
+          line: 3,
+          messageId: 'unsafeComputedMemberAccess',
         },
       ],
     },
@@ -248,14 +248,14 @@ function foo(x: { a: number }, y: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeComputedMemberAccess',
-          line: 3,
           column: 5,
-          endColumn: 13,
           data: {
             property: '[1 as any]',
             type: '`any`',
           },
+          endColumn: 13,
+          line: 3,
+          messageId: 'unsafeComputedMemberAccess',
         },
       ],
     },
@@ -267,14 +267,14 @@ function foo(x: { a: number }, y: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeComputedMemberAccess',
-          line: 3,
           column: 5,
-          endColumn: 8,
           data: {
             property: '[y()]',
             type: '`any`',
           },
+          endColumn: 8,
+          line: 3,
+          messageId: 'unsafeComputedMemberAccess',
         },
       ],
     },
@@ -286,14 +286,14 @@ function foo(x: string[], y: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeComputedMemberAccess',
-          line: 3,
           column: 5,
-          endColumn: 6,
           data: {
             property: '[y]',
             type: '`any`',
           },
+          endColumn: 6,
+          line: 3,
+          messageId: 'unsafeComputedMemberAccess',
         },
       ],
     },
@@ -305,14 +305,14 @@ function foo(x: { a: number }, y: NotKnown) {
       `,
       errors: [
         {
-          messageId: 'unsafeComputedMemberAccess',
-          line: 3,
           column: 5,
-          endColumn: 6,
           data: {
             property: '[y]',
             type: '`error` typed',
           },
+          endColumn: 6,
+          line: 3,
+          messageId: 'unsafeComputedMemberAccess',
         },
       ],
     },
@@ -337,22 +337,22 @@ const methods = {
       `,
       errors: [
         {
-          messageId: 'unsafeThisMemberExpression',
-          line: 4,
           column: 17,
           endColumn: 24,
+          line: 4,
+          messageId: 'unsafeThisMemberExpression',
         },
         {
-          messageId: 'unsafeThisMemberExpression',
-          line: 8,
           column: 17,
           endColumn: 30,
+          line: 8,
+          messageId: 'unsafeThisMemberExpression',
         },
         {
-          messageId: 'unsafeThisMemberExpression',
-          line: 14,
           column: 19,
           endColumn: 26,
+          line: 14,
+          messageId: 'unsafeThisMemberExpression',
         },
       ],
     },
@@ -369,16 +369,16 @@ class C {
       `,
       errors: [
         {
-          messageId: 'unsafeMemberExpression',
-          line: 5,
           column: 18,
           endColumn: 22,
+          line: 5,
+          messageId: 'unsafeMemberExpression',
         },
         {
-          messageId: 'unsafeMemberExpression',
-          line: 5,
           column: 25,
           endColumn: 34,
+          line: 5,
+          messageId: 'unsafeMemberExpression',
         },
       ],
     },

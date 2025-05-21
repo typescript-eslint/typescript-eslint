@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -11,30 +12,30 @@ import {
 } from '../util';
 
 const FUNCTION_CONSTRUCTOR = 'Function';
-const GLOBAL_CANDIDATES = new Set(['global', 'window', 'globalThis']);
-const EVAL_LIKE_METHODS = new Set([
+const GLOBAL_CANDIDATES = new Set(['global', 'globalThis', 'window']);
+const EVAL_LIKE_FUNCTIONS = new Set([
+  'execScript',
   'setImmediate',
   'setInterval',
   'setTimeout',
-  'execScript',
 ]);
 
 export default createRule({
   name: 'no-implied-eval',
   meta: {
+    type: 'suggestion',
     docs: {
-      description: 'Disallow the use of `eval()`-like methods',
-      recommended: 'recommended',
+      description: 'Disallow the use of `eval()`-like functions',
       extendsBaseRule: true,
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
-      noImpliedEvalError: 'Implied eval. Consider passing a function.',
       noFunctionConstructor:
         'Implied eval. Do not use the Function constructor to create functions.',
+      noImpliedEvalError: 'Implied eval. Consider passing a function.',
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -147,7 +148,7 @@ export default createRule({
 
       const [handler] = node.arguments;
       if (
-        EVAL_LIKE_METHODS.has(calleeName) &&
+        EVAL_LIKE_FUNCTIONS.has(calleeName) &&
         !isFunction(handler) &&
         isReferenceToGlobalFunction(calleeName, node, context.sourceCode)
       ) {
@@ -156,8 +157,8 @@ export default createRule({
     }
 
     return {
-      NewExpression: checkImpliedEval,
       CallExpression: checkImpliedEval,
+      NewExpression: checkImpliedEval,
     };
   },
 });

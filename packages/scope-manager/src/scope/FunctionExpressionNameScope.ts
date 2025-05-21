@@ -1,17 +1,19 @@
 import type { TSESTree } from '@typescript-eslint/types';
 
-import { FunctionNameDefinition } from '../definition';
 import type { ScopeManager } from '../ScopeManager';
 import type { Scope } from './Scope';
+
+import { FunctionNameDefinition } from '../definition';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class FunctionExpressionNameScope extends ScopeBase<
+export class FunctionExpressionNameScope extends ScopeBase<
   ScopeType.functionExpressionName,
   TSESTree.FunctionExpression,
   Scope
 > {
-  public readonly functionExpressionScope: true;
+  public override readonly functionExpressionScope: true;
+
   constructor(
     scopeManager: ScopeManager,
     upperScope: FunctionExpressionNameScope['upper'],
@@ -33,5 +35,3 @@ class FunctionExpressionNameScope extends ScopeBase<
     this.functionExpressionScope = true;
   }
 }
-
-export { FunctionExpressionNameScope };

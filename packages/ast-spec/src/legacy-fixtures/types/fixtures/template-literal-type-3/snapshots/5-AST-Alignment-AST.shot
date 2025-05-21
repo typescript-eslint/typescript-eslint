@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > template-literal-type-3 > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,12 +10,12 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Color',
--         optional: false,
+          optional: false,
 
           range: [78, 83],
           loc: {
@@ -30,7 +30,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
               type: 'TSLiteralType',
               literal: Literal {
                 type: 'Literal',
-                raw: '\\'red\\'',
+                raw: '\'red\'',
                 value: 'red',
 
                 range: [86, 91],
@@ -50,7 +50,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
               type: 'TSLiteralType',
               literal: Literal {
                 type: 'Literal',
-                raw: '\\'blue\\'',
+                raw: '\'blue\'',
                 value: 'blue',
 
                 range: [94, 100],
@@ -83,12 +83,12 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Quantity',
--         optional: false,
+          optional: false,
 
           range: [107, 115],
           loc: {
@@ -103,7 +103,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
               type: 'TSLiteralType',
               literal: Literal {
                 type: 'Literal',
-                raw: '\\'one\\'',
+                raw: '\'one\'',
                 value: 'one',
 
                 range: [118, 123],
@@ -123,7 +123,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
               type: 'TSLiteralType',
               literal: Literal {
                 type: 'Literal',
-                raw: '\\'two\\'',
+                raw: '\'two\'',
                 value: 'two',
 
                 range: [126, 131],
@@ -156,12 +156,12 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'SeussFish',
--         optional: false,
+          optional: false,
 
           range: [138, 147],
           loc: {
@@ -179,7 +179,22 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
 -               'cooked': '',
 -               'raw': '',
 -             },
--
++       typeAnnotation: TSLiteralType {
++         type: 'TSLiteralType',
++         literal: TemplateLiteral {
++           type: 'TemplateLiteral',
++           expressions: Array [
++             TSUnionType {
++               type: 'TSUnionType',
++               types: Array [
++                 TSTypeReference {
++                   type: 'TSTypeReference',
++                   typeName: Identifier {
++                     type: 'Identifier',
++                     decorators: Array [],
++                     name: 'Quantity',
++                     optional: false,
+
 -             range: [150, 153],
 -             loc: {
 -               start: { column: 17, line: 5 },
@@ -193,20 +208,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
 -               'cooked': ' fish',
 -               'raw': ' fish',
 -             },
-+       typeAnnotation: TSLiteralType {
-+         type: 'TSLiteralType',
-+         literal: TemplateLiteral {
-+           type: 'TemplateLiteral',
-+           expressions: Array [
-+             TSUnionType {
-+               type: 'TSUnionType',
-+               types: Array [
-+                 TSTypeReference {
-+                   type: 'TSTypeReference',
-+                   typeName: Identifier {
-+                     type: 'Identifier',
-+                     name: 'Quantity',
-
+-
 -             range: [169, 176],
 -             loc: {
 -               start: { column: 36, line: 5 },
@@ -242,7 +244,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
 +                   type: 'TSTypeReference',
 +                   typeName: Identifier {
 +                     type: 'Identifier',
++                     decorators: Array [],
 +                     name: 'Color',
++                     optional: false,
 
 -                 range: [153, 161],
 -                 loc: {
@@ -349,5 +353,4 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

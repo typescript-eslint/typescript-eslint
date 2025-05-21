@@ -1,62 +1,72 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 function x(x: number): void;
 function x(x: string): void;
-           ~~~~~~~~~ These overloads can be combined into one signature taking \`number | string\`.
-"
-`;
+           ~~~~~~~~~ These overloads can be combined into one signature taking `number | string`.
 
-exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 2`] = `
-"Incorrect
+Incorrect
 
 function y(): void;
 function y(...x: number[]): void;
            ~~~~~~~~~~~~~~ These overloads can be combined into one signature with a rest parameter.
-"
-`;
 
-exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 3`] = `
-"Correct
+Correct
 
 function x(x: number | string): void;
-"
-`;
 
-exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 
 function y(...x: number[]): void;
-"
-`;
 
-exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 5`] = `
-"Correct
+Correct
 
 // This rule won't check overload signatures with different rest parameter types.
 // See https://github.com/microsoft/TypeScript/issues/5077
 function f(...a: number[]): void;
 function f(...a: string[]): void;
-"
-`;
 
-exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 6`] = `
-"Incorrect
+Incorrect
 Options: { "ignoreDifferentlyNamedParameters": true }
 
 function f(a: number): void;
 function f(a: string): void;
-           ~~~~~~~~~ These overloads can be combined into one signature taking \`number | string\`.
-"
-`;
+           ~~~~~~~~~ These overloads can be combined into one signature taking `number | string`.
 
-exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 7`] = `
-"Correct
+Correct
 Options: { "ignoreDifferentlyNamedParameters": true }
 
 function f(a: number): void;
 function f(b: string): void;
-"
-`;
+
+Incorrect
+Options: { "ignoreOverloadsWithDifferentJSDoc": true }
+
+declare function f(x: string): void;
+declare function f(x: boolean): void;
+                   ~~~~~~~~~~ This overload and the one on line 1 can be combined into one signature taking `string | boolean`.
+/**
+ * @deprecate
+ */
+declare function f(x: number): void;
+/**
+ * @deprecate
+ */
+declare function f(x: null): void;
+                   ~~~~~~~ This overload and the one on line 6 can be combined into one signature taking `number | null`.
+
+Correct
+Options: { "ignoreOverloadsWithDifferentJSDoc": true }
+
+declare function f(x: string): void;
+/**
+ * This signature does something else.
+ */
+declare function f(x: boolean): void;
+/**
+ * @async
+ */
+declare function f(x: number): void;
+/**
+ * @deprecate
+ */
+declare function f(x: null): void;

@@ -1,9 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-const enum OptionKeys {
+export const enum OptionKeys {
   ArrayDestructuring = 'arrayDestructuring',
   ArrowParameter = 'arrowParameter',
   MemberVariableDeclaration = 'memberVariableDeclaration',
@@ -14,13 +15,18 @@ const enum OptionKeys {
   VariableDeclarationIgnoreFunction = 'variableDeclarationIgnoreFunction',
 }
 
-type Options = { [k in OptionKeys]?: boolean };
+export type Options = [Partial<Record<OptionKeys, boolean>>];
 
-type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
+export type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
 
-export default createRule<[Options], MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'typedef',
   meta: {
+    type: 'suggestion',
+    deprecated: {
+      deprecatedSince: '8.33.0',
+      message: 'This is an old rule that is no longer recommended for use.',
+    },
     docs: {
       description: 'Require type annotations in certain places',
     },
@@ -33,18 +39,49 @@ export default createRule<[Options], MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          [OptionKeys.ArrayDestructuring]: { type: 'boolean' },
-          [OptionKeys.ArrowParameter]: { type: 'boolean' },
-          [OptionKeys.MemberVariableDeclaration]: { type: 'boolean' },
-          [OptionKeys.ObjectDestructuring]: { type: 'boolean' },
-          [OptionKeys.Parameter]: { type: 'boolean' },
-          [OptionKeys.PropertyDeclaration]: { type: 'boolean' },
-          [OptionKeys.VariableDeclaration]: { type: 'boolean' },
-          [OptionKeys.VariableDeclarationIgnoreFunction]: { type: 'boolean' },
+          [OptionKeys.ArrayDestructuring]: {
+            type: 'boolean',
+            description:
+              'Whether to enforce type annotations on variables declared using array destructuring.',
+          },
+          [OptionKeys.ArrowParameter]: {
+            type: 'boolean',
+            description:
+              'Whether to enforce type annotations for parameters of arrow functions.',
+          },
+          [OptionKeys.MemberVariableDeclaration]: {
+            type: 'boolean',
+            description:
+              'Whether to enforce type annotations on member variables of classes.',
+          },
+          [OptionKeys.ObjectDestructuring]: {
+            type: 'boolean',
+            description:
+              'Whether to enforce type annotations on variables declared using object destructuring.',
+          },
+          [OptionKeys.Parameter]: {
+            type: 'boolean',
+            description:
+              'Whether to enforce type annotations for parameters of functions and methods.',
+          },
+          [OptionKeys.PropertyDeclaration]: {
+            type: 'boolean',
+            description:
+              'Whether to enforce type annotations for properties of interfaces and types.',
+          },
+          [OptionKeys.VariableDeclaration]: {
+            type: 'boolean',
+            description:
+              'Whether to enforce type annotations for variable declarations, excluding array and object destructuring.',
+          },
+          [OptionKeys.VariableDeclarationIgnoreFunction]: {
+            type: 'boolean',
+            description:
+              'Whether to ignore variable declarations for non-arrow and arrow functions.',
+          },
         },
       },
     ],
-    type: 'suggestion',
   },
   defaultOptions: [
     {

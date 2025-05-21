@@ -1,11 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-empty-interface.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 // an empty interface
 interface Foo {}
-          ~~~ An empty interface is equivalent to \`{}\`.
+          ~~~ An empty interface is equivalent to `{}`.
 
 // an interface with only one supertype (Bar === Foo)
 interface Bar extends Foo {}
@@ -13,12 +10,9 @@ interface Bar extends Foo {}
 
 // an interface with an empty list of supertypes
 interface Baz {}
-          ~~~ An empty interface is equivalent to \`{}\`.
-"
-`;
+          ~~~ An empty interface is equivalent to `{}`.
 
-exports[`Validating rule docs no-empty-interface.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 // an interface with any number of members
 interface Foo {
@@ -33,5 +27,3 @@ interface Bar {
 // an interface with more than one supertype
 // in this case the interface can be used as a replacement of an intersection type.
 interface Baz extends Foo, Bar {}
-"
-`;

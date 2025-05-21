@@ -9,14 +9,14 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/only-throw-error** for documentation.
 
+It uses type information to determine which values are `Error`s.
+
 It is considered good practice to only `throw` the `Error` object itself or an object using the `Error` object as base objects for user-defined exceptions.
 The fundamental benefit of `Error` objects is that they automatically keep track of where they were built and originated.
 
-This rule restricts what can be thrown as an exception.
-
 :::info[Migration from `no-throw-literal`]
 
-This rule was formerly known as `no-throw-literal`.
+This extension rule was formerly known as `@typescript-eslint/no-throw-literal`.
 The new name is a drop-in replacement with identical functionality.
 
 :::
@@ -103,6 +103,32 @@ This rule adds the following options:
 ```ts
 interface Options {
   /**
+   * Type specifiers that can be thrown.
+   */
+  allow?: (
+    | {
+        from: 'file';
+        name: [string, ...string[]] | string;
+        path?: string;
+      }
+    | {
+        from: 'lib';
+        name: [string, ...string[]] | string;
+      }
+    | {
+        from: 'package';
+        name: [string, ...string[]] | string;
+        package: string;
+      }
+    | string
+  )[];
+
+  /**
+   * Whether to allow rethrowing caught values that are not `Error` objects.
+   */
+  allowRethrowing?: boolean;
+
+  /**
    * Whether to always allow throwing values typed as `any`.
    */
   allowThrowingAny?: boolean;
@@ -114,8 +140,10 @@ interface Options {
 }
 
 const defaultOptions: Options = {
-  allowThrowingAny: false,
-  allowThrowingUnknown: false,
+  allow: [],
+  allowRethrowing: false,
+  allowThrowingAny: true,
+  allowThrowingUnknown: true,
 };
 ```
 

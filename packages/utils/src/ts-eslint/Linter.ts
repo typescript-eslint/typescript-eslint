@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-namespace, no-restricted-syntax */
 
 import { Linter as ESLintLinter } from 'eslint';
 
@@ -22,6 +22,11 @@ export type MinimalRuleModule<
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class LinterBase {
+  /**
+   * The version from package.json.
+   */
+  readonly version: string;
+
   /**
    * Initialize the Linter.
    * @param config the config object
@@ -79,10 +84,19 @@ declare class LinterBase {
    * @returns The results as an array of messages or an empty array if no messages.
    */
   verify(
-    textOrSourceCode: SourceCode | string,
+    textOrSourceCode: string | SourceCode,
     config: Linter.ConfigType,
-    filenameOrOptions?: Linter.VerifyOptions | string,
+    filenameOrOptions?: string | Linter.VerifyOptions,
   ): Linter.LintMessage[];
+
+  ////////////////////
+  // static members //
+  ////////////////////
+
+  /**
+   * The version from package.json.
+   */
+  static readonly version: string;
 
   /**
    * Performs multiple autofix passes over the text until as many fixes as possible have been applied.
@@ -96,20 +110,6 @@ declare class LinterBase {
     config: Linter.ConfigType,
     options: Linter.FixOptions,
   ): Linter.FixReport;
-
-  /**
-   * The version from package.json.
-   */
-  readonly version: string;
-
-  ////////////////////
-  // static members //
-  ////////////////////
-
-  /**
-   * The version from package.json.
-   */
-  static readonly version: string;
 }
 
 namespace Linter {
@@ -140,13 +140,13 @@ namespace Linter {
   export type Severity = SharedConfig.Severity;
   export type SeverityString = SharedConfig.SeverityString;
 
-  /** @deprecated use Linter.ConfigType instead */
+  /** @deprecated use {@link Linter.ConfigType} instead */
   export type Config = ClassicConfig.Config;
   export type ConfigType =
     | ClassicConfig.Config
     | FlatConfig.Config
     | FlatConfig.ConfigArray;
-  /** @deprecated use ClassicConfig.ConfigOverride instead */
+  /** @deprecated use {@link ClassicConfig.ConfigOverride} instead */
   export type ConfigOverride = ClassicConfig.ConfigOverride;
 
   export interface VerifyOptions {
@@ -183,7 +183,7 @@ namespace Linter {
     /**
      * Adds reported errors for unused `eslint-disable` directives.
      */
-    reportUnusedDisableDirectives?: SeverityString | boolean;
+    reportUnusedDisableDirectives?: boolean | SeverityString;
   }
 
   export interface FixOptions extends VerifyOptions {
@@ -251,22 +251,22 @@ namespace Linter {
      */
     fixed: boolean;
     /**
-     * Fixed code text (might be the same as input if no fixes were applied).
-     */
-    output: string;
-    /**
      * Collection of all messages for the given code
      */
     messages: LintMessage[];
+    /**
+     * Fixed code text (might be the same as input if no fixes were applied).
+     */
+    output: string;
   }
 
-  /** @deprecated use Parser.ParserModule */
+  /** @deprecated use {@link Parser.ParserModule} */
   export type ParserModule = Parser.LooseParserModule;
 
-  /** @deprecated use Parser.ParseResult */
+  /** @deprecated use {@link Parser.ParseResult} */
   export type ESLintParseResult = Parser.ParseResult;
 
-  /** @deprecated use Processor.ProcessorModule */
+  /** @deprecated use {@link ProcessorType.ProcessorModule} */
   export type Processor = ProcessorType.ProcessorModule;
 
   export interface Environment {

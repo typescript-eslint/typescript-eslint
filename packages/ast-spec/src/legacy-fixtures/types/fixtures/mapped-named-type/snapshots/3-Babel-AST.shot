@@ -1,14 +1,14 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types mapped-named-type Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Test",
+        optional: false,
 
         range: [78, 82],
         loc: {
@@ -44,7 +44,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "P",
+              optional: false,
 
               range: [117, 118],
               loc: {
@@ -63,7 +65,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [115, 116],
               loc: {
@@ -87,6 +91,7 @@ Program {
         },
         typeParameter: TSTypeParameter {
           type: "TSTypeParameter",
+          const: false,
           constraint: TSTypeOperator {
             type: "TSTypeOperator",
             operator: "keyof",
@@ -94,7 +99,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "T",
+                optional: false,
 
                 range: [104, 105],
                 loc: {
@@ -116,7 +123,9 @@ Program {
               end: { column: 15, line: 4 },
             },
           },
+          in: false,
           name: "P",
+          out: false,
 
           range: [93, 105],
           loc: {
@@ -136,7 +145,10 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "T",
+            out: false,
 
             range: [83, 84],
             loc: {
@@ -168,4 +180,3 @@ Program {
     end: { column: 0, line: 6 },
   },
 }
-`;

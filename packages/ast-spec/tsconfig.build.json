@@ -1,12 +1,5 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "composite": true,
-    "jsx": "preserve",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "resolveJsonModule": true
-  },
-  "include": ["src", "typings"],
-  "exclude": ["**/fixtures/**"]
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {},
+  "references": []
 }

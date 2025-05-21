@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -6,10 +7,11 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getThisExpression,
+  isBuiltinSymbolLike,
   isTypeAnyType,
 } from '../util';
 
-type MessageIds =
+export type MessageIds =
   | 'unsafeCall'
   | 'unsafeCallThis'
   | 'unsafeNew'
@@ -25,13 +27,13 @@ export default createRule<[], MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeCall: 'Unsafe call of an {{type}} typed value.',
+      unsafeCall: 'Unsafe call of a(n) {{type}} typed value.',
       unsafeCallThis: [
-        'Unsafe call of an `any` typed value. `this` is typed as `any`.',
+        'Unsafe call of a(n) {{type}} typed value. `this` is typed as {{type}}.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
-      unsafeNew: 'Unsafe construction of an any type value.',
-      unsafeTemplateTag: 'Unsafe any typed template tag.',
+      unsafeNew: 'Unsafe construction of a(n) {{type}} typed value.',
+      unsafeTemplateTag: 'Unsafe use of a(n) {{type}} typed template tag.',
     },
     schema: [],
   },
@@ -69,11 +71,54 @@ export default createRule<[], MessageIds>({
 
         context.report({
           node: reportingNode,
-          messageId: messageId,
+          messageId,
           data: {
             type: isErrorType ? '`error` type' : '`any`',
           },
         });
+        return;
+      }
+
+      if (isBuiltinSymbolLike(services.program, type, 'Function')) {
+        // this also matches subtypes of `Function`, like `interface Foo extends Function {}`.
+        //
+        // For weird TS reasons that I don't understand, these are
+        //
+        // safe to construct if:
+        // - they have at least one call signature _that is not void-returning_,
+        // - OR they have at least one construct signature.
+        //
+        // safe to call (including as template) if:
+        // - they have at least one call signature
+        // - OR they have at least one construct signature.
+
+        const constructSignatures = type.getConstructSignatures();
+        if (constructSignatures.length > 0) {
+          return;
+        }
+
+        const callSignatures = type.getCallSignatures();
+        if (messageId === 'unsafeNew') {
+          if (
+            callSignatures.some(
+              signature =>
+                !tsutils.isIntrinsicVoidType(signature.getReturnType()),
+            )
+          ) {
+            return;
+          }
+        } else if (callSignatures.length > 0) {
+          return;
+        }
+
+        context.report({
+          node: reportingNode,
+          messageId,
+          data: {
+            type: '`Function`',
+          },
+        });
+        return;
       }
     }
 

@@ -1,12 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures namespaces-and-modules shorthand-ambient-module-declaration Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       declare: true,
+      global: false,
       id: Literal {
         type: "Literal",
         raw: "'hot-new-module'",
@@ -18,6 +16,7 @@ Program {
           end: { column: 31, line: 3 },
         },
       },
+      kind: "module",
 
       range: [73, 105],
       loc: {
@@ -34,4 +33,3 @@ Program {
     end: { column: 0, line: 4 },
   },
 }
-`;

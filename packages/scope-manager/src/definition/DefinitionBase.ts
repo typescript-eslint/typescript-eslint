@@ -1,11 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/types';
 
-import { createIdGenerator } from '../ID';
 import type { DefinitionType } from './DefinitionType';
+
+import { createIdGenerator } from '../ID';
 
 const generator = createIdGenerator();
 
-abstract class DefinitionBase<
+export abstract class DefinitionBase<
   Type extends DefinitionType,
   Node extends TSESTree.Node,
   Parent extends TSESTree.Node | null,
@@ -53,5 +54,3 @@ abstract class DefinitionBase<
    */
   public abstract readonly isVariableDefinition: boolean;
 }
-
-export { DefinitionBase };

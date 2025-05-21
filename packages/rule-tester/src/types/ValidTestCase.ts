@@ -28,13 +28,21 @@ export interface TestLanguageOptions {
 
 export interface ValidTestCase<Options extends readonly unknown[]> {
   /**
-   * Name for the test case.
+   * Function to execute after testing the case regardless of its result.
    */
-  readonly name?: string;
+  readonly after?: () => void;
+  /**
+   * Function to execute before testing the case.
+   */
+  readonly before?: () => void;
   /**
    * Code for the test case.
    */
   readonly code: string;
+  /**
+   * Constraints that must pass in the current environment for the test to run
+   */
+  readonly dependencyConstraints?: DependencyConstraint;
   /**
    * The fake filename for the test case. Useful for rules that make assertion about filenames.
    */
@@ -44,6 +52,14 @@ export interface ValidTestCase<Options extends readonly unknown[]> {
    */
   readonly languageOptions?: TestLanguageOptions;
   /**
+   * Name for the test case.
+   */
+  readonly name?: string;
+  /**
+   * Run this case exclusively for debugging in supported test frameworks.
+   */
+  readonly only?: boolean;
+  /**
    * Options for the test case.
    */
   readonly options?: Readonly<Options>;
@@ -52,15 +68,7 @@ export interface ValidTestCase<Options extends readonly unknown[]> {
    */
   readonly settings?: Readonly<SharedConfigurationSettings>;
   /**
-   * Run this case exclusively for debugging in supported test frameworks.
-   */
-  readonly only?: boolean;
-  /**
    * Skip this case in supported test frameworks.
    */
   readonly skip?: boolean;
-  /**
-   * Constraints that must pass in the current environment for the test to run
-   */
-  readonly dependencyConstraints?: DependencyConstraint;
 }

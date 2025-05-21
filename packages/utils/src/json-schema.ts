@@ -28,13 +28,10 @@ export type JSONSchema4TypeName =
 export type JSONSchema4Type = boolean | number | string | null;
 
 export type JSONSchema4TypeExtended =
-  | JSONSchema4Type
   | JSONSchema4Array
-  | JSONSchema4Object;
+  | JSONSchema4Object
+  | JSONSchema4Type;
 
-// Workaround for infinite type recursion
-// Also, https://github.com/typescript-eslint/typescript-eslint/issues/7863
-// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 export interface JSONSchema4Object {
   [key: string]: JSONSchema4TypeExtended;
 }
@@ -78,14 +75,10 @@ export type JSONSchema4 =
   | JSONSchema4StringSchema;
 
 interface JSONSchema4Base {
-  id?: string | undefined;
-
-  $schema?: JSONSchema4Version | undefined;
-
   /**
-   * A single type, or a union of simple types
+   * Reusable definitions that can be referenced via `$ref`
    */
-  type?: JSONSchema4TypeName | JSONSchema4TypeName[] | undefined;
+  $defs?: Record<string, JSONSchema4> | undefined;
 
   /**
    * Path to a schema defined in `definitions`/`$defs` that will form the base
@@ -104,13 +97,27 @@ interface JSONSchema4Base {
    */
   $ref?: string | undefined;
 
+  $schema?: JSONSchema4Version | undefined;
+
   /**
-   * This attribute is a string that provides a short description of the
-   * instance property.
-   *
-   * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.21
+   * (AND) Must be valid against all of the sub-schemas
    */
-  title?: string | undefined;
+  allOf?: JSONSchema4[] | undefined;
+
+  /**
+   * (OR) Must be valid against any of the sub-schemas
+   */
+  anyOf?: JSONSchema4[] | undefined;
+
+  /**
+   * The default value for the item if not present
+   */
+  default?: JSONSchema4TypeExtended | undefined;
+
+  /**
+   * Reusable definitions that can be referenced via `$ref`
+   */
+  definitions?: Record<string, JSONSchema4> | undefined;
 
   /**
    * This attribute is a string that provides a full description of the of
@@ -119,15 +126,6 @@ interface JSONSchema4Base {
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.22
    */
   description?: string | undefined;
-
-  /**
-   * Reusable definitions that can be referenced via `$ref`
-   */
-  definitions?: Record<string, JSONSchema4> | undefined;
-  /**
-   * Reusable definitions that can be referenced via `$ref`
-   */
-  $defs?: Record<string, JSONSchema4> | undefined;
 
   /**
    * The value of this property MUST be another schema which will provide
@@ -145,12 +143,19 @@ interface JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.26
    */
-  extends?: string[] | string | undefined;
+  extends?: string | string[] | undefined;
+
+  id?: string | undefined;
 
   /**
-   * The default value for the item if not present
+   * (NOT) Must not be valid against the given schema
    */
-  default?: JSONSchema4TypeExtended | undefined;
+  not?: JSONSchema4 | undefined;
+
+  /**
+   * (XOR) Must be valid against exactly one of the sub-schemas
+   */
+  oneOf?: JSONSchema4[] | undefined;
 
   /**
    * This attribute indicates if the instance must have a value, and not
@@ -159,44 +164,40 @@ interface JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.7
    */
-  required?: string[] | boolean | undefined;
+  required?: boolean | string[] | undefined;
 
   /**
-   * (NOT) Must not be valid against the given schema
+   * This attribute is a string that provides a short description of the
+   * instance property.
+   *
+   * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.21
    */
-  not?: JSONSchema4 | undefined;
+  title?: string | undefined;
+
   /**
-   * (AND) Must be valid against all of the sub-schemas
+   * A single type, or a union of simple types
    */
-  allOf?: JSONSchema4[] | undefined;
-  /**
-   * (OR) Must be valid against any of the sub-schemas
-   */
-  anyOf?: JSONSchema4[] | undefined;
-  /**
-   * (XOR) Must be valid against exactly one of the sub-schemas
-   */
-  oneOf?: JSONSchema4[] | undefined;
+  type?: JSONSchema4TypeName | JSONSchema4TypeName[] | undefined;
 }
 
 export interface JSONSchema4RefSchema extends JSONSchema4Base {
-  type?: undefined;
   $ref: string;
+  type?: undefined;
 }
 
 export interface JSONSchema4AllOfSchema extends JSONSchema4Base {
-  type?: undefined;
   allOf: JSONSchema4[];
+  type?: undefined;
 }
 
 export interface JSONSchema4AnyOfSchema extends JSONSchema4Base {
-  type?: undefined;
   anyOf: JSONSchema4[];
+  type?: undefined;
 }
 
 export interface JSONSchema4OneOfSchema extends JSONSchema4Base {
-  type?: undefined;
   oneOf: JSONSchema4[];
+  type?: undefined;
 }
 
 export interface JSONSchema4MultiSchema
@@ -207,7 +208,6 @@ export interface JSONSchema4MultiSchema
     Omit<JSONSchema4BooleanSchema, 'enum' | 'type'>,
     Omit<JSONSchema4NullSchema, 'enum' | 'type'>,
     Omit<JSONSchema4AnySchema, 'enum' | 'type'> {
-  type: JSONSchema4TypeName[];
   /**
    * This provides an enumeration of all possible values that are valid
    * for the instance property. This MUST be an array, and each item in
@@ -218,14 +218,13 @@ export interface JSONSchema4MultiSchema
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.19
    */
   enum?: JSONSchema4Type[];
+  type: JSONSchema4TypeName[];
 }
 
 /**
  * @see https://json-schema.org/understanding-json-schema/reference/object.html
  */
 export interface JSONSchema4ObjectSchema extends JSONSchema4Base {
-  type: 'object';
-
   /**
    * This attribute defines a schema for all properties that are not
    * explicitly defined in an object type definition. If specified, the
@@ -236,7 +235,37 @@ export interface JSONSchema4ObjectSchema extends JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.4
    */
-  additionalProperties?: JSONSchema4 | boolean | undefined;
+  additionalProperties?: boolean | JSONSchema4 | undefined;
+
+  /**
+   * The `dependencies` keyword conditionally applies a sub-schema when a given
+   * property is present. This schema is applied in the same way `allOf` applies
+   * schemas. Nothing is merged or extended. Both schemas apply independently.
+   */
+  dependencies?: Record<string, JSONSchema4 | string[]> | undefined;
+
+  /**
+   * The maximum number of properties allowed for record-style schemas
+   */
+  maxProperties?: number | undefined;
+
+  /**
+   * The minimum number of properties required for record-style schemas
+   */
+  minProperties?: number | undefined;
+
+  /**
+   * This attribute is an object that defines the schema for a set of
+   * property names of an object instance. The name of each property of
+   * this attribute's object is a regular expression pattern in the ECMA
+   * 262/Perl 5 format, while the value is a schema. If the pattern
+   * matches the name of a property on the instance object, the value of
+   * the instance's property MUST be valid against the pattern name's
+   * schema value.
+   *
+   * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.3
+   */
+  patternProperties?: Record<string, JSONSchema4> | undefined;
 
   /**
    * This attribute is an object with property definitions that define the
@@ -253,42 +282,13 @@ export interface JSONSchema4ObjectSchema extends JSONSchema4Base {
    */
   properties?: Record<string, JSONSchema4> | undefined;
 
-  /**
-   * This attribute is an object that defines the schema for a set of
-   * property names of an object instance. The name of each property of
-   * this attribute's object is a regular expression pattern in the ECMA
-   * 262/Perl 5 format, while the value is a schema. If the pattern
-   * matches the name of a property on the instance object, the value of
-   * the instance's property MUST be valid against the pattern name's
-   * schema value.
-   *
-   * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.3
-   */
-  patternProperties?: Record<string, JSONSchema4> | undefined;
-
-  /**
-   * The `dependencies` keyword conditionally applies a sub-schema when a given
-   * property is present. This schema is applied in the same way `allOf` applies
-   * schemas. Nothing is merged or extended. Both schemas apply independently.
-   */
-  dependencies?: Record<string, JSONSchema4 | string[]> | undefined;
-
-  /**
-   * The maximum number of properties allowed for record-style schemas
-   */
-  maxProperties?: number | undefined;
-  /**
-   * The minimum number of properties required for record-style schemas
-   */
-  minProperties?: number | undefined;
+  type: 'object';
 }
 
 /**
  * @see https://json-schema.org/understanding-json-schema/reference/array.html
  */
 export interface JSONSchema4ArraySchema extends JSONSchema4Base {
-  type: 'array';
-
   /**
    * May only be defined when "items" is defined, and is a tuple of JSONSchemas.
    *
@@ -299,7 +299,7 @@ export interface JSONSchema4ArraySchema extends JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.6
    */
-  additionalItems?: JSONSchema4 | boolean | undefined;
+  additionalItems?: boolean | JSONSchema4 | undefined;
 
   /**
    * This attribute defines the allowed items in an instance array, and
@@ -332,6 +332,8 @@ export interface JSONSchema4ArraySchema extends JSONSchema4Base {
    */
   minItems?: number | undefined;
 
+  type: 'array';
+
   /**
    * Enforces that all items in the array are unique
    */
@@ -342,7 +344,37 @@ export interface JSONSchema4ArraySchema extends JSONSchema4Base {
  * @see https://json-schema.org/understanding-json-schema/reference/string.html
  */
 export interface JSONSchema4StringSchema extends JSONSchema4Base {
-  type: 'string';
+  enum?: string[] | undefined;
+
+  /**
+   * The `format` keyword allows for basic semantic identification of certain
+   * kinds of string values that are commonly used.
+   *
+   * For example, because JSON doesn’t have a “DateTime” type, dates need to be
+   * encoded as strings. `format` allows the schema author to indicate that the
+   * string value should be interpreted as a date.
+   *
+   * ajv v6 provides a few built-in formats - all other strings will cause AJV
+   * to throw during schema compilation
+   */
+  format?:
+    | 'date'
+    | 'date-time'
+    | 'email'
+    | 'hostname'
+    | 'ipv4'
+    | 'ipv6'
+    | 'json-pointer'
+    | 'json-pointer-uri-fragment'
+    | 'regex'
+    | 'relative-json-pointer'
+    | 'time'
+    | 'uri'
+    | 'uri-reference'
+    | 'uri-template'
+    | 'url'
+    | 'uuid'
+    | undefined;
 
   /**
    * The maximum allowed length for the string
@@ -369,60 +401,23 @@ export interface JSONSchema4StringSchema extends JSONSchema4Base {
    */
   pattern?: string | undefined;
 
-  /**
-   * The `format` keyword allows for basic semantic identification of certain
-   * kinds of string values that are commonly used.
-   *
-   * For example, because JSON doesn’t have a “DateTime” type, dates need to be
-   * encoded as strings. `format` allows the schema author to indicate that the
-   * string value should be interpreted as a date.
-   *
-   * ajv v6 provides a few built-in formats - all other strings will cause AJV
-   * to throw during schema compilation
-   */
-  format?:
-    | 'date-time'
-    | 'date'
-    | 'email'
-    | 'hostname'
-    | 'ipv4'
-    | 'ipv6'
-    | 'json-pointer-uri-fragment'
-    | 'json-pointer'
-    | 'regex'
-    | 'relative-json-pointer'
-    | 'time'
-    | 'uri-reference'
-    | 'uri-template'
-    | 'uri'
-    | 'url'
-    | 'uuid'
-    | undefined;
-
-  enum?: string[] | undefined;
+  type: 'string';
 }
 
 /**
  * @see https://json-schema.org/understanding-json-schema/reference/numeric.html
  */
 export interface JSONSchema4NumberSchema extends JSONSchema4Base {
-  type: 'integer' | 'number';
-
   /**
-   * Numbers can be restricted to a multiple of a given number, using the
-   * `multipleOf` keyword. It may be set to any positive number.
+   * This provides an enumeration of all possible values that are valid
+   * for the instance property. This MUST be an array, and each item in
+   * the array represents a possible value for the instance value. If
+   * this attribute is defined, the instance value MUST be one of the
+   * values in the array in order for the schema to be valid.
+   *
+   * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.19
    */
-  multipleOf?: number | undefined;
-
-  /**
-   * The maximum allowed value for the number
-   */
-  maximum?: number | undefined;
-
-  /**
-   * The minimum allowed value for the number
-   */
-  minimum?: number | undefined;
+  enum?: number[] | undefined;
 
   /**
    * The exclusive minimum allowed value for the number
@@ -443,23 +438,28 @@ export interface JSONSchema4NumberSchema extends JSONSchema4Base {
   exclusiveMinimum?: boolean | undefined;
 
   /**
-   * This provides an enumeration of all possible values that are valid
-   * for the instance property. This MUST be an array, and each item in
-   * the array represents a possible value for the instance value. If
-   * this attribute is defined, the instance value MUST be one of the
-   * values in the array in order for the schema to be valid.
-   *
-   * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.19
+   * The maximum allowed value for the number
    */
-  enum?: number[] | undefined;
+  maximum?: number | undefined;
+
+  /**
+   * The minimum allowed value for the number
+   */
+  minimum?: number | undefined;
+
+  /**
+   * Numbers can be restricted to a multiple of a given number, using the
+   * `multipleOf` keyword. It may be set to any positive number.
+   */
+  multipleOf?: number | undefined;
+
+  type: 'integer' | 'number';
 }
 
 /**
  * @see https://json-schema.org/understanding-json-schema/reference/boolean.html
  */
 export interface JSONSchema4BooleanSchema extends JSONSchema4Base {
-  type: 'boolean';
-
   /**
    * This provides an enumeration of all possible values that are valid
    * for the instance property. This MUST be an array, and each item in
@@ -470,14 +470,14 @@ export interface JSONSchema4BooleanSchema extends JSONSchema4Base {
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.19
    */
   enum?: boolean[] | undefined;
+
+  type: 'boolean';
 }
 
 /**
  * @see https://json-schema.org/understanding-json-schema/reference/null.html
  */
 export interface JSONSchema4NullSchema extends JSONSchema4Base {
-  type: 'null';
-
   /**
    * This provides an enumeration of all possible values that are valid
    * for the instance property. This MUST be an array, and each item in
@@ -488,6 +488,8 @@ export interface JSONSchema4NullSchema extends JSONSchema4Base {
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.19
    */
   enum?: null[] | undefined;
+
+  type: 'null';
 }
 
 export interface JSONSchema4AnySchema extends JSONSchema4Base {

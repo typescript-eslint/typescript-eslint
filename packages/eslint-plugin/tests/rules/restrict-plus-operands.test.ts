@@ -8,8 +8,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -180,9 +180,9 @@ const x = a + b;
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: true,
-          allowNullish: false,
         },
       ],
     },
@@ -196,9 +196,9 @@ const x = a + b;
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: true,
-          allowNullish: false,
         },
       ],
     },
@@ -371,21 +371,25 @@ const f = (a: string | number, b: string | number) => a + b;
         },
       ],
     },
+    {
+      code: "let foo = '1' + 1n;",
+      options: [{ allowNumberAndString: true }],
+    },
   ],
   invalid: [
     {
       code: "let foo = '1' + 1;",
       errors: [
         {
+          column: 11,
           data: {
             left: 'string',
             right: 'number',
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
           },
-          messageId: 'mismatched',
           line: 1,
-          column: 11,
+          messageId: 'mismatched',
         },
       ],
       options: [{ allowNumberAndString: false }],
@@ -394,14 +398,14 @@ const f = (a: string | number, b: string | number) => a + b;
       code: "let foo = '1' + 1;",
       errors: [
         {
+          column: 11,
           data: {
             left: 'string',
             right: 'number',
             stringLike: 'string',
           },
-          messageId: 'mismatched',
           line: 1,
-          column: 11,
+          messageId: 'mismatched',
         },
       ],
       options: [
@@ -418,23 +422,23 @@ const f = (a: string | number, b: string | number) => a + b;
       code: 'let foo = [] + {};',
       errors: [
         {
+          column: 11,
           data: {
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
             type: 'never[]',
           },
-          column: 11,
           endColumn: 13,
           line: 1,
           messageId: 'invalid',
         },
         {
+          column: 16,
           data: {
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
             type: '{}',
           },
-          column: 16,
           endColumn: 18,
           line: 1,
           messageId: 'invalid',
@@ -445,14 +449,14 @@ const f = (a: string | number, b: string | number) => a + b;
       code: "let foo = 5 + '10';",
       errors: [
         {
+          column: 11,
           data: {
             left: 'number',
             right: 'string',
             stringLike: 'string',
           },
-          messageId: 'mismatched',
           line: 1,
-          column: 11,
+          messageId: 'mismatched',
         },
       ],
       options: [
@@ -469,15 +473,15 @@ const f = (a: string | number, b: string | number) => a + b;
       code: 'let foo = [] + 5;',
       errors: [
         {
+          column: 11,
           data: {
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
             type: 'never[]',
           },
-          messageId: 'invalid',
-          line: 1,
-          column: 11,
           endColumn: 13,
+          line: 1,
+          messageId: 'invalid',
         },
       ],
     },
@@ -485,26 +489,26 @@ const f = (a: string | number, b: string | number) => a + b;
       code: 'let foo = [] + [];',
       errors: [
         {
+          column: 11,
           data: {
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
             type: 'never[]',
           },
-          messageId: 'invalid',
-          line: 1,
           endColumn: 13,
-          column: 11,
+          line: 1,
+          messageId: 'invalid',
         },
         {
+          column: 16,
           data: {
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
             type: 'never[]',
           },
-          messageId: 'invalid',
-          line: 1,
           endColumn: 18,
-          column: 16,
+          line: 1,
+          messageId: 'invalid',
         },
       ],
     },
@@ -512,12 +516,12 @@ const f = (a: string | number, b: string | number) => a + b;
       code: 'let foo = 5 + [3];',
       errors: [
         {
+          column: 15,
           data: {
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
             type: 'number[]',
           },
-          column: 15,
           endColumn: 18,
           line: 1,
           messageId: 'invalid',
@@ -528,15 +532,15 @@ const f = (a: string | number, b: string | number) => a + b;
       code: "let foo = '5' + {};",
       errors: [
         {
+          column: 17,
           data: {
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
             type: '{}',
           },
-          messageId: 'invalid',
-          line: 1,
           endColumn: 19,
-          column: 17,
+          line: 1,
+          messageId: 'invalid',
         },
       ],
     },
@@ -544,15 +548,15 @@ const f = (a: string | number, b: string | number) => a + b;
       code: "let foo = 5.5 + '5';",
       errors: [
         {
+          column: 11,
           data: {
             left: 'number',
             right: 'string',
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
           },
-          messageId: 'mismatched',
           line: 1,
-          column: 11,
+          messageId: 'mismatched',
         },
       ],
       options: [{ allowNumberAndString: false }],
@@ -561,15 +565,15 @@ const f = (a: string | number, b: string | number) => a + b;
       code: "let foo = '5.5' + 5;",
       errors: [
         {
+          column: 11,
           data: {
             left: 'string',
             right: 'number',
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
           },
-          messageId: 'mismatched',
           line: 1,
-          column: 11,
+          messageId: 'mismatched',
         },
       ],
       options: [{ allowNumberAndString: false }],
@@ -582,15 +586,15 @@ let foo = x + y;
       `,
       errors: [
         {
+          column: 11,
           data: {
             left: 'number',
             right: 'string',
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
           },
-          messageId: 'mismatched',
           line: 4,
-          column: 11,
+          messageId: 'mismatched',
         },
       ],
       options: [{ allowNumberAndString: false }],
@@ -603,15 +607,15 @@ let foo = y + x;
       `,
       errors: [
         {
+          column: 11,
           data: {
-            right: 'number',
             left: 'string',
+            right: 'number',
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
           },
-          messageId: 'mismatched',
           line: 4,
-          column: 11,
+          messageId: 'mismatched',
         },
       ],
       options: [{ allowNumberAndString: false }],
@@ -623,14 +627,14 @@ let foo = x + {};
       `,
       errors: [
         {
+          column: 15,
           data: {
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
             type: '{}',
           },
-          messageId: 'invalid',
           line: 3,
-          column: 15,
+          messageId: 'invalid',
         },
       ],
     },
@@ -641,14 +645,14 @@ let foo = [] + y;
       `,
       errors: [
         {
+          column: 11,
           data: {
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
             type: 'never[]',
           },
-          messageId: 'invalid',
           line: 3,
-          column: 11,
+          messageId: 'invalid',
         },
       ],
     },
@@ -659,21 +663,21 @@ let foo = pair + pair;
       `,
       errors: [
         {
+          column: 11,
           data: {
             stringLike: 'string',
             type: '{ first: number; second: string; }',
           },
-          column: 11,
           endColumn: 15,
           line: 3,
           messageId: 'invalid',
         },
         {
+          column: 18,
           data: {
             stringLike: 'string',
             type: '{ first: number; second: string; }',
           },
-          column: 18,
           endColumn: 22,
           line: 3,
           messageId: 'invalid',
@@ -683,9 +687,9 @@ let foo = pair + pair;
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -697,11 +701,11 @@ let combined = value + 0;
       `,
       errors: [
         {
+          column: 16,
           data: {
             stringLike: 'string',
             type: 'Valued',
           },
-          column: 16,
           endColumn: 21,
           line: 4,
           messageId: 'invalid',
@@ -711,9 +715,9 @@ let combined = value + 0;
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -721,13 +725,13 @@ let combined = value + 0;
       code: 'let foo = 1n + 1;',
       errors: [
         {
+          column: 11,
           data: {
             left: 'bigint',
             right: 'number',
           },
-          messageId: 'bigintAndNumber',
           line: 1,
-          column: 11,
+          messageId: 'bigintAndNumber',
         },
       ],
     },
@@ -735,13 +739,13 @@ let combined = value + 0;
       code: 'let foo = 1 + 1n;',
       errors: [
         {
+          column: 11,
           data: {
             left: 'number',
             right: 'bigint',
           },
-          messageId: 'bigintAndNumber',
           line: 1,
-          column: 11,
+          messageId: 'bigintAndNumber',
         },
       ],
     },
@@ -752,13 +756,13 @@ let combined = value + 0;
       `,
       errors: [
         {
+          column: 9,
           data: {
             left: 'bigint',
             right: 'number',
           },
-          messageId: 'bigintAndNumber',
           line: 3,
-          column: 9,
+          messageId: 'bigintAndNumber',
         },
       ],
     },
@@ -769,13 +773,13 @@ let combined = value + 0;
       `,
       errors: [
         {
+          column: 9,
           data: {
             left: 'number',
             right: 'bigint',
           },
-          messageId: 'bigintAndNumber',
           line: 3,
-          column: 9,
+          messageId: 'bigintAndNumber',
         },
       ],
     },
@@ -788,23 +792,23 @@ function foo<T extends string>(a: T) {
       `,
       errors: [
         {
+          column: 10,
           data: {
             left: 'string',
             right: 'number',
             stringLike: 'string',
           },
-          messageId: 'mismatched',
           line: 3,
-          column: 10,
+          messageId: 'mismatched',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -816,23 +820,23 @@ function foo<T extends 'a' | 'b'>(a: T) {
       `,
       errors: [
         {
+          column: 10,
           data: {
             left: 'string',
             right: 'number',
             stringLike: 'string',
           },
-          messageId: 'mismatched',
           line: 3,
-          column: 10,
+          messageId: 'mismatched',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -844,23 +848,23 @@ function foo<T extends number>(a: T) {
       `,
       errors: [
         {
+          column: 10,
           data: {
             left: 'number',
             right: 'string',
             stringLike: 'string',
           },
-          messageId: 'mismatched',
           line: 3,
-          column: 10,
+          messageId: 'mismatched',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -872,23 +876,23 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 10,
           data: {
             left: 'number',
             right: 'string',
             stringLike: 'string',
           },
-          messageId: 'mismatched',
           line: 3,
-          column: 10,
+          messageId: 'mismatched',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -900,23 +904,23 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             left: 'string',
             right: 'number',
             stringLike: 'string',
           },
-          messageId: 'mismatched',
           line: 4,
-          column: 19,
+          messageId: 'mismatched',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -928,22 +932,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'never',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -955,22 +959,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'never',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -982,22 +986,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'never',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1009,22 +1013,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'any',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1036,22 +1040,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: '{ a: 1; } & { b: 2; }',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1066,22 +1070,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'A',
           },
-          messageId: 'invalid',
           line: 7,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1099,22 +1103,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'A2',
           },
-          messageId: 'invalid',
           line: 10,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1127,22 +1131,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'A',
           },
-          messageId: 'invalid',
           line: 5,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1154,22 +1158,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: '{ a: 1; } & { b: 2; }',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1181,22 +1185,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'never',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1208,22 +1212,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'any',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1235,22 +1239,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: '{ a: 1; } & { b: 2; }',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1262,22 +1266,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'RegExp',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1289,22 +1293,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'RegExp',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1316,22 +1320,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'Symbol',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1343,22 +1347,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'symbol',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1370,22 +1374,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'unique symbol',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1397,22 +1401,22 @@ function foo<T extends 1>(a: T) {
       `,
       errors: [
         {
+          column: 19,
           data: {
             stringLike: 'string',
             type: 'unique symbol',
           },
-          messageId: 'invalid',
           line: 4,
-          column: 19,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1421,25 +1425,25 @@ function foo<T extends 1>(a: T) {
 let foo: string | undefined;
 foo += 'some data';
       `,
-      options: [
-        {
-          allowAny: false,
-          allowBoolean: false,
-          allowNumberAndString: false,
-          allowRegExp: false,
-          allowNullish: false,
-          skipCompoundAssignments: false,
-        },
-      ],
       errors: [
         {
+          column: 1,
           data: {
             stringLike: 'string',
             type: 'string | undefined',
           },
-          messageId: 'invalid',
           line: 3,
-          column: 1,
+          messageId: 'invalid',
+        },
+      ],
+      options: [
+        {
+          allowAny: false,
+          allowBoolean: false,
+          allowNullish: false,
+          allowNumberAndString: false,
+          allowRegExp: false,
+          skipCompoundAssignments: false,
         },
       ],
     },
@@ -1450,22 +1454,22 @@ foo += 'some data';
       `,
       errors: [
         {
+          column: 1,
           data: {
             stringLike: 'string',
             type: 'string | null',
           },
-          messageId: 'invalid',
           line: 3,
-          column: 1,
+          messageId: 'invalid',
         },
       ],
       options: [
         {
           allowAny: false,
           allowBoolean: false,
+          allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
-          allowNullish: false,
         },
       ],
     },
@@ -1476,14 +1480,14 @@ foo += 1;
       `,
       errors: [
         {
+          column: 1,
           data: {
             left: 'string',
             right: 'number',
             stringLike: 'string',
           },
-          messageId: 'mismatched',
           line: 3,
-          column: 1,
+          messageId: 'mismatched',
         },
       ],
       options: [
@@ -1503,14 +1507,14 @@ foo += '';
       `,
       errors: [
         {
+          column: 1,
           data: {
             left: 'number',
             right: 'string',
             stringLike: 'string',
           },
-          messageId: 'mismatched',
           line: 3,
-          column: 1,
+          messageId: 'mismatched',
         },
       ],
       options: [
@@ -1527,17 +1531,17 @@ foo += '';
       code: `
 const f = (a: any, b: boolean) => a + b;
       `,
+      errors: [
+        {
+          column: 39,
+          line: 2,
+          messageId: 'invalid',
+        },
+      ],
       options: [
         {
           allowAny: true,
           allowBoolean: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'invalid',
-          line: 2,
-          column: 39,
         },
       ],
     },
@@ -1545,21 +1549,21 @@ const f = (a: any, b: boolean) => a + b;
       code: `
 const f = (a: any, b: []) => a + b;
       `,
-      options: [
-        {
-          allowAny: true,
-        },
-      ],
       errors: [
         {
+          column: 34,
           data: {
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
             type: '[]',
           },
-          messageId: 'invalid',
           line: 2,
-          column: 34,
+          messageId: 'invalid',
+        },
+      ],
+      options: [
+        {
+          allowAny: true,
         },
       ],
     },
@@ -1567,22 +1571,22 @@ const f = (a: any, b: []) => a + b;
       code: `
 const f = (a: any, b: boolean) => a + b;
       `,
-      options: [
-        {
-          allowAny: false,
-          allowBoolean: true,
-        },
-      ],
       errors: [
         {
+          column: 35,
           data: {
             stringLike:
               'string, allowing a string + any of: `boolean`, `null`, `RegExp`, `undefined`',
             type: 'any',
           },
-          messageId: 'invalid',
           line: 2,
-          column: 35,
+          messageId: 'invalid',
+        },
+      ],
+      options: [
+        {
+          allowAny: false,
+          allowBoolean: true,
         },
       ],
     },
@@ -1590,21 +1594,21 @@ const f = (a: any, b: boolean) => a + b;
       code: `
 const f = (a: any, b: any) => a + b;
       `,
+      errors: [
+        {
+          column: 31,
+          line: 2,
+          messageId: 'invalid',
+        },
+        {
+          column: 35,
+          line: 2,
+          messageId: 'invalid',
+        },
+      ],
       options: [
         {
           allowAny: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'invalid',
-          line: 2,
-          column: 31,
-        },
-        {
-          messageId: 'invalid',
-          line: 2,
-          column: 35,
         },
       ],
     },
@@ -1612,16 +1616,16 @@ const f = (a: any, b: any) => a + b;
       code: `
 const f = (a: any, b: string) => a + b;
       `,
+      errors: [
+        {
+          column: 34,
+          line: 2,
+          messageId: 'invalid',
+        },
+      ],
       options: [
         {
           allowAny: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'invalid',
-          line: 2,
-          column: 34,
         },
       ],
     },
@@ -1629,16 +1633,16 @@ const f = (a: any, b: string) => a + b;
       code: `
 const f = (a: any, b: bigint) => a + b;
       `,
+      errors: [
+        {
+          column: 34,
+          line: 2,
+          messageId: 'invalid',
+        },
+      ],
       options: [
         {
           allowAny: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'invalid',
-          line: 2,
-          column: 34,
         },
       ],
     },
@@ -1646,16 +1650,16 @@ const f = (a: any, b: bigint) => a + b;
       code: `
 const f = (a: any, b: number) => a + b;
       `,
+      errors: [
+        {
+          column: 34,
+          line: 2,
+          messageId: 'invalid',
+        },
+      ],
       options: [
         {
           allowAny: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'invalid',
-          line: 2,
-          column: 34,
         },
       ],
     },
@@ -1665,14 +1669,14 @@ const f = (a: any, b: boolean) => a + b;
       `,
       errors: [
         {
-          messageId: 'invalid',
-          line: 2,
           column: 35,
+          line: 2,
+          messageId: 'invalid',
         },
         {
-          messageId: 'invalid',
-          line: 2,
           column: 39,
+          line: 2,
+          messageId: 'invalid',
         },
       ],
       options: [
@@ -1688,9 +1692,9 @@ const f = (a: number, b: RegExp) => a + b;
       `,
       errors: [
         {
-          messageId: 'invalid',
-          line: 2,
           column: 41,
+          line: 2,
+          messageId: 'invalid',
         },
       ],
       options: [
@@ -1706,14 +1710,14 @@ foo = foo + 'some data';
       `,
       errors: [
         {
+          column: 7,
           data: {
             stringLike:
               'string, allowing a string + any of: `any`, `null`, `RegExp`, `undefined`',
             type: 'string | boolean',
           },
-          messageId: 'invalid',
           line: 3,
-          column: 7,
+          messageId: 'invalid',
         },
       ],
       options: [
@@ -1729,14 +1733,14 @@ foo = foo + 'some data';
       `,
       errors: [
         {
+          column: 7,
           data: {
             stringLike:
               'string, allowing a string + any of: `any`, `null`, `RegExp`, `undefined`',
             type: 'boolean',
           },
-          messageId: 'invalid',
           line: 3,
-          column: 7,
+          messageId: 'invalid',
         },
       ],
       options: [
@@ -1749,6 +1753,18 @@ foo = foo + 'some data';
       code: `
 const f = (a: any, b: unknown) => a + b;
       `,
+      errors: [
+        {
+          column: 39,
+          data: {
+            stringLike:
+              'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
+            type: 'unknown',
+          },
+          line: 2,
+          messageId: 'invalid',
+        },
+      ],
       options: [
         {
           allowAny: true,
@@ -1757,18 +1773,23 @@ const f = (a: any, b: unknown) => a + b;
           allowRegExp: true,
         },
       ],
+    },
+    {
+      code: "let foo = '1' + 1n;",
       errors: [
         {
+          column: 11,
           data: {
+            left: 'string',
+            right: 'bigint',
             stringLike:
               'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
-            type: 'unknown',
           },
-          messageId: 'invalid',
-          line: 2,
-          column: 39,
+          line: 1,
+          messageId: 'mismatched',
         },
       ],
+      options: [{ allowNumberAndString: false }],
     },
   ],
 });

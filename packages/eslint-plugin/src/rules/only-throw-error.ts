@@ -1,19 +1,30 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { isThenableType } from 'ts-api-utils';
 import * as ts from 'typescript';
+
+import type { TypeOrValueSpecifier } from '../util';
 
 import {
   createRule,
+  findVariable,
   getParserServices,
   isErrorLike,
   isTypeAnyType,
   isTypeUnknownType,
+  typeMatchesSomeSpecifier,
+  typeOrValueSpecifiersSchema,
+  nullThrows,
 } from '../util';
+import { parseCatchCall, parseThenCall } from '../util/promiseUtils';
 
-type MessageIds = 'object' | 'undef';
+export type MessageIds = 'object' | 'undef';
 
-type Options = [
+export type Options = [
   {
+    allow?: TypeOrValueSpecifier[];
+    allowRethrowing?: boolean;
     allowThrowingAny?: boolean;
     allowThrowingUnknown?: boolean;
   },
@@ -25,37 +36,111 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow throwing non-`Error` values as exceptions',
-      recommended: 'recommended',
       extendsBaseRule: 'no-throw-literal',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowThrowingAny: {
-            type: 'boolean',
-          },
-          allowThrowingUnknown: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
     messages: {
       object: 'Expected an error object to be thrown.',
       undef: 'Do not throw undefined.',
     },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allow: {
+            ...typeOrValueSpecifiersSchema,
+            description: 'Type specifiers that can be thrown.',
+          },
+          allowRethrowing: {
+            type: 'boolean',
+            description:
+              'Whether to allow rethrowing caught values that are not `Error` objects.',
+          },
+          allowThrowingAny: {
+            type: 'boolean',
+            description:
+              'Whether to always allow throwing values typed as `any`.',
+          },
+          allowThrowingUnknown: {
+            type: 'boolean',
+            description:
+              'Whether to always allow throwing values typed as `unknown`.',
+          },
+        },
+      },
+    ],
   },
   defaultOptions: [
     {
+      allow: [],
+      allowRethrowing: true,
       allowThrowingAny: true,
       allowThrowingUnknown: true,
     },
   ],
   create(context, [options]) {
     const services = getParserServices(context);
+    const allow = options.allow;
+
+    function isRethrownError(node: TSESTree.Node): boolean {
+      if (node.type !== AST_NODE_TYPES.Identifier) {
+        return false;
+      }
+
+      const scope = context.sourceCode.getScope(node);
+
+      const smVariable = nullThrows(
+        findVariable(scope, node),
+        `Variable ${node.name} should exist in scope manager`,
+      );
+
+      const variableDefinitions = smVariable.defs.filter(
+        def => def.isVariableDefinition,
+      );
+      if (variableDefinitions.length !== 1) {
+        return false;
+      }
+      const def = smVariable.defs[0];
+
+      // try { /* ... */ } catch (x) { throw x; }
+      if (def.node.type === AST_NODE_TYPES.CatchClause) {
+        return true;
+      }
+
+      // promise.catch(x => { throw x; })
+      // promise.then(onFulfilled, x => { throw x; })
+      if (
+        def.node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+        def.node.params.length >= 1 &&
+        def.node.params[0] === def.name &&
+        def.node.parent.type === AST_NODE_TYPES.CallExpression
+      ) {
+        const callExpression = def.node.parent;
+
+        const parsedPromiseHandlingCall =
+          parseCatchCall(callExpression, context) ??
+          parseThenCall(callExpression, context);
+        if (parsedPromiseHandlingCall != null) {
+          const { object, onRejected } = parsedPromiseHandlingCall;
+          if (onRejected === def.node) {
+            const tsObjectNode = services.esTreeNodeToTSNodeMap.get(
+              object,
+            ) as ts.Expression;
+
+            // make sure we're actually dealing with a promise
+            if (
+              isThenableType(services.program.getTypeChecker(), tsObjectNode)
+            ) {
+              return true;
+            }
+          }
+        }
+      }
+
+      return false;
+    }
 
     function checkThrowArgument(node: TSESTree.Node): void {
       if (
@@ -65,7 +150,15 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
+      if (options.allowRethrowing && isRethrownError(node)) {
+        return;
+      }
+
       const type = services.getTypeAtLocation(node);
+
+      if (typeMatchesSomeSpecifier(type, allow, services.program)) {
+        return;
+      }
 
       if (type.flags & ts.TypeFlags.Undefined) {
         context.report({ node, messageId: 'undef' });
@@ -89,9 +182,7 @@ export default createRule<Options, MessageIds>({
 
     return {
       ThrowStatement(node): void {
-        if (node.argument) {
-          checkThrowArgument(node.argument);
-        }
+        checkThrowArgument(node.argument);
       },
     };
   },

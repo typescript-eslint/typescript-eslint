@@ -1,16 +1,17 @@
 // Forked from https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/lib/shared/config-validator.js
 
-import util from 'node:util';
-
 import type { AnyRuleModule, Linter } from '@typescript-eslint/utils/ts-eslint';
 import type {
   AdditionalPropertiesParams,
   ErrorObject as AjvErrorObject,
   ValidateFunction,
 } from 'ajv';
+
 import { builtinRules } from 'eslint/use-at-your-own-risk';
+import util from 'node:util';
 
 import type { TesterConfigWithDefaults } from '../types';
+
 import { ajvBuilder } from './ajv';
 import { emitDeprecationWarning } from './deprecation-warnings';
 import { flatConfigSchema } from './flat-config-schema';
@@ -25,8 +26,8 @@ const ruleValidators = new WeakMap<AnyRuleModule, ValidateFunction>();
 let validateSchema: ValidateFunction | undefined;
 const severityMap = {
   error: 2,
-  warn: 1,
   off: 0,
+  warn: 1,
 } as const;
 
 /**
@@ -50,8 +51,8 @@ function validateRuleSeverity(options: Linter.RuleEntry): number | string {
   throw new Error(
     `\tSeverity should be one of the following: 0 = off, 1 = warn, 2 = error (you passed '${util
       .inspect(severity)
-      .replace(/'/gu, '"')
-      .replace(/\n/gu, '')}').\n`,
+      .replaceAll("'", '"')
+      .replaceAll('\n', '')}').\n`,
   );
 }
 
@@ -196,7 +197,7 @@ function validateConfigSchema(
   config: TesterConfigWithDefaults,
   source: string,
 ): void {
-  validateSchema ||= ajv.compile(flatConfigSchema);
+  validateSchema ??= ajv.compile(flatConfigSchema);
 
   if (!validateSchema(config)) {
     throw new Error(

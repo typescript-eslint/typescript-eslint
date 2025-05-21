@@ -41,7 +41,7 @@ export function containsAllTypesByName(
   const bases = type.getBaseTypes();
 
   return (
-    bases !== undefined &&
+    bases != null &&
     (matchAnyInstead
       ? bases.some(predicate)
       : bases.length > 0 && bases.every(predicate))

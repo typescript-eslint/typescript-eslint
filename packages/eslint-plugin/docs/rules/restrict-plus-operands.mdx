@@ -74,6 +74,8 @@ Safer alternatives to using the `allow*` options include:
 
 ### `allowAny`
 
+{/* insert option description */}
+
 Examples of code for this rule with `{ allowAny: true }`:
 
 <Tabs>
@@ -97,6 +99,8 @@ let fn = (a: string, b: any) => a + b;
 
 ### `allowBoolean`
 
+{/* insert option description */}
+
 Examples of code for this rule with `{ allowBoolean: true }`:
 
 <Tabs>
@@ -119,6 +123,8 @@ let fn = (a: string, b: boolean) => a + b;
 </Tabs>
 
 ### `allowNullish`
+
+{/* insert option description */}
 
 Examples of code for this rule with `{ allowNullish: true }`:
 
@@ -147,6 +153,8 @@ let fn = (a: string, b: null) => a + b;
 
 ### `allowNumberAndString`
 
+{/* insert option description */}
+
 Examples of code for this rule with `{ allowNumberAndString: true }`:
 
 <Tabs>
@@ -163,12 +171,15 @@ let fn = (a: number, b: never) => a + b;
 ```ts option='{ "allowNumberAndString": true }'
 let fn = (a: number, b: string) => a + b;
 let fn = (a: number, b: number | string) => a + b;
+let fn = (a: bigint, b: string) => a + b;
 ```
 
 </TabItem>
 </Tabs>
 
 ### `allowRegExp`
+
+{/* insert option description */}
 
 Examples of code for this rule with `{ allowRegExp: true }`:
 
@@ -190,6 +201,8 @@ let fn = (a: string, b: RegExp) => a + b;
 </Tabs>
 
 ### `skipCompoundAssignments`
+
+{/* insert option description */}
 
 Examples of code for this rule with `{ skipCompoundAssignments: false }`:
 

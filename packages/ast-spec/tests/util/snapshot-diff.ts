@@ -1,30 +1,37 @@
-import { diff } from 'jest-diff';
-import defaultPrinter from 'pretty-format';
+import { format } from '@vitest/pretty-format';
+import { diff } from '@vitest/utils/diff';
 
-import * as NodeSerializer from './serializers/Node';
-import * as StringSerializer from './serializers/string';
+import * as NodeSerializer from './serializers/Node.js';
+import * as StringSerializer from './serializers/string.js';
 
 function identity<T>(value: T): T {
   return value;
 }
+
+// https://github.com/facebook/jest/blob/a293b75310cfc209713df1d34d243eb258995316/packages/jest-diff/src/constants.ts#L8
+const NO_DIFF_MESSAGE = 'Compared values have no visual difference.';
 
 function diffStrings(
   valueA: unknown,
   valueB: unknown,
   valueAName: string,
   valueBName: string,
-): string | null {
+): string | undefined {
+  if (Object.is(valueA, valueB)) {
+    return NO_DIFF_MESSAGE;
+  }
+
   return diff(valueA, valueB, {
     expand: false,
     // we want to show the entire file in the diff
     // that way you don't have to try and figure out what lines map to which sections
-    contextLines: Number.MAX_SAFE_INTEGER,
     aAnnotation: valueAName,
-    bAnnotation: valueBName,
     aColor: identity,
+    bAnnotation: valueBName,
     bColor: identity,
     changeColor: identity,
     commonColor: identity,
+    contextLines: Number.MAX_SAFE_INTEGER,
     patchColor: identity,
   });
 }
@@ -38,7 +45,7 @@ export function snapshotDiff(
   const OPTIONS = {
     plugins: [
       NodeSerializer.serializer,
-      // by default jest will quote the string with double quotes
+      // by default vitest will quote the string with double quotes
       // this means the diff string will have double quotes escaped and look ugly
       // this is a single-quote string serializer which won't clash with the outer double quotes
       // so we get a nicer looking diff because of it!
@@ -47,8 +54,8 @@ export function snapshotDiff(
   };
 
   const difference = diffStrings(
-    defaultPrinter(valueA, OPTIONS),
-    defaultPrinter(valueB, OPTIONS),
+    format(valueA, OPTIONS),
+    format(valueB, OPTIONS),
     valueAName,
     valueBName,
   );
@@ -57,11 +64,8 @@ export function snapshotDiff(
     throw new Error('Unexpected null when diffing snapshots.');
   }
 
-  return 'Snapshot Diff:\n' + difference;
+  return `Snapshot Diff:\n${difference}`;
 }
-
-// https://github.com/facebook/jest/blob/a293b75310cfc209713df1d34d243eb258995316/packages/jest-diff/src/constants.ts#L8
-const NO_DIFF_MESSAGE = 'Compared values have no visual difference.';
 
 export function diffHasChanges(diff: string): boolean {
   return !diff.includes(NO_DIFF_MESSAGE);

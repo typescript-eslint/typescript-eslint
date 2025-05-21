@@ -2,15 +2,22 @@ import type {
   ParserServicesWithTypeInformation,
   TSESTree,
 } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type {
   ReportDescriptor,
   ReportFixFunction,
   RuleContext,
   SourceCode,
 } from '@typescript-eslint/utils/ts-eslint';
-import { unionTypeParts } from 'ts-api-utils';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { unionConstituents } from 'ts-api-utils';
 import * as ts from 'typescript';
+
+import type { ValidOperand } from './gatherLogicalOperands';
+import type {
+  PreferOptionalChainMessageIds,
+  PreferOptionalChainOptions,
+} from './PreferOptionalChainOptions';
 
 import {
   getFixOrSuggest,
@@ -24,12 +31,7 @@ import {
 } from '../../util';
 import { checkNullishAndReport } from './checkNullishAndReport';
 import { compareNodes, NodeComparisonResult } from './compareNodes';
-import type { ValidOperand } from './gatherLogicalOperands';
 import { NullishComparisonType } from './gatherLogicalOperands';
-import type {
-  PreferOptionalChainMessageIds,
-  PreferOptionalChainOptions,
-} from './PreferOptionalChainOptions';
 
 function includesType(
   parserServices: ParserServicesWithTypeInformation,
@@ -37,7 +39,7 @@ function includesType(
   typeFlagIn: ts.TypeFlags,
 ): boolean {
   const typeFlag = typeFlagIn | ts.TypeFlags.Any | ts.TypeFlags.Unknown;
-  const types = unionTypeParts(parserServices.getTypeAtLocation(node));
+  const types = unionConstituents(parserServices.getTypeAtLocation(node));
   for (const type of types) {
     if (isTypeFlagSet(type, typeFlag)) {
       return true;
@@ -55,7 +57,7 @@ type OperandAnalyzer = (
   operand: ValidOperand,
   index: number,
   chain: readonly ValidOperand[],
-) => readonly [ValidOperand] | readonly [ValidOperand, ValidOperand] | null;
+) => readonly [ValidOperand, ValidOperand] | readonly [ValidOperand] | null;
 const analyzeAndChainOperand: OperandAnalyzer = (
   parserServices,
   operand,
@@ -376,7 +378,7 @@ function getReportDescriptor(
       if (lastOperand.isYoda) {
         const unaryOperator =
           lastOperand.node.right.type === AST_NODE_TYPES.UnaryExpression
-            ? lastOperand.node.right.operator + ' '
+            ? `${lastOperand.node.right.operator} `
             : '';
 
         return {
@@ -386,7 +388,7 @@ function getReportDescriptor(
       }
       const unaryOperator =
         lastOperand.node.left.type === AST_NODE_TYPES.UnaryExpression
-          ? lastOperand.node.left.operator + ' '
+          ? `${lastOperand.node.left.operator} `
           : '';
       return {
         left: unaryOperator + newCode,
@@ -405,16 +407,16 @@ function getReportDescriptor(
     fixer.replaceTextRange(reportRange, newCode);
 
   return {
-    messageId: 'preferOptionalChain',
     loc: {
-      start: sourceCode.getLocFromIndex(reportRange[0]),
       end: sourceCode.getLocFromIndex(reportRange[1]),
+      start: sourceCode.getLocFromIndex(reportRange[0]),
     },
+    messageId: 'preferOptionalChain',
     ...getFixOrSuggest({
-      useFix: !useSuggestionFixer,
+      fixOrSuggest: useSuggestionFixer ? 'suggest' : 'fix',
       suggestion: {
-        messageId: 'optionalChainSuggest',
         fix,
+        messageId: 'optionalChainSuggest',
       },
     }),
   };
@@ -541,7 +543,7 @@ export function analyzeChain(
 
   // Things like x !== null && x !== undefined have two nodes, but they are
   // one logical unit here, so we'll allow them to be grouped.
-  let subChain: (ValidOperand | readonly ValidOperand[])[] = [];
+  let subChain: (readonly ValidOperand[] | ValidOperand)[] = [];
   const maybeReportThenReset = (
     newChainSeed?: readonly [ValidOperand, ...ValidOperand[]],
   ): void => {

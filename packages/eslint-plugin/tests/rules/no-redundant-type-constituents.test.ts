@@ -7,8 +7,8 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -165,6 +165,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type T = 'a' | 1 | 'b';
       type U = T & string;
     `,
+    "declare function fn(): never | 'foo';",
   ],
 
   invalid: [
@@ -307,6 +308,19 @@ ruleTester.run('no-redundant-type-constituents', rule, {
             typeName: 'unknown',
           },
           messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type ErrorTypes = NotKnown | 0;',
+      errors: [
+        {
+          column: 19,
+          data: {
+            container: 'union',
+            typeName: 'NotKnown',
+          },
+          messageId: 'errorTypeOverrides',
         },
       ],
     },
@@ -650,6 +664,19 @@ ruleTester.run('no-redundant-type-constituents', rule, {
             typeName: 'any',
           },
           messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type ErrorTypes = NotKnown & 0;',
+      errors: [
+        {
+          column: 19,
+          data: {
+            container: 'intersection',
+            typeName: 'NotKnown',
+          },
+          messageId: 'errorTypeOverrides',
         },
       ],
     },

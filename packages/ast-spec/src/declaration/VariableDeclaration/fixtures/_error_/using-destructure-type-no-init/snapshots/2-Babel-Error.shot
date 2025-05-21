@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ using-destructure-type-no-init Babel - Error 1`] = `[SyntaxError: Missing semicolon. (1:5)]`;
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > using-destructure-type-no-init > Babel - Error`]
+SyntaxError: Using declaration cannot have destructuring patterns. (1:6)

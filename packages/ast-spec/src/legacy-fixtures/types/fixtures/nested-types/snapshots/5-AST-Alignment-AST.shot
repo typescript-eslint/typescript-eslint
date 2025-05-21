@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types nested-types AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > nested-types > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,12 +10,12 @@ exports[`AST Fixtures legacy-fixtures types nested-types AST Alignment - AST 1`]
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [78, 81],
           loc: {
@@ -182,17 +182,6 @@ exports[`AST Fixtures legacy-fixtures types nested-types AST Alignment - AST 1`]
 +                             types: Array [
 +                               TSNullKeyword {
 +                                 type: 'TSNullKeyword',
-+
-+                                 range: [139, 143],
-+                                 loc: {
-+                                   start: { column: 23, line: 5 },
-+                                   end: { column: 27, line: 5 },
-+                                 },
-+                               },
-+                               TSArrayType {
-+                                 type: 'TSArrayType',
-+                                 elementType: TSBooleanKeyword {
-+                                   type: 'TSBooleanKeyword',
 
 -                             range: [139, 143],
 -                             loc: {
@@ -204,17 +193,28 @@ exports[`AST Fixtures legacy-fixtures types nested-types AST Alignment - AST 1`]
 -                             type: 'TSArrayType',
 -                             elementType: TSBooleanKeyword {
 -                               type: 'TSBooleanKeyword',
++                                 range: [139, 143],
++                                 loc: {
++                                   start: { column: 23, line: 5 },
++                                   end: { column: 27, line: 5 },
++                                 },
++                               },
++                               TSArrayType {
++                                 type: 'TSArrayType',
++                                 elementType: TSBooleanKeyword {
++                                   type: 'TSBooleanKeyword',
+
+-                               range: [146, 153],
+-                               loc: {
+-                                 start: { column: 30, line: 5 },
+-                                 end: { column: 37, line: 5 },
 +                                   range: [146, 153],
 +                                   loc: {
 +                                     start: { column: 30, line: 5 },
 +                                     end: { column: 37, line: 5 },
 +                                   },
 +                                 },
-
--                               range: [146, 153],
--                               loc: {
--                                 start: { column: 30, line: 5 },
--                                 end: { column: 37, line: 5 },
++
 +                                 range: [146, 155],
 +                                 loc: {
 +                                   start: { column: 30, line: 5 },
@@ -244,54 +244,54 @@ exports[`AST Fixtures legacy-fixtures types nested-types AST Alignment - AST 1`]
 +                             end: { column: 40, line: 5 },
 +                           },
                           },
--                       },
--                     ],
 +                       ],
++
++                       range: [126, 156],
++                       loc: {
++                         start: { column: 10, line: 5 },
++                         end: { column: 40, line: 5 },
+                        },
+-                     ],
++                     },
++                   ],
 
 -                     range: [126, 156],
 -                     loc: {
 -                       start: { column: 10, line: 5 },
 -                       end: { column: 40, line: 5 },
-+                       range: [126, 156],
-+                       loc: {
-+                         start: { column: 10, line: 5 },
-+                         end: { column: 40, line: 5 },
-+                       },
-                      },
-+                   ],
-+
+-                     },
 +                   range: [121, 157],
 +                   loc: {
 +                     start: { column: 5, line: 5 },
 +                     end: { column: 41, line: 5 },
                     },
 -                 ],
-+                 },
-+                 TSTypeLiteral {
-+                   type: 'TSTypeLiteral',
-+                   members: Array [],
-
+-
 -                 range: [121, 157],
 -                 loc: {
 -                   start: { column: 5, line: 5 },
 -                   end: { column: 41, line: 5 },
+                  },
+-               },
+-               TSTypeLiteral {
+-                 type: 'TSTypeLiteral',
+-                 members: Array [],
++                 TSTypeLiteral {
++                   type: 'TSTypeLiteral',
++                   members: Array [],
+
+-                 range: [160, 162],
+-                 loc: {
+-                   start: { column: 44, line: 5 },
+-                   end: { column: 46, line: 5 },
 +                   range: [160, 162],
 +                   loc: {
 +                     start: { column: 44, line: 5 },
 +                     end: { column: 46, line: 5 },
 +                   },
                   },
--               },
--               TSTypeLiteral {
--                 type: 'TSTypeLiteral',
--                 members: Array [],
 +               ],
-
--                 range: [160, 162],
--                 loc: {
--                   start: { column: 44, line: 5 },
--                   end: { column: 46, line: 5 },
--                 },
++
 +               range: [121, 162],
 +               loc: {
 +                 start: { column: 5, line: 5 },
@@ -332,5 +332,4 @@ exports[`AST Fixtures legacy-fixtures types nested-types AST Alignment - AST 1`]
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

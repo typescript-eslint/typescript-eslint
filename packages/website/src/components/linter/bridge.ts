@@ -1,9 +1,10 @@
 import type * as tsvfs from '@site/src/vendor/typescript-vfs';
 import type * as ts from 'typescript';
 
-import { debounce } from '../lib/debounce';
 import type { ConfigModel } from '../types';
 import type { PlaygroundSystem } from './types';
+
+import { debounce } from '../lib/debounce';
 import { getPathRegExp } from './utils';
 
 export function createFileSystem(

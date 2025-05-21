@@ -1,10 +1,10 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "8.1.0",
+  "version": "8.32.1",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
-    "_ts4.3",
+    "!*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"
@@ -37,52 +37,51 @@
     "estree"
   ],
   "scripts": {
-    "copy-ast-spec": "tsx ./tools/copy-ast-spec.ts",
-    "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts4.3/dist --to=4.3",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf src/generated && rimraf _ts3.4 && rimraf _ts4.3 && rimraf coverage",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate-lib": "npx nx run scope-manager:generate-lib",
-    "lint": "npx nx lint",
-    "typecheck": "tsc --noEmit"
-  },
-  "nx": {
-    "targets": {
-      "copy-ast-spec": {
-        "dependsOn": [
-          "^build"
-        ],
-        "outputs": [
-          "{projectRoot}/src/generated"
-        ],
-        "cache": true
-      },
-      "build": {
-        "dependsOn": [
-          "^build",
-          "copy-ast-spec"
-        ]
-      }
-    }
+    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
+    "build": "yarn run -BT nx build",
+    "clean": "rimraf dist/ src/generated/ coverage/",
+    "copy-ast-spec": "tsx ./tools/copy-ast-spec.mts",
+    "format": "yarn run -T format",
+    "generate-lib": "yarn run -BT nx run scope-manager:generate-lib",
+    "lint": "yarn run -BT nx lint",
+    "test": "yarn run -BT nx test",
+    "typecheck": "yarn run -BT nx typecheck"
   },
   "devDependencies": {
-    "@jest/types": "29.6.3",
-    "downlevel-dts": "*",
-    "prettier": "^3.2.5",
+    "@vitest/coverage-v8": "^3.1.3",
     "rimraf": "*",
     "tsx": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "vitest": "^3.1.3"
   },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
   },
-  "typesVersions": {
-    "<4.7": {
-      "*": [
-        "_ts4.3/*"
-      ]
+  "nx": {
+    "name": "types",
+    "includedScripts": [
+      "clean"
+    ],
+    "targets": {
+      "build": {
+        "dependsOn": [
+          "copy-ast-spec"
+        ]
+      },
+      "copy-ast-spec": {
+        "command": "tsx ./tools/copy-ast-spec.mts",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "ast-spec:build"
+        ],
+        "outputs": [
+          "{projectRoot}/src/generated"
+        ],
+        "cache": true
+      }
     }
   }
 }

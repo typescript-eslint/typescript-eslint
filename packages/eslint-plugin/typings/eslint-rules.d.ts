@@ -20,11 +20,11 @@ declare module 'eslint/use-at-your-own-risk' {
     'no-loop-func': typeof import('eslint/lib/rules/no-loop-func');
     'no-loss-of-precision': typeof import('eslint/lib/rules/no-loss-of-precision');
     'no-magic-numbers': typeof import('eslint/lib/rules/no-magic-numbers');
+    'no-restricted-globals': typeof import('eslint/lib/rules/no-restricted-globals');
     'no-restricted-imports': typeof import('eslint/lib/rules/no-restricted-imports');
     'no-undef': typeof import('eslint/lib/rules/no-undef');
     'no-unused-expressions': typeof import('eslint/lib/rules/no-unused-expressions');
     'no-useless-constructor': typeof import('eslint/lib/rules/no-useless-constructor');
-    'no-restricted-globals': typeof import('eslint/lib/rules/no-restricted-globals');
     'prefer-const': typeof import('eslint/lib/rules/prefer-const');
     'prefer-destructuring': typeof import('eslint/lib/rules/prefer-destructuring');
     strict: typeof import('eslint/lib/rules/strict');
@@ -70,12 +70,12 @@ declare module 'eslint/lib/rules/consistent-return' {
     ],
     unknown,
     {
-      ReturnStatement(node: TSESTree.ReturnStatement): void;
-      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
-      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void;
       'ArrowFunctionExpression:exit'(
         node: TSESTree.ArrowFunctionExpression,
       ): void;
+      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
+      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void;
+      ReturnStatement(node: TSESTree.ReturnStatement): void;
     }
   >;
   export = rule;
@@ -89,9 +89,9 @@ declare module 'eslint/lib/rules/camelcase' {
     [
       {
         allow?: string[];
+        genericType?: 'always' | 'never';
         ignoreDestructuring?: boolean;
         properties?: 'always' | 'never';
-        genericType?: 'always' | 'never';
       },
     ],
     unknown,
@@ -107,14 +107,19 @@ declare module 'eslint/lib/rules/max-params' {
   const rule: TSESLint.RuleModule<
     'exceed',
     (
-      | { max: number; countVoidThis?: boolean }
-      | { maximum: number; countVoidThis?: boolean }
+      | { countVoidThis?: boolean; max: number }
+      | { countVoidThis?: boolean; maximum: number }
     )[],
     unknown,
     {
-      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
-      FunctionExpression(node: TSESTree.FunctionExpression): void;
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+      FunctionDeclaration(
+        node:
+          | TSESTree.FunctionDeclaration
+          | TSESTree.TSDeclareFunction
+          | TSESTree.TSFunctionType,
+      ): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
     }
   >;
   export = rule;
@@ -128,12 +133,12 @@ declare module 'eslint/lib/rules/no-dupe-class-members' {
     [],
     unknown,
     {
-      Program(): void;
-      ClassBody(): void;
       'ClassBody:exit'(): void;
       'MethodDefinition, PropertyDefinition'(
         node: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
       ): void;
+      ClassBody(): void;
+      Program(): void;
     }
   >;
   export = rule;
@@ -200,8 +205,8 @@ declare module 'eslint/lib/rules/no-loop-func' {
     unknown,
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
-      FunctionExpression(node: TSESTree.FunctionExpression): void;
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
     }
   >;
   export = rule;
@@ -214,12 +219,12 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
     'noMagic',
     [
       {
+        detectObjects?: boolean;
+        enforceConst?: boolean;
         ignore?: (number | string)[];
         ignoreArrayIndexes?: boolean;
-        enforceConst?: boolean;
-        detectObjects?: boolean;
-        ignoreNumericLiteralTypes?: boolean;
         ignoreEnums?: boolean;
+        ignoreNumericLiteralTypes?: boolean;
         ignoreReadonlyClassProperties?: boolean;
         ignoreTypeIndexes?: boolean;
       },
@@ -258,8 +263,8 @@ declare module 'eslint/lib/rules/no-restricted-globals' {
     (
       | string
       | {
-          name: string;
           message?: string;
+          name: string;
         }
     )[],
     unknown,
@@ -277,9 +282,9 @@ declare module 'eslint/lib/rules/no-shadow' {
     'noShadow',
     [
       {
+        allow?: string[];
         builtinGlobals?: boolean;
         hoist?: 'all' | 'functions' | 'never';
-        allow?: string[];
         ignoreOnInitialization?: boolean;
       },
     ],
@@ -318,14 +323,14 @@ declare module 'eslint/lib/rules/no-unused-vars' {
       | 'all'
       | 'local'
       | {
-          vars?: 'all' | 'local';
-          varsIgnorePattern?: string;
           args?: 'after-used' | 'all' | 'none';
-          ignoreRestSiblings?: boolean;
           argsIgnorePattern?: string;
           caughtErrors?: 'all' | 'none';
           caughtErrorsIgnorePattern?: string;
           destructuredArrayIgnorePattern?: string;
+          ignoreRestSiblings?: boolean;
+          vars?: 'all' | 'local';
+          varsIgnorePattern?: string;
         },
     ],
     unknown,
@@ -344,8 +349,8 @@ declare module 'eslint/lib/rules/no-unused-expressions' {
     [
       {
         allowShortCircuit?: boolean;
-        allowTernary?: boolean;
         allowTaggedTemplates?: boolean;
+        allowTernary?: boolean;
       },
     ],
     unknown,
@@ -364,8 +369,8 @@ declare module 'eslint/lib/rules/no-use-before-define' {
     (
       | 'nofunc'
       | {
-          functions?: boolean;
           classes?: boolean;
+          functions?: boolean;
           variables?: boolean;
         }
     )[],
@@ -404,7 +409,7 @@ declare module 'eslint/lib/rules/no-useless-constructor' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'noUselessConstructor',
+    'noUselessConstructor' | 'removeConstructor',
     [],
     unknown,
     {
@@ -458,11 +463,11 @@ declare module 'eslint/lib/rules/dot-notation' {
     'useBrackets' | 'useDot',
     [
       {
+        allowIndexSignaturePropertyAccess?: boolean;
         allowKeywords?: boolean;
         allowPattern?: string;
         allowPrivateClassPropertyAccess?: boolean;
         allowProtectedClassPropertyAccess?: boolean;
-        allowIndexSignaturePropertyAccess?: boolean;
       },
     ],
     unknown,
@@ -510,17 +515,17 @@ declare module 'eslint/lib/rules/prefer-const' {
 declare module 'eslint/lib/rules/prefer-destructuring' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-  interface DestructuringTypeConfig {
-    object?: boolean;
+  export interface DestructuringTypeConfig {
     array?: boolean;
+    object?: boolean;
   }
   type Option0 =
     | DestructuringTypeConfig
     | {
-        VariableDeclarator?: DestructuringTypeConfig;
         AssignmentExpression?: DestructuringTypeConfig;
+        VariableDeclarator?: DestructuringTypeConfig;
       };
-  interface Option1 {
+  export interface Option1 {
     enforceForRenamedProperties?: boolean;
   }
   const rule: TSESLint.RuleModule<
@@ -528,8 +533,8 @@ declare module 'eslint/lib/rules/prefer-destructuring' {
     [Option0, Option1?],
     unknown,
     {
-      VariableDeclarator(node: TSESTree.VariableDeclarator): void;
       AssignmentExpression(node: TSESTree.AssignmentExpression): void;
+      VariableDeclarator(node: TSESTree.VariableDeclarator): void;
     }
   >;
   export = rule;
@@ -541,32 +546,33 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
     export type ArrayOfStringOrObject = (
       | string
       | {
-          name: string;
-          message?: string;
-          importNames?: string[];
           // extended
           allowTypeImports?: boolean;
+          importNames?: string[];
+          message?: string;
+          name: string;
         }
     )[];
     export type ArrayOfStringOrObjectPatterns =
+      | string[]
       | {
-          group: string[];
-          message?: string;
-          caseSensitive?: boolean;
           // extended
           allowTypeImports?: boolean;
-        }[]
-      | string[];
+          caseSensitive?: boolean;
+          group?: string[];
+          regex?: string;
+          message?: string;
+        }[];
     export type RuleListener =
       | Record<string, never>
       | {
-          ImportDeclaration(node: TSESTree.ImportDeclaration): void;
-          ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
           ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
+          ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
+          ImportDeclaration(node: TSESTree.ImportDeclaration): void;
         };
   }
 
-  interface ObjectOfPathsAndPatterns {
+  export interface ObjectOfPathsAndPatterns {
     paths?: rule.ArrayOfStringOrObject;
     patterns?: rule.ArrayOfStringOrObjectPatterns;
   }
@@ -580,7 +586,7 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
     | 'pathWithCustomMessage'
     | 'patterns'
     | 'patternWithCustomMessage',
-    rule.ArrayOfStringOrObject | [ObjectOfPathsAndPatterns],
+    [ObjectOfPathsAndPatterns] | rule.ArrayOfStringOrObject,
     unknown,
     rule.RuleListener
   >;

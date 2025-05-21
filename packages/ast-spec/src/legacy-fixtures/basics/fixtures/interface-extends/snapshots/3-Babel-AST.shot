@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics interface-extends Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -16,12 +13,15 @@ Program {
           end: { column: 28, line: 3 },
         },
       },
+      declare: false,
       extends: [
         TSExpressionWithTypeArguments {
           type: "TSExpressionWithTypeArguments",
           expression: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "Bar",
+            optional: false,
 
             range: [95, 98],
             loc: {
@@ -39,7 +39,9 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [83, 86],
         loc: {
@@ -63,4 +65,3 @@ Program {
     end: { column: 0, line: 4 },
   },
 }
-`;

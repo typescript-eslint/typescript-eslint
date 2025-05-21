@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-arguments AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > expressions > optional-call-expression-type-arguments > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -20,9 +20,9 @@ exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-
               computed: false,
               object: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'foo',
--               optional: false,
+                optional: false,
 
                 range: [73, 76],
                 loc: {
@@ -33,9 +33,9 @@ exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-
               optional: true,
               property: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'bar',
--               optional: false,
+                optional: false,
 
                 range: [78, 81],
                 loc: {
@@ -59,9 +59,9 @@ exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'A',
--                   optional: false,
+                    optional: false,
 
                     range: [82, 83],
                     loc: {
@@ -117,9 +117,9 @@ exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-
               computed: false,
               object: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'foo',
--               optional: false,
+                optional: false,
 
                 range: [88, 91],
                 loc: {
@@ -130,9 +130,9 @@ exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-
               optional: true,
               property: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'bar',
--               optional: false,
+                optional: false,
 
                 range: [93, 96],
                 loc: {
@@ -198,5 +198,4 @@ exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-
       start: { column: 0, line: 3 },
       end: { column: 0, line: 5 },
     },
-  }"
-`;
+  }

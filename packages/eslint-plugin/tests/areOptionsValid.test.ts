@@ -2,19 +2,19 @@ import { createRule } from '../src/util';
 import { areOptionsValid } from './areOptionsValid';
 
 const exampleRule = createRule<['value-a' | 'value-b'], never>({
-  name: 'my-example-rule',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Detects something or other',
-    },
-    schema: [{ type: 'string', enum: ['value-a', 'value-b'] }],
-    messages: {},
-  },
-  defaultOptions: ['value-a'],
   create() {
     return {};
   },
+  defaultOptions: ['value-a'],
+  meta: {
+    docs: {
+      description: 'Detects something or other',
+    },
+    messages: {},
+    schema: [{ enum: ['value-a', 'value-b'], type: 'string' }],
+    type: 'suggestion',
+  },
+  name: 'my-example-rule',
 });
 
 test('returns true for valid options', () => {

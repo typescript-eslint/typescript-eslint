@@ -7,9 +7,9 @@ type Monaco = typeof MonacoEditor;
 type Sandbox = typeof SandboxFactory;
 
 export interface SandboxModel {
+  lintUtils: WebLinterModule;
   main: Monaco;
   sandboxFactory: Sandbox;
-  lintUtils: WebLinterModule;
 }
 
 function loadSandbox(tsVersion: string): Promise<SandboxModel> {
@@ -23,9 +23,9 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
       // https://typescript.azureedge.net/indexes/releases.json
       window.require.config({
         paths: {
-          vs: `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`,
-          sandbox: 'https://www.typescriptlang.org/js/sandbox',
           linter: '/sandbox',
+          sandbox: 'https://www.typescriptlang.org/js/sandbox',
+          vs: `https://playgroundcdn.typescriptlang.org/cdn/${tsVersion}/monaco/min/vs`,
         },
         // This is something you need for monaco to work
         ignoreDuplicateModules: ['vs/editor/editor.main'],
@@ -35,7 +35,7 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
       window.require<[Monaco, Sandbox, WebLinterModule]>(
         ['vs/editor/editor.main', 'sandbox/index', 'linter/index'],
         (main, sandboxFactory, lintUtils) => {
-          resolve({ main, sandboxFactory, lintUtils });
+          resolve({ lintUtils, main, sandboxFactory });
         },
         () => {
           reject(

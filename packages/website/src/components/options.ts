@@ -1,12 +1,13 @@
-import { toJson } from './lib/json';
 import type { ConfigFileType, ConfigModel, ConfigShowAst } from './types';
 
-export const detailTabs: { value: ConfigShowAst; label: string }[] = [
-  { value: false, label: 'Errors' },
-  { value: 'es', label: 'ESTree' },
-  { value: 'ts', label: 'TypeScript' },
-  { value: 'scope', label: 'Scope' },
-  { value: 'types', label: 'Types' },
+import { toJson } from './lib/json';
+
+export const detailTabs: { label: string; value: ConfigShowAst }[] = [
+  { label: 'Errors', value: false },
+  { label: 'ESTree', value: 'es' },
+  { label: 'TypeScript', value: 'ts' },
+  { label: 'Scope', value: 'scope' },
+  { label: 'Types', value: 'types' },
 ];
 
 /**
@@ -29,19 +30,19 @@ export const fileTypes: ConfigFileType[] = [
  * It's used as a fallback when the URL doesn't contain any config
  */
 export const defaultConfig: ConfigModel = {
-  fileType: '.tsx',
-  showAST: false,
-  sourceType: 'module',
   code: '',
+  eslintrc: toJson({
+    rules: {},
+  }),
+  fileType: '.tsx',
+  scroll: true,
+  showAST: false,
+  showTokens: false,
+  sourceType: 'module',
   ts: process.env.TS_VERSION,
   tsconfig: toJson({
     compilerOptions: {
       strictNullChecks: true,
     },
   }),
-  eslintrc: toJson({
-    rules: {},
-  }),
-  scroll: true,
-  showTokens: false,
 };

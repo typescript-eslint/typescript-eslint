@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-unused-expressions 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,19 +6,18 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowShortCircuit": {
-        "default": false,
         "type": "boolean"
       },
       "allowTaggedTemplates": {
-        "default": false,
         "type": "boolean"
       },
       "allowTernary": {
-        "default": false,
         "type": "boolean"
       },
       "enforceForJSX": {
-        "default": false,
+        "type": "boolean"
+      },
+      "ignoreDirectives": {
         "type": "boolean"
       }
     },
@@ -38,7 +34,6 @@ type Options = [
     allowTaggedTemplates?: boolean;
     allowTernary?: boolean;
     enforceForJSX?: boolean;
+    ignoreDirectives?: boolean;
   },
 ];
-"
-`;

@@ -18,13 +18,13 @@ export default createRule({
       description: `Enforce that eslint-plugin rules don't require anything from ${TSESTREE_NAME} or ${TYPES_NAME}`,
     },
     fixable: 'code',
-    schema: [],
     messages: {
       dontImportPackage: [
         `Don't import from {{packageName}}. Everything you need should be available in ${UTILS_NAME}.`,
         `{{packageName}} is an indirect dependency of this package, and thus should not be used directly.`,
       ].join('\n'),
     },
+    schema: [],
   },
   defaultOptions: [],
   create(context) {

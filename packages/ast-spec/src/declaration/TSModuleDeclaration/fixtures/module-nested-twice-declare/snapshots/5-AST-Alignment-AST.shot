@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSModuleDeclaration module-nested-twice-declare AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > TSModuleDeclaration > module-nested-twice-declare > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,79 +10,116 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-nested-twice-declar
     body: Array [
       TSModuleDeclaration {
         type: 'TSModuleDeclaration',
-        body: TSModuleDeclaration {
-          type: 'TSModuleDeclaration',
-          body: TSModuleDeclaration {
-            type: 'TSModuleDeclaration',
-            body: TSModuleBlock {
-              type: 'TSModuleBlock',
-              body: Array [],
-
-              range: [27, 29],
-              loc: {
-                start: { column: 27, line: 1 },
-                end: { column: 29, line: 1 },
-              },
-            },
--           declare: false,
--           global: false,
-            id: Identifier {
-              type: 'Identifier',
--             decorators: Array [],
-              name: 'ghi',
--             optional: false,
-
-              range: [23, 26],
-              loc: {
-                start: { column: 23, line: 1 },
-                end: { column: 26, line: 1 },
-              },
-            },
--           kind: 'module',
-
-            range: [23, 29],
-            loc: {
-              start: { column: 23, line: 1 },
-              end: { column: 29, line: 1 },
-            },
-          },
--         declare: false,
--         global: false,
-          id: Identifier {
-            type: 'Identifier',
--           decorators: Array [],
-            name: 'def',
--           optional: false,
-
-            range: [19, 22],
-            loc: {
-              start: { column: 19, line: 1 },
-              end: { column: 22, line: 1 },
-            },
-          },
--         kind: 'module',
-
-          range: [19, 29],
-          loc: {
-            start: { column: 19, line: 1 },
-            end: { column: 29, line: 1 },
-          },
-        },
-        declare: true,
+-       body: TSModuleBlock {
+-         type: 'TSModuleBlock',
+-         body: Array [],
+-
+-         range: [27, 29],
+-         loc: {
+-           start: { column: 27, line: 1 },
+-           end: { column: 29, line: 1 },
+-         },
+-       },
+-       declare: true,
 -       global: false,
-        id: Identifier {
-          type: 'Identifier',
--         decorators: Array [],
-          name: 'abc',
--         optional: false,
+-       id: TSQualifiedName {
+-         type: 'TSQualifiedName',
+-         left: TSQualifiedName {
+-           type: 'TSQualifiedName',
+-           left: Identifier {
+-             type: 'Identifier',
+-             decorators: Array [],
+-             name: 'abc',
+-             optional: false,
++       body: TSModuleDeclaration {
++         type: 'TSModuleDeclaration',
++         body: TSModuleDeclaration {
++           type: 'TSModuleDeclaration',
++           body: TSModuleBlock {
++             type: 'TSModuleBlock',
++             body: Array [],
 
-          range: [15, 18],
+-             range: [15, 18],
++             range: [27, 29],
+              loc: {
+-               start: { column: 15, line: 1 },
+-               end: { column: 18, line: 1 },
++               start: { column: 27, line: 1 },
++               end: { column: 29, line: 1 },
+              },
+            },
+-           right: Identifier {
++           declare: false,
++           global: false,
++           id: Identifier {
+              type: 'Identifier',
+              decorators: Array [],
+-             name: 'def',
++             name: 'ghi',
+              optional: false,
+
+-             range: [19, 22],
++             range: [23, 26],
+              loc: {
+-               start: { column: 19, line: 1 },
+-               end: { column: 22, line: 1 },
++               start: { column: 23, line: 1 },
++               end: { column: 26, line: 1 },
+              },
+            },
+
+-           range: [15, 22],
++           range: [23, 29],
+            loc: {
+-             start: { column: 15, line: 1 },
+-             end: { column: 22, line: 1 },
++             start: { column: 23, line: 1 },
++             end: { column: 29, line: 1 },
+            },
+          },
+-         right: Identifier {
++         declare: false,
++         global: false,
++         id: Identifier {
+            type: 'Identifier',
+            decorators: Array [],
+-           name: 'ghi',
++           name: 'def',
+            optional: false,
+
+-           range: [23, 26],
++           range: [19, 22],
+            loc: {
+-             start: { column: 23, line: 1 },
+-             end: { column: 26, line: 1 },
++             start: { column: 19, line: 1 },
++             end: { column: 22, line: 1 },
+            },
+          },
+
+-         range: [15, 26],
++         range: [19, 29],
++         loc: {
++           start: { column: 19, line: 1 },
++           end: { column: 29, line: 1 },
++         },
++       },
++       declare: true,
++       global: false,
++       id: Identifier {
++         type: 'Identifier',
++         decorators: Array [],
++         name: 'abc',
++         optional: false,
++
++         range: [15, 18],
           loc: {
             start: { column: 15, line: 1 },
-            end: { column: 18, line: 1 },
+-           end: { column: 26, line: 1 },
++           end: { column: 18, line: 1 },
           },
         },
--       kind: 'module',
+        kind: 'module',
 
         range: [0, 29],
         loc: {
@@ -98,5 +135,4 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-nested-twice-declar
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

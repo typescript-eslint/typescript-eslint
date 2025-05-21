@@ -18,32 +18,32 @@ interface BaseASTNode {
 }
 
 export interface ArrayAST extends BaseASTNode {
-  readonly type: 'array';
   readonly elementType: AST;
+  readonly type: 'array';
 }
 export interface LiteralAST extends BaseASTNode {
-  readonly type: 'literal';
   readonly code: string;
+  readonly type: 'literal';
 }
 export interface ObjectAST extends BaseASTNode {
-  readonly type: 'object';
+  readonly indexSignature: AST | null;
   readonly properties: {
     readonly name: string;
     readonly optional: boolean;
     readonly type: AST;
   }[];
-  readonly indexSignature: AST | null;
+  readonly type: 'object';
 }
 export interface TupleAST extends BaseASTNode {
-  readonly type: 'tuple';
   readonly elements: AST[];
   readonly spreadType: AST | null;
+  readonly type: 'tuple';
 }
 export interface TypeReferenceAST extends BaseASTNode {
   readonly type: 'type-reference';
   readonly typeName: string;
 }
 export interface UnionAST extends BaseASTNode {
-  readonly type: 'union';
   readonly elements: AST[];
+  readonly type: 'union';
 }

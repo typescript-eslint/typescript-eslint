@@ -37,8 +37,8 @@ export const blogFooter: Plugin = () => {
                 value: 'supporting us on Open Collective',
               },
             ],
-            url: 'https://opencollective.com/typescript-eslint',
             type: 'link',
+            url: 'https://opencollective.com/typescript-eslint',
           },
           {
             type: 'text',

@@ -24,7 +24,7 @@ This page is a quick-start for [ESLint's new "flat" config format](https://eslin
 First, install the required packages for [ESLint](https://eslint.org), [TypeScript](https://typescriptlang.org), and [our tooling](../packages/TypeScript_ESLint.mdx):
 
 ```bash npm2yarn
-npm install --save-dev eslint @eslint/js @types/eslint__js typescript typescript-eslint
+npm install --save-dev eslint @eslint/js typescript typescript-eslint
 ```
 
 ### Step 2: Configuration
@@ -39,7 +39,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
+  tseslint.configs.recommended,
 );
 ```
 
@@ -51,6 +51,12 @@ This code will enable our [recommended configuration](../users/Shared_Configurat
 The `.mjs` extension makes the file use the [ES modules (ESM)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) format. Node interprets `.js` files in the [CommonJS (CJS)](https://nodejs.org/api/modules.html) format by default, but if you have `"type": "module"` in your `package.json`, you can also use `eslint.config.js`.
 
 </details>
+
+#### Details
+
+- `tseslint.config(...)` is an **_optional_** helper function — see [`typescript-eslint`'s `config(...)`](../packages/TypeScript_ESLint.mdx#config).
+- `'@eslint/js'` / `eslint.configs.recommended` turns on [eslint's recommended config](https://www.npmjs.com/package/@eslint/js).
+- `tseslint.configs.recommended` turns on [our recommended config](../users/Shared_Configurations.mdx#recommended).
 
 ### Step 3: Running ESLint
 
@@ -82,12 +88,6 @@ pnpm eslint .
 
 ESLint will lint all TypeScript compatible files within the current folder, and will output the results to your terminal.
 
-## Details
-
-- `tseslint.config(...)` is an _optional_ helper function — [read more about it here](../packages/TypeScript_ESLint.mdx#config).
-- `'@eslint/js'` / `eslint.configs.recommended` turns on [eslint's recommended config](https://www.npmjs.com/package/@eslint/js).
-- `...tseslint.configs.recommended` turns on [our recommended config](../users/Shared_Configurations.mdx#recommended).
-
 ## Next Steps
 
 If you're having problems getting this working, please have a look at our [Troubleshooting & FAQs](../troubleshooting/faqs/General.mdx).
@@ -103,11 +103,11 @@ We recommend you consider enabling the following two configs:
 export default tseslint.config(
   eslint.configs.recommended,
   // Remove this line
-  ...tseslint.configs.recommended,
+  tseslint.configs.recommended,
   // Add this line
-  ...tseslint.configs.strict,
+  tseslint.configs.strict,
   // Add this line
-  ...tseslint.configs.stylistic,
+  tseslint.configs.stylistic,
 );
 ```
 

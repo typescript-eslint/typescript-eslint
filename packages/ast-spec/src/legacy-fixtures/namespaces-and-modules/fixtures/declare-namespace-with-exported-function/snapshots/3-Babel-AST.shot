@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-with-exported-function Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -15,11 +12,14 @@ Program {
             declaration: TSDeclareFunction {
               type: "TSDeclareFunction",
               async: false,
+              declare: false,
               expression: false,
               generator: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "select",
+                optional: false,
 
                 range: [114, 120],
                 loc: {
@@ -30,7 +30,9 @@ Program {
               params: [
                 Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "selector",
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSStringKeyword {
@@ -63,7 +65,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "Selection",
+                    optional: false,
 
                     range: [140, 149],
                     loc: {
@@ -131,9 +135,12 @@ Program {
         },
       },
       declare: true,
+      global: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "d3",
+        optional: false,
 
         range: [91, 93],
         loc: {
@@ -141,6 +148,7 @@ Program {
           end: { column: 20, line: 3 },
         },
       },
+      kind: "namespace",
 
       range: [73, 157],
       loc: {
@@ -157,4 +165,3 @@ Program {
     end: { column: 0, line: 6 },
   },
 }
-`;

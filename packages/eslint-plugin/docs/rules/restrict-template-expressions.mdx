@@ -55,6 +55,8 @@ const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
 
 ### `allowNumber`
 
+{/* insert option description */}
+
 Examples of additional **correct** code for this rule with `{ allowNumber: true }`:
 
 ```ts option='{ "allowNumber": true }' showPlaygroundButton
@@ -65,7 +67,13 @@ const msg2 = `arg = ${arg || 'zero'}`;
 
 This option controls both numbers and BigInts.
 
+We recommend avoiding using this option if you use any floating point numbers.
+Although `` `${1}` `` evaluates to `'1'`, `` `${0.1 + 0.2}` `` evaluates to `'0.30000000000000004'`.
+Consider using [`.toFixed()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed) or [`.toPrecision()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision) instead.
+
 ### `allowBoolean`
+
+{/* insert option description */}
 
 Examples of additional **correct** code for this rule with `{ allowBoolean: true }`:
 
@@ -77,6 +85,8 @@ const msg2 = `arg = ${arg || 'not truthy'}`;
 
 ### `allowAny`
 
+{/* insert option description */}
+
 Examples of additional **correct** code for this rule with `{ allowAny: true }`:
 
 ```ts option='{ "allowAny": true }' showPlaygroundButton
@@ -87,6 +97,8 @@ const msg2 = `arg = ${user.name || 'the user with no name'}`;
 
 ### `allowNullish`
 
+{/* insert option description */}
+
 Examples of additional **correct** code for this rule with `{ allowNullish: true }`:
 
 ```ts option='{ "allowNullish": true }' showPlaygroundButton
@@ -95,6 +107,8 @@ const msg1 = `arg = ${arg}`;
 ```
 
 ### `allowRegExp`
+
+{/* insert option description */}
 
 Examples of additional **correct** code for this rule with `{ allowRegExp: true }`:
 
@@ -110,6 +124,8 @@ const msg1 = `arg = ${arg}`;
 
 ### `allowNever`
 
+{/* insert option description */}
+
 Examples of additional **correct** code for this rule with `{ allowNever: true }`:
 
 ```ts option='{ "allowNever": true }' showPlaygroundButton
@@ -119,11 +135,26 @@ const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
 
 ### `allowArray`
 
+{/* insert option description */}
+
 Examples of additional **correct** code for this rule with `{ allowArray: true }`:
 
 ```ts option='{ "allowArray": true }' showPlaygroundButton
 const arg = ['foo', 'bar'];
 const msg1 = `arg = ${arg}`;
+```
+
+### `allow`
+
+{/* insert option description */}
+
+This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier).
+
+Examples of additional **correct** code for this rule with the default option `{ allow: [{ from: 'lib', name: 'Error' }, { from: 'lib', name: 'URL' }, { from: 'lib', name: 'URLSearchParams' }] }`:
+
+```ts showPlaygroundButton
+const error = new Error();
+const msg1 = `arg = ${error}`;
 ```
 
 ## When Not To Use It

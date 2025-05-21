@@ -1,7 +1,10 @@
 import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
 import type { StringLiteral } from '../../expression/literal/StringLiteral/spec';
-import type { ExportSpecifier } from '../../special/ExportSpecifier/spec';
+import type {
+  ExportSpecifier,
+  ExportSpecifierWithIdentifierLocal,
+} from '../../special/ExportSpecifier/spec';
 import type { ImportAttribute } from '../../special/ImportAttribute/spec';
 import type { NamedExportDeclarations } from '../../unions/ExportDeclaration';
 import type { ExportKind } from '../ExportAndImportKind';
@@ -75,6 +78,8 @@ export interface ExportNamedDeclarationWithoutSourceWithMultiple
   attributes: ImportAttribute[];
   declaration: null;
   source: null;
+  // Cannot have literal local without a source
+  specifiers: ExportSpecifierWithIdentifierLocal[];
 }
 
 /**
@@ -99,7 +104,7 @@ export interface ExportNamedDeclarationWithoutSourceWithSingle
   /**
    * This will always be an empty array.
    */
-  specifiers: ExportSpecifier[];
+  specifiers: ExportSpecifierWithIdentifierLocal[];
 }
 
 /**
@@ -113,6 +118,10 @@ export interface ExportNamedDeclarationWithSource
   declaration: null;
   source: StringLiteral;
 }
+
+export type ExportNamedDeclarationWithoutSource =
+  | ExportNamedDeclarationWithoutSourceWithMultiple
+  | ExportNamedDeclarationWithoutSourceWithSingle;
 
 export type ExportNamedDeclaration =
   | ExportNamedDeclarationWithoutSourceWithMultiple

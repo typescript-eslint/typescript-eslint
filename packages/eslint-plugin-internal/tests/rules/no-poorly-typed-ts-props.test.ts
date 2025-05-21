@@ -14,20 +14,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-poorly-typed-ts-props', rule, {
-  valid: [
-    `
-declare const foo: { declarations: string[] };
-foo.declarations.map(decl => console.log(decl));
-    `,
-    `
-declare const bar: Symbol;
-bar.declarations.map(decl => console.log(decl));
-    `,
-    `
-declare const baz: Type;
-baz.symbol.name;
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -37,20 +23,20 @@ thing.declarations.map(decl => {});
       `,
       errors: [
         {
-          messageId: 'doNotUseWithFixer',
           data: {
-            type: 'Symbol',
-            property: 'declarations',
             fixWith: 'getDeclarations()',
+            property: 'declarations',
+            type: 'Symbol',
           },
           line: 4,
+          messageId: 'doNotUseWithFixer',
           suggestions: [
             {
-              messageId: 'suggestedFix',
               data: {
-                type: 'Symbol',
                 fixWith: 'getDeclarations()',
+                type: 'Symbol',
               },
+              messageId: 'suggestedFix',
               output: `
 import ts from 'typescript';
 declare const thing: ts.Symbol;
@@ -69,20 +55,20 @@ thing.symbol;
       `,
       errors: [
         {
-          messageId: 'doNotUseWithFixer',
           data: {
-            type: 'Type',
-            property: 'symbol',
             fixWith: 'getSymbol()',
+            property: 'symbol',
+            type: 'Type',
           },
           line: 4,
+          messageId: 'doNotUseWithFixer',
           suggestions: [
             {
-              messageId: 'suggestedFix',
               data: {
-                type: 'Type',
                 fixWith: 'getSymbol()',
+                type: 'Type',
               },
+              messageId: 'suggestedFix',
               output: `
 import ts from 'typescript';
 declare const thing: ts.Type;
@@ -101,20 +87,20 @@ thing?.symbol;
       `,
       errors: [
         {
-          messageId: 'doNotUseWithFixer',
           data: {
-            type: 'Type',
-            property: 'symbol',
             fixWith: 'getSymbol()',
+            property: 'symbol',
+            type: 'Type',
           },
           line: 4,
+          messageId: 'doNotUseWithFixer',
           suggestions: [
             {
-              messageId: 'suggestedFix',
               data: {
-                type: 'Type',
                 fixWith: 'getSymbol()',
+                type: 'Type',
               },
+              messageId: 'suggestedFix',
               output: `
 import ts from 'typescript';
 declare const thing: ts.Type;
@@ -125,5 +111,19 @@ thing?.getSymbol();
         },
       ],
     },
+  ],
+  valid: [
+    `
+declare const foo: { declarations: string[] };
+foo.declarations.map(decl => console.log(decl));
+    `,
+    `
+declare const bar: Symbol;
+bar.declarations.map(decl => console.log(decl));
+    `,
+    `
+declare const baz: Type;
+baz.symbol.name;
+    `,
   ],
 });

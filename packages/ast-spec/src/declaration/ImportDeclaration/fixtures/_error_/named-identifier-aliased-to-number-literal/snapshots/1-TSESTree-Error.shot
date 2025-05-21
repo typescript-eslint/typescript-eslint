@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > named-identifier-aliased-to-number-literal > TSESTree - Error`]
+TSError
+> 1 | import { X as 1 } from 'mod';
+    |               ^ Identifier expected.
+  2 |

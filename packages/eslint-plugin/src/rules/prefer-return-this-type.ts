@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -14,8 +15,6 @@ type FunctionLike =
 
 export default createRule({
   name: 'prefer-return-this-type',
-  defaultOptions: [],
-
   meta: {
     type: 'suggestion',
     docs: {
@@ -24,12 +23,14 @@ export default createRule({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
       useThisType: 'Use `this` type instead.',
     },
     schema: [],
-    fixable: 'code',
   },
+
+  defaultOptions: [],
 
   create(context) {
     const services = getParserServices(context);
@@ -61,7 +62,7 @@ export default createRule({
 
     function isThisSpecifiedInParameters(originalFunc: FunctionLike): boolean {
       const firstArg = originalFunc.params.at(0);
-      return !!(
+      return (
         firstArg?.type === AST_NODE_TYPES.Identifier && firstArg.name === 'this'
       );
     }
@@ -147,24 +148,27 @@ export default createRule({
       }
     }
 
-    return {
-      'ClassBody > MethodDefinition'(node: TSESTree.MethodDefinition): void {
-        checkFunction(node.value, node.parent.parent as ClassLikeDeclaration);
-      },
-      'ClassBody > PropertyDefinition'(
-        node: TSESTree.PropertyDefinition,
-      ): void {
-        if (
-          !(
-            node.value?.type === AST_NODE_TYPES.FunctionExpression ||
-            node.value?.type === AST_NODE_TYPES.ArrowFunctionExpression
-          )
-        ) {
-          return;
-        }
+    function checkProperty(
+      node: TSESTree.AccessorProperty | TSESTree.PropertyDefinition,
+    ): void {
+      if (
+        !(
+          node.value?.type === AST_NODE_TYPES.FunctionExpression ||
+          node.value?.type === AST_NODE_TYPES.ArrowFunctionExpression
+        )
+      ) {
+        return;
+      }
 
-        checkFunction(node.value, node.parent.parent as ClassLikeDeclaration);
+      checkFunction(node.value, node.parent.parent);
+    }
+
+    return {
+      'ClassBody > AccessorProperty': checkProperty,
+      'ClassBody > MethodDefinition'(node: TSESTree.MethodDefinition): void {
+        checkFunction(node.value, node.parent.parent);
       },
+      'ClassBody > PropertyDefinition': checkProperty,
     };
   },
 });

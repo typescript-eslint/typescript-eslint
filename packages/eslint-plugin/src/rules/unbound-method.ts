@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -105,6 +106,7 @@ const BASE_MESSAGE =
 export default createRule<Options, MessageIds>({
   name: 'unbound-method',
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Enforce unbound methods are called with their expected scope',
@@ -113,25 +115,21 @@ export default createRule<Options, MessageIds>({
     },
     messages: {
       unbound: BASE_MESSAGE,
-      unboundWithoutThisAnnotation:
-        BASE_MESSAGE +
-        '\n' +
-        'If your function does not access `this`, you can annotate it with `this: void`, or consider using an arrow function instead.',
+      unboundWithoutThisAnnotation: `${BASE_MESSAGE}\nIf your function does not access \`this\`, you can annotate it with \`this: void\`, or consider using an arrow function instead.`,
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           ignoreStatic: {
+            type: 'boolean',
             description:
               'Whether to skip checking whether `static` methods are correctly bound.',
-            type: 'boolean',
           },
         },
-        additionalProperties: false,
       },
     ],
-    type: 'problem',
   },
   defaultOptions: [
     {
@@ -156,11 +154,11 @@ export default createRule<Options, MessageIds>({
       );
       if (dangerous) {
         context.report({
+          node,
           messageId:
             firstParamIsThis === false
               ? 'unboundWithoutThisAnnotation'
               : 'unbound',
-          node,
         });
         return true;
       }
@@ -261,8 +259,10 @@ export default createRule<Options, MessageIds>({
           }
 
           for (const intersectionPart of tsutils
-            .unionTypeParts(services.getTypeAtLocation(node))
-            .flatMap(unionPart => tsutils.intersectionTypeParts(unionPart))) {
+            .unionConstituents(services.getTypeAtLocation(node))
+            .flatMap(unionPart =>
+              tsutils.intersectionConstituents(unionPart),
+            )) {
             const reported = checkIfMethodAndReport(
               property.key,
               intersectionPart.getProperty(property.key.name),
@@ -340,9 +340,9 @@ function checkIfMethod(
 
 function checkMethod(
   valueDeclaration:
+    | ts.FunctionExpression
     | ts.MethodDeclaration
-    | ts.MethodSignature
-    | ts.FunctionExpression,
+    | ts.MethodSignature,
   ignoreStatic: boolean,
 ): CheckMethodResult {
   const firstParam = valueDeclaration.parameters.at(0);
@@ -392,10 +392,10 @@ function isSafeUse(node: TSESTree.Node): boolean {
       // the first case is safe for obvious
       // reasons. The second one is also fine
       // since we're returning something falsy
-      return ['typeof', '!', 'void', 'delete'].includes(parent.operator);
+      return ['!', 'delete', 'typeof', 'void'].includes(parent.operator);
 
     case AST_NODE_TYPES.BinaryExpression:
-      return ['instanceof', '==', '!=', '===', '!=='].includes(parent.operator);
+      return ['!=', '!==', '==', '===', 'instanceof'].includes(parent.operator);
 
     case AST_NODE_TYPES.AssignmentExpression:
       return (

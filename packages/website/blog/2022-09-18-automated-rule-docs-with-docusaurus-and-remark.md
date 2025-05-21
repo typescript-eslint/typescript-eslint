@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: /img/team/joshuakgoldberg.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
+authors: joshuakgoldberg
 description: How typescript-eslint generates much of the docs pages for each of its lint rules.
 slug: automated-rule-docs-with-docusaurus-and-remark
 tags: [documentation, docusaurus, remark]

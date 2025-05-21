@@ -62,39 +62,51 @@ export type W<T> = {
   invalid: [
     {
       code: noFormat`type T = { x: number; };`,
-      output: `interface T { x: number; }`,
-      options: ['interface'],
       errors: [
         {
-          messageId: 'interfaceOverType',
-          line: 1,
           column: 6,
+          line: 1,
+          messageId: 'interfaceOverType',
         },
       ],
+      options: ['interface'],
+      output: `interface T { x: number; }`,
     },
     {
       code: noFormat`type T={ x: number; };`,
-      output: `interface T { x: number; }`,
-      options: ['interface'],
       errors: [
         {
-          messageId: 'interfaceOverType',
-          line: 1,
           column: 6,
+          line: 1,
+          messageId: 'interfaceOverType',
         },
       ],
+      options: ['interface'],
+      output: `interface T { x: number; }`,
     },
     {
       code: noFormat`type T=                         { x: number; };`,
-      output: `interface T { x: number; }`,
-      options: ['interface'],
       errors: [
         {
-          messageId: 'interfaceOverType',
-          line: 1,
           column: 6,
+          line: 1,
+          messageId: 'interfaceOverType',
         },
       ],
+      options: ['interface'],
+      output: `interface T { x: number; }`,
+    },
+    {
+      code: noFormat`type T /* comment */={ x: number; };`,
+      errors: [
+        {
+          column: 6,
+          line: 1,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      options: ['interface'],
+      output: `interface T /* comment */ { x: number; }`,
     },
     {
       code: `
@@ -102,79 +114,79 @@ export type W<T> = {
   x: T;
 };
       `,
+      errors: [
+        {
+          column: 13,
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      options: ['interface'],
       output: `
 export interface W<T> {
   x: T;
 }
       `,
-      options: ['interface'],
-      errors: [
-        {
-          messageId: 'interfaceOverType',
-          line: 2,
-          column: 13,
-        },
-      ],
     },
     {
       code: noFormat`interface T { x: number; }`,
-      output: `type T = { x: number; }`,
-      options: ['type'],
       errors: [
         {
-          messageId: 'typeOverInterface',
-          line: 1,
           column: 11,
+          line: 1,
+          messageId: 'typeOverInterface',
         },
       ],
+      options: ['type'],
+      output: `type T = { x: number; }`,
     },
     {
       code: noFormat`interface T{ x: number; }`,
-      output: `type T = { x: number; }`,
-      options: ['type'],
       errors: [
         {
-          messageId: 'typeOverInterface',
-          line: 1,
           column: 11,
+          line: 1,
+          messageId: 'typeOverInterface',
         },
       ],
+      options: ['type'],
+      output: `type T = { x: number; }`,
     },
     {
       code: noFormat`interface T                          { x: number; }`,
-      output: `type T = { x: number; }`,
-      options: ['type'],
       errors: [
         {
-          messageId: 'typeOverInterface',
-          line: 1,
           column: 11,
+          line: 1,
+          messageId: 'typeOverInterface',
         },
       ],
+      options: ['type'],
+      output: `type T = { x: number; }`,
     },
     {
       code: noFormat`interface A extends B, C { x: number; };`,
-      output: `type A = { x: number; } & B & C;`,
-      options: ['type'],
       errors: [
         {
-          messageId: 'typeOverInterface',
-          line: 1,
           column: 11,
+          line: 1,
+          messageId: 'typeOverInterface',
         },
       ],
+      options: ['type'],
+      output: `type A = { x: number; } & B & C;`,
     },
     {
       code: noFormat`interface A extends B<T1>, C<T2> { x: number; };`,
-      output: `type A = { x: number; } & B<T1> & C<T2>;`,
-      options: ['type'],
       errors: [
         {
-          messageId: 'typeOverInterface',
-          line: 1,
           column: 11,
+          line: 1,
+          messageId: 'typeOverInterface',
         },
       ],
+      options: ['type'],
+      output: `type A = { x: number; } & B<T1> & C<T2>;`,
     },
     {
       code: `
@@ -182,19 +194,19 @@ export interface W<T> {
   x: T;
 }
       `,
+      errors: [
+        {
+          column: 18,
+          line: 2,
+          messageId: 'typeOverInterface',
+        },
+      ],
+      options: ['type'],
       output: `
 export type W<T> = {
   x: T;
 }
       `,
-      options: ['type'],
-      errors: [
-        {
-          messageId: 'typeOverInterface',
-          line: 2,
-          column: 18,
-        },
-      ],
     },
     {
       code: `
@@ -204,6 +216,14 @@ namespace JSX {
   }
 }
       `,
+      errors: [
+        {
+          column: 13,
+          line: 3,
+          messageId: 'typeOverInterface',
+        },
+      ],
+      options: ['type'],
       output: `
 namespace JSX {
   type Array<T> = {
@@ -211,14 +231,6 @@ namespace JSX {
   }
 }
       `,
-      options: ['type'],
-      errors: [
-        {
-          messageId: 'typeOverInterface',
-          line: 3,
-          column: 13,
-        },
-      ],
     },
     {
       code: `
@@ -228,6 +240,14 @@ global {
   }
 }
       `,
+      errors: [
+        {
+          column: 13,
+          line: 3,
+          messageId: 'typeOverInterface',
+        },
+      ],
+      options: ['type'],
       output: `
 global {
   type Array<T> = {
@@ -235,14 +255,6 @@ global {
   }
 }
       `,
-      options: ['type'],
-      errors: [
-        {
-          messageId: 'typeOverInterface',
-          line: 3,
-          column: 13,
-        },
-      ],
     },
     {
       code: `
@@ -252,15 +264,15 @@ declare global {
   }
 }
       `,
-      output: null,
-      options: ['type'],
       errors: [
         {
-          messageId: 'typeOverInterface',
-          line: 3,
           column: 13,
+          line: 3,
+          messageId: 'typeOverInterface',
         },
       ],
+      options: ['type'],
+      output: null,
     },
     {
       code: `
@@ -270,15 +282,15 @@ declare global {
   }
 }
       `,
-      output: null,
-      options: ['type'],
       errors: [
         {
-          messageId: 'typeOverInterface',
-          line: 4,
           column: 15,
+          line: 4,
+          messageId: 'typeOverInterface',
         },
       ],
+      options: ['type'],
+      output: null,
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/3894
@@ -288,6 +300,14 @@ export default interface Test {
   foo(): number;
 }
       `,
+      errors: [
+        {
+          column: 26,
+          line: 2,
+          messageId: 'typeOverInterface',
+        },
+      ],
+      options: ['type'],
       output: `
 type Test = {
   bar(): string;
@@ -295,14 +315,6 @@ type Test = {
 }
 export default Test
       `,
-      options: ['type'],
-      errors: [
-        {
-          messageId: 'typeOverInterface',
-          line: 2,
-          column: 26,
-        },
-      ],
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/4333
@@ -312,20 +324,20 @@ export declare type Test = {
   bar: string;
 };
       `,
+      errors: [
+        {
+          column: 21,
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      options: ['interface'],
       output: `
 export declare interface Test {
   foo: string;
   bar: string;
 }
       `,
-      options: ['interface'],
-      errors: [
-        {
-          messageId: 'interfaceOverType',
-          line: 2,
-          column: 21,
-        },
-      ],
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/4333
@@ -335,20 +347,119 @@ export declare interface Test {
   bar: string;
 }
       `,
+      errors: [
+        {
+          column: 26,
+          line: 2,
+          messageId: 'typeOverInterface',
+        },
+      ],
+      options: ['type'],
       output: `
 export declare type Test = {
   foo: string;
   bar: string;
 }
       `,
-      options: ['type'],
+    },
+    {
+      code: noFormat`
+type Foo = ({
+  a: string;
+});
+      `,
       errors: [
         {
-          messageId: 'typeOverInterface',
           line: 2,
-          column: 26,
+          messageId: 'interfaceOverType',
         },
       ],
+      output: `
+interface Foo {
+  a: string;
+}
+      `,
+    },
+    {
+      code: noFormat`
+type Foo = ((((((((({
+  a: string;
+})))))))));
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+      `,
+    },
+    {
+      // no closing semicolon
+      code: noFormat`
+type Foo = {
+  a: string;
+}
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+      `,
+    },
+    {
+      // no closing semicolon; ensure we don't erase subsequent code.
+      code: noFormat`
+type Foo = {
+  a: string;
+}
+type Bar = string;
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+type Bar = string;
+      `,
+    },
+    {
+      // no closing semicolon; ensure we don't erase subsequent code.
+      code: noFormat`
+type Foo = ((({
+  a: string;
+})))
+
+const bar = 1;
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+
+const bar = 1;
+      `,
     },
   ],
 });

@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-unused-vars 1`] = `
-"
 # SCHEMA:
 
 [
@@ -15,36 +12,46 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "additionalProperties": false,
         "properties": {
           "args": {
+            "description": "Whether to check all, some, or no arguments.",
             "enum": ["after-used", "all", "none"],
             "type": "string"
           },
           "argsIgnorePattern": {
+            "description": "Regular expressions of argument names to not check for usage.",
             "type": "string"
           },
           "caughtErrors": {
+            "description": "Whether to check catch block arguments.",
             "enum": ["all", "none"],
             "type": "string"
           },
           "caughtErrorsIgnorePattern": {
+            "description": "Regular expressions of catch block argument names to not check for usage.",
             "type": "string"
           },
           "destructuredArrayIgnorePattern": {
+            "description": "Regular expressions of destructured array variable names to not check for usage.",
             "type": "string"
           },
           "ignoreClassWithStaticInitBlock": {
+            "description": "Whether to ignore classes with at least one static initialization block.",
             "type": "boolean"
           },
           "ignoreRestSiblings": {
+            "description": "Whether to ignore sibling properties in `...` destructurings.",
             "type": "boolean"
           },
           "reportUsedIgnorePattern": {
+            "description": "Whether to report variables that match any of the valid ignore pattern options if they have been used.",
             "type": "boolean"
           },
           "vars": {
+            "description": "Whether to check all variables or only locally-declared variables.",
             "enum": ["all", "local"],
             "type": "string"
           },
           "varsIgnorePattern": {
+            "description": "Regular expressions of variable names to not check for usage.",
             "type": "string"
           }
         },
@@ -61,17 +68,35 @@ type Options = [
   | 'all'
   | 'local'
   | {
-      args?: 'after-used' | 'all' | 'none';
+      /** Whether to check all, some, or no arguments. */
+      args?:
+        | 'all'
+        | 'none'
+        /** Whether to check all, some, or no arguments. */
+        | 'after-used';
+      /** Regular expressions of argument names to not check for usage. */
       argsIgnorePattern?: string;
-      caughtErrors?: 'all' | 'none';
+      /** Whether to check catch block arguments. */
+      caughtErrors?:
+        | 'none'
+        /** Whether to check catch block arguments. */
+        | 'all';
+      /** Regular expressions of catch block argument names to not check for usage. */
       caughtErrorsIgnorePattern?: string;
+      /** Regular expressions of destructured array variable names to not check for usage. */
       destructuredArrayIgnorePattern?: string;
+      /** Whether to ignore classes with at least one static initialization block. */
       ignoreClassWithStaticInitBlock?: boolean;
+      /** Whether to ignore sibling properties in `...` destructurings. */
       ignoreRestSiblings?: boolean;
+      /** Whether to report variables that match any of the valid ignore pattern options if they have been used. */
       reportUsedIgnorePattern?: boolean;
-      vars?: 'all' | 'local';
+      /** Whether to check all variables or only locally-declared variables. */
+      vars?:
+        | 'local'
+        /** Whether to check all variables or only locally-declared variables. */
+        | 'all';
+      /** Regular expressions of variable names to not check for usage. */
       varsIgnorePattern?: string;
     },
 ];
-"
-`;

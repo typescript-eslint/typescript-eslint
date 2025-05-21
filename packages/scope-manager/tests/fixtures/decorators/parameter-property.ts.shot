@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`decorators parameter-property 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -21,7 +18,7 @@ ScopeManager {
           isWrite: false,
           resolved: Variable$2,
         },
-        Reference$3 {
+        Reference$2 {
           identifier: Identifier<"decorator">,
           isRead: true,
           isTypeReference: false,
@@ -92,7 +89,7 @@ ScopeManager {
       ],
       name: "b",
       references: [
-        Reference$2 {
+        Reference$3 {
           identifier: Identifier<"b">,
           init: true,
           isRead: false,
@@ -141,7 +138,10 @@ ScopeManager {
     ClassScope$3 {
       block: ClassDeclaration$2,
       isStrict: true,
-      references: [],
+      references: [
+        Reference$1,
+        Reference$2,
+      ],
       set: Map {
         "Foo" => Variable$5,
       },
@@ -155,8 +155,6 @@ ScopeManager {
       block: FunctionExpression$3,
       isStrict: true,
       references: [
-        Reference$1,
-        Reference$2,
         Reference$3,
       ],
       set: Map {
@@ -174,4 +172,3 @@ ScopeManager {
     },
   ],
 }
-`;

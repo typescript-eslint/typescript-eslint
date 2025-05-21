@@ -11,19 +11,19 @@ export type TSModuleDeclarationKind = 'global' | 'module' | 'namespace';
 interface TSModuleDeclarationBase extends BaseNode {
   type: AST_NODE_TYPES.TSModuleDeclaration;
   /**
-   * The name of the module
-   * ```
-   * namespace A {}
-   * namespace A.B.C {}
-   * module 'a' {}
-   * ```
-   */
-  id: Identifier | Literal | TSQualifiedName;
-  /**
    * The body of the module.
    * This can only be `undefined` for the code `declare module 'mod';`
    */
   body?: TSModuleBlock;
+  /**
+   * Whether the module is `declare`d
+   * @example
+   * ```ts
+   * declare namespace F {}
+   * ```
+   */
+  declare: boolean;
+  // TODO - remove this in the next major (we have `.kind` now)
   /**
    * Whether this is a global declaration
    * @example
@@ -33,16 +33,16 @@ interface TSModuleDeclarationBase extends BaseNode {
    *
    * @deprecated Use {@link kind} instead
    */
-  // TODO - remove this in the next major (we have `.kind` now)
   global: boolean;
   /**
-   * Whether the module is `declare`d
-   * @example
-   * ```ts
-   * declare namespace F {}
+   * The name of the module
+   * ```
+   * namespace A {}
+   * namespace A.B.C {}
+   * module 'a' {}
    * ```
    */
-  declare: boolean;
+  id: Identifier | Literal | TSQualifiedName;
 
   /**
    * The keyword used to define this module declaration
@@ -62,18 +62,18 @@ interface TSModuleDeclarationBase extends BaseNode {
 }
 
 export interface TSModuleDeclarationNamespace extends TSModuleDeclarationBase {
-  kind: 'namespace';
-  id: Identifier | TSQualifiedName;
   body: TSModuleBlock;
+  id: Identifier | TSQualifiedName;
+  kind: 'namespace';
 }
 
 export interface TSModuleDeclarationGlobal extends TSModuleDeclarationBase {
-  kind: 'global';
+  body: TSModuleBlock;
   /**
    * This will always be an Identifier with name `global`
    */
   id: Identifier;
-  body: TSModuleBlock;
+  kind: 'global';
 }
 
 interface TSModuleDeclarationModuleBase extends TSModuleDeclarationBase {
@@ -88,10 +88,10 @@ interface TSModuleDeclarationModuleBase extends TSModuleDeclarationBase {
  */
 export interface TSModuleDeclarationModuleWithStringIdNotDeclared
   extends TSModuleDeclarationModuleBase {
-  kind: 'module';
-  id: StringLiteral;
-  declare: false;
   body: TSModuleBlock;
+  declare: false;
+  id: StringLiteral;
+  kind: 'module';
 }
 /**
  * A string module declaration that is declared:
@@ -102,10 +102,10 @@ export interface TSModuleDeclarationModuleWithStringIdNotDeclared
  */
 export interface TSModuleDeclarationModuleWithStringIdDeclared
   extends TSModuleDeclarationModuleBase {
-  kind: 'module';
-  id: StringLiteral;
-  declare: true;
   body?: TSModuleBlock;
+  declare: true;
+  id: StringLiteral;
+  kind: 'module';
 }
 /**
  * The legacy module declaration, replaced with namespace declarations.
@@ -115,12 +115,12 @@ export interface TSModuleDeclarationModuleWithStringIdDeclared
  */
 export interface TSModuleDeclarationModuleWithIdentifierId
   extends TSModuleDeclarationModuleBase {
-  kind: 'module';
+  // Maybe not worth fixing since it's legacy
+  body: TSModuleBlock;
   id: Identifier;
   // TODO: we emit the wrong AST for `module A.B {}`
   // https://github.com/typescript-eslint/typescript-eslint/pull/6272 only fixed namespaces
-  // Maybe not worth fixing since it's legacy
-  body: TSModuleBlock;
+  kind: 'module';
 }
 
 export type TSModuleDeclarationModuleWithStringId =

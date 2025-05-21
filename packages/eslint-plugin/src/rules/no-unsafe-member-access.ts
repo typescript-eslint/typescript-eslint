@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import type * as ts from 'typescript';
 
 import {
   createRule,
@@ -16,7 +17,7 @@ const enum State {
   Safe = 2,
 }
 
-function createDataType(type: ts.Type): '`error` typed' | '`any`' {
+function createDataType(type: ts.Type): '`any`' | '`error` typed' {
   const isErrorType = tsutils.isIntrinsicErrorType(type);
   return isErrorType ? '`error` typed' : '`any`';
 }
@@ -31,14 +32,14 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
+      unsafeComputedMemberAccess:
+        'Computed name {{property}} resolves to an {{type}} value.',
       unsafeMemberExpression:
         'Unsafe member access {{property}} on an {{type}} value.',
       unsafeThisMemberExpression: [
         'Unsafe member access {{property}} on an `any` value. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
-      unsafeComputedMemberAccess:
-        'Computed name {{property}} resolves to an {{type}} value.',
     },
     schema: [],
   },
@@ -97,8 +98,8 @@ export default createRule({
           node: node.property,
           messageId,
           data: {
-            property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
             type: createDataType(type),
+            property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
           },
         });
       }
@@ -133,8 +134,8 @@ export default createRule({
             node,
             messageId: 'unsafeComputedMemberAccess',
             data: {
-              property: `[${propertyName}]`,
               type: createDataType(type),
+              property: `[${propertyName}]`,
             },
           });
         }

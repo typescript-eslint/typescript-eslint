@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import * as ts from 'typescript';
 
 import { escapeRegExp } from './escapeRegExp';
@@ -37,11 +38,11 @@ export function getNameLocationInGlobalDirectiveComment(
     comment.range[0] + '/*'.length + (match ? match.index + 1 : 0),
   );
   const end = {
-    line: start.line,
     column: start.column + (match ? name.length : 1),
+    line: start.line,
   };
 
-  return { start, end };
+  return { end, start };
 }
 
 // Copied from typescript https://github.com/microsoft/TypeScript/blob/42b0e3c4630c129ca39ce0df9fff5f0d1b4dd348/src/compiler/utilities.ts#L1335

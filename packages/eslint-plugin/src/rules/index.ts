@@ -29,6 +29,7 @@ import noArrayDelete from './no-array-delete';
 import noBaseToString from './no-base-to-string';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import noConfusingVoidExpression from './no-confusing-void-expression';
+import noDeprecated from './no-deprecated';
 import noDupeClassMembers from './no-dupe-class-members';
 import noDuplicateEnumValues from './no-duplicate-enum-values';
 import noDuplicateTypeConstituents from './no-duplicate-type-constituents';
@@ -52,6 +53,7 @@ import noMagicNumbers from './no-magic-numbers';
 import noMeaninglessVoidOperator from './no-meaningless-void-operator';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
+import noMisusedSpread from './no-misused-spread';
 import noMixedEnums from './no-mixed-enums';
 import noNamespace from './no-namespace';
 import noNonNullAssertedNullishCoalescing from './no-non-null-asserted-nullish-coalescing';
@@ -73,6 +75,7 @@ import noUnnecessaryTemplateExpression from './no-unnecessary-template-expressio
 import noUnnecessaryTypeArguments from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnnecessaryTypeConstraint from './no-unnecessary-type-constraint';
+import noUnnecessaryTypeConversion from './no-unnecessary-type-conversion';
 import noUnnecessaryTypeParameters from './no-unnecessary-type-parameters';
 import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
@@ -82,6 +85,7 @@ import noUnsafeEnumComparison from './no-unsafe-enum-comparison';
 import noUnsafeFunctionType from './no-unsafe-function-type';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
+import noUnsafeTypeAssertion from './no-unsafe-type-assertion';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
 import noUnusedExpressions from './no-unused-expressions';
 import noUnusedVars from './no-unused-vars';
@@ -113,6 +117,7 @@ import preferReturnThisType from './prefer-return-this-type';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
 import preferTsExpectError from './prefer-ts-expect-error';
 import promiseFunctionAsync from './promise-function-async';
+import relatedGetterSetterPairs from './related-getter-setter-pairs';
 import requireArraySortCompare from './require-array-sort-compare';
 import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
@@ -127,7 +132,7 @@ import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
 import useUnknownInCatchCallbackVariable from './use-unknown-in-catch-callback-variable';
 
-export default {
+const rules = {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
   'array-type': arrayType,
   'await-thenable': awaitThenable,
@@ -157,6 +162,7 @@ export default {
   'no-base-to-string': noBaseToString,
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'no-confusing-void-expression': noConfusingVoidExpression,
+  'no-deprecated': noDeprecated,
   'no-dupe-class-members': noDupeClassMembers,
   'no-duplicate-enum-values': noDuplicateEnumValues,
   'no-duplicate-type-constituents': noDuplicateTypeConstituents,
@@ -180,6 +186,7 @@ export default {
   'no-meaningless-void-operator': noMeaninglessVoidOperator,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
+  'no-misused-spread': noMisusedSpread,
   'no-mixed-enums': noMixedEnums,
   'no-namespace': noNamespace,
   'no-non-null-asserted-nullish-coalescing': noNonNullAssertedNullishCoalescing,
@@ -202,6 +209,7 @@ export default {
   'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-unnecessary-type-constraint': noUnnecessaryTypeConstraint,
+  'no-unnecessary-type-conversion': noUnnecessaryTypeConversion,
   'no-unnecessary-type-parameters': noUnnecessaryTypeParameters,
   'no-unsafe-argument': noUnsafeArgument,
   'no-unsafe-assignment': noUnsafeAssignment,
@@ -211,6 +219,7 @@ export default {
   'no-unsafe-function-type': noUnsafeFunctionType,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
+  'no-unsafe-type-assertion': noUnsafeTypeAssertion,
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
   'no-unused-expressions': noUnusedExpressions,
   'no-unused-vars': noUnusedVars,
@@ -242,6 +251,7 @@ export default {
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'prefer-ts-expect-error': preferTsExpectError,
   'promise-function-async': promiseFunctionAsync,
+  'related-getter-setter-pairs': relatedGetterSetterPairs,
   'require-array-sort-compare': requireArraySortCompare,
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
@@ -251,8 +261,10 @@ export default {
   'strict-boolean-expressions': strictBooleanExpressions,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
-  typedef: typedef,
+  typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
   'use-unknown-in-catch-callback-variable': useUnknownInCatchCallbackVariable,
 } satisfies Linter.PluginRules;
+
+export = rules;

@@ -1,5 +1,6 @@
-import { parseRegExpLiteral } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+import { parseRegExpLiteral } from '@eslint-community/regexpp';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -8,12 +9,11 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getStaticValue,
+  isStaticMemberAccessOfValue,
 } from '../util';
 
 export default createRule({
   name: 'prefer-includes',
-  defaultOptions: [],
-
   meta: {
     type: 'suggestion',
     docs: {
@@ -29,6 +29,8 @@ export default createRule({
     },
     schema: [],
   },
+
+  defaultOptions: [],
 
   create(context) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
@@ -102,7 +104,7 @@ export default createRule({
         return null;
       }
 
-      const { pattern, flags } = parseRegExpLiteral(evaluated.value);
+      const { flags, pattern } = parseRegExpLiteral(evaluated.value);
       if (
         pattern.alternatives.length !== 1 ||
         flags.ignoreCase ||
@@ -124,19 +126,19 @@ export default createRule({
     function escapeString(str: string): string {
       const EscapeMap = {
         '\0': '\\0',
+        '\t': '\\t',
+        '\n': '\\n',
+        '\v': '\\v',
+        '\f': '\\f',
+        '\r': '\\r',
         "'": "\\'",
         '\\': '\\\\',
-        '\n': '\\n',
-        '\r': '\\r',
-        '\v': '\\v',
-        '\t': '\\t',
-        '\f': '\\f',
         // "\b" cause unexpected replacements
         // '\b': '\\b',
       };
       const replaceRegex = new RegExp(Object.values(EscapeMap).join('|'), 'g');
 
-      return str.replace(
+      return str.replaceAll(
         replaceRegex,
         char => EscapeMap[char as keyof typeof EscapeMap],
       );
@@ -146,6 +148,9 @@ export default createRule({
       node: TSESTree.MemberExpression,
       allowFixing: boolean,
     ): void {
+      if (!isStaticMemberAccessOfValue(node, context, 'indexOf')) {
+        return;
+      }
       // Check if the comparison is equivalent to `includes()`.
       const callNode = node.parent as TSESTree.CallExpression;
       const compareNode = (
@@ -204,14 +209,14 @@ export default createRule({
 
     return {
       // a.indexOf(b) !== 1
-      "BinaryExpression > CallExpression.left > MemberExpression.callee[property.name='indexOf'][computed=false]"(
+      'BinaryExpression > CallExpression.left > MemberExpression'(
         node: TSESTree.MemberExpression,
       ): void {
         checkArrayIndexOf(node, /* allowFixing */ true);
       },
 
       // a?.indexOf(b) !== 1
-      "BinaryExpression > ChainExpression.left > CallExpression > MemberExpression.callee[property.name='indexOf'][computed=false]"(
+      'BinaryExpression > ChainExpression.left > CallExpression > MemberExpression'(
         node: TSESTree.MemberExpression,
       ): void {
         checkArrayIndexOf(node, /* allowFixing */ false);
@@ -219,7 +224,7 @@ export default createRule({
 
       // /bar/.test(foo)
       'CallExpression[arguments.length=1] > MemberExpression.callee[property.name="test"][computed=false]'(
-        node: TSESTree.MemberExpression & { parent: TSESTree.CallExpression },
+        node: { parent: TSESTree.CallExpression } & TSESTree.MemberExpression,
       ): void {
         const callNode = node.parent;
         const text = parseRegExp(node.object);

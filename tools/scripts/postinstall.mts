@@ -1,9 +1,6 @@
 import { $ as $_config } from 'execa';
 
 const $ = $_config({
-  stdout: 'inherit',
-  stderr: 'inherit',
-  verbose: true,
   env: {
     /**
      * Do not apply the special GitHub Actions group markers within the
@@ -12,6 +9,9 @@ const $ = $_config({
      */
     NX_SKIP_LOG_GROUPING: 'true',
   },
+  stderr: 'inherit',
+  stdout: 'inherit',
+  verbose: true,
 });
 
 /**
@@ -28,21 +28,20 @@ if (process.env.SKIP_POSTINSTALL) {
   process.exit(0);
 }
 
-void (async function (): Promise<void> {
-  // make sure we're running from the workspace root
-  const {
-    default: { workspaceRoot },
-  } = await import('@nx/devkit');
-  process.chdir(workspaceRoot);
+// make sure we're running from the workspace root
+const {
+  default: { workspaceRoot },
+} = await import('@nx/devkit');
+process.chdir(workspaceRoot);
 
-  // Install git hooks
-  await $`yarn husky`;
+// Install git hooks
+await $`yarn husky`;
 
-  if (!process.env.SKIP_POSTINSTALL_BUILD) {
-    // Clean any caches that may be invalid now
-    await $`yarn clean`;
+if (!process.env.SKIP_POSTINSTALL_BUILD) {
+  // Clean any caches that may be invalid now
+  await $`yarn clean`;
 
-    // Build all the packages ready for use
-    await $`yarn build`;
-  }
-})();
+  // Build all the packages ready for use
+  await $`yarn build`;
+  await $`yarn nx typecheck ast-spec`;
+}

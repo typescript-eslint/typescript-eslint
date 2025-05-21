@@ -19,16 +19,16 @@ export function getRuleOptionsSchema(
   if (isReadonlyArray(schema)) {
     if (schema.length) {
       return {
-        type: 'array',
         items: schema as JSONSchema4[],
-        minItems: 0,
         maxItems: schema.length,
+        minItems: 0,
+        type: 'array',
       };
     }
     return {
-      type: 'array',
-      minItems: 0,
       maxItems: 0,
+      minItems: 0,
+      type: 'array',
     };
   }
 

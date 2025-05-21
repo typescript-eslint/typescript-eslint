@@ -10,16 +10,23 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-    steps:
-      - id: changed-stable-configs
-        uses: tj-actions/changed-files@v44.5.2
-        with:
-          files: packages/{eslint-plugin,typescript-eslint}/src/configs/{recommended,stylistic}*
-      - if: steps.changed-stable-configs.outputs.any_changed == 'true'
-        uses: mheap/github-action-required-labels@v5.4.1
-        with:
-          add_comment: true
-          count: 1
-          labels: breaking change
-          message: '🤖 Beep boop! PRs that change our stable preset configs must be labeled with `breaking change`.'
-          mode: minimum
+    #
+    # WARNING!!!!!!!!!!!
+    #
+    # THIS ACTION WAS COMPROMISED: https://www.stepsecurity.io/blog/harden-runner-detection-tj-actions-changed-files-action-is-compromised
+    #
+    # DO NOT RE-ENABLE THIS WORKFLOW WITH THIS IN USE!!!!!
+    #
+    # steps:
+    #   - id: changed-stable-configs
+    #     uses: tj-actions/changed-files@v44.5.2
+    #     with:
+    #       files: packages/{eslint-plugin,typescript-eslint}/src/configs/{recommended,stylistic}*
+    #   - if: steps.changed-stable-configs.outputs.any_changed == 'true'
+    #     uses: mheap/github-action-required-labels@5.5.0
+    #     with:
+    #       add_comment: true
+    #       count: 1
+    #       labels: breaking change
+    #       message: '🤖 Beep boop! PRs that change our stable preset configs must be labeled with `breaking change`.'
+    #       mode: minimum

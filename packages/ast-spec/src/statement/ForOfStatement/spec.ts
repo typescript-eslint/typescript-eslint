@@ -6,8 +6,8 @@ import type { Statement } from '../../unions/Statement';
 
 export interface ForOfStatement extends BaseNode {
   type: AST_NODE_TYPES.ForOfStatement;
+  await: boolean;
+  body: Statement;
   left: ForOfInitialiser;
   right: Expression;
-  body: Statement;
-  await: boolean;
 }

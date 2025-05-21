@@ -1,15 +1,16 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
-type Options = [
+export type Options = [
   {
     allow?: string[];
     allowAsImport?: boolean;
   },
 ];
-type MessageIds = 'noRequireImports';
+export type MessageIds = 'noRequireImports';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-require-imports',
@@ -19,26 +20,26 @@ export default util.createRule<Options, MessageIds>({
       description: 'Disallow invocation of `require()`',
       recommended: 'recommended',
     },
+    messages: {
+      noRequireImports: 'A `require()` style import is forbidden.',
+    },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allow: {
             type: 'array',
-            items: { type: 'string' },
             description: 'Patterns of import paths to allow requiring from.',
+            items: { type: 'string' },
           },
           allowAsImport: {
             type: 'boolean',
             description: 'Allows `require` statements in import declarations.',
           },
         },
-        additionalProperties: false,
       },
     ],
-    messages: {
-      noRequireImports: 'A `require()` style import is forbidden.',
-    },
   },
   defaultOptions: [{ allow: [], allowAsImport: false }],
   create(context, options) {

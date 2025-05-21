@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getNameFromMember, MemberNameType } from '../util';
@@ -28,17 +29,17 @@ export default createRule({
       description: 'Require that function overload signatures be consecutive',
       recommended: 'stylistic',
     },
-    schema: [],
     messages: {
       adjacentSignature: 'All {{name}} signatures should be adjacent.',
     },
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
     interface Method {
+      callSignature: boolean;
       name: string;
       static?: boolean;
-      callSignature: boolean;
       type: MemberNameType;
     }
 
@@ -69,32 +70,27 @@ export default createRule({
           }
           return {
             name,
-            callSignature: false,
             type: MemberNameType.Normal,
+            callSignature: false,
           };
         }
         case AST_NODE_TYPES.TSMethodSignature:
+        case AST_NODE_TYPES.MethodDefinition:
           return {
             ...getNameFromMember(member, context.sourceCode),
-            static: !!member.static,
             callSignature: false,
+            static: member.static,
           };
         case AST_NODE_TYPES.TSCallSignatureDeclaration:
           return {
             name: 'call',
-            callSignature: true,
             type: MemberNameType.Normal,
+            callSignature: true,
           };
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return {
             name: 'new',
-            callSignature: false,
             type: MemberNameType.Normal,
-          };
-        case AST_NODE_TYPES.MethodDefinition:
-          return {
-            ...getNameFromMember(member, context.sourceCode),
-            static: !!member.static,
             callSignature: false,
           };
       }
@@ -159,12 +155,12 @@ export default createRule({
     }
 
     return {
+      BlockStatement: checkBodyForOverloadMethods,
       ClassBody: checkBodyForOverloadMethods,
       Program: checkBodyForOverloadMethods,
+      TSInterfaceBody: checkBodyForOverloadMethods,
       TSModuleBlock: checkBodyForOverloadMethods,
       TSTypeLiteral: checkBodyForOverloadMethods,
-      TSInterfaceBody: checkBodyForOverloadMethods,
-      BlockStatement: checkBodyForOverloadMethods,
     };
   },
 });

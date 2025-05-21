@@ -1,16 +1,18 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
-  getStaticStringValue,
+  getStaticMemberAccessValue,
   isAssignee,
   isFunction,
+  isStaticMemberAccessOfValue,
   nullThrows,
 } from '../util';
 
-type Options = ['fields' | 'getters'];
-type MessageIds =
+export type Options = ['fields' | 'getters'];
+export type MessageIds =
   | 'preferFieldStyle'
   | 'preferFieldStyleSuggestion'
   | 'preferGetterStyle'
@@ -22,8 +24,8 @@ interface NodeWithModifiers {
 }
 
 interface PropertiesInfo {
+  excludeSet: Set<string | symbol>;
   properties: TSESTree.PropertyDefinition[];
-  excludeSet: Set<string>;
 }
 
 const printNodeModifiers = (
@@ -71,6 +73,7 @@ export default createRule<Options, MessageIds>({
     schema: [
       {
         type: 'string',
+        description: 'Which literal class member syntax to prefer.',
         enum: ['fields', 'getters'],
       },
     ],
@@ -79,19 +82,15 @@ export default createRule<Options, MessageIds>({
   create(context, [style]) {
     const propertiesInfoStack: PropertiesInfo[] = [];
 
-    function getStringValue(node: TSESTree.Node): string {
-      return getStaticStringValue(node) ?? context.sourceCode.getText(node);
-    }
-
     function enterClassBody(): void {
       propertiesInfoStack.push({
-        properties: [],
         excludeSet: new Set(),
+        properties: [],
       });
     }
 
     function exitClassBody(): void {
-      const { properties, excludeSet } = nullThrows(
+      const { excludeSet, properties } = nullThrows(
         propertiesInfoStack.pop(),
         'Stack should exist on class exit',
       );
@@ -102,8 +101,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const name = getStringValue(node.key);
-        if (excludeSet.has(name)) {
+        const name = getStaticMemberAccessValue(node, context);
+        if (name && excludeSet.has(name)) {
           return;
         }
 
@@ -134,9 +133,7 @@ export default createRule<Options, MessageIds>({
         const { excludeSet } =
           propertiesInfoStack[propertiesInfoStack.length - 1];
 
-        const name =
-          getStaticStringValue(node.property) ??
-          context.sourceCode.getText(node.property);
+        const name = getStaticMemberAccessValue(node, context);
 
         if (name) {
           excludeSet.add(name);
@@ -149,6 +146,7 @@ export default createRule<Options, MessageIds>({
         MethodDefinition(node): void {
           if (
             node.kind !== 'get' ||
+            node.override ||
             !node.value.body ||
             node.value.body.body.length === 0
           ) {
@@ -167,15 +165,17 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const name = getStringValue(node.key);
+          const name = getStaticMemberAccessValue(node, context);
 
-          const hasDuplicateKeySetter = node.parent.body.some(element => {
-            return (
-              element.type === AST_NODE_TYPES.MethodDefinition &&
-              element.kind === 'set' &&
-              getStringValue(element.key) === name
-            );
-          });
+          const hasDuplicateKeySetter =
+            name &&
+            node.parent.body.some(element => {
+              return (
+                element.type === AST_NODE_TYPES.MethodDefinition &&
+                element.kind === 'set' &&
+                isStaticMemberAccessOfValue(element, context, name)
+              );
+            });
           if (hasDuplicateKeySetter) {
             return;
           }
@@ -224,7 +224,7 @@ export default createRule<Options, MessageIds>({
           }
         },
         PropertyDefinition(node): void {
-          if (!node.readonly || node.declare) {
+          if (!node.readonly || node.declare || node.override) {
             return;
           }
           const { properties } =

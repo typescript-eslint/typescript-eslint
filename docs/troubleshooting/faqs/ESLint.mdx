@@ -84,6 +84,51 @@ module.exports = {
 
 If you choose to leave on the ESLint `no-undef` lint rule, you can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring/language-options#specifying-environments).
 
+## I get errors from the `@typescript-eslint/no-namespace` and/or `no-var` rules about declaring global variables
+
+Two common solutions in TypeScript for declaring the existence of a global variable include:
+
+- `declare global` with a `var`, which violates [`no-var`](https://eslint.org/docs/latest/rules/no-var):
+
+  ```ts
+  declare global {
+    var myValue: string;
+    // Unexpected var, use let or const instead. eslint (no-var)
+  }
+
+  myValue;
+  ```
+
+- `declare namespace globalThis`, which violates [`@typescript-eslint/no-namespace`](https://typescript-eslint.io/rules/no-namespace):
+
+  ```ts
+  declare namespace globalThis {
+    // ES2015 module syntax is preferred over namespaces. eslint (@typescript-eslint/no-namespace)
+    let myValue: string;
+  }
+
+  globalThis.myValue;
+  ```
+
+[Using global variables is generally discouraged](https://stackoverflow.com/questions/10525582/why-are-global-variables-considered-bad-practice).
+If possible, it's best to avoid declaring globals altogether.
+
+If you absolutely must use one of the two strategies, then you can use an [ESLint configuration comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) to disable rules as needed.
+For example:
+
+```ts
+declare global {
+  // eslint-disable-next-line no-var -- Provided by an old third-party integration.
+  var myValue: string;
+}
+```
+
+:::tip
+Whenever you need to disable an ESLint rule, it's best to include an informative comment explaining why.
+:::
+
+See [#9582](https://github.com/typescript-eslint/typescript-eslint/issues/9582 'typescript-eslint/typescript-eslint#9582 Docs: globalThis without ignores of no-var and no-namespace') and [#7941](https://github.com/typescript-eslint/typescript-eslint/issues/7941 'typescript-eslint/typescript-eslint#7941 Base rule extension: no-var configuration for declarations') for discussions around typescript-eslint supporting these use cases.
+
 ## Can I use ESLint's `--cache` with typescript-eslint?
 
 [ESLint's `--cache` option](https://eslint.org/docs/latest/use/command-line-interface#caching) caches on a per-file basis.

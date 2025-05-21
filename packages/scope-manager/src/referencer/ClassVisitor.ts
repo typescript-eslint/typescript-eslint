@@ -1,12 +1,14 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import { ClassNameDefinition, ParameterDefinition } from '../definition';
 import type { Referencer } from './Referencer';
+
+import { ClassNameDefinition, ParameterDefinition } from '../definition';
 import { TypeVisitor } from './TypeVisitor';
 import { Visitor } from './Visitor';
 
-class ClassVisitor extends Visitor {
+export class ClassVisitor extends Visitor {
   readonly #classNode: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
   readonly #referencer: Referencer;
 
@@ -27,7 +29,7 @@ class ClassVisitor extends Visitor {
     classVisitor.visitClass(node);
   }
 
-  visit(node: TSESTree.Node | null | undefined): void {
+  override visit(node: TSESTree.Node | null | undefined): void {
     // make sure we only handle the nodes we are designed to handle
     if (node && node.type in this) {
       super.visit(node);
@@ -74,23 +76,6 @@ class ClassVisitor extends Visitor {
     this.#referencer.close(node);
   }
 
-  protected visitPropertyDefinition(
-    node:
-      | TSESTree.AccessorProperty
-      | TSESTree.PropertyDefinition
-      | TSESTree.TSAbstractAccessorProperty
-      | TSESTree.TSAbstractPropertyDefinition,
-  ): void {
-    this.visitPropertyBase(node);
-    /**
-     * class A {
-     *   @meta     // <--- check this
-     *   foo: Type;
-     * }
-     */
-    this.visitType(node.typeAnnotation);
-  }
-
   protected visitFunctionParameterTypeAnnotation(
     node: TSESTree.Parameter,
   ): void {
@@ -106,6 +91,20 @@ class ClassVisitor extends Visitor {
     }
   }
 
+  protected visitMethod(node: TSESTree.MethodDefinition): void {
+    if (node.computed) {
+      this.#referencer.visit(node.key);
+    }
+
+    if (node.value.type === AST_NODE_TYPES.FunctionExpression) {
+      this.visitMethodFunction(node.value, node);
+    } else {
+      this.#referencer.visit(node.value);
+    }
+
+    node.decorators.forEach(d => this.#referencer.visit(d));
+  }
+
   protected visitMethodFunction(
     node: TSESTree.FunctionExpression,
     methodNode: TSESTree.MethodDefinition,
@@ -115,6 +114,10 @@ class ClassVisitor extends Visitor {
       // FunctionExpressionNameScope.
       this.#referencer.scopeManager.nestFunctionExpressionNameScope(node);
     }
+
+    node.params.forEach(param => {
+      param.decorators.forEach(d => this.visit(d));
+    });
 
     // Consider this function is in the MethodDefinition.
     this.#referencer.scopeManager.nestFunctionScope(node, true);
@@ -206,7 +209,6 @@ class ClassVisitor extends Visitor {
         { processRightHandNodes: true },
       );
       this.visitFunctionParameterTypeAnnotation(param);
-      param.decorators.forEach(d => this.visit(d));
     }
 
     this.visitType(node.returnType);
@@ -251,18 +253,21 @@ class ClassVisitor extends Visitor {
     node.decorators.forEach(d => this.#referencer.visit(d));
   }
 
-  protected visitMethod(node: TSESTree.MethodDefinition): void {
-    if (node.computed) {
-      this.#referencer.visit(node.key);
-    }
-
-    if (node.value.type === AST_NODE_TYPES.FunctionExpression) {
-      this.visitMethodFunction(node.value, node);
-    } else {
-      this.#referencer.visit(node.value);
-    }
-
-    node.decorators.forEach(d => this.#referencer.visit(d));
+  protected visitPropertyDefinition(
+    node:
+      | TSESTree.AccessorProperty
+      | TSESTree.PropertyDefinition
+      | TSESTree.TSAbstractAccessorProperty
+      | TSESTree.TSAbstractPropertyDefinition,
+  ): void {
+    this.visitPropertyBase(node);
+    /**
+     * class A {
+     *   @meta     // <--- check this
+     *   foo: Type;
+     * }
+     */
+    this.visitType(node.typeAnnotation);
   }
 
   protected visitType(node: TSESTree.Node | null | undefined): void {
@@ -286,22 +291,32 @@ class ClassVisitor extends Visitor {
     this.visitChildren(node);
   }
 
-  protected PropertyDefinition(node: TSESTree.PropertyDefinition): void {
-    this.visitPropertyDefinition(node);
+  protected Identifier(node: TSESTree.Identifier): void {
+    this.#referencer.visit(node);
   }
 
   protected MethodDefinition(node: TSESTree.MethodDefinition): void {
     this.visitMethod(node);
   }
 
-  protected TSAbstractAccessorProperty(
-    node: TSESTree.TSAbstractAccessorProperty,
-  ): void {
+  protected PrivateIdentifier(): void {
+    // intentionally skip
+  }
+
+  protected PropertyDefinition(node: TSESTree.PropertyDefinition): void {
     this.visitPropertyDefinition(node);
   }
 
-  protected TSAbstractPropertyDefinition(
-    node: TSESTree.TSAbstractPropertyDefinition,
+  protected StaticBlock(node: TSESTree.StaticBlock): void {
+    this.#referencer.scopeManager.nestClassStaticBlockScope(node);
+
+    node.body.forEach(b => this.visit(b));
+
+    this.#referencer.close(node);
+  }
+
+  protected TSAbstractAccessorProperty(
+    node: TSESTree.TSAbstractAccessorProperty,
   ): void {
     this.visitPropertyDefinition(node);
   }
@@ -312,24 +327,14 @@ class ClassVisitor extends Visitor {
     this.visitPropertyBase(node);
   }
 
-  protected Identifier(node: TSESTree.Identifier): void {
-    this.#referencer.visit(node);
-  }
-
-  protected PrivateIdentifier(): void {
-    // intentionally skip
+  protected TSAbstractPropertyDefinition(
+    node: TSESTree.TSAbstractPropertyDefinition,
+  ): void {
+    this.visitPropertyDefinition(node);
   }
 
   protected TSIndexSignature(node: TSESTree.TSIndexSignature): void {
     this.visitType(node);
-  }
-
-  protected StaticBlock(node: TSESTree.StaticBlock): void {
-    this.#referencer.scopeManager.nestClassStaticBlockScope(node);
-
-    node.body.forEach(b => this.visit(b));
-
-    this.#referencer.close(node);
   }
 }
 
@@ -368,5 +373,3 @@ function getLiteralMethodKeyName(
   }
   return null;
 }
-
-export { ClassVisitor };

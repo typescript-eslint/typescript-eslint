@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -12,21 +13,35 @@ import {
 /**
  * @returns Whether the right type is an unsafe comparison against any left type.
  */
-function typeViolates(leftTypeParts: ts.Type[], right: ts.Type): boolean {
-  const leftValueKinds = new Set(leftTypeParts.map(getEnumValueType));
+function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
+  const leftEnumValueTypes = new Set(leftTypeParts.map(getEnumValueType));
 
   return (
-    (leftValueKinds.has(ts.TypeFlags.Number) &&
-      tsutils.isTypeFlagSet(
-        right,
-        ts.TypeFlags.Number | ts.TypeFlags.NumberLike,
-      )) ||
-    (leftValueKinds.has(ts.TypeFlags.String) &&
-      tsutils.isTypeFlagSet(
-        right,
-        ts.TypeFlags.String | ts.TypeFlags.StringLike,
-      ))
+    (leftEnumValueTypes.has(ts.TypeFlags.Number) && isNumberLike(rightType)) ||
+    (leftEnumValueTypes.has(ts.TypeFlags.String) && isStringLike(rightType))
   );
+}
+
+function isNumberLike(type: ts.Type): boolean {
+  const typeParts = tsutils.intersectionConstituents(type);
+
+  return typeParts.some(typePart => {
+    return tsutils.isTypeFlagSet(
+      typePart,
+      ts.TypeFlags.Number | ts.TypeFlags.NumberLike,
+    );
+  });
+}
+
+function isStringLike(type: ts.Type): boolean {
+  const typeParts = tsutils.intersectionConstituents(type);
+
+  return typeParts.some(typePart => {
+    return tsutils.isTypeFlagSet(
+      typePart,
+      ts.TypeFlags.String | ts.TypeFlags.StringLike,
+    );
+  });
 }
 
 /**
@@ -43,13 +58,13 @@ function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
 export default createRule({
   name: 'no-unsafe-enum-comparison',
   meta: {
-    hasSuggestions: true,
     type: 'suggestion',
     docs: {
       description: 'Disallow comparing an enum value with a non-enum value',
       recommended: 'recommended',
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
       mismatchedCase:
         'The case statement does not have a shared enum type with the switch predicate.',
@@ -90,8 +105,15 @@ export default createRule({
         }
       }
 
-      const leftTypeParts = tsutils.unionTypeParts(leftType);
-      const rightTypeParts = tsutils.unionTypeParts(rightType);
+      // We need to split the type into the union type parts in order to find
+      // valid enum comparisons like:
+      //
+      // ```ts
+      // declare const something: Fruit | Vegetable;
+      // something === Fruit.Apple;
+      // ```
+      const leftTypeParts = tsutils.unionConstituents(leftType);
+      const rightTypeParts = tsutils.unionConstituents(rightType);
 
       // If a type exists in both sides, we consider this comparison safe:
       //
@@ -120,8 +142,8 @@ export default createRule({
 
         if (isMismatchedComparison(leftType, rightType)) {
           context.report({
-            messageId: 'mismatchedCondition',
             node,
+            messageId: 'mismatchedCondition',
             suggest: [
               {
                 messageId: 'replaceValueWithEnum',
@@ -176,8 +198,8 @@ export default createRule({
 
         if (isMismatchedComparison(leftType, rightType)) {
           context.report({
-            messageId: 'mismatchedCase',
             node,
+            messageId: 'mismatchedCase',
           });
         }
       },

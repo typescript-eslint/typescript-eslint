@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics type-alias-object-without-annotation Babel - Tokens 1`] = `
 [
   Identifier {
     type: "Identifier",
@@ -113,4 +110,3 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-object-without-annotatio
     },
   },
 ]
-`;

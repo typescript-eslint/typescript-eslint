@@ -9,7 +9,6 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-magic-numbers** for documentation.
 
-This rule extends the base [`eslint/no-magic-numbers`](https://eslint.org/docs/rules/no-magic-numbers) rule.
 It adds support for:
 
 - numeric literal types (`type T = 1`),
@@ -39,7 +38,9 @@ const defaultOptions: Options = {
 
 ### `ignoreEnums`
 
-A boolean to specify if enums used in TypeScript are considered okay. `false` by default.
+{/* insert option description */}
+
+Whether enums used in TypeScript are considered okay. `false` by default.
 
 Examples of **incorrect** code for the `{ "ignoreEnums": false }` option:
 
@@ -59,7 +60,9 @@ enum foo {
 
 ### `ignoreNumericLiteralTypes`
 
-A boolean to specify if numbers used in TypeScript numeric literal types are considered okay. `false` by default.
+{/* insert option description */}
+
+Whether numbers used in TypeScript numeric literal types are considered okay. `false` by default.
 
 Examples of **incorrect** code for the `{ "ignoreNumericLiteralTypes": false }` option:
 
@@ -74,6 +77,10 @@ type SmallPrimes = 2 | 3 | 5 | 7 | 11;
 ```
 
 ### `ignoreReadonlyClassProperties`
+
+{/* insert option description */}
+
+Whether `readonly` class properties are considered okay.
 
 Examples of **incorrect** code for the `{ "ignoreReadonlyClassProperties": false }` option:
 
@@ -99,7 +106,9 @@ class Foo {
 
 ### `ignoreTypeIndexes`
 
-A boolean to specify if numbers used to index types are okay. `false` by default.
+{/* insert option description */}
+
+Whether numbers used to index types are okay. `false` by default.
 
 Examples of **incorrect** code for the `{ "ignoreTypeIndexes": false }` option:
 

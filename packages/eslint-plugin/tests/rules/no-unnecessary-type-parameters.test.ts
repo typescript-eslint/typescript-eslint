@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-type-parameters';
 import { getFixturesRootDir } from '../RuleTester';
@@ -8,8 +8,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -60,13 +60,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     `
       class Joiner<T extends string | number> {
         join(els: T[]) {
-          return els.map(el => '' + el).join(',');
-        }
-      }
-    `,
-    `
-      class Joiner {
-        join<T extends string | number>(els: T[]) {
           return els.map(el => '' + el).join(',');
         }
       }
@@ -243,8 +236,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function makeSets<K>(): [Set<K>][];',
     'declare function makeMap<K, V>(): Map<K, V>;',
     'declare function makeMap<K, V>(): [Map<K, V>];',
+    'declare function makeArray<T>(): T[];',
+    'declare function makeArrayNullish<T>(): (T | null)[];',
+    'declare function makeTupleMulti<T>(): [T | null, T | null];',
+    'declare function takeTupleMulti<T>(input: [T, T]): void;',
+    'declare function takeTupleMultiNullish<T>(input: [T | null, T | null]): void;',
     'declare function arrayOfPairs<T>(): [T, T][];',
     'declare function fetchJson<T>(url: string): Promise<T>;',
+    'declare function fetchJsonTuple<T>(url: string): Promise<[T]>;',
     'declare function fn<T>(input: T): 0 extends 0 ? T : never;',
     'declare function useFocus<T extends HTMLOrSVGElement>(): [React.RefObject<T>];',
     `
@@ -343,10 +342,91 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
           tokenType in conditions;
     `,
     `
+      type Foo<T, S> = S extends 'somebody'
+        ? T extends 'once'
+          ? 'told'
+          : 'me'
+        : never;
+
+      declare function foo<T>(data: T): <S>(other: S) => Foo<T, S>;
+    `,
+    `
+      type Foo<T, S> = S extends 'somebody'
+        ? T extends 'once'
+          ? 'told'
+          : 'me'
+        : never;
+
+      declare function foo<T>(data: T): <S>(other: S) => Foo<S, T>;
+    `,
+    `
       declare function mapObj<K extends string, V>(
         obj: { [key in K]?: V },
         fn: (key: K, val: V) => number,
       ): number[];
+    `,
+    `
+      declare function mappedReturnType<T extends string>(
+        x: T,
+      ): { [K in T]: Capitalize<K> };
+
+      function inferredMappedReturnType<T extends string>(x: T) {
+        return mappedReturnType(x);
+      }
+    `,
+    `
+      declare function mappedReturnType<T extends string>(
+        x: T,
+      ): { [K in T]: Capitalize<K> };
+
+      function inferredMappedReturnType<T extends string>(x: T) {
+        return () => mappedReturnType(x);
+      }
+    `,
+    `
+      declare function mappedReturnType<T extends string>(
+        x: T,
+      ): { [K in T]: Capitalize<K> };
+
+      function inferredMappedReturnType<T extends string>(x: T) {
+        return [{ value: () => mappedReturnType(x) }];
+      }
+    `,
+    `
+type Identity<T> = T;
+
+type Mapped<T, Value> = Identity<{ [P in keyof T]: Value }>;
+
+declare function sillyFoo<Data, Value>(
+  c: Value,
+): (data: Data) => Mapped<Data, Value>;
+    `,
+    `
+type Silly<T> = { [P in keyof T]: T[P] };
+
+type SillyFoo<T, Value> = Silly<{ [P in keyof T]: Value }>;
+
+type Foo<T, Value> = { [P in keyof T]: Value };
+
+declare function foo<T, Constant>(data: T, c: Constant): Foo<T, Constant>;
+declare function foo<T, Constant>(c: Constant): (data: T) => Foo<T, Constant>;
+
+declare function sillyFoo<T, Constant>(
+  data: T,
+  c: Constant,
+): SillyFoo<T, Constant>;
+declare function sillyFoo<T, Constant>(
+  c: Constant,
+): (data: T) => SillyFoo<T, Constant>;
+    `,
+    `
+const f = <T,>(setValue: (v: T) => void, getValue: () => NoInfer<T>) => {};
+    `,
+    `
+const f = <T,>(
+  setValue: (v: T) => NoInfer<T>,
+  getValue: (v: NoInfer<T>) => NoInfer<T>,
+) => {};
     `,
   ],
 
@@ -355,8 +435,44 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'const func = <T,>(param: T) => null;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'const func = (param: unknown) => null;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const func = <T,>(param: [T]) => null;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'const func = (param: [unknown]) => null;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const func = <T,>(param: T[]) => null;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'const func = (param: unknown[]) => null;',
+            },
+          ],
         },
       ],
     },
@@ -364,8 +480,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'const f1 = <T,>(): T => {};',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'const f1 = (): unknown => {};',
+            },
+          ],
         },
       ],
     },
@@ -377,8 +499,18 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        interface I {
+          (value: unknown): void;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -388,7 +520,21 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
           m<T>(x: T): void;
         }
       `,
-      errors: [{ messageId: 'sole' }],
+      errors: [
+        {
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        interface I {
+          m(x: unknown): void;
+        }
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -400,8 +546,20 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        class Joiner {
+          join(el: string | number, other: string) {
+            return [el, other].join(',');
+          }
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -411,8 +569,16 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'V', uses: 'never used' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class C {}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -424,12 +590,32 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class C<U> {
+          method(param: unknown): U;
+        }
+      `,
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class C<T> {
+          method(param: T): unknown;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -441,12 +627,32 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class C {
+          method<U>(param: unknown): U;
+        }
+      `,
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class C {
+          method<T>(param: T): unknown;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -458,8 +664,18 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'P', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class C {
+          prop: () => unknown;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -471,8 +687,18 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class Foo {
+          foo(this: unknown): void;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -484,12 +710,32 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'A', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function third<B, C>(a: unknown, b: B, c: C): C {
+          return c;
+        }
+      `,
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'B', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function third<A, C>(a: A, b: unknown, c: C): C {
+          return c;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -502,8 +748,19 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function foo(_: unknown) {
+          const x: unknown = null!;
+          const y: unknown = null!;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -516,22 +773,46 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function foo(_: unknown): void {
+          const x: unknown = null!;
+          const y: unknown = null!;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
     {
       code: `
-        function foo<T>(_: T): <T>(input: T) => T {
-          const x: T = null!;
-          const y: T = null!;
-        }
+function foo<T>(_: T): <T>(input: T) => T {
+  const x: T = null!;
+  const y: T = null!;
+  return null!;
+}
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function foo(_: unknown): <T>(input: T) => T {
+  const x: unknown = null!;
+  const y: unknown = null!;
+  return null!;
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -548,8 +829,23 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function foo(_: unknown) {
+          function withX(): unknown {
+            return null!;
+          }
+          function withY(): unknown {
+            return null!;
+          }
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -561,8 +857,18 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function parseYAML(input: string): unknown {
+          return input as any as unknown;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -574,8 +880,18 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'K', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function printProperty<T>(obj: T, key: keyof T) {
+          console.log(obj[key]);
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -590,6 +906,17 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function fn(param: string) {
+          let v: unknown = null!;
+          return v;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -608,12 +935,44 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'CB1', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function both<
+          Args extends unknown[],
+          CB2 extends (...args: Args) => void,
+        >(fn1: (...args: Args) => void, fn2: CB2): (...args: Args) => void {
+          return function (...args: Args) {
+            fn1(...args);
+            fn2(...args);
+          };
+        }
+      `,
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'CB2', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function both<
+          Args extends unknown[],
+          CB1 extends (...args: Args) => void,
+        >(fn1: CB1, fn2: (...args: Args) => void): (...args: Args) => void {
+          return function (...args: Args) {
+            fn1(...args);
+            fn2(...args);
+          };
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -627,6 +986,16 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function getLength(x: { length: number }) {
+          return x.length;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -643,6 +1012,19 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        interface Lengthy {
+          length: number;
+        }
+        function getLength(x: Lengthy) {
+          return x.length;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -650,8 +1032,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function get<T>(): unknown;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function get(): unknown;',
+            },
+          ],
         },
       ],
     },
@@ -659,8 +1047,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function get<T>(): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function get(): unknown;',
+            },
+          ],
         },
       ],
     },
@@ -668,8 +1062,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function get<T extends object>(): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function get(): object;',
+            },
+          ],
         },
       ],
     },
@@ -677,8 +1077,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function take<T>(param: T): void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function take(param: unknown): void;',
+            },
+          ],
         },
       ],
     },
@@ -686,8 +1092,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function take<T extends object>(param: T): void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function take(param: object): void;',
+            },
+          ],
         },
       ],
     },
@@ -695,8 +1107,15 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function take<T, U = T>(param1: T, param2: U): void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function take<T>(param1: T, param2: unknown): void;',
+            },
+          ],
         },
       ],
     },
@@ -704,8 +1123,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function take<T, U extends T>(param: T): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function take<T>(param: T): T;',
+            },
+          ],
         },
       ],
     },
@@ -713,8 +1138,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function take<T, U extends T>(param: U): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function take<U extends unknown>(param: U): U;',
+            },
+          ],
         },
       ],
     },
@@ -722,8 +1153,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function get<T, U = T>(param: U): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function get<U = unknown>(param: U): U;',
+            },
+          ],
         },
       ],
     },
@@ -731,8 +1168,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function get<T, U extends T = T>(param: T): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function get<T>(param: T): T;',
+            },
+          ],
         },
       ],
     },
@@ -740,8 +1183,15 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function compare<T, U extends T>(param1: T, param2: U): boolean;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function compare<T>(param1: T, param2: T): boolean;',
+            },
+          ],
         },
       ],
     },
@@ -749,16 +1199,37 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function get<T>(param: <U, V>(param: U) => V): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function get(param: <U, V>(param: U) => V): unknown;',
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function get<T>(param: <V>(param: unknown) => V): T;',
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function get<T>(param: <U>(param: U) => unknown): T;',
+            },
+          ],
         },
       ],
     },
@@ -766,16 +1237,177 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'declare function get<T>(param: <T, U>(param: T) => U): T;',
       errors: [
         {
-          messageId: 'sole',
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 23,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function get(param: <T, U>(param: T) => U): unknown;',
+            },
+          ],
         },
         {
-          messageId: 'sole',
+          column: 33,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 34,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function get<T>(param: <U>(param: unknown) => U): T;',
+            },
+          ],
         },
         {
-          messageId: 'sole',
+          column: 36,
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          endColumn: 37,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function get<T>(param: <T>(param: T) => unknown): T;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function makeReadonlyArray<T>(): readonly T[];',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function makeReadonlyArray(): readonly unknown[];',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function makeReadonlyTuple<T>(): readonly [T];',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function makeReadonlyTuple(): readonly [unknown];',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function makeReadonlyTupleNullish<T>(): readonly [T | null];',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function makeReadonlyTupleNullish(): readonly [unknown | null];',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function takeArray<T>(input: T[]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function takeArray(input: unknown[]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function takeArrayNullish<T>(input: (T | null)[]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function takeArrayNullish(input: (unknown | null)[]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function takeTuple<T>(input: [T]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function takeTuple(input: [unknown]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function takeTupleMultiUnrelated<T>(input: [T, number]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function takeTupleMultiUnrelated(input: [unknown, number]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare function takeTupleMultiUnrelatedNullish<T>(
+          input: [T | null, null],
+        ): void;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare function takeTupleMultiUnrelatedNullish(
+          input: [unknown | null, null],
+        ): void;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -783,8 +1415,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'type Fn = <T>() => T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Fn = () => unknown;',
+            },
+          ],
         },
       ],
     },
@@ -792,8 +1430,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'type Fn = <T>() => [];',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Fn = () => [];',
+            },
+          ],
         },
       ],
     },
@@ -804,8 +1448,17 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        type Other = 0;
+        type Fn = () => Other;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -816,8 +1469,17 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        type Other = 0 | 1;
+        type Fn = () => Other;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -825,8 +1487,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'type Fn = <U>(param: U) => void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Fn = (param: unknown) => void;',
+            },
+          ],
         },
       ],
     },
@@ -834,8 +1502,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'type Ctr = new <T>() => T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Ctr = new () => unknown;',
+            },
+          ],
         },
       ],
     },
@@ -843,8 +1517,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'type Fn = <T>() => { [K in keyof T]: K };',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Fn = () => { [K in keyof unknown]: K };',
+            },
+          ],
         },
       ],
     },
@@ -852,8 +1532,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: "type Fn = <T>() => { [K in 'a']: T };",
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: "type Fn = () => { [K in 'a']: unknown };",
+            },
+          ],
         },
       ],
     },
@@ -861,8 +1547,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'type Fn = <T>(value: unknown) => value is T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Fn = (value: unknown) => value is unknown;',
+            },
+          ],
         },
       ],
     },
@@ -870,8 +1562,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'type Fn = <T extends string>() => `a${T}b`;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Fn = () => `a${string}b`;',
+            },
+          ],
         },
       ],
     },
@@ -884,8 +1582,332 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare function mapObj<K extends string>(
+          obj: { [key in K]?: unknown },
+          fn: (key: K) => number,
+        ): number[];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function setItem<T>(T): T;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+declare function setItem(T): unknown;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface StorageService {
+  setItem<T>({ key: string, value: T }): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+interface StorageService {
+  setItem({ key: string, value: T }): Promise<void>;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // This isn't actually an important test case.
+      // However, we use it as an example in the docs of code that is flagged,
+      // but shouldn't necessarily be. So, if you make a change to the rule logic
+      // that resolves this sort-of-false-positive, please update the docs
+      // accordingly.
+      // Original discussion in https://github.com/typescript-eslint/typescript-eslint/issues/9709
+      code: noFormat`
+type Compute<A> = A extends Function ? A : { [K in keyof A]: Compute<A[K]> };
+type Equal<X, Y> =
+  (<T1>() => T1 extends Compute<X> ? 1 : 2) extends
+    (<T2>() => T2 extends Compute<Y> ? 1 : 2)
+  ? true
+  : false;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T1', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+type Compute<A> = A extends Function ? A : { [K in keyof A]: Compute<A[K]> };
+type Equal<X, Y> =
+  (() => unknown extends Compute<X> ? 1 : 2) extends
+    (<T2>() => T2 extends Compute<Y> ? 1 : 2)
+  ? true
+  : false;
+      `,
+            },
+          ],
+        },
+        {
+          data: { descriptor: 'function', name: 'T2', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+type Compute<A> = A extends Function ? A : { [K in keyof A]: Compute<A[K]> };
+type Equal<X, Y> =
+  (<T1>() => T1 extends Compute<X> ? 1 : 2) extends
+    (() => unknown extends Compute<Y> ? 1 : 2)
+  ? true
+  : false;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function f<T extends any>(x: T): void {
+  // @ts-expect-error
+  x.notAMethod();
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function f(x: unknown): void {
+  // @ts-expect-error
+  x.notAMethod();
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Joiner {
+  join<T extends number>(els: T[]) {
+    return els.map(el => '' + el).join(',');
+  }
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class Joiner {
+  join(els: number[]) {
+    return els.map(el => '' + el).join(',');
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function join<T extends string | number>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: (string | number)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function join<T extends string & number>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: (string & number)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function join<T extends (string & number) | boolean>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: ((string & number) | boolean)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+function join<T extends (string | number)>(els: T[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: (string | number)[]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function join<T extends { hoge: string } | { hoge: number }>(els: T['hoge'][]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function join(els: ({ hoge: string } | { hoge: number })['hoge'][]) {
+  return els.map(el => '' + el).join(',');
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+type A = string;
+type B = string;
+type C = string;
+declare function f<T extends A | B>(): T & C;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+type A = string;
+type B = string;
+type C = string;
+declare function f(): (A | B) & C;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+type A = string;
+type B = string;
+type C = string;
+type D = string;
+declare function f<T extends A extends B ? C : D>(): T | null;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+type A = string;
+type B = string;
+type C = string;
+type D = string;
+declare function f(): (A extends B ? C : D) | null;
+      `,
+            },
+          ],
         },
       ],
     },

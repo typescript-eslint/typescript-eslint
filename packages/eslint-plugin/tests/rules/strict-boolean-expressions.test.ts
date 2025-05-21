@@ -1,12 +1,13 @@
-/* eslint-disable deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
+/* eslint-disable @typescript-eslint/no-deprecated -- TODO - migrate this test away from `batchedSingleLineTests` */
 
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import * as path from 'path';
+import * as path from 'node:path';
 
 import type {
   MessageId,
   Options,
 } from '../../src/rules/strict-boolean-expressions';
+
 import rule from '../../src/rules/strict-boolean-expressions';
 import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
 
@@ -14,8 +15,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -94,128 +95,170 @@ if (x) {
 
     // nullable boolean in boolean context
     {
-      options: [{ allowNullableBoolean: true }],
       code: `
         declare const x: boolean | null;
         if (x) {
         }
       `,
+      options: [{ allowNullableBoolean: true }],
     },
     {
-      options: [{ allowNullableBoolean: true }],
       code: `
         (x?: boolean) => !x;
       `,
+      options: [{ allowNullableBoolean: true }],
     },
     {
-      options: [{ allowNullableBoolean: true }],
       code: `
         <T extends boolean | null | undefined>(x: T) => (x ? 1 : 0);
       `,
+      options: [{ allowNullableBoolean: true }],
+    },
+    {
+      code: `
+        const a: (undefined | boolean | null)[] = [true, undefined, null];
+        a.some(x => x);
+      `,
+      options: [{ allowNullableBoolean: true }],
     },
 
     // nullable string in boolean context
     {
-      options: [{ allowNullableString: true }],
       code: `
         declare const x: string | null;
         if (x) {
         }
       `,
+      options: [{ allowNullableString: true }],
     },
     {
-      options: [{ allowNullableString: true }],
       code: `
         (x?: string) => !x;
       `,
+      options: [{ allowNullableString: true }],
     },
     {
-      options: [{ allowNullableString: true }],
       code: `
         <T extends string | null | undefined>(x: T) => (x ? 1 : 0);
       `,
+      options: [{ allowNullableString: true }],
     },
 
     // nullable number in boolean context
     {
-      options: [{ allowNullableNumber: true }],
       code: `
         declare const x: number | null;
         if (x) {
         }
       `,
+      options: [{ allowNullableNumber: true }],
     },
     {
-      options: [{ allowNullableNumber: true }],
       code: `
         (x?: number) => !x;
       `,
+      options: [{ allowNullableNumber: true }],
     },
     {
-      options: [{ allowNullableNumber: true }],
       code: `
         <T extends number | null | undefined>(x: T) => (x ? 1 : 0);
       `,
+      options: [{ allowNullableNumber: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: (null | unknown[])[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array?.length);
+      `,
+      options: [{ allowNullableNumber: true }],
     },
 
     // any in boolean context
     {
-      options: [{ allowAny: true }],
       code: `
         declare const x: any;
         if (x) {
         }
       `,
+      options: [{ allowAny: true }],
     },
     {
-      options: [{ allowAny: true }],
       code: `
         x => !x;
       `,
+      options: [{ allowAny: true }],
     },
     {
-      options: [{ allowAny: true }],
       code: `
         <T extends any>(x: T) => (x ? 1 : 0);
       `,
+      options: [{ allowAny: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: any[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowAny: true }],
     },
 
     // logical operator
     {
-      options: [{ allowString: true, allowNumber: true }],
       code: `
         1 && true && 'x' && {};
       `,
+      options: [{ allowNumber: true, allowString: true }],
     },
     {
-      options: [{ allowString: true, allowNumber: true }],
       code: `
         let x = 0 || false || '' || null;
       `,
+      options: [{ allowNumber: true, allowString: true }],
     },
     {
-      options: [{ allowString: true, allowNumber: true }],
       code: `
         if (1 && true && 'x') void 0;
       `,
+      options: [{ allowNumber: true, allowString: true }],
     },
     {
-      options: [{ allowString: true, allowNumber: true }],
       code: `
         if (0 || false || '') void 0;
       `,
+      options: [{ allowNumber: true, allowString: true }],
     },
     {
-      options: [{ allowString: true, allowNumber: true }],
       code: `
         1 && true && 'x' ? {} : null;
       `,
+      options: [{ allowNumber: true, allowString: true }],
     },
     {
-      options: [{ allowString: true, allowNumber: true }],
       code: `
         0 || false || '' ? null : {};
       `,
+      options: [{ allowNumber: true, allowString: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: string[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowString: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: number[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowNumber: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: (null | object)[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowNullableObject: true }],
     },
 
     // nullable enum in boolean context
@@ -329,7 +372,17 @@ if (x) {
       `,
       options: [{ allowNullableEnum: true }],
     },
-
+    {
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        declare const arrayOfArrays: (ExampleEnum | null)[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
     {
       code: `
 declare const x: string[] | null;
@@ -337,16 +390,16 @@ declare const x: string[] | null;
 if (x) {
 }
       `,
-      options: [
-        {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
-        },
-      ],
       languageOptions: {
         parserOptions: {
           tsconfigRootDir: path.join(rootPath, 'unstrict'),
         },
       },
+      options: [
+        {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
+        },
+      ],
     },
 
     `
@@ -440,14 +493,6 @@ declare const nullableString: string | null;
 declare const boo: boolean;
 assert(boo, nullableString);
     `,
-    // Intentional TS error - cannot assert a parameter in a binding pattern.
-    `
-declare function assert(a: boolean, b: unknown): asserts b;
-declare function assert(a: boolean, { b }: { b: unknown }): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
     `
 declare function assert(a: number, b: unknown): asserts b;
 declare const nullableString: string | null;
@@ -515,39 +560,6 @@ declare const nullableString: string | null;
 assert(3 as any, nullableString);
       `,
     },
-    // Intentional TS error - A rest parameter must be last in a parameter list.
-    // This is just to test that we don't crash or falsely report.
-    `
-declare function assert(...a: boolean[], b: unknown): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
-    // Intentional TS error - A type predicate cannot reference a rest parameter.
-    // This is just to test that we don't crash or falsely report.
-    `
-declare function assert(a: boolean, ...b: unknown[]): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
-    // Intentional TS error - An assertion function must have a parameter to assert.
-    // This is just to test that we don't crash or falsely report.
-    `
-declare function assert(): asserts x;
-declare const nullableString: string | null;
-assert(nullableString);
-    `,
-    `
-function assert(one: unknown): asserts one;
-function assert(one: unknown, two: unknown): asserts two;
-function assert(...args: unknown[]) {
-  throw new Error('not implemented');
-}
-declare const nullableString: string | null;
-assert(nullableString);
-assert('one', nullableString);
-    `,
     // Intentional use of `any` to test a function call with no call signatures.
     `
 declare const assert: any;
@@ -561,14 +573,79 @@ assert(nullableString);
         break;
       }
     `,
+    `
+[true, false].some(function (x) {
+  return x;
+});
+    `,
+    `
+[true, false].some(function check(x) {
+  return x;
+});
+    `,
+    `
+[true, false].some(x => {
+  return x;
+});
+    `,
+    `
+[1, null].filter(function (x) {
+  return x != null;
+});
+    `,
+    `
+['one', 'two', ''].filter(function (x) {
+  return !!x;
+});
+    `,
+    `
+['one', 'two', ''].filter(function (x): boolean {
+  return !!x;
+});
+    `,
+    `
+['one', 'two', ''].filter(function (x): boolean {
+  if (x) {
+    return true;
+  }
+});
+    `,
+    `
+['one', 'two', ''].filter(function (x): boolean {
+  if (x) {
+    return true;
+  }
+
+  throw new Error('oops');
+});
+    `,
+    `
+declare const predicate: (string) => boolean;
+['one', 'two', ''].filter(predicate);
+    `,
+    `
+declare function notNullish<T>(x: T): x is NonNullable<T>;
+['one', null].filter(notNullish);
+    `,
+    `
+declare function predicate(x: string | null): x is string;
+['one', null].filter(predicate);
+    `,
+    `
+declare function predicate<T extends boolean>(x: string | null): T;
+['one', null].filter(predicate);
+    `,
+    `
+declare function f(x: number): boolean;
+declare function f(x: string | null): boolean;
+
+[35].filter(f);
+    `,
   ],
 
   invalid: [
     // non-boolean in RHS of test expression
     ...batchedSingleLineTests<MessageId, Options>({
-      options: [
-        { allowString: false, allowNumber: false, allowNullableObject: false },
-      ],
       code: noFormat`
         if (true && (1 + 1)) {}
         while (false || "a" + "b") {}
@@ -576,9 +653,12 @@ assert(nullableString);
       `,
       errors: [
         {
-          messageId: 'conditionErrorNumber',
-          line: 2,
           column: 14,
+          data: {
+            context: 'conditional',
+          },
+          line: 2,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -595,9 +675,9 @@ assert(nullableString);
           ],
         },
         {
-          messageId: 'conditionErrorString',
-          line: 3,
           column: 25,
+          line: 3,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -613,22 +693,28 @@ assert(nullableString);
             },
           ],
         },
-        { messageId: 'conditionErrorObject', line: 4, column: 41 },
+        {
+          column: 41,
+          data: {
+            context: 'conditional',
+          },
+          line: 4,
+          messageId: 'conditionErrorObject',
+        },
+      ],
+      options: [
+        { allowNullableObject: false, allowNumber: false, allowString: false },
       ],
     }),
 
     // check if all and only the outermost operands are checked
     {
-      options: [
-        { allowString: false, allowNumber: false, allowNullableObject: false },
-      ],
       code: noFormat`if (('' && {}) || (0 && void 0)) { }`,
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorString',
-          line: 1,
           column: 6,
+          line: 1,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -644,11 +730,21 @@ assert(nullableString);
             },
           ],
         },
-        { messageId: 'conditionErrorObject', line: 1, column: 12 },
         {
-          messageId: 'conditionErrorNumber',
+          column: 12,
+          data: {
+            context: 'conditional',
+          },
           line: 1,
+          messageId: 'conditionErrorObject',
+        },
+        {
           column: 20,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -664,23 +760,71 @@ assert(nullableString);
             },
           ],
         },
-        { messageId: 'conditionErrorNullish', line: 1, column: 25 },
+        { column: 25, line: 1, messageId: 'conditionErrorNullish' },
       ],
+      options: [
+        { allowNullableObject: false, allowNumber: false, allowString: false },
+      ],
+      output: null,
     },
     {
-      options: [
-        { allowString: false, allowNumber: false, allowNullableObject: false },
+      code: `
+        declare const array: string[];
+        array.some(x => x);
+      `,
+      errors: [
+        {
+          data: {
+            context: 'array predicate return type',
+          },
+          messageId: 'conditionErrorString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: `
+        declare const array: string[];
+        array.some(x => x.length > 0);
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `
+        declare const array: string[];
+        array.some(x => x !== "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+        declare const array: string[];
+        array.some(x => Boolean(x));
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+        declare const array: string[];
+        array.some((x): boolean => x);
+      `,
+            },
+          ],
+        },
       ],
+      options: [{ allowNullableBoolean: true, allowString: false }],
+    },
+    {
       code: noFormat`
 declare const foo: true & { __BRAND: 'Foo' };
 if (('' && foo) || (0 && void 0)) { }
       `,
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorString',
-          line: 3,
           column: 6,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -706,9 +850,12 @@ if (((Boolean('')) && foo) || (0 && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 3,
           column: 21,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -733,23 +880,26 @@ if (('' && foo) || ((Boolean(0)) && void 0)) { }
             },
           ],
         },
-        { messageId: 'conditionErrorNullish', line: 3, column: 26 },
+        { column: 26, line: 3, messageId: 'conditionErrorNullish' },
       ],
+      options: [
+        { allowNullableObject: false, allowNumber: false, allowString: false },
+      ],
+      output: null,
     },
     {
-      options: [
-        { allowString: false, allowNumber: false, allowNullableObject: false },
-      ],
       code: noFormat`
 declare const foo: false & { __BRAND: 'Foo' };
 if (('' && {}) || (foo && void 0)) { }
       `,
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorString',
-          line: 3,
           column: 6,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -774,21 +924,40 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
             },
           ],
         },
-        { messageId: 'conditionErrorObject', line: 3, column: 12 },
-        { messageId: 'conditionErrorNullish', line: 3, column: 27 },
+        {
+          column: 12,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorObject',
+        },
+        {
+          column: 27,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorNullish',
+        },
       ],
+      options: [
+        { allowNullableObject: false, allowNumber: false, allowString: false },
+      ],
+      output: null,
     },
 
     // shouldn't check last logical operand when used for control flow
     {
-      options: [{ allowString: false, allowNumber: false }],
       code: "'asd' && 123 && [] && null;",
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorString',
-          line: 1,
           column: 1,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -805,9 +974,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 1,
           column: 10,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -824,21 +996,27 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorObject',
-          line: 1,
           column: 17,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorObject',
         },
       ],
+      options: [{ allowNumber: false, allowString: false }],
+      output: null,
     },
     {
-      options: [{ allowString: false, allowNumber: false }],
       code: "'asd' || 123 || [] || null;",
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorString',
-          line: 1,
           column: 1,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -855,9 +1033,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 1,
           column: 10,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -874,21 +1055,27 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorObject',
-          line: 1,
           column: 17,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorObject',
         },
       ],
+      options: [{ allowNumber: false, allowString: false }],
+      output: null,
     },
     {
-      options: [{ allowString: false, allowNumber: false }],
       code: "let x = (1 && 'a' && null) || 0 || '' || {};",
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNumber',
-          line: 1,
           column: 10,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -906,9 +1093,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorString',
-          line: 1,
           column: 15,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -926,14 +1116,17 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNullish',
-          line: 1,
           column: 22,
+          line: 1,
+          messageId: 'conditionErrorNullish',
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 1,
           column: 31,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -951,9 +1144,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorString',
-          line: 1,
           column: 36,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -971,16 +1167,19 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
       ],
+      options: [{ allowNumber: false, allowString: false }],
+      output: null,
     },
     {
-      options: [{ allowString: false, allowNumber: false }],
       code: "return (1 || 'a' || null) && 0 && '' && {};",
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNumber',
-          line: 1,
           column: 9,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -998,9 +1197,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorString',
-          line: 1,
           column: 14,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -1018,14 +1220,17 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNullish',
-          line: 1,
           column: 21,
+          line: 1,
+          messageId: 'conditionErrorNullish',
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 1,
           column: 30,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -1043,9 +1248,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorString',
-          line: 1,
           column: 35,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -1063,16 +1271,19 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
       ],
+      options: [{ allowNumber: false, allowString: false }],
+      output: null,
     },
     {
-      options: [{ allowString: false, allowNumber: false }],
       code: "console.log((1 && []) || ('a' && {}));",
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNumber',
-          line: 1,
           column: 14,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -1089,14 +1300,20 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorObject',
-          line: 1,
           column: 19,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorObject',
         },
         {
-          messageId: 'conditionErrorString',
-          line: 1,
           column: 27,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -1113,18 +1330,21 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
       ],
+      options: [{ allowNumber: false, allowString: false }],
+      output: null,
     },
 
     // should check all logical operands when used in a condition
     {
-      options: [{ allowString: false, allowNumber: false }],
       code: "if ((1 && []) || ('a' && {})) void 0;",
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNumber',
-          line: 1,
           column: 6,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -1141,14 +1361,20 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorObject',
-          line: 1,
           column: 11,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorObject',
         },
         {
-          messageId: 'conditionErrorString',
-          line: 1,
           column: 19,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -1165,26 +1391,32 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorObject',
-          line: 1,
           column: 26,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorObject',
         },
       ],
+      options: [{ allowNumber: false, allowString: false }],
+      output: null,
     },
     {
-      options: [{ allowString: false, allowNumber: false }],
       code: "let x = null || 0 || 'a' || [] ? {} : undefined;",
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNullish',
-          line: 1,
           column: 9,
+          line: 1,
+          messageId: 'conditionErrorNullish',
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 1,
           column: 17,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -1204,9 +1436,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorString',
-          line: 1,
           column: 22,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -1226,26 +1461,32 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorObject',
-          line: 1,
           column: 29,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorObject',
         },
       ],
+      options: [{ allowNumber: false, allowString: false }],
+      output: null,
     },
     {
-      options: [{ allowString: false, allowNumber: false }],
       code: "return !(null || 0 || 'a' || []);",
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNullish',
-          line: 1,
           column: 10,
+          line: 1,
+          messageId: 'conditionErrorNullish',
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 1,
           column: 18,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -1262,9 +1503,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorString',
-          line: 1,
           column: 23,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -1281,11 +1525,16 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorObject',
-          line: 1,
           column: 30,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorObject',
         },
       ],
+      options: [{ allowNumber: false, allowString: false }],
+      output: null,
     },
 
     // nullish in boolean context
@@ -1300,13 +1549,13 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         <T extends undefined>(x: T) => x ? 1 : 0;
       `,
       errors: [
-        { messageId: 'conditionErrorNullish', line: 2, column: 1 },
-        { messageId: 'conditionErrorNullish', line: 3, column: 9 },
-        { messageId: 'conditionErrorNullish', line: 4, column: 36 },
-        { messageId: 'conditionErrorNullish', line: 5, column: 28 },
-        { messageId: 'conditionErrorNullish', line: 6, column: 47 },
-        { messageId: 'conditionErrorNullish', line: 7, column: 35 },
-        { messageId: 'conditionErrorNullish', line: 8, column: 40 },
+        { column: 1, line: 2, messageId: 'conditionErrorNullish' },
+        { column: 9, line: 3, messageId: 'conditionErrorNullish' },
+        { column: 36, line: 4, messageId: 'conditionErrorNullish' },
+        { column: 28, line: 5, messageId: 'conditionErrorNullish' },
+        { column: 47, line: 6, messageId: 'conditionErrorNullish' },
+        { column: 35, line: 7, messageId: 'conditionErrorNullish' },
+        { column: 40, line: 8, messageId: 'conditionErrorNullish' },
       ],
     }),
 
@@ -1323,20 +1572,75 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         <T extends () => void>(x: T) => x ? 1 : 0;
       `,
       errors: [
-        { messageId: 'conditionErrorObject', line: 2, column: 1 },
-        { messageId: 'conditionErrorObject', line: 3, column: 10 },
-        { messageId: 'conditionErrorObject', line: 4, column: 38 },
-        { messageId: 'conditionErrorObject', line: 5, column: 29 },
-        { messageId: 'conditionErrorObject', line: 6, column: 37 },
-        { messageId: 'conditionErrorObject', line: 7, column: 48 },
-        { messageId: 'conditionErrorObject', line: 8, column: 44 },
-        { messageId: 'conditionErrorObject', line: 9, column: 41 },
+        {
+          column: 1,
+          data: {
+            context: 'conditional',
+          },
+          line: 2,
+          messageId: 'conditionErrorObject',
+        },
+        {
+          column: 10,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorObject',
+        },
+        {
+          column: 38,
+          data: {
+            context: 'conditional',
+          },
+          line: 4,
+          messageId: 'conditionErrorObject',
+        },
+        {
+          column: 29,
+          data: {
+            context: 'conditional',
+          },
+          line: 5,
+          messageId: 'conditionErrorObject',
+        },
+        {
+          column: 37,
+          data: {
+            context: 'conditional',
+          },
+          line: 6,
+          messageId: 'conditionErrorObject',
+        },
+        {
+          column: 48,
+          data: {
+            context: 'conditional',
+          },
+          line: 7,
+          messageId: 'conditionErrorObject',
+        },
+        {
+          column: 44,
+          data: {
+            context: 'conditional',
+          },
+          line: 8,
+          messageId: 'conditionErrorObject',
+        },
+        {
+          column: 41,
+          data: {
+            context: 'conditional',
+          },
+          line: 9,
+          messageId: 'conditionErrorObject',
+        },
       ],
     }),
 
     // string in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
-      options: [{ allowString: false }],
       code: noFormat`
         while ("") {}
         for (; "foo";) {}
@@ -1346,9 +1650,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          messageId: 'conditionErrorString',
-          line: 2,
           column: 8,
+          data: {
+            context: 'conditional',
+          },
+          line: 2,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -1365,9 +1672,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorString',
-          line: 3,
           column: 16,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -1384,9 +1694,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorString',
-          line: 4,
           column: 38,
+          data: {
+            context: 'conditional',
+          },
+          line: 4,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -1403,9 +1716,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorString',
-          line: 5,
           column: 26,
+          data: {
+            context: 'conditional',
+          },
+          line: 5,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -1422,9 +1738,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorString',
-          line: 6,
           column: 37,
+          data: {
+            context: 'conditional',
+          },
+          line: 6,
+          messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -1441,11 +1760,11 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
       ],
+      options: [{ allowString: false }],
     }),
 
     // number in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
-      options: [{ allowNumber: false }],
       code: noFormat`
         while (0n) {}
         for (; 123;) {}
@@ -1457,9 +1776,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          messageId: 'conditionErrorNumber',
-          line: 2,
           column: 8,
+          data: {
+            context: 'conditional',
+          },
+          line: 2,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -1478,9 +1800,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 3,
           column: 16,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -1497,9 +1822,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 4,
           column: 38,
+          data: {
+            context: 'conditional',
+          },
+          line: 4,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -1516,9 +1844,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 5,
           column: 25,
+          data: {
+            context: 'conditional',
+          },
+          line: 5,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -1537,9 +1868,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 6,
           column: 38,
+          data: {
+            context: 'conditional',
+          },
+          line: 6,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -1556,9 +1890,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 7,
           column: 10,
+          data: {
+            context: 'conditional',
+          },
+          line: 7,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -1575,9 +1912,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNumber',
-          line: 8,
           column: 61,
+          data: {
+            context: 'conditional',
+          },
+          line: 8,
+          messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
@@ -1594,46 +1934,105 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
       ],
+      options: [{ allowNumber: false }],
     }),
 
     // number (array.length) in boolean context
-    ...batchedSingleLineTests<MessageId, Options>({
-      options: [{ allowNumber: false }],
-      code: noFormat`
-        if (![].length) {}
-        (a: number[]) => a.length && "..."
-        <T extends unknown[]>(...a: T) => a.length || "empty";
+
+    {
+      code: `
+if (![].length) {
+}
       `,
       errors: [
-        { messageId: 'conditionErrorNumber', line: 2, column: 6 },
-        { messageId: 'conditionErrorNumber', line: 3, column: 26 },
-        { messageId: 'conditionErrorNumber', line: 4, column: 43 },
-      ],
-      output: `
-        if ([].length === 0) {}
-        (a: number[]) => (a.length > 0) && "..."
-        <T extends unknown[]>(...a: T) => (a.length > 0) || "empty";
+        {
+          column: 6,
+          data: {
+            context: 'conditional',
+          },
+          line: 2,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareArrayLengthZero',
+              output: `
+if ([].length === 0) {
+}
       `,
-    }),
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
+    {
+      code: `
+(a: number[]) => a.length && '...';
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            context: 'conditional',
+          },
+          line: 2,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareArrayLengthNonzero',
+              // not technically the same; changes from returning (nonzero) number to returning true
+              output: `
+(a: number[]) => (a.length > 0) && '...';
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
+    {
+      code: `
+<T extends unknown[]>(...a: T) => a.length || 'empty';
+      `,
+      errors: [
+        {
+          column: 35,
+          data: {
+            context: 'conditional',
+          },
+          line: 2,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareArrayLengthNonzero',
+              // not technically the same; changes from returning (nonzero) number to returning true
+              output: `
+<T extends unknown[]>(...a: T) => (a.length > 0) || 'empty';
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
 
     // mixed `string | number` value in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
-      options: [{ allowString: true, allowNumber: true }],
       code: noFormat`
         declare const x: string | number; if (x) {}
         (x: bigint | string) => !x;
         <T extends number | bigint | string>(x: T) => x ? 1 : 0;
       `,
       errors: [
-        { messageId: 'conditionErrorOther', line: 2, column: 39 },
-        { messageId: 'conditionErrorOther', line: 3, column: 34 },
-        { messageId: 'conditionErrorOther', line: 4, column: 55 },
+        { column: 39, line: 2, messageId: 'conditionErrorOther' },
+        { column: 34, line: 3, messageId: 'conditionErrorOther' },
+        { column: 55, line: 4, messageId: 'conditionErrorOther' },
       ],
+      options: [{ allowNumber: true, allowString: true }],
     }),
 
     // nullable boolean in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
-      options: [{ allowNullableBoolean: false }],
       code: noFormat`
         declare const x: boolean | null; if (x) {}
         (x?: boolean) => !x;
@@ -1641,9 +2040,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          messageId: 'conditionErrorNullableBoolean',
-          line: 2,
           column: 38,
+          data: {
+            context: 'conditional',
+          },
+          line: 2,
+          messageId: 'conditionErrorNullableBoolean',
           suggestions: [
             {
               messageId: 'conditionFixDefaultFalse',
@@ -1656,9 +2058,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNullableBoolean',
-          line: 3,
           column: 27,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorNullableBoolean',
           suggestions: [
             {
               messageId: 'conditionFixDefaultFalse',
@@ -1671,9 +2076,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNullableBoolean',
-          line: 4,
           column: 57,
+          data: {
+            context: 'conditional',
+          },
+          line: 4,
+          messageId: 'conditionErrorNullableBoolean',
           suggestions: [
             {
               messageId: 'conditionFixDefaultFalse',
@@ -1686,11 +2094,11 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
       ],
+      options: [{ allowNullableBoolean: false }],
     }),
 
     // nullable object in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
-      options: [{ allowNullableObject: false }],
       code: noFormat`
         declare const x: object | null; if (x) {}
         (x?: { a: number }) => !x;
@@ -1698,9 +2106,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          messageId: 'conditionErrorNullableObject',
-          line: 2,
           column: 37,
+          line: 2,
+          messageId: 'conditionErrorNullableObject',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1709,9 +2117,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNullableObject',
-          line: 3,
           column: 33,
+          line: 3,
+          messageId: 'conditionErrorNullableObject',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1720,9 +2128,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNullableObject',
-          line: 4,
           column: 52,
+          line: 4,
+          messageId: 'conditionErrorNullableObject',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1731,6 +2139,7 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
       ],
+      options: [{ allowNullableObject: false }],
     }),
 
     // nullable string in boolean context
@@ -1743,9 +2152,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          messageId: 'conditionErrorNullableString',
-          line: 2,
           column: 37,
+          data: {
+            context: 'conditional',
+          },
+          line: 2,
+          messageId: 'conditionErrorNullableString',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1762,9 +2174,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNullableString',
-          line: 3,
           column: 26,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorNullableString',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1781,9 +2196,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNullableString',
-          line: 4,
           column: 56,
+          data: {
+            context: 'conditional',
+          },
+          line: 4,
+          messageId: 'conditionErrorNullableString',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1803,9 +2221,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNullableString',
-          line: 5,
           column: 51,
+          data: {
+            context: 'conditional',
+          },
+          line: 5,
+          messageId: 'conditionErrorNullableString',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1837,9 +2258,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          messageId: 'conditionErrorNullableNumber',
-          line: 2,
           column: 37,
+          data: {
+            context: 'conditional',
+          },
+          line: 2,
+          messageId: 'conditionErrorNullableNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1856,9 +2280,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNullableNumber',
-          line: 3,
           column: 26,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorNullableNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1875,9 +2302,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNullableNumber',
-          line: 4,
           column: 56,
+          data: {
+            context: 'conditional',
+          },
+          line: 4,
+          messageId: 'conditionErrorNullableNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1897,9 +2327,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorNullableNumber',
-          line: 5,
           column: 46,
+          data: {
+            context: 'conditional',
+          },
+          line: 5,
+          messageId: 'conditionErrorNullableNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1923,7 +2356,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
 
     // nullable enum in boolean context
     {
-      options: [{ allowNullableEnum: false }],
       code: `
         enum ExampleEnum {
           This = 0,
@@ -1935,14 +2367,18 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          line: 7,
           column: 13,
-          messageId: 'conditionErrorNullableEnum',
-          endLine: 7,
+          data: {
+            context: 'conditional',
+          },
           endColumn: 20,
-        },
-      ],
-      output: `
+          endLine: 7,
+          line: 7,
+          messageId: 'conditionErrorNullableEnum',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = 0,
           That = 1,
@@ -1951,9 +2387,13 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum != null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
-      options: [{ allowNullableEnum: false }],
       code: `
         enum ExampleEnum {
           This = 0,
@@ -1965,14 +2405,18 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          line: 7,
           column: 14,
-          messageId: 'conditionErrorNullableEnum',
-          endLine: 7,
+          data: {
+            context: 'conditional',
+          },
           endColumn: 21,
-        },
-      ],
-      output: `
+          endLine: 7,
+          line: 7,
+          messageId: 'conditionErrorNullableEnum',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = 0,
           That = 1,
@@ -1981,9 +2425,13 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum == null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
-      options: [{ allowNullableEnum: false }],
       code: `
         enum ExampleEnum {
           This,
@@ -1995,14 +2443,18 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          line: 7,
           column: 14,
-          messageId: 'conditionErrorNullableEnum',
-          endLine: 7,
+          data: {
+            context: 'conditional',
+          },
           endColumn: 21,
-        },
-      ],
-      output: `
+          endLine: 7,
+          line: 7,
+          messageId: 'conditionErrorNullableEnum',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This,
           That,
@@ -2011,9 +2463,13 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum == null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
-      options: [{ allowNullableEnum: false }],
       code: `
         enum ExampleEnum {
           This = '',
@@ -2025,14 +2481,18 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          line: 7,
           column: 14,
-          messageId: 'conditionErrorNullableEnum',
-          endLine: 7,
+          data: {
+            context: 'conditional',
+          },
           endColumn: 21,
-        },
-      ],
-      output: `
+          endLine: 7,
+          line: 7,
+          messageId: 'conditionErrorNullableEnum',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = '',
           That = 'a',
@@ -2041,9 +2501,13 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum == null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
-      options: [{ allowNullableEnum: false }],
       code: `
         enum ExampleEnum {
           This = '',
@@ -2055,14 +2519,18 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          line: 7,
           column: 14,
-          messageId: 'conditionErrorNullableEnum',
-          endLine: 7,
+          data: {
+            context: 'conditional',
+          },
           endColumn: 21,
-        },
-      ],
-      output: `
+          endLine: 7,
+          line: 7,
+          messageId: 'conditionErrorNullableEnum',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = '',
           That = 0,
@@ -2071,9 +2539,13 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum == null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
-      options: [{ allowNullableEnum: false }],
       code: `
         enum ExampleEnum {
           This = 'one',
@@ -2085,14 +2557,18 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          line: 7,
           column: 14,
-          messageId: 'conditionErrorNullableEnum',
-          endLine: 7,
+          data: {
+            context: 'conditional',
+          },
           endColumn: 21,
-        },
-      ],
-      output: `
+          endLine: 7,
+          line: 7,
+          messageId: 'conditionErrorNullableEnum',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = 'one',
           That = 'two',
@@ -2101,9 +2577,13 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum == null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
-      options: [{ allowNullableEnum: false }],
       code: `
         enum ExampleEnum {
           This = 1,
@@ -2115,14 +2595,18 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          line: 7,
           column: 14,
-          messageId: 'conditionErrorNullableEnum',
-          endLine: 7,
+          data: {
+            context: 'conditional',
+          },
           endColumn: 21,
-        },
-      ],
-      output: `
+          endLine: 7,
+          line: 7,
+          messageId: 'conditionErrorNullableEnum',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = 1,
           That = 2,
@@ -2131,12 +2615,16 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum == null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
 
     // nullable mixed enum in boolean context
     {
       // falsy number and truthy string
-      options: [{ allowNullableEnum: false }],
       code: `
         enum ExampleEnum {
           This = 0,
@@ -2146,24 +2634,32 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          line: 6,
           column: 35,
-          messageId: 'conditionErrorNullableEnum',
-          endLine: 6,
+          data: {
+            context: 'conditional',
+          },
           endColumn: 40,
-        },
-      ],
-      output: `
+          endLine: 6,
+          line: 6,
+          messageId: 'conditionErrorNullableEnum',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = 0,
           That = 'one',
         }
         (value?: ExampleEnum) => ((value != null) ? 1 : 0);
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
       // falsy string and truthy number
-      options: [{ allowNullableEnum: false }],
       code: `
         enum ExampleEnum {
           This = '',
@@ -2173,24 +2669,32 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          line: 6,
           column: 36,
-          messageId: 'conditionErrorNullableEnum',
-          endLine: 6,
+          data: {
+            context: 'conditional',
+          },
           endColumn: 41,
-        },
-      ],
-      output: `
+          endLine: 6,
+          line: 6,
+          messageId: 'conditionErrorNullableEnum',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = '',
           That = 1,
         }
         (value?: ExampleEnum) => ((value == null) ? 1 : 0);
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
       // truthy string and truthy number
-      options: [{ allowNullableEnum: false }],
       code: `
         enum ExampleEnum {
           This = 'this',
@@ -2200,24 +2704,32 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          line: 6,
           column: 36,
-          messageId: 'conditionErrorNullableEnum',
-          endLine: 6,
+          data: {
+            context: 'conditional',
+          },
           endColumn: 41,
-        },
-      ],
-      output: `
+          endLine: 6,
+          line: 6,
+          messageId: 'conditionErrorNullableEnum',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = 'this',
           That = 1,
         }
         (value?: ExampleEnum) => ((value == null) ? 1 : 0);
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
       // falsy string and falsy number
-      options: [{ allowNullableEnum: false }],
       code: `
         enum ExampleEnum {
           This = '',
@@ -2227,20 +2739,29 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          line: 6,
           column: 36,
-          messageId: 'conditionErrorNullableEnum',
-          endLine: 6,
+          data: {
+            context: 'conditional',
+          },
           endColumn: 41,
-        },
-      ],
-      output: `
+          endLine: 6,
+          line: 6,
+          messageId: 'conditionErrorNullableEnum',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = '',
           That = 0,
         }
         (value?: ExampleEnum) => ((value == null) ? 1 : 0);
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
 
     // any in boolean context
@@ -2253,9 +2774,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       `,
       errors: [
         {
-          messageId: 'conditionErrorAny',
-          line: 2,
           column: 5,
+          data: {
+            context: 'conditional',
+          },
+          line: 2,
+          messageId: 'conditionErrorAny',
           suggestions: [
             {
               messageId: 'conditionFixCastBoolean',
@@ -2264,9 +2788,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorAny',
-          line: 3,
           column: 15,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorAny',
           suggestions: [
             {
               messageId: 'conditionFixCastBoolean',
@@ -2275,9 +2802,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorAny',
-          line: 4,
           column: 34,
+          data: {
+            context: 'conditional',
+          },
+          line: 4,
+          messageId: 'conditionErrorAny',
           suggestions: [
             {
               messageId: 'conditionFixCastBoolean',
@@ -2286,9 +2816,12 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           ],
         },
         {
-          messageId: 'conditionErrorAny',
-          line: 5,
           column: 22,
+          data: {
+            context: 'conditional',
+          },
+          line: 5,
+          messageId: 'conditionErrorAny',
           suggestions: [
             {
               messageId: 'conditionFixCastBoolean',
@@ -2306,17 +2839,19 @@ declare const x: string[] | null;
 if (x) {
 }
       `,
-      output: null,
       errors: [
         {
-          messageId: 'noStrictNullCheck',
-          line: 0,
           column: 1,
+          line: 0,
+          messageId: 'noStrictNullCheck',
         },
         {
-          messageId: 'conditionErrorObject',
-          line: 3,
           column: 5,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorObject',
         },
       ],
       languageOptions: {
@@ -2324,11 +2859,11 @@ if (x) {
           tsconfigRootDir: path.join(rootPath, 'unstrict'),
         },
       },
+      output: null,
     },
 
     // automatic semicolon insertion test
     {
-      options: [{ allowNullableObject: false }],
       code: noFormat`
         declare const obj: { x: number } | null;
         !obj ? 1 : 0
@@ -2336,12 +2871,11 @@ if (x) {
         obj || 0
         obj && 1 || 0
       `,
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNullableObject',
-          line: 3,
           column: 10,
+          line: 3,
+          messageId: 'conditionErrorNullableObject',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -2356,9 +2890,9 @@ if (x) {
           ],
         },
         {
-          messageId: 'conditionErrorNullableObject',
-          line: 4,
           column: 10,
+          line: 4,
+          messageId: 'conditionErrorNullableObject',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -2373,9 +2907,9 @@ if (x) {
           ],
         },
         {
-          messageId: 'conditionErrorNullableObject',
-          line: 5,
           column: 9,
+          line: 5,
+          messageId: 'conditionErrorNullableObject',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -2390,9 +2924,9 @@ if (x) {
           ],
         },
         {
-          messageId: 'conditionErrorNullableObject',
-          line: 6,
           column: 9,
+          line: 6,
+          messageId: 'conditionErrorNullableObject',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -2407,6 +2941,8 @@ if (x) {
           ],
         },
       ],
+      options: [{ allowNullableObject: false }],
+      output: null,
     },
     {
       code: `
@@ -2414,12 +2950,14 @@ declare function assert(x: unknown): asserts x;
 declare const nullableString: string | null;
 assert(nullableString);
       `,
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNullableString',
-          line: 4,
           column: 8,
+          data: {
+            context: 'conditional',
+          },
+          line: 4,
+          messageId: 'conditionErrorNullableString',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -2448,6 +2986,7 @@ assert(Boolean(nullableString));
           ],
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -2455,12 +2994,14 @@ declare function assert(a: number, b: unknown): asserts b;
 declare const nullableString: string | null;
 assert(foo, nullableString);
       `,
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNullableString',
-          line: 4,
           column: 13,
+          data: {
+            context: 'conditional',
+          },
+          line: 4,
+          messageId: 'conditionErrorNullableString',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -2489,6 +3030,7 @@ assert(foo, Boolean(nullableString));
           ],
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -2497,12 +3039,14 @@ declare function assert(one: number, two: unknown): asserts two;
 declare const nullableString: string | null;
 assert(foo, nullableString);
       `,
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNullableString',
+          column: 13,
+          data: {
+            context: 'conditional',
+          },
           line: 5,
-          column: 13,
+          messageId: 'conditionErrorNullableString',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -2534,6 +3078,7 @@ assert(foo, Boolean(nullableString));
           ],
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -2541,12 +3086,14 @@ declare function assert(this: object, a: number, b: unknown): asserts b;
 declare const nullableString: string | null;
 assert(foo, nullableString);
       `,
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNullableString',
-          line: 4,
           column: 13,
+          data: {
+            context: 'conditional',
+          },
+          line: 4,
+          messageId: 'conditionErrorNullableString',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -2575,8 +3122,14 @@ assert(foo, Boolean(nullableString));
           ],
         },
       ],
+      output: null,
     },
     {
+      // This should be checkable, but the TS API doesn't currently report
+      // `someAssert(maybeString)` as a type predicate call, which appears to be
+      // a bug.
+      //
+      // See https://github.com/microsoft/TypeScript/issues/59707
       code: `
 function asserts1(x: string | number | undefined): asserts x {}
 function asserts2(x: string | number | undefined): asserts x {}
@@ -2588,9 +3141,11 @@ const someAssert: typeof asserts1 | typeof asserts2 =
 
 someAssert(maybeString);
       `,
-      output: null,
       errors: [
         {
+          data: {
+            context: 'conditional',
+          },
           messageId: 'conditionErrorNullableString',
           suggestions: [
             {
@@ -2638,6 +3193,8 @@ someAssert(Boolean(maybeString));
           ],
         },
       ],
+      output: null,
+      skip: true,
     },
     {
       // The implementation signature doesn't count towards the call signatures
@@ -2660,12 +3217,14 @@ function assert(...args: any[]) {
 declare const nullableString: string | null;
 assert(3 as any, nullableString);
       `,
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNullableString',
-          line: 18,
           column: 18,
+          data: {
+            context: 'conditional',
+          },
+          line: 18,
+          messageId: 'conditionErrorNullableString',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -2736,6 +3295,7 @@ assert(3 as any, Boolean(nullableString));
           ],
         },
       ],
+      output: null,
     },
     {
       // The implementation signature doesn't count towards the call signatures
@@ -2759,12 +3319,14 @@ function assert(...args: any[]) {
 declare const nullableString: string | null;
 assert(3 as any, nullableString, 'more', 'args', 'afterwards');
       `,
-      output: null,
       errors: [
         {
-          messageId: 'conditionErrorNullableString',
-          line: 19,
           column: 18,
+          data: {
+            context: 'conditional',
+          },
+          line: 19,
+          messageId: 'conditionErrorNullableString',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -2838,6 +3400,7 @@ assert(3 as any, Boolean(nullableString), 'more', 'args', 'afterwards');
           ],
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -2847,9 +3410,11 @@ declare const nullableString: string | null;
 declare const boo: boolean;
 assert(boo, nullableString);
       `,
-      output: null,
       errors: [
         {
+          data: {
+            context: 'conditional',
+          },
           line: 6,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -2887,6 +3452,910 @@ assert(boo, Boolean(nullableString));
           ],
         },
       ],
+      output: null,
+    },
+    {
+      // This report matches TS's analysis, which selects the assertion overload.
+      code: `
+function assert(one: unknown): asserts one;
+function assert(one: unknown, two: unknown): asserts two;
+function assert(...args: unknown[]) {
+  throw new Error('not implemented');
+}
+declare const nullableString: string | null;
+assert(nullableString);
+      `,
+      errors: [
+        {
+          data: {
+            context: 'conditional',
+          },
+          line: 8,
+          messageId: 'conditionErrorNullableString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+function assert(one: unknown): asserts one;
+function assert(one: unknown, two: unknown): asserts two;
+function assert(...args: unknown[]) {
+  throw new Error('not implemented');
+}
+declare const nullableString: string | null;
+assert(nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+function assert(one: unknown): asserts one;
+function assert(one: unknown, two: unknown): asserts two;
+function assert(...args: unknown[]) {
+  throw new Error('not implemented');
+}
+declare const nullableString: string | null;
+assert(nullableString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+function assert(one: unknown): asserts one;
+function assert(one: unknown, two: unknown): asserts two;
+function assert(...args: unknown[]) {
+  throw new Error('not implemented');
+}
+declare const nullableString: string | null;
+assert(Boolean(nullableString));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+['one', 'two', ''].find(x => {
+  return x;
+});
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'conditionErrorString',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+['one', 'two', ''].find((x): boolean => {
+  return x;
+});
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowString: false }],
+    },
+    {
+      code: `
+['one', 'two', ''].find(x => {
+  return;
+});
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'conditionErrorNullish',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+['one', 'two', ''].find((x): boolean => {
+  return;
+});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+['one', 'two', ''].findLast(x => {
+  return undefined;
+});
+      `,
+      errors: [
+        {
+          column: 29,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'conditionErrorNullish',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+['one', 'two', ''].findLast((x): boolean => {
+  return undefined;
+});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+['one', 'two', ''].find(x => {
+  if (x) {
+    return Math.random() > 0.5;
+  }
+});
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 2,
+          endLine: 6,
+          line: 2,
+          messageId: 'conditionErrorNullableBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+['one', 'two', ''].find((x): boolean => {
+  if (x) {
+    return Math.random() > 0.5;
+  }
+});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const predicate = (x: string) => {
+  if (x) {
+    return Math.random() > 0.5;
+  }
+};
+
+['one', 'two', ''].find(predicate);
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 34,
+          endLine: 8,
+          line: 8,
+          messageId: 'conditionErrorNullableBoolean',
+        },
+      ],
+      options: [{ allowNullableBoolean: false }],
+    },
+    {
+      code: `
+[1, null].every(async x => {
+  return x != null;
+});
+      `,
+      errors: [
+        {
+          column: 17,
+          data: {
+            type: 'Promise<boolean>',
+          },
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'predicateCannotBeAsync',
+        },
+      ],
+    },
+    {
+      code: `
+const predicate = async x => {
+  return x != null;
+};
+
+[1, null].every(predicate);
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 26,
+          endLine: 6,
+          line: 6,
+          messageId: 'conditionErrorObject',
+        },
+      ],
+    },
+    {
+      code: `
+[1, null].every((x): boolean | number => {
+  return x != null;
+});
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'conditionErrorOther',
+        },
+      ],
+    },
+    {
+      code: `
+[1, null].every((x): boolean | undefined => {
+  return x != null;
+});
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'conditionErrorNullableBoolean',
+        },
+      ],
+    },
+    // various cases for the suggestion fix
+    {
+      code: `
+[1, null].every((x, i) => {});
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 29,
+          endLine: 2,
+          line: 2,
+          messageId: 'conditionErrorNullish',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+[1, null].every((x, i): boolean => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+[() => {}, null].every((x: () => void) => {});
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'conditionErrorNullish',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+[() => {}, null].every((x: () => void): boolean => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+[() => {}, null].every(function (x: () => void) {});
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 51,
+          endLine: 2,
+          line: 2,
+          messageId: 'conditionErrorNullish',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+[() => {}, null].every(function (x: () => void): boolean {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+[() => {}, null].every(() => {});
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 32,
+          endLine: 2,
+          line: 2,
+          messageId: 'conditionErrorNullish',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+[() => {}, null].every((): boolean => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    // function overloading
+    {
+      code: `
+declare function f(x: number): string;
+declare function f(x: string | null): boolean;
+
+[35].filter(f);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'conditionErrorOther',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(x: number): string;
+declare function f(x: number | boolean): boolean;
+declare function f(x: string | null): boolean;
+
+[35].filter(f);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'conditionErrorOther',
+        },
+      ],
+    },
+    // type constraints
+    {
+      code: `
+declare function foo<T>(x: number): T;
+[1, null].every(foo);
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorAny',
+        },
+      ],
+    },
+    {
+      code: `
+function foo<T extends number>(x: number): T {}
+[1, null].every(foo);
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNumber',
+        },
+      ],
+      options: [
+        {
+          allowNumber: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const nullOrString: string | null;
+['one', null].filter(x => nullOrString);
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            context: 'array predicate return type',
+          },
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullableString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter(x => nullOrString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter(x => nullOrString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter(x => Boolean(nullOrString));
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter((x): boolean => nullOrString);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const nullOrString: string | null;
+['one', null].filter(x => !nullOrString);
+      `,
+      errors: [
+        {
+          column: 28,
+          data: {
+            context: 'conditional',
+          },
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullableString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter(x => nullOrString == null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter(x => !(nullOrString ?? ""));
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter(x => !Boolean(nullOrString));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const anyValue: any;
+['one', null].filter(x => anyValue);
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            context: 'array predicate return type',
+          },
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorAny',
+          suggestions: [
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const anyValue: any;
+['one', null].filter(x => Boolean(anyValue));
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+declare const anyValue: any;
+['one', null].filter((x): boolean => anyValue);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const nullOrBoolean: boolean | null;
+[true, null].filter(x => nullOrBoolean);
+      `,
+      errors: [
+        {
+          column: 21,
+          data: {
+            context: 'array predicate return type',
+          },
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullableBoolean',
+          suggestions: [
+            {
+              messageId: 'conditionFixDefaultFalse',
+              output: `
+declare const nullOrBoolean: boolean | null;
+[true, null].filter(x => nullOrBoolean ?? false);
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareTrue',
+              output: `
+declare const nullOrBoolean: boolean | null;
+[true, null].filter(x => nullOrBoolean === true);
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+declare const nullOrBoolean: boolean | null;
+[true, null].filter((x): boolean => nullOrBoolean);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+[0, 1].filter(x => theEnum);
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            context: 'array predicate return type',
+          },
+          endColumn: 27,
+          endLine: 7,
+          line: 7,
+          messageId: 'conditionErrorNullableEnum',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+[0, 1].filter(x => theEnum != null);
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+[0, 1].filter((x): boolean => theEnum);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const nullOrNumber: number | null;
+[0, null].filter(x => nullOrNumber);
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            context: 'array predicate return type',
+          },
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullableNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare const nullOrNumber: number | null;
+[0, null].filter(x => nullOrNumber != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultZero',
+              output: `
+declare const nullOrNumber: number | null;
+[0, null].filter(x => nullOrNumber ?? 0);
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const nullOrNumber: number | null;
+[0, null].filter(x => Boolean(nullOrNumber));
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+declare const nullOrNumber: number | null;
+[0, null].filter((x): boolean => nullOrNumber);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const objectValue: object = {};
+[{ a: 0 }, {}].filter(x => objectValue);
+      `,
+      errors: [
+        {
+          column: 23,
+          data: {
+            context: 'array predicate return type',
+          },
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorObject',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+const objectValue: object = {};
+[{ a: 0 }, {}].filter((x): boolean => objectValue);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const objectValue: object = {};
+[{ a: 0 }, {}].filter(x => {
+  return objectValue;
+});
+      `,
+      errors: [
+        {
+          column: 23,
+          data: {
+            context: 'array predicate return type',
+          },
+          endColumn: 2,
+          endLine: 5,
+          line: 3,
+          messageId: 'conditionErrorObject',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+const objectValue: object = {};
+[{ a: 0 }, {}].filter((x): boolean => {
+  return objectValue;
+});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const nullOrObject: object | null;
+[{ a: 0 }, null].filter(x => nullOrObject);
+      `,
+      errors: [
+        {
+          column: 25,
+          data: {
+            context: 'array predicate return type',
+          },
+          endColumn: 42,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullableObject',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare const nullOrObject: object | null;
+[{ a: 0 }, null].filter(x => nullOrObject != null);
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+declare const nullOrObject: object | null;
+[{ a: 0 }, null].filter((x): boolean => nullOrObject);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableObject: false }],
+    },
+    {
+      code: `
+const numbers: number[] = [1];
+[1, 2].filter(x => numbers.length);
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            context: 'array predicate return type',
+          },
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareArrayLengthNonzero',
+              output: `
+const numbers: number[] = [1];
+[1, 2].filter(x => numbers.length > 0);
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+const numbers: number[] = [1];
+[1, 2].filter((x): boolean => numbers.length);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
+    {
+      code: `
+const numberValue: number = 1;
+[1, 2].filter(x => numberValue);
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            context: 'array predicate return type',
+          },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: `
+const numberValue: number = 1;
+[1, 2].filter(x => numberValue !== 0);
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: `
+const numberValue: number = 1;
+[1, 2].filter(x => !Number.isNaN(numberValue));
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+const numberValue: number = 1;
+[1, 2].filter(x => Boolean(numberValue));
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+const numberValue: number = 1;
+[1, 2].filter((x): boolean => numberValue);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
+    {
+      code: `
+const stringValue: string = 'hoge';
+['hoge', 'foo'].filter(x => stringValue);
+      `,
+      errors: [
+        {
+          column: 24,
+          data: {
+            context: 'array predicate return type',
+          },
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: `
+const stringValue: string = 'hoge';
+['hoge', 'foo'].filter(x => stringValue.length > 0);
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `
+const stringValue: string = 'hoge';
+['hoge', 'foo'].filter(x => stringValue !== "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+const stringValue: string = 'hoge';
+['hoge', 'foo'].filter(x => Boolean(stringValue));
+      `,
+            },
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+const stringValue: string = 'hoge';
+['hoge', 'foo'].filter((x): boolean => stringValue);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowString: false }],
     },
   ],
 });

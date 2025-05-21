@@ -1,4 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -8,7 +9,7 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type MessageIds = 'noNonNull' | 'suggestOptionalChain';
+export type MessageIds = 'noNonNull' | 'suggestOptionalChain';
 
 export default createRule<[], MessageIds>({
   name: 'no-non-null-assertion',
@@ -79,14 +80,8 @@ export default createRule<[], MessageIds>({
                 },
               });
             }
-          } else if (node.parent.computed) {
-            // it is x!?.[y].z
-            suggest.push({
-              messageId: 'suggestOptionalChain',
-              fix: removeToken(),
-            });
           } else {
-            // it is x!?.y.z
+            // it is x!?.[y].z or  x!?.y.z
             suggest.push({
               messageId: 'suggestOptionalChain',
               fix: removeToken(),

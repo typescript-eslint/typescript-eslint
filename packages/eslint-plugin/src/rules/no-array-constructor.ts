@@ -1,7 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isOptionalCallExpression } from '../util';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import {
+  isOpeningParenToken,
+  isClosingParenToken,
+} from '@typescript-eslint/utils/ast-utils';
+
+import { createRule } from '../util';
 
 export default createRule({
   name: 'no-array-constructor',
@@ -9,8 +14,8 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow generic `Array` constructors',
-      recommended: 'recommended',
       extendsBaseRule: true,
+      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {
@@ -20,6 +25,29 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const sourceCode = context.sourceCode;
+
+    function getArgumentsText(
+      node: TSESTree.CallExpression | TSESTree.NewExpression,
+    ) {
+      const lastToken = sourceCode.getLastToken(node);
+
+      if (lastToken == null || !isClosingParenToken(lastToken)) {
+        return '';
+      }
+
+      let firstToken: TSESTree.Expression | TSESTree.Token | null = node.callee;
+
+      do {
+        firstToken = sourceCode.getTokenAfter(firstToken);
+        if (!firstToken || firstToken === lastToken) {
+          return '';
+        }
+      } while (!isOpeningParenToken(firstToken));
+
+      return sourceCode.text.slice(firstToken.range[1], lastToken.range[0]);
+    }
+
     /**
      * Disallow construction of dense arrays using the Array constructor
      * @param node node to evaluate
@@ -31,23 +59,15 @@ export default createRule({
         node.arguments.length !== 1 &&
         node.callee.type === AST_NODE_TYPES.Identifier &&
         node.callee.name === 'Array' &&
-        !node.typeArguments &&
-        !isOptionalCallExpression(node)
+        !node.typeArguments
       ) {
         context.report({
           node,
           messageId: 'useLiteral',
           fix(fixer) {
-            if (node.arguments.length === 0) {
-              return fixer.replaceText(node, '[]');
-            }
-            const fullText = context.sourceCode.getText(node);
-            const preambleLength = node.callee.range[1] - node.range[0];
+            const argsText = getArgumentsText(node);
 
-            return fixer.replaceText(
-              node,
-              `[${fullText.slice(preambleLength + 1, -1)}]`,
-            );
+            return fixer.replaceText(node, `[${argsText}]`);
           },
         });
       }

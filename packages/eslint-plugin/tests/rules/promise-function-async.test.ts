@@ -4,13 +4,12 @@ import rule from '../../src/rules/promise-function-async';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const messageId = 'missingAsync';
 
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -182,6 +181,52 @@ async function asyncFunctionReturningUnion(p: boolean) {
   return p ? Promise.resolve(5) : 5;
 }
     `,
+    `
+function overloadingThatCanReturnPromise(): Promise<number>;
+function overloadingThatCanReturnPromise(a: boolean): number;
+function overloadingThatCanReturnPromise(
+  a?: boolean,
+): Promise<number> | number {
+  return Promise.resolve(5);
+}
+    `,
+    `
+function overloadingThatCanReturnPromise(a: boolean): number;
+function overloadingThatCanReturnPromise(): Promise<number>;
+function overloadingThatCanReturnPromise(
+  a?: boolean,
+): Promise<number> | number {
+  return Promise.resolve(5);
+}
+    `,
+    `
+function a(): Promise<void>;
+function a(x: boolean): void;
+function a(x?: boolean) {
+  if (x == null) return Promise.reject(new Error());
+  throw new Error();
+}
+    `,
+    {
+      code: `
+function overloadingThatIncludeUnknown(): number;
+function overloadingThatIncludeUnknown(a: boolean): unknown;
+function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
+  return Promise.resolve(5);
+}
+      `,
+      options: [{ allowAny: true }],
+    },
+    {
+      code: `
+function overloadingThatIncludeAny(): number;
+function overloadingThatIncludeAny(a: boolean): any;
+function overloadingThatIncludeAny(a?: boolean): any | number {
+  return Promise.resolve(5);
+}
+      `,
+      options: [{ allowAny: true }],
+    },
   ],
   invalid: [
     {
@@ -190,17 +235,17 @@ function returnsAny(): any {
   return 0;
 }
       `,
-      output: null,
+      errors: [
+        {
+          messageId: 'missingAsync',
+        },
+      ],
       options: [
         {
           allowAny: false,
         },
       ],
-      errors: [
-        {
-          messageId,
-        },
-      ],
+      output: null,
     },
     {
       code: `
@@ -208,17 +253,17 @@ function returnsUnknown(): unknown {
   return 0;
 }
       `,
-      output: null,
+      errors: [
+        {
+          messageId: 'missingAsync',
+        },
+      ],
       options: [
         {
           allowAny: false,
         },
       ],
-      errors: [
-        {
-          messageId,
-        },
-      ],
+      output: null,
     },
     {
       code: `
@@ -228,7 +273,7 @@ const nonAsyncPromiseFunctionExpressionA = function (p: Promise<void>) {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -245,7 +290,7 @@ const nonAsyncPromiseFunctionExpressionB = function () {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -262,7 +307,7 @@ function nonAsyncPromiseFunctionDeclarationA(p: Promise<void>) {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -279,7 +324,7 @@ function nonAsyncPromiseFunctionDeclarationB() {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -294,7 +339,7 @@ const nonAsyncPromiseArrowFunctionA = (p: Promise<void>) => p;
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -307,7 +352,7 @@ const nonAsyncPromiseArrowFunctionB = () => new Promise<void>();
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -325,7 +370,7 @@ const functions = {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -351,11 +396,11 @@ class Test {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 7,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -388,25 +433,25 @@ class Test {
   }
 }
       `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'missingAsync',
+        },
+        {
+          line: 6,
+          messageId: 'missingAsync',
+        },
+        {
+          line: 13,
+          messageId: 'missingAsync',
+        },
+      ],
       options: [
         {
           checkArrowFunctions: false,
         },
       ],
-      errors: [
-        {
-          line: 2,
-          messageId,
-        },
-        {
-          line: 6,
-          messageId,
-        },
-        {
-          line: 13,
-          messageId,
-        },
-      ],
       output: `
 const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
   return p;
@@ -443,25 +488,25 @@ class Test {
   }
 }
       `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'missingAsync',
+        },
+        {
+          line: 10,
+          messageId: 'missingAsync',
+        },
+        {
+          line: 13,
+          messageId: 'missingAsync',
+        },
+      ],
       options: [
         {
           checkFunctionDeclarations: false,
         },
       ],
-      errors: [
-        {
-          line: 2,
-          messageId,
-        },
-        {
-          line: 10,
-          messageId,
-        },
-        {
-          line: 13,
-          messageId,
-        },
-      ],
       output: `
 const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
   return p;
@@ -498,23 +543,23 @@ class Test {
   }
 }
       `,
-      options: [
-        {
-          checkFunctionExpressions: false,
-        },
-      ],
       errors: [
         {
           line: 6,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 10,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 13,
-          messageId,
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [
+        {
+          checkFunctionExpressions: false,
         },
       ],
       output: `
@@ -553,23 +598,23 @@ class Test {
   }
 }
       `,
-      options: [
-        {
-          checkMethodDeclarations: false,
-        },
-      ],
       errors: [
         {
           line: 2,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 6,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 10,
-          messageId,
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [
+        {
+          checkMethodDeclarations: false,
         },
       ],
       output: `
@@ -596,15 +641,15 @@ class PromiseType {}
 
 const returnAllowedType = () => new PromiseType();
       `,
-      options: [
-        {
-          allowedPromiseNames: ['PromiseType'],
-        },
-      ],
       errors: [
         {
           line: 4,
-          messageId,
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [
+        {
+          allowedPromiseNames: ['PromiseType'],
         },
       ],
       output: `
@@ -622,15 +667,15 @@ function foo(): Promise<string> | SPromise<boolean> {
     : Promise.resolve(false);
 }
       `,
-      options: [
-        {
-          allowedPromiseNames: ['SPromise'],
-        },
-      ],
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [
+        {
+          allowedPromiseNames: ['SPromise'],
         },
       ],
       output: `
@@ -651,7 +696,7 @@ class Test {
   }
 }
       `,
-      errors: [{ line: 4, column: 3, messageId }],
+      errors: [{ column: 3, line: 4, messageId: 'missingAsync' }],
       output: `
 class Test {
   @decorator
@@ -677,9 +722,9 @@ class Test {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId },
-        { line: 7, column: 3, messageId },
-        { line: 10, column: 3, messageId },
+        { column: 3, line: 4, messageId: 'missingAsync' },
+        { column: 3, line: 7, messageId: 'missingAsync' },
+        { column: 3, line: 10, messageId: 'missingAsync' },
       ],
       output: `
 class Test {
@@ -714,6 +759,23 @@ class Foo {
   }
 }
       `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'missingAsync',
+        },
+        {
+          column: 3,
+          line: 7,
+          messageId: 'missingAsync',
+        },
+        {
+          column: 3,
+          line: 12,
+          messageId: 'missingAsync',
+        },
+      ],
       output: `
 class Foo {
   async catch() {
@@ -730,23 +792,6 @@ class Foo {
   }
 }
       `,
-      errors: [
-        {
-          line: 3,
-          column: 3,
-          messageId,
-        },
-        {
-          line: 7,
-          column: 3,
-          messageId,
-        },
-        {
-          line: 12,
-          column: 3,
-          messageId,
-        },
-      ],
     },
     {
       code: `
@@ -756,6 +801,13 @@ const foo = {
   },
 };
       `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'missingAsync',
+        },
+      ],
       output: `
 const foo = {
   async catch() {
@@ -763,13 +815,6 @@ const foo = {
   },
 };
       `,
-      errors: [
-        {
-          line: 3,
-          column: 3,
-          messageId,
-        },
-      ],
     },
     {
       code: `
@@ -779,7 +824,7 @@ function promiseInUnionWithoutExplicitReturnType(p: boolean) {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsyncHybridReturn',
         },
       ],
       output: `
@@ -787,6 +832,120 @@ async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
   return p ? Promise.resolve(5) : 5;
 }
       `,
+    },
+    {
+      code: `
+function test1(): 'one' | Promise<'one'>;
+function test1(a: number): Promise<number>;
+function test1(a?: number) {
+  if (a) {
+    return Promise.resolve(a);
+  }
+
+  return Math.random() > 0.5 ? 'one' : Promise.resolve('one');
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAsyncHybridReturn',
+        },
+      ],
+      output: `
+function test1(): 'one' | Promise<'one'>;
+function test1(a: number): Promise<number>;
+async function test1(a?: number) {
+  if (a) {
+    return Promise.resolve(a);
+  }
+
+  return Math.random() > 0.5 ? 'one' : Promise.resolve('one');
+}
+      `,
+    },
+    {
+      code: `
+class PromiseType {
+  s?: string;
+}
+
+function promiseInUnionWithoutExplicitReturnType(p: boolean) {
+  return p ? new PromiseType() : 5;
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAsyncHybridReturn',
+        },
+      ],
+      options: [
+        {
+          allowedPromiseNames: ['PromiseType'],
+        },
+      ],
+      output: `
+class PromiseType {
+  s?: string;
+}
+
+async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
+  return p ? new PromiseType() : 5;
+}
+      `,
+    },
+    {
+      code: `
+function overloadingThatCanReturnPromise(): Promise<number>;
+function overloadingThatCanReturnPromise(a: boolean): Promise<string>;
+function overloadingThatCanReturnPromise(
+  a?: boolean,
+): Promise<number | string> {
+  return Promise.resolve(5);
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAsync',
+        },
+      ],
+      output: `
+function overloadingThatCanReturnPromise(): Promise<number>;
+function overloadingThatCanReturnPromise(a: boolean): Promise<string>;
+async function overloadingThatCanReturnPromise(
+  a?: boolean,
+): Promise<number | string> {
+  return Promise.resolve(5);
+}
+      `,
+    },
+    {
+      code: `
+function overloadingThatIncludeAny(): number;
+function overloadingThatIncludeAny(a: boolean): any;
+function overloadingThatIncludeAny(a?: boolean): any | number {
+  return Promise.resolve(5);
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [{ allowAny: false }],
+    },
+    {
+      code: `
+function overloadingThatIncludeUnknown(): number;
+function overloadingThatIncludeUnknown(a: boolean): unknown;
+function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
+  return Promise.resolve(5);
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [{ allowAny: false }],
     },
   ],
 });

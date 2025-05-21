@@ -6,8 +6,8 @@ import { getFixturesRootDir } from '../RuleTester';
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: getFixturesRootDir(),
       project: './tsconfig.json',
+      tsconfigRootDir: getFixturesRootDir(),
     },
   },
 });
@@ -134,6 +134,115 @@ function fun(value: unknown) {
   throw value;
 }
     `,
+    `
+function fun<T extends Error>(t: T): void {
+  throw t;
+}
+    `,
+    {
+      code: `
+throw undefined;
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'undefined' }],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+class CustomError implements Error {}
+throw new CustomError();
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'CustomError' }],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+throw new Map();
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'Map' }],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+        import { createError } from 'errors';
+        throw createError();
+      `,
+      options: [
+        {
+          allow: [{ from: 'package', name: 'ErrorLike', package: 'errors' }],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+try {
+} catch (e) {
+  throw e;
+}
+      `,
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+try {
+} catch (eOuter) {
+  try {
+    if (Math.random() > 0.5) {
+      throw eOuter;
+    }
+  } catch (eInner) {
+    if (Math.random() > 0.5) {
+      throw eOuter;
+    } else {
+      throw eInner;
+    }
+  }
+}
+      `,
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').catch(e => {
+  throw e;
+});
+      `,
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -352,9 +461,9 @@ throw new Error();
       `,
       errors: [
         {
-          messageId: 'object',
-          line: 3,
           column: 7,
+          line: 3,
+          messageId: 'object',
         },
       ],
     },
@@ -365,9 +474,9 @@ throw new CustomError();
       `,
       errors: [
         {
-          messageId: 'object',
-          line: 3,
           column: 7,
+          line: 3,
+          messageId: 'object',
         },
       ],
     },
@@ -380,9 +489,9 @@ function foo<T>() {
       `,
       errors: [
         {
-          messageId: 'object',
-          line: 4,
           column: 9,
+          line: 4,
+          messageId: 'object',
         },
       ],
     },
@@ -396,9 +505,9 @@ function foo<T>(fn: () => Promise<T>) {
       `,
       errors: [
         {
-          messageId: 'object',
-          line: 5,
           column: 9,
+          line: 5,
+          messageId: 'object',
         },
       ],
     },
@@ -464,6 +573,174 @@ function fun(value: unknown) {
       ],
       options: [
         {
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+function fun<T extends number>(t: T): void {
+  throw t;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+    },
+    {
+      code: `
+class UnknownError implements Error {}
+throw new UnknownError();
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allow: [{ from: 'file', name: 'CustomError' }],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+let x = 1;
+Promise.reject('foo').catch(e => {
+  throw x;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').catch((...e) => {
+  throw e;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any[];
+Promise.reject('foo').catch(...x, e => {
+  throw e;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any[];
+Promise.reject('foo').then(...x, e => {
+  throw e;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const onFulfilled: any;
+declare const x: any[];
+Promise.reject('foo').then(onFulfilled, ...x, e => {
+  throw e;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').then((...e) => {
+  throw e;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').then(e => {
+  throw globalThis;
+});
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
           allowThrowingUnknown: false,
         },
       ],

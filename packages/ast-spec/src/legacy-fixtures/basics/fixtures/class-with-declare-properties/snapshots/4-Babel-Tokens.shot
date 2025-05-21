@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties Babel - Tokens 1`] = `
 [
   Keyword {
     type: "Keyword",
@@ -84,21 +81,21 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties Babel
   },
   Identifier {
     type: "Identifier",
-    value: "public",
+    value: "declare",
 
-    range: [118, 124],
+    range: [118, 125],
     loc: {
       start: { column: 2, line: 5 },
-      end: { column: 8, line: 5 },
+      end: { column: 9, line: 5 },
     },
   },
   Identifier {
     type: "Identifier",
-    value: "declare",
+    value: "public",
 
-    range: [125, 132],
+    range: [126, 132],
     loc: {
-      start: { column: 9, line: 5 },
+      start: { column: 10, line: 5 },
       end: { column: 16, line: 5 },
     },
   },
@@ -264,21 +261,21 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties Babel
   },
   Identifier {
     type: "Identifier",
-    value: "public",
+    value: "declare",
 
-    range: [216, 222],
+    range: [216, 223],
     loc: {
       start: { column: 2, line: 8 },
-      end: { column: 8, line: 8 },
+      end: { column: 9, line: 8 },
     },
   },
   Identifier {
     type: "Identifier",
-    value: "declare",
+    value: "public",
 
-    range: [223, 230],
+    range: [224, 230],
     loc: {
-      start: { column: 9, line: 8 },
+      start: { column: 10, line: 8 },
       end: { column: 16, line: 8 },
     },
   },
@@ -334,21 +331,21 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties Babel
   },
   Identifier {
     type: "Identifier",
-    value: "public",
+    value: "declare",
 
-    range: [257, 263],
+    range: [257, 264],
     loc: {
       start: { column: 2, line: 9 },
-      end: { column: 8, line: 9 },
+      end: { column: 9, line: 9 },
     },
   },
   Identifier {
     type: "Identifier",
-    value: "declare",
+    value: "public",
 
-    range: [264, 271],
+    range: [265, 271],
     loc: {
-      start: { column: 9, line: 9 },
+      start: { column: 10, line: 9 },
       end: { column: 16, line: 9 },
     },
   },
@@ -404,21 +401,21 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties Babel
   },
   Identifier {
     type: "Identifier",
-    value: "public",
+    value: "declare",
 
-    range: [296, 302],
+    range: [296, 303],
     loc: {
       start: { column: 2, line: 10 },
-      end: { column: 8, line: 10 },
+      end: { column: 9, line: 10 },
     },
   },
   Identifier {
     type: "Identifier",
-    value: "declare",
+    value: "public",
 
-    range: [303, 310],
+    range: [304, 310],
     loc: {
-      start: { column: 9, line: 10 },
+      start: { column: 10, line: 10 },
       end: { column: 16, line: 10 },
     },
   },
@@ -493,4 +490,3 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties Babel
     },
   },
 ]
-`;
