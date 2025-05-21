@@ -138,5 +138,8 @@
       "!{projectRoot}/vitest.config.mts",
       "!{projectRoot}/src/test-setup.[jt]s"
     ]
+  },
+  "sync": {
+    "applyChanges": true
   }
 }
