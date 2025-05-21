@@ -19,14 +19,8 @@
       "plugin": "@nx/vite/plugin",
       "exclude": ["*"],
       "options": {
-        "testTargetName": "test"
-      }
-    },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "include": ["packages/*"],
-      "options": {
-        "targetName": "lint"
+        "testTargetName": "test",
+        "typecheckTargetName": "vite:typecheck"
       }
     }
   ],
@@ -51,7 +45,20 @@
     }
   },
   "targetDefaults": {
+    "lint": {
+      "cache": false,
+      "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
+      "options": {
+        "cwd": "{workspaceRoot}",
+        "config": "{workspaceRoot}/eslint.config.mjs",
+        "args": ["{projectRoot}"]
+      }
+    },
     "test": {
+      "dependsOn": ["^build"],
+      "options": {
+        "config": "vitest.config.mts"
+      },
       "outputs": ["{projectRoot}/coverage"]
     }
   },
