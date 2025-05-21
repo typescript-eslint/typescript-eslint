@@ -196,6 +196,7 @@
     "tsconfigrootdir",
     "tsconfigs",
     "tseslint",
+    "tsgo",
     "tsvfs",
     "typedef",
     "typedefs",
