@@ -153,8 +153,8 @@ See [Packages > Parser > `projectService` > `ProjectServiceOptions`](/packages/p
 
 ## Predictability
 
-We've found configuring `tsconfig.eslint.json` to be a common source of confusion for users of the traditional Program APIs, as well as an annoying extra file to maintain.
-They can easily result in the type information used for _linting_ accidentally being different from the type information used for _type checking_.
+We've found configuring `tsconfig.eslint.json` files to be a common source of confusion with the traditional Program APIs.
+They can result in the type information used for _linting_ accidentally being different from the type information used for _type checking_.
 Unifying TypeScript configurations to the same `tsconfig.json` file(s) altogether avoids potential divergent types.
 
 Another benefit of using the new Project Service API is that typed linting requires no additional work in typescript-eslint for more difficult uses of ESLint and/or TypeScript.
