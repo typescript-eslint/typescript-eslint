@@ -5493,6 +5493,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@typescript-eslint/project-service@8.32.1, @typescript-eslint/project-service@workspace:packages/project-service":
+  version: 0.0.0-use.local
+  resolution: "@typescript-eslint/project-service@workspace:packages/project-service"
+  dependencies:
+    "@typescript-eslint/tsconfig-utils": ^8.32.1
+    "@typescript-eslint/types": ^8.32.1
+    debug: ^4.3.4
+  languageName: unknown
+  linkType: soft
+
 "@typescript-eslint/rule-schema-to-typescript-types@8.32.1, @typescript-eslint/rule-schema-to-typescript-types@workspace:*, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
@@ -5544,6 +5554,14 @@ __metadata:
     rimraf: "*"
     typescript: "*"
     vitest: ^3.1.3
+  languageName: unknown
+  linkType: soft
+
+"@typescript-eslint/tsconfig-utils@8.32.1, @typescript-eslint/tsconfig-utils@^8.32.1, @typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils":
+  version: 0.0.0-use.local
+  resolution: "@typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils"
+  peerDependencies:
+    typescript: ">=4.8.4 <5.9.0"
   languageName: unknown
   linkType: soft
 
@@ -5648,6 +5666,8 @@ __metadata:
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
     "@types/is-glob": ^4.0.4
+    "@typescript-eslint/project-service": 8.32.1
+    "@typescript-eslint/tsconfig-utils": 8.32.1
     "@typescript-eslint/types": 8.32.1
     "@typescript-eslint/visitor-keys": 8.32.1
     "@vitest/coverage-v8": ^3.1.3

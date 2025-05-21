@@ -2,8 +2,8 @@ import { createParseSettings } from '../../src/parseSettings/createParseSettings
 
 const projectService = { service: true };
 
-vi.mock('../../src/create-program/createProjectService.js', () => ({
-  createProjectService: (): typeof projectService => projectService,
+vi.mock('@typescript-eslint/project-service', () => ({
+  createProjectService: () => projectService,
 }));
 
 describe(createParseSettings, () => {

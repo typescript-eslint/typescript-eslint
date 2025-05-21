@@ -1,10 +1,11 @@
 {
-  "name": "@typescript-eslint/typescript-estree",
+  "name": "@typescript-eslint/tsconfig-utils",
   "version": "8.32.1",
-  "description": "A parser that converts TypeScript source code into an ESTree compatible form",
+  "description": "Utilities for collecting TSConfigs for linting scenarios.",
   "files": [
     "dist",
     "!*.tsbuildinfo",
+    "package.json",
     "README.md",
     "LICENSE"
   ],
@@ -14,34 +15,25 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./package.json": "./package.json",
-    "./use-at-your-own-risk": {
-      "types": "./dist/use-at-your-own-risk.d.ts",
-      "default": "./dist/use-at-your-own-risk.js"
-    }
+    "./package.json": "./package.json"
   },
-  "types": "./dist/index.d.ts",
   "engines": {
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
-    "directory": "packages/typescript-estree"
+    "directory": "packages/tsconfig-utils"
   },
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
-  "homepage": "https://typescript-eslint.io/packages/typescript-estree",
+  "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "keywords": [
-    "ast",
-    "estree",
-    "ecmascript",
-    "javascript",
+    "eslint",
     "typescript",
-    "parser",
-    "syntax"
+    "estree"
   ],
   "scripts": {
     "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
@@ -52,26 +44,6 @@
     "test": "yarn run -BT nx test",
     "typecheck": "yarn run -BT nx typecheck"
   },
-  "dependencies": {
-    "@typescript-eslint/project-service": "8.32.1",
-    "@typescript-eslint/tsconfig-utils": "8.32.1",
-    "@typescript-eslint/types": "8.32.1",
-    "@typescript-eslint/visitor-keys": "8.32.1",
-    "debug": "^4.3.4",
-    "fast-glob": "^3.3.2",
-    "is-glob": "^4.0.3",
-    "minimatch": "^9.0.4",
-    "semver": "^7.6.0",
-    "ts-api-utils": "^2.1.0"
-  },
-  "devDependencies": {
-    "@types/is-glob": "^4.0.4",
-    "@vitest/coverage-v8": "^3.1.3",
-    "glob": "*",
-    "rimraf": "*",
-    "typescript": "*",
-    "vitest": "^3.1.3"
-  },
   "peerDependencies": {
     "typescript": ">=4.8.4 <5.9.0"
   },
@@ -80,7 +52,7 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "nx": {
-    "name": "typescript-estree",
+    "name": "tsconfig-utils",
     "includedScripts": [
       "clean"
     ]
