@@ -631,11 +631,8 @@ export default createRule<Options, MessageIds>({
 
       // #region interface
 
-      'TSEnumMember[computed != true]': {
-        handler: (
-          node: TSESTree.TSEnumMemberNonComputedName,
-          validator,
-        ): void => {
+      TSEnumMember: {
+        handler: (node: TSESTree.TSEnumMember, validator): void => {
           const id = node.id;
           const modifiers = new Set<Modifiers>();
 
