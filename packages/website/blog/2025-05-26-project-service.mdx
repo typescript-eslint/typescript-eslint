@@ -106,7 +106,7 @@ Common solutions in the traditional Program API were to either skip typed lintin
 The new Project Service API allows for a configuration object specifying `allowDefaultProject`: a glob of "out-of-project" files to lint with type information.
 That means you can lint those files without any new configuration files or TypeScript compiler options!
 
-For example, the following config solves the common case of projects that have root-level files like `eslint.config.js` and `vitest.config.ts`:
+For example, the following config solves the common case of projects that have root-level files like `eslint.config.js` or `vitest.config.ts`:
 
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
@@ -144,7 +144,7 @@ module.exports = {
 </TabItem>
 </Tabs>
 
-This means most projects should be able to remove lint-only `tsconfig.eslint.json` files!
+This means most projects should be able to remove all `tsconfig.eslint.json` files!
 🥳
 
 :::tip
@@ -153,17 +153,17 @@ See [Packages > Parser > `projectService` > `ProjectServiceOptions`](/packages/p
 
 ## Predictability
 
-Without separate `tsconfig.eslint.json` files, you can be more confident that the type information used for linting is the same as the one used for type checking.
-We've round this to be a common source of confusion for users, as well as an annoying extra file to maintain.
+We've found configuring `tsconfig.eslint.json` to be a common source of confusion for users of the traditional Program APIs, as well as an annoying extra file to maintain.
+They can easily result in the type information used for _linting_ accidentally being different from the type information used for _type checking_.
+Unifying TypeScript configurations to the same `tsconfig.json` file(s) altogether avoids potential divergent types.
 
-Another benefit of using the new Project Service API is that typed linting requires no additional configuration to work with extensions to TypeScript.
-Many use cases couldn't be supported by the traditional Program API while still optimizing for performance.
-For example:
+Another benefit of using the new Project Service API is that typed linting requires no additional work in typescript-eslint for more difficult uses of ESLint and/or TypeScript.
+We sometimes had to de-optimize the traditional Program API to support use cases:
 
-- ESLint's `--fix` mode would lose type information after the first run ([#9577](https://github.com/typescript-eslint/typescript-eslint/pull/9577))
-- Extra file extensions, such as those used by `.svelte` and `.vue`, were not supported ([#9504](https://github.com/typescript-eslint/typescript-eslint/issues/9504))
+- CLI `--fix` mode would lose type information after the first pass ([#9577](https://github.com/typescript-eslint/typescript-eslint/pull/9577))
+- Extra file extensions such as `.svelte` and `.vue` were not supported at all ([#9504](https://github.com/typescript-eslint/typescript-eslint/issues/9504))
 
-`parserOptions.projectService` does not suffer from the same bugs as `parserOptions.project` with single-run mode.
+The new Project Service API does not suffer from these issues.
 It supports extra file extensions out-of-the-box and does not slow down when used with ESLint's `--fix`.
 
 ## Scalability
