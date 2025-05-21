@@ -1,15 +1,6 @@
 ---
-<<<<<<< HEAD
-authors:
-  - image_url: /img/team/joshuakgoldberg.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
-description: Simplifying how many projects resolve their TSConfigs for typed linting.
-=======
 authors: joshuakgoldberg
 description: Simplifying how many projects resolve their
->>>>>>> main
 slug: parser-options-project-true
 tags: [parser, parser options, project, tsconfig]
 title: Relative TSConfig Projects with `parserOptions.project = true`
