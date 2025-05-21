@@ -4,8 +4,8 @@ authors:
     name: Josh Goldberg
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
-description: Using a faster and more convenient "Project Service" API for configuring typed linting.
-slug: parser-options-project-service
+description: How typescript-eslint's new "Project Service" makes typed linting easier to configure, especially for large projects.
+slug: project-service
 tags: [parser, parser options, project, project service, tsconfig]
 title: Typed Linting with `parserOptions.projectService`
 ---
@@ -13,9 +13,11 @@ title: Typed Linting with `parserOptions.projectService`
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-["Typed linting"](/linting/typed-linting), or enabling ESLint rules to tap into the power of the TypeScript type checker, is one of the best parts of typescript-eslint.
+["Typed linting"](/linting/typed-linting), or enabling ESLint rules to understand TypeScript types, is one of the best parts of typescript-eslint.
 It enables a slew of more powerful lint rules that check for nuanced bugs, best practice violations, and other code issues.
-But typed linting hasn't always been straightforward to configure or performant at runtime.
+
+Typed linting hasn't always been straightforward to configure or performant at runtime.
+ESLint and TypeScript were not originally designed to work together, and older APIs
 
 With typescript-eslint 8.0, we marked as stable a **`parserOptions.projectService`** option that uses more powerful TypeScript APIs than previous typed linting implementations.
 We've found it to bring the following benefits:
