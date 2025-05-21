@@ -9,11 +9,11 @@ title: Typed Linting with Project Service
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-["Typed linting"](/linting/typed-linting), or enabling ESLint rules to understand TypeScript types, is one of the best parts of typescript-eslint.
-It enables a slew of more powerful lint rules that check for nuanced bugs, best practice violations, and other code issues.
+["Typed linting"](/blog/typed-linting), or enabling ESLint rules to understand TypeScript types, is one of the best parts of typescript-eslint.
+It enables a slew of more powerful lint rules that check for nuanced bugs, best practice violations, and other code issues that can only be detected using type information.
 
 Typed linting hasn't always been straightforward to configure or performant at runtime.
-We've seen user have to manage separate `tsconfig.eslint.json` files to enable typed linting — sometimes with different compiler options than the rest of the project.
+We've seen users have to manage separate `tsconfig.eslint.json` files to enable typed linting — sometimes with different compiler options than the rest of the project.
 Not ideal.
 
 In typescript-eslint 8.0, we stabilized a **`parserOptions.projectService`** option that uses more powerful, streamlined TypeScript APIs than before.
@@ -93,7 +93,10 @@ module.exports = {
 That's it!
 
 Other settings, including how you run ESLint and configure rules, should work the same.
-[Packages > Parser > `projectService`](/packages/parser#projectservice) has more details on granular configuration options.
+
+:::tip
+See [Packages > Parser > `projectService`](/packages/parser#projectservice) for more details on granular configuration options.
+:::
 
 ### Additional Files
 
@@ -144,7 +147,9 @@ module.exports = {
 This means most projects should be able to remove lint-only `tsconfig.eslint.json` files!
 🥳
 
-[Packages > Parser > `projectService` > `ProjectServiceOptions`](/packages/parser#projectserviceOptions) has more details on out-of-project files and other granular configuration options.
+:::tip
+See [Packages > Parser > `projectService` > `ProjectServiceOptions`](/packages/parser#projectserviceOptions) for more details on out-of-project files and other granular configuration options.
+:::
 
 ## Predictability
 
