@@ -1,4 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > parameter > TSParameterProperty > _error_ > override-method-parameter > Babel - Error`]
-SyntaxError: A parameter property is only allowed in a constructor implementation. (2:9)
+BabelError
+  1 | class Foo {
+> 2 |   method(override parameter) {}
+    |          ^ A parameter property is only allowed in a constructor implementation. (2:9)
+  3 | }
+  4 |
+  

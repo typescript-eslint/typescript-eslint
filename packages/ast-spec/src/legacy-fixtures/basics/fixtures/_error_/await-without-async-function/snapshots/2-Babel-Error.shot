@@ -1,4 +1,12 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > basics > _error_ > await-without-async-function > Babel - Error`]
-SyntaxError: Unexpected reserved word 'await'. (4:14)
+BabelError
+  2 |
+  3 | function foo() {
+> 4 |   const bar = await baz();
+    |               ^ Unexpected reserved word 'await'. (4:14)
+  5 |   return bar.qux;
+  6 | }
+  7 |
+  

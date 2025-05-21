@@ -1,4 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > class-empty-extends > Babel - Error`]
-SyntaxError: Unexpected token, expected "{" (6:0)
+BabelError
+  4 |
+  5 | }
+> 6 |
+    | ^ Unexpected token, expected "{" (6:0)
+  
