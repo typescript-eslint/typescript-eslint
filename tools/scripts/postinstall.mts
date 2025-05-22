@@ -42,5 +42,5 @@ if (!process.env.SKIP_POSTINSTALL_BUILD) {
 
   // Build all the packages ready for use
   await $`pnpm run build`;
-  await $`pnpx nx typecheck ast-spec`;
+  await $`pnpm exec nx typecheck ast-spec`;
 }
