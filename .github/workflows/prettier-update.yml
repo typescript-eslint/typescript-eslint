@@ -36,8 +36,8 @@ jobs:
           # We cannot use secrets.GITHUB_TOKEN for this because it is not permitted to kick off subsequent actions worfklow runs, so we use a PAT instead
           GITHUB_TOKEN: ${{ secrets.JAMES_HENRY_GITHUB_TOKEN }}
         run: |
-          yarn --mode skip-build
-          yarn format
+          pnpm install --ignore-scripts
+          pnpm run format
 
           # Commit all the changes to the PR (see note on not being able to use secrets.GITHUB_TOKEN for this)
           git config --global user.email "james@henry.sc"

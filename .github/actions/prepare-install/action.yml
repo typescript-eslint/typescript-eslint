@@ -68,7 +68,7 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: |
         yarn install --immutable --inline-builds
-        yarn check-clean-workspace-after-install
+        pnpm run check-clean-workspace-after-install
       env:
         # CI optimizations. Overrides yarnrc.yml options (or their defaults) in the CI action.
         YARN_ENABLE_GLOBAL_CACHE: 'false' # Use local cache folder to keep downloaded archives
