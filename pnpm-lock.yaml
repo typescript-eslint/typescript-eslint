@@ -277,6 +277,9 @@ importers:
       '@types/natural-compare':
         specifier: '*'
         version: 1.4.3
+      '@types/react':
+        specifier: ^18.3.21
+        version: 18.3.21
       '@typescript-eslint/rule-schema-to-typescript-types':
         specifier: workspace:*
         version: link:../rule-schema-to-typescript-types
