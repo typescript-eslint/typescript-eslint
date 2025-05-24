@@ -44,9 +44,9 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "devDependencies": {
-    "@babel/code-frame": "^7.24.2",
-    "@babel/core": "^7.24.4",
-    "@babel/eslint-parser": "^7.24.1",
+    "@babel/code-frame": "^7.26.2",
+    "@babel/core": "^7.26.8",
+    "@babel/eslint-parser": "^7.26.8",
     "@microsoft/api-extractor": "^7.47.11",
     "@types/babel__code-frame": "^7.0.6",
     "@types/babel__core": "^7.20.5",
