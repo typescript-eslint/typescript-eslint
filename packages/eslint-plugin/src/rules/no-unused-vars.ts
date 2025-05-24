@@ -38,6 +38,9 @@ export type Options = [
       reportUsedIgnorePattern?: boolean;
       vars?: 'all' | 'local';
       varsIgnorePattern?: string;
+      enableAutofixRemoval?: {
+        imports: boolean;
+      };
     },
 ];
 
@@ -52,6 +55,9 @@ interface TranslatedOptions {
   reportUsedIgnorePattern: boolean;
   vars: 'all' | 'local';
   varsIgnorePattern?: RegExp;
+  enableAutofixRemoval?: {
+    imports: boolean;
+  };
 }
 
 type VariableType =
@@ -74,6 +80,7 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
       recommended: 'recommended',
     },
+    fixable: 'code',
     messages: {
       unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
       usedIgnoredVar:
@@ -116,6 +123,16 @@ export default createRule<Options, MessageIds>({
                 type: 'string',
                 description:
                   'Regular expressions of destructured array variable names to not check for usage.',
+              },
+              enableAutofixRemoval: {
+                type: 'object',
+                properties: {
+                  imports: {
+                    type: 'boolean',
+                    description:
+                      'Whether to enable autofix for removing unused imports.',
+                  },
+                },
               },
               ignoreClassWithStaticInitBlock: {
                 type: 'boolean',
@@ -207,6 +224,10 @@ export default createRule<Options, MessageIds>({
             firstOption.destructuredArrayIgnorePattern,
             'u',
           );
+        }
+
+        if (firstOption.enableAutofixRemoval) {
+          options.enableAutofixRemoval = firstOption.enableAutofixRemoval;
         }
       }
 
@@ -687,6 +708,87 @@ export default createRule<Options, MessageIds>({
               data: unusedVar.references.some(ref => ref.isWrite())
                 ? getAssignedMessageData(unusedVar)
                 : getDefinedMessageData(unusedVar),
+              fix:
+                options.enableAutofixRemoval?.imports &&
+                unusedVar.defs.some(
+                  d => d.type === DefinitionType.ImportBinding,
+                )
+                  ? fixer => {
+                      const def = unusedVar.defs.find(
+                        d => d.type === DefinitionType.ImportBinding,
+                      );
+                      if (!def) {
+                        return null;
+                      }
+
+                      const source = context.sourceCode;
+                      const node = def.node;
+                      const decl = node.parent as TSESTree.ImportDeclaration;
+
+                      // Remove import declaration line if no specifiers are left
+                      if (decl.specifiers.length === 1) {
+                        const next = source.getTokenAfter(decl) ?? {
+                          range: [decl.range[1], decl.range[1]],
+                        };
+                        return fixer.removeRange([
+                          decl.range[0],
+                          next.range[0],
+                        ]);
+                      }
+
+                      // case: remove { unused }
+                      const restNamed = decl.specifiers.filter(
+                        s =>
+                          s === node &&
+                          s.type === AST_NODE_TYPES.ImportSpecifier,
+                      );
+                      if (restNamed.length === 1) {
+                        const nextBraceToken = source.getTokenAfter(node);
+                        const prevBraceToken = source.getTokenBefore(node);
+                        if (
+                          nextBraceToken?.value === '}' &&
+                          prevBraceToken?.value === '{'
+                        ) {
+                          // remove comma
+                          const prevComma =
+                            source.getTokenBefore(prevBraceToken);
+
+                          return fixer.removeRange([
+                            prevComma?.value === ','
+                              ? prevComma.range[0]
+                              : prevBraceToken.range[0],
+                            nextBraceToken.range[1],
+                          ]);
+                        }
+                      }
+
+                      // case: Remove comma after node
+                      const nextCommaToken = source.getTokenAfter(node);
+                      if (nextCommaToken?.value === ',') {
+                        const nextToken = source.getTokenAfter(nextCommaToken, {
+                          includeComments: true,
+                        });
+
+                        return fixer.removeRange([
+                          node.range[0],
+                          nextToken
+                            ? nextToken.range[0]
+                            : nextCommaToken.range[1],
+                        ]);
+                      }
+
+                      // case: Remove comma before node
+                      const prevCommaToken = source.getTokenBefore(node);
+                      if (prevCommaToken?.value === ',') {
+                        return fixer.removeRange([
+                          prevCommaToken.range[0],
+                          node.range[1],
+                        ]);
+                      }
+                      // Remove the current specifier and all tokens until the next specifier
+                      return fixer.remove(node);
+                    }
+                  : undefined,
             });
 
             // If there are no regular declaration, report the first `/*globals*/` comment directive.
