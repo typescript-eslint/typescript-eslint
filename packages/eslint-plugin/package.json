@@ -53,7 +53,7 @@
     "clean": "rimraf dist/ coverage/",
     "format": "pnpm --workspace-root run format",
     "generate-breaking-changes": "tsx tools/generate-breaking-changes.mts",
-    "generate-configs": "yarn run -T generate-configs",
+    "generate-configs": "pnpm --workspace-root run generate-configs",
     "lint": "pnpm --workspace-root exec nx lint",
     "test": "vitest --run --config=./vitest.config.mts",
     "test-single": "vitest --run --config=./vitest.config.mts --no-coverage",

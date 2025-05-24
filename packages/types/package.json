@@ -41,7 +41,7 @@
     "build": "tsc -b tsconfig.build.json",
     "clean": "rimraf dist/ src/generated/ coverage/",
     "format": "pnpm --workspace-root run format",
-    "generate-lib": "yarn run -BT nx run scope-manager:generate-lib",
+    "generate-lib": "pnpm --workspace-root exec nx run scope-manager:generate-lib",
     "lint": "pnpm --workspace-root exec nx lint",
     "test": "vitest --run --config=./vitest.config.mts",
     "check-types": "pnpm --workspace-root exec nx typecheck"
