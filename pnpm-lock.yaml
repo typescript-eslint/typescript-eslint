@@ -734,6 +734,9 @@ importers:
       '@docusaurus/plugin-content-blog':
         specifier: ^3.7.0
         version: 3.7.0(@docusaurus/plugin-content-docs@3.7.0(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2))(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)
+      '@docusaurus/plugin-content-docs':
+        specifier: ^3.7.0
+        version: 3.7.0(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)
       '@docusaurus/plugin-pwa':
         specifier: ^3.2.1
         version: 3.7.0(@docusaurus/plugin-content-docs@3.7.0(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2))(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(@types/babel__core@7.20.5)(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)
@@ -746,6 +749,9 @@ importers:
       '@docusaurus/theme-common':
         specifier: ^3.2.1
         version: 3.7.0(@docusaurus/plugin-content-docs@3.7.0(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2))(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mdx-js/react':
+        specifier: ^3.1.0
+        version: 3.1.0(@types/react@18.3.21)(react@18.3.1)
       '@typescript-eslint/parser':
         specifier: workspace:*
         version: link:../parser
@@ -779,6 +785,9 @@ importers:
       prism-react-renderer:
         specifier: ^2.3.1
         version: 2.4.1(react@18.3.1)
+      prismjs:
+        specifier: ^1.30.0
+        version: 1.30.0
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -900,6 +909,9 @@ importers:
       '@typescript-eslint/scope-manager':
         specifier: workspace:*
         version: link:../scope-manager
+      '@typescript-eslint/type-utils':
+        specifier: workspace:*
+        version: link:../type-utils
       '@typescript-eslint/typescript-estree':
         specifier: workspace:*
         version: link:../typescript-estree

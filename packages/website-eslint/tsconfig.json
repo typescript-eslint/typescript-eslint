@@ -13,6 +13,9 @@
       "path": "../scope-manager"
     },
     {
+      "path": "../type-utils"
+    },
+    {
       "path": "../parser"
     },
     {

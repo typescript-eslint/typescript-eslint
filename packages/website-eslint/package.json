@@ -37,6 +37,7 @@
     "@eslint/js": "*",
     "@typescript-eslint/eslint-plugin": "workspace:*",
     "@typescript-eslint/parser": "workspace:*",
+    "@typescript-eslint/type-utils": "workspace:*",
     "@typescript-eslint/scope-manager": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
