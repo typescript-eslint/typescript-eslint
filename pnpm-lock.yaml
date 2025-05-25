@@ -553,6 +553,9 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0(typescript@5.8.2)
     devDependencies:
+      '@types/babel__code-frame':
+        specifier: ^7.0.6
+        version: 7.0.6
       '@typescript-eslint/parser':
         specifier: 8.32.1
         version: 8.32.1(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.2)
