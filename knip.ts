@@ -57,7 +57,12 @@ export default {
         'typings/typescript.d.ts',
       ],
 
-      ignoreDependencies: ['@types/react', '^@site/.*', '^@theme/.*'],
+      ignoreDependencies: [
+        '@types/react',
+        '^@site/.*',
+        '^@theme/.*',
+        '^@theme-original/.*',
+      ],
     },
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],
@@ -132,7 +137,7 @@ export default {
         'src/pages/**/*.tsx',
 
         // imported in MDX docs
-        'src/components/**/*.tsx',
+        'src/components/**/*.{ts,tsx}',
 
         // used by Docusaurus
         'src/theme/**/*.tsx',

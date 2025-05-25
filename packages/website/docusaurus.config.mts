@@ -7,6 +7,8 @@ import type { UserThemeConfig as ThemeCommonConfig } from '@docusaurus/theme-com
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 import type { Config } from '@docusaurus/types';
 
+import pluginContentBlog from '@docusaurus/plugin-content-blog';
+import pluginContentDocs from '@docusaurus/plugin-content-docs';
 import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import { version } from '@typescript-eslint/parser/package.json';
 
@@ -391,8 +393,11 @@ const config: Config = {
       },
     ]),
     require.resolve('./webpack.plugin'),
+    pluginContentBlog,
+    pluginContentDocs,
     ['@docusaurus/plugin-content-docs', pluginContentDocsOptions],
     ['@docusaurus/plugin-pwa', pluginPwaOptions],
+    ['@docusaurus/plugin-client-redirects', redirects],
     ['@docusaurus/plugin-client-redirects', redirects],
   ],
   presets: [['classic', presetClassicOptions]],
