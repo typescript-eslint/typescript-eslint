@@ -54,6 +54,7 @@ export default {
       },
     },
     'packages/eslint-plugin': {
+      entry: ['docs/**/*.mdx', 'tests/**/*.{bench,test,test-d}.?(cm)ts?(x)'],
       ignore: [
         'tests/fixtures/**',
         'typings/eslint-rules.d.ts',
@@ -96,6 +97,8 @@ export default {
     },
     'packages/type-utils': {
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
+
+      ignoreDependencies: ['@types/babel__code-frame'],
 
       vitest: {
         config: ['vitest.config.mts'],
@@ -168,6 +171,7 @@ export default {
         '^@theme-original/.*',
         'docusaurus-plugin-typedoc',
         'typedoc-plugin-markdown',
+        'prismjs',
       ],
     },
     'packages/website-eslint': {
@@ -186,6 +190,8 @@ export default {
       ignoreDependencies: [
         // virtual module
         'vt',
+
+        '@typescript-eslint/type-utils',
       ],
     },
     'tools/dummypkg': {},
