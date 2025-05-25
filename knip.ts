@@ -22,11 +22,7 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignoreDependencies: [
-        '@nx/workspace',
-        // imported for type purposes only
-        'website',
-      ],
+      ignoreDependencies: ['@nx/workspace'],
 
       project: [
         'tools/scripts/**/*.mts',
@@ -60,6 +56,8 @@ export default {
         'typings/eslint-rules.d.ts',
         'typings/typescript.d.ts',
       ],
+
+      ignoreDependencies: ['@types/react', '^@site/.*', '^@theme/.*'],
     },
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],
