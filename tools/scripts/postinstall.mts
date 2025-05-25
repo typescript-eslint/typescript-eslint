@@ -2,11 +2,10 @@ import { $ as $_config } from 'execa';
 
 const $ = $_config({
   env: {
-    // TODO!: Check it out and, if necessary, rewrite it
     /**
      * Do not apply the special GitHub Actions group markers within the
      * postinstall logging, it cannot work correctly when nested within
-     * yarn's output and therefore just adds visual noise.
+     * pnpm's output and therefore just adds visual noise.
      */
     NX_SKIP_LOG_GROUPING: 'true',
   },
