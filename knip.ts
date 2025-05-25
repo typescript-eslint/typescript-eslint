@@ -22,6 +22,8 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
+      ignore: ['tools/scripts/generate-sponsors.mts'],
+
       ignoreDependencies: ['@nx/workspace'],
 
       project: [
@@ -50,19 +52,15 @@ export default {
       },
     },
     'packages/eslint-plugin': {
-      entry: ['docs/**/*.mdx', 'tests/**/*.{bench,test,test-d}.?(cm)ts?(x)'],
+      entry: ['tests/**/*.{bench,test,test-d}.?(cm)ts?(x)'],
       ignore: [
         'tests/fixtures/**',
         'typings/eslint-rules.d.ts',
         'typings/typescript.d.ts',
+        'docs/**/*.mdx',
       ],
 
-      ignoreDependencies: [
-        '@types/react',
-        '^@site/.*',
-        '^@theme/.*',
-        '^@theme-original/.*',
-      ],
+      ignoreDependencies: ['@types/react'],
     },
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],
@@ -158,8 +156,6 @@ export default {
 
         '@docusaurus/mdx-loader',
         '@docusaurus/types',
-        '@docusaurus/plugin-content-docs',
-        '@docusaurus/plugin-content-blog',
         '@docusaurus/theme-search-algolia',
         '@docusaurus/ExecutionEnvironment',
         '@docusaurus/Link',
