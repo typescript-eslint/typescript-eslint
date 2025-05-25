@@ -130,13 +130,13 @@ export const setup = async (project: TestProject): Promise<void> => {
     ),
     { encoding: 'utf-8' },
   );
-  // TODO!: Rewrite
-  // We install the tarballs here once so that yarn can cache them globally.
+
+  // We install the tarballs here once so that pnpm can cache them globally.
   // This solves 2 problems:
   // 1. Tests can be run concurrently because they won't be trying to install
   //    the same tarballs at the same time.
-  // 2. Installing the tarballs for each test becomes much faster as Yarn can
-  //    grab them from the global cache folder.
+  // 2. Installing the tarballs for each test becomes much faster as pnpm can
+  //    reuse them from its global content-addressable store.
   await execFile('pnpm', ['install', '--no-frozen-lockfile'], {
     cwd: temp,
     shell: true,
