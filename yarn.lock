@@ -5423,19 +5423,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/eslint-plugin@8.32.1, @typescript-eslint/eslint-plugin@workspace:*, @typescript-eslint/eslint-plugin@workspace:^, @typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin":
+"@typescript-eslint/eslint-plugin@8.33.0, @typescript-eslint/eslint-plugin@workspace:*, @typescript-eslint/eslint-plugin@workspace:^, @typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
     "@eslint-community/regexpp": ^4.10.0
     "@types/mdast": ^4.0.3
     "@types/natural-compare": "*"
-    "@typescript-eslint/rule-schema-to-typescript-types": 8.32.1
-    "@typescript-eslint/rule-tester": 8.32.1
-    "@typescript-eslint/scope-manager": 8.32.1
-    "@typescript-eslint/type-utils": 8.32.1
-    "@typescript-eslint/utils": 8.32.1
-    "@typescript-eslint/visitor-keys": 8.32.1
+    "@typescript-eslint/rule-schema-to-typescript-types": 8.33.0
+    "@typescript-eslint/rule-tester": 8.33.0
+    "@typescript-eslint/scope-manager": 8.33.0
+    "@typescript-eslint/type-utils": 8.33.0
+    "@typescript-eslint/utils": 8.33.0
+    "@typescript-eslint/visitor-keys": 8.33.0
     "@vitest/coverage-v8": ^3.1.3
     ajv: ^6.12.6
     cross-fetch: "*"
@@ -5458,7 +5458,7 @@ __metadata:
     unist-util-visit: ^5.0.0
     vitest: ^3.1.3
   peerDependencies:
-    "@typescript-eslint/parser": ^8.0.0 || ^8.0.0-alpha.0
+    "@typescript-eslint/parser": ^8.33.0
     eslint: ^8.57.0 || ^9.0.0
     typescript: ">=4.8.4 <5.9.0"
   languageName: unknown
@@ -5473,14 +5473,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/parser@8.32.1, @typescript-eslint/parser@workspace:*, @typescript-eslint/parser@workspace:^, @typescript-eslint/parser@workspace:packages/parser":
+"@typescript-eslint/parser@8.33.0, @typescript-eslint/parser@workspace:*, @typescript-eslint/parser@workspace:^, @typescript-eslint/parser@workspace:packages/parser":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/parser@workspace:packages/parser"
   dependencies:
-    "@typescript-eslint/scope-manager": 8.32.1
-    "@typescript-eslint/types": 8.32.1
-    "@typescript-eslint/typescript-estree": 8.32.1
-    "@typescript-eslint/visitor-keys": 8.32.1
+    "@typescript-eslint/scope-manager": 8.33.0
+    "@typescript-eslint/types": 8.33.0
+    "@typescript-eslint/typescript-estree": 8.33.0
+    "@typescript-eslint/visitor-keys": 8.33.0
     "@vitest/coverage-v8": ^3.1.3
     debug: ^4.3.4
     glob: "*"
@@ -5493,22 +5493,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/project-service@8.32.1, @typescript-eslint/project-service@workspace:packages/project-service":
+"@typescript-eslint/project-service@8.33.0, @typescript-eslint/project-service@workspace:packages/project-service":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/project-service@workspace:packages/project-service"
   dependencies:
-    "@typescript-eslint/tsconfig-utils": ^8.32.1
-    "@typescript-eslint/types": ^8.32.1
+    "@typescript-eslint/tsconfig-utils": ^8.33.0
+    "@typescript-eslint/types": ^8.33.0
     debug: ^4.3.4
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-schema-to-typescript-types@8.32.1, @typescript-eslint/rule-schema-to-typescript-types@workspace:*, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
+"@typescript-eslint/rule-schema-to-typescript-types@8.33.0, @typescript-eslint/rule-schema-to-typescript-types@workspace:*, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
   dependencies:
-    "@typescript-eslint/type-utils": 8.32.1
-    "@typescript-eslint/utils": 8.32.1
+    "@typescript-eslint/type-utils": 8.33.0
+    "@typescript-eslint/utils": 8.33.0
     "@vitest/coverage-v8": ^3.1.3
     natural-compare: ^1.4.0
     prettier: ^3.2.5
@@ -5518,15 +5518,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-tester@8.32.1, @typescript-eslint/rule-tester@workspace:*, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
+"@typescript-eslint/rule-tester@8.33.0, @typescript-eslint/rule-tester@workspace:*, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-tester@workspace:packages/rule-tester"
   dependencies:
     "@types/json-stable-stringify-without-jsonify": ^1.0.2
     "@types/lodash.merge": 4.6.9
-    "@typescript-eslint/parser": 8.32.1
-    "@typescript-eslint/typescript-estree": 8.32.1
-    "@typescript-eslint/utils": 8.32.1
+    "@typescript-eslint/parser": 8.33.0
+    "@typescript-eslint/typescript-estree": 8.33.0
+    "@typescript-eslint/utils": 8.33.0
     "@vitest/coverage-v8": ^3.1.3
     ajv: ^6.12.6
     eslint: "*"
@@ -5541,13 +5541,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/scope-manager@8.32.1, @typescript-eslint/scope-manager@workspace:*, @typescript-eslint/scope-manager@workspace:^, @typescript-eslint/scope-manager@workspace:packages/scope-manager":
+"@typescript-eslint/scope-manager@8.33.0, @typescript-eslint/scope-manager@workspace:*, @typescript-eslint/scope-manager@workspace:^, @typescript-eslint/scope-manager@workspace:packages/scope-manager":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/scope-manager@workspace:packages/scope-manager"
   dependencies:
-    "@typescript-eslint/types": 8.32.1
-    "@typescript-eslint/typescript-estree": 8.32.1
-    "@typescript-eslint/visitor-keys": 8.32.1
+    "@typescript-eslint/types": 8.33.0
+    "@typescript-eslint/typescript-estree": 8.33.0
+    "@typescript-eslint/visitor-keys": 8.33.0
     "@vitest/coverage-v8": ^3.1.3
     "@vitest/pretty-format": ^3.1.3
     glob: "*"
@@ -5557,7 +5557,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/tsconfig-utils@8.32.1, @typescript-eslint/tsconfig-utils@^8.32.1, @typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils":
+"@typescript-eslint/tsconfig-utils@8.33.0, @typescript-eslint/tsconfig-utils@^8.33.0, @typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils"
   peerDependencies:
@@ -5565,13 +5565,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/type-utils@8.32.1, @typescript-eslint/type-utils@workspace:*, @typescript-eslint/type-utils@workspace:packages/type-utils":
+"@typescript-eslint/type-utils@8.33.0, @typescript-eslint/type-utils@workspace:*, @typescript-eslint/type-utils@workspace:packages/type-utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/type-utils@workspace:packages/type-utils"
   dependencies:
-    "@typescript-eslint/parser": 8.32.1
-    "@typescript-eslint/typescript-estree": 8.32.1
-    "@typescript-eslint/utils": 8.32.1
+    "@typescript-eslint/parser": 8.33.0
+    "@typescript-eslint/typescript-estree": 8.33.0
+    "@typescript-eslint/utils": 8.33.0
     "@vitest/coverage-v8": ^3.1.3
     ajv: ^6.12.6
     debug: ^4.3.4
@@ -5586,7 +5586,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@8.32.1, @typescript-eslint/types@^8.32.1, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@8.33.0, @typescript-eslint/types@^8.32.1, @typescript-eslint/types@^8.33.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -5661,15 +5661,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/typescript-estree@8.32.1, @typescript-eslint/typescript-estree@workspace:*, @typescript-eslint/typescript-estree@workspace:^, @typescript-eslint/typescript-estree@workspace:packages/typescript-estree":
+"@typescript-eslint/typescript-estree@8.33.0, @typescript-eslint/typescript-estree@workspace:*, @typescript-eslint/typescript-estree@workspace:^, @typescript-eslint/typescript-estree@workspace:packages/typescript-estree":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
     "@types/is-glob": ^4.0.4
-    "@typescript-eslint/project-service": 8.32.1
-    "@typescript-eslint/tsconfig-utils": 8.32.1
-    "@typescript-eslint/types": 8.32.1
-    "@typescript-eslint/visitor-keys": 8.32.1
+    "@typescript-eslint/project-service": 8.33.0
+    "@typescript-eslint/tsconfig-utils": 8.33.0
+    "@typescript-eslint/types": 8.33.0
+    "@typescript-eslint/visitor-keys": 8.33.0
     "@vitest/coverage-v8": ^3.1.3
     debug: ^4.3.4
     fast-glob: ^3.3.2
@@ -5686,14 +5686,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/utils@8.32.1, @typescript-eslint/utils@^8.32.1, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/utils@8.33.0, @typescript-eslint/utils@^8.32.1, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
     "@eslint-community/eslint-utils": ^4.7.0
-    "@typescript-eslint/scope-manager": 8.32.1
-    "@typescript-eslint/types": 8.32.1
-    "@typescript-eslint/typescript-estree": 8.32.1
+    "@typescript-eslint/scope-manager": 8.33.0
+    "@typescript-eslint/types": 8.33.0
+    "@typescript-eslint/typescript-estree": 8.33.0
     "@vitest/coverage-v8": ^3.1.3
     rimraf: "*"
     typescript: "*"
@@ -5704,11 +5704,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/visitor-keys@8.32.1, @typescript-eslint/visitor-keys@workspace:*, @typescript-eslint/visitor-keys@workspace:packages/visitor-keys":
+"@typescript-eslint/visitor-keys@8.33.0, @typescript-eslint/visitor-keys@workspace:*, @typescript-eslint/visitor-keys@workspace:packages/visitor-keys":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/visitor-keys@workspace:packages/visitor-keys"
   dependencies:
-    "@typescript-eslint/types": 8.32.1
+    "@typescript-eslint/types": 8.33.0
     "@vitest/coverage-v8": ^3.1.3
     eslint-visitor-keys: ^4.2.0
     rimraf: "*"
@@ -18737,9 +18737,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "typescript-eslint@workspace:packages/typescript-eslint"
   dependencies:
-    "@typescript-eslint/eslint-plugin": 8.32.1
-    "@typescript-eslint/parser": 8.32.1
-    "@typescript-eslint/utils": 8.32.1
+    "@typescript-eslint/eslint-plugin": 8.33.0
+    "@typescript-eslint/parser": 8.33.0
+    "@typescript-eslint/utils": 8.33.0
     "@vitest/coverage-v8": ^3.1.3
     rimraf: "*"
     typescript: "*"
