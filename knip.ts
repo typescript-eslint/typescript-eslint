@@ -24,7 +24,11 @@ export default {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
       ignore: ['tools/scripts/generate-sponsors.mts'],
 
-      ignoreDependencies: ['@nx/workspace'],
+      ignoreDependencies: [
+        '@nx/workspace',
+        '@types/eslint',
+        '@docusaurus/theme-classic',
+      ],
 
       project: [
         'tools/scripts/**/*.mts',
@@ -154,8 +158,6 @@ export default {
         // it's imported only as type (esquery types are forked and defined in packages/website/typings/esquery.d.ts)
         'esquery',
 
-        '@docusaurus/mdx-loader',
-        '@docusaurus/types',
         '@docusaurus/theme-search-algolia',
         '@docusaurus/ExecutionEnvironment',
         '@docusaurus/Link',
