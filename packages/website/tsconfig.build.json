@@ -12,7 +12,7 @@
       "@site/*": ["./*"]
     },
     "lib": ["DOM", "ES2023"],
-    "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
+    "types": ["@docusaurus/module-type-aliases"]
   },
   "include": [
     "src",
