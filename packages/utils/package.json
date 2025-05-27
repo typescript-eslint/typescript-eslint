@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "8.32.1",
+  "version": "8.33.0",
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -53,18 +53,19 @@
     "estree"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
+    "build": "pnpm --workspace-root exec nx build",
     "clean": "rimraf dist/ coverage/",
     "format": "pnpm --workspace-root run format",
     "lint": "pnpm --workspace-root exec nx lint",
-    "test": "vitest --run --config=./vitest.config.mts",
-    "check-types": "pnpm --workspace-root exec nx typecheck"
+    "test": "pnpm --workspace-root exec nx test",
+    "typecheck": "pnpm --workspace-root exec nx typecheck"
   },
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.7.0",
-    "@typescript-eslint/scope-manager": "8.32.1",
-    "@typescript-eslint/types": "8.32.1",
-    "@typescript-eslint/typescript-estree": "8.32.1"
+    "@typescript-eslint/scope-manager": "8.33.0",
+    "@typescript-eslint/types": "8.33.0",
+    "@typescript-eslint/typescript-estree": "8.33.0"
   },
   "peerDependencies": {
     "eslint": "^8.57.0 || ^9.0.0",
@@ -79,5 +80,18 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
+  },
+  "nx": {
+    "name": "utils",
+    "includedScripts": [
+      "clean"
+    ],
+    "targets": {
+      "test": {
+        "dependsOn": [
+          "^build"
+        ]
+      }
+    }
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "typescript-eslint",
-  "version": "8.32.1",
+  "version": "8.33.0",
   "description": "Tooling which enables you to use TypeScript with ESLint",
   "files": [
     "dist",
@@ -42,17 +42,18 @@
     "eslint-plugin"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
+    "build": "pnpm --workspace-root exec nx build",
     "clean": "rimraf dist/ coverage/",
     "format": "pnpm --workspace-root run format",
     "lint": "pnpm --workspace-root exec nx lint",
-    "test": "vitest --run --config=./vitest.config.mts",
-    "check-types": "pnpm --workspace-root exec nx typecheck"
+    "test": "pnpm --workspace-root exec nx test",
+    "typecheck": "pnpm --workspace-root exec nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "8.32.1",
-    "@typescript-eslint/parser": "8.32.1",
-    "@typescript-eslint/utils": "8.32.1"
+    "@typescript-eslint/eslint-plugin": "8.33.0",
+    "@typescript-eslint/parser": "8.33.0",
+    "@typescript-eslint/utils": "8.33.0"
   },
   "peerDependencies": {
     "eslint": "^8.57.0 || ^9.0.0",
@@ -67,5 +68,11 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
+  },
+  "nx": {
+    "name": "typescript-eslint",
+    "includedScripts": [
+      "clean"
+    ]
   }
 }

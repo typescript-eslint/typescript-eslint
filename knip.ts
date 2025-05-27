@@ -2,6 +2,7 @@ import type { KnipConfig } from 'knip' with { 'resolution-mode': 'import' };
 
 export default {
   rules: {
+    binaries: 'off',
     classMembers: 'off',
     duplicates: 'off',
     enumMembers: 'off',
@@ -56,7 +57,7 @@ export default {
       },
     },
     'packages/eslint-plugin': {
-      entry: ['tests/**/*.{bench,test,test-d}.?(cm)ts?(x)'],
+      entry: ['tests/**/*.{bench,test,test-d}.?(cm)ts?(x)', 'tools/**'],
       ignore: [
         'tests/fixtures/**',
         'typings/eslint-rules.d.ts',
@@ -64,7 +65,7 @@ export default {
         'docs/**/*.mdx',
       ],
 
-      ignoreDependencies: ['@types/react'],
+      ignoreDependencies: ['@types/react', 'tsx'],
     },
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],

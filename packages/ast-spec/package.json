@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "8.32.1",
+  "version": "8.33.0",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -31,13 +31,14 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
     "build": "tsc -b tsconfig.build.json && api-extractor run --local --config=./api-extractor.json",
     "clean": "rimraf dist/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "pnpm --workspace-root run format",
     "lint": "pnpm --workspace-root exec nx lint",
-    "test": "vitest --run --config=./vitest.config.mts",
-    "check-types": "pnpm --workspace-root exec nx typecheck"
+    "test": "pnpm --workspace-root exec nx test",
+    "typecheck": "pnpm --workspace-root exec nx typecheck"
   },
   "funding": {
     "type": "opencollective",
@@ -59,5 +60,37 @@
     "rimraf": "*",
     "typescript": "*",
     "vitest": "^3.1.3"
+  },
+  "nx": {
+    "name": "ast-spec",
+    "implicitDependencies": [
+      "!typescript-estree"
+    ],
+    "includedScripts": [
+      "clean",
+      "clean-fixtures"
+    ],
+    "targets": {
+      "build": {
+        "command": "tsc -b tsconfig.build.json && api-extractor run --local --config=api-extractor.json",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "outputs": [
+          "{projectRoot}/dist/**/*.ts"
+        ],
+        "cache": true
+      },
+      "typecheck": {
+        "dependsOn": [
+          "typescript-estree:build"
+        ]
+      },
+      "test": {
+        "dependsOn": [
+          "typecheck"
+        ]
+      }
+    }
   }
 }
