@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@types/eslint-scope': file:./tools/dummypkg
-  '@types/eslint': file:./tools/dummypkg
-  '@types/estree': file:./tools/dummypkg
   '@types/node': ^22.0.0
   '@types/react': ^18.2.14
   prettier: 3.5.0
@@ -57,6 +54,9 @@ importers:
       '@types/debug':
         specifier: ^4.1.12
         version: 4.1.12
+      '@types/eslint':
+        specifier: ^9.6.1
+        version: 9.6.1
       '@types/eslint-plugin-jsx-a11y':
         specifier: ^6.10.0
         version: 6.10.0
@@ -816,8 +816,17 @@ importers:
         specifier: 5.8.2
         version: 5.8.2
     devDependencies:
+      '@docusaurus/mdx-loader':
+        specifier: ^3.7.0
+        version: 3.7.0(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@docusaurus/module-type-aliases':
         specifier: ^3.2.1
+        version: 3.7.0(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@docusaurus/theme-classic':
+        specifier: ^3.7.0
+        version: 3.7.0(@swc/core@1.11.24(@swc/helpers@0.5.17))(@types/react@18.3.21)(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)
+      '@docusaurus/types':
+        specifier: ^3.7.0
         version: 3.7.0(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/mdast':
         specifier: ^4.0.3
@@ -3322,8 +3331,20 @@ packages:
   '@types/eslint-plugin-jsx-a11y@6.10.0':
     resolution: {integrity: sha512-TGKmk2gO6DrvTVADNOGQMqn3SzqcFcJILFnXNllQA34us9uClS3/AsL/cERPz6jS9ePI3bx+1q8/d2GZsxPVYw==}
 
+  '@types/eslint-scope@3.7.7':
+    resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
+
+  '@types/eslint@9.6.1':
+    resolution: {integrity: sha512-FXx2pKgId/WyYo2jXw63kk7/+TY7u7AziEJxJAnSFzHlqTAS3Ync6SvgYAN/k4/PQpnnVuzoMuVnByKK2qp0ag==}
+
   '@types/estree-jsx@1.0.5':
     resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
+
+  '@types/estree@0.0.39':
+    resolution: {integrity: sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==}
+
+  '@types/estree@1.0.7':
+    resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
   '@types/express-serve-static-core@4.19.6':
     resolution: {integrity: sha512-N4LZ2xG7DatVqhCZzOGb1Yi5lMbXSZcmdLDe9EzSndPV2HpWYWzRbaerl2n27irrm94EPpprqa8KpskPT085+A==}
@@ -4749,9 +4770,6 @@ packages:
   dotenv@16.4.7:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
-
-  dummypkg@file:tools/dummypkg:
-    resolution: {directory: tools/dummypkg, type: directory}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -11362,8 +11380,8 @@ snapshots:
 
   '@es-joy/jsdoccomment@0.50.1':
     dependencies:
-      '@types/eslint': dummypkg@file:tools/dummypkg
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/eslint': 9.6.1
+      '@types/estree': 1.0.7
       '@typescript-eslint/types': 8.32.1
       comment-parser: 1.4.1
       esquery: 1.6.0
@@ -11590,7 +11608,7 @@ snapshots:
 
   '@mdx-js/mdx@3.1.0(acorn@8.14.1)':
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       '@types/estree-jsx': 1.0.5
       '@types/hast': 3.0.4
       '@types/mdx': 2.0.13
@@ -11988,14 +12006,14 @@ snapshots:
 
   '@rollup/pluginutils@3.1.0(rollup@2.79.2)':
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 0.0.39
       estree-walker: 1.0.1
       picomatch: 2.3.1
       rollup: 2.79.2
 
   '@rollup/pluginutils@5.1.4(rollup@2.79.2)':
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       estree-walker: 2.0.2
       picomatch: 4.0.2
     optionalDependencies:
@@ -12377,11 +12395,25 @@ snapshots:
 
   '@types/eslint-plugin-jsx-a11y@6.10.0':
     dependencies:
-      '@types/eslint': dummypkg@file:tools/dummypkg
+      '@types/eslint': 9.6.1
+
+  '@types/eslint-scope@3.7.7':
+    dependencies:
+      '@types/eslint': 9.6.1
+      '@types/estree': 1.0.7
+
+  '@types/eslint@9.6.1':
+    dependencies:
+      '@types/estree': 1.0.7
+      '@types/json-schema': 7.0.15
 
   '@types/estree-jsx@1.0.5':
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
+
+  '@types/estree@0.0.39': {}
+
+  '@types/estree@1.0.7': {}
 
   '@types/express-serve-static-core@4.19.6':
     dependencies:
@@ -14020,8 +14052,6 @@ snapshots:
 
   dotenv@16.4.7: {}
 
-  dummypkg@file:tools/dummypkg: {}
-
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -14426,7 +14456,7 @@ snapshots:
       '@humanfs/node': 0.16.6
       '@humanwhocodes/module-importer': 1.0.1
       '@humanwhocodes/retry': 0.4.3
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       '@types/json-schema': 7.0.15
       ajv: 6.12.6
       chalk: 4.1.2
@@ -14477,7 +14507,7 @@ snapshots:
 
   estree-util-attach-comments@3.0.0:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
 
   estree-util-build-jsx@3.0.1:
     dependencies:
@@ -14490,7 +14520,7 @@ snapshots:
 
   estree-util-scope@1.0.0:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       devlop: 1.1.0
 
   estree-util-to-js@2.0.0:
@@ -14501,7 +14531,7 @@ snapshots:
 
   estree-util-value-to-estree@3.4.0:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
 
   estree-util-visit@2.0.0:
     dependencies:
@@ -14514,7 +14544,7 @@ snapshots:
 
   estree-walker@3.0.3:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
 
   esutils@2.0.3: {}
 
@@ -15056,7 +15086,7 @@ snapshots:
 
   hast-util-to-estree@3.1.3:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       '@types/estree-jsx': 1.0.5
       '@types/hast': 3.0.4
       comma-separated-tokens: 2.0.3
@@ -15077,7 +15107,7 @@ snapshots:
 
   hast-util-to-jsx-runtime@2.3.6:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       '@types/hast': 3.0.4
       '@types/unist': 3.0.3
       comma-separated-tokens: 2.0.3
@@ -16278,7 +16308,7 @@ snapshots:
 
   micromark-extension-mdx-expression@3.0.1:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       devlop: 1.1.0
       micromark-factory-mdx-expression: 2.0.3
       micromark-factory-space: 2.0.1
@@ -16289,7 +16319,7 @@ snapshots:
 
   micromark-extension-mdx-jsx@3.0.2:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       devlop: 1.1.0
       estree-util-is-identifier-name: 3.0.0
       micromark-factory-mdx-expression: 2.0.3
@@ -16306,7 +16336,7 @@ snapshots:
 
   micromark-extension-mdxjs-esm@3.0.0:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       devlop: 1.1.0
       micromark-core-commonmark: 2.0.3
       micromark-util-character: 2.1.1
@@ -16342,7 +16372,7 @@ snapshots:
 
   micromark-factory-mdx-expression@2.0.3:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       devlop: 1.1.0
       micromark-factory-space: 2.0.1
       micromark-util-character: 2.1.1
@@ -16416,7 +16446,7 @@ snapshots:
 
   micromark-util-events-to-acorn@2.0.3:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       '@types/unist': 3.0.3
       devlop: 1.1.0
       estree-util-visit: 2.0.0
@@ -17693,7 +17723,7 @@ snapshots:
 
   recma-build-jsx@1.0.0:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       estree-util-build-jsx: 3.0.1
       vfile: 6.0.3
 
@@ -17709,14 +17739,14 @@ snapshots:
 
   recma-parse@1.0.0:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       esast-util-from-js: 2.0.1
       unified: 11.0.5
       vfile: 6.0.3
 
   recma-stringify@1.0.0:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       estree-util-to-js: 2.0.0
       unified: 11.0.5
       vfile: 6.0.3
@@ -17793,7 +17823,7 @@ snapshots:
 
   rehype-recma@1.0.0:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
       '@types/hast': 3.0.4
       hast-util-to-estree: 3.1.3
     transitivePeerDependencies:
@@ -17944,7 +17974,7 @@ snapshots:
 
   rollup@4.41.0:
     dependencies:
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/estree': 1.0.7
     optionalDependencies:
       '@rollup/rollup-android-arm-eabi': 4.41.0
       '@rollup/rollup-android-arm64': 4.41.0
@@ -19088,8 +19118,8 @@ snapshots:
 
   webpack@5.99.8(@swc/core@1.11.24(@swc/helpers@0.5.17)):
     dependencies:
-      '@types/eslint-scope': dummypkg@file:tools/dummypkg
-      '@types/estree': dummypkg@file:tools/dummypkg
+      '@types/eslint-scope': 3.7.7
+      '@types/estree': 1.0.7
       '@types/json-schema': 7.0.15
       '@webassemblyjs/ast': 1.14.1
       '@webassemblyjs/wasm-edit': 1.14.1

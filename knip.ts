@@ -22,10 +22,12 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
+      ignore: ['tools/scripts/generate-sponsors.mts'],
+
       ignoreDependencies: [
         '@nx/workspace',
-        // imported for type purposes only
-        'website',
+        '@types/eslint',
+        '@docusaurus/theme-classic',
       ],
 
       project: [
@@ -54,11 +56,15 @@ export default {
       },
     },
     'packages/eslint-plugin': {
+      entry: ['tests/**/*.{bench,test,test-d}.?(cm)ts?(x)'],
       ignore: [
         'tests/fixtures/**',
         'typings/eslint-rules.d.ts',
         'typings/typescript.d.ts',
+        'docs/**/*.mdx',
       ],
+
+      ignoreDependencies: ['@types/react'],
     },
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],
@@ -97,6 +103,8 @@ export default {
     'packages/type-utils': {
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
 
+      ignoreDependencies: ['@types/babel__code-frame'],
+
       vitest: {
         config: ['vitest.config.mts'],
         entry: [
@@ -131,7 +139,7 @@ export default {
         'src/pages/**/*.tsx',
 
         // imported in MDX docs
-        'src/components/**/*.tsx',
+        'src/components/**/*.{ts,tsx}',
 
         // used by Docusaurus
         'src/theme/**/*.tsx',
@@ -150,10 +158,6 @@ export default {
         // it's imported only as type (esquery types are forked and defined in packages/website/typings/esquery.d.ts)
         'esquery',
 
-        '@docusaurus/mdx-loader',
-        '@docusaurus/types',
-        '@docusaurus/plugin-content-docs',
-        '@docusaurus/plugin-content-blog',
         '@docusaurus/theme-search-algolia',
         '@docusaurus/ExecutionEnvironment',
         '@docusaurus/Link',
@@ -168,6 +172,7 @@ export default {
         '^@theme-original/.*',
         'docusaurus-plugin-typedoc',
         'typedoc-plugin-markdown',
+        'prismjs',
       ],
     },
     'packages/website-eslint': {
@@ -186,6 +191,8 @@ export default {
       ignoreDependencies: [
         // virtual module
         'vt',
+
+        '@typescript-eslint/type-utils',
       ],
     },
     'tools/dummypkg': {},

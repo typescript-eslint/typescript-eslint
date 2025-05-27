@@ -1,6 +1,7 @@
 {
   "type": "module",
   "devDependencies": {
+    "@eslint/js": "latest",
     "eslint-plugin-markdown": "latest"
   }
 }
