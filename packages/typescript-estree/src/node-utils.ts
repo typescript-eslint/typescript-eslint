@@ -577,6 +577,15 @@ export function getTokenType(
   return AST_TOKEN_TYPES.Identifier;
 }
 
+export function unescapeUnicodeIdentifier(text: string): string {
+  return text.replaceAll(
+    /\\u\{([0-9a-fA-F]+)\}|\\u([0-9a-fA-F]{4})/g,
+    (_match: string, curlyHex: string, shortHex: string) => {
+      const codePoint = parseInt(curlyHex || shortHex, 16);
+      return String.fromCodePoint(codePoint);
+    },
+  );
+}
 /**
  * Extends and formats a given ts.Token, for a given AST
  */
@@ -589,8 +598,11 @@ export function convertToken(
       ? token.getFullStart()
       : token.getStart(ast);
   const end = token.getEnd();
-  const value = ast.text.slice(start, end);
   const tokenType = getTokenType(token);
+  const value =
+    token.kind === SyntaxKind.Identifier
+      ? unescapeUnicodeIdentifier(ast.text.slice(start, end))
+      : ast.text.slice(start, end);
   const range: TSESTree.Range = [start, end];
   const loc = getLocFor(range, ast);
 
