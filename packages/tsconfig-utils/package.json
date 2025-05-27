@@ -51,6 +51,9 @@
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "nx": {
     "name": "tsconfig-utils",
     "includedScripts": [
