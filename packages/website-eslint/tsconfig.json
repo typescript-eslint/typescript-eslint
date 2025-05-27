@@ -4,6 +4,9 @@
   "include": [],
   "references": [
     {
+      "path": "../tsconfig-utils"
+    },
+    {
       "path": "../visitor-keys"
     },
     {

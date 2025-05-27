@@ -192,7 +192,7 @@ export default {
       ignoreDependencies: [
         // virtual module
         'vt',
-
+        '@typescript-eslint/tsconfig-utils',
         '@typescript-eslint/type-utils',
       ],
     },

@@ -914,6 +914,10 @@ importers:
         version: 5.99.8(@swc/core@1.11.24(@swc/helpers@0.5.17))
 
   packages/website-eslint:
+    dependencies:
+      '@typescript-eslint/tsconfig-utils':
+        specifier: workspace:*
+        version: link:../tsconfig-utils
     devDependencies:
       '@eslint/js':
         specifier: '*'

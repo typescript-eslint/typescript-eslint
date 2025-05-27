@@ -34,6 +34,9 @@
     "lint": "pnpm --workspace-root exec nx lint",
     "typecheck": "pnpm --workspace-root exec nx typecheck"
   },
+  "dependencies": {
+    "@typescript-eslint/tsconfig-utils": "workspace:*"
+  },
   "devDependencies": {
     "@eslint/js": "*",
     "@typescript-eslint/eslint-plugin": "workspace:*",
