@@ -3,6 +3,12 @@
   "compilerOptions": {},
   "references": [
     {
+      "path": "../project-service/tsconfig.build.json"
+    },
+    {
+      "path": "../tsconfig-utils/tsconfig.build.json"
+    },
+    {
       "path": "../visitor-keys/tsconfig.build.json"
     },
     {

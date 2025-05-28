@@ -12,17 +12,19 @@
   "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
+    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
     "build": "docusaurus build",
     "clear": "docusaurus clear",
-    "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore",
+    "clean": "rimraf dist/ build/ .docusaurus/ && yarn run clear",
+    "format": "yarn run -T format",
     "generate-website-dts": "tsx ./tools/generate-website-dts.mts",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
-    "lint": "npx nx lint",
+    "lint": "yarn run -BT nx lint",
     "serve": "docusaurus serve",
-    "start": "npx nx start",
+    "start": "yarn run -BT nx start",
     "swizzle": "docusaurus swizzle",
-    "check-types": "npx nx typecheck"
+    "typecheck": "yarn run -BT nx typecheck"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.4",
@@ -51,9 +53,6 @@
     "typedoc": "^0.28.4",
     "typedoc-plugin-markdown": "^4.6.3",
     "typescript": "*"
-  },
-  "resolutions": {
-    "react": "^18.2.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.2.1",
@@ -95,5 +94,28 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "nx": {
+    "name": "website",
+    "includedScripts": [
+      "clean",
+      "build"
+    ],
+    "targets": {
+      "build": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "start": {
+        "command": "docusaurus start",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "^build"
+        ]
+      }
+    }
   }
 }

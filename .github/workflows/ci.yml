@@ -39,6 +39,8 @@ jobs:
   install:
     name: Checkout and Install
     runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -51,6 +53,8 @@ jobs:
     name: Build All Packages
     needs: [install]
     runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -65,6 +69,8 @@ jobs:
     name: Generate Configs
     needs: [build]
     runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -84,6 +90,8 @@ jobs:
     strategy:
       matrix:
         lint-task: ['check-spelling', 'check-format', 'lint-markdown']
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -103,6 +111,8 @@ jobs:
     strategy:
       matrix:
         lint-task: ['lint', 'typecheck', 'knip']
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -122,6 +132,8 @@ jobs:
     name: Stylelint
     needs: [install]
     runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -137,6 +149,8 @@ jobs:
     name: Run integration tests on primary Node.js version
     needs: [build]
     runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -170,8 +184,10 @@ jobs:
             'eslint-plugin',
             'eslint-plugin-internal',
             'parser',
+            'project-service',
             'rule-tester',
             'scope-manager',
+            'tsconfig-utils',
             'type-utils',
             'typescript-eslint',
             'typescript-estree',
@@ -179,8 +195,7 @@ jobs:
             'visitor-keys',
           ]
     env:
-      # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
-      NX_CLOUD_ENV_NAME: 'Node ${{ matrix.node-version }} -'
+      NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
     steps:
       - name: Checkout
@@ -198,12 +213,12 @@ jobs:
       # we don't collect coverage on other node versions so they run faster
       - name: Run unit tests with coverage for ${{ matrix.package }}
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        run: npx nx run ${{ matrix.package }}:test -- --coverage
+        run: yarn nx run ${{ matrix.package }}:test -- --coverage
         env:
           CI: true
       - name: Run unit tests for ${{ matrix.package }}
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        run: npx nx test ${{ matrix.package }}
+        run: yarn nx test ${{ matrix.package }}
         env:
           CI: true
 
@@ -225,7 +240,8 @@ jobs:
         package:
           ['eslint-plugin', 'eslint-plugin-internal', 'typescript-estree']
     env:
-      COLLECT_COVERAGE: false
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      COLLECT_COVERAGE: false,
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -238,7 +254,7 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
       - name: Run unit tests for ${{ matrix.package }}
-        run: npx nx test ${{ matrix.package }} --coverage=false
+        run: yarn nx test ${{ matrix.package }} --coverage=false
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true

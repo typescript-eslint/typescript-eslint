@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.32.1",
+  "version": "8.33.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -49,22 +49,22 @@
     "typescript"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
+    "build": "yarn run -BT nx build",
     "clean": "rimraf dist/ coverage/",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate:breaking-changes": "tsx tools/generate-breaking-changes.mts",
-    "generate:configs": "npx nx generate-configs repo",
-    "lint": "npx nx lint",
-    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
-    "test-single": "vitest --run --config=$INIT_CWD/vitest.config.mts --no-coverage",
-    "check-types": "npx nx typecheck"
+    "format": "yarn run -T format",
+    "generate-breaking-changes": "yarn run -BT nx generate-breaking-changes",
+    "generate-configs": "yarn run -T generate-configs",
+    "lint": "yarn run -BT nx lint",
+    "test": "yarn run -BT nx test",
+    "typecheck": "yarn run -BT nx typecheck"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",
-    "@typescript-eslint/scope-manager": "8.32.1",
-    "@typescript-eslint/type-utils": "8.32.1",
-    "@typescript-eslint/utils": "8.32.1",
-    "@typescript-eslint/visitor-keys": "8.32.1",
+    "@typescript-eslint/scope-manager": "8.33.0",
+    "@typescript-eslint/type-utils": "8.33.0",
+    "@typescript-eslint/utils": "8.33.0",
+    "@typescript-eslint/visitor-keys": "8.33.0",
     "graphemer": "^1.4.0",
     "ignore": "^7.0.0",
     "natural-compare": "^1.4.0",
@@ -73,8 +73,8 @@
   "devDependencies": {
     "@types/mdast": "^4.0.3",
     "@types/natural-compare": "*",
-    "@typescript-eslint/rule-schema-to-typescript-types": "8.32.1",
-    "@typescript-eslint/rule-tester": "8.32.1",
+    "@typescript-eslint/rule-schema-to-typescript-types": "8.33.0",
+    "@typescript-eslint/rule-tester": "8.33.0",
     "@vitest/coverage-v8": "^3.1.3",
     "ajv": "^6.12.6",
     "cross-fetch": "*",
@@ -85,7 +85,7 @@
     "mdast-util-from-markdown": "^2.0.0",
     "mdast-util-mdx": "^3.0.0",
     "micromark-extension-mdxjs": "^3.0.0",
-    "prettier": "^3.2.5",
+    "prettier": "^3.5.3",
     "rimraf": "*",
     "title-case": "^4.0.0",
     "tsx": "*",
@@ -94,12 +94,29 @@
     "vitest": "^3.1.3"
   },
   "peerDependencies": {
-    "@typescript-eslint/parser": "^8.0.0 || ^8.0.0-alpha.0",
+    "@typescript-eslint/parser": "^8.33.0",
     "eslint": "^8.57.0 || ^9.0.0",
     "typescript": ">=4.8.4 <5.9.0"
   },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
+  },
+  "nx": {
+    "name": "eslint-plugin",
+    "includedScripts": [
+      "clean"
+    ],
+    "targets": {
+      "generate-breaking-changes": {
+        "command": "tsx tools/generate-breaking-changes.mts",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "type-utils:build"
+        ]
+      }
+    }
   }
 }
