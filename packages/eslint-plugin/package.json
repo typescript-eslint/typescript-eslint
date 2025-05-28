@@ -9,7 +9,7 @@
     "raw-plugin.d.ts",
     "rules.d.ts",
     "package.json",
-    "README.md",
+    "./README.md",
     "LICENSE"
   ],
   "type": "commonjs",
