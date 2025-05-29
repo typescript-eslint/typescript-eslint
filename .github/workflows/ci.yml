@@ -124,7 +124,7 @@ jobs:
         uses: ./.github/actions/prepare-build
 
       - name: Run Check
-        run: pnpm run ${{ matrix.lint-task }}
+        run: pnpm ${{ matrix.lint-task }}
         env:
           ESLINT_USE_FLAT_CONFIG: true
 
