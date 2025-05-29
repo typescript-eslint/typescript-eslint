@@ -76,3 +76,4 @@ runs:
         YARN_INSTALL_STATE_PATH: .yarn/ci-cache/install-state.gz # Very small speedup when lock does not change
         # Other environment variables
         HUSKY: '0' # By default do not run HUSKY install
+        SKIP_POSTINSTALL: 'true'

@@ -83,7 +83,11 @@
         ]
       },
       "lint": {
-        "command": "eslint"
+        "command": "eslint",
+        "dependsOn": [
+          "typescript-eslint:build",
+          "eslint-plugin-internal:build"
+        ]
       }
     }
   }
