@@ -58,14 +58,15 @@ export default {
     },
     'packages/eslint-plugin': {
       entry: ['tests/**/*.{bench,test,test-d}.?(cm)ts?(x)', 'tools/**'],
-      ignore: [
-        'tests/fixtures/**',
-        'typings/eslint-rules.d.ts',
-        'typings/typescript.d.ts',
-        'docs/**/*.mdx',
-      ],
+      ignore: ['typings/eslint-rules.d.ts', 'typings/typescript.d.ts'],
+      ignoreDependencies: ['@types/react'],
+      project: ['src/**/*.ts!', 'tools/**/*.mts'],
 
-      ignoreDependencies: ['@types/react', 'tsx'],
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: ['tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+        project: ['tests/**', '!tests/fixtures/**'],
+      },
     },
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],
@@ -168,6 +169,7 @@ export default {
         '@docusaurus/BrowserOnly',
         '@docusaurus/module-type-aliases',
         '@generated/docusaurus.config',
+        '@typescript-eslint/website-eslint',
         '^@site/.*',
         '^@theme/.*',
         '^@theme-original/.*',
@@ -194,6 +196,7 @@ export default {
         'vt',
         '@typescript-eslint/tsconfig-utils',
         '@typescript-eslint/type-utils',
+        '@typescript-eslint/tsconfig-utils',
       ],
     },
     'tools/dummypkg': {},

@@ -13,6 +13,9 @@
       "path": "../typescript-estree"
     },
     {
+      "path": "../tsconfig-utils"
+    },
+    {
       "path": "../scope-manager"
     },
     {
