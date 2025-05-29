@@ -40,6 +40,7 @@
     "@typescript-eslint/parser": "workspace:*",
     "@typescript-eslint/type-utils": "workspace:*",
     "@typescript-eslint/scope-manager": "workspace:*",
+    "@typescript-eslint/tsconfig-utils": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
     "esbuild": "~0.25.0",

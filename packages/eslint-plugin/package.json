@@ -50,15 +50,15 @@
   ],
   "scripts": {
     "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
-    "build": "pnpm --workspace-root exec nx build",
+    "build": "pnpm -w exec nx build",
     "clean": "rimraf dist/ coverage/",
-    "format": "pnpm --workspace-root run format",
+    "format": "pnpm -w run format",
     "generate-breaking-changes": "tsx tools/generate-breaking-changes.mts",
-    "generate-configs": "pnpm --workspace-root run generate-configs",
-    "lint": "pnpm --workspace-root exec nx lint",
-    "test": "pnpm --workspace-root exec nx test",
+    "generate-configs": "pnpm -w run generate-configs",
+    "lint": "pnpm -w exec nx lint",
+    "test": "pnpm -w exec nx test",
     "test-single": "vitest --run --config=./vitest.config.mts --no-coverage",
-    "typecheck": "pnpm --workspace-root exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",
@@ -97,7 +97,7 @@
     "vitest": "^3.1.3"
   },
   "peerDependencies": {
-    "@typescript-eslint/parser": "^8.0.0 || ^8.0.0-alpha.0",
+    "@typescript-eslint/parser": "^8.33.0",
     "eslint": "^8.57.0 || ^9.0.0",
     "typescript": ">=4.8.4 <5.9.0"
   },

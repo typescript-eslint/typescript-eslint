@@ -35,7 +35,7 @@
     "generate-sponsors": "tsx tools/scripts/generate-sponsors.mts",
     "generate-website-dts": "nx run website:generate-website-dts",
     "lint-fix": "pnpm run lint --fix",
-    "lint-markdown-fix": "pnpm lint-markdown --fix",
+    "lint-markdown-fix": "pnpm run lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
     "lint-stylelint": "nx lint website stylelint",
     "lint": "nx run-many -t lint",

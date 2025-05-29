@@ -32,13 +32,13 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
-    "build": "tsc -b tsconfig.build.json && api-extractor run --local --config=./api-extractor.json",
+    "build": "pnpm -w exec nx build",
     "clean": "rimraf dist/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
-    "format": "pnpm --workspace-root run format",
-    "lint": "pnpm --workspace-root exec nx lint",
-    "test": "pnpm --workspace-root exec nx test",
-    "typecheck": "pnpm --workspace-root exec nx typecheck"
+    "format": "pnpm -w run format",
+    "lint": "pnpm -w exec nx lint",
+    "test": "pnpm -w exec nx test",
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "funding": {
     "type": "opencollective",

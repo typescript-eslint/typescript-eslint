@@ -241,7 +241,7 @@ importers:
         specifier: ^4.10.0
         version: 4.12.1
       '@typescript-eslint/parser':
-        specifier: ^8.0.0 || ^8.0.0-alpha.0
+        specifier: ^8.33.0
         version: 8.33.0(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.2)
       '@typescript-eslint/scope-manager':
         specifier: 8.33.0
@@ -927,6 +927,9 @@ importers:
       '@typescript-eslint/scope-manager':
         specifier: workspace:*
         version: link:../scope-manager
+      '@typescript-eslint/tsconfig-utils':
+        specifier: workspace:*
+        version: link:../tsconfig-utils
       '@typescript-eslint/type-utils':
         specifier: workspace:*
         version: link:../type-utils
