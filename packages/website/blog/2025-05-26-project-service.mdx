@@ -181,7 +181,7 @@ This is a huge win for monorepos, as it means you can lint all of your projects 
 ## Performance
 
 Supporting project references allows the new Project Service API to be significantly faster than the traditional `parserOptions.project` API in many monorepo cases.
-We've observed improvements for typed linting speed in real-world repositories [^1] [^2].
+We've observed improvements for typed linting speed in real-world repositories [^babel-conversion] [^create-t3-app-conversion] [^sveltekit-conversion].
 For smaller projects, the performance of the new Project Service API is similar to the traditional `parserOptions.project` API.
 
 When we first started working with the new project service API, it outperformed equivalent `parserOptions.project` setups by ~10-15%.
@@ -221,6 +221,8 @@ Abstracting configuration details into the Project Service API means it will be 
 So, please, try out the new Project Service API.
 We're excited to hear how it works for you and what we can do to improve it. 💜
 
-[^1]: https://github.com/babel/babel/pull/16192#issue-2054613116
+[^babel-conversion]: https://github.com/babel/babel/pull/16192#issue-2054613116
 
-[^2]: https://github.com/t3-oss/create-t3-app/pull/1936/#discussion_r1667389041
+[^create-t3-app-conversion]: https://github.com/t3-oss/create-t3-app/pull/1936/#discussion_r1667389041
+
+[^sveltekit-conversion]: https://github.com/sveltejs/kit/pull/13839
