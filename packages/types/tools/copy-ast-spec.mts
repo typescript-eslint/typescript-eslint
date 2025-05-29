@@ -70,7 +70,7 @@ async function copyFile(
 
 if (process.env.SKIP_AST_SPEC_REBUILD) {
   // ensure the package is built
-  await execAsync('pnpm run', ['build'], { cwd: AST_SPEC_PATH });
+  await execAsync('pnpm', ['run', 'build'], { cwd: AST_SPEC_PATH });
 }
 
 await copyFile('dist', 'ast-spec.ts', code =>
