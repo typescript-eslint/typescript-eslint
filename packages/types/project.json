@@ -14,7 +14,8 @@
       "dependsOn": ["copy-ast-spec"]
     },
     "lint": {
-      "executor": "@nx/eslint:lint"
+      "executor": "@nx/eslint:lint",
+      "dependsOn": ["typescript-eslint:build", "eslint-plugin-internal:build"]
     }
   }
 }
