@@ -64,6 +64,7 @@ export default tseslint.config({
       project: true,
       // Add this line
       projectService: true,
+      tsconfigRootDir: import.meta.dirname,
     },
   },
   // ...
@@ -82,6 +83,7 @@ module.exports = {
     project: true,
     // Add this line
     projectService: true,
+    tsconfigRootDir: __dirname,
   },
   // ...
 };
@@ -119,6 +121,7 @@ export default tseslint.config({
       projectService: {
         allowDefaultProject: ['*.js'],
       },
+      tsconfigRootDir: import.meta.dirname,
     },
   },
   // ...
@@ -135,6 +138,7 @@ module.exports = {
   parserOptions: {
     projectService: {
       allowDefaultProject: ['*.js'],
+      tsconfigRootDir: __dirname,
     },
   },
   // ...
