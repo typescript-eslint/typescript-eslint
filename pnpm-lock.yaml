@@ -931,9 +931,6 @@ importers:
       '@typescript-eslint/scope-manager':
         specifier: workspace:*
         version: link:../scope-manager
-      '@typescript-eslint/tsconfig-utils':
-        specifier: workspace:*
-        version: link:../tsconfig-utils
       '@typescript-eslint/type-utils':
         specifier: workspace:*
         version: link:../type-utils
