@@ -32,7 +32,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
-    "build": "pnpm -w exec nx build",
+    "build": "pnpm exec nx build",
     "clean": "rimraf dist/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "pnpm -w run format",

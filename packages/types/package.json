@@ -38,7 +38,7 @@
   ],
   "scripts": {
     "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
-    "build": "pnpm -w exec nx build",
+    "build": "pnpm exec nx build",
     "clean": "rimraf dist/ src/generated/ coverage/",
     "copy-ast-spec": "tsx ./tools/copy-ast-spec.mts",
     "format": "pnpm -w run format",
