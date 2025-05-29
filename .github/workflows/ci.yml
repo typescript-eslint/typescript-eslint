@@ -78,7 +78,7 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - run: yarn generate-configs
+      - run: yarn nx run generate-configs
       - run: git status --porcelain
       - if: failure()
         run: echo "Outdated result detected from yarn generate-configs. Please check in any file changes."
