@@ -33,7 +33,7 @@ const { workspaceRoot } = await import('@nx/devkit');
 process.chdir(workspaceRoot);
 
 // Install git hooks
-await $`pnpx husky`;
+await $`pnpm -w exec husky`;
 
 if (!process.env.SKIP_POSTINSTALL_BUILD) {
   // Clean any caches that may be invalid now
@@ -41,5 +41,5 @@ if (!process.env.SKIP_POSTINSTALL_BUILD) {
 
   // Build all the packages ready for use
   await $`pnpm run build`;
-  await $`pnpm exec nx typecheck ast-spec`;
+  await $`pnpm -w exec nx typecheck ast-spec`;
 }

@@ -78,7 +78,7 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - run: pnpm run generate-configs
+      - run: pnpm exec nx run generate-configs
       - run: git status --porcelain
       - if: failure()
         run: echo "Outdated result detected from pnpm run generate-configs. Please check in any file changes."
@@ -124,7 +124,7 @@ jobs:
         uses: ./.github/actions/prepare-build
 
       - name: Run Check
-        run: pnpm run ${{ matrix.lint-task }}
+        run: pnpm ${{ matrix.lint-task }}
         env:
           ESLINT_USE_FLAT_CONFIG: true
 

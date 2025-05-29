@@ -19,6 +19,9 @@
       "path": "../typescript-estree/tsconfig.build.json"
     },
     {
+      "path": "../tsconfig-utils/tsconfig.build.json"
+    },
+    {
       "path": "../scope-manager/tsconfig.build.json"
     },
     {

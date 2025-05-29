@@ -13,10 +13,10 @@
   "license": "MIT",
   "scripts": {
     "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
-    "format": "pnpm --workspace-root run format",
-    "lint": "pnpm --workspace-root exec nx lint",
-    "test": "pnpm --workspace-root exec nx test",
-    "typecheck": "pnpm --workspace-root exec nx typecheck"
+    "format": "pnpm -w run format",
+    "lint": "pnpm -w exec nx lint",
+    "test": "pnpm -w exec nx test",
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^3.1.3",

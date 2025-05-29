@@ -50,3 +50,4 @@ runs:
       env:
         # Other environment variables
         HUSKY: '0' # By default do not run HUSKY install
+        SKIP_POSTINSTALL: 'true'

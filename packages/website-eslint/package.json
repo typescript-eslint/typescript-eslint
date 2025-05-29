@@ -30,9 +30,9 @@
     "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
     "build": "tsx ./build.mts",
     "clean": "rimraf dist/",
-    "format": "pnpm --workspace-root run format",
-    "lint": "pnpm --workspace-root exec nx lint",
-    "typecheck": "pnpm --workspace-root exec nx typecheck"
+    "format": "pnpm -w run format",
+    "lint": "pnpm -w exec nx lint",
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/tsconfig-utils": "workspace:*"
@@ -43,6 +43,7 @@
     "@typescript-eslint/parser": "workspace:*",
     "@typescript-eslint/type-utils": "workspace:*",
     "@typescript-eslint/scope-manager": "workspace:*",
+    "@typescript-eslint/tsconfig-utils": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
     "esbuild": "~0.25.0",

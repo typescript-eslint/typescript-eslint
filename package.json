@@ -27,7 +27,7 @@
     "check-format": "prettier --check .",
     "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\" --no-progress --show-context --show-suggestions",
     "clean": "nx run-many -t clean --parallel=20",
-    "format": "prettier --ignore-path=$PROJECT_CWD/.prettierignore --config=$PROJECT_CWD/.prettierrc.json --write .",
+    "format": "prettier --ignore-path=%PNPM_SCRIPT_SRC_DIR%/.prettierignore --config=%PNPM_SCRIPT_SRC_DIR%/.prettierrc.json --write %INIT_CWD%",
     "generate-breaking-changes": "nx run eslint-plugin:generate-breaking-changes",
     "generate-configs": "tsx tools/scripts/generate-configs.mts",
     "generate-contributors": "tsx tools/scripts/generate-contributors.mts",
@@ -35,7 +35,7 @@
     "generate-sponsors": "tsx tools/scripts/generate-sponsors.mts",
     "generate-website-dts": "nx run website:generate-website-dts",
     "lint-fix": "pnpm run lint --fix",
-    "lint-markdown-fix": "pnpm lint-markdown --fix",
+    "lint-markdown-fix": "pnpm run lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
     "lint-stylelint": "nx lint website stylelint",
     "lint": "nx run-many -t lint",
@@ -45,8 +45,7 @@
     "start": "nx run website:start",
     "test": "nx run-many -t test --exclude integration-tests website website-eslint",
     "test-integration": "nx run integration-tests:test",
-    "typecheck": "nx run-many -t typecheck",
-    "knip": "knip"
+    "typecheck": "nx run-many -t typecheck"
   },
   "engines": {
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
