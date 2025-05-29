@@ -16,15 +16,15 @@
     "build": "docusaurus build",
     "clear": "docusaurus clear",
     "clean": "rimraf dist/ build/ .docusaurus/ && pnpm run clear",
-    "format": "pnpm --workspace-root run format",
+    "format": "pnpm -w run format",
     "generate-website-dts": "tsx ./tools/generate-website-dts.mts",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
-    "lint": "pnpm --workspace-root exec nx lint",
+    "lint": "pnpm -w exec nx lint",
     "serve": "docusaurus serve",
-    "start": "pnpm --workspace-root exec nx start",
+    "start": "pnpm -w exec nx start",
     "swizzle": "docusaurus swizzle",
-    "typecheck": "pnpm --workspace-root exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.4",
