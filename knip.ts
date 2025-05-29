@@ -60,6 +60,7 @@ export default {
       entry: ['tests/**/*.{bench,test,test-d}.?(cm)ts?(x)', 'tools/**'],
       ignore: ['typings/eslint-rules.d.ts', 'typings/typescript.d.ts'],
       ignoreDependencies: ['@types/react'],
+
       project: ['src/**/*.ts!', 'tools/**/*.mts'],
 
       vitest: {
