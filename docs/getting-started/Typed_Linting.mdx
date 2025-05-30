@@ -82,7 +82,7 @@ module.exports = {
 In more detail:
 
 - `plugin:@typescript-eslint/recommended-type-checked` is a [shared configuration](../users/Shared_Configurations.mdx). It contains recommended rules that additionally require type information.
-- `parserOptions.projectService: true` indicates to ask TypeScript's type checking service for each source file's type information (see [Parser > `projectService`](../packages/Parser.mdx#projectService)).
+- `parserOptions.projectService: true` indicates to ask TypeScript's type checking service for each source file's type information (see [Parser > `projectService`](../packages/Parser.mdx#projectservice)).
 - `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser > `tsconfigRootDir`](../packages/Parser.mdx#tsconfigrootdir)).
 
 </TabItem>
@@ -163,5 +163,5 @@ If you're having problems with typed linting, please see our [Troubleshooting FA
 
 For details on the parser options that enable typed linting, see:
 
-- [Parser > `projectService`](../packages/Parser.mdx#projectService): our recommended option, with settings to customize TypeScript project information
-- [Parser > `project`](../packages/Parser.mdx#projectService): an older option that can be used as an alternative
+- [Parser > `projectService`](../packages/Parser.mdx#projectservice): our recommended option, with settings to customize TypeScript project information
+- [Parser > `project`](../packages/Parser.mdx#project): an older option that can be used as an alternative
