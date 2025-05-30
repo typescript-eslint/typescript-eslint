@@ -122,7 +122,7 @@ If you find yourself writing runtime values only for types, consider refactoring
 ### Why are variables reported as unused despite being referenced by @link in JSDoc?
 
 JSDoc references are not supported by typeScript-eslint.
-You can use a rule such as [`eslint-plugin-jsdoc/no-undefined-types`](https://github.com/gajus/eslint-plugin-jsdoc/blob/main/docs/rules/no-undefined-types.md) to resolve variables as used in JSDoc comments.
+You can use a rule such as [`jsdoc/no-undefined-types`](https://github.com/gajus/eslint-plugin-jsdoc/blob/main/docs/rules/no-undefined-types.md) to resolve variables as used in JSDoc comments.
 
 ```ts
 import type { Box } from './Box';
