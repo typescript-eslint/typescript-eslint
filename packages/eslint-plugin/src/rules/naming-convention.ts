@@ -60,6 +60,11 @@ const defaultCamelCaseAllTheThingsConfig: Options = [
     format: ['PascalCase'],
     selector: 'typeLike',
   },
+
+  {
+    format: ['PascalCase'],
+    selector: 'enumMember',
+  },
 ];
 
 export default createRule<Options, MessageIds>({
