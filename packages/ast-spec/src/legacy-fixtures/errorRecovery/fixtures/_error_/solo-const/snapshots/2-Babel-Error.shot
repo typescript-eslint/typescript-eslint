@@ -1,4 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > solo-const > Babel - Error`]
-SyntaxError: Unexpected token (3:5)
+BabelError
+  1 | // TODO: This fixture might be too large, and if so should be split up.
+  2 |
+> 3 | const
+    |      ^ Unexpected token (3:5)
+  

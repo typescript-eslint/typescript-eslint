@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > statement > ForOfStatement > _error_ > decl-multi > Babel - Error`]
-SyntaxError: Missing initializer in const declaration. (1:12)
+BabelError
+> 1 | for (const x, y of []) {}
+    |             ^ Missing initializer in const declaration. (1:12)
+  2 |
+  

@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > ClassDeclaration > _error_ > non-identifier-name > Babel - Error`]
-SyntaxError: A class name is required. (1:6)
+BabelError
+> 1 | class 'Foo' {}
+    |       ^ A class name is required. (1:6)
+  2 |
+  

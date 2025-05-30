@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > missing-id-with-value > Babel - Error`]
-SyntaxError: Unexpected token (1:6)
+BabelError
+> 1 | const = 1;
+    |       ^ Unexpected token (1:6)
+  2 |
+  

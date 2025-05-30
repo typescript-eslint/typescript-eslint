@@ -1,4 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > interface-with-optional-index-signature > Babel - Error`]
-SyntaxError: Unexpected token (4:7)
+BabelError
+  2 |
+  3 | interface Foo {
+> 4 |   [fff?: number]: string;
+    |        ^ Unexpected token (4:7)
+  5 | }
+  6 |
+  

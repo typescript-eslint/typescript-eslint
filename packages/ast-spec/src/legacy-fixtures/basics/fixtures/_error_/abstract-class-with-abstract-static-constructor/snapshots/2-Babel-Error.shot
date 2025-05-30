@@ -1,4 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > basics > _error_ > abstract-class-with-abstract-static-constructor > Babel - Error`]
-SyntaxError: 'static' modifier cannot be used with 'abstract' modifier. (4:11)
+BabelError
+  2 |
+  3 | export abstract class AbstractSocket {
+> 4 |   abstract static constructor();
+    |            ^ 'static' modifier cannot be used with 'abstract' modifier. (4:11)
+  5 | }
+  6 |
+  

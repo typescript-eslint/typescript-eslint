@@ -1,4 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > parameter-decorators > _error_ > parameter-array-pattern-decorator > Babel - Error`]
-SyntaxError: Unexpected token (4:28)
+BabelError
+  2 |
+  3 | class Foo {
+> 4 |   bar(@special(true) [ bar ]: any) {}
+    |                             ^ Unexpected token (4:28)
+  5 | }
+  6 |
+  

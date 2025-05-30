@@ -1,4 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > statement > SwitchStatement > _error_ > multiple-default-cases > Babel - Error`]
-SyntaxError: Multiple default clauses. (2:10)
+BabelError
+  1 | switch (true) {
+> 2 | 	default: default:
+    | 	         ^ Multiple default clauses. (2:10)
+  3 | }
+  4 |
+  
