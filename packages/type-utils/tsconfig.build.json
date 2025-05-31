@@ -3,9 +3,6 @@
   "compilerOptions": {},
   "references": [
     {
-      "path": "../types/tsconfig.build.json"
-    },
-    {
       "path": "../utils/tsconfig.build.json"
     },
     {
