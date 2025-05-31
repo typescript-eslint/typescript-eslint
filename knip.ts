@@ -164,6 +164,7 @@ export default {
         '@docusaurus/useDocusaurusContext',
         '@docusaurus/useBaseUrl',
         '@docusaurus/BrowserOnly',
+        '@docusaurus/Translate',
         '@docusaurus/module-type-aliases',
         '@generated/docusaurus.config',
         '^@site/.*',
