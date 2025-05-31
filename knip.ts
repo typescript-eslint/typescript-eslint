@@ -163,6 +163,7 @@ export default {
         '@docusaurus/router',
         '@docusaurus/useDocusaurusContext',
         '@docusaurus/useBaseUrl',
+        '@docusaurus/useIsBrowser',
         '@docusaurus/BrowserOnly',
         '@docusaurus/module-type-aliases',
         '@generated/docusaurus.config',
