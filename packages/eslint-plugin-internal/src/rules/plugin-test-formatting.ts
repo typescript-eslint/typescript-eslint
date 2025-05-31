@@ -520,8 +520,33 @@ export default createRule<Options, MessageIds>({
           continue;
         }
 
-        if (prop.key.name === 'code') {
+        if (prop.key.name === 'code' || prop.key.name === 'output') {
           checkExpression(prop.value, isErrorTest);
+        }
+
+        if (
+          prop.key.name === 'errors' &&
+          prop.value.type === AST_NODE_TYPES.ArrayExpression
+        ) {
+          for (const errorElement of prop.value.elements) {
+            if (errorElement?.type === AST_NODE_TYPES.ObjectExpression) {
+              for (const errorProp of errorElement.properties) {
+                if (
+                  errorProp.type === AST_NODE_TYPES.Property &&
+                  !errorProp.computed &&
+                  errorProp.key.type === AST_NODE_TYPES.Identifier &&
+                  errorProp.key.name === 'suggestions' &&
+                  errorProp.value.type === AST_NODE_TYPES.ArrayExpression
+                ) {
+                  for (const suggestion of errorProp.value.elements) {
+                    if (suggestion?.type === AST_NODE_TYPES.ObjectExpression) {
+                      checkInvalidTest(suggestion, isErrorTest);
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
