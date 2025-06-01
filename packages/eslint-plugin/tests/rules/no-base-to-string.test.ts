@@ -675,6 +675,126 @@ function foo<T>(x: T) {
       ],
     },
     {
+      code: `
+declare const x: any;
+\`\${x})\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'always',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any;
+x.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'always',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any;
+x.toLocaleString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'always',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any;
+'' + x;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'always',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any;
+String(x);
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'always',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: any;
+'' += x;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'always',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
       code: '`${{}})`;',
       errors: [
         {
