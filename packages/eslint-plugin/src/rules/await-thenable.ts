@@ -1,10 +1,12 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
 import * as tsutils from 'ts-api-utils';
 
 import {
   Awaitable,
   createRule,
+  getConstrainedTypeAtLocation,
   getFixOrSuggest,
   getParserServices,
   isAwaitKeyword,
@@ -14,12 +16,14 @@ import {
   NullThrowsReasons,
 } from '../util';
 import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
+import { isPromiseAggregatorMethod } from '../util/isPromiseAggregatorMethod';
 
 export type MessageId =
   | 'await'
   | 'awaitUsingOfNonAsyncDisposable'
   | 'convertToOrdinaryFor'
   | 'forAwaitOfNonAsyncIterable'
+  | 'invalidPromiseAggregatorInput'
   | 'removeAwait';
 
 export default createRule<[], MessageId>({
@@ -39,6 +43,8 @@ export default createRule<[], MessageId>({
       convertToOrdinaryFor: 'Convert to an ordinary `for...of` loop.',
       forAwaitOfNonAsyncIterable:
         'Unexpected `for await...of` of a value that is not async iterable.',
+      invalidPromiseAggregatorInput:
+        'Unexpected iterator of non-Promise (non-"Thenable") values passed to promise aggregator.',
       removeAwait: 'Remove unnecessary `await`.',
     },
     schema: [],
@@ -80,6 +86,33 @@ export default createRule<[], MessageId>({
                 },
               },
             ],
+          });
+        }
+      },
+
+      CallExpression(node: TSESTree.CallExpression): void {
+        if (!isPromiseAggregatorMethod(context, services, node)) {
+          return;
+        }
+
+        const argument = node.arguments.at(0);
+
+        if (argument == null) {
+          return;
+        }
+
+        const type = getConstrainedTypeAtLocation(services, argument);
+
+        if (
+          isInvalidPromiseAggregatorInput(
+            checker,
+            services.esTreeNodeToTSNodeMap.get(argument),
+            type,
+          )
+        ) {
+          context.report({
+            node: argument,
+            messageId: 'invalidPromiseAggregatorInput',
           });
         }
       },
@@ -176,3 +209,31 @@ export default createRule<[], MessageId>({
     };
   },
 });
+
+function isInvalidPromiseAggregatorInput(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+  type: ts.Type,
+): boolean {
+  for (const part of tsutils.unionConstituents(type)) {
+    if (
+      tsutils.isTypeReference(part) &&
+      tsutils.getWellKnownSymbolPropertyOfType(part, 'iterator', checker)
+    ) {
+      for (const typeArgument of checker.getTypeArguments(part)) {
+        if (
+          tsutils.unionConstituents(typeArgument).some(typeArgumentPart => {
+            return (
+              needsToBeAwaited(checker, node, typeArgumentPart) ===
+              Awaitable.Never
+            );
+          })
+        ) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
+}

@@ -339,6 +339,177 @@ class C<R extends unknown> {
 }
       `,
     },
+
+    {
+      code: `
+declare const x: unknown;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: any;
+Promise.all(x);
+      `,
+    },
+
+    {
+      code: `
+declare const x: Array<Promise<unknown>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Array<Promise<number>> | Array<Promise<string>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Array<Promise<number> | Promise<string>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: Array<Promise<T>>) {
+  Promise.all(x);
+}
+      `,
+    },
+    {
+      code: `
+function f<T extends Promise<unknown>>(x: Array<T>) {
+  Promise.all(x);
+}
+      `,
+    },
+    {
+      code: `
+declare const x: Array<unknown>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Array<any>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: number | Array<Promise<number>>;
+Promise.all(x);
+      `,
+    },
+
+    {
+      code: `
+declare const x: [Promise<unknown>, Promise<void>];
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: [Promise<number>] | [Promise<string>];
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: [Promise<number> | Promise<string>];
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: [Promise<T>]) {
+  Promise.all(x);
+}
+      `,
+    },
+    {
+      code: `
+function f<T extends Promise<unknown>>(x: [T]) {
+  Promise.all(x);
+}
+      `,
+    },
+    {
+      code: `
+declare const x: [unknown, any];
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: number | [Promise<number>];
+Promise.all(x);
+      `,
+    },
+
+    {
+      code: `
+declare const x: Iterable<Promise<unknown>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Iterable<Promise<number>> | Iterable<Promise<string>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Iterable<Promise<number | string>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: Iterable<Promise<T>>) {
+  Promise.all(x);
+}
+      `,
+    },
+    {
+      code: `
+function f<T extends Promise<unknown>>(x: Iterable<T>) {
+  Promise.all(x);
+}
+      `,
+    },
+    {
+      code: `
+declare const x: Iterable<unknown>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Iterable<any>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: number | Iterable<Promise<number>>;
+Promise.all(x);
+      `,
+    },
+
+    {
+      code: `
+Promise.all();
+      `,
+    },
+    {
+      code: `
+Promise.all(1);
+      `,
+    },
   ],
 
   invalid: [
@@ -783,6 +954,130 @@ class C<R extends number> {
       `,
             },
           ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const x: Array<number>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Array<number> | Array<Promise<number>>;
+Promise.race(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Array<number> | Array<string>;
+Promise.allSettled(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Array<number | Promise<number>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const x: [number];
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: [number] | [Promise<number>];
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: [number | Promise<number>];
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: [Promise<number>, number];
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const x: Iterable<number>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Iterable<number> | Iterable<Promise<number>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Iterable<number | Promise<number>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
         },
       ],
     },
