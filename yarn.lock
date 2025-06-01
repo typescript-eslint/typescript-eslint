@@ -5500,6 +5500,8 @@ __metadata:
     "@typescript-eslint/tsconfig-utils": ^8.33.0
     "@typescript-eslint/types": ^8.33.0
     debug: ^4.3.4
+  peerDependencies:
+    typescript: ">=4.8.4 <5.9.0"
   languageName: unknown
   linkType: soft
 
