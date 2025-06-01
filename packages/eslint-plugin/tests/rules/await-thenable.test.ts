@@ -994,7 +994,7 @@ Promise.allSettled(x);
     {
       code: `
 declare const x: Array<number | Promise<number>>;
-Promise.all(x);
+Promise.any(x);
       `,
       errors: [
         {

@@ -16,6 +16,7 @@ const PROMISE_CONSTRUCTOR_ARRAY_METHODS = new Set<unknown>([
   'all',
   'allSettled',
   'race',
+  'any',
 ]);
 
 export function isPromiseAggregatorMethod(
