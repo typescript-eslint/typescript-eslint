@@ -86,7 +86,7 @@ function ErrorBlock({
           </FixButton>
         )}
       </div>
-      {item.suggestions.length > 0 && (
+      {item.suggestions && item.suggestions.length > 0 && (
         <div>
           {item.suggestions.map((fixer, index) => (
             <div
