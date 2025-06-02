@@ -2,8 +2,9 @@ import type * as eslintConfigHelpers from '@eslint/config-helpers';
 // see the comment in config-helper.ts for why this doesn't use /ts-eslint
 import type { TSESLint } from '@typescript-eslint/utils';
 
-import pluginBase from '@typescript-eslint/eslint-plugin';
-import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw-plugin';
+import rawPlugin, {
+  TSESLintConfig,
+} from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw-plugin';
 
 import { config } from './config-helper';
 
@@ -40,7 +41,7 @@ use our new package); however legacy configs consumed via `@eslint/eslintrc`
 would never be able to satisfy this constraint and thus users would be blocked
 from using them.
 */
-export const plugin = pluginBase as unknown as eslintConfigHelpers.Plugin;
+export const plugin = rawPlugin.plugin satisfies eslintConfigHelpers.Plugin;
 
 export const configs = {
   /**

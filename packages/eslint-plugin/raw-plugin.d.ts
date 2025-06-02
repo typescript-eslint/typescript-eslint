@@ -2,21 +2,37 @@ import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
 import type * as parserBase from '@typescript-eslint/parser';
 
-import type plugin from './index';
+import type * as parserBase from '@typescript-eslint/parser';
+import { Linter } from '@typescript-eslint/utils/ts-eslint';
 
-type TSESLintParser = {
+export type TSESLintParser = {
   meta: typeof parserBase.meta;
   parseForESLint: typeof parserBase.parseForESLint;
 };
 
-type TSESLintConfig = {
+export type TSESLintConfig = {
   name?: string;
   rules?: Record<string, any>;
+  files?: string[];
   languageOptions?: {
     sourceType?: 'module';
     parser?: TSESLintParser;
     parserOptions?: Record<string, unknown>;
   };
+
+  // causes type errors :shrug:
+  // plugins?: {
+  //   '@typescript-eslint': TSESLintPlugin;
+  // };
+};
+
+export type TSESLintPlugin = {
+  configs: Record<string, TSESLintConfig | TSESLintConfig[]>;
+  meta: {
+    name: string;
+    version: string;
+  };
+  rules: Record<string, Linter.PluginRules>;
 };
 
 declare const cjsExport: {

@@ -4,10 +4,8 @@ import type {
 } from '@typescript-eslint/utils/ts-eslint';
 
 import type rules from './rules';
+import { TSESLintPlugin } from './raw-plugin';
 
-declare const cjsExport: {
-  configs: Record<string, ClassicConfig.Config>;
-  meta: FlatConfig.PluginMeta;
-  rules: typeof rules;
-};
+declare const cjsExport: TSESLintPlugin;
+
 export = cjsExport;
