@@ -2596,10 +2596,8 @@ Snapshot Diff:
         end: { column: 18, line: 76 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Keyword {
+      type: 'Keyword',
       value: 'let',
 
       range: [1130, 1133],
@@ -2628,10 +2626,8 @@ Snapshot Diff:
         end: { column: 11, line: 77 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Keyword {
+      type: 'Keyword',
       value: 'yield',
 
       range: [1138, 1143],
