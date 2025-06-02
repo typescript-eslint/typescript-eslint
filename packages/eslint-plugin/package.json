@@ -5,12 +5,11 @@
   "files": [
     "dist",
     "!*.tsbuildinfo",
-    "docs",
     "index.d.ts",
     "raw-plugin.d.ts",
     "rules.d.ts",
     "package.json",
-    "README.md",
+    "./README.md",
     "LICENSE"
   ],
   "type": "commonjs",
