@@ -2,9 +2,7 @@ import type * as eslintConfigHelpers from '@eslint/config-helpers';
 // see the comment in config-helper.ts for why this doesn't use /ts-eslint
 import type { TSESLint } from '@typescript-eslint/utils';
 
-import rawPlugin, {
-  TSESLintConfig,
-} from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw-plugin';
+import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw-plugin';
 
 import { config } from './config-helper';
 

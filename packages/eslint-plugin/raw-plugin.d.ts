@@ -8,7 +8,7 @@ export interface TSESLintParser {
 
 export interface TSESLintConfig {
   name?: string;
-  rules?: Record<string, unknown>;
+  rules?: Record<string, ['error' | 'off', ...unknown[]]>;
   files?: string[];
   languageOptions?: {
     sourceType?: 'module';
@@ -28,7 +28,7 @@ export interface TSESLintPlugin {
     name: string;
     version: string;
   };
-  rules: Record<string, Linter.PluginRules>;
+  rules: Linter.PluginRules;
 }
 
 declare const cjsExport: {
@@ -48,7 +48,7 @@ declare const cjsExport: {
     'flat/stylistic-type-checked-only': TSESLintConfig[];
   };
   parser: TSESLintParser;
-  plugin: typeof plugin;
+  plugin: TSESLintPlugin;
 };
 
 export = cjsExport;
