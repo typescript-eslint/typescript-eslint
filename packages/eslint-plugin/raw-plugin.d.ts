@@ -1,23 +1,37 @@
-import type * as eslintConfigHelpers from '@eslint/config-helpers';
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
+
+import type * as parserBase from '@typescript-eslint/parser';
 
 import type plugin from './index';
 
+type TSESLintConfig = {
+  name?: string;
+  rules?: Record<string, any>;
+  languageOptions?: {
+    sourceType?: 'module';
+    parser?: {
+      meta: typeof parserBase.meta;
+      parseForESLint: typeof parserBase.parseForESLint;
+    };
+    parserOptions?: Record<string, unknown>;
+  };
+};
+
 declare const cjsExport: {
   flatConfigs: {
-    'flat/all': eslintConfigHelpers.Config[];
-    'flat/base': eslintConfigHelpers.Config;
-    'flat/disable-type-checked': eslintConfigHelpers.Config;
-    'flat/eslint-recommended': eslintConfigHelpers.Config;
-    'flat/recommended': eslintConfigHelpers.Config[];
-    'flat/recommended-type-checked': eslintConfigHelpers.Config[];
-    'flat/recommended-type-checked-only': eslintConfigHelpers.Config[];
-    'flat/strict': eslintConfigHelpers.Config[];
-    'flat/strict-type-checked': eslintConfigHelpers.Config[];
-    'flat/strict-type-checked-only': eslintConfigHelpers.Config[];
-    'flat/stylistic': eslintConfigHelpers.Config[];
-    'flat/stylistic-type-checked': eslintConfigHelpers.Config[];
-    'flat/stylistic-type-checked-only': eslintConfigHelpers.Config[];
+    'flat/all': TSESLintConfig[];
+    'flat/base': TSESLintConfig;
+    'flat/disable-type-checked': TSESLintConfig;
+    'flat/eslint-recommended': TSESLintConfig;
+    'flat/recommended': TSESLintConfig[];
+    'flat/recommended-type-checked': TSESLintConfig[];
+    'flat/recommended-type-checked-only': TSESLintConfig[];
+    'flat/strict': TSESLintConfig[];
+    'flat/strict-type-checked': TSESLintConfig[];
+    'flat/strict-type-checked-only': TSESLintConfig[];
+    'flat/stylistic': TSESLintConfig[];
+    'flat/stylistic-type-checked': TSESLintConfig[];
+    'flat/stylistic-type-checked-only': TSESLintConfig[];
   };
   parser: FlatConfig.Parser;
   plugin: typeof plugin;

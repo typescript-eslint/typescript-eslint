@@ -101,6 +101,6 @@ export namespace Parser {
 
   // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
   export interface VisitorKeys {
-    [nodeType: string]: readonly string[];
+    [nodeType: string]: string[];
   }
 }

@@ -61,7 +61,6 @@
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",
-    "@eslint/config-helpers": "^0.2",
     "@typescript-eslint/scope-manager": "8.32.1",
     "@typescript-eslint/type-utils": "8.32.1",
     "@typescript-eslint/utils": "8.32.1",

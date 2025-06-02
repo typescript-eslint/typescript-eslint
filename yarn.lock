@@ -5528,7 +5528,6 @@ __metadata:
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
     "@eslint-community/regexpp": ^4.10.0
-    "@eslint/config-helpers": ^0.2
     "@types/mdast": ^4.0.3
     "@types/natural-compare": "*"
     "@typescript-eslint/rule-schema-to-typescript-types": 8.32.1
