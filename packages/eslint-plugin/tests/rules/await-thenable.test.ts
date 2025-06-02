@@ -510,6 +510,12 @@ Promise.all();
 Promise.all(1);
       `,
     },
+    {
+      code: `
+declare const x: Promise<number>;
+Promise.all(x);
+      `,
+    },
   ],
 
   invalid: [
