@@ -9,8 +9,8 @@
       end: { column: 7, line: 1 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "let",
 
     range: [8, 11],

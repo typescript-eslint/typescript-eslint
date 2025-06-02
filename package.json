@@ -45,7 +45,8 @@
     "start": "nx run website:start",
     "test": "nx run-many -t test --exclude integration-tests website website-eslint",
     "test-integration": "nx run integration-tests:test",
-    "typecheck": "nx run-many -t typecheck"
+    "typecheck": "nx run-many -t typecheck",
+    "test:update": "vitest -u"
   },
   "engines": {
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"

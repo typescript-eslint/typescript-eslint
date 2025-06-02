@@ -6,8 +6,10 @@ Snapshot Diff:
 + Babel
 
   Array [
-    Keyword {
-      type: 'Keyword',
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
       value: 'let',
 
       range: [73, 76],

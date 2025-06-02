@@ -6,8 +6,10 @@ Snapshot Diff:
 + Babel
 
   Array [
-    Keyword {
-      type: 'Keyword',
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
       value: 'let',
 
       range: [73, 76],
@@ -98,8 +100,10 @@ Snapshot Diff:
         end: { column: 37, line: 3 },
       },
     },
-    Keyword {
-      type: 'Keyword',
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
       value: 'let',
 
       range: [111, 114],
@@ -168,8 +172,10 @@ Snapshot Diff:
         end: { column: 34, line: 4 },
       },
     },
-    Keyword {
-      type: 'Keyword',
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
       value: 'let',
 
       range: [146, 149],
@@ -278,8 +284,10 @@ Snapshot Diff:
         end: { column: 45, line: 5 },
       },
     },
-    Keyword {
-      type: 'Keyword',
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
       value: 'let',
 
       range: [192, 195],

@@ -1,6 +1,6 @@
 [
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "let",
 
     range: [73, 76],
@@ -89,8 +89,8 @@
       end: { column: 37, line: 3 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "let",
 
     range: [111, 114],
@@ -159,8 +159,8 @@
       end: { column: 34, line: 4 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "let",
 
     range: [146, 149],
@@ -269,8 +269,8 @@
       end: { column: 45, line: 5 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "let",
 
     range: [192, 195],

@@ -109,8 +109,8 @@
       end: { column: 21, line: 8 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "let",
 
     range: [165, 168],
