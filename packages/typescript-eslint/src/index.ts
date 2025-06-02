@@ -15,7 +15,7 @@ type ESLintParserType = NonNullable<
   NonNullable<eslintConfigHelpers.Config['languageOptions']>['parser']
 >;
 
-export const parser = rawPlugin.parser as ESLintParserType;
+export const parser = rawPlugin.parser satisfies ESLintParserType;
 
 /*
 we could build a plugin object here without the `configs` key - but if we do

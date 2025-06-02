@@ -4,15 +4,17 @@ import type * as parserBase from '@typescript-eslint/parser';
 
 import type plugin from './index';
 
+type TSESLintParser = {
+  meta: typeof parserBase.meta;
+  parseForESLint: typeof parserBase.parseForESLint;
+};
+
 type TSESLintConfig = {
   name?: string;
   rules?: Record<string, any>;
   languageOptions?: {
     sourceType?: 'module';
-    parser?: {
-      meta: typeof parserBase.meta;
-      parseForESLint: typeof parserBase.parseForESLint;
-    };
+    parser?: TSESLintParser;
     parserOptions?: Record<string, unknown>;
   };
 };
@@ -33,7 +35,7 @@ declare const cjsExport: {
     'flat/stylistic-type-checked': TSESLintConfig[];
     'flat/stylistic-type-checked-only': TSESLintConfig[];
   };
-  parser: FlatConfig.Parser;
+  parser: TSESLintParser;
   plugin: typeof plugin;
 };
 
