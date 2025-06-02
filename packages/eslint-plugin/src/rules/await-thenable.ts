@@ -215,20 +215,16 @@ function isInvalidPromiseAggregatorInput(
   node: ts.Node,
   type: ts.Type,
 ): boolean {
+  // non array/tuple/iterable types already show up as a type error
+  if (!isIterable(type, checker)) {
+    return false;
+  }
+
+  // check for non
   for (const part of tsutils.unionConstituents(type)) {
-    if (
-      tsutils.isTypeReference(part) &&
-      tsutils.getWellKnownSymbolPropertyOfType(part, 'iterator', checker)
-    ) {
+    if (tsutils.isTypeReference(part)) {
       for (const typeArgument of checker.getTypeArguments(part)) {
-        if (
-          tsutils.unionConstituents(typeArgument).some(typeArgumentPart => {
-            return (
-              needsToBeAwaited(checker, node, typeArgumentPart) ===
-              Awaitable.Never
-            );
-          })
-        ) {
+        if (isTypeNeverAwaitable(typeArgument, node, checker)) {
           return true;
         }
       }
@@ -236,4 +232,26 @@ function isInvalidPromiseAggregatorInput(
   }
 
   return false;
+}
+
+function isTypeNeverAwaitable(
+  type: ts.Type,
+  node: ts.Node,
+  checker: ts.TypeChecker,
+): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .some(
+      typeArgumentPart =>
+        needsToBeAwaited(checker, node, typeArgumentPart) === Awaitable.Never,
+    );
+}
+
+function isIterable(type: ts.Type, checker: ts.TypeChecker): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .every(
+      part =>
+        !!tsutils.getWellKnownSymbolPropertyOfType(part, 'iterator', checker),
+    );
 }
