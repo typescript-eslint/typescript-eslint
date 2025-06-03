@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > ClassDeclaration > _error_ > missing-extends-type-param > Babel - Error`]
-SyntaxError: Type argument list cannot be empty. (1:17)
+BabelError
+> 1 | class C extends D<> {}
+    |                  ^ Type argument list cannot be empty. (1:17)
+  2 |
+  

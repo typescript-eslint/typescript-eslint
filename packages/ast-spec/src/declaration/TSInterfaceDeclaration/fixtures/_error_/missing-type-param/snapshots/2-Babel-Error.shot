@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSInterfaceDeclaration > _error_ > missing-type-param > Babel - Error`]
-SyntaxError: Type parameter list cannot be empty. (1:11)
+BabelError
+> 1 | interface F<> {}
+    |            ^ Type parameter list cannot be empty. (1:11)
+  2 |
+  

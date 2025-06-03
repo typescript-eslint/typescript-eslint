@@ -1,4 +1,12 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > interface-index-signature-export > Babel - Error`]
-SyntaxError: Unexpected token, expected ";" (4:9)
+BabelError
+  2 |
+  3 | interface Foo {
+> 4 |   export [baz: string]: string;
+    |          ^ Unexpected token, expected ";" (4:9)
+  5 | }
+  6 |
+  7 |
+  

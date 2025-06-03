@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSImportEqualsDeclaration > _error_ > missing-reference > Babel - Error`]
-SyntaxError: Unexpected token, expected "from" (1:8)
+BabelError
+> 1 | import F;
+    |         ^ Unexpected token, expected "from" (1:8)
+  2 |
+  

@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSModuleDeclaration > _error_ > module-missing-body > Babel - Error`]
-SyntaxError: Unexpected token, expected "{" (1:8)
+BabelError
+> 1 | module F;
+    |         ^ Unexpected token, expected "{" (1:8)
+  2 |
+  

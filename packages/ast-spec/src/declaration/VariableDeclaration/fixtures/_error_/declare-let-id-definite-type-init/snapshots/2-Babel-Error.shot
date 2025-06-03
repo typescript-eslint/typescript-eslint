@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-let-id-definite-type-init > Babel - Error`]
-SyntaxError: Initializers are not allowed in ambient contexts. (1:24)
+BabelError
+> 1 | declare let foo!: any = 1;
+    |                         ^ Initializers are not allowed in ambient contexts. (1:24)
+  2 |
+  

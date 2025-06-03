@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSTypeAliasDeclaration > _error_ > non-identifier-name > Babel - Error`]
-SyntaxError: Missing semicolon. (1:4)
+BabelError
+> 1 | type 1 = 2;
+    |     ^ Missing semicolon. (1:4)
+  2 |
+  

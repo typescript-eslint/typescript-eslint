@@ -1,4 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > empty-type-parameters-in-method-signature > Babel - Error`]
-SyntaxError: Type parameter list cannot be empty. (4:6)
+BabelError
+  2 |
+  3 | interface foo {
+> 4 |   test<>();
+    |       ^ Type parameter list cannot be empty. (4:6)
+  5 | }
+  6 |
+  

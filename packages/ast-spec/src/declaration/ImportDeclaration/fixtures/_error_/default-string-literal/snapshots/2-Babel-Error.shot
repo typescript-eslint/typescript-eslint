@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > default-string-literal > Babel - Error`]
-SyntaxError: Missing semicolon. (1:12)
+BabelError
+> 1 | import 'a a' from 'mod';
+    |             ^ Missing semicolon. (1:12)
+  2 |
+  

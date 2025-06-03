@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > const-id-type-no-init > Babel - Error`]
-SyntaxError: Missing initializer in const declaration. (1:14)
+BabelError
+> 1 | const foo: any;
+    |               ^ Missing initializer in const declaration. (1:14)
+  2 |
+  

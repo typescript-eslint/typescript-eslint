@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > expression > ImportExpression > _error_ > no-arguments > Babel - Error`]
-SyntaxError: `import()` requires exactly one or two arguments. (1:0)
+BabelError
+> 1 | import();
+    | ^ `import()` requires exactly one or two arguments. (1:0)
+  2 |
+  
