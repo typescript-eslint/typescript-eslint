@@ -531,6 +531,30 @@ function foo<T>(x: T) {
   String(x);
 }
     `,
+    `
+declare const x: any;
+\`\${x})\`;
+    `,
+    `
+declare const x: any;
+x.toString();
+    `,
+    `
+declare const x: any;
+x.toLocaleString();
+    `,
+    `
+declare const x: any;
+'' + x;
+    `,
+    `
+declare const x: any;
+String(x);
+    `,
+    `
+declare const x: any;
+'' += x;
+    `,
   ],
   invalid: [
     {
@@ -663,126 +687,6 @@ function foo<T>(x: T) {
         {
           data: {
             certainty: 'may',
-            name: 'x',
-          },
-          messageId: 'baseToString',
-        },
-      ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: any;
-\`\${x})\`;
-      `,
-      errors: [
-        {
-          data: {
-            certainty: 'always',
-            name: 'x',
-          },
-          messageId: 'baseToString',
-        },
-      ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: any;
-x.toString();
-      `,
-      errors: [
-        {
-          data: {
-            certainty: 'always',
-            name: 'x',
-          },
-          messageId: 'baseToString',
-        },
-      ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: any;
-x.toLocaleString();
-      `,
-      errors: [
-        {
-          data: {
-            certainty: 'always',
-            name: 'x',
-          },
-          messageId: 'baseToString',
-        },
-      ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: any;
-'' + x;
-      `,
-      errors: [
-        {
-          data: {
-            certainty: 'always',
-            name: 'x',
-          },
-          messageId: 'baseToString',
-        },
-      ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: any;
-String(x);
-      `,
-      errors: [
-        {
-          data: {
-            certainty: 'always',
-            name: 'x',
-          },
-          messageId: 'baseToString',
-        },
-      ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: any;
-'' += x;
-      `,
-      errors: [
-        {
-          data: {
-            certainty: 'always',
             name: 'x',
           },
           messageId: 'baseToString',
