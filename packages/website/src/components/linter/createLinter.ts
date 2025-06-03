@@ -11,6 +11,7 @@ import type {
   LinterOnLint,
   LinterOnParse,
   PlaygroundSystem,
+  RegisterFile,
   WebLinterModule,
 } from './types';
 
@@ -36,6 +37,7 @@ export interface CreateLinter {
   triggerFix(filename: string): Linter.FixReport | undefined;
   triggerLint(filename: string): void;
   updateParserOptions(sourceType?: SourceType): void;
+  registerFile: RegisterFile;
 }
 
 export function createLinter(
@@ -164,6 +166,11 @@ export function createLinter(
     }
   };
 
+  const registerFile = (fileName: string, code: string) => {
+    parser.registerFile(fileName, code);
+    triggerLintAll();
+  };
+
   const triggerLintAll = (): void => {
     system.searchFiles('/input.*').forEach(triggerLint);
   };
@@ -185,6 +192,7 @@ export function createLinter(
     configs: [...configs.keys()],
     onLint: onLint.register,
     onParse: onParse.register,
+    registerFile,
     rules,
     triggerFix,
     triggerLint,
