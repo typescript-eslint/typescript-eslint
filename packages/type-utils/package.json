@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "8.33.0",
+  "version": "8.33.1",
   "description": "Type utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -45,8 +45,8 @@
     "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "8.33.0",
-    "@typescript-eslint/utils": "8.33.0",
+    "@typescript-eslint/typescript-estree": "8.33.1",
+    "@typescript-eslint/utils": "8.33.1",
     "debug": "^4.3.4",
     "ts-api-utils": "^2.1.0"
   },
