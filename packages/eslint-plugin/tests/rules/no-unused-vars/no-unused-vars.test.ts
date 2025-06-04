@@ -1850,6 +1850,25 @@ import Used3, { Used4 } from 'foobar';
 export { Used1, Used2, Used3, Used4 };
       `,
     },
+    {
+      code: `
+let unused;
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'unused',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      options: [{ enableAutofixRemoval: { imports: true } }],
+      output: null,
+    },
   ],
 
   valid: [
