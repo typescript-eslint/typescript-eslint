@@ -721,16 +721,17 @@ export default createRule<Options, MessageIds>({
                     const source = context.sourceCode;
                     const node = def.node;
                     const decl = node.parent as TSESTree.ImportDeclaration;
-
-                    const afterDeclToken = source.getTokenAfter(decl);
                     const afterNodeToken = source.getTokenAfter(node);
                     const beforeNodeToken = source.getTokenBefore(node);
+                    const prevBeforeNodeToken = beforeNodeToken
+                      ? source.getTokenBefore(beforeNodeToken)
+                      : null;
 
                     // Remove import declaration line if no specifiers are left, import unused from 'a';
-                    if (decl.specifiers.length === 1 && afterDeclToken) {
+                    if (decl.specifiers.length === 1) {
                       return fixer.removeRange([
                         decl.range[0],
-                        afterDeclToken.range[0],
+                        decl.range[1] + 1, // +1 to include "\n"
                       ]);
                     }
 
@@ -742,15 +743,11 @@ export default createRule<Options, MessageIds>({
                     if (
                       restNamed.length === 1 &&
                       afterNodeToken?.value === '}' &&
-                      beforeNodeToken?.value === '{'
+                      beforeNodeToken?.value === '{' &&
+                      prevBeforeNodeToken?.value === ','
                     ) {
-                      // remove comma before braces
-                      const prevComma = source.getTokenBefore(beforeNodeToken);
-
                       return fixer.removeRange([
-                        prevComma?.value === ','
-                          ? prevComma.range[0]
-                          : beforeNodeToken.range[0],
+                        prevBeforeNodeToken.range[0],
                         afterNodeToken.range[1],
                       ]);
                     }
@@ -761,12 +758,17 @@ export default createRule<Options, MessageIds>({
                         includeComments: true,
                       });
 
-                      return fixer.removeRange([
-                        node.range[0],
-                        nextToken
-                          ? nextToken.range[0]
-                          : afterNodeToken.range[1],
-                      ]);
+                      if (
+                        nextToken?.loc.end.line === afterNodeToken.loc.end.line
+                      ) {
+                        return fixer.removeRange([
+                          node.range[0],
+                          nextToken.range[0],
+                        ]);
+                      }
+
+                      // TODO: remove multi-line import
+                      return null;
                     }
 
                     // case: Remove comma before node, import { used, unused } from 'a';
