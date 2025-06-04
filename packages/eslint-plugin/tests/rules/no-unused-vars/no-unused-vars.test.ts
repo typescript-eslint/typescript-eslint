@@ -1908,6 +1908,24 @@ export { u2 };
     },
     {
       code: `
+import { Unused1, Unused2, Used1 } from 'foo';
+import { Unused3, Unused4 } from 'bar';
+export { Used1 };
+      `,
+      errors: [
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+      ],
+      options: [{ enableAutofixRemoval: { imports: true } }],
+      output: `
+import { Used1 } from 'foo';
+export { Used1 };
+      `,
+    },
+    {
+      code: `
 import {
   Unused1,
   Unused2,
@@ -1931,7 +1949,11 @@ export { Used1, Used2 };
       ],
       options: [{ enableAutofixRemoval: { imports: true } }],
       output: `
-import { Used1, /* cmt */ Used2 } from 'foo';
+import {
+  Used1,
+  /* cmt */
+  Used2,
+} from 'foo';
 export { Used1, Used2 };
       `,
     },
