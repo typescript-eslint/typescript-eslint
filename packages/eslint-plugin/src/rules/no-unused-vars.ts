@@ -708,84 +708,78 @@ export default createRule<Options, MessageIds>({
               data: unusedVar.references.some(ref => ref.isWrite())
                 ? getAssignedMessageData(unusedVar)
                 : getDefinedMessageData(unusedVar),
-              fix:
-                options.enableAutofixRemoval?.imports &&
-                unusedVar.defs.some(
-                  d => d.type === DefinitionType.ImportBinding,
-                )
-                  ? fixer => {
-                      // Find the import statement
-                      const def = unusedVar.defs.find(
-                        d => d.type === DefinitionType.ImportBinding,
-                      );
-                      if (!def) {
-                        return null;
-                      }
-
-                      const source = context.sourceCode;
-                      const node = def.node;
-                      const decl = node.parent as TSESTree.ImportDeclaration;
-
-                      const afterDeclToken = source.getTokenAfter(decl);
-                      const afterNodeToken = source.getTokenAfter(node);
-                      const beforeNodeToken = source.getTokenBefore(node);
-
-                      // Remove import declaration line if no specifiers are left, import unused from 'a';
-                      if (decl.specifiers.length === 1 && afterDeclToken) {
-                        return fixer.removeRange([
-                          decl.range[0],
-                          afterDeclToken.range[0],
-                        ]);
-                      }
-
-                      // case: remove braces, import used, { unused } from 'a';
-                      const restNamed = decl.specifiers.filter(
-                        s =>
-                          s === node &&
-                          s.type === AST_NODE_TYPES.ImportSpecifier,
-                      );
-                      if (
-                        restNamed.length === 1 &&
-                        afterNodeToken?.value === '}' &&
-                        beforeNodeToken?.value === '{'
-                      ) {
-                        // remove comma before braces
-                        const prevComma =
-                          source.getTokenBefore(beforeNodeToken);
-
-                        return fixer.removeRange([
-                          prevComma?.value === ','
-                            ? prevComma.range[0]
-                            : beforeNodeToken.range[0],
-                          afterNodeToken.range[1],
-                        ]);
-                      }
-
-                      // case: Remove comma after node, import { unused, used } from 'a';
-                      if (afterNodeToken?.value === ',') {
-                        const nextToken = source.getTokenAfter(afterNodeToken, {
-                          includeComments: true,
-                        });
-
-                        return fixer.removeRange([
-                          node.range[0],
-                          nextToken
-                            ? nextToken.range[0]
-                            : afterNodeToken.range[1],
-                        ]);
-                      }
-
-                      // case: Remove comma before node, import { used, unused } from 'a';
-                      if (beforeNodeToken?.value === ',') {
-                        return fixer.removeRange([
-                          beforeNodeToken.range[0],
-                          node.range[1],
-                        ]);
-                      }
-
+              fix: options.enableAutofixRemoval?.imports
+                ? fixer => {
+                    // Find the import statement
+                    const def = unusedVar.defs.find(
+                      d => d.type === DefinitionType.ImportBinding,
+                    );
+                    if (!def) {
                       return null;
                     }
-                  : undefined,
+
+                    const source = context.sourceCode;
+                    const node = def.node;
+                    const decl = node.parent as TSESTree.ImportDeclaration;
+
+                    const afterDeclToken = source.getTokenAfter(decl);
+                    const afterNodeToken = source.getTokenAfter(node);
+                    const beforeNodeToken = source.getTokenBefore(node);
+
+                    // Remove import declaration line if no specifiers are left, import unused from 'a';
+                    if (decl.specifiers.length === 1 && afterDeclToken) {
+                      return fixer.removeRange([
+                        decl.range[0],
+                        afterDeclToken.range[0],
+                      ]);
+                    }
+
+                    // case: remove braces, import used, { unused } from 'a';
+                    const restNamed = decl.specifiers.filter(
+                      s =>
+                        s === node && s.type === AST_NODE_TYPES.ImportSpecifier,
+                    );
+                    if (
+                      restNamed.length === 1 &&
+                      afterNodeToken?.value === '}' &&
+                      beforeNodeToken?.value === '{'
+                    ) {
+                      // remove comma before braces
+                      const prevComma = source.getTokenBefore(beforeNodeToken);
+
+                      return fixer.removeRange([
+                        prevComma?.value === ','
+                          ? prevComma.range[0]
+                          : beforeNodeToken.range[0],
+                        afterNodeToken.range[1],
+                      ]);
+                    }
+
+                    // case: Remove comma after node, import { unused, used } from 'a';
+                    if (afterNodeToken?.value === ',') {
+                      const nextToken = source.getTokenAfter(afterNodeToken, {
+                        includeComments: true,
+                      });
+
+                      return fixer.removeRange([
+                        node.range[0],
+                        nextToken
+                          ? nextToken.range[0]
+                          : afterNodeToken.range[1],
+                      ]);
+                    }
+
+                    // case: Remove comma before node, import { used, unused } from 'a';
+                    if (beforeNodeToken?.value === ',') {
+                      return fixer.removeRange([
+                        beforeNodeToken.range[0],
+                        node.range[1],
+                      ]);
+                    }
+
+                    return null;
+                  }
+                : undefined,
             });
 
             // If there are no regular declaration, report the first `/*globals*/` comment directive.
