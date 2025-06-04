@@ -714,6 +714,7 @@ export default createRule<Options, MessageIds>({
                   d => d.type === DefinitionType.ImportBinding,
                 )
                   ? fixer => {
+                      // Find the import statement
                       const def = unusedVar.defs.find(
                         d => d.type === DefinitionType.ImportBinding,
                       );
@@ -725,47 +726,44 @@ export default createRule<Options, MessageIds>({
                       const node = def.node;
                       const decl = node.parent as TSESTree.ImportDeclaration;
 
-                      // Remove import declaration line if no specifiers are left
-                      if (decl.specifiers.length === 1) {
-                        const next = source.getTokenAfter(decl) ?? {
-                          range: [decl.range[1], decl.range[1]],
-                        };
+                      const afterDeclToken = source.getTokenAfter(decl);
+                      const afterNodeToken = source.getTokenAfter(node);
+                      const beforeNodeToken = source.getTokenBefore(node);
+
+                      // Remove import declaration line if no specifiers are left, import unused from 'a';
+                      if (decl.specifiers.length === 1 && afterDeclToken) {
                         return fixer.removeRange([
                           decl.range[0],
-                          next.range[0],
+                          afterDeclToken.range[0],
                         ]);
                       }
 
-                      // case: remove { unused }
+                      // case: remove braces, import used, { unused } from 'a';
                       const restNamed = decl.specifiers.filter(
                         s =>
                           s === node &&
                           s.type === AST_NODE_TYPES.ImportSpecifier,
                       );
-                      if (restNamed.length === 1) {
-                        const nextBraceToken = source.getTokenAfter(node);
-                        const prevBraceToken = source.getTokenBefore(node);
-                        if (
-                          nextBraceToken?.value === '}' &&
-                          prevBraceToken?.value === '{'
-                        ) {
-                          // remove comma
-                          const prevComma =
-                            source.getTokenBefore(prevBraceToken);
+                      if (
+                        restNamed.length === 1 &&
+                        afterNodeToken?.value === '}' &&
+                        beforeNodeToken?.value === '{'
+                      ) {
+                        // remove comma before braces
+                        const prevComma =
+                          source.getTokenBefore(beforeNodeToken);
 
-                          return fixer.removeRange([
-                            prevComma?.value === ','
-                              ? prevComma.range[0]
-                              : prevBraceToken.range[0],
-                            nextBraceToken.range[1],
-                          ]);
-                        }
+                        return fixer.removeRange([
+                          prevComma?.value === ','
+                            ? prevComma.range[0]
+                            : beforeNodeToken.range[0],
+                          afterNodeToken.range[1],
+                        ]);
                       }
 
-                      // case: Remove comma after node
-                      const nextCommaToken = source.getTokenAfter(node);
-                      if (nextCommaToken?.value === ',') {
-                        const nextToken = source.getTokenAfter(nextCommaToken, {
+                      // case: Remove comma after node, import { unused, used } from 'a';
+                      if (afterNodeToken?.value === ',') {
+                        const nextToken = source.getTokenAfter(afterNodeToken, {
                           includeComments: true,
                         });
 
@@ -773,20 +771,19 @@ export default createRule<Options, MessageIds>({
                           node.range[0],
                           nextToken
                             ? nextToken.range[0]
-                            : nextCommaToken.range[1],
+                            : afterNodeToken.range[1],
                         ]);
                       }
 
-                      // case: Remove comma before node
-                      const prevCommaToken = source.getTokenBefore(node);
-                      if (prevCommaToken?.value === ',') {
+                      // case: Remove comma before node, import { used, unused } from 'a';
+                      if (beforeNodeToken?.value === ',') {
                         return fixer.removeRange([
-                          prevCommaToken.range[0],
+                          beforeNodeToken.range[0],
                           node.range[1],
                         ]);
                       }
-                      // Remove the current specifier and all tokens until the next specifier
-                      return fixer.remove(node);
+
+                      return null;
                     }
                   : undefined,
             });
