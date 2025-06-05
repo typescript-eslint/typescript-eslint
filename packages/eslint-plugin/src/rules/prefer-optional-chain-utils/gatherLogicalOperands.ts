@@ -111,6 +111,11 @@ function isValidFalseBooleanCheckType(
   if (options.checkBigInt === true) {
     allowedFlags |= ts.TypeFlags.BigIntLike;
   }
+
+  if (options.checkVoid === true) {
+    allowedFlags |= ts.TypeFlags.Void;
+  }
+
   return types.every(t => isTypeFlagSet(t, allowedFlags));
 }
 
