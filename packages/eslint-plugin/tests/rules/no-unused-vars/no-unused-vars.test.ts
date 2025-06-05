@@ -1961,6 +1961,7 @@ export { u2 };
     //       `,
     //     },
   ],
+
   valid: [
     `
 import { ClassDecoratorFactory } from 'decorators';
