@@ -1680,6 +1680,22 @@ describe('hand-crafted cases', () => {
         ],
         output: 'a?.prop;',
       },
+      // check void
+      {
+        code: `
+declare const foo: {
+  method: undefined | (() => void);
+};
+foo.method && foo.method();
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: `
+declare const foo: {
+  method: undefined | (() => void);
+};
+foo.method?.();
+        `,
+      },
     ],
     valid: [
       '!a || !b;',
