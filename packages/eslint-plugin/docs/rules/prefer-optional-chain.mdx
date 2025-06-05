@@ -265,6 +265,37 @@ thing?.toString();
 </TabItem>
 </Tabs>
 
+### `checkVoid`
+
+{/* insert option description */}
+
+Examples of code for this rule with `{ checkVoid: true }`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "checkVoid": true }'
+declare const thing: {
+  method: undefined | (() => void);
+};
+
+thing.method && thing.method();
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "checkVoid": true }'
+declare const thing: {
+  method: undefined | (() => void);
+};
+
+thing.method?.();
+```
+
+</TabItem>
+</Tabs>
+
 ### `requireNullish`
 
 {/* insert option description */}
