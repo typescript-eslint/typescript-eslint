@@ -282,7 +282,7 @@ If this setting is specified, you must only lint files that are included in the 
 }
 ```
 
-For an option that allows linting files outside of your TSConfig file(s), see [`projectService`](#projectService).
+For an option that allows linting files outside of your TSConfig file(s), see [`projectService`](#projectservice).
 
 <HiddenHeading id="experimental_useprojectservice" />
 
@@ -293,6 +293,8 @@ For an option that allows linting files outside of your TSConfig file(s), see [`
 Specifies using TypeScript APIs to generate type information for rules.
 It will automatically use the nearest `tsconfig.json` for each file (like `project: true`).
 It can also be configured to also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
+
+See [Typed Linting with `parserOptions.projectService`](/blog/project-service) for more context.
 
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
