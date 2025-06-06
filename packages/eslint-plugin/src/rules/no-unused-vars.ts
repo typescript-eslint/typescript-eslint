@@ -734,10 +734,7 @@ export default createRule<Options, MessageIds>({
 
                     // Remove import declaration line if no specifiers are left, import unused from 'a';
                     if (decl.specifiers.length === 1) {
-                      return fixer.removeRange([
-                        decl.range[0],
-                        decl.range[1] + 1, // +1 to include "\n"
-                      ]);
+                      return fixer.removeRange([decl.range[0], decl.range[1]]);
                     }
 
                     // case: remove braces, import used, { unused } from 'a';
@@ -759,21 +756,10 @@ export default createRule<Options, MessageIds>({
 
                     // case: Remove comma after node, import { unused, used } from 'a';
                     if (afterNodeToken?.value === ',') {
-                      const nextToken = source.getTokenAfter(afterNodeToken, {
-                        includeComments: true,
-                      });
-
-                      if (
-                        nextToken?.loc.end.line === afterNodeToken.loc.end.line
-                      ) {
-                        return fixer.removeRange([
-                          node.range[0],
-                          nextToken.range[0],
-                        ]);
-                      }
-
-                      // TODO: remove multi-line import
-                      return null;
+                      return fixer.removeRange([
+                        node.range[0],
+                        afterNodeToken.range[1],
+                      ]);
                     }
 
                     // case: Remove comma before node, import { used, unused } from 'a';
