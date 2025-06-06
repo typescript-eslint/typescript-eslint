@@ -1735,20 +1735,12 @@ export {};
       filename: 'foo.d.ts',
     },
     {
-      code: `
-import * as Unused from 'foo';
-import * as Used from 'bar';
+      code: noFormat`
+import * as Unused from 'foo';import * as Used from 'bar';
 export { Used };
       `,
       errors: [
         {
-          column: 13,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Unused',
-          },
-          line: 2,
           messageId: 'unusedVar',
         },
       ],
@@ -1759,91 +1751,51 @@ export { Used };
       `,
     },
     {
-      code: `
+      code: noFormat`
 import Unused1 from 'foo';
-import Unused2, { Used } from 'bar';
+import Unused2,{ Used } from 'bar';
 export { Used };
       `,
       errors: [
         {
-          column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Unused1',
-          },
-          line: 2,
           messageId: 'unusedVar',
         },
         {
-          column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Unused2',
-          },
-          line: 3,
           messageId: 'unusedVar',
         },
       ],
       options: [{ enableAutofixRemoval: { imports: true } }],
       output: `
+
 import { Used } from 'bar';
 export { Used };
       `,
     },
     {
-      code: `
+      code: noFormat`
 import { Unused1 } from 'foo';
 import Used1, { Unused2 } from 'bar';
 import { Used2, Unused3 } from 'baz';
-import Used3, { Unused4, Used4 } from 'foobar';
+import Used3, { Unused4,Used4 } from 'foobar';
 export { Used1, Used2, Used3, Used4 };
       `,
       errors: [
         {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Unused1',
-          },
-          line: 2,
           messageId: 'unusedVar',
         },
         {
-          column: 17,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Unused2',
-          },
-          line: 3,
           messageId: 'unusedVar',
         },
         {
-          column: 17,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Unused3',
-          },
-          line: 4,
           messageId: 'unusedVar',
         },
         {
-          column: 17,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Unused4',
-          },
-          line: 5,
           messageId: 'unusedVar',
         },
       ],
       options: [{ enableAutofixRemoval: { imports: true } }],
       output: `
+
 import Used1 from 'bar';
 import { Used2 } from 'baz';
 import Used3, { Used4 } from 'foobar';
@@ -1877,14 +1829,13 @@ export { Used1 };
       errors: [{ messageId: 'unusedVar' }],
       options: [{ enableAutofixRemoval: { imports: true } }],
       output: `
-import { /* cmt */ Used1 } from 'foo';
+import { /* cmt */  Used1 } from 'foo';
 export { Used1 };
       `,
     },
     {
-      code: `
-import type { UnusedType } from 'foo';
-import { Used1, Unused1 } from 'foo';
+      code: noFormat`
+import type { UnusedType } from 'foo';import { Used1, Unused1 } from 'foo';
 export { Used1 };
       `,
       errors: [{ messageId: 'unusedVar' }, { messageId: 'unusedVar' }],
@@ -1902,7 +1853,7 @@ export { u2 };
       errors: [{ messageId: 'unusedVar' }],
       options: [{ enableAutofixRemoval: { imports: true } }],
       output: `
-import { Used1 as u2 } from 'foo';
+import {  Used1 as u2 } from 'foo';
 export { u2 };
       `,
     },
@@ -1925,9 +1876,13 @@ export { y };
     //       code: `
     // import { Unused1, Unused2, Used1 } from 'foo';
     // import { Unused3, Unused4 } from 'bar';
-    // export { Used1 };
+    // export { Used1, Used2 };
     //       `,
     //       errors: [
+    //         { messageId: 'unusedVar' },
+    //         { messageId: 'unusedVar' },
+    //         { messageId: 'unusedVar' },
+    //         { messageId: 'unusedVar' },
     //         { messageId: 'unusedVar' },
     //         { messageId: 'unusedVar' },
     //         { messageId: 'unusedVar' },
@@ -1935,45 +1890,50 @@ export { y };
     //       ],
     //       options: [{ enableAutofixRemoval: { imports: true } }],
     //       output: `
-    // import { Used1 } from 'foo';
-    // export { Used1 };
-    //       `,
-    //     },
+    // import { Used1,Used2 } from 'foo';
 
-    // TODO: multi-line import
-    //     {
-    //       code: `
-    // import {
-    //   Unused1,
-    //   Unused2,
-    //   Unused3,
-    //   Unused4,
-    //   Used1,
-    //   /* cmt */
-    //   Unused5,
-    //   Unused6,
-    //   Used2,
-    // } from 'foo';
     // export { Used1, Used2 };
-    //       `,
-    //       errors: [
-    //         { messageId: 'unusedVar' },
-    //         { messageId: 'unusedVar' },
-    //         { messageId: 'unusedVar' },
-    //         { messageId: 'unusedVar' },
-    //         { messageId: 'unusedVar' },
-    //         { messageId: 'unusedVar' },
-    //       ],
-    //       options: [{ enableAutofixRemoval: { imports: true } }],
-    //       output: `
-    // import {
-    //   Used1,
-    //   /* cmt */
-    //   Used2,
-    // } from 'foo';
-    // export { Used1, Used2 };
-    //       `,
+    //     `,
     //     },
+    {
+      code: noFormat`
+import {
+Unused1,
+Unused2,
+Unused3,
+Unused4,
+Used1,
+/* cmt */
+Unused5,
+Unused6,
+Used2,
+} from 'foo';
+export { Used1, Used2 };
+      `,
+      errors: [
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+      ],
+      options: [{ enableAutofixRemoval: { imports: true } }],
+      output: noFormat`
+import {
+
+
+
+
+Used1,
+/* cmt */
+
+
+Used2,
+} from 'foo';
+export { Used1, Used2 };
+      `,
+    },
   ],
 
   valid: [
