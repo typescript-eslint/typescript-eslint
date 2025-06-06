@@ -11,10 +11,7 @@ export default mergeConfig(
     root: import.meta.dirname,
 
     test: {
-      include: [
-        path.join(import.meta.dirname, 'tests/rules/no-base-to-string.test.ts'),
-      ],
-      // dir: path.join(import.meta.dirname, 'tests'),
+      dir: path.join(import.meta.dirname, 'tests'),
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
     },
