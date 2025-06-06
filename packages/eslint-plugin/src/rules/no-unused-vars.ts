@@ -720,7 +720,12 @@ export default createRule<Options, MessageIds>({
 
                     const source = context.sourceCode;
                     const node = def.node;
-                    const decl = node.parent as TSESTree.ImportDeclaration;
+                    const decl = node.parent;
+                    if (decl.type !== AST_NODE_TYPES.ImportDeclaration) {
+                      // decl.type is Program, import foo = require('bar');
+                      return fixer.remove(node);
+                    }
+
                     const afterNodeToken = source.getTokenAfter(node);
                     const beforeNodeToken = source.getTokenBefore(node);
                     const prevBeforeNodeToken = beforeNodeToken

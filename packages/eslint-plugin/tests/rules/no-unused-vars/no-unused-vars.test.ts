@@ -1906,6 +1906,20 @@ import { Used1 as u2 } from 'foo';
 export { u2 };
       `,
     },
+    {
+      code: `
+import x = require('foo');
+import y = require('bar');
+export { y };
+      `,
+      errors: [{ messageId: 'unusedVar' }],
+      options: [{ enableAutofixRemoval: { imports: true } }],
+      output: `
+
+import y = require('bar');
+export { y };
+      `,
+    },
     // TODO: Logic to remove multiple unused vars in one-line
     //     {
     //       code: `
