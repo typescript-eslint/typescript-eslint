@@ -5,6 +5,11 @@
   {
     "additionalProperties": false,
     "properties": {
+      "checkUnknown": {
+        "default": false,
+        "description": "Checks the case where toString is applied to unknown type",
+        "type": "boolean"
+      },
       "ignoredTypeNames": {
         "description": "Stringified regular expressions of type names to ignore.",
         "items": {
@@ -22,6 +27,8 @@
 
 type Options = [
   {
+    /** Checks the case where toString is applied to unknown type */
+    checkUnknown?: boolean;
     /** Stringified regular expressions of type names to ignore. */
     ignoredTypeNames?: string[];
   },
