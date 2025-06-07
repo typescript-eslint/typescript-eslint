@@ -5,7 +5,7 @@ This is exclusively used for the playground in the [`website` package](../websit
 
 ## Building
 
-`yarn build` runs `build.ts`, which uses ESBuild to create a CommonJS bundle including:
+`pnpm run build` runs `build.ts`, which uses ESBuild to create a CommonJS bundle including:
 
 - ESLint's [`Linter` class](https://eslint.org/docs/latest/integrate/nodejs-api#linter) and built-in rules
 - A wrapper that causes TypeScript's `typescript` and `typescript/lib/tsserverlibrary` module entry points to be downloaded on the fly

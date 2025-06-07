@@ -64,9 +64,6 @@
       },
       {
         "runtime": "echo $NETLIFY"
-      },
-      {
-        "runtime": "yarn -v"
       }
     ],
     "production": [
@@ -77,5 +74,8 @@
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/vitest.config.mts"
     ]
+  },
+  "sync": {
+    "applyChanges": true
   }
 }
