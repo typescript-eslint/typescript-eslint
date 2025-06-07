@@ -59,8 +59,6 @@ export interface InvalidOperand {
   type: OperandValidity.Invalid;
 }
 type Operand = InvalidOperand | ValidOperand;
-
-const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(
   node: TSESTree.Node,
   disallowFalseyLiteral: boolean,
@@ -92,31 +90,30 @@ function isValidFalseBooleanCheckType(
     return false;
   }
 
-  let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
-  if (options.checkAny === true) {
-    allowedFlags |= ts.TypeFlags.Any;
+  let flagsToExcludeFromCheck = 0;
+  if (options.checkAny !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.Any;
   }
-  if (options.checkUnknown === true) {
-    allowedFlags |= ts.TypeFlags.Unknown;
+  if (options.checkUnknown !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.Unknown;
   }
-  if (options.checkString === true) {
-    allowedFlags |= ts.TypeFlags.StringLike;
+  if (options.checkString !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.StringLike;
   }
-  if (options.checkNumber === true) {
-    allowedFlags |= ts.TypeFlags.NumberLike;
+  if (options.checkNumber !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.NumberLike;
   }
-  if (options.checkBoolean === true) {
-    allowedFlags |= ts.TypeFlags.BooleanLike;
+  if (options.checkBoolean !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.BooleanLike;
   }
-  if (options.checkBigInt === true) {
-    allowedFlags |= ts.TypeFlags.BigIntLike;
+  if (options.checkBigInt !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.BigIntLike;
+  }
+  if (options.checkVoid !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.Void;
   }
 
-  if (options.checkVoid === true) {
-    allowedFlags |= ts.TypeFlags.Void;
-  }
-
-  return types.every(t => isTypeFlagSet(t, allowedFlags));
+  return types.every(t => !isTypeFlagSet(t, flagsToExcludeFromCheck));
 }
 
 export function gatherLogicalOperands(
