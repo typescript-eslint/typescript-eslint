@@ -1894,6 +1894,15 @@ foo.method?.();
         `,
         options: [{ checkUnknown: false }],
       },
+      {
+        code: `
+declare const foo: {
+  method: undefined | (() => void);
+};
+foo.method && foo.method();
+        `,
+        options: [{ checkVoid: false }],
+      },
       '(x = {}) && (x.y = true) != null && x.y.toString();',
       "('x' as `${'x'}`) && ('x' as `${'x'}`).length;",
       '`x` && `x`.length;',
