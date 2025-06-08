@@ -9,20 +9,24 @@ runs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const pr = context.payload.pull_request;
-          if (!pr) {
-            throw new Error("This action can only be run on pull_request events.");
+          async function getPullRequest() {
+            const pr = context.payload.pull_request;
+            if (!pr) {
+              throw new Error("This action can only be run on pull_request events.");
+            }
+
+            const owner = pr.base.repo.owner.login;
+            const repo = pr.base.repo.name;
+            const pull_number = pr.number;
+
+            const { data } = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number,
+            });
+
+            return data;
           }
-
-          const owner = pr.base.repo.owner.login;
-          const repo = pr.base.repo.name;
-          const pull_number = pr.number;
-
-          const { data: pullRequest } = await github.rest.pulls.get({
-            owner,
-            repo,
-            pull_number,
-          });
 
           function checkTitle(title) {
             if (/^[a-z]+(\([a-z-]+\))?!: /.test(title)) {
@@ -52,5 +56,14 @@ runs:
             }
           }
 
-          checkTitle(pullRequest.title);
-          checkDescription(pullRequest.body ?? '', pullRequest.labels);
+          async function run() {
+            const pr = await getPullRequest();
+            checkTitle(pr.title);
+            checkDescription(pr.body ?? '', pr.labels);
+          }
+
+          try {
+            await run();
+          } catch (e) {
+            throw new Error(e.message ?? String(e));
+          }
