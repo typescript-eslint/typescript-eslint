@@ -2,5 +2,55 @@ name: Validate Breaking Change PR
 description: Validate breaking change PR title and description
 
 runs:
-  using: node20
-  main: index.js
+  using: 'composite'
+  steps:
+    - name: Check PR title and body using github-script
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const pr = context.payload.pull_request;
+          if (!pr) {
+            throw new Error("This action can only be run on pull_request events.");
+          }
+
+          const owner = pr.base.repo.owner.login;
+          const repo = pr.base.repo.name;
+          const pull_number = pr.number;
+
+          const { data: pullRequest } = await github.rest.pulls.get({
+            owner,
+            repo,
+            pull_number,
+          });
+
+          function checkTitle(title) {
+            if (/^[a-z]+(\([a-z-]+\))?!: /.test(title)) {
+              throw new Error(
+                `Do not use exclamation mark ('!') to indicate breaking change in the PR Title.`,
+              );
+            }
+          }
+
+          function checkDescription(body, labels) {
+            if (!labels.some(label => label.name === 'breaking change')) {
+              return;
+            }
+
+            const [firstLine, secondLine] = body.split(/\r?\n/);
+
+            if (!firstLine || !/^BREAKING CHANGE:/.test(firstLine)) {
+              throw new Error(
+                `Breaking change PR body should start with "BREAKING CHANGE:". See https://typescript-eslint.io/maintenance/releases#2-merging-breaking-changes.`,
+              );
+            }
+
+            if (!secondLine) {
+              throw new Error(
+                `The description of breaking change is missing. See https://typescript-eslint.io/maintenance/releases#2-merging-breaking-changes.`,
+              );
+            }
+          }
+
+          checkTitle(pullRequest.title);
+          checkDescription(pullRequest.body ?? '', pullRequest.labels);
