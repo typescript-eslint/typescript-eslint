@@ -1,4 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > element > TSEnumMember > _error_ > numeric-name > Error Alignment`]
-Both errored

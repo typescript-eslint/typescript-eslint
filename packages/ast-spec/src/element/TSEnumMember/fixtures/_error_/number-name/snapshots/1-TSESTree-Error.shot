@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures > element > TSEnumMember > _error_ > numeric-name > TSESTree - Error`]
+exports[`AST Fixtures > element > TSEnumMember > _error_ > number-name > TSESTree - Error`]
 TSError
   1 | enum Foo {
 > 2 |   1 = 2

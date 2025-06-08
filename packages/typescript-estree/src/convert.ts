@@ -3249,7 +3249,10 @@ export class Converter {
           );
         }
 
-        if (node.name.kind === SyntaxKind.NumericLiteral) {
+        if (
+          node.name.kind === SyntaxKind.NumericLiteral ||
+          node.name.kind === SyntaxKind.BigIntLiteral
+        ) {
           this.#throwUnlessAllowInvalidAST(
             node.name,
             'An enum member cannot have a numeric name.',
