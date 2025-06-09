@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > FunctionDeclaration > _error_ > non-identifier-type-param > Babel - Error`]
-SyntaxError: Unexpected token (1:13)
+BabelError
+> 1 | function foo<1>() {}
+    |              ^ Unexpected token (1:13)
+  2 |
+  

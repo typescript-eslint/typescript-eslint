@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > type > TSImportType > _error_ > type-import-type-with-import-attributes-assert > Babel - Error`]
-SyntaxError: Unexpected token, expected "with" (1:23)
+BabelError
+> 1 | type A = import("A", { assert: { type: "json" } });
+    |                        ^ Unexpected token, expected "with" (1:23)
+  2 |
+  
