@@ -1,13 +1,16 @@
 name: Semantic Breaking Change PR 2
 
+# FIXME: this is test logic
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - edited
       - synchronize
       - labeled
       - unlabeled
+
+  workflow_dispatch:
 
 jobs:
   main:
