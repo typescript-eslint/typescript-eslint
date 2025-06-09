@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSDeclareFunction > _error_ > declare-with-body > Babel - Error`]
-SyntaxError: An implementation cannot be declared in ambient contexts. (1:0)
+BabelError
+> 1 | declare function foo(): void {};
+    | ^ An implementation cannot be declared in ambient contexts. (1:0)
+  2 |
+  
