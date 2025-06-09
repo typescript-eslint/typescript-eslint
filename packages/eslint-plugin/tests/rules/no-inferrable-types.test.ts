@@ -37,9 +37,6 @@ ruleTester.run('no-inferrable-types', rule, {
     "const a = RegExp('a');",
     "const a = RegExp?.('a');",
     "const a = new RegExp('a');",
-    // Testing with double quotes
-    // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-    'const a = "str";',
     "const a = 'str';",
     'const a = `str`;',
     'const a = String(1);',
@@ -557,22 +554,6 @@ class Foo {
         },
       ],
       output: "const a = new RegExp('a');",
-    },
-    {
-      // Testing with double quotes
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      code: 'const a: string = "str";',
-      errors: [
-        {
-          column: 7,
-          data: {
-            type: 'string',
-          },
-          line: 1,
-          messageId: 'noInferrableType',
-        },
-      ],
-      output: 'const a = "str";',
     },
     {
       code: "const a: string = 'str';",
