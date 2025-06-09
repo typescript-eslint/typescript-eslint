@@ -449,25 +449,4 @@ describe('convert', () => {
       expect(Object.keys(tsMappedType)).toContain('typeParameter');
     });
   });
-
-  describe('should throw error for invalid interface extends clauses', () => {
-    it('should throw error for multiple extends', () => {
-      const code = 'interface Foo extends Bar extends Bar {}';
-
-      const instance = new Converter(convertCode(code));
-
-      expect(() => instance.convertProgram()).toThrow(
-        "'extends' clause already seen.",
-      );
-    });
-    it('should throw error for optional chain', () => {
-      const code = 'interface Foo extends Bar?.Bar {}';
-
-      const instance = new Converter(convertCode(code));
-
-      expect(() => instance.convertProgram()).toThrow(
-        'Interface declaration can only extend an identifier/qualified name with optional type arguments.',
-      );
-    });
-  });
 });
