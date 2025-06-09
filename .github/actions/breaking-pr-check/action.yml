@@ -1,4 +1,4 @@
-name: Validate Breaking Change PR2
+name: Validate Breaking Change PR
 description: Validate breaking change PR title and description
 
 runs:

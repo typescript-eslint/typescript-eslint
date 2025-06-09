@@ -1,4 +1,4 @@
-name: Semantic Breaking Change PR 2
+name: Semantic Breaking Change PR Test
 
 # FIXME: this is test logic
 on:
@@ -14,9 +14,8 @@ on:
 
 jobs:
   main:
-    name: Validate Breaking Change PR 2
+    name: Validate Breaking Change PR Test
     runs-on: ubuntu-latest
-    cache: false
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/breaking-pr-check
