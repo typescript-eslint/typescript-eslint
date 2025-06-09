@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSNamespaceExportDeclaration > _error_ > missing-id > Babel - Error`]
-SyntaxError: Unexpected token (1:19)
+BabelError
+> 1 | export as namespace;
+    |                    ^ Unexpected token (1:19)
+  2 |
+  
