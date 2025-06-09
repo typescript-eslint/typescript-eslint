@@ -741,10 +741,10 @@ importers:
         specifier: ^7.24.4
         version: 7.27.1
       '@docusaurus/core':
-        specifier: ^3.2.1
+        specifier: ^3.7.0
         version: 3.7.0(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)
       '@docusaurus/plugin-client-redirects':
-        specifier: ^3.2.1
+        specifier: ^3.7.0
         version: 3.7.0(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)
       '@docusaurus/plugin-content-blog':
         specifier: ^3.7.0
@@ -753,16 +753,16 @@ importers:
         specifier: ^3.7.0
         version: 3.7.0(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)
       '@docusaurus/plugin-pwa':
-        specifier: ^3.2.1
+        specifier: ^3.7.0
         version: 3.7.0(@docusaurus/plugin-content-docs@3.7.0(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2))(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(@types/babel__core@7.20.5)(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)
       '@docusaurus/preset-classic':
-        specifier: ^3.2.1
+        specifier: ^3.7.0
         version: 3.7.0(@algolia/client-search@5.25.0)(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(@types/react@18.3.21)(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.8.2)
       '@docusaurus/remark-plugin-npm2yarn':
-        specifier: ^3.2.1
+        specifier: ^3.7.0
         version: 3.7.0
       '@docusaurus/theme-common':
-        specifier: ^3.2.1
+        specifier: ^3.7.0
         version: 3.7.0(@docusaurus/plugin-content-docs@3.7.0(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(eslint@9.27.0(jiti@2.4.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2))(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mdx-js/react':
         specifier: ^3.1.0
@@ -832,7 +832,7 @@ importers:
         specifier: ^3.7.0
         version: 3.7.0(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@docusaurus/module-type-aliases':
-        specifier: ^3.2.1
+        specifier: ^3.7.0
         version: 3.7.0(@swc/core@1.11.24(@swc/helpers@0.5.17))(acorn@8.14.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@docusaurus/theme-classic':
         specifier: ^3.7.0
