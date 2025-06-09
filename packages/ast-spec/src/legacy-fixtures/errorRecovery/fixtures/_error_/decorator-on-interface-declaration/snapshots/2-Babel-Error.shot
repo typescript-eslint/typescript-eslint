@@ -1,4 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > decorator-on-interface-declaration > Babel - Error`]
-SyntaxError: Leading decorators must be attached to a class declaration. (4:0)
+BabelError
+  2 |
+  3 | @deco()
+> 4 | interface M {}
+    | ^ Leading decorators must be attached to a class declaration. (4:0)
+  

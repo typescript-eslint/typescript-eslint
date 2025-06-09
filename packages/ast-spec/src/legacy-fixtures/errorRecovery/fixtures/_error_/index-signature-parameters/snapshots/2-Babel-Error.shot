@@ -1,4 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > index-signature-parameters > Babel - Error`]
-SyntaxError: Unexpected token, expected "]" (4:12)
+BabelError
+  2 |
+  3 | type foo = {
+> 4 |   [a: string, b: string]: string;
+    |             ^ Unexpected token, expected "]" (4:12)
+  5 | }
+  6 |
+  

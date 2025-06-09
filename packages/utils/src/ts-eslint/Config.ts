@@ -79,7 +79,7 @@ export namespace ClassicConfig {
      */
     globals?: GlobalsConfig;
     /**
-     * The flag that disables directive comments.
+     * The flag that disables comment directives.
      */
     noInlineConfig?: boolean;
     /**

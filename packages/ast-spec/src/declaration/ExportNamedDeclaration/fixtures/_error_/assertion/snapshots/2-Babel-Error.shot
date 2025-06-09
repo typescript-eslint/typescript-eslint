@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > ExportNamedDeclaration > _error_ > assertion > Babel - Error`]
-SyntaxError: A JSON module can only be imported with `default`. (1:9)
+BabelError
+> 1 | export { foo } from 'mod' assert { type: 'json' };
+    |          ^ A JSON module can only be imported with `default`. (1:9)
+  2 |
+  
