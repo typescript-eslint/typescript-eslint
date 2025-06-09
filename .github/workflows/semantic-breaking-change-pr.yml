@@ -1,4 +1,4 @@
-name: Semantic Breaking Change PR
+name: Semantic Breaking Change PR 2
 
 on:
   pull_request_target:
@@ -11,8 +11,9 @@ on:
 
 jobs:
   main:
-    name: Validate Breaking Change PR
+    name: Validate Breaking Change PR 2
     runs-on: ubuntu-latest
+    cache: false
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/breaking-pr-check
