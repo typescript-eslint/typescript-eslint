@@ -140,8 +140,14 @@ export const useSandboxServices = (
         });
       })
       .catch((err: unknown) => {
-        props.setState({ ts: process.env.TS_VERSION });
+        // props.setState({ ts: process.env.TS_VERSION });
         if (err instanceof Error) {
+          if (
+            err.message ===
+            'Could not get all the dependencies of sandbox set up!'
+          ) {
+            props.setState({ ts: process.env.TS_VERSION });
+          }
           setServices(err);
         } else {
           setServices(new Error(String(err)));
