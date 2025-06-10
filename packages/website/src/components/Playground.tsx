@@ -152,6 +152,7 @@ function Playground(): React.JSX.Element {
             onMarkersChange={setMarkers}
             onSelect={setPosition}
             selectedRange={selectedRange}
+            setState={setState}
           />
         </Panel>
         <PanelResizeHandle className={styles.PanelResizeHandle} />
