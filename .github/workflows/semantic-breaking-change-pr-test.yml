@@ -1,6 +1,5 @@
 name: Semantic Breaking Change PR
 
-# FIXME: this is test logic
 on:
   pull_request_target:
     types:
