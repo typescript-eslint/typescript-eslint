@@ -1,8 +1,8 @@
-name: Semantic Breaking Change PR Test
+name: Semantic Breaking Change PR
 
 # FIXME: this is test logic
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - edited
@@ -10,15 +10,9 @@ on:
       - labeled
       - unlabeled
 
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pull-requests: write
-
 jobs:
   main:
-    name: Validate Breaking Change PR Test
+    name: Validate Breaking Change PR
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
