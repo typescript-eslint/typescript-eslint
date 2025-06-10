@@ -1,4 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > element > TSEnumMember > _error_ > number-name > Babel - Error`]
-SyntaxError: Unexpected token (2:2)
+BabelError
+  1 | enum Foo {
+> 2 |   1 = 2
+    |   ^ Unexpected token (2:2)
+  3 | }
+  4 |
+  
