@@ -140,7 +140,6 @@ export const useSandboxServices = (
         });
       })
       .catch((err: unknown) => {
-        // props.setState({ ts: process.env.TS_VERSION });
         if (err instanceof Error) {
           if (
             err.message ===
