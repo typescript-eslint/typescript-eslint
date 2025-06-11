@@ -1,3 +1,15 @@
+## 8.34.0 (2025-06-09)
+
+### 🩹 Fixes
+
+- **visitor-keys:** fix visitor keys order ([#11279](https://github.com/typescript-eslint/typescript-eslint/pull/11279))
+
+### ❤️ Thank You
+
+- overlookmotel
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.33.1 (2025-06-02)
 
 This was a version bump only for scope-manager to align it with other projects, there were no code changes.

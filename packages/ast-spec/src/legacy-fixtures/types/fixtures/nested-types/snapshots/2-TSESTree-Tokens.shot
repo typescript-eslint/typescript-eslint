@@ -249,8 +249,8 @@
       end: { column: 23, line: 5 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Null {
+    type: "Null",
     value: "null",
 
     range: [139, 143],
