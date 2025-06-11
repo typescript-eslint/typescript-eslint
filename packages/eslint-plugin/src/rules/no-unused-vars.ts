@@ -671,6 +671,63 @@ export default createRule<Options, MessageIds>({
       // collect
       'Program:exit'(programNode): void {
         const unusedVars = collectUnusedVariables();
+        /**
+         * metadata of import declaration include unused specifiers
+         */
+        interface UnusedDecl {
+          /**
+           * Ranges of all unused default & named specifiers
+           */
+          unusedNodeRanges: TSESLint.AST.Range[];
+          /**
+           * Range of named imports include braces
+           */
+          namedRange?: TSESLint.AST.Range;
+          /**
+           * Range of import declaration
+           */
+          declRange: TSESLint.AST.Range;
+        }
+
+        // Structuring unused specifiers for each decl
+        const unusedDecl = new Map<string, UnusedDecl>();
+        for (const unusedVar of unusedVars) {
+          const def = unusedVar.defs.find(
+            d => d.type === DefinitionType.ImportBinding,
+          );
+          if (!def) {
+            continue;
+          }
+          const node = def.node;
+          const decl = node.parent;
+          if (decl.type !== AST_NODE_TYPES.ImportDeclaration) {
+            continue;
+          }
+          const mapKey = decl.range.toString();
+          const afterNodeToken = context.sourceCode.getTokenAfter(node);
+          const beforeNodeToken = context.sourceCode.getTokenBefore(node);
+
+          const prevValue = unusedDecl.get(mapKey);
+          // get range of { A, B, C, ... , D }
+          const namedRange = prevValue?.namedRange ?? [0, 0];
+          if (beforeNodeToken?.value === '{') {
+            namedRange[0] = beforeNodeToken.range[0];
+          }
+          if (afterNodeToken?.value === '}') {
+            namedRange[1] = afterNodeToken.range[1];
+          }
+
+          unusedDecl.set(mapKey, {
+            declRange: decl.range,
+            namedRange: namedRange.every(v => v === 0)
+              ? prevValue?.namedRange
+              : namedRange,
+            unusedNodeRanges: [
+              ...(prevValue?.unusedNodeRanges ?? []),
+              node.range,
+            ],
+          });
+        }
 
         for (const unusedVar of unusedVars) {
           // Report the first declaration.
@@ -734,24 +791,28 @@ export default createRule<Options, MessageIds>({
                 ? source.getTokenBefore(beforeNodeToken)
                 : null;
 
-              // Remove import declaration line if no specifiers are left, import unused from 'a';
-              if (decl.specifiers.length === 1) {
-                return fixer.removeRange([decl.range[0], decl.range[1]]);
+              const declInfo = unusedDecl.get(decl.range.toString());
+
+              // Remove import declaration if no used specifiers are left, import unused from 'a';
+              if (
+                declInfo &&
+                decl.specifiers.length === declInfo.unusedNodeRanges.length
+              ) {
+                return fixer.removeRange(declInfo.declRange);
               }
 
               // case: remove braces, import used, { unused } from 'a';
               const restNamed = decl.specifiers.filter(
-                s => s === node && s.type === AST_NODE_TYPES.ImportSpecifier,
+                s => s.type === AST_NODE_TYPES.ImportSpecifier,
               );
               if (
-                restNamed.length === 1 &&
-                afterNodeToken?.value === '}' &&
-                beforeNodeToken?.value === '{' &&
+                declInfo?.namedRange &&
+                restNamed.length === declInfo.unusedNodeRanges.length &&
                 prevBeforeNodeToken?.value === ','
               ) {
                 return fixer.removeRange([
                   prevBeforeNodeToken.range[0],
-                  afterNodeToken.range[1],
+                  declInfo.namedRange[1],
                 ]);
               }
 
