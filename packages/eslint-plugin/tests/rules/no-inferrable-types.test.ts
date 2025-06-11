@@ -1,100 +1,50 @@
-import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
-
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-import type {
-  InferMessageIdsTypeFromRule,
-  InferOptionsTypeFromRule,
-} from '../../src/util';
-
 import rule from '../../src/rules/no-inferrable-types';
-
-type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
-type Options = InferOptionsTypeFromRule<typeof rule>;
-
-const testCases = [
-  {
-    code: [
-      '10n',
-      '-10n',
-      'BigInt(10)',
-      '-BigInt(10)',
-      'BigInt?.(10)',
-      '-BigInt?.(10)',
-    ],
-    type: 'bigint',
-  },
-  {
-    code: ['false', 'true', 'Boolean(null)', 'Boolean?.(null)', '!0'],
-    type: 'boolean',
-  },
-  {
-    code: [
-      '10',
-      '+10',
-      '-10',
-      'Number("1")',
-      '+Number("1")',
-      '-Number("1")',
-      'Number?.("1")',
-      '+Number?.("1")',
-      '-Number?.("1")',
-      'Infinity',
-      '+Infinity',
-      '-Infinity',
-      'NaN',
-      '+NaN',
-      '-NaN',
-    ],
-    type: 'number',
-  },
-  {
-    code: ['null'],
-    type: 'null',
-  },
-  {
-    code: ['/a/', 'RegExp("a")', 'RegExp?.("a")', 'new RegExp("a")'],
-    type: 'RegExp',
-  },
-  {
-    code: ['"str"', "'str'", '`str`', 'String(1)', 'String?.(1)'],
-    type: 'string',
-  },
-  {
-    code: ['Symbol("a")', 'Symbol?.("a")'],
-    type: 'symbol',
-  },
-  {
-    code: ['undefined', 'void someValue'],
-    type: 'undefined',
-  },
-];
-const validTestCases = testCases.flatMap(c =>
-  c.code.map(code => `const a = ${code}`),
-);
-const invalidTestCases: InvalidTestCase<MessageIds, Options>[] =
-  testCases.flatMap(cas =>
-    cas.code.map(code => ({
-      code: `const a: ${cas.type} = ${code}`,
-      errors: [
-        {
-          column: 7,
-          data: {
-            type: cas.type,
-          },
-          line: 1,
-          messageId: 'noInferrableType',
-        },
-      ],
-      output: `const a = ${code}`,
-    })),
-  );
 
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-inferrable-types', rule, {
   valid: [
-    ...validTestCases,
+    'const a = 10n;',
+    'const a = -10n;',
+    'const a = BigInt(10);',
+    'const a = -BigInt(10);',
+    'const a = BigInt?.(10);',
+    'const a = -BigInt?.(10);',
+    'const a = false;',
+    'const a = true;',
+    'const a = Boolean(null);',
+    'const a = Boolean?.(null);',
+    'const a = !0;',
+    'const a = 10;',
+    'const a = +10;',
+    'const a = -10;',
+    "const a = Number('1');",
+    "const a = +Number('1');",
+    "const a = -Number('1');",
+    "const a = Number?.('1');",
+    "const a = +Number?.('1');",
+    "const a = -Number?.('1');",
+    'const a = Infinity;',
+    'const a = +Infinity;',
+    'const a = -Infinity;',
+    'const a = NaN;',
+    'const a = +NaN;',
+    'const a = -NaN;',
+    'const a = null;',
+    'const a = /a/;',
+    "const a = RegExp('a');",
+    "const a = RegExp?.('a');",
+    "const a = new RegExp('a');",
+    "const a = 'str';",
+    'const a = `str`;',
+    'const a = String(1);',
+    'const a = String?.(1);',
+    "const a = Symbol('a');",
+    "const a = Symbol?.('a');",
+    'const a = undefined;',
+    'const a = void someValue;',
 
     "const fn = (a = 5, b = true, c = 'foo') => {};",
     "const fn = function (a = 5, b = true, c = 'foo') {};",
@@ -171,7 +121,553 @@ class Foo {
   ],
 
   invalid: [
-    ...invalidTestCases,
+    {
+      code: 'const a: bigint = 10n;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'bigint',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = 10n;',
+    },
+    {
+      code: 'const a: bigint = -10n;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'bigint',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = -10n;',
+    },
+    {
+      code: 'const a: bigint = BigInt(10);',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'bigint',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = BigInt(10);',
+    },
+    {
+      code: 'const a: bigint = -BigInt(10);',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'bigint',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = -BigInt(10);',
+    },
+    {
+      code: 'const a: bigint = BigInt?.(10);',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'bigint',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = BigInt?.(10);',
+    },
+    {
+      code: 'const a: bigint = -BigInt?.(10);',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'bigint',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = -BigInt?.(10);',
+    },
+    {
+      code: 'const a: boolean = false;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'boolean',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = false;',
+    },
+    {
+      code: 'const a: boolean = true;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'boolean',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = true;',
+    },
+    {
+      code: 'const a: boolean = Boolean(null);',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'boolean',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = Boolean(null);',
+    },
+    {
+      code: 'const a: boolean = Boolean?.(null);',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'boolean',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = Boolean?.(null);',
+    },
+    {
+      code: 'const a: boolean = !0;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'boolean',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = !0;',
+    },
+    {
+      code: 'const a: number = 10;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = 10;',
+    },
+    {
+      code: 'const a: number = +10;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = +10;',
+    },
+    {
+      code: 'const a: number = -10;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = -10;',
+    },
+    {
+      code: "const a: number = Number('1');",
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: "const a = Number('1');",
+    },
+    {
+      code: "const a: number = +Number('1');",
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: "const a = +Number('1');",
+    },
+    {
+      code: "const a: number = -Number('1');",
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: "const a = -Number('1');",
+    },
+    {
+      code: "const a: number = Number?.('1');",
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: "const a = Number?.('1');",
+    },
+    {
+      code: "const a: number = +Number?.('1');",
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: "const a = +Number?.('1');",
+    },
+    {
+      code: "const a: number = -Number?.('1');",
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: "const a = -Number?.('1');",
+    },
+    {
+      code: 'const a: number = Infinity;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = Infinity;',
+    },
+    {
+      code: 'const a: number = +Infinity;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = +Infinity;',
+    },
+    {
+      code: 'const a: number = -Infinity;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = -Infinity;',
+    },
+    {
+      code: 'const a: number = NaN;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = NaN;',
+    },
+    {
+      code: 'const a: number = +NaN;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = +NaN;',
+    },
+    {
+      code: 'const a: number = -NaN;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = -NaN;',
+    },
+    {
+      code: 'const a: null = null;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'null',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = null;',
+    },
+    {
+      code: 'const a: RegExp = /a/;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'RegExp',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = /a/;',
+    },
+    {
+      code: "const a: RegExp = RegExp('a');",
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'RegExp',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: "const a = RegExp('a');",
+    },
+    {
+      code: "const a: RegExp = RegExp?.('a');",
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'RegExp',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: "const a = RegExp?.('a');",
+    },
+    {
+      code: "const a: RegExp = new RegExp('a');",
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'RegExp',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: "const a = new RegExp('a');",
+    },
+    {
+      code: "const a: string = 'str';",
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'string',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: "const a = 'str';",
+    },
+    {
+      code: 'const a: string = `str`;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'string',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = `str`;',
+    },
+    {
+      code: 'const a: string = String(1);',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'string',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = String(1);',
+    },
+    {
+      code: 'const a: string = String?.(1);',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'string',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = String?.(1);',
+    },
+    {
+      code: "const a: symbol = Symbol('a');",
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'symbol',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: "const a = Symbol('a');",
+    },
+    {
+      code: "const a: symbol = Symbol?.('a');",
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'symbol',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: "const a = Symbol?.('a');",
+    },
+    {
+      code: 'const a: undefined = undefined;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'undefined',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = undefined;',
+    },
+    {
+      code: 'const a: undefined = void someValue;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            type: 'undefined',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      output: 'const a = void someValue;',
+    },
+
     {
       // This is invalid TS semantic, but it's trivial to make valid anyway
       code: 'const fn = (a?: number = 5) => {};',
