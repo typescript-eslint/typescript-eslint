@@ -2144,30 +2144,27 @@ import y = require('bar');
 export { y };
       `,
     },
-    // TODO: Logic to remove multiple unused vars in one-line
-    //     {
-    //       code: `
-    // import { Unused1, Unused2, Used1 } from 'foo';
-    // import { Unused3, Unused4 } from 'bar';
-    // export { Used1, Used2 };
-    //       `,
-    //       errors: [
-    //         { messageId: 'unusedVar' },
-    //         { messageId: 'unusedVar' },
-    //         { messageId: 'unusedVar' },
-    //         { messageId: 'unusedVar' },
-    //         { messageId: 'unusedVar' },
-    //         { messageId: 'unusedVar' },
-    //         { messageId: 'unusedVar' },
-    //         { messageId: 'unusedVar' },
-    //       ],
-    //       options: [{ enableAutofixRemoval: { imports: true } }],
-    //       output: `
-    // import { Used1,Used2 } from 'foo';
-
-    // export { Used1, Used2 };
-    //     `,
-    //     },
+    {
+      code: `
+import { Unused1, Unused2, Unused3, Used1 } from 'foo';
+import Used2, { Unused4, Unused5, Unused6 } from 'bar';
+export { Used1, Used2 };
+      `,
+      errors: [
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+      ],
+      options: [{ enableAutofixRemoval: { imports: true } }],
+      output: `
+import {    Used1 } from 'foo';
+import Used2 from 'bar';
+export { Used1, Used2 };
+      `,
+    },
     {
       code: noFormat`
 import {
