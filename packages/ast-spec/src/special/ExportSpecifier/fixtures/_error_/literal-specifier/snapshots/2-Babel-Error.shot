@@ -1,5 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > special > ExportSpecifier > _error_ > literal-specifier > Babel - Error`]
-SyntaxError: A string literal cannot be used as an exported binding without `from`.
+BabelError
+> 1 | export { 'A' as A };
+    |          ^ A string literal cannot be used as an exported binding without `from`.
 - Did you mean `export { 'A' as 'A' } from 'some-module'`? (1:9)
+  2 |
+  

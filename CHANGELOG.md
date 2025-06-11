@@ -1,3 +1,23 @@
+## 8.34.0 (2025-06-09)
+
+### 🚀 Features
+
+- **type-utils:** deprecated getSourceFileOfNode function ([#11284](https://github.com/typescript-eslint/typescript-eslint/pull/11284))
+
+### 🩹 Fixes
+
+- **typescript-estree:** change the token type of `null` from `Keyword` to `Null` ([#11283](https://github.com/typescript-eslint/typescript-eslint/pull/11283))
+- **typescript-estree:** add validation to interface extends ([#11271](https://github.com/typescript-eslint/typescript-eslint/pull/11271))
+- **visitor-keys:** fix visitor keys order ([#11279](https://github.com/typescript-eslint/typescript-eslint/pull/11279))
+
+### ❤️ Thank You
+
+- Kim Sang Du @developer-bandi
+- overlookmotel
+- Tao
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.33.1 (2025-06-02)
 
 ### 🩹 Fixes

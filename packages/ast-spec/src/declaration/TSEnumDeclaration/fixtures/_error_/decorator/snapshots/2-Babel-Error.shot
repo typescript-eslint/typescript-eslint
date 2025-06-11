@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSEnumDeclaration > _error_ > decorator > Babel - Error`]
-SyntaxError: Leading decorators must be attached to a class declaration. (1:6)
+BabelError
+> 1 | @decl enum Test {}
+    |       ^ Leading decorators must be attached to a class declaration. (1:6)
+  2 |
+  
