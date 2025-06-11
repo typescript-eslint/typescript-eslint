@@ -3274,7 +3274,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/config-helpers@npm:^0.2.1":
+"@eslint/config-helpers@npm:^0.2.1, @eslint/config-helpers@npm:^0.2.2":
   version: 0.2.2
   resolution: "@eslint/config-helpers@npm:0.2.2"
   checksum: 8a4091a2c8af5366513647ccad720f184c1b723f04c086755797a3a5cac69dc9013bc8a75453d9fc188fc4364460f0eae9f1584b77b28082e0d26bf48356ae8f
@@ -5429,6 +5429,7 @@ __metadata:
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
     "@eslint-community/regexpp": ^4.10.0
+    "@eslint/config-helpers": ^0.2.2
     "@types/mdast": ^4.0.3
     "@types/natural-compare": "*"
     "@typescript-eslint/rule-schema-to-typescript-types": 8.34.0
