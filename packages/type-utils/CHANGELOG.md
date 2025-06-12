@@ -1,3 +1,15 @@
+## 8.34.0 (2025-06-09)
+
+### 🚀 Features
+
+- **type-utils:** deprecated getSourceFileOfNode function ([#11284](https://github.com/typescript-eslint/typescript-eslint/pull/11284))
+
+### ❤️ Thank You
+
+- Kim Sang Du @developer-bandi
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.33.1 (2025-06-02)
 
 This was a version bump only for type-utils to align it with other projects, there were no code changes.

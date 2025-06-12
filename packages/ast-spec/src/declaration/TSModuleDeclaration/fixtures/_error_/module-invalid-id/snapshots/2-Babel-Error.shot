@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSModuleDeclaration > _error_ > module-invalid-id > Babel - Error`]
-SyntaxError: Missing semicolon. (1:6)
+BabelError
+> 1 | module 1 {}
+    |       ^ Missing semicolon. (1:6)
+  2 |
+  

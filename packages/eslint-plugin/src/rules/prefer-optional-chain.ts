@@ -115,7 +115,6 @@ export default createRule<
     const seenLogicals = new Set<TSESTree.LogicalExpression>();
 
     return {
-      // specific handling for `(foo ?? {}).bar` / `(foo || {}).bar`
       'LogicalExpression[operator!="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {
@@ -163,6 +162,7 @@ export default createRule<
         }
       },
 
+      // specific handling for `(foo ?? {}).bar` / `(foo || {}).bar`
       'LogicalExpression[operator="||"], LogicalExpression[operator="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {
@@ -192,6 +192,7 @@ export default createRule<
 
           return leftPrecedence < OperatorPrecedence.LeftHandSide;
         }
+
         checkNullishAndReport(context, parserServices, options, [leftNode], {
           node: parentNode,
           messageId: 'preferOptionalChain',
