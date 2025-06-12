@@ -1696,6 +1696,32 @@ declare const foo: {
 foo.method?.();
         `,
       },
+      // Exclude for everything else, an error occurs
+      {
+        code: noFormat`declare const foo: { x: { y: string } } | null; foo && foo.x;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `declare const foo: { x: { y: string } } | null; foo?.x;`,
+              },
+            ],
+          },
+        ],
+        options: [
+          {
+            checkAny: false,
+            checkBigInt: false,
+            checkBoolean: false,
+            checkNumber: false,
+            checkString: false,
+            checkUnknown: false,
+            checkVoid: false,
+          },
+        ],
+      },
     ],
     valid: [
       '!a || !b;',
