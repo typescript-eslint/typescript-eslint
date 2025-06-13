@@ -1695,14 +1695,24 @@ export class Converter {
           this.fixParentLocation(constructor, constructor.typeParameters.range);
         }
 
-        const constructorKey = this.createNode<TSESTree.Identifier>(node, {
-          type: AST_NODE_TYPES.Identifier,
-          range: [constructorToken.getStart(this.ast), constructorToken.end],
-          decorators: [],
-          name: 'constructor',
-          optional: false,
-          typeAnnotation: undefined,
-        });
+        const constructorKey =
+          constructorToken.kind === SyntaxKind.StringLiteral
+            ? this.createNode<TSESTree.StringLiteral>(constructorToken, {
+                type: AST_NODE_TYPES.Literal,
+                raw: constructorToken.getText(),
+                value: 'constructor',
+              })
+            : this.createNode<TSESTree.Identifier>(node, {
+                type: AST_NODE_TYPES.Identifier,
+                range: [
+                  constructorToken.getStart(this.ast),
+                  constructorToken.end,
+                ],
+                decorators: [],
+                name: 'constructor',
+                optional: false,
+                typeAnnotation: undefined,
+              });
 
         const isStatic = hasModifier(SyntaxKind.StaticKeyword, node);
 
