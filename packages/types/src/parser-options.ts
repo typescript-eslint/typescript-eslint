@@ -21,6 +21,7 @@ export type EcmaVersion =
   | 14
   | 15
   | 16
+  | 17
   | 2015
   | 2016
   | 2017
@@ -32,6 +33,7 @@ export type EcmaVersion =
   | 2023
   | 2024
   | 2025
+  | 2026
   | 'latest'
   | undefined;
 
