@@ -222,7 +222,6 @@ export class RuleTester extends TestFramework {
       linterForBasePath = (() => {
         const linter = new Linter({
           configType: 'flat',
-          cwd: basePath,
         });
 
         // This nonsense is a workaround for https://github.com/jestjs/jest/issues/14840
