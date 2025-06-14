@@ -56,3 +56,9 @@ let value = /regex/;
 value.toString();
 let text = `${value}`;
 String(/regex/);
+
+Options: { "checkUnknown": true }
+
+declare const x: unknown;
+String(x);
+       ~ 'x' may use Object's default stringification format ('[object Object]') when stringified.
