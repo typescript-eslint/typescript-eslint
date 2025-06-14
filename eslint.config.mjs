@@ -7,7 +7,7 @@ import eslint from '@eslint/js';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
 import vitestPlugin from '@vitest/eslint-plugin';
 import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
-import importPlugin from 'eslint-plugin-import';
+import importXPlugin, { createNodeResolver } from 'eslint-plugin-import-x';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import perfectionistPlugin from 'eslint-plugin-perfectionist';
@@ -38,7 +38,7 @@ export default tseslint.config(
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
-      ['import']: importPlugin,
+      ['import-x']: importXPlugin,
       ['jsdoc']: jsdocPlugin,
       // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
       ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
@@ -54,6 +54,7 @@ export default tseslint.config(
     },
     /* eslint-enable no-useless-computed-key */
     settings: {
+      'import-x/resolver-next': createNodeResolver(),
       perfectionist: {
         order: 'asc',
         partitionByComment: true,
@@ -263,24 +264,24 @@ export default tseslint.config(
       ],
 
       //
-      // eslint-plugin-import
+      // eslint-plugin-import-x
       //
       // enforces consistent type specifier style for named imports
-      'import/consistent-type-specifier-style': 'error',
+      'import-x/consistent-type-specifier-style': 'error',
       // disallow non-import statements appearing before import statements
-      'import/first': 'error',
+      'import-x/first': 'error',
       // Require a newline after the last import/require in a group
-      'import/newline-after-import': 'error',
+      'import-x/newline-after-import': 'error',
       // Forbid import of modules using absolute paths
-      'import/no-absolute-path': 'error',
+      'import-x/no-absolute-path': 'error',
       // disallow AMD require/define
-      'import/no-amd': 'error',
+      'import-x/no-amd': 'error',
       // forbid default exports - we want to standardize on named exports so that imported names are consistent
-      'import/no-default-export': 'error',
+      'import-x/no-default-export': 'error',
       // disallow imports from duplicate paths
-      'import/no-duplicates': 'error',
+      'import-x/no-duplicates': 'error',
       // Forbid the use of extraneous packages
-      'import/no-extraneous-dependencies': [
+      'import-x/no-extraneous-dependencies': [
         'error',
         {
           devDependencies: true,
@@ -289,15 +290,15 @@ export default tseslint.config(
         },
       ],
       // Forbid mutable exports
-      'import/no-mutable-exports': 'error',
+      'import-x/no-mutable-exports': 'error',
       // Prevent importing the default as if it were named
-      'import/no-named-default': 'error',
+      'import-x/no-named-default': 'error',
       // Prohibit named exports
-      'import/no-named-export': 'off', // we want everything to be a named export
+      'import-x/no-named-export': 'off', // we want everything to be a named export
       // Forbid a module from importing itself
-      'import/no-self-import': 'error',
+      'import-x/no-self-import': 'error',
       // Require modules with a single export to use a default export
-      'import/prefer-default-export': 'off', // we want everything to be named
+      'import-x/prefer-default-export': 'off', // we want everything to be named
 
       // enforce a sort order across the codebase
       'perfectionist/sort-imports': 'error',
@@ -448,7 +449,7 @@ export default tseslint.config(
     name: 'no-default-export',
     rules: {
       // requirement
-      'import/no-default-export': 'off',
+      'import-x/no-default-export': 'off',
     },
   },
 
@@ -491,7 +492,7 @@ export default tseslint.config(
       ],
 
       // specifically for rules - default exports makes the tooling easier
-      'import/no-default-export': 'off',
+      'import-x/no-default-export': 'off',
 
       'no-restricted-syntax': [
         'error',
@@ -510,7 +511,7 @@ export default tseslint.config(
     name: 'eslint-plugin/source-files/rules-index-file',
     rules: {
       // enforce alphabetical ordering
-      'import/order': ['error', { alphabetize: { order: 'asc' } }],
+      'import-x/order': ['error', { alphabetize: { order: 'asc' } }],
       'sort-keys': 'error',
     },
   },
@@ -593,7 +594,7 @@ export default tseslint.config(
     name: 'website',
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
-      'import/no-default-export': 'off',
+      'import-x/no-default-export': 'off',
       'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
@@ -606,10 +607,9 @@ export default tseslint.config(
     },
   },
   {
-    files: ['packages/website/src/**/*.?(m|c)ts?(x)'],
+    files: ['packages/website/src/**/*.?(m|c)[tj]s?(x)'],
     name: 'website/source-files',
     rules: {
-      'import/no-default-export': 'off',
       // allow console logs in the website to help with debugging things in production
       'no-console': 'off',
     },
@@ -619,7 +619,7 @@ export default tseslint.config(
     name: 'website/source-files/mocks-and-declaration-files',
     rules: {
       // mocks and declaration files have to mirror their original package
-      'import/no-default-export': 'off',
+      'import-x/no-default-export': 'off',
     },
   },
   {
