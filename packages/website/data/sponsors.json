@@ -227,7 +227,7 @@
     "id": "syntaxfm",
     "image": "https://avatars.githubusercontent.com/u/130389858?v=4",
     "name": "Syntax",
-    "totalDonations": 34208,
+    "totalDonations": 39473,
     "website": "https://syntax.fm"
   },
   {
@@ -322,6 +322,13 @@
     "website": "https://balsa.com/"
   },
   {
+    "id": "getsentry",
+    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
+    "name": "Sentry",
+    "totalDonations": 15455,
+    "website": "https://sentry.io"
+  },
+  {
     "id": "THE PADDING",
     "image": "https://images.opencollective.com/thepadding/55e79ad/logo.png",
     "name": "THE PADDING",
@@ -329,25 +336,18 @@
     "website": "https://paddn.com/"
   },
   {
+    "id": "codecov",
+    "image": "https://avatars.githubusercontent.com/u/8226205?v=4",
+    "name": "Codecov",
+    "totalDonations": 14501,
+    "website": "https://codecov.io/"
+  },
+  {
     "id": "Now4real",
     "image": "https://images.opencollective.com/now4real/54ca7d9/logo.png",
     "name": "Now4real",
     "totalDonations": 14500,
     "website": "https://now4real.com/"
-  },
-  {
-    "id": "getsentry",
-    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
-    "name": "Sentry",
-    "totalDonations": 13614,
-    "website": "https://sentry.io"
-  },
-  {
-    "id": "codecov",
-    "image": "https://avatars.githubusercontent.com/u/8226205?v=4",
-    "name": "Codecov",
-    "totalDonations": 13218,
-    "website": "https://codecov.io/"
   },
   {
     "id": "gitbutlerapp",
