@@ -5,8 +5,8 @@
 **/.vs
 CONTRIBUTORS.md
 
-.yarn/plugins
-.yarn/releases
+pnpm-lock.yaml
+pnpm-workspace.yaml
 
 packages/eslint-plugin/tests/fixtures/indent/
 
