@@ -7,7 +7,7 @@ import semverSatisfies from 'semver/functions/satisfies';
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import type { CreateLinter } from '../linter/createLinter';
 import type { PlaygroundSystem } from '../linter/types';
-import type { RuleDetails } from '../types';
+import type { ConfigModel, RuleDetails } from '../types';
 import type { CommonEditorProps } from './types';
 
 import rootPackageJson from '../../../../../package.json';
@@ -23,6 +23,7 @@ export interface SandboxServicesProps {
     ruleDetails: RuleDetails[],
     tsVersions: readonly string[],
   ) => void;
+  readonly setState: (value: Partial<ConfigModel>) => void;
   readonly ts: string;
 }
 
@@ -140,6 +141,12 @@ export const useSandboxServices = (
       })
       .catch((err: unknown) => {
         if (err instanceof Error) {
+          if (
+            err.message ===
+            'Could not get all the dependencies of sandbox set up!'
+          ) {
+            props.setState({ ts: process.env.TS_VERSION });
+          }
           setServices(err);
         } else {
           setServices(new Error(String(err)));
