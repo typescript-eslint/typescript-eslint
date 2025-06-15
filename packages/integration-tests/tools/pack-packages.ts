@@ -40,8 +40,6 @@ export const FIXTURES_DESTINATION_DIR = path.join(
   FIXTURES_DIR_BASENAME,
 );
 
-const YARN_RC_CONTENT = 'nodeLinker: node-modules\n\nenableGlobalCache: true\n';
-
 const FIXTURES_DIR = path.join(__dirname, '..', FIXTURES_DIR_BASENAME);
 
 const TAR_FOLDER = path.join(INTEGRATION_TEST_DIR, 'tarballs');
@@ -118,10 +116,6 @@ export const setup = async (project: TestProject): Promise<void> => {
     encoding: 'utf-8',
   });
 
-  await fs.writeFile(path.join(temp, '.yarnrc.yml'), YARN_RC_CONTENT, {
-    encoding: 'utf-8',
-  });
-
   await fs.writeFile(
     path.join(temp, 'package.json'),
     JSON.stringify(
@@ -137,13 +131,13 @@ export const setup = async (project: TestProject): Promise<void> => {
     { encoding: 'utf-8' },
   );
 
-  // We install the tarballs here once so that yarn can cache them globally.
+  // We install the tarballs here once so that pnpm can cache them globally.
   // This solves 2 problems:
   // 1. Tests can be run concurrently because they won't be trying to install
   //    the same tarballs at the same time.
-  // 2. Installing the tarballs for each test becomes much faster as Yarn can
-  //    grab them from the global cache folder.
-  await execFile('yarn', ['install', '--no-immutable'], {
+  // 2. Installing the tarballs for each test becomes much faster as pnpm can
+  //    reuse them from its global content-addressable store.
+  await execFile('pnpm', ['install', '--no-frozen-lockfile'], {
     cwd: temp,
     shell: true,
   });
@@ -187,15 +181,9 @@ export const setup = async (project: TestProject): Promise<void> => {
         { encoding: 'utf-8' },
       );
 
-      await fs.writeFile(
-        path.join(testFolder, '.yarnrc.yml'),
-        YARN_RC_CONTENT,
-        { encoding: 'utf-8' },
-      );
-
       const { stderr, stdout } = await execFile(
-        'yarn',
-        ['install', '--no-immutable'],
+        'pnpm',
+        ['install', '--no-frozen-lockfile'],
         {
           cwd: testFolder,
           shell: true,
