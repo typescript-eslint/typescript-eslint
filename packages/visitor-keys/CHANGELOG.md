@@ -1,3 +1,15 @@
+## 8.34.1 (2025-06-16)
+
+### 🩹 Fixes
+
+- **visitor-keys:** bump `eslint-visitor-keys` dependency ([#11294](https://github.com/typescript-eslint/typescript-eslint/pull/11294))
+
+### ❤️ Thank You
+
+- overlookmotel
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.34.0 (2025-06-09)
 
 ### 🩹 Fixes
