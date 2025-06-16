@@ -56,14 +56,6 @@ runs:
             }
           }
 
-          async function run() {
-            const pr = await getPullRequest();
-            checkTitle(pr.title);
-            checkDescription(pr.body ?? '', pr.labels);
-          }
-
-          try {
-            await run();
-          } catch (e) {
-            throw new Error(e.message ?? String(e));
-          }
+          const pr = await getPullRequest();
+          checkTitle(pr.title);
+          checkDescription(pr.body ?? '', pr.labels);
