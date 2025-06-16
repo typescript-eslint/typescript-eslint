@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > default-and-named-and-namespace > Babel - Error`]
-SyntaxError: Unexpected token, expected "from" (1:16)
+BabelError
+> 1 | import a, * as b, { c } from 'mod';
+    |                 ^ Unexpected token, expected "from" (1:16)
+  2 |
+  

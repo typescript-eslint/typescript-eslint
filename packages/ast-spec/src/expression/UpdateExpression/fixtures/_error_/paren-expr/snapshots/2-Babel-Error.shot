@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > expression > UpdateExpression > _error_ > paren-expr > Babel - Error`]
-SyntaxError: Invalid left-hand side in postfix operation. (1:1)
+BabelError
+> 1 | (a())++;
+    |  ^ Invalid left-hand side in postfix operation. (1:1)
+  2 |
+  
