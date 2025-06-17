@@ -253,4 +253,4 @@ declare module './generated/ast-spec' {
   }
 }
 
-export * as TSESTree from './generated/ast-spec';
+export type * as TSESTree from './generated/ast-spec';
