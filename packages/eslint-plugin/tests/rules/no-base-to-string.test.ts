@@ -13,7 +13,13 @@ const ruleTester = new RuleTester({
   },
 });
 
-const literalListBasic: string[] = [
+/**
+ * ref: https://github.com/typescript-eslint/typescript-eslint/issues/11043
+ * Be careful with dynamic test case generation.
+ * Iterate based on the following cases:
+ * 1. literalListBasic
+ * ```
+[
   "''",
   "'text'",
   'true',
@@ -23,45 +29,190 @@ const literalListBasic: string[] = [
   '[]',
   '/regex/',
 ];
-
-const literalListNeedParen: string[] = [
+ * ```
+ * 2. literalListNeedParen
+ * ```
+[
   "__dirname === 'foobar'",
   '{}.constructor()',
   '() => {}',
   'function() {}',
 ];
-
-const literalList = [...literalListBasic, ...literalListNeedParen];
-
-const literalListWrapped = [
-  ...literalListBasic,
-  ...literalListNeedParen.map(i => `(${i})`),
-];
-
+ * ```
+ */
 ruleTester.run('no-base-to-string', rule, {
   valid: [
     // template
-    ...literalList.map(i => `\`\${${i}}\`;`),
+    "`${''}`;",
+    "`${'text'}`;",
+    '`${true}`;',
+    '`${false}`;',
+    '`${1}`;',
+    '`${1n}`;',
+    '`${[]}`;',
+    '`${/regex/}`;',
+    "`${__dirname === 'foobar'}`;",
+    '`${{}.constructor()}`;',
+    '`${() => {}}`;',
+    '`${function () {}}`;',
 
     // operator + +=
-    ...literalListWrapped.flatMap(l =>
-      literalListWrapped.map(r => `${l} + ${r};`),
-    ),
+    "'' + 'text';",
+    "'' + true;",
+    "'' + false;",
+    "'' + 1;",
+    "'' + 1n;",
+    "'' + [];",
+    "'' + /regex/;",
+    "'' + (__dirname === 'foobar');",
+    "'' + {}.constructor();",
+    "'' + (() => {});",
+    "'' + function () {};",
+    "'text' + true;",
+    "'text' + false;",
+    "'text' + 1;",
+    "'text' + 1n;",
+    "'text' + [];",
+    "'text' + /regex/;",
+    "'text' + (__dirname === 'foobar');",
+    "'text' + {}.constructor();",
+    "'text' + (() => {});",
+    "'text' + function () {};",
+    'true + false;',
+    'true + 1;',
+    'true + 1n;',
+    'true + [];',
+    'true + /regex/;',
+    "true + (__dirname === 'foobar');",
+    'true + {}.constructor();',
+    'true + (() => {});',
+    'true + function () {};',
+    'false + 1;',
+    'false + 1n;',
+    'false + [];',
+    'false + /regex/;',
+    "false + (__dirname === 'foobar');",
+    'false + {}.constructor();',
+    'false + (() => {});',
+    'false + function () {};',
+    '1 + 1n;',
+    '1 + [];',
+    '1 + /regex/;',
+    "1 + (__dirname === 'foobar');",
+    '1 + {}.constructor();',
+    '1 + (() => {});',
+    '1 + function () {};',
+    '1n + [];',
+    '1n + /regex/;',
+    "1n + (__dirname === 'foobar');",
+    '1n + {}.constructor();',
+    '1n + (() => {});',
+    '1n + function () {};',
+    '[] + /regex/;',
+    "[] + (__dirname === 'foobar');",
+    '[] + {}.constructor();',
+    '[] + (() => {});',
+    '[] + function () {};',
+    "/regex/ + (__dirname === 'foobar');",
+    '/regex/ + {}.constructor();',
+    '/regex/ + (() => {});',
+    '/regex/ + function () {};',
+    "(__dirname === 'foobar') + {}.constructor();",
+    "(__dirname === 'foobar') + (() => {});",
+    "(__dirname === 'foobar') + function () {};",
+    '({}).constructor() + (() => {});',
+    '({}).constructor() + function () {};',
+    '(() => {}) + function () {};',
 
     // toString()
-    ...literalListWrapped.map(i => `${i === '1' ? `(${i})` : i}.toString();`),
+    "''.toString();",
+    "'text'.toString();",
+    'true.toString();',
+    'false.toString();',
+    '(1).toString();',
+    '1n.toString();',
+    '[].toString();',
+    '/regex/.toString();',
+    "(__dirname === 'foobar').toString();",
+    '({}).constructor().toString();',
+    '(() => {}).toString();',
+    '(function () {}).toString();',
 
     // variable toString() and template
-    ...literalList.map(
-      i => `
-        let value = ${i};
-        value.toString();
-        let text = \`\${value}\`;
-      `,
-    ),
+    `
+      let value = '';
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = 'text';
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = true;
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = false;
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = 1;
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = 1n;
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = [];
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = /regex/;
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = __dirname === 'foobar';
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = {}.constructor();
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = () => {};
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = function () {};
+      value.toString();
+      let text = \`\${value}\`;
+    `,
 
     // String()
-    ...literalList.map(i => `String(${i});`),
+    "String('');",
+    "String('text');",
+    'String(true);',
+    'String(false);',
+    'String(1);',
+    'String(1n);',
+    'String([]);',
+    'String(/regex/);',
+    "String(__dirname === 'foobar');",
+    'String({}.constructor());',
+    'String(() => {});',
+    'String(function () {});',
     `
 function someFunction() {}
 someFunction.toString();

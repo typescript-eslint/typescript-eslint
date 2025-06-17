@@ -1,3 +1,15 @@
+## 8.34.1 (2025-06-16)
+
+### 🩹 Fixes
+
+- **typescript-estree:** emit a Literal instead of Identifier for constructor when the identifier is a string ([#11299](https://github.com/typescript-eslint/typescript-eslint/pull/11299))
+
+### ❤️ Thank You
+
+- Tao
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.34.0 (2025-06-09)
 
 ### 🩹 Fixes
