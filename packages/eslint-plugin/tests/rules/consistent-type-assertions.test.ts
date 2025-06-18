@@ -1,141 +1,516 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- TODO - migrate this test away from `batchedSingleLineTests` */
-
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import * as parser from '@typescript-eslint/parser';
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-import type {
-  MessageIds,
-  Options,
-} from '../../src/rules/consistent-type-assertions';
-
 import rule from '../../src/rules/consistent-type-assertions';
-import { dedupeTestCases } from '../dedupeTestCases';
-import { batchedSingleLineTests } from '../RuleTester';
 
 const ruleTester = new RuleTester();
 
-const ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE = `
-const x = <Foo>new Generic<int>();
-const x = <A>b;
-const x = <readonly number[]>[1];
-const x = <a | b>('string');
-const x = <A>!'string';
-const x = <A>a + b;
-const x = <(A)>a + (b);
-const x = <Foo>(new Generic<string>());
-const x = new (<Foo>Generic<string>)();
-const x = new (<Foo>Generic<string>)('string');
-const x = () => <Foo>{ bar: 5 };
-const x = () => <Foo>({ bar: 5 });
-const x = () => <Foo>bar;
-const x = <Foo>bar<string>\`\${"baz"}\`;`;
-
-const ANGLE_BRACKET_TESTS = `${ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE}
-const x = <const>{ key: 'value' };
-`;
-
-// Intentionally contains a duplicate in order to mirror ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE
-const AS_TESTS_EXCEPT_CONST_CASE = `
-const x = new Generic<int>() as Foo;
-const x = b as A;
-const x = [1] as readonly number[];
-const x = 'string' as a | b;
-const x = !'string' as A;
-const x = (a as A) + b;
-const x = (a as A) + (b);
-const x = new Generic<string>() as Foo;
-const x = new ((Generic<string>) as Foo)();
-const x = new ((Generic<string>) as Foo)('string');
-const x = () => ({ bar: 5 } as Foo);
-const x = () => ({ bar: 5 } as Foo);
-const x = () => (bar as Foo);
-const x = bar<string>\`\${"baz"}\` as Foo;`;
-
-const AS_TESTS = `${AS_TESTS_EXCEPT_CONST_CASE}
-const x = { key: 'value' } as const;
-`;
-
-const OBJECT_LITERAL_AS_CASTS = `
-const x = {} as Foo<int>;
-const x = ({}) as a | b;
-const x = {} as A + b;
-`;
-const OBJECT_LITERAL_ANGLE_BRACKET_CASTS = `
-const x = <Foo<int>>{};
-const x = <a | b>({});
-const x = <A>{} + b;
-`;
-const OBJECT_LITERAL_ARGUMENT_AS_CASTS = `
-print({ bar: 5 } as Foo)
-new print({ bar: 5 } as Foo)
-function foo() { throw { bar: 5 } as Foo }
-function b(x = {} as Foo.Bar) {}
-function c(x = {} as Foo) {}
-print?.({ bar: 5 } as Foo)
-print?.call({ bar: 5 } as Foo)
-print\`\${{ bar: 5 } as Foo}\`
-`;
-const OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS = `
-print(<Foo>{ bar: 5 })
-new print(<Foo>{ bar: 5 })
-function foo() { throw <Foo>{ bar: 5 } }
-print?.(<Foo>{ bar: 5 })
-print?.call(<Foo>{ bar: 5 })
-print\`\${<Foo>{ bar: 5 }}\`
-`;
-
 ruleTester.run('consistent-type-assertions', rule, {
   valid: [
-    ...dedupeTestCases(
-      batchedSingleLineTests<Options>({
-        code: AS_TESTS,
-        options: [
-          { assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' },
-        ],
-      }),
-    ),
-    ...batchedSingleLineTests<Options>({
-      code: ANGLE_BRACKET_TESTS,
+    {
+      code: 'const x = new Generic<int>() as Foo;',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = b as A;',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = [1] as readonly number[];',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: "const x = 'string' as a | b;",
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: "const x = !'string' as A;",
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = (a as A) + b;',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = new Generic<string>() as Foo;',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = new (Generic<string> as Foo)();',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: "const x = new (Generic<string> as Foo)('string');",
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = () => ({ bar: 5 }) as Foo;',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = () => bar as Foo;',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: "const x = bar<string>`${'baz'}` as Foo;",
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: "const x = { key: 'value' } as const;",
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = <Foo>new Generic<int>();',
       options: [
         {
           assertionStyle: 'angle-bracket',
           objectLiteralTypeAssertions: 'allow',
         },
       ],
-    }),
-    ...batchedSingleLineTests<Options>({
-      code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
+    },
+    {
+      code: 'const x = <A>b;',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = <readonly number[]>[1];',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: "const x = <a | b>'string';",
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: "const x = <A>!'string';",
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = <A>a + b;',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = <Foo>new Generic<string>();',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = new (<Foo>Generic<string>)();',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: "const x = new (<Foo>Generic<string>)('string');",
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = () => <Foo>{ bar: 5 };',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = () => <Foo>bar;',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: "const x = <Foo>bar<string>`${'baz'}`;",
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: "const x = <const>{ key: 'value' };",
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = {} as Foo<int>;',
       options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
-    }),
-    ...batchedSingleLineTests<Options>({
-      code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
+    },
+    {
+      code: 'const x = {} as a | b;',
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
+    },
+    {
+      code: 'const x = ({} as A) + b;',
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
+    },
+    {
+      code: 'print({ bar: 5 } as Foo);',
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
+    },
+    {
+      code: 'new print({ bar: 5 } as Foo);',
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
+    },
+    {
+      code: `
+function foo() {
+  throw { bar: 5 } as Foo;
+}
+      `,
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
+    },
+    {
+      code: 'function b(x = {} as Foo.Bar) {}',
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
+    },
+    {
+      code: 'function c(x = {} as Foo) {}',
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
+    },
+    {
+      code: 'print?.({ bar: 5 } as Foo);',
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
+    },
+    {
+      code: 'print?.call({ bar: 5 } as Foo);',
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
+    },
+    {
+      code: 'print`${{ bar: 5 } as Foo}`;',
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
+    },
+    {
+      code: 'const x = <Foo<int>>{};',
       options: [
         {
           assertionStyle: 'angle-bracket',
           objectLiteralTypeAssertions: 'allow',
         },
       ],
-    }),
-    ...batchedSingleLineTests<Options>({
-      code: OBJECT_LITERAL_ARGUMENT_AS_CASTS,
+    },
+    {
+      code: 'const x = <a | b>{};',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'const x = <A>{} + b;',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'print(<Foo>{ bar: 5 });',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'new print(<Foo>{ bar: 5 });',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  throw <Foo>{ bar: 5 };
+}
+      `,
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'print?.(<Foo>{ bar: 5 });',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'print?.call(<Foo>{ bar: 5 });',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'print`${<Foo>{ bar: 5 }}`;',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+    {
+      code: 'print({ bar: 5 } as Foo);',
       options: [
         {
           assertionStyle: 'as',
           objectLiteralTypeAssertions: 'allow-as-parameter',
         },
       ],
-    }),
-    ...batchedSingleLineTests<Options>({
-      code: OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS,
+    },
+    {
+      code: 'new print({ bar: 5 } as Foo);',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  throw { bar: 5 } as Foo;
+}
+      `,
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'function b(x = {} as Foo.Bar) {}',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'function c(x = {} as Foo) {}',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'print?.({ bar: 5 } as Foo);',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'print?.call({ bar: 5 } as Foo);',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'print`${{ bar: 5 } as Foo}`;',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'print(<Foo>{ bar: 5 });',
       options: [
         {
           assertionStyle: 'angle-bracket',
           objectLiteralTypeAssertions: 'allow-as-parameter',
         },
       ],
-    }),
+    },
+    {
+      code: 'new print(<Foo>{ bar: 5 });',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  throw <Foo>{ bar: 5 };
+}
+      `,
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'print?.(<Foo>{ bar: 5 });',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'print?.call(<Foo>{ bar: 5 });',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'print`${<Foo>{ bar: 5 }}`;',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+
     {
       code: 'const x = [] as string[];',
       options: [
@@ -347,30 +722,524 @@ const x = { key: 'value' } as unknown;
     },
   ],
   invalid: [
-    ...dedupeTestCases(
-      (
-        [
-          ['angle-bracket', AS_TESTS],
-          ['as', ANGLE_BRACKET_TESTS, AS_TESTS],
-          ['never', AS_TESTS_EXCEPT_CONST_CASE],
-          ['never', ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE],
-        ] as const
-      ).flatMap(([assertionStyle, code, output]) =>
-        batchedSingleLineTests<MessageIds, Options>({
-          code,
-          errors: code
-            .split(`\n`)
-            .map((_, i) => ({ line: i + 1, messageId: assertionStyle })),
-          options: [{ assertionStyle }],
-          output,
-        }),
-      ),
-    ),
-    ...batchedSingleLineTests<MessageIds, Options>({
-      code: OBJECT_LITERAL_AS_CASTS,
+    {
+      code: 'const x = new Generic<int>() as Foo;',
       errors: [
         {
-          line: 2,
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: 'const x = b as A;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: 'const x = [1] as readonly number[];',
+      errors: [
+        {
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: "const x = 'string' as a | b;",
+      errors: [
+        {
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: "const x = !'string' as A;",
+      errors: [
+        {
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: 'const x = (a as A) + b;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: 'const x = new Generic<string>() as Foo;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: 'const x = new (Generic<string> as Foo)();',
+      errors: [
+        {
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: "const x = new (Generic<string> as Foo)('string');",
+      errors: [
+        {
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: 'const x = () => ({ bar: 5 }) as Foo;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: 'const x = () => bar as Foo;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: "const x = bar<string>`${'baz'}` as Foo;",
+      errors: [
+        {
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: "const x = { key: 'value' } as const;",
+      errors: [
+        {
+          line: 1,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [{ assertionStyle: 'angle-bracket' }],
+    },
+    {
+      code: 'const x = <Foo>new Generic<int>();',
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: 'const x = new Generic<int>() as Foo;',
+    },
+    {
+      code: 'const x = <A>b;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: 'const x = b as A;',
+    },
+    {
+      code: 'const x = <readonly number[]>[1];',
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: 'const x = [1] as readonly number[];',
+    },
+    {
+      code: "const x = <a | b>'string';",
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: "const x = 'string' as a | b;",
+    },
+    {
+      code: "const x = <A>!'string';",
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: "const x = !'string' as A;",
+    },
+    {
+      code: 'const x = <A>a + b;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: 'const x = (a as A) + b;',
+    },
+    {
+      code: 'const x = <Foo>new Generic<string>();',
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: 'const x = new Generic<string>() as Foo;',
+    },
+    {
+      code: 'const x = new (<Foo>Generic<string>)();',
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: 'const x = new ((Generic<string>) as Foo)();',
+    },
+    {
+      code: "const x = new (<Foo>Generic<string>)('string');",
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: "const x = new ((Generic<string>) as Foo)('string');",
+    },
+    {
+      code: 'const x = () => <Foo>{ bar: 5 };',
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: 'const x = () => ({ bar: 5 } as Foo);',
+    },
+    {
+      code: 'const x = () => <Foo>bar;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: 'const x = () => (bar as Foo);',
+    },
+    {
+      code: "const x = <Foo>bar<string>`${'baz'}`;",
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: "const x = bar<string>`${'baz'}` as Foo;",
+    },
+    {
+      code: "const x = <const>{ key: 'value' };",
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
+      options: [{ assertionStyle: 'as' }],
+      output: "const x = { key: 'value' } as const;",
+    },
+    {
+      code: 'const x = new Generic<int>() as Foo;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = b as A;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = [1] as readonly number[];',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: "const x = 'string' as a | b;",
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: "const x = !'string' as A;",
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = (a as A) + b;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = new Generic<string>() as Foo;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = new (Generic<string> as Foo)();',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: "const x = new (Generic<string> as Foo)('string');",
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = () => ({ bar: 5 }) as Foo;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = () => bar as Foo;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: "const x = bar<string>`${'baz'}` as Foo;",
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = <Foo>new Generic<int>();',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = <A>b;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = <readonly number[]>[1];',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: "const x = <a | b>'string';",
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: "const x = <A>!'string';",
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = <A>a + b;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = <Foo>new Generic<string>();',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = new (<Foo>Generic<string>)();',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: "const x = new (<Foo>Generic<string>)('string');",
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = () => <Foo>{ bar: 5 };',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = () => <Foo>bar;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: "const x = <Foo>bar<string>`${'baz'}`;",
+      errors: [
+        {
+          line: 1,
+          messageId: 'never',
+        },
+      ],
+      options: [{ assertionStyle: 'never' }],
+    },
+    {
+      code: 'const x = {} as Foo<int>;',
+      errors: [
+        {
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
@@ -382,33 +1251,6 @@ const x = { key: 'value' } as unknown;
               data: { cast: 'Foo<int>' },
               messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'const x = {} satisfies Foo<int>;',
-            },
-          ],
-        },
-        {
-          line: 3,
-          messageId: 'unexpectedObjectTypeAssertion',
-          suggestions: [
-            {
-              data: { cast: 'a | b' },
-              messageId: 'replaceObjectTypeAssertionWithAnnotation',
-              output: 'const x: a | b = ({});',
-            },
-            {
-              data: { cast: 'a | b' },
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'const x = ({}) satisfies a | b;',
-            },
-          ],
-        },
-        {
-          line: 4,
-          messageId: 'unexpectedObjectTypeAssertion',
-          suggestions: [
-            {
-              data: { cast: 'A' },
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'const x = {} satisfies A + b;',
             },
           ],
         },
@@ -419,12 +1261,61 @@ const x = { key: 'value' } as unknown;
           objectLiteralTypeAssertions: 'allow-as-parameter',
         },
       ],
-    }),
-    ...batchedSingleLineTests<MessageIds, Options>({
-      code: OBJECT_LITERAL_ANGLE_BRACKET_CASTS,
+    },
+    {
+      code: 'const x = {} as a | b;',
       errors: [
         {
-          line: 2,
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'a | b' },
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
+              output: 'const x: a | b = {};',
+            },
+            {
+              data: { cast: 'a | b' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = {} satisfies a | b;',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'const x = ({} as A) + b;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'A' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = ({} satisfies A) + b;',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'const x = <Foo<int>>{};',
+      errors: [
+        {
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
@@ -439,24 +1330,46 @@ const x = { key: 'value' } as unknown;
             },
           ],
         },
+      ],
+      options: [
         {
-          line: 3,
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'const x = <a | b>{};',
+      errors: [
+        {
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
               data: { cast: 'a | b' },
               messageId: 'replaceObjectTypeAssertionWithAnnotation',
-              output: 'const x: a | b = ({});',
+              output: 'const x: a | b = {};',
             },
             {
               data: { cast: 'a | b' },
               messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'const x = ({}) satisfies a | b;',
+              output: 'const x = {} satisfies a | b;',
             },
           ],
         },
+      ],
+      options: [
         {
-          line: 4,
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'const x = <A>{} + b;',
+      errors: [
+        {
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
@@ -473,12 +1386,12 @@ const x = { key: 'value' } as unknown;
           objectLiteralTypeAssertions: 'allow-as-parameter',
         },
       ],
-    }),
-    ...batchedSingleLineTests<MessageIds, Options>({
-      code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
+    },
+    {
+      code: 'const x = {} as Foo<int>;',
       errors: [
         {
-          line: 2,
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
@@ -493,68 +1406,112 @@ const x = { key: 'value' } as unknown;
             },
           ],
         },
+      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: 'const x = {} as a | b;',
+      errors: [
         {
-          line: 3,
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
               data: { cast: 'a | b' },
               messageId: 'replaceObjectTypeAssertionWithAnnotation',
-              output: 'const x: a | b = ({});',
+              output: 'const x: a | b = {};',
             },
             {
               data: { cast: 'a | b' },
               messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'const x = ({}) satisfies a | b;',
+              output: 'const x = {} satisfies a | b;',
             },
           ],
         },
+      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: 'const x = ({} as A) + b;',
+      errors: [
         {
-          line: 4,
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
               data: { cast: 'A' },
               messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'const x = {} satisfies A + b;',
+              output: 'const x = ({} satisfies A) + b;',
             },
           ],
         },
+      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: 'print({ bar: 5 } as Foo);',
+      errors: [
         {
-          line: 5,
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
               data: { cast: 'Foo' },
               messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'print({ bar: 5 } satisfies Foo)',
+              output: 'print({ bar: 5 } satisfies Foo);',
             },
           ],
         },
+      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: 'new print({ bar: 5 } as Foo);',
+      errors: [
         {
-          line: 6,
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
               data: { cast: 'Foo' },
               messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'new print({ bar: 5 } satisfies Foo)',
+              output: 'new print({ bar: 5 } satisfies Foo);',
             },
           ],
         },
+      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: `
+function foo() {
+  throw { bar: 5 } as Foo;
+}
+      `,
+      errors: [
         {
-          line: 7,
+          line: 3,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
               data: { cast: 'Foo' },
               messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'function foo() { throw { bar: 5 } satisfies Foo }',
+              output: `
+function foo() {
+  throw { bar: 5 } satisfies Foo;
+}
+      `,
             },
           ],
         },
+      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: 'function b(x = {} as Foo.Bar) {}',
+      errors: [
         {
-          line: 8,
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
@@ -564,8 +1521,14 @@ const x = { key: 'value' } as unknown;
             },
           ],
         },
+      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: 'function c(x = {} as Foo) {}',
+      errors: [
         {
-          line: 9,
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
@@ -575,47 +1538,65 @@ const x = { key: 'value' } as unknown;
             },
           ],
         },
+      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: 'print?.({ bar: 5 } as Foo);',
+      errors: [
         {
-          line: 10,
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
               data: { cast: 'Foo' },
               messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'print?.({ bar: 5 } satisfies Foo)',
-            },
-          ],
-        },
-        {
-          line: 11,
-          messageId: 'unexpectedObjectTypeAssertion',
-          suggestions: [
-            {
-              data: { cast: 'Foo' },
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'print?.call({ bar: 5 } satisfies Foo)',
-            },
-          ],
-        },
-        {
-          line: 12,
-          messageId: 'unexpectedObjectTypeAssertion',
-          suggestions: [
-            {
-              data: { cast: 'Foo' },
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: `print\`\${{ bar: 5 } satisfies Foo}\``,
+              output: 'print?.({ bar: 5 } satisfies Foo);',
             },
           ],
         },
       ],
       options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
-    }),
-    ...batchedSingleLineTests<MessageIds, Options>({
-      code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
+    },
+    {
+      code: 'print?.call({ bar: 5 } as Foo);',
       errors: [
         {
-          line: 2,
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'print?.call({ bar: 5 } satisfies Foo);',
+            },
+          ],
+        },
+      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: 'print`${{ bar: 5 } as Foo}`;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'print`${{ bar: 5 } satisfies Foo}`;',
+            },
+          ],
+        },
+      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: 'const x = <Foo<int>>{};',
+      errors: [
+        {
+          line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
@@ -627,99 +1608,6 @@ const x = { key: 'value' } as unknown;
               data: { cast: 'Foo<int>' },
               messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'const x = {} satisfies Foo<int>;',
-            },
-          ],
-        },
-        {
-          line: 3,
-          messageId: 'unexpectedObjectTypeAssertion',
-          suggestions: [
-            {
-              data: { cast: 'a | b' },
-              messageId: 'replaceObjectTypeAssertionWithAnnotation',
-              output: 'const x: a | b = ({});',
-            },
-            {
-              data: { cast: 'a | b' },
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'const x = ({}) satisfies a | b;',
-            },
-          ],
-        },
-        {
-          line: 4,
-          messageId: 'unexpectedObjectTypeAssertion',
-          suggestions: [
-            {
-              data: { cast: 'A' },
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'const x = {} satisfies A + b;',
-            },
-          ],
-        },
-        {
-          line: 5,
-          messageId: 'unexpectedObjectTypeAssertion',
-          suggestions: [
-            {
-              data: { cast: 'Foo' },
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'print({ bar: 5 } satisfies Foo)',
-            },
-          ],
-        },
-        {
-          line: 6,
-          messageId: 'unexpectedObjectTypeAssertion',
-          suggestions: [
-            {
-              data: { cast: 'Foo' },
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'new print({ bar: 5 } satisfies Foo)',
-            },
-          ],
-        },
-        {
-          line: 7,
-          messageId: 'unexpectedObjectTypeAssertion',
-          suggestions: [
-            {
-              data: { cast: 'Foo' },
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'function foo() { throw { bar: 5 } satisfies Foo }',
-            },
-          ],
-        },
-        {
-          line: 8,
-          messageId: 'unexpectedObjectTypeAssertion',
-          suggestions: [
-            {
-              data: { cast: 'Foo' },
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'print?.({ bar: 5 } satisfies Foo)',
-            },
-          ],
-        },
-        {
-          line: 9,
-          messageId: 'unexpectedObjectTypeAssertion',
-          suggestions: [
-            {
-              data: { cast: 'Foo' },
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: 'print?.call({ bar: 5 } satisfies Foo)',
-            },
-          ],
-        },
-        {
-          line: 10,
-          messageId: 'unexpectedObjectTypeAssertion',
-          suggestions: [
-            {
-              data: { cast: 'Foo' },
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              output: `print\`\${{ bar: 5 } satisfies Foo}\``,
             },
           ],
         },
@@ -730,7 +1618,196 @@ const x = { key: 'value' } as unknown;
           objectLiteralTypeAssertions: 'never',
         },
       ],
-    }),
+    },
+    {
+      code: 'const x = <a | b>{};',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'a | b' },
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
+              output: 'const x: a | b = {};',
+            },
+            {
+              data: { cast: 'a | b' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = {} satisfies a | b;',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
+    },
+    {
+      code: 'const x = <A>{} + b;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'A' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = {} satisfies A + b;',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
+    },
+    {
+      code: 'print(<Foo>{ bar: 5 });',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'print({ bar: 5 } satisfies Foo);',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
+    },
+    {
+      code: 'new print(<Foo>{ bar: 5 });',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'new print({ bar: 5 } satisfies Foo);',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  throw <Foo>{ bar: 5 };
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: `
+function foo() {
+  throw { bar: 5 } satisfies Foo;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
+    },
+    {
+      code: 'print?.(<Foo>{ bar: 5 });',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'print?.({ bar: 5 } satisfies Foo);',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
+    },
+    {
+      code: 'print?.call(<Foo>{ bar: 5 });',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'print?.call({ bar: 5 } satisfies Foo);',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
+    },
+    {
+      code: 'print`${<Foo>{ bar: 5 }}`;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'print`${{ bar: 5 } satisfies Foo}`;',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
+    },
     {
       code: 'const foo = <Foo style={{ bar: 5 } as Bar} />;',
       errors: [{ line: 1, messageId: 'never' }],
