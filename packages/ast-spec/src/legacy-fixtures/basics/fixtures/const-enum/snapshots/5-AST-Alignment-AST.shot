@@ -15,7 +15,6 @@ Snapshot Diff:
 -         members: Array [
 -           TSEnumMember {
 -             type: 'TSEnumMember',
--             computed: false,
 -             id: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -81,7 +80,6 @@ Snapshot Diff:
             },
 -           TSEnumMember {
 -             type: 'TSEnumMember',
--             computed: false,
 -             id: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -121,12 +119,7 @@ Snapshot Diff:
 -         loc: {
 -           start: { column: 15, line: 3 },
 -           end: { column: 1, line: 6 },
-+           range: [103, 106],
-+           loc: {
-+             start: { column: 2, line: 5 },
-+             end: { column: 5, line: 5 },
-+           },
-          },
+-         },
 -       },
 -       const: true,
 -       declare: false,
@@ -140,7 +133,12 @@ Snapshot Diff:
 -         loc: {
 -           start: { column: 11, line: 3 },
 -           end: { column: 14, line: 3 },
--         },
++           range: [103, 106],
++           loc: {
++             start: { column: 2, line: 5 },
++             end: { column: 5, line: 5 },
++           },
+          },
 -       },
 +       ],
 
