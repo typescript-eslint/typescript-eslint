@@ -6,12 +6,13 @@ import semverSatisfies from 'semver/functions/satisfies';
 
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import type { CreateLinter } from '../linter/createLinter';
-import type { PlaygroundSystem } from '../linter/types';
+import type { PlaygroundSystem, RegisterFile } from '../linter/types';
 import type { RuleDetails } from '../types';
 import type { CommonEditorProps } from './types';
 
 import rootPackageJson from '../../../../../package.json';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
+import { createEventsBinder } from '../lib/createEventsBinder';
 import { createFileSystem } from '../linter/bridge';
 import { createLinter } from '../linter/createLinter';
 import { createTwoslashInlayProvider } from './createProvideTwoslashInlay';
@@ -79,6 +80,7 @@ export const useSandboxServices = (
           sandboxInstance.language,
           createTwoslashInlayProvider(sandboxInstance),
         );
+        const onModelCreate = createEventsBinder<RegisterFile>();
 
         const system = createFileSystem(props, sandboxInstance.tsvfs);
 
@@ -89,6 +91,7 @@ export const useSandboxServices = (
           }
           const path = model.uri.path.replace('/file:///', '/');
           system.writeFile(path, model.getValue());
+          onModelCreate.trigger(path, model.getValue());
         });
         // Delete files in vfs when a model is disposed in the editor (this is used only for ATA types)
         sandboxInstance.monaco.editor.onWillDisposeModel(model => {
@@ -117,6 +120,7 @@ export const useSandboxServices = (
           lintUtils,
           sandboxInstance.tsvfs,
         );
+        onModelCreate.register(webLinter.registerFile);
 
         onLoaded(
           [...webLinter.rules.values()],
