@@ -1680,6 +1680,48 @@ describe('hand-crafted cases', () => {
         ],
         output: 'a?.prop;',
       },
+      // check void
+      {
+        code: `
+declare const foo: {
+  method: undefined | (() => void);
+};
+foo.method && foo.method();
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: `
+declare const foo: {
+  method: undefined | (() => void);
+};
+foo.method?.();
+        `,
+      },
+      // Exclude for everything else, an error occurs
+      {
+        code: noFormat`declare const foo: { x: { y: string } } | null; foo && foo.x;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `declare const foo: { x: { y: string } } | null; foo?.x;`,
+              },
+            ],
+          },
+        ],
+        options: [
+          {
+            checkAny: false,
+            checkBigInt: false,
+            checkBoolean: false,
+            checkNumber: false,
+            checkString: false,
+            checkUnknown: false,
+            checkVoid: false,
+          },
+        ],
+      },
     ],
     valid: [
       '!a || !b;',
@@ -1877,6 +1919,15 @@ describe('hand-crafted cases', () => {
           x && x.length;
         `,
         options: [{ checkUnknown: false }],
+      },
+      {
+        code: `
+declare const foo: {
+  method: undefined | (() => void);
+};
+foo.method && foo.method();
+        `,
+        options: [{ checkVoid: false }],
       },
       '(x = {}) && (x.y = true) != null && x.y.toString();',
       "('x' as `${'x'}`) && ('x' as `${'x'}`).length;",
