@@ -17,7 +17,6 @@ import {
   ESLintUtils,
   TSESLint,
 } from '@typescript-eslint/utils';
-import { Node } from 'typescript';
 
 import { isTypeImport } from './isTypeImport';
 import { referenceContainsTypeQuery } from './referenceContainsTypeQuery';
@@ -191,7 +190,7 @@ class UnusedVarsVisitor extends Visitor {
           // basic exported variables
           isExported(variable) ||
           // variables implicitly exported via a merged declaration
-          isMergableExported(variable) ||
+          isMergeableExported(variable) ||
           // used variables
           isUsedVariable(variable)
         ) {
@@ -452,7 +451,7 @@ const MERGABLE_TYPES = new Set([
  * Determine if the variable is directly exported
  * @param variable the variable to check
  */
-function isMergableExported(variable: ScopeVariable): boolean {
+function isMergeableExported(variable: ScopeVariable): boolean {
   const safeFlag = isSafeUnusedExportCondition(variable);
   // If all of the merged things are of the same type, TS will error if not all of them are exported - so we only need to find one
   for (const def of variable.defs) {
