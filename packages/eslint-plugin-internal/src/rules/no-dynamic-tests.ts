@@ -41,26 +41,11 @@ export default createRule({
         case AST_NODE_TYPES.TemplateLiteral:
           return node.expressions.some(expr => isDynamicExpression(expr));
         case AST_NODE_TYPES.BinaryExpression:
-          return (
-            isDynamicExpression(node.left) || isDynamicExpression(node.right)
-          );
-        case AST_NODE_TYPES.UnaryExpression:
-          return isDynamicExpression(node.argument);
+          return true;
         case AST_NODE_TYPES.ConditionalExpression:
-          return (
-            isDynamicExpression(node.test) ||
-            isDynamicExpression(node.consequent) ||
-            isDynamicExpression(node.alternate)
-          );
-        case AST_NODE_TYPES.LogicalExpression:
-          return (
-            isDynamicExpression(node.left) || isDynamicExpression(node.right)
-          );
+          return true;
         case AST_NODE_TYPES.MemberExpression:
-          return (
-            isDynamicExpression(node.object) ||
-            isDynamicExpression(node.property)
-          );
+          return true;
         case AST_NODE_TYPES.ArrayExpression:
           return node.elements.some(
             element => element && isDynamicExpression(element),

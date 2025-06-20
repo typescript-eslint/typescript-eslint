@@ -156,6 +156,22 @@ ruleTester.run('test', rule, {
         },
       ],
     },
+    // Object spread
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: [{ ...testConfig }],
+  invalid: [],
+});
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 3,
+          messageId: 'noDynamicTests',
+        },
+      ],
+    },
   ],
   valid: [
     {
