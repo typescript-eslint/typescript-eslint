@@ -119,6 +119,7 @@ export const useSandboxServices = (
           system,
           lintUtils,
           sandboxInstance.tsvfs,
+          props.onMarkersChange,
         );
         onModelCreate.register(webLinter.registerFile);
 
