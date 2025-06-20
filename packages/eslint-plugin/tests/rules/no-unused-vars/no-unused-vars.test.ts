@@ -1715,6 +1715,24 @@ export {};
       ],
       filename: 'foo.d.ts',
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10658
+    {
+      code: `
+const A = 0;
+export type A = typeof A;
+      `,
+      errors: [
+        {
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'A',
+          },
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
   ],
 
   valid: [
@@ -3017,6 +3035,14 @@ class Foo {}
 declare class Bar {}
       `,
       filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const A = 0;
+
+type A = typeof A;
+export { A };
+      `,
     },
   ],
 });
