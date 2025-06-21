@@ -157,4 +157,12 @@ describe(inferSingleRun, () => {
 
     expect(actual).toBe(false);
   });
+
+  it('returns true for project service in single run', () => {
+    vi.stubEnv('CI', 'true');
+    // Do not set `project: true` if `projectService: true`
+    const actual = inferSingleRun({ projectService: true });
+
+    expect(actual).toBe(true);
+  });
 });
