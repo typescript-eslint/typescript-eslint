@@ -47,6 +47,12 @@ export default tseslint.config(
 
 This config file exports a flat config that enables both the [core ESLint recommended config](https://www.npmjs.com/package/@eslint/js) and [our recommended config](../users/Shared_Configurations.mdx#recommended).
 
+:::note
+ESLint also provides a `defineConfig()` helper similar to `tseslint.config`.
+However, there is an types incompatibility issue that causes type errors to incorrectly be reported when mixing typescript-eslint's configs and `defineConfig()`.
+For now we recommend using `tseslint.config` for type-safe configs.
+:::
+
 ### `config(...)`
 
 `tseslint.config(...)` takes in any number of ESLint config objects, each of which may additionally include an `extends` array of configs to extend.

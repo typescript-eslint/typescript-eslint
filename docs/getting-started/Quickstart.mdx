@@ -45,18 +45,29 @@ export default tseslint.config(
 
 This code will enable our [recommended configuration](../users/Shared_Configurations.mdx) for linting.
 
+#### Details
+
+- `tseslint.config(...)` is an **_optional_** helper function — see [`typescript-eslint`'s `config(...)`](../packages/TypeScript_ESLint.mdx#config).
+- `'@eslint/js'` / `eslint.configs.recommended` turns on [eslint's recommended config](https://www.npmjs.com/package/@eslint/js).
+- `tseslint.configs.recommended` turns on [our recommended config](../users/Shared_Configurations.mdx#recommended).
+
+<details>
+<summary>Aside on ESLint's `defineConfig()`</summary>
+
+ESLint also provides a `defineConfig()` helper similar to `tseslint.config`.
+However, there is an types incompatibility issue that causes type errors to incorrectly be reported when mixing typescript-eslint's configs and `defineConfig()`.
+For now we recommend using `tseslint.config` for type-safe configs.
+
+See [typescript-eslint#10899](https://github.com/typescript-eslint/typescript-eslint/issues/10899) for more details.
+
+</details>
+
 <details>
 <summary>Aside on file extensions</summary>
 
 The `.mjs` extension makes the file use the [ES modules (ESM)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) format. Node interprets `.js` files in the [CommonJS (CJS)](https://nodejs.org/api/modules.html) format by default, but if you have `"type": "module"` in your `package.json`, you can also use `eslint.config.js`.
 
 </details>
-
-#### Details
-
-- `tseslint.config(...)` is an **_optional_** helper function — see [`typescript-eslint`'s `config(...)`](../packages/TypeScript_ESLint.mdx#config).
-- `'@eslint/js'` / `eslint.configs.recommended` turns on [eslint's recommended config](https://www.npmjs.com/package/@eslint/js).
-- `tseslint.configs.recommended` turns on [our recommended config](../users/Shared_Configurations.mdx#recommended).
 
 ### Step 3: Running ESLint
 
