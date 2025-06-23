@@ -49,9 +49,8 @@ export default createRule<Options, MessageIds>({
         properties: {
           checkUnknown: {
             type: 'boolean',
-            default: false,
             description:
-              'Checks the case where toString is applied to unknown type',
+              'Whether to also check values of type `unknown`',
           },
           ignoredTypeNames: {
             type: 'array',
