@@ -49,8 +49,7 @@ export default createRule<Options, MessageIds>({
         properties: {
           checkUnknown: {
             type: 'boolean',
-            description:
-              'Whether to also check values of type `unknown`',
+            description: 'Whether to also check values of type `unknown`',
           },
           ignoredTypeNames: {
             type: 'array',
