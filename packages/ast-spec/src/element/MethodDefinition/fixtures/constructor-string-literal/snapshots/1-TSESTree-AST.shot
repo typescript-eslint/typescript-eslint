@@ -1,0 +1,100 @@
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            decorators: [],
+            key: Literal {
+              type: "Literal",
+              raw: ""constructor"",
+              value: "constructor",
+
+              range: [35, 48],
+              loc: {
+                start: { column: 2, line: 3 },
+                end: { column: 15, line: 3 },
+              },
+            },
+            kind: "constructor",
+            optional: false,
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [],
+
+                range: [51, 53],
+                loc: {
+                  start: { column: 18, line: 3 },
+                  end: { column: 20, line: 3 },
+                },
+              },
+              declare: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: [],
+
+              range: [48, 53],
+              loc: {
+                start: { column: 15, line: 3 },
+                end: { column: 20, line: 3 },
+              },
+            },
+
+            range: [35, 53],
+            loc: {
+              start: { column: 2, line: 3 },
+              end: { column: 20, line: 3 },
+            },
+          },
+        ],
+
+        range: [10, 55],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 1, line: 4 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [6, 9],
+        loc: {
+          start: { column: 6, line: 1 },
+          end: { column: 9, line: 1 },
+        },
+      },
+      implements: [],
+      superClass: null,
+
+      range: [0, 55],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 1, line: 4 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 56],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 5 },
+  },
+}
