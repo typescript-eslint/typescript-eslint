@@ -114,6 +114,11 @@ describe('semanticInfo - singleRun', () => {
     createProgramFromConfigFile.mockClear();
     // Do not track invocations per file across tests
     clearParseAndGenerateServicesCalls();
+
+    vi.stubEnv(
+      'TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR',
+      'true',
+    );
   });
 
   it('should not create any programs ahead of time by default when there is no way to infer singleRun=true', () => {
