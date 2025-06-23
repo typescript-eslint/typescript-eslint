@@ -90,6 +90,12 @@
       "lint": {
         "command": "eslint"
       },
+      "typecheck": {
+        "outputs": [
+          "{workspaceRoot}/dist",
+          "{projectRoot}/dist"
+        ]
+      },
       "test": {
         "dependsOn": [
           "^build",
