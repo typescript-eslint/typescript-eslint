@@ -64,7 +64,6 @@ export default createRule({
     }
 
     return {
-      // Check RuleTester.run calls
       CallExpression(node) {
         if (isRuleTesterCall(node)) {
           const testObject = node.arguments[2];
@@ -73,7 +72,7 @@ export default createRule({
               if (
                 prop.type === AST_NODE_TYPES.Property &&
                 prop.key.type === AST_NODE_TYPES.Identifier &&
-                (prop.key.name === 'valid' || prop.key.name === 'invalid') && // Check each element in the array
+                (prop.key.name === 'valid' || prop.key.name === 'invalid') &&
                 prop.value.type === AST_NODE_TYPES.ArrayExpression
               ) {
                 prop.value.elements.forEach(element => {
