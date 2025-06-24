@@ -499,6 +499,33 @@ declare const x: number | Iterable<Promise<number>>;
 Promise.all(x);
       `,
     },
+    {
+      code: `
+declare const x: Iterable<Promise<unknown>, number>;
+Promise.all(x);
+      `,
+    },
+
+    {
+      code: `
+declare const x: Iterable<Promise<string>> | Array<Promise<string>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x:
+  | Iterable<Promise<string>>
+  | [Promise<string>, Promise<unknown>];
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Array<Promise<string>> | [Promise<string>, Promise<unknown>];
+Promise.all(x);
+      `,
+    },
 
     {
       code: `
@@ -1079,6 +1106,40 @@ Promise.all(x);
     {
       code: `
 declare const x: Iterable<number | Promise<number>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const x: Iterable<string> | Array<Promise<unknown>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Iterable<Promise<string>> | [string, Promise<unknown>];
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Array<string> | [Promise<string>, Promise<unknown>];
 Promise.all(x);
       `,
       errors: [

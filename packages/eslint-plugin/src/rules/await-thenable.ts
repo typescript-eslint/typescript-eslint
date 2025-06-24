@@ -220,11 +220,15 @@ function isInvalidPromiseAggregatorInput(
     return false;
   }
 
-  // check for non
   for (const part of tsutils.unionConstituents(type)) {
     if (tsutils.isTypeReference(part)) {
-      for (const typeArgument of checker.getTypeArguments(part)) {
-        if (isTypeNeverAwaitable(typeArgument, node, checker)) {
+      // only check the first type argument of `Iterator<...>` or `Array<...>`
+      const typeArguments = checker.isTupleType(part)
+        ? part.typeArguments
+        : part.typeArguments?.slice(0, 1);
+
+      for (const typeArgument of typeArguments ?? []) {
+        if (containsNonAwaitableType(typeArgument, node, checker)) {
           return true;
         }
       }
@@ -234,7 +238,7 @@ function isInvalidPromiseAggregatorInput(
   return false;
 }
 
-function isTypeNeverAwaitable(
+function containsNonAwaitableType(
   type: ts.Type,
   node: ts.Node,
   checker: ts.TypeChecker,
