@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-using-id-no-init > Babel - Error`]
-SyntaxError: Missing semicolon. (1:7)
+BabelError
+> 1 | declare using foo;
+    |        ^ Missing semicolon. (1:7)
+  2 |
+  

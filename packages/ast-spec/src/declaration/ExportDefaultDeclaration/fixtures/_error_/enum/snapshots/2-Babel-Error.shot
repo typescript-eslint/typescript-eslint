@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > ExportDefaultDeclaration > _error_ > enum > Babel - Error`]
-SyntaxError: Unexpected reserved word 'enum'. (1:15)
+BabelError
+> 1 | export default enum Foo {}
+    |                ^ Unexpected reserved word 'enum'. (1:15)
+  2 |
+  
