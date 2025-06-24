@@ -1148,5 +1148,16 @@ Promise.all(x);
         },
       ],
     },
+    {
+      code: `
+declare const x: Array<Array<Promise<number>>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
   ],
 });
