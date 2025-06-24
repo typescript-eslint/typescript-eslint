@@ -70,6 +70,25 @@ export interface ASTMaps {
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node>;
 }
 
+function isPropertyAccessEntityNameExpression(
+  node: ts.Node,
+): node is ts.PropertyAccessEntityNameExpression {
+  return (
+    ts.isPropertyAccessExpression(node) &&
+    ts.isIdentifier(node.name) &&
+    isEntityNameExpression(node.expression)
+  );
+}
+
+function isEntityNameExpression(
+  node: ts.Node,
+): node is ts.EntityNameExpression {
+  return (
+    node.kind === SyntaxKind.Identifier ||
+    isPropertyAccessEntityNameExpression(node)
+  );
+}
+
 export class Converter {
   private allowPattern = false;
   private readonly ast: ts.SourceFile;
@@ -1676,14 +1695,24 @@ export class Converter {
           this.fixParentLocation(constructor, constructor.typeParameters.range);
         }
 
-        const constructorKey = this.createNode<TSESTree.Identifier>(node, {
-          type: AST_NODE_TYPES.Identifier,
-          range: [constructorToken.getStart(this.ast), constructorToken.end],
-          decorators: [],
-          name: 'constructor',
-          optional: false,
-          typeAnnotation: undefined,
-        });
+        const constructorKey =
+          constructorToken.kind === SyntaxKind.StringLiteral
+            ? this.createNode<TSESTree.StringLiteral>(constructorToken, {
+                type: AST_NODE_TYPES.Literal,
+                raw: constructorToken.getText(),
+                value: 'constructor',
+              })
+            : this.createNode<TSESTree.Identifier>(node, {
+                type: AST_NODE_TYPES.Identifier,
+                range: [
+                  constructorToken.getStart(this.ast),
+                  constructorToken.end,
+                ],
+                decorators: [],
+                name: 'constructor',
+                optional: false,
+                typeAnnotation: undefined,
+              });
 
         const isStatic = hasModifier(SyntaxKind.StaticKeyword, node);
 
@@ -3024,6 +3053,7 @@ export class Converter {
         const interfaceHeritageClauses = node.heritageClauses ?? [];
         const interfaceExtends: TSESTree.TSInterfaceHeritage[] = [];
 
+        let seenExtendsClause = false;
         for (const heritageClause of interfaceHeritageClauses) {
           if (heritageClause.token !== SyntaxKind.ExtendsKeyword) {
             this.#throwError(
@@ -3033,8 +3063,21 @@ export class Converter {
                 : 'Unexpected token.',
             );
           }
+          if (seenExtendsClause) {
+            this.#throwError(heritageClause, "'extends' clause already seen.");
+          }
+          seenExtendsClause = true;
 
           for (const heritageType of heritageClause.types) {
+            if (
+              !isEntityNameExpression(heritageType.expression) ||
+              ts.isOptionalChain(heritageType.expression)
+            ) {
+              this.#throwError(
+                heritageType,
+                'Interface declaration can only extend an identifier/qualified name with optional type arguments.',
+              );
+            }
             interfaceExtends.push(
               this.convertChild(
                 heritageType,

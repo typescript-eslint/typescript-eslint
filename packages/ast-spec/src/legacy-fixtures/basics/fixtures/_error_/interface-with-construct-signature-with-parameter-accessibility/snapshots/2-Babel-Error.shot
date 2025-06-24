@@ -1,4 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > basics > _error_ > interface-with-construct-signature-with-parameter-accessibility > Babel - Error`]
-SyntaxError: A parameter property is only allowed in a constructor implementation. (4:9)
+BabelError
+  2 |
+  3 | interface Test {
+> 4 |     new (public x, private y);
+    |          ^ A parameter property is only allowed in a constructor implementation. (4:9)
+  5 | }
+  6 |
+  

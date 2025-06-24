@@ -1,4 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > object-optional-not-allowed > Babel - Error`]
-SyntaxError: Unexpected token, expected "," (3:3)
+BabelError
+  1 | // TODO: This fixture might be too large, and if so should be split up.
+  2 |
+> 3 | ({a?} = {})
+    |    ^ Unexpected token, expected "," (3:3)
+  4 |
+  
