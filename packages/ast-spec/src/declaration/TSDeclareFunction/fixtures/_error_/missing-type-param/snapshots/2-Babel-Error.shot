@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSDeclareFunction > _error_ > missing-type-param > Babel - Error`]
-SyntaxError: Type parameter list cannot be empty. (1:20)
+BabelError
+> 1 | declare function foo<>(): void;
+    |                     ^ Type parameter list cannot be empty. (1:20)
+  2 |
+  

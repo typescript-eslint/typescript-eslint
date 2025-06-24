@@ -1,4 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > basics > _error_ > export-named-enum-computed-number > Babel - Error`]
-SyntaxError: Unexpected token (4:4)
+BabelError
+  2 |
+  3 | export enum Foo {
+> 4 |     [1],
+    |     ^ Unexpected token (4:4)
+  5 | }
+  6 |
+  

@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSInterfaceDeclaration > _error_ > missing-extends > Babel - Error`]
-SyntaxError: 'extends' list cannot be empty. (1:20)
+BabelError
+> 1 | interface F extends {}
+    |                     ^ 'extends' list cannot be empty. (1:20)
+  2 |
+  
