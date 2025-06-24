@@ -203,5 +203,13 @@ ruleTester.run('test', rule, {
 });
       `,
     },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: [noFormat\`const x = 1;\`],
+  invalid: [],
+});
+      `,
+    },
   ],
 });

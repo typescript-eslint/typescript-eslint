@@ -58,6 +58,7 @@ export default createRule({
             return isDynamicExpression(prop.value);
           });
         case AST_NODE_TYPES.Literal:
+        case AST_NODE_TYPES.TaggedTemplateExpression:
         default:
           return false;
       }
