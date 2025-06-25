@@ -31,7 +31,7 @@ npm i typescript-eslint
 
 ## Usage
 
-We recommend getting started by using `tseslint.config` helper function in your ESLint config:
+We recommend getting started by using the `tseslint.config()` helper function in your ESLint config:
 
 ```js title="eslint.config.mjs"
 // @ts-check
@@ -50,7 +50,7 @@ This config file exports a flat config that enables both the [core ESLint recomm
 :::note
 ESLint also provides a `defineConfig()` helper similar to `tseslint.config()`.
 However, there is a types incompatibility issue that causes type errors to incorrectly be reported when mixing typescript-eslint's configs and `defineConfig()`.
-For now we recommend using `tseslint.config` for use with typescript-eslint configs.
+For now we recommend using `tseslint.config()` for use with typescript-eslint configs.
 
 See [typescript-eslint#10899](https://github.com/typescript-eslint/typescript-eslint/issues/10899) for more details.
 
@@ -114,7 +114,7 @@ Otherwise it _will not_ impact your ability to use our tooling.
 
 #### Flat config `extends`
 
-The `tseslint.config` utility function also adds handling for the `extends` property on flat config objects.
+The `tseslint.config()` utility function also adds handling for the `extends` property on flat config objects.
 This allows you to more easily extend shared configs for specific file patterns whilst also overriding rules/options provided by those configs:
 
 ```js

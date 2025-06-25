@@ -54,9 +54,9 @@ This code will enable our [recommended configuration](../users/Shared_Configurat
 <details>
 <summary>Aside on ESLint's `defineConfig()`</summary>
 
-ESLint also provides a `defineConfig()` helper similar to `tseslint.config`.
+ESLint also provides a `defineConfig()` helper similar to `tseslint.config()`.
 However, there is a types incompatibility issue that causes type errors to incorrectly be reported when mixing typescript-eslint's configs and `defineConfig()`.
-For now we recommend using `tseslint.config` for use with typescript-eslint's configs.
+For now we recommend using `tseslint.config()` for use with typescript-eslint's configs.
 
 See [typescript-eslint#10899](https://github.com/typescript-eslint/typescript-eslint/issues/10899) for more details.
 
