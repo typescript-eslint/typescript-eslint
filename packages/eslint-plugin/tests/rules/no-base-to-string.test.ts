@@ -626,15 +626,6 @@ declare const bb: ExtendedGuildChannel;
 bb.toString();
     `,
     `
-function foo<T>(x: T) {
-  String(x);
-}
-    `,
-    `
-declare const u: unknown;
-String(u);
-    `,
-    `
 type Value = string | Value[];
 declare const v: Value;
 
@@ -662,8 +653,202 @@ String(v);
 declare const v: ('foo' | 'bar')[][];
 String(v);
     `,
+    `
+declare const x: unknown;
+\`\${x})\`;
+    `,
+    `
+declare const x: unknown;
+x.toString();
+    `,
+    `
+declare const x: unknown;
+x.toLocaleString();
+    `,
+    `
+declare const x: unknown;
+'' + x;
+    `,
+    `
+declare const x: unknown;
+String(x);
+    `,
+    `
+declare const x: unknown;
+'' += x;
+    `,
+    `
+function foo<T>(x: T) {
+  String(x);
+}
+    `,
+    `
+declare const x: any;
+\`\${x})\`;
+    `,
+    `
+declare const x: any;
+x.toString();
+    `,
+    `
+declare const x: any;
+x.toLocaleString();
+    `,
+    `
+declare const x: any;
+'' + x;
+    `,
+    `
+declare const x: any;
+String(x);
+    `,
+    `
+declare const x: any;
+'' += x;
+    `,
   ],
   invalid: [
+    {
+      code: `
+declare const x: unknown;
+\`\${x})\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: unknown;
+x.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: unknown;
+x.toLocaleString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: unknown;
+'' + x;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: unknown;
+String(x);
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: unknown;
+'' += x;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+function foo<T>(x: T) {
+  String(x);
+}
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
     {
       code: '`${{}})`;',
       errors: [
