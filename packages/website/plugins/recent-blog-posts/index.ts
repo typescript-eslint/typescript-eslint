@@ -39,7 +39,6 @@ export default async function blogPluginEnhanced(): Promise<Plugin> {
     }),
   );
 
-  await fs.mkdir(storageDirectory, { recursive: true });
   await fs.writeFile(storageFile, JSON.stringify(blogPosts, null, 2));
 
   return {
