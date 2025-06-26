@@ -5,7 +5,6 @@ import * as fs from 'node:fs/promises';
 import readingTime from 'reading-time';
 import { z } from 'zod';
 
-const storageDirectory = 'data';
 const storageFile = `data/recent-blog-posts.json`;
 
 const matterSchema = z.object({
