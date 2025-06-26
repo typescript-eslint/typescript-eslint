@@ -18,7 +18,7 @@ export function ExplainerSpotlight({
   return (
     <a className={styles.explainerSpotlight} href={href}>
       <Heading as="h3" className={styles.heading}>
-        {header} <span>{emoji}</span>
+        {header} <span className={styles.emoji}>{emoji}</span>
       </Heading>
       <div>{children}</div>
     </a>

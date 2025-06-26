@@ -35,6 +35,10 @@
 }
 
 @media (width >= 996px) {
+  .explainers {
+    margin-bottom: 2rem;
+  }
+
   .explainerSpotlights {
     flex-direction: row;
     max-width: var(--ifm-container-width);
