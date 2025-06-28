@@ -215,6 +215,7 @@ exports[`AST Fixtures > List fixtures with AST differences`]
   "legacy-fixtures/types/fixtures/optional-variance-out/fixture.ts",
   "legacy-fixtures/types/fixtures/reference-generic-nested/fixture.ts",
   "legacy-fixtures/types/fixtures/reference-generic/fixture.ts",
+  "legacy-fixtures/types/fixtures/template-literal-type-1/fixture.ts",
   "legacy-fixtures/types/fixtures/template-literal-type-2/fixture.ts",
   "legacy-fixtures/types/fixtures/template-literal-type-3/fixture.ts",
   "legacy-fixtures/types/fixtures/template-literal-type-4/fixture.ts",
