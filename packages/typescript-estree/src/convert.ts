@@ -93,6 +93,7 @@ export class Converter {
   private allowPattern = false;
   private readonly ast: ts.SourceFile;
   private readonly esTreeNodeToTSNodeMap = new WeakMap();
+  private isInTaggedTemplate = false;
   private readonly options: ConverterOptions;
   private readonly tsNodeToESTreeNodeMap = new WeakMap();
 
@@ -1917,19 +1918,25 @@ export class Converter {
         return result;
       }
 
-      case SyntaxKind.TaggedTemplateExpression:
-        return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
-          type: AST_NODE_TYPES.TaggedTemplateExpression,
-          quasi: this.convertChild(node.template),
-          tag: this.convertChild(node.tag),
-          typeArguments:
-            node.typeArguments &&
-            this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            ),
-        });
-
+      case SyntaxKind.TaggedTemplateExpression: {
+        this.isInTaggedTemplate = true;
+        const result = this.createNode<TSESTree.TaggedTemplateExpression>(
+          node,
+          {
+            type: AST_NODE_TYPES.TaggedTemplateExpression,
+            quasi: this.convertChild(node.template),
+            tag: this.convertChild(node.tag),
+            typeArguments:
+              node.typeArguments &&
+              this.convertTypeArgumentsToTypeParameterInstantiation(
+                node.typeArguments,
+                node,
+              ),
+          },
+        );
+        this.isInTaggedTemplate = false;
+        return result;
+      }
       case SyntaxKind.TemplateHead:
       case SyntaxKind.TemplateMiddle:
       case SyntaxKind.TemplateTail: {
