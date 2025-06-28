@@ -90,10 +90,10 @@ function isEntityNameExpression(
 }
 
 export class Converter {
+  #isInTaggedTemplate = false;
   private allowPattern = false;
   private readonly ast: ts.SourceFile;
   private readonly esTreeNodeToTSNodeMap = new WeakMap();
-  private isInTaggedTemplate = false;
   private readonly options: ConverterOptions;
   private readonly tsNodeToESTreeNodeMap = new WeakMap();
 
@@ -400,6 +400,38 @@ export class Converter {
         }
       }
     }
+  }
+
+  #isValidEscape(arg: string): boolean {
+    const unicode = /\\u([0-9a-fA-F]{4})/g;
+    const unicodeBracket = /\\u\{([0-9a-fA-F]+)\}/g; // supports ES6+
+    const hex = /\\x([0-9a-fA-F]{2})/g;
+    const validShort = /\\[nrtbfv0\\'"]/g;
+
+    const allEscapes =
+      /\\(u\{[^}]*\}|u[0-9a-fA-F]{0,4}|x[0-9a-fA-F]{0,2}|[^ux])/g;
+
+    let match: RegExpExecArray | null;
+    while ((match = allEscapes.exec(arg)) != null) {
+      const escape = match[0];
+
+      if (
+        unicode.test(escape) ||
+        (unicodeBracket.test(escape) &&
+          (() => {
+            const cp = parseInt(escape.match(unicodeBracket)![1], 16);
+            return cp <= 0x10ffff;
+          })()) ||
+        hex.test(escape) ||
+        validShort.test(escape)
+      ) {
+        continue;
+      }
+
+      return false;
+    }
+
+    return true;
   }
 
   #throwError(node: number | ts.Node, message: string): asserts node is never {
@@ -1890,7 +1922,10 @@ export class Converter {
               type: AST_NODE_TYPES.TemplateElement,
               tail: true,
               value: {
-                cooked: node.text,
+                cooked:
+                  this.#isValidEscape(node.text) && this.#isInTaggedTemplate
+                    ? node.text
+                    : null,
                 raw: this.ast.text.slice(
                   node.getStart(this.ast) + 1,
                   node.end - 1,
@@ -1919,7 +1954,7 @@ export class Converter {
       }
 
       case SyntaxKind.TaggedTemplateExpression: {
-        this.isInTaggedTemplate = true;
+        this.#isInTaggedTemplate = true;
         const result = this.createNode<TSESTree.TaggedTemplateExpression>(
           node,
           {
@@ -1934,7 +1969,7 @@ export class Converter {
               ),
           },
         );
-        this.isInTaggedTemplate = false;
+        this.#isInTaggedTemplate = false;
         return result;
       }
       case SyntaxKind.TemplateHead:
@@ -1945,7 +1980,10 @@ export class Converter {
           type: AST_NODE_TYPES.TemplateElement,
           tail,
           value: {
-            cooked: node.text,
+            cooked:
+              this.#isValidEscape(node.text) && this.#isInTaggedTemplate
+                ? node.text
+                : null,
             raw: this.ast.text.slice(
               node.getStart(this.ast) + 1,
               node.end - (tail ? 1 : 2),
