@@ -30,7 +30,6 @@
     "format": "prettier --ignore-path=%PNPM_SCRIPT_SRC_DIR%/.prettierignore --config=%PNPM_SCRIPT_SRC_DIR%/.prettierrc.json --write %INIT_CWD%",
     "generate-breaking-changes": "nx run eslint-plugin:generate-breaking-changes",
     "generate-configs": "tsx tools/scripts/generate-configs.mts",
-    "generate-contributors": "tsx tools/scripts/generate-contributors.mts",
     "generate-lib": "tsx tools/scripts/generate-lib.mts",
     "generate-sponsors": "tsx tools/scripts/generate-sponsors.mts",
     "generate-website-dts": "nx run website:generate-website-dts",
@@ -113,7 +112,6 @@
     "name": "repo",
     "includedScripts": [
       "generate-configs",
-      "generate-contributors",
       "generate-lib",
       "generate-sponsors"
     ],

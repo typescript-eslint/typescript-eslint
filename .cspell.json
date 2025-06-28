@@ -15,7 +15,6 @@
     ".vscode/*.json",
     "**/*.{json,snap}",
     "**/**/CHANGELOG.md",
-    "**/**/CONTRIBUTORS.md",
     "**/**/TSLINT_RULE_ALTERNATIVES.md",
     "**/coverage/**",
     "**/dist/**",
