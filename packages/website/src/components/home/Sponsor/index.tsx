@@ -1,7 +1,7 @@
 import Link from '@docusaurus/Link';
 import React from 'react';
 
-import type { SponsorData } from './types';
+import type { SponsorData } from '../FinancialContributors/types';
 
 import styles from './styles.module.css';
 
