@@ -46,7 +46,7 @@ export function createParser(
       // if text is empty use empty line to avoid error
       const code = text || '\n';
 
-      if (system.fileExists(filePath)) {
+      if (compilerHost.getSourceFile(filePath)) {
         compilerHost.updateFile(filePath, code);
       } else {
         compilerHost.createFile(filePath, code);
