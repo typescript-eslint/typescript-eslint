@@ -19,7 +19,9 @@ declare const cjsExport: {
     'flat/stylistic-type-checked-only': FlatConfig.ConfigArray;
   };
   parser: FlatConfig.Parser;
-  plugin: typeof plugin;
+  // hide the configs from downstream users, since this isn't how we want them
+  // to be accessed.
+  plugin: Omit<typeof plugin, 'configs'>;
 };
 
 export = cjsExport;
