@@ -37,8 +37,7 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
         (main, sandboxFactory, lintUtils) => {
           resolve({ lintUtils, main, sandboxFactory });
         },
-        error => {
-          console.log(error);
+        () => {
           reject(
             new Error('Could not get all the dependencies of sandbox set up!'),
           );
