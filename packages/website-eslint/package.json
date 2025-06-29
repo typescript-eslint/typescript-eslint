@@ -27,8 +27,7 @@
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "scripts": {
-    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
-    "build": "tsx ./build.mts",
+    "build": "yarn run -BT nx build",
     "clean": "rimraf dist/",
     "format": "yarn run -T format",
     "lint": "yarn run -BT nx lint",
@@ -50,8 +49,21 @@
   "nx": {
     "name": "website-eslint",
     "includedScripts": [
-      "clean",
-      "build"
-    ]
+      "clean"
+    ],
+    "targets": {
+      "build": {
+        "command": "tsx build.mts",
+        "dependsOn": [
+          "types:copy-ast-spec"
+        ],
+        "options": {
+          "cwd": "{projectRoot}"
+        }
+      },
+      "lint": {
+        "command": "eslint"
+      }
+    }
   }
 }
