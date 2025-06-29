@@ -35,6 +35,23 @@ export interface SandboxServices {
   webLinter: CreateLinter;
 }
 
+const checkUseSupportedTypescriptVersion = async (tsVersion: string) => {
+  const supportedVersionsResponse = await fetch(
+    'https://typescript.azureedge.net/indexes/releases.json',
+  );
+
+  if (supportedVersionsResponse.ok) {
+    const supportedVersions = (await supportedVersionsResponse.json()) as {
+      versions: string[];
+    };
+    const filteredVersions = supportedVersions.versions.filter(item =>
+      semverSatisfies(item, rootPackageJson.devDependencies.typescript),
+    );
+    return filteredVersions.includes(tsVersion);
+  }
+  return false;
+};
+
 export const useSandboxServices = (
   props: CommonEditorProps & SandboxServicesProps,
 ): Error | SandboxServices | undefined => {
@@ -45,113 +62,122 @@ export const useSandboxServices = (
   useEffect(() => {
     let sandboxInstance: SandboxInstance | undefined;
 
-    sandboxSingleton(props.ts)
-      .then(async ({ lintUtils, main, sandboxFactory }) => {
-        const compilerOptions = createCompilerOptions();
-
-        sandboxInstance = sandboxFactory.createTypeScriptSandbox(
-          {
-            acquireTypes: true,
-            compilerOptions:
-              compilerOptions as Monaco.languages.typescript.CompilerOptions,
-            domID: editorEmbedId,
-            monacoSettings: {
-              autoIndent: 'full',
-              fontSize: 13,
-              formatOnPaste: true,
-              formatOnType: true,
-              hover: { above: false },
-              minimap: { enabled: false },
-              scrollBeyondLastLine: false,
-              smoothScrolling: true,
-              wordWrap: 'off',
-              wrappingIndent: 'same',
-            },
-            text: props.code,
-          },
-          main,
-          window.ts,
-        );
-        sandboxInstance.monaco.editor.setTheme(
-          colorMode === 'dark' ? 'vs-dark' : 'vs-light',
-        );
-
-        sandboxInstance.monaco.languages.registerInlayHintsProvider(
-          sandboxInstance.language,
-          createTwoslashInlayProvider(sandboxInstance),
-        );
-
-        const system = createFileSystem(props, sandboxInstance.tsvfs);
-
-        // Write files in vfs when a model is created in the editor (this is used only for ATA types)
-        sandboxInstance.monaco.editor.onDidCreateModel(model => {
-          if (!model.uri.path.includes('node_modules')) {
-            return;
-          }
-          const path = model.uri.path.replace('/file:///', '/');
-          system.writeFile(path, model.getValue());
-        });
-        // Delete files in vfs when a model is disposed in the editor (this is used only for ATA types)
-        sandboxInstance.monaco.editor.onWillDisposeModel(model => {
-          if (!model.uri.path.includes('node_modules')) {
-            return;
-          }
-          const path = model.uri.path.replace('/file:///', '/');
-          system.deleteFile(path);
-        });
-
-        // Load the lib files from typescript to vfs (eg. es2020.d.ts)
-        const worker = await sandboxInstance.getWorkerProcess();
-        if (worker.getLibFiles) {
-          const libs = await worker.getLibFiles();
-          for (const [key, value] of Object.entries(libs)) {
-            system.writeFile(`/${key}`, value);
-          }
+    checkUseSupportedTypescriptVersion(props.ts)
+      .then(res => {
+        if (!res) {
+          props.setState({ ts: process.env.TS_VERSION });
         }
+      })
+      .then(() => {
+        sandboxSingleton(props.ts)
+          .then(async ({ lintUtils, main, sandboxFactory }) => {
+            const compilerOptions = createCompilerOptions();
 
-        window.system = system;
-        window.esquery = lintUtils.esquery;
-        window.visitorKeys = lintUtils.visitorKeys;
+            sandboxInstance = sandboxFactory.createTypeScriptSandbox(
+              {
+                acquireTypes: true,
+                compilerOptions:
+                  compilerOptions as Monaco.languages.typescript.CompilerOptions,
+                domID: editorEmbedId,
+                monacoSettings: {
+                  autoIndent: 'full',
+                  fontSize: 13,
+                  formatOnPaste: true,
+                  formatOnType: true,
+                  hover: { above: false },
+                  minimap: { enabled: false },
+                  scrollBeyondLastLine: false,
+                  smoothScrolling: true,
+                  wordWrap: 'off',
+                  wrappingIndent: 'same',
+                },
+                text: props.code,
+              },
+              main,
+              window.ts,
+            );
+            sandboxInstance.monaco.editor.setTheme(
+              colorMode === 'dark' ? 'vs-dark' : 'vs-light',
+            );
 
-        const webLinter = createLinter(
-          system,
-          lintUtils,
-          sandboxInstance.tsvfs,
-        );
+            sandboxInstance.monaco.languages.registerInlayHintsProvider(
+              sandboxInstance.language,
+              createTwoslashInlayProvider(sandboxInstance),
+            );
 
-        onLoaded(
-          [...webLinter.rules.values()],
-          [
-            ...new Set([
-              window.ts.version,
-              ...sandboxInstance.supportedVersions,
-            ]),
-          ]
-            .filter(item =>
-              semverSatisfies(item, rootPackageJson.devDependencies.typescript),
-            )
-            .sort((a, b) => b.localeCompare(a)),
-        );
+            const system = createFileSystem(props, sandboxInstance.tsvfs);
 
-        setServices({
-          sandboxInstance,
-          system,
-          webLinter,
-        });
+            // Write files in vfs when a model is created in the editor (this is used only for ATA types)
+            sandboxInstance.monaco.editor.onDidCreateModel(model => {
+              if (!model.uri.path.includes('node_modules')) {
+                return;
+              }
+              const path = model.uri.path.replace('/file:///', '/');
+              system.writeFile(path, model.getValue());
+            });
+            // Delete files in vfs when a model is disposed in the editor (this is used only for ATA types)
+            sandboxInstance.monaco.editor.onWillDisposeModel(model => {
+              if (!model.uri.path.includes('node_modules')) {
+                return;
+              }
+              const path = model.uri.path.replace('/file:///', '/');
+              system.deleteFile(path);
+            });
+
+            // Load the lib files from typescript to vfs (eg. es2020.d.ts)
+            const worker = await sandboxInstance.getWorkerProcess();
+            if (worker.getLibFiles) {
+              const libs = await worker.getLibFiles();
+              for (const [key, value] of Object.entries(libs)) {
+                system.writeFile(`/${key}`, value);
+              }
+            }
+
+            window.system = system;
+            window.esquery = lintUtils.esquery;
+            window.visitorKeys = lintUtils.visitorKeys;
+
+            const webLinter = createLinter(
+              system,
+              lintUtils,
+              sandboxInstance.tsvfs,
+            );
+
+            onLoaded(
+              [...webLinter.rules.values()],
+              [
+                ...new Set([
+                  window.ts.version,
+                  ...sandboxInstance.supportedVersions,
+                ]),
+              ]
+                .filter(item =>
+                  semverSatisfies(
+                    item,
+                    rootPackageJson.devDependencies.typescript,
+                  ),
+                )
+                .sort((a, b) => b.localeCompare(a)),
+            );
+
+            setServices({
+              sandboxInstance,
+              system,
+              webLinter,
+            });
+          })
+          .catch((err: unknown) => {
+            if (err instanceof Error) {
+              setServices(err);
+            } else {
+              setServices(new Error(String(err)));
+            }
+          });
       })
       .catch((err: unknown) => {
-        if (err instanceof Error) {
-          if (
-            err.message ===
-            'Could not get all the dependencies of sandbox set up!'
-          ) {
-            props.setState({ ts: process.env.TS_VERSION });
-          }
-          setServices(err);
-        } else {
-          setServices(new Error(String(err)));
-        }
+        console.error(err);
       });
+
     return (): void => {
       if (!sandboxInstance) {
         return;
