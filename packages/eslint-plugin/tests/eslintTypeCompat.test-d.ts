@@ -1,13 +1,15 @@
 // eslint itself doesn't export these types, but config-helpers does.
-import {
-  defineConfig,
+import type {
   Plugin as EslintPluginType,
   Config as EslintConfigType,
 } from '@eslint/config-helpers';
 
+import { defineConfig } from '@eslint/config-helpers';
+
 // intentionally testing the types accessed from the external entry point due to hand-authored d.ts shenanigans
+import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
+
 import * as rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw-plugin';
-import { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
 type EslintParserType = NonNullable<
   NonNullable<EslintConfigType['languageOptions']>['parser']
