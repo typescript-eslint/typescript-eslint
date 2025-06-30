@@ -329,6 +329,12 @@ ruleTester.run('no-deprecated', rule, {
       }
       <foo bar={1} />;
     `,
+    `
+      export {
+        /** @deprecated */
+        foo,
+      };
+    `,
     {
       code: `
 /** @deprecated */
@@ -3169,6 +3175,64 @@ class B extends A {
           endColumn: 30,
           endLine: 7,
           line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { deprecatedFunction } from './deprecated';
+
+        export { deprecatedFunction };
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 36,
+          endLine: 4,
+          line: 4,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        export { deprecatedFunction } from './deprecated';
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 36,
+          endLine: 2,
+          line: 2,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        export type { T, U } from './deprecated';
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 24,
+          endLine: 2,
+          line: 2,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        export { default as foo } from './deprecated';
+      `,
+      errors: [
+        {
+          column: 29,
+          endColumn: 32,
+          endLine: 2,
+          line: 2,
           messageId: 'deprecated',
         },
       ],
