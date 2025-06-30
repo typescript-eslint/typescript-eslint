@@ -1327,6 +1327,7 @@ describe('RuleTester - multipass fixer', () => {
             {
               code: 'foo',
               errors: [{ messageId: 'error' }],
+              output: null,
             },
           ],
           valid: [],
