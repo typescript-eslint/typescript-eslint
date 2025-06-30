@@ -14,12 +14,11 @@ const vitestConfig = mergeConfig(
       dir: path.join(import.meta.dirname, 'tests'),
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
-      setupFiles: ['./tests/util/setupVitest.mts'],
 
-      typecheck: {
-        enabled: true,
-        tsconfig: path.join(import.meta.dirname, 'tsconfig.spec.json'),
-      },
+      setupFiles: [
+        './tests/util/setupVitest.mts',
+        './tests/util/custom-matchers/custom-matchers.ts',
+      ],
     },
   }),
 );

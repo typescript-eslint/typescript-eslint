@@ -21,12 +21,12 @@ Snapshot Diff:
               MethodDefinition {
                 type: 'MethodDefinition',
                 computed: false,
--               decorators: Array [],
+                decorators: Array [],
                 key: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'createSocket',
--                 optional: false,
+                  optional: false,
 
                   range: [114, 126],
                   loc: {
@@ -36,7 +36,7 @@ Snapshot Diff:
                 },
                 kind: 'method',
                 optional: true,
--               override: false,
+                override: false,
                 static: false,
 -               value: TSEmptyBodyFunctionExpression {
 -                 type: 'TSEmptyBodyFunctionExpression',
@@ -44,7 +44,7 @@ Snapshot Diff:
 +                 type: 'FunctionExpression',
                   async: false,
 -                 body: null,
--                 declare: false,
+                  declare: false,
                   expression: false,
                   generator: false,
                   id: null,
@@ -56,7 +56,9 @@ Snapshot Diff:
 -                     typeArguments: TSTypeParameterInstantiation {
 +                     typeName: Identifier {
 +                       type: 'Identifier',
++                       decorators: Array [],
 +                       name: 'Promise',
++                       optional: false,
 +
 +                       range: [131, 138],
 +                       loc: {
@@ -132,13 +134,13 @@ Snapshot Diff:
               end: { column: 1, line: 5 },
             },
           },
--         declare: false,
--         decorators: Array [],
+          declare: false,
+          decorators: Array [],
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'AbstractSocket',
--           optional: false,
+            optional: false,
 
             range: [95, 109],
             loc: {
@@ -146,7 +148,7 @@ Snapshot Diff:
               end: { column: 36, line: 3 },
             },
           },
--         implements: Array [],
+          implements: Array [],
           superClass: null,
 
           range: [80, 149],

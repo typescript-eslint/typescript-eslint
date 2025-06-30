@@ -4,7 +4,7 @@
   "plugins": [
     {
       "plugin": "@nx/js/typescript",
-      "exclude": [".", "packages/integration-tests/fixtures/**"],
+      "exclude": ["packages/integration-tests/fixtures/**"],
       "options": {
         "typecheck": {
           "targetName": "typecheck"
@@ -17,24 +17,16 @@
     },
     {
       "plugin": "@nx/vite/plugin",
-      "include": ["packages/*"],
+      "exclude": ["*"],
       "options": {
-        "buildTargetName": "vite:build",
-        "testTargetName": "test",
-        "serveTargetName": "serve",
-        "devTargetName": "dev",
-        "previewTargetName": "preview",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "vite:typecheck",
-        "buildDepsTargetName": "vite:build-deps",
-        "watchDepsTargetName": "vite:watch-deps"
+        "testTargetName": "test"
       }
     },
     {
-      "plugin": "@nx/jest/plugin",
+      "plugin": "@nx/eslint/plugin",
       "include": ["packages/*"],
       "options": {
-        "targetName": "test"
+        "targetName": "lint"
       }
     }
   ],
@@ -59,80 +51,8 @@
     }
   },
   "targetDefaults": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"],
-      "outputs": ["{projectRoot}/dist"],
-      "options": {
-        "cwd": "{projectRoot}"
-      },
-      "cache": true
-    },
     "test": {
-      "dependsOn": ["^build"],
-      "outputs": ["{projectRoot}/coverage"],
-      "cache": true
-    },
-    "@nx/jest:jest": {
-      "dependsOn": ["^build"],
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/jest.config.js",
-        "{workspaceRoot}/jest.config.base.js"
-      ],
-      "outputs": ["{projectRoot}/coverage"],
-      "cache": true,
-      "options": {
-        "jestConfig": "{projectRoot}/jest.config.js",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
-      }
-    },
-    "@nx/vite:test": {
-      "dependsOn": ["^build"],
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/vitest.config.mts",
-        "{workspaceRoot}/vitest.config.base.mts",
-        "{projectRoot}/vitest.config.mts"
-      ],
-      "outputs": ["{projectRoot}/coverage"],
-      "cache": true,
-      "options": {
-        "config": "{projectRoot}/vitest.config.mts",
-        "watch": false
-      }
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "dependsOn": [
-        "eslint-plugin:build",
-        "eslint-plugin-internal:build",
-        "typescript-eslint:build"
-      ],
-      "inputs": [
-        "default",
-        "{workspaceRoot}/eslint.config.js",
-        "{workspaceRoot}/eslint.config.mjs",
-        {
-          "dependentTasksOutputFiles": "**/*.js",
-          "transitive": false
-        }
-      ],
-      "outputs": ["{options.outputFile}"],
-      "cache": true
-    },
-    "typecheck": {
-      "dependsOn": ["types:copy-ast-spec"],
-      "outputs": ["{workspaceRoot}/dist"],
-      "cache": true
+      "outputs": ["{projectRoot}/coverage"]
     }
   },
   "namedInputs": {
@@ -147,16 +67,15 @@
       },
       {
         "runtime": "yarn -v"
-      },
-      "{workspaceRoot}/yarn.lock"
+      }
     ],
     "production": [
       "default",
-      "!{projectRoot}/**/?(*.)+(test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/**/?(*.)+(test).?(m|c)[jt]s?(x)?(.snap|.shot)",
+      "!{projectRoot}/tests",
+      "!{projectRoot}/tools",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
-      "!{projectRoot}/vitest.config.m[jt]s",
-      "!{projectRoot}/src/test-setup.[jt]s"
+      "!{projectRoot}/vitest.config.mts"
     ]
   }
 }

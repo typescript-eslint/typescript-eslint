@@ -45,11 +45,13 @@ Snapshot Diff:
             },
           },
 -         right: Identifier {
++         declare: false,
++         global: false,
 +         id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'def',
--           optional: false,
+            optional: false,
 
             range: [11, 14],
             loc: {
@@ -65,9 +67,13 @@ Snapshot Diff:
 +           end: { column: 17, line: 1 },
 +         },
 +       },
++       declare: false,
++       global: false,
 +       id: Identifier {
 +         type: 'Identifier',
++         decorators: Array [],
 +         name: 'abd',
++         optional: false,
 +
 +         range: [7, 10],
           loc: {

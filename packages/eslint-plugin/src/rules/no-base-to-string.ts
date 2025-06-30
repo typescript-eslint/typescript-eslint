@@ -21,6 +21,7 @@ enum Usefulness {
 export type Options = [
   {
     ignoredTypeNames?: string[];
+    checkUnknown?: boolean;
   },
 ];
 export type MessageIds = 'baseArrayJoin' | 'baseToString';
@@ -46,6 +47,10 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          checkUnknown: {
+            type: 'boolean',
+            description: 'Whether to also check values of type `unknown`',
+          },
           ignoredTypeNames: {
             type: 'array',
             description:
@@ -60,6 +65,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      checkUnknown: false,
       ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
     },
   ],
@@ -76,6 +82,7 @@ export default createRule<Options, MessageIds>({
         type ?? services.getTypeAtLocation(node),
         new Set(),
       );
+
       if (certainty === Usefulness.Always) {
         return;
       }
@@ -213,7 +220,7 @@ export default createRule<Options, MessageIds>({
           return collectToStringCertainty(constraint, visited);
         }
         // unconstrained generic means `unknown`
-        return Usefulness.Always;
+        return option.checkUnknown ? Usefulness.Sometimes : Usefulness.Always;
       }
 
       // the Boolean type definition missing toString()
@@ -251,8 +258,13 @@ export default createRule<Options, MessageIds>({
       const toString =
         checker.getPropertyOfType(type, 'toString') ??
         checker.getPropertyOfType(type, 'toLocaleString');
+
       if (!toString) {
-        // e.g. any/unknown
+        // unknown
+        if (option.checkUnknown && type.flags === ts.TypeFlags.Unknown) {
+          return Usefulness.Sometimes;
+        }
+        // e.g. any
         return Usefulness.Always;
       }
 

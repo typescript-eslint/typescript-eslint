@@ -20,7 +20,7 @@ Snapshot Diff:
             end: { column: 30, line: 1 },
           },
         },
--       declare: false,
+        declare: false,
         extends: Array [
 -         TSInterfaceHeritage {
 -           type: 'TSInterfaceHeritage',
@@ -28,9 +28,9 @@ Snapshot Diff:
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'A',
--             optional: false,
+              optional: false,
 
               range: [20, 21],
               loc: {
@@ -51,9 +51,9 @@ Snapshot Diff:
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'B',
--             optional: false,
+              optional: false,
 
               range: [23, 24],
               loc: {
@@ -74,9 +74,9 @@ Snapshot Diff:
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'C',
--             optional: false,
+              optional: false,
 
               range: [26, 27],
               loc: {
@@ -94,9 +94,9 @@ Snapshot Diff:
         ],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'F',
--         optional: false,
+          optional: false,
 
           range: [10, 11],
           loc: {

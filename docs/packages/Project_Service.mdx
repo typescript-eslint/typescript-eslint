@@ -1,0 +1,39 @@
+---
+id: project-service
+sidebar_label: project-service
+toc_max_heading_level: 3
+---
+
+import GeneratedDocs from './project-service/generated/index.md';
+
+# `@typescript-eslint/project-service`
+
+<PackageLink packageName="project-service" scope="@typescript-eslint" />
+
+> Standalone TypeScript project service wrapper for linting ✨
+
+The typescript-eslint Project Service is a wrapper around TypeScript's "project service" APIs.
+These APIs are what editors such as VS Code use to programmatically "open" files and generate TypeScript programs for type information.
+
+:::note
+See [Blog > Typed Linting with Project Service](/blog/project-service) for more details on how lint users interact with the Project Service.
+:::
+
+```ts
+import { createProjectService } from '@typescript-eslint/project-service';
+
+const filePathAbsolute = '/path/to/your/project/index.ts';
+const { service } = createProjectService();
+
+service.openClientFile(filePathAbsolute);
+
+const scriptInfo = service.getScriptInfo(filePathAbsolute)!;
+const program = service
+  .getDefaultProjectForFile(scriptInfo.fileName, true)!
+  .getLanguageService(true)
+  .getProgram()!;
+```
+
+The following documentation is auto-generated from source code.
+
+<GeneratedDocs />

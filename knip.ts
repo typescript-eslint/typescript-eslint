@@ -2,6 +2,7 @@ import type { KnipConfig } from 'knip' with { 'resolution-mode': 'import' };
 
 export default {
   rules: {
+    binaries: 'off',
     classMembers: 'off',
     duplicates: 'off',
     enumMembers: 'off',
@@ -22,24 +23,16 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignore: [
-        'jest.config.base.js',
-        'tools/scripts/typings/typescript.d.ts',
-        'typings/*.d.ts',
-      ],
       ignoreDependencies: [
-        '@babel/code-frame',
-        '@babel/core',
-        '@babel/eslint-parser',
-        '@babel/parser',
-        '@babel/types',
-        '@nx/js',
         '@nx/workspace',
-        'glob',
-        'jest-specific-snapshot',
-        'make-dir',
         // imported for type purposes only
         'website',
+      ],
+
+      project: [
+        'tools/scripts/**/*.mts',
+        '!tools/scripts/typings/typescript.d.ts',
+        '!typings/*.d.ts',
       ],
     },
     'packages/ast-spec': {
@@ -47,7 +40,6 @@ export default {
         // @typescript-eslint/typescript-estree is not listed in dependencies to avoid circular dependency errors
         // You can check a more detailed explanation in this file
         'tests/util/parsers/typescript-estree-import.ts',
-        'typings/global.d.ts',
       ],
 
       project: ['src/**/*.ts', 'tests/util/**/*.ts', '!src/**/fixtures/**'],
@@ -57,15 +49,19 @@ export default {
         entry: [
           'tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
           'tests/util/setupVitest.mts',
+          'tests/util/custom-matchers/custom-matchers.ts',
+          'tests/util/custom-matchers/vitest-custom-matchers.d.ts',
         ],
       },
     },
     'packages/eslint-plugin': {
+      entry: ['tools/**'],
       ignore: [
         'tests/fixtures/**',
         'typings/eslint-rules.d.ts',
         'typings/typescript.d.ts',
       ],
+      ignoreDependencies: ['tsx'], // used in nx target definitions
     },
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],
@@ -96,11 +92,22 @@ export default {
         entry: [
           'tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
           'tests/test-utils/serializers/index.ts',
+          'tests/test-utils/custom-matchers/custom-matchers.ts',
+          'tests/test-utils/custom-matchers/vitest-custom-matchers.d.ts',
         ],
       },
     },
     'packages/type-utils': {
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: [
+          'tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
+          'tests/test-utils/custom-matchers/custom-matchers.ts',
+          'tests/test-utils/custom-matchers/vitest-custom-matchers.d.ts',
+        ],
+      },
     },
     'packages/typescript-estree': {
       entry: ['src/use-at-your-own-risk.ts'],
@@ -108,7 +115,11 @@ export default {
 
       vitest: {
         config: ['vitest.config.mts'],
-        entry: ['tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+        entry: [
+          'tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
+          'tests/test-utils/custom-matchers/custom-matchers.ts',
+          'tests/test-utils/custom-matchers/vitest-custom-matchers.d.ts',
+        ],
       },
     },
     'packages/utils': {

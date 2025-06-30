@@ -4,6 +4,12 @@
   "include": [],
   "references": [
     {
+      "path": "../project-service"
+    },
+    {
+      "path": "../tsconfig-utils"
+    },
+    {
       "path": "../visitor-keys"
     },
     {

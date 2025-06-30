@@ -18,16 +18,12 @@ export const vitestBaseConfig = {
     include: ['**/*.test.?(c|m)ts?(x)'],
 
     reporters: process.env.GITHUB_ACTIONS
-      ? [['basic'], ['github-actions']]
-      : [['verbose']],
+      ? [['default', { summary: false }], ['github-actions']]
+      : [['default']],
 
     setupFiles: ['console-fail-test/setup'],
 
     testTimeout: 10_000,
-
-    typecheck: {
-      include: ['**/*.test-d.?(c|m)ts?(x)'],
-    },
 
     watch: false,
   },

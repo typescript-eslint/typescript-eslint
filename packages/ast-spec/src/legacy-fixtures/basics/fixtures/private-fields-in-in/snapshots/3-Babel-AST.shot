@@ -3,12 +3,16 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: PrivateIdentifier {
               type: "PrivateIdentifier",
               name: "prop1",
@@ -19,6 +23,9 @@ Program {
                 end: { column: 8, line: 4 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             value: null,
 
@@ -31,9 +38,12 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "method",
+              optional: false,
 
               range: [97, 103],
               loc: {
@@ -42,6 +52,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -66,7 +78,9 @@ Program {
                       operator: "in",
                       right: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "arg",
+                        optional: false,
 
                         range: [132, 135],
                         loc: {
@@ -96,13 +110,16 @@ Program {
                   end: { column: 3, line: 7 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
               params: [
                 Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "arg",
+                  optional: false,
 
                   range: [104, 107],
                   loc: {
@@ -133,9 +150,13 @@ Program {
           end: { column: 1, line: 8 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -143,6 +164,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 142],

@@ -1,4 +1,4 @@
-import type { NewPlugin } from 'pretty-format';
+import type { NewPlugin } from '@vitest/pretty-format';
 
 type ConstructorSignature = new (...args: never) => unknown;
 

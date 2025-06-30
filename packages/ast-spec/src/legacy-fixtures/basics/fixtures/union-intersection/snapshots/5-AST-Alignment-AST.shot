@@ -13,12 +13,12 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'union',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSUnionType {
@@ -82,7 +82,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'let',
 
         range: [73, 110],
@@ -96,12 +96,12 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'intersection',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSIntersectionType {
@@ -156,7 +156,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'let',
 
         range: [111, 145],
@@ -170,12 +170,12 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'precedence1',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSUnionType {
@@ -279,7 +279,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'let',
 
         range: [146, 191],
@@ -293,12 +293,12 @@ Snapshot Diff:
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'precedence2',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSUnionType {
@@ -402,7 +402,7 @@ Snapshot Diff:
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'let',
 
         range: [192, 237],
@@ -413,12 +413,12 @@ Snapshot Diff:
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'unionLeading',
--         optional: false,
+          optional: false,
 
           range: [244, 256],
           loc: {
@@ -464,12 +464,12 @@ Snapshot Diff:
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'intersectionLeading',
--         optional: false,
+          optional: false,
 
           range: [281, 300],
           loc: {
@@ -515,12 +515,12 @@ Snapshot Diff:
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'unionLeadingSingle',
--         optional: false,
+          optional: false,
 
           range: [325, 343],
           loc: {
@@ -546,12 +546,12 @@ Snapshot Diff:
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'intersectionLeadingSingle',
--         optional: false,
+          optional: false,
 
           range: [359, 384],
           loc: {

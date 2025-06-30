@@ -3,6 +3,7 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
@@ -29,7 +30,9 @@ Program {
                   ],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "configurable",
+                    optional: false,
 
                     range: [90, 102],
                     loc: {
@@ -55,7 +58,9 @@ Program {
             ],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "x",
+              optional: false,
 
               range: [116, 117],
               loc: {
@@ -64,6 +69,8 @@ Program {
               },
             },
             kind: "get",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -88,7 +95,9 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "_x",
+                        optional: false,
 
                         range: [138, 140],
                         loc: {
@@ -118,6 +127,7 @@ Program {
                   end: { column: 3, line: 7 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -144,9 +154,13 @@ Program {
           end: { column: 1, line: 8 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Point",
+        optional: false,
 
         range: [79, 84],
         loc: {
@@ -154,6 +168,7 @@ Program {
           end: { column: 11, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 147],
