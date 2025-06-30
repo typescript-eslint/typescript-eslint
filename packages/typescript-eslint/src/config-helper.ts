@@ -181,8 +181,6 @@ function configImpl(...configs: unknown[]): ConfigArray {
               ` 'basePath' in 'extends' is not allowed.`,
           );
         }
-          );
-        }
       }
       if (nonObjectExtensions.length > 0) {
         const extensionIndices = nonObjectExtensions.join(', ');
