@@ -3,7 +3,6 @@
 **/.vscode
 **/.nyc_output
 **/.vs
-CONTRIBUTORS.md
 
 .yarn/plugins
 .yarn/releases
