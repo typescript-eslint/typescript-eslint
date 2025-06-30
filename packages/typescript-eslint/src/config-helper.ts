@@ -178,7 +178,9 @@ function configImpl(...configs: unknown[]): ConfigArray {
         if ('basePath' in extension) {
           throw new TypeError(
             `tseslint.config(): Config at index ${configIndex}${nameErrorPhrase} has an 'extends' array that contains a config with a 'basePath' property at index ${extensionIndex}.` +
-              ` 'basePath' in \`extends\' is not allowed.`,
+              ` 'basePath' in 'extends' is not allowed.`,
+          );
+        }
           );
         }
       }

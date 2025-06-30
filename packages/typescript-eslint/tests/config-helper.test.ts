@@ -410,10 +410,10 @@ describe('config helper', () => {
   it('basePath cannot be used in an extension', () => {
     expect(() => {
       tseslint.config({
-        extends: [{ rules: { rule1: 'error' }, basePath: 'base/path' }],
+        extends: [{ basePath: 'base/path', rules: { rule1: 'error' } }],
       });
     }).toThrow(
-      "tseslint.config(): Config at index 0 (anonymous) has an 'extends' array that contains a config with a 'basePath' property at index 0. 'basePath' in `extends' is not allowed.",
+      "tseslint.config(): Config at index 0 (anonymous) has an 'extends' array that contains a config with a 'basePath' property at index 0. 'basePath' in 'extends' is not allowed.",
     );
   });
 });
