@@ -5998,7 +5998,6 @@ __metadata:
     mdast-util-mdx: ^3.0.0
     micromark-extension-mdxjs: ^3.0.0
     natural-compare: ^1.4.0
-    prettier: ^3.5.3
     rimraf: "*"
     title-case: ^4.0.0
     ts-api-utils: ^2.1.0
