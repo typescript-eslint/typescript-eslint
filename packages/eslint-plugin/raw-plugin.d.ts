@@ -1,6 +1,15 @@
+import type { parseForESLint } from '@typescript-eslint/parser';
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
 import type plugin from './index';
+
+interface TSESLintParser {
+  meta: {
+    name: string;
+    version: string;
+  };
+  parseForESLint: typeof parseForESLint;
+}
 
 declare const cjsExport: {
   flatConfigs: {
@@ -18,7 +27,7 @@ declare const cjsExport: {
     'flat/stylistic-type-checked': FlatConfig.ConfigArray;
     'flat/stylistic-type-checked-only': FlatConfig.ConfigArray;
   };
-  parser: FlatConfig.Parser;
+  parser: TSESLintParser;
   // hide the configs from downstream users, since this isn't how we want them
   // to be accessed.
   plugin: Omit<typeof plugin, 'configs'>;
