@@ -26,7 +26,7 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
   /**
    * The base path for files and ignores.
    *
-   * @since eslint v9.30.0
+   * Since ESLint 9.30.0
    */
   basePath?: string;
 
