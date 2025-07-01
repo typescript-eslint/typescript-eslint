@@ -1,6 +1,7 @@
 import type {
   ScopeManager,
   ScopeVariable,
+  Variable,
 } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 
@@ -428,10 +429,7 @@ const exportExceptDefTypes: DefinitionType[] = [
  * @param variable the variable to check
  * @returns true if it is an edge case
  */
-function isSafeUnusedExportCondition(variable: ScopeVariable): boolean {
-  if (variable instanceof ESLintScopeVariable) {
-    return true;
-  }
+function isSafeUnusedExportCondition(variable: Variable): boolean {
   if (variable.isTypeVariable && variable.isValueVariable) {
     return !variable.defs
       .map(d => d.type)
@@ -451,7 +449,7 @@ const MERGABLE_TYPES = new Set([
  * Determine if the variable is directly exported
  * @param variable the variable to check
  */
-function isMergeableExported(variable: ScopeVariable): boolean {
+function isMergeableExported(variable: Variable): boolean {
   const safeFlag = isSafeUnusedExportCondition(variable);
   // If all of the merged things are of the same type, TS will error if not all of them are exported - so we only need to find one
   for (const def of variable.defs) {
@@ -481,7 +479,7 @@ function isMergeableExported(variable: ScopeVariable): boolean {
  * @param variable eslint-scope variable object.
  * @returns True if the variable is exported, false if not.
  */
-function isExported(variable: ScopeVariable): boolean {
+function isExported(variable: Variable): boolean {
   const safeFlag = isSafeUnusedExportCondition(variable);
   return variable.defs.some(definition => {
     let node = definition.node;
