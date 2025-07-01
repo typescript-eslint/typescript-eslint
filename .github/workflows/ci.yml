@@ -13,11 +13,10 @@ concurrency:
   group: '${{ github.workflow }} - ${{ github.head_ref || github.ref }}'
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
-environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }}
-
 env:
   PRIMARY_NODE_VERSION: 20
   # Value will be controlled via main environment secret, will be read-write for main branch, read-only for other branches
+  GITHUB_ENVIRONMENT: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }}
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   # This increases the verbosity of the logs for everything, including Nx Cloud, but will hopefully surface more info about recent lint failures
   NX_VERBOSE_LOGGING: false
@@ -40,6 +39,7 @@ permissions:
 jobs:
   install:
     name: Checkout and Install
+    environment: ${{ env.GITHUB_ENVIRONMENT }}
     runs-on: ubuntu-latest
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
@@ -53,6 +53,7 @@ jobs:
 
   build:
     name: Build All Packages
+    environment: ${{ env.GITHUB_ENVIRONMENT }}
     needs: [install]
     runs-on: ubuntu-latest
     env:
