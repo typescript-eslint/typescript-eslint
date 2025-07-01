@@ -69,10 +69,10 @@
         "runtime": "node -v"
       },
       {
-        "runtime": "echo $NETLIFY"
+        "runtime": "yarn -v"
       },
       {
-        "runtime": "yarn -v"
+        "runtime": "echo $NETLIFY"
       }
     ],
     "production": [
