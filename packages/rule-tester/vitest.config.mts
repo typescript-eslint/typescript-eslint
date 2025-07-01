@@ -1,5 +1,5 @@
 import * as path from 'node:path';
-import { defaultExclude, defineProject, mergeConfig } from 'vitest/config';
+import { defineProject, mergeConfig } from 'vitest/config';
 
 import { vitestBaseConfig } from '../../vitest.config.base.mjs';
 import packageJson from './package.json' with { type: 'json' };
@@ -61,7 +61,6 @@ const vitestConfig = mergeConfig(
 
     test: {
       dir: path.join(import.meta.dirname, 'tests'),
-      exclude: [...defaultExclude, 'eslint-base/eslint-base.test.js'],
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
     },
