@@ -70,7 +70,7 @@
         ]
       },
       "copy-ast-spec": {
-        "cache": true,
+        "cache": false,
         "command": "tsx tools/copy-ast-spec.mts",
         "dependsOn": [
           "ast-spec:build"
