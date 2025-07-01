@@ -47,6 +47,16 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: |
+          yarn install --immutable --inline-builds
+          yarn check-clean-workspace-after-install
+        env:
+          # CI optimizations. Overrides yarnrc.yml options (or their defaults) in the CI action.
+          YARN_ENABLE_GLOBAL_CACHE: 'false' # Use local cache folder to keep downloaded archives
+          YARN_NM_MODE: 'hardlinks-local' # Hardlinks-(local|global) reduces io / node_modules size
+          YARN_INSTALL_STATE_PATH: .yarn/ci-cache/install-state.gz # Very small speedup when lock does not change
+          # Other environment variables
+          HUSKY: '0' # By default do not run HUSKY install
+          SKIP_POSTINSTALL: 'true'
 
       - run: yarn nx affected -t build
