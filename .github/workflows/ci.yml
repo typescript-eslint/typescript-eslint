@@ -39,7 +39,7 @@ permissions:
 jobs:
   install:
     name: Checkout and Install
-    environment: ${{ env.GITHUB_ENVIRONMENT }}
+    environment: 'main'
     runs-on: ubuntu-latest
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
@@ -53,7 +53,7 @@ jobs:
 
   build:
     name: Build All Packages
-    environment: ${{ env.GITHUB_ENVIRONMENT }}
+    environment: 'main'
     needs: [install]
     runs-on: ubuntu-latest
     env:
