@@ -39,7 +39,11 @@ jobs:
       - run: corepack enable
 
       # Enable task distribution via Nx Cloud
-      - run: yarn dlx nx-cloud start-ci-run --distribute-on="10 linux-medium-js" --stop-agents-after="build"
+      - run: yarn dlx nx-cloud start-ci-run --distribute-on="10 linux-medium-js" --stop-agents-after="build" --with-env-vars="SKIP_POSTINSTALL,GIT_FETCH_TAGS,HUSKY"
+        env:
+          SKIP_POSTINSTALL: 'true' # Skip postinstall scripts on Nx Agents
+          GIT_FETCH_TAGS: 'true' # Fetch all tags on checkout on Nx Agents
+          HUSKY: '0' # Do not run husky install on Nx Agents
 
       - uses: nrwl/nx-set-shas@v4
 
@@ -61,4 +65,5 @@ jobs:
           HUSKY: '0' # By default do not run HUSKY install
           SKIP_POSTINSTALL: 'true'
 
-      - run: yarn nx affected -t build
+      # Website will be built by the Netlify GitHub App
+      - run: yarn nx run-many --target=build --exclude=website --exclude=website-eslint
