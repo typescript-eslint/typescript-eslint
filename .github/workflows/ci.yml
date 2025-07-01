@@ -38,7 +38,7 @@ permissions:
 jobs:
   install:
     name: Checkout and Install
-    environment: 'main'
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }}
     runs-on: ubuntu-latest
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
@@ -52,7 +52,7 @@ jobs:
 
   build:
     name: Build All Packages
-    environment: 'main'
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }}
     needs: [install]
     runs-on: ubuntu-latest
     env:
