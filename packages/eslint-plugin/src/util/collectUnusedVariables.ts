@@ -450,7 +450,6 @@ const MERGABLE_TYPES = new Set([
  * @param variable the variable to check
  */
 function isMergeableExported(variable: Variable): boolean {
-  const safeFlag = isSafeUnusedExportCondition(variable);
   // If all of the merged things are of the same type, TS will error if not all of them are exported - so we only need to find one
   for (const def of variable.defs) {
     // parameters can never be exported.
@@ -466,7 +465,8 @@ function isMergeableExported(variable: Variable): boolean {
       def.node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration
     ) {
       return (
-        safeFlag || def.node.type !== AST_NODE_TYPES.TSTypeAliasDeclaration
+        def.node.type !== AST_NODE_TYPES.TSTypeAliasDeclaration ||
+        isSafeUnusedExportCondition(variable)
       );
     }
   }
@@ -480,7 +480,6 @@ function isMergeableExported(variable: Variable): boolean {
  * @returns True if the variable is exported, false if not.
  */
 function isExported(variable: Variable): boolean {
-  const safeFlag = isSafeUnusedExportCondition(variable);
   return variable.defs.some(definition => {
     let node = definition.node;
 
@@ -496,7 +495,8 @@ function isExported(variable: Variable): boolean {
 
     return (
       isExportedFlag &&
-      (safeFlag || node.type !== AST_NODE_TYPES.TSTypeAliasDeclaration)
+      (node.type !== AST_NODE_TYPES.TSTypeAliasDeclaration ||
+        isSafeUnusedExportCondition(variable))
     );
   });
 }
