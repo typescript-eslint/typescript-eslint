@@ -256,6 +256,13 @@ export namespace FlatConfig {
   // https://github.com/eslint/eslint/blob/v8.45.0/lib/config/flat-config-schema.js
   export interface Config {
     /**
+     * Path to the directory where the configuration object should apply.
+     * `files` and `ignores` patterns in the configuration object are
+     * interpreted as relative to this path.
+     * @since 9.30.0
+     */
+    basePath?: string;
+    /**
      * An array of glob patterns indicating the files that the configuration object should apply to.
      * If not specified, the configuration object applies to all files matched by any other configuration object.
      */
