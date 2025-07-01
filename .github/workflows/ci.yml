@@ -41,6 +41,8 @@ jobs:
       # Enable task distribution via Nx Cloud
       - run: yarn dlx nx-cloud start-ci-run --distribute-on="10 linux-medium-js" --stop-agents-after="build"
 
+      - uses: nrwl/nx-set-shas@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
