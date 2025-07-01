@@ -48,12 +48,11 @@
     "typescript"
   ],
   "scripts": {
-    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
     "build": "yarn run -BT nx build",
     "clean": "rimraf dist/ coverage/",
     "format": "yarn run -T format",
     "generate-breaking-changes": "yarn run -BT nx generate-breaking-changes",
-    "generate-configs": "yarn run -T generate-configs",
+    "generate-configs": "yarn run -BT nx generate-configs repo",
     "lint": "yarn run -BT nx lint",
     "test": "yarn run -BT nx test",
     "typecheck": "yarn run -BT nx typecheck"
@@ -84,6 +83,7 @@
     "mdast-util-from-markdown": "^2.0.0",
     "mdast-util-mdx": "^3.0.0",
     "micromark-extension-mdxjs": "^3.0.0",
+    "prettier": "3.5.0",
     "rimraf": "*",
     "title-case": "^4.0.0",
     "tsx": "*",
@@ -114,6 +114,9 @@
         "dependsOn": [
           "type-utils:build"
         ]
+      },
+      "lint": {
+        "command": "eslint"
       }
     }
   }
