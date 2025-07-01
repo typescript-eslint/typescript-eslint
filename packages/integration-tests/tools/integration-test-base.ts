@@ -74,7 +74,7 @@ export function eslintIntegrationTest(
           `"filePath": "<root>/${path.relative(testFolder, testFile)}"`,
       )
       .replaceAll(/C:\\\\(usr)\\\\(linked)\\\\(tsconfig.json)/g, '/$1/$2/$3');
-    let lintOutput: any;
+    let lintOutput: unknown;
     try {
       lintOutput = JSON.parse(lintOutputRAW);
     } catch {
