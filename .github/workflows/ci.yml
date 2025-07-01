@@ -15,8 +15,8 @@ concurrency:
 
 env:
   PRIMARY_NODE_VERSION: 20
-  # Only set the read-write token if we are on the main branch
-  NX_CLOUD_ACCESS_TOKEN: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') && secrets.NX_CLOUD_ACCESS_TOKEN || '' }}
+  # Value will be controlled via main environment secret, will be read-write for main branch, read-only for other branches
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   # This increases the verbosity of the logs for everything, including Nx Cloud, but will hopefully surface more info about recent lint failures
   NX_VERBOSE_LOGGING: false
 
