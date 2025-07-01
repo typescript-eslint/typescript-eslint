@@ -15,8 +15,7 @@ concurrency:
 
 env:
   PRIMARY_NODE_VERSION: 20
-  # Value will be controlled via main environment secret, will be read-write for main branch, read-only for other branches
-  GITHUB_ENVIRONMENT: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }}
+  # Value will be controlled via GitHub environment (called "main") secret, will be read-write for main branch, read-only for other branches
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   # This increases the verbosity of the logs for everything, including Nx Cloud, but will hopefully surface more info about recent lint failures
   NX_VERBOSE_LOGGING: false
@@ -39,7 +38,7 @@ permissions:
 jobs:
   install:
     name: Checkout and Install
-    environment: 'main'
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     runs-on: ubuntu-latest
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
@@ -53,7 +52,7 @@ jobs:
 
   build:
     name: Build All Packages
-    environment: 'main'
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
     runs-on: ubuntu-latest
     env:
@@ -70,6 +69,7 @@ jobs:
 
   generate_configs:
     name: Generate Configs
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     runs-on: ubuntu-latest
     env:
@@ -88,6 +88,7 @@ jobs:
 
   lint_without_build:
     name: Lint without build
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
     runs-on: ubuntu-latest
     strategy:
@@ -108,6 +109,7 @@ jobs:
 
   lint_with_build:
     name: Lint with build
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     # because we lint with our own tooling, we need to build
     needs: [build]
     runs-on: ubuntu-latest
@@ -133,6 +135,7 @@ jobs:
 
   stylelint:
     name: Stylelint
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
     runs-on: ubuntu-latest
     env:
@@ -150,6 +153,7 @@ jobs:
 
   integration_tests:
     name: Run integration tests on primary Node.js version
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     runs-on: ubuntu-latest
     env:
@@ -171,6 +175,7 @@ jobs:
 
   unit_tests:
     name: Run Unit Tests
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -236,6 +241,7 @@ jobs:
 
   unit_tests_project_service:
     name: Run Unit Tests with Project Service
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
@@ -264,6 +270,7 @@ jobs:
 
   upload_coverage:
     name: Upload Codecov Coverage
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [unit_tests]
     runs-on: ubuntu-latest
     steps:
@@ -285,6 +292,7 @@ jobs:
 
   publish_canary_version:
     name: Publish the latest code as a canary version
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -313,5 +321,6 @@ jobs:
         run: npx nx release publish --tag canary --verbose
         env:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
+          # This secret is only accessible on the GitHub environment "main"
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
