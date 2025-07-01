@@ -13,6 +13,8 @@ concurrency:
   group: '${{ github.workflow }} - ${{ github.head_ref || github.ref }}'
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
+environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }}
+
 env:
   PRIMARY_NODE_VERSION: 20
   # Value will be controlled via main environment secret, will be read-write for main branch, read-only for other branches
