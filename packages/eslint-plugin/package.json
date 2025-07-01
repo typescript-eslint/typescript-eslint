@@ -48,7 +48,6 @@
     "typescript"
   ],
   "scripts": {
-    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
     "build": "pnpm -w exec nx build",
     "clean": "rimraf dist/ coverage/",
     "format": "pnpm -w run format",
@@ -56,7 +55,6 @@
     "generate-configs": "pnpm -w run generate-configs",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "test-single": "vitest --run --config=./vitest.config.mts --no-coverage",
     "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
@@ -87,6 +85,7 @@
     "mdast-util-from-markdown": "^2.0.0",
     "mdast-util-mdx": "^3.0.0",
     "micromark-extension-mdxjs": "^3.0.0",
+    "prettier": "3.5.0",
     "rimraf": "*",
     "title-case": "^4.0.0",
     "tsx": "*",
@@ -117,6 +116,9 @@
         "dependsOn": [
           "type-utils:build"
         ]
+      },
+      "lint": {
+        "command": "eslint"
       }
     }
   }

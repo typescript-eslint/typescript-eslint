@@ -56,8 +56,8 @@ export default {
         ],
       },
     },
+
     'packages/eslint-plugin': {
-      entry: ['tests/**/*.{bench,test,test-d}.?(cm)ts?(x)', 'tools/**'],
       ignore: ['typings/eslint-rules.d.ts', 'typings/typescript.d.ts'],
       ignoreDependencies: ['@types/react'],
 
@@ -69,26 +69,28 @@ export default {
         project: ['tests/**', '!tests/fixtures/**'],
       },
     },
+
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],
     },
     'packages/integration-tests': {
       ignore: ['fixtures/**'],
     },
-    'packages/parser': {
-      ignore: ['tests/fixtures/**'],
 
+    'packages/parser': {
       vitest: {
         config: ['vitest.config.mts'],
-        entry: ['tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+        entry: [
+          'tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
+          'tests/test-utils/test-utils.ts',
+          'tests/test-utils/ts-error-serializer.ts',
+        ],
+        project: ['tests/**', '!tests/fixtures/**'],
       },
     },
+
     'packages/rule-tester': {
       ignore: ['typings/eslint.d.ts'],
-
-      mocha: {
-        entry: ['tests/eslint-base/eslint-base.test.js'],
-      },
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
@@ -117,6 +119,15 @@ export default {
         ],
       },
     },
+
+    'packages/types': {
+      project: [
+        'src/**/*.ts!',
+        '!src/generated/**/*.ts',
+        'tools/copy-ast-spec.mts',
+      ],
+    },
+
     'packages/typescript-estree': {
       entry: ['src/use-at-your-own-risk.ts'],
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],

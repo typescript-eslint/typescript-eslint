@@ -33,9 +33,6 @@ importers:
       '@nx/devkit':
         specifier: 21.0.3
         version: 21.0.3(nx@21.0.3(@swc/core@1.11.24(@swc/helpers@0.5.17)))
-      '@nx/eslint':
-        specifier: 21.0.3
-        version: 21.0.3(@babel/traverse@7.27.1)(@swc/core@1.11.24(@swc/helpers@0.5.17))(@zkochan/js-yaml@0.0.7)(eslint@9.27.0(jiti@2.4.2))(nx@21.0.3(@swc/core@1.11.24(@swc/helpers@0.5.17)))
       '@nx/js':
         specifier: 21.0.3
         version: 21.0.3(@babel/traverse@7.27.1)(@swc/core@1.11.24(@swc/helpers@0.5.17))(nx@21.0.3(@swc/core@1.11.24(@swc/helpers@0.5.17)))
@@ -313,6 +310,9 @@ importers:
       micromark-extension-mdxjs:
         specifier: ^3.0.0
         version: 3.0.0
+      prettier:
+        specifier: 3.5.0
+        version: 3.5.0
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -356,6 +356,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^3.1.3
         version: 3.1.3(vitest@3.1.3(@types/debug@4.1.12)(@types/node@22.15.18)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))
+      eslint:
+        specifier: '*'
+        version: 9.27.0(jiti@2.4.2)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -368,6 +371,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^3.1.3
         version: 3.1.3(vitest@3.1.3(@types/debug@4.1.12)(@types/node@22.15.18)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))
+      eslint:
+        specifier: '*'
+        version: 9.27.0(jiti@2.4.2)
       vitest:
         specifier: ^3.1.3
         version: 3.1.3(@types/debug@4.1.12)(@types/node@22.15.18)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0)
@@ -389,13 +395,13 @@ importers:
       debug:
         specifier: ^4.3.4
         version: 4.4.1
-      eslint:
-        specifier: ^8.57.0 || ^9.0.0
-        version: 9.27.0(jiti@2.4.2)
     devDependencies:
       '@vitest/coverage-v8':
         specifier: ^3.1.3
         version: 3.1.3(vitest@3.1.3(@types/debug@4.1.12)(@types/node@22.15.18)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))
+      eslint:
+        specifier: '*'
+        version: 9.27.0(jiti@2.4.2)
       glob:
         specifier: '*'
         version: 11.0.2
@@ -442,6 +448,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^3.1.3
         version: 3.1.3(vitest@3.1.3(@types/debug@4.1.12)(@types/node@22.15.18)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))
+      eslint:
+        specifier: '*'
+        version: 9.27.0(jiti@2.4.2)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -516,6 +525,9 @@ importers:
       '@vitest/pretty-format':
         specifier: ^3.1.3
         version: 3.1.3
+      eslint:
+        specifier: '*'
+        version: 9.27.0(jiti@2.4.2)
       glob:
         specifier: '*'
         version: 11.0.2
@@ -580,6 +592,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^3.1.3
         version: 3.1.3(vitest@3.1.3(@types/debug@4.1.12)(@types/node@22.15.18)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))
+      eslint:
+        specifier: '*'
+        version: 9.27.0(jiti@2.4.2)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -604,13 +619,13 @@ importers:
       '@typescript-eslint/utils':
         specifier: 8.35.1
         version: 8.35.1(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.2)
-      eslint:
-        specifier: ^8.57.0 || ^9.0.0
-        version: 9.27.0(jiti@2.4.2)
     devDependencies:
       '@vitest/coverage-v8':
         specifier: ^3.1.3
         version: 3.1.3(vitest@3.1.3(@types/debug@4.1.12)(@types/node@22.15.18)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))
+      eslint:
+        specifier: '*'
+        version: 9.27.0(jiti@2.4.2)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -660,6 +675,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^3.1.3
         version: 3.1.3(vitest@3.1.3(@types/debug@4.1.12)(@types/node@22.15.18)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))
+      eslint:
+        specifier: '*'
+        version: 9.27.0(jiti@2.4.2)
       glob:
         specifier: '*'
         version: 11.0.2
@@ -687,13 +705,13 @@ importers:
       '@typescript-eslint/typescript-estree':
         specifier: 8.35.1
         version: 8.35.1(typescript@5.8.2)
-      eslint:
-        specifier: ^8.57.0 || ^9.0.0
-        version: 9.27.0(jiti@2.4.2)
     devDependencies:
       '@vitest/coverage-v8':
         specifier: ^3.1.3
         version: 3.1.3(vitest@3.1.3(@types/debug@4.1.12)(@types/node@22.15.18)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))
+      eslint:
+        specifier: '*'
+        version: 9.27.0(jiti@2.4.2)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -716,6 +734,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^3.1.3
         version: 3.1.3(vitest@3.1.3(@types/debug@4.1.12)(@types/node@22.15.18)(jiti@2.4.2)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))
+      eslint:
+        specifier: '*'
+        version: 9.27.0(jiti@2.4.2)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -2658,15 +2679,6 @@ packages:
     resolution: {integrity: sha512-PnEZWenJ3fOoAU+Es9v0xxANyrROtFj+rjDHCjfyqGs3jMihMyTsCDQLpsjdnrUF5jjp9VUawfms76ocSLmwpw==}
     peerDependencies:
       nx: 21.0.3
-
-  '@nx/eslint@21.0.3':
-    resolution: {integrity: sha512-0YNNO5iTPIq8j4vTluVTIXM1Be3GOvB1n930oupZYVvnQIR0Zv7SO9fnoz+boyZfeFhjBcy74xeiymz8eoAsDA==}
-    peerDependencies:
-      '@zkochan/js-yaml': 0.0.7
-      eslint: ^8.0.0 || ^9.0.0
-    peerDependenciesMeta:
-      '@zkochan/js-yaml':
-        optional: true
 
   '@nx/js@21.0.3':
     resolution: {integrity: sha512-nrlMpSd567zGbZDyj4BTUcZAKzjTqzvx6B2+zmkq+q8RqApGOs3xvJ6QJpFrcaC7Oqa9xZljDUbaDE7bPueAMA==}
@@ -11531,25 +11543,6 @@ snapshots:
       tmp: 0.2.3
       tslib: 2.8.1
       yargs-parser: 21.1.1
-
-  '@nx/eslint@21.0.3(@babel/traverse@7.27.1)(@swc/core@1.11.24(@swc/helpers@0.5.17))(@zkochan/js-yaml@0.0.7)(eslint@9.27.0(jiti@2.4.2))(nx@21.0.3(@swc/core@1.11.24(@swc/helpers@0.5.17)))':
-    dependencies:
-      '@nx/devkit': 21.0.3(nx@21.0.3(@swc/core@1.11.24(@swc/helpers@0.5.17)))
-      '@nx/js': 21.0.3(@babel/traverse@7.27.1)(@swc/core@1.11.24(@swc/helpers@0.5.17))(nx@21.0.3(@swc/core@1.11.24(@swc/helpers@0.5.17)))
-      eslint: 9.27.0(jiti@2.4.2)
-      semver: 7.7.0
-      tslib: 2.8.1
-      typescript: 5.8.2
-    optionalDependencies:
-      '@zkochan/js-yaml': 0.0.7
-    transitivePeerDependencies:
-      - '@babel/traverse'
-      - '@swc-node/register'
-      - '@swc/core'
-      - debug
-      - nx
-      - supports-color
-      - verdaccio
 
   '@nx/js@21.0.3(@babel/traverse@7.27.1)(@swc/core@1.11.24(@swc/helpers@0.5.17))(nx@21.0.3(@swc/core@1.11.24(@swc/helpers@0.5.17)))':
     dependencies:

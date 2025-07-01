@@ -81,8 +81,6 @@ export default tseslint.config(
       'packages/types/src/generated/**/*.ts',
       // Playground types downloaded from the web
       'packages/website/src/vendor/',
-      // see the file header in eslint-base.test.js for more info
-      'packages/rule-tester/tests/eslint-base/',
     ],
     name: 'global-ignores',
   },
