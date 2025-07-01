@@ -1,6 +1,5 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
   "plugins": [
     {
       "plugin": "@nx/js/typescript",
@@ -70,10 +69,10 @@
         "runtime": "node -v"
       },
       {
-        "runtime": "echo $NETLIFY"
+        "runtime": "yarn -v"
       },
       {
-        "runtime": "yarn -v"
+        "runtime": "echo $NETLIFY"
       }
     ],
     "production": [
@@ -84,5 +83,6 @@
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/vitest.config.mts"
     ]
-  }
+  },
+  "nxCloudId": "60b38765e74d975e3faae5ad"
 }
