@@ -1735,7 +1735,7 @@ export type A = typeof A;
     },
     {
       code: `
-function A() { }
+function A() {}
 namespace A {
   export const prop = 1;
 }
@@ -3065,7 +3065,7 @@ export { A };
     },
     {
       code: `
-class A { }
+class A {}
 export type B = A;
       `,
     },
