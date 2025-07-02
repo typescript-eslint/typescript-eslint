@@ -1733,6 +1733,26 @@ export type A = typeof A;
         },
       ],
     },
+    {
+      code: `
+function A() { }
+namespace A {
+  export const prop = 1;
+}
+export type A = typeof A;
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'A',
+          },
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
   ],
 
   valid: [
@@ -3039,9 +3059,14 @@ declare class Bar {}
     {
       code: `
 const A = 0;
-
 type A = typeof A;
 export { A };
+      `,
+    },
+    {
+      code: `
+class A { }
+export type B = A;
       `,
     },
   ],
