@@ -6,8 +6,6 @@ import type {
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import {
-  DefinitionType,
-  ESLintScopeVariable,
   ImplicitLibVariable,
   ScopeType,
   Visitor,
@@ -418,24 +416,12 @@ function isSelfReference(
   return false;
 }
 
-const exportExceptDefTypes: DefinitionType[] = [
-  DefinitionType.Variable,
-  DefinitionType.Type,
-];
 /**
- * In edge cases, the existing used logic does not work.
- * When the type and variable name of the variable are the same
- * @ref https://github.com/typescript-eslint/typescript-eslint/issues/10658
  * @param variable the variable to check
- * @returns true if it is an edge case
+ * @returns true if it is `isTypeVariable` and `isValueVariable`
  */
-function isSafeUnusedExportCondition(variable: Variable): boolean {
-  if (variable.isTypeVariable && variable.isValueVariable) {
-    return !variable.defs
-      .map(d => d.type)
-      .every(t => exportExceptDefTypes.includes(t));
-  }
-  return true;
+function isDualPurposeVariable(variable: Variable): boolean {
+  return variable.isTypeVariable && variable.isValueVariable;
 }
 
 const MERGABLE_TYPES = new Set([
@@ -464,9 +450,9 @@ function isMergeableExported(variable: Variable): boolean {
         def.node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
       def.node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration
     ) {
-      return (
-        def.node.type !== AST_NODE_TYPES.TSTypeAliasDeclaration ||
-        isSafeUnusedExportCondition(variable)
+      return !(
+        def.node.type === AST_NODE_TYPES.TSTypeAliasDeclaration &&
+        isDualPurposeVariable(variable)
       );
     }
   }
@@ -495,8 +481,10 @@ function isExported(variable: Variable): boolean {
 
     return (
       isExportedFlag &&
-      (node.type !== AST_NODE_TYPES.TSTypeAliasDeclaration ||
-        isSafeUnusedExportCondition(variable))
+      !(
+        node.type === AST_NODE_TYPES.TSTypeAliasDeclaration &&
+        isDualPurposeVariable(variable)
+      )
     );
   });
 }
