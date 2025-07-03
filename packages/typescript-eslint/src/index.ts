@@ -3,8 +3,10 @@ import type { TSESLint } from '@typescript-eslint/utils';
 
 import pluginBase from '@typescript-eslint/eslint-plugin';
 import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw-plugin';
+import { addCandidateTSConfigRootDir } from '@typescript-eslint/typescript-estree';
 
 import { config } from './config-helper';
+import { getRootDirFromStack } from './getRootDirFromStack';
 
 export const parser: TSESLint.FlatConfig.Parser = rawPlugin.parser;
 
@@ -36,7 +38,7 @@ export const plugin: TSESLint.FlatConfig.Plugin = pluginBase as Omit<
   'configs'
 >;
 
-export const configs = {
+export const configs = createConfigsGetters({
   /**
    * Enables each the rules provided as a part of typescript-eslint. Note that many rules are not applicable in all codebases, or are meant to be configured.
    * @see {@link https://typescript-eslint.io/users/configs#all}
@@ -120,7 +122,35 @@ export const configs = {
    */
   stylisticTypeCheckedOnly:
     rawPlugin.flatConfigs['flat/stylistic-type-checked-only'],
-};
+});
+
+function createConfigsGetters<T extends object>(values: T): T {
+  const configs = {};
+
+  Object.defineProperties(
+    configs,
+    Object.fromEntries(
+      Object.entries(values).map(([key, value]: [string, unknown]) => [
+        key,
+        {
+          get: () => {
+            const candidateRootDir = getRootDirFromStack(
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              new Error().stack!,
+            );
+            if (candidateRootDir) {
+              addCandidateTSConfigRootDir(candidateRootDir);
+            }
+
+            return value;
+          },
+        },
+      ]),
+    ),
+  );
+
+  return configs as T;
+}
 
 export type Config = TSESLint.FlatConfig.ConfigFile;
 
