@@ -24,13 +24,6 @@ export type InfiniteDepthConfigWithExtends =
 
 export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
   /**
-   * The base path for files and ignores.
-   *
-   * Since ESLint 9.30.0
-   */
-  basePath?: string;
-
-  /**
    * Allows you to "extend" a set of configs similar to `extends` from the
    * classic configs.
    *
