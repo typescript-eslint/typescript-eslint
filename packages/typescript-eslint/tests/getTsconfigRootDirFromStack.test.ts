@@ -1,8 +1,8 @@
-import { getRootDirFromStack } from '../src/getRootDirFromStack';
+import { getTsconfigRootDirFromStack } from '../src/getTsconfigRootDirFromStack';
 
-describe(getRootDirFromStack, () => {
+describe(getTsconfigRootDirFromStack, () => {
   it('returns undefined when no file path seems to be an ESLint config', () => {
-    const actual = getRootDirFromStack(
+    const actual = getTsconfigRootDirFromStack(
       [
         `Error`,
         ' at file:///index.js',
@@ -17,7 +17,7 @@ describe(getRootDirFromStack, () => {
   it.each(['cjs', 'cts', 'js', 'mjs', 'mts', 'ts'])(
     'returns the path to the config file when in a Unix system and its extension is %s',
     extension => {
-      const actual = getRootDirFromStack(
+      const actual = getTsconfigRootDirFromStack(
         [
           `Error`,
           ` at file:///path/to/file/eslint.config.${extension}`,
