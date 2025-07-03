@@ -3,7 +3,6 @@
 **/.vscode
 **/.nyc_output
 **/.vs
-CONTRIBUTORS.md
 
 .yarn/plugins
 .yarn/releases
@@ -34,9 +33,6 @@ CHANGELOG.md
 
 packages/website/.docusaurus
 packages/website/build
-
-# see the file header in eslint-base.test.js for more info
-packages/rule-tester/tests/eslint-base
 
 /.nx/cache
 /.nx/workspace-data
