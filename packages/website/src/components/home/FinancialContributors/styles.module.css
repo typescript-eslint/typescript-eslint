@@ -8,7 +8,7 @@
 
 .details {
   font-size: 1.2rem;
-  max-width: 70vw;
+  max-width: min(70vw, 70rem);
   margin: 2rem auto;
 }
 
