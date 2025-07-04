@@ -161,13 +161,11 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function isInsideExportOrImport(node: TSESTree.Node): boolean {
+    function isInsideImport(node: TSESTree.Node): boolean {
       let current = node;
 
       while (true) {
         switch (current.type) {
-          case AST_NODE_TYPES.ExportAllDeclaration:
-          case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.ImportDeclaration:
             return true;
 
@@ -178,6 +176,7 @@ export default createRule<Options, MessageIds>({
           case AST_NODE_TYPES.FunctionDeclaration:
           case AST_NODE_TYPES.FunctionExpression:
           case AST_NODE_TYPES.Program:
+          case AST_NODE_TYPES.ExportSpecifier:
           case AST_NODE_TYPES.TSUnionType:
           case AST_NODE_TYPES.VariableDeclarator:
             return false;
@@ -365,7 +364,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkIdentifier(node: IdentifierLike): void {
-      if (isDeclaration(node) || isInsideExportOrImport(node)) {
+      if (isDeclaration(node) || isInsideImport(node)) {
         return;
       }
 
@@ -436,7 +435,18 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      Identifier: checkIdentifier,
+      ExportSpecifier(node): void {
+        const symbol = services.getSymbolAtLocation(node.exported);
+
+        if (searchForDeprecationInAliasesChain(symbol, false) == null) {
+          checkIdentifier(node.exported as TSESTree.Identifier);
+        }
+      },
+      Identifier(node): void {
+        if (node.parent.type !== AST_NODE_TYPES.ExportSpecifier) {
+          checkIdentifier(node);
+        }
+      },
       JSXIdentifier(node): void {
         if (node.parent.type !== AST_NODE_TYPES.JSXClosingElement) {
           checkIdentifier(node);
