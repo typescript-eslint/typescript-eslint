@@ -16,7 +16,10 @@ export type {
   ParserServicesWithTypeInformation,
   TSESTreeOptions,
 } from './parser-options';
-export { addCandidateTSConfigRootDir } from './parseSettings/candidateTSConfigRootDirs';
+export {
+  addCandidateTSConfigRootDir,
+  clearCandidateTSConfigRootDirs,
+} from './parseSettings/candidateTSConfigRootDirs';
 export { simpleTraverse } from './simple-traverse';
 export * from './ts-estree';
 export { typescriptVersionIsAtLeast } from './version-check';

@@ -1,10 +1,10 @@
 import path from 'node:path';
 
-import { getTsconfigRootDirFromStack } from '../src/getTsconfigRootDirFromStack';
+import { getTSConfigRootDirFromStack } from '../src/getTSConfigRootDirFromStack';
 
-describe(getTsconfigRootDirFromStack, () => {
+describe(getTSConfigRootDirFromStack, () => {
   it('returns undefined when no file path seems to be an ESLint config', () => {
-    const actual = getTsconfigRootDirFromStack(
+    const actual = getTSConfigRootDirFromStack(
       [
         `Error`,
         ' at file:///index.js',
@@ -24,7 +24,7 @@ describe(getTsconfigRootDirFromStack, () => {
           ? 'C:\\path\\to\\file\\'
           : '/path/to/file/';
 
-      const actual = getTsconfigRootDirFromStack(
+      const actual = getTSConfigRootDirFromStack(
         [
           `Error`,
           ` at ${path.join(expected, `eslint.config.${extension}`)}`,
