@@ -1,4 +1,5 @@
 import path from 'node:path';
+
 import { getTsconfigRootDirFromStack } from '../src/getTsconfigRootDirFromStack';
 
 describe(getTsconfigRootDirFromStack, () => {
