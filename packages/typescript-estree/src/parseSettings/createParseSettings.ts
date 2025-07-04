@@ -15,6 +15,7 @@ import type { MutableParseSettings } from './index';
 import { ensureAbsolutePath } from '../create-program/shared';
 import { validateDefaultProjectForFilesGlob } from '../create-program/validateDefaultProjectForFilesGlob';
 import { isSourceFile } from '../source-files';
+import { getInferredTSConfigRootDir } from './candidateTSConfigRootDirs';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
   ExpiringCache,
@@ -52,7 +53,7 @@ export function createParseSettings(
   const tsconfigRootDir =
     typeof tsestreeOptions.tsconfigRootDir === 'string'
       ? tsestreeOptions.tsconfigRootDir
-      : process.cwd();
+      : getInferredTSConfigRootDir();
   const passedLoggerFn = typeof tsestreeOptions.loggerFn === 'function';
   const filePath = ensureAbsolutePath(
     typeof tsestreeOptions.filePath === 'string' &&
