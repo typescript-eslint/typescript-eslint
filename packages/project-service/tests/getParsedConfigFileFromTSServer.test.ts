@@ -1,6 +1,6 @@
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
-import { getParsedConfigFileFromTSServer } from '../src/getParsedConfigFileFromTSServer';
+import { getParsedConfigFileFromTSServer } from '../src/getParsedConfigFileFromTSServer.js';
 
 const mockGetParsedConfigFile = vi.fn();
 
