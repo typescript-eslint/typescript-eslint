@@ -72,5 +72,5 @@ jobs:
           # Build (NOTE: website will be built by the Netlify GitHub App)
           yarn nx run-many -t build --exclude=website --exclude=website-eslint &
           # Unit tests with Project Service enabled
-          TYPESCRIPT_ESLINT_PROJECT_SERVICE=true yarn nx run-many -t test --include eslint-plugin eslint-plugin-internal typescript-estree &
+          TYPESCRIPT_ESLINT_PROJECT_SERVICE=true yarn nx run-many -t test --projects eslint-plugin eslint-plugin-internal typescript-estree &
           wait
