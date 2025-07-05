@@ -12,7 +12,7 @@
   "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
-    "build": "yarn run -BT nx build",
+    "build": "pnpm exec nx build",
     "clear": "docusaurus clear",
     "clean": "rimraf dist/ build/ .docusaurus/ && pnpm run clear",
     "format": "pnpm -w run format",

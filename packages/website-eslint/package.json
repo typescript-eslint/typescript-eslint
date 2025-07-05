@@ -27,7 +27,7 @@
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "scripts": {
-    "build": "yarn run -BT nx build",
+    "build": "pnpm exec nx build",
     "clean": "rimraf dist/",
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
