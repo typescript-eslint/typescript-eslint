@@ -156,6 +156,7 @@ export default {
         'src/components/**/*.{ts,tsx}',
 
         // used by Docusaurus
+        'plugins/recent-blog-posts/index.ts',
         'src/theme/**/*.tsx',
         'src/theme/prism-include-languages.js',
       ],

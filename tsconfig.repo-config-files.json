@@ -4,10 +4,7 @@
     "outDir": "./dist",
     "allowJs": true,
     "allowImportingTsExtensions": true,
-    "erasableSyntaxOnly": true,
-    "paths": {
-      "@site/*": ["./packages/website/*"]
-    }
+    "erasableSyntaxOnly": true
   },
   "include": [
     "typings",
