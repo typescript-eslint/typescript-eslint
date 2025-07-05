@@ -45,6 +45,16 @@ class A {
     `
 const a = function (a: Foo = new Foo<string>()) {};
     `,
+    {
+      code: `
+const foo: Foo<string> = new Foo();
+      `,
+      languageOptions: {
+        parserOptions: {
+          isolatedDeclarations: true,
+        },
+      },
+    },
     // type-annotation
     {
       code: 'const a = new Foo();',
