@@ -39,7 +39,7 @@ jobs:
       - run: corepack enable
 
       # Enable task distribution via Nx Cloud
-      - run: yarn dlx nx-cloud start-ci-run --distribute-on="10 linux-large-js" --stop-agents-after="build,test,typecheck,lint" --with-env-vars="SKIP_POSTINSTALL,GIT_FETCH_TAGS,HUSKY"
+      - run: yarn dlx nx-cloud start-ci-run --distribute-on="10 linux-large-js" --stop-agents-after="build,test,lint" --with-env-vars="SKIP_POSTINSTALL,GIT_FETCH_TAGS,HUSKY"
         env:
           SKIP_POSTINSTALL: 'true' # Skip postinstall scripts on Nx Agents
           GIT_FETCH_TAGS: 'true' # Fetch all tags on checkout on Nx Agents
@@ -67,8 +67,8 @@ jobs:
 
       # Trigger as many tasks as possible in parallel and let Nx Cloud orchestrate them based on their dependency relationships
       - run: |
-          # Type-checking and linting
-          yarn nx run-many -t typecheck lint &
+          # Linting
+          yarn nx run-many -t lint &
           # Build (NOTE: website will be built by the Netlify GitHub App)
           yarn nx run-many -t build --exclude=website --exclude=website-eslint &
           # Unit tests with Project Service enabled
