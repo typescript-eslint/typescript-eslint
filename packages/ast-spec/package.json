@@ -31,23 +31,22 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "yarn run -BT nx build",
+    "build": "pnpm exec nx build",
     "clean": "rimraf dist/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
-    "format": "yarn run -T format",
-    "lint": "yarn run -BT nx lint",
-    "test": "yarn run -BT nx test",
-    "typecheck": "yarn run -BT nx typecheck"
+    "format": "pnpm -w run format",
+    "lint": "pnpm -w exec nx lint",
+    "test": "pnpm -w exec nx test",
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
   },
   "devDependencies": {
-    "@babel/code-frame": "^7.24.2",
-    "@babel/core": "^7.24.4",
-    "@babel/eslint-parser": "^7.24.1",
-    "@babel/parser": "^7.24.1",
+    "@babel/code-frame": "^7.26.2",
+    "@babel/core": "^7.26.8",
+    "@babel/eslint-parser": "^7.26.8",
     "@microsoft/api-extractor": "^7.47.11",
     "@types/babel__code-frame": "^7.0.6",
     "@types/babel__core": "^7.20.5",

@@ -69,9 +69,6 @@
         "runtime": "node -v"
       },
       {
-        "runtime": "yarn -v"
-      },
-      {
         "runtime": "echo $NETLIFY"
       }
     ],
@@ -84,5 +81,8 @@
       "!{projectRoot}/vitest.config.mts"
     ]
   },
-  "nxCloudId": "60b38765e74d975e3faae5ad"
+  "nxCloudId": "60b38765e74d975e3faae5ad",
+  "sync": {
+    "applyChanges": true
+  }
 }

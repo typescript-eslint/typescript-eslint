@@ -43,12 +43,12 @@ const { projectsVersionData, workspaceVersion } = await releaseVersion({
 
 // Update the lock file after the version bumps and stage it ready to be committed by the changelog step
 if (!options.dryRun) {
-  console.log('⏳ Updating yarn.lock...');
-  execaSync(`yarn`, [`install`], {
+  console.log('⏳ Updating pnpm-lock.yaml...');
+  execaSync(`pnpm`, [`install`], {
     env: { ...process.env, SKIP_POSTINSTALL: 'true' },
   });
-  execaSync(`git`, [`add`, `yarn.lock`]);
-  console.log('✅ Updated and staged yarn.lock\n');
+  execaSync(`git`, [`add`, `pnpm-lock.yaml`]);
+  console.log('✅ Updated and staged pnpm-lock.yaml\n');
 }
 
 // This will create a release on GitHub

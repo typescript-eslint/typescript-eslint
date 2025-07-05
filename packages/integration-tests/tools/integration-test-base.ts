@@ -35,7 +35,7 @@ export function eslintIntegrationTest(
     let stderr = '';
     try {
       await execFile(
-        'yarn',
+        'pnpm',
         [
           'eslint',
           '--format',
@@ -94,7 +94,7 @@ export function typescriptIntegrationTest(
 ): void {
   integrationTest(testName, testFilename, async testFolder => {
     const [result] = await Promise.allSettled([
-      execFile('yarn', ['tsc', '--noEmit', '--skipLibCheck', ...tscArgs], {
+      execFile('pnpm', ['tsc', '--noEmit', '--skipLibCheck', ...tscArgs], {
         cwd: testFolder,
         shell: true,
       }),
