@@ -418,10 +418,18 @@ function isSelfReference(
 
 /**
  * @param variable the variable to check
- * @returns true if it is `isTypeVariable` and `isValueVariable`
+ * @param node the node from a some def of variable
+ * @returns true if variable is type/value duality and declaration is type declaration
  */
-function isDualPurposeVariable(variable: Variable): boolean {
-  return variable.isTypeVariable && variable.isValueVariable;
+function isMergedTypeDeclaration(
+  variable: Variable,
+  node: TSESTree.Node,
+): boolean {
+  return (
+    node.type === AST_NODE_TYPES.TSTypeAliasDeclaration &&
+    variable.isTypeVariable &&
+    variable.isValueVariable
+  );
 }
 
 const MERGABLE_TYPES = new Set([
@@ -450,10 +458,7 @@ function isMergeableExported(variable: Variable): boolean {
         def.node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
       def.node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration
     ) {
-      return !(
-        def.node.type === AST_NODE_TYPES.TSTypeAliasDeclaration &&
-        isDualPurposeVariable(variable)
-      );
+      return !isMergedTypeDeclaration(variable, def.node);
     }
   }
 
@@ -479,13 +484,7 @@ function isExported(variable: Variable): boolean {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const isExportedFlag = node.parent!.type.startsWith('Export');
 
-    return (
-      isExportedFlag &&
-      !(
-        node.type === AST_NODE_TYPES.TSTypeAliasDeclaration &&
-        isDualPurposeVariable(variable)
-      )
-    );
+    return isExportedFlag && !isMergedTypeDeclaration(variable, node);
   });
 }
 
