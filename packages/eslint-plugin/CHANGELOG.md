@@ -1,3 +1,15 @@
+## 8.35.1 (2025-06-30)
+
+### 🩹 Fixes
+
+- remove prettier from eslint-plugin ([#11339](https://github.com/typescript-eslint/typescript-eslint/pull/11339))
+
+### ❤️ Thank You
+
+- Abhijeet Singh @cseas
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.35.0 (2025-06-23)
 
 ### 🚀 Features
