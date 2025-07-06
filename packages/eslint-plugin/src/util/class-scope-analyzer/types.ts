@@ -1,9 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 export type ClassNode = TSESTree.ClassDeclaration | TSESTree.ClassExpression;
-export type FunctionNode =
-  | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression;
 export type MemberNode =
   | TSESTree.AccessorProperty
   | TSESTree.MethodDefinition
