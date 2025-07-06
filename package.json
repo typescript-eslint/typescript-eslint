@@ -130,7 +130,8 @@
       "typecheck": {
         "command": "tsc -b tsconfig.repo-config-files.json",
         "dependsOn": [
-          "types:copy-ast-spec"
+          "types:copy-ast-spec",
+          "website:build"
         ],
         "outputs": [
           "{workspaceRoot}/dist"
