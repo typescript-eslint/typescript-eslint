@@ -1,0 +1,28 @@
+.explainerSpotlight {
+  background: var(--ifm-color-emphasis-100);
+  border-radius: var(--ifm-global-radius);
+  color: var(--ifm-heading-color);
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  transition: box-shadow 0.3s ease;
+  width: 100%;
+}
+
+[data-theme='dark'] .explainerSpotlight {
+  background: var(--ifm-color-emphasis-200);
+}
+
+.explainerSpotlight:hover {
+  color: var(--ifm-heading-color);
+  text-decoration: none;
+  box-shadow: 0 3px 3px 0 var(--gray-border-shadow);
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+}
+
+.emoji {
+  user-select: none;
+}
