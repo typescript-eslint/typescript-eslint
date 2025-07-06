@@ -230,9 +230,7 @@ class UnusedVarsVisitor extends Visitor {
   private markVariableAsUsed(
     variableOrIdentifier: ScopeVariable | TSESTree.Identifier,
   ): void;
-
   private markVariableAsUsed(name: string, parent: TSESTree.Node): void;
-
   private markVariableAsUsed(
     variableOrIdentifierOrName: string | ScopeVariable | TSESTree.Identifier,
     parent?: TSESTree.Node,

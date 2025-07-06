@@ -190,9 +190,13 @@ function getRuleDefaultOptions(page: RuleDocsPage): string {
 
   return typeof recommended === 'object'
     ? [
-        `const defaultOptionsRecommended: Options = ${defaults};`,
-        '',
-        '// These options are merged on top of the recommended defaults',
+        ...(recommended.recommended
+          ? [
+              `const defaultOptionsRecommended: Options = ${defaults};`,
+              '',
+              '// These options are merged on top of the recommended defaults',
+            ]
+          : []),
         `const defaultOptionsStrict: Options = ${JSON.stringify(recommended.strict)};`,
       ].join('\n')
     : `const defaultOptions: Options = ${defaults};`;

@@ -1,3 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics _error_ new-target-in-arrow-function-body Babel - Error 1`] = `[SyntaxError: \`new.target\` can only be used in functions or class properties. (3:16)]`;
+exports[`AST Fixtures > legacy-fixtures > basics > _error_ > new-target-in-arrow-function-body > Babel - Error`]
+BabelError
+  1 | // TODO: This fixture might be too large, and if so should be split up.
+  2 |
+> 3 | const b = () => new.target;
+    |                 ^ `new.target` can only be used in functions or class properties. (3:16)
+  4 |
+  

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constrained-type-parameter AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > type-alias-declaration-with-constrained-type-parameter > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,12 +10,12 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Result',
--         optional: false,
+          optional: false,
 
           range: [78, 84],
           loc: {
@@ -31,7 +31,9 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
 -             typeArguments: TSTypeParameterInstantiation {
 +             typeName: Identifier {
 +               type: 'Identifier',
++               decorators: Array [],
 +               name: 'Success',
++               optional: false,
 +
 +               range: [101, 108],
 +               loc: {
@@ -46,9 +48,9 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
                     type: 'TSTypeReference',
                     typeName: Identifier {
                       type: 'Identifier',
--                     decorators: Array [],
+                      decorators: Array [],
                       name: 'T',
--                     optional: false,
+                      optional: false,
 
                       range: [109, 110],
                       loc: {
@@ -94,9 +96,9 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'Failure',
--               optional: false,
+                optional: false,
 
                 range: [114, 121],
                 loc: {
@@ -124,7 +126,7 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
+              const: false,
               constraint: TSTypeLiteral {
                 type: 'TSTypeLiteral',
                 members: Array [],
@@ -135,7 +137,7 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
                   end: { column: 24, line: 3 },
                 },
               },
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -148,8 +150,8 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
 -                 end: { column: 13, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [85, 97],
               loc: {
@@ -180,5 +182,4 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

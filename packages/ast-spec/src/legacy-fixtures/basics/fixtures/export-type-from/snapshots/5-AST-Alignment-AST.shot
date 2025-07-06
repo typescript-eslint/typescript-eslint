@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics export-type-from AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > export-type-from > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -16,7 +16,7 @@ exports[`AST Fixtures legacy-fixtures basics export-type-from AST Alignment - AS
         exportKind: 'type',
         source: Literal {
           type: 'Literal',
-          raw: '\\'bar\\'',
+          raw: '\'bar\'',
           value: 'bar',
 
           range: [98, 103],
@@ -30,9 +30,9 @@ exports[`AST Fixtures legacy-fixtures basics export-type-from AST Alignment - AS
             type: 'ExportSpecifier',
             exported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'foo',
--             optional: false,
+              optional: false,
 
               range: [87, 90],
               loc: {
@@ -43,9 +43,9 @@ exports[`AST Fixtures legacy-fixtures basics export-type-from AST Alignment - AS
             exportKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'foo',
--             optional: false,
+              optional: false,
 
               range: [87, 90],
               loc: {
@@ -69,13 +69,11 @@ exports[`AST Fixtures legacy-fixtures basics export-type-from AST Alignment - AS
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [73, 105],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

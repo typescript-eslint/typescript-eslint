@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes only-throw-error 1`] = `
-"
 # SCHEMA:
 
 [
@@ -103,12 +100,16 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         },
         "type": "array"
       },
+      "allowRethrowing": {
+        "description": "Whether to allow rethrowing caught values that are not `Error` objects.",
+        "type": "boolean"
+      },
       "allowThrowingAny": {
-        "description": "Whether to always allow throwing values typed as \`any\`.",
+        "description": "Whether to always allow throwing values typed as `any`.",
         "type": "boolean"
       },
       "allowThrowingUnknown": {
-        "description": "Whether to always allow throwing values typed as \`unknown\`.",
+        "description": "Whether to always allow throwing values typed as `unknown`.",
         "type": "boolean"
       }
     },
@@ -125,25 +126,25 @@ type Options = [
     allow?: (
       | {
           from: 'file';
-          name: [string, ...string[]] | string;
+          name: string | string[];
           path?: string;
         }
       | {
           from: 'lib';
-          name: [string, ...string[]] | string;
+          name: string | string[];
         }
       | {
           from: 'package';
-          name: [string, ...string[]] | string;
+          name: string | string[];
           package: string;
         }
       | string
     )[];
-    /** Whether to always allow throwing values typed as \`any\`. */
+    /** Whether to allow rethrowing caught values that are not `Error` objects. */
+    allowRethrowing?: boolean;
+    /** Whether to always allow throwing values typed as `any`. */
     allowThrowingAny?: boolean;
-    /** Whether to always allow throwing values typed as \`unknown\`. */
+    /** Whether to always allow throwing values typed as `unknown`. */
     allowThrowingUnknown?: boolean;
   },
 ];
-"
-`;

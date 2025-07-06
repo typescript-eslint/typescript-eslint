@@ -1,18 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/integration-tests",
-    "module": "NodeNext",
-    "types": ["jest", "node"]
+    "outDir": "../../dist/packages/integration-tests"
   },
-  "include": [
-    "jest.config.js",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts",
-    "tests",
-    "tools",
-    "typings"
-  ],
-  "references": []
+  "include": ["vitest.config.mts", "package.json", "tests", "tools", "typings"],
+  "references": [
+    {
+      "path": "../../tsconfig.spec.json"
+    }
+  ]
 }

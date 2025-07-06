@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics interface-with-jsdoc AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > interface-with-jsdoc > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -18,9 +18,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-jsdoc AST Alignment 
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'foo',
--               optional: false,
+                optional: false,
 
                 range: [138, 141],
                 loc: {
@@ -29,14 +29,14 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-jsdoc AST Alignment 
                 },
               },
               kind: 'method',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'bar',
--                 optional: false,
+                  optional: false,
 
                   range: [142, 145],
                   loc: {
@@ -45,8 +45,8 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-jsdoc AST Alignment 
                   },
                 },
               ],
--             readonly: false,
--             static: false,
+              readonly: false,
+              static: false,
 
               range: [138, 147],
               loc: {
@@ -62,13 +62,13 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-jsdoc AST Alignment 
             end: { column: 1, line: 9 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Test',
--         optional: false,
+          optional: false,
 
           range: [83, 87],
           loc: {
@@ -91,5 +91,4 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-jsdoc AST Alignment 
       start: { column: 0, line: 3 },
       end: { column: 0, line: 10 },
     },
-  }"
-`;
+  }

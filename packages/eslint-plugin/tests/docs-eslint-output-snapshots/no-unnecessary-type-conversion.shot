@@ -1,0 +1,49 @@
+Incorrect
+
+String('123');
+~~~~~~ Passing a string to String() does not change the type or value of the string.
+'123'.toString();
+      ~~~~~~~~~~ Calling a string's .toString() method does not change the type or value of the string.
+'' + '123';
+~~~~~ Concatenating '' with a string does not change the type or value of the string.
+'123' + '';
+     ~~~~~ Concatenating a string with '' does not change the type or value of the string.
+
+Number(123);
+~~~~~~ Passing a number to Number() does not change the type or value of the number.
++123;
+~ Using the unary + operator on a number does not change the type or value of the number.
+~~123;
+~~ Using ~~ on a number does not change the type or value of the number.
+
+Boolean(true);
+~~~~~~~ Passing a boolean to Boolean() does not change the type or value of the boolean.
+!!true;
+~~ Using !! on a boolean does not change the type or value of the boolean.
+
+BigInt(BigInt(1));
+~~~~~~ Passing a bigint to BigInt() does not change the type or value of the bigint.
+
+let str = '123';
+str += '';
+~~~~~~~~~ Concatenating a string with '' does not change the type or value of the string.
+
+Correct
+
+function foo(bar: string | number) {
+  String(bar);
+  bar.toString();
+  '' + bar;
+  bar + '';
+
+  Number(bar);
+  +bar;
+  ~~bar;
+
+  Boolean(bar);
+  !!bar;
+
+  BigInt(1);
+
+  bar += '';
+}

@@ -10,6 +10,7 @@ import type { MakeRequired } from '../util';
 import {
   createRule,
   getParserServices,
+  getWrappingFixer,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -108,7 +109,28 @@ export default createRule({
                 for (const reference of smTypeParameterVariable.references) {
                   if (reference.isTypeReference) {
                     const referenceNode = reference.identifier;
-                    yield fixer.replaceText(referenceNode, constraintText);
+                    const isComplexType =
+                      constraint?.type === AST_NODE_TYPES.TSUnionType ||
+                      constraint?.type === AST_NODE_TYPES.TSIntersectionType ||
+                      constraint?.type === AST_NODE_TYPES.TSConditionalType;
+                    const hasMatchingAncestorType = [
+                      AST_NODE_TYPES.TSArrayType,
+                      AST_NODE_TYPES.TSIndexedAccessType,
+                      AST_NODE_TYPES.TSIntersectionType,
+                      AST_NODE_TYPES.TSUnionType,
+                      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    ].some(type => referenceNode.parent.parent!.type === type);
+                    if (isComplexType && hasMatchingAncestorType) {
+                      const fixResult = getWrappingFixer({
+                        node: referenceNode,
+                        innerNode: constraint,
+                        sourceCode: context.sourceCode,
+                        wrap: constraintNode => constraintNode,
+                      })(fixer);
+                      yield fixResult;
+                    } else {
+                      yield fixer.replaceText(referenceNode, constraintText);
+                    }
                   }
                 }
 

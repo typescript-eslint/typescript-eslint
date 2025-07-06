@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures List fixtures with Token differences 1`] = `
+exports[`AST Fixtures > List fixtures with Token differences`]
 [
   "declaration/ClassDeclaration/fixtures/implements-many/fixture.ts",
   "declaration/ClassDeclaration/fixtures/implements-one/fixture.ts",
@@ -30,18 +30,14 @@ exports[`AST Fixtures List fixtures with Token differences 1`] = `
   "declaration/VariableDeclaration/fixtures/let-id-type-init/fixture.ts",
   "declaration/VariableDeclaration/fixtures/let-id-type-no-init/fixture.ts",
   "declaration/VariableDeclaration/fixtures/multiple-declarations/fixture.ts",
-  "element/AccessorProperty/fixtures/key-private/fixture.ts",
   "element/AccessorProperty/fixtures/modifier-private/fixture.ts",
   "element/AccessorProperty/fixtures/modifier-protected/fixture.ts",
   "element/AccessorProperty/fixtures/modifier-public/fixture.ts",
-  "expression/UpdateExpression/fixtures/valid-assignment/fixture.ts",
   "jsx/JSXNamespacedName/fixtures/component-dashed/fixture.tsx",
   "jsx/JSXNamespacedName/fixtures/component/fixture.tsx",
   "legacy-fixtures/basics/fixtures/abstract-class-with-abstract-readonly-property/fixture.ts",
   "legacy-fixtures/basics/fixtures/abstract-class-with-declare-properties/fixture.ts",
   "legacy-fixtures/basics/fixtures/async-function-with-var-declaration/fixture.ts",
-  "legacy-fixtures/basics/fixtures/class-private-identifier-field-with-annotation/fixture.ts",
-  "legacy-fixtures/basics/fixtures/class-private-identifier-readonly-field/fixture.ts",
   "legacy-fixtures/basics/fixtures/class-with-accessibility-modifiers/fixture.ts",
   "legacy-fixtures/basics/fixtures/class-with-constructor-and-modifier/fixture.ts",
   "legacy-fixtures/basics/fixtures/class-with-constructor-and-parameter-property-with-modifiers/fixture.ts",
@@ -55,7 +51,6 @@ exports[`AST Fixtures List fixtures with Token differences 1`] = `
   "legacy-fixtures/basics/fixtures/class-with-optional-methods/fixture.ts",
   "legacy-fixtures/basics/fixtures/class-with-optional-properties/fixture.ts",
   "legacy-fixtures/basics/fixtures/class-with-optional-property-undefined/fixture.ts",
-  "legacy-fixtures/basics/fixtures/class-with-private-optional-property/fixture.ts",
   "legacy-fixtures/basics/fixtures/class-with-private-parameter-properties/fixture.ts",
   "legacy-fixtures/basics/fixtures/class-with-protected-parameter-properties/fixture.ts",
   "legacy-fixtures/basics/fixtures/class-with-public-parameter-properties/fixture.ts",
@@ -81,13 +76,10 @@ exports[`AST Fixtures List fixtures with Token differences 1`] = `
   "legacy-fixtures/basics/fixtures/non-null-assertion-operator/fixture.ts",
   "legacy-fixtures/basics/fixtures/null-and-undefined-type-annotations/fixture.ts",
   "legacy-fixtures/basics/fixtures/nullish-coalescing/fixture.ts",
-  "legacy-fixtures/basics/fixtures/object-with-escaped-properties/fixture.ts",
-  "legacy-fixtures/basics/fixtures/private-fields-in-in/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-assertion-in-interface/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-assertion-with-guard-in-interface/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-guard-in-interface/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-parameters-comments-heritage/fixture.ts",
-  "legacy-fixtures/basics/fixtures/typed-keyword-null/fixture.ts",
   "legacy-fixtures/basics/fixtures/typed-this/fixture.ts",
   "legacy-fixtures/basics/fixtures/union-intersection/fixture.ts",
   "legacy-fixtures/basics/fixtures/unknown-type-annotation/fixture.ts",
@@ -117,7 +109,6 @@ exports[`AST Fixtures List fixtures with Token differences 1`] = `
   "legacy-fixtures/types/fixtures/mapped-readonly/fixture.ts",
   "legacy-fixtures/types/fixtures/mapped-untypped/fixture.ts",
   "legacy-fixtures/types/fixtures/mapped/fixture.ts",
-  "legacy-fixtures/types/fixtures/nested-types/fixture.ts",
   "legacy-fixtures/types/fixtures/reference-generic-nested/fixture.ts",
   "legacy-fixtures/types/fixtures/reference-generic/fixture.ts",
   "legacy-fixtures/types/fixtures/reference/fixture.ts",
@@ -140,6 +131,5 @@ exports[`AST Fixtures List fixtures with Token differences 1`] = `
   "special/TSTypeParameter/fixtures/interface-const-modifier-multiple/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-const-modifier/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-in-const-modifier-multiple/fixture.ts",
-  "type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts",
+  "type/TSImportType/fixtures/type-import-type-with-import-attributes-with/fixture.ts"
 ]
-`;

@@ -41,7 +41,7 @@ export default createRule({
         return undefined;
       }
 
-      return tsutils.unionTypeParts(type);
+      return tsutils.unionConstituents(type);
     };
 
     const couldBeNullish = (type: ts.Type): boolean => {

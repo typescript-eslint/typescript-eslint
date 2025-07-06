@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration VariableDeclaration await-using-multiple-declarations Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -9,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "x",
+            optional: false,
 
             range: [12, 13],
             loc: {
@@ -39,9 +39,12 @@ Program {
         },
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "y",
+            optional: false,
 
             range: [21, 22],
             loc: {
@@ -68,6 +71,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "await using",
 
       range: [0, 27],
@@ -85,4 +89,3 @@ Program {
     end: { column: 0, line: 3 },
   },
 }
-`;

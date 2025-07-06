@@ -477,6 +477,9 @@ export function isChildUnwrappableOptionalChain(
 export function getTokenType(
   token: ts.Identifier | ts.Token<ts.SyntaxKind>,
 ): Exclude<AST_TOKEN_TYPES, AST_TOKEN_TYPES.Block | AST_TOKEN_TYPES.Line> {
+  if (token.kind === SyntaxKind.NullKeyword) {
+    return AST_TOKEN_TYPES.Null;
+  }
   let keywordKind: ts.SyntaxKind | undefined;
   if (isAtLeast50 && token.kind === SyntaxKind.Identifier) {
     keywordKind = ts.identifierToKeywordKind(token as ts.Identifier);
@@ -527,7 +530,11 @@ export function getTokenType(
 
   switch (token.kind) {
     case SyntaxKind.NumericLiteral:
+    case SyntaxKind.BigIntLiteral:
       return AST_TOKEN_TYPES.Numeric;
+
+    case SyntaxKind.PrivateIdentifier:
+      return AST_TOKEN_TYPES.PrivateIdentifier;
 
     case SyntaxKind.JsxText:
       return AST_TOKEN_TYPES.JSXText;
@@ -602,6 +609,16 @@ export function convertToken(
       value,
     };
   }
+
+  if (tokenType === AST_TOKEN_TYPES.PrivateIdentifier) {
+    return {
+      type: tokenType,
+      loc,
+      range,
+      value: value.slice(1),
+    };
+  }
+
   // @ts-expect-error TS is complaining about `value` not being the correct
   // type but it is
   return {

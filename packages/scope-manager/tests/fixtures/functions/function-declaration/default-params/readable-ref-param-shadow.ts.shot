@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`functions function-declaration default-params readable-ref-param-shadow 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -120,4 +117,3 @@ ScopeManager {
     },
   ],
 }
-`;

@@ -18,7 +18,11 @@ import {
   nullThrows,
   NullThrowsReasons,
   skipChainExpression,
+  isParenthesized,
+  getOperatorPrecedenceForNode,
+  OperatorPrecedence,
 } from '../util';
+import { getWrappedCode } from '../util/getWrappedCode';
 
 const isMemberAccessLike = isNodeOfTypes([
   AST_NODE_TYPES.ChainExpression,
@@ -40,15 +44,16 @@ export type Options = [
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     ignoreBooleanCoercion?: boolean;
     ignoreConditionalTests?: boolean;
+    ignoreIfStatements?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
     ignorePrimitives?:
+      | true
       | {
           bigint?: boolean;
           boolean?: boolean;
           number?: boolean;
           string?: boolean;
-        }
-      | true;
+        };
     ignoreTernaryTests?: boolean;
   },
 ];
@@ -102,6 +107,11 @@ export default createRule<Options, MessageIds>({
             description:
               'Whether to ignore cases that are located within a conditional test.',
           },
+          ignoreIfStatements: {
+            type: 'boolean',
+            description:
+              'Whether to ignore any if statements that could be simplified by using the nullish coalescing operator.',
+          },
           ignoreMixedLogicalExpressions: {
             type: 'boolean',
             description:
@@ -154,6 +164,7 @@ export default createRule<Options, MessageIds>({
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
       ignoreBooleanCoercion: false,
       ignoreConditionalTests: true,
+      ignoreIfStatements: false,
       ignoreMixedLogicalExpressions: false,
       ignorePrimitives: {
         bigint: false,
@@ -171,6 +182,7 @@ export default createRule<Options, MessageIds>({
         allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
         ignoreBooleanCoercion,
         ignoreConditionalTests,
+        ignoreIfStatements,
         ignoreMixedLogicalExpressions,
         ignorePrimitives,
         ignoreTernaryTests,
@@ -242,10 +254,10 @@ export default createRule<Options, MessageIds>({
 
       if (
         tsutils
-          .typeParts(type)
+          .typeConstituents(type)
           .some(t =>
             tsutils
-              .intersectionTypeParts(t)
+              .intersectionConstituents(t)
               .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
           )
       ) {
@@ -481,9 +493,14 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        const { nonNullishBranch, nullishBranch } = getBranchNodes(
+          node,
+          operator,
+        );
+
         const nullishCoalescingParams = getNullishCoalescingParams(
           node,
-          getBranchNodes(node, operator).nonNullishBranch,
+          nonNullishBranch,
           nodesInsideTestExpression,
           operator,
         );
@@ -499,15 +516,27 @@ export default createRule<Options, MessageIds>({
                 messageId: 'suggestNullish',
                 data: { equals: '' },
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
+                  const nullishBranchText = getTextWithParentheses(
+                    context.sourceCode,
+                    nullishBranch,
+                  );
+                  const rightOperandReplacement = isParenthesized(
+                    nullishBranch,
+                    context.sourceCode,
+                  )
+                    ? nullishBranchText
+                    : getWrappedCode(
+                        nullishBranchText,
+                        getOperatorPrecedenceForNode(nullishBranch),
+                        OperatorPrecedence.Coalesce,
+                      );
+
                   return fixer.replaceText(
                     node,
                     `${getTextWithParentheses(
                       context.sourceCode,
                       nullishCoalescingParams.nullishCoalescingLeftNode,
-                    )} ?? ${getTextWithParentheses(
-                      context.sourceCode,
-                      getBranchNodes(node, operator).nullishBranch,
-                    )}`,
+                    )} ?? ${rightOperandReplacement}`,
                   );
                 },
               },
@@ -516,7 +545,7 @@ export default createRule<Options, MessageIds>({
         }
       },
       IfStatement(node: TSESTree.IfStatement): void {
-        if (node.alternate != null) {
+        if (ignoreIfStatements || node.alternate != null) {
           return;
         }
 

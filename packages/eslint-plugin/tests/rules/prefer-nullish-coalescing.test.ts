@@ -518,6 +518,30 @@ x?.a ? y?.a : 'foo'
       code,
       options: [{ ignoreTernaryTests: false }] as const,
     })),
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (!foo) {
+    foo = makeFoo();
+  }
+}
+      `,
+      options: [{ ignoreIfStatements: true }],
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (!foo) foo = makeFoo();
+}
+      `,
+      options: [{ ignoreIfStatements: true }],
+    },
 
     // ignoreConditionalTests
     ...nullishTypeTest((nullish, type, equals) => ({
@@ -6217,6 +6241,77 @@ declare function makeString(): string;
 function weirdParens() {
   ((foo).a) ??= makeString();
 }
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+let a: string | undefined;
+let b: { message: string } | undefined;
+
+const foo = a ? a : b ? 1 : 2;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | undefined;
+let b: { message: string } | undefined;
+
+const foo = a ?? (b ? 1 : 2);
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+let a: string | undefined;
+let b: { message: string } | undefined;
+
+const foo = a ? a : (b ? 1 : 2);
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | undefined;
+let b: { message: string } | undefined;
+
+const foo = a ?? (b ? 1 : 2);
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const c: string | null;
+c !== null ? c : c ? 1 : 2;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const c: string | null;
+c ?? (c ? 1 : 2);
       `,
             },
           ],

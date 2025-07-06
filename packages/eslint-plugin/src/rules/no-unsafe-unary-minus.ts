@@ -36,7 +36,7 @@ export default util.createRule<Options, MessageIds>({
         const checker = services.program.getTypeChecker();
         if (
           tsutils
-            .unionTypeParts(argType)
+            .unionConstituents(argType)
             .some(
               type =>
                 !tsutils.isTypeFlagSet(

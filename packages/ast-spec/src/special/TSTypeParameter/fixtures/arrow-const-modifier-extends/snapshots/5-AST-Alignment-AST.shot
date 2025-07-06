@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures special TSTypeParameter arrow-const-modifier-extends AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > special > TSTypeParameter > arrow-const-modifier-extends > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -37,9 +37,9 @@ exports[`AST Fixtures special TSTypeParameter arrow-const-modifier-extends AST A
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'U',
--                   optional: false,
+                    optional: false,
 
                     range: [17, 18],
                     loc: {
@@ -54,7 +54,7 @@ exports[`AST Fixtures special TSTypeParameter arrow-const-modifier-extends AST A
                     end: { column: 18, line: 1 },
                   },
                 },
--               in: false,
+                in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
 -                 decorators: Array [],
@@ -67,8 +67,8 @@ exports[`AST Fixtures special TSTypeParameter arrow-const-modifier-extends AST A
 -                   end: { column: 8, line: 1 },
 -                 },
 -               },
--               out: false,
 +               name: 'T',
+                out: false,
 
                 range: [1, 18],
                 loc: {
@@ -106,5 +106,4 @@ exports[`AST Fixtures special TSTypeParameter arrow-const-modifier-extends AST A
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > TSTypeAliasDeclaration > type-param-one > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,12 +10,12 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'T',
--         optional: false,
+          optional: false,
 
           range: [5, 6],
           loc: {
@@ -48,8 +48,8 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -62,8 +62,8 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
 -                 end: { column: 8, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'U',
+              out: false,
 
               range: [7, 8],
               loc: {
@@ -73,8 +73,8 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -87,8 +87,8 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
 -                 end: { column: 11, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'V',
+              out: false,
 
               range: [10, 11],
               loc: {
@@ -98,8 +98,8 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -112,8 +112,8 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
 -                 end: { column: 14, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'W',
+              out: false,
 
               range: [13, 14],
               loc: {
@@ -144,5 +144,4 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

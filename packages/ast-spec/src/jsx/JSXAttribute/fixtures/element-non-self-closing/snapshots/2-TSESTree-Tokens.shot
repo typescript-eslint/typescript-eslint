@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures jsx JSXAttribute element-non-self-closing TSESTree - Tokens 1`] = `
 [
   Punctuator {
     type: "Punctuator",
@@ -153,4 +150,3 @@ exports[`AST Fixtures jsx JSXAttribute element-non-self-closing TSESTree - Token
     },
   },
 ]
-`;

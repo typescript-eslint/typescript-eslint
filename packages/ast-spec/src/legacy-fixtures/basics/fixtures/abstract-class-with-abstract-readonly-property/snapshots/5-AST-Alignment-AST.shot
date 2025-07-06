@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-readonly-property AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > abstract-class-with-abstract-readonly-property > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -21,14 +21,14 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-readon
 +             abstract: true,
               accessibility: 'public',
               computed: false,
--             declare: false,
--             decorators: Array [],
--             definite: false,
+              declare: false,
+              decorators: Array [],
+              definite: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'foo',
--               optional: false,
+                optional: false,
 
                 range: [121, 124],
                 loc: {
@@ -36,8 +36,8 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-readon
                   end: { column: 30, line: 4 },
                 },
               },
--             optional: false,
--             override: false,
+              optional: false,
+              override: false,
               readonly: true,
               static: false,
               typeAnnotation: TSTypeAnnotation {
@@ -74,13 +74,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-readon
             end: { column: 1, line: 5 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [88, 91],
           loc: {
@@ -88,7 +88,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-readon
             end: { column: 18, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
 
         range: [73, 135],
@@ -105,5 +105,4 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-readon
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

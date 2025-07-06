@@ -1,3 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures expression ObjectExpression _error_ missing-getter-body Babel - Error 1`] = `[SyntaxError: Unexpected token, expected "{" (1:11)]`;
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > missing-getter-body > Babel - Error`]
+BabelError
+> 1 | ({get foo();})
+    |            ^ Unexpected token, expected "{" (1:11)
+  2 |
+  

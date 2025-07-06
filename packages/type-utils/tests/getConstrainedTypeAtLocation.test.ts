@@ -1,29 +1,16 @@
 import type { TSESTree } from '@typescript-eslint/types';
-import type { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
 
-import { parseForESLint } from '@typescript-eslint/parser';
-import path from 'node:path';
 import * as tsutils from 'ts-api-utils';
 
-import { getConstrainedTypeAtLocation, isTypeUnknownType } from '../src';
+import {
+  getConstrainedTypeAtLocation,
+  isTypeUnknownType,
+} from '../src/index.js';
+import { parseCodeForEslint } from './test-utils/custom-matchers/custom-matchers.js';
 
-function parseCodeForEslint(code: string): ReturnType<typeof parseForESLint> & {
-  services: ParserServicesWithTypeInformation;
-} {
-  const rootDir = path.join(__dirname, 'fixtures');
-
-  // @ts-expect-error -- services will have type information.
-  return parseForESLint(code, {
-    disallowAutomaticSingleRunInference: true,
-    filePath: path.join(rootDir, 'file.ts'),
-    project: './tsconfig.json',
-    tsconfigRootDir: rootDir,
-  });
-}
-
-describe('getConstrainedTypeAtLocation', () => {
+describe(getConstrainedTypeAtLocation, () => {
   // See https://github.com/typescript-eslint/typescript-eslint/issues/10438
-  // eslint-disable-next-line jest/no-disabled-tests -- known issue.
+  // eslint-disable-next-line vitest/no-disabled-tests -- known issue.
   it.skip('returns unknown for unconstrained generic', () => {
     const sourceCode = `
 function foo<T>(x: T);

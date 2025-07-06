@@ -1,3 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration ImportDeclaration _error_ named-string-literal-aliased-to-string-literal Babel - Error 1`] = `[SyntaxError: Unexpected token (1:17)]`;
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > named-string-literal-aliased-to-string-literal > Babel - Error`]
+BabelError
+> 1 | import { "😭" as 'a a' } from 'mod';
+    |                  ^ Unexpected token (1:17)
+  2 |
+  

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-mixin-reference > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -21,14 +21,14 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
             end: { column: 48, line: 3 },
           },
         },
--       declare: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'M',
--         optional: false,
+          optional: false,
 
           range: [82, 83],
           loc: {
@@ -39,18 +39,18 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
         params: Array [
           Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'Base',
--           optional: false,
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'T',
--                 optional: false,
+                  optional: false,
 
                   range: [116, 117],
                   loc: {
@@ -85,13 +85,15 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
+              const: false,
               constraint: TSTypeReference {
                 type: 'TSTypeReference',
 -               typeArguments: TSTypeParameterInstantiation {
 +               typeName: Identifier {
 +                 type: 'Identifier',
++                 decorators: Array [],
 +                 name: 'Constructor',
++                 optional: false,
 +
 +                 range: [94, 105],
 +                 loc: {
@@ -106,9 +108,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
                       type: 'TSTypeReference',
                       typeName: Identifier {
                         type: 'Identifier',
--                       decorators: Array [],
+                        decorators: Array [],
                         name: 'M',
--                       optional: false,
+                        optional: false,
 
                         range: [106, 107],
                         loc: {
@@ -136,21 +138,21 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
 -                 decorators: Array [],
 -                 name: 'Constructor',
 -                 optional: false,
--
+
 -                 range: [94, 105],
 -                 loc: {
 -                   start: { column: 21, line: 3 },
 -                   end: { column: 32, line: 3 },
 -                 },
 -               },
-
+-
                 range: [94, 108],
                 loc: {
                   start: { column: 21, line: 3 },
                   end: { column: 35, line: 3 },
                 },
               },
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -163,8 +165,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
 -                 end: { column: 12, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [84, 108],
               loc: {
@@ -195,5 +197,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

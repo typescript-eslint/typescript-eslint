@@ -1,3 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-with-no-body Babel - Error 1`] = `[SyntaxError: Unexpected token, expected "{" (4:0)]`;
+exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > interface-with-no-body > Babel - Error`]
+BabelError
+  2 |
+  3 | interface Foo
+> 4 |
+    | ^ Unexpected token, expected "{" (4:0)
+  

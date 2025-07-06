@@ -1,0 +1,76 @@
+Program {
+  type: "Program",
+  body: [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      declare: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "ReadonlyOptional",
+        optional: false,
+
+        range: [5, 21],
+        loc: {
+          start: { column: 5, line: 1 },
+          end: { column: 21, line: 1 },
+        },
+      },
+      typeAnnotation: TSMappedType {
+        type: "TSMappedType",
+        nameType: null,
+        readonly: true,
+        typeAnnotation: TSNumberKeyword {
+          type: "TSNumberKeyword",
+
+          range: [52, 58],
+          loc: {
+            start: { column: 26, line: 2 },
+            end: { column: 32, line: 2 },
+          },
+        },
+        typeParameter: TSTypeParameter {
+          type: "TSTypeParameter",
+          const: false,
+          constraint: TSStringKeyword {
+            type: "TSStringKeyword",
+
+            range: [43, 49],
+            loc: {
+              start: { column: 17, line: 2 },
+              end: { column: 23, line: 2 },
+            },
+          },
+          in: false,
+          name: "P",
+          out: false,
+
+          range: [38, 49],
+          loc: {
+            start: { column: 12, line: 2 },
+            end: { column: 23, line: 2 },
+          },
+        },
+
+        range: [24, 61],
+        loc: {
+          start: { column: 24, line: 1 },
+          end: { column: 1, line: 3 },
+        },
+      },
+
+      range: [0, 62],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 2, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 63],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 4 },
+  },
+}

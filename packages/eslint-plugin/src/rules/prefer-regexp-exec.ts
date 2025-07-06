@@ -150,7 +150,7 @@ export default createRule({
 
         const argumentType = services.getTypeAtLocation(argumentNode);
         const argumentTypes = collectArgumentTypes(
-          tsutils.unionTypeParts(argumentType),
+          tsutils.unionConstituents(argumentType),
         );
         switch (argumentTypes) {
           case ArgumentType.RegExp:

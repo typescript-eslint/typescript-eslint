@@ -10,7 +10,7 @@ import type {
 } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { unionTypeParts } from 'ts-api-utils';
+import { unionConstituents } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { ValidOperand } from './gatherLogicalOperands';
@@ -39,7 +39,7 @@ function includesType(
   typeFlagIn: ts.TypeFlags,
 ): boolean {
   const typeFlag = typeFlagIn | ts.TypeFlags.Any | ts.TypeFlags.Unknown;
-  const types = unionTypeParts(parserServices.getTypeAtLocation(node));
+  const types = unionConstituents(parserServices.getTypeAtLocation(node));
   for (const type of types) {
     if (isTypeFlagSet(type, typeFlag)) {
       return true;

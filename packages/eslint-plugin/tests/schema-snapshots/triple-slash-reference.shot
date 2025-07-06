@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes triple-slash-reference 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,17 +6,17 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "lib": {
-        "description": "What to enforce for \`/// <reference lib=\\"...\\" />\` references.",
+        "description": "What to enforce for `/// <reference lib=\"...\" />` references.",
         "enum": ["always", "never"],
         "type": "string"
       },
       "path": {
-        "description": "What to enforce for \`/// <reference path=\\"...\\" />\` references.",
+        "description": "What to enforce for `/// <reference path=\"...\" />` references.",
         "enum": ["always", "never"],
         "type": "string"
       },
       "types": {
-        "description": "What to enforce for \`/// <reference types=\\"...\\" />\` references.",
+        "description": "What to enforce for `/// <reference types=\"...\" />` references.",
         "enum": ["always", "never", "prefer-import"],
         "type": "string"
       }
@@ -33,23 +30,21 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** What to enforce for \`/// <reference lib="..." />\` references. */
+    /** What to enforce for `/// <reference lib="..." />` references. */
     lib?:
       | 'never'
-      /** What to enforce for \`/// <reference lib="..." />\` references. */
+      /** What to enforce for `/// <reference lib="..." />` references. */
       | 'always';
-    /** What to enforce for \`/// <reference path="..." />\` references. */
+    /** What to enforce for `/// <reference path="..." />` references. */
     path?:
       | 'never'
-      /** What to enforce for \`/// <reference path="..." />\` references. */
+      /** What to enforce for `/// <reference path="..." />` references. */
       | 'always';
-    /** What to enforce for \`/// <reference types="..." />\` references. */
+    /** What to enforce for `/// <reference types="..." />` references. */
     types?:
       | 'never'
       | 'prefer-import'
-      /** What to enforce for \`/// <reference types="..." />\` references. */
+      /** What to enforce for `/// <reference types="..." />` references. */
       | 'always';
   },
 ];
-"
-`;

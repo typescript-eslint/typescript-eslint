@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`vue-sfc eslint should work successfully 1`] = `
+exports[`vue-sfc > eslint > should work successfully 1`] = `
 [
   {
     "errorCount": 1,
@@ -68,12 +68,12 @@ export default Vue.extend({
             {
               "message": "ESLint Stylistic now maintains deprecated stylistic core rules.",
               "plugin": {
-                "name": "@stylistic/eslint-plugin-js",
-                "url": "https://eslint.style/packages/js",
+                "name": "@stylistic/eslint-plugin",
+                "url": "https://eslint.style",
               },
               "rule": {
                 "name": "semi-spacing",
-                "url": "https://eslint.style/rules/js/semi-spacing",
+                "url": "https://eslint.style/rules/semi-spacing",
               },
               "url": "https://eslint.style/guide/migration",
             },
@@ -81,7 +81,7 @@ export default Vue.extend({
           "url": "https://eslint.org/blog/2023/10/deprecating-formatting-rules/",
         },
         "replacedBy": [
-          "@stylistic/js/semi-spacing",
+          "@stylistic/semi-spacing",
         ],
         "ruleId": "semi-spacing",
       },
@@ -130,12 +130,12 @@ export default class Utility {
             {
               "message": "ESLint Stylistic now maintains deprecated stylistic core rules.",
               "plugin": {
-                "name": "@stylistic/eslint-plugin-js",
-                "url": "https://eslint.style/packages/js",
+                "name": "@stylistic/eslint-plugin",
+                "url": "https://eslint.style",
               },
               "rule": {
                 "name": "semi-spacing",
-                "url": "https://eslint.style/rules/js/semi-spacing",
+                "url": "https://eslint.style/rules/semi-spacing",
               },
               "url": "https://eslint.style/guide/migration",
             },
@@ -143,7 +143,7 @@ export default class Utility {
           "url": "https://eslint.org/blog/2023/10/deprecating-formatting-rules/",
         },
         "replacedBy": [
-          "@stylistic/js/semi-spacing",
+          "@stylistic/semi-spacing",
         ],
         "ruleId": "semi-spacing",
       },
@@ -209,12 +209,12 @@ export default Vue.extend({
             {
               "message": "ESLint Stylistic now maintains deprecated stylistic core rules.",
               "plugin": {
-                "name": "@stylistic/eslint-plugin-js",
-                "url": "https://eslint.style/packages/js",
+                "name": "@stylistic/eslint-plugin",
+                "url": "https://eslint.style",
               },
               "rule": {
                 "name": "semi-spacing",
-                "url": "https://eslint.style/rules/js/semi-spacing",
+                "url": "https://eslint.style/rules/semi-spacing",
               },
               "url": "https://eslint.style/guide/migration",
             },
@@ -222,7 +222,7 @@ export default Vue.extend({
           "url": "https://eslint.org/blog/2023/10/deprecating-formatting-rules/",
         },
         "replacedBy": [
-          "@stylistic/js/semi-spacing",
+          "@stylistic/semi-spacing",
         ],
         "ruleId": "semi-spacing",
       },

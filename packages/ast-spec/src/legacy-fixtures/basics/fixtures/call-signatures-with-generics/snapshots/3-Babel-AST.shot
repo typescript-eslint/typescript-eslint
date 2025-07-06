@@ -1,14 +1,14 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics call-signatures-with-generics Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "foo",
+        optional: false,
 
         range: [78, 81],
         loc: {
@@ -24,7 +24,9 @@ Program {
             parameters: [
               Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "a",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSStringKeyword {
@@ -74,7 +76,10 @@ Program {
               params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
+                  in: false,
                   name: "T",
+                  out: false,
 
                   range: [89, 90],
                   loc: {
@@ -102,7 +107,9 @@ Program {
             parameters: [
               Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "a",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSStringKeyword {
@@ -152,7 +159,10 @@ Program {
               params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
+                  in: false,
                   name: "T",
+                  out: false,
 
                   range: [119, 120],
                   loc: {
@@ -199,4 +209,3 @@ Program {
     end: { column: 0, line: 7 },
   },
 }
-`;
