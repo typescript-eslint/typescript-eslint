@@ -125,6 +125,11 @@
           "build"
         ]
       },
+      "typecheck": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
       "start": {
         "command": "docusaurus start",
         "dependsOn": [
