@@ -1,3 +1,96 @@
+## 8.35.1 (2025-06-30)
+
+### 🩹 Fixes
+
+- remove prettier from eslint-plugin ([#11339](https://github.com/typescript-eslint/typescript-eslint/pull/11339))
+- **website:** did not find a source file error if url hash doesn't contain fileType ([#11350](https://github.com/typescript-eslint/typescript-eslint/pull/11350))
+
+### ❤️ Thank You
+
+- Abhijeet Singh @cseas
+- mdm317
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.35.0 (2025-06-23)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-base-to-string] add checkUnknown Option ([#11128](https://github.com/typescript-eslint/typescript-eslint/pull/11128))
+
+### 🩹 Fixes
+
+- **website:** acquired types are shown in the editor but not reflected in linting ([#11198](https://github.com/typescript-eslint/typescript-eslint/pull/11198))
+
+### ❤️ Thank You
+
+- Kim Sang Du @developer-bandi
+- mdm317
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.34.1 (2025-06-16)
+
+### 🩹 Fixes
+
+- **types:** add 2026/17 to EcmaVersion ([#11304](https://github.com/typescript-eslint/typescript-eslint/pull/11304))
+- **typescript-estree:** emit a Literal instead of Identifier for constructor when the identifier is a string ([#11299](https://github.com/typescript-eslint/typescript-eslint/pull/11299))
+- **visitor-keys:** bump `eslint-visitor-keys` dependency ([#11294](https://github.com/typescript-eslint/typescript-eslint/pull/11294))
+
+### ❤️ Thank You
+
+- David Archibald
+- overlookmotel
+- Tao
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.34.0 (2025-06-09)
+
+### 🚀 Features
+
+- **type-utils:** deprecated getSourceFileOfNode function ([#11284](https://github.com/typescript-eslint/typescript-eslint/pull/11284))
+
+### 🩹 Fixes
+
+- **typescript-estree:** change the token type of `null` from `Keyword` to `Null` ([#11283](https://github.com/typescript-eslint/typescript-eslint/pull/11283))
+- **typescript-estree:** add validation to interface extends ([#11271](https://github.com/typescript-eslint/typescript-eslint/pull/11271))
+- **visitor-keys:** fix visitor keys order ([#11279](https://github.com/typescript-eslint/typescript-eslint/pull/11279))
+
+### ❤️ Thank You
+
+- Kim Sang Du @developer-bandi
+- overlookmotel
+- Tao
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.33.1 (2025-06-02)
+
+### 🩹 Fixes
+
+- exclude docs/ directory from eslint-plugin package ([#11251](https://github.com/typescript-eslint/typescript-eslint/pull/11251))
+- **project-service:** add missing `typescript` peer dependency ([#11265](https://github.com/typescript-eslint/typescript-eslint/pull/11265))
+
+### ❤️ Thank You
+
+- JounQin
+- roottool
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.33.0 (2025-05-26)
+
+### 🚀 Features
+
+- create standalone project-service, tsconfig-utils packages ([#11182](https://github.com/typescript-eslint/typescript-eslint/pull/11182))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.32.1 (2025-05-12)
 
 ### 🩹 Fixes

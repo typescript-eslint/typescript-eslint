@@ -1,8 +1,8 @@
-import type { Plugin } from 'pretty-format';
+import type { SnapshotSerializer } from 'vitest';
 
 import { TSError } from '@typescript-eslint/typescript-estree';
 
-export const serializer: Plugin = {
+export const serializer: SnapshotSerializer = {
   serialize(val: TSError, config, indentation, depth, refs, printer) {
     const format = (value: unknown): string =>
       printer(value, config, indentation, depth + 1, refs);

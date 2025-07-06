@@ -2,6 +2,7 @@ import type { KnipConfig } from 'knip' with { 'resolution-mode': 'import' };
 
 export default {
   rules: {
+    binaries: 'off',
     classMembers: 'off',
     duplicates: 'off',
     enumMembers: 'off',
@@ -22,13 +23,16 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignore: ['tools/scripts/typings/typescript.d.ts', 'typings/*.d.ts'],
       ignoreDependencies: [
-        '@nx/js',
         '@nx/workspace',
-        'make-dir',
         // imported for type purposes only
         'website',
+      ],
+
+      project: [
+        'tools/scripts/**/*.mts',
+        '!tools/scripts/typings/typescript.d.ts',
+        '!typings/*.d.ts',
       ],
     },
     'packages/ast-spec': {
@@ -50,33 +54,40 @@ export default {
         ],
       },
     },
+
     'packages/eslint-plugin': {
-      ignore: [
-        'tests/fixtures/**',
-        'typings/eslint-rules.d.ts',
-        'typings/typescript.d.ts',
-      ],
+      ignore: ['typings/eslint-rules.d.ts', 'typings/typescript.d.ts'],
+
+      project: ['src/**/*.ts!', 'tools/**/*.mts'],
+
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: ['tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+        project: ['tests/**', '!tests/fixtures/**'],
+      },
     },
+
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],
     },
     'packages/integration-tests': {
       ignore: ['fixtures/**'],
     },
-    'packages/parser': {
-      ignore: ['tests/fixtures/**'],
 
+    'packages/parser': {
       vitest: {
         config: ['vitest.config.mts'],
-        entry: ['tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
+        entry: [
+          'tests/lib/**/*.{bench,test,test-d}.?(c|m)ts?(x)',
+          'tests/test-utils/test-utils.ts',
+          'tests/test-utils/ts-error-serializer.ts',
+        ],
+        project: ['tests/**', '!tests/fixtures/**'],
       },
     },
+
     'packages/rule-tester': {
       ignore: ['typings/eslint.d.ts'],
-
-      mocha: {
-        entry: ['tests/eslint-base/eslint-base.test.js'],
-      },
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
@@ -103,6 +114,15 @@ export default {
         ],
       },
     },
+
+    'packages/types': {
+      project: [
+        'src/**/*.ts!',
+        '!src/generated/**/*.ts',
+        'tools/copy-ast-spec.mts',
+      ],
+    },
+
     'packages/typescript-estree': {
       entry: ['src/use-at-your-own-risk.ts'],
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
@@ -131,6 +151,7 @@ export default {
         'src/components/**/*.tsx',
 
         // used by Docusaurus
+        'plugins/recent-blog-posts/index.ts',
         'src/theme/**/*.tsx',
         'src/theme/prism-include-languages.js',
       ],
