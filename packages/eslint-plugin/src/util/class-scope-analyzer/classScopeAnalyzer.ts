@@ -20,17 +20,23 @@ export class Member {
   public readonly node: MemberNode;
 
   /**
+   * The resolved, unique key for this member.
+   */
+  public readonly key: Key;
+
+  /**
    * The member name, as given in the source code.
    */
-  public readonly name: Key;
+  public readonly name: string;
 
   /**
    * The number of references to this member.
    */
   public referenceCount = 0;
 
-  private constructor(node: MemberNode, name: Key) {
+  private constructor(node: MemberNode, key: Key, name: string) {
     this.node = node;
+    this.key = key;
     this.name = name;
   }
   public static create(node: MemberNode): Member | null {
@@ -38,7 +44,11 @@ export class Member {
     if (name == null) {
       return null;
     }
-    return new Member(node, name);
+    return new Member(node, ...name);
+  }
+
+  public isHashPrivate(): boolean {
+    return this.node.key.type === AST_NODE_TYPES.PrivateIdentifier;
   }
 
   public isPrivate(): boolean {
@@ -116,7 +126,10 @@ abstract class ThisScope extends Visitor {
         if (this.thisContext == null) {
           return null;
         }
-        return { thisContext: this.thisContext, type: 'instance' };
+        return {
+          thisContext: this.thisContext,
+          type: this.isStaticThisContext ? 'static' : 'instance',
+        };
       }
 
       case AST_NODE_TYPES.Identifier: {
@@ -149,7 +162,7 @@ abstract class ThisScope extends Visitor {
   private visitClass(node: ClassNode): void {
     const classScope = new ClassScope(node, this, this.scopeManager);
     this.childScopes.push(classScope);
-    classScope.visit(node);
+    classScope.visitChildren(node);
   }
 
   private visitIntermediate(node: IntermediateNode): void {
@@ -159,7 +172,7 @@ abstract class ThisScope extends Visitor {
       node,
     );
     this.childScopes.push(intermediateScope);
-    intermediateScope.visit(node);
+    intermediateScope.visitChildren(node);
   }
 
   /**
@@ -200,6 +213,8 @@ abstract class ThisScope extends Visitor {
   }
 
   protected MemberExpression(node: TSESTree.MemberExpression): void {
+    this.visitChildren(node);
+
     if (node.property.type === AST_NODE_TYPES.PrivateIdentifier) {
       // will be handled by the PrivateIdentifier visitor
       return;
@@ -223,7 +238,7 @@ abstract class ThisScope extends Visitor {
       objectClassName.type === 'instance'
         ? objectClassName.thisContext.members.instance
         : objectClassName.thisContext.members.static;
-    const member = members.get(propertyName);
+    const member = members.get(propertyName[0]);
     if (member == null) {
       return;
     }
@@ -232,6 +247,17 @@ abstract class ThisScope extends Visitor {
   }
 
   protected PrivateIdentifier(node: TSESTree.PrivateIdentifier): void {
+    this.visitChildren(node);
+
+    if (
+      (node.parent.type === AST_NODE_TYPES.MethodDefinition ||
+        node.parent.type === AST_NODE_TYPES.PropertyDefinition) &&
+      node.parent.key === node
+    ) {
+      // ignore the member definition
+      return;
+    }
+
     // We can actually be pretty loose with our code here thanks to how private
     // members are designed.
     //
@@ -388,9 +414,9 @@ class ClassScope extends ThisScope implements ClassScopeResult {
             continue;
           }
           if (member.isStatic()) {
-            this.members.static.set(member.name, member);
+            this.members.static.set(member.key, member);
           } else {
-            this.members.instance.set(member.name, member);
+            this.members.instance.set(member.key, member);
           }
           break;
         }

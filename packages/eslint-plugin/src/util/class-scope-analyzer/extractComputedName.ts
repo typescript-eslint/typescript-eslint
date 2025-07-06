@@ -6,31 +6,36 @@ import type { Key, MemberNode } from './types';
 
 import { privateKey, publicKey } from './types';
 
-function extractComputedName(computedName: TSESTree.Expression): Key | null {
+function extractComputedName(
+  computedName: TSESTree.Expression,
+): [Key, string] | null {
   if (computedName.type === AST_NODE_TYPES.Literal) {
-    return publicKey(computedName.value?.toString() ?? 'null');
+    const name = computedName.value?.toString() ?? 'null';
+    return [publicKey(name), name];
   }
   if (
     computedName.type === AST_NODE_TYPES.TemplateLiteral &&
     computedName.expressions.length === 0
   ) {
-    return publicKey(computedName.quasis[0].value.raw);
+    const name = computedName.quasis[0].value.raw;
+    return [publicKey(name), name];
   }
   return null;
 }
 function extractNonComputedName(
   nonComputedName: TSESTree.Identifier | TSESTree.PrivateIdentifier,
-): Key {
+): [Key, string] | null {
+  const name = nonComputedName.name;
   if (nonComputedName.type === AST_NODE_TYPES.PrivateIdentifier) {
-    return privateKey(nonComputedName);
+    return [privateKey(nonComputedName), `#${name}`];
   }
-  return publicKey(nonComputedName.name);
+  return [publicKey(name), name];
 }
 /**
  * Extracts the string name for a member.
  * @returns `null` if the name cannot be extracted due to it being a computed.
  */
-export function extractNameForMember(node: MemberNode): Key | null {
+export function extractNameForMember(node: MemberNode): [Key, string] | null {
   if (node.computed) {
     return extractComputedName(node.key);
   }
@@ -47,7 +52,7 @@ export function extractNameForMember(node: MemberNode): Key | null {
  */
 export function extractNameForMemberExpression(
   node: TSESTree.MemberExpression,
-): Key | null {
+): [Key, string] | null {
   if (node.computed) {
     return extractComputedName(node.property);
   }

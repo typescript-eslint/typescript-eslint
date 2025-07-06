@@ -254,7 +254,7 @@ class C {
   #unusedInOuterClass;
 
   foo() {
-    return class {
+    return class D {
       #unusedInOuterClass;
 
       bar() {
