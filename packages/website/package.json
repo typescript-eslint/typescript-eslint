@@ -113,7 +113,10 @@
         }
       },
       "lint": {
-        "command": "eslint"
+        "command": "eslint",
+        "dependsOn": [
+          "build"
+        ]
       },
       "start": {
         "command": "docusaurus start",
