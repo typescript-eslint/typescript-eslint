@@ -1,3 +1,34 @@
+## 8.35.1 (2025-06-30)
+
+### 🩹 Fixes
+
+- remove prettier from eslint-plugin ([#11339](https://github.com/typescript-eslint/typescript-eslint/pull/11339))
+- **website:** did not find a source file error if url hash doesn't contain fileType ([#11350](https://github.com/typescript-eslint/typescript-eslint/pull/11350))
+
+### ❤️ Thank You
+
+- Abhijeet Singh @cseas
+- mdm317
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.35.0 (2025-06-23)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-base-to-string] add checkUnknown Option ([#11128](https://github.com/typescript-eslint/typescript-eslint/pull/11128))
+
+### 🩹 Fixes
+
+- **website:** acquired types are shown in the editor but not reflected in linting ([#11198](https://github.com/typescript-eslint/typescript-eslint/pull/11198))
+
+### ❤️ Thank You
+
+- Kim Sang Du @developer-bandi
+- mdm317
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.34.1 (2025-06-16)
 
 ### 🩹 Fixes

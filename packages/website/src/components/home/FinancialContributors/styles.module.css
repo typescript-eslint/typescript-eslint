@@ -1,8 +1,15 @@
-.sponsorLink {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 8px;
-  height: 100%;
+.financialContributors {
+  align-items: center;
+  background: var(--ifm-color-emphasis-0);
+  display: flex;
+  text-align: center;
+  width: 100%;
+}
+
+.details {
+  font-size: 1.2rem;
+  max-width: min(70vw, 70rem);
+  margin: 2rem auto;
 }
 
 .linksArea {
@@ -55,10 +62,6 @@
 
   .tierOtherArea {
     grid-area: 2 / 2 / 3 / 3;
-  }
-
-  .sponsorLink {
-    display: flex;
   }
 
   .linksArea {
