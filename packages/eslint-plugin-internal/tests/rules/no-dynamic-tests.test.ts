@@ -196,7 +196,7 @@ ruleTester.run('test', rule, {
       `,
       errors: [
         {
-          column: 44,
+          column: 48,
           line: 3,
           messageId: 'noDynamicTests',
         },
