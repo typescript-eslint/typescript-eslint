@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > expression > ObjectExpression > _error_ > missing-setter-body > Babel - Error`]
-SyntaxError: Unexpected token, expected "{" (1:16)
+BabelError
+> 1 | ({set foo(value);})
+    |                 ^ Unexpected token, expected "{" (1:16)
+  2 |
+  

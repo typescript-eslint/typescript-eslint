@@ -38,10 +38,8 @@ Snapshot Diff:
         end: { column: 6, line: 3 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Null {
-+     type: 'Null',
+    Null {
+      type: 'Null',
       value: 'null',
 
       range: [80, 84],

@@ -22,45 +22,42 @@
   },
   "homepage": "https://typescript-eslint.io",
   "scripts": {
-    "build": "npx nx run-many --target=build --exclude website --exclude website-eslint",
+    "build": "nx run-many -t build --exclude website website-eslint",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
     "check-format": "prettier --check .",
     "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\" --no-progress --show-context --show-suggestions",
-    "clean": "npx nx run-many --target=clean",
-    "format": "prettier --write .",
-    "generate-breaking-changes": "npx nx run eslint-plugin:generate-breaking-changes",
-    "generate-configs": "npx nx generate-configs",
-    "generate-contributors": "npx nx generate-contributors",
-    "generate-lib": "npx nx generate-lib",
-    "generate-sponsors": "npx nx generate-sponsors",
-    "generate-website-dts": "npx nx run website:generate-website-dts",
+    "clean": "nx run-many -t clean --parallel=20",
+    "format": "prettier --ignore-path=$PROJECT_CWD/.prettierignore --config=$PROJECT_CWD/.prettierrc.json --write $INIT_CWD",
+    "generate-breaking-changes": "nx run eslint-plugin:generate-breaking-changes",
+    "generate-configs": "tsx tools/scripts/generate-configs.mts",
+    "generate-lib": "tsx tools/scripts/generate-lib.mts",
+    "generate-sponsors": "tsx tools/scripts/generate-sponsors.mts",
+    "generate-website-dts": "nx run website:generate-website-dts",
     "lint-fix": "yarn lint --fix",
     "lint-markdown-fix": "yarn lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
-    "lint-stylelint": "npx nx lint website stylelint",
-    "lint": "npx nx lint eslint-plugin --skip-nx-cache && npx nx run-many --target=lint --exclude eslint-plugin",
+    "lint-stylelint": "nx lint website stylelint",
+    "lint": "nx run-many -t lint",
     "postinstall": "tsx tools/scripts/postinstall.mts",
-    "pre-commit": "yarn lint-staged",
+    "pre-commit": "lint-staged",
     "release": "tsx tools/release/release.mts",
-    "start": "npx nx run website:start",
-    "test": "npx nx run-many --target=test --exclude integration-tests --exclude website --exclude website-eslint",
-    "test-integration": "npx nx run integration-tests:test",
-    "typecheck": "npx nx run-many --target=typecheck"
+    "start": "nx run website:start",
+    "test": "nx run-many -t test --exclude integration-tests website website-eslint",
+    "test-integration": "nx run integration-tests:test",
+    "typecheck": "nx run-many -t typecheck"
   },
   "engines": {
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "devDependencies": {
-    "@actions/core": "^1.10.1",
-    "@actions/github": "^6.0.0",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.4.1",
     "@eslint/compat": "^1.2.4",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.26.0",
-    "@nx/devkit": "20.7.2",
-    "@nx/eslint": "20.7.2",
-    "@nx/vite": "20.7.2",
-    "@nx/workspace": "20.7.2",
+    "@nx/devkit": "21.0.3",
+    "@nx/js": "21.0.3",
+    "@nx/vite": "21.0.3",
+    "@nx/workspace": "21.0.3",
     "@swc/core": "^1.4.12",
     "@types/debug": "^4.1.12",
     "@types/eslint-plugin-jsx-a11y": "^6.10.0",
@@ -70,6 +67,7 @@
     "@types/yargs": "^17.0.32",
     "@typescript-eslint/eslint-plugin": "workspace:^",
     "@typescript-eslint/eslint-plugin-internal": "workspace:^",
+    "@typescript-eslint/parser": "workspace:^",
     "@typescript-eslint/scope-manager": "workspace:^",
     "@typescript-eslint/types": "workspace:^",
     "@typescript-eslint/typescript-estree": "workspace:^",
@@ -84,7 +82,7 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsdoc": "^50.5.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-perfectionist": "^3.9.1",
+    "eslint-plugin-perfectionist": "^4.12.3",
     "eslint-plugin-react": "^7.37.3",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-regexp": "^2.7.0",
@@ -92,14 +90,11 @@
     "execa": "7.2.0",
     "globals": "^16.0.0",
     "husky": "^9.1.4",
-    "jiti": "2.4.2",
     "knip": "^5.41.1",
     "lint-staged": "^15.2.2",
-    "make-dir": "^4.0.0",
     "markdownlint-cli": "^0.44.0",
-    "nx": "20.7.2",
+    "nx": "21.0.3",
     "prettier": "3.5.0",
-    "pretty-format": "^29.7.0",
     "rimraf": "^5.0.5",
     "semver": "7.7.0",
     "tsx": "*",
@@ -117,14 +112,52 @@
     "@types/react": "^18.2.14",
     "eslint-plugin-eslint-plugin@^5.5.0": "patch:eslint-plugin-eslint-plugin@npm%3A5.5.1#./.yarn/patches/eslint-plugin-eslint-plugin-npm-5.5.1-4206c2506d.patch",
     "prettier": "3.5.0",
-    "pretty-format": "^29",
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
-    "tmp": "0.2.1",
     "tsx": "^4.7.2",
     "typescript": "5.8.2"
   },
   "packageManager": "yarn@3.8.2",
   "nx": {
-    "includedScripts": []
+    "name": "repo",
+    "includedScripts": [
+      "generate-configs",
+      "generate-lib",
+      "generate-sponsors"
+    ],
+    "targets": {
+      "generate-configs": {
+        "dependsOn": [
+          "eslint-plugin:build"
+        ]
+      },
+      "generate-lib": {
+        "dependsOn": [
+          "typescript-eslint:build",
+          "eslint-plugin-internal:build"
+        ]
+      },
+      "// These targets are used for repo level utils and checking repo files which do not belong to specific published packages": {},
+      "typecheck": {
+        "command": "tsc -b tsconfig.repo-config-files.json",
+        "dependsOn": [
+          "types:copy-ast-spec"
+        ],
+        "outputs": [
+          "{workspaceRoot}/dist"
+        ],
+        "cache": true
+      },
+      "lint": {
+        "command": "eslint",
+        "options": {
+          "cache": true,
+          "ignore-pattern": "packages"
+        },
+        "cache": false
+      },
+      "clean": {
+        "command": "rimraf dist/ coverage/ .eslintcache"
+      }
+    }
   }
 }

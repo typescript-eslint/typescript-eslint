@@ -72,18 +72,11 @@ async function copyFile(
   console.log('Copied', fileName);
 }
 
-async function main(): Promise<void> {
-  if (process.env.SKIP_AST_SPEC_REBUILD) {
-    // ensure the package is built
-    await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH });
-  }
-
-  await copyFile('dist', 'ast-spec.ts', code =>
-    code.replaceAll('export declare enum', 'export enum'),
-  );
+if (process.env.SKIP_AST_SPEC_REBUILD) {
+  // ensure the package is built
+  await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH });
 }
 
-main().catch((error: unknown) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+await copyFile('dist', 'ast-spec.ts', code =>
+  code.replaceAll('export declare enum', 'export enum'),
+);

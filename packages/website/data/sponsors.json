@@ -3,7 +3,7 @@
     "id": "ESLint",
     "image": "https://images.opencollective.com/eslint/48a2e5d/logo.png",
     "name": "ESLint",
-    "totalDonations": 3330000,
+    "totalDonations": 3360000,
     "website": "https://eslint.org/"
   },
   {
@@ -17,21 +17,21 @@
     "id": "Nx (by Nrwl)",
     "image": "https://images.opencollective.com/nx/0efbe42/logo.png",
     "name": "Nx (by Nrwl)",
-    "totalDonations": 1250000,
+    "totalDonations": 1275000,
     "website": "https://nx.dev"
   },
   {
     "id": "JetBrains",
     "image": "https://images.opencollective.com/jetbrains/fe76f99/logo.png",
     "name": "JetBrains",
-    "totalDonations": 850000,
+    "totalDonations": 900000,
     "website": "https://www.jetbrains.com/"
   },
   {
     "id": "Cybozu",
     "image": "https://images.opencollective.com/cybozu/933e46d/logo.png",
     "name": "Cybozu",
-    "totalDonations": 685000,
+    "totalDonations": 710000,
     "website": "https://cybozu.co.jp/"
   },
   {
@@ -45,21 +45,21 @@
     "id": "Codecademy",
     "image": "https://images.opencollective.com/codecademy/d56a48d/logo.png",
     "name": "Codecademy",
-    "totalDonations": 400000,
+    "totalDonations": 410000,
     "website": "https://codecademy.com"
   },
   {
     "id": "Sourcegraph",
     "image": "https://images.opencollective.com/sourcegraph/f67b621/logo.png",
     "name": "Sourcegraph",
-    "totalDonations": 350000,
+    "totalDonations": 360000,
     "website": "https://about.sourcegraph.com"
   },
   {
     "id": "Vite",
     "image": "https://images.opencollective.com/vite/e6d15e1/logo.png",
     "name": "Vite",
-    "totalDonations": 300000,
+    "totalDonations": 360000,
     "website": "https://vite.dev/"
   },
   {
@@ -70,6 +70,13 @@
     "website": "https://www.canva.com"
   },
   {
+    "id": "Airbnb",
+    "image": "https://images.opencollective.com/airbnb/d327d66/logo.png",
+    "name": "Airbnb",
+    "totalDonations": 295800,
+    "website": "https://www.airbnb.com/"
+  },
+  {
     "id": "THANKS.DEV",
     "image": "https://images.opencollective.com/thanks-dev/ed78b39/logo.png",
     "name": "THANKS.DEV",
@@ -77,17 +84,10 @@
     "website": "https://thanks.dev"
   },
   {
-    "id": "Airbnb",
-    "image": "https://images.opencollective.com/airbnb/d327d66/logo.png",
-    "name": "Airbnb",
-    "totalDonations": 290800,
-    "website": "https://www.airbnb.com/"
-  },
-  {
     "id": "GitBook",
     "image": "https://images.opencollective.com/gitbook/820419f/logo.png",
     "name": "GitBook",
-    "totalDonations": 230000,
+    "totalDonations": 240000,
     "website": "https://www.gitbook.com"
   },
   {
@@ -122,7 +122,7 @@
     "id": "STORIS",
     "image": "https://images.opencollective.com/storis/dfb0e13/logo.png",
     "name": "STORIS",
-    "totalDonations": 106000,
+    "totalDonations": 109500,
     "website": "https://www.storis.com/"
   },
   {
@@ -157,8 +157,15 @@
     "id": "WebdriverIO",
     "image": "https://images.opencollective.com/webdriverio/bbdd5c3/logo.png",
     "name": "WebdriverIO",
-    "totalDonations": 56000,
+    "totalDonations": 59500,
     "website": "https://webdriver.io/"
+  },
+  {
+    "id": "Torutek",
+    "image": "https://images.opencollective.com/torutek/logo.png",
+    "name": "Torutek",
+    "totalDonations": 55000,
+    "website": "https://torutek.com"
   },
   {
     "id": "Future Processing",
@@ -175,18 +182,18 @@
     "website": "https://www.cryptonewsz.com/"
   },
   {
+    "id": "Defined Networking",
+    "image": "https://images.opencollective.com/defined-networking/072920e/logo.png",
+    "name": "Defined Networking",
+    "totalDonations": 50000,
+    "website": "https://www.defined.net"
+  },
+  {
     "id": "Skunk Team",
     "image": "https://images.opencollective.com/skunk-team/3ddba2f/logo.png",
     "name": "Skunk Team",
     "totalDonations": 50000,
     "website": "https://skunk.team"
-  },
-  {
-    "id": "Torutek",
-    "image": "https://images.opencollective.com/torutek/logo.png",
-    "name": "Torutek",
-    "totalDonations": 50000,
-    "website": "https://torutek.com"
   },
   {
     "id": "vlt",
@@ -201,13 +208,6 @@
     "name": "Joe Alden",
     "totalDonations": 48000,
     "website": "https://joealden.com/"
-  },
-  {
-    "id": "Defined Networking",
-    "image": "https://images.opencollective.com/defined-networking/072920e/logo.png",
-    "name": "Defined Networking",
-    "totalDonations": 47500,
-    "website": "https://www.defined.net"
   },
   {
     "id": "Quicko",
@@ -227,15 +227,8 @@
     "id": "syntaxfm",
     "image": "https://avatars.githubusercontent.com/u/130389858?v=4",
     "name": "Syntax",
-    "totalDonations": 37639,
+    "totalDonations": 39473,
     "website": "https://syntax.fm"
-  },
-  {
-    "id": "frontendmasters",
-    "image": "https://avatars.githubusercontent.com/u/5613852?v=4",
-    "name": "Frontend Masters",
-    "totalDonations": 32379,
-    "website": "https://FrontendMasters.com"
   },
   {
     "id": "Monito",
@@ -255,29 +248,36 @@
     "id": "0+X",
     "image": "https://images.opencollective.com/0-x/707287f/logo.png",
     "name": "0+X",
-    "totalDonations": 29000,
+    "totalDonations": 30000,
     "website": "https://www.0x.se"
   },
   {
     "id": "Trevor Burnham",
     "image": "https://images.opencollective.com/trevorburnham/016f6da/avatar.png",
     "name": "Trevor Burnham",
-    "totalDonations": 28000,
+    "totalDonations": 29000,
     "website": "https://trevorburnham.com"
   },
   {
     "id": "Corellium",
     "image": "https://images.opencollective.com/corellium/aa8c228/logo.png",
     "name": "Corellium",
-    "totalDonations": 25200,
+    "totalDonations": 25800,
     "website": "https://www.corellium.com"
   },
   {
     "id": "Evil Martians",
     "image": "https://images.opencollective.com/evilmartians/707ab4d/logo.png",
     "name": "Evil Martians",
-    "totalDonations": 25000,
+    "totalDonations": 25500,
     "website": "https://evilmartians.com/"
+  },
+  {
+    "id": "frontendmasters",
+    "image": "https://avatars.githubusercontent.com/u/5613852?v=4",
+    "name": "Frontend Masters",
+    "totalDonations": 24758,
+    "website": "https://FrontendMasters.com"
   },
   {
     "id": "revo.js",
@@ -322,6 +322,13 @@
     "website": "https://balsa.com/"
   },
   {
+    "id": "getsentry",
+    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
+    "name": "Sentry",
+    "totalDonations": 15455,
+    "website": "https://sentry.io"
+  },
+  {
     "id": "THE PADDING",
     "image": "https://images.opencollective.com/thepadding/55e79ad/logo.png",
     "name": "THE PADDING",
@@ -329,11 +336,11 @@
     "website": "https://paddn.com/"
   },
   {
-    "id": "getsentry",
-    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
-    "name": "Sentry",
-    "totalDonations": 14729,
-    "website": "https://sentry.io"
+    "id": "codecov",
+    "image": "https://avatars.githubusercontent.com/u/8226205?v=4",
+    "name": "Codecov",
+    "totalDonations": 14501,
+    "website": "https://codecov.io/"
   },
   {
     "id": "Now4real",
@@ -341,13 +348,6 @@
     "name": "Now4real",
     "totalDonations": 14500,
     "website": "https://now4real.com/"
-  },
-  {
-    "id": "codecov",
-    "image": "https://avatars.githubusercontent.com/u/8226205?v=4",
-    "name": "Codecov",
-    "totalDonations": 14456,
-    "website": "https://codecov.io/"
   },
   {
     "id": "gitbutlerapp",
