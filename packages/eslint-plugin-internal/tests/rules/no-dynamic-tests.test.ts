@@ -172,6 +172,21 @@ ruleTester.run('test', rule, {
         },
       ],
     },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: [foo\`const x = 1;\`],
+  invalid: [],
+});
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 3,
+          messageId: 'noDynamicTests',
+        },
+      ],
+    },
   ],
   valid: [
     {

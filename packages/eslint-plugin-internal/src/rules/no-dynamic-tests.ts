@@ -57,8 +57,12 @@ export default createRule({
             }
             return isDynamicExpression(prop.value);
           });
-        case AST_NODE_TYPES.Literal:
         case AST_NODE_TYPES.TaggedTemplateExpression:
+          return !(
+            node.tag.type === AST_NODE_TYPES.Identifier &&
+            node.tag.name === 'noFormat'
+          );
+        case AST_NODE_TYPES.Literal:
         default:
           return false;
       }
