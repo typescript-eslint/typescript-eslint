@@ -187,6 +187,21 @@ ruleTester.run('test', rule, {
         },
       ],
     },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: [{ code: \`foo\`, errors: [{ messageId: getMessageId() }] }],
+  invalid: [],
+});
+      `,
+      errors: [
+        {
+          column: 44,
+          line: 3,
+          messageId: 'noDynamicTests',
+        },
+      ],
+    },
   ],
   valid: [
     {
