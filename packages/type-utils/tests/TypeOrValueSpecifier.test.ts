@@ -405,6 +405,14 @@ describe('TypeOrValueSpecifier', () => {
           package: 'node:test',
         },
       ],
+      [
+        'import { fail } from "node:assert"; type Test = typeof fail;',
+        {
+          from: 'package',
+          name: 'fail',
+          package: 'assert',
+        },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching package specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
