@@ -23,7 +23,7 @@ The new name is a drop-in replacement with identical functionality.
 
 ## Examples
 
-This rule is aimed at maintaining consistency when throwing exception by disallowing to throw literals and other expressions which cannot possibly be an `Error` object.
+This rule is aimed at maintaining consistency when throwing exceptions by disallowing throwing values that are not `Error` objects.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -35,26 +35,20 @@ throw 0;
 
 throw undefined;
 
-throw null;
-
-const err = new Error();
-throw 'an ' + err;
-
-const err = new Error();
-throw `${err}`;
-
-const err = '';
-throw err;
-
-function getError() {
+function getErrorString(): string {
   return '';
 }
-throw getError();
+throw getErrorString();
 
 const foo = {
-  bar: '',
+  bar: 'error string',
 };
 throw foo.bar;
+
+class SomeClass {
+  // ...
+}
+throw new SomeClass();
 ```
 
 </TabItem>
@@ -67,15 +61,6 @@ throw new Error('error');
 
 const e = new Error('error');
 throw e;
-
-try {
-  throw new Error('error');
-} catch (e) {
-  throw e;
-}
-
-const err = new Error();
-throw err;
 
 function getError() {
   return new Error();
@@ -108,16 +93,16 @@ interface Options {
   allow?: (
     | {
         from: 'file';
-        name: [string, ...string[]] | string;
+        name: string[] | string;
         path?: string;
       }
     | {
         from: 'lib';
-        name: [string, ...string[]] | string;
+        name: string[] | string;
       }
     | {
         from: 'package';
-        name: [string, ...string[]] | string;
+        name: string[] | string;
         package: string;
       }
     | string
@@ -145,6 +130,122 @@ const defaultOptions: Options = {
   allowThrowingAny: true,
   allowThrowingUnknown: true,
 };
+```
+
+### allowThrowingAny
+
+When set to `true`, this option allows throwing values typed as `any`.
+
+Examples of **correct** code with `{ allowThrowingAny: true }`:
+
+```ts option='{ "allowThrowingAny": true }' showPlaygroundButton
+function throwAny(value: any) {
+  throw value;
+}
+```
+
+### allowThrowingUnknown
+
+When set to `true`, this option allows throwing values typed as `unknown`.
+
+Examples of **correct** code with `{ allowThrowingUnknown: true }`:
+
+```ts option='{ "allowThrowingUnknown": true }' showPlaygroundButton
+function throwUnknown(value: unknown) {
+  throw value;
+}
+```
+
+### allowRethrowing
+
+When set to `true`, this option allows throwing caught values.
+This is intended to be used in order to make patterns involving rethrowing exceptions less painful for users who set `allowThrowingAny`/`allowThrowingUnknown` to `false`.
+
+Examples of **correct** code with `{ allowRethrowing: true, allowThrowingAny: false, allowThrowingUnknown: false }`:
+
+```ts option='{ "allowRethrowing": true, "allowThrowingAny": false, "allowThrowingUnknown": false }' showPlaygroundButton
+declare function mightThrow(): void;
+declare class SomeSpecificError extends Error {
+  // ...
+}
+
+function foo() {
+  try {
+    mightThrow();
+  } catch (e) {
+    if (e instanceof SomeSpecificError) {
+      // handle specific error ...
+      return;
+    }
+
+    // unexpected error that we shouldn't catch.
+    throw e;
+  }
+}
+
+declare function mightReject(): Promise<void>;
+
+mightReject().catch(e => {
+  if (e instanceof SomeSpecificError) {
+    // handle specific error ...
+    return;
+  }
+
+  // unexpected error that we can't handle
+  throw e;
+});
+
+declare function log(message: string): void;
+
+function bar() {
+  log('starting bar()');
+  let wasError = false;
+  try {
+    // ...
+  } catch (e) {
+    wasError = true;
+    throw e;
+  } finally {
+    log(`completed bar() ${wasError ? 'with error' : 'successfully'}`);
+  }
+}
+```
+
+:::note
+
+While it makes sense to rethrow errors in some cases, it is likely more common that one would want to create a new `Error` and set its [`cause`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause) appropriately.
+
+```ts
+function foo() {
+  try {
+    // ...
+  } catch (e) {
+    throw new Error('Could not complete foo()', { cause: e });
+  }
+}
+```
+
+:::
+
+### allow
+
+This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier) to allow throwing values that are not `Error` objects.
+While we strongly recommend that you only create custom error classes that extend `Error`, this option can be useful for throwing errors defined by libraries that do not follow this convention.
+
+Examples of code for this rule with:
+
+```jsonc
+{
+  "allow": [{ "from": "file", "name": "CustomError" }],
+}
+```
+
+```ts option='{ "allow": [{ "from": "file", "name": "CustomError" }] }' showPlaygroundButton
+class CustomError /* does NOT extend Error */ {
+  // ...
+}
+
+throw new CustomError();
 ```
 
 {/* Intentionally Omitted: When Not To Use It */}
