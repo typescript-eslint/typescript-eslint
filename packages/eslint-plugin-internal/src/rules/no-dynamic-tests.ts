@@ -30,48 +30,70 @@ export default createRule({
       );
     }
 
-    function isDynamicExpression(node: TSESTree.Node): boolean {
+    function reportDynamicElements(node: TSESTree.Node): void {
       switch (node.type) {
         case AST_NODE_TYPES.CallExpression:
-          return true;
         case AST_NODE_TYPES.SpreadElement:
-          return true;
         case AST_NODE_TYPES.Identifier:
-          return true;
-        case AST_NODE_TYPES.TemplateLiteral:
-          return node.expressions.some(expr => isDynamicExpression(expr));
         case AST_NODE_TYPES.BinaryExpression:
-          return true;
         case AST_NODE_TYPES.ConditionalExpression:
-          return true;
         case AST_NODE_TYPES.MemberExpression:
-          return true;
-        case AST_NODE_TYPES.ArrayExpression:
-          return node.elements.some(
-            element => element && isDynamicExpression(element),
-          );
-        case AST_NODE_TYPES.ObjectExpression:
-          return node.properties.some(prop => {
-            if (prop.type === AST_NODE_TYPES.SpreadElement) {
-              return true;
-            }
-            return isDynamicExpression(prop.value);
+          context.report({
+            node,
+            messageId: 'noDynamicTests',
           });
+          break;
+        case AST_NODE_TYPES.TemplateLiteral:
+          node.expressions.forEach(expr => {
+            reportDynamicElements(expr);
+          });
+          break;
+        case AST_NODE_TYPES.ArrayExpression:
+          node.elements.forEach(element => {
+            if (element) {
+              reportDynamicElements(element);
+            }
+          });
+          break;
+        case AST_NODE_TYPES.ObjectExpression:
+          node.properties.forEach(prop => {
+            if (prop.type === AST_NODE_TYPES.SpreadElement) {
+              context.report({
+                node: prop,
+                messageId: 'noDynamicTests',
+              });
+            } else {
+              reportDynamicElements(prop.value);
+            }
+          });
+          break;
         case AST_NODE_TYPES.TaggedTemplateExpression:
-          return !(
-            node.tag.type === AST_NODE_TYPES.Identifier &&
-            node.tag.name === 'noFormat'
-          );
-        case AST_NODE_TYPES.Literal:
+          if (
+            !(
+              node.tag.type === AST_NODE_TYPES.Identifier &&
+              node.tag.name === 'noFormat'
+            )
+          ) {
+            context.report({
+              node,
+              messageId: 'noDynamicTests',
+            });
+          }
+          break;
         default:
-          return false;
+          break;
       }
     }
 
     return {
       CallExpression(node) {
         if (isRuleTesterCall(node)) {
+          // If valid code, arg length is always 3 but we need to avoid conflict while dev
+          if (node.arguments.length < 3) {
+            return;
+          }
           const testObject = node.arguments[2];
+
           if (testObject.type === AST_NODE_TYPES.ObjectExpression) {
             for (const prop of testObject.properties) {
               if (
@@ -81,11 +103,8 @@ export default createRule({
                 prop.value.type === AST_NODE_TYPES.ArrayExpression
               ) {
                 prop.value.elements.forEach(element => {
-                  if (element && isDynamicExpression(element)) {
-                    context.report({
-                      node: element,
-                      messageId: 'noDynamicTests',
-                    });
+                  if (element) {
+                    reportDynamicElements(element);
                   }
                 });
               }

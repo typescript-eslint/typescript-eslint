@@ -102,7 +102,7 @@ ruleTester.run('test', rule, {
       `,
       errors: [
         {
-          column: 11,
+          column: 14,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -166,7 +166,7 @@ ruleTester.run('test', rule, {
       `,
       errors: [
         {
-          column: 11,
+          column: 13,
           line: 3,
           messageId: 'noDynamicTests',
         },
