@@ -292,6 +292,14 @@ export interface RuleContext<
    * We do not have any shared settings in this plugin.
    */
   settings: SharedConfigurationSettings;
+
+  // Deprecated members
+
+  /**
+   * A SourceCode object that you can use to work with the source that
+   * was passed to ESLint.
+   */
+  sourceCode: Readonly<SourceCode>;
 }
 
 /**
