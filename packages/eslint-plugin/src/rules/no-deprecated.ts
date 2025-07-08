@@ -438,8 +438,11 @@ export default createRule<Options, MessageIds>({
       ExportSpecifier(node): void {
         const symbol = services.getSymbolAtLocation(node.exported);
 
-        if (searchForDeprecationInAliasesChain(symbol, false) == null) {
-          checkIdentifier(node.exported as TSESTree.Identifier);
+        if (
+          searchForDeprecationInAliasesChain(symbol, false) == null &&
+          node.exported.type === AST_NODE_TYPES.Identifier
+        ) {
+          checkIdentifier(node.exported);
         }
       },
       Identifier(node): void {

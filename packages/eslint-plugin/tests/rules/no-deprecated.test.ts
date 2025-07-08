@@ -223,6 +223,15 @@ ruleTester.run('no-deprecated', rule, {
       } from 'typescript';
     `,
     `
+      export { deprecatedFunction as 'bur' } from './deprecated';
+    `,
+    `
+      export { 'deprecatedFunction' } from './deprecated';
+    `,
+    `
+      export { deprecatedFunction as 'bar' } from './deprecated';
+    `,
+    `
       namespace A {
         /** @deprecated */
         export type B = string;
@@ -3231,6 +3240,20 @@ class B extends A {
         {
           column: 29,
           endColumn: 32,
+          endLine: 2,
+          line: 2,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        export { deprecatedFunction as bar } from './deprecated';
+      `,
+      errors: [
+        {
+          column: 40,
+          endColumn: 43,
           endLine: 2,
           line: 2,
           messageId: 'deprecated',
