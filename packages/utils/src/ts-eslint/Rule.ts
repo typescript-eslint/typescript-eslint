@@ -296,6 +296,16 @@ export interface RuleContext<
   // Deprecated members
 
   /**
+   * The filename associated with the source.
+   */
+  filename: string;
+
+  /**
+   * The full path of the file on disk without any code block information (unlike `filename`).
+   */
+  physicalFilename: string;
+
+  /**
    * A SourceCode object that you can use to work with the source that
    * was passed to ESLint.
    */
