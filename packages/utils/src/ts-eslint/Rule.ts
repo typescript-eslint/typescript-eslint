@@ -3,7 +3,6 @@ import type { ParserServices, TSESTree } from '../ts-estree';
 import type { AST } from './AST';
 import type { FlatConfig } from './Config';
 import type { Linter } from './Linter';
-import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
 export type RuleRecommendation = 'recommended' | 'strict' | 'stylistic';
