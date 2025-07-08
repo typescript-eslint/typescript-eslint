@@ -300,6 +300,11 @@ export interface RuleContext<
    * was passed to ESLint.
    */
   sourceCode: Readonly<SourceCode>;
+
+  /**
+   * Reports a problem in the code.
+   */
+  report(descriptor: ReportDescriptor<MessageIds>): void;
 }
 
 /**
