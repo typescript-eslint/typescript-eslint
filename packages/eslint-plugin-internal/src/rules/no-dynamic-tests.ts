@@ -1,3 +1,4 @@
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -62,6 +63,22 @@ export default createRule({
                 node: prop,
                 messageId: 'noDynamicTests',
               });
+            } else {
+              // InvalidTestCase extends ValidTestCase
+              type TestCaseKey = keyof InvalidTestCase<string, []>;
+              const keyToValidate: TestCaseKey[] = ['code', 'errors'];
+
+              if (
+                prop.key.type === AST_NODE_TYPES.Identifier &&
+                keyToValidate.includes(prop.key.name as TestCaseKey)
+              ) {
+                reportDynamicElements(prop.value);
+              } else if (
+                prop.key.type === AST_NODE_TYPES.Literal &&
+                keyToValidate.includes(prop.key.value as TestCaseKey)
+              ) {
+                reportDynamicElements(prop.value);
+              }
             }
           });
           break;
