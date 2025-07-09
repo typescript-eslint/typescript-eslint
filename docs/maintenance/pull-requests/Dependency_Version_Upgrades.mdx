@@ -56,7 +56,7 @@ Our published packages only depend on `@babel/*` packages as devDependencies.
 You can generally upgrade those dependencies with:
 
 1. `pnpm add -D @babel/code-frame @babel/core @babel/eslint-parser @babel/parser @babel/types`
-2. `pnpx nx run ast-spec:test -u`
+2. `pnpx exec nx run ast-spec:test -u`
 
 The fixtures under `packages/ast-spec/` describe how the files are parsed under both Babel and our (TSESTree) parser.
 
