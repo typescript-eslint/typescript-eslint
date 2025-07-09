@@ -62,8 +62,6 @@ export default createRule({
                 node: prop,
                 messageId: 'noDynamicTests',
               });
-            } else {
-              reportDynamicElements(prop.value);
             }
           });
           break;
@@ -75,11 +73,12 @@ export default createRule({
             )
           ) {
             context.report({
-              node,
+              node: node.tag,
               messageId: 'noDynamicTests',
             });
           }
           break;
+        case AST_NODE_TYPES.Literal:
         default:
           break;
       }

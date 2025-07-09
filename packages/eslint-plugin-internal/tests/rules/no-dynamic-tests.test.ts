@@ -187,21 +187,6 @@ ruleTester.run('test', rule, {
         },
       ],
     },
-    {
-      code: `
-ruleTester.run('test', rule, {
-  valid: [{ code: \`foo\`, errors: [{ messageId: getMessageId() }] }],
-  invalid: [],
-});
-      `,
-      errors: [
-        {
-          column: 48,
-          line: 3,
-          messageId: 'noDynamicTests',
-        },
-      ],
-    },
   ],
   valid: [
     {
@@ -238,6 +223,17 @@ ruleTester.run('test', rule, {
 ruleTester.run('test', rule, {
   valid: [noFormat\`const x = 1;\`],
   invalid: [],
+});
+      `,
+    },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  code: "import type { ValueOf } from './utils';",
+  filename: path.resolve(
+    PACKAGES_DIR,
+    'ast-spec/src/expression/AssignmentExpression/spec.ts',
+  ),
 });
       `,
     },
