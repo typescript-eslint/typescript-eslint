@@ -145,6 +145,12 @@ export function createParseSettings(
     tsconfigRootDir,
   };
 
+  if (parseSettings.projectService && tsestreeOptions.project) {
+    throw new Error(
+      'Cannot use both projectService and project parser options.',
+    );
+  }
+
   // debug doesn't support multiple `enable` calls, so have to do it all at once
   if (parseSettings.debugLevel.size > 0) {
     const namespaces = [];
