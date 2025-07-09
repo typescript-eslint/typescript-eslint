@@ -41,7 +41,7 @@ const HEADER = `\
  * ANY CHANGES WILL BE LOST ON THE NEXT BUILD *
  *                                            *
  *   MAKE CHANGES TO ast-spec AND THEN RUN    *
- *                 yarn build                 *
+ *                 pnpm run build             *
  **********************************************/
 
 `;
@@ -63,18 +63,14 @@ async function copyFile(
     encoding: 'utf-8',
   });
 
-  await execAsync(
-    'yarn',
-    ['run', '--top-level', 'prettier', '--write', outpath],
-    {},
-  );
+  await execAsync('pnpm', ['-w', 'exec', 'prettier', '--write', outpath], {});
 
   console.log('Copied', fileName);
 }
 
 if (process.env.SKIP_AST_SPEC_REBUILD) {
   // ensure the package is built
-  await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH });
+  await execAsync('pnpm', ['run', 'build'], { cwd: AST_SPEC_PATH });
 }
 
 await copyFile('dist', 'ast-spec.ts', code =>
