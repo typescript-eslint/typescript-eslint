@@ -378,6 +378,19 @@ declare function f(x: boolean): unknown;
 declare function f(x: number): unknown;
 declare function f(x: boolean): unknown;
       `,
+
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+class C {
+  a(b: string): void;
+  /**
+   * @deprecate
+   */
+  a(b: number): void;
+}
+      `,
       options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
     },
     `
@@ -829,6 +842,30 @@ abstract class Foo {
             type2: 'string',
           },
           line: 4,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
+abstract class C {
+  a(b: string): void;
+  /**
+   * @deprecate
+   */
+  a(b: number): void;
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'string',
+            type2: 'number',
+          },
+          line: 7,
           messageId: 'singleParameterDifference',
         },
       ],

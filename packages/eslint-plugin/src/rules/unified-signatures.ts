@@ -241,9 +241,8 @@ export default createRule<Options, MessageIds>({
       }
 
       if (ignoreOverloadsWithDifferentJSDoc) {
-        const aComment = getBlockCommentForNode(getExportingNode(a) ?? a);
-        const bComment = getBlockCommentForNode(getExportingNode(b) ?? b);
-
+        const aComment = getBlockCommentForNode(getCommentTargetNode(a));
+        const bComment = getBlockCommentForNode(getCommentTargetNode(b));
         if (aComment?.value !== bComment?.value) {
           return false;
         }
@@ -656,6 +655,14 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function getCommentTargetNode(node: SignatureDefinition) {
+  if (node.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
+    return node.parent;
+  }
+
+  return getExportingNode(node) ?? node;
+}
 
 function getExportingNode(
   node: SignatureDefinition,
