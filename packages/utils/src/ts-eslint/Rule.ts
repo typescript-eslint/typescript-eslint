@@ -295,14 +295,48 @@ export interface RuleContext<
   // Deprecated members
 
   /**
+   * Returns the current working directory passed to Linter.
+   * It is a path to a directory that should be considered as the current working directory.
+   * @deprecated in favor of `RuleContext#cwd`
+   */
+  getCwd(): string;
+
+  /**
+   * The current working directory passed to Linter.
+   * It is a path to a directory that should be considered as the current working directory.
+   */
+  cwd: string;
+
+  /**
+   * Returns the filename associated with the source.
+   *
+   * @deprecated in favor of `RuleContext#filename`
+   */
+  getFilename(): string;
+
+  /**
    * The filename associated with the source.
    */
   filename: string;
 
   /**
+   * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
+   * @deprecated in favor of `RuleContext#physicalFilename`
+   */
+  getPhysicalFilename(): string;
+
+  /**
    * The full path of the file on disk without any code block information (unlike `filename`).
    */
   physicalFilename: string;
+
+  /**
+   * Returns a SourceCode object that you can use to work with the source that
+   * was passed to ESLint.
+   *
+   * @deprecated in favor of `RuleContext#sourceCode`
+   */
+  getSourceCode(): Readonly<SourceCode>;
 
   /**
    * A SourceCode object that you can use to work with the source that
