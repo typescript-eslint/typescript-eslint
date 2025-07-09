@@ -40,10 +40,10 @@ export type SelectedRange = [number, number];
 
 export interface ErrorItem {
   fixer?: { fix(): void; message: string };
-  location: string;
+  location?: string;
   message: string;
   severity: number;
-  suggestions: { fix(): void; message: string }[];
+  suggestions?: { fix(): void; message: string }[];
 }
 
 export interface ErrorGroup {
