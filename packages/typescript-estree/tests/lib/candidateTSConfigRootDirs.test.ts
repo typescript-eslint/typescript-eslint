@@ -30,10 +30,11 @@ describe(getInferredTSConfigRootDir, () => {
 
     expect(() => getInferredTSConfigRootDir())
       .toThrowErrorMatchingInlineSnapshot(`
-      [Error: No tsconfigRootDir was set, and multiple candidate TSConfigRootDirs are present:
-       - a
-       - b
-      You'll need to explicitly set tsconfigRootDir in your parser options.]
-    `);
+        [Error: No tsconfigRootDir was set, and multiple candidate TSConfigRootDirs are present:
+         - a
+         - b
+        You'll need to explicitly set tsconfigRootDir in your parser options.
+        See: https://typescript-eslint.io/packages/parser/#tsconfigrootdir]
+      `);
   });
 });
