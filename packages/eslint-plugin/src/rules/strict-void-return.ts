@@ -73,9 +73,7 @@ export default util.createRule<Options, MessageId>({
         }
       },
       AssignmentExpression: (node): void => {
-        if (['=', '||=', '&&=', '??='].includes(node.operator)) {
-          checkExpressionNode(node.right);
-        }
+        checkExpressionNode(node.right); // should ignore operators like `+=` or `-=` automatically
       },
       'CallExpression, NewExpression': checkFunctionCallNode,
       JSXAttribute: (node): void => {
