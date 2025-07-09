@@ -30,7 +30,6 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: echo ${{ github.ref }}
 
-    - uses: actions/checkout@v4
     - name: Install pnpm
       uses: pnpm/action-setup@v4
 
