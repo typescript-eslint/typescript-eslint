@@ -1301,6 +1301,32 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: `
+        const enum SearchIndexType {
+          title = 1,
+          heading = 2,
+        }
+      `,
+      errors: [
+        {
+          data: {
+            formats: 'PascalCase',
+            name: 'title',
+            type: 'Enum Member',
+          },
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          data: {
+            formats: 'PascalCase',
+            name: 'heading',
+            type: 'Enum Member',
+          },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+    },
   ],
   valid: [
     {
@@ -2290,6 +2316,14 @@ ruleTester.run('naming-convention', rule, {
           selector: ['import'],
         },
       ],
+    },
+    {
+      code: `
+        const enum SearchIndexType {
+          Title = 1,
+          Heading = 2,
+        }
+      `,
     },
   ],
 });
