@@ -465,6 +465,27 @@ ruleTester.run('strict-void-return', rule, {
     },
     {
       code: `
+        declare function Foo(props: { cb: () => void }): unknown;
+        return <Foo cb="() => {}" />;
+      `,
+      filename: 'react.tsx',
+    },
+    {
+      code: `
+        declare function Foo(props: { cb: () => void }): unknown;
+        return <Foo cb={} />;
+      `,
+      filename: 'react.tsx',
+    },
+    {
+      code: `
+        declare function Foo(props: { cb: () => void }): unknown;
+        return <Bar children=<Foo cb={() => {}} /> />;
+      `,
+      filename: 'react.tsx',
+    },
+    {
+      code: `
         type Cb = () => void;
         declare function Foo(props: { cb: Cb; s: string }): unknown;
         return <Foo cb={function () {}} s="asd" />;
