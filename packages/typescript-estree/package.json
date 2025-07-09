@@ -55,7 +55,6 @@
     "@typescript-eslint/project-service": "8.36.0",
     "@typescript-eslint/tsconfig-utils": "8.36.0",
     "@typescript-eslint/types": "8.36.0",
-    "@typescript-eslint/typescript-estree": "8.36.0",
     "@typescript-eslint/visitor-keys": "8.36.0",
     "debug": "^4.3.4",
     "fast-glob": "^3.3.2",
