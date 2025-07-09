@@ -110,7 +110,7 @@ export default util.createRule<Options, MessageId>({
       const returnTypes = tsutils
         .getCallSignaturesOfType(type)
         .flatMap(signature =>
-          tsutils.unionTypeParts(signature.getReturnType()),
+          tsutils.unionConstituents(signature.getReturnType()),
         );
       return (
         // At least one return type is void
@@ -173,7 +173,7 @@ export default util.createRule<Options, MessageId>({
 
       const funcType = checker.getTypeAtLocation(callTsNode.expression);
       const funcSignatures = tsutils
-        .unionTypeParts(funcType)
+        .unionConstituents(funcType)
         .flatMap(type =>
           ts.isCallExpression(callTsNode)
             ? type.getCallSignatures()
@@ -197,7 +197,7 @@ export default util.createRule<Options, MessageId>({
           .map(param =>
             checker.getTypeOfSymbolAtLocation(param, callTsNode.expression),
           )
-          .flatMap(paramType => tsutils.unionTypeParts(paramType))
+          .flatMap(paramType => tsutils.unionConstituents(paramType))
           .flatMap(paramType => paramType.getCallSignatures())
           .map(paramSignature => paramSignature.getReturnType());
         if (
@@ -351,7 +351,7 @@ export default util.createRule<Options, MessageId>({
         tsutils
           .getCallSignaturesOfType(actualType)
           .map(signature => signature.getReturnType())
-          .flatMap(returnType => tsutils.unionTypeParts(returnType))
+          .flatMap(returnType => tsutils.unionConstituents(returnType))
           .every(type => tsutils.isTypeFlagSet(type, allowedReturnType))
       ) {
         // The function is already void.
