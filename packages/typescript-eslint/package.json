@@ -52,6 +52,7 @@
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "8.36.0",
     "@typescript-eslint/parser": "8.36.0",
+    "@typescript-eslint/typescript-estree": "8.36.0",
     "@typescript-eslint/utils": "8.36.0"
   },
   "peerDependencies": {
