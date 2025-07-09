@@ -24,7 +24,7 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
 
   if (
     // single-run implies type-aware linting - no projects means we can't be in single-run mode
-    options?.project == null ||
+    (options?.project == null && options?.projectService == null) ||
     // programs passed via options means the user should be managing the programs, so we shouldn't
     // be creating our own single-run programs accidentally
     options.programs != null
