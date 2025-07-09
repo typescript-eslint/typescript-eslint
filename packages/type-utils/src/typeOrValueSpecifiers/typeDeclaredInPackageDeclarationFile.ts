@@ -5,14 +5,17 @@ function findParentModuleDeclaration(
 ): ts.ModuleDeclaration | undefined {
   switch (node.kind) {
     case ts.SyntaxKind.ModuleDeclaration:
+      // "namespace x {...}" should be ignored here
+      if (node.flags & ts.NodeFlags.Namespace) {
+        break;
+      }
       return ts.isStringLiteral((node as ts.ModuleDeclaration).name)
         ? (node as ts.ModuleDeclaration)
         : undefined;
     case ts.SyntaxKind.SourceFile:
       return undefined;
-    default:
-      return findParentModuleDeclaration(node.parent);
   }
+  return findParentModuleDeclaration(node.parent);
 }
 
 function typeDeclaredInDeclareModule(
