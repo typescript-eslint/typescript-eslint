@@ -1917,7 +1917,7 @@ export class Converter {
         return result;
       }
 
-      case SyntaxKind.TaggedTemplateExpression:
+      case SyntaxKind.TaggedTemplateExpression: {
         if (
           node.tag.kind === SyntaxKind.PropertyAccessExpression &&
           node.tag.flags & ts.NodeFlags.OptionalChain
@@ -1938,6 +1938,7 @@ export class Converter {
               node,
             ),
         });
+      }
 
       case SyntaxKind.TemplateHead:
       case SyntaxKind.TemplateMiddle:
