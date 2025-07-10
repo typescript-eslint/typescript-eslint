@@ -172,6 +172,7 @@ ruleTester.run('test', rule, {
         },
       ],
     },
+    // Tag
     {
       code: `
 ruleTester.run('test', rule, {
@@ -182,6 +183,37 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 11,
+          line: 3,
+          messageId: 'noDynamicTests',
+        },
+      ],
+    },
+    // Object Value
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: [{ code: foo }],
+  invalid: [],
+});
+      `,
+      errors: [
+        {
+          column: 19,
+          line: 3,
+          messageId: 'noDynamicTests',
+        },
+      ],
+    },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: [{ errors: [...getErrors()] }],
+  invalid: [],
+});
+      `,
+      errors: [
+        {
+          column: 22,
           line: 3,
           messageId: 'noDynamicTests',
         },
