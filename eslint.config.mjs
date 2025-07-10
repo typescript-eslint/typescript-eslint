@@ -417,6 +417,7 @@ export default tseslint.config(
     name: 'eslint-plugin-and-eslint-plugin-internal/test-files/rules',
     rules: {
       '@typescript-eslint/internal/plugin-test-formatting': 'error',
+      '@typescript-eslint/internal/no-dynamic-tests': 'error',
     },
   },
 
