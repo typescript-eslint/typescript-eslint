@@ -73,8 +73,8 @@ if (maybeString) console.log(maybeString.toUpperCase()); // ✅ No crash
 
 ### Unhandled returned promises
 
-If a promise is returned from a callback that should return void,
-it probably won't be awaited and its rejection will be silently ignored
+If a callback is meant to return void, values returned from functions are likely ignored.
+Ignoring a returned Promise means any Promise rejection will be silently ignored
 or crash the process depending on runtime.
 
 <Tabs>
