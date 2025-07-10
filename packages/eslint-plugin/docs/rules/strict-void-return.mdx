@@ -156,8 +156,10 @@ takesCallback(() => {
 
 ### Probable mistakes
 
-Returning a value from a void function is likely a mistake on part of the programmer.
-This rule will often warn you early when using a function in a wrong way.
+Returning a value from a void function often is an indication of incorrect assumptions about APIs.
+Those incorrect assumptions can often lead to bugs.
+
+The following `forEach` loop is a common mistake: its author likely either meant to add `console.log` or meant to use `.map` instead.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
