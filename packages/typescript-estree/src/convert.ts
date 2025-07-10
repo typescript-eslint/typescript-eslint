@@ -1917,7 +1917,16 @@ export class Converter {
         return result;
       }
 
-      case SyntaxKind.TaggedTemplateExpression:
+      case SyntaxKind.TaggedTemplateExpression: {
+        if (
+          node.tag.kind === SyntaxKind.PropertyAccessExpression &&
+          node.tag.flags & ts.NodeFlags.OptionalChain
+        ) {
+          this.#throwError(
+            node,
+            'Cannot have an optional chain in TaggedTemplateExpression.',
+          );
+        }
         return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
           type: AST_NODE_TYPES.TaggedTemplateExpression,
           quasi: this.convertChild(node.template),
@@ -1929,6 +1938,7 @@ export class Converter {
               node,
             ),
         });
+      }
 
       case SyntaxKind.TemplateHead:
       case SyntaxKind.TemplateMiddle:

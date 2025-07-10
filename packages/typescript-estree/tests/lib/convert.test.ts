@@ -238,6 +238,15 @@ describe('convert', () => {
         type: AST_NODE_TYPES.TSAbstractKeyword,
       });
     });
+
+    it('should throw an error if optional chaining in TaggedTemplateExpression', () => {
+      const ast = convertCode('a?.b``');
+      const instance = new Converter(ast);
+
+      expect(() => instance.convertProgram()).toThrow(
+        'Cannot have an optional chain in TaggedTemplateExpression.',
+      );
+    });
   });
   /* eslint-enable @typescript-eslint/dot-notation */
 
