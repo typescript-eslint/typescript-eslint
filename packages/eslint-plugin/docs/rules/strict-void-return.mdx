@@ -405,7 +405,7 @@ In such case, instead of handling the promises and `console.error`ing them anywa
 Similarly, the default behavior of crashing the process on unhandled promise rejection
 might be acceptable when developing, for example, a CLI tool.
 If your promise handlers simply call `process.exit(1)` on rejection,
-you might as well not use this rule and rely on the default behavior.
+you may prefer to avoid this rule and rely on the default behavior.
 
 ## Related To
 
