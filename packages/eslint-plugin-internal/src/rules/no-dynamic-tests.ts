@@ -112,17 +112,24 @@ export default createRule({
 
           if (testObject.type === AST_NODE_TYPES.ObjectExpression) {
             for (const prop of testObject.properties) {
-              if (
+              const isTestCases =
                 prop.type === AST_NODE_TYPES.Property &&
                 prop.key.type === AST_NODE_TYPES.Identifier &&
-                (prop.key.name === 'valid' || prop.key.name === 'invalid') &&
-                prop.value.type === AST_NODE_TYPES.ArrayExpression
-              ) {
-                prop.value.elements.forEach(element => {
-                  if (element) {
-                    reportDynamicElements(element);
-                  }
-                });
+                (prop.key.name === 'valid' || prop.key.name === 'invalid');
+
+              if (isTestCases) {
+                if (prop.value.type === AST_NODE_TYPES.ArrayExpression) {
+                  prop.value.elements.forEach(element => {
+                    if (element) {
+                      reportDynamicElements(element);
+                    }
+                  });
+                } else {
+                  context.report({
+                    node: prop.value,
+                    messageId: 'noDynamicTests',
+                  });
+                }
               }
             }
           }

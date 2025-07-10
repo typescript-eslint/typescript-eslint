@@ -219,6 +219,22 @@ ruleTester.run('test', rule, {
         },
       ],
     },
+    // assign directly
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: foo,
+  invalid: [],
+});
+      `,
+      errors: [
+        {
+          column: 10,
+          line: 3,
+          messageId: 'noDynamicTests',
+        },
+      ],
+    },
   ],
   valid: [
     {
