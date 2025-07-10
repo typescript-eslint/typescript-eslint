@@ -398,7 +398,7 @@ Some projects are architected so that values returned from synchronous void func
 If you only want to check for misused voids with asynchronous functions then you can use [`no-misused-promises`](./no-misused-promises.mdx) instead.
 
 In browser context, an unhandled promise will be reported as an error in the console.
-It's a always a good idea to also show some kind of indicator on the page that something went wrong,
+It's generally a good idea to also show some kind of indicator on the page that something went wrong,
 but if you are just prototyping or don't care about that, the default behavior might be acceptable.
 In such case, instead of handling the promises and `console.error`ing them anyways, you can just disable this rule.
 
