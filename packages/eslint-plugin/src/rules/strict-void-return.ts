@@ -112,20 +112,9 @@ export default util.createRule<Options, MessageId>({
           tsutils.unionConstituents(signature.getReturnType()),
         );
       return (
-        // At least one return type is void
-        returnTypes.some(type =>
-          tsutils.isTypeFlagSet(type, ts.TypeFlags.Void),
-        ) &&
-        // The rest are nullish or any
+        returnTypes.length > 0 &&
         returnTypes.every(type =>
-          tsutils.isTypeFlagSet(
-            type,
-            ts.TypeFlags.VoidLike |
-              ts.TypeFlags.Undefined |
-              ts.TypeFlags.Null |
-              ts.TypeFlags.Any |
-              ts.TypeFlags.Never,
-          ),
+          tsutils.isTypeFlagSet(type, ts.TypeFlags.Void),
         )
       );
     }
