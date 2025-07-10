@@ -394,8 +394,8 @@ fn(() => {
 
 ## When Not To Use It
 
-Primitive values returned from void functions are usually safe.
-If you don't care about returning them you can use [`no-misused-promises`](./no-misused-promises.mdx) instead.
+Some projects are architected so that values returned from synchronous void functions are generally safe.
+If you only want to check for misused voids with asynchronous functions then you can use [`no-misused-promises`](./no-misused-promises.mdx) instead.
 
 In browser context, an unhandled promise will be reported as an error in the console.
 It's a always a good idea to also show some kind of indicator on the page that something went wrong,
