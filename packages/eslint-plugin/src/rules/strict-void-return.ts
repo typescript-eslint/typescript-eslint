@@ -105,7 +105,6 @@ export default util.createRule<Options, MessageId>({
       },
     };
 
-    /** Checks whether the type is a void-returning function type. */
     function isVoidReturningFunctionType(type: ts.Type): boolean {
       const returnTypes = tsutils
         .getCallSignaturesOfType(type)
