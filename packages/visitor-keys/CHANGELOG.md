@@ -1,3 +1,33 @@
+## 8.36.0 (2025-07-07)
+
+This was a version bump only for visitor-keys to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.35.1 (2025-06-30)
+
+This was a version bump only for visitor-keys to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.35.0 (2025-06-23)
+
+This was a version bump only for visitor-keys to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.34.1 (2025-06-16)
+
+### 🩹 Fixes
+
+- **visitor-keys:** bump `eslint-visitor-keys` dependency ([#11294](https://github.com/typescript-eslint/typescript-eslint/pull/11294))
+
+### ❤️ Thank You
+
+- overlookmotel
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.34.0 (2025-06-09)
 
 ### 🩹 Fixes
