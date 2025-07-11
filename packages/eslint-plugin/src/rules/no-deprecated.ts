@@ -170,13 +170,14 @@ export default createRule<Options, MessageIds>({
             return true;
 
           case AST_NODE_TYPES.ArrowFunctionExpression:
+          case AST_NODE_TYPES.ExportAllDeclaration:
+          case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.BlockStatement:
           case AST_NODE_TYPES.ClassDeclaration:
           case AST_NODE_TYPES.TSInterfaceDeclaration:
           case AST_NODE_TYPES.FunctionDeclaration:
           case AST_NODE_TYPES.FunctionExpression:
           case AST_NODE_TYPES.Program:
-          case AST_NODE_TYPES.ExportSpecifier:
           case AST_NODE_TYPES.TSUnionType:
           case AST_NODE_TYPES.VariableDeclarator:
             return false;
@@ -369,11 +370,13 @@ export default createRule<Options, MessageIds>({
       }
 
       const reason = getDeprecationReason(node);
+
       if (reason == null) {
         return;
       }
 
       const type = services.getTypeAtLocation(node);
+
       if (typeMatchesSomeSpecifier(type, allow, services.program)) {
         return;
       }
@@ -436,19 +439,30 @@ export default createRule<Options, MessageIds>({
 
     return {
       ExportSpecifier(node): void {
-        const symbol = services.getSymbolAtLocation(node.exported);
-
-        if (
-          searchForDeprecationInAliasesChain(symbol, false) == null &&
-          node.exported.type === AST_NODE_TYPES.Identifier
-        ) {
-          checkIdentifier(node.exported);
+        if (node.exported.type !== AST_NODE_TYPES.Identifier) {
+          return;
         }
+
+        const symbol = services.getSymbolAtLocation(node.exported);
+        const aliasDeprecation = getJsDocDeprecation(symbol);
+
+        if (aliasDeprecation != null) {
+          return;
+        }
+
+        checkIdentifier(node.exported);
       },
       Identifier(node): void {
-        if (node.parent.type !== AST_NODE_TYPES.ExportSpecifier) {
-          checkIdentifier(node);
+        if (
+          [
+            AST_NODE_TYPES.ExportNamedDeclaration,
+            AST_NODE_TYPES.ExportAllDeclaration,
+            AST_NODE_TYPES.ExportSpecifier,
+          ].includes(node.parent.type)
+        ) {
+          return;
         }
+        checkIdentifier(node);
       },
       JSXIdentifier(node): void {
         if (node.parent.type !== AST_NODE_TYPES.JSXClosingElement) {
