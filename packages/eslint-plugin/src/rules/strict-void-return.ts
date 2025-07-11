@@ -217,15 +217,8 @@ export default util.createRule<Options, MessageId>({
      * Object properties require different logic
      * when the property is a method shorthand.
      */
-    function checkObjectPropertyNode(
-      propNode: TSESTree.MethodDefinition | TSESTree.Property,
-    ): void {
-      if (
-        propNode.value.type === AST_NODE_TYPES.AssignmentPattern ||
-        propNode.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
-      ) {
-        return;
-      }
+    function checkObjectPropertyNode(propNode: TSESTree.Property): void {
+      const valueNode = propNode.value as TSESTree.Expression;
       const propTsNode = parserServices.esTreeNodeToTSNodeMap.get(propNode);
 
       if (propTsNode.kind === ts.SyntaxKind.MethodDeclaration) {
@@ -254,13 +247,13 @@ export default util.createRule<Options, MessageId>({
           propTsNode,
         );
         if (isVoidReturningFunctionType(propExpectedType)) {
-          reportIfNonVoidFunction(propNode.value);
+          reportIfNonVoidFunction(valueNode);
         }
         return;
       }
 
       // Object property is a regular property.
-      checkExpressionNode(propNode.value);
+      checkExpressionNode(valueNode);
     }
 
     /**
