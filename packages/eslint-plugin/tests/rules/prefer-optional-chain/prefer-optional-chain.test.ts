@@ -1698,12 +1698,21 @@ foo?.();
           declare const x: { y: boolean };
           x && x.y;
         `,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ checkBoolean: false }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const x: { y: boolean };
           x?.y;
         `,
+              },
+            ],
+          },
+        ],
+        options: [{ checkBoolean: false }],
       },
       // Exclude for everything else, an error occurs
       {
