@@ -1683,17 +1683,26 @@ describe('hand-crafted cases', () => {
       // check void
       {
         code: `
-declare const foo: {
-  method: undefined | (() => void);
-};
-foo.method && foo.method();
+declare const foo: void;
+foo && foo();
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
         output: `
-declare const foo: {
-  method: undefined | (() => void);
-};
-foo.method?.();
+declare const foo: void;
+foo?.();
+        `,
+      },
+      // check flag with obj
+      {
+        code: `
+          declare const x: { y: boolean };
+          x && x.y;
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ checkBoolean: false }],
+        output: `
+          declare const x: { y: boolean };
+          x?.y;
         `,
       },
       // Exclude for everything else, an error occurs
@@ -1901,6 +1910,13 @@ foo.method?.();
       },
       {
         code: `
+          declare const x: { y: boolean };
+          x?.y && x?.y.length;
+        `,
+        options: [{ checkBoolean: false }],
+      },
+      {
+        code: `
           declare const x: number;
           x && x.length;
         `,
@@ -1922,10 +1938,8 @@ foo.method?.();
       },
       {
         code: `
-declare const foo: {
-  method: undefined | (() => void);
-};
-foo.method && foo.method();
+declare const foo: void;
+foo && foo.method();
         `,
         options: [{ checkVoid: false }],
       },
