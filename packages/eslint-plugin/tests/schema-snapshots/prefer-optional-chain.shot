@@ -33,10 +33,6 @@
         "description": "Check operands that are typed as `unknown` when inspecting \"loose boolean\" operands.",
         "type": "boolean"
       },
-      "checkVoid": {
-        "description": "Check operands that are typed as `void` when inspecting \"loose boolean\" operands.",
-        "type": "boolean"
-      },
       "requireNullish": {
         "description": "Skip operands that are not typed with `null` and/or `undefined` when inspecting \"loose boolean\" operands.",
         "type": "boolean"
@@ -65,8 +61,6 @@ type Options = [
     checkString?: boolean;
     /** Check operands that are typed as `unknown` when inspecting "loose boolean" operands. */
     checkUnknown?: boolean;
-    /** Check operands that are typed as `void` when inspecting "loose boolean" operands. */
-    checkVoid?: boolean;
     /** Skip operands that are not typed with `null` and/or `undefined` when inspecting "loose boolean" operands. */
     requireNullish?: boolean;
   },

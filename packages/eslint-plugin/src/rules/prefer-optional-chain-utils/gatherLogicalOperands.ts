@@ -109,9 +109,6 @@ function isValidFalseBooleanCheckType(
   if (options.checkBigInt !== true) {
     flagsToExcludeFromCheck |= ts.TypeFlags.BigIntLike;
   }
-  if (options.checkVoid !== true) {
-    flagsToExcludeFromCheck |= ts.TypeFlags.Void;
-  }
 
   return types.every(t => !isTypeFlagSet(t, flagsToExcludeFromCheck));
 }

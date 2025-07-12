@@ -1736,7 +1736,6 @@ foo?.();
             checkNumber: false,
             checkString: false,
             checkUnknown: false,
-            checkVoid: false,
           },
         ],
       },
@@ -1944,13 +1943,6 @@ foo?.();
           x && x.length;
         `,
         options: [{ checkUnknown: false }],
-      },
-      {
-        code: `
-declare const foo: void;
-foo && foo.method();
-        `,
-        options: [{ checkVoid: false }],
       },
       '(x = {}) && (x.y = true) != null && x.y.toString();',
       "('x' as `${'x'}`) && ('x' as `${'x'}`).length;",

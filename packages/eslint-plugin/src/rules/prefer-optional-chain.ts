@@ -82,11 +82,6 @@ export default createRule<
             description:
               'Check operands that are typed as `unknown` when inspecting "loose boolean" operands.',
           },
-          checkVoid: {
-            type: 'boolean',
-            description:
-              'Check operands that are typed as `void` when inspecting "loose boolean" operands.',
-          },
           requireNullish: {
             type: 'boolean',
             description:
@@ -105,7 +100,6 @@ export default createRule<
       checkNumber: true,
       checkString: true,
       checkUnknown: true,
-      checkVoid: true,
       requireNullish: false,
     },
   ],

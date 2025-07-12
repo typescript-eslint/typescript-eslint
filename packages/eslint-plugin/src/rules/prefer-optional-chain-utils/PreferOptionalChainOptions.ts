@@ -10,6 +10,5 @@ export interface PreferOptionalChainOptions {
   checkNumber?: boolean;
   checkString?: boolean;
   checkUnknown?: boolean;
-  checkVoid?: boolean;
   requireNullish?: boolean;
 }
