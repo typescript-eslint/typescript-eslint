@@ -685,6 +685,31 @@ ruleTester.run('strict-void-return', rule, {
     },
     {
       code: `
+        class Bar {
+          foo() {}
+        }
+        class Foo extends Bar {
+          foo();
+        }
+      `,
+    },
+    {
+      code: `
+        interface Bar {
+          foo(): void;
+        }
+        class Foo implements Bar {
+          get foo() {
+            return new Date();
+          }
+          set foo() {
+            return new Date('wtf');
+          }
+        }
+      `,
+    },
+    {
+      code: `
         class Foo {
           foo: () => void = () => undefined;
         }
@@ -2209,6 +2234,25 @@ ruleTester.run('strict-void-return', rule, {
         {
           column: 13,
           line: 10,
+          messageId: 'nonVoidReturn',
+        },
+      ],
+    },
+    {
+      code: `
+        class Bar {
+          foo() {}
+        }
+        class Foo extends Bar {
+          get foo() {
+            return () => 1;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 13,
+          line: 7,
           messageId: 'nonVoidReturn',
         },
       ],

@@ -297,9 +297,6 @@ export default util.createRule<Options, MessageId>({
       ) {
         return;
       }
-      if (methodNode.kind !== 'method') {
-        return;
-      }
 
       // Check in comparison to the base types.
       for (const { baseMemberType } of util.getBaseTypesOfClassMember(
