@@ -59,8 +59,6 @@ export interface InvalidOperand {
   type: OperandValidity.Invalid;
 }
 type Operand = InvalidOperand | ValidOperand;
-
-const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(
   node: TSESTree.Node,
   disallowFalseyLiteral: boolean,
@@ -92,26 +90,27 @@ function isValidFalseBooleanCheckType(
     return false;
   }
 
-  let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
-  if (options.checkAny === true) {
-    allowedFlags |= ts.TypeFlags.Any;
+  let flagsToExcludeFromCheck = 0;
+  if (options.checkAny !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.Any;
   }
-  if (options.checkUnknown === true) {
-    allowedFlags |= ts.TypeFlags.Unknown;
+  if (options.checkUnknown !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.Unknown;
   }
-  if (options.checkString === true) {
-    allowedFlags |= ts.TypeFlags.StringLike;
+  if (options.checkString !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.StringLike;
   }
-  if (options.checkNumber === true) {
-    allowedFlags |= ts.TypeFlags.NumberLike;
+  if (options.checkNumber !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.NumberLike;
   }
-  if (options.checkBoolean === true) {
-    allowedFlags |= ts.TypeFlags.BooleanLike;
+  if (options.checkBoolean !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.BooleanLike;
   }
-  if (options.checkBigInt === true) {
-    allowedFlags |= ts.TypeFlags.BigIntLike;
+  if (options.checkBigInt !== true) {
+    flagsToExcludeFromCheck |= ts.TypeFlags.BigIntLike;
   }
-  return types.every(t => isTypeFlagSet(t, allowedFlags));
+
+  return types.every(t => !isTypeFlagSet(t, flagsToExcludeFromCheck));
 }
 
 export function gatherLogicalOperands(
@@ -248,12 +247,13 @@ export function gatherLogicalOperands(
       case AST_NODE_TYPES.UnaryExpression:
         if (
           operand.operator === '!' &&
-          isValidFalseBooleanCheckType(
-            operand.argument,
-            areMoreOperands && node.operator === '||',
-            parserServices,
-            options,
-          )
+          (!areMoreOperands ||
+            isValidFalseBooleanCheckType(
+              operand.argument,
+              node.operator === '||',
+              parserServices,
+              options,
+            ))
         ) {
           result.push({
             comparedName: operand.argument,
@@ -274,9 +274,10 @@ export function gatherLogicalOperands(
 
       default:
         if (
+          !areMoreOperands ||
           isValidFalseBooleanCheckType(
             operand,
-            areMoreOperands && node.operator === '&&',
+            node.operator === '&&',
             parserServices,
             options,
           )
