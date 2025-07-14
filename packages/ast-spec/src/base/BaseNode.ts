@@ -1,7 +1,6 @@
 // import type { Node } from '../unions/Node';
 import type { AST_NODE_TYPES } from '../ast-node-types';
 import type { NodeOrTokenData } from './NodeOrTokenData';
-import x from 'graphemer';
 
 export interface BaseNode extends NodeOrTokenData {
   type: AST_NODE_TYPES;
