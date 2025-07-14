@@ -1,12 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/types/vitest",
-    "resolveJsonModule": true,
-    "types": ["vitest/globals", "vitest/importMeta"]
+    "outDir": "../../dist/packages/project-service"
   },
-  "include": ["vitest.config.mts", "package.json", "tests"],
-  "exclude": ["**/fixtures/**"],
   "references": [
     {
       "path": "./tsconfig.build.json"

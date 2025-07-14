@@ -1,3 +1,15 @@
+## 8.36.0 (2025-07-07)
+
+### 🚀 Features
+
+- **typescript-eslint:** support `basePath` in `tseslint.config()` ([#11357](https://github.com/typescript-eslint/typescript-eslint/pull/11357))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.35.1 (2025-06-30)
 
 This was a version bump only for typescript-eslint to align it with other projects, there were no code changes.
