@@ -16,11 +16,19 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import regexpPlugin from 'eslint-plugin-regexp';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
+import fs from 'node:fs';
+import path from 'node:path';
 import url from 'node:url';
 import tseslint from 'typescript-eslint';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const compat = new FlatCompat({ baseDirectory: __dirname });
+
+const packagesDir = path.join(__dirname, 'packages');
+const packageDirs = fs
+  .readdirSync(packagesDir, { withFileTypes: true })
+  .filter(dirent => dirent.isDirectory())
+  .map(dirent => path.join(packagesDir, dirent.name));
 
 const restrictNamedDeclarations = {
   message:
@@ -283,7 +291,7 @@ export default tseslint.config(
         {
           devDependencies: true,
           optionalDependencies: false,
-          packageDir: ['.', 'packages/*'],
+          packageDir: [...packageDirs, './'],
           peerDependencies: true,
         },
       ],
