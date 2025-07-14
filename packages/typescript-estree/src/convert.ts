@@ -1918,10 +1918,7 @@ export class Converter {
       }
 
       case SyntaxKind.TaggedTemplateExpression: {
-        if (
-          node.tag.kind === SyntaxKind.PropertyAccessExpression &&
-          node.tag.flags & ts.NodeFlags.OptionalChain
-        ) {
+        if (node.tag.flags & ts.NodeFlags.OptionalChain) {
           this.#throwError(
             node,
             'Cannot have an optional chain in TaggedTemplateExpression.',
