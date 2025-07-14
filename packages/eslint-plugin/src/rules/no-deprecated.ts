@@ -454,30 +454,31 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      ExportSpecifier(node): void {
-        if (node.exported.type !== AST_NODE_TYPES.Identifier) {
-          return;
-        }
-
-        const symbol = services.getSymbolAtLocation(node.exported);
-        const aliasDeprecation = getJsDocDeprecation(symbol);
-
-        if (aliasDeprecation != null) {
-          return;
-        }
-
-        checkIdentifier(node.exported);
-      },
       Identifier(node): void {
+        const { parent } = node;
+
         if (
-          [
-            AST_NODE_TYPES.ExportNamedDeclaration,
-            AST_NODE_TYPES.ExportAllDeclaration,
-            AST_NODE_TYPES.ExportSpecifier,
-          ].includes(node.parent.type)
+          parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
+          parent.type === AST_NODE_TYPES.ExportAllDeclaration
         ) {
           return;
         }
+
+        if (parent.type === AST_NODE_TYPES.ExportSpecifier) {
+          // only deal with the alias (exported) side, not the local binding
+          if (parent.exported !== node) {
+            return;
+          }
+
+          const symbol = services.getSymbolAtLocation(node);
+          const aliasDeprecation = getJsDocDeprecation(symbol);
+
+          if (aliasDeprecation != null) {
+            return;
+          }
+        }
+
+        // whether it's a plain identifier or the exported alias
         checkIdentifier(node);
       },
       JSXIdentifier(node): void {
