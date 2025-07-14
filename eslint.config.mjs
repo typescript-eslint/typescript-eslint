@@ -283,6 +283,7 @@ export default tseslint.config(
         {
           devDependencies: true,
           optionalDependencies: false,
+          packageDir: ['.', 'packages/*'],
           peerDependencies: true,
         },
       ],
