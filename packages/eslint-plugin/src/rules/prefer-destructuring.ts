@@ -64,6 +64,7 @@ const schema: readonly JSONSchema4[] = [
           'Whether to enforce destructuring that use a different variable name than the property name.',
       },
     },
+    additionalProperties: false,
   },
 ];
 

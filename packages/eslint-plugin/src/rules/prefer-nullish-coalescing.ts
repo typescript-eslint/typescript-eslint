@@ -142,6 +142,7 @@ export default createRule<Options, MessageIds>({
                     description: 'Ignore string primitive types.',
                   },
                 },
+                additionalProperties: false,
               },
               {
                 type: 'boolean',
