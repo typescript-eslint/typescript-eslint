@@ -10,7 +10,7 @@ ScopeManager {
       ],
       name: "T",
       references: [
-        Reference$2 {
+        Reference$1 {
           identifier: Identifier<"T">,
           isRead: true,
           isTypeReference: true,
@@ -31,7 +31,7 @@ ScopeManager {
       ],
       name: "K",
       references: [
-        Reference$1 {
+        Reference$2 {
           identifier: Identifier<"K">,
           isRead: true,
           isTypeReference: true,

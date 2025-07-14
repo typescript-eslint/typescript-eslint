@@ -21,7 +21,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "A",
+            optional: false,
 
             range: [14, 15],
             loc: {
@@ -32,7 +34,9 @@ Program {
           importKind: "type",
           local: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "A",
+            optional: false,
 
             range: [14, 15],
             loc: {
@@ -51,7 +55,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "B",
+            optional: false,
 
             range: [22, 23],
             loc: {
@@ -62,7 +68,9 @@ Program {
           importKind: "type",
           local: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "B",
+            optional: false,
 
             range: [22, 23],
             loc: {

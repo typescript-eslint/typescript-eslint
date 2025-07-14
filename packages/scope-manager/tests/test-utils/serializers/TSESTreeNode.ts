@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/types';
-import type { NewPlugin } from 'pretty-format';
+import type { NewPlugin } from '@vitest/pretty-format';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 

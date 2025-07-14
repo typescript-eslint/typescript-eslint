@@ -1,6 +1,6 @@
-import type { TSESTreeOptions } from '../../src';
+import type { TSESTreeOptions } from '../../src/index.js';
 
-import { withoutProjectParserOptions } from '../../src';
+import { withoutProjectParserOptions } from '../../src/index.js';
 
 describe(withoutProjectParserOptions, () => {
   it('removes only project parser options', () => {
@@ -13,7 +13,7 @@ describe(withoutProjectParserOptions, () => {
 
     const without = withoutProjectParserOptions(options);
 
-    expect(without).toEqual({
+    expect(without).toStrictEqual({
       comment: true,
     });
   });
@@ -26,7 +26,7 @@ describe(withoutProjectParserOptions, () => {
       projectService: true,
     });
 
-    expect(without).toEqual({
+    expect(without).toStrictEqual({
       comment: true,
       other: true,
     });

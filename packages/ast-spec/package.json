@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "8.31.1",
+  "version": "8.37.0",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -31,32 +31,73 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -b tsconfig.build.json && api-extractor run --local",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist/ coverage/",
+    "build": "yarn run -BT nx build",
+    "clean": "rimraf dist/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "npx nx lint",
-    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts",
-    "check-types": "npx nx typecheck"
+    "format": "yarn run -T format",
+    "lint": "yarn run -BT nx lint",
+    "test": "yarn run -BT nx test",
+    "typecheck": "yarn run -BT nx typecheck"
   },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
   },
   "devDependencies": {
-    "@babel/code-frame": "*",
-    "@babel/core": "*",
-    "@babel/eslint-parser": "*",
+    "@babel/code-frame": "^7.24.2",
+    "@babel/core": "^7.24.4",
+    "@babel/eslint-parser": "^7.24.1",
+    "@babel/parser": "^7.24.1",
     "@microsoft/api-extractor": "^7.47.11",
+    "@types/babel__code-frame": "^7.0.6",
+    "@types/babel__core": "^7.20.5",
     "@typescript-eslint/typescript-estree": "workspace:*",
-    "@vitest/coverage-v8": "^3.1.1",
+    "@vitest/coverage-v8": "^3.1.3",
+    "@vitest/pretty-format": "^3.1.3",
+    "@vitest/utils": "^3.1.3",
+    "eslint": "*",
     "glob": "*",
-    "jest-diff": "^29.7.0",
-    "prettier": "^3.2.5",
-    "pretty-format": "*",
     "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.3"
+  },
+  "nx": {
+    "name": "ast-spec",
+    "implicitDependencies": [
+      "!typescript-estree"
+    ],
+    "includedScripts": [
+      "clean",
+      "clean-fixtures"
+    ],
+    "targets": {
+      "build": {
+        "command": "tsc -b tsconfig.build.json && api-extractor run --local --config=api-extractor.json",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "outputs": [
+          "{projectRoot}/dist/**/*.ts"
+        ],
+        "cache": true
+      },
+      "lint": {
+        "command": "eslint"
+      },
+      "typecheck": {
+        "outputs": [
+          "{workspaceRoot}/dist",
+          "{projectRoot}/dist"
+        ],
+        "dependsOn": [
+          "typescript-estree:build"
+        ]
+      },
+      "test": {
+        "dependsOn": [
+          "typecheck"
+        ]
+      }
+    }
   }
 }

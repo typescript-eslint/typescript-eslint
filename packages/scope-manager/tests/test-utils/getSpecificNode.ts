@@ -35,7 +35,7 @@ export function getSpecificNode(
           const res = cb ? cb(n) : n;
           if (res) {
             // the callback shouldn't match multiple nodes or else tests may behave weirdly
-            expect(node).toBeFalsy();
+            assert.notExists(node);
             node = typeof res === 'boolean' ? n : res;
           }
         },
@@ -45,6 +45,6 @@ export function getSpecificNode(
   );
 
   // should have found at least one node
-  expect(node).not.toBeFalsy();
-  return node!;
+  assert.exists(node);
+  return node;
 }

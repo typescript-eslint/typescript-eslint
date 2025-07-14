@@ -1,4 +1,5 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-floating-promises';
 import { getFixturesRootDir } from '../RuleTester';
@@ -710,7 +711,10 @@ myTag\`abc\`;
               // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
               path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
                 ? 'file.ts'
-                : 'tests/fixtures/file.ts',
+                : path.posix.join(
+                    ...path.relative(process.cwd(), rootDir).split(path.sep),
+                    'file.ts',
+                  ),
             },
           ],
         },
@@ -5487,6 +5491,102 @@ void (<Promise<number>>{});
               messageId: 'floatingFixAwait',
               output: `
 await (<Promise<number>>{});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').then();
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('foo').then();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('foo').then();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').finally();
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('foo').finally();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('foo').finally();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').finally(...[], () => {});
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('foo').finally(...[], () => {});
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('foo').finally(...[], () => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').then(...[], () => {});
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('foo').then(...[], () => {});
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('foo').then(...[], () => {});
       `,
             },
           ],

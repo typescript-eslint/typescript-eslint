@@ -19,9 +19,12 @@ Program {
         declarations: [
           VariableDeclarator {
             type: "VariableDeclarator",
+            definite: false,
             id: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "a",
+              optional: false,
 
               range: [17, 18],
               loc: {
@@ -38,6 +41,7 @@ Program {
             },
           },
         ],
+        declare: false,
         kind: "await using",
 
         range: [5, 18],
@@ -48,7 +52,9 @@ Program {
       },
       right: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "b",
+        optional: false,
 
         range: [22, 23],
         loc: {

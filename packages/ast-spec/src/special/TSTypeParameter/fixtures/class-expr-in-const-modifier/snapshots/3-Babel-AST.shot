@@ -5,6 +5,7 @@ Program {
       type: "ExpressionStatement",
       expression: ClassExpression {
         type: "ClassExpression",
+        abstract: false,
         body: ClassBody {
           type: "ClassBody",
           body: [],
@@ -15,7 +16,10 @@ Program {
             end: { column: 21, line: 1 },
           },
         },
+        declare: false,
+        decorators: [],
         id: null,
+        implements: [],
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: "TSTypeParameterDeclaration",
@@ -25,6 +29,7 @@ Program {
               const: true,
               in: true,
               name: "T",
+              out: false,
 
               range: [7, 17],
               loc: {

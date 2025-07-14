@@ -15,9 +15,12 @@ Program {
         },
       },
       declare: true,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [96, 99],
         loc: {
@@ -25,6 +28,7 @@ Program {
           end: { column: 26, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 102],

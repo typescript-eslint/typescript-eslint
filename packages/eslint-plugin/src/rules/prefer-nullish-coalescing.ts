@@ -47,13 +47,13 @@ export type Options = [
     ignoreIfStatements?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
     ignorePrimitives?:
+      | true
       | {
           bigint?: boolean;
           boolean?: boolean;
           number?: boolean;
           string?: boolean;
-        }
-      | true;
+        };
     ignoreTernaryTests?: boolean;
   },
 ];
@@ -254,10 +254,10 @@ export default createRule<Options, MessageIds>({
 
       if (
         tsutils
-          .typeParts(type)
+          .typeConstituents(type)
           .some(t =>
             tsutils
-              .intersectionTypeParts(t)
+              .intersectionConstituents(t)
               .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
           )
       ) {

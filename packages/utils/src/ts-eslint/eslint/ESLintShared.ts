@@ -104,7 +104,7 @@ export declare class ESLintBase<
 }
 export interface ESLintOptions<Config extends Linter.ConfigType> {
   /**
-   * If false is present, ESLint suppresses directive comments in source code.
+   * If false is present, ESLint suppresses comment directives in source code.
    * If this option is false, it overrides the noInlineConfig setting in your configurations.
    * @default true
    */

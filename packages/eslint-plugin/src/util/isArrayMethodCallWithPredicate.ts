@@ -38,7 +38,7 @@ export function isArrayMethodCallWithPredicate(
   const checker = services.program.getTypeChecker();
   const type = getConstrainedTypeAtLocation(services, node.callee.object);
   return tsutils
-    .unionTypeParts(type)
-    .flatMap(part => tsutils.intersectionTypeParts(part))
+    .unionConstituents(type)
+    .flatMap(part => tsutils.intersectionConstituents(part))
     .some(t => checker.isArrayType(t) || checker.isTupleType(t));
 }

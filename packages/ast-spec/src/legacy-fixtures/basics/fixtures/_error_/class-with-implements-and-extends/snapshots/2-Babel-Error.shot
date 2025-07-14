@@ -1,4 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > basics > _error_ > class-with-implements-and-extends > Babel - Error`]
-SyntaxError: Unexpected token, expected "," (3:57)
+BabelError
+  1 | // TODO: This fixture might be too large, and if so should be split up.
+  2 |
+> 3 | class ClassWithParentAndInterface implements MyInterface extends MyOtherClass {}
+    |                                                          ^ Unexpected token, expected "," (3:57)
+  4 |
+  

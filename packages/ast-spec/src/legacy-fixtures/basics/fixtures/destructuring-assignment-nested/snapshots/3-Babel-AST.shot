@@ -7,13 +7,17 @@ Program {
         type: "AssignmentExpression",
         left: ObjectPattern {
           type: "ObjectPattern",
+          decorators: [],
+          optional: false,
           properties: [
             Property {
               type: "Property",
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "foo",
+                optional: false,
 
                 range: [78, 81],
                 loc: {
@@ -23,18 +27,24 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: false,
               value: AssignmentPattern {
                 type: "AssignmentPattern",
+                decorators: [],
                 left: ObjectPattern {
                   type: "ObjectPattern",
+                  decorators: [],
+                  optional: false,
                   properties: [
                     Property {
                       type: "Property",
                       computed: false,
                       key: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "bar",
+                        optional: false,
 
                         range: [85, 88],
                         loc: {
@@ -44,18 +54,24 @@ Program {
                       },
                       kind: "init",
                       method: false,
+                      optional: false,
                       shorthand: false,
                       value: AssignmentPattern {
                         type: "AssignmentPattern",
+                        decorators: [],
                         left: ObjectPattern {
                           type: "ObjectPattern",
+                          decorators: [],
+                          optional: false,
                           properties: [
                             Property {
                               type: "Property",
                               computed: false,
                               key: Identifier {
                                 type: "Identifier",
+                                decorators: [],
                                 name: "baz",
+                                optional: false,
 
                                 range: [92, 95],
                                 loc: {
@@ -65,15 +81,20 @@ Program {
                               },
                               kind: "init",
                               method: false,
+                              optional: false,
                               shorthand: false,
                               value: AssignmentPattern {
                                 type: "AssignmentPattern",
+                                decorators: [],
                                 left: ArrayPattern {
                                   type: "ArrayPattern",
+                                  decorators: [],
                                   elements: [
                                     Identifier {
                                       type: "Identifier",
+                                      decorators: [],
                                       name: "a",
+                                      optional: false,
 
                                       range: [98, 99],
                                       loc: {
@@ -83,15 +104,20 @@ Program {
                                     },
                                     AssignmentPattern {
                                       type: "AssignmentPattern",
+                                      decorators: [],
                                       left: ObjectPattern {
                                         type: "ObjectPattern",
+                                        decorators: [],
+                                        optional: false,
                                         properties: [
                                           Property {
                                             type: "Property",
                                             computed: false,
                                             key: Identifier {
                                               type: "Identifier",
+                                              decorators: [],
                                               name: "foo",
+                                              optional: false,
 
                                               range: [103, 106],
                                               loc: {
@@ -101,15 +127,20 @@ Program {
                                             },
                                             kind: "init",
                                             method: false,
+                                            optional: false,
                                             shorthand: false,
                                             value: AssignmentPattern {
                                               type: "AssignmentPattern",
+                                              decorators: [],
                                               left: ArrayPattern {
                                                 type: "ArrayPattern",
+                                                decorators: [],
                                                 elements: [
                                                   Identifier {
                                                     type: "Identifier",
+                                                    decorators: [],
                                                     name: "x",
+                                                    optional: false,
 
                                                     range: [109, 110],
                                                     loc: {
@@ -118,6 +149,7 @@ Program {
                                                     },
                                                   },
                                                 ],
+                                                optional: false,
 
                                                 range: [108, 111],
                                                 loc: {
@@ -125,6 +157,7 @@ Program {
                                                   end: { column: 35, line: 4 },
                                                 },
                                               },
+                                              optional: false,
                                               right: ArrayExpression {
                                                 type: "ArrayExpression",
                                                 elements: [
@@ -169,6 +202,7 @@ Program {
                                           end: { column: 43, line: 4 },
                                         },
                                       },
+                                      optional: false,
                                       right: ObjectExpression {
                                         type: "ObjectExpression",
                                         properties: [
@@ -177,7 +211,9 @@ Program {
                                             computed: false,
                                             key: Identifier {
                                               type: "Identifier",
+                                              decorators: [],
                                               name: "foo",
+                                              optional: false,
 
                                               range: [124, 127],
                                               loc: {
@@ -187,6 +223,7 @@ Program {
                                             },
                                             kind: "init",
                                             method: false,
+                                            optional: false,
                                             shorthand: false,
                                             value: ArrayExpression {
                                               type: "ArrayExpression",
@@ -233,6 +270,7 @@ Program {
                                       },
                                     },
                                   ],
+                                  optional: false,
 
                                   range: [97, 135],
                                   loc: {
@@ -240,6 +278,7 @@ Program {
                                     end: { column: 59, line: 4 },
                                   },
                                 },
+                                optional: false,
                                 right: ArrayExpression {
                                   type: "ArrayExpression",
                                   elements: [],
@@ -272,6 +311,7 @@ Program {
                             end: { column: 66, line: 4 },
                           },
                         },
+                        optional: false,
                         right: ObjectExpression {
                           type: "ObjectExpression",
                           properties: [],
@@ -304,6 +344,7 @@ Program {
                     end: { column: 73, line: 4 },
                   },
                 },
+                optional: false,
                 right: ObjectExpression {
                   type: "ObjectExpression",
                   properties: [],
@@ -345,7 +386,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "foo",
+                optional: false,
 
                 range: [162, 165],
                 loc: {
@@ -355,6 +398,7 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: false,
               value: ObjectExpression {
                 type: "ObjectExpression",
@@ -364,7 +408,9 @@ Program {
                     computed: false,
                     key: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "bar",
+                      optional: false,
 
                       range: [169, 172],
                       loc: {
@@ -374,6 +420,7 @@ Program {
                     },
                     kind: "init",
                     method: false,
+                    optional: false,
                     shorthand: false,
                     value: ObjectExpression {
                       type: "ObjectExpression",
@@ -383,7 +430,9 @@ Program {
                           computed: false,
                           key: Identifier {
                             type: "Identifier",
+                            decorators: [],
                             name: "baz",
+                            optional: false,
 
                             range: [176, 179],
                             loc: {
@@ -393,6 +442,7 @@ Program {
                           },
                           kind: "init",
                           method: false,
+                          optional: false,
                           shorthand: false,
                           value: ArrayExpression {
                             type: "ArrayExpression",
@@ -416,7 +466,9 @@ Program {
                                     computed: false,
                                     key: Identifier {
                                       type: "Identifier",
+                                      decorators: [],
                                       name: "foo",
+                                      optional: false,
 
                                       range: [187, 190],
                                       loc: {
@@ -426,6 +478,7 @@ Program {
                                     },
                                     kind: "init",
                                     method: false,
+                                    optional: false,
                                     shorthand: false,
                                     value: ArrayExpression {
                                       type: "ArrayExpression",

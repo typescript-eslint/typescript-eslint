@@ -1,9 +1,13 @@
+import {
+  addCandidateTSConfigRootDir,
+  clearCandidateTSConfigRootDirs,
+} from '../../src/parseSettings/candidateTSConfigRootDirs';
 import { createParseSettings } from '../../src/parseSettings/createParseSettings';
 
 const projectService = { service: true };
 
-vi.mock('../../src/create-program/createProjectService.js', () => ({
-  createProjectService: (): typeof projectService => projectService,
+vi.mock('@typescript-eslint/project-service', () => ({
+  createProjectService: () => projectService,
 }));
 
 describe(createParseSettings, () => {
@@ -36,7 +40,7 @@ describe(createParseSettings, () => {
         projectService: undefined,
       });
 
-      expect(parseSettings.projectService).toBeUndefined();
+      assert.isUndefined(parseSettings.projectService);
     });
 
     it('is not created when options.projectService is false, options.project is true, and process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE is true', () => {
@@ -47,7 +51,7 @@ describe(createParseSettings, () => {
         projectService: false,
       });
 
-      expect(parseSettings.projectService).toBeUndefined();
+      assert.isUndefined(parseSettings.projectService);
     });
   });
 
@@ -59,6 +63,38 @@ describe(createParseSettings, () => {
       expect(parseSettings1.tsconfigMatchCache).toBe(
         parseSettings2.tsconfigMatchCache,
       );
+    });
+  });
+
+  describe('tsconfigRootDir', () => {
+    beforeEach(() => {
+      clearCandidateTSConfigRootDirs();
+    });
+
+    it('uses the provided tsconfigRootDir when it exists and no candidates exist', () => {
+      const tsconfigRootDir = 'a/b/c';
+
+      const parseSettings = createParseSettings('', { tsconfigRootDir });
+
+      expect(parseSettings.tsconfigRootDir).toBe(tsconfigRootDir);
+    });
+
+    it('uses the provided tsconfigRootDir when it exists and a candidate exists', () => {
+      addCandidateTSConfigRootDir('candidate');
+      const tsconfigRootDir = 'a/b/c';
+
+      const parseSettings = createParseSettings('', { tsconfigRootDir });
+
+      expect(parseSettings.tsconfigRootDir).toBe(tsconfigRootDir);
+    });
+
+    it('uses the inferred candidate when no tsconfigRootDir is provided and a candidate exists', () => {
+      const tsconfigRootDir = 'a/b/c';
+      addCandidateTSConfigRootDir(tsconfigRootDir);
+
+      const parseSettings = createParseSettings('');
+
+      expect(parseSettings.tsconfigRootDir).toBe(tsconfigRootDir);
     });
   });
 });

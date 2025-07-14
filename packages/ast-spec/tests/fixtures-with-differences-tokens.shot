@@ -76,12 +76,10 @@ exports[`AST Fixtures > List fixtures with Token differences`]
   "legacy-fixtures/basics/fixtures/non-null-assertion-operator/fixture.ts",
   "legacy-fixtures/basics/fixtures/null-and-undefined-type-annotations/fixture.ts",
   "legacy-fixtures/basics/fixtures/nullish-coalescing/fixture.ts",
-  "legacy-fixtures/basics/fixtures/object-with-escaped-properties/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-assertion-in-interface/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-assertion-with-guard-in-interface/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-guard-in-interface/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-parameters-comments-heritage/fixture.ts",
-  "legacy-fixtures/basics/fixtures/typed-keyword-null/fixture.ts",
   "legacy-fixtures/basics/fixtures/typed-this/fixture.ts",
   "legacy-fixtures/basics/fixtures/union-intersection/fixture.ts",
   "legacy-fixtures/basics/fixtures/unknown-type-annotation/fixture.ts",
@@ -111,7 +109,6 @@ exports[`AST Fixtures > List fixtures with Token differences`]
   "legacy-fixtures/types/fixtures/mapped-readonly/fixture.ts",
   "legacy-fixtures/types/fixtures/mapped-untypped/fixture.ts",
   "legacy-fixtures/types/fixtures/mapped/fixture.ts",
-  "legacy-fixtures/types/fixtures/nested-types/fixture.ts",
   "legacy-fixtures/types/fixtures/reference-generic-nested/fixture.ts",
   "legacy-fixtures/types/fixtures/reference-generic/fixture.ts",
   "legacy-fixtures/types/fixtures/reference/fixture.ts",
@@ -134,5 +131,5 @@ exports[`AST Fixtures > List fixtures with Token differences`]
   "special/TSTypeParameter/fixtures/interface-const-modifier-multiple/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-const-modifier/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-in-const-modifier-multiple/fixture.ts",
-  "type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts"
+  "type/TSImportType/fixtures/type-import-type-with-import-attributes-with/fixture.ts"
 ]

@@ -5,6 +5,10 @@
   {
     "additionalProperties": false,
     "properties": {
+      "checkUnknown": {
+        "description": "Whether to also check values of type `unknown`",
+        "type": "boolean"
+      },
       "ignoredTypeNames": {
         "description": "Stringified regular expressions of type names to ignore.",
         "items": {
@@ -22,6 +26,8 @@
 
 type Options = [
   {
+    /** Whether to also check values of type `unknown` */
+    checkUnknown?: boolean;
     /** Stringified regular expressions of type names to ignore. */
     ignoredTypeNames?: string[];
   },
