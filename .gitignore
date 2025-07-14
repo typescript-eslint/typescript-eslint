@@ -10,6 +10,7 @@ docs/packages/*/generated
 packages/website/.docusaurus
 packages/website/.cache-loader
 packages/website/build
+packages/website/data/recent-blog-posts.json
 packages/website/static/sandbox
 
 # Runtime data
