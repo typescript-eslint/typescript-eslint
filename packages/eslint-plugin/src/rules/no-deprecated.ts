@@ -88,22 +88,39 @@ export default createRule<Options, MessageIds>({
           ? getJsDocDeprecation(symbol)
           : undefined;
       }
+
+      const seen = new Set<ts.Symbol>();
       const targetSymbol = checker.getAliasedSymbol(symbol);
-      while (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
-        const reason = getJsDocDeprecation(symbol);
+      let current = symbol;
+
+      while (tsutils.isSymbolFlagSet(current, ts.SymbolFlags.Alias)) {
+        if (seen.has(current)) {
+          break;
+        }
+
+        seen.add(current);
+
+        const reason = getJsDocDeprecation(current);
+
         if (reason != null) {
           return reason;
         }
-        const immediateAliasedSymbol: ts.Symbol | undefined =
-          symbol.getDeclarations() && checker.getImmediateAliasedSymbol(symbol);
-        if (!immediateAliasedSymbol) {
+
+        const nextAlias: ts.Symbol | undefined =
+          current.getDeclarations() &&
+          checker.getImmediateAliasedSymbol(current);
+
+        if (!nextAlias) {
           break;
         }
-        symbol = immediateAliasedSymbol;
-        if (checkDeprecationsOfAliasedSymbol && symbol === targetSymbol) {
-          return getJsDocDeprecation(symbol);
+
+        current = nextAlias;
+
+        if (checkDeprecationsOfAliasedSymbol && current === targetSymbol) {
+          return getJsDocDeprecation(current);
         }
       }
+
       return undefined;
     }
 
@@ -178,6 +195,7 @@ export default createRule<Options, MessageIds>({
           case AST_NODE_TYPES.FunctionDeclaration:
           case AST_NODE_TYPES.FunctionExpression:
           case AST_NODE_TYPES.Program:
+          case AST_NODE_TYPES.ExportSpecifier:
           case AST_NODE_TYPES.TSUnionType:
           case AST_NODE_TYPES.VariableDeclarator:
             return false;
@@ -370,13 +388,11 @@ export default createRule<Options, MessageIds>({
       }
 
       const reason = getDeprecationReason(node);
-
       if (reason == null) {
         return;
       }
 
       const type = services.getTypeAtLocation(node);
-
       if (typeMatchesSomeSpecifier(type, allow, services.program)) {
         return;
       }

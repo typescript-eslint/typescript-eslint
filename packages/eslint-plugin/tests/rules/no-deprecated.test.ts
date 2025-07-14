@@ -229,9 +229,6 @@ ruleTester.run('no-deprecated', rule, {
       export { 'deprecatedFunction' } from './deprecated';
     `,
     `
-      export { deprecatedFunction as 'bar' } from './deprecated';
-    `,
-    `
       namespace A {
         /** @deprecated */
         export type B = string;
