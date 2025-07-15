@@ -34,4 +34,5 @@
         "extends": "jest_snapshot"
     },
   ],
+  "nxConsole.generateAiAgentRules": true,
 }
