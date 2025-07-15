@@ -59,7 +59,7 @@
     "debug": "^4.3.4",
     "fast-glob": "^3.3.2",
     "is-glob": "^4.0.3",
-    "minimatch": "^9.0.4",
+    "minimatch": "^10.0.3",
     "semver": "^7.6.0",
     "ts-api-utils": "^2.1.0"
   },
