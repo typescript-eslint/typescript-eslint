@@ -1,7 +1,7 @@
-import path from 'node:path';
+import * as path from 'node:path';
 import * as ts from 'typescript';
 
-import { getParsedConfigFile } from '../../src/getParsedConfigFile';
+import { getParsedConfigFile } from '../src/getParsedConfigFile.js';
 
 const mockGetParsedCommandLineOfConfigFile = vi.fn();
 
@@ -22,9 +22,9 @@ describe(getParsedConfigFile, () => {
   });
 
   it('throws an error when tsserver.sys is undefined', () => {
-    expect(() =>
-      getParsedConfigFile({} as typeof ts, './tsconfig.json'),
-    ).toThrow(
+    expect(() => {
+      getParsedConfigFile({} as typeof ts, './tsconfig.json');
+    }).toThrow(
       '`getParsedConfigFile` is only supported in a Node-like environment.',
     );
   });
@@ -72,9 +72,9 @@ describe(getParsedConfigFile, () => {
         },
       ] satisfies ts.Diagnostic[],
     });
-    expect(() => getParsedConfigFile(mockTsserver, './tsconfig.json')).toThrow(
-      /.+ error TS1234: Oh no!/,
-    );
+    expect(() => {
+      getParsedConfigFile(mockTsserver, './tsconfig.json');
+    }).toThrow(/.+ error TS1234: Oh no!/);
   });
 
   it('throws a diagnostic error when getParsedCommandLineOfConfigFile throws an error', () => {
@@ -96,9 +96,9 @@ describe(getParsedConfigFile, () => {
         } satisfies ts.Diagnostic);
       },
     );
-    expect(() => getParsedConfigFile(mockTsserver, './tsconfig.json')).toThrow(
-      /.+ error TS1234: Oh no!/,
-    );
+    expect(() => {
+      getParsedConfigFile(mockTsserver, './tsconfig.json');
+    }).toThrow(/.+ error TS1234: Oh no!/);
   });
 
   it('uses compiler options when parsing a config file succeeds', () => {
