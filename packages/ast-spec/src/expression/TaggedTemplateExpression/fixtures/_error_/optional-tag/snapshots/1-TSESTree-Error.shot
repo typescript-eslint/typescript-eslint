@@ -3,5 +3,5 @@
 exports[`AST Fixtures > expression > TaggedTemplateExpression > _error_ > optional-tag > TSESTree - Error`]
 TSError
 > 1 | a?.b`...`
-    | ^^^^^^^^^ Cannot have an optional chain in TaggedTemplateExpression.
+    | ^^^^^^^^^ Tagged template expressions are not permitted in an optional chain.
   2 |

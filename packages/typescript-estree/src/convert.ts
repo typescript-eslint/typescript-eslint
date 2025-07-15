@@ -1921,7 +1921,7 @@ export class Converter {
         if (node.tag.flags & ts.NodeFlags.OptionalChain) {
           this.#throwError(
             node,
-            'Cannot have an optional chain in TaggedTemplateExpression.',
+            'Tagged template expressions are not permitted in an optional chain.',
           );
         }
         return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
