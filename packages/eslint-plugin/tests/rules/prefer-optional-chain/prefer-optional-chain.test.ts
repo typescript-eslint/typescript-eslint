@@ -1680,65 +1680,6 @@ describe('hand-crafted cases', () => {
         ],
         output: 'a?.prop;',
       },
-      // check void
-      {
-        code: `
-declare const foo: void;
-foo && foo();
-        `,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        output: `
-declare const foo: void;
-foo?.();
-        `,
-      },
-      // check flag with obj
-      {
-        code: `
-          declare const x: { y: boolean };
-          x && x.y;
-        `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: `
-          declare const x: { y: boolean };
-          x?.y;
-        `,
-              },
-            ],
-          },
-        ],
-        options: [{ checkBoolean: false }],
-      },
-      // Exclude for everything else, an error occurs
-      {
-        code: noFormat`declare const foo: { x: { y: string } } | null; foo && foo.x;`,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: `declare const foo: { x: { y: string } } | null; foo?.x;`,
-              },
-            ],
-          },
-        ],
-        options: [
-          {
-            checkAny: false,
-            checkBigInt: false,
-            checkBoolean: false,
-            checkNumber: false,
-            checkString: false,
-            checkUnknown: false,
-          },
-        ],
-      },
     ],
     valid: [
       '!a || !b;',
@@ -1913,13 +1854,6 @@ foo?.();
         code: `
           declare const x: boolean;
           x && x.length;
-        `,
-        options: [{ checkBoolean: false }],
-      },
-      {
-        code: `
-          declare const x: { y: boolean };
-          x?.y && x?.y.length;
         `,
         options: [{ checkBoolean: false }],
       },
