@@ -351,8 +351,7 @@ const redirects: PluginRedirectOptions = {
 
 const config: Config = {
   baseUrl: '/',
-  tagline:
-    'The tooling that enables ESLint and Prettier to support TypeScript.',
+  tagline: 'Powerful static analysis for JavaScript and TypeScript.',
   title: 'typescript-eslint',
   url: 'https://typescript-eslint.io',
 
@@ -368,6 +367,7 @@ const config: Config = {
   onBrokenMarkdownLinks: 'throw',
   organizationName: 'typescript-eslint',
   plugins: [
+    './plugins/recent-blog-posts/index.ts',
     ...['ast-spec', 'project-service', 'tsconfig-utils', 'type-utils'].map(
       packageName => [
         'docusaurus-plugin-typedoc',

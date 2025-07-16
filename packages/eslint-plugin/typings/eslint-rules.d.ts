@@ -345,7 +345,7 @@ declare module 'eslint/lib/rules/no-unused-expressions' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'expected',
+    'unusedExpression',
     [
       {
         allowShortCircuit?: boolean;

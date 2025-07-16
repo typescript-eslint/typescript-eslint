@@ -12,13 +12,6 @@ import TabItem from '@theme/TabItem';
 Any expression being used as a condition must be able to evaluate as truthy or falsy in order to be considered "necessary".
 Conversely, any expression that always evaluates to truthy or always evaluates to falsy, as determined by the type of the expression, is considered unnecessary and will be flagged by this rule.
 
-The following expressions are checked:
-
-- Arguments to the `&&`, `||` and `?:` (ternary) operators
-- Conditions for `if`, `for`, `while`, and `do-while` statements
-- `case`s in `switch` statements
-- Base values of optional chain expressions
-
 ## Examples
 
 <Tabs>

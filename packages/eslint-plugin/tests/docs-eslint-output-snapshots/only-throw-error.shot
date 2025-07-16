@@ -9,31 +9,23 @@ throw 0;
 throw undefined;
       ~~~~~~~~~ Do not throw undefined.
 
-throw null;
-      ~~~~ Expected an error object to be thrown.
-
-const err = new Error();
-throw 'an ' + err;
-      ~~~~~~~~~~~ Expected an error object to be thrown.
-
-const err = new Error();
-throw `${err}`;
-      ~~~~~~~~ Expected an error object to be thrown.
-
-const err = '';
-throw err;
-
-function getError() {
+function getErrorString(): string {
   return '';
 }
-throw getError();
-      ~~~~~~~~~~ Expected an error object to be thrown.
+throw getErrorString();
+      ~~~~~~~~~~~~~~~~ Expected an error object to be thrown.
 
 const foo = {
-  bar: '',
+  bar: 'error string',
 };
 throw foo.bar;
       ~~~~~~~ Expected an error object to be thrown.
+
+class SomeClass {
+  // ...
+}
+throw new SomeClass();
+      ~~~~~~~~~~~~~~~ Expected an error object to be thrown.
 
 Correct
 
@@ -43,15 +35,6 @@ throw new Error('error');
 
 const e = new Error('error');
 throw e;
-
-try {
-  throw new Error('error');
-} catch (e) {
-  throw e;
-}
-
-const err = new Error();
-throw err;
 
 function getError() {
   return new Error();
@@ -66,4 +49,72 @@ throw foo.bar;
 class CustomError extends Error {
   // ...
 }
+throw new CustomError();
+
+Options: { "allowThrowingAny": true }
+
+function throwAny(value: any) {
+  throw value;
+}
+
+Options: { "allowThrowingUnknown": true }
+
+function throwUnknown(value: unknown) {
+  throw value;
+}
+
+Options: { "allowRethrowing": true, "allowThrowingAny": false, "allowThrowingUnknown": false }
+
+declare function mightThrow(): void;
+declare class SomeSpecificError extends Error {
+  // ...
+}
+
+function foo() {
+  try {
+    mightThrow();
+  } catch (e) {
+    if (e instanceof SomeSpecificError) {
+      // handle specific error ...
+      return;
+    }
+
+    // unexpected error that we shouldn't catch.
+    throw e;
+  }
+}
+
+declare function mightReject(): Promise<void>;
+
+mightReject().catch(e => {
+  if (e instanceof SomeSpecificError) {
+    // handle specific error ...
+    return;
+  }
+
+  // unexpected error that we can't handle
+  throw e;
+});
+
+declare function log(message: string): void;
+
+function bar() {
+  log('starting bar()');
+  let wasError = false;
+  try {
+    // ...
+  } catch (e) {
+    wasError = true;
+    throw e;
+  } finally {
+    log(`completed bar() ${wasError ? 'with error' : 'successfully'}`);
+  }
+}
+
+Options: { "allow": [{ "from": "file", "name": "CustomError" }] }
+
+class CustomError /* does NOT extend Error */ {
+  // ...
+}
+
 throw new CustomError();

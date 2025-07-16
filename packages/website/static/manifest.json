@@ -1,6 +1,6 @@
 {
   "background_color": "#443FD4",
-  "description": "Documentation for typescript-eslint: the tooling that enables ESLint to support TypeScript.",
+  "description": "Documentation for typescript-eslint: powerful static analysis for JavaScript and TypeScript.",
   "display": "standalone",
   "icons": [
     {

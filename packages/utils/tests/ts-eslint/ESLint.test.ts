@@ -1,5 +1,7 @@
 import { FlatESLint, LegacyESLint } from 'eslint/use-at-your-own-risk';
 
+import type { FlatConfig } from '../../src/ts-eslint';
+
 import * as ESLint from '../../src/ts-eslint/ESLint';
 
 describe('ESLint', () => {
@@ -12,6 +14,7 @@ describe('ESLint', () => {
       });
       expect(eslint).toBeInstanceOf(FlatESLint);
     });
+
     it('legacy', () => {
       // eslint-disable-next-line @typescript-eslint/no-deprecated
       const eslint = new ESLint.LegacyESLint({
@@ -26,6 +29,12 @@ describe('ESLint', () => {
         },
       });
       expect(eslint).toBeInstanceOf(LegacyESLint);
+    });
+
+    it('config type permits basePath (type test)', () => {
+      const __config: FlatConfig.Config = {
+        basePath: 'some/path',
+      };
     });
   });
 });
