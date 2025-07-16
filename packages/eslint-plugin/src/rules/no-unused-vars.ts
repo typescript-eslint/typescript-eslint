@@ -15,6 +15,7 @@ import type { MakeRequired } from '../util';
 import {
   collectVariables,
   createRule,
+  getFixOrSuggest,
   getNameLocationInGlobalDirectiveComment,
   isDefinitionFile,
   isFunction,
@@ -23,7 +24,11 @@ import {
 } from '../util';
 import { referenceContainsTypeQuery } from '../util/referenceContainsTypeQuery';
 
-export type MessageIds = 'unusedVar' | 'usedIgnoredVar' | 'usedOnlyAsType';
+export type MessageIds =
+  | 'unusedVar'
+  | 'unusedVarSuggestion'
+  | 'usedIgnoredVar'
+  | 'usedOnlyAsType';
 export type Options = [
   | 'all'
   | 'local'
@@ -38,6 +43,9 @@ export type Options = [
       reportUsedIgnorePattern?: boolean;
       vars?: 'all' | 'local';
       varsIgnorePattern?: string;
+      enableAutofixRemoval?: {
+        imports: boolean;
+      };
     },
 ];
 
@@ -52,6 +60,9 @@ interface TranslatedOptions {
   reportUsedIgnorePattern: boolean;
   vars: 'all' | 'local';
   varsIgnorePattern?: RegExp;
+  enableAutofixRemoval?: {
+    imports: boolean;
+  };
 }
 
 type VariableType =
@@ -74,8 +85,13 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
       recommended: 'recommended',
     },
+    fixable: 'code',
+    // If generate suggest dynamically, disable the eslint rule.
+    // eslint-disable-next-line eslint-plugin/require-meta-has-suggestions
+    hasSuggestions: true,
     messages: {
       unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
+      unusedVarSuggestion: 'Remove unused variable.',
       usedIgnoredVar:
         "'{{varName}}' is marked as ignored but is used{{additional}}.",
       usedOnlyAsType:
@@ -116,6 +132,16 @@ export default createRule<Options, MessageIds>({
                 type: 'string',
                 description:
                   'Regular expressions of destructured array variable names to not check for usage.',
+              },
+              enableAutofixRemoval: {
+                type: 'object',
+                properties: {
+                  imports: {
+                    type: 'boolean',
+                    description:
+                      'Whether to enable autofix for removing unused imports.',
+                  },
+                },
               },
               ignoreClassWithStaticInitBlock: {
                 type: 'boolean',
@@ -207,6 +233,10 @@ export default createRule<Options, MessageIds>({
             firstOption.destructuredArrayIgnorePattern,
             'u',
           );
+        }
+
+        if (firstOption.enableAutofixRemoval) {
+          options.enableAutofixRemoval = firstOption.enableAutofixRemoval;
         }
       }
 
@@ -681,12 +711,83 @@ export default createRule<Options, MessageIds>({
               },
             };
 
+            const fixer: TSESLint.ReportFixFunction = fixer => {
+              // Find the import statement
+              const def = unusedVar.defs.find(
+                d => d.type === DefinitionType.ImportBinding,
+              );
+              if (!def) {
+                return null;
+              }
+
+              const source = context.sourceCode;
+              const node = def.node;
+              const decl = node.parent;
+              if (decl.type !== AST_NODE_TYPES.ImportDeclaration) {
+                // decl.type is Program, import foo = require('bar');
+                return fixer.remove(node);
+              }
+
+              const afterNodeToken = source.getTokenAfter(node);
+              const beforeNodeToken = source.getTokenBefore(node);
+              const prevBeforeNodeToken = beforeNodeToken
+                ? source.getTokenBefore(beforeNodeToken)
+                : null;
+
+              // Remove import declaration if no used specifiers are left
+              if (decl.specifiers.length === 1) {
+                return fixer.removeRange(decl.range);
+              }
+
+              // case: remove braces if no used named specifiers are left
+              const restNamed = decl.specifiers.filter(
+                s => s.type === AST_NODE_TYPES.ImportSpecifier,
+              );
+              if (
+                restNamed.length === 1 &&
+                afterNodeToken?.value === '}' &&
+                prevBeforeNodeToken?.value === ','
+              ) {
+                return fixer.removeRange([
+                  prevBeforeNodeToken.range[0],
+                  afterNodeToken.range[1],
+                ]);
+              }
+
+              // case: Remove comma after node, import { unused, used } from 'a';
+              if (afterNodeToken?.value === ',') {
+                return fixer.removeRange([
+                  node.range[0],
+                  afterNodeToken.range[1],
+                ]);
+              }
+
+              // case: Remove comma before node, import { used, unused } from 'a';
+              if (beforeNodeToken?.value === ',') {
+                return fixer.removeRange([
+                  beforeNodeToken.range[0],
+                  node.range[1],
+                ]);
+              }
+
+              return null;
+            };
+
             context.report({
               loc,
               messageId,
               data: unusedVar.references.some(ref => ref.isWrite())
                 ? getAssignedMessageData(unusedVar)
                 : getDefinedMessageData(unusedVar),
+              ...getFixOrSuggest({
+                fixOrSuggest: options.enableAutofixRemoval?.imports
+                  ? 'fix'
+                  : 'suggest',
+                suggestion: {
+                  messageId: 'unusedVarSuggestion',
+                  fix: fixer,
+                },
+              }),
             });
 
             // If there are no regular declaration, report the first `/*globals*/` comment directive.
