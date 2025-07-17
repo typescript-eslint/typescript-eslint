@@ -52,7 +52,7 @@ describe(getTSConfigRootDirFromStack, () => {
     },
   );
 
-  it("doesn't get tricked by a messed up by not-an-eslint.config.js", () => {
+  it("doesn't get tricked by a not-an-eslint.config.js", () => {
     const actual = getTSConfigRootDirFromStack(
       [
         `Error`,
