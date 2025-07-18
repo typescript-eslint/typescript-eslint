@@ -1,9 +1,9 @@
-import { getTSConfigRootDirFromV8Api } from '../src/getTSConfigRootDirFromStack';
+import { getTSConfigRootDirFromStack } from '../src/getTSConfigRootDirFromStack';
 import * as normalFolder from './path-test-fixtures/tsconfigRootDirInference-normal/normal-folder/eslint.config.cjs';
 import * as notEslintConfig from './path-test-fixtures/tsconfigRootDirInference-not-eslint-config/not-an-eslint.config.cjs';
 import * as folderThatHasASpace from './path-test-fixtures/tsconfigRootDirInference-space/folder that has a space/eslint.config.cjs';
 
-describe(getTSConfigRootDirFromV8Api, () => {
+describe(getTSConfigRootDirFromStack, () => {
   it('does stack analysis right for normal folder', () => {
     expect(normalFolder.get()).toBe(normalFolder.dirname());
   });

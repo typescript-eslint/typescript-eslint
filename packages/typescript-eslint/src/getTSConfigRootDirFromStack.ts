@@ -1,6 +1,10 @@
 import path from 'node:path';
 
-export function getTSConfigRootDirFromV8Api(): string | undefined {
+/**
+ * Infers the `tsconfigRootDir` from the current call stack, using the V8 API.
+ * This appears to be available in current Deno and Bun as well.
+ */
+export function getTSConfigRootDirFromStack(): string | undefined {
   function getStack(): NodeJS.CallSite[] {
     const stackTraceLimit = Error.stackTraceLimit;
     Error.stackTraceLimit = Infinity;
@@ -10,7 +14,7 @@ export function getTSConfigRootDirFromV8Api(): string | undefined {
         structuredStackTrace;
       try {
         const dummyObject: { stack?: NodeJS.CallSite[] } = {};
-        Error.captureStackTrace(dummyObject, getTSConfigRootDirFromV8Api);
+        Error.captureStackTrace(dummyObject, getTSConfigRootDirFromStack);
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- stack is set by captureStackTrace
         return dummyObject.stack!;
       } finally {
