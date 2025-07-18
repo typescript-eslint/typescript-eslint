@@ -11,7 +11,7 @@ describe(getTSConfigRootDirFromStack, () => {
         `Error`,
         ' at file:///other.config.js',
         ' at ModuleJob.run',
-        'at NodeHfs.walk(...)',
+        'at async NodeHfs.walk(...)',
       ].join('\n'),
     );
 
