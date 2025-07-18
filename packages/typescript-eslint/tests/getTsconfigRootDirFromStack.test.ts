@@ -52,7 +52,7 @@ describe(getTSConfigRootDirFromStack, () => {
     },
   );
 
-  it('returns the full path when it contains spaces', () => {
+  it('returns the full path when it contains a space', () => {
     const actual = getTSConfigRootDirFromStack(
       [
         `Error`,
@@ -64,7 +64,7 @@ describe(getTSConfigRootDirFromStack, () => {
     expect(actual).toBe('/path/with space/to/dir/');
   });
 
-  it('returns the full path when it contains spaces after an async import', () => {
+  it('returns the full path when it contains a space after an async import', () => {
     const actual = getTSConfigRootDirFromStack(
       [
         `Error`,
@@ -74,5 +74,17 @@ describe(getTSConfigRootDirFromStack, () => {
     );
 
     expect(actual).toBe('/path/with space/to/dir/');
+  });
+
+  it('returns the full path when it contains multiple spaces', () => {
+    const actual = getTSConfigRootDirFromStack(
+      [
+        `Error`,
+        ` at /path/with spaces to dir/eslint.config.ts`,
+        ' at ModuleJob.run',
+      ].join('\n'),
+    );
+
+    expect(actual).toBe('/path/with spaces to dir/');
   });
 });
