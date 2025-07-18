@@ -1,54 +1,18 @@
-import path from 'node:path';
+import { getTSConfigRootDirFromV8Api } from '../src/getTSConfigRootDirFromStack';
+import * as normalFolder from './path-test-fixtures/tsconfigRootDirInference-normal/normal-folder/eslint.config.cjs';
+import * as notEslintConfig from './path-test-fixtures/tsconfigRootDirInference-not-eslint-config/not-an-eslint.config.cjs';
+import * as folderThatHasASpace from './path-test-fixtures/tsconfigRootDirInference-space/folder that has a space/eslint.config.cjs';
 
-import { getTSConfigRootDirFromStack } from '../src/getTSConfigRootDirFromStack';
-
-const isWindows = process.platform === 'win32';
-
-describe(getTSConfigRootDirFromStack, () => {
-  it('returns undefined when no file path seems to be an ESLint config', () => {
-    const actual = getTSConfigRootDirFromStack(
-      [
-        `Error`,
-        ' at file:///other.config.js',
-        ' at ModuleJob.run',
-        'at async NodeHfs.walk(...)',
-      ].join('\n'),
-    );
-
-    expect(actual).toBeUndefined();
+describe(getTSConfigRootDirFromV8Api, () => {
+  it('does stack analysis right for normal folder', () => {
+    expect(normalFolder.get()).toBe(normalFolder.dirname());
   });
 
-  it.runIf(!isWindows)(
-    'returns a Posix config file path when a file:// path to an ESLint config is in the stack',
-    () => {
-      const actual = getTSConfigRootDirFromStack(
-        [
-          `Error`,
-          ' at file:///path/to/file/eslint.config.js',
-          ' at ModuleJob.run',
-          'at async NodeHfs.walk(...)',
-        ].join('\n'),
-      );
+  it('does stack analysis right for folder that has a space', () => {
+    expect(folderThatHasASpace.get()).toBe(folderThatHasASpace.dirname());
+  });
 
-      expect(actual).toBe('/path/to/file/');
-    },
-  );
-
-  it.each(['cjs', 'cts', 'js', 'mjs', 'mts', 'ts'])(
-    'returns the path to the config file when its extension is %s',
-    extension => {
-      const expected = isWindows ? 'C:\\path\\to\\file\\' : '/path/to/file/';
-
-      const actual = getTSConfigRootDirFromStack(
-        [
-          `Error`,
-          ` at ${path.join(expected, `eslint.config.${extension}`)}`,
-          ' at ModuleJob.run',
-          'at async NodeHfs.walk(...)',
-        ].join('\n'),
-      );
-
-      expect(actual).toBe(expected);
-    },
-  );
+  it("doesn't get tricked by a file that is not an ESLint config", () => {
+    expect(notEslintConfig.get()).toBeUndefined();
+  });
 });

@@ -6,7 +6,7 @@ import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw
 import { addCandidateTSConfigRootDir } from '@typescript-eslint/typescript-estree';
 
 import { config } from './config-helper';
-import { getTSConfigRootDirFromStack } from './getTSConfigRootDirFromStack';
+import { getTSConfigRootDirFromV8Api } from './getTSConfigRootDirFromStack';
 
 export const parser: TSESLint.FlatConfig.Parser = rawPlugin.parser;
 
@@ -135,10 +135,7 @@ function createConfigsGetters<T extends object>(values: T): T {
         {
           enumerable: true,
           get: () => {
-            const candidateRootDir = getTSConfigRootDirFromStack(
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              new Error().stack!,
-            );
+            const candidateRootDir = getTSConfigRootDirFromV8Api();
             if (candidateRootDir) {
               addCandidateTSConfigRootDir(candidateRootDir);
             }

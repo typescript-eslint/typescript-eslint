@@ -1,15 +1,38 @@
-import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
-export function getTSConfigRootDirFromStack(stack: string): string | undefined {
-  for (const line of stack.split('\n').map(line => line.trim())) {
-    const candidate = /(\S+)eslint\.config\.(c|m)?(j|t)s/.exec(line)?.[1];
-    if (!candidate) {
+export function getTSConfigRootDirFromV8Api(): string | undefined {
+  function getStack(): NodeJS.CallSite[] {
+    const stackTraceLimit = Error.stackTraceLimit;
+    Error.stackTraceLimit = Infinity;
+    try {
+      const prepareStackTrace = Error.prepareStackTrace;
+      Error.prepareStackTrace = (_, structuredStackTrace) =>
+        structuredStackTrace;
+      try {
+        const dummyObject: { stack?: NodeJS.CallSite[] } = {};
+        Error.captureStackTrace(dummyObject, getTSConfigRootDirFromV8Api);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- stack is set by captureStackTrace
+        return dummyObject.stack!;
+      } finally {
+        Error.prepareStackTrace = prepareStackTrace;
+      }
+    } finally {
+      Error.stackTraceLimit = stackTraceLimit;
+    }
+  }
+
+  for (const callSite of getStack()) {
+    const stackFrameFilePath = callSite.getFileName();
+    if (!stackFrameFilePath) {
       continue;
     }
 
-    return candidate.startsWith('file://')
-      ? fileURLToPath(candidate)
-      : candidate;
+    const parsedPath = path.parse(stackFrameFilePath);
+
+    // Check if the file name matches the ESLint config pattern
+    if (/^eslint\.config\.(c|m)?(j|t)s$/.test(parsedPath.base)) {
+      return parsedPath.dir;
+    }
   }
 
   return undefined;
