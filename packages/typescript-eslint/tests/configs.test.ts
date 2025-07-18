@@ -10,8 +10,8 @@ import tseslint from '../src/index.js';
 
 vi.mock('@typescript-eslint/typescript-estree', async () => ({
   ...(await vi.importActual('@typescript-eslint/typescript-estree')),
-  get addCandidateTSConfigRootDir() {
-    return mockAddCandidateTSConfigRootDir;
+  get getTSConfigRootDirFromV8Api() {
+    return mockGetTSConfigRootDirFromV8Api;
   },
 }));
 
@@ -401,12 +401,12 @@ describe('stylistic-type-checked-only.ts', () => {
   );
 });
 
-const mockAddCandidateTSConfigRootDir = vi.fn();
+const mockGetTSConfigRootDirFromV8Api = vi.fn();
 
 describe('Candidate tsconfigRootDirs', () => {
   beforeEach(() => {
     clearCandidateTSConfigRootDirs();
-    mockAddCandidateTSConfigRootDir.mockClear();
+    mockGetTSConfigRootDirFromV8Api.mockClear();
   });
 
   describe.each(Object.keys(tseslint.configs))('%s', configKey => {
@@ -416,7 +416,7 @@ describe('Candidate tsconfigRootDirs', () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       tseslint.configs[configKey as keyof typeof tseslint.configs];
 
-      expect(mockAddCandidateTSConfigRootDir).not.toHaveBeenCalled();
+      expect(mockGetTSConfigRootDirFromV8Api).not.toHaveBeenCalled();
     });
 
     it('populates a candidate tsconfigRootDir when accessed and one can be inferred from the stack', () => {
@@ -427,7 +427,7 @@ describe('Candidate tsconfigRootDirs', () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       tseslint.configs[configKey as keyof typeof tseslint.configs];
 
-      expect(mockAddCandidateTSConfigRootDir).toHaveBeenCalledWith(
+      expect(mockGetTSConfigRootDirFromV8Api).toHaveBeenCalledWith(
         tsconfigRootDir,
       );
     });
