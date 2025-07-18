@@ -24,7 +24,7 @@ runs:
       run: |
         yarn nx run types:build
       env:
-        SKIP_AST_SPEC_REBUILD: true
+        SKIP_AST_SPEC_REBUILD: false
 
     - name: Build
       if: steps['build-cache'].outputs.cache-hit != 'true'
@@ -33,4 +33,4 @@ runs:
       run: |
         yarn nx run-many --target=build --parallel --exclude=website --exclude=website-eslint
       env:
-        SKIP_AST_SPEC_REBUILD: true
+        SKIP_AST_SPEC_REBUILD: false
