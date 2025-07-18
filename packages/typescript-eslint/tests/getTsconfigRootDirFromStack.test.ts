@@ -87,4 +87,16 @@ describe(getTSConfigRootDirFromStack, () => {
 
     expect(actual).toBe('/path/with spaces to dir/');
   });
+
+  it('returns just the path when prefixed with getter information', () => {
+    const actual = getTSConfigRootDirFromStack(
+      [
+        'Error',
+        'at Object.<anonymous> (/Users/myusername/src/repros/Has Space/eslint.config.js:4:13)',
+        'at Module._compile (node:internal/modules/cjs/loader:1692:14)',
+      ].join('\n'),
+    );
+
+    expect(actual).toBe('/Users/myusername/src/repros/Has Space/');
+  });
 });
