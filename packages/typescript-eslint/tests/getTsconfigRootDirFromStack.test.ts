@@ -9,9 +9,9 @@ describe(getTSConfigRootDirFromStack, () => {
     const actual = getTSConfigRootDirFromStack(
       [
         `Error`,
-        ' at async file:///other.config.js',
+        ' at file:///other.config.js',
         ' at ModuleJob.run',
-        'at async NodeHfs.walk(...)',
+        'at NodeHfs.walk(...)',
       ].join('\n'),
     );
 
@@ -24,7 +24,7 @@ describe(getTSConfigRootDirFromStack, () => {
       const actual = getTSConfigRootDirFromStack(
         [
           `Error`,
-          ' at async file:///path/to/file/eslint.config.js',
+          ' at file:///path/to/file/eslint.config.js',
           ' at ModuleJob.run',
           'at async NodeHfs.walk(...)',
         ].join('\n'),
@@ -42,7 +42,7 @@ describe(getTSConfigRootDirFromStack, () => {
       const actual = getTSConfigRootDirFromStack(
         [
           `Error`,
-          ` at async ${path.join(expected, `eslint.config.${extension}`)}`,
+          ` at ${path.join(expected, `eslint.config.${extension}`)}`,
           ' at ModuleJob.run',
           'at async NodeHfs.walk(...)',
         ].join('\n'),
