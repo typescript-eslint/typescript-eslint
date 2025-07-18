@@ -111,6 +111,7 @@ import preferOptionalChain from './prefer-optional-chain';
 import preferPromiseRejectErrors from './prefer-promise-reject-errors';
 import preferReadonly from './prefer-readonly';
 import preferReadonlyParameterTypes from './prefer-readonly-parameter-types';
+import preferRecordTypeAnnotation from './prefer-record-type-annotation';
 import preferReduceTypeParameter from './prefer-reduce-type-parameter';
 import preferRegexpExec from './prefer-regexp-exec';
 import preferReturnThisType from './prefer-return-this-type';
@@ -245,6 +246,7 @@ const rules = {
   'prefer-promise-reject-errors': preferPromiseRejectErrors,
   'prefer-readonly': preferReadonly,
   'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
+  'prefer-record-type-annotation': preferRecordTypeAnnotation,
   'prefer-reduce-type-parameter': preferReduceTypeParameter,
   'prefer-regexp-exec': preferRegexpExec,
   'prefer-return-this-type': preferReturnThisType,

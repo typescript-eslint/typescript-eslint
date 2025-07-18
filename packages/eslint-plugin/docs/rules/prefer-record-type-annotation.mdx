@@ -1,0 +1,170 @@
+---
+description: 'Enforce explicit Record<K, V> type annotations for object literals.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/prefer-record-type-annotation** for documentation.
+
+This rule enforces explicit `Record<K, V>` type annotations for object literals that could benefit from them. It helps improve type safety and code clarity by making the intended structure of objects explicit.
+
+## Rule Details
+
+When you have object literals with multiple properties of the same type, it can be beneficial to explicitly type them as `Record<K, V>` to:
+
+1. **Improve type safety** - TypeScript can better catch errors when the structure is explicit
+2. **Enhance readability** - Other developers immediately understand the intended structure
+3. **Enable better IntelliSense** - IDEs can provide better autocomplete and suggestions
+4. **Facilitate refactoring** - Changes to the value type are easier to make consistently
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+const statusMessages = {
+  success: "Operation completed",
+  error: "An error occurred",
+  pending: "Operation pending",
+};
+
+const userScores = {
+  alice: 100,
+  bob: 95,
+  charlie: 87,
+};
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+const statusMessages: Record<'success' | 'error' | 'pending', string> = {
+  success: "Operation completed",
+  error: "An error occurred",
+  pending: "Operation pending",
+};
+
+const userScores: Record<'alice' | 'bob' | 'charlie', number> = {
+  alice: 100,
+  bob: 95,
+  charlie: 87,
+};
+```
+
+</TabItem>
+</Tabs>
+
+## Configuration
+
+This rule has no configurable options. It triggers for object literals that have consistent value types.
+
+## When Not To Use It
+
+You might want to disable this rule if:
+
+- You prefer to rely on TypeScript's type inference for object literals
+- Your team has a different style preference for object typing
+- You're working with dynamic objects where explicit typing would be overly restrictive
+- You have many small objects that don't benefit from explicit Record typing
+
+## Examples
+
+### Basic Usage
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+// Even small objects trigger the rule
+const environment = {
+  dev: "development",
+  prod: "production",
+};
+
+// String values
+const statusMessages = {
+  success: "Operation completed successfully",
+  error: "An error occurred",
+  pending: "Operation is pending",
+};
+
+// Number values
+const httpStatusCodes = {
+  ok: 200,
+  notFound: 404,
+  serverError: 500,
+};
+
+// Boolean values
+const featureFlags = {
+  newDesign: true,
+  betaFeatures: false,
+  analytics: true,
+};
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+// Even small objects need explicit typing
+const environment: Record<'dev' | 'prod', string> = {
+  dev: "development",
+  prod: "production",
+};
+
+// String values
+const statusMessages: Record<'success' | 'error' | 'pending', string> = {
+  success: "Operation completed successfully",
+  error: "An error occurred",
+  pending: "Operation is pending",
+};
+
+// Number values
+const httpStatusCodes: Record<'ok' | 'notFound' | 'serverError', number> = {
+  ok: 200,
+  notFound: 404,
+  serverError: 500,
+};
+
+// Boolean values
+const featureFlags: Record<'newDesign' | 'betaFeatures' | 'analytics', boolean> = {
+  newDesign: true,
+  betaFeatures: false,
+  analytics: true,
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Cases That Won't Trigger The Rule
+
+```ts
+// Already has explicit type annotation
+const typed: Record<string, string> = { a: "1", b: "2", c: "3" };
+
+// Mixed value types
+const mixed = { str: "hello", num: 42, bool: true };
+
+// Complex properties (computed keys, methods)
+const complex = {
+  a: "1",
+  b: "2",
+  c: "3",
+  ['computed']: "4",
+  method() { return "value"; }
+};
+
+// Non-literal values
+const variable = "test";
+const dynamic = { a: variable, b: variable, c: variable };
+```
+
+## Related Rules
+
+- [`consistent-indexed-object-style`](https://typescript-eslint.io/rules/consistent-indexed-object-style) - Enforces consistent usage of Record vs index signatures
+- [`typedef`](https://typescript-eslint.io/rules/typedef) - Requires type annotations in various places
