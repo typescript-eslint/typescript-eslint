@@ -24,20 +24,20 @@ describe(getTSConfigRootDirFromStack, () => {
       const actual = getTSConfigRootDirFromStack(
         [
           `Error`,
-          ' at file:///path/to/file/eslint.config.js',
+          ' at file:///path/to/dir/eslint.config.js',
           ' at ModuleJob.run',
           'at async NodeHfs.walk(...)',
         ].join('\n'),
       );
 
-      expect(actual).toBe('/path/to/file/');
+      expect(actual).toBe('/path/to/dir');
     },
   );
 
   it.each(['cjs', 'cts', 'js', 'mjs', 'mts', 'ts'])(
     'returns the path to the config file when its extension is %s',
     extension => {
-      const expected = isWindows ? 'C:\\path\\to\\file\\' : '/path/to/file/';
+      const expected = isWindows ? 'C:\\path\\to\\dir' : '/path/to/dir';
 
       const actual = getTSConfigRootDirFromStack(
         [
@@ -61,7 +61,7 @@ describe(getTSConfigRootDirFromStack, () => {
       ].join('\n'),
     );
 
-    expect(actual).toBe('/path/with space/to/dir/');
+    expect(actual).toBe('/path/with space/to/dir');
   });
 
   it('returns the full path when it contains a space after an async import', () => {
@@ -73,7 +73,7 @@ describe(getTSConfigRootDirFromStack, () => {
       ].join('\n'),
     );
 
-    expect(actual).toBe('/path/with space/to/dir/');
+    expect(actual).toBe('/path/with space/to/dir');
   });
 
   it('returns the full path when it contains multiple spaces', () => {
@@ -85,7 +85,7 @@ describe(getTSConfigRootDirFromStack, () => {
       ].join('\n'),
     );
 
-    expect(actual).toBe('/path/with spaces to dir/');
+    expect(actual).toBe('/path/with spaces to dir');
   });
 
   it('returns just the path when prefixed with getter information', () => {
@@ -97,6 +97,37 @@ describe(getTSConfigRootDirFromStack, () => {
       ].join('\n'),
     );
 
-    expect(actual).toBe('/Users/myusername/src/repros/Has Space/');
+    expect(actual).toBe('/Users/myusername/src/repros/Has Space');
   });
+
+  it("doesn't get tricked by a not-an-eslint.config.js", () => {
+    const actual = getTSConfigRootDirFromStack(
+      [
+        `Error`,
+        ' at file:///a/b/not-an-eslint.config.js',
+        ' at ModuleJob.run',
+        'at async NodeHfs.walk(...)',
+      ].join('\n'),
+    );
+
+    expect(actual).toBeUndefined();
+  });
+
+  it.each(['cjs', 'cts', 'js', 'mjs', 'mts', 'ts'])(
+    'correctly resolves the config file even when multiple path seps are present %s',
+    extension => {
+      const expected = isWindows ? 'C:\\path\\to\\dir' : '/path/to/dir';
+
+      const actual = getTSConfigRootDirFromStack(
+        [
+          `Error`,
+          ` at ${expected + path.sep + path.sep}eslint.config.${extension}}`,
+          ' at ModuleJob.run',
+          'at async NodeHfs.walk(...)',
+        ].join('\n'),
+      );
+
+      expect(actual).toBe(expected);
+    },
+  );
 });
