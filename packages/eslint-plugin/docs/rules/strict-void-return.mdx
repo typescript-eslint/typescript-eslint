@@ -154,10 +154,10 @@ takesCallback(() => {
 </TabItem>
 </Tabs>
 
-### Probable mistakes
+### Accidental dead code
 
 Returning a value from a void function often is an indication of incorrect assumptions about APIs.
-Those incorrect assumptions can often lead to bugs.
+Those incorrect assumptions can often lead to unnecessary code.
 
 The following `forEach` loop is a common mistake: its author likely either meant to add `console.log` or meant to use `.map` instead.
 
@@ -178,104 +178,7 @@ The following `forEach` loop is a common mistake: its author likely either meant
 </TabItem>
 </Tabs>
 
-### Void context examples
-
-Every expression has a contextual (expected) type computed by the TypeScript type system.
-This rule will check expressions where the contextual type is a function returning void.
-
-The following expressions are checked:
-
-- Function arguments
-- JSX attribute values
-- Right-hand side of assignments
-- Return values
-- Object property values
-- Array elements
-- Class property values
-
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```tsx
-declare function takesCallback(cb: () => void): void;
-declare function TakesCallback(props: { cb: () => void }): string;
-declare let callback: () => void;
-declare let returnsCallback: () => () => void;
-declare let callbackObj: Record<string, () => void>;
-declare let callbackArr: (() => void)[];
-
-takesCallback(() => 'Hello');
-<TakesCallback cb={() => 'Hello'} />;
-callback = () => 'Hello';
-returnsCallback = () => {
-  return () => 'Hello';
-};
-callbackObj = {
-  hello: () => 'Hello',
-};
-callbackArr = [() => 'Hello'];
-```
-
-</TabItem>
-<TabItem value="✅ Correct">
-
-```tsx
-declare function takesCallback(cb: () => void): void;
-declare function TakesCallback(props: { cb: () => void }): string;
-declare let callback: () => void;
-declare let returnsCallback: () => () => void;
-declare let callbackObj: Record<string, () => void>;
-declare let callbackArr: (() => void)[];
-
-takesCallback(() => console.log('Hello'));
-<TakesCallback cb={() => console.log('Hello')} />;
-callback = () => console.log('Hello');
-returnsCallback = () => {
-  return () => console.log('Hello');
-};
-callbackObj = {
-  hello: () => console.log('Hello'),
-};
-callbackArr = [() => console.log('Hello')];
-```
-
-</TabItem>
-</Tabs>
-
-### Void context from overloads
-
-This rule treats an any-returning callback argument as a void context,
-if there exists another overload where it is typed as returning void.
-
-This is required to correctly detect `addEventListener`'s callback as void callback,
-because otherwise the call always resolves to the any-returning signature.
-
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts
-/// <reference lib="dom" />
-
-document.addEventListener('click', () => {
-  return 'Clicked';
-});
-```
-
-</TabItem>
-<TabItem value="✅ Correct">
-
-```ts
-/// <reference lib="dom" />
-
-document.addEventListener('click', () => {
-  console.log('Clicked');
-});
-```
-
-</TabItem>
-</Tabs>
-
-### Void context from base classes
+### Void context from extended classes
 
 This rule enforces class methods which override a void method to also be void.
 
