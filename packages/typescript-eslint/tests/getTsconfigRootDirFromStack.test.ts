@@ -15,4 +15,14 @@ describe(getTSConfigRootDirFromStack, () => {
   it("doesn't get tricked by a file that is not an ESLint config", () => {
     expect(notEslintConfig.get()).toBeUndefined();
   });
+
+  it('should work in the presence of a messed up strack trace string', () => {
+    const prepareStackTrace = Error.prepareStackTrace;
+    const dummyFunction = () => {};
+    Error.prepareStackTrace = dummyFunction;
+    expect(new Error().stack).toBeUndefined();
+    expect(normalFolder.get()).toBe(normalFolder.dirname());
+    expect(Error.prepareStackTrace).toBe(dummyFunction);
+    Error.prepareStackTrace = prepareStackTrace;
+  });
 });
