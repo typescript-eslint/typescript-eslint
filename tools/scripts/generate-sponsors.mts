@@ -1,4 +1,4 @@
-import type { SponsorData } from 'website/src/components/home/FinancialContributors/types.ts';
+import type { SponsorData } from '@site/src/components/home/FinancialContributors/types.ts';
 
 import fetch from 'cross-fetch';
 import * as fs from 'node:fs';
