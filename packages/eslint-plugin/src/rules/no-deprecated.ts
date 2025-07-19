@@ -89,22 +89,39 @@ export default createRule<Options, MessageIds>({
           ? getJsDocDeprecation(symbol)
           : undefined;
       }
+
+      const seen = new Set<ts.Symbol>();
       const targetSymbol = checker.getAliasedSymbol(symbol);
-      while (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
-        const reason = getJsDocDeprecation(symbol);
+      let current = symbol;
+
+      while (tsutils.isSymbolFlagSet(current, ts.SymbolFlags.Alias)) {
+        if (seen.has(current)) {
+          break;
+        }
+
+        seen.add(current);
+
+        const reason = getJsDocDeprecation(current);
+
         if (reason != null) {
           return reason;
         }
-        const immediateAliasedSymbol: ts.Symbol | undefined =
-          symbol.getDeclarations() && checker.getImmediateAliasedSymbol(symbol);
-        if (!immediateAliasedSymbol) {
+
+        const nextAlias: ts.Symbol | undefined =
+          current.getDeclarations() &&
+          checker.getImmediateAliasedSymbol(current);
+
+        if (!nextAlias) {
           break;
         }
-        symbol = immediateAliasedSymbol;
-        if (checkDeprecationsOfAliasedSymbol && symbol === targetSymbol) {
-          return getJsDocDeprecation(symbol);
+
+        current = nextAlias;
+
+        if (checkDeprecationsOfAliasedSymbol && current === targetSymbol) {
+          return getJsDocDeprecation(current);
         }
       }
+
       return undefined;
     }
 
@@ -162,23 +179,24 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function isInsideExportOrImport(node: TSESTree.Node): boolean {
+    function isInsideImport(node: TSESTree.Node): boolean {
       let current = node;
 
       while (true) {
         switch (current.type) {
-          case AST_NODE_TYPES.ExportAllDeclaration:
-          case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.ImportDeclaration:
             return true;
 
           case AST_NODE_TYPES.ArrowFunctionExpression:
+          case AST_NODE_TYPES.ExportAllDeclaration:
+          case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.BlockStatement:
           case AST_NODE_TYPES.ClassDeclaration:
           case AST_NODE_TYPES.TSInterfaceDeclaration:
           case AST_NODE_TYPES.FunctionDeclaration:
           case AST_NODE_TYPES.FunctionExpression:
           case AST_NODE_TYPES.Program:
+          case AST_NODE_TYPES.ExportSpecifier:
           case AST_NODE_TYPES.TSUnionType:
           case AST_NODE_TYPES.VariableDeclarator:
             return false;
@@ -366,7 +384,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkIdentifier(node: IdentifierLike): void {
-      if (isDeclaration(node) || isInsideExportOrImport(node)) {
+      if (isDeclaration(node) || isInsideImport(node)) {
         return;
       }
 
@@ -440,7 +458,33 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      Identifier: checkIdentifier,
+      Identifier(node): void {
+        const { parent } = node;
+
+        if (
+          parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
+          parent.type === AST_NODE_TYPES.ExportAllDeclaration
+        ) {
+          return;
+        }
+
+        if (parent.type === AST_NODE_TYPES.ExportSpecifier) {
+          // only deal with the alias (exported) side, not the local binding
+          if (parent.exported !== node) {
+            return;
+          }
+
+          const symbol = services.getSymbolAtLocation(node);
+          const aliasDeprecation = getJsDocDeprecation(symbol);
+
+          if (aliasDeprecation != null) {
+            return;
+          }
+        }
+
+        // whether it's a plain identifier or the exported alias
+        checkIdentifier(node);
+      },
       JSXIdentifier(node): void {
         if (node.parent.type !== AST_NODE_TYPES.JSXClosingElement) {
           checkIdentifier(node);
