@@ -1917,7 +1917,13 @@ export class Converter {
         return result;
       }
 
-      case SyntaxKind.TaggedTemplateExpression:
+      case SyntaxKind.TaggedTemplateExpression: {
+        if (node.tag.flags & ts.NodeFlags.OptionalChain) {
+          this.#throwError(
+            node,
+            'Tagged template expressions are not permitted in an optional chain.',
+          );
+        }
         return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
           type: AST_NODE_TYPES.TaggedTemplateExpression,
           quasi: this.convertChild(node.template),
@@ -1929,6 +1935,7 @@ export class Converter {
               node,
             ),
         });
+      }
 
       case SyntaxKind.TemplateHead:
       case SyntaxKind.TemplateMiddle:

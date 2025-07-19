@@ -4,6 +4,9 @@
   "include": [],
   "references": [
     {
+      "path": "../typescript-estree"
+    },
+    {
       "path": "../utils"
     },
     {
