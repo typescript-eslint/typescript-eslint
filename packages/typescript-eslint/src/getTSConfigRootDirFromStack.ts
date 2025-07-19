@@ -32,8 +32,6 @@ export function getTSConfigRootDirFromStack(): string | undefined {
     }
 
     const parsedPath = path.parse(stackFrameFilePath);
-
-    // Check if the file name matches the ESLint config pattern
     if (/^eslint\.config\.(c|m)?(j|t)s$/.test(parsedPath.base)) {
       return parsedPath.dir;
     }
