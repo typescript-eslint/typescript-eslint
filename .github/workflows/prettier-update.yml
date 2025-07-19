@@ -26,7 +26,7 @@ jobs:
           git diff HEAD~1 -G"prettier" --exit-code package.json && echo "prettier unchanged" || echo "::set-output name=was-changed::true"
 
       - uses: pnpm/action-setup@v4
-        if: ${{ steps.nrwl-workspace-package-check.outputs.was-changed == 'true' }}
+        if: ${{ steps.prettier-package-check.outputs.was-changed == 'true' }}
         name: Install pnpm
         with:
           run_install: false
