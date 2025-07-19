@@ -135,10 +135,7 @@ function createConfigsGetters<T extends object>(values: T): T {
         {
           enumerable: true,
           get: () => {
-            const candidateRootDir = getTSConfigRootDirFromStack(
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              new Error().stack!,
-            );
+            const candidateRootDir = getTSConfigRootDirFromStack();
             if (candidateRootDir) {
               addCandidateTSConfigRootDir(candidateRootDir);
             }
