@@ -48,10 +48,8 @@ Snapshot Diff:
         end: { column: 8, line: 3 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Identifier {
+      type: 'Identifier',
       value: 'this',
 
       range: [81, 85],
