@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > TaggedTemplateExpression > _error_ > optional-nested-tag > Babel - Error`]
+BabelError
+> 1 | a?.b.c`...`
+    | ^ Tagged Template Literals are not allowed in optionalChain. (1:0)
+  2 |
+  
