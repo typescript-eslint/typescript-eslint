@@ -543,6 +543,14 @@ declare const x: Promise<number>;
 Promise.all(x);
       `,
     },
+    {
+      code: `
+interface MyArray<Unused, T> extends Array<T> {}
+declare const x: MyArray<null, Promise<void>>;
+
+Promise.all(x);
+      `,
+    },
   ],
 
   invalid: [
@@ -1151,6 +1159,19 @@ Promise.all(x);
     {
       code: `
 declare const x: Array<Array<Promise<number>>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyArray<Unused, T> extends Array<T> {}
+declare const x: MyArray<Promise<void>, null>;
+
 Promise.all(x);
       `,
       errors: [
