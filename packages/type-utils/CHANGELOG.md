@@ -1,3 +1,35 @@
+## 8.38.0 (2025-07-21)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.37.0 (2025-07-14)
+
+### 🩹 Fixes
+
+- **type-utils:** handle namespaced exports in specifier matching ([#11380](https://github.com/typescript-eslint/typescript-eslint/pull/11380))
+- **type-utils:** add missing 'types' dependency to 'type-utils' ([#11383](https://github.com/typescript-eslint/typescript-eslint/pull/11383))
+
+### ❤️ Thank You
+
+- Bill Collins
+- René @Renegade334
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.36.0 (2025-07-07)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.35.1 (2025-06-30)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.35.0 (2025-06-23)
 
 This was a version bump only for type-utils to align it with other projects, there were no code changes.

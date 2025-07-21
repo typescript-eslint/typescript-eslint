@@ -123,6 +123,7 @@ export default createRule<Options, MessageIds>({
             oneOf: [
               {
                 type: 'object',
+                additionalProperties: false,
                 description: 'Which primitives types may be ignored.',
                 properties: {
                   bigint: {

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "8.35.0",
+  "version": "8.38.0",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -31,7 +31,6 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
     "build": "yarn run -BT nx build",
     "clean": "rimraf dist/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
@@ -82,7 +81,14 @@
         ],
         "cache": true
       },
+      "lint": {
+        "command": "eslint"
+      },
       "typecheck": {
+        "outputs": [
+          "{workspaceRoot}/dist",
+          "{projectRoot}/dist"
+        ],
         "dependsOn": [
           "typescript-estree:build"
         ]

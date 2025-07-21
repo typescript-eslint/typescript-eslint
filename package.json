@@ -30,7 +30,6 @@
     "format": "prettier --ignore-path=$PROJECT_CWD/.prettierignore --config=$PROJECT_CWD/.prettierrc.json --write $INIT_CWD",
     "generate-breaking-changes": "nx run eslint-plugin:generate-breaking-changes",
     "generate-configs": "tsx tools/scripts/generate-configs.mts",
-    "generate-contributors": "tsx tools/scripts/generate-contributors.mts",
     "generate-lib": "tsx tools/scripts/generate-lib.mts",
     "generate-sponsors": "tsx tools/scripts/generate-sponsors.mts",
     "generate-website-dts": "nx run website:generate-website-dts",
@@ -55,11 +54,10 @@
     "@eslint/compat": "^1.2.4",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.26.0",
-    "@nx/devkit": "21.0.3",
-    "@nx/eslint": "21.0.3",
-    "@nx/js": "21.0.3",
-    "@nx/vite": "21.0.3",
-    "@nx/workspace": "21.0.3",
+    "@nx/devkit": "21.2.3",
+    "@nx/js": "21.2.3",
+    "@nx/vite": "21.2.3",
+    "@nx/workspace": "21.2.3",
     "@swc/core": "^1.4.12",
     "@types/debug": "^4.1.12",
     "@types/eslint-plugin-jsx-a11y": "^6.10.0",
@@ -95,7 +93,7 @@
     "knip": "^5.41.1",
     "lint-staged": "^15.2.2",
     "markdownlint-cli": "^0.44.0",
-    "nx": "21.0.3",
+    "nx": "21.2.3",
     "prettier": "3.5.0",
     "rimraf": "^5.0.5",
     "semver": "7.7.0",
@@ -123,7 +121,6 @@
     "name": "repo",
     "includedScripts": [
       "generate-configs",
-      "generate-contributors",
       "generate-lib",
       "generate-sponsors"
     ],
@@ -151,11 +148,11 @@
         "cache": true
       },
       "lint": {
-        "command": "eslint . --ignore-pattern=packages --cache",
-        "dependsOn": [
-          "typescript-eslint:build",
-          "eslint-plugin-internal:build"
-        ],
+        "command": "eslint",
+        "options": {
+          "cache": true,
+          "ignore-pattern": "packages"
+        },
         "cache": false
       },
       "clean": {
