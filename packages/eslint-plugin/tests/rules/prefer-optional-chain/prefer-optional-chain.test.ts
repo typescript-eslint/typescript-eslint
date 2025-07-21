@@ -1960,7 +1960,6 @@ const baz = foo?.bar;
       `
         declare const x: void | (() => void);
         x && x();
-        x && x();
       `,
     ],
   });
