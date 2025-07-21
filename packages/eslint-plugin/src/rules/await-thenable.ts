@@ -44,7 +44,7 @@ export default createRule<[], MessageId>({
       forAwaitOfNonAsyncIterable:
         'Unexpected `for await...of` of a value that is not async iterable.',
       invalidPromiseAggregatorInput:
-        'Unexpected iterator of non-Promise (non-"Thenable") values passed to promise aggregator.',
+        'Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.',
       removeAwait: 'Remove unnecessary `await`.',
     },
     schema: [],
