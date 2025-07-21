@@ -1958,7 +1958,8 @@ const baz = foo?.bar;
       `,
       "typeof globalThis !== 'undefined' && globalThis.Array();",
       `
-        declare const x: void;
+        declare const x: void | (() => void);
+        x && x();
         x && x();
       `,
     ],
