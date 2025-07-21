@@ -260,4 +260,17 @@ describe('semanticInfo - singleRun', () => {
       );
     },
   );
+
+  it('should create program when extraFileExtensions is provided in projectService and singleRun mode', () => {
+    vi.stubEnv('TSESTREE_SINGLE_RUN', 'true');
+
+    const resultProgram = parseAndGenerateServices(code, {
+      ...options,
+      extraFileExtensions: ['.vue'],
+      project: null,
+      projectService: true,
+    }).services.program;
+
+    expect(resultProgram).not.toBeNull();
+  });
 });
