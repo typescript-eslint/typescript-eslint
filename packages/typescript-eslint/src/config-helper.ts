@@ -174,6 +174,13 @@ function configImpl(...configs: unknown[]): ConfigArray {
               ` 'basePath' in 'extends' is not allowed.`,
           );
         }
+
+        if ('extends' in extension) {
+          throw new TypeError(
+            `tseslint.config(): Config at index ${configIndex}${nameErrorPhrase} has an 'extends' array that contains a config with an 'extends' property at index ${extensionIndex}.` +
+              ` Nested 'extends' is not allowed.`,
+          );
+        }
       }
       if (nonObjectExtensions.length > 0) {
         const extensionIndices = nonObjectExtensions.join(', ');
