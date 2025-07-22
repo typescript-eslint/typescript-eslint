@@ -39,8 +39,8 @@
       end: { column: 8, line: 3 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "this",
 
     range: [81, 85],
