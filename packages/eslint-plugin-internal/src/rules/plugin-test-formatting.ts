@@ -284,6 +284,10 @@ export default createRule<Options, MessageIds>({
 
       const text = literal.quasis[0].value.cooked;
 
+      if (text == null) {
+        return;
+      }
+
       if (literal.loc.end.line === literal.loc.start.line) {
         // don't use template strings for single line tests
         return context.report({
@@ -448,9 +452,13 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkForUnnecesaryNoFormat(
-      text: string,
+      text: string | null,
       expr: TSESTree.TaggedTemplateExpression,
     ): void {
+      if (text == null) {
+        return;
+      }
+
       const formatted = getCodeFormatted(text);
       if (formatted === text) {
         context.report({

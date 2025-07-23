@@ -200,7 +200,11 @@ export default createRule({
           receiverProperty.key.type === AST_NODE_TYPES.TemplateLiteral &&
           receiverProperty.key.quasis.length === 1
         ) {
-          key = receiverProperty.key.quasis[0].value.cooked;
+          const cooked = receiverProperty.key.quasis[0].value.cooked;
+          if (cooked == null) {
+            continue;
+          }
+          key = cooked;
         } else {
           // can't figure out the name, so skip it
           continue;
