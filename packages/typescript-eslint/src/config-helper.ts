@@ -120,6 +120,7 @@ function configImpl(...configs: unknown[]): ConfigArray {
         extends?: unknown;
         files?: unknown;
         ignores?: unknown;
+        basePath?: unknown;
       };
 
       if (extendsArr == null) {
@@ -163,11 +164,27 @@ function configImpl(...configs: unknown[]): ConfigArray {
         }
         if (extension == null || typeof extension !== 'object') {
           nonObjectExtensions.push(extensionIndex);
+          continue;
+        }
+
+        // https://github.com/eslint/rewrite/blob/82d07fd0e8e06780b552a41f8bcbe2a4f8741d42/packages/config-helpers/src/define-config.js#L448-L450
+        if ('basePath' in extension) {
+          throw new TypeError(
+            `tseslint.config(): Config at index ${configIndex}${nameErrorPhrase} has an 'extends' array that contains a config with a 'basePath' property at index ${extensionIndex}.` +
+              ` 'basePath' in 'extends' is not allowed.`,
+          );
+        }
+
+        if ('extends' in extension) {
+          throw new TypeError(
+            `tseslint.config(): Config at index ${configIndex}${nameErrorPhrase} has an 'extends' array that contains a config with an 'extends' property at index ${extensionIndex}.` +
+              ` Nested 'extends' is not allowed.`,
+          );
         }
       }
       if (nonObjectExtensions.length > 0) {
         const extensionIndices = nonObjectExtensions.join(', ');
-        throw new Error(
+        throw new TypeError(
           `tseslint.config(): Config at index ${configIndex}${nameErrorPhrase} contains non-object` +
             ` extensions at the following indices: ${extensionIndices}.`,
         );
@@ -181,6 +198,7 @@ function configImpl(...configs: unknown[]): ConfigArray {
           files?: unknown;
           ignores?: unknown;
         };
+
         const resolvedConfigName = [name, extension.name]
           .filter(Boolean)
           .join('__');
@@ -195,6 +213,7 @@ function configImpl(...configs: unknown[]): ConfigArray {
             ...extension,
             ...(config.files ? { files: config.files } : {}),
             ...(config.ignores ? { ignores: config.ignores } : {}),
+            ...(config.basePath ? { basePath: config.basePath } : {}),
             ...(resolvedConfigName !== '' ? { name: resolvedConfigName } : {}),
           });
         }
@@ -218,5 +237,7 @@ function configImpl(...configs: unknown[]): ConfigArray {
  * the return value can still be true.
  */
 function isPossiblyGlobalIgnores(config: object): boolean {
-  return Object.keys(config).every(key => ['name', 'ignores'].includes(key));
+  return Object.keys(config).every(key =>
+    ['name', 'ignores', 'basePath'].includes(key),
+  );
 }

@@ -1954,6 +1954,12 @@ export class Converter {
       }
 
       case SyntaxKind.TaggedTemplateExpression: {
+        if (node.tag.flags & ts.NodeFlags.OptionalChain) {
+          this.#throwError(
+            node,
+            'Tagged template expressions are not permitted in an optional chain.',
+          );
+        }
         this.#isInTaggedTemplate = true;
         const result = this.createNode<TSESTree.TaggedTemplateExpression>(
           node,

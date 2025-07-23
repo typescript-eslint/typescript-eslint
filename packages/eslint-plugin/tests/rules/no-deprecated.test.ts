@@ -332,6 +332,21 @@ ruleTester.run('no-deprecated', rule, {
     {
       code: `
 /** @deprecated */
+function A() {
+  return <div />;
+}
+
+const a = <A></A>;
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'A' }],
+        },
+      ],
+    },
+    {
+      code: `
+/** @deprecated */
 declare class A {}
 
 new A();
@@ -344,7 +359,62 @@ new A();
     },
     {
       code: `
+/** @deprecated */
+const deprecatedValue = 45;
+const bar = deprecatedValue;
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'deprecatedValue' }],
+        },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  /** @deprecated */
+  #privateProp = 42;
+  value = this.#privateProp;
+}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'privateProp' }],
+        },
+      ],
+    },
+    {
+      code: `
+/** @deprecated */
+const deprecatedValue = 45;
+const bar = deprecatedValue;
+      `,
+      options: [
+        {
+          allow: ['deprecatedValue'],
+        },
+      ],
+    },
+    {
+      code: `
 import { exists } from 'fs';
+exists('/foo');
+      `,
+      options: [
+        {
+          allow: [
+            {
+              from: 'package',
+              name: 'exists',
+              package: 'fs',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const { exists } = import('fs');
 exists('/foo');
       `,
       options: [
@@ -2912,6 +2982,37 @@ class B extends A {
           endLine: 19,
           line: 19,
           messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+import { exists } from 'fs';
+exists('/foo');
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            name: 'exists',
+            reason:
+              'Since v1.0.0 - Use {@link stat} or {@link access} instead.',
+          },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+      options: [
+        {
+          allow: [
+            {
+              from: 'package',
+              name: 'exists',
+              package: 'hoge',
+            },
+          ],
         },
       ],
     },

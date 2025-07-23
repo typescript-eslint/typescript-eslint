@@ -3,6 +3,7 @@ import {
   clearDefaultProjectMatchedFiles,
   clearProgramCache as clearProgramCacheOriginal,
 } from './parser';
+import { clearCandidateTSConfigRootDirs } from './parseSettings/candidateTSConfigRootDirs';
 import {
   clearTSConfigMatchCache,
   clearTSServerProjectService,
@@ -17,6 +18,7 @@ import { clearGlobCache } from './parseSettings/resolveProjectList';
  * - In custom lint tooling that iteratively lints one project at a time to prevent OOMs.
  */
 export function clearCaches(): void {
+  clearCandidateTSConfigRootDirs();
   clearDefaultProjectMatchedFiles();
   clearProgramCacheOriginal();
   clearWatchCaches();
