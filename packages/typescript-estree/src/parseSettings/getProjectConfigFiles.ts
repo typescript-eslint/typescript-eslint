@@ -57,7 +57,7 @@ export function getProjectConfigFiles(
     checkedDirectories.push(directory);
   } while (
     directory.length > 1 &&
-    directory.length >= parseSettings.tsconfigRootDir.length
+    directory.length >= path.normalize(parseSettings.tsconfigRootDir).replace(/[/\\]$/, '').length
   );
 
   throw new Error(

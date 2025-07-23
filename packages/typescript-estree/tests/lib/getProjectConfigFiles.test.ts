@@ -178,5 +178,20 @@ describe(getProjectConfigFiles, () => {
         `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to './repos/repo/packages/package/file.ts' within '/'.]`,
       );
     });
+
+    it('works correctly with trailing path separator in tsconfigRootDir', () => {
+      mockExistsSync.mockImplementation(
+        filePath => filePath === path.normalize('repos/repo/tsconfig.json'),
+      );
+
+      const actual = getProjectConfigFiles(
+        { ...parseSettings, tsconfigRootDir: './repos/repo/' },
+        true,
+      );
+
+      expect(actual).toStrictEqual([
+        path.normalize('repos/repo/tsconfig.json'),
+      ]);
+    });
   });
 });
