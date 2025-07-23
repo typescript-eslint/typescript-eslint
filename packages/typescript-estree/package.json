@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "8.36.0",
+  "version": "8.38.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -52,10 +52,10 @@
     "typecheck": "yarn run -BT nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/project-service": "8.36.0",
-    "@typescript-eslint/tsconfig-utils": "8.36.0",
-    "@typescript-eslint/types": "8.36.0",
-    "@typescript-eslint/visitor-keys": "8.36.0",
+    "@typescript-eslint/project-service": "8.38.0",
+    "@typescript-eslint/tsconfig-utils": "8.38.0",
+    "@typescript-eslint/types": "8.38.0",
+    "@typescript-eslint/visitor-keys": "8.38.0",
     "debug": "^4.3.4",
     "fast-glob": "^3.3.2",
     "is-glob": "^4.0.3",

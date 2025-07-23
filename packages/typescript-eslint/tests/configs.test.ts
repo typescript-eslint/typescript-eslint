@@ -4,8 +4,24 @@ import type {
 } from '@typescript-eslint/utils/ts-eslint';
 
 import rules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+import { clearCandidateTSConfigRootDirs } from '@typescript-eslint/typescript-estree';
 
 import tseslint from '../src/index.js';
+
+vi.mock('@typescript-eslint/typescript-estree', async () => ({
+  ...(await vi.importActual('@typescript-eslint/typescript-estree')),
+  get addCandidateTSConfigRootDir() {
+    return mockAddCandidateTSConfigRootDir;
+  },
+}));
+
+const mockGetTSConfigRootDirFromStack = vi.fn();
+
+vi.mock('../src/getTSConfigRootDirFromStack', () => ({
+  get getTSConfigRootDirFromStack() {
+    return mockGetTSConfigRootDirFromStack;
+  },
+}));
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
 const EXTENSION_RULES = Object.entries(rules)
@@ -383,4 +399,37 @@ describe('stylistic-type-checked-only.ts', () => {
       expect(unfilteredConfigRules).toMatchObject(expectedOverrides);
     },
   );
+});
+
+const mockAddCandidateTSConfigRootDir = vi.fn();
+
+describe('Candidate tsconfigRootDirs', () => {
+  beforeEach(() => {
+    clearCandidateTSConfigRootDirs();
+    mockAddCandidateTSConfigRootDir.mockClear();
+  });
+
+  describe.each(Object.keys(tseslint.configs))('%s', configKey => {
+    it('does not populate a candidate tsconfigRootDir when accessed and one cannot be inferred from the stack', () => {
+      mockGetTSConfigRootDirFromStack.mockReturnValue(undefined);
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      tseslint.configs[configKey as keyof typeof tseslint.configs];
+
+      expect(mockAddCandidateTSConfigRootDir).not.toHaveBeenCalled();
+    });
+
+    it('populates a candidate tsconfigRootDir when accessed and one can be inferred from the stack', () => {
+      const tsconfigRootDir = 'a/b/c/';
+
+      mockGetTSConfigRootDirFromStack.mockReturnValue(tsconfigRootDir);
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      tseslint.configs[configKey as keyof typeof tseslint.configs];
+
+      expect(mockAddCandidateTSConfigRootDir).toHaveBeenCalledWith(
+        tsconfigRootDir,
+      );
+    });
+  });
 });

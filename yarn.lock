@@ -4352,9 +4352,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/devkit@npm:21.0.3"
+"@nx/devkit@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/devkit@npm:21.2.3"
   dependencies:
     ejs: ^3.1.7
     enquirer: ~2.3.6
@@ -4365,14 +4365,14 @@ __metadata:
     tslib: ^2.3.0
     yargs-parser: 21.1.1
   peerDependencies:
-    nx: 21.0.3
-  checksum: a742dce7d5103b585d0cb13fc2cf11fb41ad5b031b5bb2ff6c7a6f0c837a287123866a0809d411974e4f03a41b057b14b46c8b226231755563267f6a46d3c611
+    nx: 21.2.3
+  checksum: 3db18a83a29d5577e89266880d6449d9e1677512adc47bdf0a2fd4448809247a964658555a809ca8f8c3197560e5f08ae3cf12244b9b87329cea6399406ca25a
   languageName: node
   linkType: hard
 
-"@nx/js@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/js@npm:21.0.3"
+"@nx/js@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/js@npm:21.2.3"
   dependencies:
     "@babel/core": ^7.23.2
     "@babel/plugin-proposal-decorators": ^7.22.7
@@ -4381,8 +4381,8 @@ __metadata:
     "@babel/preset-env": ^7.23.2
     "@babel/preset-typescript": ^7.22.5
     "@babel/runtime": ^7.22.6
-    "@nx/devkit": 21.0.3
-    "@nx/workspace": 21.0.3
+    "@nx/devkit": 21.2.3
+    "@nx/workspace": 21.2.3
     "@zkochan/js-yaml": 0.0.7
     babel-plugin-const-enum: ^1.0.1
     babel-plugin-macros: ^3.1.0
@@ -4408,88 +4408,89 @@ __metadata:
   peerDependenciesMeta:
     verdaccio:
       optional: true
-  checksum: 97af3d23ef58484011ba7e0667656c4ab15e38935176d29310c926ba42d3b78aa50724ae293c15e2f565a9752bcbee3b4007197e778d43a33329d8bd38773bb7
+  checksum: d2a79a4ca57bd6251362c8853dddc52f6ea51b7da96913611f73ae44e24d562d9f9d8afa002822932d3e246b605f69e363c5c22db8962d14d5e210eae84a9693
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-arm64@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/nx-darwin-arm64@npm:21.0.3"
+"@nx/nx-darwin-arm64@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/nx-darwin-arm64@npm:21.2.3"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-x64@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/nx-darwin-x64@npm:21.0.3"
+"@nx/nx-darwin-x64@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/nx-darwin-x64@npm:21.2.3"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-freebsd-x64@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/nx-freebsd-x64@npm:21.0.3"
+"@nx/nx-freebsd-x64@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/nx-freebsd-x64@npm:21.2.3"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm-gnueabihf@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/nx-linux-arm-gnueabihf@npm:21.0.3"
+"@nx/nx-linux-arm-gnueabihf@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/nx-linux-arm-gnueabihf@npm:21.2.3"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-gnu@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/nx-linux-arm64-gnu@npm:21.0.3"
+"@nx/nx-linux-arm64-gnu@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/nx-linux-arm64-gnu@npm:21.2.3"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-musl@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/nx-linux-arm64-musl@npm:21.0.3"
+"@nx/nx-linux-arm64-musl@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/nx-linux-arm64-musl@npm:21.2.3"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-gnu@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/nx-linux-x64-gnu@npm:21.0.3"
+"@nx/nx-linux-x64-gnu@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/nx-linux-x64-gnu@npm:21.2.3"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-musl@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/nx-linux-x64-musl@npm:21.0.3"
+"@nx/nx-linux-x64-musl@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/nx-linux-x64-musl@npm:21.2.3"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-arm64-msvc@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/nx-win32-arm64-msvc@npm:21.0.3"
+"@nx/nx-win32-arm64-msvc@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/nx-win32-arm64-msvc@npm:21.2.3"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-x64-msvc@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/nx-win32-x64-msvc@npm:21.0.3"
+"@nx/nx-win32-x64-msvc@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/nx-win32-x64-msvc@npm:21.2.3"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/vite@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/vite@npm:21.0.3"
+"@nx/vite@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/vite@npm:21.2.3"
   dependencies:
-    "@nx/devkit": 21.0.3
-    "@nx/js": 21.0.3
+    "@nx/devkit": 21.2.3
+    "@nx/js": 21.2.3
     "@phenomnomnominal/tsquery": ~5.0.1
     "@swc/helpers": ~0.5.0
+    ajv: ^8.0.0
     enquirer: ~2.3.6
     picomatch: 4.0.2
     semver: ^7.6.3
@@ -4497,23 +4498,23 @@ __metadata:
   peerDependencies:
     vite: ^5.0.0 || ^6.0.0
     vitest: ^1.3.1 || ^2.0.0 || ^3.0.0
-  checksum: 4195276b94cfd310650d5fd68172e00a025b2df75424f1e930923a8703178bc8c1887d3d3854cd4cad2b5b15d70ed4331b9f2aadfba1d172f2d33bc49f098e36
+  checksum: cc274da699980816d52927ac037e9f206978853fc4d97c98a08eef8ae542b8ec392e19cf39a2c66889da392853d1553f2179dd8fb223833b3729dcfd8cd68e75
   languageName: node
   linkType: hard
 
-"@nx/workspace@npm:21.0.3":
-  version: 21.0.3
-  resolution: "@nx/workspace@npm:21.0.3"
+"@nx/workspace@npm:21.2.3":
+  version: 21.2.3
+  resolution: "@nx/workspace@npm:21.2.3"
   dependencies:
-    "@nx/devkit": 21.0.3
+    "@nx/devkit": 21.2.3
     "@zkochan/js-yaml": 0.0.7
     chalk: ^4.1.0
     enquirer: ~2.3.6
-    nx: 21.0.3
+    nx: 21.2.3
     picomatch: 4.0.2
     tslib: ^2.3.0
     yargs-parser: 21.1.1
-  checksum: 20c4051faa3a61c28acd8578b04afb4e991da23b382ff8e70aa907d88ea2f553e4b39759a21da893fdf36814ce809a1dce97fc95683576cfb37bf7278f38efc9
+  checksum: 6381eb146a0b9b4786452161f7179fcb5f1301b2aa0608ab522b02a0a8e73cdf80097ba68f454dbea94aae31c3b2eb7b23572152fb6cfb6df31b1d6f5a42b4f2
   languageName: node
   linkType: hard
 
@@ -5954,19 +5955,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/eslint-plugin@8.36.0, @typescript-eslint/eslint-plugin@workspace:*, @typescript-eslint/eslint-plugin@workspace:^, @typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin":
+"@typescript-eslint/eslint-plugin@8.38.0, @typescript-eslint/eslint-plugin@workspace:*, @typescript-eslint/eslint-plugin@workspace:^, @typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
     "@eslint-community/regexpp": ^4.10.0
     "@types/mdast": ^4.0.3
     "@types/natural-compare": "*"
-    "@typescript-eslint/rule-schema-to-typescript-types": 8.36.0
-    "@typescript-eslint/rule-tester": 8.36.0
-    "@typescript-eslint/scope-manager": 8.36.0
-    "@typescript-eslint/type-utils": 8.36.0
-    "@typescript-eslint/utils": 8.36.0
-    "@typescript-eslint/visitor-keys": 8.36.0
+    "@typescript-eslint/rule-schema-to-typescript-types": 8.38.0
+    "@typescript-eslint/rule-tester": 8.38.0
+    "@typescript-eslint/scope-manager": 8.38.0
+    "@typescript-eslint/type-utils": 8.38.0
+    "@typescript-eslint/utils": 8.38.0
+    "@typescript-eslint/visitor-keys": 8.38.0
     "@vitest/coverage-v8": ^3.1.3
     ajv: ^6.12.6
     cross-fetch: "*"
@@ -5989,7 +5990,7 @@ __metadata:
     unist-util-visit: ^5.0.0
     vitest: ^3.1.3
   peerDependencies:
-    "@typescript-eslint/parser": ^8.36.0
+    "@typescript-eslint/parser": ^8.38.0
     eslint: ^8.57.0 || ^9.0.0
     typescript: ">=4.8.4 <5.9.0"
   languageName: unknown
@@ -6005,14 +6006,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/parser@8.36.0, @typescript-eslint/parser@workspace:*, @typescript-eslint/parser@workspace:^, @typescript-eslint/parser@workspace:packages/parser":
+"@typescript-eslint/parser@8.38.0, @typescript-eslint/parser@workspace:*, @typescript-eslint/parser@workspace:^, @typescript-eslint/parser@workspace:packages/parser":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/parser@workspace:packages/parser"
   dependencies:
-    "@typescript-eslint/scope-manager": 8.36.0
-    "@typescript-eslint/types": 8.36.0
-    "@typescript-eslint/typescript-estree": 8.36.0
-    "@typescript-eslint/visitor-keys": 8.36.0
+    "@typescript-eslint/scope-manager": 8.38.0
+    "@typescript-eslint/types": 8.38.0
+    "@typescript-eslint/typescript-estree": 8.38.0
+    "@typescript-eslint/visitor-keys": 8.38.0
     "@vitest/coverage-v8": ^3.1.3
     debug: ^4.3.4
     eslint: "*"
@@ -6026,12 +6027,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/project-service@8.36.0, @typescript-eslint/project-service@workspace:packages/project-service":
+"@typescript-eslint/project-service@8.38.0, @typescript-eslint/project-service@workspace:packages/project-service":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/project-service@workspace:packages/project-service"
   dependencies:
-    "@typescript-eslint/tsconfig-utils": ^8.36.0
-    "@typescript-eslint/types": ^8.36.0
+    "@typescript-eslint/tsconfig-utils": ^8.38.0
+    "@typescript-eslint/types": ^8.38.0
     "@vitest/coverage-v8": ^3.1.3
     debug: ^4.3.4
     rimraf: "*"
@@ -6042,12 +6043,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-schema-to-typescript-types@8.36.0, @typescript-eslint/rule-schema-to-typescript-types@workspace:*, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
+"@typescript-eslint/rule-schema-to-typescript-types@8.38.0, @typescript-eslint/rule-schema-to-typescript-types@workspace:*, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
   dependencies:
-    "@typescript-eslint/type-utils": 8.36.0
-    "@typescript-eslint/utils": 8.36.0
+    "@typescript-eslint/type-utils": 8.38.0
+    "@typescript-eslint/utils": 8.38.0
     "@vitest/coverage-v8": ^3.1.3
     eslint: "*"
     natural-compare: ^1.4.0
@@ -6058,15 +6059,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-tester@8.36.0, @typescript-eslint/rule-tester@workspace:*, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
+"@typescript-eslint/rule-tester@8.38.0, @typescript-eslint/rule-tester@workspace:*, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-tester@workspace:packages/rule-tester"
   dependencies:
     "@types/json-stable-stringify-without-jsonify": ^1.0.2
     "@types/lodash.merge": 4.6.9
-    "@typescript-eslint/parser": 8.36.0
-    "@typescript-eslint/typescript-estree": 8.36.0
-    "@typescript-eslint/utils": 8.36.0
+    "@typescript-eslint/parser": 8.38.0
+    "@typescript-eslint/typescript-estree": 8.38.0
+    "@typescript-eslint/utils": 8.38.0
     "@vitest/coverage-v8": ^3.1.3
     ajv: ^6.12.6
     eslint: "*"
@@ -6081,13 +6082,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/scope-manager@8.36.0, @typescript-eslint/scope-manager@workspace:*, @typescript-eslint/scope-manager@workspace:^, @typescript-eslint/scope-manager@workspace:packages/scope-manager":
+"@typescript-eslint/scope-manager@8.38.0, @typescript-eslint/scope-manager@workspace:*, @typescript-eslint/scope-manager@workspace:^, @typescript-eslint/scope-manager@workspace:packages/scope-manager":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/scope-manager@workspace:packages/scope-manager"
   dependencies:
-    "@typescript-eslint/types": 8.36.0
-    "@typescript-eslint/typescript-estree": 8.36.0
-    "@typescript-eslint/visitor-keys": 8.36.0
+    "@typescript-eslint/types": 8.38.0
+    "@typescript-eslint/typescript-estree": 8.38.0
+    "@typescript-eslint/visitor-keys": 8.38.0
     "@vitest/coverage-v8": ^3.1.3
     "@vitest/pretty-format": ^3.1.3
     eslint: "*"
@@ -6098,7 +6099,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/tsconfig-utils@8.36.0, @typescript-eslint/tsconfig-utils@^8.36.0, @typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils":
+"@typescript-eslint/tsconfig-utils@8.38.0, @typescript-eslint/tsconfig-utils@^8.38.0, @typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/tsconfig-utils@workspace:packages/tsconfig-utils"
   dependencies:
@@ -6111,13 +6112,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/type-utils@8.36.0, @typescript-eslint/type-utils@workspace:*, @typescript-eslint/type-utils@workspace:packages/type-utils":
+"@typescript-eslint/type-utils@8.38.0, @typescript-eslint/type-utils@workspace:*, @typescript-eslint/type-utils@workspace:packages/type-utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/type-utils@workspace:packages/type-utils"
   dependencies:
-    "@typescript-eslint/parser": 8.36.0
-    "@typescript-eslint/typescript-estree": 8.36.0
-    "@typescript-eslint/utils": 8.36.0
+    "@typescript-eslint/parser": 8.38.0
+    "@typescript-eslint/types": 8.38.0
+    "@typescript-eslint/typescript-estree": 8.38.0
+    "@typescript-eslint/utils": 8.38.0
     "@vitest/coverage-v8": ^3.1.3
     ajv: ^6.12.6
     debug: ^4.3.4
@@ -6132,7 +6134,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@8.36.0, @typescript-eslint/types@^8.32.1, @typescript-eslint/types@^8.36.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@8.38.0, @typescript-eslint/types@^8.32.1, @typescript-eslint/types@^8.38.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -6153,10 +6155,10 @@ __metadata:
     "@eslint/compat": ^1.2.4
     "@eslint/eslintrc": ^3.2.0
     "@eslint/js": ^9.26.0
-    "@nx/devkit": 21.0.3
-    "@nx/js": 21.0.3
-    "@nx/vite": 21.0.3
-    "@nx/workspace": 21.0.3
+    "@nx/devkit": 21.2.3
+    "@nx/js": 21.2.3
+    "@nx/vite": 21.2.3
+    "@nx/workspace": 21.2.3
     "@swc/core": ^1.4.12
     "@types/debug": ^4.1.12
     "@types/eslint-plugin-jsx-a11y": ^6.10.0
@@ -6192,7 +6194,7 @@ __metadata:
     knip: ^5.41.1
     lint-staged: ^15.2.2
     markdownlint-cli: ^0.44.0
-    nx: 21.0.3
+    nx: 21.2.3
     prettier: 3.5.0
     rimraf: ^5.0.5
     semver: 7.7.0
@@ -6205,15 +6207,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/typescript-estree@8.36.0, @typescript-eslint/typescript-estree@workspace:*, @typescript-eslint/typescript-estree@workspace:^, @typescript-eslint/typescript-estree@workspace:packages/typescript-estree":
+"@typescript-eslint/typescript-estree@8.38.0, @typescript-eslint/typescript-estree@workspace:*, @typescript-eslint/typescript-estree@workspace:^, @typescript-eslint/typescript-estree@workspace:packages/typescript-estree":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
     "@types/is-glob": ^4.0.4
-    "@typescript-eslint/project-service": 8.36.0
-    "@typescript-eslint/tsconfig-utils": 8.36.0
-    "@typescript-eslint/types": 8.36.0
-    "@typescript-eslint/visitor-keys": 8.36.0
+    "@typescript-eslint/project-service": 8.38.0
+    "@typescript-eslint/tsconfig-utils": 8.38.0
+    "@typescript-eslint/types": 8.38.0
+    "@typescript-eslint/visitor-keys": 8.38.0
     "@vitest/coverage-v8": ^3.1.3
     debug: ^4.3.4
     eslint: "*"
@@ -6231,14 +6233,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/utils@8.36.0, @typescript-eslint/utils@^8.24.0, @typescript-eslint/utils@^8.32.1, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/utils@8.38.0, @typescript-eslint/utils@^8.24.0, @typescript-eslint/utils@^8.32.1, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
     "@eslint-community/eslint-utils": ^4.7.0
-    "@typescript-eslint/scope-manager": 8.36.0
-    "@typescript-eslint/types": 8.36.0
-    "@typescript-eslint/typescript-estree": 8.36.0
+    "@typescript-eslint/scope-manager": 8.38.0
+    "@typescript-eslint/types": 8.38.0
+    "@typescript-eslint/typescript-estree": 8.38.0
     "@vitest/coverage-v8": ^3.1.3
     eslint: "*"
     rimraf: "*"
@@ -6250,11 +6252,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/visitor-keys@8.36.0, @typescript-eslint/visitor-keys@workspace:*, @typescript-eslint/visitor-keys@workspace:packages/visitor-keys":
+"@typescript-eslint/visitor-keys@8.38.0, @typescript-eslint/visitor-keys@workspace:*, @typescript-eslint/visitor-keys@workspace:packages/visitor-keys":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/visitor-keys@workspace:packages/visitor-keys"
   dependencies:
-    "@typescript-eslint/types": 8.36.0
+    "@typescript-eslint/types": 8.38.0
     "@vitest/coverage-v8": ^3.1.3
     eslint: "*"
     eslint-visitor-keys: ^4.2.1
@@ -15288,21 +15290,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nx@npm:21.0.3":
-  version: 21.0.3
-  resolution: "nx@npm:21.0.3"
+"nx@npm:21.2.3":
+  version: 21.2.3
+  resolution: "nx@npm:21.2.3"
   dependencies:
     "@napi-rs/wasm-runtime": 0.2.4
-    "@nx/nx-darwin-arm64": 21.0.3
-    "@nx/nx-darwin-x64": 21.0.3
-    "@nx/nx-freebsd-x64": 21.0.3
-    "@nx/nx-linux-arm-gnueabihf": 21.0.3
-    "@nx/nx-linux-arm64-gnu": 21.0.3
-    "@nx/nx-linux-arm64-musl": 21.0.3
-    "@nx/nx-linux-x64-gnu": 21.0.3
-    "@nx/nx-linux-x64-musl": 21.0.3
-    "@nx/nx-win32-arm64-msvc": 21.0.3
-    "@nx/nx-win32-x64-msvc": 21.0.3
+    "@nx/nx-darwin-arm64": 21.2.3
+    "@nx/nx-darwin-x64": 21.2.3
+    "@nx/nx-freebsd-x64": 21.2.3
+    "@nx/nx-linux-arm-gnueabihf": 21.2.3
+    "@nx/nx-linux-arm64-gnu": 21.2.3
+    "@nx/nx-linux-arm64-musl": 21.2.3
+    "@nx/nx-linux-x64-gnu": 21.2.3
+    "@nx/nx-linux-x64-musl": 21.2.3
+    "@nx/nx-win32-arm64-msvc": 21.2.3
+    "@nx/nx-win32-x64-msvc": 21.2.3
     "@yarnpkg/lockfile": ^1.1.0
     "@yarnpkg/parsers": 3.0.2
     "@zkochan/js-yaml": 0.0.7
@@ -15369,7 +15371,7 @@ __metadata:
   bin:
     nx: bin/nx.js
     nx-cloud: bin/nx-cloud.js
-  checksum: 9b3ae238d5df6265bff3430e4e0680762fc3236fb2cd3aed4d3177f64f12586fa19aa8dc4f60f9f5674fb035c46dcf6e0dcad3744d717e84f4a70775aaa10d1b
+  checksum: faaef03d763f6da739f8108c3f8fe4ad5dd30926d15b279508266e8a272164b5d53598fb3ff5b636ee665bb8e9782ccc2a3134cb6c977b577c5c16d5f20722bd
   languageName: node
   linkType: hard
 
@@ -19799,9 +19801,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "typescript-eslint@workspace:packages/typescript-eslint"
   dependencies:
-    "@typescript-eslint/eslint-plugin": 8.36.0
-    "@typescript-eslint/parser": 8.36.0
-    "@typescript-eslint/utils": 8.36.0
+    "@typescript-eslint/eslint-plugin": 8.38.0
+    "@typescript-eslint/parser": 8.38.0
+    "@typescript-eslint/typescript-estree": 8.38.0
+    "@typescript-eslint/utils": 8.38.0
     "@vitest/coverage-v8": ^3.1.3
     eslint: "*"
     rimraf: "*"

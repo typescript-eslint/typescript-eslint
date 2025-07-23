@@ -20,4 +20,5 @@
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "nxConsole.generateAiAgentRules": true,
 }
