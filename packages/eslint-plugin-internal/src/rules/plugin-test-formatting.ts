@@ -277,6 +277,10 @@ export default createRule<Options, MessageIds>({
       isErrorTest: boolean,
       isNoFormatTagged = false,
     ): void {
+      function isNull(value: unknown): value is null {
+        return value == null;
+      }
+
       if (literal.quasis.length > 1) {
         // ignore template literals with ${expressions} for simplicity
         return;
@@ -284,7 +288,7 @@ export default createRule<Options, MessageIds>({
 
       const text = literal.quasis[0].value.cooked;
 
-      if (text == null) {
+      if (isNull(text)) {
         return;
       }
 

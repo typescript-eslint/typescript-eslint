@@ -172,6 +172,10 @@ export default createRule({
       senderType: ts.Type,
       senderNode: ts.Node,
     ): boolean {
+      function isNull(value: unknown): value is null {
+        return value == null;
+      }
+
       const properties = new Map(
         senderType
           .getProperties()
@@ -201,7 +205,7 @@ export default createRule({
           receiverProperty.key.quasis.length === 1
         ) {
           const cooked = receiverProperty.key.quasis[0].value.cooked;
-          if (cooked == null) {
+          if (isNull(cooked)) {
             continue;
           }
           key = cooked;
