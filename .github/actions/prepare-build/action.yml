@@ -23,8 +23,6 @@ runs:
       shell: bash
       run: |
         yarn nx run types:build
-      env:
-        SKIP_AST_SPEC_REBUILD: true
 
     - name: Build
       if: steps['build-cache'].outputs.cache-hit != 'true'
@@ -32,5 +30,3 @@ runs:
       # Website will be built by the Netlify GitHub App
       run: |
         yarn nx run-many --target=build --parallel --exclude=website --exclude=website-eslint
-      env:
-        SKIP_AST_SPEC_REBUILD: true

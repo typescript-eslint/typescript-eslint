@@ -26,7 +26,7 @@ Program {
               type: "TemplateElement",
               tail: true,
               value: {
-                "cooked": "foo",
+                "cooked": null,
                 "raw": "foo",
               },
 

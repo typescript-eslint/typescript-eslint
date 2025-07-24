@@ -172,6 +172,10 @@ export default createRule({
       senderType: ts.Type,
       senderNode: ts.Node,
     ): boolean {
+      function isNull(value: unknown): value is null {
+        return value == null;
+      }
+
       const properties = new Map(
         senderType
           .getProperties()
@@ -200,7 +204,11 @@ export default createRule({
           receiverProperty.key.type === AST_NODE_TYPES.TemplateLiteral &&
           receiverProperty.key.quasis.length === 1
         ) {
-          key = receiverProperty.key.quasis[0].value.cooked;
+          const cooked = receiverProperty.key.quasis[0].value.cooked;
+          if (isNull(cooked)) {
+            continue;
+          }
+          key = cooked;
         } else {
           // can't figure out the name, so skip it
           continue;

@@ -277,12 +277,20 @@ export default createRule<Options, MessageIds>({
       isErrorTest: boolean,
       isNoFormatTagged = false,
     ): void {
+      function isNull(value: unknown): value is null {
+        return value == null;
+      }
+
       if (literal.quasis.length > 1) {
         // ignore template literals with ${expressions} for simplicity
         return;
       }
 
       const text = literal.quasis[0].value.cooked;
+
+      if (isNull(text)) {
+        return;
+      }
 
       if (literal.loc.end.line === literal.loc.start.line) {
         // don't use template strings for single line tests
@@ -448,9 +456,13 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkForUnnecesaryNoFormat(
-      text: string,
+      text: string | null,
       expr: TSESTree.TaggedTemplateExpression,
     ): void {
+      if (text == null) {
+        return;
+      }
+
       const formatted = getCodeFormatted(text);
       if (formatted === text) {
         context.report({
