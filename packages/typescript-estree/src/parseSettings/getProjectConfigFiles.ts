@@ -38,6 +38,9 @@ export function getProjectConfigFiles(
   log('Looking for tsconfig.json at or above file: %s', parseSettings.filePath);
   let directory = path.dirname(parseSettings.filePath);
   const checkedDirectories = [directory];
+  
+  // Normalize tsconfigRootDir once to avoid repeated regex operations in the loop
+  const normalizedTsconfigRootDirLength = Math.max(1, parseSettings.tsconfigRootDir.replace(/[/\\]+$/, '').length);
 
   do {
     log('Checking tsconfig.json path: %s', directory);
@@ -57,7 +60,7 @@ export function getProjectConfigFiles(
     checkedDirectories.push(directory);
   } while (
     directory.length > 1 &&
-    directory.length >= Math.max(1, parseSettings.tsconfigRootDir.replace(/[/\\]+$/, '').length)
+    directory.length >= normalizedTsconfigRootDirLength
   );
 
   throw new Error(
