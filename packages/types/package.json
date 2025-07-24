@@ -65,9 +65,6 @@
     ],
     "targets": {
       "build": {
-        "inputs": [
-          "{projectRoot}/src/generated"
-        ],
         "dependsOn": [
           "copy-ast-spec"
         ]
