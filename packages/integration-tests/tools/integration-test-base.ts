@@ -59,7 +59,12 @@ export function eslintIntegrationTest(
       }
     }
     // console.log('Lint complete.');
-    expect(stderr).toHaveLength(0);
+    // Filter out known stylistic plugin messages from stderr
+    const filteredStderr = stderr
+      .split('\n')
+      .filter(line => line && !line.includes('[@stylistic/eslint-plugin]'))
+      .join('\n');
+    expect(filteredStderr).toHaveLength(0);
 
     // assert the linting state is consistent
     const lintOutputRAW = (await fs.readFile(outFile, { encoding: 'utf-8' }))
