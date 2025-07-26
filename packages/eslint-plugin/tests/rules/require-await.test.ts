@@ -228,6 +228,19 @@ async function* foo(): Promise<string> {
         await using foo = new Bar();
       };
     `,
+    // Additional test: async function declaration with await using
+    `
+      async function foo() {
+        await using bar = new Bar();
+      }
+    `,
+    // Additional test: async generator with await using
+    `
+      async function* gen() {
+        await using bar = new Bar();
+        yield 1;
+      }
+    `,
     `
       async function* test1() {
         yield Promise.resolve(1);
