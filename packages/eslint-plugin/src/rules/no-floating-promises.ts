@@ -16,6 +16,7 @@ import {
   readonlynessOptionsSchema,
   skipChainExpression,
   typeMatchesSomeSpecifier,
+  valueMatchesSomeSpecifier,
 } from '../util';
 import {
   parseCatchCall,
@@ -241,6 +242,17 @@ export default createRule<Options, MessageId>({
       }
 
       const type = services.getTypeAtLocation(node.callee);
+
+      if (
+        valueMatchesSomeSpecifier(
+          node.callee,
+          allowForKnownSafeCalls,
+          services.program,
+          type,
+        )
+      ) {
+        return true;
+      }
 
       return typeMatchesSomeSpecifier(
         type,
