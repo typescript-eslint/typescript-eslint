@@ -52,6 +52,7 @@ const schema: readonly JSONSchema4[] = [
   },
   {
     type: 'object',
+    additionalProperties: false,
     properties: {
       enforceForDeclarationWithTypeAnnotation: {
         type: 'boolean',
