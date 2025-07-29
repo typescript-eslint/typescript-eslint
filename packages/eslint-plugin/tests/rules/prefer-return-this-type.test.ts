@@ -411,5 +411,41 @@ class Animal<T> {
 }
       `,
     },
+    {
+      code: `
+declare const valueUnion: number | string;
+
+class BaseUnion {
+  f(): BaseUnion | string {
+    if (hidden) {
+      return this;
+    }
+
+    return valueUnion;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 17,
+          line: 5,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+declare const valueUnion: number | string;
+
+class BaseUnion {
+  f(): this | string {
+    if (hidden) {
+      return this;
+    }
+
+    return valueUnion;
+  }
+}
+      `,
+    },
   ],
 });
