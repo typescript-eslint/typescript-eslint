@@ -100,6 +100,19 @@ class Foo {
   f?: string;
 }
     `,
+    `
+declare const valueUnion: BaseUnion | string;
+
+class BaseUnion {
+  f(): BaseUnion | string {
+    if (hidden) {
+      return this;
+    }
+
+    return valueUnion;
+  }
+}
+    `,
   ],
   invalid: [
     {
