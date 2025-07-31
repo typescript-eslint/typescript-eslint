@@ -179,6 +179,7 @@ jobs:
     needs: [build]
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         exclude:
           - os: windows-latest
