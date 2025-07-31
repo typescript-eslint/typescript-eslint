@@ -169,7 +169,7 @@ Program {
             type: "TemplateElement",
             tail: false,
             value: {
-              "cooked": null,
+              "cooked": "",
               "raw": "",
             },
 
@@ -183,7 +183,7 @@ Program {
             type: "TemplateElement",
             tail: true,
             value: {
-              "cooked": null,
+              "cooked": " fish",
               "raw": " fish",
             },
 

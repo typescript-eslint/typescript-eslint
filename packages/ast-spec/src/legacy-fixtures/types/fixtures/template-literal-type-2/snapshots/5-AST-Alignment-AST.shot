@@ -30,7 +30,7 @@ Snapshot Diff:
 -             type: 'TemplateElement',
 -             tail: false,
 -             value: Object {
--               'cooked': null,
+-               'cooked': 'foo',
 -               'raw': 'foo',
 -             },
 +       typeAnnotation: TSLiteralType {
@@ -55,7 +55,7 @@ Snapshot Diff:
 -             type: 'TemplateElement',
 -             tail: true,
 -             value: Object {
--               'cooked': null,
+-               'cooked': '',
 -               'raw': '',
 -             },
 +                 range: [88, 93],

@@ -176,7 +176,7 @@ Snapshot Diff:
 -             type: 'TemplateElement',
 -             tail: false,
 -             value: Object {
--               'cooked': null,
+-               'cooked': '',
 -               'raw': '',
 -             },
 +       typeAnnotation: TSLiteralType {
@@ -205,7 +205,7 @@ Snapshot Diff:
 -             type: 'TemplateElement',
 -             tail: true,
 -             value: Object {
--               'cooked': null,
+-               'cooked': ' fish',
 -               'raw': ' fish',
 -             },
 -
