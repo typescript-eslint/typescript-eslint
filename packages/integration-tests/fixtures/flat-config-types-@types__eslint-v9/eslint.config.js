@@ -31,7 +31,7 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
-  stylisticPlugin.configs['recommended-flat'],
+  stylisticPlugin.configs.recommended,
 );
 
 // wrapped in a function so they aren't executed at lint time
@@ -48,7 +48,7 @@ function _otherCases() {
   tseslint.config(
     eslint.configs.recommended,
     ...tseslint.configs.recommended,
-    stylisticPlugin.configs['recommended-flat'],
+    stylisticPlugin.configs.recommended,
     vitestPlugin.configs.recommended,
   );
   tseslint.config(
