@@ -7,9 +7,6 @@
       "path": "../visitor-keys"
     },
     {
-      "path": "../types"
-    },
-    {
       "path": "../typescript-estree"
     },
     {

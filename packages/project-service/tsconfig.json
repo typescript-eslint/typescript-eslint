@@ -7,9 +7,6 @@
       "path": "../tsconfig-utils"
     },
     {
-      "path": "../types"
-    },
-    {
       "path": "./tsconfig.build.json"
     },
     {
