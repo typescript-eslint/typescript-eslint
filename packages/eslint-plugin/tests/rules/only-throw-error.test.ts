@@ -257,7 +257,7 @@ async function foo() {
     },
     {
       code: `
-function *foo(): Generator<number, void, Error> {
+function* foo(): Generator<number, void, Error> {
   throw yield 303;
 }
       `,
