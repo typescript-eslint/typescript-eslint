@@ -4670,14 +4670,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prettier/sync@npm:^0.5.1":
-  version: 0.5.2
-  resolution: "@prettier/sync@npm:0.5.2"
+"@prettier/sync@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "@prettier/sync@npm:0.6.1"
   dependencies:
-    make-synchronized: ^0.2.8
+    make-synchronized: ^0.8.0
   peerDependencies:
     prettier: "*"
-  checksum: 172cdc62f4103b022f8e8d0a63839350d97bc51468ea476594bce651c2cda311e4810417f16a3c967941a8493a68468a5df27beea4c85eaeaa37e84be3acf399
+  checksum: 2c53cd4ee718e2ebd2fb31aa5ec4773f743b9c29fcc6db6794dc3553bc87aa8fe7db47b51add6809cab655520b7550329d1cce2ca837f6f4643991eff44abad1
   languageName: node
   linkType: hard
 
@@ -5942,7 +5942,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/eslint-plugin-internal@workspace:packages/eslint-plugin-internal"
   dependencies:
-    "@prettier/sync": ^0.5.1
+    "@prettier/sync": ^0.6.1
     "@typescript-eslint/rule-tester": "workspace:*"
     "@typescript-eslint/scope-manager": "workspace:*"
     "@typescript-eslint/type-utils": "workspace:*"
@@ -13747,10 +13747,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"make-synchronized@npm:^0.2.8":
-  version: 0.2.8
-  resolution: "make-synchronized@npm:0.2.8"
-  checksum: fa5e0a7dadbf03c9b0b00707acf6ef6379d5926c7ba2b2c8e9a60163bf4195e3acafbdabdc09e88a87fe1cb611927d9808c5a9b8a8c97a8973f74554b9434f1e
+"make-synchronized@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "make-synchronized@npm:0.8.0"
+  checksum: 303cb607ec555e297763bda44893f6ceb1a23fc2776d5d5d838c7f51a3ad339b2b7d922a8c7d9e515c161acf18829a1d9d5792224e418ee11c8d1bafac21a4ca
   languageName: node
   linkType: hard
 
