@@ -1,3 +1,27 @@
+## 8.38.0 (2025-07-21)
+
+### 🚀 Features
+
+- **typescript-estree:** forbid optional chain in `TemplateTaggedLiteral` ([#11391](https://github.com/typescript-eslint/typescript-eslint/pull/11391))
+
+### 🩹 Fixes
+
+- disallow extra properties in rule options ([#11397](https://github.com/typescript-eslint/typescript-eslint/pull/11397))
+- **eslint-plugin:** [consistent-generic-constructors] resolve conflict with `isolatedDeclarations` if enabled in `constructor` option ([#11351](https://github.com/typescript-eslint/typescript-eslint/pull/11351))
+- **typescript-eslint:** infer tsconfigRootDir with v8 API ([#11412](https://github.com/typescript-eslint/typescript-eslint/pull/11412))
+- **typescript-eslint:** error on nested `extends` in `tseslint.config()` ([#11361](https://github.com/typescript-eslint/typescript-eslint/pull/11361))
+- **typescript-estree:** ensure the token type of the property name is Identifier ([#11329](https://github.com/typescript-eslint/typescript-eslint/pull/11329))
+
+### ❤️ Thank You
+
+- Andrew Kazakov @andreww2012
+- Kirk Waiblinger @kirkwaiblinger
+- MK @asdf93074
+- tao
+- Younsang Na @nayounsang
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.37.0 (2025-07-14)
 
 ### 🚀 Features
