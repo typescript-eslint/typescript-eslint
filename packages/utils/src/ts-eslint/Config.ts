@@ -194,7 +194,7 @@ export namespace FlatConfig {
      * A severity string indicating if and how unused disable and enable
      * directives should be tracked and reported. For legacy compatibility, `true`
      * is equivalent to `"warn"` and `false` is equivalent to `"off"`.
-     * @default "off"
+     * @default "warn"
      */
     reportUnusedDisableDirectives?:
       | boolean
