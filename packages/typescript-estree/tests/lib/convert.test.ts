@@ -494,6 +494,7 @@ describe('convert', () => {
     });
 
     it('should not set cooked to null for untagged template literals', () => {
+      // eslint-disable-next-line no-useless-escape
       const code = `const foo = \`\c1\``;
       const result = convertCode(code);
       const converter = new Converter(result);
@@ -512,6 +513,7 @@ describe('convert', () => {
       }
       const templateElement = init.quasis[0];
 
+      // eslint-disable-next-line no-useless-escape
       expect(templateElement.value.cooked).toBe(`\c1`);
     });
 
