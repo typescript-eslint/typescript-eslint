@@ -416,4 +416,19 @@ describe('config helper', () => {
       "tseslint.config(): Config at index 0 (anonymous) has an 'extends' array that contains a config with a 'basePath' property at index 0. 'basePath' in 'extends' is not allowed.",
     );
   });
+
+  it('should error when trying to use nested extends', () => {
+    expect(() => {
+      tseslint.config({
+        extends: [
+          {
+            extends: [
+              { rules: { rule1: 'error' } },
+              { rules: { rule2: 'error' } },
+            ],
+          },
+        ],
+      });
+    }).toThrow();
+  });
 });
