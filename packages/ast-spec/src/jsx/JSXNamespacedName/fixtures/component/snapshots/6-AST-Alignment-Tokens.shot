@@ -542,21 +542,23 @@ Snapshot Diff:
     },
     Punctuator {
       type: 'Punctuator',
-      value: '<',
+-     value: '</',
++     value: '<',
 
-      range: [275, 276],
+-     range: [275, 277],
++     range: [275, 276],
       loc: {
         start: { column: 28, line: 9 },
-        end: { column: 29, line: 9 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: '/',
-
-      range: [276, 277],
-      loc: {
-        start: { column: 29, line: 9 },
++       end: { column: 29, line: 9 },
++     },
++   },
++   Punctuator {
++     type: 'Punctuator',
++     value: '/',
++
++     range: [276, 277],
++     loc: {
++       start: { column: 29, line: 9 },
         end: { column: 30, line: 9 },
       },
     },

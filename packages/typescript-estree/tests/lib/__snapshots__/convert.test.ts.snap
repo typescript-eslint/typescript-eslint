@@ -274,7 +274,7 @@ exports[`convert > deeplyCopy > should convert node correctly 1`] = `
             "imports": undefined,
             "isDeclarationFile": false,
             "jsDocParsingMode": 0,
-            "kind": 307,
+            "kind": 308,
             "languageVariant": 1,
             "languageVersion": 99,
             "libReferenceDirectives": [],

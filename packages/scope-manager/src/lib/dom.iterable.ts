@@ -22,6 +22,7 @@ export const dom_iterable: LibDefinition = {
     ['Cache', TYPE],
     ['CanvasPath', TYPE],
     ['CanvasPathDrawingStyles', TYPE],
+    ['CookieStoreManager', TYPE],
     ['CustomStateSet', TYPE],
     ['DOMRectList', TYPE],
     ['DOMStringList', TYPE],
