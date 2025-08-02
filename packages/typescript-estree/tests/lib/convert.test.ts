@@ -476,14 +476,14 @@ describe('convert', () => {
     });
 
     it('should set cooked to null for mixed valid and invalid escape sequences', () => {
-      const code = `String.raw\`\n${invalidEscapeSequences}\t\``;
+      const code = `String.raw\`\n${invalidEscapeSequences}\\\t\${}\``;
       const templateElement = getTemplateElement(code);
 
       expect(templateElement.value.cooked).toBeNull();
     });
 
     it('should not set cooked to null for text without invalid escape sequences', () => {
-      const code = `String.raw\`foo\n\u1111\t
+      const code = `String.raw\`foo\n\\\u1111\t
         bar
         baz\``;
       const templateElement = getTemplateElement(code);

@@ -407,7 +407,20 @@ export class Converter {
       return /^[0-9a-fA-F]+$/.test(hex);
     }
 
-    const validShort = ['f', 'n', 'r', 't', 'v', 'b', '\\', '"', "'", '`', '0'];
+    const validShort = [
+      'f',
+      'n',
+      'r',
+      't',
+      'v',
+      'b',
+      '\\',
+      '"',
+      "'",
+      '`',
+      '0',
+      '$',
+    ];
 
     for (let index = 0; index < text.length; index++) {
       const char = text[index];
