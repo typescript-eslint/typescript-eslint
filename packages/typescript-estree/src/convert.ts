@@ -90,6 +90,7 @@ function isEntityNameExpression(
 }
 
 export class Converter {
+  #isInTaggedTemplate = false;
   private allowPattern = false;
   private readonly ast: ts.SourceFile;
   private readonly esTreeNodeToTSNodeMap = new WeakMap();
@@ -399,6 +400,81 @@ export class Converter {
         }
       }
     }
+  }
+
+  #isValidEscape(text: string): boolean {
+    function isHex(hex: string): boolean {
+      return /^[0-9a-fA-F]+$/.test(hex);
+    }
+
+    const validShort = [
+      'f',
+      'n',
+      'r',
+      't',
+      'v',
+      'b',
+      '\\',
+      '"',
+      "'",
+      '`',
+      '0',
+      '$',
+    ];
+
+    for (let index = 0; index < text.length; index++) {
+      const char = text[index];
+      if (char !== '\\') {
+        continue;
+      }
+
+      const nextChar = text[index + 1];
+      if (nextChar == null) {
+        return false;
+      }
+
+      if (validShort.includes(nextChar)) {
+        index += 1;
+        continue;
+      }
+
+      // unicode
+      if (nextChar === 'u') {
+        if (text[index + 2] === '{') {
+          const closingBraceIndex = text.indexOf('}', index + 3);
+          if (closingBraceIndex === -1) {
+            return false;
+          }
+
+          const hex = text.slice(index + 3, closingBraceIndex);
+          if (!isHex(hex) || hex.length === 0 || hex.length > 6) {
+            return false;
+          }
+          index += closingBraceIndex;
+          continue;
+        } else {
+          const hex = text.slice(index + 2, index + 6);
+          if (!isHex(hex) || hex.length !== 4) {
+            return false;
+          }
+          index += 5;
+          continue;
+        }
+      }
+
+      // hex
+      if (nextChar === 'x') {
+        const hex = text.slice(index + 2, index + 4);
+        if (!isHex(hex) || hex.length !== 2) {
+          return false;
+        }
+        index += 3;
+        continue;
+      }
+
+      return false;
+    }
+    return true;
   }
 
   #throwError(node: number | ts.Node, message: string): asserts node is never {
@@ -1889,7 +1965,10 @@ export class Converter {
               type: AST_NODE_TYPES.TemplateElement,
               tail: true,
               value: {
-                cooked: node.text,
+                cooked:
+                  this.#isInTaggedTemplate && !this.#isValidEscape(node.text)
+                    ? null
+                    : node.text,
                 raw: this.ast.text.slice(
                   node.getStart(this.ast) + 1,
                   node.end - 1,
@@ -1924,19 +2003,24 @@ export class Converter {
             'Tagged template expressions are not permitted in an optional chain.',
           );
         }
-        return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
-          type: AST_NODE_TYPES.TaggedTemplateExpression,
-          quasi: this.convertChild(node.template),
-          tag: this.convertChild(node.tag),
-          typeArguments:
-            node.typeArguments &&
-            this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            ),
-        });
+        this.#isInTaggedTemplate = true;
+        const result = this.createNode<TSESTree.TaggedTemplateExpression>(
+          node,
+          {
+            type: AST_NODE_TYPES.TaggedTemplateExpression,
+            quasi: this.convertChild(node.template),
+            tag: this.convertChild(node.tag),
+            typeArguments:
+              node.typeArguments &&
+              this.convertTypeArgumentsToTypeParameterInstantiation(
+                node.typeArguments,
+                node,
+              ),
+          },
+        );
+        this.#isInTaggedTemplate = false;
+        return result;
       }
-
       case SyntaxKind.TemplateHead:
       case SyntaxKind.TemplateMiddle:
       case SyntaxKind.TemplateTail: {
@@ -1945,7 +2029,10 @@ export class Converter {
           type: AST_NODE_TYPES.TemplateElement,
           tail,
           value: {
-            cooked: node.text,
+            cooked:
+              this.#isInTaggedTemplate && !this.#isValidEscape(node.text)
+                ? null
+                : node.text,
             raw: this.ast.text.slice(
               node.getStart(this.ast) + 1,
               node.end - (tail ? 1 : 2),
