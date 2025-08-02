@@ -6,7 +6,6 @@ The intention is to help us ensure we do not regress functionality compared to t
 They have been modified to:
 
 - be written in TypeScript
-- work with jest
 - work with our folder structure
 - adhere to our formatting and linting style
 
