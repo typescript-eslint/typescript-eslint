@@ -402,35 +402,65 @@ export class Converter {
     }
   }
 
-  #isValidEscape(arg: string): boolean {
-    const unicode = /\\u([0-9a-fA-F]{4})/g;
-    const unicodeBracket = /\\u\{([0-9a-fA-F]+)\}/g; // supports ES6+
-    const hex = /\\x([0-9a-fA-F]{2})/g;
-    const validShort = /\\[nrtbfv0\\'"]/g;
+  #isValidEscape(text: string): boolean {
+    function isHex(hex: string): boolean {
+      return /^[0-9a-fA-F]+$/.test(hex);
+    }
 
-    const allEscapes =
-      /\\(u\{[^}]*\}|u[0-9a-fA-F]{0,4}|x[0-9a-fA-F]{0,2}|[^ux])/g;
+    const validShort = ['f', 'n', 'r', 't', 'v', 'b', '\\', '"', "'", '`', '0'];
 
-    let match: RegExpExecArray | null;
-    while ((match = allEscapes.exec(arg)) != null) {
-      const escape = match[0];
+    for (let index = 0; index < text.length; index++) {
+      const char = text[index];
+      if (char !== '\\') {
+        continue;
+      }
 
-      if (
-        unicode.test(escape) ||
-        (unicodeBracket.test(escape) &&
-          (() => {
-            const cp = parseInt(escape.match(unicodeBracket)![1], 16);
-            return cp <= 0x10ffff;
-          })()) ||
-        hex.test(escape) ||
-        validShort.test(escape)
-      ) {
+      const nextChar = text[index + 1];
+      if (nextChar == null) {
+        return false;
+      }
+
+      if (validShort.includes(nextChar)) {
+        index += 1;
+        continue;
+      }
+
+      // unicode
+      if (nextChar === 'u') {
+        if (text[index + 2] === '{') {
+          const closingBraceIndex = text.indexOf('}', index + 3);
+          if (closingBraceIndex === -1) {
+            return false;
+          }
+
+          const hex = text.slice(index + 3, closingBraceIndex);
+          if (!isHex(hex) || hex.length === 0 || hex.length > 6) {
+            return false;
+          }
+          index += closingBraceIndex;
+          continue;
+        } else {
+          const hex = text.slice(index + 2, index + 6);
+          if (!isHex(hex) || hex.length !== 4) {
+            return false;
+          }
+          index += 5;
+          continue;
+        }
+      }
+
+      // hex
+      if (nextChar === 'x') {
+        const hex = text.slice(index + 2, index + 4);
+        if (!isHex(hex) || hex.length !== 2) {
+          return false;
+        }
+        index += 3;
         continue;
       }
 
       return false;
     }
-
     return true;
   }
 
@@ -1923,9 +1953,9 @@ export class Converter {
               tail: true,
               value: {
                 cooked:
-                  this.#isValidEscape(node.text) && this.#isInTaggedTemplate
-                    ? node.text
-                    : null,
+                  this.#isInTaggedTemplate && !this.#isValidEscape(node.text)
+                    ? null
+                    : node.text,
                 raw: this.ast.text.slice(
                   node.getStart(this.ast) + 1,
                   node.end - 1,
@@ -1987,9 +2017,9 @@ export class Converter {
           tail,
           value: {
             cooked:
-              this.#isValidEscape(node.text) && this.#isInTaggedTemplate
-                ? node.text
-                : null,
+              this.#isInTaggedTemplate && !this.#isValidEscape(node.text)
+                ? null
+                : node.text,
             raw: this.ast.text.slice(
               node.getStart(this.ast) + 1,
               node.end - (tail ? 1 : 2),
