@@ -282,7 +282,11 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const text = literal.quasis[0].value.cooked ?? '';
+      const text = literal.quasis[0].value.cooked;
+
+      if (text == null) {
+        return;
+      }
 
       if (literal.loc.end.line === literal.loc.start.line) {
         // don't use template strings for single line tests
