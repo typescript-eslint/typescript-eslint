@@ -466,24 +466,24 @@ describe('convert', () => {
       return expression.quasi.quasis[0];
     };
 
-    const invalidEscapeSequences = String.raw`\uXXXX`;
+    const invalidEscapeSequences = [String.raw`\uXXXX`, String.raw`\xQW`];
 
     it('should set cooked to null for invalid escape sequences in tagged template literals', () => {
-      const code = `String.raw\`${invalidEscapeSequences}\``;
+      const code = `tag\`${invalidEscapeSequences[0]}${invalidEscapeSequences[1]}\``;
       const templateElement = getTemplateElement(code);
 
       expect(templateElement.value.cooked).toBeNull();
     });
 
     it('should set cooked to null for mixed valid and invalid escape sequences', () => {
-      const code = `String.raw\`\n${invalidEscapeSequences}\\\t\${}\``;
+      const code = `tag\`\n${invalidEscapeSequences[0]}\u{1111}\t\${}${invalidEscapeSequences[1]}\``;
       const templateElement = getTemplateElement(code);
 
       expect(templateElement.value.cooked).toBeNull();
     });
 
     it('should not set cooked to null for text without invalid escape sequences', () => {
-      const code = `String.raw\`foo\n\\\u1111\t
+      const code = `tag\`foo\n\\\u1111\t
         bar
         baz\``;
       const templateElement = getTemplateElement(code);
@@ -494,8 +494,7 @@ describe('convert', () => {
     });
 
     it('should not set cooked to null for untagged template literals', () => {
-      // eslint-disable-next-line no-useless-escape
-      const code = `const foo = \`\c1\``;
+      const code = `const foo = \`${invalidEscapeSequences[0]}\``;
       const result = convertCode(code);
       const converter = new Converter(result);
       const program = converter.convertProgram();
@@ -513,15 +512,14 @@ describe('convert', () => {
       }
       const templateElement = init.quasis[0];
 
-      // eslint-disable-next-line no-useless-escape
-      expect(templateElement.value.cooked).toBe(`\c1`);
+      expect(templateElement.value.cooked).toBe(`\\uXXXX`);
     });
 
     describe('validate escape sequences', () => {
       it('should return false for invalid unicode', () => {
         const invalidUnicodes = [String.raw`\uXXXX`, String.raw`\u12`];
         const codes = invalidUnicodes.map(
-          invalidUnicode => `String.raw\`${invalidUnicode}\``,
+          invalidUnicode => `tag\`${invalidUnicode}\``,
         );
         const templateElements = codes.map(code => getTemplateElement(code));
 
@@ -532,7 +530,7 @@ describe('convert', () => {
       it('should return false for invalid unicode with braces', () => {
         const invalidUnicodes = [String.raw`\u{123`, String.raw`\u{12345678}`];
         const codes = invalidUnicodes.map(
-          invalidUnicode => `String.raw\`${invalidUnicode}\``,
+          invalidUnicode => `tag\`${invalidUnicode}\``,
         );
         const templateElements = codes.map(code => getTemplateElement(code));
 
@@ -543,20 +541,15 @@ describe('convert', () => {
       it('should return true for valid unicode', () => {
         // 002E is .
         const validUnicodes = [String.raw`\u{002E}`, String.raw`\u002E`];
-        const codes = validUnicodes.map(
-          validUnicode => `String.raw\`${validUnicode}\``,
-        );
-        const templateElements = codes.map(code => getTemplateElement(code));
+        const code = `tag\`${validUnicodes[0]}${validUnicodes[1]}\``;
+        const templateElement = getTemplateElement(code);
 
-        expect(templateElements[0].value.cooked).toBe('.');
-        expect(templateElements[1].value.cooked).toBe('.');
+        expect(templateElement.value.cooked).toBe('..');
       });
 
       it('should return false for invalid hex', () => {
         const invalidHexes = [String.raw`\x1`, String.raw`\xZX`];
-        const codes = invalidHexes.map(
-          invalidHex => `String.raw\`${invalidHex}\``,
-        );
+        const codes = invalidHexes.map(invalidHex => `tag\`${invalidHex}\``);
         const templateElements = codes.map(code => getTemplateElement(code));
 
         expect(templateElements[0].value.cooked).toBeNull();
@@ -565,7 +558,7 @@ describe('convert', () => {
 
       it('should return true for valid hex', () => {
         const validHex = String.raw`\x2E`;
-        const code = `String.raw\`${validHex}\``;
+        const code = `tag\`${validHex}\``;
         const templateElement = getTemplateElement(code);
 
         expect(templateElement.value.cooked).toBe('.');
@@ -573,18 +566,18 @@ describe('convert', () => {
 
       it('should return false for invalid short', () => {
         const invalidShort = String.raw`\1`;
-        const code = `String.raw\`${invalidShort}\``;
+        const code = `tag\`${invalidShort}\``;
         const templateElement = getTemplateElement(code);
 
         expect(templateElement.value.cooked).toBeNull();
       });
 
       it('should return true for valid short', () => {
-        const validShort = String.raw`\"`;
-        const code = `String.raw\`${validShort}\``;
+        const validShort = String.raw`\"\'`;
+        const code = `tag\`${validShort}\``;
         const templateElement = getTemplateElement(code);
 
-        expect(templateElement.value.cooked).toBe(`"`);
+        expect(templateElement.value.cooked).toBe(`"'`);
       });
     });
   });

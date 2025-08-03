@@ -429,9 +429,6 @@ export class Converter {
       }
 
       const nextChar = text[index + 1];
-      if (nextChar == null) {
-        return false;
-      }
 
       if (validShort.includes(nextChar)) {
         index += 1;
