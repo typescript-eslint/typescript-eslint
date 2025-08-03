@@ -38,7 +38,7 @@ function parseAndAnalyze(
 }
 
 // @ts-expect-error - libMap is private and not typed
-const tsLibMap: Map<string, string> = ts.libMap;
+const tsLibMap = ts.libMap as Map<string, string>;
 const libMap = new Map(tsLibMap);
 // add the "full" libs as well - these are used by the default config resolution system
 for (const [lib] of tsLibMap) {
