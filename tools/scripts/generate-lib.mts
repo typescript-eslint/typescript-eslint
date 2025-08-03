@@ -14,7 +14,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import prettier from 'prettier';
 import { rimraf } from 'rimraf';
-import ts from 'typescript';
+import * as ts from 'typescript';
 
 import {
   PACKAGES_SCOPE_MANAGER,
@@ -37,9 +37,11 @@ function parseAndAnalyze(
   return { ast, scopeManager };
 }
 
-const libMap = new Map(ts.libMap);
+// @ts-expect-error - libMap is private and not typed
+const tsLibMap = ts.libMap as Map<string, string>;
+const libMap = new Map(tsLibMap);
 // add the "full" libs as well - these are used by the default config resolution system
-for (const [lib] of ts.libMap) {
+for (const [lib] of tsLibMap) {
   if (
     (/^es2\d{3}$/.test(lib) || lib === 'esnext') &&
     // there's no "full" lib for es2015
