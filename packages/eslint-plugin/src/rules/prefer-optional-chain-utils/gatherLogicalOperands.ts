@@ -248,12 +248,13 @@ export function gatherLogicalOperands(
       case AST_NODE_TYPES.UnaryExpression:
         if (
           operand.operator === '!' &&
-          isValidFalseBooleanCheckType(
-            operand.argument,
-            areMoreOperands && node.operator === '||',
-            parserServices,
-            options,
-          )
+          (!areMoreOperands ||
+            isValidFalseBooleanCheckType(
+              operand.argument,
+              node.operator === '||',
+              parserServices,
+              options,
+            ))
         ) {
           result.push({
             comparedName: operand.argument,
@@ -274,9 +275,10 @@ export function gatherLogicalOperands(
 
       default:
         if (
+          !areMoreOperands ||
           isValidFalseBooleanCheckType(
             operand,
-            areMoreOperands && node.operator === '&&',
+            node.operator === '&&',
             parserServices,
             options,
           )
