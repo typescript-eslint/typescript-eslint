@@ -35,6 +35,7 @@ export type Options = [
       destructuredArrayIgnorePattern?: string;
       ignoreClassWithStaticInitBlock?: boolean;
       ignoreRestSiblings?: boolean;
+      ignoreUsingDeclarations?: boolean;
       reportUsedIgnorePattern?: boolean;
       vars?: 'all' | 'local';
       varsIgnorePattern?: string;
@@ -49,6 +50,7 @@ interface TranslatedOptions {
   destructuredArrayIgnorePattern?: RegExp;
   ignoreClassWithStaticInitBlock: boolean;
   ignoreRestSiblings: boolean;
+  ignoreUsingDeclarations: boolean;
   reportUsedIgnorePattern: boolean;
   vars: 'all' | 'local';
   varsIgnorePattern?: RegExp;
@@ -127,6 +129,11 @@ export default createRule<Options, MessageIds>({
                 description:
                   'Whether to ignore sibling properties in `...` destructurings.',
               },
+              ignoreUsingDeclarations: {
+                type: 'boolean',
+                description:
+                  'Whether to ignore using or await using declarations.',
+              },
               reportUsedIgnorePattern: {
                 type: 'boolean',
                 description:
@@ -162,6 +169,7 @@ export default createRule<Options, MessageIds>({
         caughtErrors: 'all',
         ignoreClassWithStaticInitBlock: false,
         ignoreRestSiblings: false,
+        ignoreUsingDeclarations: false,
         reportUsedIgnorePattern: false,
         vars: 'all',
       };
@@ -173,6 +181,9 @@ export default createRule<Options, MessageIds>({
         options.args = firstOption.args ?? options.args;
         options.ignoreRestSiblings =
           firstOption.ignoreRestSiblings ?? options.ignoreRestSiblings;
+        options.ignoreUsingDeclarations =
+          firstOption.ignoreUsingDeclarations ??
+          options.ignoreUsingDeclarations;
         options.caughtErrors = firstOption.caughtErrors ?? options.caughtErrors;
         options.ignoreClassWithStaticInitBlock =
           firstOption.ignoreClassWithStaticInitBlock ??
