@@ -557,6 +557,12 @@ export default createRule<Options, MessageIds>({
             });
           }
           continue;
+        } else if (
+          def.type === TSESLint.Scope.DefinitionType.Variable &&
+          options.ignoreUsingDeclarations &&
+          (def.parent.kind === 'await using' || def.parent.kind === 'using')
+        ) {
+          continue;
         }
 
         if (hasRestSpreadSibling(variable)) {
