@@ -8,13 +8,44 @@ import useIsBrowser from '@docusaurus/useIsBrowser';
 
 export function LocalTimeOfRelease() {
   const isBrowser = useIsBrowser();
-  // An arbitrary Monday at 17:00 UTC.
-  const date = new Date('1970-01-05T17:00Z');
-  const formatted = date.toLocaleTimeString('en-US', {
+  if (!isBrowser) {
+    // An arbitrary Monday at 17:00 UTC.
+    const arbitraryMonday = new Date('1970-01-05T17:00Z');
+    return arbitraryMonday.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'short',
+      timeZone: 'UTC',
+    });
+  }
+  const now = new Date();
+  const daysAgoToMonday = (now.getUTCDay() + 6) % 7;
+  // Calculate the previous Monday at 17:00 UTC.
+  const previousReleaseDate = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() - daysAgoToMonday,
+      17,
+    ),
+  );
+  // This will happen if the current time is before 17:00 UTC on Monday.
+  if (previousReleaseDate > now) {
+    previousReleaseDate.setUTCDate(previousReleaseDate.getUTCDate() - 7);
+  }
+  // Next release is 7 days later.
+  const nextReleaseDate = new Date(previousReleaseDate.getTime());
+  nextReleaseDate.setUTCDate(previousReleaseDate.getUTCDate() + 7);
+  // If we're near a DST time change, we want to display the time of the release that has the same UTC offset as now.
+  // If, for some reason, neither does, just display the local time of the next release.
+  const dateWithSameUtcOffset =
+    [nextReleaseDate, previousReleaseDate].find(
+      date => date.getTimezoneOffset() === now.getTimezoneOffset(),
+    ) ?? nextReleaseDate;
+  const formatted = dateWithSameUtcOffset.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
     timeZoneName: 'short',
-    timeZone: isBrowser ? undefined : 'UTC',
   });
   // Specify the day of week if it's not a Monday.
   const dayNames = [
@@ -26,8 +57,8 @@ export function LocalTimeOfRelease() {
     'Friday',
     'Saturday',
   ];
-  if (date.getDay() !== date.getUTCDay()) {
-    return `${dayNames[date.getDay()]}s at ${formatted}`;
+  if (dateWithSameUtcOffset.getDay() !== dateWithSameUtcOffset.getUTCDay()) {
+    return `${dayNames[dateWithSameUtcOffset.getDay()]}s at ${formatted}`;
   }
   return formatted;
 }
