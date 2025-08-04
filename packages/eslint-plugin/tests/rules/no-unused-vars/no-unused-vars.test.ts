@@ -1715,6 +1715,40 @@ export {};
       ],
       filename: 'foo.d.ts',
     },
+    {
+      code: `
+using foo = bar;
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            varName: 'foo',
+            additional: '',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+await using foo = bar;
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            varName: 'foo',
+            additional: '',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
   ],
 
   valid: [
@@ -3016,6 +3050,20 @@ export default function foo(): Bar;
 class Foo {}
 declare class Bar {}
       `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+using foo = bar;
+      `,
+      options: [{ ignoreUsingDeclarations: true }],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+await using foo = bar;
+      `,
+      options: [{ ignoreUsingDeclarations: true }],
       filename: 'foo.d.ts',
     },
   ],
