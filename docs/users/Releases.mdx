@@ -38,11 +38,11 @@ export function LocalTimeOfRelease() {
   nextReleaseDate.setUTCDate(previousReleaseDate.getUTCDate() + 7);
   // If we're near a DST time change, we want to display the time of the release that has the same UTC offset as now.
   // If, for some reason, neither does, just display the local time of the next release.
-  const dateWithSameUtcOffset =
+  const releaseWithSameUtcOffset =
     [nextReleaseDate, previousReleaseDate].find(
       date => date.getTimezoneOffset() === now.getTimezoneOffset(),
     ) ?? nextReleaseDate;
-  const formatted = dateWithSameUtcOffset.toLocaleTimeString('en-US', {
+  const formatted = releaseWithSameUtcOffset.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
     timeZoneName: 'short',
@@ -57,8 +57,10 @@ export function LocalTimeOfRelease() {
     'Friday',
     'Saturday',
   ];
-  if (dateWithSameUtcOffset.getDay() !== dateWithSameUtcOffset.getUTCDay()) {
-    return `${dayNames[dateWithSameUtcOffset.getDay()]}s at ${formatted}`;
+  if (
+    releaseWithSameUtcOffset.getDay() !== releaseWithSameUtcOffset.getUTCDay()
+  ) {
+    return `${dayNames[releaseWithSameUtcOffset.getDay()]}s at ${formatted}`;
   }
   return formatted;
 }
