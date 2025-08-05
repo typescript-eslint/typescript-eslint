@@ -33,7 +33,6 @@ exports[`AST Fixtures > List fixtures with Token differences`]
   "element/AccessorProperty/fixtures/modifier-private/fixture.ts",
   "element/AccessorProperty/fixtures/modifier-protected/fixture.ts",
   "element/AccessorProperty/fixtures/modifier-public/fixture.ts",
-  "jsx/JSXAttribute/fixtures/element-non-self-closing/fixture.tsx",
   "jsx/JSXNamespacedName/fixtures/component-dashed/fixture.tsx",
   "jsx/JSXNamespacedName/fixtures/component/fixture.tsx",
   "legacy-fixtures/basics/fixtures/abstract-class-with-abstract-readonly-property/fixture.ts",
