@@ -2,11 +2,6 @@
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: ['config:recommended', ':approveMajorUpdates'],
 
-  env: {
-    // the build takes a while
-    SKIP_POSTINSTALL: 'true',
-  },
-
   dependencyDashboardLabels: ['dependencies', 'repo maintenance'],
   enabledManagers: ['github-actions', 'npm'],
 
