@@ -115,7 +115,7 @@ export default createRule<Options, MessageIds>({
     },
     messages: {
       unbound: BASE_MESSAGE,
-      unboundWithoutThisAnnotation: `${BASE_MESSAGE}\nIf your function does not access \`this\`, you can annotate it with \`this: void\`, or consider using an arrow function instead.`,
+      unboundWithoutThisAnnotation: `${BASE_MESSAGE} If your function does not access \`this\`, you can annotate it with \`this: void\`, or consider using an arrow function instead.`,
     },
     schema: [
       {
