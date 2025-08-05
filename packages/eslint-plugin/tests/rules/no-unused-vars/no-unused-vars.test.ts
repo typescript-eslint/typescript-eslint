@@ -1722,15 +1722,14 @@ using foo = bar;
       errors: [
         {
           data: {
-            action: 'defined',
-            varName: 'foo',
+            action: 'assigned a value',
             additional: '',
+            varName: 'foo',
           },
           line: 2,
           messageId: 'unusedVar',
         },
       ],
-      filename: 'foo.d.ts',
     },
     {
       code: `
@@ -1739,15 +1738,14 @@ await using foo = bar;
       errors: [
         {
           data: {
-            action: 'defined',
-            varName: 'foo',
+            action: 'assigned a value',
             additional: '',
+            varName: 'foo',
           },
           line: 2,
           messageId: 'unusedVar',
         },
       ],
-      filename: 'foo.d.ts',
     },
   ],
 
@@ -3057,14 +3055,12 @@ declare class Bar {}
 using foo = bar;
       `,
       options: [{ ignoreUsingDeclarations: true }],
-      filename: 'foo.d.ts',
     },
     {
       code: `
 await using foo = bar;
       `,
       options: [{ ignoreUsingDeclarations: true }],
-      filename: 'foo.d.ts',
     },
   ],
 });
