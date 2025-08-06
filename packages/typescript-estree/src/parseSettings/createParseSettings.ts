@@ -51,7 +51,7 @@ export function createParseSettings(
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
   const tsconfigRootDir = (() => {
-    let tsconfigRootDir: string;
+    let tsconfigRootDir;
     if (tsestreeOptions.tsconfigRootDir == null) {
       tsconfigRootDir = getInferredTSConfigRootDir();
       if (!path.isAbsolute(tsconfigRootDir)) {
