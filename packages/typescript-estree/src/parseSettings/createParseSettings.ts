@@ -50,10 +50,32 @@ export function createParseSettings(
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
-  const tsconfigRootDir =
-    typeof tsestreeOptions.tsconfigRootDir === 'string'
-      ? tsestreeOptions.tsconfigRootDir
-      : getInferredTSConfigRootDir();
+  const tsconfigRootDir = (() => {
+    if (tsestreeOptions.tsconfigRootDir == null) {
+      const inferredTsconfigRootDir = getInferredTSConfigRootDir();
+      if (!path.isAbsolute(inferredTsconfigRootDir)) {
+        throw new Error(
+          `inferred parserOptions.tsconfigRootDir should have be an absolute path, but received: ${JSON.stringify(
+            inferredTsconfigRootDir,
+          )}. This is a bug in @typescript-eslint/typescript-estree! Please report it to us at https://github.com/typescript-eslint/typescript-eslint/issues/new/choose`,
+        );
+      }
+      return inferredTsconfigRootDir;
+    }
+
+    if (typeof tsestreeOptions.tsconfigRootDir === 'string') {
+      if (!path.isAbsolute(tsestreeOptions.tsconfigRootDir)) {
+        throw new Error(
+          `parserOptions.tsconfigRootDir must be an absolute path, but received: ${JSON.stringify(tsestreeOptions.tsconfigRootDir)}`,
+        );
+      }
+      return tsestreeOptions.tsconfigRootDir;
+    }
+
+    throw new Error(
+      `if provided, parserOptions.tsconfigRootDir must be a string, but received a value of type "${typeof tsestreeOptions.tsconfigRootDir}"`,
+    );
+  })();
   const passedLoggerFn = typeof tsestreeOptions.loggerFn === 'function';
   const filePath = ensureAbsolutePath(
     typeof tsestreeOptions.filePath === 'string' &&
