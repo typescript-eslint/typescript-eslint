@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 /**
  * Infers the `tsconfigRootDir` from the current call stack, using the V8 API.
@@ -26,10 +27,17 @@ export function getTSConfigRootDirFromStack(): string | undefined {
   }
 
   for (const callSite of getStack()) {
-    const stackFrameFilePath = callSite.getFileName();
-    if (!stackFrameFilePath) {
+    const stackFrameFilePathOrUrl = callSite.getFileName();
+    if (!stackFrameFilePathOrUrl) {
       continue;
     }
+
+    // ESM seem to return a file URL, so we'll convert it to a file path.
+    // This isn't terribly documented in the v8 API docs, but it seems to be the case.
+    // See https://github.com/typescript-eslint/typescript-eslint/issues/11429
+    const stackFrameFilePath = stackFrameFilePathOrUrl.startsWith('file://')
+      ? fileURLToPath(stackFrameFilePathOrUrl)
+      : stackFrameFilePathOrUrl;
 
     const parsedPath = path.parse(stackFrameFilePath);
     if (/^eslint\.config\.(c|m)?(j|t)s$/.test(parsedPath.base)) {
