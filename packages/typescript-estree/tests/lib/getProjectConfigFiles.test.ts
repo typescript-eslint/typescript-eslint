@@ -26,6 +26,7 @@ describe(getProjectConfigFiles, () => {
   beforeEach(() => {
     parseSettings.tsconfigMatchCache.clear();
     vi.clearAllMocks();
+    vi.resetModules();
   });
 
   afterAll(() => {

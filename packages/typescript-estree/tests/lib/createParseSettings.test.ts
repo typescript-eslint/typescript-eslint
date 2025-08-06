@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import {
   addCandidateTSConfigRootDir,
   clearCandidateTSConfigRootDirs,
@@ -84,7 +86,9 @@ describe(createParseSettings, () => {
         tsconfigRootDir: '/a/b////..//c///',
       });
 
-      expect(parseSettings.tsconfigRootDir).toBe('/a/c');
+      expect(parseSettings.tsconfigRootDir).toBe(
+        process.platform !== 'win32' ? '/a/c' : '\\a\\c',
+      );
     });
 
     it('errors on invalid tsconfigRootDir', () => {
@@ -99,7 +103,7 @@ describe(createParseSettings, () => {
     });
 
     it('uses the provided tsconfigRootDir when it exists and no candidates exist', () => {
-      const tsconfigRootDir = '/a/b/c';
+      const tsconfigRootDir = path.normalize('/a/b/c');
 
       const parseSettings = createParseSettings('', { tsconfigRootDir });
 
@@ -108,7 +112,7 @@ describe(createParseSettings, () => {
 
     it('uses the provided tsconfigRootDir when it exists and a candidate exists', () => {
       addCandidateTSConfigRootDir('candidate');
-      const tsconfigRootDir = '/a/b/c';
+      const tsconfigRootDir = path.normalize('/a/b/c');
 
       const parseSettings = createParseSettings('', { tsconfigRootDir });
 
@@ -116,7 +120,7 @@ describe(createParseSettings, () => {
     });
 
     it('uses the inferred candidate when no tsconfigRootDir is provided and a candidate exists', () => {
-      const tsconfigRootDir = '/a/b/c';
+      const tsconfigRootDir = path.normalize('/a/b/c');
       addCandidateTSConfigRootDir(tsconfigRootDir);
 
       const parseSettings = createParseSettings('');
