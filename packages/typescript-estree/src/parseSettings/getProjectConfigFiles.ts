@@ -36,33 +36,6 @@ export function getProjectConfigFiles(
   }
 
   log('Looking for tsconfig.json at or above file: %s', parseSettings.filePath);
-  assert(
-    path.isAbsolute(parseSettings.tsconfigRootDir),
-    `tsconfigRootDir must be absolute. Got ${JSON.stringify(
-      parseSettings.tsconfigRootDir,
-    )} instead. This is a bug in @typescript-eslint/typescript-estree! Please report it to us at https://github.com/typescript-eslint/typescript-eslint/issues/new/choose.`,
-  );
-  assert(
-    path.resolve(parseSettings.tsconfigRootDir) ===
-      parseSettings.tsconfigRootDir,
-    `tsconfigRootDir must be normalized. Got ${JSON.stringify(
-      parseSettings.tsconfigRootDir,
-    )} instead. This is a bug in @typescript-eslint/typescript-estree! Please report it to us at https://github.com/typescript-eslint/typescript-eslint/issues/new/choose.`,
-  );
-
-  assert(
-    path.isAbsolute(parseSettings.filePath),
-    `filePath must be absolute. Got ${JSON.stringify(
-      parseSettings.filePath,
-    )} instead. This is a bug in @typescript-eslint/typescript-estree! Please report it to us at https://github.com/typescript-eslint/typescript-eslint/issues/new/choose.`,
-  );
-  assert(
-    path.resolve(parseSettings.filePath) === parseSettings.filePath,
-    `filePath must be normalized. Got ${JSON.stringify(
-      parseSettings.filePath,
-    )} instead. This is a bug in @typescript-eslint/typescript-estree! Please report it to us at https://github.com/typescript-eslint/typescript-eslint/issues/new/choose`,
-  );
-
   let directory = path.dirname(parseSettings.filePath);
   const checkedDirectories = [directory];
 
@@ -88,7 +61,6 @@ export function getProjectConfigFiles(
   );
 
   throw new Error(
-    // TODO - should this say "related to" instead of "relative to"?
     `project was set to \`true\` but couldn't find any tsconfig.json relative to '${parseSettings.filePath}' within '${parseSettings.tsconfigRootDir}'.`,
   );
 }

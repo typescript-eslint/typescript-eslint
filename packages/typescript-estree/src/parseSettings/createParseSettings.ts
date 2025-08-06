@@ -51,31 +51,36 @@ export function createParseSettings(
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
   const tsconfigRootDir = (() => {
+    let tsconfigRootDir: string;
     if (tsestreeOptions.tsconfigRootDir == null) {
-      const inferredTsconfigRootDir = getInferredTSConfigRootDir();
-      if (!path.isAbsolute(inferredTsconfigRootDir)) {
+      tsconfigRootDir = getInferredTSConfigRootDir();
+      if (!path.isAbsolute(tsconfigRootDir)) {
         throw new Error(
-          `inferred parserOptions.tsconfigRootDir should have be an absolute path, but received: ${JSON.stringify(
-            inferredTsconfigRootDir,
-          )}. This is a bug in @typescript-eslint/typescript-estree! Please report it to us at https://github.com/typescript-eslint/typescript-eslint/issues/new/choose`,
+          `inferred tsconfigRootDir should have be an absolute path, but received: ${JSON.stringify(
+            tsconfigRootDir,
+          )}. This is a bug in typescript-eslint! Please report it to us at https://github.com/typescript-eslint/typescript-eslint/issues/new/choose.`,
         );
       }
-      return inferredTsconfigRootDir;
-    }
-
-    if (typeof tsestreeOptions.tsconfigRootDir === 'string') {
-      if (!path.isAbsolute(tsestreeOptions.tsconfigRootDir)) {
+    } else if (typeof tsestreeOptions.tsconfigRootDir === 'string') {
+      tsconfigRootDir = tsestreeOptions.tsconfigRootDir;
+      if (!path.isAbsolute(tsconfigRootDir)) {
         throw new Error(
-          `parserOptions.tsconfigRootDir must be an absolute path, but received: ${JSON.stringify(tsestreeOptions.tsconfigRootDir)}`,
+          `parserOptions.tsconfigRootDir must be an absolute path, but received: ${JSON.stringify(
+            tsconfigRootDir,
+          )}. This is a bug in your configuration; please supply an absolute path.`,
         );
       }
-      return tsestreeOptions.tsconfigRootDir;
+    } else {
+      throw new Error(
+        `If provided, parserOptions.tsconfigRootDir must be a string, but received a value of type "${typeof tsestreeOptions.tsconfigRootDir}"`,
+      );
     }
 
-    throw new Error(
-      `if provided, parserOptions.tsconfigRootDir must be a string, but received a value of type "${typeof tsestreeOptions.tsconfigRootDir}"`,
-    );
+    // Deal with any funny business around trailing path separators (a/b/) or relative path segments (/a/b/../c)
+    // We already know it's absolute, so we can safely use path.resolve
+    return path.resolve(tsconfigRootDir);
   })();
+
   const passedLoggerFn = typeof tsestreeOptions.loggerFn === 'function';
   const filePath = ensureAbsolutePath(
     typeof tsestreeOptions.filePath === 'string' &&

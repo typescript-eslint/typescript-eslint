@@ -75,8 +75,16 @@ describe(createParseSettings, () => {
       expect(() =>
         createParseSettings('', { tsconfigRootDir: 'a/b/c' }),
       ).toThrowErrorMatchingInlineSnapshot(
-        `[Error: parserOptions.tsconfigRootDir must be an absolute path, but received: "a/b/c"]`,
+        `[Error: parserOptions.tsconfigRootDir must be an absolute path, but received: "a/b/c". This is a bug in your configuration; please supply an absolute path.]`,
       );
+    });
+
+    it('normalizes crazy tsconfigRootDir', () => {
+      const parseSettings = createParseSettings('', {
+        tsconfigRootDir: '/a/b////..//c///',
+      });
+
+      expect(parseSettings.tsconfigRootDir).toBe('/a/c');
     });
 
     it('errors on invalid tsconfigRootDir', () => {
@@ -86,7 +94,7 @@ describe(createParseSettings, () => {
           tsconfigRootDir: 42,
         }),
       ).toThrowErrorMatchingInlineSnapshot(
-        `[Error: if provided, parserOptions.tsconfigRootDir must be a string, but received a value of type "number"]`,
+        `[Error: If provided, parserOptions.tsconfigRootDir must be a string, but received a value of type "number"]`,
       );
     });
 
