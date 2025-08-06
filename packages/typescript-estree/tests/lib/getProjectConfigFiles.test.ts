@@ -17,9 +17,9 @@ vi.mock(import('node:fs'), async importOriginal => {
 });
 
 const parseSettings = {
-  filePath: './repos/repo/packages/package/file.ts',
+  filePath: path.normalize('/repos/repo/packages/package/file.ts'),
   tsconfigMatchCache: new ExpiringCache<string, string>(1),
-  tsconfigRootDir: './repos/repo',
+  tsconfigRootDir: path.normalize('/repos/repo'),
 };
 
 describe(getProjectConfigFiles, () => {
@@ -66,14 +66,14 @@ describe(getProjectConfigFiles, () => {
       const actual = getProjectConfigFiles(parseSettings, true);
 
       expect(actual).toStrictEqual([
-        path.normalize('repos/repo/packages/package/tsconfig.json'),
+        path.normalize('/repos/repo/packages/package/tsconfig.json'),
       ]);
       expect(mockExistsSync).toHaveBeenCalledOnce();
     });
 
     it('returns a nearby parent tsconfig.json when it was previously cached by a different directory search', () => {
       mockExistsSync.mockImplementation(
-        input => input === path.normalize('a/tsconfig.json'),
+        input => input === path.normalize('/a/tsconfig.json'),
       );
 
       const tsconfigMatchCache = new ExpiringCache<string, string>(1);
@@ -81,9 +81,9 @@ describe(getProjectConfigFiles, () => {
       // This should call to fs.existsSync three times: c, b, a
       getProjectConfigFiles(
         {
-          filePath: './a/b/c/d.ts',
+          filePath: path.normalize('/a/b/c/d.ts'),
           tsconfigMatchCache,
-          tsconfigRootDir: './a',
+          tsconfigRootDir: path.normalize('/a'),
         },
         true,
       );
@@ -92,20 +92,20 @@ describe(getProjectConfigFiles, () => {
       // Then it should retrieve c from cache, pointing to a
       const actual = getProjectConfigFiles(
         {
-          filePath: './a/b/c/e/f.ts',
+          filePath: path.normalize('/a/b/c/e/f.ts'),
           tsconfigMatchCache,
-          tsconfigRootDir: './a',
+          tsconfigRootDir: path.normalize('/a'),
         },
         true,
       );
 
-      expect(actual).toStrictEqual([path.normalize('a/tsconfig.json')]);
+      expect(actual).toStrictEqual([path.normalize('/a/tsconfig.json')]);
       expect(mockExistsSync).toHaveBeenCalledTimes(4);
     });
 
     it('returns a distant parent tsconfig.json when it was previously cached by a different directory search', () => {
       mockExistsSync.mockImplementation(
-        input => input === path.normalize('a/tsconfig.json'),
+        input => input === path.normalize('/a/tsconfig.json'),
       );
 
       const tsconfigMatchCache = new ExpiringCache<string, string>(1);
@@ -113,9 +113,9 @@ describe(getProjectConfigFiles, () => {
       // This should call to fs.existsSync 4 times: d, c, b, a
       getProjectConfigFiles(
         {
-          filePath: './a/b/c/d/e.ts',
+          filePath: path.normalize('/a/b/c/d/e.ts'),
           tsconfigMatchCache,
-          tsconfigRootDir: './a',
+          tsconfigRootDir: path.normalize('/a'),
         },
         true,
       );
@@ -124,14 +124,14 @@ describe(getProjectConfigFiles, () => {
       // Then it should retrieve b from cache, pointing to a
       const actual = getProjectConfigFiles(
         {
-          filePath: './a/b/f/g/h.ts',
+          filePath: path.normalize('/a/b/f/g/h.ts'),
           tsconfigMatchCache,
-          tsconfigRootDir: './a',
+          tsconfigRootDir: path.normalize('/a'),
         },
         true,
       );
 
-      expect(actual).toStrictEqual([path.normalize('a/tsconfig.json')]);
+      expect(actual).toStrictEqual([path.normalize('/a/tsconfig.json')]);
       expect(mockExistsSync).toHaveBeenCalledTimes(6);
     });
   });
@@ -143,39 +143,68 @@ describe(getProjectConfigFiles, () => {
       const actual = getProjectConfigFiles(parseSettings, true);
 
       expect(actual).toStrictEqual([
-        path.normalize('repos/repo/packages/package/tsconfig.json'),
+        path.normalize('/repos/repo/packages/package/tsconfig.json'),
       ]);
     });
 
     it('returns a parent tsconfig.json when matched', () => {
       mockExistsSync.mockImplementation(
-        filePath => filePath === path.normalize('repos/repo/tsconfig.json'),
+        filePath => filePath === path.normalize('/repos/repo/tsconfig.json'),
       );
 
       const actual = getProjectConfigFiles(parseSettings, true);
 
       expect(actual).toStrictEqual([
-        path.normalize('repos/repo/tsconfig.json'),
+        path.normalize('/repos/repo/tsconfig.json'),
       ]);
     });
 
-    it('throws when searching hits .', () => {
+    it('throws when searching hits .', async () => {
+      // ensure posix-style paths are used for consistent snapshot.
+      vi.mock('path', async () => {
+        const actual = await vi.importActual<typeof path>('path');
+        return {
+          ...actual.posix,
+          default: actual.posix,
+        };
+      });
+
+      const { getProjectConfigFiles } = await import(
+        '../../src/parseSettings/getProjectConfigFiles.js'
+      );
+
       mockExistsSync.mockReturnValue(false);
 
       expect(() =>
         getProjectConfigFiles(parseSettings, true),
       ).toThrowErrorMatchingInlineSnapshot(
-        `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to './repos/repo/packages/package/file.ts' within './repos/repo'.]`,
+        `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to '/repos/repo/packages/package/file.ts' within '/repos/repo'.]`,
       );
     });
 
-    it('throws when searching passes the tsconfigRootDir', () => {
+    it('throws when searching passes the tsconfigRootDir', async () => {
+      // ensure posix-style paths are used for consistent snapshot.
+      vi.mock('path', async () => {
+        const actual = await vi.importActual<typeof path>('path');
+        return {
+          ...actual.posix,
+          default: actual.posix,
+        };
+      });
+
+      const { getProjectConfigFiles } = await import(
+        '../../src/parseSettings/getProjectConfigFiles.js'
+      );
+
       mockExistsSync.mockReturnValue(false);
 
       expect(() =>
-        getProjectConfigFiles({ ...parseSettings, tsconfigRootDir: '/' }, true),
+        getProjectConfigFiles(
+          { ...parseSettings, tsconfigRootDir: path.normalize('/') },
+          true,
+        ),
       ).toThrowErrorMatchingInlineSnapshot(
-        `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to './repos/repo/packages/package/file.ts' within '/'.]`,
+        `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to '/repos/repo/packages/package/file.ts' within '/'.]`,
       );
     });
   });
