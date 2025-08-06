@@ -41,6 +41,10 @@
             "description": "Whether to ignore sibling properties in `...` destructurings.",
             "type": "boolean"
           },
+          "ignoreUsingDeclarations": {
+            "description": "Whether to ignore using or await using declarations.",
+            "type": "boolean"
+          },
           "reportUsedIgnorePattern": {
             "description": "Whether to report variables that match any of the valid ignore pattern options if they have been used.",
             "type": "boolean"
@@ -89,6 +93,8 @@ type Options = [
       ignoreClassWithStaticInitBlock?: boolean;
       /** Whether to ignore sibling properties in `...` destructurings. */
       ignoreRestSiblings?: boolean;
+      /** Whether to ignore using or await using declarations. */
+      ignoreUsingDeclarations?: boolean;
       /** Whether to report variables that match any of the valid ignore pattern options if they have been used. */
       reportUsedIgnorePattern?: boolean;
       /** Whether to check all variables or only locally-declared variables. */
