@@ -33,7 +33,7 @@ export function getTSConfigRootDirFromStack(): string | undefined {
     }
 
     // ESM seem to return a file URL, so we'll convert it to a file path.
-    // This isn't terribly documented in the v8 API docs, but it seems to be the case.
+    // AFAICT this isn't documented in the v8 API docs, but it seems to be the case.
     // See https://github.com/typescript-eslint/typescript-eslint/issues/11429
     const stackFrameFilePath = stackFrameFilePathOrUrl.startsWith('file://')
       ? fileURLToPath(stackFrameFilePathOrUrl)
