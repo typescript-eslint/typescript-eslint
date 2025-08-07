@@ -3,6 +3,8 @@ import * as normalFolder from './path-test-fixtures/tsconfigRootDirInference-nor
 import * as notEslintConfig from './path-test-fixtures/tsconfigRootDirInference-not-eslint-config/not-an-eslint.config.cjs';
 import * as folderThatHasASpace from './path-test-fixtures/tsconfigRootDirInference-space/folder that has a space/eslint.config.cjs';
 
+const isWindows = process.platform === 'win32';
+
 describe(getTSConfigRootDirFromStack, () => {
   it('does stack analysis right for normal folder', () => {
     expect(normalFolder.get()).toBe(normalFolder.dirname());
@@ -15,7 +17,9 @@ describe(getTSConfigRootDirFromStack, () => {
         target.stack = [
           {
             getFileName() {
-              return 'file:///a/b/eslint.config.mts';
+              return !isWindows
+                ? 'file:///a/b/eslint.config.mts'
+                : 'file:F:\\a\\b\\eslint.config.mts';
             },
           },
         ];
@@ -24,7 +28,7 @@ describe(getTSConfigRootDirFromStack, () => {
 
     const inferredTsconfigRootDir = getTSConfigRootDirFromStack();
 
-    expect(inferredTsconfigRootDir).toBe('/a/b');
+    expect(inferredTsconfigRootDir).toBe(!isWindows ? '/a/b' : 'F:\\a\\b');
   });
 
   it('does stack analysis right for folder that has a space', () => {
