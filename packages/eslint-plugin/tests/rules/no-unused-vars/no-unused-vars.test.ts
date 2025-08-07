@@ -3075,23 +3075,23 @@ resource();
       code: `
 using resource = getResource();
       `,
-      options: [{ ignoreUsingDeclarations: true }],
       languageOptions: {
         parserOptions: {
           ecmaVersion: 2026,
         },
       },
+      options: [{ ignoreUsingDeclarations: true }],
     },
     {
       code: `
 await using resource = getResource();
       `,
-      options: [{ ignoreUsingDeclarations: true }],
       languageOptions: {
         parserOptions: {
           ecmaVersion: 2026,
         },
       },
+      options: [{ ignoreUsingDeclarations: true }],
     },
   ],
 });
