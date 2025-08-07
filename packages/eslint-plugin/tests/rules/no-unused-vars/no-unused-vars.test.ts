@@ -3063,7 +3063,7 @@ declare class Bar {}
     {
       code: `
 using resource = getResource();
-resource();
+resource;
       `,
       languageOptions: {
         parserOptions: {
