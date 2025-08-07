@@ -19,7 +19,7 @@ describe(getTSConfigRootDirFromStack, () => {
             getFileName() {
               return !isWindows
                 ? 'file:///a/b/eslint.config.mts'
-                : 'file:F:\\a\\b\\eslint.config.mts';
+                : 'file:///F:/a/b/eslint.config.mts';
             },
           },
         ];
