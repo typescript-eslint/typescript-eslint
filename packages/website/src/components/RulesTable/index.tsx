@@ -1,5 +1,8 @@
 import type { RulesMeta } from '@site/rulesMeta';
-import type { RuleRecommendation } from '@typescript-eslint/utils/ts-eslint';
+import type {
+  DeprecatedInfo,
+  RuleRecommendation,
+} from '@typescript-eslint/utils/ts-eslint';
 
 import Link from '@docusaurus/Link';
 import { useHistory } from '@docusaurus/router';
@@ -22,6 +25,7 @@ import {
   SUGGESTIONS_EMOJI,
   TYPE_INFORMATION_EMOJI,
 } from '../constants';
+import { isRuleFrozen } from '../lib/isRuleFrozen';
 import styles from './styles.module.css';
 
 function interpolateCode(
@@ -41,6 +45,18 @@ function getActualRecommended({
   return recommended ? getRecommendationWithEmoji(recommended) : ['', ''];
 }
 
+function isRealDeprecated(
+  deprecated: boolean | DeprecatedInfo | undefined,
+): boolean {
+  if (typeof deprecated === 'boolean') {
+    return deprecated;
+  }
+  if (isRuleFrozen(deprecated)) {
+    return false;
+  }
+  return !!deprecated;
+}
+
 function RuleRow({
   rule,
 }: {
@@ -50,14 +66,18 @@ function RuleRow({
     return null;
   }
   const { deprecated, fixable, hasSuggestions } = rule;
+  const isDeprecated = isRealDeprecated(deprecated);
   const { extendsBaseRule, requiresTypeChecking } = rule.docs;
   const [emoji, actualRecommended] = getActualRecommended(rule);
   return (
     <tr>
       <td>
-        <Link to={new URL(rule.docs.url).pathname}>
-          <code>@typescript-eslint/{rule.name}</code>
-        </Link>
+        <div className={styles.ruleNameWrapper}>
+          <Link to={new URL(rule.docs.url).pathname}>
+            <code>@typescript-eslint/{rule.name}</code>
+          </Link>
+          {isRuleFrozen(rule.deprecated) && <span>❄️</span>}
+        </div>
         <br />
         {interpolateCode(rule.docs.description)}
       </td>
@@ -94,9 +114,9 @@ function RuleRow({
       </td>
       <td
         className={styles.attrCol}
-        title={deprecated ? 'deprecated' : undefined}
+        title={isDeprecated ? 'deprecated' : undefined}
       >
-        {deprecated ? DEPRECATED_RULE_EMOJI : ''}
+        {isDeprecated ? DEPRECATED_RULE_EMOJI : ''}
       </td>
     </tr>
   );
@@ -173,7 +193,7 @@ export default function RulesTable(): React.JSX.Element {
           match(filters.suggestions, !!r.hasSuggestions),
           match(filters.typeInformation, !!r.docs.requiresTypeChecking),
           match(filters.extension, !!r.docs.extendsBaseRule),
-          match(filters.deprecated, !!r.deprecated),
+          match(filters.deprecated, isRealDeprecated(r.deprecated)),
         ].filter(
           (o): o is boolean =>
             // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
