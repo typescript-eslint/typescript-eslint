@@ -1717,35 +1717,45 @@ export {};
     },
     {
       code: `
-using foo = bar;
+using resource = getResource();
       `,
       errors: [
         {
           data: {
             action: 'assigned a value',
             additional: '',
-            varName: 'foo',
+            varName: 'resource',
           },
           line: 2,
           messageId: 'unusedVar',
         },
       ],
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
     },
     {
       code: `
-await using foo = bar;
+await using resource = getResource();
       `,
       errors: [
         {
           data: {
             action: 'assigned a value',
             additional: '',
-            varName: 'foo',
+            varName: 'resource',
           },
           line: 2,
           messageId: 'unusedVar',
         },
       ],
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
     },
   ],
 
@@ -3052,15 +3062,36 @@ declare class Bar {}
     },
     {
       code: `
-using foo = bar;
+using resource = getResource();
+resource();
       `,
-      options: [{ ignoreUsingDeclarations: true }],
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
     },
     {
       code: `
-await using foo = bar;
+using resource = getResource();
       `,
       options: [{ ignoreUsingDeclarations: true }],
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
+    },
+    {
+      code: `
+await using resource = getResource();
+      `,
+      options: [{ ignoreUsingDeclarations: true }],
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
     },
   ],
 });
