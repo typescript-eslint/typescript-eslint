@@ -8,6 +8,25 @@ describe(getTSConfigRootDirFromStack, () => {
     expect(normalFolder.get()).toBe(normalFolder.dirname());
   });
 
+  it('does stack analysis right for a file that gives a file:// URL as its name', () => {
+    vi.spyOn(Error, 'captureStackTrace').mockImplementationOnce(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (target: any, _constructorOpt) => {
+        target.stack = [
+          {
+            getFileName() {
+              return 'file:///a/b/eslint.config.mts';
+            },
+          },
+        ];
+      },
+    );
+
+    const inferredTsconfigRootDir = getTSConfigRootDirFromStack();
+
+    expect(inferredTsconfigRootDir).toBe('/a/b');
+  });
+
   it('does stack analysis right for folder that has a space', () => {
     expect(folderThatHasASpace.get()).toBe(folderThatHasASpace.dirname());
   });
