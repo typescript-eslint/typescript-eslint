@@ -8,6 +8,9 @@ export default createRule({
   name: 'default-param-last',
   meta: {
     type: 'suggestion',
+    deprecated: {
+      availableUntil: null,
+    },
     docs: {
       description: 'Enforce default parameters to be last',
       extendsBaseRule: true,
