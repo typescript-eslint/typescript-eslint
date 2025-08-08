@@ -50,10 +50,37 @@ export function createParseSettings(
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
-  const tsconfigRootDir =
-    typeof tsestreeOptions.tsconfigRootDir === 'string'
-      ? tsestreeOptions.tsconfigRootDir
-      : getInferredTSConfigRootDir();
+  const tsconfigRootDir = (() => {
+    let tsconfigRootDir;
+    if (tsestreeOptions.tsconfigRootDir == null) {
+      tsconfigRootDir = getInferredTSConfigRootDir();
+      if (!path.isAbsolute(tsconfigRootDir)) {
+        throw new Error(
+          `inferred tsconfigRootDir should have be an absolute path, but received: ${JSON.stringify(
+            tsconfigRootDir,
+          )}. This is a bug in typescript-eslint! Please report it to us at https://github.com/typescript-eslint/typescript-eslint/issues/new/choose.`,
+        );
+      }
+    } else if (typeof tsestreeOptions.tsconfigRootDir === 'string') {
+      tsconfigRootDir = tsestreeOptions.tsconfigRootDir;
+      if (!path.isAbsolute(tsconfigRootDir)) {
+        throw new Error(
+          `parserOptions.tsconfigRootDir must be an absolute path, but received: ${JSON.stringify(
+            tsconfigRootDir,
+          )}. This is a bug in your configuration; please supply an absolute path.`,
+        );
+      }
+    } else {
+      throw new Error(
+        `If provided, parserOptions.tsconfigRootDir must be a string, but received a value of type "${typeof tsestreeOptions.tsconfigRootDir}"`,
+      );
+    }
+
+    // Deal with any funny business around trailing path separators (a/b/) or relative path segments (/a/b/../c)
+    // We already know it's absolute, so we can safely use path.resolve
+    return path.resolve(tsconfigRootDir);
+  })();
+
   const passedLoggerFn = typeof tsestreeOptions.loggerFn === 'function';
   const filePath = ensureAbsolutePath(
     typeof tsestreeOptions.filePath === 'string' &&

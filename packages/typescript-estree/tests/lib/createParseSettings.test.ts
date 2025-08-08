@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import {
   addCandidateTSConfigRootDir,
   clearCandidateTSConfigRootDirs,
@@ -71,8 +73,37 @@ describe(createParseSettings, () => {
       clearCandidateTSConfigRootDirs();
     });
 
+    it('errors on non-absolute path', () => {
+      expect(() =>
+        createParseSettings('', { tsconfigRootDir: 'a/b/c' }),
+      ).toThrowErrorMatchingInlineSnapshot(
+        `[Error: parserOptions.tsconfigRootDir must be an absolute path, but received: "a/b/c". This is a bug in your configuration; please supply an absolute path.]`,
+      );
+    });
+
+    it('normalizes crazy tsconfigRootDir', () => {
+      const parseSettings = createParseSettings('', {
+        tsconfigRootDir: '/a/b////..//c///',
+      });
+
+      expect(parseSettings.tsconfigRootDir).toBe(
+        process.platform !== 'win32' ? '/a/c' : '\\a\\c',
+      );
+    });
+
+    it('errors on invalid tsconfigRootDir', () => {
+      expect(() =>
+        createParseSettings('', {
+          // @ts-expect-error -- testing invalid input
+          tsconfigRootDir: 42,
+        }),
+      ).toThrowErrorMatchingInlineSnapshot(
+        `[Error: If provided, parserOptions.tsconfigRootDir must be a string, but received a value of type "number"]`,
+      );
+    });
+
     it('uses the provided tsconfigRootDir when it exists and no candidates exist', () => {
-      const tsconfigRootDir = 'a/b/c';
+      const tsconfigRootDir = path.normalize('/a/b/c');
 
       const parseSettings = createParseSettings('', { tsconfigRootDir });
 
@@ -81,7 +112,7 @@ describe(createParseSettings, () => {
 
     it('uses the provided tsconfigRootDir when it exists and a candidate exists', () => {
       addCandidateTSConfigRootDir('candidate');
-      const tsconfigRootDir = 'a/b/c';
+      const tsconfigRootDir = path.normalize('/a/b/c');
 
       const parseSettings = createParseSettings('', { tsconfigRootDir });
 
@@ -89,7 +120,7 @@ describe(createParseSettings, () => {
     });
 
     it('uses the inferred candidate when no tsconfigRootDir is provided and a candidate exists', () => {
-      const tsconfigRootDir = 'a/b/c';
+      const tsconfigRootDir = path.normalize('/a/b/c');
       addCandidateTSConfigRootDir(tsconfigRootDir);
 
       const parseSettings = createParseSettings('');
