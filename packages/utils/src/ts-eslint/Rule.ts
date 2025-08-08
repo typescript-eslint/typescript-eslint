@@ -29,7 +29,7 @@ export interface RuleMetaDataDocs {
   /**
    * Mark this rule as frozen.
    */
-  isFrozen?: boolean;
+  frozen?: boolean;
 }
 
 export interface ExternalSpecifier {

@@ -11,6 +11,7 @@ export default createRule({
     docs: {
       description: 'Enforce default parameters to be last',
       extendsBaseRule: true,
+      frozen: true,
     },
     messages: {
       shouldBeLast: 'Default parameters should be last.',
