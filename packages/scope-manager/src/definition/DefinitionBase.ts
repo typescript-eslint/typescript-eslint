@@ -5,10 +5,15 @@ import type { DefinitionType } from './DefinitionType';
 import { createIdGenerator } from '../ID';
 
 const generator = createIdGenerator();
+/**
+ * Helper type to exclude Program from valid definition nodes
+ * Program is the root node and doesn't have a parent property
+ */
+export type NodeWithParent = Exclude<TSESTree.Node, TSESTree.Program>;
 
 export abstract class DefinitionBase<
   Type extends DefinitionType,
-  Node extends TSESTree.Node,
+  Node extends NodeWithParent,
   Parent extends TSESTree.Node | null,
   Name extends TSESTree.Node,
 > {
