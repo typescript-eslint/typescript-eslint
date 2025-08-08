@@ -1,8 +1,5 @@
 import type { RulesMeta } from '@site/rulesMeta';
-import type {
-  DeprecatedInfo,
-  RuleRecommendation,
-} from '@typescript-eslint/utils/ts-eslint';
+import type { RuleRecommendation } from '@typescript-eslint/utils/ts-eslint';
 
 import Link from '@docusaurus/Link';
 import { useHistory } from '@docusaurus/router';
@@ -25,7 +22,6 @@ import {
   SUGGESTIONS_EMOJI,
   TYPE_INFORMATION_EMOJI,
 } from '../constants';
-import { isRuleFrozen } from '../lib/isRuleFrozen';
 import styles from './styles.module.css';
 
 function interpolateCode(
@@ -45,18 +41,6 @@ function getActualRecommended({
   return recommended ? getRecommendationWithEmoji(recommended) : ['', ''];
 }
 
-function isRealDeprecated(
-  deprecated: boolean | DeprecatedInfo | undefined,
-): boolean {
-  if (typeof deprecated === 'boolean') {
-    return deprecated;
-  }
-  if (isRuleFrozen(deprecated)) {
-    return false;
-  }
-  return !!deprecated;
-}
-
 function RuleRow({
   rule,
 }: {
@@ -66,7 +50,6 @@ function RuleRow({
     return null;
   }
   const { deprecated, fixable, hasSuggestions } = rule;
-  const isDeprecated = isRealDeprecated(deprecated);
   const { extendsBaseRule, requiresTypeChecking } = rule.docs;
   const [emoji, actualRecommended] = getActualRecommended(rule);
   return (
@@ -76,7 +59,7 @@ function RuleRow({
           <Link to={new URL(rule.docs.url).pathname}>
             <code>@typescript-eslint/{rule.name}</code>
           </Link>
-          {isRuleFrozen(rule.deprecated) && <span>❄️</span>}
+          {rule.docs.frozen && <span>❄️</span>}
         </div>
         <br />
         {interpolateCode(rule.docs.description)}
@@ -114,9 +97,9 @@ function RuleRow({
       </td>
       <td
         className={styles.attrCol}
-        title={isDeprecated ? 'deprecated' : undefined}
+        title={deprecated ? 'deprecated' : undefined}
       >
-        {isDeprecated ? DEPRECATED_RULE_EMOJI : ''}
+        {deprecated ? DEPRECATED_RULE_EMOJI : ''}
       </td>
     </tr>
   );
@@ -193,7 +176,7 @@ export default function RulesTable(): React.JSX.Element {
           match(filters.suggestions, !!r.hasSuggestions),
           match(filters.typeInformation, !!r.docs.requiresTypeChecking),
           match(filters.extension, !!r.docs.extendsBaseRule),
-          match(filters.deprecated, isRealDeprecated(r.deprecated)),
+          match(filters.deprecated, !!r.deprecated),
         ].filter(
           (o): o is boolean =>
             // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish

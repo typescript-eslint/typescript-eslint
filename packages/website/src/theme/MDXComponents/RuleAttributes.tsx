@@ -17,7 +17,6 @@ import {
   STYLISTIC_CONFIG_EMOJI,
   SUGGESTIONS_EMOJI,
 } from '../../components/constants';
-import { isRuleFrozen } from '../../components/lib/isRuleFrozen';
 import { Feature } from './Feature';
 import styles from './RuleAttributes.module.css';
 
@@ -156,7 +155,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
     });
   }
 
-  if (isRuleFrozen(rule.deprecated)) {
+  if (rule.docs.frozen) {
     features.push({
       children: (
         <>
