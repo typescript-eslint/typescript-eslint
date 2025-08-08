@@ -258,7 +258,7 @@ unsafe('...', () => {});
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{"allowForKnownSafeCalls":[{"from":"file","name":"safe","path":"input.ts"}]}' skipValidation
+```ts option='{"allowForKnownSafeCalls":[{"from":"file","name":"safe","path":"input.ts"}]}'
 declare function safe(...args: unknown[]): Promise<void>;
 
 safe('...', () => {});
