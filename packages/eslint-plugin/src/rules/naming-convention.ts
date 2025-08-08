@@ -70,8 +70,8 @@ export default createRule<Options, MessageIds>({
       description:
         'Enforce naming conventions for everything across a codebase',
       // technically only requires type checking if the user uses "type" modifiers
-      requiresTypeChecking: true,
       frozen: true,
+      requiresTypeChecking: true,
     },
     messages: {
       doesNotMatchFormat:
