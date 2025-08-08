@@ -32,9 +32,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     defaultOptions,
-    deprecated: {
-      availableUntil: null,
-    },
     docs: {
       description: 'Enforce dot notation whenever possible',
       extendsBaseRule: true,

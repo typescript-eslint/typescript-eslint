@@ -49,9 +49,6 @@ export default createRule<Options, MessageIds>({
   name: 'no-magic-numbers',
   meta: {
     type: 'suggestion',
-    deprecated: {
-      availableUntil: null,
-    },
     // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description: 'Disallow magic numbers',

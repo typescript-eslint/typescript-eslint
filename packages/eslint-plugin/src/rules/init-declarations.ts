@@ -19,9 +19,6 @@ export default createRule<Options, MessageIds>({
   name: 'init-declarations',
   meta: {
     type: 'suggestion',
-    deprecated: {
-      availableUntil: null,
-    },
     // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description:

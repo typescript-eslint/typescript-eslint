@@ -726,9 +726,6 @@ export default createRule<Options, MessageIds>({
   name: 'member-ordering',
   meta: {
     type: 'suggestion',
-    deprecated: {
-      availableUntil: null,
-    },
     docs: {
       description: 'Require a consistent member declaration order',
     },

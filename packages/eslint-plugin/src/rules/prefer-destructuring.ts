@@ -72,9 +72,6 @@ export default createRule<Options, MessageIds>({
   name: 'prefer-destructuring',
   meta: {
     type: 'suggestion',
-    deprecated: {
-      availableUntil: null,
-    },
     // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description: 'Require destructuring from arrays and/or objects',

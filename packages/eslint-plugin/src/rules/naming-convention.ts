@@ -66,9 +66,6 @@ export default createRule<Options, MessageIds>({
   name: 'naming-convention',
   meta: {
     type: 'suggestion',
-    deprecated: {
-      availableUntil: null,
-    },
     docs: {
       description:
         'Enforce naming conventions for everything across a codebase',
