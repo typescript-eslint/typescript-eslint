@@ -114,13 +114,7 @@ function reducer(
   [key, value]: RuleEntry,
   settings: ConfigRuleSettings = {},
 ): LinterConfigRules {
-  const deprecated = value.meta.deprecated;
-  if (deprecated) {
-    // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish, eqeqeq
-    if (typeof deprecated === 'object' && deprecated.availableUntil === null) {
-      return config;
-    }
-
+  if (value.meta.deprecated) {
     if (value.meta.docs.recommended) {
       throw new Error(`${key} is both deprecated and recommended.`);
     }
