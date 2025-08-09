@@ -6,7 +6,7 @@ import type * as Shared from './ESLintShared';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class FlatESLintBase extends Shared.ESLintBase<
-  FlatConfig.ConfigArray,
+  FlatConfig.Config | FlatConfig.ConfigArray,
   FlatESLint.ESLintOptions
 > {
   static readonly configType: 'flat';
@@ -18,7 +18,7 @@ declare class FlatESLintBase extends Shared.ESLintBase<
    * @param filePath The path of the file to retrieve a config object for.
    * @returns A configuration object for the file or `undefined` if there is no configuration data for the object.
    */
-  calculateConfigForFile(filePath: string): Promise<FlatConfig.ConfigArray>;
+  calculateConfigForFile(filePath: string): Promise<FlatConfig.Config>;
 
   /**
    * Finds the config file being used by this instance based on the options
