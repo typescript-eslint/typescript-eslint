@@ -35,6 +35,7 @@ export default createRule<Options, MessageIds>({
     docs: {
       description: 'Enforce dot notation whenever possible',
       extendsBaseRule: true,
+      frozen: true,
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },

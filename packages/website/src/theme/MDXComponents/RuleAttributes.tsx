@@ -155,6 +155,18 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
     });
   }
 
+  if (rule.docs.frozen) {
+    features.push({
+      children: (
+        <>
+          This rule is currently <Link href="/rules#frozen-rules">frozen</Link>{' '}
+          and is not accepting feature requests.
+        </>
+      ),
+      emoji: '❄️',
+    });
+  }
+
   return (
     <div className={styles.features}>
       {features.map(feature => (
