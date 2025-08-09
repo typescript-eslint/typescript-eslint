@@ -56,7 +56,7 @@ export default createRule({
             return;
           }
 
-          let value: number | string | undefined;
+          let value: number | string | null | undefined;
           if (isStringLiteral(member.initializer)) {
             value = member.initializer.value;
           } else if (isNumberLiteral(member.initializer)) {
