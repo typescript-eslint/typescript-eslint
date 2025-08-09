@@ -6179,7 +6179,7 @@ __metadata:
     cross-fetch: ^4.0.0
     cspell: ^9.0.0
     eslint: ^9.26.0
-    eslint-plugin-eslint-plugin: ^6.3.1
+    eslint-plugin-eslint-plugin: ^7.0.0
     eslint-plugin-import: ^2.31.0
     eslint-plugin-jsdoc: ^50.5.0
     eslint-plugin-jsx-a11y: ^6.10.2
@@ -10049,15 +10049,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-eslint-plugin@npm:^6.3.1":
-  version: 6.4.0
-  resolution: "eslint-plugin-eslint-plugin@npm:6.4.0"
+"eslint-plugin-eslint-plugin@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "eslint-plugin-eslint-plugin@npm:7.0.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.4.0
     estraverse: ^5.3.0
   peerDependencies:
-    eslint: ">=8.23.0"
-  checksum: 8cf4e4928c207fec5fd5ae025a0ec3c11e8d7d147aee1732a0eff4c3d258a279981ca26d3d4b35df22dcc61db0da8973d51466f1c783d5e03785c78e167ba03c
+    eslint: ">=9.0.0"
+  checksum: b67099bbb56a2abc28e09f296ae9b04e23401c72cf2f611c50010644f8a5ab732801c7367f1784c6522ca4e727e1144d4590878065c84b384bb634b70c4d0f5e
   languageName: node
   linkType: hard
 
