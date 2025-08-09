@@ -36,6 +36,11 @@ export {
   ClassWithDeprecatedConstructor as ReexportedClassWithDeprecatedConstructor,
 };
 
+/** @deprecated Reason */
+export type T = { a: string };
+
+export type U = { b: string };
+
 /** @deprecated */
 export default {
   foo: 1,
