@@ -40,17 +40,18 @@ export default createRule<Options, MessageIds>({
             ...classScope.members.instance.values(),
             ...classScope.members.static.values(),
           ]) {
-            if (!member.isPrivate() && !member.isHashPrivate()) {
+            if (
+              (!member.isPrivate() && !member.isHashPrivate()) ||
+              member.isUsed()
+            ) {
               continue;
             }
 
-            if (member.referenceCount === 0) {
-              context.report({
-                node: member.node.key,
-                messageId: 'unusedPrivateClassMember',
-                data: { classMemberName: member.name },
-              });
-            }
+            context.report({
+              node: member.node.key,
+              messageId: 'unusedPrivateClassMember',
+              data: { classMemberName: member.name },
+            });
           }
         }
       },

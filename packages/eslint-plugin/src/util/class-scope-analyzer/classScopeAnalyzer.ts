@@ -6,6 +6,7 @@ import { Visitor } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { ClassNode, Key, MemberNode } from './types';
+import { nullThrows, NullThrowsReasons } from '..';
 
 import {
   extractNameForMember,
@@ -30,9 +31,14 @@ export class Member {
   public readonly name: string;
 
   /**
-   * The number of references to this member.
+   * The number of writes to this member.
    */
-  public referenceCount = 0;
+  public writeCount = 0;
+
+  /**
+   * The number of reads from this member.
+   */
+  public readCount = 0;
 
   private constructor(node: MemberNode, key: Key, name: string) {
     this.node = node;
@@ -58,6 +64,107 @@ export class Member {
   public isStatic(): boolean {
     return this.node.static;
   }
+
+  public isAccessor(): boolean {
+    if (
+      this.node.type === AST_NODE_TYPES.MethodDefinition ||
+      this.node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
+    ) {
+      return this.node.kind === 'set' || this.node.kind === 'get';
+    }
+
+    return (
+      this.node.type === AST_NODE_TYPES.AccessorProperty ||
+      this.node.type === AST_NODE_TYPES.TSAbstractAccessorProperty
+    );
+  }
+
+  public isUsed(): boolean {
+    return (
+      this.readCount > 0 ||
+      // any usage of an accessor is considered a usage as accessor can have side effects
+      (this.writeCount > 0 && this.isAccessor())
+    );
+  }
+}
+
+function isWriteOnlyUsage(node: TSESTree.Node, parent: TSESTree.Node): boolean {
+  if (
+    parent.type !== AST_NODE_TYPES.AssignmentExpression &&
+    parent.type !== AST_NODE_TYPES.ForInStatement &&
+    parent.type !== AST_NODE_TYPES.ForOfStatement &&
+    parent.type !== AST_NODE_TYPES.AssignmentPattern
+  ) {
+    return false;
+  }
+
+  // If it's on the right then it's a read not a write
+  if (parent.left !== node) {
+    return false;
+  }
+
+  if (
+    parent.type === AST_NODE_TYPES.AssignmentExpression &&
+    // For any other operator (such as '+=') we still consider it a read operation
+    parent.operator !== '='
+  ) {
+    // if the read operation is "discarded" in an empty statement, then it is write only.
+    return parent.parent.type === AST_NODE_TYPES.ExpressionStatement;
+  }
+
+  return true;
+}
+
+function countReference(identifierParent: TSESTree.Node, member: Member) {
+  const identifierGrandparent = nullThrows(
+    identifierParent.parent,
+    NullThrowsReasons.MissingParent,
+  );
+
+  if (isWriteOnlyUsage(identifierParent, identifierGrandparent)) {
+    member.writeCount += 1;
+    return;
+  }
+
+  const identifierGreatGrandparent = identifierGrandparent.parent;
+
+  // A statement which only increments (`this.#x++;`)
+  if (
+    identifierGrandparent.type === AST_NODE_TYPES.UpdateExpression &&
+    identifierGreatGrandparent?.type === AST_NODE_TYPES.ExpressionStatement
+  ) {
+    member.writeCount += 1;
+    return;
+  }
+
+  /*
+   * ({ x: this.#usedInDestructuring } = bar);
+   *
+   * But should treat the following as a read:
+   * ({ [this.#x]: a } = foo);
+   */
+  if (
+    identifierGrandparent.type === AST_NODE_TYPES.Property &&
+    identifierGreatGrandparent?.type === AST_NODE_TYPES.ObjectPattern &&
+    identifierGrandparent.value === identifierParent
+  ) {
+    member.writeCount += 1;
+    return;
+  }
+
+  // [...this.#unusedInRestPattern] = bar;
+  if (identifierGrandparent.type === 'RestElement') {
+    member.writeCount += 1;
+    return;
+  }
+
+  // [this.#unusedInAssignmentPattern] = bar;
+  if (identifierGrandparent.type === 'ArrayPattern') {
+    member.writeCount += 1;
+    return;
+  }
+
+  member.readCount += 1;
 }
 
 type IntermediateNode =
@@ -243,7 +350,7 @@ abstract class ThisScope extends Visitor {
       return;
     }
 
-    member.referenceCount += 1;
+    countReference(node, member);
   }
 
   protected PrivateIdentifier(node: TSESTree.PrivateIdentifier): void {
@@ -277,7 +384,7 @@ abstract class ThisScope extends Visitor {
           currentScope.thisContext.members.instance.get(key) ??
           currentScope.thisContext.members.static.get(key);
         if (member != null) {
-          member.referenceCount += 1;
+          countReference(node.parent, member);
           return;
         }
       }

@@ -82,8 +82,6 @@ class C {
   }
 }
       `,
-      // TODO make this work
-      skip: true,
     },
 
     ...[
