@@ -17,7 +17,7 @@ const banner = [
   ' *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *',
   ' *                                            *',
   ' *    YOU CAN REGENERATE THESE FILES USING    *',
-  ' *          yarn generate-website-dts         *',
+  ' *          pnpm run generate-website-dts     *',
   ' **********************************************/',
 ];
 
