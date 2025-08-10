@@ -243,6 +243,30 @@ Promise.reject('foo').catch(e => {
         },
       ],
     },
+    {
+      code: `
+async function foo() {
+  throw await Promise.resolve(new Error('error'));
+}
+      `,
+      options: [
+        {
+          allowThrowingAny: false,
+        },
+      ],
+    },
+    {
+      code: `
+function* foo(): Generator<number, void, Error> {
+  throw yield 303;
+}
+      `,
+      options: [
+        {
+          allowThrowingAny: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -742,6 +766,40 @@ Promise.reject('foo').then(e => {
           allowRethrowing: true,
           allowThrowingAny: false,
           allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  throw await bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowThrowingAny: false,
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  throw await Promise.resolve<number>(303);
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowThrowingAny: false,
         },
       ],
     },

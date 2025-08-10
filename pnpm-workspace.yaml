@@ -6,4 +6,4 @@ overrides:
   "@types/react": ^18.2.14
   prettier: 3.5.0
   tsx: ^4.7.2
-  typescript: 5.8.2
+  typescript: 5.9.2

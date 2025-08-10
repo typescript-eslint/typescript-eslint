@@ -453,7 +453,7 @@ export default tseslint.config(
   //
 
   {
-    extends: [eslintPluginPlugin.configs['flat/recommended']],
+    extends: [eslintPluginPlugin.configs.recommended],
     files: [
       'packages/eslint-plugin-internal/**/*.?(m|c)ts?(x)',
       'packages/eslint-plugin/**/*.?(m|c)ts?(x)',
@@ -462,6 +462,10 @@ export default tseslint.config(
 
     rules: {
       '@typescript-eslint/internal/no-typescript-estree-import': 'error',
+      // TODO (43081j): maybe enable these one day?
+      'eslint-plugin/no-meta-replaced-by': 'off',
+      'eslint-plugin/require-meta-default-options': 'off',
+      'eslint-plugin/require-meta-schema-description': 'off',
     },
   },
   {
