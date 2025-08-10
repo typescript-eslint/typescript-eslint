@@ -1,3 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures parameter TSParameterProperty _error_ override-function-parameter Babel - Error 1`] = `[SyntaxError: A parameter property is only allowed in a constructor implementation. (1:13)]`;
+exports[`AST Fixtures > parameter > TSParameterProperty > _error_ > override-function-parameter > Babel - Error`]
+BabelError
+> 1 | function foo(override parameter) {}
+    |              ^ A parameter property is only allowed in a constructor implementation. (1:13)
+  2 |
+  

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > object-with-typed-methods > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -13,12 +13,12 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'foo',
--             optional: false,
+              optional: false,
 
               range: [79, 82],
               loc: {
@@ -34,9 +34,9 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                   computed: false,
                   key: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'constructor',
--                   optional: false,
+                    optional: false,
 
                     range: [89, 100],
                     loc: {
@@ -46,29 +46,8 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                   },
                   kind: 'init',
                   method: true,
--                 optional: false,
+                  optional: false,
                   shorthand: false,
-+                 typeParameters: TSTypeParameterDeclaration {
-+                   type: 'TSTypeParameterDeclaration',
-+                   params: Array [
-+                     TSTypeParameter {
-+                       type: 'TSTypeParameter',
-+                       name: 'T',
-+
-+                       range: [101, 102],
-+                       loc: {
-+                         start: { column: 14, line: 4 },
-+                         end: { column: 15, line: 4 },
-+                       },
-+                     },
-+                   ],
-+
-+                   range: [100, 103],
-+                   loc: {
-+                     start: { column: 13, line: 4 },
-+                     end: { column: 16, line: 4 },
-+                   },
-+                 },
                   value: FunctionExpression {
                     type: 'FunctionExpression',
                     async: false,
@@ -103,7 +82,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                         end: { column: 3, line: 6 },
                       },
                     },
--                   declare: false,
+                    declare: false,
                     expression: false,
                     generator: false,
                     id: null,
@@ -126,47 +105,46 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                         end: { column: 26, line: 4 },
                       },
                     },
--                   typeParameters: TSTypeParameterDeclaration {
--                     type: 'TSTypeParameterDeclaration',
--                     params: Array [
--                       TSTypeParameter {
--                         type: 'TSTypeParameter',
--                         const: false,
--                         in: false,
+                    typeParameters: TSTypeParameterDeclaration {
+                      type: 'TSTypeParameterDeclaration',
+                      params: Array [
+                        TSTypeParameter {
+                          type: 'TSTypeParameter',
+                          const: false,
+                          in: false,
 -                         name: Identifier {
 -                           type: 'Identifier',
 -                           decorators: Array [],
 -                           name: 'T',
 -                           optional: false,
-
+-
 -                           range: [101, 102],
 -                           loc: {
 -                             start: { column: 14, line: 4 },
 -                             end: { column: 15, line: 4 },
 -                           },
 -                         },
--                         out: false,
--
--                         range: [101, 102],
--                         loc: {
--                           start: { column: 14, line: 4 },
--                           end: { column: 15, line: 4 },
--                         },
--                       },
--                     ],
--
--                     range: [100, 103],
--                     loc: {
--                       start: { column: 13, line: 4 },
--                       end: { column: 16, line: 4 },
--                     },
--                   },
--
--                   range: [100, 133],
-+                   range: [103, 133],
++                         name: 'T',
+                          out: false,
+
+                          range: [101, 102],
+                          loc: {
+                            start: { column: 14, line: 4 },
+                            end: { column: 15, line: 4 },
+                          },
+                        },
+                      ],
+
+                      range: [100, 103],
+                      loc: {
+                        start: { column: 13, line: 4 },
+                        end: { column: 16, line: 4 },
+                      },
+                    },
+
+                    range: [100, 133],
                     loc: {
--                     start: { column: 13, line: 4 },
-+                     start: { column: 16, line: 4 },
+                      start: { column: 13, line: 4 },
                       end: { column: 3, line: 6 },
                     },
                   },
@@ -182,9 +160,9 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                   computed: false,
                   key: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'foo',
--                   optional: false,
+                    optional: false,
 
                     range: [137, 140],
                     loc: {
@@ -194,29 +172,8 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                   },
                   kind: 'init',
                   method: true,
--                 optional: false,
+                  optional: false,
                   shorthand: false,
-+                 typeParameters: TSTypeParameterDeclaration {
-+                   type: 'TSTypeParameterDeclaration',
-+                   params: Array [
-+                     TSTypeParameter {
-+                       type: 'TSTypeParameter',
-+                       name: 'T',
-+
-+                       range: [141, 142],
-+                       loc: {
-+                         start: { column: 6, line: 7 },
-+                         end: { column: 7, line: 7 },
-+                       },
-+                     },
-+                   ],
-+
-+                   range: [140, 143],
-+                   loc: {
-+                     start: { column: 5, line: 7 },
-+                     end: { column: 8, line: 7 },
-+                   },
-+                 },
                   value: FunctionExpression {
                     type: 'FunctionExpression',
                     async: false,
@@ -251,7 +208,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                         end: { column: 3, line: 9 },
                       },
                     },
--                   declare: false,
+                    declare: false,
                     expression: false,
                     generator: false,
                     id: null,
@@ -274,47 +231,46 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                         end: { column: 18, line: 7 },
                       },
                     },
--                   typeParameters: TSTypeParameterDeclaration {
--                     type: 'TSTypeParameterDeclaration',
--                     params: Array [
--                       TSTypeParameter {
--                         type: 'TSTypeParameter',
--                         const: false,
--                         in: false,
+                    typeParameters: TSTypeParameterDeclaration {
+                      type: 'TSTypeParameterDeclaration',
+                      params: Array [
+                        TSTypeParameter {
+                          type: 'TSTypeParameter',
+                          const: false,
+                          in: false,
 -                         name: Identifier {
 -                           type: 'Identifier',
 -                           decorators: Array [],
 -                           name: 'T',
 -                           optional: false,
-
+-
 -                           range: [141, 142],
 -                           loc: {
 -                             start: { column: 6, line: 7 },
 -                             end: { column: 7, line: 7 },
 -                           },
 -                         },
--                         out: false,
--
--                         range: [141, 142],
--                         loc: {
--                           start: { column: 6, line: 7 },
--                           end: { column: 7, line: 7 },
--                         },
--                       },
--                     ],
--
--                     range: [140, 143],
--                     loc: {
--                       start: { column: 5, line: 7 },
--                       end: { column: 8, line: 7 },
--                     },
--                   },
--
--                   range: [140, 173],
-+                   range: [143, 173],
++                         name: 'T',
+                          out: false,
+
+                          range: [141, 142],
+                          loc: {
+                            start: { column: 6, line: 7 },
+                            end: { column: 7, line: 7 },
+                          },
+                        },
+                      ],
+
+                      range: [140, 143],
+                      loc: {
+                        start: { column: 5, line: 7 },
+                        end: { column: 8, line: 7 },
+                      },
+                    },
+
+                    range: [140, 173],
                     loc: {
--                     start: { column: 5, line: 7 },
-+                     start: { column: 8, line: 7 },
+                      start: { column: 5, line: 7 },
                       end: { column: 3, line: 9 },
                     },
                   },
@@ -330,9 +286,9 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                   computed: false,
                   key: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'a',
--                   optional: false,
+                    optional: false,
 
                     range: [181, 182],
                     loc: {
@@ -342,7 +298,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                   },
                   kind: 'get',
                   method: false,
--                 optional: false,
+                  optional: false,
                   shorthand: false,
                   value: FunctionExpression {
                     type: 'FunctionExpression',
@@ -378,7 +334,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                         end: { column: 3, line: 12 },
                       },
                     },
--                   declare: false,
+                    declare: false,
                     expression: false,
                     generator: false,
                     id: null,
@@ -420,9 +376,9 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                   computed: false,
                   key: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'a',
--                   optional: false,
+                    optional: false,
 
                     range: [220, 221],
                     loc: {
@@ -432,7 +388,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                   },
                   kind: 'set',
                   method: false,
--                 optional: false,
+                  optional: false,
                   shorthand: false,
                   value: FunctionExpression {
                     type: 'FunctionExpression',
@@ -447,16 +403,16 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                         end: { column: 29, line: 13 },
                       },
                     },
--                   declare: false,
+                    declare: false,
                     expression: false,
                     generator: false,
                     id: null,
                     params: Array [
                       Identifier {
                         type: 'Identifier',
--                       decorators: Array [],
+                        decorators: Array [],
                         name: 'x',
--                       optional: false,
+                        optional: false,
                         typeAnnotation: TSTypeAnnotation {
                           type: 'TSTypeAnnotation',
                           typeAnnotation: TSNumberKeyword {
@@ -531,7 +487,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'const',
 
         range: [73, 247],
@@ -548,5 +504,4 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
       start: { column: 0, line: 3 },
       end: { column: 0, line: 15 },
     },
-  }"
-`;
+  }

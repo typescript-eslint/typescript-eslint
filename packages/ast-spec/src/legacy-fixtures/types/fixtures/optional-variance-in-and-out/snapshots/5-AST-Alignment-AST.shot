@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > optional-variance-in-and-out > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,12 +10,12 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Mapper',
--         optional: false,
+          optional: false,
 
           range: [78, 84],
           loc: {
@@ -29,18 +29,18 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
 +         parameters: Array [
             Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'x',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeReference {
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'T',
--                   optional: false,
+                    optional: false,
 
                     range: [104, 105],
                     loc: {
@@ -77,9 +77,9 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'U',
--               optional: false,
+                optional: false,
 
                 range: [110, 111],
                 loc: {
@@ -113,7 +113,7 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
+              const: false,
               in: true,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -127,8 +127,8 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
 -                 end: { column: 16, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [85, 89],
               loc: {
@@ -138,8 +138,8 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -184,5 +184,4 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

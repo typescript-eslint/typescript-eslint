@@ -345,7 +345,7 @@ declare module 'eslint/lib/rules/no-unused-expressions' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'expected',
+    'unusedExpression',
     [
       {
         allowShortCircuit?: boolean;
@@ -520,11 +520,11 @@ declare module 'eslint/lib/rules/prefer-destructuring' {
     object?: boolean;
   }
   type Option0 =
+    | DestructuringTypeConfig
     | {
         AssignmentExpression?: DestructuringTypeConfig;
         VariableDeclarator?: DestructuringTypeConfig;
-      }
-    | DestructuringTypeConfig;
+      };
   export interface Option1 {
     enforceForRenamedProperties?: boolean;
   }
@@ -554,6 +554,7 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
         }
     )[];
     export type ArrayOfStringOrObjectPatterns =
+      | string[]
       | {
           // extended
           allowTypeImports?: boolean;
@@ -561,15 +562,14 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
           group?: string[];
           regex?: string;
           message?: string;
-        }[]
-      | string[];
+        }[];
     export type RuleListener =
+      | Record<string, never>
       | {
           ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
           ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
           ImportDeclaration(node: TSESTree.ImportDeclaration): void;
-        }
-      | Record<string, never>;
+        };
   }
 
   export interface ObjectOfPathsAndPatterns {

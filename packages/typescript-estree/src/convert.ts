@@ -70,6 +70,25 @@ export interface ASTMaps {
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node>;
 }
 
+function isPropertyAccessEntityNameExpression(
+  node: ts.Node,
+): node is ts.PropertyAccessEntityNameExpression {
+  return (
+    ts.isPropertyAccessExpression(node) &&
+    ts.isIdentifier(node.name) &&
+    isEntityNameExpression(node.expression)
+  );
+}
+
+function isEntityNameExpression(
+  node: ts.Node,
+): node is ts.EntityNameExpression {
+  return (
+    node.kind === SyntaxKind.Identifier ||
+    isPropertyAccessEntityNameExpression(node)
+  );
+}
+
 export class Converter {
   private allowPattern = false;
   private readonly ast: ts.SourceFile;
@@ -1676,14 +1695,24 @@ export class Converter {
           this.fixParentLocation(constructor, constructor.typeParameters.range);
         }
 
-        const constructorKey = this.createNode<TSESTree.Identifier>(node, {
-          type: AST_NODE_TYPES.Identifier,
-          range: [constructorToken.getStart(this.ast), constructorToken.end],
-          decorators: [],
-          name: 'constructor',
-          optional: false,
-          typeAnnotation: undefined,
-        });
+        const constructorKey =
+          constructorToken.kind === SyntaxKind.StringLiteral
+            ? this.createNode<TSESTree.StringLiteral>(constructorToken, {
+                type: AST_NODE_TYPES.Literal,
+                raw: constructorToken.getText(),
+                value: 'constructor',
+              })
+            : this.createNode<TSESTree.Identifier>(node, {
+                type: AST_NODE_TYPES.Identifier,
+                range: [
+                  constructorToken.getStart(this.ast),
+                  constructorToken.end,
+                ],
+                decorators: [],
+                name: 'constructor',
+                optional: false,
+                typeAnnotation: undefined,
+              });
 
         const isStatic = hasModifier(SyntaxKind.StaticKeyword, node);
 
@@ -1888,7 +1917,13 @@ export class Converter {
         return result;
       }
 
-      case SyntaxKind.TaggedTemplateExpression:
+      case SyntaxKind.TaggedTemplateExpression: {
+        if (node.tag.flags & ts.NodeFlags.OptionalChain) {
+          this.#throwError(
+            node,
+            'Tagged template expressions are not permitted in an optional chain.',
+          );
+        }
         return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
           type: AST_NODE_TYPES.TaggedTemplateExpression,
           quasi: this.convertChild(node.template),
@@ -1900,6 +1935,7 @@ export class Converter {
               node,
             ),
         });
+      }
 
       case SyntaxKind.TemplateHead:
       case SyntaxKind.TemplateMiddle:
@@ -1955,6 +1991,7 @@ export class Converter {
           parameter = this.convertChild(node.name) as TSESTree.BindingName;
           result = this.createNode<TSESTree.AssignmentPattern>(node, {
             type: AST_NODE_TYPES.AssignmentPattern,
+            range: [node.name.getStart(this.ast), node.initializer.end],
             decorators: [],
             left: parameter,
             optional: false,
@@ -2144,6 +2181,9 @@ export class Converter {
         );
 
         if (node.importClause) {
+          // TODO(bradzacher) swap to `phaseModifier` once we add support for `import defer`
+          // https://github.com/estree/estree/issues/328
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           if (node.importClause.isTypeOnly) {
             result.importKind = 'type';
           }
@@ -2869,14 +2909,14 @@ export class Converter {
               constraint: this.convertChild(node.typeParameter.constraint),
               key: this.convertChild(node.typeParameter.name),
               nameType: this.convertChild(node.nameType) ?? null,
-              optional:
-                node.questionToken &&
-                (node.questionToken.kind === SyntaxKind.QuestionToken ||
-                  getTextForTokenKind(node.questionToken.kind)),
-              readonly:
-                node.readonlyToken &&
-                (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword ||
-                  getTextForTokenKind(node.readonlyToken.kind)),
+              optional: node.questionToken
+                ? node.questionToken.kind === SyntaxKind.QuestionToken ||
+                  getTextForTokenKind(node.questionToken.kind)
+                : false,
+              readonly: node.readonlyToken
+                ? node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword ||
+                  getTextForTokenKind(node.readonlyToken.kind)
+                : undefined,
               typeAnnotation: node.type && this.convertChild(node.type),
             },
             'typeParameter',
@@ -3023,6 +3063,7 @@ export class Converter {
         const interfaceHeritageClauses = node.heritageClauses ?? [];
         const interfaceExtends: TSESTree.TSInterfaceHeritage[] = [];
 
+        let seenExtendsClause = false;
         for (const heritageClause of interfaceHeritageClauses) {
           if (heritageClause.token !== SyntaxKind.ExtendsKeyword) {
             this.#throwError(
@@ -3032,8 +3073,21 @@ export class Converter {
                 : 'Unexpected token.',
             );
           }
+          if (seenExtendsClause) {
+            this.#throwError(heritageClause, "'extends' clause already seen.");
+          }
+          seenExtendsClause = true;
 
           for (const heritageType of heritageClause.types) {
+            if (
+              !isEntityNameExpression(heritageType.expression) ||
+              ts.isOptionalChain(heritageType.expression)
+            ) {
+              this.#throwError(
+                heritageType,
+                'Interface declaration can only extend an identifier/qualified name with optional type arguments.',
+              );
+            }
             interfaceExtends.push(
               this.convertChild(
                 heritageType,
@@ -3117,8 +3171,16 @@ export class Converter {
             node,
             this.ast,
           )!;
-          const withToken = findNextToken(openBraceToken, node, this.ast)!;
-          const withTokenRange = getRange(withToken, this.ast);
+          const withOrAssertToken = findNextToken(
+            openBraceToken,
+            node,
+            this.ast,
+          )!;
+          const withOrAssertTokenRange = getRange(withOrAssertToken, this.ast);
+          const withOrAssertName =
+            withOrAssertToken.kind === ts.SyntaxKind.AssertKeyword
+              ? 'assert'
+              : 'with';
 
           options = this.createNode<TSESTree.ObjectExpression>(node, {
             type: AST_NODE_TYPES.ObjectExpression,
@@ -3126,13 +3188,13 @@ export class Converter {
             properties: [
               this.createNode<TSESTree.Property>(node, {
                 type: AST_NODE_TYPES.Property,
-                range: [withTokenRange[0], node.attributes.end],
+                range: [withOrAssertTokenRange[0], node.attributes.end],
                 computed: false,
                 key: this.createNode<TSESTree.Identifier>(node, {
                   type: AST_NODE_TYPES.Identifier,
-                  range: withTokenRange,
+                  range: withOrAssertTokenRange,
                   decorators: [],
-                  name: 'with',
+                  name: withOrAssertName,
                   optional: false,
                   typeAnnotation: undefined,
                 }),

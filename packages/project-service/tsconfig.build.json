@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {},
+  "references": [
+    {
+      "path": "../tsconfig-utils/tsconfig.build.json"
+    },
+    {
+      "path": "../types/tsconfig.build.json"
+    }
+  ]
+}

@@ -1,11 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter-underscore Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -16,9 +14,13 @@ Program {
           end: { column: 15, line: 3 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "A",
+        optional: false,
 
         range: [79, 80],
         loc: {
@@ -26,13 +28,17 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "__P",
+            out: false,
 
             range: [81, 84],
             loc: {
@@ -64,4 +70,3 @@ Program {
     end: { column: 0, line: 4 },
   },
 }
-`;

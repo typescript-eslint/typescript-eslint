@@ -174,6 +174,18 @@ interface ExampleObject {
   [key: string]: ExampleRoot;
 }
     `,
+    `
+type Bar<K extends string = never> = {
+  [k in K]: Bar;
+};
+    `,
+    `
+type Bar<K extends string = never> = {
+  [k in K]: Foo;
+};
+
+type Foo = Bar;
+    `,
 
     // Type literal
     'type Foo = {};',
@@ -646,6 +658,36 @@ type Foo2 = Record<string, Foo3>;
 type Foo3 = Record<string, Record<string, Foo1>>;
       `,
     },
+    {
+      code: `
+type Foos<K extends string = never> = {
+  [k in K]: { foo: Foo };
+};
+
+type Foo = Foos;
+      `,
+      errors: [{ column: 39, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foos<K extends string = never> = Record<K, { foo: Foo }>;
+
+type Foo = Foos;
+      `,
+    },
+    {
+      code: `
+type Foos<K extends string = never> = {
+  [k in K]: Foo[];
+};
+
+type Foo = Foos;
+      `,
+      errors: [{ column: 39, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foos<K extends string = never> = Record<K, Foo[]>;
+
+type Foo = Foos;
+      `,
+    },
 
     // Generic
     {
@@ -902,6 +944,18 @@ type Foo = Record<string, Bar>;
 interface Bar {
   [key: string];
 }
+      `,
+    },
+
+    {
+      code: `
+type Foo = {
+  [k in string];
+};
+      `,
+      errors: [{ column: 12, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo = Record<string, any>;
       `,
     },
   ],

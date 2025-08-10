@@ -1,3 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures special CatchClause _error_ with-initializer Babel - Error 1`] = `[SyntaxError: Unexpected token, expected ")" (3:9)]`;
+exports[`AST Fixtures > special > CatchClause > _error_ > with-initializer > Babel - Error`]
+BabelError
+  1 | try {
+  2 | }
+> 3 | catch (e = 1) {
+    |          ^ Unexpected token, expected ")" (3:9)
+  4 | }
+  5 |
+  

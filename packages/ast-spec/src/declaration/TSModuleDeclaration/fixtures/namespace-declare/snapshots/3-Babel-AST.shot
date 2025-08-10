@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration TSModuleDeclaration namespace-declare Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -17,9 +14,12 @@ Program {
         },
       },
       declare: true,
+      global: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "F",
+        optional: false,
 
         range: [18, 19],
         loc: {
@@ -44,4 +44,3 @@ Program {
     end: { column: 0, line: 2 },
   },
 }
-`;

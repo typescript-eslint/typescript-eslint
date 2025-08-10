@@ -35,9 +35,7 @@ const evenNumOfBackslashesRegExp = /(?<!(?:[^\\]|^)(?:\\\\)*\\)/;
 // '\\\\$' <- true
 // '\\\\\\$' <- false
 function endsWithUnescapedDollarSign(str: string): boolean {
-  return new RegExp(`${String(evenNumOfBackslashesRegExp.source)}\\$$`).test(
-    str,
-  );
+  return new RegExp(`${evenNumOfBackslashesRegExp.source}\\$$`).test(str);
 }
 
 export default createRule<[], MessageId>({
@@ -78,7 +76,7 @@ export default createRule<[], MessageId>({
     }
 
     function isEnumMemberType(type: ts.Type): boolean {
-      return tsutils.typeParts(type).some(t => {
+      return tsutils.typeConstituents(type).some(t => {
         const symbol = t.getSymbol();
         return !!(
           symbol?.valueDeclaration && ts.isEnumMember(symbol.valueDeclaration)
@@ -316,10 +314,7 @@ export default createRule<[], MessageId>({
             // \${ -> \${
             // \\${ -> \\\${
             .replaceAll(
-              new RegExp(
-                `${String(evenNumOfBackslashesRegExp.source)}(\`|\\\${)`,
-                'g',
-              ),
+              new RegExp(`${evenNumOfBackslashesRegExp.source}(\`|\\\${)`, 'g'),
               '\\$1',
             );
 

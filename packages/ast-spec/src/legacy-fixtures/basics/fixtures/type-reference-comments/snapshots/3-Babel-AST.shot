@@ -1,20 +1,23 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics type-reference-comments Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "mBuffers",
+              optional: false,
 
               range: [99, 107],
               loc: {
@@ -22,6 +25,9 @@ Program {
                 end: { column: 10, line: 4 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -31,7 +37,9 @@ Program {
                   type: "TSQualifiedName",
                   left: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "interop",
+                    optional: false,
 
                     range: [109, 116],
                     loc: {
@@ -41,7 +49,9 @@ Program {
                   },
                   right: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "Reference",
+                    optional: false,
 
                     range: [117, 126],
                     loc: {
@@ -106,9 +116,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "AudioBufferList",
+        optional: false,
 
         range: [79, 94],
         loc: {
@@ -116,6 +130,7 @@ Program {
           end: { column: 21, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 150],
@@ -133,4 +148,3 @@ Program {
     end: { column: 0, line: 6 },
   },
 }
-`;

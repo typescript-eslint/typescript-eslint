@@ -15,8 +15,6 @@ const ruleTester = new RuleTester({
   },
 });
 
-const messageId = 'unnecessaryQualifier';
-
 ruleTester.run('no-unnecessary-qualifier', rule, {
   valid: [
     `
@@ -95,7 +93,7 @@ namespace A {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryQualifier',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
@@ -115,7 +113,7 @@ namespace A {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryQualifier',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
@@ -137,7 +135,7 @@ namespace A {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryQualifier',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
@@ -161,7 +159,7 @@ namespace A {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryQualifier',
           type: AST_NODE_TYPES.TSQualifiedName,
         },
       ],
@@ -185,7 +183,7 @@ namespace A {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryQualifier',
           type: AST_NODE_TYPES.TSQualifiedName,
         },
       ],
@@ -209,7 +207,7 @@ namespace A {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryQualifier',
           type: AST_NODE_TYPES.MemberExpression,
         },
       ],
@@ -231,7 +229,7 @@ enum A {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryQualifier',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
@@ -253,7 +251,7 @@ namespace Foo {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryQualifier',
           type: AST_NODE_TYPES.MemberExpression,
         },
       ],
@@ -275,7 +273,7 @@ declare module './foo' {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryQualifier',
           type: AST_NODE_TYPES.Identifier,
         },
       ],

@@ -1,3 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures element MethodDefinition _error_ duplicated-accessibility-modifiers Babel - Error 1`] = `[SyntaxError: Accessibility modifier already seen. (2:9)]`;
+exports[`AST Fixtures > element > MethodDefinition > _error_ > duplicated-accessibility-modifiers > Babel - Error`]
+BabelError
+  1 | class Foo {
+> 2 |   public public bar() {};
+    |          ^ Accessibility modifier already seen. (2:9)
+  3 | }
+  4 |
+  

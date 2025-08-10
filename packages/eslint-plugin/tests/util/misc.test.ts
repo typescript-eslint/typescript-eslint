@@ -1,6 +1,38 @@
 import * as misc from '../../src/util/misc';
 
-describe('formatWordList', () => {
+describe(misc.isDefinitionFile, () => {
+  it.for([['index.d.ts'], ['module.d.cts'], ['package.d.mts']] as const)(
+    'returns true for standard definition file: %s',
+    ([filename], { expect }) => {
+      expect(misc.isDefinitionFile(filename)).toBe(true);
+    },
+  );
+
+  it.for([
+    ['styles.d.css.ts'],
+    ['component.d.vue.ts'],
+    ['env.d.node.ts'],
+  ] as const)(
+    'returns true for arbitrary extension definition file: %s',
+    ([filename], { expect }) => {
+      expect(misc.isDefinitionFile(filename)).toBe(true);
+    },
+  );
+
+  it.for([
+    ['index.ts'],
+    ['app.tsx'],
+    ['styles.css.ts'],
+    ['vite.config.ts'],
+  ] as const)(
+    'returns false for non definition file: %s',
+    ([filename], { expect }) => {
+      expect(misc.isDefinitionFile(filename)).toBe(false);
+    },
+  );
+});
+
+describe(misc.formatWordList, () => {
   it('can format with no words', () => {
     expect(misc.formatWordList([])).toBe('');
   });
@@ -24,7 +56,7 @@ describe('formatWordList', () => {
   });
 });
 
-describe('findLastIndex', () => {
+describe(misc.findLastIndex, () => {
   it('returns -1 if there are no elements to iterate over', () => {
     expect(misc.findLastIndex([], () => true)).toBe(-1);
   });

@@ -1,14 +1,14 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Uppercase",
+        optional: false,
 
         range: [78, 87],
         loc: {
@@ -30,6 +30,7 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -39,7 +40,9 @@ Program {
                 end: { column: 31, line: 3 },
               },
             },
+            in: false,
             name: "S",
+            out: false,
 
             range: [88, 104],
             loc: {
@@ -64,9 +67,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Lowercase",
+        optional: false,
 
         range: [124, 133],
         loc: {
@@ -88,6 +94,7 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -97,7 +104,9 @@ Program {
                 end: { column: 31, line: 4 },
               },
             },
+            in: false,
             name: "S",
+            out: false,
 
             range: [134, 150],
             loc: {
@@ -122,9 +131,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Capitalize",
+        optional: false,
 
         range: [170, 180],
         loc: {
@@ -146,6 +158,7 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -155,7 +168,9 @@ Program {
                 end: { column: 32, line: 5 },
               },
             },
+            in: false,
             name: "S",
+            out: false,
 
             range: [181, 197],
             loc: {
@@ -180,9 +195,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Uncapitalize",
+        optional: false,
 
         range: [217, 229],
         loc: {
@@ -204,6 +222,7 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -213,7 +232,9 @@ Program {
                 end: { column: 34, line: 6 },
               },
             },
+            in: false,
             name: "S",
+            out: false,
 
             range: [230, 246],
             loc: {
@@ -245,4 +266,3 @@ Program {
     end: { column: 0, line: 7 },
   },
 }
-`;

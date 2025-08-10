@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-parameters AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > interface-with-extends-type-parameters > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -20,7 +20,7 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
             end: { column: 34, line: 3 },
           },
         },
--       declare: false,
+        declare: false,
         extends: Array [
 -         TSInterfaceHeritage {
 -           type: 'TSInterfaceHeritage',
@@ -28,9 +28,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'Bar',
--             optional: false,
+              optional: false,
 
               range: [98, 101],
               loc: {
@@ -46,9 +46,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'J',
--                   optional: false,
+                    optional: false,
 
                     range: [102, 103],
                     loc: {
@@ -81,9 +81,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
         ],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [83, 86],
           loc: {
@@ -96,8 +96,8 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -110,8 +110,8 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
 -                 end: { column: 15, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [87, 88],
               loc: {
@@ -142,5 +142,4 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

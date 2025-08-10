@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics declare-class-with-optional-method AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > declare-class-with-optional-method > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,19 +10,19 @@ exports[`AST Fixtures legacy-fixtures basics declare-class-with-optional-method 
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'bar',
--               optional: false,
+                optional: false,
 
                 range: [95, 98],
                 loc: {
@@ -32,7 +32,7 @@ exports[`AST Fixtures legacy-fixtures basics declare-class-with-optional-method 
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -40,7 +40,7 @@ exports[`AST Fixtures legacy-fixtures basics declare-class-with-optional-method 
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -86,12 +86,12 @@ exports[`AST Fixtures legacy-fixtures basics declare-class-with-optional-method 
           },
         },
         declare: true,
--       decorators: Array [],
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [87, 90],
           loc: {
@@ -99,7 +99,7 @@ exports[`AST Fixtures legacy-fixtures basics declare-class-with-optional-method 
             end: { column: 17, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
 
         range: [73, 109],
@@ -116,5 +116,4 @@ exports[`AST Fixtures legacy-fixtures basics declare-class-with-optional-method 
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

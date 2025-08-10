@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes prefer-destructuring 1`] = `
-"
 # SCHEMA:
 
 [
@@ -52,6 +49,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     ]
   },
   {
+    "additionalProperties": false,
     "properties": {
       "enforceForDeclarationWithTypeAnnotation": {
         "description": "Whether to enforce destructuring on variable declarations with type annotations.",
@@ -91,8 +89,5 @@ type Options = [
     enforceForDeclarationWithTypeAnnotation?: boolean;
     /** Whether to enforce destructuring that use a different variable name than the property name. */
     enforceForRenamedProperties?: boolean;
-    [k: string]: unknown;
   },
 ];
-"
-`;

@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics null-and-undefined-type-annotations Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -9,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "x",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSNullKeyword {
@@ -46,6 +46,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [73, 85],
@@ -59,9 +60,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "y",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSUndefinedKeyword {
@@ -96,6 +100,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [86, 103],
@@ -113,4 +118,3 @@ Program {
     end: { column: 0, line: 5 },
   },
 }
-`;

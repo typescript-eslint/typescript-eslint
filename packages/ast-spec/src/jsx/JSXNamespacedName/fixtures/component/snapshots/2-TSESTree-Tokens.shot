@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
 [
   Keyword {
     type: "Keyword",
@@ -524,21 +521,11 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
   },
   Punctuator {
     type: "Punctuator",
-    value: "<",
+    value: "</",
 
-    range: [275, 276],
+    range: [275, 277],
     loc: {
       start: { column: 28, line: 9 },
-      end: { column: 29, line: 9 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "/",
-
-    range: [276, 277],
-    loc: {
-      start: { column: 29, line: 9 },
       end: { column: 30, line: 9 },
     },
   },
@@ -583,4 +570,3 @@ exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - Tokens 1`] = `
     },
   },
 ]
-`;

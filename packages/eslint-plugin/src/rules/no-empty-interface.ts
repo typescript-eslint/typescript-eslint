@@ -16,7 +16,18 @@ export default createRule<Options, MessageIds>({
   name: 'no-empty-interface',
   meta: {
     type: 'suggestion',
-    deprecated: true,
+    deprecated: {
+      deprecatedSince: '8.0.0',
+      replacedBy: [
+        {
+          rule: {
+            name: '@typescript-eslint/no-empty-object-type',
+            url: 'https://typescript-eslint.io/rules/no-empty-object-type',
+          },
+        },
+      ],
+      url: 'https://github.com/typescript-eslint/typescript-eslint/pull/8977',
+    },
     docs: {
       description: 'Disallow the declaration of empty interfaces',
     },
@@ -86,11 +97,10 @@ export default createRule<Options, MessageIds>({
               def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
             );
 
-          const isInAmbientDeclaration = !!(
+          const isInAmbientDeclaration =
             isDefinitionFile(context.filename) &&
             scope.type === ScopeType.tsModule &&
-            scope.block.declare
-          );
+            scope.block.declare;
 
           const useAutoFix = !(
             isInAmbientDeclaration || mergedWithClassDeclaration

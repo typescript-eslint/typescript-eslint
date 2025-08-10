@@ -10,6 +10,7 @@ docs/packages/*/generated
 packages/website/.docusaurus
 packages/website/.cache-loader
 packages/website/build
+packages/website/data/recent-blog-posts.json
 packages/website/static/sandbox
 
 # Runtime data
@@ -73,16 +74,9 @@ jspm_packages/
 .DS_Store
 .idea
 dist
-_ts3.4
-_ts4.2
 *.tsbuildinfo
 .watchmanconfig
 .rollup.cache
-
-# the downlevel-dts output folders
-_ts3.4
-_ts4.2
-_ts4.3
 
 # Files copied as part of the build
 packages/types/src/generated/**/*.ts
@@ -99,3 +93,11 @@ packages/**/.yarn
 
 .nx/cache
 .nx/workspace-data
+
+# Vitest type tests
+tsconfig*.vitest-temp.json
+
+# Leave these AI agent files up to individual contributors for now
+.cursor/mcp.json
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md

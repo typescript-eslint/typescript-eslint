@@ -1,6 +1,8 @@
+import type { TSESTree } from '@typescript-eslint/types';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type * as ts from 'typescript';
 
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as tsutils from 'ts-api-utils';
 
 import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
@@ -204,7 +206,7 @@ export function typeMatchesSpecifier(
   if (
     tsutils.isIntersectionType(type) &&
     tsutils
-      .intersectionTypeParts(type)
+      .intersectionConstituents(type)
       .some(part => typeMatchesSpecifier(part, specifier, program))
   ) {
     return true;
@@ -219,3 +221,69 @@ export const typeMatchesSomeSpecifier = (
   program: ts.Program,
 ): boolean =>
   specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));
+
+const getSpecifierNames = (specifierName: string | string[]): string[] => {
+  return typeof specifierName === 'string' ? [specifierName] : specifierName;
+};
+
+const getStaticName = (node: TSESTree.Node): string | undefined => {
+  if (
+    node.type === AST_NODE_TYPES.Identifier ||
+    node.type === AST_NODE_TYPES.JSXIdentifier ||
+    node.type === AST_NODE_TYPES.PrivateIdentifier
+  ) {
+    return node.name;
+  }
+
+  if (node.type === AST_NODE_TYPES.Literal && typeof node.value === 'string') {
+    return node.value;
+  }
+
+  return undefined;
+};
+
+export function valueMatchesSpecifier(
+  node: TSESTree.Node,
+  specifier: TypeOrValueSpecifier,
+  program: ts.Program,
+  type: ts.Type,
+): boolean {
+  const staticName = getStaticName(node);
+  if (!staticName) {
+    return false;
+  }
+
+  if (typeof specifier === 'string') {
+    return specifier === staticName;
+  }
+
+  if (!getSpecifierNames(specifier.name).includes(staticName)) {
+    return false;
+  }
+
+  if (specifier.from === 'package') {
+    const symbol = type.getSymbol() ?? type.aliasSymbol;
+    const declarations = symbol?.getDeclarations() ?? [];
+    const declarationFiles = declarations.map(declaration =>
+      declaration.getSourceFile(),
+    );
+    return typeDeclaredInPackageDeclarationFile(
+      specifier.package,
+      declarations,
+      declarationFiles,
+      program,
+    );
+  }
+
+  return true;
+}
+
+export const valueMatchesSomeSpecifier = (
+  node: TSESTree.Node,
+  specifiers: TypeOrValueSpecifier[] = [],
+  program: ts.Program,
+  type: ts.Type,
+): boolean =>
+  specifiers.some(specifier =>
+    valueMatchesSpecifier(node, specifier, program, type),
+  );

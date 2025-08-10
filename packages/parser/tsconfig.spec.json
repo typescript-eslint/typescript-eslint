@@ -1,21 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/parser",
-    "module": "NodeNext",
-    "types": ["jest", "node"]
+    "outDir": "../../dist/packages/parser"
   },
-  "include": [
-    "jest.config.js",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts",
-    "tests"
-  ],
-  "exclude": ["**/fixtures/**"],
   "references": [
     {
       "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "../../tsconfig.spec.json"
     }
   ]
 }

@@ -1,20 +1,21 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics class-with-method Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "foo",
+              optional: false,
 
               range: [85, 88],
               loc: {
@@ -23,6 +24,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -37,6 +40,7 @@ Program {
                   end: { column: 18, line: 4 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -76,9 +80,12 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "bar",
+              optional: false,
 
               range: [104, 107],
               loc: {
@@ -87,6 +94,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -101,6 +110,7 @@ Program {
                   end: { column: 13, line: 5 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -110,7 +120,10 @@ Program {
                 params: [
                   TSTypeParameter {
                     type: "TSTypeParameter",
+                    const: false,
+                    in: false,
                     name: "T",
+                    out: false,
 
                     range: [108, 109],
                     loc: {
@@ -127,9 +140,9 @@ Program {
                 },
               },
 
-              range: [110, 115],
+              range: [107, 115],
               loc: {
-                start: { column: 8, line: 5 },
+                start: { column: 5, line: 5 },
                 end: { column: 13, line: 5 },
               },
             },
@@ -143,9 +156,12 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "baz",
+              optional: false,
 
               range: [118, 121],
               loc: {
@@ -154,6 +170,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -168,6 +186,7 @@ Program {
                   end: { column: 10, line: 6 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -194,9 +213,13 @@ Program {
           end: { column: 1, line: 7 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "C",
+        optional: false,
 
         range: [79, 80],
         loc: {
@@ -204,6 +227,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 128],
@@ -221,4 +245,3 @@ Program {
     end: { column: 0, line: 8 },
   },
 }
-`;

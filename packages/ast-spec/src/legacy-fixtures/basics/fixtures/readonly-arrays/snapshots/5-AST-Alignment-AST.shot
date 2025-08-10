@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > readonly-arrays > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -24,9 +24,9 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                   computed: false,
                   object: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'arr',
--                   optional: false,
+                    optional: false,
 
                     range: [118, 121],
                     loc: {
@@ -37,9 +37,9 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                   optional: false,
                   property: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'slice',
--                   optional: false,
+                    optional: false,
 
                     range: [122, 127],
                     loc: {
@@ -76,7 +76,7 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                 arguments: Array [
                   Literal {
                     type: 'Literal',
-                    raw: '\\'hello!\\'',
+                    raw: '\'hello!\'',
                     value: 'hello!',
 
                     range: [150, 158],
@@ -91,9 +91,9 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                   computed: false,
                   object: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'arr',
--                   optional: false,
+                    optional: false,
 
                     range: [141, 144],
                     loc: {
@@ -104,9 +104,9 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                   optional: false,
                   property: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'push',
--                   optional: false,
+                    optional: false,
 
                     range: [145, 149],
                     loc: {
@@ -144,14 +144,14 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
             end: { column: 1, line: 6 },
           },
         },
--       declare: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'foo',
--         optional: false,
+          optional: false,
 
           range: [82, 85],
           loc: {
@@ -162,9 +162,9 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
         params: Array [
           Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'arr',
--           optional: false,
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
@@ -172,7 +172,9 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
 -               typeArguments: TSTypeParameterInstantiation {
 +               typeName: Identifier {
 +                 type: 'Identifier',
++                 decorators: Array [],
 +                 name: 'ReadonlyArray',
++                 optional: false,
 +
 +                 range: [91, 104],
 +                 loc: {
@@ -257,9 +259,9 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                   computed: false,
                   object: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'arr',
--                   optional: false,
+                    optional: false,
 
                     range: [215, 218],
                     loc: {
@@ -270,9 +272,9 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                   optional: false,
                   property: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'slice',
--                   optional: false,
+                    optional: false,
 
                     range: [219, 224],
                     loc: {
@@ -309,7 +311,7 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                 arguments: Array [
                   Literal {
                     type: 'Literal',
-                    raw: '\\'hello!\\'',
+                    raw: '\'hello!\'',
                     value: 'hello!',
 
                     range: [247, 255],
@@ -324,9 +326,9 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                   computed: false,
                   object: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'arr',
--                   optional: false,
+                    optional: false,
 
                     range: [238, 241],
                     loc: {
@@ -337,9 +339,9 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                   optional: false,
                   property: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'push',
--                   optional: false,
+                    optional: false,
 
                     range: [242, 246],
                     loc: {
@@ -377,14 +379,14 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
             end: { column: 1, line: 11 },
           },
         },
--       declare: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'foo',
--         optional: false,
+          optional: false,
 
           range: [183, 186],
           loc: {
@@ -395,9 +397,9 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
         params: Array [
           Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'arr',
--           optional: false,
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeOperator {
@@ -458,5 +460,4 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
       start: { column: 0, line: 3 },
       end: { column: 0, line: 12 },
     },
-  }"
-`;
+  }

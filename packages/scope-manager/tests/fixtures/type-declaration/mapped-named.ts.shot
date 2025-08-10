@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`type-declaration mapped-named 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -13,7 +10,7 @@ ScopeManager {
       ],
       name: "T",
       references: [
-        Reference$4 {
+        Reference$3 {
           identifier: Identifier<"T">,
           isRead: true,
           isTypeReference: true,
@@ -54,7 +51,7 @@ ScopeManager {
           isWrite: false,
           resolved: Variable$4,
         },
-        Reference$3 {
+        Reference$4 {
           identifier: Identifier<"k">,
           isRead: true,
           isTypeReference: true,
@@ -113,4 +110,3 @@ ScopeManager {
     },
   ],
 }
-`;

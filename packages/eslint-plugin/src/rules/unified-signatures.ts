@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import type { Equal } from '../util';
 
@@ -61,6 +61,7 @@ export type MessageIds =
 export type Options = [
   {
     ignoreDifferentlyNamedParameters?: boolean;
+    ignoreOverloadsWithDifferentJSDoc?: boolean;
   },
 ];
 
@@ -91,6 +92,11 @@ export default createRule<Options, MessageIds>({
             description:
               'Whether two parameters with different names at the same index should be considered different even if their types are the same.',
           },
+          ignoreOverloadsWithDifferentJSDoc: {
+            type: 'boolean',
+            description:
+              'Whether two overloads with different JSDoc comments should be considered different even if their parameter and return types are the same.',
+          },
         },
       },
     ],
@@ -98,9 +104,13 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       ignoreDifferentlyNamedParameters: false,
+      ignoreOverloadsWithDifferentJSDoc: false,
     },
   ],
-  create(context, [{ ignoreDifferentlyNamedParameters }]) {
+  create(
+    context,
+    [{ ignoreDifferentlyNamedParameters, ignoreOverloadsWithDifferentJSDoc }],
+  ) {
     //----------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------
@@ -230,6 +240,14 @@ export default createRule<Options, MessageIds>({
         }
       }
 
+      if (ignoreOverloadsWithDifferentJSDoc) {
+        const aComment = getBlockCommentForNode(getCommentTargetNode(a));
+        const bComment = getBlockCommentForNode(getCommentTargetNode(b));
+        if (aComment?.value !== bComment?.value) {
+          return false;
+        }
+      }
+
       return (
         typesAreEqual(a.returnType, b.returnType) &&
         // Must take the same type parameters.
@@ -245,6 +263,14 @@ export default createRule<Options, MessageIds>({
       types1: readonly TSESTree.Parameter[],
       types2: readonly TSESTree.Parameter[],
     ): Unify | undefined {
+      const firstParam1 = types1[0];
+      const firstParam2 = types2[0];
+
+      // exempt signatures with `this: void` from the rule
+      if (isThisVoidParam(firstParam1) || isThisVoidParam(firstParam2)) {
+        return undefined;
+      }
+
       const index = getIndexOfFirstDifference(
         types1,
         types2,
@@ -275,6 +301,22 @@ export default createRule<Options, MessageIds>({
         : undefined;
     }
 
+    function isThisParam(param: TSESTree.Parameter | undefined): boolean {
+      return (
+        param != null &&
+        param.type === AST_NODE_TYPES.Identifier &&
+        param.name === 'this'
+      );
+    }
+
+    function isThisVoidParam(param: TSESTree.Parameter | undefined) {
+      return (
+        isThisParam(param) &&
+        (param as TSESTree.Identifier).typeAnnotation?.typeAnnotation.type ===
+          AST_NODE_TYPES.TSVoidKeyword
+      );
+    }
+
     /**
      * Detect `a(): void` and `a(x: number): void`.
      * Returns the parameter declaration (`x: number` in this example) that should be optional/rest, and overload it's a part of.
@@ -290,6 +332,19 @@ export default createRule<Options, MessageIds>({
       const longer = sig1.length < sig2.length ? sig2 : sig1;
       const shorter = sig1.length < sig2.length ? sig1 : sig2;
       const shorterSig = sig1.length < sig2.length ? a : b;
+
+      const firstParam1 = sig1.at(0);
+      const firstParam2 = sig2.at(0);
+      // If one signature has explicit this type and another doesn't, they can't
+      // be unified.
+      if (isThisParam(firstParam1) !== isThisParam(firstParam2)) {
+        return undefined;
+      }
+
+      // exempt signatures with `this: void` from the rule
+      if (isThisVoidParam(firstParam1) || isThisVoidParam(firstParam2)) {
+        return undefined;
+      }
 
       // If one is has 2+ parameters more than the other, they must all be optional/rest.
       // Differ by optional parameters: f() and f(x), f() and f(x, ?y, ...z)
@@ -522,6 +577,18 @@ export default createRule<Options, MessageIds>({
       currentScope = scopes.pop();
     }
 
+    /**
+     * @returns the first valid JSDoc comment annotating `node`
+     */
+    function getBlockCommentForNode(
+      node: TSESTree.Node,
+    ): TSESTree.Comment | undefined {
+      return context.sourceCode
+        .getCommentsBefore(node)
+        .reverse()
+        .find(comment => comment.type === AST_TOKEN_TYPES.Block);
+    }
+
     function addOverload(
       signature: OverloadNode,
       key?: string,
@@ -589,8 +656,16 @@ export default createRule<Options, MessageIds>({
   },
 });
 
+function getCommentTargetNode(node: SignatureDefinition) {
+  if (node.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
+    return node.parent;
+  }
+
+  return getExportingNode(node) ?? node;
+}
+
 function getExportingNode(
-  node: TSESTree.TSDeclareFunction,
+  node: SignatureDefinition,
 ):
   | TSESTree.ExportDefaultDeclaration
   | TSESTree.ExportNamedDeclaration

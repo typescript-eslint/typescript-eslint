@@ -1,20 +1,21 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-decorator-static-member Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "bar",
+              optional: false,
 
               range: [100, 103],
               loc: {
@@ -23,6 +24,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: true,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -37,6 +40,7 @@ Program {
                   end: { column: 43, line: 4 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -63,7 +67,9 @@ Program {
                         ],
                         callee: Identifier {
                           type: "Identifier",
+                          decorators: [],
                           name: "special",
+                          optional: false,
 
                           range: [105, 112],
                           loc: {
@@ -88,6 +94,7 @@ Program {
                     },
                   ],
                   name: "baz",
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSNumberKeyword {
@@ -136,9 +143,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "StaticFoo",
+        optional: false,
 
         range: [79, 88],
         loc: {
@@ -146,6 +157,7 @@ Program {
           end: { column: 15, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 136],
@@ -163,4 +175,3 @@ Program {
     end: { column: 0, line: 6 },
   },
 }
-`;

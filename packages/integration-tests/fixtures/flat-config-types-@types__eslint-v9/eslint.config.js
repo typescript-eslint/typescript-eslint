@@ -3,8 +3,8 @@
 import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
 import stylisticPlugin from '@stylistic/eslint-plugin';
+import vitestPlugin from '@vitest/eslint-plugin';
 import deprecationPlugin from 'eslint-plugin-deprecation';
-import jestPlugin from 'eslint-plugin-jest';
 import tseslint from 'typescript-eslint';
 
 import __dirname from './dirname.cjs';
@@ -26,12 +26,12 @@ export default tseslint.config(
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['deprecation']: deprecationPlugin,
-      ['jest']: jestPlugin,
+      ['vitest']: vitestPlugin,
     },
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
-  stylisticPlugin.configs['recommended-flat'],
+  stylisticPlugin.configs.recommended,
 );
 
 // wrapped in a function so they aren't executed at lint time
@@ -42,23 +42,23 @@ function _otherCases() {
       ['@stylistic']: stylisticPlugin,
       ['@typescript-eslint']: tseslint.plugin,
       ['deprecation']: deprecationPlugin,
-      ['jest']: jestPlugin,
+      ['vitest']: vitestPlugin,
     },
   });
   tseslint.config(
     eslint.configs.recommended,
     ...tseslint.configs.recommended,
-    stylisticPlugin.configs['recommended-flat'],
-    jestPlugin.configs['flat/recommended'],
+    stylisticPlugin.configs.recommended,
+    vitestPlugin.configs.recommended,
   );
   tseslint.config(
+    // @ts-expect-error
     compat.config(deprecationPlugin.configs.recommended),
-    ...compat.config(jestPlugin.configs.recommended),
+    vitestPlugin.configs.recommended,
   );
   tseslint.config(
     // @ts-expect-error
     deprecationPlugin.configs.recommended,
-    // this should error but doesn't because there are no types exported from the jest plugin
-    jestPlugin.configs.recommended,
+    vitestPlugin.configs.recommended,
   );
 }

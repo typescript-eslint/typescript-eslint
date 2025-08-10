@@ -36,7 +36,6 @@ export default createRule<[], MessageIds>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       addUnknownRestTypeAnnotationSuggestion:
@@ -63,7 +62,7 @@ export default createRule<[], MessageIds>({
     const checker = program.getTypeChecker();
 
     function isFlaggableHandlerType(type: ts.Type): boolean {
-      for (const unionPart of tsutils.unionTypeParts(type)) {
+      for (const unionPart of tsutils.unionConstituents(type)) {
         const callSignatures = tsutils.getCallSignaturesOfType(unionPart);
         if (callSignatures.length === 0) {
           // Ignore any non-function components to the type. Those are not this rule's problem.
