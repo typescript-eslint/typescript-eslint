@@ -2,6 +2,8 @@ import type path from 'node:path';
 
 import { existsSync } from 'node:fs';
 
+import type { ParseSettings } from '../../src/parseSettings';
+
 import { ExpiringCache } from '../../src/parseSettings/ExpiringCache';
 import { getProjectConfigFiles } from '../../src/parseSettings/getProjectConfigFiles';
 
@@ -19,19 +21,26 @@ vi.mock(import('node:fs'), async importOriginal => {
   };
 });
 
-const parseSettingsWindows = {
+type TestParseSettings = Pick<
+  ParseSettings,
+  'filePath' | 'tsconfigMatchCache' | 'tsconfigRootDir'
+> & { tsconfigMatchCache: ExpiringCache<string, string> };
+
+const parseSettingsWindows: TestParseSettings = {
   filePath: 'H:\\repos\\repo\\packages\\package\\file.ts',
   tsconfigMatchCache: new ExpiringCache<string, string>(1),
   tsconfigRootDir: 'H:\\repos\\repo',
 };
 
-const parseSettingsPosix = {
+const parseSettingsPosix: TestParseSettings = {
   filePath: '/repos/repo/packages/package/file.ts',
   tsconfigMatchCache: new ExpiringCache<string, string>(1),
   tsconfigRootDir: '/repos/repo',
 };
 
-const parseSettings = !isWindows ? parseSettingsPosix : parseSettingsWindows;
+const parseSettings: TestParseSettings = !isWindows
+  ? parseSettingsPosix
+  : parseSettingsWindows;
 
 describe(getProjectConfigFiles, () => {
   beforeEach(() => {
@@ -75,14 +84,16 @@ describe(getProjectConfigFiles, () => {
       mockExistsSync.mockReturnValueOnce(true);
 
       getProjectConfigFiles(parseSettings, true);
+
       const actual = getProjectConfigFiles(parseSettings, true);
+
+      expect(mockExistsSync).toHaveBeenCalledOnce();
 
       expect(actual).toStrictEqual([
         !isWindows
           ? '/repos/repo/packages/package/tsconfig.json'
           : 'H:\\repos\\repo\\packages\\package\\tsconfig.json',
       ]);
-      expect(mockExistsSync).toHaveBeenCalledOnce();
     });
 
     it('returns a nearby parent tsconfig.json when it was previously cached by a different directory search', () => {
