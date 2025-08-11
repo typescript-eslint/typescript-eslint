@@ -1,6 +1,6 @@
 {
   "name": "typescript-eslint",
-  "version": "8.39.0",
+  "version": "8.39.1",
   "description": "Tooling which enables you to use TypeScript with ESLint",
   "files": [
     "dist",
@@ -50,10 +50,10 @@
     "typecheck": "yarn run -BT nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "8.39.0",
-    "@typescript-eslint/parser": "8.39.0",
-    "@typescript-eslint/typescript-estree": "8.39.0",
-    "@typescript-eslint/utils": "8.39.0"
+    "@typescript-eslint/eslint-plugin": "8.39.1",
+    "@typescript-eslint/parser": "8.39.1",
+    "@typescript-eslint/typescript-estree": "8.39.1",
+    "@typescript-eslint/utils": "8.39.1"
   },
   "peerDependencies": {
     "eslint": "^8.57.0 || ^9.0.0",
