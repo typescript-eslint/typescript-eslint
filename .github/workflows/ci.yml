@@ -188,22 +188,7 @@ jobs:
         os: [windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [18, 20, 22, 24]
-        package:
-          [
-            'ast-spec',
-            'eslint-plugin',
-            'eslint-plugin-internal',
-            'parser',
-            'project-service',
-            'rule-tester',
-            'scope-manager',
-            'tsconfig-utils',
-            'type-utils',
-            'typescript-eslint',
-            'typescript-estree',
-            'utils',
-            'visitor-keys',
-          ]
+        package: ['typescript-estree']
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false

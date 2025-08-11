@@ -36,18 +36,23 @@ export function getProjectConfigFiles(
   }
 
   log('Looking for tsconfig.json at or above file: %s', parseSettings.filePath);
+  console.warn('filePath: ', parseSettings.filePath);
   let directory = path.dirname(parseSettings.filePath);
+  console.warn('direcotry: ', directory);
   const checkedDirectories = [directory];
 
   do {
     log('Checking tsconfig.json path: %s', directory);
     const tsconfigPath = path.join(directory, 'tsconfig.json');
+    console.warn('tsconfigPath: ', tsconfigPath);
     const cached =
       parseSettings.tsconfigMatchCache.get(directory) ??
       (fs.existsSync(tsconfigPath) && tsconfigPath);
 
     if (cached) {
+      console.warn('cached: ', cached);
       for (const directory of checkedDirectories) {
+        console.warn('caching: ', directory, ' -> ', cached);
         parseSettings.tsconfigMatchCache.set(directory, cached);
       }
       return [cached];
