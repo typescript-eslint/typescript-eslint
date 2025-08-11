@@ -96,6 +96,19 @@ const NOOP_RULE: RuleModule<'error'> = {
   },
 };
 
+function windowsToPosixPath(p: string): string {
+  if (process.platform !== 'win32') {
+    return p;
+  }
+  const parsed = path.parse(p);
+  const hasDriveLetter = /^[a-zA-Z]:/.test(parsed.root);
+  let rv = p;
+  if (hasDriveLetter) {
+    rv = rv.substring(2);
+  }
+  return rv.replaceAll('\\', '/');
+}
+
 describe(RuleTester, () => {
   const runRuleForItemSpy: MockInstance<
     (
@@ -144,7 +157,21 @@ describe(RuleTester, () => {
 
   function getTestConfigFromCall(): unknown[] {
     return runRuleForItemSpy.mock.calls.map(c => {
-      return { ...c[2], filename: c[2].filename?.replaceAll('\\', '/') };
+      const copy = structuredClone(c);
+      if (copy[2].filename) {
+        // @ts-expect-error readonly-ness
+        copy[2].filename = windowsToPosixPath(copy[2].filename);
+      }
+
+      if (copy[2].languageOptions?.parserOptions?.tsconfigRootDir) {
+        // @ts-expect-error readonly-ness
+        copy[2].languageOptions.parserOptions.tsconfigRootDir =
+          windowsToPosixPath(
+            copy[2].languageOptions.parserOptions.tsconfigRootDir,
+          );
+      }
+
+      return copy;
     });
   }
 
@@ -155,7 +182,7 @@ describe(RuleTester, () => {
           parser,
           parserOptions: {
             project: 'tsconfig.json',
-            tsconfigRootDir: path.resolve('/some/path/that/totally/exists/'),
+            tsconfigRootDir: '/some/path/that/totally/exists/',
           },
         },
       });
