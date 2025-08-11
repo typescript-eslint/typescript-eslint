@@ -150,13 +150,13 @@ describe(getProjectConfigFiles, () => {
         {
           filePath: !isWindows ? '/a/b/f/g/h.ts' : 'H:\\a\\b\\f\\g\\h.ts',
           tsconfigMatchCache,
-          tsconfigRootDir: !isWindows ? '/a' : '\\H:\\a',
+          tsconfigRootDir: !isWindows ? '/a' : 'H:\\a',
         },
         true,
       );
 
       expect(actual).toStrictEqual([
-        !isWindows ? '/a/tsconfig.json' : '\\H:\\a\\tsconfig.json',
+        !isWindows ? '/a/tsconfig.json' : 'H:\\a\\tsconfig.json',
       ]);
       expect(mockExistsSync).toHaveBeenCalledTimes(6);
     });
