@@ -182,12 +182,12 @@ jobs:
       # TODO remove
       fail-fast: false
       matrix:
-        exclude:
-          - os: windows-latest
-            node-version: 18
+        # exclude:
+        #   - os: windows-latest
+        #     node-version: 18
         os: [windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
-        node-version: [18, 20]
+        node-version: [18, 20, 22, 24]
         package:
           [
             'ast-spec',

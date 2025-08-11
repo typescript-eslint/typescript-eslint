@@ -16,7 +16,6 @@ vi.mock(import('node:fs'), async importOriginal => {
 
   return {
     ...actual,
-    default: actual.default,
     existsSync: vi.fn(actual.existsSync),
   };
 });
@@ -83,17 +82,19 @@ describe(getProjectConfigFiles, () => {
     it('returns a local tsconfig.json without calling existsSync a second time', () => {
       mockExistsSync.mockReturnValueOnce(true);
 
-      getProjectConfigFiles(parseSettings, true);
-
-      const actual = getProjectConfigFiles(parseSettings, true);
-
-      expect(mockExistsSync).toHaveBeenCalledOnce();
-
-      expect(actual).toStrictEqual([
+      const expected = [
         !isWindows
           ? '/repos/repo/packages/package/tsconfig.json'
           : 'H:\\repos\\repo\\packages\\package\\tsconfig.json',
-      ]);
+      ];
+
+      const firstActual = getProjectConfigFiles(parseSettings, true);
+      expect(mockExistsSync).toHaveBeenCalledOnce();
+      expect(firstActual).toStrictEqual(expected);
+
+      const second = getProjectConfigFiles(parseSettings, true);
+      expect(mockExistsSync).toHaveBeenCalledOnce();
+      expect(second).toStrictEqual(expected);
     });
 
     it('returns a nearby parent tsconfig.json when it was previously cached by a different directory search', () => {
