@@ -70,7 +70,6 @@ export function createParseSettings(
         !path.isAbsolute(userProvidedTsconfigRootDir) ||
         // Ensure it's fully absolute with a drive letter if windows
         (process.platform === 'win32' &&
-          /* istanbul ignore next -- conditionally tested on windows */
           !/^[a-zA-Z]:/.test(userProvidedTsconfigRootDir))
       ) {
         throw new Error(
