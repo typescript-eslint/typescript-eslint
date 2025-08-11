@@ -66,11 +66,10 @@ export function createParseSettings(
     if (typeof tsestreeOptions.tsconfigRootDir === 'string') {
       const userProvidedTsconfigRootDir = tsestreeOptions.tsconfigRootDir;
       if (
-        !(path.isAbsolute(userProvidedTsconfigRootDir) &&
+        !path.isAbsolute(userProvidedTsconfigRootDir) ||
         // Ensure it's fully absolute with a drive letter if windows
-        process.platform === 'win32'
-          ? !/^[a-zA-Z]:/.test(userProvidedTsconfigRootDir)
-          : true)
+        (process.platform === 'win32' &&
+          !/^[a-zA-Z]:/.test(userProvidedTsconfigRootDir))
       ) {
         throw new Error(
           `parserOptions.tsconfigRootDir must be an absolute path, but received: ${JSON.stringify(

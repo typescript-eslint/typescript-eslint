@@ -81,6 +81,17 @@ describe(createParseSettings, () => {
       );
     });
 
+    it.runIf(isWindows)(
+      'complains about missing drive letter on windows',
+      () => {
+        expect(() =>
+          createParseSettings('', { tsconfigRootDir: '\\a\\b\\c' }),
+        ).toThrowErrorMatchingInlineSnapshot(
+          `parserOptions.tsconfigRootDir must be an absolute path, but received: "\\a\\b\\c". This is a bug in your configuration; please supply an absolute path.`,
+        );
+      },
+    );
+
     it('normalizes crazy tsconfigRootDir', () => {
       const parseSettings = createParseSettings('', {
         tsconfigRootDir: !isWindows
