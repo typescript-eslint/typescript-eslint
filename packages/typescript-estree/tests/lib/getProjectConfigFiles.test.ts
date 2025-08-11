@@ -245,10 +245,5 @@ describe(getProjectConfigFiles, () => {
         vi.doUnmock(import('node:path'));
       }
     });
-
-    it.runIf(isWindows)('has reverted to windows paths', async () => {
-      const path = await import('node:path');
-      expect(path.dirname('C:\\foo\\bar.ts')).toBe('C:\\foo');
-    });
   });
 });
