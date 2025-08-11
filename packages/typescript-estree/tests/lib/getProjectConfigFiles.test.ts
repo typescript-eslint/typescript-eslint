@@ -19,13 +19,19 @@ vi.mock(import('node:fs'), async importOriginal => {
   };
 });
 
-const parseSettings = {
-  filePath: !isWindows
-    ? '/repos/repo/packages/package/file.ts'
-    : 'H:\\repos\\repo\\packages\\package\\file.ts',
+const parseSettingsWindows = {
+  filePath: 'H:\\repos\\repo\\packages\\package\\file.ts',
   tsconfigMatchCache: new ExpiringCache<string, string>(1),
-  tsconfigRootDir: !isWindows ? '/repos/repo' : 'H:\\repos\repo',
+  tsconfigRootDir: 'H:\\repos\repo',
 };
+
+const parseSettingsPosix = {
+  filePath: '/repos/repo/packages/package/file.ts',
+  tsconfigMatchCache: new ExpiringCache<string, string>(1),
+  tsconfigRootDir: '/repos/repo',
+};
+
+const parseSettings = !isWindows ? parseSettingsPosix : parseSettingsWindows;
 
 describe(getProjectConfigFiles, () => {
   beforeEach(() => {
@@ -195,7 +201,7 @@ describe(getProjectConfigFiles, () => {
       mockExistsSync.mockReturnValue(false);
 
       expect(() =>
-        getProjectConfigFiles(parseSettings, true),
+        getProjectConfigFiles(parseSettingsPosix, true),
       ).toThrowErrorMatchingInlineSnapshot(
         `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to '/repos/repo/packages/package/file.ts' within '/repos/repo'.]`,
       );
@@ -215,7 +221,10 @@ describe(getProjectConfigFiles, () => {
       mockExistsSync.mockReturnValue(false);
 
       expect(() =>
-        getProjectConfigFiles({ ...parseSettings, tsconfigRootDir: '/' }, true),
+        getProjectConfigFiles(
+          { ...parseSettingsPosix, tsconfigRootDir: '/' },
+          true,
+        ),
       ).toThrowErrorMatchingInlineSnapshot(
         `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to '/repos/repo/packages/package/file.ts' within '/'.]`,
       );

@@ -50,6 +50,7 @@ export function createParseSettings(
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
+
   const tsconfigRootDir = (() => {
     if (tsestreeOptions.tsconfigRootDir == null) {
       const inferredTsconfigRootDir = getInferredTSConfigRootDir();
