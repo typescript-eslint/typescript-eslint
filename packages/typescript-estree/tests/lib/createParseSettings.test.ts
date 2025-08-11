@@ -87,7 +87,7 @@ describe(createParseSettings, () => {
         expect(() =>
           createParseSettings('', { tsconfigRootDir: '\\a\\b\\c' }),
         ).toThrowErrorMatchingInlineSnapshot(
-          `parserOptions.tsconfigRootDir must be an absolute path, but received: "\\a\\b\\c". This is a bug in your configuration; please supply an absolute path.`,
+          `[Error: parserOptions.tsconfigRootDir must be an absolute path, but received: "\\\\a\\\\b\\\\c". This is a bug in your configuration; please supply an absolute path.]`,
         );
       },
     );

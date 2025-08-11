@@ -22,7 +22,7 @@ vi.mock(import('node:fs'), async importOriginal => {
 const parseSettingsWindows = {
   filePath: 'H:\\repos\\repo\\packages\\package\\file.ts',
   tsconfigMatchCache: new ExpiringCache<string, string>(1),
-  tsconfigRootDir: 'H:\\repos\repo',
+  tsconfigRootDir: 'H:\\repos\\repo',
 };
 
 const parseSettingsPosix = {
