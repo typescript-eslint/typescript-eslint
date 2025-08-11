@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import {
   addCandidateTSConfigRootDir,
   clearCandidateTSConfigRootDirs,
@@ -139,6 +141,14 @@ describe(createParseSettings, () => {
       const parseSettings = createParseSettings('');
 
       expect(parseSettings.tsconfigRootDir).toBe(tsconfigRootDir);
+    });
+
+    it('should error if inferred tsconfig is not clean', () => {
+      addCandidateTSConfigRootDir('a/b/c');
+
+      expect(() => createParseSettings('')).toThrowErrorMatchingInlineSnapshot(
+        `[Error: inferred tsconfigRootDir should be a resolved absolute path, but received: "a/b/c". This is a bug in typescript-eslint! Please report it to us at https://github.com/typescript-eslint/typescript-eslint/issues/new/choose.]`,
+      );
     });
   });
 });
