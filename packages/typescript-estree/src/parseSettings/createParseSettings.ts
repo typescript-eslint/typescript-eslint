@@ -6,7 +6,7 @@ import type { ProjectServiceOptions } from '@typescript-eslint/types';
 
 import { createProjectService } from '@typescript-eslint/project-service';
 import debug from 'debug';
-import path from 'node:path';
+import path, { parse } from 'node:path';
 import * as ts from 'typescript';
 
 import type { TSESTreeOptions } from '../parser-options';
@@ -51,34 +51,41 @@ export function createParseSettings(
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
   const tsconfigRootDir = (() => {
-    let tsconfigRootDir;
     if (tsestreeOptions.tsconfigRootDir == null) {
-      tsconfigRootDir = getInferredTSConfigRootDir();
-      if (!path.isAbsolute(tsconfigRootDir)) {
+      const inferredTsconfigRootDir = getInferredTSConfigRootDir();
+      if (path.resolve(inferredTsconfigRootDir) !== inferredTsconfigRootDir) {
         throw new Error(
-          `inferred tsconfigRootDir should have be an absolute path, but received: ${JSON.stringify(
-            tsconfigRootDir,
+          `inferred tsconfigRootDir should be a resolved absolute path, but received: ${JSON.stringify(
+            inferredTsconfigRootDir,
           )}. This is a bug in typescript-eslint! Please report it to us at https://github.com/typescript-eslint/typescript-eslint/issues/new/choose.`,
         );
       }
-    } else if (typeof tsestreeOptions.tsconfigRootDir === 'string') {
-      tsconfigRootDir = tsestreeOptions.tsconfigRootDir;
-      if (!path.isAbsolute(tsconfigRootDir)) {
+      return inferredTsconfigRootDir;
+    }
+
+    if (typeof tsestreeOptions.tsconfigRootDir === 'string') {
+      const userProvidedTsconfigRootDir = tsestreeOptions.tsconfigRootDir;
+      if (
+        !(path.isAbsolute(userProvidedTsconfigRootDir) &&
+        // Ensure it's fully absolute with a drive letter if windows
+        process.platform === 'win32'
+          ? !/^[a-zA-Z]:/.test(userProvidedTsconfigRootDir)
+          : true)
+      ) {
         throw new Error(
           `parserOptions.tsconfigRootDir must be an absolute path, but received: ${JSON.stringify(
-            tsconfigRootDir,
+            userProvidedTsconfigRootDir,
           )}. This is a bug in your configuration; please supply an absolute path.`,
         );
       }
-    } else {
-      throw new Error(
-        `If provided, parserOptions.tsconfigRootDir must be a string, but received a value of type "${typeof tsestreeOptions.tsconfigRootDir}"`,
-      );
+      // Deal with any funny business around trailing path separators (a/b/) or relative path segments (/a/b/../c)
+      // Since we already know it's absolute, we can safely use path.resolve here.
+      return path.resolve(userProvidedTsconfigRootDir);
     }
 
-    // Deal with any funny business around trailing path separators (a/b/) or relative path segments (/a/b/../c)
-    // We already know it's absolute, so we can safely use path.resolve
-    return path.resolve(tsconfigRootDir);
+    throw new Error(
+      `If provided, parserOptions.tsconfigRootDir must be a string, but received a value of type "${typeof tsestreeOptions.tsconfigRootDir}"`,
+    );
   })();
 
   const passedLoggerFn = typeof tsestreeOptions.loggerFn === 'function';

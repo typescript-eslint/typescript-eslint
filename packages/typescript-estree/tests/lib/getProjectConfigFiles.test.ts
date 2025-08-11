@@ -1,8 +1,11 @@
+import type path from 'node:path';
+
 import { existsSync } from 'node:fs';
-import path from 'node:path';
 
 import { ExpiringCache } from '../../src/parseSettings/ExpiringCache';
 import { getProjectConfigFiles } from '../../src/parseSettings/getProjectConfigFiles';
+
+const isWindows = process.platform === 'win32';
 
 const mockExistsSync = vi.mocked(existsSync);
 
@@ -17,9 +20,11 @@ vi.mock(import('node:fs'), async importOriginal => {
 });
 
 const parseSettings = {
-  filePath: path.normalize('/repos/repo/packages/package/file.ts'),
+  filePath: !isWindows
+    ? '/repos/repo/packages/package/file.ts'
+    : 'H:\\repos\\repo\\packages\\package\\file.ts',
   tsconfigMatchCache: new ExpiringCache<string, string>(1),
-  tsconfigRootDir: path.normalize('/repos/repo'),
+  tsconfigRootDir: !isWindows ? '/repos/repo' : 'H:\\repos\repo',
 };
 
 describe(getProjectConfigFiles, () => {
@@ -67,14 +72,17 @@ describe(getProjectConfigFiles, () => {
       const actual = getProjectConfigFiles(parseSettings, true);
 
       expect(actual).toStrictEqual([
-        path.normalize('/repos/repo/packages/package/tsconfig.json'),
+        !isWindows
+          ? '/repos/repo/packages/package/tsconfig.json'
+          : 'H:\\repos\\repo\\packages\\package\\tsconfig.json',
       ]);
       expect(mockExistsSync).toHaveBeenCalledOnce();
     });
 
     it('returns a nearby parent tsconfig.json when it was previously cached by a different directory search', () => {
       mockExistsSync.mockImplementation(
-        input => input === path.normalize('/a/tsconfig.json'),
+        input =>
+          input === (!isWindows ? '/a/tsconfig.json' : 'H:\\a\\tsconfig.json'),
       );
 
       const tsconfigMatchCache = new ExpiringCache<string, string>(1);
@@ -82,9 +90,9 @@ describe(getProjectConfigFiles, () => {
       // This should call to fs.existsSync three times: c, b, a
       getProjectConfigFiles(
         {
-          filePath: path.normalize('/a/b/c/d.ts'),
+          filePath: !isWindows ? '/a/b/c/d.ts' : 'H:\\a\\b\\c\\d.ts',
           tsconfigMatchCache,
-          tsconfigRootDir: path.normalize('/a'),
+          tsconfigRootDir: !isWindows ? '/a' : 'H:\\a',
         },
         true,
       );
@@ -93,20 +101,23 @@ describe(getProjectConfigFiles, () => {
       // Then it should retrieve c from cache, pointing to a
       const actual = getProjectConfigFiles(
         {
-          filePath: path.normalize('/a/b/c/e/f.ts'),
+          filePath: !isWindows ? '/a/b/c/e/f.ts' : 'H:\\a\\b\\c\\e\\f.ts',
           tsconfigMatchCache,
-          tsconfigRootDir: path.normalize('/a'),
+          tsconfigRootDir: !isWindows ? '/a' : 'H:\\a',
         },
         true,
       );
 
-      expect(actual).toStrictEqual([path.normalize('/a/tsconfig.json')]);
+      expect(actual).toStrictEqual([
+        !isWindows ? '/a/tsconfig.json' : 'H:\\a\\tsconfig.json',
+      ]);
       expect(mockExistsSync).toHaveBeenCalledTimes(4);
     });
 
     it('returns a distant parent tsconfig.json when it was previously cached by a different directory search', () => {
       mockExistsSync.mockImplementation(
-        input => input === path.normalize('/a/tsconfig.json'),
+        input =>
+          input === (!isWindows ? '/a/tsconfig.json' : 'H:\\a\\tsconfig.json'),
       );
 
       const tsconfigMatchCache = new ExpiringCache<string, string>(1);
@@ -114,9 +125,9 @@ describe(getProjectConfigFiles, () => {
       // This should call to fs.existsSync 4 times: d, c, b, a
       getProjectConfigFiles(
         {
-          filePath: path.normalize('/a/b/c/d/e.ts'),
+          filePath: !isWindows ? '/a/b/c/d/e.ts' : 'H:\\a\\b\\c\\d\\e.ts',
           tsconfigMatchCache,
-          tsconfigRootDir: path.normalize('/a'),
+          tsconfigRootDir: !isWindows ? '/a' : 'H:\\a',
         },
         true,
       );
@@ -125,14 +136,16 @@ describe(getProjectConfigFiles, () => {
       // Then it should retrieve b from cache, pointing to a
       const actual = getProjectConfigFiles(
         {
-          filePath: path.normalize('/a/b/f/g/h.ts'),
+          filePath: !isWindows ? '/a/b/f/g/h.ts' : 'H:\\a\\b\\f\\g\\h.ts',
           tsconfigMatchCache,
-          tsconfigRootDir: path.normalize('/a'),
+          tsconfigRootDir: !isWindows ? '/a' : '\\H:\\a',
         },
         true,
       );
 
-      expect(actual).toStrictEqual([path.normalize('/a/tsconfig.json')]);
+      expect(actual).toStrictEqual([
+        !isWindows ? '/a/tsconfig.json' : '\\H:\\a\\tsconfig.json',
+      ]);
       expect(mockExistsSync).toHaveBeenCalledTimes(6);
     });
   });
@@ -144,19 +157,27 @@ describe(getProjectConfigFiles, () => {
       const actual = getProjectConfigFiles(parseSettings, true);
 
       expect(actual).toStrictEqual([
-        path.normalize('/repos/repo/packages/package/tsconfig.json'),
+        !isWindows
+          ? '/repos/repo/packages/package/tsconfig.json'
+          : 'H:\\repos\\repo\\packages\\package\\tsconfig.json',
       ]);
     });
 
     it('returns a parent tsconfig.json when matched', () => {
       mockExistsSync.mockImplementation(
-        filePath => filePath === path.normalize('/repos/repo/tsconfig.json'),
+        filePath =>
+          filePath ===
+          (!isWindows
+            ? '/repos/repo/tsconfig.json'
+            : 'H:\\repos\\repo\\tsconfig.json'),
       );
 
       const actual = getProjectConfigFiles(parseSettings, true);
 
       expect(actual).toStrictEqual([
-        path.normalize('/repos/repo/tsconfig.json'),
+        !isWindows
+          ? '/repos/repo/tsconfig.json'
+          : 'H:\\repos\\repo\\tsconfig.json',
       ]);
     });
 
@@ -164,10 +185,7 @@ describe(getProjectConfigFiles, () => {
       // ensure posix-style paths are used for consistent snapshot.
       vi.mock('path', async () => {
         const actual = await vi.importActual<typeof path>('path');
-        return {
-          ...actual.posix,
-          default: actual.posix,
-        };
+        return actual.posix;
       });
 
       const { getProjectConfigFiles } = await import(
@@ -187,10 +205,7 @@ describe(getProjectConfigFiles, () => {
       // ensure posix-style paths are used for consistent snapshot.
       vi.mock('path', async () => {
         const actual = await vi.importActual<typeof path>('path');
-        return {
-          ...actual.posix,
-          default: actual.posix,
-        };
+        return actual.posix;
       });
 
       const { getProjectConfigFiles } = await import(
@@ -200,10 +215,7 @@ describe(getProjectConfigFiles, () => {
       mockExistsSync.mockReturnValue(false);
 
       expect(() =>
-        getProjectConfigFiles(
-          { ...parseSettings, tsconfigRootDir: path.normalize('/') },
-          true,
-        ),
+        getProjectConfigFiles({ ...parseSettings, tsconfigRootDir: '/' }, true),
       ).toThrowErrorMatchingInlineSnapshot(
         `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to '/repos/repo/packages/package/file.ts' within '/'.]`,
       );

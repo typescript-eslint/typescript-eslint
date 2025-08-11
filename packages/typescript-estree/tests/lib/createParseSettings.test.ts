@@ -1,5 +1,3 @@
-import path from 'node:path';
-
 import {
   addCandidateTSConfigRootDir,
   clearCandidateTSConfigRootDirs,
@@ -7,6 +5,8 @@ import {
 import { createParseSettings } from '../../src/parseSettings/createParseSettings';
 
 const projectService = { service: true };
+
+const isWindows = process.platform === 'win32';
 
 vi.mock('@typescript-eslint/project-service', () => ({
   createProjectService: () => projectService,
@@ -83,11 +83,13 @@ describe(createParseSettings, () => {
 
     it('normalizes crazy tsconfigRootDir', () => {
       const parseSettings = createParseSettings('', {
-        tsconfigRootDir: '/a/b////..//c///',
+        tsconfigRootDir: !isWindows
+          ? '/a/b////..//c///'
+          : 'E:\\a\\b\\\\\\\\..\\\\c\\\\\\',
       });
 
       expect(parseSettings.tsconfigRootDir).toBe(
-        process.platform !== 'win32' ? '/a/c' : '\\a\\c',
+        !isWindows ? '/a/c' : 'E:\\a\\c',
       );
     });
 
@@ -103,7 +105,7 @@ describe(createParseSettings, () => {
     });
 
     it('uses the provided tsconfigRootDir when it exists and no candidates exist', () => {
-      const tsconfigRootDir = path.normalize('/a/b/c');
+      const tsconfigRootDir = !isWindows ? '/a/b/c' : 'F:\\b\\c';
 
       const parseSettings = createParseSettings('', { tsconfigRootDir });
 
@@ -112,7 +114,7 @@ describe(createParseSettings, () => {
 
     it('uses the provided tsconfigRootDir when it exists and a candidate exists', () => {
       addCandidateTSConfigRootDir('candidate');
-      const tsconfigRootDir = path.normalize('/a/b/c');
+      const tsconfigRootDir = !isWindows ? '/a/b/c' : 'F:\\a\\b\\c';
 
       const parseSettings = createParseSettings('', { tsconfigRootDir });
 
@@ -120,7 +122,7 @@ describe(createParseSettings, () => {
     });
 
     it('uses the inferred candidate when no tsconfigRootDir is provided and a candidate exists', () => {
-      const tsconfigRootDir = path.normalize('/a/b/c');
+      const tsconfigRootDir = !isWindows ? '/a/b/c' : 'G:\\a\\b\\c';
       addCandidateTSConfigRootDir(tsconfigRootDir);
 
       const parseSettings = createParseSettings('');
