@@ -38,7 +38,7 @@ export function getProjectConfigFiles(
   log('Looking for tsconfig.json at or above file: %s', parseSettings.filePath);
   console.warn('filePath: ', parseSettings.filePath);
   let directory = path.dirname(parseSettings.filePath);
-  console.warn('direcotry: ', directory);
+  console.warn('directory: ', directory);
   const checkedDirectories = [directory];
 
   do {

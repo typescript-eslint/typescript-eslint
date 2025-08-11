@@ -199,7 +199,7 @@ describe(getProjectConfigFiles, () => {
       ]);
     });
 
-    it('throws when searching hits .', async () => {
+    it.runIf(!isWindows)('throws when searching hits .', async () => {
       // ensure posix-style paths are used for consistent snapshot.
       vi.mock('path', async () => {
         const actual = await vi.importActual<typeof path>('path');
@@ -219,27 +219,30 @@ describe(getProjectConfigFiles, () => {
       );
     });
 
-    it('throws when searching passes the tsconfigRootDir', async () => {
-      // ensure posix-style paths are used for consistent snapshot.
-      vi.mock('path', async () => {
-        const actual = await vi.importActual<typeof path>('path');
-        return actual.posix;
-      });
+    it.runIf(!isWindows)(
+      'throws when searching passes the tsconfigRootDir',
+      async () => {
+        // ensure posix-style paths are used for consistent snapshot.
+        vi.mock('path', async () => {
+          const actual = await vi.importActual<typeof path>('path');
+          return actual.posix;
+        });
 
-      const { getProjectConfigFiles } = await import(
-        '../../src/parseSettings/getProjectConfigFiles.js'
-      );
+        const { getProjectConfigFiles } = await import(
+          '../../src/parseSettings/getProjectConfigFiles.js'
+        );
 
-      mockExistsSync.mockReturnValue(false);
+        mockExistsSync.mockReturnValue(false);
 
-      expect(() =>
-        getProjectConfigFiles(
-          { ...parseSettingsPosix, tsconfigRootDir: '/' },
-          true,
-        ),
-      ).toThrowErrorMatchingInlineSnapshot(
-        `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to '/repos/repo/packages/package/file.ts' within '/'.]`,
-      );
-    });
+        expect(() =>
+          getProjectConfigFiles(
+            { ...parseSettingsPosix, tsconfigRootDir: '/' },
+            true,
+          ),
+        ).toThrowErrorMatchingInlineSnapshot(
+          `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to '/repos/repo/packages/package/file.ts' within '/'.]`,
+        );
+      },
+    );
   });
 });
