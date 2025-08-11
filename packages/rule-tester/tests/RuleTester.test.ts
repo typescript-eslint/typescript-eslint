@@ -157,26 +157,20 @@ describe(RuleTester, () => {
 
   function getTestConfigFromCall(): unknown[] {
     return runRuleForItemSpy.mock.calls.map(c => {
-      // structuredClone cannot be used since it has functions and such
-      const rv = { ...c[2] };
-      if (rv.filename) {
-        rv.filename = windowsToPosixPath(rv.filename);
+      const copy = structuredClone(c[2]);
+      if (copy.filename) {
+        // @ts-expect-error -- readonly-ness
+        copy.filename = windowsToPosixPath(copy.filename);
       }
 
-      if (rv.languageOptions?.parserOptions?.tsconfigRootDir) {
-        rv.languageOptions = { ...rv.languageOptions };
-
-        // @ts-expect-error readonly-ness
-        rv.languageOptions.parserOptions = {
-          ...rv.languageOptions.parserOptions,
-        };
-        // @ts-expect-error readonly-ness
-        rv.languageOptions.parserOptions.tsconfigRootDir = windowsToPosixPath(
-          rv.languageOptions.parserOptions.tsconfigRootDir!,
+      if (copy.languageOptions?.parserOptions?.tsconfigRootDir) {
+        // @ts-expect-error -- readonly-ness
+        copy.languageOptions.parserOptions.tsconfigRootDir = windowsToPosixPath(
+          copy.languageOptions.parserOptions.tsconfigRootDir,
         );
       }
 
-      return rv;
+      return copy;
     });
   }
 
