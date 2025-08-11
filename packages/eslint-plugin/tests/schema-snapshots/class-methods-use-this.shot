@@ -6,7 +6,6 @@
     "additionalProperties": false,
     "properties": {
       "enforceForClassFields": {
-        "default": true,
         "description": "Enforces that functions used as instance field initializers utilize `this`.",
         "type": "boolean"
       },
