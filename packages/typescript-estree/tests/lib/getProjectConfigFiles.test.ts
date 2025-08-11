@@ -201,7 +201,7 @@ describe(getProjectConfigFiles, () => {
 
     it.runIf(!isWindows)('throws when searching hits .', async () => {
       // ensure posix-style paths are used for consistent snapshot.
-      vi.mock('path', async () => {
+      vi.doMock('path', async () => {
         const actual = await vi.importActual<typeof path>('path');
         return actual.posix;
       });
@@ -223,7 +223,7 @@ describe(getProjectConfigFiles, () => {
       'throws when searching passes the tsconfigRootDir',
       async () => {
         // ensure posix-style paths are used for consistent snapshot.
-        vi.mock('path', async () => {
+        vi.doMock('path', async () => {
           const actual = await vi.importActual<typeof path>('path');
           return actual.posix;
         });
