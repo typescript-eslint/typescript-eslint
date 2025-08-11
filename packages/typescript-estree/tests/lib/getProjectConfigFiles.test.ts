@@ -1,5 +1,3 @@
-import type path from 'node:path';
-
 import { existsSync } from 'node:fs';
 
 import type { ParseSettings } from '../../src/parseSettings';
@@ -197,45 +195,60 @@ describe(getProjectConfigFiles, () => {
 
     it('throws when searching hits .', async () => {
       // ensure posix-style paths are used for consistent snapshot.
-      vi.doMock('path', async () => {
-        const actual = await vi.importActual<typeof path>('path');
-        return actual.posix;
+      vi.doMock(import('node:path'), async importActual => {
+        const actualPath = await importActual();
+        return {
+          ...actualPath.posix,
+          default: actualPath.posix,
+        };
       });
 
-      const { getProjectConfigFiles } = await import(
-        '../../src/parseSettings/getProjectConfigFiles.js'
-      );
+      try {
+        const { getProjectConfigFiles } = await import(
+          '../../src/parseSettings/getProjectConfigFiles.js'
+        );
 
-      mockExistsSync.mockReturnValue(false);
+        mockExistsSync.mockReturnValue(false);
 
-      expect(() =>
-        getProjectConfigFiles(parseSettingsPosix, true),
-      ).toThrowErrorMatchingInlineSnapshot(
-        `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to '/repos/repo/packages/package/file.ts' within '/repos/repo'.]`,
-      );
+        expect(() =>
+          getProjectConfigFiles(parseSettingsPosix, true),
+        ).toThrowErrorMatchingInlineSnapshot(
+          `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to '/repos/repo/packages/package/file.ts' within '/repos/repo'.]`,
+        );
+      } finally {
+        vi.doUnmock(import('node:path'));
+      }
     });
 
     it('throws when searching passes the tsconfigRootDir', async () => {
       // ensure posix-style paths are used for consistent snapshot.
-      vi.doMock('path', async () => {
-        const actual = await vi.importActual<typeof path>('path');
-        return actual.posix;
+      vi.doMock(import('node:path'), async importActual => {
+        const actualPath = await importActual();
+        return { ...actualPath.posix, default: actualPath.posix };
       });
+      try {
+        const { getProjectConfigFiles } = await import(
+          '../../src/parseSettings/getProjectConfigFiles.js'
+        );
 
-      const { getProjectConfigFiles } = await import(
-        '../../src/parseSettings/getProjectConfigFiles.js'
-      );
+        mockExistsSync.mockReturnValue(false);
 
-      mockExistsSync.mockReturnValue(false);
+        expect(() =>
+          getProjectConfigFiles(
+            { ...parseSettingsPosix, tsconfigRootDir: '/' },
+            true,
+          ),
+        ).toThrowErrorMatchingInlineSnapshot(
+          `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to '/repos/repo/packages/package/file.ts' within '/'.]`,
+        );
+      } finally {
+        vi.doUnmock(import('node:path'));
+      }
+    });
 
-      expect(() =>
-        getProjectConfigFiles(
-          { ...parseSettingsPosix, tsconfigRootDir: '/' },
-          true,
-        ),
-      ).toThrowErrorMatchingInlineSnapshot(
-        `[Error: project was set to \`true\` but couldn't find any tsconfig.json relative to '/repos/repo/packages/package/file.ts' within '/'.]`,
-      );
+    it.runIf(isWindows)('has reverted to windows paths', async () => {
+      const path = await import('node:path');
+      expect(path.dirname('C:\\foo\\bar.ts')).toBe('C:\\foo');
     });
   });
 });
