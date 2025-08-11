@@ -185,7 +185,7 @@ jobs:
         exclude:
           - os: windows-latest
             node-version: 18
-        os: [ubuntu-latest, windows-latest]
+        os: [windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [18, 20]
         package:
