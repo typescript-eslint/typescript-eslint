@@ -6,7 +6,7 @@ import type { ProjectServiceOptions } from '@typescript-eslint/types';
 
 import { createProjectService } from '@typescript-eslint/project-service';
 import debug from 'debug';
-import path, { parse } from 'node:path';
+import path from 'node:path';
 import * as ts from 'typescript';
 
 import type { TSESTreeOptions } from '../parser-options';

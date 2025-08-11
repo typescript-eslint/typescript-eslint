@@ -157,13 +157,18 @@ describe(RuleTester, () => {
 
   function getTestConfigFromCall(): unknown[] {
     return runRuleForItemSpy.mock.calls.map(c => {
-      const copy = structuredClone(c);
+      // structuredClone cannot be used since it has functions and such
+      const copy = { ...c };
       if (copy[2].filename) {
         // @ts-expect-error readonly-ness
         copy[2].filename = windowsToPosixPath(copy[2].filename);
       }
 
       if (copy[2].languageOptions?.parserOptions?.tsconfigRootDir) {
+        copy[2].languageOptions = { ...copy[2].languageOptions };
+        copy[2].languageOptions.parserOptions = {
+          ...copy[2].languageOptions.parserOptions,
+        };
         // @ts-expect-error readonly-ness
         copy[2].languageOptions.parserOptions.tsconfigRootDir =
           windowsToPosixPath(
