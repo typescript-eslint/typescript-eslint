@@ -4,6 +4,7 @@ import type { MockInstance } from 'vitest';
 
 import * as parser from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import path from 'node:path';
 
 import type { InvalidTestCase, RuleTesterConfig, ValidTestCase } from '../src';
 import type { RuleTesterTestFrameworkFunctionBase } from '../src/TestFramework';
@@ -154,7 +155,7 @@ describe(RuleTester, () => {
           parser,
           parserOptions: {
             project: 'tsconfig.json',
-            tsconfigRootDir: '/some/path/that/totally/exists/',
+            tsconfigRootDir: path.resolve('/some/path/that/totally/exists/'),
           },
         },
       });
@@ -277,7 +278,7 @@ describe(RuleTester, () => {
           parser,
           parserOptions: {
             project: 'tsconfig.json',
-            tsconfigRootDir: '/some/path/that/totally/exists/',
+            tsconfigRootDir: path.resolve('/some/path/that/totally/exists/'),
           },
         },
       });
@@ -337,7 +338,7 @@ describe(RuleTester, () => {
         parser,
         parserOptions: {
           project: 'tsconfig.json',
-          tsconfigRootDir: '/some/path/that/totally/exists/',
+          tsconfigRootDir: path.resolve('/some/path/that/totally/exists/'),
         },
       },
     });
@@ -375,7 +376,7 @@ describe(RuleTester, () => {
         parser,
         parserOptions: {
           project: 'tsconfig.json',
-          tsconfigRootDir: '/some/path/that/totally/exists/',
+          tsconfigRootDir: path.resolve('/some/path/that/totally/exists/'),
         },
       },
     });
