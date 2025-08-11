@@ -69,6 +69,7 @@ export function createParseSettings(
       if (
         !path.isAbsolute(userProvidedTsconfigRootDir) ||
         // Ensure it's fully absolute with a drive letter if windows
+        /* istanbul ignore next -- is tested but only on windows, which doesn't contribute to cov report */
         (process.platform === 'win32' &&
           !/^[a-zA-Z]:/.test(userProvidedTsconfigRootDir))
       ) {
