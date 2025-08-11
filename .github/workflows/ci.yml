@@ -179,16 +179,29 @@ jobs:
     needs: [build]
     runs-on: ${{ matrix.os }}
     strategy:
-      # TODO remove
-      fail-fast: false
       matrix:
-        # exclude:
-        #   - os: windows-latest
-        #     node-version: 18
-        os: [windows-latest]
+        exclude:
+          - os: windows-latest
+            node-version: 18
+        os: [ubuntu-latest, windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
-        node-version: [18, 20, 22, 24]
-        package: ['typescript-estree']
+        node-version: [18, 20]
+        package:
+          [
+            'ast-spec',
+            'eslint-plugin',
+            'eslint-plugin-internal',
+            'parser',
+            'project-service',
+            'rule-tester',
+            'scope-manager',
+            'tsconfig-utils',
+            'type-utils',
+            'typescript-eslint',
+            'typescript-estree',
+            'utils',
+            'visitor-keys',
+          ]
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
