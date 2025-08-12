@@ -449,4 +449,136 @@ describe('convert', () => {
       expect(Object.keys(tsMappedType)).toContain('typeParameter');
     });
   });
+
+  describe('tagged template literal cooked', () => {
+    const getTemplateElement = (code: string): TSESTree.TemplateElement => {
+      const result = convertCode(code);
+      const converter = new Converter(result);
+      const program = converter.convertProgram();
+
+      const taggedTemplate = program.body.find(
+        b => b.type === AST_NODE_TYPES.ExpressionStatement,
+      );
+      const expression = taggedTemplate?.expression;
+      if (expression?.type !== AST_NODE_TYPES.TaggedTemplateExpression) {
+        throw new Error('TaggedTemplateExpression not found');
+      }
+      return expression.quasi.quasis[0];
+    };
+
+    const invalidEscapeSequences = [String.raw`\uXXXX`, String.raw`\xQW`];
+
+    it('should set cooked to null for invalid escape sequences in tagged template literals', () => {
+      const code = `tag\`${invalidEscapeSequences[0]}${invalidEscapeSequences[1]}\``;
+      const templateElement = getTemplateElement(code);
+
+      expect(templateElement.value.cooked).toBeNull();
+    });
+
+    it('should set cooked to null for mixed valid and invalid escape sequences', () => {
+      const code = `tag\`\n${invalidEscapeSequences[0]}\u{1111}\t\${}${invalidEscapeSequences[1]}\``;
+      const templateElement = getTemplateElement(code);
+
+      expect(templateElement.value.cooked).toBeNull();
+    });
+
+    it('should not set cooked to null for text without invalid escape sequences', () => {
+      const code = `tag\`foo\n\\\u1111\t
+        bar
+        baz\``;
+      const templateElement = getTemplateElement(code);
+
+      expect(templateElement.value.cooked).toBe(`foo\n\u1111\t
+        bar
+        baz`);
+    });
+
+    it('should not set cooked to null for untagged template literals', () => {
+      const code = `const foo = \`${invalidEscapeSequences[0]}\``;
+      const result = convertCode(code);
+      const converter = new Converter(result);
+      const program = converter.convertProgram();
+
+      const variableDeclaration = program.body.find(
+        b => b.type === AST_NODE_TYPES.VariableDeclaration,
+      );
+      const variableDeclarator = variableDeclaration?.declarations[0];
+      if (variableDeclarator?.type !== AST_NODE_TYPES.VariableDeclarator) {
+        throw new Error('VariableDeclarator not found');
+      }
+      const init = variableDeclarator.init;
+      if (init?.type !== AST_NODE_TYPES.TemplateLiteral) {
+        throw new Error('TemplateLiteral not found');
+      }
+      const templateElement = init.quasis[0];
+
+      expect(templateElement.value.cooked).toBe(`\\uXXXX`);
+    });
+
+    describe('validate escape sequences', () => {
+      it('should return false for invalid unicode', () => {
+        const invalidUnicodes = [String.raw`\uXXXX`, String.raw`\u12`];
+        const codes = invalidUnicodes.map(
+          invalidUnicode => `tag\`${invalidUnicode}\``,
+        );
+        const templateElements = codes.map(code => getTemplateElement(code));
+
+        expect(templateElements[0].value.cooked).toBeNull();
+        expect(templateElements[1].value.cooked).toBeNull();
+      });
+
+      it('should return false for invalid unicode with braces', () => {
+        const invalidUnicodes = [String.raw`\u{123`, String.raw`\u{12345678}`];
+        const codes = invalidUnicodes.map(
+          invalidUnicode => `tag\`${invalidUnicode}\``,
+        );
+        const templateElements = codes.map(code => getTemplateElement(code));
+
+        expect(templateElements[0].value.cooked).toBeNull();
+        expect(templateElements[1].value.cooked).toBeNull();
+      });
+
+      it('should return true for valid unicode', () => {
+        // 002E is .
+        const validUnicodes = [String.raw`\u{002E}`, String.raw`\u002E`];
+        const code = `tag\`${validUnicodes[0]}${validUnicodes[1]}\``;
+        const templateElement = getTemplateElement(code);
+
+        expect(templateElement.value.cooked).toBe('..');
+      });
+
+      it('should return false for invalid hex', () => {
+        const invalidHexes = [String.raw`\x1`, String.raw`\xZX`];
+        const codes = invalidHexes.map(invalidHex => `tag\`${invalidHex}\``);
+        const templateElements = codes.map(code => getTemplateElement(code));
+
+        expect(templateElements[0].value.cooked).toBeNull();
+        expect(templateElements[1].value.cooked).toBeNull();
+      });
+
+      it('should return true for valid hex', () => {
+        const validHex = String.raw`\x2E`;
+        const code = `tag\`${validHex}\``;
+        const templateElement = getTemplateElement(code);
+
+        expect(templateElement.value.cooked).toBe('.');
+      });
+
+      it('should return false for invalid short', () => {
+        const invalidShort = String.raw`\1`;
+        const code = `tag\`${invalidShort}\``;
+        const templateElement = getTemplateElement(code);
+
+        expect(templateElement.value.cooked).toBeNull();
+      });
+
+      it('should return true for valid short', () => {
+        const validShort = String.raw`\"\'`;
+        const code = `tag\`${validShort}\``;
+        const templateElement = getTemplateElement(code);
+
+        expect(templateElement.value.cooked).toBe(`"'`);
+      });
+    });
+  });
 });
