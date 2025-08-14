@@ -2067,8 +2067,8 @@ async function test() {
               output: `
 async function test() {
   (Promise.resolve(), 123);
-  123, Promise.resolve();
-  (void ((123, Promise.resolve(), 123)));
+  (123, Promise.resolve());
+  void ((123, Promise.resolve(), 123));
 }
       `,
             },
@@ -2077,8 +2077,8 @@ async function test() {
               output: `
 async function test() {
   (Promise.resolve(), 123);
-  123, Promise.resolve();
-  (await ((123, Promise.resolve(), 123)));
+  (123, Promise.resolve());
+  await ((123, Promise.resolve(), 123));
 }
       `,
             },
