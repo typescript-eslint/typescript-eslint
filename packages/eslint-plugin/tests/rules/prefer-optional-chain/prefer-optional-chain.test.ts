@@ -1515,8 +1515,7 @@ describe('hand-crafted cases', () => {
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         options: [
           {
-            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing:
-              true,
+            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: true,
           },
         ],
         output: `
@@ -1545,8 +1544,7 @@ describe('hand-crafted cases', () => {
         ],
         options: [
           {
-            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing:
-              false,
+            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: false,
           },
         ],
         output: null,
@@ -1560,8 +1558,7 @@ describe('hand-crafted cases', () => {
         errors: [{ messageId: 'preferOptionalChain' }],
         options: [
           {
-            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing:
-              true,
+            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: true,
           },
         ],
         output: `

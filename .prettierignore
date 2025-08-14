@@ -12,22 +12,6 @@ packages/eslint-plugin/tests/fixtures/indent/
 # ignore all error fixtures cos they often have intentional syntax errors
 packages/ast-spec/src/*/*/fixtures/_error_/*/fixture.ts
 
-# TS 5.6 -- string literal import/export specifiers
-# TODO - remove this once prettier supports it
-packages/ast-spec/src/declaration/ExportNamedDeclaration/fixtures/braced-identifier-aliased-to-string-literal-with-source/fixture.ts
-packages/ast-spec/src/declaration/ExportNamedDeclaration/fixtures/braced-identifier-aliased-to-string-literal-without-source/fixture.ts
-packages/ast-spec/src/declaration/ExportNamedDeclaration/fixtures/braced-string-literal-aliased-to-identifier-with-source/fixture.ts
-packages/ast-spec/src/declaration/ExportNamedDeclaration/fixtures/braced-string-literal-many-with-source/fixture.ts
-packages/ast-spec/src/declaration/ExportNamedDeclaration/fixtures/braced-string-literal-with-source/fixture.ts
-packages/ast-spec/src/declaration/ImportDeclaration/fixtures/named-string-literal-aliased-to-identifier/fixture.ts
-packages/ast-spec/src/special/ExportSpecifier/fixtures/literal-specifier/fixture.ts
-packages/ast-spec/src/special/ExportSpecifier/fixtures/value-export-specifier/fixture.ts
-
-# TODO - remove this once prettier supports it
-# https://github.com/prettier/prettier/issues/16072
-packages/ast-spec/src/type/TSImportType/fixtures/type-import-type-with-import-attributes-assert/fixture.ts
-packages/ast-spec/src/type/TSImportType/fixtures/type-import-type-with-import-attributes-with/fixture.ts
-
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
 
