@@ -87,7 +87,7 @@ ruleTester.run('no-unused-expressions', rule, {
       ],
     },
     {
-      code: 'f(0), {};',
+      code: '(f(0), {});',
       errors: [
         {
           column: 1,
@@ -99,7 +99,7 @@ ruleTester.run('no-unused-expressions', rule, {
       ],
     },
     {
-      code: 'a, b();',
+      code: '(a, b());',
       errors: [
         {
           column: 1,
