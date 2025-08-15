@@ -198,6 +198,10 @@ export enum OperatorPrecedence {
   Invalid = -1,
 }
 
+/**
+ * Note that this does not take into account parenthesization. You should check
+ * for parenthesization separately if it's relevant to your usage.
+ */
 export function getOperatorPrecedenceForNode(
   node: TSESTree.Node,
 ): OperatorPrecedence {
