@@ -1,1 +1,1 @@
-type A = import("A", { with: { type: "json" } });
+type A = import('A', { with: { type: 'json' } });

@@ -51,7 +51,7 @@
   },
   String {
     type: "String",
-    value: ""A"",
+    value: "'A'",
 
     range: [16, 19],
     loc: {
@@ -131,7 +131,7 @@
   },
   String {
     type: "String",
-    value: ""json"",
+    value: "'json'",
 
     range: [37, 43],
     loc: {

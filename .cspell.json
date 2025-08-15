@@ -150,6 +150,7 @@
     "oxlint",
     "packagespecifier",
     "parameterised",
+    "parenthesization",
     "performant",
     "pluggable",
     "postprocess",
