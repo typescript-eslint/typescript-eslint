@@ -3166,10 +3166,15 @@ export class Converter {
 
           const commaToken = findNextToken(node.argument, node, this.ast)!;
           const openBraceToken = findNextToken(commaToken, node, this.ast)!;
-     const tokenAfterAttributes = findNextToken(node.attributes, node, this.ast)!;
-     const closeBraceToken = tokenAfterAttributes.kind === ts.SyntaxKind.CommaToken
-       ? tokenAfterAttributes
-       : findNextToken(tokenAfterAttributes, node, this.ast)!;
+          const tokenAfterAttributes = findNextToken(
+            node.attributes,
+            node,
+            this.ast,
+          )!;
+          const closeBraceToken =
+            tokenAfterAttributes.kind === ts.SyntaxKind.CommaToken
+              ? tokenAfterAttributes
+              : findNextToken(tokenAfterAttributes, node, this.ast)!;
           const withOrAssertToken = findNextToken(
             openBraceToken,
             node,
