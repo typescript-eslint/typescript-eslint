@@ -117,10 +117,10 @@ Program {
             },
           ],
 
-          range: [21, 47],
+          range: [21, 48],
           loc: {
             start: { column: 21, line: 1 },
-            end: { column: 47, line: 1 },
+            end: { column: 48, line: 1 },
           },
         },
         qualifier: null,
