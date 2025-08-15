@@ -1,14 +1,13 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
 
 import {
   createRule,
-  getOperatorPrecedence,
   getOperatorPrecedenceForNode,
   getParserServices,
   isBuiltinSymbolLike,
