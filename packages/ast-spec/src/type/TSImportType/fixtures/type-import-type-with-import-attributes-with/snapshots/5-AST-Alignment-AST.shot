@@ -31,18 +31,18 @@ Snapshot Diff:
 -             type: 'Literal',
 -             raw: '"A"',
 -             value: 'A',
--
++         argument: Literal {
++           type: 'Literal',
++           raw: '"A"',
++           value: 'A',
+
 -             range: [16, 19],
 -             loc: {
 -               start: { column: 16, line: 1 },
 -               end: { column: 19, line: 1 },
 -             },
 -           },
-+         argument: Literal {
-+           type: 'Literal',
-+           raw: '"A"',
-+           value: 'A',
-
+-
             range: [16, 19],
             loc: {
               start: { column: 16, line: 1 },
@@ -128,12 +128,10 @@ Snapshot Diff:
               },
             ],
 
--           range: [21, 48],
-+           range: [21, 47],
+            range: [21, 47],
             loc: {
               start: { column: 21, line: 1 },
--             end: { column: 48, line: 1 },
-+             end: { column: 47, line: 1 },
+              end: { column: 47, line: 1 },
             },
           },
           qualifier: null,

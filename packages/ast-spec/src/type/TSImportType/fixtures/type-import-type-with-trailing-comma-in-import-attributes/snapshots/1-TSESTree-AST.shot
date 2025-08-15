@@ -116,10 +116,10 @@ Program {
             },
           ],
 
-          range: [33, 74],
+          range: [33, 76],
           loc: {
             start: { column: 33, line: 1 },
-            end: { column: 74, line: 1 },
+            end: { column: 76, line: 1 },
           },
         },
         qualifier: null,

@@ -3171,10 +3171,11 @@ export class Converter {
             node,
             this.ast,
           )!;
+          // Since TS 5.9, there could be a trailing comma, i.e. `{ with: { ... }, }`
           const closeBraceToken =
             tokenAfterAttributes.kind === ts.SyntaxKind.CommaToken
-              ? tokenAfterAttributes
-              : findNextToken(tokenAfterAttributes, node, this.ast)!;
+              ? findNextToken(tokenAfterAttributes, node, this.ast)!
+              : tokenAfterAttributes;
           const withOrAssertToken = findNextToken(
             openBraceToken,
             node,
