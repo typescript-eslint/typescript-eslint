@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/project-service",
-  "version": "8.39.0",
+  "version": "8.39.1",
   "description": "Standalone TypeScript project service wrapper for linting.",
   "files": [
     "dist",
@@ -49,8 +49,8 @@
     "typescript": ">=4.8.4 <6.0.0"
   },
   "dependencies": {
-    "@typescript-eslint/tsconfig-utils": "^8.39.0",
-    "@typescript-eslint/types": "^8.39.0",
+    "@typescript-eslint/tsconfig-utils": "^8.39.1",
+    "@typescript-eslint/types": "^8.39.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {

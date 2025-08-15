@@ -29,7 +29,6 @@
     "additionalProperties": false,
     "properties": {
       "minimumDescriptionLength": {
-        "default": 3,
         "description": "A minimum character length for descriptions when `allow-with-description` is enabled.",
         "type": "number"
       },
