@@ -87,11 +87,11 @@ ruleTester.run('no-unused-expressions', rule, {
       ],
     },
     {
-      code: 'f(0), {};',
+      code: '(f(0), {});',
       errors: [
         {
           column: 1,
-          endColumn: 10,
+          endColumn: 12,
           endLine: 1,
           line: 1,
           messageId: 'unusedExpression',
@@ -99,11 +99,11 @@ ruleTester.run('no-unused-expressions', rule, {
       ],
     },
     {
-      code: 'a, b();',
+      code: '(a, b());',
       errors: [
         {
           column: 1,
-          endColumn: 8,
+          endColumn: 10,
           endLine: 1,
           line: 1,
           messageId: 'unusedExpression',
