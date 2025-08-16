@@ -390,7 +390,7 @@ x?.
     {
       code: noFormat`
 document.querySelector("input")!.files = new FileList();
-`,
+      `,
       errors: [
         {
           column: 1,
@@ -403,7 +403,7 @@ document.querySelector("input")!.files = new FileList();
     {
       code: noFormat`
 hoge.files = document.querySelector("input")!.files
-`,
+      `,
       errors: [
         {
           column: 14,
