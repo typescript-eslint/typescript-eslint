@@ -2,6 +2,7 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
+import path from 'node:path';
 
 import { RuleTester } from '../src/RuleTester';
 
@@ -62,7 +63,9 @@ describe('rule tester filename', () => {
 
   new RuleTester({
     languageOptions: {
-      parserOptions: { tsconfigRootDir: '/some/path/that/totally/exists/' },
+      parserOptions: {
+        tsconfigRootDir: path.resolve('/some/path/that/totally/exists/'),
+      },
     },
   }).run('with tsconfigRootDir', rule, {
     invalid: [

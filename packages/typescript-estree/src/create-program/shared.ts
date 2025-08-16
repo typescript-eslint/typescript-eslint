@@ -70,9 +70,7 @@ export function getCanonicalFileName(filePath: string): CanonicalPath {
 }
 
 export function ensureAbsolutePath(p: string, tsconfigRootDir: string): string {
-  return path.isAbsolute(p)
-    ? p
-    : path.join(tsconfigRootDir || process.cwd(), p);
+  return path.resolve(tsconfigRootDir, p);
 }
 
 export function canonicalDirname(p: CanonicalPath): CanonicalPath {
