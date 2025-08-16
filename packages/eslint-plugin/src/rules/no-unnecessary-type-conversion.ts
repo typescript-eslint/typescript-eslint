@@ -19,6 +19,14 @@ type MessageIds =
   | 'suggestSatisfies'
   | 'unnecessaryTypeConversion';
 
+function isEnumType(type: ts.Type): boolean {
+  return (type.getFlags() & ts.TypeFlags.EnumLike) !== 0;
+}
+
+function isEnumMemberType(type: ts.Type): boolean {
+  return ((type.symbol?.flags ?? 0) & ts.SymbolFlags.EnumMember) !== 0;
+}
+
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-conversion',
   meta: {
@@ -294,6 +302,11 @@ export default createRule<Options, MessageIds>({
       ): void {
         const memberExpr = node.parent as TSESTree.MemberExpression;
         const type = getConstrainedTypeAtLocation(services, memberExpr.object);
+
+        if (isEnumType(type) || isEnumMemberType(type)) {
+          return;
+        }
+
         if (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.StringLike)) {
           const wrappingFixerParams = {
             node: memberExpr.parent,
