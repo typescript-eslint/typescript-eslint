@@ -3166,11 +3166,16 @@ export class Converter {
 
           const commaToken = findNextToken(node.argument, node, this.ast)!;
           const openBraceToken = findNextToken(commaToken, node, this.ast)!;
-          const closeBraceToken = findNextToken(
+          const tokenAfterAttributes = findNextToken(
             node.attributes,
             node,
             this.ast,
           )!;
+          // Since TS 5.9, there could be a trailing comma, i.e. `{ with: { ... }, }`
+          const closeBraceToken =
+            tokenAfterAttributes.kind === ts.SyntaxKind.CommaToken
+              ? findNextToken(tokenAfterAttributes, node, this.ast)!
+              : tokenAfterAttributes;
           const withOrAssertToken = findNextToken(
             openBraceToken,
             node,
