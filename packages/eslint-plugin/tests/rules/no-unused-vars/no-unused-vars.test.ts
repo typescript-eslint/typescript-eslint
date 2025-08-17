@@ -1753,6 +1753,23 @@ export type A = typeof A;
         },
       ],
     },
+    {
+      code: `
+const A = 0;
+export interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'A',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
   ],
 
   valid: [
@@ -3067,6 +3084,18 @@ export { A };
       code: `
 class A {}
 export type B = A;
+      `,
+    },
+    {
+      code: `
+export const Foo = 0;
+export interface Foo {}
+      `,
+    },
+    {
+      code: `
+export const Foo = 0;
+export type Foo = typeof Foo;
       `,
     },
   ],

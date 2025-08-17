@@ -419,14 +419,15 @@ function isSelfReference(
 /**
  * @param variable the variable to check
  * @param node the node from a some def of variable
- * @returns true if variable is type/value duality and declaration is type declaration
+ * @returns `true` if variable is type/value duality and declaration is type declaration
  */
 function isMergedTypeDeclaration(
   variable: Variable,
   node: TSESTree.Node,
 ): boolean {
   return (
-    node.type === AST_NODE_TYPES.TSTypeAliasDeclaration &&
+    (node.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+      node.type === AST_NODE_TYPES.TSInterfaceDeclaration) &&
     variable.isTypeVariable &&
     variable.isValueVariable
   );
