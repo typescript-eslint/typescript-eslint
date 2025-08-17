@@ -1,3 +1,97 @@
+## 8.39.1 (2025-08-11)
+
+### 🩹 Fixes
+
+- **typescript-eslint:** handle `file://` urls in stack trace when inferring `tsconfigRootDir` ([#11464](https://github.com/typescript-eslint/typescript-eslint/pull/11464))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.39.0 (2025-08-04)
+
+### 🚀 Features
+
+- update to TypeScript 5.9.2 ([#11445](https://github.com/typescript-eslint/typescript-eslint/pull/11445))
+- **eslint-plugin:** [naming-convention] add enumMember PascalCase default option ([#11127](https://github.com/typescript-eslint/typescript-eslint/pull/11127))
+- **eslint-plugin:** add no-unnecessary-type-conversion to strict-type-checked ruleset ([#11427](https://github.com/typescript-eslint/typescript-eslint/pull/11427))
+- **eslint-plugin:** [only-throw-error] support yield/await expressions ([#11417](https://github.com/typescript-eslint/typescript-eslint/pull/11417))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] ignore `check` option for most RHS of a chain ([#11272](https://github.com/typescript-eslint/typescript-eslint/pull/11272))
+- **eslint-plugin:** [no-unsafe-assignment] add an `unsafeObjectPattern` message ([#11403](https://github.com/typescript-eslint/typescript-eslint/pull/11403))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- James Garbutt @43081j
+- Kim Sang Du @developer-bandi
+- Sasha Kondrashov
+- tao
+- Younsang Na @nayounsang
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.38.0 (2025-07-21)
+
+### 🚀 Features
+
+- **typescript-estree:** forbid optional chain in `TemplateTaggedLiteral` ([#11391](https://github.com/typescript-eslint/typescript-eslint/pull/11391))
+
+### 🩹 Fixes
+
+- disallow extra properties in rule options ([#11397](https://github.com/typescript-eslint/typescript-eslint/pull/11397))
+- **eslint-plugin:** [consistent-generic-constructors] resolve conflict with `isolatedDeclarations` if enabled in `constructor` option ([#11351](https://github.com/typescript-eslint/typescript-eslint/pull/11351))
+- **typescript-eslint:** infer tsconfigRootDir with v8 API ([#11412](https://github.com/typescript-eslint/typescript-eslint/pull/11412))
+- **typescript-eslint:** error on nested `extends` in `tseslint.config()` ([#11361](https://github.com/typescript-eslint/typescript-eslint/pull/11361))
+- **typescript-estree:** ensure the token type of the property name is Identifier ([#11329](https://github.com/typescript-eslint/typescript-eslint/pull/11329))
+
+### ❤️ Thank You
+
+- Andrew Kazakov @andreww2012
+- Kirk Waiblinger @kirkwaiblinger
+- MK @asdf93074
+- tao
+- Younsang Na @nayounsang
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.37.0 (2025-07-14)
+
+### 🚀 Features
+
+- **typescript-estree:** infer tsconfigRootDir from call stack ([#11370](https://github.com/typescript-eslint/typescript-eslint/pull/11370))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [unified-signatures] fix false positives for ignoreOverloadsWithDifferentJSDoc option ([#11381](https://github.com/typescript-eslint/typescript-eslint/pull/11381))
+- **type-utils:** add missing 'types' dependency to 'type-utils' ([#11383](https://github.com/typescript-eslint/typescript-eslint/pull/11383))
+- **type-utils:** handle namespaced exports in specifier matching ([#11380](https://github.com/typescript-eslint/typescript-eslint/pull/11380))
+
+### ❤️ Thank You
+
+- Bill Collins
+- Josh Goldberg ✨
+- René @Renegade334
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.36.0 (2025-07-07)
+
+### 🚀 Features
+
+- **typescript-eslint:** support `basePath` in `tseslint.config()` ([#11357](https://github.com/typescript-eslint/typescript-eslint/pull/11357))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.35.1 (2025-06-30)
 
 ### 🩹 Fixes

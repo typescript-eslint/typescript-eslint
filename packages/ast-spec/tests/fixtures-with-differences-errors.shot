@@ -27,9 +27,6 @@ exports[`AST Fixtures > List fixtures with Error differences`]
     "legacy-fixtures/basics/fixtures/_error_/class-with-constructor-and-type-parameters/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/class-with-two-methods-computed-constructor/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/const-assertions/fixture.ts",
-    "legacy-fixtures/basics/fixtures/_error_/export-named-enum-computed-number/fixture.ts",
-    "legacy-fixtures/basics/fixtures/_error_/export-named-enum-computed-string/fixture.ts",
-    "legacy-fixtures/basics/fixtures/_error_/export-named-enum-computed-var-ref/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/export-with-import-assertions/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/import-type-error/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/new-target-in-arrow-function-body/fixture.ts",
@@ -47,7 +44,8 @@ exports[`AST Fixtures > List fixtures with Error differences`]
     "legacy-fixtures/errorRecovery/fixtures/_error_/interface-with-optional-index-signature/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-array-pattern-decorator/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-rest-element-decorator/fixture.ts",
-    "type/TSImportType/fixtures/_error_/type-import-type-with-import-attributes-assert/fixture.ts"
+    "type/TSImportType/fixtures/_error_/type-import-type-with-import-attributes-assert/fixture.ts",
+    "type/TSImportType/fixtures/type-import-type-with-trailing-comma-in-import-attributes/fixture.ts"
   ],
   "TSESTree errored but Babel didn't": [
     "declaration/TSDeclareFunction/fixtures/_error_/generator-ambient/fixture.ts",
