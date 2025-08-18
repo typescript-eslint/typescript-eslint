@@ -1,4 +1,4 @@
-import type { ProjectServiceAndMetadata as ProjectServiceAndMetadata } from '@typescript-eslint/project-service';
+import type { ProjectServiceAndMetadata } from '@typescript-eslint/project-service';
 
 import debug from 'debug';
 import { minimatch } from 'minimatch';
@@ -316,5 +316,7 @@ function filePathMatchedBy(
   filePath: string,
   allowDefaultProject: string[] | undefined,
 ): boolean {
-  return !!allowDefaultProject?.some(pattern => minimatch(filePath, pattern));
+  return !!allowDefaultProject?.some(pattern =>
+    minimatch(filePath, pattern, { dot: true }),
+  );
 }
