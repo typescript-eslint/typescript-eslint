@@ -1,3 +1,15 @@
+## 8.39.1 (2025-08-11)
+
+### 🩹 Fixes
+
+- **typescript-eslint:** handle `file://` urls in stack trace when inferring `tsconfigRootDir` ([#11464](https://github.com/typescript-eslint/typescript-eslint/pull/11464))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.39.0 (2025-08-04)
 
 ### 🚀 Features

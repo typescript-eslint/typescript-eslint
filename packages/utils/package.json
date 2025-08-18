@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "8.39.0",
+  "version": "8.39.1",
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -62,9 +62,9 @@
   },
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.7.0",
-    "@typescript-eslint/scope-manager": "8.39.0",
-    "@typescript-eslint/types": "8.39.0",
-    "@typescript-eslint/typescript-estree": "8.39.0"
+    "@typescript-eslint/scope-manager": "8.39.1",
+    "@typescript-eslint/types": "8.39.1",
+    "@typescript-eslint/typescript-estree": "8.39.1"
   },
   "peerDependencies": {
     "eslint": "^8.57.0 || ^9.0.0",
