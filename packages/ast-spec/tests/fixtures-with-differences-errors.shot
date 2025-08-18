@@ -47,8 +47,7 @@ exports[`AST Fixtures > List fixtures with Error differences`]
     "legacy-fixtures/errorRecovery/fixtures/_error_/interface-with-optional-index-signature/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-array-pattern-decorator/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-rest-element-decorator/fixture.ts",
-    "type/TSImportType/fixtures/_error_/type-import-type-with-import-attributes-assert/fixture.ts",
-    "type/TSImportType/fixtures/type-import-type-with-trailing-comma-in-import-attributes/fixture.ts"
+    "type/TSImportType/fixtures/_error_/type-import-type-with-import-attributes-assert/fixture.ts"
   ],
   "TSESTree errored but Babel didn't": [
     "declaration/TSDeclareFunction/fixtures/_error_/generator-ambient/fixture.ts",
