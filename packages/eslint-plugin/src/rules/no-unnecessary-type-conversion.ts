@@ -24,7 +24,11 @@ function isEnumType(type: ts.Type): boolean {
 }
 
 function isEnumMemberType(type: ts.Type): boolean {
-  return ((type.symbol?.flags ?? 0) & ts.SymbolFlags.EnumMember) !== 0;
+  const symbol = type.getSymbol();
+  if (!symbol) {
+    return false;
+  }
+  return (symbol.flags & ts.SymbolFlags.EnumMember) !== 0;
 }
 
 export default createRule<Options, MessageIds>({
