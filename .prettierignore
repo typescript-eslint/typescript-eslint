@@ -12,6 +12,9 @@ packages/eslint-plugin/tests/fixtures/indent/
 # ignore all error fixtures cos they often have intentional syntax errors
 packages/ast-spec/src/*/*/fixtures/_error_/*/fixture.ts
 
+# https://github.com/prettier/prettier/issues/17405
+packages/ast-spec/src/type/TSImportType/fixtures/type-import-type-with-trailing-comma-in-import-attributes/fixture.ts
+
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
 

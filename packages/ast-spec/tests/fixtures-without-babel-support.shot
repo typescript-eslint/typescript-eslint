@@ -1,4 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > List fixtures we expect babel to not support`]
-[]
+[
+  [
+    "type/TSImportType/fixtures/type-import-type-with-trailing-comma-in-import-attributes/fixture.ts",
+    "waiting for https://github.com/babel/babel/pull/17465 to be released"
+  ]
+]
