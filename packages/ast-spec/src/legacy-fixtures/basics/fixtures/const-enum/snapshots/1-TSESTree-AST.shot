@@ -8,6 +8,7 @@ Program {
         members: [
           TSEnumMember {
             type: "TSEnumMember",
+            computed: false,
             id: Identifier {
               type: "Identifier",
               decorators: [],
@@ -40,6 +41,7 @@ Program {
           },
           TSEnumMember {
             type: "TSEnumMember",
+            computed: false,
             id: Identifier {
               type: "Identifier",
               decorators: [],

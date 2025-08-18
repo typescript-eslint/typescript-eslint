@@ -1,9 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > element > TSEnumMember > _error_ > number-name > TSESTree - Error`]
-TSError
-  1 | enum Foo {
-> 2 |   1 = 2
-    |   ^ An enum member cannot have a numeric name.
-  3 | }
-  4 |
