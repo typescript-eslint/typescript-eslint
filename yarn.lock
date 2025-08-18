@@ -5499,11 +5499,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^22.0.0":
-  version: 22.15.3
-  resolution: "@types/node@npm:22.15.3"
+  version: 22.17.2
+  resolution: "@types/node@npm:22.17.2"
   dependencies:
     undici-types: ~6.21.0
-  checksum: 26618a9fdfb84de3841e898b7c5fd372e1c0bdb9adc3ec71c12c38dd07d4e73da14681924919d27ff509ebf3714b8de941a21f51c26146cc8aaae31561ca7a5c
+  checksum: 2a82f96abcf25104efa6e9b8231616e039e5e0854f07e9ce4fdf821d30eaac30a80ec3cafefb36d2af8bd7c9594cfda337887bd85bb5c2031ba0f7e23a3d588d
   languageName: node
   linkType: hard
 
