@@ -362,11 +362,6 @@ export default tseslint.config(
 
   // test file specific configuration
   {
-    files: [
-      'packages/*/tests/**/*.?(m|c)ts?(x)',
-      'packages/integration-tests/tools/**/*.ts',
-    ],
-
     extends: [
       // @ts-expect-error -- uses `string` instead of `off` | `readonly` | `writable` for the globals setting.
       vitestPlugin.configs.env,
@@ -397,6 +392,11 @@ export default tseslint.config(
         },
         settings: { vitest: { typecheck: true } },
       },
+    ],
+
+    files: [
+      'packages/*/tests/**/*.?(m|c)ts?(x)',
+      'packages/integration-tests/tools/**/*.ts',
     ],
   },
 
