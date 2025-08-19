@@ -713,8 +713,8 @@ export default tseslint.config(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: { top: ['^valid$'] },
-          groups: ['top', 'unknown'],
+          customGroups: { skip: ['^skip$'], top: ['^valid$'] },
+          groups: ['top', 'skip', 'unknown'],
         },
       ],
     },
