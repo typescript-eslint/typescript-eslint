@@ -3698,14 +3698,14 @@ __metadata:
   linkType: hard
 
 "@eslint/compat@npm:^1.2.4":
-  version: 1.2.4
-  resolution: "@eslint/compat@npm:1.2.4"
+  version: 1.3.2
+  resolution: "@eslint/compat@npm:1.3.2"
   peerDependencies:
-    eslint: ^9.10.0
+    eslint: ^8.40 || 9
   peerDependenciesMeta:
     eslint:
       optional: true
-  checksum: d68b0e5d4f2890c86b439cd2e4c0f9c6e7eae09230a69cf80a0b647f7242ed5c662cc286a06d6eb06d95e3def62ed26e9e1eac494538d58b4e2cfc355d37c176
+  checksum: 64ef212d38c039b92d1210bbcc640bbc1d21335ff343ca3c6dcbd63d7e7fa734395ab476b7787dbc3466ff40c264db5b11322ac371b4a409f5850e053829010b
   languageName: node
   linkType: hard
 
