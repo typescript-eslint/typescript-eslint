@@ -92,7 +92,7 @@
     "husky": "^9.1.4",
     "knip": "^5.41.1",
     "lint-staged": "^15.2.2",
-    "markdownlint-cli": "^0.44.0",
+    "markdownlint-cli": "^0.45.0",
     "nx": "21.2.3",
     "prettier": "3.6.2",
     "rimraf": "^5.0.5",
