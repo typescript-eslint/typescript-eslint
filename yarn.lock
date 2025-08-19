@@ -5904,7 +5904,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@8.40.0, @typescript-eslint/types@^8.11.0, @typescript-eslint/types@^8.32.1, @typescript-eslint/types@^8.40.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@8.40.0, @typescript-eslint/types@^8.11.0, @typescript-eslint/types@^8.34.1, @typescript-eslint/types@^8.40.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -6003,7 +6003,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/utils@8.40.0, @typescript-eslint/utils@^8.24.1, @typescript-eslint/utils@^8.32.1, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/utils@8.40.0, @typescript-eslint/utils@^8.24.1, @typescript-eslint/utils@^8.34.1, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
@@ -9792,15 +9792,15 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-perfectionist@npm:^4.12.3":
-  version: 4.13.0
-  resolution: "eslint-plugin-perfectionist@npm:4.13.0"
+  version: 4.15.0
+  resolution: "eslint-plugin-perfectionist@npm:4.15.0"
   dependencies:
-    "@typescript-eslint/types": ^8.32.1
-    "@typescript-eslint/utils": ^8.32.1
+    "@typescript-eslint/types": ^8.34.1
+    "@typescript-eslint/utils": ^8.34.1
     natural-orderby: ^5.0.0
   peerDependencies:
     eslint: ">=8.45.0"
-  checksum: 8dacb19fcd1cb1c5362c8715f72946aaed91be4f35c3cf4465d8e82a0a1b436bd6e7c36973cfc8e25221413d3a9a0d1e73901d40cca295e91a0d61dcdb0f9aa6
+  checksum: 84a7ff19a18afc08d3b992e89a9af646b83c7ae925b62e689832d311931abcb1e531793de150ac15609b9819e157f85b155070f471c40ae65821e326f287ec4f
   languageName: node
   linkType: hard
 
