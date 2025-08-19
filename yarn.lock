@@ -11117,9 +11117,9 @@ __metadata:
   linkType: hard
 
 "globals@npm:^16.0.0":
-  version: 16.1.0
-  resolution: "globals@npm:16.1.0"
-  checksum: b6ed722b61a6c37c057a71d9433c08196ad57cd1e86ed160a82f5a488310b2d85cc593f17414bad00bf88f1e6f4f8387d2014f9ac859a16ccf2a0df77a1aac45
+  version: 16.3.0
+  resolution: "globals@npm:16.3.0"
+  checksum: 2f3467f27bd84dca7778b0f7b528718b697274f3ed0d12721b9af0a14a9b6eb20240cb221817c264a27bfc5b9fac3ae28f6168b39808f27c74142942fb953c73
   languageName: node
   linkType: hard
 
