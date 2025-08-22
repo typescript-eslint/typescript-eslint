@@ -6031,7 +6031,7 @@ __metadata:
     cspell: ^9.0.0
     eslint: ^9.26.0
     eslint-plugin-eslint-plugin: ^7.0.0
-    eslint-plugin-import: ^2.31.0
+    eslint-plugin-import: ^2.32.0
     eslint-plugin-jsdoc: ^50.5.0
     eslint-plugin-jsx-a11y: ^6.10.2
     eslint-plugin-perfectionist: ^4.12.3
@@ -9811,7 +9811,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:^2.31.0":
+"eslint-plugin-import@npm:^2.32.0":
   version: 2.32.0
   resolution: "eslint-plugin-import@npm:2.32.0"
   dependencies:
