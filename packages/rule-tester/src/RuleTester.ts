@@ -210,7 +210,7 @@ export class RuleTester extends TestFramework {
     // file name (`foo.ts`), don't change the base path.
     if (
       filename != null &&
-      (path.isAbsolute(filename) || filename.startsWith('..'))
+      (path.isAbsolute(filename) || path.normalize(filename).startsWith('..'))
     ) {
       basePath = path.parse(
         path.resolve(basePath ?? process.cwd(), filename),
