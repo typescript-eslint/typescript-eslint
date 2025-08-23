@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > element > TSEnumMember > _error_ > computed-string-name > Babel - Error`]
+BabelError
+  1 | enum Foo {
+> 2 |   ["A"] = 2
+    |   ^ Unexpected token (2:2)
+  3 | }
+  4 |
+  

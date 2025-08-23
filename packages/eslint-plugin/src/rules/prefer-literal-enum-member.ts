@@ -85,7 +85,7 @@ export default createRule({
         if (node.initializer == null) {
           return;
         }
-        const declaration = node.parent.parent;
+        const declaration = node.parent.parent as TSESTree.TSEnumDeclaration;
 
         function isAllowedInitializerExpressionRecursive(
           node: TSESTree.Expression | TSESTree.PrivateIdentifier,
