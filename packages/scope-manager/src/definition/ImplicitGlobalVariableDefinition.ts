@@ -1,11 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/types';
 
+import type { NodeWithParent } from './DefinitionBase';
+
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';
 
 export class ImplicitGlobalVariableDefinition extends DefinitionBase<
   DefinitionType.ImplicitGlobalVariable,
-  TSESTree.Node,
+  NodeWithParent,
   null,
   TSESTree.BindingName
 > {

@@ -438,8 +438,8 @@ function isMergableExported(variable: ScopeVariable): boolean {
 
     if (
       (MERGABLE_TYPES.has(def.node.type) &&
-        def.node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
-      def.node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration
+        def.node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
+      def.node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
     ) {
       return true;
     }
@@ -458,14 +458,12 @@ function isExported(variable: ScopeVariable): boolean {
     let node = definition.node;
 
     if (node.type === AST_NODE_TYPES.VariableDeclarator) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      node = node.parent!;
+      node = node.parent;
     } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
       return false;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return node.parent!.type.startsWith('Export');
+    return node.parent.type.startsWith('Export');
   });
 }
 
