@@ -672,7 +672,7 @@ export default createRule<Options, MessageIds>({
       'Program:exit'(programNode): void {
         const unusedVars = collectUnusedVariables();
 
-        // collect unused named import specifers for import decl
+        // collect unused named import specifiers for import decl
         const unusedImportSpecifiersMap = new Map<
           string,
           (
