@@ -672,6 +672,44 @@ export default createRule<Options, MessageIds>({
       'Program:exit'(programNode): void {
         const unusedVars = collectUnusedVariables();
 
+        // collect unused named import specifers for import decl
+        const unusedImportSpecifiersMap = new Map<
+          string,
+          (
+            | TSESTree.ImportDefaultSpecifier
+            | TSESTree.ImportNamespaceSpecifier
+            | TSESTree.ImportSpecifier
+          )[]
+        >();
+
+        function getSpecifiersMapKey(range: TSESTree.Range): string {
+          const [start, end] = range;
+          return `${start}, ${end}`;
+        }
+
+        for (const unusedVar of unusedVars) {
+          // Find the import statement
+          const def = unusedVar.defs.find(
+            d => d.type === DefinitionType.ImportBinding,
+          );
+          if (!def) {
+            continue;
+          }
+
+          const node = def.node;
+          const decl = node.parent;
+          if (
+            decl.type !== AST_NODE_TYPES.ImportDeclaration ||
+            node.type === AST_NODE_TYPES.TSImportEqualsDeclaration
+          ) {
+            continue;
+          }
+          const key = getSpecifiersMapKey(decl.range);
+
+          const prev = unusedImportSpecifiersMap.get(key) ?? [];
+          unusedImportSpecifiersMap.set(key, [...prev, node]);
+        }
+
         for (const unusedVar of unusedVars) {
           // Report the first declaration.
           if (unusedVar.defs.length > 0) {
@@ -730,28 +768,47 @@ export default createRule<Options, MessageIds>({
 
               const afterNodeToken = source.getTokenAfter(node);
               const beforeNodeToken = source.getTokenBefore(node);
-              const prevBeforeNodeToken = beforeNodeToken
-                ? source.getTokenBefore(beforeNodeToken)
-                : null;
-
               // Remove import declaration if no used specifiers are left
-              if (decl.specifiers.length === 1) {
+              if (
+                decl.specifiers.length ===
+                unusedImportSpecifiersMap.get(getSpecifiersMapKey(decl.range))
+                  ?.length
+              ) {
                 return fixer.removeRange(decl.range);
               }
 
               // case: remove braces if no used named specifiers are left
-              const restNamed = decl.specifiers.filter(
-                s => s.type === AST_NODE_TYPES.ImportSpecifier,
-              );
-              if (
-                restNamed.length === 1 &&
-                afterNodeToken?.value === '}' &&
-                prevBeforeNodeToken?.value === ','
-              ) {
-                return fixer.removeRange([
-                  prevBeforeNodeToken.range[0],
-                  afterNodeToken.range[1],
-                ]);
+              const unusedSpecifiers = unusedImportSpecifiersMap
+                .get(getSpecifiersMapKey(decl.range))
+                ?.filter(
+                  specifier =>
+                    specifier.type === AST_NODE_TYPES.ImportSpecifier,
+                );
+
+              if (unusedSpecifiers && unusedSpecifiers.length > 0) {
+                const restNamed = decl.specifiers.filter(
+                  s => s.type === AST_NODE_TYPES.ImportSpecifier,
+                );
+                const lastBraceToken = source.getTokenAfter(
+                  unusedSpecifiers[unusedSpecifiers.length - 1],
+                );
+                const firstBraceToken = source.getTokenBefore(
+                  unusedSpecifiers[0],
+                );
+                const commaToken = firstBraceToken
+                  ? source.getTokenBefore(firstBraceToken)
+                  : null;
+
+                if (
+                  restNamed.length === unusedSpecifiers.length &&
+                  lastBraceToken?.value === '}' &&
+                  commaToken?.value === ','
+                ) {
+                  return fixer.removeRange([
+                    commaToken.range[0],
+                    lastBraceToken.range[1],
+                  ]);
+                }
               }
 
               // case: Remove comma after node, import { unused, used } from 'a';
