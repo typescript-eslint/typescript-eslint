@@ -167,6 +167,7 @@ describe('TypeOrValueSpecifier', () => {
     it.for([
       ['interface Foo {prop: string}; type Test = Foo;', 'Foo'],
       ['type Test = RegExp;', 'RegExp'],
+      ['type Test = RegExp | BigInt;', 'RegExp'],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching universal string specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
@@ -189,6 +190,10 @@ describe('TypeOrValueSpecifier', () => {
     it.for([
       [
         'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo' },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo | number;',
         { from: 'file', name: 'Foo' },
       ],
       [
@@ -296,6 +301,7 @@ describe('TypeOrValueSpecifier', () => {
 
     it.for([
       ['type Test = RegExp;', { from: 'lib', name: 'RegExp' }],
+      ['type Test = RegExp | BigInt;', { from: 'lib', name: 'RegExp' }],
       ['type Test = RegExp;', { from: 'lib', name: ['RegExp', 'BigInt'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching lib specifier: %s\n\t%s',
@@ -316,6 +322,7 @@ describe('TypeOrValueSpecifier', () => {
 
     it.for([
       ['type Test = string;', { from: 'lib', name: 'string' }],
+      ['type Test = string | number;', { from: 'lib', name: 'string' }],
       ['type Test = string;', { from: 'lib', name: ['string', 'number'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching intrinsic type specifier: %s\n\t%s',
@@ -337,6 +344,10 @@ describe('TypeOrValueSpecifier', () => {
     it.for([
       [
         'import type {Node} from "typescript"; type Test = Node;',
+        { from: 'package', name: 'Node', package: 'typescript' },
+      ],
+      [
+        'import type {Node} from "typescript"; type Test = Node | Symbol;',
         { from: 'package', name: 'Node', package: 'typescript' },
       ],
       [
