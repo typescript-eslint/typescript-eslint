@@ -2177,6 +2177,42 @@ import unused = require('foo');
 
       `,
     },
+    {
+      code: `
+import { Unused1, Unused2 } from 'foo';
+      `,
+      errors: [{ messageId: 'unusedVar' }, { messageId: 'unusedVar' }],
+      options: [{ enableAutofixRemoval: { imports: true } }],
+      output: `
+
+      `,
+    },
+    {
+      code: `
+import Unused1, { Unused2, Unused3 } from 'foo';
+      `,
+      errors: [
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+        { messageId: 'unusedVar' },
+      ],
+      options: [{ enableAutofixRemoval: { imports: true } }],
+      output: `
+
+      `,
+    },
+    {
+      code: `
+import Used1, { Unused1, Unused2 } from 'foo';
+export { Used1 };
+      `,
+      errors: [{ messageId: 'unusedVar' }, { messageId: 'unusedVar' }],
+      options: [{ enableAutofixRemoval: { imports: true } }],
+      output: `
+import Used1 from 'foo';
+export { Used1 };
+      `,
+    },
   ],
 
   valid: [
