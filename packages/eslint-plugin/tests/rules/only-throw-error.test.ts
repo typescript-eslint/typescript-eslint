@@ -191,6 +191,19 @@ throw new Map();
     },
     {
       code: `
+function func<T1, T2>() {
+  let err: Promise<T1> | Promise<T2>;
+  throw err;
+}
+      `,
+      options: [
+        {
+          allow: ['Promise'],
+        },
+      ],
+    },
+    {
+      code: `
 try {
 } catch (e) {
   throw e;
