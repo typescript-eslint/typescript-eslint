@@ -3544,6 +3544,7 @@ assert(foo, Boolean(nullableString));
       // a bug.
       //
       // See https://github.com/microsoft/TypeScript/issues/59707
+      skip: true,
       code: `
 function asserts1(x: string | number | undefined): asserts x {}
 function asserts2(x: string | number | undefined): asserts x {}
@@ -3608,7 +3609,6 @@ someAssert(Boolean(maybeString));
         },
       ],
       output: null,
-      skip: true,
     },
     {
       // The implementation signature doesn't count towards the call signatures

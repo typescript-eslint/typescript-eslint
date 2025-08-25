@@ -1123,6 +1123,87 @@ ruleTester.run('no-unsafe-enum-comparison', rule, {
     },
     {
       code: `
+        enum ComputedKey {
+          ['test-key' /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum ComputedKey {
+          ['test-key' /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === ComputedKey['test-key'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum ComputedKey {
+          [\`test-key\` /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum ComputedKey {
+          [\`test-key\` /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === ComputedKey[\`test-key\`];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum ComputedKey {
+          [\`test-
+          key\` /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum ComputedKey {
+          [\`test-
+          key\` /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === ComputedKey[\`test-
+          key\`];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
         enum Fruit {
           Apple,
         }

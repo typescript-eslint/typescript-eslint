@@ -476,7 +476,7 @@ export class Converter {
   >(
     node: Properties,
     deprecatedKey: Key,
-    preferredKey: string | undefined,
+    preferredKey: string,
     value: Value,
   ): Properties & Record<Key, Value> {
     let warned = false;
@@ -487,13 +487,10 @@ export class Converter {
         ? (): Value => value
         : (): Value => {
             if (!warned) {
-              let message = `The '${deprecatedKey}' property is deprecated on ${node.type} nodes.`;
-              if (preferredKey) {
-                message += ` Use ${preferredKey} instead.`;
-              }
-              message +=
-                ' See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.';
-              process.emitWarning(message, 'DeprecationWarning');
+              process.emitWarning(
+                `The '${deprecatedKey}' property is deprecated on ${node.type} nodes. Use ${preferredKey} instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+                'DeprecationWarning',
+              );
               warned = true;
             }
 
@@ -3266,38 +3263,12 @@ export class Converter {
       }
 
       case SyntaxKind.EnumMember: {
-        const computed = node.name.kind === ts.SyntaxKind.ComputedPropertyName;
-        if (computed) {
-          this.#throwUnlessAllowInvalidAST(
-            node.name,
-            'Computed property names are not allowed in enums.',
-          );
-        }
-
-        if (
-          node.name.kind === SyntaxKind.NumericLiteral ||
-          node.name.kind === SyntaxKind.BigIntLiteral
-        ) {
-          this.#throwUnlessAllowInvalidAST(
-            node.name,
-            'An enum member cannot have a numeric name.',
-          );
-        }
-
-        return this.createNode<TSESTree.TSEnumMember>(
-          node,
-          this.#withDeprecatedGetter(
-            {
-              type: AST_NODE_TYPES.TSEnumMember,
-              id: this.convertChild(node.name),
-              initializer:
-                node.initializer && this.convertChild(node.initializer),
-            },
-            'computed',
-            undefined,
-            computed,
-          ),
-        );
+        return this.createNode<TSESTree.TSEnumMember>(node, {
+          type: AST_NODE_TYPES.TSEnumMember,
+          computed: node.name.kind === ts.SyntaxKind.ComputedPropertyName,
+          id: this.convertChild(node.name),
+          initializer: node.initializer && this.convertChild(node.initializer),
+        });
       }
 
       case SyntaxKind.ModuleDeclaration: {

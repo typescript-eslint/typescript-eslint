@@ -668,7 +668,10 @@ export class Referencer extends Visitor {
           name,
           new TSEnumMemberDefinition(name, member),
         );
-      } else if (member.id.type === AST_NODE_TYPES.Identifier) {
+      } else if (
+        !member.computed &&
+        member.id.type === AST_NODE_TYPES.Identifier
+      ) {
         this.currentScope().defineIdentifier(
           member.id,
           new TSEnumMemberDefinition(member.id, member),
