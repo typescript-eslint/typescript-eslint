@@ -672,20 +672,18 @@ export default createRule<Options, MessageIds>({
       'Program:exit'(programNode): void {
         const unusedVars = collectUnusedVariables();
 
-        // collect unused named import specifiers for import decl
-        const unusedImportSpecifiersMap = new Map<
-          string,
+        /**
+         * Collect unused import specifiers for the import declaration.
+         * Access the map by the import declaration.
+         */
+        const unusedImportSpecifiersMap = new WeakMap<
+          TSESTree.ImportDeclaration,
           (
             | TSESTree.ImportDefaultSpecifier
             | TSESTree.ImportNamespaceSpecifier
             | TSESTree.ImportSpecifier
           )[]
         >();
-
-        function getSpecifiersMapKey(range: TSESTree.Range): string {
-          const [start, end] = range;
-          return `${start}, ${end}`;
-        }
 
         for (const unusedVar of unusedVars) {
           // Find the import statement
@@ -704,10 +702,9 @@ export default createRule<Options, MessageIds>({
           ) {
             continue;
           }
-          const key = getSpecifiersMapKey(decl.range);
 
-          const prev = unusedImportSpecifiersMap.get(key) ?? [];
-          unusedImportSpecifiersMap.set(key, [...prev, node]);
+          const prev = unusedImportSpecifiersMap.get(decl) ?? [];
+          unusedImportSpecifiersMap.set(decl, [...prev, node]);
         }
 
         for (const unusedVar of unusedVars) {
@@ -771,15 +768,14 @@ export default createRule<Options, MessageIds>({
               // Remove import declaration if no used specifiers are left
               if (
                 decl.specifiers.length ===
-                unusedImportSpecifiersMap.get(getSpecifiersMapKey(decl.range))
-                  ?.length
+                unusedImportSpecifiersMap.get(decl)?.length
               ) {
                 return fixer.removeRange(decl.range);
               }
 
               // case: remove braces if no used named specifiers are left
               const unusedSpecifiers = unusedImportSpecifiersMap
-                .get(getSpecifiersMapKey(decl.range))
+                .get(decl)
                 ?.filter(
                   specifier =>
                     specifier.type === AST_NODE_TYPES.ImportSpecifier,
