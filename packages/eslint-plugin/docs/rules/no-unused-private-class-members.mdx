@@ -1,0 +1,80 @@
+---
+description: 'Disallow unused private class members.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unused-private-class-members** for documentation.
+
+This rule extends the base [`eslint/no-unused-private-class-members`](https://eslint.org/docs/rules/no-unused-private-class-members) rule.
+It adds support for members declared with TypeScript's `private` keyword.
+
+## Options
+
+This rule has no options.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+class A {
+  private foo = 123;
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```tsx
+class A {
+  private foo = 123;
+
+  constructor() {
+    console.log(this.foo);
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Limitations
+
+This rule does not detect the following cases:
+
+(1) Private members only used using private only without `this`:
+
+```ts
+class Foo {
+  private prop = 123;
+
+  method(a: Foo) {
+    // ✅ Detected as a usage
+    const prop = this.prop;
+
+    // ❌ NOT detected as a usage
+    const otherProp = a.prop;
+  }
+}
+```
+
+(2) Usages of the private member outside of the class:
+
+```ts
+class Foo {
+  private prop = 123;
+}
+
+const instance = new Foo();
+// ❌ NOT detected as a usage
+console.log(foo['prop']);
+```
+
+## When Not To Use It
+
+If you don't want to be notified about unused private class members, you can safely turn this rule off.
