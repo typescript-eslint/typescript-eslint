@@ -31,7 +31,7 @@ npm i typescript-eslint
 
 ## Usage
 
-We recommend getting started by using the `tseslint.config()` helper function in your ESLint config:
+We recommend getting started by using the default ESLint setup with our shared configs.
 
 ```js title="eslint.config.mjs"
 // @ts-check
@@ -52,7 +52,7 @@ This config file exports a flat config that enables both the [core ESLint recomm
 
 :::danger
 
-The `config(...)` utility function was **deprecated** in favor of ESLint core's [`defineConfig()`](<https://eslint.org/blog/2025/03/flat-config-extends-define-config-global-ignores/#introducing-defineconfig()-for-eslint>) in [#10935](https://github.com/typescript-eslint/typescript-eslint/issues/10935).
+The `config(...)` utility function was deprecated in favor of ESLint core's [`defineConfig()`](<https://eslint.org/blog/2025/03/flat-config-extends-define-config-global-ignores/#introducing-defineconfig()-for-eslint>) in [#10935](https://github.com/typescript-eslint/typescript-eslint/issues/10935).
 See [the migration guide below](#migrating-to-defineconfig) for more details.
 
 The documentation here is preserved for historical reference and migration purposes.
