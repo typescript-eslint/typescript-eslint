@@ -65,13 +65,17 @@ function isTruthyOperand(
   }
   switch (nullishComparisonType) {
     case NullishComparisonType.Boolean:
+    case NullishComparisonType.NotBoolean:
       const types = unionConstituents(comparedNameType);
       return types.every(type => !isFalsyType(type));
     case NullishComparisonType.NotStrictEqualUndefined:
+    case NullishComparisonType.StrictEqualUndefined:
       return !isTypeFlagSet(comparedNameType, ts.TypeFlags.Undefined);
     case NullishComparisonType.NotStrictEqualNull:
+    case NullishComparisonType.StrictEqualNull:
       return !isTypeFlagSet(comparedNameType, ts.TypeFlags.Null);
     case NullishComparisonType.NotEqualNullOrUndefined:
+    case NullishComparisonType.EqualNullOrUndefined:
       return !isTypeFlagSet(
         comparedNameType,
         ts.TypeFlags.Null | ts.TypeFlags.Undefined,
@@ -81,7 +85,7 @@ function isTruthyOperand(
   }
 }
 
-function isValidLastChainOperand(
+function isValidAndLastChainOperand(
   ComparisonValueType: TSESTree.Node,
   operator: TSESTree.BinaryExpression['operator'],
   parserServices: ParserServicesWithTypeInformation,
@@ -107,6 +111,42 @@ function isValidLastChainOperand(
       );
       return !isUndefined;
     }
+    case '!=':
+    case '!==':
+      return false;
+    default:
+      return false;
+  }
+}
+function isValidOrLastChainOperand(
+  ComparisonValueType: TSESTree.Node,
+  operator: TSESTree.BinaryExpression['operator'],
+  parserServices: ParserServicesWithTypeInformation,
+) {
+  const type = parserServices.getTypeAtLocation(ComparisonValueType);
+  let ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+
+  switch (operator) {
+    case '!=': {
+      const types = unionConstituents(type);
+      const isNullish = types.some(t =>
+        isTypeFlagSet(
+          t,
+          ANY_UNKNOWN_FLAGS | ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+        ),
+      );
+      return !isNullish;
+    }
+    case '!==': {
+      const types = unionConstituents(type);
+      const isUndefined = types.some(t =>
+        isTypeFlagSet(t, ANY_UNKNOWN_FLAGS | ts.TypeFlags.Undefined),
+      );
+      return !isUndefined;
+    }
+    case '==':
+    case '===':
+      return false;
     default:
       return false;
   }
@@ -209,6 +249,7 @@ const analyzeOrChainOperand: OperandAnalyzer = (
       ) {
         return [operand, nextOperand];
       }
+
       if (
         includesType(
           parserServices,
@@ -221,7 +262,6 @@ const analyzeOrChainOperand: OperandAnalyzer = (
         // optional chain would change the runtime behavior of the expression
         return null;
       }
-
       return [operand];
     }
 
@@ -659,11 +699,13 @@ export function analyzeChain(
           operand.comparedName,
         );
         switch (operand.comparisonType) {
+          case NullishComparisonType.StrictEqualUndefined:
           case NullishComparisonType.NotStrictEqualUndefined: {
             if (comparisonResult === NodeComparisonResult.Subset) {
               subChain.push(operand);
             }
           }
+          case NullishComparisonType.StrictEqualNull:
           case NullishComparisonType.NotStrictEqualNull: {
             if (
               comparisonResult === NodeComparisonResult.Subset &&
@@ -717,7 +759,10 @@ export function analyzeChain(
       lastOperand.comparedName,
       lastChainOperand.comparedName,
     );
-
+    const isValidLastChainOperand =
+      operator === '&&'
+        ? isValidAndLastChainOperand
+        : isValidOrLastChainOperand;
     if (
       comparisonResult === NodeComparisonResult.Subset &&
       (isTruthyOperand(
