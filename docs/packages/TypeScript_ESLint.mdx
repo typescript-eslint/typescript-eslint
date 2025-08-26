@@ -52,7 +52,7 @@ This config file exports a flat config that enables both the [core ESLint recomm
 
 :::danger
 
-The `config(...)` utility function was deprecated in favor of ESLint core's [`defineConfig()`](<https://eslint.org/blog/2025/03/flat-config-extends-define-config-global-ignores/#introducing-defineconfig()-for-eslint>) in [#10935](https://github.com/typescript-eslint/typescript-eslint/issues/10935).
+The `config(...)` utility function was deprecated in favor of ESLint core's [`defineConfig(...)`](<https://eslint.org/blog/2025/03/flat-config-extends-define-config-global-ignores/#introducing-defineConfig(...)-for-eslint>) in [#10935](https://github.com/typescript-eslint/typescript-eslint/issues/10935).
 See [the migration guide below](#migrating-to-defineconfig) for more details.
 
 The documentation here is preserved for historical reference and migration purposes.
@@ -115,7 +115,7 @@ Otherwise it _will not_ impact your ability to use our tooling.
 
 #### Flat config `extends`
 
-The `tseslint.config()` utility function also adds handling for the `extends` property on flat config objects.
+The `tseslint.config(...)` utility function also adds handling for the `extends` property on flat config objects.
 This allows you to more easily extend shared configs for specific file patterns whilst also overriding rules/options provided by those configs:
 
 ```js
@@ -169,66 +169,79 @@ export default tseslint.config({
 });
 ```
 
-#### Migrating to `defineConfig()`
+#### Migrating to `defineConfig(...)`
 
-The core `defineConfig()` helper is a nearly exact clone of `tseslint.config(...)` that was [first released in ESLint v9.22.0](https://eslint.org/blog/2025/03/eslint-v9.22.0-released/).
-See [the ESLint blog post](https://eslint.org/blog/2025/03/flat-config-extends-define-config-global-ignores/#support-for-older-eslint-versions) for info on how to use `defineConfig()` with older versions of ESLint.
+The core `defineConfig(...)` helper is a nearly exact clone of `tseslint.config(...)` that was [first released in ESLint v9.22.0](https://eslint.org/blog/2025/03/eslint-v9.22.0-released/).
+See [the ESLint blog post](https://eslint.org/blog/2025/03/flat-config-extends-define-config-global-ignores/#support-for-older-eslint-versions) for info on how to use `defineConfig(...)` with older versions of ESLint.
 
 At the time of writing there are a small number of known edge cases in which the two functions have different functionality.
 
+{/* prettier-ignore */}
 1. Overriding `files` in `extends`.
-   When `files` is provided in both a base object and an extension, `tseslint.config(...)` _overrides_ the `files` property in the extension, whereas `defineConfig()` semantically intersects the two provided `files` specifiers.
+   When `files` is provided in both a base object and an extension, `tseslint.config(...)` _overrides_ the `files` property in the extension, whereas `defineConfig(...)` semantically intersects the two provided `files` specifiers.
+   <Tabs>
+    <TabItem value="tseslint.config(...)">
 
-   ```ts title="eslint.config.mjs"
-   import tseslint from 'typescript-eslint';
+      ```ts title="eslint.config.mjs"
+      import tseslint from 'typescript-eslint';
 
-   export default tseslint.config({
-     files: ['a.ts'],
-     extends: [
-       {
-         files: ['b.ts'],
-         rules: {
-           'some-rule': 'error',
-         },
-       },
-     ],
-   });
+      export default tseslint.config({
+        files: ['a.ts'],
+        extends: [
+          {
+            files: ['b.ts'],
+            rules: {
+              'some-rule': 'error',
+            },
+          },
+        ],
+      });
 
-   // equivalent to
+      // equivalent to
 
-   export default {
-     files: ['a.ts'],
-     rules: { 'some-rule': 'error' },
-   };
-   ```
+      export default {
+        files: ['a.ts'],
+        rules: { 'some-rule': 'error' },
+      };
+      ```
 
-   ```ts title="eslint.config.mjs"
-   import { defineConfig } from 'eslint/config';
+    </TabItem>
+    <TabItem value="defineConfig(...)">
 
-   export default defineConfig({
-     files: ['a.ts'],
-     extends: [
-       {
-         files: ['b.ts'],
-         rules: {
-           'some-rule': 'error',
-         },
-       },
-     ],
-   });
+        ```ts title="eslint.config.mjs"
+        import { defineConfig } from 'eslint/config';
 
-   // equivalent to
+        export default defineConfig({
+          files: ['a.ts'],
+          extends: [
+            {
+              files: ['b.ts'],
+              rules: {
+                'some-rule': 'error',
+              },
+            },
+          ],
+        });
 
-   // the base config ensures that 'b.ts' is still included in the lint run,
-   // but otherwise the config has no effect, due to the intersection of 'a.ts'
-   // and 'b.ts' being empty
-   export default {
-     files: ['a.ts'],
-   };
-   ```
+        // equivalent to
+
+        // The base config technically ensures that 'b.ts' is still included in
+        // the lint run, but otherwise the config has no effect, due to the
+        // intersection of 'a.ts' and 'b.ts' being empty.
+        export default {
+          files: ['a.ts'],
+        };
+        ```
+
+    </TabItem>
+
+   </Tabs>
+
+
+
 
 2. Type declarations (only applies to users who typecheck their eslint configs).
-   There are slight differences in the way types are declared between the two functions, which may cause typechecking errors when you switch from `tseslint.config(...)` to `defineConfig()` in some cases.
+   There are slight differences in the way types are declared between the two functions, which may cause typechecking errors when you switch from `tseslint.config(...)` to `defineConfig(...)` in some cases.
    See [#10899](https://github.com/typescript-eslint/typescript-eslint/issues/10899) for an example.
    Type errors such as these do not indicate a runtime problem and can safely be ignored.
 
