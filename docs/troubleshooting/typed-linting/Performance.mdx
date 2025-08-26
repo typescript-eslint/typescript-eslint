@@ -180,7 +180,7 @@ Instead of globs that use `**` to recursively check all folders, prefer paths th
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommendedRequiringTypeChecking,
   {
