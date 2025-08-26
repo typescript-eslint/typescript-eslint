@@ -25,6 +25,7 @@ const enum ComparisonValueType {
 }
 export const enum OperandValidity {
   Valid = 'Valid',
+  Last = 'Last',
   Invalid = 'Invalid',
 }
 export const enum NullishComparisonType {
@@ -48,17 +49,31 @@ export const enum NullishComparisonType {
   /** `x` */
   Boolean = 'Boolean', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
 }
+export const enum ComparisonType {
+  NotEqual = 'NotEqual',
+  Equal = 'Equal',
+  NotStrictEqual = 'NotStrictEqual',
+  StrictEqual = 'StrictEqual',
+}
 export interface ValidOperand {
   comparedName: TSESTree.Node;
-  comparisonType: NullishComparisonType;
+  comparisonType: NullishComparisonType | ComparisonType;
   isYoda: boolean;
   node: TSESTree.Expression;
   type: OperandValidity.Valid;
 }
+export interface LastChainOperand {
+  comparedName: TSESTree.Node;
+  comparisonType: ComparisonType;
+  comparisonValue: TSESTree.Node;
+  isYoda: boolean;
+  node: TSESTree.BinaryExpression;
+  type: OperandValidity.Last;
+}
 export interface InvalidOperand {
   type: OperandValidity.Invalid;
 }
-type Operand = InvalidOperand | ValidOperand;
+type Operand = InvalidOperand | ValidOperand | LastChainOperand;
 
 const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(
@@ -201,9 +216,6 @@ export function gatherLogicalOperands(
               });
               continue;
             }
-            // x == something :(
-            result.push({ type: OperandValidity.Invalid });
-            continue;
 
           case '!==':
           case '===': {
@@ -232,11 +244,51 @@ export function gatherLogicalOperands(
                   type: OperandValidity.Valid,
                 });
                 continue;
+            }
+          }
+        }
 
-              default:
-                // x === something :(
-                result.push({ type: OperandValidity.Invalid });
-                continue;
+        // x == something :(
+        // x === something :(
+        // x != something :(
+        // x !== something :(
+        const binaryComparisonChain = getBinaryComparisonChain(operand);
+        if (binaryComparisonChain) {
+          const { comparedName, comparedValue, isYoda } = binaryComparisonChain;
+
+          switch (operand.operator) {
+            case '==':
+            case '===': {
+              const comparisonType =
+                operand.operator === '=='
+                  ? ComparisonType.Equal
+                  : ComparisonType.StrictEqual;
+              result.push({
+                isYoda,
+                comparedName,
+                comparisonType: comparisonType,
+                type: OperandValidity.Last,
+                node: operand,
+                comparisonValue: comparedValue,
+              });
+              continue;
+            }
+
+            case '!=':
+            case '!==': {
+              const comparisonType =
+                operand.operator === '!='
+                  ? ComparisonType.NotEqual
+                  : ComparisonType.NotStrictEqual;
+              result.push({
+                isYoda,
+                comparedName,
+                comparisonType: comparisonType,
+                type: OperandValidity.Last,
+                node: operand,
+                comparisonValue: comparedValue,
+              });
+              continue;
             }
           }
         }
@@ -372,6 +424,33 @@ export function gatherLogicalOperands(
         return null;
     }
 
+    return null;
+  }
+
+  function getBinaryComparisonChain(node: TSESTree.BinaryExpression) {
+    const { left, right } = node;
+    let isYoda = false;
+    const isLeftMemberExpression =
+      left.type === AST_NODE_TYPES.MemberExpression;
+    const isRightMemberExpression =
+      right.type === AST_NODE_TYPES.MemberExpression;
+    if (isLeftMemberExpression && !isRightMemberExpression) {
+      const [comparedName, comparedValue] = [left, right];
+      return {
+        isYoda,
+        comparedName,
+        comparedValue,
+      };
+    } else if (!isLeftMemberExpression && isRightMemberExpression) {
+      const [comparedName, comparedValue] = [right, left];
+
+      isYoda = true;
+      return {
+        isYoda,
+        comparedName,
+        comparedValue,
+      };
+    }
     return null;
   }
 }
