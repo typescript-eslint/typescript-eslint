@@ -755,6 +755,22 @@ describe('chain ending with comparison', () => {
       'foo == null && foo.bar === true;',
       'foo == null && foo.bar === null;',
       'foo == null && foo.bar !== undefined;',
+      `
+        declare const x: false | { a: string };
+        x && x.a == x;
+      `,
+      `
+        declare const x: '' | { a: string };
+        x && x.a == x;
+      `,
+      `
+        declare const x: 0 | { a: string };
+        x && x.a == x;
+      `,
+      `
+        declare const x: 0n | { a: string };
+        x && x.a;
+      `,
     ],
     invalid: [
       {
@@ -1181,6 +1197,28 @@ describe('chain ending with comparison', () => {
         output: `
             declare const foo: { bar: number };
             foo?.bar !== x;
+          `,
+      },
+      {
+        code: `
+            declare const foo: { bar: number } | 1;
+            foo && foo.bar == x;
+          `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+            declare const foo: { bar: number } | 1;
+            foo?.bar == x;
+          `,
+      },
+      {
+        code: `
+            declare const foo: { bar: number } | 0;
+            foo != null && foo.bar == x;
+          `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+            declare const foo: { bar: number } | 0;
+            foo?.bar == x;
           `,
       },
     ],
