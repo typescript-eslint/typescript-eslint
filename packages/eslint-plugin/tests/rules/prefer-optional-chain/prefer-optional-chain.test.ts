@@ -3088,6 +3088,7 @@ describe('base cases', () => {
           // with the `| null | undefined` type - `=== null` doesn't cover the
           // `undefined` case - so optional chaining is not a valid conversion
           valid: BaseCases({
+            skipIds: [20, 26],
             mutateCode: c => c.replaceAll('||', '=== null ||'),
             mutateOutput: identity,
             operator: '||',
@@ -3105,7 +3106,30 @@ describe('base cases', () => {
             mutateOutput: c => c.replace(/;$/, ' === null;'),
             operator: '||',
             useSuggestionFixer: true,
-          }),
+          }).concat([
+            {
+              code: `
+                declare const foo: {bar: () => ({baz: {buzz: (() => number) | null | undefined} | null | undefined}) | null | undefined};
+                foo.bar === null || foo.bar() === null || foo.bar().baz === null || foo.bar().baz.buzz === null || foo.bar().baz.buzz();
+              `,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `
+                declare const foo: {bar: () => ({baz: {buzz: (() => number) | null | undefined} | null | undefined}) | null | undefined};
+                foo.bar?.() === null || foo.bar().baz === null || foo.bar().baz.buzz === null || foo.bar().baz.buzz();
+              `,
+            },
+            {
+              code: `
+                declare const foo: {bar: () => ({baz: number} | null | undefined)};
+                foo.bar === null || foo.bar?.() === null || foo.bar?.().baz;
+              `,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `
+                declare const foo: {bar: () => ({baz: number} | null | undefined)};
+                foo.bar?.() === null || foo.bar?.().baz;
+              `,
+            },
+          ]),
         });
       });
 
@@ -3130,6 +3154,7 @@ describe('base cases', () => {
           // with the `| null | undefined` type - `=== undefined` doesn't cover the
           // `null` case - so optional chaining is not a valid conversion
           valid: BaseCases({
+            skipIds: [20, 26],
             mutateCode: c => c.replaceAll('||', '=== undefined ||'),
             mutateOutput: identity,
             operator: '||',
@@ -3146,7 +3171,30 @@ describe('base cases', () => {
             mutateDeclaration: c => c.replaceAll('| null', ''),
             mutateOutput: c => c.replace(/;$/, ' === undefined;'),
             operator: '||',
-          }),
+          }).concat([
+            {
+              code: `
+                declare const foo: {bar: () => ({baz: {buzz: (() => number) | null | undefined} | null | undefined}) | null | undefined};
+                foo.bar === undefined || foo.bar() === undefined || foo.bar().baz === undefined || foo.bar().baz.buzz === undefined || foo.bar().baz.buzz();
+              `,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `
+                declare const foo: {bar: () => ({baz: {buzz: (() => number) | null | undefined} | null | undefined}) | null | undefined};
+                foo.bar?.() === undefined || foo.bar().baz === undefined || foo.bar().baz.buzz === undefined || foo.bar().baz.buzz();
+              `,
+            },
+            {
+              code: `
+                declare const foo: {bar: () => ({baz: number} | null | undefined)};
+                foo.bar === undefined || foo.bar?.() === undefined || foo.bar?.().baz;
+              `,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `
+                declare const foo: {bar: () => ({baz: number} | null | undefined)};
+                foo.bar?.() === undefined || foo.bar?.().baz;
+              `,
+            },
+          ]),
         });
       });
 
