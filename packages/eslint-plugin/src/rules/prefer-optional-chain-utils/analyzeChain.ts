@@ -129,10 +129,7 @@ const analyzeAndChainOperand: OperandAnalyzer = (
   chain,
 ) => {
   switch (operand.comparisonType) {
-    case NullishComparisonType.Boolean: {
-      return [operand];
-    }
-
+    case NullishComparisonType.Boolean:
     case NullishComparisonType.NotEqualNullOrUndefined:
       return [operand];
 
@@ -148,7 +145,8 @@ const analyzeAndChainOperand: OperandAnalyzer = (
         return [operand, nextOperand];
       }
       if (
-        includesType(
+        nextOperand &&
+        !includesType(
           parserServices,
           operand.comparedName,
           ts.TypeFlags.Undefined,
@@ -157,10 +155,9 @@ const analyzeAndChainOperand: OperandAnalyzer = (
         // we know the next operand is not an `undefined` check and that this
         // operand includes `undefined` - which means that making this an
         // optional chain would change the runtime behavior of the expression
-        return null;
+        return [operand];
       }
-
-      return [operand];
+      return null;
     }
 
     case NullishComparisonType.NotStrictEqualUndefined: {
@@ -676,7 +673,10 @@ export function analyzeChain(
                 parserServices,
               )
             ) {
-              subChain.push(operand);
+              subChain.push({
+                ...operand,
+                comparisonType: ComparisonType.NotStrictEqual,
+              });
             }
           }
         }

@@ -1446,51 +1446,9 @@ describe('hand-crafted cases', () => {
         output: '!foo.bar!.baz?.paz;',
       },
       {
-        code: `
-          declare const foo: { bar: string } | null;
-          foo !== null && foo.bar !== null;
-        `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: `
-          declare const foo: { bar: string } | null;
-          foo?.bar !== null;
-        `,
-              },
-            ],
-          },
-        ],
-        output: null,
-      },
-      {
         code: 'foo != null && foo.bar != null;',
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         output: 'foo?.bar != null;',
-      },
-      {
-        code: `
-          declare const foo: { bar: string | null } | null;
-          foo != null && foo.bar !== null;
-        `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: `
-          declare const foo: { bar: string | null } | null;
-          foo?.bar !== null;
-        `,
-              },
-            ],
-          },
-        ],
-        output: null,
       },
       {
         code: `
@@ -2298,6 +2256,14 @@ const baz = foo?.bar;
       '(x || y) != null && (x || y).foo;',
       // TODO - should we handle this?
       '(await foo) && (await foo).bar;',
+      `
+        declare const foo: { bar: string } | null;
+        foo !== null && foo.bar !== null;
+      `,
+      `
+        declare const foo: { bar: string | null } | null;
+        foo != null && foo.bar !== null;
+      `,
       {
         code: `
           declare const x: string;
