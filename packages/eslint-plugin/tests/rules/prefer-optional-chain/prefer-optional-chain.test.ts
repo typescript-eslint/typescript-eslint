@@ -1203,8 +1203,7 @@ describe('hand-crafted cases', () => {
       {
         code: 'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output:
-          'foo?.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
+        output: 'foo?.bar?.baz !== undefined && foo.bar.baz.buzz;',
       },
       {
         code: `
@@ -1215,8 +1214,7 @@ describe('hand-crafted cases', () => {
         `,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         output: `
-          foo.bar?.baz != null &&
-            foo.bar.baz.qux !== undefined &&
+          foo.bar?.baz?.qux !== undefined &&
             foo.bar.baz.qux.buzz;
         `,
       },
