@@ -197,53 +197,55 @@ export function gatherLogicalOperands(
           continue;
         }
 
-        switch (operand.operator) {
-          case '!=':
-          case '==':
-            if (
-              comparedValue === ComparisonValueType.Null ||
-              comparedValue === ComparisonValueType.Undefined
-            ) {
-              // x == null, x == undefined
-              result.push({
-                comparedName: comparedExpression,
-                comparisonType: operand.operator.startsWith('!')
-                  ? NullishComparisonType.NotEqualNullOrUndefined
-                  : NullishComparisonType.EqualNullOrUndefined,
-                isYoda,
-                node: operand,
-                type: OperandValidity.Valid,
-              });
-              continue;
-            }
-
-          case '!==':
-          case '===': {
-            const comparedName = comparedExpression;
-            switch (comparedValue) {
-              case ComparisonValueType.Null:
+        if (operand.operator.startsWith('!') !== (node.operator === '||')) {
+          switch (operand.operator) {
+            case '!=':
+            case '==':
+              if (
+                comparedValue === ComparisonValueType.Null ||
+                comparedValue === ComparisonValueType.Undefined
+              ) {
+                // x == null, x == undefined
                 result.push({
-                  comparedName,
+                  comparedName: comparedExpression,
                   comparisonType: operand.operator.startsWith('!')
-                    ? NullishComparisonType.NotStrictEqualNull
-                    : NullishComparisonType.StrictEqualNull,
+                    ? NullishComparisonType.NotEqualNullOrUndefined
+                    : NullishComparisonType.EqualNullOrUndefined,
                   isYoda,
                   node: operand,
                   type: OperandValidity.Valid,
                 });
                 continue;
+              }
 
-              case ComparisonValueType.Undefined:
-                result.push({
-                  comparedName,
-                  comparisonType: operand.operator.startsWith('!')
-                    ? NullishComparisonType.NotStrictEqualUndefined
-                    : NullishComparisonType.StrictEqualUndefined,
-                  isYoda,
-                  node: operand,
-                  type: OperandValidity.Valid,
-                });
-                continue;
+            case '!==':
+            case '===': {
+              const comparedName = comparedExpression;
+              switch (comparedValue) {
+                case ComparisonValueType.Null:
+                  result.push({
+                    comparedName,
+                    comparisonType: operand.operator.startsWith('!')
+                      ? NullishComparisonType.NotStrictEqualNull
+                      : NullishComparisonType.StrictEqualNull,
+                    isYoda,
+                    node: operand,
+                    type: OperandValidity.Valid,
+                  });
+                  continue;
+
+                case ComparisonValueType.Undefined:
+                  result.push({
+                    comparedName,
+                    comparisonType: operand.operator.startsWith('!')
+                      ? NullishComparisonType.NotStrictEqualUndefined
+                      : NullishComparisonType.StrictEqualUndefined,
+                    isYoda,
+                    node: operand,
+                    type: OperandValidity.Valid,
+                  });
+                  continue;
+              }
             }
           }
         }
