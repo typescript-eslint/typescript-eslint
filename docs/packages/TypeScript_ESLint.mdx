@@ -176,6 +176,8 @@ See [the ESLint blog post](https://eslint.org/blog/2025/03/flat-config-extends-d
 
 At the time of writing there are a small number of known edge cases in which the two functions have different functionality.
 
+{/* https://github.com/prettier/prettier/issues/17816 */}
+
 {/* prettier-ignore */}
 1. Overriding `files` in `extends`.
    When `files` is provided in both a base object and an extension, `tseslint.config(...)` _overrides_ the `files` property in the extension, whereas `defineConfig(...)` semantically intersects the two provided `files` specifiers.
