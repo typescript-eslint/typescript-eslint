@@ -326,6 +326,10 @@ function getReportDescriptor(
     lastOperand.comparisonType === NullishComparisonType.StrictEqualUndefined ||
     lastOperand.comparisonType ===
       NullishComparisonType.NotStrictEqualUndefined ||
+    lastOperand.comparisonType === ComparisonType.Equal ||
+    lastOperand.comparisonType === ComparisonType.NotEqual ||
+    lastOperand.comparisonType === ComparisonType.NotStrictEqual ||
+    lastOperand.comparisonType === ComparisonType.StrictEqual ||
     (operator === '||' &&
       lastOperand.comparisonType === NullishComparisonType.NotBoolean)
   ) {
@@ -652,6 +656,31 @@ export function analyzeChain(
       //                    ^^^^^^^ invalid OR chain logical, but still part of
       //                            the chain for combination purposes
 
+      if (lastOperand) {
+        const comparisonResult = compareNodes(
+          lastOperand.comparedName,
+          operand.comparedName,
+        );
+        switch (operand.comparisonType) {
+          case NullishComparisonType.NotStrictEqualUndefined: {
+            if (comparisonResult === NodeComparisonResult.Subset) {
+              subChain.push(operand);
+            }
+          }
+          case NullishComparisonType.NotStrictEqualNull: {
+            if (
+              comparisonResult === NodeComparisonResult.Subset &&
+              isTruthyOperand(
+                lastOperand.comparedName,
+                lastOperand.comparisonType,
+                parserServices,
+              )
+            ) {
+              subChain.push(operand);
+            }
+          }
+        }
+      }
       maybeReportThenReset();
       continue;
     }
