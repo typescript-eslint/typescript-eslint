@@ -176,7 +176,7 @@ See [the ESLint blog post](https://eslint.org/blog/2025/03/flat-config-extends-d
 
 At the time of writing there are a small number of known edge cases in which the two have different functionality.
 
-{/* https://github.com/prettier/prettier/issues/17816 */}
+{/* https://github.com/prettier/prettier/issues/17816 -- prettier has trouble with the code fences in the custom elements */}
 
 {/* prettier-ignore */}
 1. Overriding `files` in `extends`.
@@ -210,41 +210,36 @@ At the time of writing there are a small number of known edge cases in which the
     </TabItem>
     <TabItem value="defineConfig(...)">
 
-        ```ts title="eslint.config.mjs"
-        import { defineConfig } from 'eslint/config';
+      ```ts title="eslint.config.mjs"
+      import { defineConfig } from 'eslint/config';
 
-        export default defineConfig({
-          files: ['a.ts'],
-          extends: [
-            {
-              files: ['b.ts'],
-              rules: {
-                'some-rule': 'error',
-              },
+      export default defineConfig({
+        files: ['a.ts'],
+        extends: [
+          {
+            files: ['b.ts'],
+            rules: {
+              'some-rule': 'error',
             },
-          ],
-        });
+          },
+        ],
+      });
 
-        // is equivalent to
+      // is equivalent to
 
-        // The base config technically ensures that 'a.ts' is still included in
-        // the lint run, but otherwise the config has no effect, due to the
-        // intersection of 'a.ts' and 'b.ts' being empty.
-        export default {
-          files: ['a.ts'],
-        };
-        ```
+      // The base config technically ensures that 'a.ts' is still included in
+      // the lint run, but otherwise the config has no effect, due to the
+      // intersection of 'a.ts' and 'b.ts' being empty.
+      export default {
+        files: ['a.ts'],
+      };
+      ```
 
     </TabItem>
-
    </Tabs>
 
-
-
-
 2. Type declarations (only applies to users who typecheck their eslint configs).
-   There are slight differences in the way types are declared between the two functions, which may cause typechecking errors when you switch from `tseslint.config(...)` to `defineConfig(...)` in some cases.
-   See [#10899](https://github.com/typescript-eslint/typescript-eslint/issues/10899) for an example.
+   There are slight differences in the way types are declared between the two functions, which may cause typechecking errors when you switch from `tseslint.config(...)` to `defineConfig(...)` in some cases (see [#10899](https://github.com/typescript-eslint/typescript-eslint/issues/10899) for an example that used to impact typescript-eslint's own configs).
    Type errors such as these do not indicate a runtime problem and can safely be ignored.
 
 ### Manual usage
