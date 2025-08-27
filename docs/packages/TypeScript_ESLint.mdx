@@ -174,7 +174,7 @@ export default tseslint.config({
 The core `defineConfig(...)` helper is a nearly exact clone of `tseslint.config(...)` that was [first released in ESLint v9.22.0](https://eslint.org/blog/2025/03/eslint-v9.22.0-released/).
 See [the ESLint blog post](https://eslint.org/blog/2025/03/flat-config-extends-define-config-global-ignores/#support-for-older-eslint-versions) for info on how to use `defineConfig(...)` with older versions of ESLint.
 
-At the time of writing there are a small number of known edge cases in which the two functions have different functionality.
+At the time of writing there are a small number of known edge cases in which the two have different functionality.
 
 {/* https://github.com/prettier/prettier/issues/17816 */}
 
@@ -199,7 +199,7 @@ At the time of writing there are a small number of known edge cases in which the
         ],
       });
 
-      // equivalent to
+      // is equivalent to
 
       export default {
         files: ['a.ts'],
@@ -225,7 +225,7 @@ At the time of writing there are a small number of known edge cases in which the
           ],
         });
 
-        // equivalent to
+        // is equivalent to
 
         // The base config technically ensures that 'b.ts' is still included in
         // the lint run, but otherwise the config has no effect, due to the
@@ -260,10 +260,11 @@ You can declare our plugin and parser in your config via this package, for examp
 // @ts-check
 
 import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import jestPlugin from 'eslint-plugin-jest';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config({
+export default defineConfig({
   plugins: {
     // highlight-next-line
     '@typescript-eslint': tseslint.plugin,
@@ -305,10 +306,11 @@ This config:
 // @ts-check
 
 import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import jestPlugin from 'eslint-plugin-jest';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
   {
     // config with just ignores is the replacement for `.eslintignore`
     ignores: ['**/build/**', '**/dist/**', 'src/some/file/to/ignore.ts'],
