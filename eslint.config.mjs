@@ -362,36 +362,42 @@ export default tseslint.config(
 
   // test file specific configuration
   {
+    extends: [
+      // @ts-expect-error -- uses `string` instead of `off` | `readonly` | `writable` for the globals setting.
+      vitestPlugin.configs.env,
+      {
+        rules: {
+          '@typescript-eslint/no-empty-function': [
+            'error',
+            { allow: ['arrowFunctions'] },
+          ],
+          '@typescript-eslint/no-non-null-assertion': 'off',
+          '@typescript-eslint/no-unsafe-assignment': 'off',
+          '@typescript-eslint/no-unsafe-call': 'off',
+          '@typescript-eslint/no-unsafe-member-access': 'off',
+          '@typescript-eslint/no-unsafe-return': 'off',
+          'vitest/no-alias-methods': 'error',
+          'vitest/no-disabled-tests': 'error',
+          'vitest/no-focused-tests': 'error',
+          'vitest/no-identical-title': 'error',
+          'vitest/no-test-prefixes': 'error',
+          'vitest/no-test-return-statement': 'error',
+          'vitest/prefer-describe-function-title': 'error',
+          'vitest/prefer-each': 'error',
+          'vitest/prefer-spy-on': 'error',
+          'vitest/prefer-to-be': 'error',
+          'vitest/prefer-to-contain': 'error',
+          'vitest/prefer-to-have-length': 'error',
+          'vitest/valid-expect': 'error',
+        },
+        settings: { vitest: { typecheck: true } },
+      },
+    ],
+
     files: [
       'packages/*/tests/**/*.?(m|c)ts?(x)',
       'packages/integration-tests/tools/**/*.ts',
     ],
-    ...vitestPlugin.configs.env,
-    rules: {
-      '@typescript-eslint/no-empty-function': [
-        'error',
-        { allow: ['arrowFunctions'] },
-      ],
-      '@typescript-eslint/no-non-null-assertion': 'off',
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-return': 'off',
-      'vitest/no-alias-methods': 'error',
-      'vitest/no-disabled-tests': 'error',
-      'vitest/no-focused-tests': 'error',
-      'vitest/no-identical-title': 'error',
-      'vitest/no-test-prefixes': 'error',
-      'vitest/no-test-return-statement': 'error',
-      'vitest/prefer-describe-function-title': 'error',
-      'vitest/prefer-each': 'error',
-      'vitest/prefer-spy-on': 'error',
-      'vitest/prefer-to-be': 'error',
-      'vitest/prefer-to-contain': 'error',
-      'vitest/prefer-to-have-length': 'error',
-      'vitest/valid-expect': 'error',
-    },
-    settings: { vitest: { typecheck: true } },
   },
 
   {
@@ -455,7 +461,7 @@ export default tseslint.config(
   //
 
   {
-    extends: [eslintPluginPlugin.configs['flat/recommended']],
+    extends: [eslintPluginPlugin.configs.recommended],
     files: [
       'packages/eslint-plugin-internal/**/*.?(m|c)ts?(x)',
       'packages/eslint-plugin/**/*.?(m|c)ts?(x)',
@@ -464,6 +470,10 @@ export default tseslint.config(
 
     rules: {
       '@typescript-eslint/internal/no-typescript-estree-import': 'error',
+      // TODO (43081j): maybe enable these one day?
+      'eslint-plugin/no-meta-replaced-by': 'off',
+      'eslint-plugin/require-meta-default-options': 'off',
+      'eslint-plugin/require-meta-schema-description': 'off',
     },
   },
   {
@@ -703,8 +713,8 @@ export default tseslint.config(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: { top: ['^valid$'] },
-          groups: ['top', 'unknown'],
+          customGroups: { skip: ['^skip$'], top: ['^valid$'] },
+          groups: ['top', 'skip', 'unknown'],
         },
       ],
     },

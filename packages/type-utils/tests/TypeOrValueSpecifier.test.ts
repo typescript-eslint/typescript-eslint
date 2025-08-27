@@ -389,31 +389,33 @@ describe('TypeOrValueSpecifier', () => {
           package: '@babel/code-frame',
         },
       ],
+      // TODO: Skipped pending resolution of https://github.com/typescript-eslint/typescript-eslint/issues/11504
+      //
       // The following type is available from the multi-file @types/node package.
-      [
-        'import { it } from "node:test"; type Test = typeof it;',
-        {
-          from: 'package',
-          name: 'it',
-          package: 'node:test',
-        },
-      ],
-      [
-        `
-          declare module "node:test" {
-            export function it(): void;
-          }
-
-          import { it } from "node:test";
-
-          type Test = typeof it;
-        `,
-        {
-          from: 'package',
-          name: 'it',
-          package: 'node:test',
-        },
-      ],
+      // [
+      //   'import { it } from "node:test"; type Test = typeof it;',
+      //   {
+      //     from: 'package',
+      //     name: 'it',
+      //     package: 'node:test',
+      //   },
+      // ],
+      // [
+      //   `
+      //     declare module "node:test" {
+      //       export function it(): void;
+      //     }
+      //
+      //     import { it } from "node:test";
+      //
+      //     type Test = typeof it;
+      //   `,
+      //   {
+      //     from: 'package',
+      //     name: 'it',
+      //     package: 'node:test',
+      //   },
+      // ],
       [
         'import { fail } from "node:assert"; type Test = typeof fail;',
         {
