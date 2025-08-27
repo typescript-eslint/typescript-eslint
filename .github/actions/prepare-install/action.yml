@@ -36,11 +36,6 @@ runs:
         node-version: ${{ inputs.node-version }}
         registry-url: ${{ inputs.registry-url }}
 
-    # 11.5.2 and later required for trusted publishing
-    - name: Use npm 11.5.2
-      shell: bash
-      run: npm install -g npm@11.5.2
-
     # Yarn 3 caching strategy which follows taken from https://gist.github.com/belgattitude/042f9caf10d029badbde6cf9d43e400a
 
     - name: Expose yarn config as "$GITHUB_OUTPUT"

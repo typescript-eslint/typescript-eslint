@@ -310,6 +310,10 @@ jobs:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
           registry-url: 'https://registry.npmjs.org'
 
+      # 11.5.2 and later required for trusted publishing
+      - name: Use npm 11.5.2
+        run: npm install -g npm@11.5.2
+
       - name: Build
         uses: ./.github/actions/prepare-build
 
