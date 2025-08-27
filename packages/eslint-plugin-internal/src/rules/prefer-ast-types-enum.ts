@@ -42,7 +42,7 @@ export default createRule({
         if (
           node.parent.type === AST_NODE_TYPES.TSEnumMember &&
           ['AST_NODE_TYPES', 'AST_TOKEN_TYPES', 'DefinitionType'].includes(
-            (node.parent.parent.parent as TSESTree.TSEnumDeclaration).id.name,
+            node.parent.parent.parent.id.name,
           )
         ) {
           return;

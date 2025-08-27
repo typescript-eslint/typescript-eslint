@@ -633,9 +633,7 @@ export default createRule<Options, MessageIds>({
 
       TSEnumMember: {
         handler: (node: TSESTree.TSEnumMember, validator): void => {
-          // Unknown reason, can't get the correct type
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-          const id = node.id as TSESTree.Identifier | TSESTree.StringLiteral;
+          const id = node.id;
           const modifiers = new Set<Modifiers>();
 
           if (requiresQuoting(id, compilerOptions.target)) {
