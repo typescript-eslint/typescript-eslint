@@ -4,7 +4,6 @@ import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comment
 import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
-import { defineConfig } from 'eslint/config';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
 import vitestPlugin from '@vitest/eslint-plugin';
 import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
@@ -16,6 +15,7 @@ import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import regexpPlugin from 'eslint-plugin-regexp';
 import unicornPlugin from 'eslint-plugin-unicorn';
+import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import url from 'node:url';
 import tseslint from 'typescript-eslint';
