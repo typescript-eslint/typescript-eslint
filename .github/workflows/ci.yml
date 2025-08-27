@@ -321,6 +321,4 @@ jobs:
         run: npx nx release publish --tag canary --verbose
         env:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
-          # This secret is only accessible on the GitHub environment "main"
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
