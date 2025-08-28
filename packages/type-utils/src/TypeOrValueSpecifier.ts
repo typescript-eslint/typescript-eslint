@@ -170,7 +170,7 @@ export function typeMatchesSpecifier(
   program: ts.Program,
 ): boolean {
   if (tsutils.isUnionType(type)) {
-    return type.types.some(t => typeMatchesSpecifier(t, specifier, program));
+    return type.types.every(t => typeMatchesSpecifier(t, specifier, program));
   }
 
   const wholeTypeMatches = ((): boolean => {
