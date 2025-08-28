@@ -5370,7 +5370,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.5.0":
+"@types/node@npm:^22.0.0":
   version: 22.18.0
   resolution: "@types/node@npm:22.18.0"
   dependencies:
@@ -5821,7 +5821,7 @@ __metadata:
     "@types/jest-specific-snapshot": ^0.5.9
     "@types/natural-compare": ^1.4.3
     "@types/ncp": ^2.0.8
-    "@types/node": ^22.5.0
+    "@types/node": ^22.0.0
     "@types/semver": ^7.5.8
     "@types/tmp": ^0.2.6
     "@types/yargs": ^17.0.32

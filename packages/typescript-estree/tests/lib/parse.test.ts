@@ -53,7 +53,7 @@ const hrtimeSpy = jest.spyOn(process, 'hrtime');
 const createDefaultCompilerOptionsFromExtra = jest.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
-const fastGlobSyncMock = jest.mocked(fs.globSync);
+const globSyncMock = jest.mocked(fs.globSync);
 
 /**
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
@@ -834,50 +834,46 @@ describe('parseAndGenerateServices', () => {
 
         it('should cache globs if the lifetime is non-zero', () => {
           doParse(30);
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
           doParse(30);
           // shouldn't call fast-glob again due to the caching
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
         });
 
         it('should not cache globs if the lifetime is zero', () => {
           doParse(0);
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
           doParse(0);
           // should call fast-glob again because we specified immediate cache expiry
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
-            expectFastGlobCalls * 2,
-          );
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls * 2);
         });
 
         it('should evict the cache if the entry expires', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse(30);
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse(30);
           // shouldn't call fast-glob again due to the caching
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
-            expectFastGlobCalls * 2,
-          );
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls * 2);
         });
 
         it('should infinitely cache if passed Infinity', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse('Infinity');
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse('Infinity');
           // shouldn't call fast-glob again due to the caching
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
         });
       });
     });
