@@ -628,6 +628,24 @@ function fun<T extends number>(t: T): void {
     },
     {
       code: `
+function func<T1, T2>() {
+  let err: Promise<T1> | Promise<T2> | void;
+  throw err;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allow: ['Promise'],
+        },
+      ],
+    },
+    {
+      code: `
 class UnknownError implements Error {}
 throw new UnknownError();
       `,
