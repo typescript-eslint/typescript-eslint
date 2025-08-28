@@ -414,7 +414,7 @@ hoge.files = document.querySelector('input')!.files;
             {
               messageId: 'suggestOptionalChain',
               output: `
-hoge.files = document.querySelector('input')?.files
+hoge.files = document.querySelector('input')?.files;
       `,
             },
           ],
