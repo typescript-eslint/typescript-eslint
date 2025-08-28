@@ -1,6 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/types';
-
-import type { NodeWithParent } from './DefinitionBase';
+import type { NodeWithParent, TSESTree } from '@typescript-eslint/types';
 
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';

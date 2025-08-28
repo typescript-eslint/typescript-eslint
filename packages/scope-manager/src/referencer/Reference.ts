@@ -1,6 +1,5 @@
-import type { TSESTree } from '@typescript-eslint/types';
+import type { NodeWithParent, TSESTree } from '@typescript-eslint/types';
 
-import type { NodeWithParent } from '../definition/DefinitionBase';
 import type { Scope } from '../scope';
 import type { Variable } from '../variable';
 

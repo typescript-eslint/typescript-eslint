@@ -254,3 +254,4 @@ declare module './generated/ast-spec' {
 }
 
 export * as TSESTree from './generated/ast-spec';
+export type NodeWithParent = Exclude<TSESTree.Node, TSESTree.Program>;
