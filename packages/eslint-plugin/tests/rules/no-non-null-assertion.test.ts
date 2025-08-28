@@ -389,7 +389,7 @@ x?.
     },
     {
       code: `
-document.querySelector("input")!.files = new FileList();
+document.querySelector('input')!.files = new FileList();
       `,
       errors: [
         {
@@ -402,7 +402,7 @@ document.querySelector("input")!.files = new FileList();
     },
     {
       code: `
-hoge.files = document.querySelector("input")!.files
+hoge.files = document.querySelector('input')!.files;
       `,
       errors: [
         {
