@@ -2,7 +2,7 @@ import type { CacheDurationSeconds } from '@typescript-eslint/types';
 import type * as typescriptModule from 'typescript';
 
 import debug from 'debug';
-import * as fastGlobModule from 'fast-glob';
+import * as fs from 'node:fs';
 import { join, resolve } from 'node:path';
 
 import type { TSESTreeOptions } from '../../src/parser-options';
@@ -40,11 +40,11 @@ jest.mock('typescript', () => {
   };
 });
 
-jest.mock('fast-glob', () => {
-  const fastGlob = jest.requireActual<typeof fastGlobModule>('fast-glob');
+jest.mock('node:fs', () => {
+  const nodeFS = jest.requireActual<typeof fs>('node:fs');
   return {
-    ...fastGlob,
-    sync: jest.fn(fastGlob.sync),
+    ...nodeFS,
+    globSync: jest.fn(fs.globSync),
   };
 });
 
@@ -53,7 +53,7 @@ const hrtimeSpy = jest.spyOn(process, 'hrtime');
 const createDefaultCompilerOptionsFromExtra = jest.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
-const fastGlobSyncMock = jest.mocked(fastGlobModule.sync);
+const fastGlobSyncMock = jest.mocked(fs.globSync);
 
 /**
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`

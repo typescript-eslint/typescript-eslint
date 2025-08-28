@@ -5370,12 +5370,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.0.0":
-  version: 20.17.5
-  resolution: "@types/node@npm:20.17.5"
+"@types/node@npm:^22.5.0":
+  version: 22.18.0
+  resolution: "@types/node@npm:22.18.0"
   dependencies:
-    undici-types: ~6.19.2
-  checksum: ca78990c16762f644ee802a93765e78e0c3c695c58b685196fb0ba37356b1380ab9591e60fd03c1bd0e3f4ec92305c9302f518f830f0e63f29dc32e5e7666802
+    undici-types: ~6.21.0
+  checksum: a110b66f079ea882be1e300e72978cd3a5e7be8217b362b72152e09f64087731a235a0557fca72d621912a8ba1347d9ba49468c35755dd2581edb7f3f6e016e2
   languageName: node
   linkType: hard
 
@@ -5821,7 +5821,7 @@ __metadata:
     "@types/jest-specific-snapshot": ^0.5.9
     "@types/natural-compare": ^1.4.3
     "@types/ncp": ^2.0.8
-    "@types/node": ^20.12.5
+    "@types/node": ^22.5.0
     "@types/semver": ^7.5.8
     "@types/tmp": ^0.2.6
     "@types/yargs": ^17.0.32
@@ -5879,7 +5879,6 @@ __metadata:
     "@typescript-eslint/types": 8.18.1
     "@typescript-eslint/visitor-keys": 8.18.1
     debug: ^4.3.4
-    fast-glob: ^3.3.2
     glob: "*"
     is-glob: ^4.0.3
     jest: 29.7.0
@@ -19362,10 +19361,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.19.2":
-  version: 6.19.8
-  resolution: "undici-types@npm:6.19.8"
-  checksum: de51f1b447d22571cf155dfe14ff6d12c5bdaec237c765085b439c38ca8518fc360e88c70f99469162bf2e14188a7b0bcb06e1ed2dc031042b984b0bb9544017
+"undici-types@npm:~6.21.0":
+  version: 6.21.0
+  resolution: "undici-types@npm:6.21.0"
+  checksum: 46331c7d6016bf85b3e8f20c159d62f5ae471aba1eb3dc52fff35a0259d58dcc7d592d4cc4f00c5f9243fa738a11cfa48bd20203040d4a9e6bc25e807fab7ab3
   languageName: node
   linkType: hard
 
