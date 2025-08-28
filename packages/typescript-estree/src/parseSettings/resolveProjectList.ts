@@ -1,6 +1,6 @@
 import debug from 'debug';
-import { globSync } from 'node:fs';
 import isGlob from 'is-glob';
+import { globSync } from 'node:fs';
 
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
