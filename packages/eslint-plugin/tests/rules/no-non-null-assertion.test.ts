@@ -388,7 +388,7 @@ x?.
       ],
     },
     {
-      code: noFormat`
+      code: `
 document.querySelector("input")!.files = new FileList();
       `,
       errors: [
@@ -401,7 +401,7 @@ document.querySelector("input")!.files = new FileList();
       ],
     },
     {
-      code: noFormat`
+      code: `
 hoge.files = document.querySelector("input")!.files
       `,
       errors: [
