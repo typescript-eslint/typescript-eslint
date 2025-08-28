@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { sync as globSync } from 'fast-glob';
+import { globSync } from 'node:fs';
 import isGlob from 'is-glob';
 
 import type { CanonicalPath } from '../create-program/shared';
@@ -59,8 +59,7 @@ export function resolveProjectList(
     options.projectFolderIgnoreList ?? ['**/node_modules/**']
   )
     .filter(folder => typeof folder === 'string')
-    // prefix with a ! for not match glob
-    .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
+    .map(folder => (folder.startsWith('!') ? folder.slice(1) : folder));
 
   const cacheKey = getHash({
     project: sanitizedProjects,
@@ -92,13 +91,10 @@ export function resolveProjectList(
   let globProjectPaths: string[] = [];
 
   if (globProjects.length > 0) {
-    // Although fast-glob supports multiple patterns, fast-glob returns arbitrary order of results
-    // to improve performance. To ensure the order is correct, we need to call fast-glob for each pattern
-    // separately and then concatenate the results in patterns' order.
     globProjectPaths = globProjects.flatMap(pattern =>
       globSync(pattern, {
         cwd: options.tsconfigRootDir,
-        ignore: projectFolderIgnoreList,
+        exclude: projectFolderIgnoreList,
       }),
     );
   }

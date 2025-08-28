@@ -1,7 +1,7 @@
 import type { CacheDurationSeconds } from '@typescript-eslint/types';
 
 import debug from 'debug';
-import * as fastGlobModule from 'fast-glob';
+import * as fs from 'node:fs';
 import { join, resolve } from 'node:path';
 
 import type { TSESTreeOptions } from '../../src/parser-options';
@@ -39,20 +39,19 @@ vi.mock(import('typescript'), async importOriginal => {
   };
 });
 
-vi.mock('fast-glob', async importOriginal => {
-  const fastGlob = await importOriginal<typeof fastGlobModule>();
+vi.mock('node:fs', async importOriginal => {
+  const nodeFS = await importOriginal<typeof fs>();
 
   return {
-    ...fastGlob,
-    default: fastGlob.default,
-    sync: vi.fn(fastGlob.sync),
+    ...nodeFS,
+    globSync: vi.fn(nodeFS.globSync),
   };
 });
 
 const createDefaultCompilerOptionsFromExtra = vi.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
-const fastGlobSyncMock = vi.mocked(fastGlobModule.sync);
+const globSyncMock = vi.mocked(fs.globSync);
 
 /**
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
@@ -846,50 +845,46 @@ describe(parser.parseAndGenerateServices, () => {
 
         it('should cache globs if the lifetime is non-zero', () => {
           doParse(30);
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
           doParse(30);
           // shouldn't call fast-glob again due to the caching
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
         });
 
         it('should not cache globs if the lifetime is zero', () => {
           doParse(0);
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
           doParse(0);
           // should call fast-glob again because we specified immediate cache expiry
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
-            expectFastGlobCalls * 2,
-          );
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls * 2);
         });
 
         it('should evict the cache if the entry expires', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse(30);
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse(30);
           // shouldn't call fast-glob again due to the caching
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
-            expectFastGlobCalls * 2,
-          );
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls * 2);
         });
 
         it('should infinitely cache if passed Infinity', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse('Infinity');
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse('Infinity');
           // shouldn't call fast-glob again due to the caching
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
         });
       });
     },
