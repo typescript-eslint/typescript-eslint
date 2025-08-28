@@ -20,7 +20,7 @@ const $ = $_config({
  * We therefore use an env var for this.
  */
 
-if (process.env.SKIP_POSTINSTALL) {
+if (process.env.SKIP_POSTINSTALL || process.env.MEND_HOSTED === 'true') {
   console.log(
     '\nSkipping postinstall script because $SKIP_POSTINSTALL is set...\n',
   );

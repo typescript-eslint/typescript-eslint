@@ -1,6 +1,6 @@
 [
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [73, 76],

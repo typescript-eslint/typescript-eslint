@@ -6,7 +6,6 @@
     "additionalProperties": false,
     "properties": {
       "checkNever": {
-        "default": false,
         "description": "Whether to suggest removing `void` when the argument has type `never`.",
         "type": "boolean"
       }

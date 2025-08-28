@@ -1917,7 +1917,13 @@ export class Converter {
         return result;
       }
 
-      case SyntaxKind.TaggedTemplateExpression:
+      case SyntaxKind.TaggedTemplateExpression: {
+        if (node.tag.flags & ts.NodeFlags.OptionalChain) {
+          this.#throwError(
+            node,
+            'Tagged template expressions are not permitted in an optional chain.',
+          );
+        }
         return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
           type: AST_NODE_TYPES.TaggedTemplateExpression,
           quasi: this.convertChild(node.template),
@@ -1929,6 +1935,7 @@ export class Converter {
               node,
             ),
         });
+      }
 
       case SyntaxKind.TemplateHead:
       case SyntaxKind.TemplateMiddle:
@@ -2174,6 +2181,9 @@ export class Converter {
         );
 
         if (node.importClause) {
+          // TODO(bradzacher) swap to `phaseModifier` once we add support for `import defer`
+          // https://github.com/estree/estree/issues/328
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           if (node.importClause.isTypeOnly) {
             result.importKind = 'type';
           }
@@ -3156,11 +3166,16 @@ export class Converter {
 
           const commaToken = findNextToken(node.argument, node, this.ast)!;
           const openBraceToken = findNextToken(commaToken, node, this.ast)!;
-          const closeBraceToken = findNextToken(
+          const tokenAfterAttributes = findNextToken(
             node.attributes,
             node,
             this.ast,
           )!;
+          // Since TS 5.9, there could be a trailing comma, i.e. `{ with: { ... }, }`
+          const closeBraceToken =
+            tokenAfterAttributes.kind === ts.SyntaxKind.CommaToken
+              ? findNextToken(tokenAfterAttributes, node, this.ast)!
+              : tokenAfterAttributes;
           const withOrAssertToken = findNextToken(
             openBraceToken,
             node,
