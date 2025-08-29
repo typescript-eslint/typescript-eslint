@@ -194,10 +194,7 @@ declare module './generated/ast-spec' {
     parent: TSESTree.TSEnumDeclaration;
   }
 
-  interface TSEnumMemberComputedName {
-    parent: TSESTree.TSEnumBody;
-  }
-  interface TSEnumMemberNonComputedName {
+  interface TSEnumMember {
     parent: TSESTree.TSEnumBody;
   }
 
