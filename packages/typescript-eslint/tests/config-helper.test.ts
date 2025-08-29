@@ -2,6 +2,8 @@ import type { TSESLint } from '@typescript-eslint/utils';
 
 import tseslint from '../src/index.js';
 
+/* eslint @typescript-eslint/no-deprecated: ["error", { "allow": [{ "from": "file", "name": "config", "path": "packages/typescript-eslint/src/config-helper.ts" }] }] */
+
 describe('config helper', () => {
   it('works without extends', () => {
     expect(

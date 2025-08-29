@@ -15,6 +15,7 @@ import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import regexpPlugin from 'eslint-plugin-regexp';
 import unicornPlugin from 'eslint-plugin-unicorn';
+import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import url from 'node:url';
 import tseslint from 'typescript-eslint';
@@ -28,7 +29,7 @@ const restrictNamedDeclarations = {
   selector: 'ExportNamedDeclaration[declaration=null][source=null]',
 };
 
-export default tseslint.config(
+export default defineConfig(
   // register all of the plugins up-front
   {
     name: 'register-all-plugins',
@@ -43,6 +44,7 @@ export default tseslint.config(
       // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
       ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
       ['perfectionist']: perfectionistPlugin,
+      // @ts-expect-error -- https://github.com/vitest-dev/eslint-plugin-vitest/issues/737
       ['vitest']: vitestPlugin,
       // https://github.com/facebook/react/issues/28313
       ['react']: reactPlugin,
@@ -363,7 +365,6 @@ export default tseslint.config(
   // test file specific configuration
   {
     extends: [
-      // @ts-expect-error -- uses `string` instead of `off` | `readonly` | `writable` for the globals setting.
       vitestPlugin.configs.env,
       {
         rules: {
