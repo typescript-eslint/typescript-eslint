@@ -1,6 +1,7 @@
 import type {
   ScopeManager,
   ScopeVariable,
+  Variable,
 } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 
@@ -188,7 +189,7 @@ class UnusedVarsVisitor extends Visitor {
           // basic exported variables
           isExported(variable) ||
           // variables implicitly exported via a merged declaration
-          isMergableExported(variable) ||
+          isMergeableExported(variable) ||
           // used variables
           isUsedVariable(variable)
         ) {
@@ -415,6 +416,23 @@ function isSelfReference(
   return false;
 }
 
+/**
+ * @param variable the variable to check
+ * @param node the node from a some def of variable
+ * @returns `true` if variable is type/value duality and declaration is type declaration
+ */
+function isMergedTypeDeclaration(
+  variable: Variable,
+  node: TSESTree.Node,
+): boolean {
+  return (
+    (node.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+      node.type === AST_NODE_TYPES.TSInterfaceDeclaration) &&
+    variable.isTypeVariable &&
+    variable.isValueVariable
+  );
+}
+
 const MERGABLE_TYPES = new Set([
   AST_NODE_TYPES.ClassDeclaration,
   AST_NODE_TYPES.FunctionDeclaration,
@@ -426,7 +444,7 @@ const MERGABLE_TYPES = new Set([
  * Determine if the variable is directly exported
  * @param variable the variable to check
  */
-function isMergableExported(variable: ScopeVariable): boolean {
+function isMergeableExported(variable: Variable): boolean {
   // If all of the merged things are of the same type, TS will error if not all of them are exported - so we only need to find one
   for (const def of variable.defs) {
     // parameters can never be exported.
@@ -441,7 +459,7 @@ function isMergableExported(variable: ScopeVariable): boolean {
         def.node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
       def.node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration
     ) {
-      return true;
+      return !isMergedTypeDeclaration(variable, def.node);
     }
   }
 
@@ -453,7 +471,7 @@ function isMergableExported(variable: ScopeVariable): boolean {
  * @param variable eslint-scope variable object.
  * @returns True if the variable is exported, false if not.
  */
-function isExported(variable: ScopeVariable): boolean {
+function isExported(variable: Variable): boolean {
   return variable.defs.some(definition => {
     let node = definition.node;
 
@@ -465,7 +483,9 @@ function isExported(variable: ScopeVariable): boolean {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return node.parent!.type.startsWith('Export');
+    const isExportedFlag = node.parent!.type.startsWith('Export');
+
+    return isExportedFlag && !isMergedTypeDeclaration(variable, node);
   });
 }
 
