@@ -1715,6 +1715,48 @@ export {};
       ],
       filename: 'foo.d.ts',
     },
+    {
+      code: `
+using resource = getResource();
+      `,
+      errors: [
+        {
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'resource',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
+    },
+    {
+      code: `
+await using resource = getResource();
+      `,
+      errors: [
+        {
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'resource',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
+    },
   ],
 
   valid: [
@@ -3017,6 +3059,39 @@ class Foo {}
 declare class Bar {}
       `,
       filename: 'foo.d.ts',
+    },
+    {
+      code: `
+using resource = getResource();
+resource;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
+    },
+    {
+      code: `
+using resource = getResource();
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
+      options: [{ ignoreUsingDeclarations: true }],
+    },
+    {
+      code: `
+await using resource = getResource();
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
+      options: [{ ignoreUsingDeclarations: true }],
     },
   ],
 });
