@@ -145,3 +145,9 @@
   text-align: center;
   cursor: default;
 }
+
+.ruleNameWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

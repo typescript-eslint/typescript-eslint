@@ -53,6 +53,7 @@ export default createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow magic numbers',
       extendsBaseRule: true,
+      frozen: true,
     },
     messages: baseRule.meta.messages,
     schema: [schema],

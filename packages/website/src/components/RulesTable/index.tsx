@@ -55,9 +55,12 @@ function RuleRow({
   return (
     <tr>
       <td>
-        <Link to={new URL(rule.docs.url).pathname}>
-          <code>@typescript-eslint/{rule.name}</code>
-        </Link>
+        <div className={styles.ruleNameWrapper}>
+          <Link to={new URL(rule.docs.url).pathname}>
+            <code>@typescript-eslint/{rule.name}</code>
+          </Link>
+          {rule.docs.frozen && <span>❄️</span>}
+        </div>
         <br />
         {interpolateCode(rule.docs.description)}
       </td>
