@@ -4,6 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  isAssignee,
   isNonNullAssertionPunctuator,
   nullThrows,
   NullThrowsReasons,
@@ -53,7 +54,8 @@ export default createRule<[], MessageIds>({
 
         if (
           node.parent.type === AST_NODE_TYPES.MemberExpression &&
-          node.parent.object === node
+          node.parent.object === node &&
+          !isAssignee(node.parent)
         ) {
           if (!node.parent.optional) {
             if (node.parent.computed) {
