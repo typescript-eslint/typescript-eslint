@@ -1,7 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -91,22 +90,18 @@ export default createRule<Options, MessageIds>({
     function isSymbolTypeBased(
       symbol: ts.Symbol | undefined,
     ): boolean | undefined {
-      if (!symbol) {
+      while (symbol && symbol.flags & ts.SymbolFlags.Alias) {
+        symbol = checker.getAliasedSymbol(symbol);
+        if (
+          symbol.getDeclarations()?.find(ts.isTypeOnlyImportOrExportDeclaration)
+        ) {
+          return true;
+        }
+      }
+      if (!symbol || checker.isUnknownSymbol(symbol)) {
         return undefined;
       }
-
-      const aliasedSymbol = tsutils.isSymbolFlagSet(
-        symbol,
-        ts.SymbolFlags.Alias,
-      )
-        ? checker.getAliasedSymbol(symbol)
-        : symbol;
-
-      if (checker.isUnknownSymbol(aliasedSymbol)) {
-        return undefined;
-      }
-
-      return !(aliasedSymbol.flags & ts.SymbolFlags.Value);
+      return !(symbol.flags & ts.SymbolFlags.Value);
     }
 
     return {

@@ -64,6 +64,11 @@ export { NonTypeNS };
     "export type * as foo from './consistent-type-exports/type-only-exports';",
     "export type * as foo from './consistent-type-exports/type-only-reexport';",
     "export * as foo from './consistent-type-exports/value-reexport';",
+    `
+import * as Foo from './consistent-type-exports';
+type Foo = 1;
+export { Foo }
+    `,
   ],
   invalid: [
     {
@@ -481,6 +486,27 @@ export {
       ],
       output: `
         export type * as foo from './consistent-type-exports/type-only-reexport';
+      `,
+    },
+    {
+      code: `
+        import type * as Foo from './consistent-type-exports';
+        type Foo = 1;
+        export { Foo };
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeOverValue',
+        },
+      ],
+      output: `
+        import type * as Foo from './consistent-type-exports';
+        type Foo = 1;
+        export type { Foo };
       `,
     },
   ],
