@@ -10,10 +10,10 @@ import type {
 } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { unionConstituents } from 'ts-api-utils';
+import { isFalsyType, unionConstituents } from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import type { ValidOperand } from './gatherLogicalOperands';
+import type { LastChainOperand, ValidOperand } from './gatherLogicalOperands';
 import type {
   PreferOptionalChainMessageIds,
   PreferOptionalChainOptions,
@@ -31,7 +31,11 @@ import {
 } from '../../util';
 import { checkNullishAndReport } from './checkNullishAndReport';
 import { compareNodes, NodeComparisonResult } from './compareNodes';
-import { NullishComparisonType } from './gatherLogicalOperands';
+import {
+  ComparisonType,
+  NullishComparisonType,
+  OperandValidity,
+} from './gatherLogicalOperands';
 
 function includesType(
   parserServices: ParserServicesWithTypeInformation,
@@ -46,6 +50,106 @@ function includesType(
     }
   }
   return false;
+}
+
+function isTruthyOperand(
+  comparedName: TSESTree.Node,
+  nullishComparisonType: NullishComparisonType | ComparisonType,
+  parserServices: ParserServicesWithTypeInformation,
+): boolean {
+  let ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+  const comparedNameType = parserServices.getTypeAtLocation(comparedName);
+
+  if (isTypeFlagSet(comparedNameType, ANY_UNKNOWN_FLAGS)) {
+    return false;
+  }
+  switch (nullishComparisonType) {
+    case NullishComparisonType.Boolean:
+    case NullishComparisonType.NotBoolean:
+      const types = unionConstituents(comparedNameType);
+      return types.every(type => !isFalsyType(type));
+    case NullishComparisonType.NotStrictEqualUndefined:
+    case NullishComparisonType.StrictEqualUndefined:
+      return !isTypeFlagSet(comparedNameType, ts.TypeFlags.Undefined);
+    case NullishComparisonType.NotStrictEqualNull:
+    case NullishComparisonType.StrictEqualNull:
+      return !isTypeFlagSet(comparedNameType, ts.TypeFlags.Null);
+    case NullishComparisonType.NotEqualNullOrUndefined:
+    case NullishComparisonType.EqualNullOrUndefined:
+      return !isTypeFlagSet(
+        comparedNameType,
+        ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+      );
+    default:
+      return false;
+  }
+}
+
+function isValidAndLastChainOperand(
+  ComparisonValueType: TSESTree.Node,
+  operator: TSESTree.BinaryExpression['operator'],
+  parserServices: ParserServicesWithTypeInformation,
+) {
+  const type = parserServices.getTypeAtLocation(ComparisonValueType);
+  let ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+
+  switch (operator) {
+    case '==': {
+      const types = unionConstituents(type);
+      const isNullish = types.some(t =>
+        isTypeFlagSet(
+          t,
+          ANY_UNKNOWN_FLAGS | ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+        ),
+      );
+      return !isNullish;
+    }
+    case '===': {
+      const types = unionConstituents(type);
+      const isUndefined = types.some(t =>
+        isTypeFlagSet(t, ANY_UNKNOWN_FLAGS | ts.TypeFlags.Undefined),
+      );
+      return !isUndefined;
+    }
+    case '!=':
+    case '!==':
+      return false;
+    default:
+      return false;
+  }
+}
+function isValidOrLastChainOperand(
+  ComparisonValueType: TSESTree.Node,
+  operator: TSESTree.BinaryExpression['operator'],
+  parserServices: ParserServicesWithTypeInformation,
+) {
+  const type = parserServices.getTypeAtLocation(ComparisonValueType);
+  let ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+
+  switch (operator) {
+    case '!=': {
+      const types = unionConstituents(type);
+      const isNullish = types.some(t =>
+        isTypeFlagSet(
+          t,
+          ANY_UNKNOWN_FLAGS | ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+        ),
+      );
+      return !isNullish;
+    }
+    case '!==': {
+      const types = unionConstituents(type);
+      const isUndefined = types.some(t =>
+        isTypeFlagSet(t, ANY_UNKNOWN_FLAGS | ts.TypeFlags.Undefined),
+      );
+      return !isUndefined;
+    }
+    case '==':
+    case '===':
+      return false;
+    default:
+      return false;
+  }
 }
 
 // I hate that these functions are identical aside from the enum values used
@@ -65,18 +169,7 @@ const analyzeAndChainOperand: OperandAnalyzer = (
   chain,
 ) => {
   switch (operand.comparisonType) {
-    case NullishComparisonType.Boolean: {
-      const nextOperand = chain.at(index + 1);
-      if (
-        nextOperand?.comparisonType ===
-          NullishComparisonType.NotStrictEqualNull &&
-        operand.comparedName.type === AST_NODE_TYPES.Identifier
-      ) {
-        return null;
-      }
-      return [operand];
-    }
-
+    case NullishComparisonType.Boolean:
     case NullishComparisonType.NotEqualNullOrUndefined:
       return [operand];
 
@@ -92,7 +185,8 @@ const analyzeAndChainOperand: OperandAnalyzer = (
         return [operand, nextOperand];
       }
       if (
-        includesType(
+        nextOperand &&
+        !includesType(
           parserServices,
           operand.comparedName,
           ts.TypeFlags.Undefined,
@@ -101,10 +195,9 @@ const analyzeAndChainOperand: OperandAnalyzer = (
         // we know the next operand is not an `undefined` check and that this
         // operand includes `undefined` - which means that making this an
         // optional chain would change the runtime behavior of the expression
-        return null;
+        return [operand];
       }
-
-      return [operand];
+      return null;
     }
 
     case NullishComparisonType.NotStrictEqualUndefined: {
@@ -156,6 +249,7 @@ const analyzeOrChainOperand: OperandAnalyzer = (
       ) {
         return [operand, nextOperand];
       }
+
       if (
         includesType(
           parserServices,
@@ -168,7 +262,6 @@ const analyzeOrChainOperand: OperandAnalyzer = (
         // optional chain would change the runtime behavior of the expression
         return null;
       }
-
       return [operand];
     }
 
@@ -270,6 +363,10 @@ function getReportDescriptor(
     lastOperand.comparisonType === NullishComparisonType.StrictEqualUndefined ||
     lastOperand.comparisonType ===
       NullishComparisonType.NotStrictEqualUndefined ||
+    lastOperand.comparisonType === ComparisonType.Equal ||
+    lastOperand.comparisonType === ComparisonType.NotEqual ||
+    lastOperand.comparisonType === ComparisonType.NotStrictEqual ||
+    lastOperand.comparisonType === ComparisonType.StrictEqual ||
     (operator === '||' &&
       lastOperand.comparisonType === NullishComparisonType.NotBoolean)
   ) {
@@ -521,10 +618,11 @@ export function analyzeChain(
   node: TSESTree.Node,
   operator: TSESTree.LogicalExpression['operator'],
   chain: ValidOperand[],
+  lastChainOperand?: LastChainOperand,
 ): void {
   // need at least 2 operands in a chain for it to be a chain
   if (
-    chain.length <= 1 ||
+    chain.length + (lastChainOperand ? 1 : 0) <= 1 ||
     /* istanbul ignore next -- previous checks make this unreachable, but keep it for exhaustiveness check */
     operator === '??'
   ) {
@@ -595,6 +693,36 @@ export function analyzeChain(
       //                    ^^^^^^^ invalid OR chain logical, but still part of
       //                            the chain for combination purposes
 
+      if (lastOperand) {
+        const comparisonResult = compareNodes(
+          lastOperand.comparedName,
+          operand.comparedName,
+        );
+        switch (operand.comparisonType) {
+          case NullishComparisonType.StrictEqualUndefined:
+          case NullishComparisonType.NotStrictEqualUndefined: {
+            if (comparisonResult === NodeComparisonResult.Subset) {
+              subChain.push(operand);
+            }
+          }
+          case NullishComparisonType.StrictEqualNull:
+          case NullishComparisonType.NotStrictEqualNull: {
+            if (
+              comparisonResult === NodeComparisonResult.Subset &&
+              isTruthyOperand(
+                lastOperand.comparedName,
+                lastOperand.comparisonType,
+                parserServices,
+              )
+            ) {
+              subChain.push({
+                ...operand,
+                comparisonType: ComparisonType.NotStrictEqual,
+              });
+            }
+          }
+        }
+      }
       maybeReportThenReset();
       continue;
     }
@@ -624,7 +752,36 @@ export function analyzeChain(
       subChain.push(currentOperand);
     }
   }
+  const lastOperand = subChain.flat().at(-1);
 
+  if (lastOperand && lastChainOperand) {
+    const comparisonResult = compareNodes(
+      lastOperand.comparedName,
+      lastChainOperand.comparedName,
+    );
+    const isValidLastChainOperand =
+      operator === '&&'
+        ? isValidAndLastChainOperand
+        : isValidOrLastChainOperand;
+    if (
+      comparisonResult === NodeComparisonResult.Subset &&
+      (isTruthyOperand(
+        lastOperand.comparedName,
+        lastOperand.comparisonType,
+        parserServices,
+      ) ||
+        isValidLastChainOperand(
+          lastChainOperand.comparisonValue,
+          lastChainOperand.node.operator,
+          parserServices,
+        ))
+    ) {
+      subChain.push({
+        ...lastChainOperand,
+        type: OperandValidity.Valid,
+      });
+    }
+  }
   // check the leftovers
   maybeReportThenReset();
 }
