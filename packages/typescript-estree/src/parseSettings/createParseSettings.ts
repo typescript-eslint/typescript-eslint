@@ -180,6 +180,16 @@ export function createParseSettings(
     tsconfigRootDir,
   };
 
+  if (
+    parseSettings.projectService &&
+    tsestreeOptions.project &&
+    !process.env.TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR
+  ) {
+    throw new Error(
+      'Enabling "project" does nothing when "projectService" is enabled. You can remove the "project" setting.',
+    );
+  }
+
   // debug doesn't support multiple `enable` calls, so have to do it all at once
   if (parseSettings.debugLevel.size > 0) {
     const namespaces = [];
