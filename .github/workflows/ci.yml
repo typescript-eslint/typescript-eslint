@@ -310,6 +310,10 @@ jobs:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
           registry-url: 'https://registry.npmjs.org'
 
+      # 11.5.2 and later required for trusted publishing
+      - name: Use npm 11.5.2
+        run: npm install -g npm@11.5.2
+
       - name: Build
         uses: ./.github/actions/prepare-build
 
@@ -321,6 +325,4 @@ jobs:
         run: npx nx release publish --tag canary --verbose
         env:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
-          # This secret is only accessible on the GitHub environment "main"
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
