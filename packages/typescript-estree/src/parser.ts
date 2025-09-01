@@ -68,13 +68,7 @@ function getProgramAndAST(
   }
 
   if (parseSettings.programs) {
-    const fromProvidedPrograms = useProvidedPrograms(
-      parseSettings.programs,
-      parseSettings,
-    );
-    if (fromProvidedPrograms) {
-      return fromProvidedPrograms;
-    }
+    return useProvidedPrograms(parseSettings.programs, parseSettings);
   }
 
   // no need to waste time creating a program as the caller didn't want parser services
