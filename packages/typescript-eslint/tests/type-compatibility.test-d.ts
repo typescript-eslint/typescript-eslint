@@ -2,6 +2,8 @@ import { defineConfig } from 'eslint/config';
 
 import tseslint from '../src/index';
 
+/* eslint @typescript-eslint/no-deprecated: ["error", { "allow": [{ "from": "file", "name": "config", "path": "packages/typescript-eslint/src/config-helper.ts" }] }] */
+
 describe('test for compatibility with config helpers', () => {
   test('exported plugin is compatible with tseslint.config()', () => {
     tseslint.config({
