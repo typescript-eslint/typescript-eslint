@@ -48,4 +48,26 @@ describe(getTSConfigRootDirFromStack, () => {
     expect(Error.prepareStackTrace).toBe(dummyFunction);
     Error.prepareStackTrace = prepareStackTrace;
   });
+
+  it.runIf(isWindows)(
+    'works when jiti gives non-normalized stack traces on windows',
+    () => {
+      vi.spyOn(Error, 'captureStackTrace').mockImplementationOnce(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (target: any, _constructorOpt) => {
+          target.stack = [
+            {
+              getFileName() {
+                return 'F:/a/b/eslint.config.ts';
+              },
+            },
+          ];
+        },
+      );
+
+      const inferredTsconfigRootDir = getTSConfigRootDirFromStack();
+
+      expect(inferredTsconfigRootDir).toBe('F:\\a\\b');
+    },
+  );
 });

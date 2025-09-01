@@ -21,9 +21,10 @@ See [Getting Started > Quickstart](../getting-started/Quickstart.mdx) first to s
 // @ts-check
 
 import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommended,
 );
@@ -37,7 +38,7 @@ If your project does not enable [typed linting](../getting-started/Typed_Linting
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommended,
   tseslint.configs.stylistic,
@@ -72,7 +73,7 @@ If your project enables [typed linting](../getting-started/Typed_Linting.mdx), w
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   // Added lines start
   tseslint.configs.recommendedTypeChecked,
@@ -147,7 +148,7 @@ These rules are those whose reports are almost always for a bad practice and/or 
 
 {/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   tseslint.configs.recommended,
 );
 ```
@@ -176,7 +177,7 @@ Rules newly added in this configuration are similarly useful to those in `recomm
 
 {/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   tseslint.configs.recommendedTypeChecked,
 );
 ```
@@ -205,7 +206,7 @@ Rules added in `strict` are more opinionated than recommended rules and might no
 
 {/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   tseslint.configs.strict,
 );
 ```
@@ -244,7 +245,7 @@ Rules newly added in this configuration are similarly useful (and opinionated) t
 
 {/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   tseslint.configs.strictTypeChecked,
 );
 ```
@@ -283,7 +284,7 @@ These rules are generally opinionated about enforcing simpler code patterns.
 
 {/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   tseslint.configs.stylistic,
 );
 ```
@@ -315,7 +316,7 @@ Rules newly added in this configuration are similarly opinionated to those in `s
 
 {/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   tseslint.configs.stylisticTypeChecked,
 );
 ```
@@ -382,7 +383,7 @@ If you use type-aware rules from other plugins, you will need to manually disabl
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   {
@@ -446,7 +447,7 @@ Additionally, it enables rules that promote using the more modern constructs Typ
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.eslintRecommended,
 );

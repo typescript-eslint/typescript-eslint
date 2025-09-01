@@ -761,8 +761,8 @@ export class RuleTester extends TestFramework {
 
     // Verify the code.
     let initialMessages: Linter.LintMessage[] | null = null;
-    let messages: Linter.LintMessage[] | null = null;
-    let fixedResult: SourceCodeFixer.AppliedFixes | null = null;
+    let messages: Linter.LintMessage[];
+    let fixedResult: SourceCodeFixer.AppliedFixes;
     let passNumber = 0;
     const outputs: string[] = [];
     const configWithoutCustomKeys = omitCustomConfigProperties(config);
