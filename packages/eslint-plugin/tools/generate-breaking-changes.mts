@@ -22,7 +22,7 @@ async function getNewRulesAsOfMajorVersion(
   // Normally we wouldn't condone using the 'eval' API...
   // But this is an internal-only script and it's the easiest way to convert
   // the JS raw text into a runtime object. 🤷
-  // eslint-disable-next-line no-unassigned-vars -- https://github.com/eslint/eslint/issues/20051
+  // eslint-disable-next-line no-unassigned-vars -- assigned by eval
   let oldRulesObject!: { rules: TypeScriptESLintRules };
   eval(`oldRulesObject = ${oldObjectText}`);
   const oldRuleNames = new Set(Object.keys(oldRulesObject.rules));
