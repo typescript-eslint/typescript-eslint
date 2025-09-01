@@ -15,7 +15,7 @@ const log = debug(
 export function useProvidedPrograms(
   programInstances: Iterable<ts.Program>,
   parseSettings: ParseSettings,
-): ASTAndDefiniteProgram | undefined {
+): ASTAndDefiniteProgram {
   log(
     'Retrieving ast for %s from provided program instance(s)',
     parseSettings.filePath,
