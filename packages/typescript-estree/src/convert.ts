@@ -401,7 +401,7 @@ export class Converter {
     }
   }
 
-  #throwError(node: number | ts.Node, message: string): asserts node is never {
+  #throwError(node: number | ts.Node, message: string): never {
     let start;
     let end;
     if (typeof node === 'number') {
@@ -690,6 +690,10 @@ export class Converter {
     typeArguments: ts.NodeArray<ts.TypeNode>,
     node: TSESTreeToTSNode<TSESTree.TSTypeParameterInstantiation>,
   ): TSESTree.TSTypeParameterInstantiation {
+    if (typeArguments.length === 0) {
+      this.#throwError(node, 'Type argument list cannot be empty.');
+    }
+
     const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
 
     return this.createNode<TSESTree.TSTypeParameterInstantiation>(node, {

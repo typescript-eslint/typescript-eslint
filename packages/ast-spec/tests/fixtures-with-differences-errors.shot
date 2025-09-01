@@ -4,7 +4,6 @@ exports[`AST Fixtures > List fixtures with Error differences`]
 {
   "Babel errored but TSESTree didn't": [
     "declaration/ClassDeclaration/fixtures/_error_/implements-non-identifier/fixture.ts",
-    "declaration/ClassDeclaration/fixtures/_error_/missing-extends-type-param/fixture.ts",
     "declaration/ClassDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
     "declaration/ExportNamedDeclaration/fixtures/_error_/assertion/fixture.ts",
     "declaration/FunctionDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
@@ -30,9 +29,6 @@ exports[`AST Fixtures > List fixtures with Error differences`]
     "legacy-fixtures/basics/fixtures/_error_/export-with-import-assertions/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/import-type-error/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/new-target-in-arrow-function-body/fixture.ts",
-    "legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-arguments-in-call-expression/fixture.ts",
-    "legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-arguments-in-new-expression/fixture.ts",
-    "legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-arguments/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-arrow-function/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-constructor/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-function-expression/fixture.ts",
