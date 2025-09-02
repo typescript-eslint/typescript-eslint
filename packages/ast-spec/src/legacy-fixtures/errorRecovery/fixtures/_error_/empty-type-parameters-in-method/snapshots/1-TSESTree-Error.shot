@@ -5,6 +5,6 @@ TSError
   2 |
   3 | class foo {
 > 4 |   test<>() {}
-    |        ^ Type parameter list cannot be empty.
+    |       ^^ Type parameter list cannot be empty.
   5 | }
   6 |

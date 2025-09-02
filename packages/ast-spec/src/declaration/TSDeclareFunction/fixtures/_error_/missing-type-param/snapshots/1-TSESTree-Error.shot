@@ -3,5 +3,5 @@
 exports[`AST Fixtures > declaration > TSDeclareFunction > _error_ > missing-type-param > TSESTree - Error`]
 TSError
 > 1 | declare function foo<>(): void;
-    |                      ^ Type parameter list cannot be empty.
+    |                     ^^ Type parameter list cannot be empty.
   2 |

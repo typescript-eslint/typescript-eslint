@@ -3,5 +3,5 @@
 exports[`AST Fixtures > declaration > ClassDeclaration > _error_ > missing-type-param > TSESTree - Error`]
 TSError
 > 1 | class C<> {}
-    |         ^ Type parameter list cannot be empty.
+    |        ^^ Type parameter list cannot be empty.
   2 |

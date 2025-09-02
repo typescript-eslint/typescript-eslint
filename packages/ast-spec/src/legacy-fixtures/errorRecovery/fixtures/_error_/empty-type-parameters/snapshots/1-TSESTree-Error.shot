@@ -5,5 +5,5 @@ TSError
   1 | // TODO: This fixture might be too large, and if so should be split up.
   2 |
 > 3 | function f1<>() {}
-    |             ^ Type parameter list cannot be empty.
+    |            ^^ Type parameter list cannot be empty.
   4 |

@@ -3,5 +3,5 @@
 exports[`AST Fixtures > declaration > ClassDeclaration > _error_ > missing-extends-type-param > TSESTree - Error`]
 TSError
 > 1 | class C extends D<> {}
-    |                   ^ Type argument list cannot be empty.
+    |                  ^^ Type argument list cannot be empty.
   2 |

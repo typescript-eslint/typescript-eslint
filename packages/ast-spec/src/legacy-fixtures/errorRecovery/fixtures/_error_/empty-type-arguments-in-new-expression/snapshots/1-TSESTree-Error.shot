@@ -5,5 +5,5 @@ TSError
   1 | // TODO: This fixture might be too large, and if so should be split up.
   2 |
 > 3 | new Foo<>()
-    |         ^ Type argument list cannot be empty.
+    |        ^^ Type argument list cannot be empty.
   4 |
