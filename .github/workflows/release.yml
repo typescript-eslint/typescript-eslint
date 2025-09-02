@@ -235,7 +235,7 @@ jobs:
     # Also ensure validation passed and we're releasing a stable version
     if: github.repository == 'typescript-eslint/typescript-eslint' && needs.validate.outputs.should_release == 'true' && needs.validate.outputs.is_stable == 'true'
     permissions:
-      contents: write # Need to create releases and push tags
+      contents: read
       id-token: write # Required for trusted publishing
     steps:
       - name: Checkout
@@ -243,6 +243,9 @@ jobs:
         with:
           # Need full history for changelog generation
           fetch-depth: 0
+          ref: main
+          # Check out the repo with a specific fine-grained PAT to allow pushing back to the repo
+          token: ${{ secrets.GH_FINE_GRAINED_PAT }}
 
       - name: Install dependencies
         uses: ./.github/actions/prepare-install
@@ -269,6 +272,8 @@ jobs:
           NPM_CONFIG_PROVENANCE: true
           # Disable distributed execution here for predictability
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
+          # Use the specific fine-grained PAT to allow pushing back to the repo
+          GH_TOKEN: ${{ secrets.GH_FINE_GRAINED_PAT }}
 
       - name: Force update the website branch to match the latest release
         # Only update the website branch if we're not doing a dry run
