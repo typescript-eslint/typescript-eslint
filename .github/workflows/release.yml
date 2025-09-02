@@ -32,7 +32,12 @@ on:
         required: true
         type: boolean
         default: true
-      force-release-without-changes:
+      first_release:
+        description: 'Whether one or more packages are being released for the first time'
+        required: false
+        type: boolean
+        default: false
+      force_release_without_changes:
         description: 'Whether to do a release regardless of if there have been changes'
         required: false
         type: boolean
@@ -64,6 +69,7 @@ jobs:
       is_stable: ${{ steps.validate.outputs.is_stable }}
       dry_run: ${{ steps.validate.outputs.dry_run }}
       force_release_without_changes: ${{ steps.validate.outputs.force_release_without_changes }}
+      first_release: ${{ steps.validate.outputs.first_release }}
       override_major_version: ${{ steps.validate.outputs.override_major_version }}
     steps:
       - name: Validate inputs and determine release type
@@ -74,6 +80,7 @@ jobs:
           INPUT_OVERRIDE_MAJOR: ${{ inputs.override_major_version }}
           INPUT_DRY_RUN: ${{ inputs.dry_run }}
           INPUT_FORCE_RELEASE: ${{ inputs.force_release_without_changes }}
+          INPUT_FIRST_RELEASE: ${{ inputs.first_release }}
         run: |
           SHOULD_RELEASE="false"
 
@@ -126,6 +133,13 @@ jobs:
             echo "force_release_without_changes=false" >> $GITHUB_OUTPUT
           fi
 
+          # Handle first release flag (only for manual releases)
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "first_release=${INPUT_FIRST_RELEASE:-false}" >> $GITHUB_OUTPUT
+          else
+            echo "first_release=false" >> $GITHUB_OUTPUT
+          fi
+
           # Validate and handle override major version for canary releases
           if [[ "$RELEASE_TYPE" == "canary" && "${{ github.event_name }}" == "workflow_dispatch" && -n "$INPUT_OVERRIDE_MAJOR" ]]; then
             if [[ ! "$INPUT_OVERRIDE_MAJOR" =~ ^[0-9]+$ ]]; then
@@ -141,7 +155,8 @@ jobs:
           echo "- Should release: $SHOULD_RELEASE"
           echo "- Release type: $RELEASE_TYPE"
           echo "- Dry run: $INPUT_DRY_RUN"
-          echo "- Force release without changes: ${INPUT_FORCE_RELEASE:-false}"
+          echo "- Force release without changes: $INPUT_FORCE_RELEASE"
+          echo "- First release: $INPUT_FIRST_RELEASE"
           echo "- Override major version (for canary only): $INPUT_OVERRIDE_MAJOR"
 
   canary_release:
@@ -182,7 +197,7 @@ jobs:
           OVERRIDE_MAJOR_VERSION: ${{ needs.validate.outputs.override_major_version }}
 
       - name: Publish canary packages
-        run: yarn nx release publish --tag canary --verbose --dry-run=${{ needs.validate.outputs.dry_run }}
+        run: yarn nx release publish --tag canary --verbose --dry-run=${{ needs.validate.outputs.dry_run }} --first-release=${{ needs.validate.outputs.first_release }}
         env:
           # Enable npm provenance
           NPM_CONFIG_PROVENANCE: true
@@ -226,7 +241,7 @@ jobs:
           git config --global user.name "typescript-eslint[bot]"
 
       - name: Run stable release
-        run: yarn release --dry-run=${{ needs.validate.outputs.dry_run }} --force-release-without-changes=${{ needs.validate.outputs.force_release_without_changes }} --verbose
+        run: yarn release --dry-run=${{ needs.validate.outputs.dry_run }} --force-release-without-changes=${{ needs.validate.outputs.force_release_without_changes }} --first-release=${{ needs.validate.outputs.first_release }} --verbose
         env:
           # Enable npm provenance
           NPM_CONFIG_PROVENANCE: true
