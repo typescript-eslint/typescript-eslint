@@ -1715,6 +1715,61 @@ export {};
       ],
       filename: 'foo.d.ts',
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10658
+    {
+      code: `
+const A = 0;
+export type A = typeof A;
+      `,
+      errors: [
+        {
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'A',
+          },
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+function A() {}
+namespace A {
+  export const prop = 1;
+}
+export type A = typeof A;
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'A',
+          },
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const A = 0;
+export interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'A',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
   ],
 
   valid: [
@@ -3017,6 +3072,31 @@ class Foo {}
 declare class Bar {}
       `,
       filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const A = 0;
+type A = typeof A;
+export { A };
+      `,
+    },
+    {
+      code: `
+class A {}
+export type B = A;
+      `,
+    },
+    {
+      code: `
+export const Foo = 0;
+export interface Foo {}
+      `,
+    },
+    {
+      code: `
+export const Foo = 0;
+export type Foo = typeof Foo;
+      `,
     },
   ],
 });
