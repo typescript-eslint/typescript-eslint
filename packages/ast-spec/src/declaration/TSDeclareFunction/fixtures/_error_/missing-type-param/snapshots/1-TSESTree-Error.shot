@@ -1,4 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSDeclareFunction > _error_ > missing-type-param > TSESTree - Error`]
-NO ERROR
+TSError
+> 1 | declare function foo<>(): void;
+    |                      ^ Type parameter list cannot be empty.
+  2 |

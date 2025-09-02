@@ -691,7 +691,10 @@ export class Converter {
     node: TSESTreeToTSNode<TSESTree.TSTypeParameterInstantiation>,
   ): TSESTree.TSTypeParameterInstantiation {
     if (typeArguments.length === 0) {
-      this.#throwError(node, 'Type argument list cannot be empty.');
+      this.#throwError(
+        typeArguments.pos,
+        'Type argument list cannot be empty.',
+      );
     }
 
     const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
@@ -718,6 +721,13 @@ export class Converter {
       typeParameters.pos - 1,
       greaterThanToken.end,
     ];
+
+    if (typeParameters.length === 0) {
+      this.#throwError(
+        typeParameters.pos,
+        'Type parameter list cannot be empty.',
+      );
+    }
 
     return {
       type: AST_NODE_TYPES.TSTypeParameterDeclaration,
