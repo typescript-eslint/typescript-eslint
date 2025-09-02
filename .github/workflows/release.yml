@@ -1,0 +1,252 @@
+name: Release
+
+on:
+  # Triggered by completed CI runs (we check for successful status in the validate job) on main branch for canary releases
+  workflow_run:
+    workflows: ['CI']
+    types: [completed]
+    branches: [main]
+
+  schedule:
+    # Github actions do not currently support specifying a timezone.
+    # Run on Mondays at 5pm UTC (1pm Eastern (Summer) Time)
+    - cron: '0 17 * * 1'
+
+  # Manual trigger for out of band releases and next major version prereleases
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Type of release to perform (stable requires core team approval)'
+        required: true
+        type: choice
+        options:
+          - canary
+          - stable
+        default: 'canary'
+      override_major_version:
+        description: 'Override major version for canary releases'
+        required: false
+        type: string
+      dry_run:
+        description: 'Perform a dry run (stable releases only)'
+        required: false
+        type: boolean
+        default: true
+      force-release-without-changes:
+        description: 'Whether to do a release regardless of if there have been changes'
+        required: false
+        type: boolean
+        default: false
+
+# Ensure only one release workflow runs at a time
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  PRIMARY_NODE_VERSION: 20
+
+# Minimal permissions by default
+permissions:
+  contents: read
+
+jobs:
+  # Validation job to ensure secure inputs and determine release type
+  validate:
+    name: Validate Release Parameters
+    runs-on: ubuntu-latest
+    # Only run on the official repository to avoid wasted compute and unnecessary errors on forks (also an initial albeit weak first layer of protection against unauthorized releases)
+    if: github.repository == 'typescript-eslint/typescript-eslint'
+    outputs:
+      should_release: ${{ steps.validate.outputs.should_release }}
+      release_type: ${{ steps.validate.outputs.release_type }}
+      is_canary: ${{ steps.validate.outputs.is_canary }}
+      is_stable: ${{ steps.validate.outputs.is_stable }}
+      dry_run: ${{ steps.validate.outputs.dry_run }}
+      force_release_without_changes: ${{ steps.validate.outputs.force_release_without_changes }}
+      override_major_version: ${{ steps.validate.outputs.override_major_version }}
+    steps:
+      - name: Validate inputs and determine release type
+        id: validate
+        env:
+          # Ensure user input is treated as data by passing them as environment variables
+          INPUT_RELEASE_TYPE: ${{ inputs.release_type }}
+          INPUT_OVERRIDE_MAJOR: ${{ inputs.override_major_version }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_FORCE_RELEASE: ${{ inputs.force_release_without_changes }}
+        run: |
+          SHOULD_RELEASE="false"
+
+          # Determine release type based on trigger
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            RELEASE_TYPE="stable"
+            SHOULD_RELEASE="true"
+          elif [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            # Only release canary if the CI workflow succeeded
+            if [[ "${{ github.event.workflow_run.conclusion }}" == "success" ]]; then
+              RELEASE_TYPE="canary"
+              SHOULD_RELEASE="true"
+            else
+              echo "CI workflow did not succeed, skipping canary release"
+              RELEASE_TYPE="canary"
+              SHOULD_RELEASE="false"
+            fi
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            RELEASE_TYPE="$INPUT_RELEASE_TYPE"
+            SHOULD_RELEASE="true"
+          else
+            echo "::error::Unsupported trigger event: ${{ github.event_name }}"
+            exit 1
+          fi
+
+          # Validate release type
+          if [[ "$RELEASE_TYPE" != "canary" && "$RELEASE_TYPE" != "stable" ]]; then
+            echo "::error::Invalid release type: $RELEASE_TYPE. Must be 'canary' or 'stable'"
+            exit 1
+          fi
+
+          # Set outputs
+          echo "should_release=$SHOULD_RELEASE" >> $GITHUB_OUTPUT
+          echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
+          echo "is_canary=$([[ "$RELEASE_TYPE" == "canary" ]] && echo "true" || echo "false")" >> $GITHUB_OUTPUT
+          echo "is_stable=$([[ "$RELEASE_TYPE" == "stable" ]] && echo "true" || echo "false")" >> $GITHUB_OUTPUT
+
+          # Handle dry run for stable releases
+          if [[ "$RELEASE_TYPE" == "stable" ]]; then
+            if [[ "${{ github.event_name }}" == "schedule" ]]; then
+              # Scheduled releases are never dry runs
+              echo "dry_run=false" >> $GITHUB_OUTPUT
+            else
+              # Manual stable releases default to dry run unless explicitly disabled
+              echo "dry_run=${INPUT_DRY_RUN:-true}" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "dry_run=false" >> $GITHUB_OUTPUT
+          fi
+
+          # Handle force release without changes for stable releases
+          if [[ "$RELEASE_TYPE" == "stable" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "force_release_without_changes=${INPUT_FORCE_RELEASE:-false}" >> $GITHUB_OUTPUT
+          else
+            echo "force_release_without_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+          # Validate and handle override major version for canary releases
+          if [[ "$RELEASE_TYPE" == "canary" && "${{ github.event_name }}" == "workflow_dispatch" && -n "$INPUT_OVERRIDE_MAJOR" ]]; then
+            if [[ ! "$INPUT_OVERRIDE_MAJOR" =~ ^[0-9]+$ ]]; then
+              echo "::error::Invalid override major version format: $INPUT_OVERRIDE_MAJOR. Must be a positive integer."
+              exit 1
+            fi
+            echo "override_major_version=$INPUT_OVERRIDE_MAJOR" >> $GITHUB_OUTPUT
+          else
+            echo "override_major_version=" >> $GITHUB_OUTPUT
+          fi
+
+          echo "Validated release configuration:"
+          echo "- Should release: $SHOULD_RELEASE"
+          echo "- Release type: $RELEASE_TYPE"
+          echo "- Is canary: $([[ "$RELEASE_TYPE" == "canary" ]] && echo "true" || echo "false")"
+          echo "- Is stable: $([[ "$RELEASE_TYPE" == "stable" ]] && echo "true" || echo "false")"
+          if [[ "$RELEASE_TYPE" == "stable" ]]; then
+            echo "- Dry run: ${INPUT_DRY_RUN:-true}"
+            echo "- Force release without changes: ${INPUT_FORCE_RELEASE:-false}"
+          fi
+          if [[ "$RELEASE_TYPE" == "canary" && -n "$INPUT_OVERRIDE_MAJOR" ]]; then
+            echo "- Override major version: $INPUT_OVERRIDE_MAJOR"
+          fi
+
+  # Do not require npm-registry environment (and therefore manual approvals) for canary releases
+  # npm trusted publishing should already go a long way to protecting against unauthorized releases
+  canary_release:
+    name: Publish Canary Release
+    runs-on: ubuntu-latest
+    needs: [validate]
+    # Only run on the official repository to avoid wasted compute and unnecessary errors on forks (also an initial albeit weak first layer of protection against unauthorized releases)
+    # Also ensure validation passed and we're releasing a canary version
+    if: github.repository == 'typescript-eslint/typescript-eslint' && needs.validate.outputs.should_release == 'true' && needs.validate.outputs.is_canary == 'true'
+    permissions:
+      contents: read # No need to write to the repository for canary releases
+      id-token: write # Required for trusted publishing
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # We need the full history for version calculation
+          fetch-depth: 0
+
+      - name: Install dependencies
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+
+      # Use specific npm version required for trusted publishing
+      - name: Use npm 11.5.2
+        run: npm install -g npm@11.5.2
+
+      - name: Build packages
+        uses: ./.github/actions/prepare-build
+
+      - name: Calculate and apply canary version
+        run: npx tsx tools/release/apply-canary-version.mts
+        env:
+          # Use the validated override major version from the validate job, if set
+          OVERRIDE_MAJOR_VERSION: ${{ needs.validate.outputs.override_major_version }}
+
+      - name: Publish canary packages
+        # NOTE: this needs to be npx, rather than yarn, to make sure the authenticated npm registry is used
+        run: npx nx release publish --tag canary --verbose
+        env:
+          # Enable npm provenance
+          NPM_CONFIG_PROVENANCE: true
+          # Disable distributed execution here for predictability
+          NX_CLOUD_DISTRIBUTED_EXECUTION: false
+
+  stable_release:
+    name: Publish Stable Release
+    runs-on: ubuntu-latest
+    environment: npm-registry # Require core team approvals for stable releases as an ultimate layer of protection against unauthorized releases
+    needs: [validate]
+    # Only run on the official repository to avoid wasted compute and unnecessary errors on forks (also an initial albeit weak first layer of protection against unauthorized releases)
+    # Also ensure validation passed and we're releasing a stable version
+    if: github.repository == 'typescript-eslint/typescript-eslint' && needs.validate.outputs.should_release == 'true' && needs.validate.outputs.is_stable == 'true'
+    permissions:
+      contents: write # Need to create releases and push tags
+      id-token: write # Required for trusted publishing
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Need full history for changelog generation
+          fetch-depth: 0
+
+      - name: Install dependencies
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+
+      # Use specific npm version required for trusted publishing
+      - name: Use npm 11.5.2
+        run: npm install -g npm@11.5.2
+
+      - name: Build packages
+        uses: ./.github/actions/prepare-build
+
+      - name: Configure git user for automated commits
+        run: |
+          git config --global user.email "typescript-eslint[bot]@users.noreply.github.com"
+          git config --global user.name "typescript-eslint[bot]"
+
+      - name: Run stable release
+        run: npx tsx tools/release/release.mts --dry-run=${{ needs.validate.outputs.dry_run }} --force-release-without-changes=${{ needs.validate.outputs.force_release_without_changes }} --verbose
+        env:
+          # Enable npm provenance
+          NPM_CONFIG_PROVENANCE: true
+          # Disable distributed execution here for predictability
+          NX_CLOUD_DISTRIBUTED_EXECUTION: false
+
+      - name: Force update the website branch to match the latest release
+        run: |
+          git branch -f website
+          git push -f origin website
