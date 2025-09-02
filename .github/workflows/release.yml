@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: 'Type of release to perform (stable requires core team approval)'
+        description: 'Type of release to perform'
         required: true
         type: choice
         options:
@@ -110,6 +110,28 @@ jobs:
           if [[ "$RELEASE_TYPE" != "canary" && "$RELEASE_TYPE" != "stable" ]]; then
             echo "::error::Invalid release type: $RELEASE_TYPE. Must be 'canary' or 'stable'"
             exit 1
+          fi
+
+          # Security: For manual triggers, only allow core maintainers to run releases
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            ALLOWED_ACTORS=("JamesHenry" "bradzacher" "JoshuaKGoldberg")
+            ACTOR="${{ github.actor }}"
+            IS_ALLOWED="false"
+
+            for allowed in "${ALLOWED_ACTORS[@]}"; do
+              if [[ "$ACTOR" == "$allowed" ]]; then
+                IS_ALLOWED="true"
+                break
+              fi
+            done
+
+            if [[ "$IS_ALLOWED" != "true" ]]; then
+              echo "::error::User '$ACTOR' is not authorized to trigger manual releases."
+              echo "::error::Only the following users can trigger manual releases: ${ALLOWED_ACTORS[*]}"
+              exit 1
+            fi
+
+            echo "✅ Authorized user '$ACTOR' triggering manual release"
           fi
 
           # Set outputs
