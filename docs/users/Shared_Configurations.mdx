@@ -78,15 +78,8 @@ export default defineConfig(
   // Added lines start
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
   // Added lines end
+  // Other configuration...
 );
 ```
 
@@ -102,12 +95,7 @@ module.exports = {
     'plugin:@typescript-eslint/stylistic-type-checked',
     // Added lines end
   ],
-  // Added lines start
-  parserOptions: {
-    projectService: true,
-    tsconfigRootDir: import.meta.dirname,
-  },
-  // Added lines end
+  // Other configuration...
 };
 ```
 
