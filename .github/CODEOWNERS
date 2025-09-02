@@ -1,3 +1,2 @@
-# Critical workflow files require approval from core maintainers
-.github/workflows/release.yml @JamesHenry @bradzacher @JoshuaKGoldberg
-.github/workflows/ci.yml @JamesHenry @bradzacher @JoshuaKGoldberg
+# All files in the .github directory require approval from core maintainers
+.github/** @JamesHenry @bradzacher @JoshuaKGoldberg
