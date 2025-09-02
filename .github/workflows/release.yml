@@ -28,8 +28,8 @@ on:
         required: false
         type: string
       dry_run:
-        description: 'Perform a dry run (stable releases only)'
-        required: false
+        description: 'Perform a dry run'
+        required: true
         type: boolean
         default: true
       force-release-without-changes:
@@ -111,16 +111,11 @@ jobs:
           echo "is_canary=$([[ "$RELEASE_TYPE" == "canary" ]] && echo "true" || echo "false")" >> $GITHUB_OUTPUT
           echo "is_stable=$([[ "$RELEASE_TYPE" == "stable" ]] && echo "true" || echo "false")" >> $GITHUB_OUTPUT
 
-          # Handle dry run for stable releases
-          if [[ "$RELEASE_TYPE" == "stable" ]]; then
-            if [[ "${{ github.event_name }}" == "schedule" ]]; then
-              # Scheduled releases are never dry runs
-              echo "dry_run=false" >> $GITHUB_OUTPUT
-            else
-              # Manual stable releases default to dry run unless explicitly disabled
-              echo "dry_run=${INPUT_DRY_RUN:-true}" >> $GITHUB_OUTPUT
-            fi
+          # Handle dry run for manual releases (defaults to true)
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "dry_run=${INPUT_DRY_RUN:-true}" >> $GITHUB_OUTPUT
           else
+            # Automated releases (schedule, workflow_run) are never dry runs
             echo "dry_run=false" >> $GITHUB_OUTPUT
           fi
 
@@ -145,21 +140,14 @@ jobs:
           echo "Validated release configuration:"
           echo "- Should release: $SHOULD_RELEASE"
           echo "- Release type: $RELEASE_TYPE"
-          echo "- Is canary: $([[ "$RELEASE_TYPE" == "canary" ]] && echo "true" || echo "false")"
-          echo "- Is stable: $([[ "$RELEASE_TYPE" == "stable" ]] && echo "true" || echo "false")"
-          if [[ "$RELEASE_TYPE" == "stable" ]]; then
-            echo "- Dry run: ${INPUT_DRY_RUN:-true}"
-            echo "- Force release without changes: ${INPUT_FORCE_RELEASE:-false}"
-          fi
-          if [[ "$RELEASE_TYPE" == "canary" && -n "$INPUT_OVERRIDE_MAJOR" ]]; then
-            echo "- Override major version: $INPUT_OVERRIDE_MAJOR"
-          fi
+          echo "- Dry run: $INPUT_DRY_RUN"
+          echo "- Force release without changes: ${INPUT_FORCE_RELEASE:-false}"
+          echo "- Override major version (for canary only): $INPUT_OVERRIDE_MAJOR"
 
-  # Do not require npm-registry environment (and therefore manual approvals) for canary releases
-  # npm trusted publishing should already go a long way to protecting against unauthorized releases
   canary_release:
     name: Publish Canary Release
     runs-on: ubuntu-latest
+    environment: npm-registry # This environment is required by the trusted publishing configuration on npm
     needs: [validate]
     # Only run on the official repository to avoid wasted compute and unnecessary errors on forks (also an initial albeit weak first layer of protection against unauthorized releases)
     # Also ensure validation passed and we're releasing a canary version
@@ -188,14 +176,13 @@ jobs:
         uses: ./.github/actions/prepare-build
 
       - name: Calculate and apply canary version
-        run: npx tsx tools/release/apply-canary-version.mts
+        run: yarn tsx tools/release/apply-canary-version.mts
         env:
           # Use the validated override major version from the validate job, if set
           OVERRIDE_MAJOR_VERSION: ${{ needs.validate.outputs.override_major_version }}
 
       - name: Publish canary packages
-        # NOTE: this needs to be npx, rather than yarn, to make sure the authenticated npm registry is used
-        run: npx nx release publish --tag canary --verbose
+        run: yarn nx release publish --tag canary --verbose --dry-run=${{ needs.validate.outputs.dry_run }}
         env:
           # Enable npm provenance
           NPM_CONFIG_PROVENANCE: true
@@ -205,7 +192,7 @@ jobs:
   stable_release:
     name: Publish Stable Release
     runs-on: ubuntu-latest
-    environment: npm-registry # Require core team approvals for stable releases as an ultimate layer of protection against unauthorized releases
+    environment: npm-registry # This environment is required by the trusted publishing configuration on npm
     needs: [validate]
     # Only run on the official repository to avoid wasted compute and unnecessary errors on forks (also an initial albeit weak first layer of protection against unauthorized releases)
     # Also ensure validation passed and we're releasing a stable version
@@ -239,7 +226,7 @@ jobs:
           git config --global user.name "typescript-eslint[bot]"
 
       - name: Run stable release
-        run: npx tsx tools/release/release.mts --dry-run=${{ needs.validate.outputs.dry_run }} --force-release-without-changes=${{ needs.validate.outputs.force_release_without_changes }} --verbose
+        run: yarn release --dry-run=${{ needs.validate.outputs.dry_run }} --force-release-without-changes=${{ needs.validate.outputs.force_release_without_changes }} --verbose
         env:
           # Enable npm provenance
           NPM_CONFIG_PROVENANCE: true
@@ -247,6 +234,8 @@ jobs:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
 
       - name: Force update the website branch to match the latest release
+        # Only update the website branch if we're not doing a dry run
+        if: needs.validate.outputs.dry_run == 'false'
         run: |
           git branch -f website
           git push -f origin website
