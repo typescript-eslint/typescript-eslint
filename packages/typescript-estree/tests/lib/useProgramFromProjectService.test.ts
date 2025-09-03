@@ -625,7 +625,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
     );
   });
 
-  it('matchs filenames starting with a period', () => {
+  it('matches filenames starting with a period', () => {
     const { service } = createMockProjectService();
 
     const filePath = `.prettierrc.js`;
