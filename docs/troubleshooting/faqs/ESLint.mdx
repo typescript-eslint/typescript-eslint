@@ -49,9 +49,9 @@ Note, that for a mixed project including JavaScript and TypeScript, the `no-unde
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-import tseslint from 'typescript-eslint';
+import { defineConfig } from 'eslint/config';
 
-export default tseslint.config(
+export default defineConfig(
   // ... the rest of your config ...
   {
     files: ['**/*.{ts,tsx,mts,cts}'],
