@@ -30,9 +30,10 @@ For example, to disable type-checked linting on all `.js` files:
   <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
+import defineConfig from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
   // ... the rest of your config ...
   {
     files: ['**/*.js'],
@@ -69,7 +70,7 @@ You can combine ESLint's [overrides](https://eslint.org/docs/latest/use/configur
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
@@ -297,7 +298,7 @@ For example, if you use a specific `tsconfig.eslint.json` for linting, you'd spe
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default tseslint.config({
+export default defineConfig({
   // ...
   languageOptions: {
     parserOptions: {

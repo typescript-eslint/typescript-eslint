@@ -1,3 +1,38 @@
+## 8.42.0 (2025-09-02)
+
+### 🚀 Features
+
+- deprecate tseslint.config() ([#11531](https://github.com/typescript-eslint/typescript-eslint/pull/11531))
+
+### 🩹 Fixes
+
+- **deps:** update eslint monorepo to v9.33.0 ([#11482](https://github.com/typescript-eslint/typescript-eslint/pull/11482))
+- **typescript-eslint:** handle non-normalized windows paths produced by jiti ([#11546](https://github.com/typescript-eslint/typescript-eslint/pull/11546))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.41.0 (2025-08-25)
+
+### 🚀 Features
+
+- tighten `tsconfigRootDir` validation ([#11463](https://github.com/typescript-eslint/typescript-eslint/pull/11463))
+
+### 🩹 Fixes
+
+- resolve type error in eslint config ([#11500](https://github.com/typescript-eslint/typescript-eslint/pull/11500))
+- **deps:** update babel monorepo ([#11174](https://github.com/typescript-eslint/typescript-eslint/pull/11174))
+- **deps:** update dependency prettier to v3.6.2 ([#11496](https://github.com/typescript-eslint/typescript-eslint/pull/11496))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.40.0 (2025-08-18)
 
 ### 🚀 Features

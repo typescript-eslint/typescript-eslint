@@ -19,7 +19,7 @@ See [Changes to `extraFileExtensions` with `projectService`](../typed-linting/Pe
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   // ... the rest of your config ...
   {
     languageOptions: {
@@ -61,10 +61,11 @@ If you are running into issues parsing .vue files, it might be because parsers l
 
 ```js title="eslint.config.mjs"
 import tseslint from 'typescript-eslint';
+import { defineConfig } from 'eslint/config';
 // Add this line
 import vueParser from 'vue-eslint-parser';
 
-export default tseslint.config(
+export default defineConfig(
   // ... the rest of your config ...
   {
     languageOptions: {
