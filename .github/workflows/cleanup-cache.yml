@@ -9,6 +9,7 @@ on:
 # IMPORTANT: Minimal permissions necessary for this workflow to function
 permissions:
   actions: write
+  contents: write
 
 jobs:
   cleanup:
