@@ -52,7 +52,7 @@ function includesType(
   return false;
 }
 
-function isTruthyOperand(
+function isAlwaysTruthyOperand(
   comparedName: TSESTree.Node,
   nullishComparisonType: NullishComparisonType | ComparisonType,
   parserServices: ParserServicesWithTypeInformation,
@@ -709,7 +709,7 @@ export function analyzeChain(
           case NullishComparisonType.NotStrictEqualNull: {
             if (
               comparisonResult === NodeComparisonResult.Subset &&
-              isTruthyOperand(
+              isAlwaysTruthyOperand(
                 lastOperand.comparedName,
                 lastOperand.comparisonType,
                 parserServices,
@@ -765,7 +765,7 @@ export function analyzeChain(
         : isValidOrLastChainOperand;
     if (
       comparisonResult === NodeComparisonResult.Subset &&
-      (isTruthyOperand(
+      (isAlwaysTruthyOperand(
         lastOperand.comparedName,
         lastOperand.comparisonType,
         parserServices,
