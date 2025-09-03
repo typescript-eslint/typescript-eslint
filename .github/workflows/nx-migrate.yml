@@ -7,6 +7,8 @@
 name: Nx Migrate
 
 on:
+  # NOTE: Never use pull_request_target here because that would populate secrets for forks
+  # Renovate creates branches directly on the main repo and acts like a trusted contributor
   pull_request:
     branches: [main]
     paths:
