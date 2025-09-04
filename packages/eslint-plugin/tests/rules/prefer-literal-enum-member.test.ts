@@ -56,11 +56,6 @@ enum ValidQuotedKeyWithAssignment {
   'a' = 1,
 }
     `,
-    `
-enum ValidKeyWithComputedSyntaxButNoComputedKey {
-  ['a'],
-}
-    `,
     {
       code: `
 enum Foo {
@@ -101,15 +96,6 @@ enum Foo {
   A = 1 << 0,
   B = 1 >> 0,
   C = Foo['A'] | B,
-}
-      `,
-      options: [{ allowBitwiseExpressions: true }],
-    },
-    {
-      code: `
-enum Foo {
-  ['A-1'] = 1 << 0,
-  C = ~Foo['A-1'],
 }
       `,
       options: [{ allowBitwiseExpressions: true }],
