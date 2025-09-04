@@ -57,7 +57,7 @@ export const enum ComparisonType {
 }
 export interface ValidOperand {
   comparedName: TSESTree.Node;
-  comparisonType: ComparisonType | NullishComparisonType;
+  comparisonType: NullishComparisonType;
   isYoda: boolean;
   node: TSESTree.Expression;
   type: OperandValidity.Valid;

@@ -31,11 +31,7 @@ import {
 } from '../../util';
 import { checkNullishAndReport } from './checkNullishAndReport';
 import { compareNodes, NodeComparisonResult } from './compareNodes';
-import {
-  ComparisonType,
-  NullishComparisonType,
-  OperandValidity,
-} from './gatherLogicalOperands';
+import { NullishComparisonType } from './gatherLogicalOperands';
 
 function includesType(
   parserServices: ParserServicesWithTypeInformation,
@@ -54,7 +50,7 @@ function includesType(
 
 function isAlwaysTruthyOperand(
   comparedName: TSESTree.Node,
-  nullishComparisonType: ComparisonType | NullishComparisonType,
+  nullishComparisonType: NullishComparisonType,
   parserServices: ParserServicesWithTypeInformation,
 ): boolean {
   const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
@@ -301,7 +297,7 @@ const analyzeOrChainOperand: OperandAnalyzer = (
  * @returns The range to report.
  */
 function getReportRange(
-  chain: ValidOperand[],
+  chain: { node: TSESTree.Expression }[],
   boundary: TSESTree.Range,
   sourceCode: SourceCode,
 ): TSESTree.Range {
@@ -341,8 +337,10 @@ function getReportDescriptor(
   node: TSESTree.Node,
   operator: '&&' | '||',
   options: PreferOptionalChainOptions,
-  chain: ValidOperand[],
+  subChain: ValidOperand[],
+  lastChain: (LastChainOperand | ValidOperand) | undefined,
 ): ReportDescriptor<PreferOptionalChainMessageIds> {
+  const chain = lastChain ? [...subChain, lastChain] : subChain;
   const lastOperand = chain[chain.length - 1];
 
   let useSuggestionFixer: boolean;
@@ -358,16 +356,13 @@ function getReportDescriptor(
   // `undefined`, or else we're going to change the final type - which is
   // unsafe and might cause downstream type errors.
   else if (
+    lastChain ||
     lastOperand.comparisonType === NullishComparisonType.EqualNullOrUndefined ||
     lastOperand.comparisonType ===
       NullishComparisonType.NotEqualNullOrUndefined ||
     lastOperand.comparisonType === NullishComparisonType.StrictEqualUndefined ||
     lastOperand.comparisonType ===
       NullishComparisonType.NotStrictEqualUndefined ||
-    lastOperand.comparisonType === ComparisonType.Equal ||
-    lastOperand.comparisonType === ComparisonType.NotEqual ||
-    lastOperand.comparisonType === ComparisonType.NotStrictEqual ||
-    lastOperand.comparisonType === ComparisonType.StrictEqual ||
     (operator === '||' &&
       lastOperand.comparisonType === NullishComparisonType.NotBoolean)
   ) {
@@ -643,16 +638,20 @@ export function analyzeChain(
   // Things like x !== null && x !== undefined have two nodes, but they are
   // one logical unit here, so we'll allow them to be grouped.
   let subChain: (readonly ValidOperand[] | ValidOperand)[] = [];
+  let lastChain: LastChainOperand | ValidOperand | undefined = undefined;
   const maybeReportThenReset = (
     newChainSeed?: readonly [ValidOperand, ...ValidOperand[]],
   ): void => {
-    if (subChain.length > 1) {
+    if (subChain.length + (lastChain ? 1 : 0) > 1) {
       const subChainFlat = subChain.flat();
+      const maybeNullishNodes = lastChain
+        ? subChainFlat.map(({ node }) => node)
+        : subChainFlat.slice(0, -1).map(({ node }) => node);
       checkNullishAndReport(
         context,
         parserServices,
         options,
-        subChainFlat.slice(0, -1).map(({ node }) => node),
+        maybeNullishNodes,
         getReportDescriptor(
           context.sourceCode,
           parserServices,
@@ -660,6 +659,7 @@ export function analyzeChain(
           operator,
           options,
           subChainFlat,
+          lastChain,
         ),
       );
     }
@@ -677,6 +677,7 @@ export function analyzeChain(
     //                          ^^^^^^^^^^^ newChainSeed
     //                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ second chain
     subChain = newChainSeed ? [newChainSeed] : [];
+    lastChain = undefined;
   };
 
   for (let i = 0; i < chain.length; i += 1) {
@@ -703,7 +704,7 @@ export function analyzeChain(
           case NullishComparisonType.StrictEqualUndefined:
           case NullishComparisonType.NotStrictEqualUndefined: {
             if (comparisonResult === NodeComparisonResult.Subset) {
-              subChain.push(operand);
+              lastChain = operand;
             }
             break;
           }
@@ -717,11 +718,9 @@ export function analyzeChain(
                 parserServices,
               )
             ) {
-              subChain.push({
-                ...operand,
-                comparisonType: ComparisonType.NotStrictEqual,
-              });
+              lastChain = operand;
             }
+            break;
           }
         }
       }
@@ -778,10 +777,7 @@ export function analyzeChain(
           parserServices,
         ))
     ) {
-      subChain.push({
-        ...lastChainOperand,
-        type: OperandValidity.Valid,
-      });
+      lastChain = lastChainOperand;
     }
   }
   // check the leftovers
