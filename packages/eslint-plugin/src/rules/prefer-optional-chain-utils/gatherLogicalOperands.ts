@@ -57,7 +57,7 @@ export const enum ComparisonType {
 }
 export interface ValidOperand {
   comparedName: TSESTree.Node;
-  comparisonType: NullishComparisonType | ComparisonType;
+  comparisonType: ComparisonType | NullishComparisonType;
   isYoda: boolean;
   node: TSESTree.Expression;
   type: OperandValidity.Valid;
@@ -73,7 +73,7 @@ export interface LastChainOperand {
 export interface InvalidOperand {
   type: OperandValidity.Invalid;
 }
-type Operand = InvalidOperand | ValidOperand | LastChainOperand;
+type Operand = InvalidOperand | LastChainOperand | ValidOperand;
 
 const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(
@@ -217,6 +217,7 @@ export function gatherLogicalOperands(
                 });
                 continue;
               }
+              break;
 
             case '!==':
             case '===': {
@@ -266,12 +267,12 @@ export function gatherLogicalOperands(
                   ? ComparisonType.Equal
                   : ComparisonType.StrictEqual;
               result.push({
-                isYoda,
                 comparedName,
-                comparisonType: comparisonType,
-                type: OperandValidity.Last,
-                node: operand,
+                comparisonType,
                 comparisonValue: comparedValue,
+                isYoda,
+                node: operand,
+                type: OperandValidity.Last,
               });
               continue;
             }
@@ -283,12 +284,12 @@ export function gatherLogicalOperands(
                   ? ComparisonType.NotEqual
                   : ComparisonType.NotStrictEqual;
               result.push({
-                isYoda,
                 comparedName,
-                comparisonType: comparisonType,
-                type: OperandValidity.Last,
-                node: operand,
+                comparisonType,
                 comparisonValue: comparedValue,
+                isYoda,
+                node: operand,
+                type: OperandValidity.Last,
               });
               continue;
             }
@@ -439,18 +440,19 @@ export function gatherLogicalOperands(
     if (isLeftMemberExpression && !isRightMemberExpression) {
       const [comparedName, comparedValue] = [left, right];
       return {
-        isYoda,
         comparedName,
         comparedValue,
+        isYoda,
       };
-    } else if (!isLeftMemberExpression && isRightMemberExpression) {
+    }
+    if (!isLeftMemberExpression && isRightMemberExpression) {
       const [comparedName, comparedValue] = [right, left];
 
       isYoda = true;
       return {
-        isYoda,
         comparedName,
         comparedValue,
+        isYoda,
       };
     }
     return null;

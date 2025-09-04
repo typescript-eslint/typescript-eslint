@@ -96,7 +96,7 @@ export default createRule<Options, MessageIds>({
       value: number,
     ): node is TSESTree.Literal {
       const evaluated = getStaticValue(node, globalScope);
-      return evaluated != null && evaluated.value === value;
+      return evaluated?.value === value;
     }
 
     /**

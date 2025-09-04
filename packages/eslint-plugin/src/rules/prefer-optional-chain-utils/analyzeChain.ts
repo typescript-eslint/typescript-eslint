@@ -54,10 +54,10 @@ function includesType(
 
 function isAlwaysTruthyOperand(
   comparedName: TSESTree.Node,
-  nullishComparisonType: NullishComparisonType | ComparisonType,
+  nullishComparisonType: ComparisonType | NullishComparisonType,
   parserServices: ParserServicesWithTypeInformation,
 ): boolean {
-  let ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+  const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
   const comparedNameType = parserServices.getTypeAtLocation(comparedName);
 
   if (isTypeFlagSet(comparedNameType, ANY_UNKNOWN_FLAGS)) {
@@ -65,9 +65,10 @@ function isAlwaysTruthyOperand(
   }
   switch (nullishComparisonType) {
     case NullishComparisonType.Boolean:
-    case NullishComparisonType.NotBoolean:
+    case NullishComparisonType.NotBoolean: {
       const types = unionConstituents(comparedNameType);
       return types.every(type => !isFalsyType(type));
+    }
     case NullishComparisonType.NotStrictEqualUndefined:
     case NullishComparisonType.StrictEqualUndefined:
       return !isTypeFlagSet(comparedNameType, ts.TypeFlags.Undefined);
@@ -91,7 +92,7 @@ function isValidAndLastChainOperand(
   parserServices: ParserServicesWithTypeInformation,
 ) {
   const type = parserServices.getTypeAtLocation(ComparisonValueType);
-  let ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+  const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 
   switch (operator) {
     case '==': {
@@ -124,7 +125,7 @@ function isValidOrLastChainOperand(
   parserServices: ParserServicesWithTypeInformation,
 ) {
   const type = parserServices.getTypeAtLocation(ComparisonValueType);
-  let ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+  const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 
   switch (operator) {
     case '!=': {
@@ -704,6 +705,7 @@ export function analyzeChain(
             if (comparisonResult === NodeComparisonResult.Subset) {
               subChain.push(operand);
             }
+            break;
           }
           case NullishComparisonType.StrictEqualNull:
           case NullishComparisonType.NotStrictEqualNull: {
