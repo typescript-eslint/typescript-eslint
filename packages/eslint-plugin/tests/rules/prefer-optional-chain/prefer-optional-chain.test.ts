@@ -1771,6 +1771,22 @@ describe('chain ending with comparison', () => {
           foo?.bar !== x;
         `,
       },
+      // yoda case
+      {
+        code: "foo != null && null != foo.bar && '123' == foo.bar.baz;",
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `'123' == foo?.bar?.baz;`,
+      },
+      {
+        code: "foo != null && null != foo.bar && '123' === foo.bar.baz;",
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `'123' === foo?.bar?.baz;`,
+      },
+      {
+        code: 'foo != null && null != foo.bar && undefined !== foo.bar.baz;',
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `undefined !== foo?.bar?.baz;`,
+      },
     ],
     valid: [
       'foo && foo.bar == x;',
