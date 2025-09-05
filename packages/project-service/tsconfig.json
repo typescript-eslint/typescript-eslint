@@ -4,10 +4,10 @@
   "include": [],
   "references": [
     {
-      "path": "../tsconfig-utils"
+      "path": "../types"
     },
     {
-      "path": "../types"
+      "path": "../tsconfig-utils"
     },
     {
       "path": "./tsconfig.build.json"
