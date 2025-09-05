@@ -31,7 +31,7 @@ import {
 } from '../../util';
 import { checkNullishAndReport } from './checkNullishAndReport';
 import { compareNodes, NodeComparisonResult } from './compareNodes';
-import { NullishComparisonType } from './gatherLogicalOperands';
+import { ComparisonType, NullishComparisonType } from './gatherLogicalOperands';
 
 function includesType(
   parserServices: ParserServicesWithTypeInformation,
@@ -66,33 +66,33 @@ function isAlwaysTruthyOperand(
       return types.every(type => !isFalsyType(type));
     }
     case NullishComparisonType.NotStrictEqualUndefined:
-    case NullishComparisonType.StrictEqualUndefined:
-      return !isTypeFlagSet(comparedNameType, ts.TypeFlags.Undefined);
     case NullishComparisonType.NotStrictEqualNull:
     case NullishComparisonType.StrictEqualNull:
-      return !isTypeFlagSet(comparedNameType, ts.TypeFlags.Null);
+    case NullishComparisonType.StrictEqualUndefined:
+      return !isTypeFlagSet(
+        comparedNameType,
+        ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+      );
     case NullishComparisonType.NotEqualNullOrUndefined:
     case NullishComparisonType.EqualNullOrUndefined:
       return !isTypeFlagSet(
         comparedNameType,
         ts.TypeFlags.Null | ts.TypeFlags.Undefined,
       );
-    default:
-      return false;
   }
 }
 
 function isValidAndLastChainOperand(
   ComparisonValueType: TSESTree.Node,
-  operator: TSESTree.BinaryExpression['operator'],
+  comparisonType: ComparisonType,
   parserServices: ParserServicesWithTypeInformation,
 ) {
   const type = parserServices.getTypeAtLocation(ComparisonValueType);
   const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 
-  switch (operator) {
-    case '==': {
-      const types = unionConstituents(type);
+  const types = unionConstituents(type);
+  switch (comparisonType) {
+    case ComparisonType.Equal: {
       const isNullish = types.some(t =>
         isTypeFlagSet(
           t,
@@ -101,31 +101,33 @@ function isValidAndLastChainOperand(
       );
       return !isNullish;
     }
-    case '===': {
-      const types = unionConstituents(type);
+    case ComparisonType.StrictEqual: {
       const isUndefined = types.some(t =>
         isTypeFlagSet(t, ANY_UNKNOWN_FLAGS | ts.TypeFlags.Undefined),
       );
       return !isUndefined;
     }
-    case '!=':
-    case '!==':
-      return false;
-    default:
-      return false;
+    case ComparisonType.NotStrictEqual: {
+      return types.every(t => isTypeFlagSet(t, ts.TypeFlags.Undefined));
+    }
+    case ComparisonType.NotEqual: {
+      return types.every(t =>
+        isTypeFlagSet(t, ts.TypeFlags.Undefined | ts.TypeFlags.Null),
+      );
+    }
   }
 }
 function isValidOrLastChainOperand(
   ComparisonValueType: TSESTree.Node,
-  operator: TSESTree.BinaryExpression['operator'],
+  comparisonType: ComparisonType,
   parserServices: ParserServicesWithTypeInformation,
 ) {
   const type = parserServices.getTypeAtLocation(ComparisonValueType);
   const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 
-  switch (operator) {
-    case '!=': {
-      const types = unionConstituents(type);
+  const types = unionConstituents(type);
+  switch (comparisonType) {
+    case ComparisonType.NotEqual: {
       const isNullish = types.some(t =>
         isTypeFlagSet(
           t,
@@ -134,18 +136,18 @@ function isValidOrLastChainOperand(
       );
       return !isNullish;
     }
-    case '!==': {
-      const types = unionConstituents(type);
+    case ComparisonType.NotStrictEqual: {
       const isUndefined = types.some(t =>
         isTypeFlagSet(t, ANY_UNKNOWN_FLAGS | ts.TypeFlags.Undefined),
       );
       return !isUndefined;
     }
-    case '==':
-    case '===':
-      return false;
-    default:
-      return false;
+    case ComparisonType.Equal:
+      return types.every(t =>
+        isTypeFlagSet(t, ts.TypeFlags.Undefined | ts.TypeFlags.Null),
+      );
+    case ComparisonType.StrictEqual:
+      return types.every(t => isTypeFlagSet(t, ts.TypeFlags.Undefined));
   }
 }
 
@@ -773,7 +775,7 @@ export function analyzeChain(
       ) ||
         isValidLastChainOperand(
           lastChainOperand.comparisonValue,
-          lastChainOperand.node.operator,
+          lastChainOperand.comparisonType,
           parserServices,
         ))
     ) {
