@@ -401,10 +401,12 @@ export class Converter {
     }
   }
 
-  #throwError(node: number | ts.Node, message: string): asserts node is never {
+  #throwError(node: number | ts.Node | TSESTree.Range, message: string): never {
     let start;
     let end;
-    if (typeof node === 'number') {
+    if (Array.isArray(node)) {
+      [start, end] = node;
+    } else if (typeof node === 'number') {
       start = end = node;
     } else {
       start = node.getStart(this.ast);
@@ -415,7 +417,7 @@ export class Converter {
   }
 
   #throwUnlessAllowInvalidAST(
-    node: number | ts.Node,
+    node: number | ts.Node | TSESTree.Range,
     message: string,
   ): asserts node is never {
     if (!this.options.allowInvalidAST) {
@@ -691,10 +693,15 @@ export class Converter {
     node: TSESTreeToTSNode<TSESTree.TSTypeParameterInstantiation>,
   ): TSESTree.TSTypeParameterInstantiation {
     const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
+    const range: TSESTree.Range = [typeArguments.pos - 1, greaterThanToken.end];
+
+    if (typeArguments.length === 0) {
+      this.#throwError(range, 'Type argument list cannot be empty.');
+    }
 
     return this.createNode<TSESTree.TSTypeParameterInstantiation>(node, {
       type: AST_NODE_TYPES.TSTypeParameterInstantiation,
-      range: [typeArguments.pos - 1, greaterThanToken.end],
+      range,
       params: typeArguments.map(typeArgument =>
         this.convertChild(typeArgument),
       ),
@@ -714,6 +721,10 @@ export class Converter {
       typeParameters.pos - 1,
       greaterThanToken.end,
     ];
+
+    if (typeParameters.length === 0) {
+      this.#throwError(range, 'Type parameter list cannot be empty.');
+    }
 
     return {
       type: AST_NODE_TYPES.TSTypeParameterDeclaration,

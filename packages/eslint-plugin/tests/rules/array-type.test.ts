@@ -1649,36 +1649,11 @@ function fooFunction(foo: ArrayClass<string>[]) {
       output: 'let x: any[];',
     },
     {
-      code: 'let x: Array<>;',
-      errors: [
-        {
-          column: 8,
-          data: { className: 'Array', readonlyPrefix: '', type: 'any' },
-          line: 1,
-          messageId: 'errorStringArray',
-        },
-      ],
-      options: [{ default: 'array' }],
-      output: 'let x: any[];',
-    },
-    {
       code: 'let x: Array;',
       errors: [
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'any' },
-          line: 1,
-          messageId: 'errorStringArraySimple',
-        },
-      ],
-      options: [{ default: 'array-simple' }],
-      output: 'let x: any[];',
-    },
-    {
-      code: 'let x: Array<>;',
-      errors: [
-        {
-          column: 8,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -2125,7 +2100,6 @@ type BrokenArray = {
       'let yy: number[][] = [[4, 5], [6]];',
       'let yy: Array<Array<number>> = [[4, 5], [6]];',
     );
-    testOutput('array', 'let a: Array<>[] = [];', 'let a: any[][] = [];');
     testOutput('array', 'let a: Array<any[]> = [];', 'let a: any[][] = [];');
     testOutput(
       'array',
@@ -2133,11 +2107,6 @@ type BrokenArray = {
       'let a: any[][][] = [];',
     );
 
-    testOutput(
-      'generic',
-      'let a: Array<>[] = [];',
-      'let a: Array<Array<>> = [];',
-    );
     testOutput(
       'generic',
       'let a: Array<any[]> = [];',

@@ -1,4 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSTypeAliasDeclaration > _error_ > missing-type-parameter > TSESTree - Error`]
-NO ERROR
+TSError
+> 1 | type T<> = 1;
+    |       ^^ Type parameter list cannot be empty.
+  2 |
