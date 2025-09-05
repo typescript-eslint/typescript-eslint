@@ -27,7 +27,7 @@ export interface RuleMetaDataDocs {
   url?: string;
 
   /**
-   * Mark this rule as frozen.
+   * Mark this rule as feature = frozen.
    */
   frozen?: boolean;
 }
