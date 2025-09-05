@@ -1,6 +1,7 @@
 // There's lots of funny stuff due to the typing of ts.Node
 /* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unnecessary-condition, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 import * as ts from 'typescript';
+import unraw from 'unraw';
 
 import type { TSError } from './node-utils';
 import type {
@@ -402,75 +403,12 @@ export class Converter {
   }
 
   #isValidEscape(text: string): boolean {
-    function isHex(hex: string): boolean {
-      return /^[0-9a-fA-F]+$/.test(hex);
-    }
-
-    const validShort = [
-      'f',
-      'n',
-      'r',
-      't',
-      'v',
-      'b',
-      '\\',
-      '"',
-      "'",
-      '`',
-      '0',
-      '$',
-    ];
-
-    for (let index = 0; index < text.length; index++) {
-      const char = text[index];
-      if (char !== '\\') {
-        continue;
-      }
-
-      const nextChar = text[index + 1];
-
-      if (validShort.includes(nextChar)) {
-        index += 1;
-        continue;
-      }
-
-      // unicode
-      if (nextChar === 'u') {
-        if (text[index + 2] === '{') {
-          const closingBraceIndex = text.indexOf('}', index + 3);
-          if (closingBraceIndex === -1) {
-            return false;
-          }
-
-          const hex = text.slice(index + 3, closingBraceIndex);
-          if (!isHex(hex) || hex.length === 0 || hex.length > 6) {
-            return false;
-          }
-          index += closingBraceIndex;
-          continue;
-        } else {
-          const hex = text.slice(index + 2, index + 6);
-          if (!isHex(hex) || hex.length !== 4) {
-            return false;
-          }
-          index += 5;
-          continue;
-        }
-      }
-
-      // hex
-      if (nextChar === 'x') {
-        const hex = text.slice(index + 2, index + 4);
-        if (!isHex(hex) || hex.length !== 2) {
-          return false;
-        }
-        index += 3;
-        continue;
-      }
-
+    try {
+      unraw(text);
+      return true;
+    } catch {
       return false;
     }
-    return true;
   }
 
   #throwError(node: number | ts.Node, message: string): asserts node is never {
@@ -1952,7 +1890,12 @@ export class Converter {
 
       // Template Literals
 
-      case SyntaxKind.NoSubstitutionTemplateLiteral:
+      case SyntaxKind.NoSubstitutionTemplateLiteral: {
+        const rawText = this.ast.text.slice(
+          node.getStart(this.ast) + 1,
+          node.end - 1,
+        );
+
         return this.createNode<TSESTree.TemplateLiteral>(node, {
           type: AST_NODE_TYPES.TemplateLiteral,
           expressions: [],
@@ -1963,17 +1906,15 @@ export class Converter {
               value: {
                 cooked:
                   node.parent.kind === SyntaxKind.TaggedTemplateExpression &&
-                  !this.#isValidEscape(node.text)
+                  !this.#isValidEscape(rawText)
                     ? null
                     : node.text,
-                raw: this.ast.text.slice(
-                  node.getStart(this.ast) + 1,
-                  node.end - 1,
-                ),
+                raw: rawText,
               },
             }),
           ],
         });
+      }
 
       case SyntaxKind.TemplateExpression: {
         const result = this.createNode<TSESTree.TemplateLiteral>(node, {
@@ -2020,19 +1961,21 @@ export class Converter {
       case SyntaxKind.TemplateMiddle:
       case SyntaxKind.TemplateTail: {
         const tail = node.kind === SyntaxKind.TemplateTail;
+        const rawText = this.ast.text.slice(
+          node.getStart(this.ast) + 1,
+          node.end - (tail ? 1 : 2),
+        );
+
         return this.createNode<TSESTree.TemplateElement>(node, {
           type: AST_NODE_TYPES.TemplateElement,
           tail,
           value: {
             cooked:
               node.parent.parent.kind === SyntaxKind.TaggedTemplateExpression &&
-              !this.#isValidEscape(node.text)
+              !this.#isValidEscape(rawText)
                 ? null
                 : node.text,
-            raw: this.ast.text.slice(
-              node.getStart(this.ast) + 1,
-              node.end - (tail ? 1 : 2),
-            ),
+            raw: rawText,
           },
         });
       }
