@@ -493,6 +493,13 @@ describe('convert', () => {
         baz`);
     });
 
+    it('should not set cooked to null for text without escape sequences', () => {
+      const code = `tag\`foo\``;
+      const templateElement = getTemplateElement(code);
+
+      expect(templateElement.value.cooked).toBe(`foo`);
+    });
+
     it('should not set cooked to null for untagged template literals', () => {
       const code = `const foo = \`${invalidEscapeSequences[0]}\``;
       const result = convertCode(code);
