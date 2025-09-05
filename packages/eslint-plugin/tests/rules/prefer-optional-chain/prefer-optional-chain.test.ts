@@ -1829,6 +1829,176 @@ describe('chain ending with comparison', () => {
       'foo != null && foo.bar != false;',
       'foo != null && foo.bar != true;',
       'foo != null && foo.bar != x;',
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar == x;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar == null;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar == undefined;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar === x;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar === undefined;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar !== 0;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar !== 1;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar !== '123';
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar !== {};
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar !== false;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar !== true;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar !== null;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo && foo.bar !== x;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar == x;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar == null;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar == undefined;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar === x;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar === undefined;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar !== 0;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar !== 1;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar !== '123';
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar !== {};
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar !== false;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar !== true;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar !== null;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo != null && foo.bar !== x;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo !== null && foo !== undefined && foo.bar == null;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo !== null && foo !== undefined && foo.bar === undefined;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo !== null && foo !== undefined && foo.bar !== 1;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo !== null && foo !== undefined && foo.bar != 1;
+      `,
+
+      `
+        declare const foo: { bar: number } | undefined;
+        foo !== null && foo !== undefined && foo.bar == null;
+      `,
+      `
+        declare const foo: { bar: number } | undefined;
+        foo !== null && foo !== undefined && foo.bar === undefined;
+      `,
+      `
+        declare const foo: { bar: number } | undefined;
+        foo !== null && foo !== undefined && foo.bar !== 1;
+      `,
+      `
+        declare const foo: { bar: number } | undefined;
+        foo !== null && foo !== undefined && foo.bar != 1;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo !== undefined && foo !== undefined && foo.bar == null;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo !== undefined && foo !== undefined && foo.bar === undefined;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo !== undefined && foo !== undefined && foo.bar !== 1;
+      `,
+      `
+        declare const foo: { bar: number } | null;
+        foo !== undefined && foo !== undefined && foo.bar != 1;
+      `,
+
+      `
+        declare const foo: { bar: number } | undefined;
+        foo !== undefined && foo !== undefined && foo.bar == null;
+      `,
+      `
+        declare const foo: { bar: number } | undefined;
+        foo !== undefined && foo !== undefined && foo.bar === undefined;
+      `,
+      `
+        declare const foo: { bar: number } | undefined;
+        foo !== undefined && foo !== undefined && foo.bar !== 1;
+      `,
+      `
+        declare const foo: { bar: number } | undefined;
+        foo !== undefined && foo !== undefined && foo.bar != 1;
+      `,
       '!foo && foo.bar == 0;',
       '!foo && foo.bar == 1;',
       "!foo && foo.bar == '123';",
