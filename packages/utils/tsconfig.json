@@ -7,6 +7,9 @@
       "path": "../typescript-estree"
     },
     {
+      "path": "../types"
+    },
+    {
       "path": "../scope-manager"
     },
     {
