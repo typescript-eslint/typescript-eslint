@@ -55,3 +55,16 @@ module.exports = {
 ```
 
 [Search for `🧱 extension rule`s](?=extension#rules) in this page to see all extension rules.
+
+## Frozen Rules
+
+When rules are feature complete, they are marked as frozen (indicated with ❄️ in the documentation). This applies to standalone rules that are complete, as well as [extension rules](#extension-rules) whose underlying core ESLint rules are frozen. After that point, we expect users to use [disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) when they find an edge case that isn’t covered.
+
+When a rule is frozen, it means:
+
+- **Bug fixes**: We will still fix confirmed bugs.
+- **New ECMAScript features**: We will ensure compatibility with new ECMAScript features, meaning the rule will not break on new syntax.
+- **TypeScript support**: We will ensure compatibility with TypeScript syntax, meaning the rule will not break on TypeScript syntax and violations are appropriate for TypeScript.
+- **New options**: We will not add any new options unless an option is the only way to fix a bug or support a newly-added ECMAScript feature.
+
+If you find that a frozen rule would work better for you with a change, we recommend copying the rule source code and modifying it to fit your needs.
