@@ -90,7 +90,6 @@ function isEntityNameExpression(
 }
 
 export class Converter {
-  #isInTaggedTemplate = false;
   private allowPattern = false;
   private readonly ast: ts.SourceFile;
   private readonly esTreeNodeToTSNodeMap = new WeakMap();
@@ -1963,7 +1962,8 @@ export class Converter {
               tail: true,
               value: {
                 cooked:
-                  this.#isInTaggedTemplate && !this.#isValidEscape(node.text)
+                  node.parent.kind === SyntaxKind.TaggedTemplateExpression &&
+                  !this.#isValidEscape(node.text)
                     ? null
                     : node.text,
                 raw: this.ast.text.slice(
@@ -2000,7 +2000,6 @@ export class Converter {
             'Tagged template expressions are not permitted in an optional chain.',
           );
         }
-        this.#isInTaggedTemplate = true;
         const result = this.createNode<TSESTree.TaggedTemplateExpression>(
           node,
           {
@@ -2015,7 +2014,6 @@ export class Converter {
               ),
           },
         );
-        this.#isInTaggedTemplate = false;
         return result;
       }
       case SyntaxKind.TemplateHead:
@@ -2027,7 +2025,8 @@ export class Converter {
           tail,
           value: {
             cooked:
-              this.#isInTaggedTemplate && !this.#isValidEscape(node.text)
+              node.parent.parent.kind === SyntaxKind.TaggedTemplateExpression &&
+              !this.#isValidEscape(node.text)
                 ? null
                 : node.text,
             raw: this.ast.text.slice(
