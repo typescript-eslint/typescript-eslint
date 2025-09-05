@@ -21,6 +21,7 @@ env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   # This increases the verbosity of the logs for everything, including Nx Cloud, but will hopefully surface more info about recent lint failures
   NX_VERBOSE_LOGGING: false
+  TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR: true
 
 defaults:
   run:
