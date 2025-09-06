@@ -140,6 +140,7 @@ describe('ES6 class', () => {
     assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
     expect(scope.isStrict).toBe(false);
+    expect(variables).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);

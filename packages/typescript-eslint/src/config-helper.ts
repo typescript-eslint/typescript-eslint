@@ -88,6 +88,9 @@ export type ConfigArray = TSESLint.FlatConfig.ConfigArray;
  *   },
  * );
  * ```
+ *
+ * @deprecated ESLint core now provides this functionality via `defineConfig()`,
+ * which we now recommend instead. See {@link https://typescript-eslint.io/packages/typescript-eslint/#config-deprecated}.
  */
 export function config(
   ...configs: InfiniteDepthConfigWithExtends[]

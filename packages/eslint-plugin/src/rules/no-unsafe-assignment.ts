@@ -50,6 +50,8 @@ export default createRule({
       unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
       unsafeAssignment:
         'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
+      unsafeObjectPattern:
+        'Unsafe object destructuring of a property with an {{sender}} value.',
     },
     schema: [],
   },
@@ -219,7 +221,7 @@ export default createRule({
         if (isTypeAnyType(senderType)) {
           context.report({
             node: receiverProperty.value,
-            messageId: 'unsafeArrayPatternFromTuple',
+            messageId: 'unsafeObjectPattern',
             data: createData(senderType),
           });
           didReport = true;
