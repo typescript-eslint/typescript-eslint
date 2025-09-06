@@ -143,7 +143,7 @@ export default createRule<Options, MessageId>({
 
         const expression = skipChainExpression(node.expression);
 
-        if (isKnownSafePromiseReturn(expression)) {
+        if (isKnownSafePromiseCall(expression)) {
           return;
         }
 
@@ -236,7 +236,7 @@ export default createRule<Options, MessageId>({
       ];
     }
 
-    function isKnownSafePromiseReturn(node: TSESTree.Node): boolean {
+    function isKnownSafePromiseCall(node: TSESTree.Node): boolean {
       if (node.type !== AST_NODE_TYPES.CallExpression) {
         return false;
       }
