@@ -4,13 +4,13 @@
   "include": [],
   "references": [
     {
+      "path": "../types"
+    },
+    {
       "path": "../utils"
     },
     {
       "path": "../typescript-estree"
-    },
-    {
-      "path": "../types"
     },
     {
       "path": "../parser"
