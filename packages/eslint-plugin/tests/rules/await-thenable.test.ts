@@ -616,6 +616,57 @@ declare const x: ReadonlyArray<any>;
 Promise.all(x);
       `,
     },
+    {
+      code: `
+Promise.all([Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)]);
+      `,
+    },
+    {
+      code: `
+declare const _unknown_: unknown;
+
+Promise.all([
+  _unknown_,
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3),
+]);
+      `,
+    },
+    {
+      code: `
+declare const _any_: any;
+
+Promise.all([
+  _any_,
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3),
+]);
+      `,
+    },
+    {
+      code: `
+declare const _promise_: Promise<number | string>;
+
+Promise.all([
+  _promise_,
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3),
+]);
+      `,
+    },
+    {
+      code: `
+Promise.all([
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3),
+  ...[Promise.resolve(4), Promise.resolve(5), Promise.resolve(6)],
+]);
+      `,
+    },
   ],
 
   invalid: [
@@ -1318,6 +1369,51 @@ Promise.all(x);
       `,
       errors: [
         {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.all([Promise.resolve(1), 2, Promise.resolve(3)]);
+      `,
+      errors: [
+        {
+          column: 34,
+          endColumn: 35,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.all([1, 2, Promise.resolve(3)]);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 15,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+        {
+          column: 17,
+          endColumn: 18,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.all([...[1, 2, 3]]);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 26,
+          line: 2,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],

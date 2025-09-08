@@ -1,6 +1,7 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
+import { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -98,6 +99,26 @@ export default createRule<[], MessageId>({
         const argument = node.arguments.at(0);
 
         if (argument == null) {
+          return;
+        }
+
+        if (argument.type === TSESTree.AST_NODE_TYPES.ArrayExpression) {
+          for (const element of argument.elements) {
+            if (element == null) {
+              continue;
+            }
+
+            const type = getConstrainedTypeAtLocation(services, element);
+            const tsNode = services.esTreeNodeToTSNodeMap.get(element);
+
+            if (containsNonAwaitableType(type, tsNode, checker)) {
+              context.report({
+                node: element,
+                messageId: 'invalidPromiseAggregatorInput',
+              });
+            }
+          }
+
           return;
         }
 
