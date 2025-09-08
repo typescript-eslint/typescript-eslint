@@ -235,7 +235,10 @@ function isInvalidPromiseAggregatorInput(
   return false;
 }
 
-function getValueTypesOfArrayLike(type: ts.Type, checker: ts.TypeChecker) {
+function getValueTypesOfArrayLike(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): readonly ts.Type[] | null {
   if (checker.isTupleType(type)) {
     return checker.getTypeArguments(type);
   }

@@ -551,6 +551,71 @@ declare const x: MyArray<null, Promise<void>>;
 Promise.all(x);
       `,
     },
+    {
+      code: `
+function* x() {
+  yield Promise.resolve(1);
+  yield Promise.resolve(2);
+  yield Promise.resolve(3);
+}
+
+Promise.all(x());
+      `,
+    },
+    {
+      code: `
+function* x() {
+  yield 1 as unknown;
+}
+
+Promise.all(x());
+      `,
+    },
+    {
+      code: `
+function* x() {
+  yield 1 as any;
+}
+
+Promise.all(x());
+      `,
+    },
+    {
+      code: `
+declare const x: Generator<Promise<number>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Generator<unknown>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Generator<any>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: ReadonlyArray<Promise<number>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: ReadonlyArray<unknown>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: ReadonlyArray<any>;
+Promise.all(x);
+      `,
+    },
   ],
 
   invalid: [
@@ -1172,6 +1237,83 @@ Promise.all(x);
 interface MyArray<Unused, T> extends Array<T> {}
 declare const x: MyArray<Promise<void>, null>;
 
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+function* x() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+Promise.all(x());
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+function* x() {
+  yield 1 as number;
+}
+
+Promise.all(x());
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+function* x() {
+  yield 1 as number | Promise<number>;
+}
+
+Promise.all(x());
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Generator<number>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: ReadonlyArray<number>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: ReadonlyArray<number | Promise<string>>;
 Promise.all(x);
       `,
       errors: [
