@@ -191,6 +191,19 @@ throw new Map();
     },
     {
       code: `
+function func<T1, T2>() {
+  let err: Promise<T1> | Promise<T2>;
+  throw err;
+}
+      `,
+      options: [
+        {
+          allow: ['Promise'],
+        },
+      ],
+    },
+    {
+      code: `
 try {
 } catch (e) {
   throw e;
@@ -240,6 +253,30 @@ Promise.reject('foo').catch(e => {
           allowRethrowing: true,
           allowThrowingAny: false,
           allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  throw await Promise.resolve(new Error('error'));
+}
+      `,
+      options: [
+        {
+          allowThrowingAny: false,
+        },
+      ],
+    },
+    {
+      code: `
+function* foo(): Generator<number, void, Error> {
+  throw yield 303;
+}
+      `,
+      options: [
+        {
+          allowThrowingAny: false,
         },
       ],
     },
@@ -591,6 +628,24 @@ function fun<T extends number>(t: T): void {
     },
     {
       code: `
+function func<T1, T2>() {
+  let err: Promise<T1> | Promise<T2> | void;
+  throw err;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allow: ['Promise'],
+        },
+      ],
+    },
+    {
+      code: `
 class UnknownError implements Error {}
 throw new UnknownError();
       `,
@@ -742,6 +797,40 @@ Promise.reject('foo').then(e => {
           allowRethrowing: true,
           allowThrowingAny: false,
           allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  throw await bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowThrowingAny: false,
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  throw await Promise.resolve<number>(303);
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowThrowingAny: false,
         },
       ],
     },

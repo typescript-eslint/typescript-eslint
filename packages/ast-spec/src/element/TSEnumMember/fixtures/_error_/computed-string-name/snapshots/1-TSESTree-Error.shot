@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > element > TSEnumMember > _error_ > computed-string-name > TSESTree - Error`]
+TSError
+  1 | enum Foo {
+> 2 |   ["A"] = 2
+    |   ^^^^^ Computed property names are not allowed in enums.
+  3 | }
+  4 |

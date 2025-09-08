@@ -169,6 +169,10 @@ export function typeMatchesSpecifier(
   specifier: TypeOrValueSpecifier,
   program: ts.Program,
 ): boolean {
+  if (tsutils.isUnionType(type)) {
+    return type.types.every(t => typeMatchesSpecifier(t, specifier, program));
+  }
+
   const wholeTypeMatches = ((): boolean => {
     if (tsutils.isIntrinsicErrorType(type)) {
       return false;

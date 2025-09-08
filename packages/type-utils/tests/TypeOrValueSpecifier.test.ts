@@ -179,6 +179,7 @@ describe('TypeOrValueSpecifier', () => {
       ['interface Foo {prop: string}; type Test = Foo;', 'RegExp'],
       ['type Test = RegExp;', 'Foo'],
       ['type Test = RegExp;', 'BigInt'],
+      ['type Test = RegExp | BigInt;', 'BigInt'],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched universal string specifier: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
@@ -268,6 +269,10 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'file', name: 'Bar' },
       ],
       [
+        'interface Foo {prop: string}; type Test = Foo | string;',
+        { from: 'file', name: 'Foo' },
+      ],
+      [
         'interface Foo {prop: string}; type Test = Foo;',
         { from: 'file', name: ['Bar', 'Baz'] },
       ],
@@ -306,6 +311,7 @@ describe('TypeOrValueSpecifier', () => {
 
     it.for([
       ['type Test = RegExp;', { from: 'lib', name: 'BigInt' }],
+      ['type Test = RegExp | BigInt;', { from: 'lib', name: 'BigInt' }],
       ['type Test = RegExp;', { from: 'lib', name: ['BigInt', 'Date'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched lib specifier: %s\n\t%s",
@@ -326,6 +332,7 @@ describe('TypeOrValueSpecifier', () => {
 
     it.for([
       ['type Test = string;', { from: 'lib', name: 'number' }],
+      ['type Test = string | number;', { from: 'lib', name: 'number' }],
       ['type Test = string;', { from: 'lib', name: ['number', 'boolean'] }],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched intrinsic type specifier: %s\n\t%s",
@@ -389,31 +396,33 @@ describe('TypeOrValueSpecifier', () => {
           package: '@babel/code-frame',
         },
       ],
+      // TODO: Skipped pending resolution of https://github.com/typescript-eslint/typescript-eslint/issues/11504
+      //
       // The following type is available from the multi-file @types/node package.
-      [
-        'import { it } from "node:test"; type Test = typeof it;',
-        {
-          from: 'package',
-          name: 'it',
-          package: 'node:test',
-        },
-      ],
-      [
-        `
-          declare module "node:test" {
-            export function it(): void;
-          }
-
-          import { it } from "node:test";
-
-          type Test = typeof it;
-        `,
-        {
-          from: 'package',
-          name: 'it',
-          package: 'node:test',
-        },
-      ],
+      // [
+      //   'import { it } from "node:test"; type Test = typeof it;',
+      //   {
+      //     from: 'package',
+      //     name: 'it',
+      //     package: 'node:test',
+      //   },
+      // ],
+      // [
+      //   `
+      //     declare module "node:test" {
+      //       export function it(): void;
+      //     }
+      //
+      //     import { it } from "node:test";
+      //
+      //     type Test = typeof it;
+      //   `,
+      //   {
+      //     from: 'package',
+      //     name: 'it',
+      //     package: 'node:test',
+      //   },
+      // ],
       [
         'import { fail } from "node:assert"; type Test = typeof fail;',
         {
@@ -542,6 +551,10 @@ describe('TypeOrValueSpecifier', () => {
       [
         'import type {Node} from "typescript"; type Test = Node;',
         { from: 'package', name: 'Symbol', package: 'typescript' },
+      ],
+      [
+        'import type {Node} from "typescript"; type Test = Node | Symbol;',
+        { from: 'package', name: 'Node', package: 'typescript' },
       ],
       [
         'import type {Node} from "typescript"; type Test = Node;',

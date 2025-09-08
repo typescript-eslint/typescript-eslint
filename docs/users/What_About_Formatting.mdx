@@ -50,11 +50,12 @@ Using this config by adding it to the end of your `extends`:
 // @ts-check
 
 import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import someOtherConfig from 'eslint-config-other-configuration-that-enables-formatting-rules';
 import prettierConfig from 'eslint-config-prettier';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommended,
   someOtherConfig,

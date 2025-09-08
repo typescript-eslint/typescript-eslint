@@ -2,6 +2,7 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
+import path from 'node:path';
 
 import { RuleTester } from '../src/RuleTester';
 
@@ -56,13 +57,51 @@ describe('rule tester filename', () => {
         errors: [{ messageId: 'foo' }],
         filename: '../foo.js',
       },
+      {
+        name: 'non-normalized relative path starting with ./',
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: './../../escaped/cwd/file.ts',
+      },
+      {
+        name: 'non-normalized relative path ./../',
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: './../foo.js',
+      },
+      {
+        name: 'non-normalized relative path with multiple ./',
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: '././../foo.js',
+      },
+      {
+        name: 'non-normalized path a/../../',
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: 'a/../../file.ts',
+      },
+      {
+        name: 'non-normalized path a/b/../c',
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: 'a/b/../c',
+      },
+      {
+        name: 'non-normalized path with multiple slashes',
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: 'a/////////////../../../b',
+      },
     ],
     valid: [],
   });
 
   new RuleTester({
     languageOptions: {
-      parserOptions: { tsconfigRootDir: '/some/path/that/totally/exists/' },
+      parserOptions: {
+        tsconfigRootDir: path.resolve('/some/path/that/totally/exists/'),
+      },
     },
   }).run('with tsconfigRootDir', rule, {
     invalid: [
@@ -77,6 +116,42 @@ describe('rule tester filename', () => {
         code: '_',
         errors: [{ messageId: 'foo' }],
         filename: '../foo.js',
+      },
+      {
+        name: 'non-normalized relative path starting with ./',
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: './../../escaped/cwd/file.ts',
+      },
+      {
+        name: 'non-normalized relative path ./../',
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: './../foo.js',
+      },
+      {
+        name: 'non-normalized relative path with multiple ./',
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: '././../foo.js',
+      },
+      {
+        name: 'non-normalized path a/../../',
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: 'a/../../file.ts',
+      },
+      {
+        name: 'non-normalized path a/b/../c',
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: 'a/b/../c',
+      },
+      {
+        name: 'non-normalized path with multiple slashes',
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: 'a/////////////../../../b',
       },
     ],
     valid: [],

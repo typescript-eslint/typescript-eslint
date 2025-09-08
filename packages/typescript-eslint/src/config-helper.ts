@@ -88,6 +88,9 @@ export type ConfigArray = TSESLint.FlatConfig.ConfigArray;
  *   },
  * );
  * ```
+ *
+ * @deprecated ESLint core now provides this functionality via `defineConfig()`,
+ * which we now recommend instead. See {@link https://typescript-eslint.io/packages/typescript-eslint/#config-deprecated}.
  */
 export function config(
   ...configs: InfiniteDepthConfigWithExtends[]
@@ -172,6 +175,13 @@ function configImpl(...configs: unknown[]): ConfigArray {
           throw new TypeError(
             `tseslint.config(): Config at index ${configIndex}${nameErrorPhrase} has an 'extends' array that contains a config with a 'basePath' property at index ${extensionIndex}.` +
               ` 'basePath' in 'extends' is not allowed.`,
+          );
+        }
+
+        if ('extends' in extension) {
+          throw new TypeError(
+            `tseslint.config(): Config at index ${configIndex}${nameErrorPhrase} has an 'extends' array that contains a config with an 'extends' property at index ${extensionIndex}.` +
+              ` Nested 'extends' is not allowed.`,
           );
         }
       }
