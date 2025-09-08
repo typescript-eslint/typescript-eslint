@@ -343,6 +343,8 @@ class C<R extends unknown> {
     {
       code: `
 declare const x: unknown;
+
+// @ts-expect-error
 Promise.all(x);
       `,
     },
@@ -400,6 +402,8 @@ Promise.all(x);
     {
       code: `
 declare const x: number | Array<Promise<number>>;
+
+// @ts-expect-error
 Promise.all(x);
       `,
     },
@@ -445,6 +449,8 @@ Promise.all(x);
     {
       code: `
 declare const x: number | [Promise<number>];
+
+// @ts-expect-error
 Promise.all(x);
       `,
     },
@@ -458,6 +464,8 @@ Promise.all(x);
     {
       code: `
 declare const x: Iterable<Promise<number>> | Iterable<Promise<string>>;
+
+// @ts-expect-error
 Promise.all(x);
       `,
     },
@@ -496,6 +504,8 @@ Promise.all(x);
     {
       code: `
 declare const x: number | Iterable<Promise<number>>;
+
+// @ts-expect-error
 Promise.all(x);
       `,
     },
@@ -529,17 +539,15 @@ Promise.all(x);
 
     {
       code: `
-Promise.all();
-      `,
-    },
-    {
-      code: `
+// @ts-expect-error
 Promise.all(1);
       `,
     },
     {
       code: `
 declare const x: Promise<number>;
+
+// @ts-expect-error
 Promise.all(x);
       `,
     },
