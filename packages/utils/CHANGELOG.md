@@ -1,3 +1,15 @@
+## 8.43.0 (2025-09-08)
+
+### 🩹 Fixes
+
+- **scope-manager:** exclude Program from DefinitionBase node types ([#11469](https://github.com/typescript-eslint/typescript-eslint/pull/11469))
+
+### ❤️ Thank You
+
+- Dima @dbarabashh
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.42.0 (2025-09-02)
 
 This was a version bump only for utils to align it with other projects, there were no code changes.

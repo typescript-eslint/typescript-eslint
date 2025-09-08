@@ -1,3 +1,15 @@
+## 8.43.0 (2025-09-08)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] should report deprecated exports and reexports ([#11359](https://github.com/typescript-eslint/typescript-eslint/pull/11359))
+
+### ❤️ Thank You
+
+- Victor Genaev @mainframev
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.42.0 (2025-09-02)
 
 ### 🚀 Features
