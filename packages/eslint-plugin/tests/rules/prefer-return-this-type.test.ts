@@ -105,7 +105,7 @@ declare const valueUnion: BaseUnion | string;
 
 class BaseUnion {
   f(): BaseUnion | string {
-    if (hidden) {
+    if (Math.random()) {
       return this;
     }
 
@@ -417,7 +417,7 @@ declare const valueUnion: number | string;
 
 class BaseUnion {
   f(): BaseUnion | string {
-    if (hidden) {
+    if (Math.random()) {
       return this;
     }
 
@@ -438,7 +438,7 @@ declare const valueUnion: number | string;
 
 class BaseUnion {
   f(): this | string {
-    if (hidden) {
+    if (Math.random()) {
       return this;
     }
 
