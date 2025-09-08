@@ -401,10 +401,12 @@ export class Converter {
     }
   }
 
-  #throwError(node: number | ts.Node, message: string): asserts node is never {
+  #throwError(node: number | ts.Node | TSESTree.Range, message: string): never {
     let start;
     let end;
-    if (typeof node === 'number') {
+    if (Array.isArray(node)) {
+      [start, end] = node;
+    } else if (typeof node === 'number') {
       start = end = node;
     } else {
       start = node.getStart(this.ast);
@@ -415,7 +417,7 @@ export class Converter {
   }
 
   #throwUnlessAllowInvalidAST(
-    node: number | ts.Node,
+    node: number | ts.Node | TSESTree.Range,
     message: string,
   ): asserts node is never {
     if (!this.options.allowInvalidAST) {
@@ -476,7 +478,7 @@ export class Converter {
   >(
     node: Properties,
     deprecatedKey: Key,
-    preferredKey: string,
+    preferredKey: string | undefined,
     value: Value,
   ): Properties & Record<Key, Value> {
     let warned = false;
@@ -487,10 +489,13 @@ export class Converter {
         ? (): Value => value
         : (): Value => {
             if (!warned) {
-              process.emitWarning(
-                `The '${deprecatedKey}' property is deprecated on ${node.type} nodes. Use ${preferredKey} instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
-                'DeprecationWarning',
-              );
+              let message = `The '${deprecatedKey}' property is deprecated on ${node.type} nodes.`;
+              if (preferredKey) {
+                message += ` Use ${preferredKey} instead.`;
+              }
+              message +=
+                ' See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.';
+              process.emitWarning(message, 'DeprecationWarning');
               warned = true;
             }
 
@@ -688,10 +693,15 @@ export class Converter {
     node: TSESTreeToTSNode<TSESTree.TSTypeParameterInstantiation>,
   ): TSESTree.TSTypeParameterInstantiation {
     const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
+    const range: TSESTree.Range = [typeArguments.pos - 1, greaterThanToken.end];
+
+    if (typeArguments.length === 0) {
+      this.#throwError(range, 'Type argument list cannot be empty.');
+    }
 
     return this.createNode<TSESTree.TSTypeParameterInstantiation>(node, {
       type: AST_NODE_TYPES.TSTypeParameterInstantiation,
-      range: [typeArguments.pos - 1, greaterThanToken.end],
+      range,
       params: typeArguments.map(typeArgument =>
         this.convertChild(typeArgument),
       ),
@@ -711,6 +721,10 @@ export class Converter {
       typeParameters.pos - 1,
       greaterThanToken.end,
     ];
+
+    if (typeParameters.length === 0) {
+      this.#throwError(range, 'Type parameter list cannot be empty.');
+    }
 
     return {
       type: AST_NODE_TYPES.TSTypeParameterDeclaration,
@@ -2181,6 +2195,9 @@ export class Converter {
         );
 
         if (node.importClause) {
+          // TODO(bradzacher) swap to `phaseModifier` once we add support for `import defer`
+          // https://github.com/estree/estree/issues/328
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           if (node.importClause.isTypeOnly) {
             result.importKind = 'type';
           }
@@ -3163,11 +3180,16 @@ export class Converter {
 
           const commaToken = findNextToken(node.argument, node, this.ast)!;
           const openBraceToken = findNextToken(commaToken, node, this.ast)!;
-          const closeBraceToken = findNextToken(
+          const tokenAfterAttributes = findNextToken(
             node.attributes,
             node,
             this.ast,
           )!;
+          // Since TS 5.9, there could be a trailing comma, i.e. `{ with: { ... }, }`
+          const closeBraceToken =
+            tokenAfterAttributes.kind === ts.SyntaxKind.CommaToken
+              ? findNextToken(tokenAfterAttributes, node, this.ast)!
+              : tokenAfterAttributes;
           const withOrAssertToken = findNextToken(
             openBraceToken,
             node,
@@ -3255,12 +3277,38 @@ export class Converter {
       }
 
       case SyntaxKind.EnumMember: {
-        return this.createNode<TSESTree.TSEnumMember>(node, {
-          type: AST_NODE_TYPES.TSEnumMember,
-          computed: node.name.kind === ts.SyntaxKind.ComputedPropertyName,
-          id: this.convertChild(node.name),
-          initializer: node.initializer && this.convertChild(node.initializer),
-        });
+        const computed = node.name.kind === ts.SyntaxKind.ComputedPropertyName;
+        if (computed) {
+          this.#throwUnlessAllowInvalidAST(
+            node.name,
+            'Computed property names are not allowed in enums.',
+          );
+        }
+
+        if (
+          node.name.kind === SyntaxKind.NumericLiteral ||
+          node.name.kind === SyntaxKind.BigIntLiteral
+        ) {
+          this.#throwUnlessAllowInvalidAST(
+            node.name,
+            'An enum member cannot have a numeric name.',
+          );
+        }
+
+        return this.createNode<TSESTree.TSEnumMember>(
+          node,
+          this.#withDeprecatedGetter(
+            {
+              type: AST_NODE_TYPES.TSEnumMember,
+              id: this.convertChild(node.name),
+              initializer:
+                node.initializer && this.convertChild(node.initializer),
+            },
+            'computed',
+            undefined,
+            computed,
+          ),
+        );
       }
 
       case SyntaxKind.ModuleDeclaration: {

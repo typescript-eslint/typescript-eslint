@@ -20,7 +20,7 @@ Program {
         type: "TSImportType",
         argument: Literal {
           type: "Literal",
-          raw: ""A"",
+          raw: "'A'",
           value: "A",
 
           range: [16, 19],
@@ -75,7 +75,7 @@ Program {
                     shorthand: false,
                     value: Literal {
                       type: "Literal",
-                      raw: ""json"",
+                      raw: "'json'",
                       value: "json",
 
                       range: [37, 43],

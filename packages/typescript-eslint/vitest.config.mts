@@ -14,6 +14,10 @@ const vitestConfig = mergeConfig(
       dir: path.join(import.meta.dirname, 'tests'),
       name: packageJson.name,
       root: import.meta.dirname,
+      typecheck: {
+        enabled: true,
+        tsconfig: path.join(import.meta.dirname, 'tsconfig.spec.json'),
+      },
     },
   }),
 );

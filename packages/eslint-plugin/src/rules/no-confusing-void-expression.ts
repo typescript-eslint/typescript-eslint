@@ -1,4 +1,8 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type {
+  NodeWithParent,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -300,8 +304,8 @@ export default createRule<Options, MessageId>({
      * @param node The void expression node to check.
      * @returns Invalid ancestor node if it was found. `null` otherwise.
      */
-    function findInvalidAncestor(node: TSESTree.Node): InvalidAncestor | null {
-      const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
+    function findInvalidAncestor(node: NodeWithParent): InvalidAncestor | null {
+      const parent = node.parent;
       if (
         parent.type === AST_NODE_TYPES.SequenceExpression &&
         node !== parent.expressions[parent.expressions.length - 1]
@@ -365,17 +369,14 @@ export default createRule<Options, MessageId>({
     /** Checks whether the return statement is the last statement in a function body. */
     function isFinalReturn(node: TSESTree.ReturnStatement): boolean {
       // the parent must be a block
-      const block = nullThrows(node.parent, NullThrowsReasons.MissingParent);
+      const block = node.parent;
       if (block.type !== AST_NODE_TYPES.BlockStatement) {
         // e.g. `if (cond) return;` (not in a block)
         return false;
       }
 
       // the block's parent must be a function
-      const blockParent = nullThrows(
-        block.parent,
-        NullThrowsReasons.MissingParent,
-      );
+      const blockParent = block.parent;
       if (
         ![
           AST_NODE_TYPES.ArrowFunctionExpression,
