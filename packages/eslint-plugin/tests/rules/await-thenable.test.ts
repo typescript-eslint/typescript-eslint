@@ -342,6 +342,17 @@ class C<R extends unknown> {
 
     {
       code: `
+// @ts-expect-error
+Promise.all();
+      `,
+    },
+    {
+      code: `
+Promise.all([,]);
+      `,
+    },
+    {
+      code: `
 declare const x: unknown;
 
 // @ts-expect-error

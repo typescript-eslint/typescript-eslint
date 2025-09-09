@@ -265,13 +265,12 @@ function getValueTypesOfArrayLike(
   }
 
   if (checker.isArrayLikeType(type)) {
-    const indexType = type.getNumberIndexType();
-
-    if (indexType != null) {
-      return [indexType];
-    }
-
-    return null;
+    return [
+      nullThrows(
+        type.getNumberIndexType(),
+        'number index type should exist on an array-like',
+      ),
+    ];
   }
 
   // `Iterable<...>`
