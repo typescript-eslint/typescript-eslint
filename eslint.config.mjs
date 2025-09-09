@@ -380,6 +380,7 @@ export default defineConfig(
           '@typescript-eslint/no-unsafe-call': 'off',
           '@typescript-eslint/no-unsafe-member-access': 'off',
           '@typescript-eslint/no-unsafe-return': 'off',
+          'vitest/hoisted-apis-on-top': 'error',
           'vitest/no-alias-methods': 'error',
           'vitest/no-disabled-tests': 'error',
           'vitest/no-focused-tests': 'error',
