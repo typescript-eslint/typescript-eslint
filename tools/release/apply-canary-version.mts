@@ -4,6 +4,7 @@ import semver from 'semver';
 
 // We are either releasing a canary version of the latest major version, or one for the next major.
 const overrideMajorVersion = process.env.OVERRIDE_MAJOR_VERSION;
+const isDryRun = process.env.DRY_RUN === 'true';
 
 const preid = 'alpha';
 
@@ -83,7 +84,7 @@ if (!nextCanaryVersion) {
 
 console.log(`\nApplying next canary version with Nx`);
 
-const command = `nx release version ${nextCanaryVersion}`;
+const command = `nx release version ${nextCanaryVersion}${isDryRun ? ' --dry-run' : ''}`;
 
 console.log(`\n> ${command}\n`);
 

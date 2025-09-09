@@ -242,6 +242,7 @@ export default defineConfig(
       'no-useless-call': 'error',
       'no-useless-computed-key': 'error',
       'no-useless-concat': 'error',
+      'no-useless-rename': 'error',
       'no-var': 'error',
       'no-void': ['error', { allowAsStatement: true }],
       'object-shorthand': 'error',

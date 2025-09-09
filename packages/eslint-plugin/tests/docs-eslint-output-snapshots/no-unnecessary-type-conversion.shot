@@ -14,7 +14,7 @@ Number(123);
 +123;
 ~ Using the unary + operator on a number does not change the type or value of the number.
 ~~123;
-~~ Using ~~ on a number does not change the type or value of the number.
+~~ Using ~~ on an integer does not change the type or value of the number.
 
 Boolean(true);
 ~~~~~~~ Passing a boolean to Boolean() does not change the type or value of the boolean.

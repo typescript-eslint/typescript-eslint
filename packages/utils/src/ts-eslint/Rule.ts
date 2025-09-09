@@ -25,6 +25,11 @@ export interface RuleMetaDataDocs {
    * The URL of the rule's docs.
    */
   url?: string;
+
+  /**
+   * Mark this rule as feature-frozen.
+   */
+  frozen?: boolean;
 }
 
 export interface ExternalSpecifier {
