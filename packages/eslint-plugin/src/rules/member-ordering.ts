@@ -728,6 +728,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require a consistent member declaration order',
+      frozen: true,
     },
     messages: {
       incorrectGroupOrder:

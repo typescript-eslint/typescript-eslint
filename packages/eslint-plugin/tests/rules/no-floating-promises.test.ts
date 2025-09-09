@@ -868,6 +868,34 @@ declare function createMyThenable(): MyThenable;
 
 createMyThenable();
     `,
+    {
+      code: `
+const randomAsyncFunction = async () => {
+  return Promise.resolve(true);
+};
+
+randomAsyncFunction();
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: ['randomAsyncFunction'],
+        },
+      ],
+    },
+    {
+      code: `
+async function myAsyncFunction() {
+  return Promise.resolve('test');
+}
+
+myAsyncFunction();
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: ['myAsyncFunction'],
+        },
+      ],
+    },
   ],
 
   invalid: [

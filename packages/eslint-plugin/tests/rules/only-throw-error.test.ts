@@ -191,6 +191,19 @@ throw new Map();
     },
     {
       code: `
+function func<T1, T2>() {
+  let err: Promise<T1> | Promise<T2>;
+  throw err;
+}
+      `,
+      options: [
+        {
+          allow: ['Promise'],
+        },
+      ],
+    },
+    {
+      code: `
 try {
 } catch (e) {
   throw e;
@@ -610,6 +623,24 @@ function fun<T extends number>(t: T): void {
       errors: [
         {
           messageId: 'object',
+        },
+      ],
+    },
+    {
+      code: `
+function func<T1, T2>() {
+  let err: Promise<T1> | Promise<T2> | void;
+  throw err;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allow: ['Promise'],
         },
       ],
     },
