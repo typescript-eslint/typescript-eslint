@@ -26,6 +26,10 @@ describe(createParseSettings, () => {
 
     it('is created when options.projectService is undefined, options.project is true, and process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE is true', () => {
       vi.stubEnv('TYPESCRIPT_ESLINT_PROJECT_SERVICE', 'true');
+      vi.stubEnv(
+        'TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR',
+        'true',
+      );
 
       const parseSettings = createParseSettings('', {
         project: true,
@@ -33,6 +37,17 @@ describe(createParseSettings, () => {
       });
 
       expect(parseSettings.projectService).toBe(projectService);
+    });
+
+    it('complains when options.projectService is true, options.project is true, and process.env.TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR is not set', () => {
+      expect(() =>
+        createParseSettings('', {
+          project: true,
+          projectService: true,
+        }),
+      ).toThrowErrorMatchingInlineSnapshot(
+        `[Error: Enabling "project" does nothing when "projectService" is enabled. You can remove the "project" setting.]`,
+      );
     });
 
     it('is not created when options.projectService is undefined, options.project is falsy, and process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE is true', () => {
