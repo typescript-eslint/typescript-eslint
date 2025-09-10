@@ -1,3 +1,3 @@
 abstract class Foo {
-  accessor [constructor]
+  accessor [constructor];
 }

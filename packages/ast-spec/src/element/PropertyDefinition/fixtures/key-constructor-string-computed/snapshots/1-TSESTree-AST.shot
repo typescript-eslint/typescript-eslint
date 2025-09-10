@@ -30,15 +30,15 @@ Program {
             static: false,
             value: null,
 
-            range: [14, 29],
+            range: [14, 30],
             loc: {
               start: { column: 2, line: 2 },
-              end: { column: 17, line: 2 },
+              end: { column: 18, line: 2 },
             },
           },
         ],
 
-        range: [10, 31],
+        range: [10, 32],
         loc: {
           start: { column: 10, line: 1 },
           end: { column: 1, line: 3 },
@@ -61,7 +61,7 @@ Program {
       implements: [],
       superClass: null,
 
-      range: [0, 31],
+      range: [0, 32],
       loc: {
         start: { column: 0, line: 1 },
         end: { column: 1, line: 3 },
@@ -70,7 +70,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [0, 32],
+  range: [0, 33],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },

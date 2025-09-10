@@ -1,3 +1,3 @@
 abstract class Foo {
-  ['constructor']
+  ['constructor'];
 }

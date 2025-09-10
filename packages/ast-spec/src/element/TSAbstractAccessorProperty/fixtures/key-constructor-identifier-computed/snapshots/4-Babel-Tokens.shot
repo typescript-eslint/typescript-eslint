@@ -81,9 +81,19 @@
   },
   Punctuator {
     type: "Punctuator",
+    value: ";",
+
+    range: [45, 46],
+    loc: {
+      start: { column: 24, line: 2 },
+      end: { column: 25, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
     value: "}",
 
-    range: [46, 47],
+    range: [47, 48],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 1, line: 3 },
