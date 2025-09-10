@@ -213,7 +213,8 @@ const additionalKeys: AdditionalKeys = {
   TSExternalModuleReference: ['expression'],
   TSFunctionType: SharedVisitorKeys.FunctionType,
   TSImportEqualsDeclaration: ['id', 'moduleReference'],
-  TSImportType: ['source', 'options', 'qualifier', 'typeArguments'],
+  // TODO: Update to use `source`
+  TSImportType: ['argument', 'options', 'qualifier', 'typeArguments'],
   TSIndexedAccessType: ['objectType', 'indexType'],
   TSIndexSignature: ['parameters', 'typeAnnotation'],
   TSInferType: ['typeParameter'],
