@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > element > TSAbstractAccessorProperty > _error_ > key-constructor-string > Babel - Error`]
+BabelError
+  1 | abstract class Foo {
+> 2 |   accessor 'constructor'
+    |            ^ Classes may not have a field named 'constructor'. (2:11)
+  3 | }
+  4 |
+  

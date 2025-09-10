@@ -1,0 +1,4 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > element > TSAbstractPropertyDefinition > _error_ > key-constructor-identifier > Error Alignment`]
+Both errored
