@@ -650,7 +650,7 @@ export class Converter {
    * @returns the converted ESTree node list
    */
   private convertChildren(
-    children?: ts.NodeArray<ts.Node> | ts.Node[],
+    children?: ts.Node[] | ts.NodeArray<ts.Node>,
     parent?: ts.Node,
   ): any {
     return children?.map(child => this.converter(child, parent, false));
@@ -2221,9 +2221,9 @@ export class Converter {
                 break;
               case SyntaxKind.NamedImports:
                 result.specifiers.push(
-                  ...this.convertChildren(
+                  ...(this.convertChildren(
                     node.importClause.namedBindings.elements,
-                  ),
+                  ) as TSESTree.ImportClause[]),
                 );
                 break;
             }
