@@ -97,6 +97,14 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
     '~~new Number();',
     'Boolean(new Boolean());',
     '!!new Boolean();',
+    `
+      enum CustomIds {
+        Id1 = 'id1',
+        Id2 = 'id2',
+      }
+      const customId = 'id1';
+      const compareWithToString = customId === CustomIds.Id1.toString();
+    `,
   ],
 
   invalid: [
