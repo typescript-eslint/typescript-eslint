@@ -1,0 +1,82 @@
+[
+  Keyword {
+    type: "Keyword",
+    value: "class",
+
+    range: [0, 5],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 5, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Foo",
+
+    range: [6, 9],
+    loc: {
+      start: { column: 6, line: 1 },
+      end: { column: 9, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [10, 11],
+    loc: {
+      start: { column: 10, line: 1 },
+      end: { column: 11, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "accessor",
+
+    range: [14, 22],
+    loc: {
+      start: { column: 2, line: 2 },
+      end: { column: 10, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "[",
+
+    range: [23, 24],
+    loc: {
+      start: { column: 11, line: 2 },
+      end: { column: 12, line: 2 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "constructor",
+
+    range: [24, 35],
+    loc: {
+      start: { column: 12, line: 2 },
+      end: { column: 23, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "]",
+
+    range: [35, 36],
+    loc: {
+      start: { column: 23, line: 2 },
+      end: { column: 24, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [37, 38],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 1, line: 3 },
+    },
+  },
+]
