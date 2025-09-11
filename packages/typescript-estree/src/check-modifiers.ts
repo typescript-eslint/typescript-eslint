@@ -7,7 +7,7 @@ import {
   getDeclarationKind,
   hasModifier,
   isThisIdentifier,
-  createErrorOnNode,
+  createError,
 } from './node-utils';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -128,13 +128,18 @@ function nodeHasIllegalDecorators(
   );
 }
 
+function throwError(node: ts.Node, message: string): never {
+  const ast = node.getSourceFile();
+  const start = node.getStart(ast);
+  const end = node.getEnd();
+
+  throw createError(message, ast, start, end);
+}
+
 export function checkModifiers(node: ts.Node): void {
   // typescript<5.0.0
   if (nodeHasIllegalDecorators(node)) {
-    throw createErrorOnNode(
-      node.illegalDecorators[0],
-      'Decorators are not valid here.',
-    );
+    throwError(node.illegalDecorators[0], 'Decorators are not valid here.');
   }
 
   for (const decorator of getDecorators(
@@ -144,12 +149,12 @@ export function checkModifiers(node: ts.Node): void {
     // `checkGrammarModifiers` function in typescript
     if (!nodeCanBeDecorated(node as TSNode)) {
       if (ts.isMethodDeclaration(node) && !nodeIsPresent(node.body)) {
-        throw createErrorOnNode(
+        throwError(
           decorator,
           'A decorator can only decorate a method implementation, not an overload.',
         );
       } else {
-        throw createErrorOnNode(decorator, 'Decorators are not valid here.');
+        throwError(decorator, 'Decorators are not valid here.');
       }
     }
   }
@@ -163,7 +168,7 @@ export function checkModifiers(node: ts.Node): void {
         node.kind === SyntaxKind.PropertySignature ||
         node.kind === SyntaxKind.MethodSignature
       ) {
-        throw createErrorOnNode(
+        throwError(
           modifier,
           `'${ts.tokenToString(
             modifier.kind,
@@ -176,7 +181,7 @@ export function checkModifiers(node: ts.Node): void {
         (modifier.kind !== SyntaxKind.StaticKeyword ||
           !ts.isClassLike(node.parent))
       ) {
-        throw createErrorOnNode(
+        throwError(
           modifier,
           `'${ts.tokenToString(
             modifier.kind,
@@ -191,7 +196,7 @@ export function checkModifiers(node: ts.Node): void {
       modifier.kind !== SyntaxKind.ConstKeyword &&
       node.kind === SyntaxKind.TypeParameter
     ) {
-      throw createErrorOnNode(
+      throwError(
         modifier,
         `'${ts.tokenToString(
           modifier.kind,
@@ -209,7 +214,7 @@ export function checkModifiers(node: ts.Node): void {
           ts.isTypeAliasDeclaration(node.parent)
         ))
     ) {
-      throw createErrorOnNode(
+      throwError(
         modifier,
         `'${ts.tokenToString(
           modifier.kind,
@@ -224,7 +229,7 @@ export function checkModifiers(node: ts.Node): void {
       node.kind !== SyntaxKind.IndexSignature &&
       node.kind !== SyntaxKind.Parameter
     ) {
-      throw createErrorOnNode(
+      throwError(
         modifier,
         "'readonly' modifier can only appear on a property declaration or index signature.",
       );
@@ -235,7 +240,7 @@ export function checkModifiers(node: ts.Node): void {
       ts.isClassLike(node.parent) &&
       !ts.isPropertyDeclaration(node)
     ) {
-      throw createErrorOnNode(
+      throwError(
         modifier,
         `'${ts.tokenToString(
           modifier.kind,
@@ -249,7 +254,7 @@ export function checkModifiers(node: ts.Node): void {
     ) {
       const declarationKind = getDeclarationKind(node.declarationList);
       if (declarationKind === 'using' || declarationKind === 'await using') {
-        throw createErrorOnNode(
+        throwError(
           modifier,
           `'declare' modifier cannot appear on a '${declarationKind}' declaration.`,
         );
@@ -265,7 +270,7 @@ export function checkModifiers(node: ts.Node): void {
       node.kind !== SyntaxKind.GetAccessor &&
       node.kind !== SyntaxKind.SetAccessor
     ) {
-      throw createErrorOnNode(
+      throwError(
         modifier,
         `'${ts.tokenToString(
           modifier.kind,
@@ -281,7 +286,7 @@ export function checkModifiers(node: ts.Node): void {
       (node.parent.kind === SyntaxKind.ModuleBlock ||
         node.parent.kind === SyntaxKind.SourceFile)
     ) {
-      throw createErrorOnNode(
+      throwError(
         modifier,
         `'${ts.tokenToString(
           modifier.kind,
@@ -293,7 +298,7 @@ export function checkModifiers(node: ts.Node): void {
       modifier.kind === SyntaxKind.AccessorKeyword &&
       node.kind !== SyntaxKind.PropertyDeclaration
     ) {
-      throw createErrorOnNode(
+      throwError(
         modifier,
         "'accessor' modifier can only appear on a property declaration.",
       );
@@ -307,10 +312,7 @@ export function checkModifiers(node: ts.Node): void {
       node.kind !== SyntaxKind.FunctionExpression &&
       node.kind !== SyntaxKind.ArrowFunction
     ) {
-      throw createErrorOnNode(
-        modifier,
-        "'async' modifier cannot be used here.",
-      );
+      throwError(modifier, "'async' modifier cannot be used here.");
     }
 
     // `checkGrammarModifiers` function in `typescript`
@@ -321,7 +323,7 @@ export function checkModifiers(node: ts.Node): void {
         modifier.kind === SyntaxKind.DeclareKeyword ||
         modifier.kind === SyntaxKind.AsyncKeyword)
     ) {
-      throw createErrorOnNode(
+      throwError(
         modifier,
         `'${ts.tokenToString(
           modifier.kind,
@@ -342,10 +344,7 @@ export function checkModifiers(node: ts.Node): void {
             anotherModifier.kind === SyntaxKind.ProtectedKeyword ||
             anotherModifier.kind === SyntaxKind.PrivateKeyword)
         ) {
-          throw createErrorOnNode(
-            anotherModifier,
-            `Accessibility modifier already seen.`,
-          );
+          throwError(anotherModifier, `Accessibility modifier already seen.`);
         }
       }
     }
@@ -366,7 +365,7 @@ export function checkModifiers(node: ts.Node): void {
       if (
         !(func?.kind === SyntaxKind.Constructor && nodeIsPresent(func.body))
       ) {
-        throw createErrorOnNode(
+        throwError(
           modifier,
           'A parameter property is only allowed in a constructor implementation.',
         );
