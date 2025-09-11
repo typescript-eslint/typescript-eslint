@@ -1388,7 +1388,7 @@ export class Converter {
           return this.createNode<TSESTree.ArrayPattern>(node, {
             type: AST_NODE_TYPES.ArrayPattern,
             decorators: [],
-            elements: this.convertChildren(node.elements),
+            elements: node.elements.map(el => this.convertPattern(el)),
             optional: false,
             typeAnnotation: undefined,
           });
