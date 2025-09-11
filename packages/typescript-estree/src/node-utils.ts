@@ -678,14 +678,6 @@ export class TSError extends Error {
   }
 }
 
-export function createErrorOnNode(node: ts.Node, message: string): TSError {
-  const ast = node.getSourceFile();
-  const start = node.getStart(ast);
-  const end = node.getEnd();
-
-  return createError(message, ast, start, end);
-}
-
 export function createError(
   message: string,
   ast: ts.SourceFile,
