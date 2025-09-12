@@ -300,6 +300,30 @@ String(foo);
       `,
       options: [{ ignoredTypeNames: ['Foo'] }],
     },
+    {
+      code: `
+interface MyError<T> {}
+declare const error: MyError<number>;
+error.toString();
+      `,
+      options: [{ ignoredTypeNames: ['MyError'] }],
+    },
+    {
+      code: `
+type MyError<T> = {};
+declare const error: MyError<number>;
+error.toString();
+      `,
+      options: [{ ignoredTypeNames: ['MyError'] }],
+    },
+    {
+      code: `
+class MyError<T> {}
+declare const error: MyError<number>;
+error.toString();
+      `,
+      options: [{ ignoredTypeNames: ['MyError'] }],
+    },
     `
 function String(value) {
   return value;
