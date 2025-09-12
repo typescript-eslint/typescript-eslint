@@ -1184,12 +1184,12 @@ switch (numberUnion) {
       `,
       errors: [
         {
-          messageId: 'mismatchedCase',
           line: 12,
+          messageId: 'mismatchedCase',
         },
         {
-          messageId: 'mismatchedCase',
           line: 13,
+          messageId: 'mismatchedCase',
         },
       ],
     },
@@ -1212,12 +1212,12 @@ switch (stringUnion) {
       `,
       errors: [
         {
-          messageId: 'mismatchedCase',
           line: 12,
+          messageId: 'mismatchedCase',
         },
         {
-          messageId: 'mismatchedCase',
           line: 13,
+          messageId: 'mismatchedCase',
         },
       ],
     },
@@ -1236,8 +1236,8 @@ stringUnion === stringEnum;
       `,
       errors: [
         {
-          messageId: 'mismatchedCondition',
           line: 11,
+          messageId: 'mismatchedCondition',
         },
       ],
     },
