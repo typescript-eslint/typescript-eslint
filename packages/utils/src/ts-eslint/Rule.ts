@@ -138,7 +138,7 @@ export interface RuleMetaData<
   /**
    * Specifies default options for the rule. If present, any user-provided options in their config will be merged on top of them recursively.
    * This merging will be applied directly to `context.options`.
-   * If you want backwards-compatible support for earlier ESLint version; consider using the top-level `defaultOptions` instead.
+   * If you want backwards-compatible support for earlier ESLint version, consider using the top-level `defaultOptions` instead.
    *
    * since ESLint 9.15.0
    */
