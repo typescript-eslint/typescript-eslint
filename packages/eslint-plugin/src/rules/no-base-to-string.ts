@@ -25,6 +25,13 @@ export type Options = [
   },
 ];
 export type MessageIds = 'baseArrayJoin' | 'baseToString';
+const canHaveTypeParameters = (declaration: ts.Declaration) => {
+  return (
+    ts.isTypeAliasDeclaration(declaration) ||
+    ts.isInterfaceDeclaration(declaration) ||
+    ts.isClassDeclaration(declaration)
+  );
+};
 
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
@@ -227,6 +234,17 @@ export default createRule<Options, MessageIds>({
       if (
         type.flags & ts.TypeFlags.Boolean ||
         type.flags & ts.TypeFlags.BooleanLiteral
+      ) {
+        return Usefulness.Always;
+      }
+
+      const symbol = type.aliasSymbol ?? type.getSymbol();
+      const decl = symbol?.getDeclarations()?.[0];
+      if (
+        decl &&
+        canHaveTypeParameters(decl) &&
+        decl.typeParameters &&
+        ignoredTypeNames.includes(symbol.name)
       ) {
         return Usefulness.Always;
       }
