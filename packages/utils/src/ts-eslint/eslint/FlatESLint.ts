@@ -49,9 +49,14 @@ export namespace FlatESLint {
      */
     ignorePatterns?: string[] | null;
     /**
-     * The path to a configuration file, overrides all configurations used with this instance.
-     * The options.overrideConfig option is applied after this option is applied.
-     * Searches for default config file when falsy. Does not do any config file lookup when `true`. Considered to be a config filename when a string.
+     * The path to a configuration file.
+     *
+     * - Overrides all configurations used with this instance.
+     * - The options.overrideConfig option is applied after this option is applied.
+     * - Searches for default config file when falsy.
+     * - Does not do any config file lookup when `true`.
+     * - Considered to be a config filename when a string.
+     *
      * @default false
      */
     overrideConfigFile?: boolean | string;
