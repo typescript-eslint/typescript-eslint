@@ -56,13 +56,15 @@ export default createRule({
             return;
           }
 
-          let value: number | string | null | undefined;
+          let value: number | string | undefined;
           if (isStringLiteral(member.initializer)) {
             value = member.initializer.value;
           } else if (isNumberLiteral(member.initializer)) {
             value = member.initializer.value;
           } else if (isStaticTemplateLiteral(member.initializer)) {
-            value = member.initializer.quasis[0].value.cooked;
+            // cooked can only be null inside a TaggedTemplateExpression, which is not possible.
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            value = member.initializer.quasis[0].value.cooked!;
           }
 
           if (value == null) {

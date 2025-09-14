@@ -116,6 +116,11 @@ type Foo = { bar: unknown };
 const bar: any = 1;
 const foo: Foo = { bar };
     `,
+    // cooked is null for invalid escape sequences in tagged template literals. ignore it.
+    // this case is based on  "[{ ['x']: x }] = [{ ['x']: 1 }] as [{ ['x']: any }];"
+    `
+[{[tag\`${String.raw`\uXXXX`}\`]: x }] = [{ [tag\`${String.raw`\uXXXX`}\`]: 1 }] as [{ [tag\`${String.raw`\uXXXX`}\`]: any }];
+    `,
   ],
   invalid: [
     {
