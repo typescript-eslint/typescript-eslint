@@ -1,7 +1,6 @@
 // There's lots of funny stuff due to the typing of ts.Node
 /* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unnecessary-condition, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 import * as ts from 'typescript';
-import unraw from 'unraw';
 
 import type { TSError } from './node-utils';
 import type {
@@ -404,7 +403,8 @@ export class Converter {
 
   #isValidEscape(text: string): boolean {
     try {
-      unraw(text);
+      // eslint-disable-next-line @typescript-eslint/no-implied-eval
+      new Function(`return \`${text}\`;`)();
       return true;
     } catch {
       return false;
