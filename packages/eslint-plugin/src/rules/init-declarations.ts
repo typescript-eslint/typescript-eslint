@@ -20,6 +20,17 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     // defaultOptions, -- base rule does not use defaultOptions
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'init-declarations',
+            url: 'https://eslint.org/docs/latest/rules/init-declarations',
+          },
+        },
+      ],
+    },
     docs: {
       description:
         'Require or disallow initialization in variable declarations',

@@ -219,6 +219,17 @@ export default createRule<Options, MessageIds>({
   name: 'no-use-before-define',
   meta: {
     type: 'problem',
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-use-before-define',
+            url: 'https://eslint.org/docs/latest/rules/no-use-before-define',
+          },
+        },
+      ],
+    },
     docs: {
       description: 'Disallow the use of variables before they are defined',
       extendsBaseRule: true,

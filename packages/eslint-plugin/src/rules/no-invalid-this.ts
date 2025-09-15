@@ -22,6 +22,17 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     defaultOptions,
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-invalid-this',
+            url: 'https://eslint.org/docs/latest/rules/no-invalid-this',
+          },
+        },
+      ],
+    },
     docs: {
       description:
         'Disallow `this` keywords outside of classes or class-like objects',

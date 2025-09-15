@@ -23,6 +23,17 @@ export default createRule<Options, MessageIds>({
   name: 'class-methods-use-this',
   meta: {
     type: 'suggestion',
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'class-methods-use-this',
+            url: 'https://eslint.org/docs/latest/rules/class-methods-use-this',
+          },
+        },
+      ],
+    },
     docs: {
       description: 'Enforce that class methods utilize `this`',
       extendsBaseRule: true,

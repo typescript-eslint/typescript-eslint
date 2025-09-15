@@ -39,6 +39,17 @@ export default createRule<Options, MessageIds>({
   name: 'no-shadow',
   meta: {
     type: 'suggestion',
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-shadow',
+            url: 'https://eslint.org/docs/latest/rules/no-shadow',
+          },
+        },
+      ],
+    },
     docs: {
       description:
         'Disallow variable declarations from shadowing variables declared in the outer scope',

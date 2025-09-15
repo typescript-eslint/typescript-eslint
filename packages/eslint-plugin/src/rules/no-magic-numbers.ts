@@ -50,6 +50,17 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     // defaultOptions, -- base rule does not use defaultOptions
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-magic-numbers',
+            url: 'https://eslint.org/docs/latest/rules/no-magic-numbers',
+          },
+        },
+      ],
+    },
     docs: {
       description: 'Disallow magic numbers',
       extendsBaseRule: true,

@@ -20,6 +20,17 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     // defaultOptions, -- base rule does not use defaultOptions
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-dupe-class-members',
+            url: 'https://eslint.org/docs/latest/rules/no-dupe-class-members',
+          },
+        },
+      ],
+    },
     docs: {
       description: 'Disallow duplicate class members',
       extendsBaseRule: true,
