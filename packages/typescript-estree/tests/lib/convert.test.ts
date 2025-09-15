@@ -451,7 +451,7 @@ describe('convert', () => {
   });
 
   describe('tagged template literal cooked', () => {
-    const getTemplateElement = (code: string): TSESTree.TemplateElement => {
+    const getTemplateElement = (code: string): TSESTree.TemplateElement[] => {
       const result = convertCode(code);
       const converter = new Converter(result);
       const program = converter.convertProgram();
@@ -463,7 +463,7 @@ describe('convert', () => {
       if (expression?.type !== AST_NODE_TYPES.TaggedTemplateExpression) {
         throw new Error('TaggedTemplateExpression not found');
       }
-      return expression.quasi.quasis[0];
+      return expression.quasi.quasis;
     };
 
     const invalidEscapeSequences = [String.raw`\uXXXX`, String.raw`\xQW`];
@@ -472,14 +472,36 @@ describe('convert', () => {
       const code = `tag\`${invalidEscapeSequences[0]}${invalidEscapeSequences[1]}\``;
       const templateElement = getTemplateElement(code);
 
-      expect(templateElement.value.cooked).toBeNull();
+      expect(templateElement[0].value.cooked).toBeNull();
     });
 
     it('should set cooked to null for mixed valid and invalid escape sequences', () => {
       const code = `tag\`\n${invalidEscapeSequences[0]}\u{1111}\t\${}${invalidEscapeSequences[1]}\``;
       const templateElement = getTemplateElement(code);
 
-      expect(templateElement.value.cooked).toBeNull();
+      expect(templateElement[0].value.cooked).toBeNull();
+      expect(templateElement[1].value.cooked).toBeNull();
+    });
+
+    it('should set cooked to null for invalid escape sequences in the tagged template literal head with expressions', () => {
+      const code = `tag\`${invalidEscapeSequences[0]}\${exp}middle\${exp}tail\``;
+      const templateElement = getTemplateElement(code);
+
+      expect(templateElement[0].value.cooked).toBeNull();
+    });
+
+    it('should set cooked to null for invalid escape sequences in the tagged template literal middle with expressions', () => {
+      const code = `tag\`head\${exp}${invalidEscapeSequences[0]}\${exp}tail\``;
+      const templateElement = getTemplateElement(code);
+
+      expect(templateElement[1].value.cooked).toBeNull();
+    });
+
+    it('should set cooked to null for invalid escape sequences in the tagged template literal tail with expressions', () => {
+      const code = `tag\`head\${exp}middle\${exp}${invalidEscapeSequences[0]}\``;
+      const templateElement = getTemplateElement(code);
+
+      expect(templateElement[2].value.cooked).toBeNull();
     });
 
     it('should not set cooked to null for text without invalid escape sequences', () => {
@@ -488,7 +510,7 @@ describe('convert', () => {
         baz\``;
       const templateElement = getTemplateElement(code);
 
-      expect(templateElement.value.cooked).toBe(`foo\n\u1111\t
+      expect(templateElement[0].value.cooked).toBe(`foo\n\u1111\t
         bar
         baz`);
     });
@@ -497,7 +519,7 @@ describe('convert', () => {
       const code = `tag\`foo\``;
       const templateElement = getTemplateElement(code);
 
-      expect(templateElement.value.cooked).toBe(`foo`);
+      expect(templateElement[0].value.cooked).toBe(`foo`);
     });
 
     it('should not set cooked to null for untagged template literals', () => {

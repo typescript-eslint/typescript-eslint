@@ -1979,16 +1979,18 @@ export class Converter {
           node.getStart(this.ast) + 1,
           node.end - (tail ? 1 : 2),
         );
+        const isTagged =
+          node.kind === SyntaxKind.TemplateHead
+            ? node.parent.parent.kind === SyntaxKind.TaggedTemplateExpression
+            : node.parent.parent.parent.kind ===
+              SyntaxKind.TaggedTemplateExpression;
 
         return this.createNode<TSESTree.TemplateElement>(node, {
           type: AST_NODE_TYPES.TemplateElement,
           tail,
           value: {
             cooked:
-              node.parent.parent.kind === SyntaxKind.TaggedTemplateExpression &&
-              !this.#isValidEscape(rawText)
-                ? null
-                : node.text,
+              isTagged && !this.#isValidEscape(rawText) ? null : node.text,
             raw: rawText,
           },
         });
