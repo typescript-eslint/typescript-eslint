@@ -96,6 +96,16 @@ class Person {
           },
           line: 3,
           messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+class Person {
+  constructor(name: string) { /* empty */ }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -113,6 +123,16 @@ class Person {
           },
           line: 3,
           messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+class Person {
+  otherMethod(name: string) { /* empty */ }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -130,6 +150,16 @@ class Foo {
           },
           line: 3,
           messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+class Foo {
+  private constructor() { /* empty */ }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -147,6 +177,16 @@ class Foo {
           },
           line: 3,
           messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+class Foo {
+  protected constructor() { /* empty */ }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -162,6 +202,14 @@ function foo() {}
           },
           line: 2,
           messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+function foo() { /* empty */ }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -180,6 +228,17 @@ class Foo {
           },
           line: 4,
           messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+class Foo {
+  @decorator()
+  foo() { /* empty */ }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -197,6 +256,16 @@ class Foo extends Base {
           },
           line: 3,
           messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+class Foo extends Base {
+  override foo() { /* empty */ }
+}
+      `,
+            },
+          ],
         },
       ],
     },
