@@ -1,0 +1,34 @@
+---
+description: 'Disallow using Object.keys, Object.values, and Object.entries on Map and Set instances.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-object-methods-on-collections** for documentation.
+
+Methods like `Object.entries()`, `Object.keys()`, and `Object.values()` can be
+used work with collections of data stored in objects. However, when working with `Map` or `Set` objects, even though
+they are collections, using these methods are a mistake because they do not properly write to (in the case of
+`Object.assign()`) or read from the object.
+
+This rule prevents such methods from being used on `Map` and `Set` objects.
+
+<Tabs>
+  <TabItem value="❌ Incorrect">
+		```ts
+			console.log(Object.values(new Set('abc')));
+			Object.assign(new Map(), { k: 'v' });
+		```
+	</TabItem>
+  <TabItem value="✅ Correct">
+		```ts
+			console.log([...new Set('abc').values()]);
+			new Map().set('k', 'v');
+		```
+	</TabItem>
+</Tabs>
+
+{/* Intentionally Omitted: When Not To Use It */}

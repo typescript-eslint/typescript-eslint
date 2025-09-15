@@ -59,6 +59,7 @@ import noNamespace from './no-namespace';
 import noNonNullAssertedNullishCoalescing from './no-non-null-asserted-nullish-coalescing';
 import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
 import noNonNullAssertion from './no-non-null-assertion';
+import noObjectMethodsOnCollections from './no-object-methods-on-collections';
 import noRedeclare from './no-redeclare';
 import noRedundantTypeConstituents from './no-redundant-type-constituents';
 import noRequireImports from './no-require-imports';
@@ -192,6 +193,7 @@ const rules = {
   'no-non-null-asserted-nullish-coalescing': noNonNullAssertedNullishCoalescing,
   'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
   'no-non-null-assertion': noNonNullAssertion,
+  'no-object-methods-on-collections': noObjectMethodsOnCollections,
   'no-redeclare': noRedeclare,
   'no-redundant-type-constituents': noRedundantTypeConstituents,
   'no-require-imports': noRequireImports,
