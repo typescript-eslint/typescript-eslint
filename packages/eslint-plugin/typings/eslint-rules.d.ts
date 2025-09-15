@@ -164,6 +164,7 @@ declare module 'eslint/lib/rules/no-empty-function' {
 
   const rule: TSESLint.RuleModule<
     'unexpected',
+    'suggestComment',
     [
       {
         allow?: string[];
