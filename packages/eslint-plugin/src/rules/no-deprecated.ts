@@ -89,20 +89,37 @@ export default createRule<Options, MessageIds>({
           ? getJsDocDeprecation(symbol)
           : undefined;
       }
+
+      const seen = new Set<ts.Symbol>();
       const targetSymbol = checker.getAliasedSymbol(symbol);
-      while (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
-        const reason = getJsDocDeprecation(symbol);
+      let current = symbol;
+
+      while (tsutils.isSymbolFlagSet(current, ts.SymbolFlags.Alias)) {
+        /* istanbul ignore next */
+        if (seen.has(current)) {
+          break;
+        }
+
+        seen.add(current);
+
+        const reason = getJsDocDeprecation(current);
+
         if (reason != null) {
           return reason;
         }
-        const immediateAliasedSymbol: ts.Symbol | undefined =
-          symbol.getDeclarations() && checker.getImmediateAliasedSymbol(symbol);
-        if (!immediateAliasedSymbol) {
+
+        const nextAlias: ts.Symbol | undefined =
+          current.getDeclarations() &&
+          checker.getImmediateAliasedSymbol(current);
+
+        if (!nextAlias) {
           break;
         }
-        symbol = immediateAliasedSymbol;
-        if (checkDeprecationsOfAliasedSymbol && symbol === targetSymbol) {
-          return getJsDocDeprecation(symbol);
+
+        current = nextAlias;
+
+        if (checkDeprecationsOfAliasedSymbol && current === targetSymbol) {
+          return getJsDocDeprecation(current);
         }
       }
       return undefined;
