@@ -795,11 +795,13 @@ export class Converter {
   }
 
   private convertImportAttributes(
-    node: ts.ImportAttributes | undefined,
+    node: ts.ExportDeclaration | ts.ImportDeclaration,
   ): TSESTree.ImportAttribute[] {
-    return node == null
-      ? []
-      : node.elements.map(element => this.convertChild(element));
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    const attributes = node.attributes ?? node.assertClause;
+    return (
+      attributes?.elements.map(element => this.convertChild(element)) ?? []
+    );
   }
 
   private convertJSXIdentifier(
@@ -2180,10 +2182,7 @@ export class Converter {
           this.#withDeprecatedAliasGetter(
             {
               type: AST_NODE_TYPES.ImportDeclaration,
-              attributes: this.convertImportAttributes(
-                // eslint-disable-next-line @typescript-eslint/no-deprecated
-                node.attributes ?? node.assertClause,
-              ),
+              attributes: this.convertImportAttributes(node),
               importKind: 'value',
               source: this.convertChild(node.moduleSpecifier),
               specifiers: [],
@@ -2261,10 +2260,7 @@ export class Converter {
             this.#withDeprecatedAliasGetter(
               {
                 type: AST_NODE_TYPES.ExportNamedDeclaration,
-                attributes: this.convertImportAttributes(
-                  // eslint-disable-next-line @typescript-eslint/no-deprecated
-                  node.attributes ?? node.assertClause,
-                ),
+                attributes: this.convertImportAttributes(node),
                 declaration: null,
                 exportKind: node.isTypeOnly ? 'type' : 'value',
                 source: this.convertChild(node.moduleSpecifier),
@@ -2284,10 +2280,7 @@ export class Converter {
           this.#withDeprecatedAliasGetter(
             {
               type: AST_NODE_TYPES.ExportAllDeclaration,
-              attributes: this.convertImportAttributes(
-                // eslint-disable-next-line @typescript-eslint/no-deprecated
-                node.attributes ?? node.assertClause,
-              ),
+              attributes: this.convertImportAttributes(node),
               exported:
                 node.exportClause?.kind === SyntaxKind.NamespaceExport
                   ? this.convertChild(node.exportClause.name)
