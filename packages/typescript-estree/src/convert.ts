@@ -798,9 +798,9 @@ export class Converter {
     node: ts.ExportDeclaration | ts.ImportDeclaration,
   ): TSESTree.ImportAttribute[] {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
-    const attritbutes = node.attributes ?? node.assertClause;
+    const attributes = node.attributes ?? node.assertClause;
     return (
-      attritbutes?.elements.map(element => this.convertChild(element)) ?? []
+      attributes?.elements.map(element => this.convertChild(element)) ?? []
     );
   }
 
