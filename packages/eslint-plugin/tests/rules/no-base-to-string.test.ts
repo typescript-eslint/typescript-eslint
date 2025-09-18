@@ -324,6 +324,27 @@ error.toString();
       `,
       options: [{ ignoredTypeNames: ['MyError'] }],
     },
+    {
+      code: `
+interface Animal {}
+interface Serializable {}
+interface Cat extends Animal, Serializable {}
+
+declare const whiskers: Cat;
+whiskers.toString();
+      `,
+      options: [{ ignoredTypeNames: ['Animal'] }],
+    },
+    {
+  code: `
+class UnknownBase {}
+class CustomError extends UnknownBase {}
+
+declare const err: CustomError;
+err.toString();
+  `,
+      options: [{ ignoredTypeNames: ['UnknownBase'] }],
+    },
     `
 function String(value) {
   return value;
@@ -2262,6 +2283,23 @@ v.join();
             name: 'v',
           },
           messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+interface Dog extends Animal {}
+
+declare const labrador: Dog;
+labrador.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'labrador',
+          },
+          messageId: 'baseToString',
         },
       ],
     },

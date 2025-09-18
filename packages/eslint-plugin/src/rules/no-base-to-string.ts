@@ -212,6 +212,44 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Always;
     }
 
+    function hasBaseTypes(type: ts.Type): type is ts.InterfaceType {
+      return (
+        (type.flags & ts.TypeFlags.Object) !== 0 &&
+        (((type as ts.ObjectType).objectFlags & ts.ObjectFlags.Interface) !==
+          0 ||
+          ((type as ts.ObjectType).objectFlags & ts.ObjectFlags.Class) !== 0)
+      );
+    }
+
+    function isIgnoredTypeOrBase(
+      type: ts.Type,
+      seen = new Set<ts.Type>(),
+      cache = new Map<ts.Type, boolean>(),
+    ): boolean {
+      if (seen.has(type)) {
+        return false;
+      }
+
+      const cached = cache.get(type);
+      if (cached != null) {
+        return cached;
+      }
+
+      seen.add(type);
+
+      const typeName = getTypeName(checker, type);
+      let result = ignoredTypeNames.includes(typeName);
+
+      if (!result && hasBaseTypes(type)) {
+        result = checker
+          .getBaseTypes(type)
+          .some(base => isIgnoredTypeOrBase(base, seen, cache));
+      }
+
+      cache.set(type, result);
+      return result;
+    }
+
     function collectToStringCertainty(
       type: ts.Type,
       visited: Set<ts.Type>,
@@ -248,8 +286,8 @@ export default createRule<Options, MessageIds>({
       ) {
         return Usefulness.Always;
       }
-
-      if (ignoredTypeNames.includes(getTypeName(checker, type))) {
+      
+      if (isIgnoredTypeOrBase(type)) {
         return Usefulness.Always;
       }
 
