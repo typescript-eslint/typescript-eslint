@@ -337,14 +337,23 @@ whiskers.toString();
     },
     {
   code: `
+interface MyError extends Error {}
+
+declare const error: MyError;
+error.toString();
+  `,
+    },
+    {
+      code: `
 class UnknownBase {}
 class CustomError extends UnknownBase {}
 
 declare const err: CustomError;
 err.toString();
-  `,
+      `,
       options: [{ ignoredTypeNames: ['UnknownBase'] }],
     },
+
     `
 function String(value) {
   return value;
