@@ -650,10 +650,10 @@ export class Converter {
    * @returns the converted ESTree node list
    */
   private convertChildren(
-    children?: ts.Node[] | ts.NodeArray<ts.Node>,
+    children: ts.Node[] | ts.NodeArray<ts.Node>,
     parent?: ts.Node,
-  ): any {
-    return children?.map(child => this.converter(child, parent, false));
+  ): any[] {
+    return children.map(child => this.converter(child, parent, false));
   }
 
   /**
@@ -805,9 +805,11 @@ export class Converter {
   }
 
   private convertImportAttributes(
-    node: ts.ImportAttributes | undefined,
+    node: ts.ExportDeclaration | ts.ImportDeclaration,
   ): TSESTree.ImportAttribute[] {
-    return node == null ? [] : this.convertChildren(node.elements);
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    const attributes = node.attributes ?? node.assertClause;
+    return this.convertChildren(attributes?.elements ?? []);
   }
 
   private convertJSXIdentifier(
@@ -2182,10 +2184,7 @@ export class Converter {
           this.#withDeprecatedAliasGetter(
             {
               type: AST_NODE_TYPES.ImportDeclaration,
-              attributes: this.convertImportAttributes(
-                // eslint-disable-next-line @typescript-eslint/no-deprecated
-                node.attributes ?? node.assertClause,
-              ),
+              attributes: this.convertImportAttributes(node),
               importKind: 'value',
               source: this.convertChild(node.moduleSpecifier),
               specifiers: [],
@@ -2263,10 +2262,7 @@ export class Converter {
             this.#withDeprecatedAliasGetter(
               {
                 type: AST_NODE_TYPES.ExportNamedDeclaration,
-                attributes: this.convertImportAttributes(
-                  // eslint-disable-next-line @typescript-eslint/no-deprecated
-                  node.attributes ?? node.assertClause,
-                ),
+                attributes: this.convertImportAttributes(node),
                 declaration: null,
                 exportKind: node.isTypeOnly ? 'type' : 'value',
                 source: this.convertChild(node.moduleSpecifier),
@@ -2287,10 +2283,7 @@ export class Converter {
           this.#withDeprecatedAliasGetter(
             {
               type: AST_NODE_TYPES.ExportAllDeclaration,
-              attributes: this.convertImportAttributes(
-                // eslint-disable-next-line @typescript-eslint/no-deprecated
-                node.attributes ?? node.assertClause,
-              ),
+              attributes: this.convertImportAttributes(node),
               exported:
                 node.exportClause?.kind === SyntaxKind.NamespaceExport
                   ? this.convertChild(node.exportClause.name)

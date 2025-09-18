@@ -1,3 +1,21 @@
+## 8.44.0 (2025-09-15)
+
+### 🚀 Features
+
+- **eslint-plugin:** [await-thenable] report invalid (non-promise) values passed to promise aggregator methods ([#11267](https://github.com/typescript-eslint/typescript-eslint/pull/11267))
+
+### 🩹 Fixes
+
+- **deps:** update dependency @eslint-community/eslint-utils to v4.8.0 ([#11589](https://github.com/typescript-eslint/typescript-eslint/pull/11589))
+- **eslint-plugin:** [no-unnecessary-type-conversion] ignore enum members ([#11490](https://github.com/typescript-eslint/typescript-eslint/pull/11490))
+
+### ❤️ Thank You
+
+- Moses Odutusin @thebolarin
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.43.0 (2025-09-08)
 
 ### 🚀 Features

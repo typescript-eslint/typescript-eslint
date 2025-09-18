@@ -1,3 +1,9 @@
+## 8.44.0 (2025-09-15)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.43.0 (2025-09-08)
 
 ### 🩹 Fixes
