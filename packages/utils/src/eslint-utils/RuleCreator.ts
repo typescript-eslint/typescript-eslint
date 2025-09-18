@@ -30,6 +30,7 @@ export interface RuleCreateAndOptions<
   defaultOptions: Readonly<Options>;
 }
 
+/** @deprecated use `'RuleWithMetaAndName'` */
 export interface RuleWithMeta<
   Options extends readonly unknown[],
   MessageIds extends string,
@@ -76,6 +77,7 @@ export function RuleCreator<PluginDocs = unknown>(
           url: urlCreator(name),
         },
       },
+      name,
       ...rule,
     });
   };
@@ -89,7 +91,8 @@ function createRule<
   create,
   defaultOptions,
   meta,
-}: Readonly<RuleWithMeta<Options, MessageIds, PluginDocs>>): RuleModule<
+  name,
+}: Readonly<RuleWithMetaAndName<Options, MessageIds, PluginDocs>>): RuleModule<
   MessageIds,
   Options,
   PluginDocs
@@ -101,6 +104,7 @@ function createRule<
     },
     defaultOptions,
     meta,
+    name,
   };
 }
 
@@ -114,7 +118,7 @@ RuleCreator.withoutDocs = function withoutDocs<
   Options extends readonly unknown[],
   MessageIds extends string,
 >(
-  args: Readonly<RuleWithMeta<Options, MessageIds>>,
+  args: Readonly<RuleWithMetaAndName<Options, MessageIds>>,
 ): RuleModule<MessageIds, Options> {
   return createRule(args);
 };
