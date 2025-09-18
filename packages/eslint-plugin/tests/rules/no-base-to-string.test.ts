@@ -353,7 +353,18 @@ err.toString();
       `,
       options: [{ ignoredTypeNames: ['UnknownBase'] }],
     },
+    {
+      code: `
+interface Animal {}
+interface Dog extends Animal {}
+interface Cat extends Animal {}
 
+declare const dog: Dog;
+declare const cat: Cat;
+cat.toString();
+      `,
+      options: [{ ignoredTypeNames: ['Animal'] }],
+    },
     `
 function String(value) {
   return value;
@@ -2307,6 +2318,24 @@ labrador.toString();
           data: {
             certainty: 'will',
             name: 'labrador',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+interface A extends B {}
+interface B extends A {}
+
+declare const a: A;
+a.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'a',
           },
           messageId: 'baseToString',
         },
