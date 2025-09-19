@@ -253,6 +253,7 @@ exports[`AST Fixtures > List fixtures with AST differences`]
   "special/TSTypeParameter/fixtures/interface-in-const-modifier-multiple/fixture.ts",
   "special/TSTypeParameter/fixtures/method-const-modifiers/fixture.ts",
   "type/TSImportType/fixtures/type-import-type-with-import-attributes-with/fixture.ts",
+  "type/TSImportType/fixtures/type-import-type-with-trailing-comma-in-import-attributes/fixture.ts",
   "type/TSMappedType/fixtures/no-modifiers/fixture.ts",
   "type/TSMappedType/fixtures/optional-minus/fixture.ts",
   "type/TSMappedType/fixtures/optional-plus/fixture.ts",

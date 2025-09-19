@@ -2579,8 +2579,8 @@
       end: { column: 18, line: 76 },
     },
   },
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [1130, 1133],
@@ -2609,8 +2609,8 @@
       end: { column: 11, line: 77 },
     },
   },
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "yield",
 
     range: [1138, 1143],

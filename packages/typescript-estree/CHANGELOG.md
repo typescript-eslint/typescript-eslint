@@ -1,3 +1,79 @@
+## 8.44.0 (2025-09-15)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.43.0 (2025-09-08)
+
+### 🚀 Features
+
+- **typescript-estree:** disallow empty type parameter/argument lists ([#11563](https://github.com/typescript-eslint/typescript-eslint/pull/11563))
+
+### 🩹 Fixes
+
+- **typescript-estree:** match filenames starting with a period when using glob in allowDefaultProject / ([#11537](https://github.com/typescript-eslint/typescript-eslint/pull/11537))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+- Nicolas Le Cam
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.42.0 (2025-09-02)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.41.0 (2025-08-25)
+
+### 🚀 Features
+
+- tighten `tsconfigRootDir` validation ([#11463](https://github.com/typescript-eslint/typescript-eslint/pull/11463))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.40.0 (2025-08-18)
+
+### 🚀 Features
+
+- **typescript-estree:** forbid invalid keys in `EnumMember` ([#11232](https://github.com/typescript-eslint/typescript-eslint/pull/11232))
+
+### 🩹 Fixes
+
+- **typescript-estree:** correct range of import assertion with trailing comma ([#11478](https://github.com/typescript-eslint/typescript-eslint/pull/11478))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.39.1 (2025-08-11)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.39.0 (2025-08-04)
+
+### 🚀 Features
+
+- update to TypeScript 5.9.2 ([#11445](https://github.com/typescript-eslint/typescript-eslint/pull/11445))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.38.0 (2025-07-21)
 
 ### 🚀 Features
