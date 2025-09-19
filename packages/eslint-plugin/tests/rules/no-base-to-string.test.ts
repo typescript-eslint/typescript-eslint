@@ -2341,5 +2341,25 @@ a.toString();
         },
       ],
     },
+    {
+      code: `
+        interface Base {}
+        interface Left extends Base {}
+        interface Right extends Base {}
+        interface Diamond extends Left, Right {}
+
+        declare const d: Diamond;
+        d.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'd',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
   ],
 });
