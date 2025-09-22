@@ -138,6 +138,17 @@ export default createRule<
               currentChain,
             );
             currentChain = [];
+          } else if (operand.type === OperandValidity.Last) {
+            analyzeChain(
+              context,
+              parserServices,
+              options,
+              node,
+              node.operator,
+              currentChain,
+              operand,
+            );
+            currentChain = [];
           } else {
             currentChain.push(operand);
           }
