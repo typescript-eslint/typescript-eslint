@@ -278,7 +278,7 @@ export default createRule<Options, MessageIds>({
       ) {
         return Usefulness.Always;
       }
-      
+
       if (isIgnoredTypeOrBase(type)) {
         return Usefulness.Always;
       }

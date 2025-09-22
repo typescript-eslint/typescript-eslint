@@ -336,12 +336,12 @@ whiskers.toString();
       options: [{ ignoredTypeNames: ['Animal'] }],
     },
     {
-  code: `
+      code: `
 interface MyError extends Error {}
 
 declare const error: MyError;
 error.toString();
-  `,
+      `,
     },
     {
       code: `
