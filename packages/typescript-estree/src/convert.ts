@@ -1532,6 +1532,16 @@ export class Converter {
           );
         }
 
+        if (
+          node.name.kind === SyntaxKind.StringLiteral &&
+          node.name.text === 'constructor'
+        ) {
+          this.#throwError(
+            node.name,
+            "Classes may not have a field named 'constructor'.",
+          );
+        }
+
         const isAccessor = hasModifier(SyntaxKind.AccessorKeyword, node);
         const type = (() => {
           if (isAccessor) {
