@@ -1,3 +1,19 @@
+## 8.44.1 (2025-09-22)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [await-thenable] should not report passing values to promise aggregators which may be a promise in an array literal ([#11611](https://github.com/typescript-eslint/typescript-eslint/pull/11611))
+- **eslint-plugin:** [no-unsafe-enum-comparison] support unions of literals ([#11599](https://github.com/typescript-eslint/typescript-eslint/pull/11599))
+- **eslint-plugin:** [no-base-to-string] make ignoredTypeNames match type names without generics ([#11597](https://github.com/typescript-eslint/typescript-eslint/pull/11597))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+- mdm317
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.44.0 (2025-09-15)
 
 ### 🚀 Features
