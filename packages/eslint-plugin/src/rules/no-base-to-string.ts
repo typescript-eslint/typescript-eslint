@@ -214,10 +214,11 @@ export default createRule<Options, MessageIds>({
 
     function hasBaseTypes(type: ts.Type): type is ts.InterfaceType {
       return (
-        (type.flags & ts.TypeFlags.Object) !== 0 &&
-        (((type as ts.ObjectType).objectFlags & ts.ObjectFlags.Interface) !==
-          0 ||
-          ((type as ts.ObjectType).objectFlags & ts.ObjectFlags.Class) !== 0)
+        tsutils.isObjectType(type) &&
+        tsutils.isObjectFlagSet(
+          type,
+          ts.ObjectFlags.Interface | ts.ObjectFlags.Class,
+        )
       );
     }
 
@@ -232,15 +233,13 @@ export default createRule<Options, MessageIds>({
       seen.add(type);
 
       const typeName = getTypeName(checker, type);
-      let result = ignoredTypeNames.includes(typeName);
-
-      if (!result && hasBaseTypes(type)) {
-        result = checker
-          .getBaseTypes(type)
-          .some(base => isIgnoredTypeOrBase(base, seen));
-      }
-
-      return result;
+      return (
+        ignoredTypeNames.includes(typeName) ||
+        (hasBaseTypes(type) &&
+          checker
+            .getBaseTypes(type)
+            .some(base => isIgnoredTypeOrBase(base, seen)))
+      );
     }
 
     function collectToStringCertainty(
