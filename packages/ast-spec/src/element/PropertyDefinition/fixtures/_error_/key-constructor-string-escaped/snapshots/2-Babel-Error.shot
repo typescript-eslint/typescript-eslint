@@ -7,4 +7,4 @@ BabelError
     |   ^ Classes may not have a field named 'constructor'. (2:2)
   3 | }
   4 |
-
+  
