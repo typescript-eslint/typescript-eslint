@@ -40,7 +40,7 @@ ruleTester.defineRule('use-every-a', {
     schema: [],
     type: 'problem',
   },
-  name: 'rule',
+  name: 'use-every-a',
 });
 
 /**
