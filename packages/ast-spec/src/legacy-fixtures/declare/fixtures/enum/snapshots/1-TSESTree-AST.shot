@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures declare enum TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -11,7 +8,6 @@ Program {
         members: [
           TSEnumMember {
             type: "TSEnumMember",
-            computed: false,
             id: Identifier {
               type: "Identifier",
               decorators: [],
@@ -33,7 +29,6 @@ Program {
           },
           TSEnumMember {
             type: "TSEnumMember",
-            computed: false,
             id: Identifier {
               type: "Identifier",
               decorators: [],
@@ -91,4 +86,3 @@ Program {
     end: { column: 0, line: 7 },
   },
 }
-`;

@@ -1515,8 +1515,7 @@ describe('hand-crafted cases', () => {
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         options: [
           {
-            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing:
-              true,
+            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: true,
           },
         ],
         output: `
@@ -1545,8 +1544,7 @@ describe('hand-crafted cases', () => {
         ],
         options: [
           {
-            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing:
-              false,
+            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: false,
           },
         ],
         output: null,
@@ -1560,8 +1558,7 @@ describe('hand-crafted cases', () => {
         errors: [{ messageId: 'preferOptionalChain' }],
         options: [
           {
-            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing:
-              true,
+            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: true,
           },
         ],
         output: `
@@ -1679,6 +1676,46 @@ describe('hand-crafted cases', () => {
           },
         ],
         output: 'a?.prop;',
+      },
+      {
+        code: `
+declare const foo: {
+  bar: undefined | (() => void);
+};
+
+foo.bar && foo.bar();
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: `
+declare const foo: {
+  bar: undefined | (() => void);
+};
+
+foo.bar?.();
+        `,
+      },
+      {
+        code: `
+declare const foo: { bar: string };
+
+const baz = foo && foo.bar;
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+declare const foo: { bar: string };
+
+const baz = foo?.bar;
+        `,
+              },
+            ],
+          },
+        ],
+        options: [{ checkString: false }],
       },
     ],
     valid: [
@@ -1917,6 +1954,10 @@ describe('hand-crafted cases', () => {
         !x || x.a;
       `,
       "typeof globalThis !== 'undefined' && globalThis.Array();",
+      `
+        declare const x: void | (() => void);
+        x && x();
+      `,
     ],
   });
 });

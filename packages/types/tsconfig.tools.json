@@ -1,9 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/scope-manager",
-    "module": "NodeNext",
-    "types": ["node"]
+    "outDir": "../../dist/packages/types"
   },
   "include": ["tools"],
   "references": []

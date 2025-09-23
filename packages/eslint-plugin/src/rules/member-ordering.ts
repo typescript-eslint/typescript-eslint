@@ -488,7 +488,7 @@ function isMemberOptional(node: Member): boolean {
     case AST_NODE_TYPES.PropertyDefinition:
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
-      return !!node.optional;
+      return node.optional;
   }
   return false;
 }
@@ -728,6 +728,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require a consistent member declaration order',
+      frozen: true,
     },
     messages: {
       incorrectGroupOrder:

@@ -1,3 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration ImportDeclaration _error_ namespace-non-identifier Babel - Error 1`] = `[SyntaxError: Unexpected token (1:12)]`;
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > namespace-non-identifier > Babel - Error`]
+BabelError
+> 1 | import * as 1 from 'mod';
+    |             ^ Unexpected token (1:12)
+  2 |
+  

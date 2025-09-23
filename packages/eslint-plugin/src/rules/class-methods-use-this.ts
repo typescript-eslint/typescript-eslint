@@ -38,7 +38,6 @@ export default createRule<Options, MessageIds>({
         properties: {
           enforceForClassFields: {
             type: 'boolean',
-            default: true,
             description:
               'Enforces that functions used as instance field initializers utilize `this`.',
           },

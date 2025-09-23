@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -14,7 +11,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "__",
+              optional: false,
 
               range: [76, 78],
               loc: {
@@ -24,6 +23,7 @@ Program {
             },
             kind: "init",
             method: false,
+            optional: false,
             shorthand: false,
             value: Literal {
               type: "Literal",
@@ -68,7 +68,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "__",
+              optional: false,
 
               range: [93, 95],
               loc: {
@@ -78,6 +80,7 @@ Program {
             },
             kind: "init",
             method: true,
+            optional: false,
             shorthand: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -92,6 +95,7 @@ Program {
                   end: { column: 10, line: 5 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -146,6 +150,7 @@ Program {
             },
             kind: "init",
             method: false,
+            optional: false,
             shorthand: false,
             value: Literal {
               type: "Literal",
@@ -182,12 +187,16 @@ Program {
     },
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Literal {
               type: "Literal",
               raw: "'__'",
@@ -199,6 +208,9 @@ Program {
                 end: { column: 6, line: 10 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             value: Literal {
               type: "Literal",
@@ -226,9 +238,13 @@ Program {
           end: { column: 1, line: 11 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X",
+        optional: false,
 
         range: [133, 134],
         loc: {
@@ -236,6 +252,7 @@ Program {
           end: { column: 7, line: 9 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [127, 153],
@@ -253,4 +270,3 @@ Program {
     end: { column: 0, line: 12 },
   },
 }
-`;

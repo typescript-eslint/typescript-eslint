@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-extends-generic-multiple > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,7 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -21,13 +21,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
             end: { column: 43, line: 3 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [79, 82],
           loc: {
@@ -35,12 +35,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
             end: { column: 9, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Bar',
--         optional: false,
+          optional: false,
 
           range: [104, 107],
           loc: {
@@ -56,9 +56,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'C',
--               optional: false,
+                optional: false,
 
                 range: [108, 109],
                 loc: {
@@ -77,9 +77,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'D',
--               optional: false,
+                optional: false,
 
                 range: [111, 112],
                 loc: {
@@ -107,14 +107,14 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
+              const: false,
               constraint: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'B',
--                 optional: false,
+                  optional: false,
 
                   range: [93, 94],
                   loc: {
@@ -129,7 +129,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
                   end: { column: 21, line: 3 },
                 },
               },
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -142,8 +142,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
 -                 end: { column: 11, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'A',
+              out: false,
 
               range: [83, 94],
               loc: {
@@ -174,5 +174,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

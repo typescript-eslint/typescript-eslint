@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > jsx > JSXNamespacedName > component > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -312,7 +312,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - Token 1`] 
     },
     String {
       type: 'String',
-      value: '\\'a:b\\'',
+      value: '\'a:b\'',
 
       range: [159, 164],
       loc: {
@@ -512,7 +512,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - Token 1`] 
     },
     String {
       type: 'String',
-      value: '\\'a:b\\'',
+      value: '\'a:b\'',
 
       range: [268, 273],
       loc: {
@@ -542,21 +542,23 @@ exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - Token 1`] 
     },
     Punctuator {
       type: 'Punctuator',
-      value: '<',
+-     value: '</',
++     value: '<',
 
-      range: [275, 276],
+-     range: [275, 277],
++     range: [275, 276],
       loc: {
         start: { column: 28, line: 9 },
-        end: { column: 29, line: 9 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: '/',
-
-      range: [276, 277],
-      loc: {
-        start: { column: 29, line: 9 },
++       end: { column: 29, line: 9 },
++     },
++   },
++   Punctuator {
++     type: 'Punctuator',
++     value: '/',
++
++     range: [276, 277],
++     loc: {
++       start: { column: 29, line: 9 },
         end: { column: 30, line: 9 },
       },
     },
@@ -600,5 +602,4 @@ exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - Token 1`] 
         end: { column: 1, line: 10 },
       },
     },
-  ]"
-`;
+  ]

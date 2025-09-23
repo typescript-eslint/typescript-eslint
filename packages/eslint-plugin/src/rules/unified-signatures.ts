@@ -241,9 +241,8 @@ export default createRule<Options, MessageIds>({
       }
 
       if (ignoreOverloadsWithDifferentJSDoc) {
-        const aComment = getBlockCommentForNode(getExportingNode(a) ?? a);
-        const bComment = getBlockCommentForNode(getExportingNode(b) ?? b);
-
+        const aComment = getBlockCommentForNode(getCommentTargetNode(a));
+        const bComment = getBlockCommentForNode(getCommentTargetNode(b));
         if (aComment?.value !== bComment?.value) {
           return false;
         }
@@ -264,6 +263,14 @@ export default createRule<Options, MessageIds>({
       types1: readonly TSESTree.Parameter[],
       types2: readonly TSESTree.Parameter[],
     ): Unify | undefined {
+      const firstParam1 = types1[0];
+      const firstParam2 = types2[0];
+
+      // exempt signatures with `this: void` from the rule
+      if (isThisVoidParam(firstParam1) || isThisVoidParam(firstParam2)) {
+        return undefined;
+      }
+
       const index = getIndexOfFirstDifference(
         types1,
         types2,
@@ -294,6 +301,22 @@ export default createRule<Options, MessageIds>({
         : undefined;
     }
 
+    function isThisParam(param: TSESTree.Parameter | undefined): boolean {
+      return (
+        param != null &&
+        param.type === AST_NODE_TYPES.Identifier &&
+        param.name === 'this'
+      );
+    }
+
+    function isThisVoidParam(param: TSESTree.Parameter | undefined) {
+      return (
+        isThisParam(param) &&
+        (param as TSESTree.Identifier).typeAnnotation?.typeAnnotation.type ===
+          AST_NODE_TYPES.TSVoidKeyword
+      );
+    }
+
     /**
      * Detect `a(): void` and `a(x: number): void`.
      * Returns the parameter declaration (`x: number` in this example) that should be optional/rest, and overload it's a part of.
@@ -309,6 +332,19 @@ export default createRule<Options, MessageIds>({
       const longer = sig1.length < sig2.length ? sig2 : sig1;
       const shorter = sig1.length < sig2.length ? sig1 : sig2;
       const shorterSig = sig1.length < sig2.length ? a : b;
+
+      const firstParam1 = sig1.at(0);
+      const firstParam2 = sig2.at(0);
+      // If one signature has explicit this type and another doesn't, they can't
+      // be unified.
+      if (isThisParam(firstParam1) !== isThisParam(firstParam2)) {
+        return undefined;
+      }
+
+      // exempt signatures with `this: void` from the rule
+      if (isThisVoidParam(firstParam1) || isThisVoidParam(firstParam2)) {
+        return undefined;
+      }
 
       // If one is has 2+ parameters more than the other, they must all be optional/rest.
       // Differ by optional parameters: f() and f(x), f() and f(x, ?y, ...z)
@@ -619,6 +655,14 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function getCommentTargetNode(node: SignatureDefinition) {
+  if (node.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
+    return node.parent;
+  }
+
+  return getExportingNode(node) ?? node;
+}
 
 function getExportingNode(
   node: SignatureDefinition,

@@ -1,6 +1,7 @@
 import * as ts from 'typescript';
 
 /**
+ * @deprecated
  * Gets the source file for a given node
  */
 export function getSourceFileOfNode(node: ts.Node): ts.SourceFile {

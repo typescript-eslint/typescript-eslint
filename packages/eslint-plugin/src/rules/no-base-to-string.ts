@@ -21,9 +21,17 @@ enum Usefulness {
 export type Options = [
   {
     ignoredTypeNames?: string[];
+    checkUnknown?: boolean;
   },
 ];
 export type MessageIds = 'baseArrayJoin' | 'baseToString';
+const canHaveTypeParameters = (declaration: ts.Declaration) => {
+  return (
+    ts.isTypeAliasDeclaration(declaration) ||
+    ts.isInterfaceDeclaration(declaration) ||
+    ts.isClassDeclaration(declaration)
+  );
+};
 
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
@@ -46,6 +54,10 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          checkUnknown: {
+            type: 'boolean',
+            description: 'Whether to also check values of type `unknown`',
+          },
           ignoredTypeNames: {
             type: 'array',
             description:
@@ -60,6 +72,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      checkUnknown: false,
       ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
     },
   ],
@@ -76,6 +89,7 @@ export default createRule<Options, MessageIds>({
         type ?? services.getTypeAtLocation(node),
         new Set(),
       );
+
       if (certainty === Usefulness.Always) {
         return;
       }
@@ -213,13 +227,24 @@ export default createRule<Options, MessageIds>({
           return collectToStringCertainty(constraint, visited);
         }
         // unconstrained generic means `unknown`
-        return Usefulness.Always;
+        return option.checkUnknown ? Usefulness.Sometimes : Usefulness.Always;
       }
 
       // the Boolean type definition missing toString()
       if (
         type.flags & ts.TypeFlags.Boolean ||
         type.flags & ts.TypeFlags.BooleanLiteral
+      ) {
+        return Usefulness.Always;
+      }
+
+      const symbol = type.aliasSymbol ?? type.getSymbol();
+      const decl = symbol?.getDeclarations()?.[0];
+      if (
+        decl &&
+        canHaveTypeParameters(decl) &&
+        decl.typeParameters &&
+        ignoredTypeNames.includes(symbol.name)
       ) {
         return Usefulness.Always;
       }
@@ -251,8 +276,13 @@ export default createRule<Options, MessageIds>({
       const toString =
         checker.getPropertyOfType(type, 'toString') ??
         checker.getPropertyOfType(type, 'toLocaleString');
+
       if (!toString) {
-        // e.g. any/unknown
+        // unknown
+        if (option.checkUnknown && type.flags === ts.TypeFlags.Unknown) {
+          return Usefulness.Sometimes;
+        }
+        // e.g. any
         return Usefulness.Always;
       }
 

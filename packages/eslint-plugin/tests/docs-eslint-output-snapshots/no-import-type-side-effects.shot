@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-import-type-side-effects.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 import { type A } from 'mod';
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.
@@ -11,11 +8,8 @@ import { type A, type B } from 'mod';
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.
 import { type A as AA, type B as BB } from 'mod';
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.
-"
-`;
 
-exports[`Validating rule docs no-import-type-side-effects.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 import type { A } from 'mod';
 import type { A as AA } from 'mod';
@@ -37,5 +31,3 @@ import { T, type U } from 'mod';
 
 import type T, { U } from 'mod';
 import T, { type U } from 'mod';
-"
-`;

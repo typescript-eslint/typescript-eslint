@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ var-id-definite-type-init TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > var-id-definite-type-init > TSESTree - Error`]
+TSError
 > 1 | var foo!: any = 1;
     |     ^^^^^^^^^^^^^ Declarations with initializers cannot also have definite assignment assertions.
-  2 |"
-`;
+  2 |

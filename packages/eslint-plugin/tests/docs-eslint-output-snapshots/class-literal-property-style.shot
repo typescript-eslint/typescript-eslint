@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 Options: "fields"
 
 class Mx {
@@ -15,11 +12,8 @@ class Mx {
     return 'hello world';
   }
 }
-"
-`;
 
-exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 Options: "fields"
 
 class Mx {
@@ -31,29 +25,23 @@ class Mx {
   private readonly ['myField3'] = 'hello world';
 
   public get myField4() {
-    return \`hello from \${window.location.href}\`;
+    return `hello from ${window.location.href}`;
   }
 }
-"
-`;
 
-exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: "getters"
 
 class Mx {
   readonly myField1 = 1;
            ~~~~~~~~ Literals should be exposed using getters.
-  readonly myField2 = \`hello world\`;
+  readonly myField2 = `hello world`;
            ~~~~~~~~ Literals should be exposed using getters.
   private readonly myField3 = 'hello world';
                    ~~~~~~~~ Literals should be exposed using getters.
 }
-"
-`;
 
-exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 Options: "getters"
 
 class Mx {
@@ -71,5 +59,3 @@ class Mx {
     return 'hello world';
   }
 }
-"
-`;

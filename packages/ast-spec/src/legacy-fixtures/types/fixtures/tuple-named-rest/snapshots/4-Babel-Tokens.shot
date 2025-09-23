@@ -1,9 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types tuple-named-rest Babel - Tokens 1`] = `
 [
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [73, 76],
@@ -163,4 +160,3 @@ exports[`AST Fixtures legacy-fixtures types tuple-named-rest Babel - Tokens 1`] 
     },
   },
 ]
-`;

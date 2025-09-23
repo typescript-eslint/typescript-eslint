@@ -1,11 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures special TSTypeParameter class-decl-const-modifier-multiple Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -16,9 +14,13 @@ Program {
           end: { column: 22, line: 1 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "C",
+        optional: false,
 
         range: [6, 7],
         loc: {
@@ -26,13 +28,17 @@ Program {
           end: { column: 7, line: 1 },
         },
       },
+      implements: [],
       superClass: null,
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "T",
+            out: false,
 
             range: [8, 9],
             loc: {
@@ -43,7 +49,9 @@ Program {
           TSTypeParameter {
             type: "TSTypeParameter",
             const: true,
+            in: false,
             name: "U",
+            out: false,
 
             range: [11, 18],
             loc: {
@@ -75,4 +83,3 @@ Program {
     end: { column: 0, line: 2 },
   },
 }
-`;

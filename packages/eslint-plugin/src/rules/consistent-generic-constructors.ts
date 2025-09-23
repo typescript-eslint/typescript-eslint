@@ -143,7 +143,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (lhs?.typeArguments && !rhs.typeArguments) {
+        const isolatedDeclarations = context.parserOptions.isolatedDeclarations;
+        if (!isolatedDeclarations && lhs?.typeArguments && !rhs.typeArguments) {
           const hasParens =
             context.sourceCode.getTokenAfter(rhs.callee)?.value === '(';
           const extraComments = new Set(

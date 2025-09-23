@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > directive-in-namespace > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -18,7 +18,7 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
 -             directive: 'use strict',
               expression: Literal {
                 type: 'Literal',
-                raw: '\\'use strict\\'',
+                raw: '\'use strict\'',
                 value: 'use strict',
 
                 range: [91, 103],
@@ -39,12 +39,12 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
               declarations: Array [
                 VariableDeclarator {
                   type: 'VariableDeclarator',
--                 definite: false,
+                  definite: false,
                   id: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'a',
--                   optional: false,
+                    optional: false,
 
                     range: [111, 112],
                     loc: {
@@ -71,7 +71,7 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
                   },
                 },
               ],
--             declare: false,
+              declare: false,
               kind: 'var',
 
               range: [107, 117],
@@ -84,7 +84,7 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
               type: 'ExpressionStatement',
               expression: Literal {
                 type: 'Literal',
-                raw: '\\'use strict\\'',
+                raw: '\'use strict\'',
                 value: 'use strict',
 
                 range: [120, 132],
@@ -108,13 +108,13 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
             end: { column: 1, line: 7 },
           },
         },
--       declare: false,
--       global: false,
+        declare: false,
+        global: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'foo',
--         optional: false,
+          optional: false,
 
           range: [83, 86],
           loc: {
@@ -138,5 +138,4 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
       start: { column: 0, line: 3 },
       end: { column: 0, line: 8 },
     },
-  }"
-`;
+  }

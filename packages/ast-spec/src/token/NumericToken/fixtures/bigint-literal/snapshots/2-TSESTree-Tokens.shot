@@ -1,0 +1,22 @@
+[
+  Numeric {
+    type: "Numeric",
+    value: "0n",
+
+    range: [0, 2],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 2, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [2, 3],
+    loc: {
+      start: { column: 2, line: 1 },
+      end: { column: 3, line: 1 },
+    },
+  },
+]

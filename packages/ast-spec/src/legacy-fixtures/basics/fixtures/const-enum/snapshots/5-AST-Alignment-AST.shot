@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics const-enum AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > const-enum > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -15,16 +15,18 @@ exports[`AST Fixtures legacy-fixtures basics const-enum AST Alignment - AST 1`] 
 -         members: Array [
 -           TSEnumMember {
 -             type: 'TSEnumMember',
--             computed: false,
 -             id: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
 -               name: 'foo',
 -               optional: false,
 +       const: true,
++       declare: false,
 +       id: Identifier {
 +         type: 'Identifier',
++         decorators: Array [],
 +         name: 'Foo',
++         optional: false,
 
 -               range: [92, 95],
 -               loc: {
@@ -45,9 +47,12 @@ exports[`AST Fixtures legacy-fixtures basics const-enum AST Alignment - AST 1`] 
 +       members: Array [
 +         TSEnumMember {
 +           type: 'TSEnumMember',
++           computed: false,
 +           id: Identifier {
 +             type: 'Identifier',
++             decorators: Array [],
 +             name: 'foo',
++             optional: false,
 
 -               range: [98, 99],
 -               loc: {
@@ -75,7 +80,6 @@ exports[`AST Fixtures legacy-fixtures basics const-enum AST Alignment - AST 1`] 
             },
 -           TSEnumMember {
 -             type: 'TSEnumMember',
--             computed: false,
 -             id: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -96,9 +100,12 @@ exports[`AST Fixtures legacy-fixtures basics const-enum AST Alignment - AST 1`] 
 +         },
 +         TSEnumMember {
 +           type: 'TSEnumMember',
++           computed: false,
 +           id: Identifier {
 +             type: 'Identifier',
++             decorators: Array [],
 +             name: 'bar',
++             optional: false,
 
               range: [103, 106],
               loc: {
@@ -149,5 +156,4 @@ exports[`AST Fixtures legacy-fixtures basics const-enum AST Alignment - AST 1`] 
       start: { column: 0, line: 3 },
       end: { column: 0, line: 7 },
     },
-  }"
-`;
+  }

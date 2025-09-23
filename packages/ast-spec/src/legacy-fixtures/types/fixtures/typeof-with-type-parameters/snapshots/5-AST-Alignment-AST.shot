@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types typeof-with-type-parameters AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > typeof-with-type-parameters > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -13,12 +13,12 @@ exports[`AST Fixtures legacy-fixtures types typeof-with-type-parameters AST Alig
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'x',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeQuery {
@@ -27,9 +27,9 @@ exports[`AST Fixtures legacy-fixtures types typeof-with-type-parameters AST Alig
                     type: 'TSQualifiedName',
                     left: Identifier {
                       type: 'Identifier',
--                     decorators: Array [],
+                      decorators: Array [],
                       name: 'y',
--                     optional: false,
+                      optional: false,
 
                       range: [87, 88],
                       loc: {
@@ -39,9 +39,9 @@ exports[`AST Fixtures legacy-fixtures types typeof-with-type-parameters AST Alig
                     },
                     right: Identifier {
                       type: 'Identifier',
--                     decorators: Array [],
+                      decorators: Array [],
                       name: 'z',
--                     optional: false,
+                      optional: false,
 
                       range: [89, 90],
                       loc: {
@@ -64,9 +64,9 @@ exports[`AST Fixtures legacy-fixtures types typeof-with-type-parameters AST Alig
                         type: 'TSTypeReference',
                         typeName: Identifier {
                           type: 'Identifier',
--                         decorators: Array [],
+                          decorators: Array [],
                           name: 'w',
--                         optional: false,
+                          optional: false,
 
                           range: [91, 92],
                           loc: {
@@ -119,7 +119,7 @@ exports[`AST Fixtures legacy-fixtures types typeof-with-type-parameters AST Alig
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'let',
 
         range: [73, 94],
@@ -136,5 +136,4 @@ exports[`AST Fixtures legacy-fixtures types typeof-with-type-parameters AST Alig
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

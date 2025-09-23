@@ -1,3 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-method-readonly Babel - Error 1`] = `[SyntaxError: 'readonly' modifier can only appear on a property declaration or index signature. (4:2)]`;
+exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > interface-method-readonly > Babel - Error`]
+BabelError
+  2 |
+  3 | interface Foo {
+> 4 |   readonly g(bar: string): void;
+    |   ^ 'readonly' modifier can only appear on a property declaration or index signature. (4:2)
+  5 | }
+  6 |
+  

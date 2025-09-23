@@ -1,15 +1,15 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics const-enum Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
       const: true,
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [84, 87],
         loc: {
@@ -20,9 +20,12 @@ Program {
       members: [
         TSEnumMember {
           type: "TSEnumMember",
+          computed: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "foo",
+            optional: false,
 
             range: [92, 95],
             loc: {
@@ -50,9 +53,12 @@ Program {
         },
         TSEnumMember {
           type: "TSEnumMember",
+          computed: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "bar",
+            optional: false,
 
             range: [103, 106],
             loc: {
@@ -84,4 +90,3 @@ Program {
     end: { column: 0, line: 7 },
   },
 }
-`;

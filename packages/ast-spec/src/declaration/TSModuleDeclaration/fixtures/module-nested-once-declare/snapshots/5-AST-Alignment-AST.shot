@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSModuleDeclaration module-nested-once-declare AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > TSModuleDeclaration > module-nested-once-declare > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -13,7 +13,12 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-nested-once-declare
 -       body: TSModuleBlock {
 -         type: 'TSModuleBlock',
 -         body: Array [],
--
++       body: TSModuleDeclaration {
++         type: 'TSModuleDeclaration',
++         body: TSModuleBlock {
++           type: 'TSModuleBlock',
++           body: Array [],
+
 -         range: [23, 25],
 -         loc: {
 -           start: { column: 23, line: 1 },
@@ -29,12 +34,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-nested-once-declare
 -           decorators: Array [],
 -           name: 'abc',
 -           optional: false,
-+       body: TSModuleDeclaration {
-+         type: 'TSModuleDeclaration',
-+         body: TSModuleBlock {
-+           type: 'TSModuleBlock',
-+           body: Array [],
-
+-
 -           range: [15, 18],
 +           range: [23, 25],
             loc: {
@@ -45,11 +45,13 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-nested-once-declare
             },
           },
 -         right: Identifier {
++         declare: false,
++         global: false,
 +         id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'def',
--           optional: false,
+            optional: false,
 
             range: [19, 22],
             loc: {
@@ -66,9 +68,12 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-nested-once-declare
 +         },
 +       },
 +       declare: true,
++       global: false,
 +       id: Identifier {
 +         type: 'Identifier',
++         decorators: Array [],
 +         name: 'abc',
++         optional: false,
 +
 +         range: [15, 18],
           loc: {
@@ -93,5 +98,4 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-nested-once-declare
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

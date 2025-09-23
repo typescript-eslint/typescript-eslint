@@ -1,7 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -91,22 +90,18 @@ export default createRule<Options, MessageIds>({
     function isSymbolTypeBased(
       symbol: ts.Symbol | undefined,
     ): boolean | undefined {
-      if (!symbol) {
+      while (symbol && symbol.flags & ts.SymbolFlags.Alias) {
+        symbol = checker.getAliasedSymbol(symbol);
+        if (
+          symbol.getDeclarations()?.find(ts.isTypeOnlyImportOrExportDeclaration)
+        ) {
+          return true;
+        }
+      }
+      if (!symbol || checker.isUnknownSymbol(symbol)) {
         return undefined;
       }
-
-      const aliasedSymbol = tsutils.isSymbolFlagSet(
-        symbol,
-        ts.SymbolFlags.Alias,
-      )
-        ? checker.getAliasedSymbol(symbol)
-        : symbol;
-
-      if (checker.isUnknownSymbol(aliasedSymbol)) {
-        return undefined;
-      }
-
-      return !(aliasedSymbol.flags & ts.SymbolFlags.Value);
+      return !(symbol.flags & ts.SymbolFlags.Value);
     }
 
     return {
@@ -203,13 +198,11 @@ export default createRule<Options, MessageIds>({
         // Cache the first encountered exports for the package. We will need to come
         // back to these later when fixing the problems.
         if (node.exportKind === 'type') {
-          if (sourceExports.typeOnlyNamedExport == null) {
-            // The export is a type export
-            sourceExports.typeOnlyNamedExport = node;
-          }
-        } else if (sourceExports.valueOnlyNamedExport == null) {
+          // The export is a type export
+          sourceExports.typeOnlyNamedExport ??= node;
+        } else {
           // The export is a value export
-          sourceExports.valueOnlyNamedExport = node;
+          sourceExports.valueOnlyNamedExport ??= node;
         }
 
         // Next for the current export, we will separate type/value specifiers.

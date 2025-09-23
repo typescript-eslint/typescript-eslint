@@ -1,5 +1,5 @@
 import fetch from 'cross-fetch';
-import makeDir from 'make-dir';
+import { makeDirectory } from 'make-dir';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -79,29 +79,22 @@ function processFiles(text: string): string {
   return result;
 }
 
-async function main(): Promise<void> {
-  const vendor = path.join(__dirname, '..', 'src', 'vendor');
+const vendor = path.join(__dirname, '..', 'src', 'vendor');
 
-  console.log('Cleaning...');
-  await rimraf(vendor);
-  await makeDir(vendor);
+console.log('Cleaning...');
+await rimraf(vendor);
+await makeDirectory(vendor);
 
-  // TS-VFS
-  await getFileAndStoreLocally(
-    '/js/sandbox/vendor/typescript-vfs.d.ts',
-    path.join(vendor, 'typescript-vfs.d.ts'),
-    processFiles,
-  );
+// TS-VFS
+await getFileAndStoreLocally(
+  '/js/sandbox/vendor/typescript-vfs.d.ts',
+  path.join(vendor, 'typescript-vfs.d.ts'),
+  processFiles,
+);
 
-  // Sandbox
-  await getFileAndStoreLocally(
-    '/js/sandbox/index.d.ts',
-    path.join(vendor, 'sandbox.d.ts'),
-    processFiles,
-  );
-}
-
-main().catch((error: unknown) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+// Sandbox
+await getFileAndStoreLocally(
+  '/js/sandbox/index.d.ts',
+  path.join(vendor, 'sandbox.d.ts'),
+  processFiles,
+);

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures special TSTypeParameter class-decl-const-modifier-multiple AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > special > TSTypeParameter > class-decl-const-modifier-multiple > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,7 +10,7 @@ exports[`AST Fixtures special TSTypeParameter class-decl-const-modifier-multiple
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -21,13 +21,13 @@ exports[`AST Fixtures special TSTypeParameter class-decl-const-modifier-multiple
             end: { column: 22, line: 1 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'C',
--         optional: false,
+          optional: false,
 
           range: [6, 7],
           loc: {
@@ -35,15 +35,15 @@ exports[`AST Fixtures special TSTypeParameter class-decl-const-modifier-multiple
             end: { column: 7, line: 1 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: 'TSTypeParameterDeclaration',
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -56,8 +56,8 @@ exports[`AST Fixtures special TSTypeParameter class-decl-const-modifier-multiple
 -                 end: { column: 9, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [8, 9],
               loc: {
@@ -68,7 +68,7 @@ exports[`AST Fixtures special TSTypeParameter class-decl-const-modifier-multiple
             TSTypeParameter {
               type: 'TSTypeParameter',
               const: true,
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -81,8 +81,8 @@ exports[`AST Fixtures special TSTypeParameter class-decl-const-modifier-multiple
 -                 end: { column: 18, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'U',
+              out: false,
 
               range: [11, 18],
               loc: {
@@ -113,5 +113,4 @@ exports[`AST Fixtures special TSTypeParameter class-decl-const-modifier-multiple
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

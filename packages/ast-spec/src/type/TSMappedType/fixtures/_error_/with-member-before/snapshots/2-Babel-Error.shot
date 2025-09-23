@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > type > TSMappedType > _error_ > with-member-before > Babel - Error`]
+BabelError
+  1 | type Mapped = {
+  2 |   member: member;
+> 3 |   [key in keyof O]: number;
+    |                 ^ Unexpected token, expected "]" (3:16)
+  4 | };
+  5 |
+  

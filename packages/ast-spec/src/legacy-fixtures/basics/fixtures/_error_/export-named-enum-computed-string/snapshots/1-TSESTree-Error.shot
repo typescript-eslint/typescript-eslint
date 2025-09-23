@@ -1,3 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics _error_ export-named-enum-computed-string TSESTree - Error 1`] = `"NO ERROR"`;
+exports[`AST Fixtures > legacy-fixtures > basics > _error_ > export-named-enum-computed-string > TSESTree - Error`]
+TSError
+  2 |
+  3 | export enum Foo {
+> 4 |     ['baz'],
+    |     ^^^^^^^ Computed property names are not allowed in enums.
+  5 | }
+  6 |

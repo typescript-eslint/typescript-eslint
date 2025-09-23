@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics keyword-variables Babel - Tokens 1`] = `
 [
   Punctuator {
     type: "Punctuator",
@@ -2582,8 +2579,8 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables Babel - Tokens 1`
       end: { column: 18, line: 76 },
     },
   },
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [1130, 1133],
@@ -2612,8 +2609,8 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables Babel - Tokens 1`
       end: { column: 11, line: 77 },
     },
   },
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "yield",
 
     range: [1138, 1143],
@@ -2653,4 +2650,3 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables Babel - Tokens 1`
     },
   },
 ]
-`;

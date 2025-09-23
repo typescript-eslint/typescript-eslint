@@ -1,4 +1,4 @@
-/* eslint-disable no-process-exit, no-console */
+/* eslint-disable no-console */
 
 import * as esbuild from 'esbuild';
 import * as fs from 'node:fs/promises';
@@ -93,6 +93,7 @@ async function buildPackage(name: string, file: string): Promise<void> {
         setup(build): void {
           build.onLoad(
             makeFilter([
+              '/getParsedConfigFile.ts',
               '/ts-eslint/ESLint.ts',
               '/ts-eslint/RuleTester.ts',
               '/ts-eslint/CLIEngine.ts',
@@ -122,6 +123,11 @@ async function buildPackage(name: string, file: string): Promise<void> {
             // this is needed to bypass system module resolver
             text = text.replace('vt:eslint/linter', normalizePath(linterPath));
             return { contents: text, loader: 'js' };
+          });
+          build.onLoad(makeFilter(['/parser/src/parser.ts']), async args => {
+            console.log('onLoad:replace', args.path);
+            const contents = await requireMock('./src/mock/parser.js');
+            return { contents, loader: 'js' };
           });
           build.onResolve(
             makeFilter([
@@ -165,12 +171,5 @@ async function buildPackage(name: string, file: string): Promise<void> {
 }
 
 console.time('building eslint for web');
-
-buildPackage('index', './src/index.js')
-  .then(() => {
-    console.timeEnd('building eslint for web');
-  })
-  .catch((e: unknown) => {
-    console.error(String(e));
-    process.exit(1);
-  });
+await buildPackage('index', './src/index.js');
+console.timeEnd('building eslint for web');

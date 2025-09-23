@@ -1,3 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ declare-const-id-definite-type-init Babel - Error 1`] = `[SyntaxError: Initializers are not allowed in ambient contexts. (1:26)]`;
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-const-id-definite-type-init > Babel - Error`]
+BabelError
+> 1 | declare const foo!: any = 1;
+    |                           ^ Initializers are not allowed in ambient contexts. (1:26)
+  2 |
+  

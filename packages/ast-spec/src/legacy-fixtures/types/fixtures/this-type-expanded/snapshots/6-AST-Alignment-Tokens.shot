@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > this-type-expanded > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -120,10 +120,8 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - T
         end: { column: 16, line: 6 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Identifier {
+      type: 'Identifier',
       value: 'this',
 
       range: [120, 124],
@@ -284,10 +282,8 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - T
         end: { column: 17, line: 10 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Identifier {
+      type: 'Identifier',
       value: 'this',
 
       range: [183, 187],
@@ -448,10 +444,8 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - T
         end: { column: 17, line: 14 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Identifier {
+      type: 'Identifier',
       value: 'this',
 
       range: [241, 245],
@@ -712,10 +706,8 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - T
         end: { column: 17, line: 19 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Identifier {
+      type: 'Identifier',
       value: 'this',
 
       range: [329, 333],
@@ -974,10 +966,8 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - T
         end: { column: 22, line: 24 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Identifier {
+      type: 'Identifier',
       value: 'this',
 
       range: [419, 423],
@@ -1116,10 +1106,8 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - T
         end: { column: 8, line: 28 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Identifier {
+      type: 'Identifier',
       value: 'typeof',
 
       range: [471, 477],
@@ -1138,10 +1126,8 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - T
         end: { column: 16, line: 28 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Identifier {
+      type: 'Identifier',
       value: 'this',
 
       range: [478, 482],
@@ -1270,5 +1256,4 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - T
         end: { column: 1, line: 31 },
       },
     },
-  ]"
-`;
+  ]

@@ -1,3 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSDeclareFunction _error_ non-identifier-type-param Babel - Error 1`] = `[SyntaxError: Unexpected token (1:19)]`;
+exports[`AST Fixtures > declaration > TSDeclareFunction > _error_ > non-identifier-type-param > Babel - Error`]
+BabelError
+> 1 | declare function f<1>(): void;
+    |                    ^ Unexpected token (1:19)
+  2 |
+  

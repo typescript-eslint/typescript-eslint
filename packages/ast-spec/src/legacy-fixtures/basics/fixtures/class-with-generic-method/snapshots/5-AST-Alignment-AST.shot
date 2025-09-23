@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-generic-method > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,19 +10,19 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'getBar',
--               optional: false,
+                optional: false,
 
                 range: [87, 93],
                 loc: {
@@ -31,8 +31,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
                 },
               },
               kind: 'method',
--             optional: false,
--             override: false,
+              optional: false,
+              override: false,
               static: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -47,7 +47,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
                     end: { column: 16, line: 4 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -57,8 +57,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
                   params: Array [
                     TSTypeParameter {
                       type: 'TSTypeParameter',
--                     const: false,
--                     in: false,
+                      const: false,
+                      in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',
 -                       decorators: Array [],
@@ -71,8 +71,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
 -                         end: { column: 10, line: 4 },
 -                       },
 -                     },
--                     out: false,
 +                     name: 'T',
+                      out: false,
 
                       range: [94, 95],
                       loc: {
@@ -89,11 +89,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
                   },
                 },
 
--               range: [93, 101],
-+               range: [96, 101],
+                range: [93, 101],
                 loc: {
--                 start: { column: 8, line: 4 },
-+                 start: { column: 11, line: 4 },
+                  start: { column: 8, line: 4 },
                   end: { column: 16, line: 4 },
                 },
               },
@@ -112,13 +110,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
             end: { column: 1, line: 5 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [79, 82],
           loc: {
@@ -126,7 +124,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
             end: { column: 9, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
 
         range: [73, 103],
@@ -143,5 +141,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }
