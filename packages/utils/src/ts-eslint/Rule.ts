@@ -735,6 +735,7 @@ export interface RuleModule<
    * Metadata about the rule
    */
   meta: RuleMetaData<MessageIds, Docs, Options>;
+
   /**
    * Rule name
    */
