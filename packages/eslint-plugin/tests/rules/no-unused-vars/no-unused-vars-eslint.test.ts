@@ -88,13 +88,11 @@ function assignedError(
  * Returns an expected error for used-but-ignored variables.
  * @param varName The name of the variable
  * @param [additional] The additional text for the message data
- * @param [type] The node type (defaults to "Identifier")
  * @returns An expected error object
  */
 function usedIgnoredError(
   varName: string,
   additional = '',
-  type = AST_NODE_TYPES.Identifier,
 ): TestCaseError<MessageIds> {
   return {
     data: {
@@ -102,7 +100,6 @@ function usedIgnoredError(
       varName,
     },
     messageId: 'usedIgnoredVar',
-    type,
   };
 }
 
