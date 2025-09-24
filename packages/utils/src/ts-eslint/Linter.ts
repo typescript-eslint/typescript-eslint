@@ -232,7 +232,7 @@ namespace Linter {
     /**
      * @deprecated `nodeType` is deprecated and will be removed in the next major version.
      */
-    nodeType: string;
+    nodeType?: string;
     /**
      * The ID of the rule which makes this message.
      */
