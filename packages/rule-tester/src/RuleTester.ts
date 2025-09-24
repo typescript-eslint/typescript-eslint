@@ -210,7 +210,7 @@ export class RuleTester extends TestFramework {
     // file name (`foo.ts`), don't change the base path.
     if (
       filename != null &&
-      (path.isAbsolute(filename) || filename.startsWith('..'))
+      (path.isAbsolute(filename) || path.normalize(filename).startsWith('..'))
     ) {
       basePath = path.parse(
         path.resolve(basePath ?? process.cwd(), filename),
@@ -761,8 +761,8 @@ export class RuleTester extends TestFramework {
 
     // Verify the code.
     let initialMessages: Linter.LintMessage[] | null = null;
-    let messages: Linter.LintMessage[] | null = null;
-    let fixedResult: SourceCodeFixer.AppliedFixes | null = null;
+    let messages: Linter.LintMessage[];
+    let fixedResult: SourceCodeFixer.AppliedFixes;
     let passNumber = 0;
     const outputs: string[] = [];
     const configWithoutCustomKeys = omitCustomConfigProperties(config);

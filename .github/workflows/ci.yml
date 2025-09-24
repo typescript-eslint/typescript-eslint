@@ -1,9 +1,11 @@
+# NOTE: The name of this workflow is significant - it is used as the identifier for the workflow_run trigger in the release workflow
 name: CI
 
 on:
   push:
     branches:
       - main
+  # NOTE: Never use pull_request_target here because that would populate secrets for forks
   pull_request:
     branches:
       - '**'
@@ -15,8 +17,8 @@ concurrency:
 
 env:
   PRIMARY_NODE_VERSION: 20
-  # Only set the read-write token if we are on the main branch
-  NX_CLOUD_ACCESS_TOKEN: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') && secrets.NX_CLOUD_ACCESS_TOKEN || '' }}
+  # Value will be controlled via GitHub environment (called "main") secret, will be read-write for main branch, read-only for other branches
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   # This increases the verbosity of the logs for everything, including Nx Cloud, but will hopefully surface more info about recent lint failures
   NX_VERBOSE_LOGGING: false
 
@@ -38,6 +40,7 @@ permissions:
 jobs:
   install:
     name: Checkout and Install
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     runs-on: ubuntu-latest
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
@@ -51,6 +54,7 @@ jobs:
 
   build:
     name: Build All Packages
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
     runs-on: ubuntu-latest
     env:
@@ -67,6 +71,7 @@ jobs:
 
   generate_configs:
     name: Generate Configs
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     runs-on: ubuntu-latest
     env:
@@ -85,6 +90,7 @@ jobs:
 
   lint_without_build:
     name: Lint without build
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
     runs-on: ubuntu-latest
     strategy:
@@ -105,6 +111,7 @@ jobs:
 
   lint_with_build:
     name: Lint with build
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     # because we lint with our own tooling, we need to build
     needs: [build]
     runs-on: ubuntu-latest
@@ -130,6 +137,7 @@ jobs:
 
   stylelint:
     name: Stylelint
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
     runs-on: ubuntu-latest
     env:
@@ -147,6 +155,7 @@ jobs:
 
   integration_tests:
     name: Run integration tests on primary Node.js version
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     runs-on: ubuntu-latest
     env:
@@ -168,6 +177,7 @@ jobs:
 
   unit_tests:
     name: Run Unit Tests
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -233,6 +243,7 @@ jobs:
 
   unit_tests_project_service:
     name: Run Unit Tests with Project Service
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
@@ -261,6 +272,7 @@ jobs:
 
   upload_coverage:
     name: Upload Codecov Coverage
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [unit_tests]
     runs-on: ubuntu-latest
     steps:
@@ -279,36 +291,3 @@ jobs:
           files: coverage/**/lcov.info
           flags: unittest
           name: codecov
-
-  publish_canary_version:
-    name: Publish the latest code as a canary version
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
-    if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # we need the tags to be available
-
-      - name: Install
-        uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Build
-        uses: ./.github/actions/prepare-build
-
-      - name: Figure out and apply the next canary version
-        run: npx tsx tools/release/apply-canary-version.mts
-
-      - name: Publish all packages to npm with the canary tag
-        # NOTE: this needs to be npx, rather than yarn, to make sure the authenticated npm registry is used
-        run: npx nx release publish --tag canary --verbose
-        env:
-          NX_CLOUD_DISTRIBUTED_EXECUTION: false
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true

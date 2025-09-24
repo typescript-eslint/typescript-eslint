@@ -2,6 +2,8 @@ import type { TSESLint } from '@typescript-eslint/utils';
 
 import tseslint from '../src/index.js';
 
+/* eslint @typescript-eslint/no-deprecated: ["error", { "allow": [{ "from": "file", "name": "config", "path": "packages/typescript-eslint/src/config-helper.ts" }] }] */
+
 describe('config helper', () => {
   it('works without extends', () => {
     expect(
@@ -373,5 +375,62 @@ describe('config helper', () => {
     }).toThrow(
       "tseslint.config(): Config at index 0 has a 'name' property that is not a string.",
     );
+  });
+
+  it('basePath works with unextended config', () => {
+    expect(
+      tseslint.config({
+        basePath: 'base/path',
+        rules: { rule1: 'error' },
+      }),
+    ).toStrictEqual([
+      {
+        basePath: 'base/path',
+        rules: { rule1: 'error' },
+      },
+    ]);
+  });
+
+  it('basePath works with extended config', () => {
+    expect(
+      tseslint.config({
+        basePath: 'base/path',
+        extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+      }),
+    ).toStrictEqual([
+      {
+        basePath: 'base/path',
+        rules: { rule1: 'error' },
+      },
+      {
+        basePath: 'base/path',
+        rules: { rule2: 'error' },
+      },
+    ]);
+  });
+
+  it('basePath cannot be used in an extension', () => {
+    expect(() => {
+      tseslint.config({
+        extends: [{ basePath: 'base/path', rules: { rule1: 'error' } }],
+      });
+    }).toThrow(
+      "tseslint.config(): Config at index 0 (anonymous) has an 'extends' array that contains a config with a 'basePath' property at index 0. 'basePath' in 'extends' is not allowed.",
+    );
+  });
+
+  it('should error when trying to use nested extends', () => {
+    expect(() => {
+      tseslint.config({
+        extends: [
+          {
+            extends: [
+              { rules: { rule1: 'error' } },
+              { rules: { rule2: 'error' } },
+            ],
+          },
+        ],
+      });
+    }).toThrow();
   });
 });

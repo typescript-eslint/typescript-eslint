@@ -223,6 +223,12 @@ ruleTester.run('no-deprecated', rule, {
       } from 'typescript';
     `,
     `
+      export { deprecatedFunction as 'bur' } from './deprecated';
+    `,
+    `
+      export { 'deprecatedFunction' } from './deprecated';
+    `,
+    `
       namespace A {
         /** @deprecated */
         export type B = string;
@@ -329,6 +335,27 @@ ruleTester.run('no-deprecated', rule, {
       }
       <foo bar={1} />;
     `,
+    `
+      export {
+        /** @deprecated */
+        foo,
+      };
+    `,
+    {
+      code: `
+/** @deprecated */
+function A() {
+  return <div />;
+}
+
+const a = <A></A>;
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'A' }],
+        },
+      ],
+    },
     {
       code: `
 /** @deprecated */
@@ -344,7 +371,62 @@ new A();
     },
     {
       code: `
+/** @deprecated */
+const deprecatedValue = 45;
+const bar = deprecatedValue;
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'deprecatedValue' }],
+        },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  /** @deprecated */
+  #privateProp = 42;
+  value = this.#privateProp;
+}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'privateProp' }],
+        },
+      ],
+    },
+    {
+      code: `
+/** @deprecated */
+const deprecatedValue = 45;
+const bar = deprecatedValue;
+      `,
+      options: [
+        {
+          allow: ['deprecatedValue'],
+        },
+      ],
+    },
+    {
+      code: `
 import { exists } from 'fs';
+exists('/foo');
+      `,
+      options: [
+        {
+          allow: [
+            {
+              from: 'package',
+              name: 'exists',
+              package: 'fs',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const { exists } = import('fs');
 exists('/foo');
       `,
       options: [
@@ -2917,6 +2999,37 @@ class B extends A {
     },
     {
       code: `
+import { exists } from 'fs';
+exists('/foo');
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            name: 'exists',
+            reason:
+              'Since v1.0.0 - Use {@link stat} or {@link access} instead.',
+          },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+      options: [
+        {
+          allow: [
+            {
+              from: 'package',
+              name: 'exists',
+              package: 'hoge',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
         declare class A {
           /** @deprecated */
           accessor b: () => string;
@@ -3169,6 +3282,78 @@ class B extends A {
           endColumn: 30,
           endLine: 7,
           line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { deprecatedFunction } from './deprecated';
+
+        export { deprecatedFunction };
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 36,
+          endLine: 4,
+          line: 4,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        export { deprecatedFunction } from './deprecated';
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 36,
+          endLine: 2,
+          line: 2,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        export type { T, U } from './deprecated';
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 24,
+          endLine: 2,
+          line: 2,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        export { default as foo } from './deprecated';
+      `,
+      errors: [
+        {
+          column: 29,
+          endColumn: 32,
+          endLine: 2,
+          line: 2,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        export { deprecatedFunction as bar } from './deprecated';
+      `,
+      errors: [
+        {
+          column: 40,
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
           messageId: 'deprecated',
         },
       ],

@@ -70,6 +70,7 @@ export default createRule<Options, MessageIds>({
       description:
         'Enforce naming conventions for everything across a codebase',
       // technically only requires type checking if the user uses "type" modifiers
+      frozen: true,
       requiresTypeChecking: true,
     },
     messages: {
@@ -631,11 +632,8 @@ export default createRule<Options, MessageIds>({
 
       // #region interface
 
-      'TSEnumMember[computed != true]': {
-        handler: (
-          node: TSESTree.TSEnumMemberNonComputedName,
-          validator,
-        ): void => {
+      TSEnumMember: {
+        handler: (node: TSESTree.TSEnumMember, validator): void => {
           const id = node.id;
           const modifiers = new Set<Modifiers>();
 

@@ -1,3 +1,17 @@
+name: PR Review Requested
+
+on:
+  # WARNING: Using pull_request_target here because we need write permissions to remove labels from fork PRs
+  # pull_request_target can be UNSAFE because it runs in the TARGET repo context (not fork context).
+  # DO NOT CHECK OUT THE REPO IN THIS WORKFLOW
+  pull_request_target:
+    types:
+      - review_requested
+
+# IMPORTANT: Minimal permissions necessary for this workflow to function
+permissions:
+  pull-requests: write
+
 jobs:
   pr_review_requested:
     runs-on: ubuntu-latest
@@ -11,13 +25,3 @@ jobs:
         run: |
           echo "Don't worry if the previous step failed."
           echo "See https://github.com/actions-ecosystem/action-remove-labels/issues/221."
-
-name: PR Review Requested
-
-on:
-  pull_request_target:
-    types:
-      - review_requested
-
-permissions:
-  pull-requests: write

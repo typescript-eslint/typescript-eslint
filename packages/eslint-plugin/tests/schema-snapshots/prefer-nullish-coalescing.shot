@@ -29,6 +29,7 @@
         "description": "Whether to ignore all (`true`) or some (an object with properties) primitive types.",
         "oneOf": [
           {
+            "additionalProperties": false,
             "description": "Which primitives types may be ignored.",
             "properties": {
               "bigint": {
@@ -95,7 +96,6 @@ type Options = [
           number?: boolean;
           /** Ignore string primitive types. */
           string?: boolean;
-          [k: string]: unknown;
         }
       /** Ignore all primitive types. */
       | true;

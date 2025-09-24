@@ -163,7 +163,7 @@ declare module 'eslint/lib/rules/no-empty-function' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'unexpected',
+    'suggestComment' | 'unexpected',
     [
       {
         allow?: string[];
@@ -345,7 +345,7 @@ declare module 'eslint/lib/rules/no-unused-expressions' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'expected',
+    'unusedExpression',
     [
       {
         allowShortCircuit?: boolean;

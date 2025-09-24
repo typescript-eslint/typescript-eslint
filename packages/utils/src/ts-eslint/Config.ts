@@ -194,7 +194,7 @@ export namespace FlatConfig {
      * A severity string indicating if and how unused disable and enable
      * directives should be tracked and reported. For legacy compatibility, `true`
      * is equivalent to `"warn"` and `false` is equivalent to `"off"`.
-     * @default "off"
+     * @default "warn"
      */
     reportUnusedDisableDirectives?:
       | boolean
@@ -255,6 +255,15 @@ export namespace FlatConfig {
   // it's not a json schema so it's nowhere near as nice to read and convert...
   // https://github.com/eslint/eslint/blob/v8.45.0/lib/config/flat-config-schema.js
   export interface Config {
+    /**
+     * The base path for files and ignores.
+     *
+     * Note that this is not permitted inside an `extends` array.
+     *
+     * Since ESLint 9.30.0
+     */
+    basePath?: string;
+
     /**
      * An array of glob patterns indicating the files that the configuration object should apply to.
      * If not specified, the configuration object applies to all files matched by any other configuration object.

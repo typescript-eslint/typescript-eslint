@@ -1,0 +1,78 @@
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          AccessorProperty {
+            type: "AccessorProperty",
+            computed: true,
+            declare: false,
+            decorators: [],
+            definite: false,
+            key: Literal {
+              type: "Literal",
+              raw: "'constructor'",
+              value: "constructor",
+
+              range: [24, 37],
+              loc: {
+                start: { column: 12, line: 2 },
+                end: { column: 25, line: 2 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: false,
+            value: null,
+
+            range: [14, 39],
+            loc: {
+              start: { column: 2, line: 2 },
+              end: { column: 27, line: 2 },
+            },
+          },
+        ],
+
+        range: [10, 41],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 1, line: 3 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [6, 9],
+        loc: {
+          start: { column: 6, line: 1 },
+          end: { column: 9, line: 1 },
+        },
+      },
+      implements: [],
+      superClass: null,
+
+      range: [0, 41],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 1, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 42],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 4 },
+  },
+}
