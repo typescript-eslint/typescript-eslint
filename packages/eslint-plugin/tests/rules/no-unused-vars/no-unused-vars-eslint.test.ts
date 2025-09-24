@@ -6,7 +6,6 @@ import type { TestCaseError } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { MessageIds } from '../../../src/rules/no-unused-vars';
 
