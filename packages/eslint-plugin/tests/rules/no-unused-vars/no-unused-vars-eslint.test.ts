@@ -6,7 +6,6 @@ import type { TestCaseError } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { MessageIds } from '../../../src/rules/no-unused-vars';
 
@@ -88,13 +87,11 @@ function assignedError(
  * Returns an expected error for used-but-ignored variables.
  * @param varName The name of the variable
  * @param [additional] The additional text for the message data
- * @param [type] The node type (defaults to "Identifier")
  * @returns An expected error object
  */
 function usedIgnoredError(
   varName: string,
   additional = '',
-  type = AST_NODE_TYPES.Identifier,
 ): TestCaseError<MessageIds> {
   return {
     data: {
@@ -102,7 +99,6 @@ function usedIgnoredError(
       varName,
     },
     messageId: 'usedIgnoredVar',
-    type,
   };
 }
 

@@ -53,7 +53,7 @@ export interface TestCaseError<MessageIds extends string> {
    */
   readonly suggestions?: readonly SuggestionOutput<MessageIds>[] | null;
   /**
-   * The type of the reported AST node.
+   * @deprecated `type` is deprecated and will be removed in the next major version.
    */
   readonly type?: AST_NODE_TYPES | AST_TOKEN_TYPES;
 
