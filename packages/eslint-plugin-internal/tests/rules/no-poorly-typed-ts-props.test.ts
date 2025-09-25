@@ -8,6 +8,7 @@ const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
       project: './tsconfig.json',
+      projectService: false,
       tsconfigRootDir: getFixturesRootDir(),
     },
   },

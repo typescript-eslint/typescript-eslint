@@ -38,6 +38,13 @@ afterEach(() => {
   process.chdir(cwdCopy);
 });
 
+beforeEach(() => {
+  vi.stubEnv(
+    'TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR',
+    'true',
+  );
+});
+
 beforeAll(async () => {
   await fs.mkdir(tmpDirsParentDirectory, {
     recursive: true,

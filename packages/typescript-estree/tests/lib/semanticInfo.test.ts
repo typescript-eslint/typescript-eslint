@@ -43,6 +43,11 @@ describe('semanticInfo', async () => {
     vi.stubEnv('TSESTREE_SINGLE_RUN', '');
   });
 
+  vi.stubEnv(
+    'TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR',
+    'true',
+  );
+
   // test all AST snapshots
   const testCases = await Promise.all(
     testFiles.map(async filename => {
