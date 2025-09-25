@@ -1253,32 +1253,6 @@ const test = Boolean(((a = b), b || c));
     },
     {
       code: `
-let a: string | true | undefined;
-let b: string | boolean | undefined;
-
-const x = Boolean(a ? a : b);
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-
-const test = Boolean(!a ? b : a);
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
 let a: string | boolean | undefined;
 let b: string | boolean | undefined;
 let c: string | boolean | undefined;
@@ -5073,6 +5047,64 @@ let a: string | true | undefined;
 let b: string | boolean | undefined;
 
 const x = Boolean(1 + (a ?? b));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a ? a : b);
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a ?? b);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+
+const test = Boolean(!a ? b : a);
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+
+const test = Boolean(a ?? b);
       `,
             },
           ],
