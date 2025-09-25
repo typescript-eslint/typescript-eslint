@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 
-import type { TSESTree, TSNode } from './ts-estree';
+import type { TSESTree } from './ts-estree';
 
 import { getModifiers } from './getModifiers';
 import { xhtmlEntities } from './jsx/xhtml-entities';
@@ -692,15 +692,6 @@ export function createError(
   return new TSError(message, ast.fileName, { end, start });
 }
 
-export function nodeHasIllegalDecorators(
-  node: ts.Node,
-): node is { illegalDecorators: ts.Node[] } & ts.Node {
-  return !!(
-    'illegalDecorators' in node &&
-    (node.illegalDecorators as unknown[] | undefined)?.length
-  );
-}
-
 export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
   // If we have a token or node that has a non-zero width, it must have tokens.
   // Note: getWidth() does not take trivia into account.
@@ -760,113 +751,6 @@ export function isThisInTypeQuery(node: ts.Node): boolean {
   }
 
   return node.parent.kind === SyntaxKind.TypeQuery;
-}
-
-// `ts.nodeIsMissing`
-function nodeIsMissing(node: ts.Node | undefined): boolean {
-  if (node == null) {
-    return true;
-  }
-  return (
-    node.pos === node.end &&
-    node.pos >= 0 &&
-    node.kind !== SyntaxKind.EndOfFileToken
-  );
-}
-
-// `ts.nodeIsPresent`
-export function nodeIsPresent(node: ts.Node | undefined): node is ts.Node {
-  return !nodeIsMissing(node);
-}
-
-// `ts.getContainingFunction`
-export function getContainingFunction(
-  node: ts.Node,
-): ts.SignatureDeclaration | undefined {
-  return ts.findAncestor(node.parent, ts.isFunctionLike);
-}
-
-// `ts.hasAbstractModifier`
-function hasAbstractModifier(node: ts.Node): boolean {
-  return hasModifier(SyntaxKind.AbstractKeyword, node);
-}
-
-// `ts.getThisParameter`
-function getThisParameter(
-  signature: ts.SignatureDeclaration,
-): ts.ParameterDeclaration | null {
-  if (signature.parameters.length && !ts.isJSDocSignature(signature)) {
-    const thisParameter = signature.parameters[0];
-    if (parameterIsThisKeyword(thisParameter)) {
-      return thisParameter;
-    }
-  }
-
-  return null;
-}
-
-// `ts.parameterIsThisKeyword`
-function parameterIsThisKeyword(parameter: ts.ParameterDeclaration): boolean {
-  return isThisIdentifier(parameter.name);
-}
-
-// Rewrite version of `ts.nodeCanBeDecorated`
-// Returns `true` for both `useLegacyDecorators: true` and `useLegacyDecorators: false`
-export function nodeCanBeDecorated(node: TSNode): boolean {
-  switch (node.kind) {
-    case SyntaxKind.ClassDeclaration:
-      return true;
-    case SyntaxKind.ClassExpression:
-      // `ts.nodeCanBeDecorated` returns `false` if `useLegacyDecorators: true`
-      return true;
-    case SyntaxKind.PropertyDeclaration: {
-      const { parent } = node;
-
-      // `ts.nodeCanBeDecorated` uses this if `useLegacyDecorators: true`
-      if (ts.isClassDeclaration(parent)) {
-        return true;
-      }
-
-      // `ts.nodeCanBeDecorated` uses this if `useLegacyDecorators: false`
-      if (ts.isClassLike(parent) && !hasAbstractModifier(node)) {
-        return true;
-      }
-
-      return false;
-    }
-    case SyntaxKind.GetAccessor:
-    case SyntaxKind.SetAccessor:
-    case SyntaxKind.MethodDeclaration: {
-      const { parent } = node;
-      // In `ts.nodeCanBeDecorated`
-      // when `useLegacyDecorators: true` uses `ts.isClassDeclaration`
-      // when `useLegacyDecorators: true` uses `ts.isClassLike`
-      return (
-        Boolean(node.body) &&
-        (ts.isClassDeclaration(parent) || ts.isClassLike(parent))
-      );
-    }
-    case SyntaxKind.Parameter: {
-      // `ts.nodeCanBeDecorated` returns `false` if `useLegacyDecorators: false`
-
-      const { parent } = node;
-      const grandparent = parent.parent;
-
-      return (
-        Boolean(parent) &&
-        'body' in parent &&
-        Boolean(parent.body) &&
-        (parent.kind === SyntaxKind.Constructor ||
-          parent.kind === SyntaxKind.MethodDeclaration ||
-          parent.kind === SyntaxKind.SetAccessor) &&
-        getThisParameter(parent) !== node &&
-        Boolean(grandparent) &&
-        grandparent.kind === SyntaxKind.ClassDeclaration
-      );
-    }
-  }
-
-  return false;
 }
 
 export function isValidAssignmentTarget(node: ts.Node): boolean {
