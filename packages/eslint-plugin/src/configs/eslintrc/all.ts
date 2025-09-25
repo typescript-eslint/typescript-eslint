@@ -62,8 +62,6 @@ export = {
     '@typescript-eslint/no-non-null-assertion': 'error',
     '@typescript-eslint/no-redundant-type-constituents': 'error',
     '@typescript-eslint/no-require-imports': 'error',
-    'no-restricted-imports': 'off',
-    '@typescript-eslint/no-restricted-imports': 'error',
     '@typescript-eslint/no-restricted-types': 'error',
     '@typescript-eslint/no-this-alias': 'error',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
