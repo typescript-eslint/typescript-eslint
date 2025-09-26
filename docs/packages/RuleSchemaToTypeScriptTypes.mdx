@@ -1,0 +1,36 @@
+---
+id: rule-schema-to-typescript-types
+sidebar_label: rule-schema-to-typescript-types
+toc_max_heading_level: 3
+---
+
+import GeneratedDocs from './rule-schema-to-typescript-types/generated/index.md';
+
+# `@typescript-eslint/rule-schema-to-typescript-types`
+
+<PackageLink
+  packageName="rule-schema-to-typescript-types"
+  scope="@typescript-eslint"
+/>
+
+> Converts ESLint rule schemas to equivalent TypeScript type strings ✨
+
+```ts
+import { schemaToTypes } from '@typescript-eslint/rule-schema-to-typescript-types';
+
+// "
+// type Options = [
+//   /** My great option! */
+//   string[]
+// ];
+// "
+schemaToTypes({
+  description: 'My great option!',
+  items: { type: 'string' },
+  type: 'array',
+});
+```
+
+The following documentation is auto-generated from source code.
+
+<GeneratedDocs />
