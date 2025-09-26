@@ -121,6 +121,19 @@ const spreadBrandedString = [...brandedString];
 </TabItem>
 </Tabs>
 
+#### Examples
+
+If you intentionally spread over strings, you can use `allow` to explicitly allowlist them:
+
+```ts option='{"allow":[{ "from": "lib", "name": "string" }]}'
+/* eslint @typescript-eslint/no-misused-spread: {"allow":[{ "from": "lib", "name": "string" }]} */
+declare const unbrandedString: string;
+
+const spreadUnbrandedString = [...unbrandedString];
+```
+
+See the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier) for more information.
+
 ## When Not To Use It
 
 If your application intentionally works with raw data in unusual ways, such as directly manipulating class prototype chains, you might not want this rule.
