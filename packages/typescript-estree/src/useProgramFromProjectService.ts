@@ -96,8 +96,26 @@ function openClientFileFromProjectService(
     }
 
     if (!isDefaultProjectAllowed) {
+      const baseMessage = `${wasNotFound}. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`;
+      const allowDefaultProject =
+        parseSettings.projectService?.allowDefaultProject;
+
+      if (!allowDefaultProject) {
+        throw new Error(baseMessage);
+      }
+
+      const relativeFilePath = path.relative(
+        parseSettings.tsconfigRootDir,
+        filePathAbsolute,
+      );
+
       throw new Error(
-        `${wasNotFound}. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
+        [
+          baseMessage,
+          `allowDefaultProject is set to ${JSON.stringify(allowDefaultProject)}, which does not match '${relativeFilePath}'.`,
+        ]
+          .filter(Boolean)
+          .join('\n'),
       );
     }
   }

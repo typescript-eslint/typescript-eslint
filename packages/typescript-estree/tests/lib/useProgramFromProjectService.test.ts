@@ -167,7 +167,7 @@ describe(useProgramFromProjectService, () => {
     expect(service.reloadProjects).not.toHaveBeenCalled();
   });
 
-  it('throws an error after reloading projects when hasFullTypeInformation is enabled, the file is neither in the project service nor allowDefaultProject, and the last reload was recent', () => {
+  it('throws a non-file-specific error after reloading projects when hasFullTypeInformation is enabled, the file is neither in the project service nor an empty allowDefaultProject, and the last reload was recent', () => {
     const { service } = createMockProjectService();
 
     service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
@@ -185,6 +185,40 @@ describe(useProgramFromProjectService, () => {
       ),
     ).toThrow(
       `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
+    );
+    expect(service.reloadProjects).toHaveBeenCalledOnce();
+  });
+
+  it('throws a file-specific error after reloading projects when hasFullTypeInformation is enabled, the file is neither in the project service nor a populated allowDefaultProject, and the last reload was recent', () => {
+    const { service } = createMockProjectService();
+    const allowDefaultProject = ['a.js', 'b.js'];
+
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject,
+          lastReloadTimestamp: 0,
+          service,
+        }),
+        {
+          ...mockParseSettings,
+          projectService: {
+            allowDefaultProject,
+            lastReloadTimestamp: 0,
+            maximumDefaultProjectFileMatchCount: 8,
+            service,
+          },
+        },
+        true,
+        new Set(),
+      ),
+    ).toThrow(
+      [
+        `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
+        `allowDefaultProject is set to ["a.js","b.js"], which does not match 'path/PascalCaseDirectory/camelCaseFile.ts'.`,
+      ].join('\n'),
     );
     expect(service.reloadProjects).toHaveBeenCalledOnce();
   });
