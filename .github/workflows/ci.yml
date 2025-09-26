@@ -117,7 +117,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        lint-task: ['lint', 'typecheck', 'knip']
+        lint-task: ['deduplicate', 'lint', 'typecheck', 'knip']
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
