@@ -22,6 +22,20 @@ describe(schemaToTypes, () => {
     expect(actual).toMatchInlineSnapshot(`"type Options = [string]"`);
   });
 
+  it('returns a complex Options type when the schema contains an array of items', () => {
+    const actual = schemaToTypes([
+      {
+        type: 'array',
+        items: [{ type: 'string' }],
+      },
+    ]);
+
+    expect(actual).toMatchInlineSnapshot(`
+      "type Options = [ | []
+ | [string]]"
+    `);
+  });
+
   it('returns a complex Options type when the schema is nested', () => {
     const actual = schemaToTypes([
       {
