@@ -111,7 +111,7 @@ export default createRule<[], MessageId>({
             const type = getConstrainedTypeAtLocation(services, element);
             const tsNode = services.esTreeNodeToTSNodeMap.get(element);
 
-            if (containsNonAwaitableType(type, tsNode, checker)) {
+            if (isAlwaysNonAwaitableType(type, tsNode, checker)) {
               context.report({
                 node: element,
                 messageId: 'invalidPromiseAggregatorInput',
@@ -279,6 +279,19 @@ function getValueTypesOfArrayLike(
   }
 
   return null;
+}
+
+function isAlwaysNonAwaitableType(
+  type: ts.Type,
+  node: ts.Node,
+  checker: ts.TypeChecker,
+): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .every(
+      typeArgumentPart =>
+        needsToBeAwaited(checker, node, typeArgumentPart) === Awaitable.Never,
+    );
 }
 
 function containsNonAwaitableType(
