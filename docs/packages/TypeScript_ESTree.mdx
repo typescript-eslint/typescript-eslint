@@ -241,7 +241,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * Note that {@link projectService} is now preferred.
    */
-  project?: string[] | string | boolean | null;
+  project?: string[] | string | boolean | ts.Project | ts.Project[] | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from

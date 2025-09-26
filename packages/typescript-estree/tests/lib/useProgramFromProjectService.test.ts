@@ -217,7 +217,7 @@ describe(useProgramFromProjectService, () => {
     ).toThrow(
       [
         `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
-        `allowDefaultProject is set to ["a.js","b.js"], which does not match 'path/PascalCaseDirectory/camelCaseFile.ts'.`,
+        `allowDefaultProject is set to ["a.js","b.js"], which does not match '${path.normalize('path/PascalCaseDirectory/camelCaseFile.ts')}'.`,
       ].join('\n'),
     );
     expect(service.reloadProjects).toHaveBeenCalledOnce();

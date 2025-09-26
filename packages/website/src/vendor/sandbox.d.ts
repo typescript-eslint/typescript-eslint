@@ -277,7 +277,7 @@ export declare const createTypeScriptSandbox: (
     paths?: MonacoEditor.languages.typescript.MapLike<string[]>;
     preserveConstEnums?: boolean;
     preserveSymlinks?: boolean;
-    project?: string;
+    project?: string | ts.Project;
     reactNamespace?: string;
     jsxFactory?: string;
     composite?: boolean;
