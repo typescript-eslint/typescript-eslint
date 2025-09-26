@@ -187,6 +187,30 @@ You can use an AST visualization tool such as [typescript-eslint playground](/pl
 
 </details>
 
+<details>
+<summary>Banning top-level await (TLA)</summary>
+
+```jsonc
+{
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+      // ban await expressions not inside an async function
+      {
+        "selector": "AwaitExpression:not(:matches(FunctionExpression AwaitExpression, ArrowFunctionExpression AwaitExpression, FunctionDeclaration AwaitExpression))",
+        "message": "TLA makes it impossible to `require()` this module or any of its downstream dependencies.",
+      },
+    ],
+  },
+}
+```
+
+Note that TLA does not prevent a file being imported via ESM (ECMAScript Module) `import`s.
+It only prevents `require()`s from loading an ESM file, most commonly through CommonJS (CJS) files.
+See [Node.js Loading ECMAScript modules using `require()`](https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require).
+
+</details>
+
 ## How do I check to see what versions are installed?
 
 If you have multiple versions of our tooling, it can cause various bugs for you.
