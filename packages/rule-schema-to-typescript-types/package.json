@@ -2,7 +2,7 @@
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
   "version": "8.44.1",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./index.d.ts",

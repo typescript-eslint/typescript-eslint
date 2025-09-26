@@ -14,7 +14,7 @@
     "Josh Goldberg <npm@joshuakgoldberg.com>",
     "James Henry <typescript-eslint@jameshenry.blog>"
   ],
-  "type": "commonjs",
+  "type": "module",
   "license": "MIT",
   "repository": "typescript-eslint/typescript-eslint",
   "bugs": {

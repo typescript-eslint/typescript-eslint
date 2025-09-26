@@ -9,7 +9,7 @@
     "README.md",
     "LICENSE"
   ],
-  "type": "commonjs",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
