@@ -4,8 +4,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
-export type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
-export type Options = ['constructor' | 'type-annotation'];
+type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
+type Options = [
+  'constructor' | 'type-annotation',
+  {
+    ignore?: string[];
+  }?,
+];
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-generic-constructors',
@@ -29,10 +34,24 @@ export default createRule<Options, MessageIds>({
         description: 'Which constructor call syntax to prefer.',
         enum: ['type-annotation', 'constructor'],
       },
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          ignore: {
+            type: 'array',
+            description:
+              'A list of constructor names to ignore when enforcing the rule.',
+            items: {
+              type: 'string',
+            },
+          },
+        },
+      },
     ],
   },
-  defaultOptions: ['constructor'],
-  create(context, [mode]) {
+  defaultOptions: ['constructor', {}],
+  create(context, [mode, options]) {
     return {
       'VariableDeclarator,PropertyDefinition,AccessorProperty,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
         node:
@@ -77,7 +96,8 @@ export default createRule<Options, MessageIds>({
           lhs &&
           (lhs.type !== AST_NODE_TYPES.TSTypeReference ||
             lhs.typeName.type !== AST_NODE_TYPES.Identifier ||
-            lhs.typeName.name !== rhs.callee.name)
+            lhs.typeName.name !== rhs.callee.name ||
+            options?.ignore?.includes(lhs.typeName.name))
         ) {
           return;
         }
