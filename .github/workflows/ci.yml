@@ -65,9 +65,7 @@ jobs:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
       - name: Run grep
-        run: |
-          grep -E "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" -I -r . --exclude-dir={node_modules,.nx} --exclude={graveyard.txt,matches.txt,matches-only.txt} > matches.txt
-          grep -E "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" -I -o -r . --exclude-dir={node_modules,.nx} --exclude={graveyard.txt,matches.txt,matches-only.txt} > matches-only.txt
+        run: grep -E "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" -I -o -r . --exclude-dir={node_modules,.nx} --exclude={graveyard.txt,matches.txt} > matches.txt
 
       - name: Check URLs
         run: yarn tsx tools/scripts/checkUrls.mts

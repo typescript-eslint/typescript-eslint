@@ -3,17 +3,14 @@ import { createSpinner } from 'nanospinner';
 import { existsSync } from 'node:fs';
 import { readFile, appendFile, writeFile } from 'node:fs/promises';
 
-// commands used:
+// command used to generate matches.txt:
 // we're not running them ourselves because windows doesn't come with grep unfortunately :/
-const commandMatches =
-  'grep -E "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" -I -r . --exclude-dir={node_modules,.nx} --exclude={graveyard.txt,matches.txt,matches-only.txt} > matches.txt';
-const commandMatchesOnly =
-  'grep -E "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" -I -o -r . --exclude-dir={node_modules,.nx} --exclude={graveyard.txt,matches.txt,matches-only.txt} > matches-only.txt';
+const command = String.raw`grep -E "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" -I -o -r . --exclude-dir={node_modules,.nx} --exclude={graveyard.txt,matches.txt,matches-only.txt} > matches.txt`;
 // regex stolen from: https://stackoverflow.com/a/3809435
 
-if (!existsSync('matches-only.txt') || !existsSync('matches.txt')) {
+if (!existsSync('matches.txt')) {
   console.error(
-    `Looks like matches.txt or matches-only.txt doesn't exist. Run these two commands first (if you're running windows run them in git bash):\n${commandMatches}\n${commandMatchesOnly}`,
+    `Looks like matches.txt doesn't exist. Run these two commands first (if you're running windows run them in git bash):\n${command}`,
   );
   // I want to output a clear error message instead of a long stack trace
   // eslint-disable-next-line no-process-exit
@@ -36,10 +33,8 @@ const createSpinnerFunction = process.argv.includes('--spinner')
   : createFakeSpinner;
 const spinner = createSpinnerFunction('Initializing - Reading Files').start();
 
-const matches = await readFile('matches-only.txt', { encoding: 'utf8' });
+const matches = await readFile('matches.txt', { encoding: 'utf8' });
 const matchesLines = matches.split('\n');
-const matchesInfo = await readFile('matches.txt', { encoding: 'utf8' });
-const matchesInfoLines = matchesInfo.split('\n');
 
 console.log('[Graveyard.js] got like', matchesLines.length, 'matches 💀');
 await writeFile('graveyard.txt', '');
@@ -98,7 +93,6 @@ for (let i = 0; i < matchesLines.length; i++) {
     continue;
   }
 
-  const info = matchesInfoLines[i];
   const [, ...urlParts] = match.split(':');
   const url = urlParts.join(':');
   update(`Fetching - ${url}`);
@@ -110,7 +104,7 @@ for (let i = 0; i < matchesLines.length; i++) {
   } catch (error) {
     await appendFile(
       'graveyard.txt',
-      `[Fetch error: ${getErrorInfo(error)}] ${info}\n`,
+      `[Fetch error: ${getErrorInfo(error)}] ${match}\n`,
     );
     continue;
   }
@@ -118,7 +112,7 @@ for (let i = 0; i < matchesLines.length; i++) {
   if (!result.ok) {
     await appendFile(
       'graveyard.txt',
-      `[HTTP ${result.status} ${result.statusText}] ${info}\n`,
+      `[HTTP ${result.status} ${result.statusText}] ${match}\n`,
     );
     continue;
   }
@@ -135,7 +129,7 @@ for (let i = 0; i < matchesLines.length; i++) {
     if (hash) {
       await appendFile(
         'graveyard.txt',
-        `[Non-HTML contentType header but a hash is present ${hash}] ${info}\n`,
+        `[Non-HTML contentType header but a hash is present ${hash}] ${match}\n`,
       );
     }
     continue;
@@ -147,7 +141,7 @@ for (let i = 0; i < matchesLines.length; i++) {
   const jsdom = new JSDOM(html, { url });
   const linkedElement = jsdom.window.document.querySelector(hash);
   if (!linkedElement) {
-    await appendFile('graveyard.txt', `[Missing element ${hash}] ${info}\n`);
+    await appendFile('graveyard.txt', `[Missing element ${hash}] ${match}\n`);
   }
 }
 
