@@ -1,3 +1,6 @@
+/**
+ * Maps ref paths to generated type names.
+ */
 export type RefMap = ReadonlyMap<
   // ref path
   string,
@@ -5,7 +8,10 @@ export type RefMap = ReadonlyMap<
   string
 >;
 
-export type AST =
+/**
+ * Minimal representation of the nodes in a schema being compiled to types.
+ */
+export type SchemaAST =
   | ArrayAST
   | LiteralAST
   | ObjectAST
@@ -13,37 +19,37 @@ export type AST =
   | TypeReferenceAST
   | UnionAST;
 
-interface BaseASTNode {
+export interface BaseSchemaASTNode {
   readonly commentLines: string[];
 }
 
-export interface ArrayAST extends BaseASTNode {
-  readonly elementType: AST;
+export interface ArrayAST extends BaseSchemaASTNode {
+  readonly elementType: SchemaAST;
   readonly type: 'array';
 }
-export interface LiteralAST extends BaseASTNode {
+export interface LiteralAST extends BaseSchemaASTNode {
   readonly code: string;
   readonly type: 'literal';
 }
-export interface ObjectAST extends BaseASTNode {
-  readonly indexSignature: AST | null;
+export interface ObjectAST extends BaseSchemaASTNode {
+  readonly indexSignature: SchemaAST | null;
   readonly properties: {
     readonly name: string;
     readonly optional: boolean;
-    readonly type: AST;
+    readonly type: SchemaAST;
   }[];
   readonly type: 'object';
 }
-export interface TupleAST extends BaseASTNode {
-  readonly elements: AST[];
-  readonly spreadType: AST | null;
+export interface TupleAST extends BaseSchemaASTNode {
+  readonly elements: SchemaAST[];
+  readonly spreadType: SchemaAST | null;
   readonly type: 'tuple';
 }
-export interface TypeReferenceAST extends BaseASTNode {
+export interface TypeReferenceAST extends BaseSchemaASTNode {
   readonly type: 'type-reference';
   readonly typeName: string;
 }
-export interface UnionAST extends BaseASTNode {
-  readonly elements: AST[];
+export interface UnionAST extends BaseSchemaASTNode {
+  readonly elements: SchemaAST[];
   readonly type: 'union';
 }

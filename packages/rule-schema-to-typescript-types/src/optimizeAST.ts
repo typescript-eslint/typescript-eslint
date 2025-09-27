@@ -1,6 +1,6 @@
-import type { AST, UnionAST } from './types';
+import type { SchemaAST, UnionAST } from './types';
 
-export function optimizeAST(ast: AST | null): void {
+export function optimizeAST(ast: SchemaAST | null): void {
   if (ast == null) {
     return;
   }
@@ -40,7 +40,7 @@ export function optimizeAST(ast: AST | null): void {
       }
 
       // hacky way to deduplicate union members
-      const uniqueElementsMap = new Map<string, AST>();
+      const uniqueElementsMap = new Map<string, SchemaAST>();
       for (const element of elements) {
         uniqueElementsMap.set(JSON.stringify(element), element);
       }
@@ -53,8 +53,8 @@ export function optimizeAST(ast: AST | null): void {
   }
 }
 
-function unwrapUnions(union: UnionAST): AST[] {
-  const elements: AST[] = [];
+function unwrapUnions(union: UnionAST): SchemaAST[] {
+  const elements: SchemaAST[] = [];
   for (const element of union.elements) {
     if (element.type === 'union') {
       elements.push(...unwrapUnions(element));

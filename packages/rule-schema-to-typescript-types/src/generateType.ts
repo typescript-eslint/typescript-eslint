@@ -2,7 +2,7 @@ import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import { TSUtils } from '@typescript-eslint/utils';
 
-import type { AST, RefMap } from './types';
+import type { SchemaAST, RefMap } from './types';
 
 import { NotSupportedError, UnexpectedError } from './errors';
 import { generateArrayType } from './generateArrayType';
@@ -22,7 +22,7 @@ const UNSUPPORTED_KEYWORDS = new Set([
   'patternProperties',
 ]);
 
-export function generateType(schema: JSONSchema4, refMap: RefMap): AST {
+export function generateType(schema: JSONSchema4, refMap: RefMap): SchemaAST {
   const unsupportedProps = Object.keys(schema).filter(key =>
     UNSUPPORTED_KEYWORDS.has(key),
   );

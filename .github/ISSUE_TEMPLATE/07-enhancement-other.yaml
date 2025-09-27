@@ -27,6 +27,7 @@ body:
         - eslint-plugin
         - parser
         - project-service
+        - rule-schema-to-typescript-types
         - rule-tester
         - scope-manager
         - tsconfig-utils

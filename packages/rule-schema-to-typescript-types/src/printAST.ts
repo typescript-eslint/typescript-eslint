@@ -1,12 +1,12 @@
 import naturalCompare from 'natural-compare';
 
-import type { AST, TupleAST } from './types';
+import type { SchemaAST, TupleAST } from './types';
 
-export function printTypeAlias(aliasName: string, ast: AST): string {
+export function printTypeAlias(aliasName: string, ast: SchemaAST): string {
   return `${printComment(ast)}type ${aliasName} = ${printAST(ast).code}`;
 }
 
-export function printASTWithComment(ast: AST): string {
+export function printASTWithComment(ast: SchemaAST): string {
   const result = printAST(ast);
   return `${printComment(result)}${result.code}`;
 }
@@ -36,7 +36,7 @@ interface CodeWithComments {
   code: string;
   commentLines: string[];
 }
-function printAST(ast: AST): CodeWithComments {
+function printAST(ast: SchemaAST): CodeWithComments {
   switch (ast.type) {
     case 'array': {
       const code = printAndMaybeParenthesise(ast.elementType);
@@ -124,7 +124,7 @@ function printAST(ast: AST): CodeWithComments {
 
 interface Element {
   code: string;
-  element: AST;
+  element: SchemaAST;
 }
 function compareElements(a: Element, b: Element): number {
   if (a.element.type !== b.element.type) {
@@ -153,7 +153,7 @@ function compareElements(a: Element, b: Element): number {
   }
 }
 
-function printAndMaybeParenthesise(ast: AST): CodeWithComments {
+function printAndMaybeParenthesise(ast: SchemaAST): CodeWithComments {
   const printed = printAST(ast);
   if (ast.type === 'union') {
     return {

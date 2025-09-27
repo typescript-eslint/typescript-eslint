@@ -3,7 +3,7 @@ import type {
   JSONSchema4Type,
 } from '@typescript-eslint/utils/json-schema';
 
-import type { AST, RefMap, UnionAST } from './types';
+import type { SchemaAST, RefMap, UnionAST } from './types';
 
 import { NotSupportedError } from './errors';
 import { generateType } from './generateType';
@@ -12,11 +12,11 @@ export function generateUnionType(
   members: (JSONSchema4 | JSONSchema4Type)[],
   refMap: RefMap,
 ): UnionAST {
-  const elements: AST[] = [];
+  const elements: SchemaAST[] = [];
 
   for (const memberSchema of members) {
     elements.push(
-      ((): AST => {
+      ((): SchemaAST => {
         switch (typeof memberSchema) {
           case 'string':
             return {

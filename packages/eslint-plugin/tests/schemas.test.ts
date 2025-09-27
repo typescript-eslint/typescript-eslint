@@ -1,4 +1,4 @@
-import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
+import { schemaToTypes } from '@typescript-eslint/rule-schema-to-typescript-types';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import prettier from 'prettier';
@@ -41,7 +41,7 @@ const ruleEntries = Object.entries(rules);
 describe('Rule schemas should be convertible to TS types for documentation purposes', async () => {
   const PRETTIER_CONFIG = {
     schema: await getPrettierConfig(SCHEMA_FILEPATH),
-    tsType: getPrettierConfig(TS_TYPE_FILEPATH),
+    tsType: await getPrettierConfig(TS_TYPE_FILEPATH),
   };
 
   beforeAll(async () => {
@@ -83,8 +83,8 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
         ),
         PRETTIER_CONFIG.schema,
       );
-      const compilationResult = await compile(
-        ruleDef.meta.schema,
+      const compilationResult = await prettier.format(
+        schemaToTypes(ruleDef.meta.schema),
         PRETTIER_CONFIG.tsType,
       );
 
