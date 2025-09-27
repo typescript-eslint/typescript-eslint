@@ -101,3 +101,8 @@ tsconfig*.vitest-temp.json
 .cursor/mcp.json
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
+
+# url checking artifacts
+matches.txt
+matches-only.txt
+graveyard.txt

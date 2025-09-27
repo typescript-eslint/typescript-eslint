@@ -40,7 +40,7 @@ permissions:
 jobs:
   install:
     name: Checkout and Install
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    ##environment: #{{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     runs-on: ubuntu-latest
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
@@ -51,6 +51,35 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+  checkUrls:
+    name: "Check URLs (tools/scripts/checkUrls.mts)"
+    needs: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+      - name: Run grep
+        run: |
+          grep -E "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" -r . --exclude-dir=node_modules > matches.txt
+          grep -E "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" -o -r . --exclude-dir=node_modules > matches-only.txt
+
+      - name: Check URLs
+        run: yarn tsx tools/scripts/checkUrls.mts
+
+      - name: Log graveyard.txt
+        run: cat graveyard.txt
+
+      - name: Upload the artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: "*.txt"
+          name: checkUrls-result
 
   build:
     name: Build All Packages
