@@ -1,7 +1,7 @@
-import { readFile, appendFile, writeFile } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 import { createSpinner } from 'nanospinner';
+import { existsSync } from 'node:fs';
+import { readFile, appendFile, writeFile } from 'node:fs/promises';
 
 // commands used:
 // we're not running them ourselves because windows doesn't come with grep unfortunately :/
@@ -15,6 +15,8 @@ if (!existsSync('matches-only.txt') || !existsSync('matches.txt')) {
   console.error(
     `Looks like matches.txt or matches-only.txt doesn't exist. Run these two commands first (if you're running windows run them in git bash):\n${commandMatches}\n${commandMatchesOnly}`,
   );
+  // I want to output a clear error message instead of a long stack trace
+  // eslint-disable-next-line no-process-exit
   process.exit(1);
 }
 
@@ -24,8 +26,8 @@ function createFakeSpinner(log: string) {
     start() {
       return this;
     },
-    update: console.log.bind(console, '[Update]'),
     success: console.log.bind(console, '[Success]'),
+    update: console.log.bind(console, '[Update]'),
   };
 }
 
@@ -45,12 +47,18 @@ await writeFile('graveyard.txt', '');
 // check if there's a hash eg #how-to-do-this?x=3
 function getHash(url: string): string | undefined {
   const hashString = new URL(url).hash.trim();
-  if (!hashString) return;
-  if (!hashString.startsWith('#')) return;
+  if (!hashString) {
+    return;
+  }
+  if (!hashString.startsWith('#')) {
+    return;
+  }
 
   // get the part between # and ?, including the #
   const questionMarkIndex = hashString.indexOf('?');
-  if (questionMarkIndex === -1) return hashString;
+  if (questionMarkIndex === -1) {
+    return hashString;
+  }
   return hashString.slice(0, questionMarkIndex);
 }
 
@@ -61,7 +69,9 @@ for (let i = 0; i < matchesLines.length; i++) {
   update('');
 
   const match = matchesLines[i];
-  if (match.startsWith('Binary file')) continue;
+  if (match.startsWith('Binary file')) {
+    continue;
+  }
 
   const info = matchesInfoLines[i];
   const [, ...urlParts] = match.split(':');
@@ -90,16 +100,19 @@ for (let i = 0; i < matchesLines.length; i++) {
 
   // if there's no #how-to-do-this-part hash in the url, there's nothing more to check
   const hash = getHash(result.url);
-  if (!hash) continue;
+  if (!hash) {
+    continue;
+  }
 
   // check if the content type is html before checking it
   const contentType = result.headers.get('content-type')?.split(';');
-  if (!contentType || !contentType[0].includes('html')) {
-    if (hash)
+  if (!contentType?.[0].includes('html')) {
+    if (hash) {
       await appendFile(
         'graveyard.txt',
         `[Non-HTML contentType header but a hash is present ${hash}] ${info}\n`,
       );
+    }
     continue;
   }
 
@@ -108,8 +121,9 @@ for (let i = 0; i < matchesLines.length; i++) {
   update('Processing through JSDOM');
   const jsdom = new JSDOM(html, { url });
   const linkedElement = jsdom.window.document.querySelector(hash);
-  if (!linkedElement)
+  if (!linkedElement) {
     await appendFile('graveyard.txt', `[Missing element ${hash}] ${info}\n`);
+  }
 }
 
 spinner.success('Successful! Check graveyard.txt');
