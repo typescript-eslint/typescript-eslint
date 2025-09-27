@@ -9,6 +9,14 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-empty-function** for documentation.
 
+:::danger Deprecated
+
+This rule has been deprecated because the base [`no-empty-function`](https://eslint.org/docs/rules/no-empty-function) rule added support for TypeScript syntax.
+There is no longer any need to use this extension rule.
+It will be removed in the next major version of typescript-eslint.
+
+:::
+
 It adds support for handling TypeScript specific code that would otherwise trigger the rule.
 
 One example of valid TypeScript specific code that would otherwise trigger the `no-empty-function` rule is the use of [parameter properties](https://www.typescriptlang.org/docs/handbook/classes.html#parameter-properties) in constructor functions.

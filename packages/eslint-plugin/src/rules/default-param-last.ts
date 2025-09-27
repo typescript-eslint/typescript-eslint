@@ -8,6 +8,17 @@ export default createRule({
   name: 'default-param-last',
   meta: {
     type: 'suggestion',
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'default-param-last',
+            url: 'https://eslint.org/docs/latest/rules/default-param-last',
+          },
+        },
+      ],
+    },
     docs: {
       description: 'Enforce default parameters to be last',
       extendsBaseRule: true,

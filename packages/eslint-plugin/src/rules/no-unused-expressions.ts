@@ -26,6 +26,17 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     defaultOptions,
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-unused-expressions',
+            url: 'https://eslint.org/docs/latest/rules/no-unused-expressions',
+          },
+        },
+      ],
+    },
     docs: {
       description: 'Disallow unused expressions',
       extendsBaseRule: true,

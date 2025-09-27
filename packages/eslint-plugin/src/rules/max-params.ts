@@ -29,6 +29,17 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     // defaultOptions, -- base rule does not use defaultOptions
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'max-params',
+            url: 'https://eslint.org/docs/latest/rules/max-params',
+          },
+        },
+      ],
+    },
     docs: {
       description:
         'Enforce a maximum number of parameters in function definitions',

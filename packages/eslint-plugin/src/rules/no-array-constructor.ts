@@ -12,6 +12,17 @@ export default createRule({
   name: 'no-array-constructor',
   meta: {
     type: 'suggestion',
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-array-constructor',
+            url: 'https://eslint.org/docs/latest/rules/no-array-constructor',
+          },
+        },
+      ],
+    },
     docs: {
       description: 'Disallow generic `Array` constructors',
       extendsBaseRule: true,

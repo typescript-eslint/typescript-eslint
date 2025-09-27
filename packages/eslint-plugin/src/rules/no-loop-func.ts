@@ -20,6 +20,17 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     // defaultOptions, -- base rule does not use defaultOptions
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-loop-func',
+            url: 'https://eslint.org/docs/latest/rules/no-loop-func',
+          },
+        },
+      ],
+    },
     docs: {
       description:
         'Disallow function declarations that contain unsafe references inside loop statements',

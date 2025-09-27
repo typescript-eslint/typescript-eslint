@@ -32,6 +32,24 @@ const AUTO_GENERATED_COMMENT_LINES = [
   '',
 ] as const;
 
+const DEPRECATED_RECOMMENDED_RULES = new Set([
+  'class-methods-use-this',
+  'default-param-last',
+  'init-declarations',
+  'max-params',
+  'no-array-constructor',
+  'no-dupe-class-members',
+  'no-empty-function',
+  'no-invalid-this',
+  'no-loop-func',
+  'no-loss-of-precision',
+  'no-magic-numbers',
+  'no-shadow',
+  'no-unused-expressions',
+  'no-use-before-define',
+  'no-useless-constructor',
+]);
+
 const EXTENDS_MODULES = [
   {
     moduleRelativePath: './base',
@@ -115,7 +133,7 @@ function reducer(
   settings: ConfigRuleSettings = {},
 ): LinterConfigRules {
   if (value.meta.deprecated) {
-    if (value.meta.docs.recommended) {
+    if (value.meta.docs.recommended && !DEPRECATED_RECOMMENDED_RULES.has(key)) {
       throw new Error(`${key} is both deprecated and recommended.`);
     }
     if (settings.deprecated) {

@@ -61,6 +61,17 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     defaultOptions,
+    deprecated: {
+      deprecatedSince: '8.45.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-empty-function',
+            url: 'https://eslint.org/docs/latest/rules/no-empty-function',
+          },
+        },
+      ],
+    },
     docs: {
       description: 'Disallow empty functions',
       extendsBaseRule: true,
