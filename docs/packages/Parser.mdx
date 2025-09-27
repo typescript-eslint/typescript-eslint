@@ -53,7 +53,7 @@ interface ParserOptions {
   jsxPragma?: string | null;
   lib?: string[];
   programs?: import('typescript').Program[];
-  project?: string | string[] | boolean | null;
+  project?: string | string[] | boolean | ts.Project | ts.Project[] | null;
   projectFolderIgnoreList?: string[];
   projectService?: boolean | ProjectServiceOptions;
   tsconfigRootDir?: string;
