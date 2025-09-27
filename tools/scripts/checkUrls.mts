@@ -18,7 +18,21 @@ if (!existsSync('matches-only.txt') || !existsSync('matches.txt')) {
   process.exit(1);
 }
 
-const spinner = createSpinner('Initializing - Reading Files').start();
+function createFakeSpinner(log: string) {
+  console.log(log);
+  return {
+    start() {
+      return this;
+    },
+    update: console.log.bind(console, '[Update]'),
+    success: console.log.bind(console, '[Success]'),
+  };
+}
+
+const createSpinnerFunction = process.argv.includes('--spinner')
+  ? createSpinner
+  : createFakeSpinner;
+const spinner = createSpinnerFunction('Initializing - Reading Files').start();
 
 const matches = await readFile('matches-only.txt', { encoding: 'utf8' });
 const matchesLines = matches.split('\n');
