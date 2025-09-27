@@ -34,14 +34,14 @@ export function convertComments(
       const textEnd =
         comment.kind === ts.SyntaxKind.SingleLineCommentTrivia
           ? // single line comments end at the end
-            range[1] - textStart
+            range[1]
           : // multiline comments end 2 characters early
-            range[1] - textStart - 2;
+            range[1] - 2;
       comments.push({
         type,
         loc,
         range,
-        value: code.slice(textStart, textStart + textEnd),
+        value: code.slice(textStart, textEnd),
       });
     },
     ast,
