@@ -60,8 +60,7 @@ export default createRule<Options, MessageIds>({
           },
           ignoredTypeNames: {
             type: 'array',
-            description:
-              'Stringified regular expressions of type names to ignore.',
+            description: 'Stringified type names to ignore.',
             items: {
               type: 'string',
             },

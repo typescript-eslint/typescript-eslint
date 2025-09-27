@@ -10,7 +10,7 @@
         "type": "boolean"
       },
       "ignoredTypeNames": {
-        "description": "Stringified regular expressions of type names to ignore.",
+        "description": "Stringified type names to ignore.",
         "items": {
           "type": "string"
         },
@@ -28,7 +28,7 @@ type Options = [
   {
     /** Whether to also check values of type `unknown` */
     checkUnknown?: boolean;
-    /** Stringified regular expressions of type names to ignore. */
+    /** Stringified type names to ignore. */
     ignoredTypeNames?: string[];
   },
 ];
