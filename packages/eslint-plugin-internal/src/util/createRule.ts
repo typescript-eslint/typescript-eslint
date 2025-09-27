@@ -1,8 +1,8 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
 
-// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const { version }: { version: string } = require('../../package.json');
+import packageJson from './packagejson.js';
+
+const { version } = packageJson;
 
 export interface ESLintPluginInternalDocs {
   requiresTypeChecking?: true;

@@ -2,7 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import rule from '../../src/rules/prefer-ast-types-enum';
+import rule from '../../src/rules/prefer-ast-types-enum.js';
 
 const ruleTester = new RuleTester();
 

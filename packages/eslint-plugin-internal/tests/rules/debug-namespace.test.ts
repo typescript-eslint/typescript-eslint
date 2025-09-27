@@ -1,6 +1,6 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/debug-namespace';
+import rule from '../../src/rules/debug-namespace.js';
 
 const ruleTester = new RuleTester();
 

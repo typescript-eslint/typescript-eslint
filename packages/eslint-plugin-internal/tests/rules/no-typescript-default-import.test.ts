@@ -1,6 +1,6 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/no-typescript-default-import';
+import rule from '../../src/rules/no-typescript-default-import.js';
 
 const ruleTester = new RuleTester();
 

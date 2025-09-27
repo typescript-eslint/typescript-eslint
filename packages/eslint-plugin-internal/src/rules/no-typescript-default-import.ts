@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule } from '../util/index.js';
 
 /*
 We have `allowSyntheticDefaultImports` turned on in this project, so there are two problems that arise:
