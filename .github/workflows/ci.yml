@@ -73,9 +73,11 @@ jobs:
         run: yarn tsx tools/scripts/checkUrls.mts
 
       - name: Log graveyard.txt
+        if: always()
         run: cat graveyard.txt
 
       - name: Upload the artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           path: "*.txt"
