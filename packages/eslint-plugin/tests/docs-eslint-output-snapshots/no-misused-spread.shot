@@ -4,7 +4,7 @@ declare const promise: Promise<number>;
 const spreadPromise = { ...promise };
                         ~~~~~~~~~~ Using the spread operator on Promise in an object can cause unexpected behavior. Did you forget to await the promise?
 
-declare function getObject(): Record<string, strings>;
+declare function getObject(): Record<string, string>;
 const getObjectSpread = { ...getObject };
                           ~~~~~~~~~~~~ Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?
 
@@ -37,7 +37,7 @@ Correct
 declare const promise: Promise<number>;
 const spreadPromise = { ...(await promise) };
 
-declare function getObject(): Record<string, strings>;
+declare function getObject(): Record<string, string>;
 const getObjectSpread = { ...getObject() };
 
 declare const map: Map<string, number>;

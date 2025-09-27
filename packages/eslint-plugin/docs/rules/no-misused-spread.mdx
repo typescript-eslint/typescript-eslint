@@ -37,7 +37,7 @@ That includes the following cases:
 declare const promise: Promise<number>;
 const spreadPromise = { ...promise };
 
-declare function getObject(): Record<string, strings>;
+declare function getObject(): Record<string, string>;
 const getObjectSpread = { ...getObject };
 
 declare const map: Map<string, number>;
@@ -64,7 +64,7 @@ const instanceSpread = { ...instance };
 declare const promise: Promise<number>;
 const spreadPromise = { ...(await promise) };
 
-declare function getObject(): Record<string, strings>;
+declare function getObject(): Record<string, string>;
 const getObjectSpread = { ...getObject() };
 
 declare const map: Map<string, number>;
