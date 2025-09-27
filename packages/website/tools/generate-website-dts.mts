@@ -1,5 +1,5 @@
 import fetch from 'cross-fetch';
-import { makeDirectory } from 'make-dir';
+import makeDirectory from 'make-dir';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
