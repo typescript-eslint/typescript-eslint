@@ -6,9 +6,9 @@ import { createSpinner } from 'nanospinner';
 // commands used:
 // we're not running them ourselves because windows doesn't come with grep unfortunately :/
 const commandMatches =
-  'grep -E "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" -r . --exclude-dir=node_modules > matches.txt';
+  'grep -E "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" -I -r . --exclude-dir={node_modules,.nx} --exclude={graveyard.txt,matches.txt,matches-only.txt} > matches.txt';
 const commandMatchesOnly =
-  'grep -E "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" -o -r . --exclude-dir=node_modules > matches-only.txt';
+  'grep -E "https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" -I -o -r . --exclude-dir={node_modules,.nx} --exclude={graveyard.txt,matches.txt,matches-only.txt} > matches-only.txt';
 // regex stolen from: https://stackoverflow.com/a/3809435
 
 if (!existsSync('matches-only.txt') || !existsSync('matches.txt')) {
