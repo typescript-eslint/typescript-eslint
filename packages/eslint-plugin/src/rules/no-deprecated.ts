@@ -157,6 +157,10 @@ export default createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSTypeParameter:
           return true;
 
+        // treat `export import Bar = Foo;` (and `import Foo = require('...')`) as declarations
+        case AST_NODE_TYPES.TSImportEqualsDeclaration:
+          return parent.id === node;
+
         default:
           return false;
       }
