@@ -62,6 +62,31 @@ function getHash(url: string): string | undefined {
   return hashString.slice(0, questionMarkIndex);
 }
 
+function getErrorInfo(error: unknown): string {
+  if (typeof error !== 'object') {
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    return String(error);
+  }
+  if (error == null) {
+    return 'null';
+  }
+  const errorInfo = [];
+
+  //@ts-expect-error well yeah I know so that's why I'm checking
+  const { syscall } = error;
+  if (syscall) {
+    errorInfo.push(syscall);
+  }
+
+  //@ts-expect-error well yeah I know so that's why I'm checking
+  const { code } = error;
+  if (code) {
+    errorInfo.push(code);
+  }
+
+  return `: ${errorInfo.join(': ')}`;
+}
+
 for (let i = 0; i < matchesLines.length; i++) {
   const iterationInfo = `Cooking (${i + 1}/${matchesLines.length}) 🔥`;
   const update = (info: string) =>
@@ -85,7 +110,7 @@ for (let i = 0; i < matchesLines.length; i++) {
   } catch (error) {
     await appendFile(
       'graveyard.txt',
-      `[Fetch error: ${error?.syscall}: ${error?.code}] ${info}\n`,
+      `[Fetch error: ${getErrorInfo(error)}] ${info}\n`,
     );
     continue;
   }
