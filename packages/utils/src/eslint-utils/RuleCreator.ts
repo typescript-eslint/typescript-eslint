@@ -36,6 +36,7 @@ export interface RuleWithMeta<
   Docs = unknown,
 > extends RuleCreateAndOptions<Options, MessageIds> {
   meta: RuleMetaData<MessageIds, Docs, Options>;
+  name: string;
 }
 
 export interface RuleWithMetaAndName<
@@ -76,6 +77,7 @@ export function RuleCreator<PluginDocs = unknown>(
           url: urlCreator(name),
         },
       },
+      name,
       ...rule,
     });
   };
@@ -89,6 +91,7 @@ function createRule<
   create,
   defaultOptions,
   meta,
+  name,
 }: Readonly<RuleWithMeta<Options, MessageIds, PluginDocs>>): RuleModule<
   MessageIds,
   Options,
@@ -101,6 +104,7 @@ function createRule<
     },
     defaultOptions,
     meta,
+    name,
   };
 }
 
