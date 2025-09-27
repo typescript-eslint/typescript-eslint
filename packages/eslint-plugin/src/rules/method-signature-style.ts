@@ -31,6 +31,7 @@ export default createRule<Options, MessageIds>({
     schema: [
       {
         type: 'string',
+        description: 'The method signature style to enforce using.',
         enum: ['property', 'method'],
       },
     ],

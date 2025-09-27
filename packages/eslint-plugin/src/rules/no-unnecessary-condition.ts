@@ -200,9 +200,12 @@ export default createRule<Options, MessageId>({
             oneOf: [
               {
                 type: 'boolean',
+                description: 'Always ignore or not ignore the loop conditions',
               },
               {
                 type: 'string',
+                description:
+                  'Which situations to ignore constant conditions in.',
                 enum: ['always', 'never', 'only-allowed-literals'],
               },
             ],

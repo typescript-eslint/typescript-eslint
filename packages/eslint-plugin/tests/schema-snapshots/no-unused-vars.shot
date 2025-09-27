@@ -5,6 +5,7 @@
   {
     "oneOf": [
       {
+        "description": "Broad setting for unused variables to target.",
         "enum": ["all", "local"],
         "type": "string"
       },
@@ -65,7 +66,6 @@
 # TYPES:
 
 type Options = [
-  | 'all'
   | 'local'
   | {
       /** Whether to check all, some, or no arguments. */
@@ -98,5 +98,7 @@ type Options = [
         | 'all';
       /** Regular expressions of variable names to not check for usage. */
       varsIgnorePattern?: string;
-    },
+    }
+  /** Broad setting for unused variables to target. */
+  | 'all',
 ];

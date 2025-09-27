@@ -145,6 +145,8 @@ export default createRule<Options, MessageIds>({
         properties: {
           formatWithPrettier: {
             type: 'boolean',
+            description:
+              'Whether to enforce formatting of code snippets using Prettier.',
           },
         },
       },
