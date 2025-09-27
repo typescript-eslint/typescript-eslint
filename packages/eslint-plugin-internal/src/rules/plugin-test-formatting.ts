@@ -4,7 +4,7 @@ import prettier from '@prettier/sync';
 import { getContextualType } from '@typescript-eslint/type-utils';
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule } from '../util/index.js';
 
 /*
 The strings that are used for eslint plugins will not be checked for formatting.
@@ -46,7 +46,7 @@ const a = 1;
 ]
 */
 
-const prettierConfig = prettier.resolveConfig(__dirname) ?? {};
+const prettierConfig = prettier.resolveConfig(import.meta.dirname) ?? {};
 const START_OF_LINE_WHITESPACE_MATCHER = /^( *)/;
 const BACKTICK_REGEX = /`/g;
 const TEMPLATE_EXPR_OPENER = /\$\{/g;

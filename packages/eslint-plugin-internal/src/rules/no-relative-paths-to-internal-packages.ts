@@ -1,12 +1,12 @@
 import path from 'node:path';
 
-import { createRule } from '../util';
+import { createRule } from '../util/index.js';
 
-export const REPO_ROOT = path.resolve(__dirname, '../../../..');
+export const REPO_ROOT = path.resolve(import.meta.dirname, '../../../..');
 export const PACKAGES_DIR = path.join(REPO_ROOT, 'packages');
 
 export default createRule({
-  name: __filename,
+  name: 'no-relative-paths-to-internal-packages',
   meta: {
     type: 'problem',
     docs: {
