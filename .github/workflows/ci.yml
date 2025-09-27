@@ -53,7 +53,7 @@ jobs:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
   checkUrls:
-    name: "Check URLs (tools/scripts/checkUrls.mts)"
+    name: Check URLs (tools/scripts/checkUrls.mts)
     needs: [install]
     runs-on: ubuntu-latest
     steps:
@@ -78,7 +78,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          path: "*.txt"
+          path: '*.txt'
           name: checkUrls-result
 
   build:
