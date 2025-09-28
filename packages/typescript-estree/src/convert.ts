@@ -14,6 +14,7 @@ import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
   createError,
+  declarationNameToString,
   findNextToken,
   getBinaryExpressionType,
   getContainingFunction,
@@ -1599,6 +1600,15 @@ export class Converter {
       }
       // otherwise, it is a non-type accessor - intentional fallthrough
       case SyntaxKind.MethodDeclaration: {
+        const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
+
+        if (isAbstract && node.body) {
+          this.#throwError(
+            node.name,
+            `Method '${declarationNameToString(node.name, this.ast)}' cannot have an implementation because it is marked abstract.`,
+          );
+        }
+
         const method = this.createNode<
           TSESTree.FunctionExpression | TSESTree.TSEmptyBodyFunctionExpression
         >(node, {
@@ -1654,10 +1664,7 @@ export class Converter {
           /**
            * TypeScript class methods can be defined as "abstract"
            */
-          const methodDefinitionType = hasModifier(
-            SyntaxKind.AbstractKeyword,
-            node,
-          )
+          const methodDefinitionType = isAbstract
             ? AST_NODE_TYPES.TSAbstractMethodDefinition
             : AST_NODE_TYPES.MethodDefinition;
 
