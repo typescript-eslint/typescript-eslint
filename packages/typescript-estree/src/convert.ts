@@ -398,6 +398,18 @@ export class Converter {
           );
         }
       }
+
+      // TODO: There are more cases in `checkGrammarObjectLiteralExpression` in typescript
+      if (
+        modifier.kind === SyntaxKind.AbstractKeyword &&
+        node.kind === SyntaxKind.MethodDeclaration &&
+        node.parent.kind === SyntaxKind.ObjectLiteralExpression
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(modifier.kind)}' modifier cannot be used here.`,
+        );
+      }
     }
   }
 
