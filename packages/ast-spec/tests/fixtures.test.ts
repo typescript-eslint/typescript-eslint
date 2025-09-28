@@ -4,7 +4,7 @@ import * as path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { VitestSnapshotEnvironment } from 'vitest/snapshot';
 
-import type { ASTFixtureConfig, Fixture } from './util/parsers/parser-types.js';
+import type { Fixture } from './util/parsers/parser-types.js';
 
 import { getErrorLabel } from './util/getErrorLabel.js';
 import { parseBabel } from './util/parsers/babel.js';

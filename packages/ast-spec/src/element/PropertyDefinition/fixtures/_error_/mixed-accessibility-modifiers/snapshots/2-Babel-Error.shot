@@ -4,7 +4,7 @@ exports[`AST Fixtures > element > PropertyDefinition > _error_ > mixed-accessibi
 BabelError
   1 | class Foo {
 > 2 |   public protected bar;
-    |          ^ Accessibility modifier already seen. (2:9)
+    |          ^ Accessibility modifier already seen: 'protected'. (2:9)
   3 | }
   4 |
   

@@ -1,9 +1,11 @@
+# NOTE: The name of this workflow is significant - it is used as the identifier for the workflow_run trigger in the release workflow
 name: CI
 
 on:
   push:
     branches:
       - main
+  # NOTE: Never use pull_request_target here because that would populate secrets for forks
   pull_request:
     branches:
       - '**'
@@ -289,38 +291,3 @@ jobs:
           files: coverage/**/lcov.info
           flags: unittest
           name: codecov
-
-  publish_canary_version:
-    name: Publish the latest code as a canary version
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
-    if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # we need the tags to be available
-
-      - name: Install
-        uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Build
-        uses: ./.github/actions/prepare-build
-
-      - name: Figure out and apply the next canary version
-        run: npx tsx tools/release/apply-canary-version.mts
-
-      - name: Publish all packages to npm with the canary tag
-        # NOTE: this needs to be npx, rather than pnpm, to make sure the authenticated npm registry is used
-        run: npx nx release publish --tag canary --verbose
-        env:
-          NX_CLOUD_DISTRIBUTED_EXECUTION: false
-          # This secret is only accessible on the GitHub environment "main"
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true

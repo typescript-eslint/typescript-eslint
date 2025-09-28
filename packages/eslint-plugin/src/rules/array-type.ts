@@ -242,7 +242,7 @@ export default createRule<Options, MessageIds>({
               ? 'errorStringArraySimpleReadonly'
               : 'errorStringArraySimple';
 
-        if (!typeParams || typeParams.length === 0) {
+        if (!typeParams) {
           // Create an 'any' array
           context.report({
             node,

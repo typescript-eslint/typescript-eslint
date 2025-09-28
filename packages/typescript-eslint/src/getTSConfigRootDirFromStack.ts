@@ -41,6 +41,11 @@ export function getTSConfigRootDirFromStack(): string | undefined {
 
     const parsedPath = path.parse(stackFrameFilePath);
     if (/^eslint\.config\.(c|m)?(j|t)s$/.test(parsedPath.base)) {
+      if (process.platform === 'win32') {
+        // workaround for https://github.com/typescript-eslint/typescript-eslint/issues/11530
+        // (caused by https://github.com/unjs/jiti/issues/397)
+        return parsedPath.dir.replaceAll('/', path.sep);
+      }
       return parsedPath.dir;
     }
   }
