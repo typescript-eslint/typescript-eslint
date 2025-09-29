@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getPropertyName } from '@typescript-eslint/utils/ast-utils';
@@ -232,20 +231,42 @@ export default createRule<Options, MessageIds>({
       return displayParts ? ts.displayPartsToString(displayParts) : '';
     }
 
-    function getComputedPropertyDeprecation(
-      node: TSESTree.MemberExpression,
-    ): string | undefined {
-      const propertyName = getPropertyName(
-        node,
-        context.sourceCode.getScope(node),
-      );
+    function getComputedPropertyDeprecation(node: TSESTree.MemberExpression) {
+      const objectType = services.getTypeAtLocation(node.object);
+      const propertyName = getPropertyNameFromScopeOrTypes(node);
       if (!propertyName) {
         return undefined;
       }
 
-      const objectType = services.getTypeAtLocation(node.object);
       const property = objectType.getProperty(propertyName);
       return getJsDocDeprecation(property);
+    }
+
+    /**
+     * Gets the static name of a MemberExpression's .property. This first attempts
+     * a quick lookup from the ESTree scope, then falls back as needed to slower
+     * type information for non-scoped information such as enum keys as needed.
+     */
+    function getPropertyNameFromScopeOrTypes(node: TSESTree.MemberExpression) {
+      const fromScope = getPropertyName(
+        node,
+        context.sourceCode.getScope(node),
+      );
+      if (fromScope) {
+        return fromScope;
+      }
+
+      const type = services.getTypeAtLocation(node.property);
+
+      if (type.isStringLiteral()) {
+        return type.value;
+      }
+
+      if (type.isLiteral()) {
+        return String(type.value as number);
+      }
+
+      return undefined;
     }
 
     type CalleeNode = TSESTree.Expression | TSESTree.JSXTagNameExpression;
@@ -361,10 +382,7 @@ export default createRule<Options, MessageIds>({
       return getJsDocDeprecation(symbol);
     }
 
-    function getReportedNodeName(
-      node: IdentifierLike,
-      context: Readonly<RuleContext<MessageIds, Options>>,
-    ): string {
+    function getReportedNodeName(node: IdentifierLike): string {
       if (node.type === AST_NODE_TYPES.Super) {
         return 'super';
       }
@@ -382,9 +400,8 @@ export default createRule<Options, MessageIds>({
         isInComputedProperty(node)
       ) {
         return (
-          getPropertyName(
+          getPropertyNameFromScopeOrTypes(
             node.parent as TSESTree.MemberExpression,
-            context.sourceCode.getScope(node),
           ) || ''
         );
       }
@@ -392,7 +409,7 @@ export default createRule<Options, MessageIds>({
       return node.name;
     }
 
-    function getDeprecationReason(node: IdentifierLike): string | undefined {
+    function getDeprecationReason(node: IdentifierLike) {
       if (isInComputedProperty(node)) {
         return getComputedPropertyDeprecation(
           node.parent as TSESTree.MemberExpression,
@@ -448,6 +465,18 @@ export default createRule<Options, MessageIds>({
       }
 
       const type = services.getTypeAtLocation(node);
+
+      // TypeScript doesn't allow non-literal keys for computed properties,
+      // even though in cases like String('...') we can still find a deprecation.
+      if (
+        node.parent.type === AST_NODE_TYPES.MemberExpression &&
+        node.parent.computed &&
+        node.parent.property === node &&
+        !type.isLiteral()
+      ) {
+        return;
+      }
+
       if (
         typeMatchesSomeSpecifier(type, allow, services.program) ||
         valueMatchesSomeSpecifier(node, allow, services.program, type)
@@ -455,7 +484,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const name = getReportedNodeName(node, context);
+      const name = getReportedNodeName(node);
 
       context.report({
         ...(reason
@@ -469,46 +498,6 @@ export default createRule<Options, MessageIds>({
             }),
         node,
       });
-    }
-
-    function checkMemberExpression(node: TSESTree.MemberExpression): void {
-      if (!node.computed) {
-        return;
-      }
-
-      const propertyType = services.getTypeAtLocation(node.property);
-
-      if (propertyType.isLiteral()) {
-        const objectType = services.getTypeAtLocation(node.object);
-
-        const propertyName = propertyType.isStringLiteral()
-          ? propertyType.value
-          : String(propertyType.value as number);
-
-        const property = objectType.getProperty(propertyName);
-
-        const reason = getJsDocDeprecation(property);
-        if (reason == null) {
-          return;
-        }
-
-        if (typeMatchesSomeSpecifier(objectType, allow, services.program)) {
-          return;
-        }
-
-        context.report({
-          ...(reason
-            ? {
-                messageId: 'deprecatedWithReason',
-                data: { name: propertyName, reason },
-              }
-            : {
-                messageId: 'deprecated',
-                data: { name: propertyName },
-              }),
-          node: node.property,
-        });
-      }
     }
 
     return {
@@ -544,7 +533,6 @@ export default createRule<Options, MessageIds>({
           checkIdentifier(node);
         }
       },
-      MemberExpression: checkMemberExpression,
       'MemberExpression > Literal': checkIdentifier,
       'MemberExpression > TemplateLiteral': checkIdentifier,
       PrivateIdentifier: checkIdentifier,

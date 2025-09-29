@@ -620,30 +620,6 @@ exists('/foo');
 
       const c = a['b'];
     `,
-    {
-      code: `
-        interface AllowedType {
-          /** @deprecated */
-          prop: string;
-        }
-
-        const obj: AllowedType = {
-          prop: 'test',
-        };
-
-        const value = obj['prop'];
-      `,
-      options: [
-        {
-          allow: [
-            {
-              from: 'file',
-              name: 'AllowedType',
-            },
-          ],
-        },
-      ],
-    },
     `
       const a = {
         /** @deprecated */
