@@ -4478,6 +4478,15 @@ abstract class Foo {
           line: 4,
           messageId: 'incorrectGroupOrder',
         },
+        {
+          column: 3,
+          data: {
+            name: 'E',
+            rank: 'private instance method',
+          },
+          line: 7,
+          messageId: 'incorrectGroupOrder',
+        },
       ],
     },
     {
