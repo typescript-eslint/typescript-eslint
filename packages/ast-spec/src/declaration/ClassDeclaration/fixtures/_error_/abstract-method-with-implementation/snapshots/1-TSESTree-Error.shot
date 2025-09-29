@@ -4,6 +4,6 @@ exports[`AST Fixtures > declaration > ClassDeclaration > _error_ > abstract-meth
 TSError
   1 | abstract class Foo  {
 > 2 |   abstract method() { }
-    |            ^^^^^^ Method ' method' cannot have an implementation because it is marked abstract.
+    |            ^^^^^^ Method 'method' cannot have an implementation because it is marked abstract.
   3 | }
   4 |
