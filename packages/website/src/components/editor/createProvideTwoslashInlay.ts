@@ -9,7 +9,7 @@ import type { SandboxInstance } from './useSandboxServices';
 
 function findTwoshashQueries(code: string): RegExpExecArray[] {
   // RegExp that matches '^<spaces>//?<spaces>$'
-  const twoslashQueryRegex = /^(\s*\/\/\s*\^\?)\s*$/m;
+  const twoslashQueryRegex = /^(\s*\/\/\s*\^\?)\s*$/gm;
   return [...code.matchAll(twoslashQueryRegex)];
 }
 
