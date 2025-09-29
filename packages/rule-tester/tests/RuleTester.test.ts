@@ -94,7 +94,6 @@ const NOOP_RULE: RuleModule<'error'> = {
     schema: [],
     type: 'problem',
   },
-  name: 'rule',
 };
 
 function windowsToPosixPath(p: string): string {
@@ -1109,7 +1108,6 @@ describe('RuleTester - hooks', () => {
       schema: [],
       type: 'problem',
     },
-    name: 'rule',
   };
 
   const ruleTester = new RuleTester();
@@ -1333,7 +1331,6 @@ describe('RuleTester - multipass fixer', () => {
         schema: [],
         type: 'problem',
       },
-      name: 'rule',
     };
 
     it('passes with no output', () => {
@@ -1419,7 +1416,6 @@ describe('RuleTester - multipass fixer', () => {
         schema: [],
         type: 'problem',
       },
-      name: 'rule',
     };
 
     it('passes with correct string output', () => {
@@ -1542,7 +1538,6 @@ describe('RuleTester - multipass fixer', () => {
         schema: [],
         type: 'problem',
       },
-      name: 'rule',
     };
 
     it('passes with correct array output', () => {
@@ -1649,7 +1644,6 @@ describe('RuleTester - run types', () => {
       ],
       type: 'suggestion',
     },
-    name: 'rule',
   };
 
   describe('infer from `rule` parameter', () => {

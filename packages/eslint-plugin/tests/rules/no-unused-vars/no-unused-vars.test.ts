@@ -32,7 +32,6 @@ ruleTester.defineRule('collect-unused-vars', {
     schema: [],
     type: 'problem',
   },
-  name: 'collect-unused-vars',
 });
 
 ruleTester.run('no-unused-vars', rule, {
