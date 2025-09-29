@@ -7,6 +7,7 @@ import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getParserServices,
+  isTypeBrandedLiteral,
   isTypeReadonly,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
@@ -129,7 +130,7 @@ export default createRule<Options, MessageIds>({
             treatMethodsAsReadonly: !!treatMethodsAsReadonly,
           });
 
-          if (!isReadOnly) {
+          if (!isReadOnly && !isTypeBrandedLiteral(type)) {
             context.report({
               node: actualParam,
               messageId: 'shouldBeReadonly',

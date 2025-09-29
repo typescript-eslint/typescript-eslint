@@ -320,6 +320,31 @@ function foo(arg: Test) {}
 
       const willNotCrash = (foo: Readonly<WithSymbol>) => {};
     `,
+    `
+type MySpecialString = bigint & {
+  readonly ' __tag': unique symbol;
+};
+function custom1(arg: MySpecialString) {}
+    `,
+    `
+type MySpecialString = number & {
+  readonly ' __tag': unique symbol;
+};
+function custom1(arg: MySpecialString) {}
+    `,
+    `
+type MySpecialString = string & {
+  readonly ' __tag': unique symbol;
+};
+function custom1(arg: MySpecialString) {}
+    `,
+    `
+type MySpecialString = string & {
+  readonly ' __tagA': unique symbol;
+  readonly ' __tagB': unique symbol;
+};
+function custom1(arg: MySpecialString) {}
+    `,
     {
       code: `
         type Callback<T> = (options: T) => void;
