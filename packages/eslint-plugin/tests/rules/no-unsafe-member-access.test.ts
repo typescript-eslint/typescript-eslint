@@ -67,6 +67,38 @@ class B implements F.S.T.A {}
     `
 interface B extends F.S.T.A {}
     `,
+    {
+      code: `
+function foo(x?: { a: number }) {
+  x?.a;
+}
+      `,
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+function foo(x?: { a: number }, y: string) {
+  x?.[y];
+}
+      `,
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+function foo(x: { a: number }, y: 'a') {
+  x?.[y];
+}
+      `,
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+function foo(x: { a: number }, y: NotKnown) {
+  x?.[y];
+}
+      `,
+      options: [{ allowOptionalChaining: true }],
+    },
   ],
   invalid: [
     {
@@ -381,6 +413,96 @@ class C {
           messageId: 'unsafeMemberExpression',
         },
       ],
+    },
+    {
+      code: `
+let value: any;
+
+value?.middle.inner;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            property: '.inner',
+            type: '`any`',
+          },
+          endColumn: 20,
+          line: 4,
+          messageId: 'unsafeMemberExpression',
+        },
+      ],
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+let value: any;
+
+value?.outer.middle.inner;
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            property: '.middle',
+            type: '`any`',
+          },
+          endColumn: 20,
+          line: 4,
+          messageId: 'unsafeMemberExpression',
+        },
+      ],
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+let value: any;
+
+value.outer?.middle.inner;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            property: '.outer',
+            type: '`any`',
+          },
+          endColumn: 12,
+          line: 4,
+          messageId: 'unsafeMemberExpression',
+        },
+        {
+          column: 21,
+          data: {
+            property: '.inner',
+            type: '`any`',
+          },
+          endColumn: 26,
+          line: 4,
+          messageId: 'unsafeMemberExpression',
+        },
+      ],
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+let value: any;
+
+value.outer.middle?.inner;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            property: '.outer',
+            type: '`any`',
+          },
+          endColumn: 12,
+          line: 4,
+          messageId: 'unsafeMemberExpression',
+        },
+      ],
+      options: [{ allowOptionalChaining: true }],
     },
   ],
 });

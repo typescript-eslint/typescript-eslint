@@ -65,6 +65,44 @@ arr[idx++];
 </TabItem>
 </Tabs>
 
+## Options
+
+### `allowOptionalChaining`
+
+{/* insert option description */}
+
+Examples of code for this rule with `{ allowOptionalChaining: true }`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+declare const outer: any;
+
+outer.inner;
+outer.middle.inner;
+outer?.middle.inner;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+declare const outer: any;
+
+outer?.inner;
+outer?.middle?.inner;
+```
+
+</TabItem>
+</Tabs>
+
+:::caution
+We only recommend using `allowOptionalChaining` to help transition an existing project towards fully enabling `no-unsafe-member-access`.
+Optional chaining makes is more safe than normal property accesses in that you won't get a runtime error if the parent value is `null` or `undefined`.
+However, it still results in an `any`-typed value, which is unsafe.
+:::
+
 ## When Not To Use It
 
 If your codebase has many existing `any`s or areas of unsafe code, it may be difficult to enable this rule.
