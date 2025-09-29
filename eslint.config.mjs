@@ -322,6 +322,7 @@ export default defineConfig(
       'jsdoc/tag-lines': 'off',
 
       'regexp/no-dupe-disjunctions': 'error',
+      'regexp/no-missing-g-flag': 'error',
       'regexp/no-useless-character-class': 'error',
       'regexp/no-useless-flag': 'error',
       'regexp/no-useless-lazy': 'error',
