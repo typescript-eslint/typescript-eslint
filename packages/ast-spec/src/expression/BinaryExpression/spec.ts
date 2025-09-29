@@ -9,16 +9,16 @@ export * from './BinaryOperatorToText';
 
 export interface PrivateInExpression extends BaseNode {
   type: AST_NODE_TYPES.BinaryExpression;
-  operator: 'in';
   left: PrivateIdentifier;
+  operator: 'in';
   right: Expression;
 }
 
 export interface SymmetricBinaryExpression extends BaseNode {
   type: AST_NODE_TYPES.BinaryExpression;
-  operator: ValueOf<BinaryOperatorToText>;
   left: Expression;
+  operator: ValueOf<BinaryOperatorToText>;
   right: Expression;
 }
 
-export type BinaryExpression = SymmetricBinaryExpression | PrivateInExpression;
+export type BinaryExpression = PrivateInExpression | SymmetricBinaryExpression;
