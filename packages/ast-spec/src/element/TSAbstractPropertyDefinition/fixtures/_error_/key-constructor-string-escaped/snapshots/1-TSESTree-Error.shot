@@ -3,7 +3,7 @@
 exports[`AST Fixtures > element > TSAbstractPropertyDefinition > _error_ > key-constructor-string-escaped > TSESTree - Error`]
 TSError
   1 | abstract class Foo {
-> 2 |   '\u{63}onstructor'
+> 2 |   'construct\u{6f}r'
     |   ^^^^^^^^^^^^^^^^^^ Classes may not have a field named 'constructor'.
   3 | }
   4 |
