@@ -1,3 +1,15 @@
+## 8.45.0 (2025-09-29)
+
+### 🚀 Features
+
+- **eslint-plugin:** expose rule name via RuleModule interface ([#11616](https://github.com/typescript-eslint/typescript-eslint/pull/11616))
+
+### ❤️ Thank You
+
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.44.1 (2025-09-22)
 
 This was a version bump only for utils to align it with other projects, there were no code changes.
