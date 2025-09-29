@@ -221,16 +221,16 @@ type Options = [
     allowForKnownSafeCalls?: (
       | {
           from: 'file';
-          name: [string, ...string[]] | string;
+          name: string | string[];
           path?: string;
         }
       | {
           from: 'lib';
-          name: [string, ...string[]] | string;
+          name: string | string[];
         }
       | {
           from: 'package';
-          name: [string, ...string[]] | string;
+          name: string | string[];
           package: string;
         }
       | string
@@ -239,16 +239,16 @@ type Options = [
     allowForKnownSafePromises?: (
       | {
           from: 'file';
-          name: [string, ...string[]] | string;
+          name: string | string[];
           path?: string;
         }
       | {
           from: 'lib';
-          name: [string, ...string[]] | string;
+          name: string | string[];
         }
       | {
           from: 'package';
-          name: [string, ...string[]] | string;
+          name: string | string[];
           package: string;
         }
       | string

@@ -47,13 +47,13 @@ export type Options = [
     ignoreIfStatements?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
     ignorePrimitives?:
+      | true
       | {
           bigint?: boolean;
           boolean?: boolean;
           number?: boolean;
           string?: boolean;
-        }
-      | true;
+        };
     ignoreTernaryTests?: boolean;
   },
 ];
@@ -123,6 +123,7 @@ export default createRule<Options, MessageIds>({
             oneOf: [
               {
                 type: 'object',
+                additionalProperties: false,
                 description: 'Which primitives types may be ignored.',
                 properties: {
                   bigint: {

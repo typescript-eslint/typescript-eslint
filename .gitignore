@@ -10,6 +10,7 @@ docs/packages/*/generated
 packages/website/.docusaurus
 packages/website/.cache-loader
 packages/website/build
+packages/website/data/recent-blog-posts.json
 packages/website/static/sandbox
 
 # Runtime data
@@ -95,3 +96,8 @@ packages/**/.yarn
 
 # Vitest type tests
 tsconfig*.vitest-temp.json
+
+# Leave these AI agent files up to individual contributors for now
+.cursor/mcp.json
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md

@@ -79,8 +79,8 @@
       end: { column: 29, line: 4 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "this",
 
     range: [124, 128],

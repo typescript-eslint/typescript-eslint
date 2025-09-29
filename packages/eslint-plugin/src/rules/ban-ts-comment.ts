@@ -86,7 +86,6 @@ export default createRule<Options, MessageIds>({
         properties: {
           minimumDescriptionLength: {
             type: 'number',
-            default: defaultMinimumDescriptionLength,
             description:
               'A minimum character length for descriptions when `allow-with-description` is enabled.',
           },

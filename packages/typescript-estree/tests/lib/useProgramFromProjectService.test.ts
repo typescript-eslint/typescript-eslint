@@ -1,10 +1,11 @@
+import type {
+  ProjectServiceAndMetadata,
+  TypeScriptProjectService,
+} from '@typescript-eslint/project-service';
+
 import path from 'node:path';
 import * as ts from 'typescript';
 
-import type {
-  ProjectServiceSettings,
-  TypeScriptProjectService,
-} from '../../src/create-program/createProjectService';
 import type { ParseSettings } from '../../src/parseSettings';
 
 import { useProgramFromProjectService } from '../../src/useProgramFromProjectService';
@@ -65,7 +66,7 @@ const mockParseSettings = {
 } as ParseSettings;
 
 const createProjectServiceSettings = <
-  T extends Partial<ProjectServiceSettings>,
+  T extends Partial<ProjectServiceAndMetadata>,
 >(
   settings: T,
 ) => ({
@@ -622,5 +623,32 @@ If you absolutely need more files included, set parserOptions.projectService.max
         filePath,
       )}\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`.`,
     );
+  });
+
+  it('matches filenames starting with a period', () => {
+    const { service } = createMockProjectService();
+
+    const filePath = `.prettierrc.js`;
+
+    const program = { getSourceFile: vi.fn() };
+
+    mockGetProgram.mockReturnValueOnce(program);
+
+    service.openClientFile.mockReturnValueOnce({
+      configFileName: 'tsconfig.json',
+    });
+    mockCreateProjectProgram.mockReturnValueOnce(program);
+
+    const actual = useProgramFromProjectService(
+      createProjectServiceSettings({
+        allowDefaultProject: ['*.js'],
+        service,
+      }),
+      { ...mockParseSettings, filePath },
+      false,
+      new Set(),
+    );
+
+    expect(actual).toBe(program);
   });
 });

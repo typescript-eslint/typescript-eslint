@@ -154,8 +154,8 @@ export function getFunctionHeadLoc(
   sourceCode: TSESLint.SourceCode,
 ): TSESTree.SourceLocation {
   const parent = node.parent;
-  let start: TSESTree.Position | null = null;
-  let end: TSESTree.Position | null = null;
+  let start: TSESTree.Position;
+  let end: TSESTree.Position;
 
   if (
     parent.type === AST_NODE_TYPES.MethodDefinition ||
