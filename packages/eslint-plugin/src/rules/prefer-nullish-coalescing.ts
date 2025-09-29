@@ -18,7 +18,11 @@ import {
   nullThrows,
   NullThrowsReasons,
   skipChainExpression,
+  isParenthesized,
+  getOperatorPrecedenceForNode,
+  OperatorPrecedence,
 } from '../util';
+import { getWrappedCode } from '../util/getWrappedCode';
 
 const isMemberAccessLike = isNodeOfTypes([
   AST_NODE_TYPES.ChainExpression,
@@ -43,13 +47,13 @@ export type Options = [
     ignoreIfStatements?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
     ignorePrimitives?:
+      | true
       | {
           bigint?: boolean;
           boolean?: boolean;
           number?: boolean;
           string?: boolean;
-        }
-      | true;
+        };
     ignoreTernaryTests?: boolean;
   },
 ];
@@ -119,6 +123,7 @@ export default createRule<Options, MessageIds>({
             oneOf: [
               {
                 type: 'object',
+                additionalProperties: false,
                 description: 'Which primitives types may be ignored.',
                 properties: {
                   bigint: {
@@ -250,10 +255,10 @@ export default createRule<Options, MessageIds>({
 
       if (
         tsutils
-          .typeParts(type)
+          .typeConstituents(type)
           .some(t =>
             tsutils
-              .intersectionTypeParts(t)
+              .intersectionConstituents(t)
               .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
           )
       ) {
@@ -489,9 +494,14 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        const { nonNullishBranch, nullishBranch } = getBranchNodes(
+          node,
+          operator,
+        );
+
         const nullishCoalescingParams = getNullishCoalescingParams(
           node,
-          getBranchNodes(node, operator).nonNullishBranch,
+          nonNullishBranch,
           nodesInsideTestExpression,
           operator,
         );
@@ -507,15 +517,27 @@ export default createRule<Options, MessageIds>({
                 messageId: 'suggestNullish',
                 data: { equals: '' },
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
+                  const nullishBranchText = getTextWithParentheses(
+                    context.sourceCode,
+                    nullishBranch,
+                  );
+                  const rightOperandReplacement = isParenthesized(
+                    nullishBranch,
+                    context.sourceCode,
+                  )
+                    ? nullishBranchText
+                    : getWrappedCode(
+                        nullishBranchText,
+                        getOperatorPrecedenceForNode(nullishBranch),
+                        OperatorPrecedence.Coalesce,
+                      );
+
                   return fixer.replaceText(
                     node,
                     `${getTextWithParentheses(
                       context.sourceCode,
                       nullishCoalescingParams.nullishCoalescingLeftNode,
-                    )} ?? ${getTextWithParentheses(
-                      context.sourceCode,
-                      getBranchNodes(node, operator).nullishBranch,
-                    )}`,
+                    )} ?? ${rightOperandReplacement}`,
                   );
                 },
               },

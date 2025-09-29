@@ -30,7 +30,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [17, 18],
                   loc: {
@@ -45,7 +47,9 @@ Program {
                   end: { column: 18, line: 1 },
                 },
               },
+              in: false,
               name: "T",
+              out: false,
 
               range: [1, 18],
               loc: {

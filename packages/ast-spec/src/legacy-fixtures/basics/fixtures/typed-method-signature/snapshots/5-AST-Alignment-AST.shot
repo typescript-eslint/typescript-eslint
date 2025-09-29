@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [78, 81],
           loc: {
@@ -31,9 +31,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'h',
--               optional: false,
+                optional: false,
 
                 range: [88, 89],
                 loc: {
@@ -42,14 +42,14 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'bar',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSStringKeyword {
@@ -76,8 +76,9 @@ Snapshot Diff:
                   },
                 },
               ],
--             readonly: false,
+              readonly: false,
 -             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSVoidKeyword {
@@ -109,9 +110,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'g',
--               optional: false,
+                optional: false,
 
                 range: [112, 113],
                 loc: {
@@ -120,23 +121,23 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'bar',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSTypeReference {
                       type: 'TSTypeReference',
                       typeName: Identifier {
                         type: 'Identifier',
--                       decorators: Array [],
+                        decorators: Array [],
                         name: 'T',
--                       optional: false,
+                        optional: false,
 
                         range: [122, 123],
                         loc: {
@@ -166,17 +167,18 @@ Snapshot Diff:
                   },
                 },
               ],
--             readonly: false,
+              readonly: false,
 -             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeReference {
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'T',
--                   optional: false,
+                    optional: false,
 
                     range: [126, 127],
                     loc: {
@@ -204,8 +206,8 @@ Snapshot Diff:
                 params: Array [
                   TSTypeParameter {
                     type: 'TSTypeParameter',
--                   const: false,
--                   in: false,
+                    const: false,
+                    in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
 -                     decorators: Array [],
@@ -218,8 +220,8 @@ Snapshot Diff:
 -                       end: { column: 5, line: 5 },
 -                     },
 -                   },
--                   out: false,
 +                   name: 'T',
+                    out: false,
 
                     range: [114, 115],
                     loc: {

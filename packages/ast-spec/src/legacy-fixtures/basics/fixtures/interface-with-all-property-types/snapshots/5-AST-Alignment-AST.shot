@@ -18,9 +18,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'baa',
--               optional: false,
+                optional: false,
 
                 range: [91, 94],
                 loc: {
@@ -28,9 +28,9 @@ Snapshot Diff:
                   end: { column: 5, line: 4 },
                 },
               },
--             optional: false,
--             readonly: false,
--             static: false,
+              optional: false,
+              readonly: false,
+              static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSNumberKeyword {
@@ -61,9 +61,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'bar',
--               optional: false,
+                optional: false,
 
                 range: [106, 109],
                 loc: {
@@ -72,8 +72,8 @@ Snapshot Diff:
                 },
               },
               optional: true,
--             readonly: false,
--             static: false,
+              readonly: false,
+              static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSNumberKeyword {
@@ -104,9 +104,9 @@ Snapshot Diff:
               computed: true,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'bax',
--               optional: false,
+                optional: false,
 
                 range: [123, 126],
                 loc: {
@@ -114,9 +114,9 @@ Snapshot Diff:
                   end: { column: 6, line: 6 },
                 },
               },
--             optional: false,
--             readonly: false,
--             static: false,
+              optional: false,
+              readonly: false,
+              static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSStringKeyword {
@@ -147,9 +147,9 @@ Snapshot Diff:
               computed: true,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'baz',
--               optional: false,
+                optional: false,
 
                 range: [140, 143],
                 loc: {
@@ -158,8 +158,8 @@ Snapshot Diff:
                 },
               },
               optional: true,
--             readonly: false,
--             static: false,
+              readonly: false,
+              static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSStringKeyword {
@@ -190,9 +190,9 @@ Snapshot Diff:
               parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'eee',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSNumberKeyword {
@@ -219,8 +219,8 @@ Snapshot Diff:
                   },
                 },
               ],
--             readonly: false,
--             static: false,
+              readonly: false,
+              static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSStringKeyword {
@@ -251,9 +251,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'doo',
--               optional: false,
+                optional: false,
 
                 range: [182, 185],
                 loc: {
@@ -262,11 +262,12 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
+              optional: false,
 -             params: Array [],
--             readonly: false,
--             returnType: TSTypeAnnotation {
 +             parameters: Array [],
+              readonly: false,
+-             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSVoidKeyword {
@@ -298,9 +299,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'coo',
--               optional: false,
+                optional: false,
 
                 range: [197, 200],
                 loc: {
@@ -314,9 +315,9 @@ Snapshot Diff:
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'a',
--                 optional: false,
+                  optional: false,
 
                   range: [202, 203],
                   loc: {
@@ -326,9 +327,9 @@ Snapshot Diff:
                 },
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'b',
--                 optional: false,
+                  optional: false,
 
                   range: [205, 206],
                   loc: {
@@ -338,9 +339,9 @@ Snapshot Diff:
                 },
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'c',
--                 optional: false,
+                  optional: false,
 
                   range: [208, 209],
                   loc: {
@@ -349,8 +350,9 @@ Snapshot Diff:
                   },
                 },
               ],
--             readonly: false,
+              readonly: false,
 -             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSVoidKeyword {
@@ -382,9 +384,9 @@ Snapshot Diff:
               computed: true,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'loo',
--               optional: false,
+                optional: false,
 
                 range: [221, 224],
                 loc: {
@@ -398,9 +400,9 @@ Snapshot Diff:
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'a',
--                 optional: false,
+                  optional: false,
 
                   range: [227, 228],
                   loc: {
@@ -410,9 +412,9 @@ Snapshot Diff:
                 },
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'b',
--                 optional: false,
+                  optional: false,
 
                   range: [230, 231],
                   loc: {
@@ -422,9 +424,9 @@ Snapshot Diff:
                 },
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'c',
--                 optional: false,
+                  optional: false,
 
                   range: [233, 234],
                   loc: {
@@ -433,8 +435,9 @@ Snapshot Diff:
                   },
                 },
               ],
--             readonly: false,
+              readonly: false,
 -             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSVoidKeyword {
@@ -466,9 +469,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'boo',
--               optional: false,
+                optional: false,
 
                 range: [245, 248],
                 loc: {
@@ -477,14 +480,14 @@ Snapshot Diff:
                 },
               },
               kind: 'method',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'a',
--                 optional: false,
+                  optional: false,
 
                   range: [252, 253],
                   loc: {
@@ -494,9 +497,9 @@ Snapshot Diff:
                 },
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'b',
--                 optional: false,
+                  optional: false,
 
                   range: [255, 256],
                   loc: {
@@ -506,9 +509,9 @@ Snapshot Diff:
                 },
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'c',
--                 optional: false,
+                  optional: false,
 
                   range: [258, 259],
                   loc: {
@@ -517,8 +520,9 @@ Snapshot Diff:
                   },
                 },
               ],
--             readonly: false,
+              readonly: false,
 -             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSVoidKeyword {
@@ -543,8 +547,8 @@ Snapshot Diff:
                 params: Array [
                   TSTypeParameter {
                     type: 'TSTypeParameter',
--                   const: false,
--                   in: false,
+                    const: false,
+                    in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
 -                     decorators: Array [],
@@ -557,8 +561,8 @@ Snapshot Diff:
 -                       end: { column: 7, line: 12 },
 -                     },
 -                   },
--                   out: false,
 +                   name: 'J',
+                    out: false,
 
                     range: [249, 250],
                     loc: {
@@ -587,9 +591,9 @@ Snapshot Diff:
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'a',
--                 optional: false,
+                  optional: false,
 
                   range: [275, 276],
                   loc: {
@@ -599,7 +603,7 @@ Snapshot Diff:
                 },
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'b',
                   optional: true,
 
@@ -642,9 +646,9 @@ Snapshot Diff:
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'a',
--                 optional: false,
+                  optional: false,
 
                   range: [301, 302],
                   loc: {
@@ -654,7 +658,7 @@ Snapshot Diff:
                 },
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'b',
                   optional: true,
 
@@ -689,8 +693,8 @@ Snapshot Diff:
                 params: Array [
                   TSTypeParameter {
                     type: 'TSTypeParameter',
--                   const: false,
--                   in: false,
+                    const: false,
+                    in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
 -                     decorators: Array [],
@@ -703,8 +707,8 @@ Snapshot Diff:
 -                       end: { column: 8, line: 14 },
 -                     },
 -                   },
--                   out: false,
 +                   name: 'F',
+                    out: false,
 
                     range: [298, 299],
                     loc: {
@@ -735,13 +739,13 @@ Snapshot Diff:
             end: { column: 1, line: 15 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [83, 86],
           loc: {

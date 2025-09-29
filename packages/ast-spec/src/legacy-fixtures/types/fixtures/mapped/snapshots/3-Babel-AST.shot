@@ -6,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "map",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSMappedType {
@@ -25,6 +28,7 @@ Program {
                 },
                 typeParameter: TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
                   constraint: TSStringKeyword {
                     type: "TSStringKeyword",
 
@@ -34,7 +38,9 @@ Program {
                       end: { column: 23, line: 3 },
                     },
                   },
+                  in: false,
                   name: "P",
+                  out: false,
 
                   range: [85, 96],
                   loc: {
@@ -72,6 +78,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [73, 108],

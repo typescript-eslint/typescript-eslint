@@ -23,25 +23,33 @@ function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
 }
 
 function isNumberLike(type: ts.Type): boolean {
-  const typeParts = tsutils.intersectionTypeParts(type);
-
-  return typeParts.some(typePart => {
-    return tsutils.isTypeFlagSet(
-      typePart,
-      ts.TypeFlags.Number | ts.TypeFlags.NumberLike,
+  return tsutils
+    .unionConstituents(type)
+    .every(unionPart =>
+      tsutils
+        .intersectionConstituents(unionPart)
+        .some(intersectionPart =>
+          tsutils.isTypeFlagSet(
+            intersectionPart,
+            ts.TypeFlags.Number | ts.TypeFlags.NumberLike,
+          ),
+        ),
     );
-  });
 }
 
 function isStringLike(type: ts.Type): boolean {
-  const typeParts = tsutils.intersectionTypeParts(type);
-
-  return typeParts.some(typePart => {
-    return tsutils.isTypeFlagSet(
-      typePart,
-      ts.TypeFlags.String | ts.TypeFlags.StringLike,
+  return tsutils
+    .unionConstituents(type)
+    .every(unionPart =>
+      tsutils
+        .intersectionConstituents(unionPart)
+        .some(intersectionPart =>
+          tsutils.isTypeFlagSet(
+            intersectionPart,
+            ts.TypeFlags.String | ts.TypeFlags.StringLike,
+          ),
+        ),
     );
-  });
 }
 
 /**
@@ -112,8 +120,8 @@ export default createRule({
       // declare const something: Fruit | Vegetable;
       // something === Fruit.Apple;
       // ```
-      const leftTypeParts = tsutils.unionTypeParts(leftType);
-      const rightTypeParts = tsutils.unionTypeParts(rightType);
+      const leftTypeParts = tsutils.unionConstituents(leftType);
+      const rightTypeParts = tsutils.unionConstituents(rightType);
 
       // If a type exists in both sides, we consider this comparison safe:
       //

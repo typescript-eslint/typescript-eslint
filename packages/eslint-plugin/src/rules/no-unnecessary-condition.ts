@@ -37,7 +37,7 @@ function isNullishType(type: ts.Type): boolean {
 }
 
 function isAlwaysNullish(type: ts.Type): boolean {
-  return tsutils.unionTypeParts(type).every(isNullishType);
+  return tsutils.unionConstituents(type).every(isNullishType);
 }
 
 /**
@@ -45,7 +45,7 @@ function isAlwaysNullish(type: ts.Type): boolean {
  * `any` or `unknown` to be nullable.
  */
 function isPossiblyNullish(type: ts.Type): boolean {
-  return tsutils.unionTypeParts(type).some(isNullishType);
+  return tsutils.unionConstituents(type).some(isNullishType);
 }
 
 function toStaticValue(
@@ -152,6 +152,7 @@ export type MessageId =
   | 'neverOptionalChain'
   | 'noOverlapBooleanExpression'
   | 'noStrictNullCheck'
+  | 'suggestRemoveOptionalChain'
   | 'typeGuardAlreadyIsType';
 
 export default createRule<Options, MessageId>({
@@ -164,7 +165,7 @@ export default createRule<Options, MessageId>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
+    hasSuggestions: true,
     messages: {
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
       alwaysFalsyFunc:
@@ -184,6 +185,7 @@ export default createRule<Options, MessageId>({
         'Unnecessary conditional, the types have no overlap.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      suggestRemoveOptionalChain: 'Remove unnecessary optional chain',
       typeGuardAlreadyIsType:
         'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
     },
@@ -272,14 +274,14 @@ export default createRule<Options, MessageId>({
     function nodeIsArrayType(node: TSESTree.Expression): boolean {
       const nodeType = getConstrainedTypeAtLocation(services, node);
       return tsutils
-        .unionTypeParts(nodeType)
+        .unionConstituents(nodeType)
         .some(part => checker.isArrayType(part));
     }
 
     function nodeIsTupleType(node: TSESTree.Expression): boolean {
       const nodeType = getConstrainedTypeAtLocation(services, node);
       return tsutils
-        .unionTypeParts(nodeType)
+        .unionConstituents(nodeType)
         .some(part => checker.isTupleType(part));
     }
 
@@ -301,7 +303,7 @@ export default createRule<Options, MessageId>({
     //    `any` or `unknown` or a naked type variable
     function isConditionalAlwaysNecessary(type: ts.Type): boolean {
       return tsutils
-        .unionTypeParts(type)
+        .unionConstituents(type)
         .some(
           part =>
             isTypeAnyType(part) ||
@@ -863,9 +865,14 @@ export default createRule<Options, MessageId>({
         loc: questionDotOperator.loc,
         node,
         messageId: 'neverOptionalChain',
-        fix(fixer) {
-          return fixer.replaceText(questionDotOperator, fix);
-        },
+        suggest: [
+          {
+            messageId: 'suggestRemoveOptionalChain',
+            fix(fixer) {
+              return fixer.replaceText(questionDotOperator, fix);
+            },
+          },
+        ],
       });
     }
 

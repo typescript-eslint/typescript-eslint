@@ -1,64 +1,7 @@
-import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
-
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-
-import type {
-  InferMessageIdsTypeFromRule,
-  InferOptionsTypeFromRule,
-} from '../../src/util';
 
 import rule from '../../src/rules/no-unsafe-assignment';
 import { getFixturesRootDir } from '../RuleTester';
-
-type Options = InferOptionsTypeFromRule<typeof rule>;
-type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
-type InvalidTest = InvalidTestCase<MessageIds, Options>;
-
-const assignmentTest = (
-  tests: [string, number, number, boolean?][],
-): InvalidTest[] =>
-  tests.flatMap(([assignment, column, endColumn, skipAssignmentExpression]) => [
-    // VariableDeclaration
-    {
-      code: `const ${assignment}`,
-      errors: [
-        {
-          column: column + 6,
-          endColumn: endColumn + 6,
-          line: 1,
-          messageId: 'unsafeArrayPatternFromTuple',
-        },
-      ],
-    },
-    // AssignmentPattern
-    {
-      code: `function foo(${assignment}) {}`,
-      errors: [
-        {
-          column: column + 13,
-          endColumn: endColumn + 13,
-          line: 1,
-          messageId: 'unsafeArrayPatternFromTuple',
-        },
-      ],
-    },
-    // AssignmentExpression
-    ...(skipAssignmentExpression
-      ? []
-      : [
-          {
-            code: `(${assignment})`,
-            errors: [
-              {
-                column: column + 1,
-                endColumn: endColumn + 1,
-                line: 1,
-                messageId: 'unsafeArrayPatternFromTuple' as const,
-              },
-            ],
-          },
-        ]),
-  ]);
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -245,7 +188,7 @@ const {
       errors: [
         {
           data: { receiver: 'error typed', sender: 'error typed' },
-          messageId: 'unsafeArrayPatternFromTuple',
+          messageId: 'unsafeObjectPattern',
         },
         {
           data: { receiver: 'error typed', sender: 'error typed' },
@@ -330,14 +273,193 @@ const [x] = [] as any[];
       ],
     },
 
-    ...assignmentTest([
-      ['[x] = [1] as [any]', 2, 3],
-      ['[[[[x]]]] = [[[[1 as any]]]]', 5, 6],
-      ['[[[[x]]]] = [1 as any]', 2, 9, true],
-      ['[{x}] = [{x: 1}] as [{x: any}]', 3, 4],
-      ['[{["x"]: x}] = [{["x"]: 1}] as [{["x"]: any}]', 10, 11],
-      ['[{[`x`]: x}] = [{[`x`]: 1}] as [{[`x`]: any}]', 10, 11],
-    ]),
+    {
+      code: 'const [x] = [1] as [any];',
+      errors: [
+        {
+          column: 8,
+          endColumn: 9,
+          line: 1,
+          messageId: 'unsafeArrayPatternFromTuple',
+        },
+      ],
+    },
+    {
+      code: 'function foo([x] = [1] as [any]) {}',
+      errors: [
+        {
+          column: 15,
+          endColumn: 16,
+          line: 1,
+          messageId: 'unsafeArrayPatternFromTuple',
+        },
+      ],
+    },
+    {
+      code: '[x] = [1] as [any];',
+      errors: [
+        {
+          column: 2,
+          endColumn: 3,
+          line: 1,
+          messageId: 'unsafeArrayPatternFromTuple',
+        },
+      ],
+    },
+    {
+      code: 'const [[[[x]]]] = [[[[1 as any]]]];',
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 1,
+          messageId: 'unsafeArrayPatternFromTuple',
+        },
+      ],
+    },
+    {
+      code: 'function foo([[[[x]]]] = [[[[1 as any]]]]) {}',
+      errors: [
+        {
+          column: 18,
+          endColumn: 19,
+          line: 1,
+          messageId: 'unsafeArrayPatternFromTuple',
+        },
+      ],
+    },
+    {
+      code: '[[[[x]]]] = [[[[1 as any]]]];',
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          line: 1,
+          messageId: 'unsafeArrayPatternFromTuple',
+        },
+      ],
+    },
+    {
+      code: 'const [[[[x]]]] = [1 as any];',
+      errors: [
+        {
+          column: 8,
+          endColumn: 15,
+          line: 1,
+          messageId: 'unsafeArrayPatternFromTuple',
+        },
+      ],
+    },
+    {
+      code: 'function foo([[[[x]]]] = [1 as any]) {}',
+      errors: [
+        {
+          column: 15,
+          endColumn: 22,
+          line: 1,
+          messageId: 'unsafeArrayPatternFromTuple',
+        },
+      ],
+    },
+    {
+      code: 'const [{ x }] = [{ x: 1 }] as [{ x: any }];',
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: 'function foo([{ x }] = [{ x: 1 }] as [{ x: any }]) {}',
+      errors: [
+        {
+          column: 17,
+          endColumn: 18,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: '[{ x }] = [{ x: 1 }] as [{ x: any }];',
+      errors: [
+        {
+          column: 4,
+          endColumn: 5,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: "const [{ ['x']: x }] = [{ ['x']: 1 }] as [{ ['x']: any }];",
+      errors: [
+        {
+          column: 17,
+          endColumn: 18,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: "function foo([{ ['x']: x }] = [{ ['x']: 1 }] as [{ ['x']: any }]) {}",
+      errors: [
+        {
+          column: 24,
+          endColumn: 25,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: "[{ ['x']: x }] = [{ ['x']: 1 }] as [{ ['x']: any }];",
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: 'const [{ [`x`]: x }] = [{ [`x`]: 1 }] as [{ [`x`]: any }];',
+      errors: [
+        {
+          column: 17,
+          endColumn: 18,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: 'function foo([{ [`x`]: x }] = [{ [`x`]: 1 }] as [{ [`x`]: any }]) {}',
+      errors: [
+        {
+          column: 24,
+          endColumn: 25,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: '[{ [`x`]: x }] = [{ [`x`]: 1 }] as [{ [`x`]: any }];',
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
     {
       // TS treats the assignment pattern weirdly in this case
       code: '[[[[x]]]] = [1 as any];',
@@ -364,12 +486,154 @@ const x = [...([] as any[])];
       errors: [{ messageId: 'unsafeArraySpread' }],
     },
 
-    ...assignmentTest([
-      ['{x} = {x: 1} as {x: any}', 2, 3],
-      ['{x: y} = {x: 1} as {x: any}', 5, 6],
-      ['{x: {y}} = {x: {y: 1}} as {x: {y: any}}', 6, 7],
-      ['{x: [y]} = {x: {y: 1}} as {x: [any]}', 6, 7],
-    ]),
+    {
+      code: 'const { x } = { x: 1 } as { x: any };',
+      errors: [
+        {
+          column: 9,
+          endColumn: 10,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: 'function foo({ x } = { x: 1 } as { x: any }) {}',
+      errors: [
+        {
+          column: 16,
+          endColumn: 17,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: '({ x } = { x: 1 } as { x: any });',
+      errors: [
+        {
+          column: 4,
+          endColumn: 5,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: 'const { x: y } = { x: 1 } as { x: any };',
+      errors: [
+        {
+          column: 12,
+          endColumn: 13,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: 'function foo({ x: y } = { x: 1 } as { x: any }) {}',
+      errors: [
+        {
+          column: 19,
+          endColumn: 20,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: '({ x: y } = { x: 1 } as { x: any });',
+      errors: [
+        {
+          column: 7,
+          endColumn: 8,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: `
+const {
+  x: { y },
+} = { x: { y: 1 } } as { x: { y: any } };
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 9,
+          line: 3,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: 'function foo({ x: { y } } = { x: { y: 1 } } as { x: { y: any } }) {}',
+      errors: [
+        {
+          column: 21,
+          endColumn: 22,
+          line: 1,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: `
+({
+  x: { y },
+} = { x: { y: 1 } } as { x: { y: any } });
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 9,
+          line: 3,
+          messageId: 'unsafeObjectPattern',
+        },
+      ],
+    },
+    {
+      code: `
+const {
+  x: [y],
+} = { x: { y: 1 } } as { x: [any] };
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 8,
+          line: 3,
+          messageId: 'unsafeArrayPatternFromTuple',
+        },
+      ],
+    },
+    {
+      code: 'function foo({ x: [y] } = { x: { y: 1 } } as { x: [any] }) {}',
+      errors: [
+        {
+          column: 20,
+          endColumn: 21,
+          line: 1,
+          messageId: 'unsafeArrayPatternFromTuple',
+        },
+      ],
+    },
+    {
+      code: `
+({
+  x: [y],
+} = { x: { y: 1 } } as { x: [any] });
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 8,
+          line: 3,
+          messageId: 'unsafeArrayPatternFromTuple',
+        },
+      ],
+    },
 
     {
       code: 'const x = { y: 1 as any };',

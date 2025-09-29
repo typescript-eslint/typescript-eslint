@@ -13,7 +13,13 @@ const ruleTester = new RuleTester({
   },
 });
 
-const literalListBasic: string[] = [
+/**
+ * ref: https://github.com/typescript-eslint/typescript-eslint/issues/11043
+ * Be careful with dynamic test case generation.
+ * Iterate based on the following cases:
+ * 1. literalListBasic
+ * ```
+[
   "''",
   "'text'",
   'true',
@@ -23,45 +29,190 @@ const literalListBasic: string[] = [
   '[]',
   '/regex/',
 ];
-
-const literalListNeedParen: string[] = [
+ * ```
+ * 2. literalListNeedParen
+ * ```
+[
   "__dirname === 'foobar'",
   '{}.constructor()',
   '() => {}',
   'function() {}',
 ];
-
-const literalList = [...literalListBasic, ...literalListNeedParen];
-
-const literalListWrapped = [
-  ...literalListBasic,
-  ...literalListNeedParen.map(i => `(${i})`),
-];
-
+ * ```
+ */
 ruleTester.run('no-base-to-string', rule, {
   valid: [
     // template
-    ...literalList.map(i => `\`\${${i}}\`;`),
+    "`${''}`;",
+    "`${'text'}`;",
+    '`${true}`;',
+    '`${false}`;',
+    '`${1}`;',
+    '`${1n}`;',
+    '`${[]}`;',
+    '`${/regex/}`;',
+    "`${__dirname === 'foobar'}`;",
+    '`${{}.constructor()}`;',
+    '`${() => {}}`;',
+    '`${function () {}}`;',
 
     // operator + +=
-    ...literalListWrapped.flatMap(l =>
-      literalListWrapped.map(r => `${l} + ${r};`),
-    ),
+    "'' + 'text';",
+    "'' + true;",
+    "'' + false;",
+    "'' + 1;",
+    "'' + 1n;",
+    "'' + [];",
+    "'' + /regex/;",
+    "'' + (__dirname === 'foobar');",
+    "'' + {}.constructor();",
+    "'' + (() => {});",
+    "'' + function () {};",
+    "'text' + true;",
+    "'text' + false;",
+    "'text' + 1;",
+    "'text' + 1n;",
+    "'text' + [];",
+    "'text' + /regex/;",
+    "'text' + (__dirname === 'foobar');",
+    "'text' + {}.constructor();",
+    "'text' + (() => {});",
+    "'text' + function () {};",
+    'true + false;',
+    'true + 1;',
+    'true + 1n;',
+    'true + [];',
+    'true + /regex/;',
+    "true + (__dirname === 'foobar');",
+    'true + {}.constructor();',
+    'true + (() => {});',
+    'true + function () {};',
+    'false + 1;',
+    'false + 1n;',
+    'false + [];',
+    'false + /regex/;',
+    "false + (__dirname === 'foobar');",
+    'false + {}.constructor();',
+    'false + (() => {});',
+    'false + function () {};',
+    '1 + 1n;',
+    '1 + [];',
+    '1 + /regex/;',
+    "1 + (__dirname === 'foobar');",
+    '1 + {}.constructor();',
+    '1 + (() => {});',
+    '1 + function () {};',
+    '1n + [];',
+    '1n + /regex/;',
+    "1n + (__dirname === 'foobar');",
+    '1n + {}.constructor();',
+    '1n + (() => {});',
+    '1n + function () {};',
+    '[] + /regex/;',
+    "[] + (__dirname === 'foobar');",
+    '[] + {}.constructor();',
+    '[] + (() => {});',
+    '[] + function () {};',
+    "/regex/ + (__dirname === 'foobar');",
+    '/regex/ + {}.constructor();',
+    '/regex/ + (() => {});',
+    '/regex/ + function () {};',
+    "(__dirname === 'foobar') + {}.constructor();",
+    "(__dirname === 'foobar') + (() => {});",
+    "(__dirname === 'foobar') + function () {};",
+    '({}).constructor() + (() => {});',
+    '({}).constructor() + function () {};',
+    '(() => {}) + function () {};',
 
     // toString()
-    ...literalListWrapped.map(i => `${i === '1' ? `(${i})` : i}.toString();`),
+    "''.toString();",
+    "'text'.toString();",
+    'true.toString();',
+    'false.toString();',
+    '(1).toString();',
+    '1n.toString();',
+    '[].toString();',
+    '/regex/.toString();',
+    "(__dirname === 'foobar').toString();",
+    '({}).constructor().toString();',
+    '(() => {}).toString();',
+    '(function () {}).toString();',
 
     // variable toString() and template
-    ...literalList.map(
-      i => `
-        let value = ${i};
-        value.toString();
-        let text = \`\${value}\`;
-      `,
-    ),
+    `
+      let value = '';
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = 'text';
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = true;
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = false;
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = 1;
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = 1n;
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = [];
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = /regex/;
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = __dirname === 'foobar';
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = {}.constructor();
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = () => {};
+      value.toString();
+      let text = \`\${value}\`;
+    `,
+    `
+      let value = function () {};
+      value.toString();
+      let text = \`\${value}\`;
+    `,
 
     // String()
-    ...literalList.map(i => `String(${i});`),
+    "String('');",
+    "String('text');",
+    'String(true);',
+    'String(false);',
+    'String(1);',
+    'String(1n);',
+    'String([]);',
+    'String(/regex/);',
+    "String(__dirname === 'foobar');",
+    'String({}.constructor());',
+    'String(() => {});',
+    'String(function () {});',
     `
 function someFunction() {}
 someFunction.toString();
@@ -148,6 +299,71 @@ declare const foo: Foo;
 String(foo);
       `,
       options: [{ ignoredTypeNames: ['Foo'] }],
+    },
+    {
+      code: `
+interface MyError<T> {}
+declare const error: MyError<number>;
+error.toString();
+      `,
+      options: [{ ignoredTypeNames: ['MyError'] }],
+    },
+    {
+      code: `
+type MyError<T> = {};
+declare const error: MyError<number>;
+error.toString();
+      `,
+      options: [{ ignoredTypeNames: ['MyError'] }],
+    },
+    {
+      code: `
+class MyError<T> {}
+declare const error: MyError<number>;
+error.toString();
+      `,
+      options: [{ ignoredTypeNames: ['MyError'] }],
+    },
+    {
+      code: `
+interface Animal {}
+interface Serializable {}
+interface Cat extends Animal, Serializable {}
+
+declare const whiskers: Cat;
+whiskers.toString();
+      `,
+      options: [{ ignoredTypeNames: ['Animal'] }],
+    },
+    {
+      code: `
+interface MyError extends Error {}
+
+declare const error: MyError;
+error.toString();
+      `,
+    },
+    {
+      code: `
+class UnknownBase {}
+class CustomError extends UnknownBase {}
+
+declare const err: CustomError;
+err.toString();
+      `,
+      options: [{ ignoredTypeNames: ['UnknownBase'] }],
+    },
+    {
+      code: `
+interface Animal {}
+interface Dog extends Animal {}
+interface Cat extends Animal {}
+
+declare const dog: Dog;
+declare const cat: Cat;
+cat.toString();
+      `,
+      options: [{ ignoredTypeNames: ['Animal'] }],
     },
     `
 function String(value) {
@@ -475,15 +691,6 @@ declare const bb: ExtendedGuildChannel;
 bb.toString();
     `,
     `
-function foo<T>(x: T) {
-  String(x);
-}
-    `,
-    `
-declare const u: unknown;
-String(u);
-    `,
-    `
 type Value = string | Value[];
 declare const v: Value;
 
@@ -511,8 +718,202 @@ String(v);
 declare const v: ('foo' | 'bar')[][];
 String(v);
     `,
+    `
+declare const x: unknown;
+\`\${x})\`;
+    `,
+    `
+declare const x: unknown;
+x.toString();
+    `,
+    `
+declare const x: unknown;
+x.toLocaleString();
+    `,
+    `
+declare const x: unknown;
+'' + x;
+    `,
+    `
+declare const x: unknown;
+String(x);
+    `,
+    `
+declare const x: unknown;
+'' += x;
+    `,
+    `
+function foo<T>(x: T) {
+  String(x);
+}
+    `,
+    `
+declare const x: any;
+\`\${x})\`;
+    `,
+    `
+declare const x: any;
+x.toString();
+    `,
+    `
+declare const x: any;
+x.toLocaleString();
+    `,
+    `
+declare const x: any;
+'' + x;
+    `,
+    `
+declare const x: any;
+String(x);
+    `,
+    `
+declare const x: any;
+'' += x;
+    `,
   ],
   invalid: [
+    {
+      code: `
+declare const x: unknown;
+\`\${x})\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: unknown;
+x.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: unknown;
+x.toLocaleString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: unknown;
+'' + x;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: unknown;
+String(x);
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: unknown;
+'' += x;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
+    {
+      code: `
+function foo<T>(x: T) {
+  String(x);
+}
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+      options: [
+        {
+          checkUnknown: true,
+        },
+      ],
+    },
     {
       code: '`${{}})`;',
       errors: [
@@ -1902,6 +2303,61 @@ v.join();
             name: 'v',
           },
           messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+interface Dog extends Animal {}
+
+declare const labrador: Dog;
+labrador.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'labrador',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+interface A extends B {}
+interface B extends A {}
+
+declare const a: A;
+a.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'a',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Base {}
+        interface Left extends Base {}
+        interface Right extends Base {}
+        interface Diamond extends Left, Right {}
+
+        declare const d: Diamond;
+        d.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'd',
+          },
+          messageId: 'baseToString',
         },
       ],
     },

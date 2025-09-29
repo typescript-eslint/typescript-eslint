@@ -1,8 +1,8 @@
-import type { NewPlugin } from 'pretty-format';
+import type { NewPlugin } from '@vitest/pretty-format';
 
-import type * as TSESTree from '../../../src';
+import type * as TSESTree from '../../../src/index.js';
 
-import { AST_NODE_TYPES } from '../../../src';
+import { AST_NODE_TYPES } from '../../../src/index.js';
 
 function sortKeys<Node extends TSESTree.Node>(
   node: Node,
@@ -28,7 +28,7 @@ function sortKeys<Node extends TSESTree.Node>(
 }
 
 function stringifyLineAndColumn(loc: TSESTree.Position): string {
-  return `{ column: ${loc.column}, line: ${loc.line} }`;
+  return `{ column: ${loc.column.toString()}, line: ${loc.line.toString()} }`;
 }
 
 function isObject(val: unknown): val is Record<string, unknown> {
@@ -48,9 +48,7 @@ export const serializer: NewPlugin = {
     printer,
   ) {
     const keys = sortKeys(node);
-    const type = node.type;
-    const loc = node.loc;
-    const range = node.range;
+    const { loc, range, type } = node;
 
     const outputLines = [];
     const childIndentation = indentation + config.indent;

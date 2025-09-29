@@ -6,7 +6,9 @@ Program {
       assertions: [],
       exported: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "x",
+        optional: false,
 
         range: [17, 18],
         loc: {
@@ -34,7 +36,7 @@ Program {
       },
     },
   ],
-  sourceType: "script",
+  sourceType: "module",
 
   range: [0, 29],
   loc: {

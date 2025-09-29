@@ -1,0 +1,140 @@
+Program {
+  type: "Program",
+  body: [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      declare: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "A",
+        optional: false,
+
+        range: [5, 6],
+        loc: {
+          start: { column: 5, line: 1 },
+          end: { column: 6, line: 1 },
+        },
+      },
+      typeAnnotation: TSImportType {
+        type: "TSImportType",
+        argument: Literal {
+          type: "Literal",
+          raw: "'A'",
+          value: "A",
+
+          range: [16, 19],
+          loc: {
+            start: { column: 16, line: 1 },
+            end: { column: 19, line: 1 },
+          },
+        },
+        options: ObjectExpression {
+          type: "ObjectExpression",
+          properties: [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "with",
+                optional: false,
+
+                range: [23, 27],
+                loc: {
+                  start: { column: 23, line: 1 },
+                  end: { column: 27, line: 1 },
+                },
+              },
+              kind: "init",
+              method: false,
+              optional: false,
+              shorthand: false,
+              value: ObjectExpression {
+                type: "ObjectExpression",
+                properties: [
+                  Property {
+                    type: "Property",
+                    computed: false,
+                    key: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "type",
+                      optional: false,
+
+                      range: [31, 35],
+                      loc: {
+                        start: { column: 31, line: 1 },
+                        end: { column: 35, line: 1 },
+                      },
+                    },
+                    kind: "init",
+                    method: false,
+                    optional: false,
+                    shorthand: false,
+                    value: Literal {
+                      type: "Literal",
+                      raw: "'json'",
+                      value: "json",
+
+                      range: [37, 43],
+                      loc: {
+                        start: { column: 37, line: 1 },
+                        end: { column: 43, line: 1 },
+                      },
+                    },
+
+                    range: [31, 43],
+                    loc: {
+                      start: { column: 31, line: 1 },
+                      end: { column: 43, line: 1 },
+                    },
+                  },
+                ],
+
+                range: [29, 45],
+                loc: {
+                  start: { column: 29, line: 1 },
+                  end: { column: 45, line: 1 },
+                },
+              },
+
+              range: [23, 45],
+              loc: {
+                start: { column: 23, line: 1 },
+                end: { column: 45, line: 1 },
+              },
+            },
+          ],
+
+          range: [21, 47],
+          loc: {
+            start: { column: 21, line: 1 },
+            end: { column: 47, line: 1 },
+          },
+        },
+        qualifier: null,
+
+        range: [9, 48],
+        loc: {
+          start: { column: 9, line: 1 },
+          end: { column: 48, line: 1 },
+        },
+      },
+
+      range: [0, 49],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 49, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 50],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

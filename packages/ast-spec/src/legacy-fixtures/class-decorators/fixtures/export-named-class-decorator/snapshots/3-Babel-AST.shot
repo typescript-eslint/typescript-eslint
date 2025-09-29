@@ -6,6 +6,7 @@ Program {
       assertions: [],
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
+        abstract: false,
         body: ClassBody {
           type: "ClassBody",
           body: [],
@@ -16,12 +17,15 @@ Program {
             end: { column: 19, line: 4 },
           },
         },
+        declare: false,
         decorators: [
           Decorator {
             type: "Decorator",
             expression: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "sealed",
+              optional: false,
 
               range: [74, 80],
               loc: {
@@ -39,7 +43,9 @@ Program {
         ],
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "Qux",
+          optional: false,
 
           range: [94, 97],
           loc: {
@@ -47,6 +53,7 @@ Program {
             end: { column: 16, line: 4 },
           },
         },
+        implements: [],
         superClass: null,
 
         range: [73, 100],

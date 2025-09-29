@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Thing',
--         optional: false,
+          optional: false,
 
           range: [78, 83],
           loc: {
@@ -31,9 +31,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'size',
--               optional: false,
+                optional: false,
 
                 range: [94, 98],
                 loc: {
@@ -42,11 +42,12 @@ Snapshot Diff:
                 },
               },
               kind: 'get',
--             optional: false,
+              optional: false,
 -             params: Array [],
--             readonly: false,
--             returnType: TSTypeAnnotation {
 +             parameters: Array [],
+              readonly: false,
+-             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSNumberKeyword {
@@ -78,9 +79,9 @@ Snapshot Diff:
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'size',
--               optional: false,
+                optional: false,
 
                 range: [116, 120],
                 loc: {
@@ -89,14 +90,14 @@ Snapshot Diff:
                 },
               },
               kind: 'set',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'value',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSUnionType {
@@ -152,8 +153,8 @@ Snapshot Diff:
                   },
                 },
               ],
--             readonly: false,
--             static: false,
+              readonly: false,
+              static: false,
 
               range: [112, 155],
               loc: {

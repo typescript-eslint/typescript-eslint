@@ -49,6 +49,7 @@
     ]
   },
   {
+    "additionalProperties": false,
     "properties": {
       "enforceForDeclarationWithTypeAnnotation": {
         "description": "Whether to enforce destructuring on variable declarations with type annotations.",
@@ -88,6 +89,5 @@ type Options = [
     enforceForDeclarationWithTypeAnnotation?: boolean;
     /** Whether to enforce destructuring that use a different variable name than the property name. */
     enforceForRenamedProperties?: boolean;
-    [k: string]: unknown;
   },
 ];

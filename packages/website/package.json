@@ -12,51 +12,52 @@
   "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
-    "build": "docusaurus build",
+    "build": "yarn run -BT nx build",
     "clear": "docusaurus clear",
-    "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore",
+    "clean": "rimraf dist/ build/ .docusaurus/ && yarn run clear",
+    "format": "yarn run -T format",
     "generate-website-dts": "tsx ./tools/generate-website-dts.mts",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
-    "lint": "npx nx lint",
+    "lint": "yarn run -BT nx lint",
     "serve": "docusaurus serve",
-    "start": "npx nx start",
+    "start": "yarn run -BT nx start",
     "swizzle": "docusaurus swizzle",
-    "check-types": "npx nx typecheck"
+    "typecheck": "yarn run -BT nx typecheck"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.4",
-    "@docusaurus/core": "^3.2.1",
-    "@docusaurus/plugin-client-redirects": "^3.2.1",
-    "@docusaurus/plugin-pwa": "^3.2.1",
-    "@docusaurus/preset-classic": "^3.2.1",
-    "@docusaurus/remark-plugin-npm2yarn": "^3.2.1",
-    "@docusaurus/theme-common": "^3.2.1",
+    "@docusaurus/core": "~3.7.0",
+    "@docusaurus/plugin-client-redirects": "~3.7.0",
+    "@docusaurus/plugin-pwa": "~3.7.0",
+    "@docusaurus/preset-classic": "~3.7.0",
+    "@docusaurus/remark-plugin-npm2yarn": "~3.7.0",
+    "@docusaurus/theme-common": "~3.7.0",
     "@typescript-eslint/parser": "workspace:*",
     "@typescript-eslint/website-eslint": "workspace:*",
     "@uiw/react-shields": "2.0.1",
     "clsx": "^2.1.0",
-    "docusaurus-plugin-typedoc": "^1.0.5",
+    "docusaurus-plugin-typedoc": "^1.4.0",
     "eslint": "^9.15.0",
+    "gray-matter": "^4.0.3",
     "json5": "^2.2.3",
     "konamimojisplosion": "^0.5.2",
     "lz-string": "^1.5.0",
-    "prettier": "^3.2.5",
+    "prettier": "3.6.2",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-markdown": "^9.0.1",
-    "react-resizable-panels": "^0.0.63",
+    "react-markdown": "^10.0.0",
+    "react-resizable-panels": "^3.0.0",
+    "reading-time": "^1.5.0",
     "semver": "^7.6.0",
-    "typedoc": "^0.27.0",
-    "typedoc-plugin-markdown": "^4.2.10",
-    "typescript": "*"
-  },
-  "resolutions": {
-    "react": "^18.2.0"
+    "typedoc": "^0.28.4",
+    "typedoc-plugin-markdown": "^4.6.3",
+    "typescript": "*",
+    "zod": "^3.25.67"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.2.1",
+    "@docusaurus/module-type-aliases": "~3.7.0",
     "@types/mdast": "^4.0.3",
     "@types/react": "*",
     "@types/unist": "^3.0.2",
@@ -66,19 +67,19 @@
     "@typescript-eslint/types": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/utils": "workspace:*",
-    "copy-webpack-plugin": "^12.0.0",
+    "copy-webpack-plugin": "^13.0.0",
     "cross-fetch": "*",
     "history": "^4.9.0",
     "make-dir": "*",
     "mdast-util-from-markdown": "^2.0.1",
     "mdast-util-mdx": "^3.0.0",
-    "monaco-editor": "~0.52.0",
+    "monaco-editor": "~0.53.0",
     "raw-loader": "^4.0.2",
     "rimraf": "*",
     "stylelint": "^16.3.1",
-    "stylelint-config-recommended": "^14.0.0",
-    "stylelint-config-standard": "^36.0.0",
-    "stylelint-order": "^6.0.4",
+    "stylelint-config-recommended": "^16.0.0",
+    "stylelint-config-standard": "^38.0.0",
+    "stylelint-order": "^7.0.0",
     "tsx": "*",
     "unified": "^11.0.4",
     "vfile": "^6.0.1",
@@ -95,5 +96,37 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "nx": {
+    "name": "website",
+    "includedScripts": [
+      "clean"
+    ],
+    "targets": {
+      "build": {
+        "command": "docusaurus build",
+        "dependsOn": [
+          "^build"
+        ],
+        "options": {
+          "cwd": "{projectRoot}"
+        }
+      },
+      "lint": {
+        "command": "eslint",
+        "dependsOn": [
+          "build"
+        ]
+      },
+      "start": {
+        "command": "docusaurus start",
+        "dependsOn": [
+          "^build"
+        ],
+        "options": {
+          "cwd": "{projectRoot}"
+        }
+      }
+    }
   }
 }

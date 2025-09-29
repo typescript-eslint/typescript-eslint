@@ -10,12 +10,12 @@ Snapshot Diff:
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'foo',
--         optional: false,
+          optional: false,
 
           range: [78, 81],
           loc: {
@@ -32,9 +32,9 @@ Snapshot Diff:
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'a',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSStringKeyword {
@@ -85,8 +85,8 @@ Snapshot Diff:
                 params: Array [
                   TSTypeParameter {
                     type: 'TSTypeParameter',
--                   const: false,
--                   in: false,
+                    const: false,
+                    in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
 -                     decorators: Array [],
@@ -99,8 +99,8 @@ Snapshot Diff:
 -                       end: { column: 4, line: 4 },
 -                     },
 -                   },
--                   out: false,
 +                   name: 'T',
+                    out: false,
 
                     range: [89, 90],
                     loc: {
@@ -129,9 +129,9 @@ Snapshot Diff:
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'a',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSStringKeyword {
@@ -182,8 +182,8 @@ Snapshot Diff:
                 params: Array [
                   TSTypeParameter {
                     type: 'TSTypeParameter',
--                   const: false,
--                   in: false,
+                    const: false,
+                    in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
 -                     decorators: Array [],
@@ -196,8 +196,8 @@ Snapshot Diff:
 -                       end: { column: 8, line: 5 },
 -                     },
 -                   },
--                   out: false,
 +                   name: 'T',
+                    out: false,
 
                     range: [119, 120],
                     loc: {

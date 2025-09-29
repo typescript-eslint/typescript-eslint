@@ -20,7 +20,7 @@ const $ = $_config({
  * We therefore use an env var for this.
  */
 
-if (process.env.SKIP_POSTINSTALL) {
+if (process.env.SKIP_POSTINSTALL || process.env.MEND_HOSTED === 'true') {
   console.log(
     '\nSkipping postinstall script because $SKIP_POSTINSTALL is set...\n',
   );
@@ -28,22 +28,20 @@ if (process.env.SKIP_POSTINSTALL) {
   process.exit(0);
 }
 
-void (async function (): Promise<void> {
-  // make sure we're running from the workspace root
-  const {
-    default: { workspaceRoot },
-  } = await import('@nx/devkit');
-  process.chdir(workspaceRoot);
+// make sure we're running from the workspace root
+const {
+  default: { workspaceRoot },
+} = await import('@nx/devkit');
+process.chdir(workspaceRoot);
 
-  // Install git hooks
-  await $`yarn husky`;
+// Install git hooks
+await $`yarn husky`;
 
-  if (!process.env.SKIP_POSTINSTALL_BUILD) {
-    // Clean any caches that may be invalid now
-    await $`yarn clean`;
+if (!process.env.SKIP_POSTINSTALL_BUILD) {
+  // Clean any caches that may be invalid now
+  await $`yarn clean`;
 
-    // Build all the packages ready for use
-    await $`yarn build`;
-    await $`yarn nx typecheck ast-spec`;
-  }
-})();
+  // Build all the packages ready for use
+  await $`yarn build`;
+  await $`yarn nx typecheck ast-spec`;
+}

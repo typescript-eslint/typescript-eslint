@@ -1,4 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > basics > _error_ > abstract-class-with-override-property > Babel - Error`]
-SyntaxError: Property 'foo' cannot have an initializer because it is marked abstract. (4:24)
+BabelError
+  2 |
+  3 | abstract class SpecializedComponent extends SomeComponent {
+> 4 |   abstract override foo = 1;
+    |                         ^ Property 'foo' cannot have an initializer because it is marked abstract. (4:24)
+  5 | }
+  6 |
+  

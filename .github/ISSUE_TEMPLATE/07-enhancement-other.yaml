@@ -26,8 +26,10 @@ body:
         - ast-spec
         - eslint-plugin
         - parser
+        - project-service
         - rule-tester
         - scope-manager
+        - tsconfig-utils
         - type-utils
         - types
         - typescript-eslint

@@ -3,15 +3,19 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "greet",
+              optional: false,
 
               range: [104, 109],
               loc: {
@@ -20,6 +24,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: true,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -47,7 +53,9 @@ Program {
                         operator: "+",
                         right: Identifier {
                           type: "Identifier",
+                          decorators: [],
                           name: "name",
+                          optional: false,
 
                           range: [158, 162],
                           loc: {
@@ -96,6 +104,7 @@ Program {
                   end: { column: 3, line: 6 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -107,7 +116,9 @@ Program {
                       type: "Decorator",
                       expression: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "required",
+                        optional: false,
 
                         range: [111, 119],
                         loc: {
@@ -124,6 +135,7 @@ Program {
                     },
                   ],
                   name: "name",
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSStringKeyword {
@@ -172,9 +184,13 @@ Program {
           end: { column: 1, line: 7 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "StaticGreeter",
+        optional: false,
 
         range: [79, 92],
         loc: {
@@ -182,6 +198,7 @@ Program {
           end: { column: 19, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 175],
