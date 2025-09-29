@@ -4465,7 +4465,7 @@ abstract class Foo {
   B: string;
   public C() {}
   private D() {}
-  abstract E() {}
+  E() {}
 }
       `,
       errors: [
