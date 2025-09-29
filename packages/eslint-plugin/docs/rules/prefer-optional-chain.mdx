@@ -35,7 +35,7 @@ foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
 !foo || !foo.bar || !foo.bar.baz || !foo.bar.baz();
 
 // this rule also supports converting chained strict nullish checks:
-foo && foo.a != null;
+foo.a !== null && foo.a !== undefined && foo.a.b;
 ```
 
 </TabItem>
