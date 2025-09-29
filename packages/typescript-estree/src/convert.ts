@@ -1605,7 +1605,10 @@ export class Converter {
         if (isAbstract && node.body) {
           this.#throwError(
             node.name,
-            `Method '${declarationNameToString(node.name, this.ast)}' cannot have an implementation because it is marked abstract.`,
+            node.kind === SyntaxKind.GetAccessor ||
+              node.kind === SyntaxKind.SetAccessor
+              ? 'An abstract accessor cannot have an implementation.'
+              : `Method '${declarationNameToString(node.name, this.ast)}' cannot have an implementation because it is marked abstract.`,
           );
         }
 

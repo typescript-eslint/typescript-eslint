@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ClassDeclaration > _error_ > abstract-getter-with-implementation > Babel - Error`]
+BabelError
+  1 | abstract class Foo  {
+> 2 |   abstract get getter() { }
+    |   ^ Method 'getter' cannot have an implementation because it is marked abstract. (2:2)
+  3 | }
+  4 |
+  
