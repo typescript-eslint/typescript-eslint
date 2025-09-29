@@ -30,7 +30,9 @@ Examples of them include `let x = "hello" as const;` and `let x = <const>"hello"
 
 ### `assertionStyle`
 
-This option defines the expected assertion style. Valid values for `assertionStyle` are:
+{/* insert option description */}
+
+Valid values for `assertionStyle` are:
 
 - `as` will enforce that you always use `... as foo`.
 - `angle-bracket` will enforce that you always use `<foo>...`
@@ -42,7 +44,10 @@ Some codebases like to go for an extra level of type safety, and ban assertions 
 
 ### `objectLiteralTypeAssertions`
 
-Always prefer `const x: T = { ... };` to `const x = { ... } as T;` (or similar with angle brackets). The type assertion in the latter case is either unnecessary or will probably hide an error.
+{/* insert option description */}
+
+For example, this would prefer `const x: T = { ... };` to `const x = { ... } as T;` (or similar with angle brackets).
+The type assertion in the latter case is either unnecessary or will probably hide an error.
 
 The compiler will warn for excess properties with this syntax, but not missing _required_ fields. For example: `const x: { foo: number } = {};` will fail to compile, but `const x = {} as { foo: number }` will succeed.
 
@@ -105,6 +110,79 @@ function bar() {
   throw { foo: 1 } as Foo;
 }
 const foo = <Foo props={{ bar: 1 } as Bar} />;
+```
+
+</TabItem>
+</Tabs>
+
+### `arrayLiteralTypeAssertions`
+
+{/* insert option description */}
+
+For example, this would prefer `const x: T[] = [ ... ];` to `const x = [ ... ] as T[];` (or similar with angle brackets).
+
+The compiler will warn for excess properties of elements with this syntax, but not missing _required_ fields of those objects.
+For example: `const x: {foo: number}[] = [{}];` will fail to compile, but `const x = [{}] as [{ foo: number }]` will succeed.
+
+The const assertion `const x = [1, 2, 3] as const`, introduced in TypeScript 3.4, is considered beneficial and is ignored by this option.
+
+Assertions to `any` are also ignored by this option.
+
+Examples of code for `{ assertionStyle: 'as', arrayLiteralTypeAssertions: 'never' }`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "assertionStyle": "as", "arrayLiteralTypeAssertions": "never" }'
+const x = ['foo'] as T;
+
+function bar() {
+  return ['foo'] as T;
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "assertionStyle": "as", "arrayLiteralTypeAssertions": "never" }'
+const x: T = ['foo'];
+const y = ['foo'] as any;
+const z = ['foo'] as unknown;
+
+function bar(): T {
+  return ['foo'];
+}
+```
+
+</TabItem>
+</Tabs>
+
+Examples of code for `{ assertionStyle: 'as', arrayLiteralTypeAssertions: 'allow-as-parameter' }`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "assertionStyle": "as", "arrayLiteralTypeAssertions": "allow-as-parameter" }'
+const x = ['foo'] as T;
+
+function bar() {
+  return ['foo'] as T;
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```tsx option='{ "assertionStyle": "as", "arrayLiteralTypeAssertions": "allow-as-parameter" }'
+const x: T = ['foo'];
+const y = ['foo'] as any;
+const z = ['foo'] as unknown;
+bar(['foo'] as T);
+new Clazz(['foo'] as T);
+function bar() {
+  throw ['foo'] as Foo;
+}
+const foo = <Foo props={['foo'] as Bar} />;
 ```
 
 </TabItem>

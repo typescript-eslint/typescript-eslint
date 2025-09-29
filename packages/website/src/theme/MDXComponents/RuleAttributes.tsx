@@ -1,8 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+import type {
+  RuleRecommendation,
+  RuleRecommendationAcrossConfigs,
+} from '@typescript-eslint/utils/ts-eslint';
+
 import Link from '@docusaurus/Link';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
-import type { RuleMetaDataDocs } from '@typescript-eslint/utils/ts-eslint';
 import React from 'react';
+
+import type { FeatureProps } from './Feature';
 
 import {
   FIXABLE_EMOJI,
@@ -11,40 +17,53 @@ import {
   STYLISTIC_CONFIG_EMOJI,
   SUGGESTIONS_EMOJI,
 } from '../../components/constants';
-import type { FeatureProps } from './Feature';
 import { Feature } from './Feature';
 import styles from './RuleAttributes.module.css';
 
-const recommendations = {
+const recommendations: Record<
+  RuleRecommendation,
+  [string, RuleRecommendation]
+> = {
   recommended: [RECOMMENDED_CONFIG_EMOJI, 'recommended'],
   strict: [STRICT_CONFIG_EMOJI, 'strict'],
   stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
 };
 
-type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
-  [K in Key]-?: NonNullable<Base[Key]>;
-};
+type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> &
+  Required<Record<Key, NonNullable<Base[Key]>>>;
 
-type RecommendedRuleMetaDataDocs<Options extends readonly unknown[]> =
-  MakeRequired<RuleMetaDataDocs<Options>, 'recommended'>;
+type RecommendedRuleMetaDataDocs = MakeRequired<
+  ESLintPluginDocs,
+  'recommended'
+>;
 
 const isRecommendedDocs = (
-  docs: RuleMetaDataDocs<unknown[]>,
-): docs is RecommendedRuleMetaDataDocs<unknown[]> => !!docs.recommended;
+  docs: ESLintPluginDocs,
+): docs is RecommendedRuleMetaDataDocs => !!docs.recommended;
 
-const getRecommendation = (
-  docs: RecommendedRuleMetaDataDocs<unknown[]>,
-): string[] => {
-  const recommended = docs.recommended;
-  const recommendation =
-    recommendations[
-      typeof recommended === 'object' ? 'recommended' : recommended
-    ];
+const resolveRecommendation = (
+  recommended: RuleRecommendationAcrossConfigs<unknown[]>,
+): RuleRecommendation => {
+  return recommended.recommended === true ? 'recommended' : 'strict';
+};
+
+const getRecommendation = (docs: RecommendedRuleMetaDataDocs): string[] => {
+  const recommendation = getRecommendationWithEmoji(docs.recommended);
 
   return docs.requiresTypeChecking
     ? [recommendation[0], `${recommendation[1]}-type-checked`]
     : recommendation;
 };
+
+export function getRecommendationWithEmoji(
+  recommended: RecommendedRuleMetaDataDocs['recommended'],
+): [string, RuleRecommendation] {
+  const recommendationKey =
+    typeof recommended === 'object'
+      ? resolveRecommendation(recommended)
+      : recommended;
+  return recommendations[recommendationKey];
+}
 
 export function RuleAttributes({ name }: { name: string }): React.ReactNode {
   const rules = useRulesMeta();
@@ -115,10 +134,36 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
           <Link href="/getting-started/typed-linting" target="_blank">
             type information
           </Link>{' '}
-          to run.
+          to run, which comes with performance tradeoffs.
         </>
       ),
       emoji: '💭',
+    });
+  }
+
+  if (rule.docs.extendsBaseRule) {
+    features.push({
+      children: (
+        <>
+          {' '}
+          This is an "extension" rule that replaces a core ESLint rule to work
+          with TypeScript. See{' '}
+          <Link href="/rules#extension-rules">Rules &gt; Extension Rules</Link>.
+        </>
+      ),
+      emoji: '🧱',
+    });
+  }
+
+  if (rule.docs.frozen) {
+    features.push({
+      children: (
+        <>
+          This rule is currently <Link href="/rules#frozen-rules">frozen</Link>{' '}
+          and is not accepting feature requests.
+        </>
+      ),
+      emoji: '❄️',
     });
   }
 

@@ -1,6 +1,0 @@
-name: Validate Breaking Change PR
-description: Validate breaking change PR title and description
-
-runs:
-  using: node20
-  main: index.js

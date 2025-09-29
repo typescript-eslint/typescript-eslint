@@ -1,3 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics _error_ var-with-definite-assignment TSESTree - Error 1`] = `"NO ERROR"`;
+exports[`AST Fixtures > legacy-fixtures > basics > _error_ > var-with-definite-assignment > TSESTree - Error`]
+TSError
+  1 | // TODO: This fixture might be too large, and if so should be split up.
+  2 |
+> 3 | const x!: string;
+    |       ^^^^^^^^^^ A definite assignment assertion '!' is not permitted in this context.
+  4 | var y!: number;
+  5 | let z!: object;
+  6 |

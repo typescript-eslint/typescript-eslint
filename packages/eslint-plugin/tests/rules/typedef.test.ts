@@ -1,15 +1,15 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/typedef';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 2015,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
+    },
   },
 });
 
@@ -351,7 +351,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: noFormat`
+      code: `
         type Test = {
           [i: string];
         };
@@ -918,7 +918,7 @@ class ClassName {
       ],
     },
     {
-      code: noFormat`
+      code: `
         type Test = {
           [i: string];
         };
@@ -953,7 +953,7 @@ class ClassName {
       ],
     },
     {
-      code: noFormat`
+      code: `
         interface Test {
           [i: string];
         }
@@ -1060,8 +1060,8 @@ class ClassName {
       code: "const foo = 'foo';",
       errors: [
         {
-          messageId: 'expectedTypedefNamed',
           data: { name: 'foo' },
+          messageId: 'expectedTypedefNamed',
         },
       ],
       options: [
@@ -1075,8 +1075,8 @@ class ClassName {
       code: 'const foo = function (): void {};',
       errors: [
         {
-          messageId: 'expectedTypedefNamed',
           data: { name: 'foo' },
+          messageId: 'expectedTypedefNamed',
         },
       ],
       options: [
@@ -1090,8 +1090,8 @@ class ClassName {
       code: 'const foo = (): void => {};',
       errors: [
         {
-          messageId: 'expectedTypedefNamed',
           data: { name: 'foo' },
+          messageId: 'expectedTypedefNamed',
         },
       ],
       options: [
@@ -1110,12 +1110,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'expectedTypedefNamed',
           data: { name: 'a' },
+          messageId: 'expectedTypedefNamed',
         },
         {
-          messageId: 'expectedTypedefNamed',
           data: { name: 'b' },
+          messageId: 'expectedTypedefNamed',
         },
       ],
       options: [

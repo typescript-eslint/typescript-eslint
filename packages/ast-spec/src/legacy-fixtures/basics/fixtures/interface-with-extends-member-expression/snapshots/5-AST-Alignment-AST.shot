@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics interface-with-extends-member-expression AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > interface-with-extends-member-expression > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -20,7 +20,7 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-member-expre
             end: { column: 32, line: 3 },
           },
         },
--       declare: false,
+        declare: false,
         extends: Array [
 -         TSInterfaceHeritage {
 -           type: 'TSInterfaceHeritage',
@@ -34,9 +34,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-member-expre
 +             type: 'TSQualifiedName',
 +             left: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'bar',
--               optional: false,
+                optional: false,
 
                 range: [95, 98],
                 loc: {
@@ -48,9 +48,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-member-expre
 -             property: Identifier {
 +             right: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'baz',
--               optional: false,
+                optional: false,
 
                 range: [99, 102],
                 loc: {
@@ -75,9 +75,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-member-expre
         ],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'foo',
--         optional: false,
+          optional: false,
 
           range: [83, 86],
           loc: {
@@ -100,5 +100,4 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-member-expre
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

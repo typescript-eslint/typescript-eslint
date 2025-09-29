@@ -1,19 +1,27 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    // specifically disable declarations for the plugin
-    // see reasoning in packages/eslint-plugin/rules.d.ts
-    "declaration": false,
-    "declarationMap": false,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "resolveJsonModule": true
-  },
-  "include": ["src", "typings"],
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {},
   "references": [
-    { "path": "../utils/tsconfig.build.json" },
-    { "path": "../parser/tsconfig.build.json" },
-    { "path": "../scope-manager/tsconfig.build.json" },
-    { "path": "../type-utils/tsconfig.build.json" }
+    {
+      "path": "../visitor-keys/tsconfig.build.json"
+    },
+    {
+      "path": "../type-utils/tsconfig.build.json"
+    },
+    {
+      "path": "../scope-manager/tsconfig.build.json"
+    },
+    {
+      "path": "../rule-tester/tsconfig.build.json"
+    },
+    {
+      "path": "../rule-schema-to-typescript-types/tsconfig.build.json"
+    },
+    {
+      "path": "../parser/tsconfig.build.json"
+    },
+    {
+      "path": "../utils/tsconfig.build.json"
+    }
   ]
 }

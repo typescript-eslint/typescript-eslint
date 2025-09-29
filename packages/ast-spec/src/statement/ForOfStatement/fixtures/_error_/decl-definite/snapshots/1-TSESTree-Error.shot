@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > statement > ForOfStatement > _error_ > decl-definite > TSESTree - Error`]
+TSError
+> 1 | for (let x! of []) {}
+    |           ^ ',' expected.
+  2 |

@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -9,8 +10,8 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type Options = [];
-type MessageIds = 'useTopLevelQualifier';
+export type Options = [];
+export type MessageIds = 'useTopLevelQualifier';
 
 export default createRule<Options, MessageIds>({
   name: 'no-import-type-side-effects',

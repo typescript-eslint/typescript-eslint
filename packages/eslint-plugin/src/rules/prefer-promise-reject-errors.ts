@@ -1,15 +1,20 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
   getParserServices,
   isErrorLike,
+  isTypeAnyType,
+  isTypeUnknownType,
   isFunction,
   isIdentifier,
   isPromiseConstructorLike,
   isPromiseLike,
   isReadonlyErrorLike,
+  isStaticMemberAccessOfValue,
+  skipChainExpression,
 } from '../util';
 
 export type MessageIds = 'rejectAnError';
@@ -17,6 +22,8 @@ export type MessageIds = 'rejectAnError';
 export type Options = [
   {
     allowEmptyReject?: boolean;
+    allowThrowingAny?: boolean;
+    allowThrowingUnknown?: boolean;
   },
 ];
 
@@ -26,28 +33,42 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require using Error objects as Promise rejection reasons',
-      recommended: 'strict',
       extendsBaseRule: true,
+      recommended: 'recommended',
       requiresTypeChecking: true,
+    },
+    messages: {
+      rejectAnError: 'Expected the Promise rejection reason to be an Error.',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowEmptyReject: {
             type: 'boolean',
+            description:
+              'Whether to allow calls to `Promise.reject()` with no arguments.',
+          },
+          allowThrowingAny: {
+            type: 'boolean',
+            description:
+              'Whether to always allow throwing values typed as `any`.',
+          },
+          allowThrowingUnknown: {
+            type: 'boolean',
+            description:
+              'Whether to always allow throwing values typed as `unknown`.',
           },
         },
-        additionalProperties: false,
       },
     ],
-    messages: {
-      rejectAnError: 'Expected the Promise rejection reason to be an Error.',
-    },
   },
   defaultOptions: [
     {
       allowEmptyReject: false,
+      allowThrowingAny: false,
+      allowThrowingUnknown: false,
     },
   ],
   create(context, [options]) {
@@ -57,6 +78,15 @@ export default createRule<Options, MessageIds>({
       const argument = callExpression.arguments.at(0);
       if (argument) {
         const type = services.getTypeAtLocation(argument);
+
+        if (options.allowThrowingAny && isTypeAnyType(type)) {
+          return;
+        }
+
+        if (options.allowThrowingUnknown && isTypeUnknownType(type)) {
+          return;
+        }
+
         if (
           isErrorLike(services.program, type) ||
           isReadonlyErrorLike(services.program, type)
@@ -71,14 +101,6 @@ export default createRule<Options, MessageIds>({
         node: callExpression,
         messageId: 'rejectAnError',
       });
-    }
-
-    function skipChainExpression<T extends TSESTree.Node>(
-      node: T,
-    ): T | TSESTree.ChainElement {
-      return node.type === AST_NODE_TYPES.ChainExpression
-        ? node.expression
-        : node;
     }
 
     function typeAtLocationIsLikePromise(node: TSESTree.Node): boolean {
@@ -97,13 +119,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const rejectMethodCalled = callee.computed
-          ? callee.property.type === AST_NODE_TYPES.Literal &&
-            callee.property.value === 'reject'
-          : callee.property.name === 'reject';
-
         if (
-          !rejectMethodCalled ||
+          !isStaticMemberAccessOfValue(callee, context, 'reject') ||
           !typeAtLocationIsLikePromise(callee.object)
         ) {
           return;

@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-const-id-definite-type-init > TSESTree - Error`]
+TSError
+> 1 | declare const foo!: any = 1;
+    |               ^^^^^^^^^^^^^ Declarations with initializers cannot also have definite assignment assertions.
+  2 |

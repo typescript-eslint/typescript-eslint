@@ -14,8 +14,6 @@ This rule reports template literals that contain substitution expressions (also 
 :::info[Migration from `no-useless-template-literals`]
 
 This rule was formerly known as [`no-useless-template-literals`](./no-useless-template-literals.mdx).
-We encourage users to migrate to the new name, `no-unnecessary-template-expression`, as the old name will be removed in a future major version of typescript-eslint.
-
 The new name is a drop-in replacement with identical functionality.
 
 :::
@@ -30,6 +28,8 @@ The new name is a drop-in replacement with identical functionality.
 
 const ab1 = `${'a'}${'b'}`;
 const ab2 = `a${'b'}`;
+type AB1 = `${'A'}${'B'}`;
+type AB2 = `A${'B'}`;
 
 const stringWithNumber = `${'1 + 1 = '}${2}`;
 
@@ -40,9 +40,13 @@ const stringWithBoolean = `${'true is '}${true}`;
 
 const text = 'a';
 const wrappedText = `${text}`;
+type Text = 'A';
+type WrappedText = `${Text}`;
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
 const wrappedIntersection = `${intersectionWithString}`;
+type IntersectionWithString = string & { _brand: 'test-brand' };
+type WrappedIntersection = `${IntersectionWithString}`;
 ```
 
 </TabItem>
@@ -53,6 +57,19 @@ const wrappedIntersection = `${intersectionWithString}`;
 
 const ab1 = `ab`;
 const ab2 = `ab`;
+type AB = `AB`;
+
+// Transforming enum members into string unions using template literals is allowed.
+enum ABC {
+  A = 'A',
+  B = 'B',
+  C = 'C',
+}
+type ABCUnion = `${ABC}`;
+type A = `${ABC.A}`;
+
+// Interpolating type parameters is allowed.
+type TextUtil<T extends string> = `${T}`;
 
 const stringWithNumber = `1 + 1 = 2`;
 
@@ -63,9 +80,13 @@ const stringWithBoolean = `true is true`;
 
 const text = 'a';
 const wrappedText = text;
+type Text = 'A';
+type WrappedText = Text;
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
 const wrappedIntersection = intersectionWithString;
+type IntersectionWithString = string & { _brand: 'test-brand' };
+type WrappedIntersection = IntersectionWithString;
 ```
 
 </TabItem>

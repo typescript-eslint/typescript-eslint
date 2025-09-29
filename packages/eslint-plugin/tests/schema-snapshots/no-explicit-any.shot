@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-explicit-any 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,7 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "fixToUnknown": {
-        "description": "Whether to enable auto-fixing in which the \`any\` type is converted to the \`unknown\` type.",
+        "description": "Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type.",
         "type": "boolean"
       },
       "ignoreRestArgs": {
@@ -26,11 +23,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to enable auto-fixing in which the \`any\` type is converted to the \`unknown\` type. */
+    /** Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type. */
     fixToUnknown?: boolean;
     /** Whether to ignore rest parameter arrays. */
     ignoreRestArgs?: boolean;
   },
 ];
-"
-`;

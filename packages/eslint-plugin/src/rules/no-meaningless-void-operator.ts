@@ -1,11 +1,12 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule } from '../util';
 
-type Options = [
+export type Options = [
   {
     checkNever: boolean;
   },
@@ -31,13 +32,14 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           checkNever: {
             type: 'boolean',
-            default: false,
+            description:
+              'Whether to suggest removing `void` when the argument has type `never`.',
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -57,7 +59,7 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
         };
 
         const argType = services.getTypeAtLocation(node.argument);
-        const unionParts = tsutils.unionTypeParts(argType);
+        const unionParts = tsutils.unionConstituents(argType);
         if (
           unionParts.every(
             part => part.flags & (ts.TypeFlags.Void | ts.TypeFlags.Undefined),

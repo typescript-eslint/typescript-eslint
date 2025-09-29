@@ -5,37 +5,37 @@ import React from 'react';
 import styles from './EditorTabs.module.css';
 
 export interface EditorTabsProps<T extends boolean | string> {
-  readonly tabs: (T | { value: T; label: string })[];
   readonly active: T;
-  readonly showVisualEditor?: boolean;
+  readonly additionalTabsInfo?: Record<string, number>;
   readonly change: (name: T) => void;
   readonly showModal?: (name: T) => void;
-  readonly additionalTabsInfo?: Record<string, number>;
+  readonly showVisualEditor?: boolean;
+  readonly tabs: (T | { label: string; value: T })[];
 }
 
 function EditorTabs<T extends boolean | string>({
-  tabs,
   active,
-  showVisualEditor,
+  additionalTabsInfo,
   change,
   showModal,
-  additionalTabsInfo,
+  showVisualEditor,
+  tabs,
 }: EditorTabsProps<T>): React.JSX.Element {
   const tabsWithLabels = tabs.map(tab =>
-    typeof tab !== 'object' ? { value: tab, label: String(tab) } : tab,
+    typeof tab !== 'object' ? { label: String(tab), value: tab } : tab,
   );
 
   return (
     <div className={clsx(styles.tabContainer, 'padding--xs')}>
-      <div role="tablist" className="button-group">
+      <div className="button-group" role="tablist">
         {tabsWithLabels.map(item => (
           <button
-            role="tab"
-            className={clsx(styles.tabStyle, 'button')}
-            key={item.label}
             aria-selected={active === item.value}
+            className={clsx(styles.tabStyle, 'button')}
             disabled={active === item.value}
+            key={item.label}
             onClick={(): void => change(item.value)}
+            role="tab"
           >
             {item.label}
             {additionalTabsInfo?.[item.label] ? (
@@ -54,7 +54,7 @@ function EditorTabs<T extends boolean | string>({
           onClick={(): void => showModal?.(active)}
         >
           Visual Editor
-          <EditIcon width={12} height={12} />
+          <EditIcon height={12} width={12} />
         </button>
       )}
     </div>

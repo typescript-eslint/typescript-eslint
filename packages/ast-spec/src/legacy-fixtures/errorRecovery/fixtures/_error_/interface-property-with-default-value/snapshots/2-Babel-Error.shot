@@ -1,3 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-property-with-default-value Babel - Error 1`] = `[SyntaxError: Unexpected token, expected ";" (4:14)]`;
+exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > interface-property-with-default-value > Babel - Error`]
+BabelError
+  2 |
+  3 | interface Foo {
+> 4 |   bar: string = 'a';
+    |               ^ Unexpected token, expected ";" (4:14)
+  5 | }
+  6 |
+  

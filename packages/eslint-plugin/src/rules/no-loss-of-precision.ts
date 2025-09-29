@@ -1,44 +1,47 @@
-import type { TSESTree } from '@typescript-eslint/utils';
-
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
-const baseRule = getESLintCoreRule('no-loss-of-precision');
+const baseRule: ReturnType<typeof getESLintCoreRule> = getESLintCoreRule(
+  'no-loss-of-precision',
+);
 
-type Options = InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
-type MessageIds = InferMessageIdsTypeFromRule<NonNullable<typeof baseRule>>;
+export type Options = InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
+export type MessageIds = InferMessageIdsTypeFromRule<
+  NonNullable<typeof baseRule>
+>;
 
 export default createRule<Options, MessageIds>({
   name: 'no-loss-of-precision',
   meta: {
     type: 'problem',
+    // defaultOptions, -- base rule does not use defaultOptions
+    deprecated: {
+      deprecatedSince: '8.0.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-loss-of-precision',
+            url: 'https://eslint.org/docs/latest/rules/no-loss-of-precision',
+          },
+        },
+      ],
+      url: 'https://github.com/typescript-eslint/typescript-eslint/pull/8832',
+    },
     docs: {
       description: 'Disallow literal numbers that lose precision',
-      recommended: 'recommended',
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: [],
     messages: baseRule.meta.messages,
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
-    const rules = baseRule.create(context);
-
-    function isSeparatedNumeric(node: TSESTree.Literal): boolean {
-      return typeof node.value === 'number' && node.raw.includes('_');
-    }
-    return {
-      Literal(node: TSESTree.Literal): void {
-        rules.Literal({
-          ...node,
-          raw: isSeparatedNumeric(node) ? node.raw.replace(/_/g, '') : node.raw,
-        } as never);
-      },
-    };
+    return baseRule.create(context);
   },
 });

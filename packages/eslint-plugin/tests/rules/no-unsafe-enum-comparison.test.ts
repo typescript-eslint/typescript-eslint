@@ -6,15 +6,15 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2015,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('strict-enums-comparison', rule, {
+ruleTester.run('no-unsafe-enum-comparison', rule, {
   valid: [
     "'a' > 'b';",
     "'a' < 'b';",
@@ -227,16 +227,6 @@ ruleTester.run('strict-enums-comparison', rule, {
         Beet = 'beet',
         Celery = 'celery',
       }
-      type WeirdString = string & { __someBrand: void };
-      declare const weirdString: WeirdString;
-      Vegetable.Asparagus === weirdString;
-    `,
-    `
-      enum Vegetable {
-        Asparagus = 'asparagus',
-        Beet = 'beet',
-        Celery = 'celery',
-      }
       const foo = {};
       const vegetable = Vegetable.Asparagus;
       vegetable in foo;
@@ -409,7 +399,23 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple === 0;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Fruit {
+          Apple = 0,
+          Banana = 'banana',
+        }
+        Fruit.Apple === Fruit.Apple;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -584,10 +590,126 @@ ruleTester.run('strict-enums-comparison', rule, {
         mixed === 1;
       `,
       errors: [
-        { messageId: 'mismatchedCondition' },
-        { messageId: 'mismatchedCondition' },
-        { messageId: 'mismatchedCondition' },
-        { messageId: 'mismatchedCondition' },
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Str {
+          A = 'a',
+        }
+        enum Num {
+          B = 1,
+        }
+        enum Mixed {
+          A = 'a',
+          B = 1,
+        }
+
+        declare const str: Str;
+        declare const num: Num;
+        declare const mixed: Mixed;
+
+        // following are all errors because the value might be an enum value
+        str === Str.A;
+        num === 1;
+        mixed === 'a';
+        mixed === 1;
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Str {
+          A = 'a',
+        }
+        enum Num {
+          B = 1,
+        }
+        enum Mixed {
+          A = 'a',
+          B = 1,
+        }
+
+        declare const str: Str;
+        declare const num: Num;
+        declare const mixed: Mixed;
+
+        // following are all errors because the value might be an enum value
+        str === 'a';
+        num === Num.B;
+        mixed === 'a';
+        mixed === 1;
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Str {
+          A = 'a',
+        }
+        enum Num {
+          B = 1,
+        }
+        enum Mixed {
+          A = 'a',
+          B = 1,
+        }
+
+        declare const str: Str;
+        declare const num: Num;
+        declare const mixed: Mixed;
+
+        // following are all errors because the value might be an enum value
+        str === 'a';
+        num === 1;
+        mixed === Mixed.A;
+        mixed === 1;
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Str {
+          A = 'a',
+        }
+        enum Num {
+          B = 1,
+        }
+        enum Mixed {
+          A = 'a',
+          B = 1,
+        }
+
+        declare const str: Str;
+        declare const num: Num;
+        declare const mixed: Mixed;
+
+        // following are all errors because the value might be an enum value
+        str === 'a';
+        num === 1;
+        mixed === 'a';
+        mixed === Mixed.B;
+      `,
+            },
+          ],
+        },
       ],
     },
     {
@@ -1001,82 +1123,121 @@ ruleTester.run('strict-enums-comparison', rule, {
     },
     {
       code: `
-        enum ComputedKey {
-          ['test-key' /* with comment */] = 1,
+        enum Fruit {
+          Apple,
         }
-        declare const computedKey: ComputedKey;
-        computedKey === 1;
+        declare const foo: number & {};
+        if (foo === Fruit.Apple) {
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        declare const foo: number & { __someBrand: void };
+        if (foo === Fruit.Apple) {
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+        }
+        declare const foo: string & {};
+        if (foo === Vegetable.Asparagus) {
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+        }
+        declare const foo: string & { __someBrand: void };
+        if (foo === Vegetable.Asparagus) {
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+enum NUMBER_ENUM {
+  First = 0,
+  Second = 1,
+}
+
+type NumberUnion = 0 | 1;
+
+declare const numberUnion: NumberUnion;
+
+switch (numberUnion) {
+  case NUMBER_ENUM.First:
+  case NUMBER_ENUM.Second:
+    break;
+}
       `,
       errors: [
         {
-          messageId: 'mismatchedCondition',
-          suggestions: [
-            {
-              messageId: 'replaceValueWithEnum',
-              output: `
-        enum ComputedKey {
-          ['test-key' /* with comment */] = 1,
-        }
-        declare const computedKey: ComputedKey;
-        computedKey === ComputedKey['test-key'];
-      `,
-            },
-          ],
+          line: 12,
+          messageId: 'mismatchedCase',
+        },
+        {
+          line: 13,
+          messageId: 'mismatchedCase',
         },
       ],
     },
     {
       code: `
-        enum ComputedKey {
-          [\`test-key\` /* with comment */] = 1,
-        }
-        declare const computedKey: ComputedKey;
-        computedKey === 1;
+enum STRING_ENUM {
+  First = 'one',
+  Second = 'two',
+}
+
+type StringUnion = 'one' | 'two';
+
+declare const stringUnion: StringUnion;
+
+switch (stringUnion) {
+  case STRING_ENUM.First:
+  case STRING_ENUM.Second:
+    break;
+}
       `,
       errors: [
         {
-          messageId: 'mismatchedCondition',
-          suggestions: [
-            {
-              messageId: 'replaceValueWithEnum',
-              output: `
-        enum ComputedKey {
-          [\`test-key\` /* with comment */] = 1,
-        }
-        declare const computedKey: ComputedKey;
-        computedKey === ComputedKey[\`test-key\`];
-      `,
-            },
-          ],
+          line: 12,
+          messageId: 'mismatchedCase',
+        },
+        {
+          line: 13,
+          messageId: 'mismatchedCase',
         },
       ],
     },
     {
       code: `
-        enum ComputedKey {
-          [\`test-
-          key\` /* with comment */] = 1,
-        }
-        declare const computedKey: ComputedKey;
-        computedKey === 1;
+declare const stringUnion: 'foo' | 'bar';
+
+enum StringEnum {
+  FOO = 'foo',
+  BAR = 'bar',
+}
+
+declare const stringEnum: StringEnum;
+
+stringUnion === stringEnum;
       `,
       errors: [
         {
+          line: 11,
           messageId: 'mismatchedCondition',
-          suggestions: [
-            {
-              messageId: 'replaceValueWithEnum',
-              output: `
-        enum ComputedKey {
-          [\`test-
-          key\` /* with comment */] = 1,
-        }
-        declare const computedKey: ComputedKey;
-        computedKey === ComputedKey[\`test-
-          key\`];
-      `,
-            },
-          ],
         },
       ],
     },

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`convert deeplyCopy should convert array of nodes 1`] = `
+exports[`convert > deeplyCopy > should convert array of nodes 1`] = `
 {
   "ambientModuleNames": undefined,
   "amdDependencies": [],
@@ -9,8 +9,11 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
   "checkJsDirective": undefined,
   "classifiableNames": undefined,
   "commentDirectives": undefined,
+  "emitNode": undefined,
   "endFlowNode": undefined,
   "endOfFileToken": {
+    "emitNode": undefined,
+    "id": 0,
     "loc": {
       "end": {
         "column": 12,
@@ -30,6 +33,7 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
   "externalModuleIndicator": undefined,
   "fileName": "text.ts",
   "hasNoDefaultLib": false,
+  "id": 0,
   "identifierCount": 2,
   "identifiers": Map {
     "foo" => "foo",
@@ -57,6 +61,7 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
   },
   "moduleAugmentations": undefined,
   "nodeCount": 8,
+  "original": undefined,
   "originalFileName": "",
   "packageJsonLocations": undefined,
   "packageJsonScope": undefined,
@@ -195,10 +200,12 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
 }
 `;
 
-exports[`convert deeplyCopy should convert node correctly 1`] = `
+exports[`convert > deeplyCopy > should convert node correctly 1`] = `
 {
   "body": [
     {
+      "emitNode": undefined,
+      "id": 0,
       "loc": {
         "end": {
           "column": 35,
@@ -209,30 +216,263 @@ exports[`convert deeplyCopy should convert node correctly 1`] = `
           "line": 1,
         },
       },
-      "name": {
+      "name": IdentifierObject {
+        "emitNode": undefined,
+        "end": 8,
         "escapedText": "foo",
+        "flags": 0,
         "flowNode": undefined,
-        "loc": {
-          "end": {
-            "column": 8,
-            "line": 1,
+        "id": 0,
+        "jsDoc": undefined,
+        "kind": undefined,
+        "parent": NodeObject {
+          "emitNode": undefined,
+          "end": 35,
+          "flags": 0,
+          "id": 0,
+          "jsDoc": undefined,
+          "kind": undefined,
+          "localSymbol": undefined,
+          "locals": undefined,
+          "modifierFlagsCache": 536870912,
+          "modifiers": undefined,
+          "name": [Circular],
+          "nextContainer": undefined,
+          "original": undefined,
+          "parent": SourceFileObject {
+            "ambientModuleNames": undefined,
+            "amdDependencies": [],
+            "bindDiagnostics": [],
+            "bindSuggestionDiagnostics": undefined,
+            "checkJsDirective": undefined,
+            "classifiableNames": undefined,
+            "commentDirectives": undefined,
+            "emitNode": undefined,
+            "end": 35,
+            "endFlowNode": undefined,
+            "endOfFileToken": TokenObject {
+              "emitNode": undefined,
+              "end": 35,
+              "flags": 0,
+              "id": 0,
+              "kind": undefined,
+              "parent": [Circular],
+              "pos": 35,
+              "transformFlags": 0,
+            },
+            "externalModuleIndicator": undefined,
+            "fileName": "text.ts",
+            "flags": 0,
+            "hasNoDefaultLib": false,
+            "id": 0,
+            "identifierCount": 3,
+            "identifiers": Map {
+              "foo" => "foo",
+              "T" => "T",
+            },
+            "impliedNodeFormat": undefined,
+            "imports": undefined,
+            "isDeclarationFile": false,
+            "jsDocParsingMode": 0,
+            "kind": 308,
+            "languageVariant": 1,
+            "languageVersion": 99,
+            "libReferenceDirectives": [],
+            "lineMap": [
+              0,
+            ],
+            "locals": undefined,
+            "modifierFlagsCache": 536870912,
+            "moduleAugmentations": undefined,
+            "nextContainer": undefined,
+            "nodeCount": 15,
+            "original": undefined,
+            "originalFileName": "",
+            "packageJsonLocations": undefined,
+            "packageJsonScope": undefined,
+            "parent": undefined,
+            "parseDiagnostics": [],
+            "path": "",
+            "pos": 0,
+            "pragmas": Map {},
+            "referencedFiles": [],
+            "resolvedPath": "",
+            "scriptKind": 4,
+            "setExternalModuleIndicator": [Function],
+            "statements": [
+              [Circular],
+            ],
+            "symbolCount": 0,
+            "text": "type foo = ?foo<T> | ?(() => void)?",
+            "transformFlags": 1,
+            "typeReferenceDirectives": [],
           },
-          "start": {
-            "column": 5,
-            "line": 1,
+          "pos": 0,
+          "symbol": undefined,
+          "transformFlags": 1,
+          "type": NodeObject {
+            "emitNode": undefined,
+            "end": 35,
+            "flags": 0,
+            "id": 0,
+            "kind": undefined,
+            "modifierFlagsCache": 0,
+            "original": undefined,
+            "parent": [Circular],
+            "pos": 10,
+            "postfix": false,
+            "transformFlags": 0,
+            "type": NodeObject {
+              "emitNode": undefined,
+              "end": 35,
+              "flags": 0,
+              "id": 0,
+              "kind": undefined,
+              "modifierFlagsCache": 0,
+              "original": undefined,
+              "parent": [Circular],
+              "pos": 12,
+              "transformFlags": 1,
+              "types": [
+                NodeObject {
+                  "emitNode": undefined,
+                  "end": 18,
+                  "flags": 0,
+                  "id": 0,
+                  "kind": undefined,
+                  "modifierFlagsCache": 0,
+                  "original": undefined,
+                  "parent": [Circular],
+                  "pos": 12,
+                  "transformFlags": 1,
+                  "typeArguments": [
+                    NodeObject {
+                      "emitNode": undefined,
+                      "end": 17,
+                      "flags": 0,
+                      "id": 0,
+                      "kind": undefined,
+                      "modifierFlagsCache": 0,
+                      "original": undefined,
+                      "parent": [Circular],
+                      "pos": 16,
+                      "transformFlags": 1,
+                      "typeArguments": undefined,
+                      "typeName": IdentifierObject {
+                        "emitNode": undefined,
+                        "end": 17,
+                        "escapedText": "T",
+                        "flags": 0,
+                        "flowNode": undefined,
+                        "id": 0,
+                        "jsDoc": undefined,
+                        "kind": undefined,
+                        "parent": [Circular],
+                        "pos": 16,
+                        "symbol": undefined,
+                        "transformFlags": 0,
+                      },
+                    },
+                  ],
+                  "typeName": IdentifierObject {
+                    "emitNode": undefined,
+                    "end": 15,
+                    "escapedText": "foo",
+                    "flags": 0,
+                    "flowNode": undefined,
+                    "id": 0,
+                    "jsDoc": undefined,
+                    "kind": undefined,
+                    "parent": [Circular],
+                    "pos": 12,
+                    "symbol": undefined,
+                    "transformFlags": 0,
+                  },
+                },
+                NodeObject {
+                  "emitNode": undefined,
+                  "end": 35,
+                  "flags": 0,
+                  "id": 0,
+                  "kind": undefined,
+                  "modifierFlagsCache": 0,
+                  "original": undefined,
+                  "parent": [Circular],
+                  "pos": 20,
+                  "postfix": false,
+                  "transformFlags": 0,
+                  "type": NodeObject {
+                    "emitNode": undefined,
+                    "end": 35,
+                    "flags": 0,
+                    "id": 0,
+                    "kind": undefined,
+                    "modifierFlagsCache": 0,
+                    "original": undefined,
+                    "parent": [Circular],
+                    "pos": 22,
+                    "postfix": true,
+                    "transformFlags": 0,
+                    "type": NodeObject {
+                      "emitNode": undefined,
+                      "end": 34,
+                      "flags": 0,
+                      "id": 0,
+                      "kind": undefined,
+                      "modifierFlagsCache": 0,
+                      "original": undefined,
+                      "parent": [Circular],
+                      "pos": 22,
+                      "transformFlags": 1,
+                      "type": NodeObject {
+                        "emitNode": undefined,
+                        "end": 33,
+                        "flags": 0,
+                        "id": 0,
+                        "jsDoc": undefined,
+                        "kind": undefined,
+                        "localSymbol": undefined,
+                        "locals": undefined,
+                        "modifierFlagsCache": 0,
+                        "modifiers": undefined,
+                        "nextContainer": undefined,
+                        "original": undefined,
+                        "parameters": [],
+                        "parent": [Circular],
+                        "pos": 23,
+                        "symbol": undefined,
+                        "transformFlags": 1,
+                        "type": TokenObject {
+                          "emitNode": undefined,
+                          "end": 33,
+                          "flags": 0,
+                          "id": 0,
+                          "kind": undefined,
+                          "parent": [Circular],
+                          "pos": 28,
+                          "transformFlags": 1,
+                        },
+                        "typeArguments": undefined,
+                        "typeParameters": undefined,
+                      },
+                    },
+                  },
+                },
+              ],
+            },
           },
+          "typeParameters": undefined,
         },
-        "range": [
-          5,
-          8,
-        ],
-        "type": "TSUnparsedPrologue",
+        "pos": 4,
+        "symbol": undefined,
+        "transformFlags": 0,
       },
+      "original": undefined,
       "range": [
         0,
         35,
       ],
-      "type": "TSUnparsedPrologue",
+      "type": "TSundefined",
       "typeAnnotation": null,
       "typeParameters": null,
     },
@@ -258,7 +498,7 @@ exports[`convert deeplyCopy should convert node correctly 1`] = `
 }
 `;
 
-exports[`convert deeplyCopy should convert node with decorators correctly 1`] = `
+exports[`convert > deeplyCopy > should convert node with decorators correctly 1`] = `
 {
   "decorators": [
     {
@@ -300,6 +540,8 @@ exports[`convert deeplyCopy should convert node with decorators correctly 1`] = 
       "type": "Decorator",
     },
   ],
+  "emitNode": undefined,
+  "id": 0,
   "loc": {
     "end": {
       "column": 18,
@@ -332,6 +574,7 @@ exports[`convert deeplyCopy should convert node with decorators correctly 1`] = 
     "type": "Identifier",
     "typeAnnotation": undefined,
   },
+  "original": undefined,
   "range": [
     0,
     18,
@@ -341,9 +584,10 @@ exports[`convert deeplyCopy should convert node with decorators correctly 1`] = 
 }
 `;
 
-exports[`convert deeplyCopy should convert node with type arguments correctly 1`] = `
+exports[`convert > deeplyCopy > should convert node with type arguments correctly 1`] = `
 {
   "arguments": [],
+  "emitNode": undefined,
   "expression": {
     "decorators": [],
     "loc": {
@@ -365,6 +609,7 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
     "type": "Identifier",
     "typeAnnotation": undefined,
   },
+  "id": 0,
   "loc": {
     "end": {
       "column": 12,
@@ -375,6 +620,7 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
       "line": 1,
     },
   },
+  "original": undefined,
   "range": [
     0,
     12,
@@ -441,8 +687,10 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
 }
 `;
 
-exports[`convert deeplyCopy should convert node with type parameters correctly 1`] = `
+exports[`convert > deeplyCopy > should convert node with type parameters correctly 1`] = `
 {
+  "emitNode": undefined,
+  "id": 0,
   "loc": {
     "end": {
       "column": 15,
@@ -475,6 +723,7 @@ exports[`convert deeplyCopy should convert node with type parameters correctly 1
     "type": "Identifier",
     "typeAnnotation": undefined,
   },
+  "original": undefined,
   "range": [
     0,
     15,

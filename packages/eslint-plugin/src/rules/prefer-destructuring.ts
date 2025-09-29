@@ -1,28 +1,31 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule, getParserServices, isTypeAnyType } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('prefer-destructuring');
 
 type BaseOptions = InferOptionsTypeFromRule<typeof baseRule>;
-type EnforcementOptions = BaseOptions[1] & {
+type EnforcementOptions = {
   enforceForDeclarationWithTypeAnnotation?: boolean;
-};
-type Options = [BaseOptions[0], EnforcementOptions];
+} & BaseOptions[1];
+export type Options = [BaseOptions[0], EnforcementOptions];
 
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const destructuringTypeConfig: JSONSchema4 = {
   type: 'object',
+  additionalProperties: false,
   properties: {
     array: {
       type: 'boolean',
@@ -31,7 +34,6 @@ const destructuringTypeConfig: JSONSchema4 = {
       type: 'boolean',
     },
   },
-  additionalProperties: false,
 };
 
 const schema: readonly JSONSchema4[] = [
@@ -39,23 +41,28 @@ const schema: readonly JSONSchema4[] = [
     oneOf: [
       {
         type: 'object',
-        properties: {
-          VariableDeclarator: destructuringTypeConfig,
-          AssignmentExpression: destructuringTypeConfig,
-        },
         additionalProperties: false,
+        properties: {
+          AssignmentExpression: destructuringTypeConfig,
+          VariableDeclarator: destructuringTypeConfig,
+        },
       },
       destructuringTypeConfig,
     ],
   },
   {
     type: 'object',
+    additionalProperties: false,
     properties: {
-      enforceForRenamedProperties: {
-        type: 'boolean',
-      },
       enforceForDeclarationWithTypeAnnotation: {
         type: 'boolean',
+        description:
+          'Whether to enforce destructuring on variable declarations with type annotations.',
+      },
+      enforceForRenamedProperties: {
+        type: 'boolean',
+        description:
+          'Whether to enforce destructuring that use a different variable name than the property name.',
       },
     },
   },
@@ -65,23 +72,25 @@ export default createRule<Options, MessageIds>({
   name: 'prefer-destructuring',
   meta: {
     type: 'suggestion',
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description: 'Require destructuring from arrays and/or objects',
       extendsBaseRule: true,
+      frozen: true,
       requiresTypeChecking: true,
     },
-    schema,
     fixable: baseRule.meta.fixable,
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
+    schema,
   },
   defaultOptions: [
     {
-      VariableDeclarator: {
+      AssignmentExpression: {
         array: true,
         object: true,
       },
-      AssignmentExpression: {
+      VariableDeclarator: {
         array: true,
         object: true,
       },
@@ -90,39 +99,41 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [enabledTypes, options]) {
     const {
-      enforceForRenamedProperties = false,
       enforceForDeclarationWithTypeAnnotation = false,
+      enforceForRenamedProperties = false,
     } = options;
-    const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
+    const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
     const typeChecker = program.getTypeChecker();
     const baseRules = baseRule.create(context);
     let baseRulesWithoutFixCache: typeof baseRules | null = null;
 
     return {
-      VariableDeclarator(node): void {
-        performCheck(node.id, node.init, node);
-      },
       AssignmentExpression(node): void {
         if (node.operator !== '=') {
           return;
         }
         performCheck(node.left, node.right, node);
       },
+      VariableDeclarator(node): void {
+        performCheck(node.id, node.init, node);
+      },
     };
 
     function performCheck(
       leftNode: TSESTree.BindingName | TSESTree.Expression,
       rightNode: TSESTree.Expression | null,
-      reportNode: TSESTree.VariableDeclarator | TSESTree.AssignmentExpression,
+      reportNode: TSESTree.AssignmentExpression | TSESTree.VariableDeclarator,
     ): void {
       const rules =
         leftNode.type === AST_NODE_TYPES.Identifier &&
-        leftNode.typeAnnotation === undefined
+        leftNode.typeAnnotation == null
           ? baseRules
           : baseRulesWithoutFix();
       if (
-        'typeAnnotation' in leftNode &&
-        leftNode.typeAnnotation !== undefined &&
+        (leftNode.type === AST_NODE_TYPES.ArrayPattern ||
+          leftNode.type === AST_NODE_TYPES.Identifier ||
+          leftNode.type === AST_NODE_TYPES.ObjectPattern) &&
+        leftNode.typeAnnotation != null &&
         !enforceForDeclarationWithTypeAnnotation
       ) {
         return;
@@ -160,8 +171,8 @@ export default createRule<Options, MessageIds>({
 
     function getNormalizedEnabledType(
       nodeType:
-        | AST_NODE_TYPES.VariableDeclarator
-        | AST_NODE_TYPES.AssignmentExpression,
+        | AST_NODE_TYPES.AssignmentExpression
+        | AST_NODE_TYPES.VariableDeclarator,
       destructuringType: 'array' | 'object',
     ): boolean | undefined {
       if ('object' in enabledTypes || 'array' in enabledTypes) {
@@ -219,7 +230,7 @@ function isTypeAnyOrIterableType(
       'iterator',
       typeChecker,
     );
-    return iterator !== undefined;
+    return iterator != null;
   }
   return type.types.every(t => isTypeAnyOrIterableType(t, typeChecker));
 }

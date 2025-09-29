@@ -1,0 +1,62 @@
+[
+  Identifier {
+    type: "Identifier",
+    value: "declare",
+
+    range: [0, 7],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 7, line: 1 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "const",
+
+    range: [8, 13],
+    loc: {
+      start: { column: 8, line: 1 },
+      end: { column: 13, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "foo",
+
+    range: [14, 17],
+    loc: {
+      start: { column: 14, line: 1 },
+      end: { column: 17, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [18, 19],
+    loc: {
+      start: { column: 18, line: 1 },
+      end: { column: 19, line: 1 },
+    },
+  },
+  Numeric {
+    type: "Numeric",
+    value: "1",
+
+    range: [20, 21],
+    loc: {
+      start: { column: 20, line: 1 },
+      end: { column: 21, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [21, 22],
+    loc: {
+      start: { column: 21, line: 1 },
+      end: { column: 22, line: 1 },
+    },
+  },
+]

@@ -1,10 +1,12 @@
-const webpack = require('webpack');
-const path = require('path');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const CopyPlugin = require('copy-webpack-plugin');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const path = require('node:path');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const webpack = require('webpack');
 
 module.exports = function (/*context, options*/) {
   return {
-    name: 'webpack-custom-plugin',
     configureWebpack() {
       return {
         externals: {
@@ -12,14 +14,14 @@ module.exports = function (/*context, options*/) {
         },
         plugins: [
           new webpack.DefinePlugin({
-            'process.env.TS_VERSION': JSON.stringify(
-              require('typescript/package.json').version,
-            ),
             'process.env.ESLINT_VERSION': JSON.stringify(
               require('eslint/package.json').version,
             ),
             'process.env.TS_ESLINT_VERSION': JSON.stringify(
               require('@typescript-eslint/eslint-plugin/package.json').version,
+            ),
+            'process.env.TS_VERSION': JSON.stringify(
+              require('typescript/package.json').version,
             ),
           }),
           new CopyPlugin({
@@ -35,5 +37,6 @@ module.exports = function (/*context, options*/) {
         ],
       };
     },
+    name: 'webpack-custom-plugin',
   };
 };

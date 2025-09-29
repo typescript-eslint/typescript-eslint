@@ -5,6 +5,6 @@ import type { Statement } from '../../unions/Statement';
 
 export interface DoWhileStatement extends BaseNode {
   type: AST_NODE_TYPES.DoWhileStatement;
-  test: Expression;
   body: Statement;
+  test: Expression;
 }

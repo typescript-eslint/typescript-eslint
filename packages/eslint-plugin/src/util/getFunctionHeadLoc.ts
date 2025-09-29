@@ -1,6 +1,7 @@
 // adapted from https://github.com/eslint/eslint/blob/5bdaae205c3a0089ea338b382df59e21d5b06436/lib/rules/utils/ast-utils.js#L1668-L1787
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 
 import { isArrowToken, isOpeningParenToken } from './astUtils';
@@ -153,8 +154,8 @@ export function getFunctionHeadLoc(
   sourceCode: TSESLint.SourceCode,
 ): TSESTree.SourceLocation {
   const parent = node.parent;
-  let start = null;
-  let end = null;
+  let start: TSESTree.Position;
+  let end: TSESTree.Position;
 
   if (
     parent.type === AST_NODE_TYPES.MethodDefinition ||
@@ -197,7 +198,7 @@ export function getFunctionHeadLoc(
   }
 
   return {
-    start: Object.assign({}, start),
-    end: Object.assign({}, end),
+    end: { ...end },
+    start: { ...start },
   };
 }

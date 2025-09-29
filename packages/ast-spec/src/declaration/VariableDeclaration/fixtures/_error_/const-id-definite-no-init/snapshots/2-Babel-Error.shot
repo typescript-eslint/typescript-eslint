@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > const-id-definite-no-init > Babel - Error`]
+BabelError
+> 1 | const foo!;
+    |           ^ Missing initializer in const declaration. (1:10)
+  2 |
+  

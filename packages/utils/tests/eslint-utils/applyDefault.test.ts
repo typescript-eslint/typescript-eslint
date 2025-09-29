@@ -1,20 +1,20 @@
 import { ESLintUtils } from '../../src';
 
-describe('applyDefault', () => {
+describe(ESLintUtils.applyDefault, () => {
   it('returns a clone of the default if no options given', () => {
     const defaults = [{ prop: 'setting' }];
     const user = null;
     const result = ESLintUtils.applyDefault(defaults, user);
 
-    expect(result).toStrictEqual(defaults);
+    expect(result).toEqual(defaults);
     expect(result).not.toBe(defaults);
   });
 
   it('returns applies a deepMerge to each element in the array', () => {
     const defaults: Record<string, string>[] = [
       {
-        prop: 'setting1',
         other: 'other',
+        prop: 'setting1',
       },
       {
         prop: 'setting2',
@@ -22,16 +22,16 @@ describe('applyDefault', () => {
     ];
     const user: Record<string, string>[] = [
       {
-        prop: 'new',
         other: 'something',
+        prop: 'new',
       },
     ];
     const result = ESLintUtils.applyDefault(defaults, user);
 
-    expect(result).toStrictEqual([
+    expect(result).toEqual([
       {
-        prop: 'new',
         other: 'something',
+        prop: 'new',
       },
       {
         prop: 'setting2',
@@ -55,7 +55,7 @@ describe('applyDefault', () => {
     const user: unknown[] = ['2tbs'];
     const result = ESLintUtils.applyDefault(defaults, user);
 
-    expect(result).toStrictEqual(['2tbs']);
+    expect(result).toEqual(['2tbs']);
     expect(result).not.toBe(defaults);
     expect(result).not.toBe(user);
   });
@@ -64,12 +64,12 @@ describe('applyDefault', () => {
     const defaults: unknown[] = [null];
     const user: unknown[] = [
       {
-        prop: 'setting1',
         other: 'other',
+        prop: 'setting1',
       },
     ];
     const result = ESLintUtils.applyDefault(defaults, user);
-    expect(result).toStrictEqual(user);
+    expect(result).toEqual(user);
     expect(result).not.toBe(defaults);
     expect(result).not.toBe(user);
   });

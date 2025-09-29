@@ -1,3 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures expression BinaryExpression _error_ private-rhs Babel - Error 1`] = `[SyntaxError: Private names are only allowed in property accesses (\`obj.#a\`) or in \`in\` expressions (\`#a in obj\`). (3:11)]`;
+exports[`AST Fixtures > expression > BinaryExpression > _error_ > private-rhs > Babel - Error`]
+BabelError
+  1 | class A {
+  2 |   #a;
+> 3 |   b = 1 in #a;
+    |            ^ Private names are only allowed in property accesses (`obj.#a`) or in `in` expressions (`#a in obj`). (3:11)
+  4 | }
+  5 |
+  

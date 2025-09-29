@@ -6,8 +6,7 @@ import {
   arrayGroupByToMap,
   createRule,
   getParserServices,
-  isFunction,
-  isFunctionType,
+  isFunctionOrFunctionType,
   isTypeAnyType,
   isTypeBigIntLiteralType,
   isTypeNeverType,
@@ -57,9 +56,9 @@ const keywordNodeTypesToTsTypes = new Map([
   [TSESTree.AST_NODE_TYPES.TSBigIntKeyword, ts.TypeFlags.BigInt],
   [TSESTree.AST_NODE_TYPES.TSBooleanKeyword, ts.TypeFlags.Boolean],
   [TSESTree.AST_NODE_TYPES.TSNeverKeyword, ts.TypeFlags.Never],
-  [TSESTree.AST_NODE_TYPES.TSUnknownKeyword, ts.TypeFlags.Unknown],
   [TSESTree.AST_NODE_TYPES.TSNumberKeyword, ts.TypeFlags.Number],
   [TSESTree.AST_NODE_TYPES.TSStringKeyword, ts.TypeFlags.String],
+  [TSESTree.AST_NODE_TYPES.TSUnknownKeyword, ts.TypeFlags.Unknown],
 ]);
 
 type PrimitiveTypeFlag = (typeof primitiveTypeFlags)[number];
@@ -100,6 +99,10 @@ function describeLiteralType(type: ts.Type): string {
   if (type.isLiteral()) {
     // eslint-disable-next-line @typescript-eslint/no-base-to-string
     return type.value.toString();
+  }
+
+  if (tsutils.isIntrinsicErrorType(type) && type.aliasSymbol) {
+    return type.aliasSymbol.escapedName.toString();
   }
 
   if (isTypeAnyType(type)) {
@@ -169,9 +172,9 @@ function describeLiteralTypeNode(typeNode: TSESTree.TypeNode): string {
 }
 
 function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
-  return !!(
+  return (
     node.parent.type === AST_NODE_TYPES.TSTypeAnnotation &&
-    (isFunctionType(node.parent.parent) || isFunction(node.parent.parent))
+    isFunctionOrFunctionType(node.parent.parent)
   );
 }
 
@@ -184,12 +187,13 @@ function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
     tsutils.isFalseLiteralType(type.types[0]) &&
     tsutils.isTrueLiteralType(type.types[1])
     ? [type]
-    : tsutils.unionTypeParts(type);
+    : tsutils.unionConstituents(type);
 }
 
 export default createRule({
   name: 'no-redundant-type-constituents',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow members of unions and intersections that do nothing or override type information',
@@ -197,13 +201,13 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
+      errorTypeOverrides: `'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.`,
       literalOverridden: `{{literal}} is overridden by {{primitive}} in this union type.`,
-      primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
       overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
       overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
+      primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -288,12 +292,15 @@ export default createRule({
           ] as const) {
             if (typeFlags === checkFlag) {
               context.report({
+                node: typeNode,
+                messageId:
+                  typeFlags === ts.TypeFlags.Any && typeName !== 'any'
+                    ? 'errorTypeOverrides'
+                    : messageId,
                 data: {
                   container: 'intersection',
                   typeName,
                 },
-                messageId,
-                node: typeNode,
               });
               return true;
             }
@@ -362,6 +369,8 @@ export default createRule({
             }
             if (Number.isInteger(primitive)) {
               context.report({
+                node: typeRef,
+                messageId: 'primitiveOverridden',
                 data: {
                   literal: typeValues.map(name => name.typeName).join(' | '),
                   primitive:
@@ -369,8 +378,6 @@ export default createRule({
                       primitive as keyof typeof primitiveTypeFlagNames
                     ],
                 },
-                messageId: 'primitiveOverridden',
-                node: typeRef,
               });
             }
           }
@@ -387,12 +394,12 @@ export default createRule({
           if (matchedLiteralTypes) {
             for (const typeNode of typeNodes) {
               context.report({
+                node: typeNode,
+                messageId: 'primitiveOverridden',
                 data: {
                   literal: matchedLiteralTypes.join(' | '),
                   primitive: primitiveTypeFlagNames[primitiveTypeFlag],
                 },
-                messageId: 'primitiveOverridden',
-                node: typeNode,
               });
             }
           }
@@ -415,12 +422,15 @@ export default createRule({
           ] as const) {
             if (typeFlags === checkFlag) {
               context.report({
+                node: typeNode,
+                messageId:
+                  typeFlags === ts.TypeFlags.Any && typeName !== 'any'
+                    ? 'errorTypeOverrides'
+                    : 'overrides',
                 data: {
                   container: 'union',
                   typeName,
                 },
-                messageId: 'overrides',
-                node: typeNode,
               });
               return true;
             }
@@ -431,12 +441,12 @@ export default createRule({
             !isNodeInsideReturnType(node)
           ) {
             context.report({
+              node: typeNode,
+              messageId: 'overridden',
               data: {
                 container: 'union',
                 typeName: 'never',
               },
-              messageId: 'overridden',
-              node: typeNode,
             });
             return true;
           }
@@ -509,12 +519,12 @@ export default createRule({
 
           for (const [primitiveTypeFlag, pairs] of grouped) {
             context.report({
+              node: typeNode,
+              messageId: 'literalOverridden',
               data: {
                 literal: pairs.map(pair => pair.literalValue).join(' | '),
                 primitive: primitiveTypeFlagNames[primitiveTypeFlag],
               },
-              messageId: 'literalOverridden',
-              node: typeNode,
             });
           }
         }

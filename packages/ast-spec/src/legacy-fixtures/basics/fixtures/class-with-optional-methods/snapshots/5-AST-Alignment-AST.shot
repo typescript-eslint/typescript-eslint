@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-optional-methods > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,19 +10,19 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Ali
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'foo',
--               optional: false,
+                optional: false,
 
                 range: [87, 90],
                 loc: {
@@ -32,7 +32,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Ali
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -40,7 +40,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Ali
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -62,12 +62,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Ali
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'bar',
--               optional: false,
+                optional: false,
 
                 range: [97, 100],
                 loc: {
@@ -77,7 +77,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Ali
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -85,7 +85,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Ali
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -126,12 +126,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Ali
               type: 'MethodDefinition',
               accessibility: 'private',
               computed: false,
--             decorators: Array [],
+              decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'baz',
--               optional: false,
+                optional: false,
 
                 range: [123, 126],
                 loc: {
@@ -141,7 +141,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Ali
               },
               kind: 'method',
               optional: true,
--             override: false,
+              override: false,
               static: false,
 -             value: TSEmptyBodyFunctionExpression {
 -               type: 'TSEmptyBodyFunctionExpression',
@@ -149,7 +149,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Ali
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -194,13 +194,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Ali
             end: { column: 1, line: 7 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [79, 82],
           loc: {
@@ -208,7 +208,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Ali
             end: { column: 9, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
 
         range: [73, 140],
@@ -225,5 +225,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods AST Ali
       start: { column: 0, line: 3 },
       end: { column: 0, line: 8 },
     },
-  }"
-`;
+  }

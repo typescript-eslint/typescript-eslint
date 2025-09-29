@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types reference-generic AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > reference-generic > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -13,12 +13,12 @@ exports[`AST Fixtures legacy-fixtures types reference-generic AST Alignment - AS
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'x',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeReference {
@@ -26,7 +26,9 @@ exports[`AST Fixtures legacy-fixtures types reference-generic AST Alignment - AS
 -                 typeArguments: TSTypeParameterInstantiation {
 +                 typeName: Identifier {
 +                   type: 'Identifier',
++                   decorators: Array [],
 +                   name: 'Array',
++                   optional: false,
 +
 +                   range: [80, 85],
 +                   loc: {
@@ -52,21 +54,21 @@ exports[`AST Fixtures legacy-fixtures types reference-generic AST Alignment - AS
                     loc: {
                       start: { column: 12, line: 3 },
                       end: { column: 20, line: 3 },
-                    },
-                  },
+-                   },
+-                 },
 -                 typeName: Identifier {
 -                   type: 'Identifier',
 -                   decorators: Array [],
 -                   name: 'Array',
 -                   optional: false,
-
+-
 -                   range: [80, 85],
 -                   loc: {
 -                     start: { column: 7, line: 3 },
 -                     end: { column: 12, line: 3 },
--                   },
--                 },
--
+                    },
+                  },
+
                   range: [80, 93],
                   loc: {
                     start: { column: 7, line: 3 },
@@ -96,7 +98,7 @@ exports[`AST Fixtures legacy-fixtures types reference-generic AST Alignment - AS
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'let',
 
         range: [73, 94],
@@ -113,5 +115,4 @@ exports[`AST Fixtures legacy-fixtures types reference-generic AST Alignment - AS
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

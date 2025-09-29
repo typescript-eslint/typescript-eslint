@@ -8,27 +8,25 @@ export function createCompilerOptions(
 ): ts.CompilerOptions {
   const config = window.ts.convertCompilerOptionsFromJson(
     {
-      target: 'esnext',
-      module: 'esnext',
       jsx: 'preserve',
+      module: 'esnext',
+      target: 'esnext',
       ...tsConfig,
       allowJs: true,
+      baseUrl: undefined,
       lib: Array.isArray(tsConfig.lib) ? tsConfig.lib : undefined,
+      moduleDetection: undefined,
       moduleResolution: undefined,
+      paths: undefined,
       plugins: undefined,
       typeRoots: undefined,
-      paths: undefined,
-      moduleDetection: undefined,
-      baseUrl: undefined,
     },
     '/tsconfig.json',
   );
 
   const options = config.options;
 
-  if (!options.lib) {
-    options.lib = [window.ts.getDefaultLibFileName(options)];
-  }
+  options.lib ??= [window.ts.getDefaultLibFileName(options)];
 
   return options;
 }

@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/parameter-properties';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('parameter-properties', rule, {
   valid: [
@@ -332,12 +330,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -349,12 +347,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -366,12 +364,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -383,12 +381,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -400,12 +398,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -417,12 +415,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -434,12 +432,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -454,12 +452,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 4,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -474,20 +472,20 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 4,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'age',
           },
           line: 5,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -502,20 +500,20 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 4,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'age',
           },
           line: 5,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -530,20 +528,20 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 4,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'age',
           },
           line: 5,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -559,12 +557,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 5,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -580,20 +578,20 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 5,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -609,28 +607,28 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 5,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'age',
           },
           line: 6,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -646,12 +644,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 5,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -667,20 +665,20 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 5,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -696,28 +694,28 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 5,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'age',
           },
           line: 6,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -733,12 +731,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 5,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -754,20 +752,20 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 5,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -783,28 +781,28 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'name',
           },
           line: 5,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'age',
           },
           line: 6,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
     },
@@ -815,17 +813,17 @@ class Foo {
   constructor(readonly name: string) {}
 }
       `,
-      options: [{ allow: ['private'] }],
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
       ],
+      options: [{ allow: ['private'] }],
     },
     {
       code: `
@@ -833,17 +831,17 @@ class Foo {
   constructor(private name: string) {}
 }
       `,
-      options: [{ allow: ['readonly'] }],
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
       ],
+      options: [{ allow: ['readonly'] }],
     },
     {
       code: `
@@ -851,19 +849,19 @@ class Foo {
   constructor(protected name: string) {}
 }
       `,
-      options: [
-        {
-          allow: ['readonly', 'private', 'public', 'protected readonly'],
-        },
-      ],
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
+        },
+      ],
+      options: [
+        {
+          allow: ['readonly', 'private', 'public', 'protected readonly'],
         },
       ],
     },
@@ -873,6 +871,16 @@ class Foo {
   constructor(public name: string) {}
 }
       `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            parameter: 'name',
+          },
+          line: 3,
+          messageId: 'preferClassProperty',
+        },
+      ],
       options: [
         {
           allow: [
@@ -884,16 +892,6 @@ class Foo {
           ],
         },
       ],
-      errors: [
-        {
-          messageId: 'preferClassProperty',
-          data: {
-            parameter: 'name',
-          },
-          line: 3,
-          column: 15,
-        },
-      ],
     },
     {
       code: `
@@ -901,17 +899,17 @@ class Foo {
   constructor(private readonly name: string) {}
 }
       `,
-      options: [{ allow: ['readonly', 'private'] }],
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 15,
           data: {
             parameter: 'name',
           },
           line: 3,
-          column: 15,
+          messageId: 'preferClassProperty',
         },
       ],
+      options: [{ allow: ['readonly', 'private'] }],
     },
     {
       code: `
@@ -919,6 +917,16 @@ class Foo {
   constructor(protected readonly name: string) {}
 }
       `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            parameter: 'name',
+          },
+          line: 3,
+          messageId: 'preferClassProperty',
+        },
+      ],
       options: [
         {
           allow: [
@@ -927,16 +935,6 @@ class Foo {
             'private readonly',
             'public readonly',
           ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'preferClassProperty',
-          data: {
-            parameter: 'name',
-          },
-          line: 3,
-          column: 15,
         },
       ],
     },
@@ -950,17 +948,17 @@ class Foo {
   ) {}
 }
       `,
-      options: [{ allow: ['private'] }],
       errors: [
         {
-          messageId: 'preferClassProperty',
+          column: 5,
           data: {
             parameter: 'age',
           },
           line: 6,
-          column: 5,
+          messageId: 'preferClassProperty',
         },
       ],
+      options: [{ allow: ['private'] }],
     },
     {
       code: `
@@ -974,12 +972,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferParameterProperty',
+          column: 3,
           data: {
             parameter: 'member',
           },
           line: 3,
-          column: 3,
+          messageId: 'preferParameterProperty',
         },
       ],
       options: [{ prefer: 'parameter-property' }],
@@ -996,12 +994,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferParameterProperty',
+          column: 3,
           data: {
             parameter: 'member',
           },
           line: 7,
-          column: 3,
+          messageId: 'preferParameterProperty',
         },
       ],
       options: [{ prefer: 'parameter-property' }],
@@ -1017,12 +1015,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferParameterProperty',
+          column: 3,
           data: {
             parameter: 'member',
           },
           line: 3,
-          column: 3,
+          messageId: 'preferParameterProperty',
         },
       ],
       options: [{ prefer: 'parameter-property' }],
@@ -1038,12 +1036,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'preferParameterProperty',
+          column: 3,
           data: {
             parameter: 'member',
           },
           line: 3,
-          column: 3,
+          messageId: 'preferParameterProperty',
         },
       ],
       options: [

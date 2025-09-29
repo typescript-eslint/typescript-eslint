@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures jsx JSXNamespacedName component TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -154,10 +151,10 @@ Program {
                       type: "JSXIdentifier",
                       name: "b",
 
-                      range: [96, 97],
+                      range: [94, 95],
                       loc: {
-                        start: { column: 38, line: 2 },
-                        end: { column: 39, line: 2 },
+                        start: { column: 36, line: 2 },
+                        end: { column: 37, line: 2 },
                       },
                     },
                     namespace: JSXIdentifier {
@@ -171,10 +168,10 @@ Program {
                       },
                     },
 
-                    range: [92, 97],
+                    range: [92, 95],
                     loc: {
                       start: { column: 34, line: 2 },
-                      end: { column: 39, line: 2 },
+                      end: { column: 37, line: 2 },
                     },
                   },
                   value: Literal {
@@ -182,17 +179,17 @@ Program {
                     raw: ""loose spacing"",
                     value: "loose spacing",
 
-                    range: [98, 113],
+                    range: [96, 111],
                     loc: {
-                      start: { column: 40, line: 2 },
-                      end: { column: 55, line: 2 },
+                      start: { column: 38, line: 2 },
+                      end: { column: 53, line: 2 },
                     },
                   },
 
-                  range: [92, 113],
+                  range: [92, 111],
                   loc: {
                     start: { column: 34, line: 2 },
-                    end: { column: 55, line: 2 },
+                    end: { column: 53, line: 2 },
                   },
                 },
               ],
@@ -208,34 +205,34 @@ Program {
               },
               selfClosing: true,
 
-              range: [68, 116],
+              range: [68, 114],
               loc: {
                 start: { column: 10, line: 2 },
-                end: { column: 58, line: 2 },
+                end: { column: 56, line: 2 },
               },
             },
 
-            range: [68, 116],
+            range: [68, 114],
             loc: {
               start: { column: 10, line: 2 },
-              end: { column: 58, line: 2 },
+              end: { column: 56, line: 2 },
             },
           },
 
-          range: [64, 116],
+          range: [64, 114],
           loc: {
             start: { column: 6, line: 2 },
-            end: { column: 58, line: 2 },
+            end: { column: 56, line: 2 },
           },
         },
       ],
       declare: false,
       kind: "const",
 
-      range: [58, 117],
+      range: [58, 115],
       loc: {
         start: { column: 0, line: 2 },
-        end: { column: 59, line: 2 },
+        end: { column: 57, line: 2 },
       },
     },
     TSInterfaceDeclaration {
@@ -248,13 +245,13 @@ Program {
             computed: false,
             key: Literal {
               type: "Literal",
-              raw: ""a:b"",
+              raw: "'a:b'",
               value: "a:b",
 
-              range: [163, 168],
+              range: [159, 164],
               loc: {
-                start: { column: 4, line: 5 },
-                end: { column: 9, line: 5 },
+                start: { column: 2, line: 5 },
+                end: { column: 7, line: 5 },
               },
             },
             optional: false,
@@ -265,29 +262,29 @@ Program {
               typeAnnotation: TSStringKeyword {
                 type: "TSStringKeyword",
 
-                range: [170, 176],
+                range: [166, 172],
                 loc: {
-                  start: { column: 11, line: 5 },
-                  end: { column: 17, line: 5 },
+                  start: { column: 9, line: 5 },
+                  end: { column: 15, line: 5 },
                 },
               },
 
-              range: [168, 176],
+              range: [164, 172],
               loc: {
-                start: { column: 9, line: 5 },
-                end: { column: 17, line: 5 },
+                start: { column: 7, line: 5 },
+                end: { column: 15, line: 5 },
               },
             },
 
-            range: [163, 177],
+            range: [159, 173],
             loc: {
-              start: { column: 4, line: 5 },
-              end: { column: 18, line: 5 },
+              start: { column: 2, line: 5 },
+              end: { column: 16, line: 5 },
             },
           },
         ],
 
-        range: [157, 179],
+        range: [155, 175],
         loc: {
           start: { column: 38, line: 4 },
           end: { column: 1, line: 6 },
@@ -301,14 +298,14 @@ Program {
         name: "NamespacePropComponentProps",
         optional: false,
 
-        range: [129, 156],
+        range: [127, 154],
         loc: {
           start: { column: 10, line: 4 },
           end: { column: 37, line: 4 },
         },
       },
 
-      range: [119, 179],
+      range: [117, 175],
       loc: {
         start: { column: 0, line: 4 },
         end: { column: 1, line: 6 },
@@ -336,36 +333,36 @@ Program {
                       name: "props",
                       optional: false,
 
-                      range: [268, 273],
+                      range: [262, 267],
                       loc: {
-                        start: { column: 17, line: 9 },
-                        end: { column: 22, line: 9 },
+                        start: { column: 15, line: 9 },
+                        end: { column: 20, line: 9 },
                       },
                     },
                     optional: false,
                     property: Literal {
                       type: "Literal",
-                      raw: ""a:b"",
+                      raw: "'a:b'",
                       value: "a:b",
 
-                      range: [274, 279],
+                      range: [268, 273],
                       loc: {
-                        start: { column: 23, line: 9 },
-                        end: { column: 28, line: 9 },
+                        start: { column: 21, line: 9 },
+                        end: { column: 26, line: 9 },
                       },
                     },
 
-                    range: [268, 280],
+                    range: [262, 274],
                     loc: {
-                      start: { column: 17, line: 9 },
-                      end: { column: 29, line: 9 },
+                      start: { column: 15, line: 9 },
+                      end: { column: 27, line: 9 },
                     },
                   },
 
-                  range: [267, 281],
+                  range: [261, 275],
                   loc: {
-                    start: { column: 16, line: 9 },
-                    end: { column: 30, line: 9 },
+                    start: { column: 14, line: 9 },
+                    end: { column: 28, line: 9 },
                   },
                 },
               ],
@@ -375,17 +372,17 @@ Program {
                   type: "JSXIdentifier",
                   name: "div",
 
-                  range: [283, 286],
+                  range: [277, 280],
                   loc: {
-                    start: { column: 32, line: 9 },
-                    end: { column: 35, line: 9 },
+                    start: { column: 30, line: 9 },
+                    end: { column: 33, line: 9 },
                   },
                 },
 
-                range: [281, 287],
+                range: [275, 281],
                 loc: {
-                  start: { column: 30, line: 9 },
-                  end: { column: 36, line: 9 },
+                  start: { column: 28, line: 9 },
+                  end: { column: 34, line: 9 },
                 },
               },
               openingElement: JSXOpeningElement {
@@ -395,37 +392,37 @@ Program {
                   type: "JSXIdentifier",
                   name: "div",
 
-                  range: [263, 266],
+                  range: [257, 260],
                   loc: {
-                    start: { column: 12, line: 9 },
-                    end: { column: 15, line: 9 },
+                    start: { column: 10, line: 9 },
+                    end: { column: 13, line: 9 },
                   },
                 },
                 selfClosing: false,
 
-                range: [262, 267],
+                range: [256, 261],
                 loc: {
-                  start: { column: 11, line: 9 },
-                  end: { column: 16, line: 9 },
+                  start: { column: 9, line: 9 },
+                  end: { column: 14, line: 9 },
                 },
               },
 
-              range: [262, 287],
+              range: [256, 281],
               loc: {
-                start: { column: 11, line: 9 },
-                end: { column: 36, line: 9 },
+                start: { column: 9, line: 9 },
+                end: { column: 34, line: 9 },
               },
             },
 
-            range: [255, 288],
+            range: [249, 282],
             loc: {
-              start: { column: 4, line: 9 },
-              end: { column: 37, line: 9 },
+              start: { column: 2, line: 9 },
+              end: { column: 35, line: 9 },
             },
           },
         ],
 
-        range: [249, 290],
+        range: [245, 284],
         loc: {
           start: { column: 68, line: 8 },
           end: { column: 1, line: 10 },
@@ -440,7 +437,7 @@ Program {
         name: "NamespacePropComponent",
         optional: false,
 
-        range: [190, 212],
+        range: [186, 208],
         loc: {
           start: { column: 9, line: 8 },
           end: { column: 31, line: 8 },
@@ -462,28 +459,28 @@ Program {
                 name: "NamespacePropComponentProps",
                 optional: false,
 
-                range: [220, 247],
+                range: [216, 243],
                 loc: {
                   start: { column: 39, line: 8 },
                   end: { column: 66, line: 8 },
                 },
               },
 
-              range: [220, 247],
+              range: [216, 243],
               loc: {
                 start: { column: 39, line: 8 },
                 end: { column: 66, line: 8 },
               },
             },
 
-            range: [218, 247],
+            range: [214, 243],
             loc: {
               start: { column: 37, line: 8 },
               end: { column: 66, line: 8 },
             },
           },
 
-          range: [213, 247],
+          range: [209, 243],
           loc: {
             start: { column: 32, line: 8 },
             end: { column: 66, line: 8 },
@@ -491,7 +488,7 @@ Program {
         },
       ],
 
-      range: [181, 290],
+      range: [177, 284],
       loc: {
         start: { column: 0, line: 8 },
         end: { column: 1, line: 10 },
@@ -500,10 +497,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [0, 291],
+  range: [0, 285],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 11 },
   },
 }
-`;

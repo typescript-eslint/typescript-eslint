@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-magic-numbers 1`] = `
-"
 # SCHEMA:
 
 [
@@ -44,15 +41,23 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       },
       "ignoreEnums": {
+        "default": false,
+        "description": "Whether enums used in TypeScript are considered okay.",
         "type": "boolean"
       },
       "ignoreNumericLiteralTypes": {
+        "default": false,
+        "description": "Whether numbers used in TypeScript numeric literal types are considered okay.",
         "type": "boolean"
       },
       "ignoreReadonlyClassProperties": {
+        "default": false,
+        "description": "Whether `readonly` class properties are considered okay.",
         "type": "boolean"
       },
       "ignoreTypeIndexes": {
+        "default": false,
+        "description": "Whether numbers used to index types are okay.",
         "type": "boolean"
       }
     },
@@ -71,11 +76,13 @@ type Options = [
     ignoreArrayIndexes?: boolean;
     ignoreClassFieldInitialValues?: boolean;
     ignoreDefaultValues?: boolean;
+    /** Whether enums used in TypeScript are considered okay. */
     ignoreEnums?: boolean;
+    /** Whether numbers used in TypeScript numeric literal types are considered okay. */
     ignoreNumericLiteralTypes?: boolean;
+    /** Whether `readonly` class properties are considered okay. */
     ignoreReadonlyClassProperties?: boolean;
+    /** Whether numbers used to index types are okay. */
     ignoreTypeIndexes?: boolean;
   },
 ];
-"
-`;

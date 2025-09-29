@@ -1,6 +1,7 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -16,6 +17,7 @@ enum AllowedType {
 export default createRule({
   name: 'no-mixed-enums',
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow enums from having both number and string members',
       recommended: 'strict',
@@ -25,7 +27,6 @@ export default createRule({
       mixed: `Mixing number and string enums can be confusing.`,
     },
     schema: [],
-    type: 'problem',
   },
   defaultOptions: [],
   create(context) {
@@ -51,7 +52,7 @@ export default createRule({
         if (
           definition.node.type === AST_NODE_TYPES.TSEnumDeclaration &&
           definition.node.range[0] < node.range[0] &&
-          definition.node.members.length > 0
+          definition.node.body.members.length > 0
         ) {
           found.previousSibling = definition.node;
           break;
@@ -137,7 +138,7 @@ export default createRule({
       // }
       for (const imported of imports) {
         const typeFromImported = getTypeFromImported(imported);
-        if (typeFromImported !== undefined) {
+        if (typeFromImported != null) {
           return typeFromImported;
         }
       }
@@ -146,7 +147,7 @@ export default createRule({
       // enum MyEnum { A }
       // enum MyEnum { B }
       if (previousSibling) {
-        return getMemberType(previousSibling.members[0]);
+        return getMemberType(previousSibling.body.members[0]);
       }
 
       // Case: Namespace declaration merging
@@ -170,27 +171,24 @@ export default createRule({
           .getSymbolAtLocation(tsNode)!
           .getDeclarations()!;
 
-        for (const declaration of declarations) {
-          for (const member of (declaration as ts.EnumDeclaration).members) {
-            return member.initializer
-              ? tsutils.isTypeFlagSet(
-                  typeChecker.getTypeAtLocation(member.initializer),
-                  ts.TypeFlags.StringLike,
-                )
-                ? AllowedType.String
-                : AllowedType.Number
-              : AllowedType.Number;
-          }
-        }
+        const [{ initializer }] = (declarations[0] as ts.EnumDeclaration)
+          .members;
+        return initializer &&
+          tsutils.isTypeFlagSet(
+            typeChecker.getTypeAtLocation(initializer),
+            ts.TypeFlags.StringLike,
+          )
+          ? AllowedType.String
+          : AllowedType.Number;
       }
 
       // Finally, we default to the type of the first enum member
-      return getMemberType(node.members[0]);
+      return getMemberType(node.body.members[0]);
     }
 
     return {
       TSEnumDeclaration(node): void {
-        if (!node.members.length) {
+        if (!node.body.members.length) {
           return;
         }
 
@@ -199,7 +197,7 @@ export default createRule({
           return;
         }
 
-        for (const member of node.members) {
+        for (const member of node.body.members) {
           const currentType = getMemberType(member);
           if (currentType === AllowedType.Unknown) {
             return;
@@ -211,8 +209,8 @@ export default createRule({
 
           if (currentType !== desiredType) {
             context.report({
-              messageId: 'mixed',
               node: member.initializer ?? member,
+              messageId: 'mixed',
             });
             return;
           }

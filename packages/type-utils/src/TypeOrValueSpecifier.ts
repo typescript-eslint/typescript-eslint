@@ -1,220 +1,293 @@
-import { getCanonicalFileName } from '@typescript-eslint/typescript-estree';
+import type { TSESTree } from '@typescript-eslint/types';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import path from 'path';
-import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
-interface FileSpecifier {
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import * as tsutils from 'ts-api-utils';
+
+import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
+import { typeDeclaredInFile } from './typeOrValueSpecifiers/typeDeclaredInFile';
+import { typeDeclaredInLib } from './typeOrValueSpecifiers/typeDeclaredInLib';
+import { typeDeclaredInPackageDeclarationFile } from './typeOrValueSpecifiers/typeDeclaredInPackageDeclarationFile';
+
+/**
+ * Describes specific types or values declared in local files.
+ * See [TypeOrValueSpecifier > FileSpecifier](/packages/type-utils/type-or-value-specifier#filespecifier).
+ */
+export interface FileSpecifier {
   from: 'file';
-  name: string[] | string;
+
+  /**
+   * Type or value name(s) to match on.
+   */
+  name: string | string[];
+
+  /**
+   * A specific file the types or values must be declared in.
+   */
   path?: string;
 }
 
-interface LibSpecifier {
+/**
+ * Describes specific types or values declared in TypeScript's built-in lib definitions.
+ * See [TypeOrValueSpecifier > LibSpecifier](/packages/type-utils/type-or-value-specifier#libspecifier).
+ */
+export interface LibSpecifier {
   from: 'lib';
-  name: string[] | string;
+
+  /**
+   * Type or value name(s) to match on.
+   */
+  name: string | string[];
 }
 
-interface PackageSpecifier {
+/**
+ * Describes specific types or values imported from packages.
+ * See [TypeOrValueSpecifier > PackageSpecifier](/packages/type-utils/type-or-value-specifier#packagespecifier).
+ */
+export interface PackageSpecifier {
   from: 'package';
-  name: string[] | string;
+
+  /**
+   * Type or value name(s) to match on.
+   */
+  name: string | string[];
+
+  /**
+   * Package name the type or value must be declared in.
+   */
   package: string;
 }
 
+/**
+ * A centralized format for rule options to describe specific _types_ and/or _values_.
+ * See [TypeOrValueSpecifier](/packages/type-utils/type-or-value-specifier).
+ */
 export type TypeOrValueSpecifier =
+  | string
   | FileSpecifier
   | LibSpecifier
-  | PackageSpecifier
-  | string;
+  | PackageSpecifier;
 
-export const typeOrValueSpecifierSchema: JSONSchema4 = {
-  oneOf: [
-    {
-      type: 'string',
-    },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: {
-          type: 'string',
-          enum: ['file'],
-        },
-        name: {
-          oneOf: [
-            {
-              type: 'string',
-            },
-            {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
-              items: {
+export const typeOrValueSpecifiersSchema = {
+  items: {
+    oneOf: [
+      {
+        type: 'string',
+      },
+      {
+        additionalProperties: false,
+        properties: {
+          from: {
+            enum: ['file'],
+            type: 'string',
+          },
+          name: {
+            oneOf: [
+              {
                 type: 'string',
               },
-            },
-          ],
+              {
+                items: {
+                  type: 'string',
+                },
+                minItems: 1,
+                type: 'array',
+                uniqueItems: true,
+              },
+            ],
+          },
+          path: {
+            type: 'string',
+          },
         },
-        path: {
-          type: 'string',
-        },
+        required: ['from', 'name'],
+        type: 'object',
       },
-      required: ['from', 'name'],
-    },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: {
-          type: 'string',
-          enum: ['lib'],
-        },
-        name: {
-          oneOf: [
-            {
-              type: 'string',
-            },
-            {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
-              items: {
+      {
+        additionalProperties: false,
+        properties: {
+          from: {
+            enum: ['lib'],
+            type: 'string',
+          },
+          name: {
+            oneOf: [
+              {
                 type: 'string',
               },
-            },
-          ],
+              {
+                items: {
+                  type: 'string',
+                },
+                minItems: 1,
+                type: 'array',
+                uniqueItems: true,
+              },
+            ],
+          },
         },
+        required: ['from', 'name'],
+        type: 'object',
       },
-      required: ['from', 'name'],
-    },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: {
-          type: 'string',
-          enum: ['package'],
-        },
-        name: {
-          oneOf: [
-            {
-              type: 'string',
-            },
-            {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
-              items: {
+      {
+        additionalProperties: false,
+        properties: {
+          from: {
+            enum: ['package'],
+            type: 'string',
+          },
+          name: {
+            oneOf: [
+              {
                 type: 'string',
               },
-            },
-          ],
+              {
+                items: {
+                  type: 'string',
+                },
+                minItems: 1,
+                type: 'array',
+                uniqueItems: true,
+              },
+            ],
+          },
+          package: {
+            type: 'string',
+          },
         },
-        package: {
-          type: 'string',
-        },
+        required: ['from', 'name', 'package'],
+        type: 'object',
       },
-      required: ['from', 'name', 'package'],
-    },
-  ],
-};
-
-function specifierNameMatches(type: ts.Type, name: string[] | string): boolean {
-  if (typeof name === 'string') {
-    name = [name];
-  }
-  if (name.some(item => item === type.intrinsicName)) {
-    return true;
-  }
-  const symbol = type.aliasSymbol ?? type.getSymbol();
-  if (symbol === undefined) {
-    return false;
-  }
-  return name.some(item => (item as ts.__String) === symbol.escapedName);
-}
-
-function typeDeclaredInFile(
-  relativePath: string | undefined,
-  declarationFiles: ts.SourceFile[],
-  program: ts.Program,
-): boolean {
-  if (relativePath === undefined) {
-    const cwd = getCanonicalFileName(program.getCurrentDirectory());
-    return declarationFiles.some(declaration =>
-      getCanonicalFileName(declaration.fileName).startsWith(cwd),
-    );
-  }
-  const absolutePath = getCanonicalFileName(
-    path.join(program.getCurrentDirectory(), relativePath),
-  );
-  return declarationFiles.some(
-    declaration => getCanonicalFileName(declaration.fileName) === absolutePath,
-  );
-}
-
-function typeDeclaredInPackage(
-  packageName: string,
-  declarationFiles: ts.SourceFile[],
-  program: ts.Program,
-): boolean {
-  // Handle scoped packages - if the name starts with @, remove it and replace / with __
-  const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
-
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
-  return declarationFiles.some(declaration => {
-    const packageIdName = program.sourceFileToPackageName.get(declaration.path);
-    return (
-      packageIdName !== undefined &&
-      matcher.test(packageIdName) &&
-      program.isSourceFileFromExternalLibrary(declaration)
-    );
-  });
-}
-
-function typeDeclaredInLib(
-  declarationFiles: ts.SourceFile[],
-  program: ts.Program,
-): boolean {
-  // Assertion: The type is not an error type.
-
-  // Intrinsic type (i.e. string, number, boolean, etc) - Treat it as if it's from lib.
-  if (declarationFiles.length === 0) {
-    return true;
-  }
-  return declarationFiles.some(declaration =>
-    program.isSourceFileDefaultLibrary(declaration),
-  );
-}
+    ],
+  },
+  type: 'array',
+} as const satisfies JSONSchema4;
 
 export function typeMatchesSpecifier(
   type: ts.Type,
   specifier: TypeOrValueSpecifier,
   program: ts.Program,
 ): boolean {
-  if (tsutils.isIntrinsicErrorType(type)) {
-    return false;
+  if (tsutils.isUnionType(type)) {
+    return type.types.every(t => typeMatchesSpecifier(t, specifier, program));
   }
-  if (typeof specifier === 'string') {
-    return specifierNameMatches(type, specifier);
+
+  const wholeTypeMatches = ((): boolean => {
+    if (tsutils.isIntrinsicErrorType(type)) {
+      return false;
+    }
+    if (typeof specifier === 'string') {
+      return specifierNameMatches(type, specifier);
+    }
+    if (!specifierNameMatches(type, specifier.name)) {
+      return false;
+    }
+    const symbol = type.getSymbol() ?? type.aliasSymbol;
+    const declarations = symbol?.getDeclarations() ?? [];
+    const declarationFiles = declarations.map(declaration =>
+      declaration.getSourceFile(),
+    );
+    switch (specifier.from) {
+      case 'file':
+        return typeDeclaredInFile(specifier.path, declarationFiles, program);
+      case 'lib':
+        return typeDeclaredInLib(declarationFiles, program);
+      case 'package':
+        return typeDeclaredInPackageDeclarationFile(
+          specifier.package,
+          declarations,
+          declarationFiles,
+          program,
+        );
+    }
+  })();
+
+  if (wholeTypeMatches) {
+    return true;
   }
-  if (!specifierNameMatches(type, specifier.name)) {
-    return false;
+
+  if (
+    tsutils.isIntersectionType(type) &&
+    tsutils
+      .intersectionConstituents(type)
+      .some(part => typeMatchesSpecifier(part, specifier, program))
+  ) {
+    return true;
   }
-  const symbol = type.getSymbol() ?? type.aliasSymbol;
-  const declarationFiles =
-    symbol
-      ?.getDeclarations()
-      ?.map(declaration => declaration.getSourceFile()) ?? [];
-  switch (specifier.from) {
-    case 'file':
-      return typeDeclaredInFile(specifier.path, declarationFiles, program);
-    case 'lib':
-      return typeDeclaredInLib(declarationFiles, program);
-    case 'package':
-      return typeDeclaredInPackage(
-        specifier.package,
-        declarationFiles,
-        program,
-      );
-  }
+
+  return false;
 }
+
+export const typeMatchesSomeSpecifier = (
+  type: ts.Type,
+  specifiers: TypeOrValueSpecifier[] = [],
+  program: ts.Program,
+): boolean =>
+  specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));
+
+const getSpecifierNames = (specifierName: string | string[]): string[] => {
+  return typeof specifierName === 'string' ? [specifierName] : specifierName;
+};
+
+const getStaticName = (node: TSESTree.Node): string | undefined => {
+  if (
+    node.type === AST_NODE_TYPES.Identifier ||
+    node.type === AST_NODE_TYPES.JSXIdentifier ||
+    node.type === AST_NODE_TYPES.PrivateIdentifier
+  ) {
+    return node.name;
+  }
+
+  if (node.type === AST_NODE_TYPES.Literal && typeof node.value === 'string') {
+    return node.value;
+  }
+
+  return undefined;
+};
+
+export function valueMatchesSpecifier(
+  node: TSESTree.Node,
+  specifier: TypeOrValueSpecifier,
+  program: ts.Program,
+  type: ts.Type,
+): boolean {
+  const staticName = getStaticName(node);
+  if (!staticName) {
+    return false;
+  }
+
+  if (typeof specifier === 'string') {
+    return specifier === staticName;
+  }
+
+  if (!getSpecifierNames(specifier.name).includes(staticName)) {
+    return false;
+  }
+
+  if (specifier.from === 'package') {
+    const symbol = type.getSymbol() ?? type.aliasSymbol;
+    const declarations = symbol?.getDeclarations() ?? [];
+    const declarationFiles = declarations.map(declaration =>
+      declaration.getSourceFile(),
+    );
+    return typeDeclaredInPackageDeclarationFile(
+      specifier.package,
+      declarations,
+      declarationFiles,
+      program,
+    );
+  }
+
+  return true;
+}
+
+export const valueMatchesSomeSpecifier = (
+  node: TSESTree.Node,
+  specifiers: TypeOrValueSpecifier[] = [],
+  program: ts.Program,
+  type: ts.Type,
+): boolean =>
+  specifiers.some(specifier =>
+    valueMatchesSpecifier(node, specifier, program, type),
+  );

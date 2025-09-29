@@ -1,22 +1,14 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "module": "Node16",
-    "types": ["jest", "node"]
+    "outDir": "../../dist/packages/scope-manager"
   },
-  "exclude": ["tests/fixtures"],
-  "include": [
-    "tests",
-    "tools",
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/*.test.tsx",
-    "**/*.spec.tsx",
-    "**/*.test.js",
-    "**/*.spec.js",
-    "**/*.test.jsx",
-    "**/*.spec.jsx",
-    "**/*.d.ts"
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "../../tsconfig.spec.json"
+    }
   ]
 }

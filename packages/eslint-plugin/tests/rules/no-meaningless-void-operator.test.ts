@@ -6,12 +6,12 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2018,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-meaningless-void-operator', rule, {
@@ -37,35 +37,33 @@ function bar(x: never) {
   invalid: [
     {
       code: 'void (() => {})();',
-      output: '(() => {})();',
       errors: [
         {
-          messageId: 'meaninglessVoidOperator',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'meaninglessVoidOperator',
         },
       ],
+      output: '(() => {})();',
     },
     {
       code: `
 function foo() {}
 void foo();
       `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
       output: `
 function foo() {}
 foo();
       `,
-      errors: [
-        {
-          messageId: 'meaninglessVoidOperator',
-          line: 3,
-          column: 1,
-        },
-      ],
     },
     {
-      options: [{ checkNever: true }],
-      output: null,
       code: `
 function bar(x: never) {
   void x;
@@ -73,9 +71,9 @@ function bar(x: never) {
       `,
       errors: [
         {
-          messageId: 'meaninglessVoidOperator',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
           suggestions: [
             {
               messageId: 'removeVoid',
@@ -88,6 +86,8 @@ function bar(x: never) {
           ],
         },
       ],
+      options: [{ checkNever: true }],
+      output: null,
     },
   ],
 });

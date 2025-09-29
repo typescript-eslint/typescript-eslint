@@ -1,17 +1,28 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import type { RuleFix, RuleFixer } from '@typescript-eslint/utils/ts-eslint';
+
+import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type MessageIds = 'preferExpectErrorComment';
+export type MessageIds = 'preferExpectErrorComment';
 
 export default createRule<[], MessageIds>({
   name: 'prefer-ts-expect-error',
   meta: {
     type: 'problem',
-    deprecated: true,
-    replacedBy: ['@typescript-eslint/ban-ts-comment'],
+    deprecated: {
+      deprecatedSince: '7.11.0',
+      replacedBy: [
+        {
+          rule: {
+            name: '@typescript-eslint/ban-ts-comment',
+            url: 'https://typescript-eslint.io/rules/ban-ts-comment',
+          },
+        },
+      ],
+      url: 'https://github.com/typescript-eslint/typescript-eslint/pull/9081',
+    },
     docs: {
       description: 'Enforce using `@ts-expect-error` over `@ts-ignore`',
     },
@@ -20,6 +31,7 @@ export default createRule<[], MessageIds>({
       preferExpectErrorComment:
         'Use "@ts-expect-error" to ensure an error is actually being suppressed.',
     },
+    replacedBy: ['@typescript-eslint/ban-ts-comment'],
     schema: [],
   },
   defaultOptions: [],

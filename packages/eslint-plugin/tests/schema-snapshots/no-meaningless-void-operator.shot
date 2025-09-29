@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-meaningless-void-operator 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,7 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "checkNever": {
-        "default": false,
+        "description": "Whether to suggest removing `void` when the argument has type `never`.",
         "type": "boolean"
       }
     },
@@ -22,8 +19,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to suggest removing `void` when the argument has type `never`. */
     checkNever?: boolean;
   },
 ];
-"
-`;

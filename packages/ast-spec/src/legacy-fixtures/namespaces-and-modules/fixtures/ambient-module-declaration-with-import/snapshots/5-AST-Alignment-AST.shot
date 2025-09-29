@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures namespaces-and-modules ambient-module-declaration-with-import AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > namespaces-and-modules > ambient-module-declaration-with-import > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -20,7 +20,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules ambient-module-decl
               importKind: 'value',
               source: Literal {
                 type: 'Literal',
-                raw: '\\'fs\\'',
+                raw: '\'fs\'',
                 value: 'fs',
 
                 range: [122, 126],
@@ -34,9 +34,9 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules ambient-module-decl
                   type: 'ImportDefaultSpecifier',
                   local: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'fs',
--                   optional: false,
+                    optional: false,
 
                     range: [114, 116],
                     loc: {
@@ -68,10 +68,10 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules ambient-module-decl
           },
         },
         declare: true,
--       global: false,
+        global: false,
         id: Literal {
           type: 'Literal',
-          raw: '\\'i-use-things\\'',
+          raw: '\'i-use-things\'',
           value: 'i-use-things',
 
           range: [88, 102],
@@ -80,7 +80,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules ambient-module-decl
             end: { column: 29, line: 3 },
           },
         },
--       kind: 'module',
+        kind: 'module',
 
         range: [73, 129],
         loc: {
@@ -97,5 +97,4 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules ambient-module-decl
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: /img/team/joshuakgoldberg.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
+authors: joshuakgoldberg
 description: Announcing the release of typescript-eslint's stable v6 release, including its changes and timeline.
 slug: announcing-typescript-eslint-v6
 tags: [breaking changes, typescript-eslint, v5, v6]
@@ -11,7 +7,7 @@ title: Announcing typescript-eslint v6
 ---
 
 [typescript-eslint](https://typescript-eslint.io) is the tooling that enables standard JavaScript tools such as [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to support TypeScript code.
-We've been working on a set of breaking changes and general features that we're excited to get in released! 🎉
+We've been working on a set of breaking changes and general features that we're excited to get released! 🎉
 
 We'd previously blogged about v6 in [Announcing typescript-eslint v6 Beta](./2023-03-13-announcing-typescript-eslint-v6-beta.md).
 This blog post contains much of the same information as that one, but updated for changes made since the beta - including a few breaking changes.
@@ -683,14 +679,12 @@ We'd like to extend a sincere _thank you_ to everybody who pitched in to make ty
   - [Josh Goldberg](https://github.com/JoshuaKGoldberg)
   - [Joshua Chen](https://github.com/Josh-Cena)
 - Community contributors whose PRs were merged into the 6.0.0 release:
-  <!-- cspell:disable -->
   - [Bryan Mishkin](https://github.com/bmish)
   - [fisker Cheung](https://github.com/fisker)
   - [Juan García](https://github.com/juank1809)
   - [Kevin Ball](https://github.com/kball)
   - [Marek Dědič](https://github.com/marekdedic)
   - [Mateusz Burzyński](https://github.com/Andarist)
-  <!-- cspell:enable -->
 - Community projects that worked with us to try out the reworked preset configs:
   - [Astro](https://github.com/withastro/astro/pull/7425)
   - [Babel](https://github.com/babel/babel/pull/15716)
@@ -699,9 +693,3 @@ We'd like to extend a sincere _thank you_ to everybody who pitched in to make ty
   - [TypeScript](https://github.com/microsoft/TypeScript/pull/54693)
 
 See the [v6.0.0 milestone](https://github.com/typescript-eslint/typescript-eslint/milestone/8) for the list of issues and associated merged pull requests.
-
-## Supporting typescript-eslint
-
-If you enjoyed this blog post and/or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
-We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
-Thanks! 💖

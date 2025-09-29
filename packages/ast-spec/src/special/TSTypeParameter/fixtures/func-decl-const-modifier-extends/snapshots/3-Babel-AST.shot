@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures special TSTypeParameter func-decl-const-modifier-extends Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -17,11 +14,14 @@ Program {
           end: { column: 34, line: 1 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "b",
+        optional: false,
 
         range: [9, 10],
         loc: {
@@ -40,7 +40,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "U",
+                optional: false,
 
                 range: [27, 28],
                 loc: {
@@ -55,7 +57,9 @@ Program {
                 end: { column: 28, line: 1 },
               },
             },
+            in: false,
             name: "T",
+            out: false,
 
             range: [11, 28],
             loc: {
@@ -87,4 +91,3 @@ Program {
     end: { column: 0, line: 2 },
   },
 }
-`;

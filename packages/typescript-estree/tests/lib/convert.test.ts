@@ -1,14 +1,20 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as ts from 'typescript';
 
 import type { TSNode } from '../../src';
 import type { ConverterOptions } from '../../src/convert';
+
 import { Converter } from '../../src/convert';
 
 describe('convert', () => {
   afterEach(() => {
-    jest.resetAllMocks();
+    vi.clearAllMocks();
+  });
+
+  afterAll(() => {
+    vi.restoreAllMocks();
   });
 
   function convertCode(code: string): ts.SourceFile {
@@ -29,7 +35,6 @@ describe('convert', () => {
       function fakeUnknownKind(node: ts.Node): void {
         ts.forEachChild(node, fakeUnknownKind);
         // @ts-expect-error -- intentionally writing to a readonly field
-        // eslint-disable-next-line deprecation/deprecation
         node.kind = ts.SyntaxKind.UnparsedPrologue;
       }
 
@@ -185,7 +190,6 @@ describe('convert', () => {
       maps.esTreeNodeToTSNodeMap.get(maps.tsNodeToESTreeNodeMap.get(ast)),
     );
 
-    expect(maps.esTreeNodeToTSNodeMap.get(program.body[0])).toBeDefined();
     expect(program.body[0]).not.toBe(
       maps.tsNodeToESTreeNodeMap.get(ast.statements[0] as TSNode),
     );
@@ -206,52 +210,52 @@ describe('convert', () => {
         pos: 0,
       };
       const convertedNode = instance['createNode'](tsNode, {
-        type: AST_NODE_TYPES.TSAbstractKeyword,
-        range: [0, 20],
         loc: {
-          start: {
-            line: 10,
-            column: 20,
-          },
           end: {
-            line: 15,
             column: 25,
+            line: 15,
+          },
+          start: {
+            column: 20,
+            line: 10,
           },
         },
+        range: [0, 20],
+        type: AST_NODE_TYPES.TSAbstractKeyword,
       });
-      expect(convertedNode).toEqual({
-        type: AST_NODE_TYPES.TSAbstractKeyword,
-        range: [0, 20],
+      expect(convertedNode).toStrictEqual({
         loc: {
-          start: {
-            line: 10,
-            column: 20,
-          },
           end: {
-            line: 15,
             column: 25,
+            line: 15,
+          },
+          start: {
+            column: 20,
+            line: 10,
           },
         },
+        range: [0, 20],
+        type: AST_NODE_TYPES.TSAbstractKeyword,
       });
     });
   });
   /* eslint-enable @typescript-eslint/dot-notation */
 
-  it('should throw error on jsDoc node', () => {
+  describe('should throw error on jsDoc node', () => {
     const jsDocCode = [
       'const x: function(new: number, string);',
       'const x: function(this: number, string);',
       'var g: function(number, number): number;',
-    ];
+    ] as const;
 
-    for (const code of jsDocCode) {
+    it.for(jsDocCode)('%s', (code, { expect }) => {
       const ast = convertCode(code);
 
       const instance = new Converter(ast);
       expect(() => instance.convertProgram()).toThrow(
         'JSDoc types can only be used inside documentation comments.',
       );
-    }
+    });
   });
 
   describe('allowInvalidAST', () => {
@@ -279,86 +283,170 @@ describe('convert', () => {
   });
 
   describe('suppressDeprecatedPropertyWarnings', () => {
-    const getEsCallExpression = (
-      converterOptions?: ConverterOptions,
-    ): TSESTree.CallExpression => {
-      const ast = convertCode(`callee<T>();`);
-      const tsCallExpression = (ast.statements[0] as ts.ExpressionStatement)
-        .expression as ts.CallExpression;
-      const instance = new Converter(ast, {
-        shouldPreserveNodeMaps: true,
-        ...converterOptions,
-      });
+    const makeNodeGetter =
+      <
+        // Small convenience for testing the nodes:
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+        S extends ts.Statement,
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+        TNode extends TSESTree.Node,
+      >(
+        code: string,
+        tsToEsNode: (statement: S) => TSNode,
+      ) =>
+      (converterOptions?: ConverterOptions): TNode => {
+        const ast = convertCode(code);
+        const instance = new Converter(ast, {
+          shouldPreserveNodeMaps: true,
+          ...converterOptions,
+        });
 
-      instance.convertProgram();
+        instance.convertProgram();
 
-      const maps = instance.getASTMaps();
+        return instance
+          .getASTMaps()
+          .tsNodeToESTreeNodeMap.get(tsToEsNode(ast.statements[0] as S));
+      };
 
-      return maps.tsNodeToESTreeNodeMap.get(tsCallExpression);
-    };
+    const getEsTsEnumDeclaration = makeNodeGetter<
+      ts.EnumDeclaration,
+      TSESTree.TSEnumDeclaration
+    >('enum Enum { A }', enumDeclaration => enumDeclaration);
 
-    it('warns on a deprecated property access when suppressDeprecatedPropertyWarnings is false', () => {
-      const emitWarning = jest
+    const getEsTsMappedType = makeNodeGetter<
+      ts.TypeAliasDeclaration,
+      TSESTree.TSMappedType
+    >(
+      'type MappedType = { [Key in Type]: Value };',
+      ({ type }) => type as ts.MappedTypeNode,
+    );
+
+    it('warns on a deprecated aliased property access when suppressDeprecatedPropertyWarnings is false', () => {
+      const emitWarning = vi
         .spyOn(process, 'emitWarning')
-        .mockImplementation();
-      const esCallExpression = getEsCallExpression({
+        .mockImplementation(() => {});
+      const esTsEnumDeclaration = getEsTsEnumDeclaration({
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      // eslint-disable-next-line deprecation/deprecation
-      esCallExpression.typeParameters;
+      // eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions
+      esTsEnumDeclaration.members;
 
-      expect(emitWarning).toHaveBeenCalledWith(
-        `The 'typeParameters' property is deprecated on CallExpression nodes. Use 'typeArguments' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+      expect(emitWarning).toHaveBeenCalledExactlyOnceWith(
+        `The 'members' property is deprecated on TSEnumDeclaration nodes. Use 'body.members' instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
         'DeprecationWarning',
       );
     });
 
-    it('does not warn on a subsequent deprecated property access when suppressDeprecatedPropertyWarnings is false', () => {
-      const emitWarning = jest
+    it('does not warn on a subsequent deprecated aliased property access when suppressDeprecatedPropertyWarnings is false', () => {
+      const emitWarning = vi
         .spyOn(process, 'emitWarning')
-        .mockImplementation();
-      const esCallExpression = getEsCallExpression({
+        .mockImplementation(() => {});
+      const esTsEnumDeclaration = getEsTsEnumDeclaration({
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      /* eslint-disable deprecation/deprecation */
-      esCallExpression.typeParameters;
-      esCallExpression.typeParameters;
-      /* eslint-enable deprecation/deprecation */
+      /* eslint-disable @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions */
+      esTsEnumDeclaration.members;
+      esTsEnumDeclaration.members;
+      /* eslint-enable @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions */
 
-      expect(emitWarning).toHaveBeenCalledTimes(1);
+      expect(emitWarning).toHaveBeenCalledOnce();
     });
 
-    it('does not warn on a deprecated property access when suppressDeprecatedPropertyWarnings is true', () => {
-      const emitWarning = jest
+    it('does not warn on a deprecated aliased property access when suppressDeprecatedPropertyWarnings is true', () => {
+      const emitWarning = vi
         .spyOn(process, 'emitWarning')
-        .mockImplementation();
-      const esCallExpression = getEsCallExpression({
+        .mockImplementation(() => {});
+      const esTsEnumDeclaration = getEsTsEnumDeclaration({
         suppressDeprecatedPropertyWarnings: true,
       });
 
-      // eslint-disable-next-line deprecation/deprecation
-      esCallExpression.typeParameters;
+      // eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions
+      esTsEnumDeclaration.members;
 
       expect(emitWarning).not.toHaveBeenCalled();
     });
 
-    it('does not allow enumeration of deprecated properties', () => {
-      const esCallExpression = getEsCallExpression();
+    it('does not allow enumeration of deprecated aliased properties', () => {
+      const esTsEnumDeclaration = getEsTsEnumDeclaration();
 
-      expect(Object.keys(esCallExpression)).not.toContain('typeParameters');
+      expect(Object.keys(esTsEnumDeclaration)).not.toContain('members');
     });
 
-    it('allows writing to the deprecated property as a new enumerable value', () => {
-      const esCallExpression = getEsCallExpression();
+    it('allows writing to the deprecated aliased property as a new enumerable value', () => {
+      const esTsEnumDeclaration = getEsTsEnumDeclaration();
 
-      // eslint-disable-next-line deprecation/deprecation
-      esCallExpression.typeParameters = undefined;
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      esTsEnumDeclaration.members = [];
 
-      // eslint-disable-next-line deprecation/deprecation
-      expect(esCallExpression.typeParameters).toBeUndefined();
-      expect(Object.keys(esCallExpression)).toContain('typeParameters');
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      expect(esTsEnumDeclaration.members).toStrictEqual([]);
+      expect(Object.keys(esTsEnumDeclaration)).toContain('members');
+    });
+
+    it('warns on a deprecated getter property access when suppressDeprecatedPropertyWarnings is false', () => {
+      const emitWarning = vi
+        .spyOn(process, 'emitWarning')
+        .mockImplementation(() => {});
+      const tsMappedType = getEsTsMappedType({
+        suppressDeprecatedPropertyWarnings: false,
+      });
+
+      // eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions
+      tsMappedType.typeParameter;
+
+      expect(emitWarning).toHaveBeenCalledExactlyOnceWith(
+        `The 'typeParameter' property is deprecated on TSMappedType nodes. Use 'constraint' and 'key' instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        'DeprecationWarning',
+      );
+    });
+
+    it('does not warn on a subsequent deprecated getter property access when suppressDeprecatedPropertyWarnings is false', () => {
+      const emitWarning = vi
+        .spyOn(process, 'emitWarning')
+        .mockImplementation(() => {});
+      const tsMappedType = getEsTsMappedType({
+        suppressDeprecatedPropertyWarnings: false,
+      });
+
+      /* eslint-disable @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions */
+      tsMappedType.typeParameter;
+      tsMappedType.typeParameter;
+      /* eslint-enable @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions */
+
+      expect(emitWarning).toHaveBeenCalledOnce();
+    });
+
+    it('does not warn on a deprecated getter property access when suppressDeprecatedPropertyWarnings is true', () => {
+      const emitWarning = vi
+        .spyOn(process, 'emitWarning')
+        .mockImplementation(() => {});
+      const tsMappedType = getEsTsMappedType({
+        suppressDeprecatedPropertyWarnings: true,
+      });
+
+      // eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions
+      tsMappedType.typeParameter;
+
+      expect(emitWarning).not.toHaveBeenCalled();
+    });
+
+    it('does not allow enumeration of deprecated getter properties', () => {
+      const tsMappedType = getEsTsMappedType();
+
+      expect(Object.keys(tsMappedType)).not.toContain('typeParameter');
+    });
+
+    it('allows writing to the deprecated getter property as a new enumerable value', () => {
+      const tsMappedType = getEsTsMappedType();
+
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      tsMappedType.typeParameter = undefined!;
+
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
+      expect(tsMappedType.typeParameter).toBeUndefined();
+      expect(Object.keys(tsMappedType)).toContain('typeParameter');
     });
   });
 });

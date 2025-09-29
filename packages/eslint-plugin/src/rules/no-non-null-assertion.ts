@@ -1,14 +1,16 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  isAssignee,
   isNonNullAssertionPunctuator,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
 
-type MessageIds = 'noNonNull' | 'suggestOptionalChain';
+export type MessageIds = 'noNonNull' | 'suggestOptionalChain';
 
 export default createRule<[], MessageIds>({
   name: 'no-non-null-assertion',
@@ -52,7 +54,8 @@ export default createRule<[], MessageIds>({
 
         if (
           node.parent.type === AST_NODE_TYPES.MemberExpression &&
-          node.parent.object === node
+          node.parent.object === node &&
+          !isAssignee(node.parent)
         ) {
           if (!node.parent.optional) {
             if (node.parent.computed) {
@@ -80,19 +83,11 @@ export default createRule<[], MessageIds>({
               });
             }
           } else {
-            if (node.parent.computed) {
-              // it is x!?.[y].z
-              suggest.push({
-                messageId: 'suggestOptionalChain',
-                fix: removeToken(),
-              });
-            } else {
-              // it is x!?.y.z
-              suggest.push({
-                messageId: 'suggestOptionalChain',
-                fix: removeToken(),
-              });
-            }
+            // it is x!?.[y].z or  x!?.y.z
+            suggest.push({
+              messageId: 'suggestOptionalChain',
+              fix: removeToken(),
+            });
           }
         } else if (
           node.parent.type === AST_NODE_TYPES.CallExpression &&

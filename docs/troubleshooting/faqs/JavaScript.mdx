@@ -1,0 +1,24 @@
+---
+id: javascript
+sidebar_label: JavaScript
+title: JavaScript FAQs
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## One of my lint rules isn't working correctly on a pure JavaScript file
+
+This is to be expected - ESLint rules do not check file extensions on purpose, as it causes issues in environments that use non-standard extensions (for example, a `.vue` and a `.md` file can both contain TypeScript code to be linted).
+
+If you have some pure JavaScript code that you do not want to apply certain lint rules to, then you can use [ESLint's `files` configuration](https://eslint.org/docs/latest/use/configure/configuration-files#specifying-files-and-ignores) to either:
+
+- (recommended) only enable TypeScript-specific rules on TypeScript file extensions
+- turn off TypeScript-specific rules on JavaScript-only file extensions
+
+## Should I run ESLint on transpiled output JavaScript files?
+
+No.
+
+Source TypeScript files have all the content of output JavaScript files, plus type annotations.
+There's no benefit to also linting output JavaScript files.

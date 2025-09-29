@@ -4,11 +4,10 @@ import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 
 const rule = getESLintCoreRule('arrow-parens');
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('arrow-parens', rule, {
+  invalid: [],
   valid: [
     // https://github.com/typescript-eslint/typescript-eslint/issues/14
     noFormat`const foo = (t) => {};`,
@@ -42,5 +41,4 @@ const foo = <T,>(bar: any): void => {
       options: ['as-needed', { requireForBlockBody: true }],
     },
   ],
-  invalid: [],
 });

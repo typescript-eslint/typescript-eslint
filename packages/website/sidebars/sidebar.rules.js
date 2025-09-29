@@ -1,9 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const plugin = require('@typescript-eslint/eslint-plugin');
 
 const rules = Object.entries(plugin.rules).map(([name, rule]) => {
   return {
-    name: name,
     meta: { ...rule.meta },
+    name,
   };
 });
 
@@ -12,9 +13,9 @@ function createCategory(label, rules, additionalItems = []) {
     items: [
       ...rules.map(rule => {
         return {
-          type: 'doc',
           id: rule.name,
           label: rule.name,
+          type: 'doc',
         };
       }),
       ...additionalItems,
@@ -25,7 +26,7 @@ function createCategory(label, rules, additionalItems = []) {
 }
 
 module.exports = {
-  someSidebar: [
+  rulesSidebar: [
     'README',
     {
       ...createCategory('Rules', rules),

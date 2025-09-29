@@ -1,11 +1,18 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/repo-tools
+// npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
+
 import { TYPE } from './base-config';
 
-export const webworker_asynciterable = {
-  FileSystemDirectoryHandle: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const webworker_asynciterable: LibDefinition = {
+  libs: [],
+  variables: [
+    ['FileSystemDirectoryHandleAsyncIterator', TYPE],
+    ['FileSystemDirectoryHandle', TYPE],
+    ['ReadableStreamAsyncIterator', TYPE],
+    ['ReadableStream', TYPE],
+  ],
+};

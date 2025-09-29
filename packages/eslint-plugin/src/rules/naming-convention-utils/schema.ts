@@ -1,10 +1,11 @@
 import type { JSONSchema } from '@typescript-eslint/utils';
 
-import { getEnumNames } from '../../util';
 import type {
   IndividualAndMetaSelectorsString,
   ModifiersString,
 } from './enums';
+
+import { getEnumNames } from '../../util';
 import {
   MetaSelectors,
   Modifiers,
@@ -16,50 +17,50 @@ import {
 
 const $DEFS: Record<string, JSONSchema.JSONSchema4> = {
   // enums
-  underscoreOptions: {
-    type: 'string',
-    enum: getEnumNames(UnderscoreOptions),
-  },
   predefinedFormats: {
-    type: 'string',
     enum: getEnumNames(PredefinedFormats),
+    type: 'string',
   },
   typeModifiers: {
-    type: 'string',
     enum: getEnumNames(TypeModifiers),
+    type: 'string',
+  },
+  underscoreOptions: {
+    enum: getEnumNames(UnderscoreOptions),
+    type: 'string',
   },
 
   // repeated types
-  prefixSuffixConfig: {
-    type: 'array',
-    items: {
-      type: 'string',
-      minLength: 1,
-    },
-    additionalItems: false,
+  formatOptionsConfig: {
+    oneOf: [
+      {
+        additionalItems: false,
+        items: {
+          $ref: '#/$defs/predefinedFormats',
+        },
+        type: 'array',
+      },
+      {
+        type: 'null',
+      },
+    ],
   },
   matchRegexConfig: {
-    type: 'object',
     additionalProperties: false,
     properties: {
       match: { type: 'boolean' },
       regex: { type: 'string' },
     },
     required: ['match', 'regex'],
+    type: 'object',
   },
-  formatOptionsConfig: {
-    oneOf: [
-      {
-        type: 'array',
-        items: {
-          $ref: '#/$defs/predefinedFormats',
-        },
-        additionalItems: false,
-      },
-      {
-        type: 'null',
-      },
-    ],
+  prefixSuffixConfig: {
+    additionalItems: false,
+    items: {
+      minLength: 1,
+      type: 'string',
+    },
+    type: 'array',
   },
 };
 
@@ -74,17 +75,17 @@ const MATCH_REGEX_SCHEMA: JSONSchema.JSONSchema4 = {
 };
 type JSONSchemaProperties = Record<string, JSONSchema.JSONSchema4>;
 const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
-  format: {
-    $ref: '#/$defs/formatOptionsConfig',
-  },
   custom: MATCH_REGEX_SCHEMA,
-  leadingUnderscore: UNDERSCORE_SCHEMA,
-  trailingUnderscore: UNDERSCORE_SCHEMA,
-  prefix: PREFIX_SUFFIX_SCHEMA,
-  suffix: PREFIX_SUFFIX_SCHEMA,
   failureMessage: {
     type: 'string',
   },
+  format: {
+    $ref: '#/$defs/formatOptionsConfig',
+  },
+  leadingUnderscore: UNDERSCORE_SCHEMA,
+  prefix: PREFIX_SUFFIX_SCHEMA,
+  suffix: PREFIX_SUFFIX_SCHEMA,
+  trailingUnderscore: UNDERSCORE_SCHEMA,
 };
 function selectorSchema(
   selectorString: IndividualAndMetaSelectorsString,
@@ -95,100 +96,98 @@ function selectorSchema(
     filter: {
       oneOf: [
         {
-          type: 'string',
           minLength: 1,
+          type: 'string',
         },
         MATCH_REGEX_SCHEMA,
       ],
     },
     selector: {
-      type: 'string',
       enum: [selectorString],
+      type: 'string',
     },
   };
   if (modifiers && modifiers.length > 0) {
     selector.modifiers = {
-      type: 'array',
-      items: {
-        type: 'string',
-        enum: modifiers,
-      },
       additionalItems: false,
+      items: {
+        enum: modifiers,
+        type: 'string',
+      },
+      type: 'array',
     };
   }
   if (allowType) {
     selector.types = {
-      type: 'array',
+      additionalItems: false,
       items: {
         $ref: '#/$defs/typeModifiers',
       },
-      additionalItems: false,
+      type: 'array',
     };
   }
 
   return [
     {
-      type: 'object',
+      additionalProperties: false,
       description: `Selector '${selectorString}'`,
       properties: {
         ...FORMAT_OPTIONS_PROPERTIES,
         ...selector,
       },
       required: ['selector', 'format'],
-      additionalProperties: false,
+      type: 'object',
     },
   ];
 }
 
 function selectorsSchema(): JSONSchema.JSONSchema4 {
   return {
-    type: 'object',
+    additionalProperties: false,
     description: 'Multiple selectors in one config',
     properties: {
       ...FORMAT_OPTIONS_PROPERTIES,
-      ...{
-        filter: {
-          oneOf: [
-            {
-              type: 'string',
-              minLength: 1,
-            },
-            MATCH_REGEX_SCHEMA,
-          ],
-        },
-        selector: {
-          type: 'array',
-          items: {
+      filter: {
+        oneOf: [
+          {
+            minLength: 1,
             type: 'string',
-            enum: [...getEnumNames(MetaSelectors), ...getEnumNames(Selectors)],
           },
-          additionalItems: false,
+          MATCH_REGEX_SCHEMA,
+        ],
+      },
+      modifiers: {
+        additionalItems: false,
+        items: {
+          enum: getEnumNames(Modifiers),
+          type: 'string',
         },
-        modifiers: {
-          type: 'array',
-          items: {
-            type: 'string',
-            enum: getEnumNames(Modifiers),
-          },
-          additionalItems: false,
+        type: 'array',
+      },
+      selector: {
+        additionalItems: false,
+        items: {
+          enum: [...getEnumNames(MetaSelectors), ...getEnumNames(Selectors)],
+          type: 'string',
         },
-        types: {
-          type: 'array',
-          items: {
-            $ref: '#/$defs/typeModifiers',
-          },
-          additionalItems: false,
+        type: 'array',
+      },
+      types: {
+        additionalItems: false,
+        items: {
+          $ref: '#/$defs/typeModifiers',
         },
+        type: 'array',
       },
     },
     required: ['selector', 'format'],
-    additionalProperties: false,
+    type: 'object',
   };
 }
 
-const SCHEMA: JSONSchema.JSONSchema4 = {
+export const SCHEMA: JSONSchema.JSONSchema4 = {
   $defs: $DEFS,
-  type: 'array',
+  additionalItems: false,
   items: {
     oneOf: [
       selectorsSchema(),
@@ -328,7 +327,5 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ...selectorSchema('import', false, ['default', 'namespace']),
     ],
   },
-  additionalItems: false,
+  type: 'array',
 };
-
-export { SCHEMA };

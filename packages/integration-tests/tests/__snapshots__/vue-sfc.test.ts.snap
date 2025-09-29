@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`vue-sfc eslint should work successfully 1`] = `
+exports[`vue-sfc > eslint > should work successfully 1`] = `
 [
   {
     "errorCount": 1,
@@ -11,7 +11,7 @@ exports[`vue-sfc eslint should work successfully 1`] = `
     "messages": [
       {
         "fatal": true,
-        "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
+        "message": "Parsing error: error TS5012: Cannot read file '/usr/linked/tsconfig.json': ENOENT: no such file or directory, open '/usr/linked/tsconfig.json'.",
         "nodeType": null,
         "ruleId": null,
         "severity": 2,
@@ -60,7 +60,29 @@ export default Vue.extend({
     "suppressedMessages": [],
     "usedDeprecatedRules": [
       {
-        "replacedBy": [],
+        "info": {
+          "availableUntil": "10.0.0",
+          "deprecatedSince": "8.53.0",
+          "message": "Formatting rules are being moved out of ESLint core.",
+          "replacedBy": [
+            {
+              "message": "ESLint Stylistic now maintains deprecated stylistic core rules.",
+              "plugin": {
+                "name": "@stylistic/eslint-plugin",
+                "url": "https://eslint.style",
+              },
+              "rule": {
+                "name": "semi-spacing",
+                "url": "https://eslint.style/rules/semi-spacing",
+              },
+              "url": "https://eslint.style/guide/migration",
+            },
+          ],
+          "url": "https://eslint.org/blog/2023/10/deprecating-formatting-rules/",
+        },
+        "replacedBy": [
+          "@stylistic/semi-spacing",
+        ],
         "ruleId": "semi-spacing",
       },
     ],
@@ -75,7 +97,7 @@ export default Vue.extend({
     "messages": [
       {
         "fatal": true,
-        "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
+        "message": "Parsing error: error TS5012: Cannot read file '/usr/linked/tsconfig.json': ENOENT: no such file or directory, open '/usr/linked/tsconfig.json'.",
         "nodeType": null,
         "ruleId": null,
         "severity": 2,
@@ -100,7 +122,29 @@ export default class Utility {
     "suppressedMessages": [],
     "usedDeprecatedRules": [
       {
-        "replacedBy": [],
+        "info": {
+          "availableUntil": "10.0.0",
+          "deprecatedSince": "8.53.0",
+          "message": "Formatting rules are being moved out of ESLint core.",
+          "replacedBy": [
+            {
+              "message": "ESLint Stylistic now maintains deprecated stylistic core rules.",
+              "plugin": {
+                "name": "@stylistic/eslint-plugin",
+                "url": "https://eslint.style",
+              },
+              "rule": {
+                "name": "semi-spacing",
+                "url": "https://eslint.style/rules/semi-spacing",
+              },
+              "url": "https://eslint.style/guide/migration",
+            },
+          ],
+          "url": "https://eslint.org/blog/2023/10/deprecating-formatting-rules/",
+        },
+        "replacedBy": [
+          "@stylistic/semi-spacing",
+        ],
         "ruleId": "semi-spacing",
       },
     ],
@@ -115,7 +159,7 @@ export default class Utility {
     "messages": [
       {
         "fatal": true,
-        "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
+        "message": "Parsing error: error TS5012: Cannot read file '/usr/linked/tsconfig.json': ENOENT: no such file or directory, open '/usr/linked/tsconfig.json'.",
         "nodeType": null,
         "ruleId": null,
         "severity": 2,
@@ -157,7 +201,29 @@ export default Vue.extend({
     "suppressedMessages": [],
     "usedDeprecatedRules": [
       {
-        "replacedBy": [],
+        "info": {
+          "availableUntil": "10.0.0",
+          "deprecatedSince": "8.53.0",
+          "message": "Formatting rules are being moved out of ESLint core.",
+          "replacedBy": [
+            {
+              "message": "ESLint Stylistic now maintains deprecated stylistic core rules.",
+              "plugin": {
+                "name": "@stylistic/eslint-plugin",
+                "url": "https://eslint.style",
+              },
+              "rule": {
+                "name": "semi-spacing",
+                "url": "https://eslint.style/rules/semi-spacing",
+              },
+              "url": "https://eslint.style/guide/migration",
+            },
+          ],
+          "url": "https://eslint.org/blog/2023/10/deprecating-formatting-rules/",
+        },
+        "replacedBy": [
+          "@stylistic/semi-spacing",
+        ],
         "ruleId": "semi-spacing",
       },
     ],

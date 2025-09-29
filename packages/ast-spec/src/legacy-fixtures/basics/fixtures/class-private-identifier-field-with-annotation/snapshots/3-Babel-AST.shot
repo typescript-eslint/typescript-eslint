@@ -1,17 +1,18 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics class-private-identifier-field-with-annotation Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: PrivateIdentifier {
               type: "PrivateIdentifier",
               name: "priv1",
@@ -22,6 +23,9 @@ Program {
                 end: { column: 8, line: 4 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -52,6 +56,9 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: PrivateIdentifier {
               type: "PrivateIdentifier",
               name: "priv2",
@@ -62,6 +69,9 @@ Program {
                 end: { column: 8, line: 5 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -102,9 +112,12 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "constructor",
+              optional: false,
 
               range: [128, 139],
               loc: {
@@ -113,6 +126,8 @@ Program {
               },
             },
             kind: "constructor",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -188,6 +203,7 @@ Program {
                   end: { column: 3, line: 9 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -214,9 +230,13 @@ Program {
           end: { column: 1, line: 10 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -224,6 +244,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 170],
@@ -241,4 +262,3 @@ Program {
     end: { column: 0, line: 11 },
   },
 }
-`;

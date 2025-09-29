@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-restricted-imports 1`] = `
-"
 # SCHEMA:
 
 {
@@ -15,8 +12,14 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           {
             "additionalProperties": false,
             "properties": {
+              "allowImportNames": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
               "allowTypeImports": {
-                "description": "Disallow value imports, but allow type-only imports.",
+                "description": "Whether to allow type-only imports for a path.",
                 "type": "boolean"
               },
               "importNames": {
@@ -56,8 +59,14 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                   {
                     "additionalProperties": false,
                     "properties": {
+                      "allowImportNames": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
                       "allowTypeImports": {
-                        "description": "Disallow value imports, but allow type-only imports.",
+                        "description": "Whether to allow type-only imports for a path.",
                         "type": "boolean"
                       },
                       "importNames": {
@@ -95,8 +104,19 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                   "items": {
                     "additionalProperties": false,
                     "properties": {
+                      "allowImportNamePattern": {
+                        "type": "string"
+                      },
+                      "allowImportNames": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "minItems": 1,
+                        "type": "array",
+                        "uniqueItems": true
+                      },
                       "allowTypeImports": {
-                        "description": "Disallow value imports, but allow type-only imports.",
+                        "description": "Whether to allow type-only imports for a path.",
                         "type": "boolean"
                       },
                       "caseSensitive": {
@@ -124,9 +144,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                       "message": {
                         "minLength": 1,
                         "type": "string"
+                      },
+                      "regex": {
+                        "type": "string"
                       }
                     },
-                    "required": ["group"],
                     "type": "object"
                   },
                   "type": "array",
@@ -149,7 +171,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options =
   | (
       | {
-          /** Disallow value imports, but allow type-only imports. */
+          allowImportNames?: string[];
+          /** Whether to allow type-only imports for a path. */
           allowTypeImports?: boolean;
           importNames?: string[];
           message?: string;
@@ -162,7 +185,8 @@ type Options =
       {
         paths?: (
           | {
-              /** Disallow value imports, but allow type-only imports. */
+              allowImportNames?: string[];
+              /** Whether to allow type-only imports for a path. */
               allowTypeImports?: boolean;
               importNames?: string[];
               message?: string;
@@ -172,16 +196,17 @@ type Options =
         )[];
         patterns?:
           | {
-              /** Disallow value imports, but allow type-only imports. */
+              allowImportNamePattern?: string;
+              allowImportNames?: string[];
+              /** Whether to allow type-only imports for a path. */
               allowTypeImports?: boolean;
               caseSensitive?: boolean;
-              group: [string, ...string[]];
+              group?: string[];
               importNamePattern?: string;
-              importNames?: [string, ...string[]];
+              importNames?: string[];
               message?: string;
+              regex?: string;
             }[]
           | string[];
       },
     ];
-"
-`;

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics typed-method-signature AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > typed-method-signature > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,12 +10,12 @@ exports[`AST Fixtures legacy-fixtures basics typed-method-signature AST Alignmen
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [78, 81],
           loc: {
@@ -31,9 +31,9 @@ exports[`AST Fixtures legacy-fixtures basics typed-method-signature AST Alignmen
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'h',
--               optional: false,
+                optional: false,
 
                 range: [88, 89],
                 loc: {
@@ -42,14 +42,14 @@ exports[`AST Fixtures legacy-fixtures basics typed-method-signature AST Alignmen
                 },
               },
               kind: 'method',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'bar',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSStringKeyword {
@@ -76,8 +76,9 @@ exports[`AST Fixtures legacy-fixtures basics typed-method-signature AST Alignmen
                   },
                 },
               ],
--             readonly: false,
+              readonly: false,
 -             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSVoidKeyword {
@@ -109,9 +110,9 @@ exports[`AST Fixtures legacy-fixtures basics typed-method-signature AST Alignmen
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'g',
--               optional: false,
+                optional: false,
 
                 range: [112, 113],
                 loc: {
@@ -120,23 +121,23 @@ exports[`AST Fixtures legacy-fixtures basics typed-method-signature AST Alignmen
                 },
               },
               kind: 'method',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'bar',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSTypeReference {
                       type: 'TSTypeReference',
                       typeName: Identifier {
                         type: 'Identifier',
--                       decorators: Array [],
+                        decorators: Array [],
                         name: 'T',
--                       optional: false,
+                        optional: false,
 
                         range: [122, 123],
                         loc: {
@@ -166,17 +167,18 @@ exports[`AST Fixtures legacy-fixtures basics typed-method-signature AST Alignmen
                   },
                 },
               ],
--             readonly: false,
+              readonly: false,
 -             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeReference {
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'T',
--                   optional: false,
+                    optional: false,
 
                     range: [126, 127],
                     loc: {
@@ -204,8 +206,8 @@ exports[`AST Fixtures legacy-fixtures basics typed-method-signature AST Alignmen
                 params: Array [
                   TSTypeParameter {
                     type: 'TSTypeParameter',
--                   const: false,
--                   in: false,
+                    const: false,
+                    in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
 -                     decorators: Array [],
@@ -218,8 +220,8 @@ exports[`AST Fixtures legacy-fixtures basics typed-method-signature AST Alignmen
 -                       end: { column: 5, line: 5 },
 -                     },
 -                   },
--                   out: false,
 +                   name: 'T',
+                    out: false,
 
                     range: [114, 115],
                     loc: {
@@ -265,5 +267,4 @@ exports[`AST Fixtures legacy-fixtures basics typed-method-signature AST Alignmen
       start: { column: 0, line: 3 },
       end: { column: 0, line: 7 },
     },
-  }"
-`;
+  }

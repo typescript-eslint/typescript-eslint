@@ -1,31 +1,25 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 const promise = new Promise((resolve, reject) => resolve('value'));
 promise;
-~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
+~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.
 
 async function returnsPromise() {
   return 'value';
 }
 returnsPromise().then(() => {});
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.
 
 Promise.reject('value').catch();
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.
 
 Promise.reject('value').finally();
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.
 
 [1, 2, 3].map(async x => x + 1);
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ An array of Promises may be unintentional. Consider handling the promises' fulfillment or rejection with Promise.all or similar, or explicitly marking the expression as ignored with the \`void\` operator.
-"
-`;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ An array of Promises may be unintentional. Consider handling the promises' fulfillment or rejection with Promise.all or similar, or explicitly marking the expression as ignored with the `void` operator.
 
-exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 const promise = new Promise((resolve, reject) => resolve('value'));
 await promise;
@@ -46,11 +40,40 @@ Promise.reject('value').catch(() => {});
 await Promise.reject('value').finally(() => {});
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
-"
-`;
 
-exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 3`] = `
-"Options: { "ignoreVoid": true }
+Incorrect
+Options: {"checkThenables": true}
+
+declare function createPromiseLike(): PromiseLike<string>;
+
+createPromiseLike();
+~~~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.
+
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+createMyThenable();
+~~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.
+
+Correct
+Options: {"checkThenables": true}
+
+declare function createPromiseLike(): PromiseLike<string>;
+
+await createPromiseLike();
+
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+await createMyThenable();
+
+Options: { "ignoreVoid": true }
 
 async function returnsPromise() {
   return 'value';
@@ -58,11 +81,8 @@ async function returnsPromise() {
 void returnsPromise();
 
 void Promise.reject('value');
-"
-`;
 
-exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 4`] = `
-"Options: { "ignoreIIFE": true }
+Options: { "ignoreIIFE": true }
 
 await (async function () {
   await res(1);
@@ -71,28 +91,22 @@ await (async function () {
 (async function () {
   await res(1);
 })();
-"
-`;
 
-exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 5`] = `
-"Incorrect
+Incorrect
 Options: {"allowForKnownSafePromises":[{"from":"file","name":"SafePromise"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 let promise: Promise<number> = Promise.resolve(2);
 promise;
-~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
+~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.
 
 function returnsPromise(): Promise<number> {
   return Promise.resolve(42);
 }
 
 returnsPromise();
-~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
-"
-`;
+~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.
 
-exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 Options: {"allowForKnownSafePromises":[{"from":"file","name":"SafePromise"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 // promises can be marked as safe by using branded types
@@ -106,5 +120,18 @@ function returnsSafePromise(): SafePromise {
 }
 
 returnsSafePromise();
-"
-`;
+
+Incorrect
+Options: {"allowForKnownSafeCalls":[{"from":"file","name":"safe","path":"input.ts"}]}
+
+declare function unsafe(...args: unknown[]): Promise<void>;
+
+unsafe('...', () => {});
+~~~~~~~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.
+
+Correct
+Options: {"allowForKnownSafeCalls":[{"from":"file","name":"safe","path":"input.ts"}]}
+
+declare function safe(...args: unknown[]): Promise<void>;
+
+safe('...', () => {});

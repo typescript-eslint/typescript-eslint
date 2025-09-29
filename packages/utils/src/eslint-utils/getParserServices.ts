@@ -3,10 +3,11 @@ import type {
   ParserServices,
   ParserServicesWithTypeInformation,
 } from '../ts-estree';
-import { parserPathSeemsToBeTSESLint } from './parserPathSeemsToBeTSESLint';
+
+import { parserSeemsToBeTSESLint } from './parserSeemsToBeTSESLint';
 
 const ERROR_MESSAGE_REQUIRES_PARSER_SERVICES =
-  'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.';
+  "You have used a rule which requires type information, but don't have parserOptions set to generate type information for this file. See https://typescript-eslint.io/getting-started/typed-linting for enabling linting with type information.";
 
 const ERROR_MESSAGE_UNKNOWN_PARSER =
   'Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.';
@@ -16,7 +17,7 @@ const ERROR_MESSAGE_UNKNOWN_PARSER =
  * Try to retrieve type-aware parser service from context.
  * This **_will_** throw if it is not available.
  */
-function getParserServices<
+export function getParserServices<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
@@ -26,7 +27,7 @@ function getParserServices<
  * Try to retrieve type-aware parser service from context.
  * This **_will_** throw if it is not available.
  */
-function getParserServices<
+export function getParserServices<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
@@ -37,7 +38,7 @@ function getParserServices<
  * Try to retrieve type-aware parser service from context.
  * This **_will not_** throw if it is not available.
  */
-function getParserServices<
+export function getParserServices<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
@@ -48,7 +49,7 @@ function getParserServices<
  * Try to retrieve type-aware parser service from context.
  * This may or may not throw if it is not available, depending on if `allowWithoutFullTypeInformation` is `true`
  */
-function getParserServices<
+export function getParserServices<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
@@ -56,10 +57,13 @@ function getParserServices<
   allowWithoutFullTypeInformation: boolean,
 ): ParserServices;
 
-function getParserServices(
+export function getParserServices(
   context: Readonly<TSESLint.RuleContext<string, unknown[]>>,
   allowWithoutFullTypeInformation = false,
 ): ParserServices {
+  const parser =
+    context.parserPath || context.languageOptions.parser?.meta?.name;
+
   // This check is unnecessary if the user is using the latest version of our parser.
   //
   // However the world isn't perfect:
@@ -74,7 +78,7 @@ function getParserServices(
     context.sourceCode.parserServices?.esTreeNodeToTSNodeMap == null ||
     context.sourceCode.parserServices.tsNodeToESTreeNodeMap == null
   ) {
-    throwError(context.parserPath);
+    throwError(parser);
   }
 
   // if a rule requires full type information, then hard fail if it doesn't exist
@@ -83,22 +87,19 @@ function getParserServices(
     context.sourceCode.parserServices.program == null &&
     !allowWithoutFullTypeInformation
   ) {
-    throwError(context.parserPath);
+    throwError(parser);
   }
 
   return context.sourceCode.parserServices as ParserServices;
 }
 /* eslint-enable @typescript-eslint/unified-signatures */
 
-function throwError(parserPath: string): never {
+function throwError(parser: string | undefined): never {
   const messages = [
     ERROR_MESSAGE_REQUIRES_PARSER_SERVICES,
-    `Parser: ${parserPath}`,
-  ];
-  if (!parserPathSeemsToBeTSESLint(parserPath)) {
-    messages.push(ERROR_MESSAGE_UNKNOWN_PARSER);
-  }
+    `Parser: ${parser || '(unknown)'}`,
+    !parserSeemsToBeTSESLint(parser) && ERROR_MESSAGE_UNKNOWN_PARSER,
+  ].filter(Boolean);
+
   throw new Error(messages.join('\n'));
 }
-
-export { getParserServices };

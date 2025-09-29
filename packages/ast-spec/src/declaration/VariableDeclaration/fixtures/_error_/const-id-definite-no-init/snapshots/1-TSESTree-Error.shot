@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > const-id-definite-no-init > TSESTree - Error`]
+TSError
+> 1 | const foo!;
+    |       ^^^^ Declarations with definite assignment assertions must also have type annotations.
+  2 |

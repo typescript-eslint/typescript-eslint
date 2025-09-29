@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > let-destructure-type-no-init > Babel - Error`]
+BabelError
+> 1 | let { foo }: any;
+    |                 ^ Missing initializer in destructuring declaration. (1:16)
+  2 |
+  

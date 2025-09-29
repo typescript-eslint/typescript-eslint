@@ -2,7 +2,7 @@ import type * as ts from 'typescript';
 
 // Workaround to support new TS version features for consumers on old TS versions
 // Eg: https://github.com/typescript-eslint/typescript-eslint/issues/2388, https://github.com/typescript-eslint/typescript-eslint/issues/2784
-/* eslint-disable @typescript-eslint/no-empty-interface */
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 declare module 'typescript' {
   // added in TS 4.5, deprecated in TS 5.3
   export interface AssertClause extends ts.ImportAttributes {}
@@ -15,206 +15,202 @@ declare module 'typescript' {
   export interface ImportAttribute extends ts.Node {}
   export interface ImportAttributes extends ts.Node {}
 }
-/* eslint-enable @typescript-eslint/no-empty-interface */
+/* eslint-enable @typescript-eslint/no-empty-object-type */
 
 export type TSToken = ts.Token<ts.SyntaxKind>;
 
 export type TSNode =
-  | ts.Modifier
-  | ts.Identifier
-  | ts.ImportAttribute
-  | ts.ImportAttributes
-  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
-  | ts.AssertClause
-  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
-  | ts.AssertEntry
-  | ts.PrivateIdentifier
-  | ts.QualifiedName
-  | ts.ComputedPropertyName
-  | ts.Decorator
-  | ts.TypeParameterDeclaration
-  // | ts.SignatureDeclarationBase -> CallSignatureDeclaration, ConstructSignatureDeclaration
-  | ts.CallSignatureDeclaration
-  | ts.ConstructSignatureDeclaration
-  | ts.VariableDeclaration
-  | ts.VariableDeclarationList
-  | ts.ParameterDeclaration
-  | ts.BindingElement
-  | ts.PropertySignature
-  | ts.PropertyDeclaration
-  | ts.PropertyAssignment
-  | ts.ShorthandPropertyAssignment
-  | ts.SpreadAssignment
-  | ts.ObjectBindingPattern
   | ts.ArrayBindingPattern
-  | ts.FunctionDeclaration
-  | ts.MethodSignature
-  | ts.MethodDeclaration
-  | ts.ConstructorDeclaration
-  | ts.SemicolonClassElement
-  | ts.GetAccessorDeclaration
-  | ts.SetAccessorDeclaration
-  | ts.IndexSignatureDeclaration
-  | ts.KeywordTypeNode // TODO: This node is bad, maybe we should report this
-  | ts.ImportTypeNode
-  | ts.ThisTypeNode
-  | ts.ClassStaticBlockDeclaration
-  // | ts.FunctionOrConstructorTypeNodeBase -> FunctionTypeNode, ConstructorTypeNode
-  | ts.ConstructorTypeNode
-  | ts.FunctionTypeNode
-  | ts.TypeReferenceNode
-  | ts.TypePredicateNode
-  | ts.TypeQueryNode
-  | ts.TypeLiteralNode
-  | ts.ArrayTypeNode
-  | ts.NamedTupleMember
-  | ts.TupleTypeNode
-  | ts.OptionalTypeNode
-  | ts.RestTypeNode
-  | ts.UnionTypeNode
-  | ts.IntersectionTypeNode
-  | ts.ConditionalTypeNode
-  | ts.InferTypeNode
-  | ts.ParenthesizedTypeNode
-  | ts.TypeOperatorNode
-  | ts.IndexedAccessTypeNode
-  | ts.MappedTypeNode
-  | ts.LiteralTypeNode
-  | ts.StringLiteral
-  | ts.OmittedExpression
-  | ts.PartiallyEmittedExpression
-  | ts.PrefixUnaryExpression
-  | ts.PostfixUnaryExpression
-  | ts.NullLiteral
-  | ts.BooleanLiteral
-  | ts.ThisExpression
-  | ts.SuperExpression
-  | ts.ImportExpression
-  | ts.DeleteExpression
-  | ts.TypeOfExpression
-  | ts.VoidExpression
-  | ts.AwaitExpression
-  | ts.YieldExpression
-  | ts.SyntheticExpression
-  | ts.BinaryExpression
-  | ts.ConditionalExpression
-  | ts.FunctionExpression
-  | ts.ArrowFunction
-  | ts.RegularExpressionLiteral
-  | ts.NoSubstitutionTemplateLiteral
-  | ts.NumericLiteral
-  | ts.BigIntLiteral
-  | ts.TemplateHead
-  | ts.TemplateMiddle
-  | ts.TemplateTail
-  | ts.TemplateExpression
-  | ts.TemplateSpan
-  | ts.ParenthesizedExpression
   | ts.ArrayLiteralExpression
-  | ts.SpreadElement
-  | ts.ObjectLiteralExpression
-  | ts.PropertyAccessExpression
-  | ts.ElementAccessExpression
-  | ts.CallExpression
-  | ts.ExpressionWithTypeArguments
-  | ts.NewExpression
-  | ts.TaggedTemplateExpression
+  | ts.ArrayTypeNode
+  | ts.ArrowFunction
   | ts.AsExpression
-  | ts.TypeAssertion
-  | ts.NonNullExpression
-  | ts.MetaProperty
-  | ts.JsxElement
-  | ts.JsxOpeningElement
-  | ts.JsxSelfClosingElement
-  | ts.JsxFragment
-  | ts.JsxOpeningFragment
-  | ts.JsxClosingFragment
-  | ts.JsxAttribute
-  | ts.JsxSpreadAttribute
-  | ts.JsxClosingElement
-  | ts.JsxExpression
-  | ts.JsxNamespacedName
-  | ts.JsxText
-  | ts.NotEmittedStatement
-  | ts.CommaListExpression
-  | ts.EmptyStatement
-  | ts.DebuggerStatement
-  | ts.MissingDeclaration
+  /* eslint-disable-next-line @typescript-eslint/no-deprecated -- intentional for old TS versions */
+  | ts.AssertClause
+  /* eslint-disable-next-line @typescript-eslint/no-deprecated -- intentional for old TS versions */
+  | ts.AssertEntry
+  | ts.AwaitExpression
+  | ts.BigIntLiteral
+  | ts.BinaryExpression
+  | ts.BindingElement
   | ts.Block
-  | ts.VariableStatement
-  | ts.ExpressionStatement
-  | ts.IfStatement
-  | ts.DoStatement
-  | ts.WhileStatement
-  | ts.ForStatement
-  | ts.ForInStatement
-  | ts.ForOfStatement
+  | ts.BooleanLiteral
   | ts.BreakStatement
-  | ts.ContinueStatement
-  | ts.ReturnStatement
-  | ts.WithStatement
-  | ts.SwitchStatement
+  | ts.Bundle
+  | ts.CallExpression
+  | ts.CallSignatureDeclaration
   | ts.CaseBlock
   | ts.CaseClause
-  | ts.DefaultClause
-  | ts.LabeledStatement
-  | ts.ThrowStatement
-  | ts.TryStatement
   | ts.CatchClause
-  // | ts.ClassLikeDeclarationBase -> ClassDeclaration | ClassExpression
   | ts.ClassDeclaration
   | ts.ClassExpression
-  | ts.InterfaceDeclaration
-  | ts.HeritageClause
-  | ts.TypeAliasDeclaration
-  | ts.EnumMember
+  // | ts.ClassLikeDeclarationBase -> ClassDeclaration | ClassExpression
+  | ts.ClassStaticBlockDeclaration
+  | ts.CommaListExpression
+  | ts.ComputedPropertyName
+  | ts.ConditionalExpression
+  | ts.ConditionalTypeNode
+  | ts.ConstructorDeclaration
+  | ts.ConstructorTypeNode
+  | ts.ConstructSignatureDeclaration
+  | ts.ContinueStatement
+  | ts.DebuggerStatement
+  | ts.Decorator
+  | ts.DefaultClause
+  | ts.DeleteExpression
+  | ts.DoStatement
+  | ts.ElementAccessExpression
+  | ts.EmptyStatement
   | ts.EnumDeclaration
-  | ts.ModuleDeclaration
-  | ts.ModuleBlock
-  | ts.ImportEqualsDeclaration
-  | ts.ExternalModuleReference
-  | ts.ImportDeclaration
-  | ts.ImportClause
-  | ts.NamespaceImport
-  | ts.NamespaceExportDeclaration
-  | ts.ExportDeclaration
-  | ts.NamedImports
-  | ts.NamedExports
-  | ts.ImportSpecifier
-  | ts.ExportSpecifier
+  | ts.EnumMember
   | ts.ExportAssignment
-  | ts.SourceFile
-  | ts.Bundle
-  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
-  | ts.InputFiles
-  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
-  | ts.UnparsedSource
-  | ts.JsonMinusNumericLiteral
-  | ts.TemplateLiteralTypeNode
-  | ts.SatisfiesExpression
-
-  // JSDoc: Unsupported
+  | ts.ExportDeclaration
+  | ts.ExportSpecifier
+  | ts.ExpressionStatement
+  | ts.ExpressionWithTypeArguments
+  | ts.ExternalModuleReference
+  | ts.ForInStatement
+  | ts.ForOfStatement
+  | ts.ForStatement
+  | ts.FunctionDeclaration
+  | ts.FunctionExpression
+  // | ts.FunctionOrConstructorTypeNodeBase -> FunctionTypeNode, ConstructorTypeNode
+  | ts.FunctionTypeNode
+  | ts.GetAccessorDeclaration
+  | ts.HeritageClause
+  | ts.Identifier
+  | ts.IfStatement
+  | ts.ImportAttribute
+  | ts.ImportAttributes
+  | ts.ImportClause
+  | ts.ImportDeclaration
+  | ts.ImportEqualsDeclaration
+  | ts.ImportExpression
+  | ts.ImportSpecifier
+  | ts.ImportTypeNode
+  | ts.IndexedAccessTypeNode
+  | ts.IndexSignatureDeclaration
+  | ts.InferTypeNode
+  | ts.InterfaceDeclaration
+  | ts.IntersectionTypeNode
   | ts.JSDoc
-  | ts.JSDocTypeExpression
-  | ts.JSDocUnknownTag
+  | ts.JSDocAllType
   | ts.JSDocAugmentsTag
+  | ts.JSDocAuthorTag
+  | ts.JSDocCallbackTag
   | ts.JSDocClassTag
   | ts.JSDocEnumTag
-  | ts.JSDocThisTag
-  | ts.JSDocTemplateTag
-  | ts.JSDocReturnTag
-  | ts.JSDocTypeTag
-  | ts.JSDocTypedefTag
-  | ts.JSDocCallbackTag
-  | ts.JSDocSignature
-  | ts.JSDocPropertyTag
-  | ts.JSDocParameterTag
-  | ts.JSDocTypeLiteral
   | ts.JSDocFunctionType
-  | ts.JSDocAllType
-  | ts.JSDocUnknownType
-  | ts.JSDocNullableType
   | ts.JSDocNonNullableType
+  | ts.JSDocNullableType
   | ts.JSDocOptionalType
+  | ts.JSDocParameterTag
+  | ts.JSDocPropertyTag
+  | ts.JSDocReturnTag
+  | ts.JSDocSignature
+  | ts.JSDocTemplateTag
+  | ts.JSDocThisTag
+  | ts.JSDocTypedefTag
+  | ts.JSDocTypeExpression
+  | ts.JSDocTypeLiteral
+  | ts.JSDocTypeTag
+  | ts.JSDocUnknownTag
+  | ts.JSDocUnknownType
   | ts.JSDocVariadicType
-  | ts.JSDocAuthorTag;
+  | ts.JsonMinusNumericLiteral
+  | ts.JsxAttribute
+  | ts.JsxClosingElement
+  | ts.JsxClosingFragment
+  | ts.JsxElement
+  | ts.JsxExpression
+  | ts.JsxFragment
+  | ts.JsxNamespacedName
+  | ts.JsxOpeningElement
+  | ts.JsxOpeningFragment
+  | ts.JsxSelfClosingElement
+  | ts.JsxSpreadAttribute
+  | ts.JsxText
+  | ts.KeywordTypeNode // TODO: This node is bad, maybe we should report this
+  | ts.LabeledStatement
+  | ts.LiteralTypeNode
+  | ts.MappedTypeNode
+  | ts.MetaProperty
+  | ts.MethodDeclaration
+  | ts.MethodSignature
+  | ts.MissingDeclaration
+  | ts.Modifier
+  | ts.ModuleBlock
+  | ts.ModuleDeclaration
+  | ts.NamedExports
+  | ts.NamedImports
+  | ts.NamedTupleMember
+  | ts.NamespaceExportDeclaration
+  | ts.NamespaceImport
+  | ts.NewExpression
+  | ts.NonNullExpression
+  | ts.NoSubstitutionTemplateLiteral
+  | ts.NotEmittedStatement
+  | ts.NullLiteral
+  | ts.NumericLiteral
+  | ts.ObjectBindingPattern
+  | ts.ObjectLiteralExpression
+  | ts.OmittedExpression
+  | ts.OptionalTypeNode
+  | ts.ParameterDeclaration
+  | ts.ParenthesizedExpression
+  | ts.ParenthesizedTypeNode
+  | ts.PartiallyEmittedExpression
+  | ts.PostfixUnaryExpression
+  | ts.PrefixUnaryExpression
+  | ts.PrivateIdentifier
+  | ts.PropertyAccessExpression
+  | ts.PropertyAssignment
+  | ts.PropertyDeclaration
+  | ts.PropertySignature
+  | ts.QualifiedName
+  | ts.RegularExpressionLiteral
+  | ts.RestTypeNode
+  | ts.ReturnStatement
+  | ts.SatisfiesExpression
+  | ts.SemicolonClassElement
+  | ts.SetAccessorDeclaration
+  // | ts.SignatureDeclarationBase -> CallSignatureDeclaration, ConstructSignatureDeclaration
+  | ts.ShorthandPropertyAssignment
+  | ts.SourceFile
+  | ts.SpreadAssignment
+  | ts.SpreadElement
+  | ts.StringLiteral
+  | ts.SuperExpression
+  | ts.SwitchStatement
+  | ts.SyntheticExpression
+  | ts.TaggedTemplateExpression
+  | ts.TemplateExpression
+  | ts.TemplateHead
+  | ts.TemplateLiteralTypeNode
+  | ts.TemplateMiddle
+
+  // JSDoc: Unsupported
+  | ts.TemplateSpan
+  | ts.TemplateTail
+  | ts.ThisExpression
+  | ts.ThisTypeNode
+  | ts.ThrowStatement
+  | ts.TryStatement
+  | ts.TupleTypeNode
+  | ts.TypeAliasDeclaration
+  | ts.TypeAssertion
+  | ts.TypeLiteralNode
+  | ts.TypeOfExpression
+  | ts.TypeOperatorNode
+  | ts.TypeParameterDeclaration
+  | ts.TypePredicateNode
+  | ts.TypeQueryNode
+  | ts.TypeReferenceNode
+  | ts.UnionTypeNode
+  | ts.VariableDeclaration
+  | ts.VariableDeclarationList
+  | ts.VariableStatement
+  | ts.VoidExpression
+  | ts.WhileStatement
+  | ts.WithStatement
+  | ts.YieldExpression;

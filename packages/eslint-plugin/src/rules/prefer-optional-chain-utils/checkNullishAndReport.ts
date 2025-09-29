@@ -1,4 +1,3 @@
-import { isTypeFlagSet } from '@typescript-eslint/type-utils';
 import type {
   ParserServicesWithTypeInformation,
   TSESTree,
@@ -7,7 +6,9 @@ import type {
   ReportDescriptor,
   RuleContext,
 } from '@typescript-eslint/utils/ts-eslint';
-import { unionTypeParts } from 'ts-api-utils';
+
+import { isTypeFlagSet } from '@typescript-eslint/type-utils';
+import { unionConstituents } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type {
@@ -28,7 +29,7 @@ export function checkNullishAndReport(
   if (
     !requireNullish ||
     maybeNullishNodes.some(node =>
-      unionTypeParts(parserServices.getTypeAtLocation(node)).some(t =>
+      unionConstituents(parserServices.getTypeAtLocation(node)).some(t =>
         isTypeFlagSet(t, ts.TypeFlags.Null | ts.TypeFlags.Undefined),
       ),
     )

@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-const-id-type-init > TSESTree - Error`]
+TSError
+> 1 | declare const foo: any = 1;
+    |               ^^^^^^^^^^^^ Initializers are not permitted in ambient contexts.
+  2 |

@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-const-destructure-type-init > Babel - Error`]
+BabelError
+> 1 | declare const { foo }: any = 1;
+    |                              ^ Initializers are not allowed in ambient contexts. (1:29)
+  2 |
+  

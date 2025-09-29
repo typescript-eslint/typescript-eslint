@@ -1,20 +1,26 @@
 import { ESLintUtils } from '../../src';
 
-describe('RuleCreator', () => {
-  const createRule = ESLintUtils.RuleCreator(name => `test/${name}`);
+describe(ESLintUtils.RuleCreator, () => {
+  interface TestDocs {
+    recommended?: 'yes';
+  }
+
+  const createRule = ESLintUtils.RuleCreator<TestDocs>(name => `test/${name}`);
 
   it('createRule should be a function', () => {
-    expect(typeof createRule).toBe('function');
+    expect(createRule).toBeTypeOf('function');
   });
 
   it('should create rule correctly', () => {
     const rule = createRule({
-      name: 'test',
+      create() {
+        return {};
+      },
+      defaultOptions: [],
       meta: {
         docs: {
           description: 'some description',
-          recommended: 'recommended',
-          requiresTypeChecking: true,
+          recommended: 'yes',
         },
         messages: {
           foo: 'some message',
@@ -22,17 +28,13 @@ describe('RuleCreator', () => {
         schema: [],
         type: 'problem',
       },
-      defaultOptions: [],
-      create() {
-        return {};
-      },
+      name: 'test',
     });
     expect(rule.meta).toEqual({
       docs: {
         description: 'some description',
+        recommended: 'yes',
         url: 'test/test',
-        recommended: 'recommended',
-        requiresTypeChecking: true,
       },
       messages: {
         foo: 'some message',

@@ -1,7 +1,8 @@
 import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+
 import { simpleTraverse } from '@typescript-eslint/typescript-estree';
 
-function getSpecificNode<
+export function getSpecificNode<
   Selector extends AST_NODE_TYPES,
   Node extends Extract<TSESTree.Node, { type: Selector }>,
 >(
@@ -9,20 +10,21 @@ function getSpecificNode<
   selector: Selector,
   cb?: (node: Node) => boolean | null | undefined,
 ): Node;
-function getSpecificNode<
+export function getSpecificNode<
   Selector extends AST_NODE_TYPES,
-  Node extends Extract<TSESTree.Node, { type: Selector }>,
   ReturnType extends TSESTree.Node,
 >(
   ast: TSESTree.Node,
   selector: Selector,
-  cb: (node: Node) => ReturnType | null | undefined,
+  cb: (
+    node: Extract<TSESTree.Node, { type: Selector }>,
+  ) => ReturnType | null | undefined,
 ): ReturnType;
 
-function getSpecificNode(
+export function getSpecificNode(
   ast: TSESTree.Node,
   selector: AST_NODE_TYPES,
-  cb?: (node: TSESTree.Node) => TSESTree.Node | boolean | null | undefined,
+  cb?: (node: TSESTree.Node) => boolean | TSESTree.Node | null | undefined,
 ): TSESTree.Node {
   let node: TSESTree.Node | null | undefined = null;
   simpleTraverse(
@@ -33,7 +35,7 @@ function getSpecificNode(
           const res = cb ? cb(n) : n;
           if (res) {
             // the callback shouldn't match multiple nodes or else tests may behave weirdly
-            expect(node).toBeFalsy();
+            assert.notExists(node);
             node = typeof res === 'boolean' ? n : res;
           }
         },
@@ -43,9 +45,6 @@ function getSpecificNode(
   );
 
   // should have found at least one node
-  expect(node).not.toBeFalsy();
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return node!;
+  assert.exists(node);
+  return node;
 }
-
-export { getSpecificNode };

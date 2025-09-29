@@ -1,33 +1,33 @@
-import type { Fixture, ParserResponse } from './parser-types';
-import { ParserResponseType } from './parser-types';
-import { parse } from './typescript-estree-import';
+import type { Fixture, ParserResponse } from './parser-types.js';
+
+import { ParserResponseType } from './parser-types.js';
+import { parse } from './typescript-estree-import.js';
 
 export function parseTSESTree(
-  fixture: Fixture,
-  contents: string,
+  fixture: Pick<Fixture, 'config' | 'contents' | 'isJSX'>,
 ): ParserResponse {
   try {
-    const result = parse(contents, {
+    const result = parse(fixture.contents, {
       allowInvalidAST: fixture.config.allowInvalidAST,
       comment: false,
-      jsx: fixture.ext.endsWith('x'),
+      jsx: fixture.isJSX,
       loc: true,
       range: true,
       suppressDeprecatedPropertyWarnings: true,
       tokens: true,
     });
-    const { tokens: _, comments: __, ...program } = result;
+    const { comments: __, tokens, ...ast } = result;
 
     return {
-      type: ParserResponseType.NoError,
-      ast: program,
+      ast,
       error: 'NO ERROR',
-      tokens: result.tokens,
+      tokens,
+      type: ParserResponseType.NoError,
     };
   } catch (error: unknown) {
     return {
-      type: ParserResponseType.Error,
       error,
+      type: ParserResponseType.Error,
     };
   }
 }

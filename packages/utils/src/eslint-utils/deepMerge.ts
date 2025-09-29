@@ -1,10 +1,10 @@
-type ObjectLike<T = unknown> = Record<string, T>;
+export type ObjectLike<T = unknown> = Record<string, T>;
 
 /**
  * Check if the variable contains an object strictly rejecting arrays
  * @returns `true` if obj is an object
  */
-function isObjectNotArray<T extends ObjectLike>(obj: unknown): obj is T {
+export function isObjectNotArray(obj: unknown): obj is ObjectLike {
   return typeof obj === 'object' && obj != null && !Array.isArray(obj);
 }
 
@@ -20,30 +20,30 @@ export function deepMerge(
   second: ObjectLike = {},
 ): Record<string, unknown> {
   // get the unique set of keys across both objects
-  const keys = new Set(Object.keys(first).concat(Object.keys(second)));
+  const keys = new Set([...Object.keys(first), ...Object.keys(second)]);
 
-  return Array.from(keys).reduce<ObjectLike>((acc, key) => {
-    const firstHasKey = key in first;
-    const secondHasKey = key in second;
-    const firstValue = first[key];
-    const secondValue = second[key];
+  return Object.fromEntries(
+    [...keys].map(key => {
+      const firstHasKey = key in first;
+      const secondHasKey = key in second;
+      const firstValue = first[key];
+      const secondValue = second[key];
 
-    if (firstHasKey && secondHasKey) {
-      if (isObjectNotArray(firstValue) && isObjectNotArray(secondValue)) {
-        // object type
-        acc[key] = deepMerge(firstValue, secondValue);
+      let value;
+      if (firstHasKey && secondHasKey) {
+        if (isObjectNotArray(firstValue) && isObjectNotArray(secondValue)) {
+          // object type
+          value = deepMerge(firstValue, secondValue);
+        } else {
+          // value type
+          value = secondValue;
+        }
+      } else if (firstHasKey) {
+        value = firstValue;
       } else {
-        // value type
-        acc[key] = secondValue;
+        value = secondValue;
       }
-    } else if (firstHasKey) {
-      acc[key] = firstValue;
-    } else {
-      acc[key] = secondValue;
-    }
-
-    return acc;
-  }, {});
+      return [key, value];
+    }),
+  );
 }
-
-export { isObjectNotArray };

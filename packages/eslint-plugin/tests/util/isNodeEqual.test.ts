@@ -1,31 +1,16 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import { createRule, isNodeEqual } from '../../src/util';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rule = createRule({
-  name: 'no-useless-expression',
-  defaultOptions: [],
-  meta: {
-    type: 'suggestion',
-    fixable: 'code',
-    docs: {
-      description: 'Remove useless expressions.',
-    },
-    messages: {
-      removeExpression: 'Remove useless expression',
-    },
-    schema: [],
-  },
-
   create(context) {
     return {
       LogicalExpression: (node: TSESTree.LogicalExpression): void => {
         if (isNodeEqual(node.left, node.right)) {
           context.report({
-            node,
-            messageId: 'removeExpression',
             fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
               return fixer.replaceText(
                 node,
@@ -35,29 +20,40 @@ const rule = createRule({
                 ),
               );
             },
+            messageId: 'removeExpression',
+            node,
           });
         }
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Remove useless expressions.',
+    },
+    fixable: 'code',
+    messages: {
+      removeExpression: 'Remove useless expression',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+
+  name: 'no-useless-expression',
 });
 
 const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
+    },
   },
 });
 
 ruleTester.run('isNodeEqual', rule, {
-  valid: [
-    { code: 'a || b' },
-    { code: '!true || true' },
-    { code: 'a() || a()' },
-    { code: 'foo.bar || foo.bar.foo' },
-  ],
   invalid: [
     {
       code: 'undefined || undefined',
@@ -99,5 +95,11 @@ ruleTester.run('isNodeEqual', rule, {
       errors: [{ messageId: 'removeExpression' }],
       output: 'x.z[1][this[this.o]]["3"][a.b.c]',
     },
+  ],
+  valid: [
+    { code: 'a || b' },
+    { code: '!true || true' },
+    { code: 'a() || a()' },
+    { code: 'foo.bar || foo.bar.foo' },
   ],
 });

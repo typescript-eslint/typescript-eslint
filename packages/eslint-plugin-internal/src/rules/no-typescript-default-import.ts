@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
@@ -21,16 +20,15 @@ export default createRule({
     docs: {
       description:
         "Enforce that packages rules don't do `import ts from 'typescript';`",
-      recommended: 'recommended',
     },
     fixable: 'code',
-    schema: [],
     messages: {
       noTSDefaultImport: [
         "Do not use the default import for typescript. Doing so will cause the package's type definitions to do the same.",
         "This causes errors for consumers if they don't use the allowSyntheticDefaultImports compiler option.",
       ].join('\n'),
     },
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -43,7 +41,7 @@ export default createRule({
       'ImportDeclaration > ImportDefaultSpecifier'(
         node: TSESTree.ImportDefaultSpecifier,
       ): void {
-        const importStatement = node.parent as TSESTree.ImportDeclaration;
+        const importStatement = node.parent;
         if (importStatement.source.value === 'typescript') {
           context.report({
             node,
@@ -62,10 +60,7 @@ export default createRule({
         node: TSESTree.TSExternalModuleReference,
       ): void {
         const parent = node.parent as TSESTree.TSImportEqualsDeclaration;
-        if (
-          node.expression.type === AST_NODE_TYPES.Literal &&
-          node.expression.value === 'typescript'
-        ) {
+        if (node.expression.value === 'typescript') {
           context.report({
             node,
             messageId: 'noTSDefaultImport',

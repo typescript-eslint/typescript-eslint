@@ -1,0 +1,148 @@
+ScopeManager {
+  variables: [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: [
+        TSModuleNameDefinition$1 {
+          name: Identifier<"A">,
+          node: TSModuleDeclaration$1,
+        },
+      ],
+      name: "A",
+      references: [
+        Reference$2 {
+          identifier: Identifier<"A">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: [
+        TSModuleNameDefinition$2 {
+          name: Identifier<"X">,
+          node: TSModuleDeclaration$2,
+        },
+      ],
+      name: "X",
+      references: [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: [
+        VariableDefinition$3 {
+          name: Identifier<"Y">,
+          node: VariableDeclarator$3,
+        },
+      ],
+      name: "Y",
+      references: [
+        Reference$1 {
+          identifier: Identifier<"Y">,
+          init: true,
+          isRead: false,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: true,
+          resolved: Variable$4,
+          writeExpr: Literal$4,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$5 {
+      defs: [
+        ImportBindingDefinition$4 {
+          name: Identifier<"Z">,
+          node: TSImportEqualsDeclaration$5,
+        },
+      ],
+      name: "Z",
+      references: [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$6 {
+      defs: [
+        VariableDefinition$5 {
+          name: Identifier<"X">,
+          node: VariableDeclarator$6,
+        },
+      ],
+      name: "X",
+      references: [
+        Reference$3 {
+          identifier: Identifier<"X">,
+          init: true,
+          isRead: false,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: true,
+          resolved: Variable$6,
+          writeExpr: Literal$7,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: [
+    GlobalScope$1 {
+      block: Program$8,
+      isStrict: false,
+      references: [
+        Reference$2,
+        Reference$3,
+      ],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "A" => Variable$2,
+        "Z" => Variable$5,
+        "X" => Variable$6,
+      },
+      type: "global",
+      upper: null,
+      variables: [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$5,
+        Variable$6,
+      ],
+    },
+    TSModuleScope$2 {
+      block: TSModuleDeclaration$1,
+      isStrict: true,
+      references: [],
+      set: Map {
+        "X" => Variable$3,
+      },
+      type: "tsModule",
+      upper: GlobalScope$1,
+      variables: [
+        Variable$3,
+      ],
+    },
+    TSModuleScope$3 {
+      block: TSModuleDeclaration$2,
+      isStrict: true,
+      references: [
+        Reference$1,
+      ],
+      set: Map {
+        "Y" => Variable$4,
+      },
+      type: "tsModule",
+      upper: TSModuleScope$2,
+      variables: [
+        Variable$4,
+      ],
+    },
+  ],
+}

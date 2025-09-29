@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`jsx children 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -51,6 +48,14 @@ ScopeManager {
           resolved: null,
         },
         Reference$3,
+        Reference$4 {
+          identifier: JSXIdentifier$5,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: null,
+        },
       ],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
@@ -65,4 +70,3 @@ ScopeManager {
     },
   ],
 }
-`;

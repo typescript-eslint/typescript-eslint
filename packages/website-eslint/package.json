@@ -1,11 +1,21 @@
 {
   "name": "@typescript-eslint/website-eslint",
-  "version": "7.11.0",
   "private": true,
   "description": "ESLint which works in browsers.",
   "files": [
-    "dist"
+    "dist",
+    "!*.tsbuildinfo"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/website-eslint"
+  },
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
+  "homepage": "https://typescript-eslint.io",
+  "license": "MIT",
   "type": "commonjs",
   "exports": {
     ".": {
@@ -14,25 +24,46 @@
     }
   },
   "engines": {
-    "node": "^18.18.0 || >=20.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "scripts": {
-    "build": "tsx ./build.ts",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "npx nx lint",
-    "typecheck": "tsc --noEmit"
+    "build": "yarn run -BT nx build",
+    "clean": "rimraf dist/",
+    "format": "yarn run -T format",
+    "lint": "yarn run -BT nx lint",
+    "typecheck": "yarn run -BT nx typecheck"
   },
   "devDependencies": {
     "@eslint/js": "*",
-    "@typescript-eslint/eslint-plugin": "7.11.0",
-    "@typescript-eslint/parser": "7.11.0",
-    "@typescript-eslint/scope-manager": "7.11.0",
-    "@typescript-eslint/typescript-estree": "7.11.0",
-    "@typescript-eslint/visitor-keys": "7.11.0",
-    "esbuild": "~0.21.0",
+    "@typescript-eslint/eslint-plugin": "workspace:*",
+    "@typescript-eslint/parser": "workspace:*",
+    "@typescript-eslint/scope-manager": "workspace:*",
+    "@typescript-eslint/typescript-estree": "workspace:*",
+    "@typescript-eslint/visitor-keys": "workspace:*",
+    "esbuild": "~0.25.0",
     "eslint": "*",
     "esquery": "*",
-    "prettier": "^3.2.5",
+    "rimraf": "*",
     "tsx": "*"
+  },
+  "nx": {
+    "name": "website-eslint",
+    "includedScripts": [
+      "clean"
+    ],
+    "targets": {
+      "build": {
+        "command": "tsx build.mts",
+        "dependsOn": [
+          "types:copy-ast-spec"
+        ],
+        "options": {
+          "cwd": "{projectRoot}"
+        }
+      },
+      "lint": {
+        "command": "eslint"
+      }
+    }
   }
 }

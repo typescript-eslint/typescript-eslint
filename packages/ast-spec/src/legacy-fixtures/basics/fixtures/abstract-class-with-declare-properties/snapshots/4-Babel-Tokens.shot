@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-properties Babel - Tokens 1`] = `
 [
   Identifier {
     type: "Identifier",
@@ -154,21 +151,21 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
   },
   Identifier {
     type: "Identifier",
-    value: "public",
+    value: "declare",
 
-    range: [169, 175],
+    range: [169, 176],
     loc: {
       start: { column: 2, line: 6 },
-      end: { column: 8, line: 6 },
+      end: { column: 9, line: 6 },
     },
   },
   Identifier {
     type: "Identifier",
-    value: "declare",
+    value: "public",
 
-    range: [176, 183],
+    range: [177, 183],
     loc: {
-      start: { column: 9, line: 6 },
+      start: { column: 10, line: 6 },
       end: { column: 16, line: 6 },
     },
   },
@@ -294,21 +291,21 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
   },
   Identifier {
     type: "Identifier",
-    value: "public",
+    value: "declare",
 
-    range: [253, 259],
+    range: [253, 260],
     loc: {
       start: { column: 2, line: 8 },
-      end: { column: 8, line: 8 },
+      end: { column: 9, line: 8 },
     },
   },
   Identifier {
     type: "Identifier",
-    value: "declare",
+    value: "public",
 
-    range: [260, 267],
+    range: [261, 267],
     loc: {
-      start: { column: 9, line: 8 },
+      start: { column: 10, line: 8 },
       end: { column: 16, line: 8 },
     },
   },
@@ -383,4 +380,3 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
     },
   },
 ]
-`;

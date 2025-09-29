@@ -88,9 +88,8 @@ export enum AST_NODE_TYPES {
   WhileStatement = 'WhileStatement',
   WithStatement = 'WithStatement',
   YieldExpression = 'YieldExpression',
-  /**
-   * TS-prefixed nodes
-   */
+
+  // TS_prefixed nodes
   TSAbstractAccessorProperty = 'TSAbstractAccessorProperty',
   TSAbstractKeyword = 'TSAbstractKeyword',
   TSAbstractMethodDefinition = 'TSAbstractMethodDefinition',
@@ -109,18 +108,19 @@ export enum AST_NODE_TYPES {
   TSDeclareFunction = 'TSDeclareFunction',
   TSDeclareKeyword = 'TSDeclareKeyword',
   TSEmptyBodyFunctionExpression = 'TSEmptyBodyFunctionExpression',
+  TSEnumBody = 'TSEnumBody',
   TSEnumDeclaration = 'TSEnumDeclaration',
   TSEnumMember = 'TSEnumMember',
   TSExportAssignment = 'TSExportAssignment',
   TSExportKeyword = 'TSExportKeyword',
   TSExternalModuleReference = 'TSExternalModuleReference',
   TSFunctionType = 'TSFunctionType',
-  TSInstantiationExpression = 'TSInstantiationExpression',
   TSImportEqualsDeclaration = 'TSImportEqualsDeclaration',
   TSImportType = 'TSImportType',
   TSIndexedAccessType = 'TSIndexedAccessType',
   TSIndexSignature = 'TSIndexSignature',
   TSInferType = 'TSInferType',
+  TSInstantiationExpression = 'TSInstantiationExpression',
   TSInterfaceBody = 'TSInterfaceBody',
   TSInterfaceDeclaration = 'TSInterfaceDeclaration',
   TSInterfaceHeritage = 'TSInterfaceHeritage',

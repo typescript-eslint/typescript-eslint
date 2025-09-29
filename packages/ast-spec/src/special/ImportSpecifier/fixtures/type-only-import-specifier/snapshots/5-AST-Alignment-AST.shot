@@ -1,0 +1,78 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > special > ImportSpecifier > type-only-import-specifier > AST Alignment - AST`]
+Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ImportDeclaration {
+        type: 'ImportDeclaration',
+-       attributes: Array [],
++       assertions: Array [],
+        importKind: 'value',
+        source: Literal {
+          type: 'Literal',
+          raw: '\'mod\'',
+          value: 'mod',
+
+          range: [23, 28],
+          loc: {
+            start: { column: 23, line: 1 },
+            end: { column: 28, line: 1 },
+          },
+        },
+        specifiers: Array [
+          ImportSpecifier {
+            type: 'ImportSpecifier',
+            imported: Identifier {
+              type: 'Identifier',
+              decorators: Array [],
+              name: 'A',
+              optional: false,
+
+              range: [14, 15],
+              loc: {
+                start: { column: 14, line: 1 },
+                end: { column: 15, line: 1 },
+              },
+            },
+            importKind: 'type',
+            local: Identifier {
+              type: 'Identifier',
+              decorators: Array [],
+              name: 'A',
+              optional: false,
+
+              range: [14, 15],
+              loc: {
+                start: { column: 14, line: 1 },
+                end: { column: 15, line: 1 },
+              },
+            },
+
+            range: [9, 15],
+            loc: {
+              start: { column: 9, line: 1 },
+              end: { column: 15, line: 1 },
+            },
+          },
+        ],
+
+        range: [0, 29],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 29, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'module',
+
+    range: [0, 30],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }

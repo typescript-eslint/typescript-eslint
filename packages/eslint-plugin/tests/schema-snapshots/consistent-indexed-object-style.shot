@@ -1,11 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-indexed-object-style 1`] = `
-"
 # SCHEMA:
 
 [
   {
+    "description": "Which indexed object syntax to prefer.",
     "enum": ["index-signature", "record"],
     "type": "string"
   }
@@ -14,6 +12,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
-type Options = ['index-signature' | 'record'];
-"
-`;
+type Options = [
+  /** Which indexed object syntax to prefer. */
+  | 'record'
+  /** Which indexed object syntax to prefer. */
+  | 'index-signature',
+];

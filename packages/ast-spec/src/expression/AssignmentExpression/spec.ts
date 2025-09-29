@@ -8,7 +8,7 @@ export * from './AssignmentOperatorToText';
 
 export interface AssignmentExpression extends BaseNode {
   type: AST_NODE_TYPES.AssignmentExpression;
-  operator: ValueOf<AssignmentOperatorToText>;
   left: Expression;
+  operator: ValueOf<AssignmentOperatorToText>;
   right: Expression;
 }

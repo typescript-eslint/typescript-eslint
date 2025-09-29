@@ -1,13 +1,15 @@
-import { ESLintUtils } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+
+import { ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { getTypeOfPropertyOfType } from './propertyTypes';
 import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
+
+import { getTypeOfPropertyOfType } from './propertyTypes';
 import {
-  typeMatchesSpecifier,
-  typeOrValueSpecifierSchema,
+  typeMatchesSomeSpecifier,
+  typeOrValueSpecifiersSchema,
 } from './TypeOrValueSpecifier';
 
 const enum Readonlyness {
@@ -20,31 +22,28 @@ const enum Readonlyness {
 }
 
 export interface ReadonlynessOptions {
-  readonly treatMethodsAsReadonly?: boolean;
   readonly allow?: TypeOrValueSpecifier[];
+  readonly treatMethodsAsReadonly?: boolean;
 }
 
 export const readonlynessOptionsSchema = {
-  type: 'object',
   additionalProperties: false,
   properties: {
+    allow: typeOrValueSpecifiersSchema,
     treatMethodsAsReadonly: {
       type: 'boolean',
     },
-    allow: {
-      type: 'array',
-      items: typeOrValueSpecifierSchema,
-    },
   },
+  type: 'object',
 } satisfies JSONSchema4;
 
 export const readonlynessOptionsDefaults: ReadonlynessOptions = {
-  treatMethodsAsReadonly: false,
   allow: [],
+  treatMethodsAsReadonly: false,
 };
 
-function hasSymbol(node: ts.Node): node is ts.Node & { symbol: ts.Symbol } {
-  return Object.prototype.hasOwnProperty.call(node, 'symbol');
+function hasSymbol(node: ts.Node): node is { symbol: ts.Symbol } & ts.Node {
+  return Object.hasOwn(node, 'symbol');
 }
 
 function isTypeReadonlyArrayOrTuple(
@@ -137,7 +136,7 @@ function isTypeReadonlyObject(
     for (const property of properties) {
       if (options.treatMethodsAsReadonly) {
         if (
-          property.valueDeclaration !== undefined &&
+          property.valueDeclaration != null &&
           hasSymbol(property.valueDeclaration) &&
           tsutils.isSymbolFlagSet(
             property.valueDeclaration.symbol,
@@ -149,11 +148,11 @@ function isTypeReadonlyObject(
 
         const declarations = property.getDeclarations();
         const lastDeclaration =
-          declarations !== undefined && declarations.length > 0
+          declarations != null && declarations.length > 0
             ? declarations[declarations.length - 1]
             : undefined;
         if (
-          lastDeclaration !== undefined &&
+          lastDeclaration != null &&
           hasSymbol(lastDeclaration) &&
           tsutils.isSymbolFlagSet(lastDeclaration.symbol, ts.SymbolFlags.Method)
         ) {
@@ -232,18 +231,14 @@ function isTypeReadonlyRecurser(
   const checker = program.getTypeChecker();
   seenTypes.add(type);
 
-  if (
-    options.allow?.some(specifier =>
-      typeMatchesSpecifier(type, specifier, program),
-    )
-  ) {
+  if (typeMatchesSomeSpecifier(type, options.allow, program)) {
     return Readonlyness.Readonly;
   }
 
   if (tsutils.isUnionType(type)) {
     // all types in the union must be readonly
     const result = tsutils
-      .unionTypeParts(type)
+      .unionConstituents(type)
       .every(
         t =>
           seenTypes.has(t) ||
@@ -336,7 +331,7 @@ function isTypeReadonlyRecurser(
 /**
  * Checks if the given type is readonly
  */
-function isTypeReadonly(
+export function isTypeReadonly(
   program: ts.Program,
   type: ts.Type,
   options: ReadonlynessOptions = readonlynessOptionsDefaults,
@@ -346,5 +341,3 @@ function isTypeReadonly(
     Readonlyness.Readonly
   );
 }
-
-export { isTypeReadonly };

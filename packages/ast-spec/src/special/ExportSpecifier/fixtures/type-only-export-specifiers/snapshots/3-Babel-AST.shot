@@ -1,0 +1,105 @@
+Program {
+  type: "Program",
+  body: [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: [],
+      declaration: null,
+      exportKind: "value",
+      source: Literal {
+        type: "Literal",
+        raw: "'mod'",
+        value: "mod",
+
+        range: [31, 36],
+        loc: {
+          start: { column: 31, line: 1 },
+          end: { column: 36, line: 1 },
+        },
+      },
+      specifiers: [
+        ExportSpecifier {
+          type: "ExportSpecifier",
+          exported: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "A",
+            optional: false,
+
+            range: [14, 15],
+            loc: {
+              start: { column: 14, line: 1 },
+              end: { column: 15, line: 1 },
+            },
+          },
+          exportKind: "type",
+          local: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "A",
+            optional: false,
+
+            range: [14, 15],
+            loc: {
+              start: { column: 14, line: 1 },
+              end: { column: 15, line: 1 },
+            },
+          },
+
+          range: [9, 15],
+          loc: {
+            start: { column: 9, line: 1 },
+            end: { column: 15, line: 1 },
+          },
+        },
+        ExportSpecifier {
+          type: "ExportSpecifier",
+          exported: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "B",
+            optional: false,
+
+            range: [22, 23],
+            loc: {
+              start: { column: 22, line: 1 },
+              end: { column: 23, line: 1 },
+            },
+          },
+          exportKind: "type",
+          local: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "B",
+            optional: false,
+
+            range: [22, 23],
+            loc: {
+              start: { column: 22, line: 1 },
+              end: { column: 23, line: 1 },
+            },
+          },
+
+          range: [17, 23],
+          loc: {
+            start: { column: 17, line: 1 },
+            end: { column: 23, line: 1 },
+          },
+        },
+      ],
+
+      range: [0, 37],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 37, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 38],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

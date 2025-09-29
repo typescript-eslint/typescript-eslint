@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > using-destructure-no-init > TSESTree - Error`]
+TSError
+> 1 | using { foo };
+    |       ^^^^^^^ 'using' declarations must be initialized.
+  2 |

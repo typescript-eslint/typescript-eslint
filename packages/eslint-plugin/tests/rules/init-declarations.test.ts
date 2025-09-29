@@ -1,11 +1,8 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/init-declarations';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('init-declarations', rule, {
   valid: [
@@ -35,17 +32,17 @@ for (var foo in []) {
 for (var foo of []) {
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: 'let a = true;',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['always'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'const a = {};',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['always'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: `
@@ -58,8 +55,8 @@ function foo() {
   }
 }
       `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['always'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: `
@@ -72,8 +69,8 @@ function foo() {
   }
 }
       `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['always'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: `
@@ -83,18 +80,18 @@ function foo() {
   var c = true;
 }
       `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['always'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var foo;',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'var foo, bar, baz;',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: `
@@ -103,18 +100,18 @@ function foo() {
   var bar;
 }
       `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'let a;',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'const a = 1;',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: `
@@ -125,8 +122,8 @@ function foo() {
   }
 }
       `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: `
@@ -139,8 +136,8 @@ function foo() {
   }
 }
       `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: `
@@ -150,8 +147,8 @@ function foo() {
   var c;
 }
       `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: 'for (var i = 0; i < 1; i++) {}',
@@ -169,8 +166,8 @@ for (var foo in []) {
 for (var foo of []) {
 }
       `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: ['never', { ignoreForLoopInit: true }],
-      parserOptions: { ecmaVersion: 6 },
     },
     {
       code: `
@@ -314,11 +311,6 @@ interface IEmployee {
       options: ['never'],
     },
     {
-      code: "declare const foo: number = 'asd';",
-      options: ['always'],
-    },
-
-    {
       code: "const foo: number = 'asd';",
       options: ['always'],
     },
@@ -376,25 +368,31 @@ declare namespace myLib1 {
     // checking compatibility with base rule
     {
       code: 'var foo;',
-      options: ['always'],
       errors: [
         {
-          messageId: 'initialized',
+          column: 5,
           data: { idName: 'foo' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'initialized',
         },
       ],
+      options: ['always'],
     },
     {
       code: 'for (var a in []) var foo;',
-      options: ['always'],
       errors: [
         {
-          messageId: 'initialized',
+          column: 23,
           data: { idName: 'foo' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 26,
+          endLine: 1,
+          line: 1,
+          messageId: 'initialized',
         },
       ],
+      options: ['always'],
     },
     {
       code: `
@@ -402,19 +400,25 @@ var foo,
   bar = false,
   baz;
       `,
-      options: ['always'],
       errors: [
         {
-          messageId: 'initialized',
+          column: 5,
           data: { idName: 'foo' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
+          messageId: 'initialized',
         },
         {
-          messageId: 'initialized',
+          column: 3,
           data: { idName: 'baz' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'initialized',
         },
       ],
+      options: ['always'],
     },
     {
       code: `
@@ -423,14 +427,17 @@ function foo() {
   var bar;
 }
       `,
-      options: ['always'],
       errors: [
         {
-          messageId: 'initialized',
+          column: 7,
           data: { idName: 'bar' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'initialized',
         },
       ],
+      options: ['always'],
     },
     {
       code: `
@@ -439,25 +446,31 @@ function foo() {
   var bar = foo;
 }
       `,
-      options: ['always'],
       errors: [
         {
-          messageId: 'initialized',
+          column: 7,
           data: { idName: 'foo' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'initialized',
         },
       ],
+      options: ['always'],
     },
     {
       code: 'let a;',
-      options: ['always'],
       errors: [
         {
-          messageId: 'initialized',
+          column: 5,
           data: { idName: 'a' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 6,
+          endLine: 1,
+          line: 1,
+          messageId: 'initialized',
         },
       ],
+      options: ['always'],
     },
     {
       code: `
@@ -470,14 +483,17 @@ function foo() {
   }
 }
       `,
-      options: ['always'],
       errors: [
         {
-          messageId: 'initialized',
+          column: 5,
           data: { idName: 'b' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'initialized',
         },
       ],
+      options: ['always'],
     },
     {
       code: `
@@ -487,41 +503,53 @@ function foo() {
   var c;
 }
       `,
-      options: ['always'],
       errors: [
         {
-          messageId: 'initialized',
+          column: 7,
           data: { idName: 'a' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'initialized',
         },
         {
-          messageId: 'initialized',
+          column: 7,
           data: { idName: 'c' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'initialized',
         },
       ],
+      options: ['always'],
     },
     {
       code: 'var foo = (bar = 2);',
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 5,
           data: { idName: 'foo' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: 'var foo = true;',
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 5,
           data: { idName: 'foo' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: `
@@ -529,19 +557,25 @@ var foo,
   bar = 5,
   baz = 3;
       `,
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 3,
           data: { idName: 'bar' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'notInitialized',
         },
         {
-          messageId: 'notInitialized',
+          column: 3,
           data: { idName: 'baz' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: `
@@ -550,26 +584,31 @@ function foo() {
   var bar = foo;
 }
       `,
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 7,
           data: { idName: 'bar' },
-
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: 'let a = 1;',
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 5,
           data: { idName: 'a' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: `
@@ -581,14 +620,17 @@ function foo() {
   }
 }
       `,
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 7,
           data: { idName: 'a' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: `
@@ -598,53 +640,65 @@ function foo() {
   var c = 1;
 }
       `,
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 7,
           data: { idName: 'c' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: 'for (var i = 0; i < 1; i++) {}',
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 10,
           data: { idName: 'i' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: `
 for (var foo in []) {
 }
       `,
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 10,
           data: { idName: 'foo' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: `
 for (var foo of []) {
 }
       `,
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 10,
           data: { idName: 'foo' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: `
@@ -652,38 +706,47 @@ function foo() {
   var bar;
 }
       `,
-      options: ['always'],
       errors: [
         {
-          messageId: 'initialized',
+          column: 7,
           data: { idName: 'bar' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'initialized',
         },
       ],
+      options: ['always'],
     },
 
     // typescript-eslint
     {
       code: "let arr: string[] = ['arr', 'ar'];",
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 5,
           data: { idName: 'arr' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: 'let arr: string = function () {};',
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 5,
           data: { idName: 'arr' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: `
@@ -693,36 +756,31 @@ const class1 = class NAME {
   }
 };
       `,
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 9,
           data: { idName: 'name1' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 32,
+          endLine: 4,
+          line: 4,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: 'let arr: string;',
-      options: ['always'],
       errors: [
         {
-          messageId: 'initialized',
+          column: 5,
           data: { idName: 'arr' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'initialized',
         },
       ],
-    },
-    {
-      code: "declare var foo: number = 'asd';",
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'foo' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
+      options: ['always'],
     },
     {
       code: `
@@ -730,14 +788,17 @@ namespace myLib {
   let numberOfGreetings: number;
 }
       `,
-      options: ['always'],
       errors: [
         {
-          messageId: 'initialized',
+          column: 7,
           data: { idName: 'numberOfGreetings' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'initialized',
         },
       ],
+      options: ['always'],
     },
     {
       code: `
@@ -745,14 +806,17 @@ namespace myLib {
   let numberOfGreetings: number = 2;
 }
       `,
-      options: ['never'],
       errors: [
         {
-          messageId: 'notInitialized',
+          column: 7,
           data: { idName: 'numberOfGreetings' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
+          messageId: 'notInitialized',
         },
       ],
+      options: ['never'],
     },
     {
       code: `
@@ -766,24 +830,33 @@ namespace myLib1 {
   }
 }
       `,
-      options: ['always'],
       errors: [
         {
-          messageId: 'initialized',
+          column: 9,
           data: { idName: 'foo' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'initialized',
         },
         {
-          messageId: 'initialized',
+          column: 9,
           data: { idName: 'bar' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'initialized',
         },
         {
-          messageId: 'initialized',
+          column: 11,
           data: { idName: 'baz' },
-          type: AST_NODE_TYPES.VariableDeclarator,
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'initialized',
         },
       ],
+      options: ['always'],
     },
   ],
 });

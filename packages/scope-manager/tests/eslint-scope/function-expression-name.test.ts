@@ -1,10 +1,5 @@
-import {
-  expectToBeFunctionExpressionNameScope,
-  expectToBeFunctionScope,
-  expectToBeGlobalScope,
-  getRealVariables,
-  parseAndAnalyze,
-} from '../test-utils';
+import { ScopeType } from '../../src/index.js';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('function name', () => {
   it('should create its special scope', () => {
@@ -18,26 +13,26 @@ describe('function name', () => {
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
     const globalScope = scope;
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     // Function expression name scope
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionExpressionNameScope(scope);
+    assert.isScopeOfType(scope, ScopeType.functionExpressionName);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('name');
     expect(scope.references).toHaveLength(0);
-    expect(scope.upper === globalScope).toBeTruthy();
+    expect(scope.upper).toBe(globalScope);
 
     // Function scope
     scope = scopeManager.scopes[2];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(variables).toHaveLength(1);
     expect(scope.variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0);
-    expect(scope.upper === scopeManager.scopes[1]).toBeTruthy();
+    expect(scope.upper).toBe(scopeManager.scopes[1]);
   });
 });

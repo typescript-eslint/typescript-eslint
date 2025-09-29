@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSEnumDeclaration declare AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > TSEnumDeclaration > declare > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,13 +10,23 @@ exports[`AST Fixtures declaration TSEnumDeclaration declare AST Alignment - AST 
     body: Array [
       TSEnumDeclaration {
         type: 'TSEnumDeclaration',
--       const: false,
+-       body: TSEnumBody {
+-         type: 'TSEnumBody',
+-         members: Array [],
+-
+-         range: [17, 19],
+-         loc: {
+-           start: { column: 17, line: 1 },
+-           end: { column: 19, line: 1 },
+-         },
+-       },
+        const: false,
         declare: true,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [13, 16],
           loc: {
@@ -24,7 +34,7 @@ exports[`AST Fixtures declaration TSEnumDeclaration declare AST Alignment - AST 
             end: { column: 16, line: 1 },
           },
         },
-        members: Array [],
++       members: Array [],
 
         range: [0, 19],
         loc: {
@@ -40,5 +50,4 @@ exports[`AST Fixtures declaration TSEnumDeclaration declare AST Alignment - AST 
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

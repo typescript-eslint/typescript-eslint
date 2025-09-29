@@ -1,13 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-duplicate-type-constituents.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 type T1 = 'A' | 'A';
                 ~~~ Union type constituent is duplicated with 'A'.
 
-type T2 = A | A | B;
-              ~ Union type constituent is duplicated with A.
+type T2 = string | string | number;
+                   ~~~~~~ Union type constituent is duplicated with string.
 
 type T3 = { a: string } & { a: string };
                           ~~~~~~~~~~~~~ Intersection type constituent is duplicated with { a: string }.
@@ -19,15 +16,15 @@ type StringA = string;
 type StringB = string;
 type T5 = StringA | StringB;
                     ~~~~~~~ Union type constituent is duplicated with StringA.
-"
-`;
 
-exports[`Validating rule docs no-duplicate-type-constituents.mdx code examples ESLint output 2`] = `
-"Correct
+const fn = (a?: string | undefined) => {};
+                         ~~~~~~~~~ Explicit undefined is unnecessary on an optional parameter.
+
+Correct
 
 type T1 = 'A' | 'B';
 
-type T2 = A | B | C;
+type T2 = string | number | boolean;
 
 type T3 = { a: string } & { b: string };
 
@@ -36,5 +33,5 @@ type T4 = [1, 2, 3] | [1, 2, 3, 4];
 type StringA = string;
 type NumberB = number;
 type T5 = StringA | NumberB;
-"
-`;
+
+const fn = (a?: string) => {};

@@ -7,9 +7,9 @@ import type { Expression } from '../../unions/Expression';
 
 export interface AssignmentPattern extends BaseNode {
   type: AST_NODE_TYPES.AssignmentPattern;
+  decorators: Decorator[];
   left: BindingName;
+  optional: boolean;
   right: Expression;
   typeAnnotation: TSTypeAnnotation | undefined;
-  optional: boolean;
-  decorators: Decorator[];
 }

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default-exports AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > namespaces-and-modules > module-with-default-exports > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -17,19 +17,19 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
               type: 'ExportDefaultDeclaration',
               declaration: ClassDeclaration {
                 type: 'ClassDeclaration',
--               abstract: false,
+                abstract: false,
                 body: ClassBody {
                   type: 'ClassBody',
                   body: Array [
                     MethodDefinition {
                       type: 'MethodDefinition',
                       computed: false,
--                     decorators: Array [],
+                      decorators: Array [],
                       key: Identifier {
                         type: 'Identifier',
--                       decorators: Array [],
+                        decorators: Array [],
                         name: 'method',
--                       optional: false,
+                        optional: false,
 
                         range: [119, 125],
                         loc: {
@@ -38,8 +38,8 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
                         },
                       },
                       kind: 'method',
--                     optional: false,
--                     override: false,
+                      optional: false,
+                      override: false,
                       static: false,
                       value: FunctionExpression {
                         type: 'FunctionExpression',
@@ -54,7 +54,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
                             end: { column: 18, line: 5 },
                           },
                         },
--                       declare: false,
+                        declare: false,
                         expression: false,
                         generator: false,
                         id: null,
@@ -65,9 +65,9 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
                             type: 'TSTypeReference',
                             typeName: Identifier {
                               type: 'Identifier',
--                             decorators: Array [],
+                              decorators: Array [],
                               name: 'C',
--                             optional: false,
+                              optional: false,
 
                               range: [129, 130],
                               loc: {
@@ -111,13 +111,13 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
                     end: { column: 3, line: 6 },
                   },
                 },
--               declare: false,
--               decorators: Array [],
+                declare: false,
+                decorators: Array [],
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'C',
--                 optional: false,
+                  optional: false,
 
                   range: [111, 112],
                   loc: {
@@ -125,7 +125,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
                     end: { column: 24, line: 4 },
                   },
                 },
--               implements: Array [],
+                implements: Array [],
                 superClass: null,
 
                 range: [105, 137],
@@ -157,14 +157,14 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
                     end: { column: 34, line: 7 },
                   },
                 },
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'bar',
--                 optional: false,
+                  optional: false,
 
                   range: [164, 167],
                   loc: {
@@ -196,11 +196,11 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
             end: { column: 1, line: 8 },
           },
         },
--       declare: false,
--       global: false,
+        declare: false,
+        global: false,
         id: Literal {
           type: 'Literal',
-          raw: '\\'foo\\'',
+          raw: '\'foo\'',
           value: 'foo',
 
           range: [80, 85],
@@ -209,7 +209,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
             end: { column: 12, line: 3 },
           },
         },
--       kind: 'module',
+        kind: 'module',
 
         range: [73, 174],
         loc: {
@@ -226,5 +226,4 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
       start: { column: 0, line: 3 },
       end: { column: 0, line: 9 },
     },
-  }"
-`;
+  }

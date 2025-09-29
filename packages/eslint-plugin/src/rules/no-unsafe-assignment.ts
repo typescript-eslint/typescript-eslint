@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import type * as ts from 'typescript';
 
 import {
   createRule,
@@ -37,17 +38,20 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      anyAssignment: 'Unsafe assignment of an `any` value.',
+      anyAssignment: 'Unsafe assignment of an {{sender}} value.',
       anyAssignmentThis: [
-        'Unsafe assignment of an `any` value. `this` is typed as `any`.',
+        'Unsafe assignment of an {{sender}} value. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
-      unsafeArrayPattern: 'Unsafe array destructuring of an `any` array value.',
+      unsafeArrayPattern:
+        'Unsafe array destructuring of an {{sender}} array value.',
       unsafeArrayPatternFromTuple:
-        'Unsafe array destructuring of a tuple element with an `any` value.',
+        'Unsafe array destructuring of a tuple element with an {{sender}} value.',
+      unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
       unsafeAssignment:
         'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
-      unsafeArraySpread: 'Unsafe spread of an `any` value in an array.',
+      unsafeObjectPattern:
+        'Unsafe object destructuring of a property with an {{sender}} value.',
     },
     schema: [],
   },
@@ -88,6 +92,7 @@ export default createRule({
         context.report({
           node: receiverNode,
           messageId: 'unsafeArrayPattern',
+          data: createData(senderType),
         });
         return false;
       }
@@ -126,6 +131,7 @@ export default createRule({
           context.report({
             node: receiverElement,
             messageId: 'unsafeArrayPatternFromTuple',
+            data: createData(senderType),
           });
           // we want to report on every invalid element in the tuple
           didReport = true;
@@ -196,7 +202,7 @@ export default createRule({
           receiverProperty.key.type === AST_NODE_TYPES.TemplateLiteral &&
           receiverProperty.key.quasis.length === 1
         ) {
-          key = String(receiverProperty.key.quasis[0].value.cooked);
+          key = receiverProperty.key.quasis[0].value.cooked;
         } else {
           // can't figure out the name, so skip it
           continue;
@@ -211,7 +217,8 @@ export default createRule({
         if (isTypeAnyType(senderType)) {
           context.report({
             node: receiverProperty.value,
-            messageId: 'unsafeArrayPatternFromTuple',
+            messageId: 'unsafeObjectPattern',
+            data: createData(senderType),
           });
           didReport = true;
         } else if (
@@ -246,8 +253,8 @@ export default createRule({
       const receiverTsNode = services.esTreeNodeToTSNodeMap.get(receiverNode);
       const receiverType =
         comparisonType === ComparisonType.Contextual
-          ? getContextualType(checker, receiverTsNode as ts.Expression) ??
-            services.getTypeAtLocation(receiverNode)
+          ? (getContextualType(checker, receiverTsNode as ts.Expression) ??
+            services.getTypeAtLocation(receiverNode))
           : services.getTypeAtLocation(receiverNode);
       const senderType = services.getTypeAtLocation(senderNode);
 
@@ -275,7 +282,9 @@ export default createRule({
         context.report({
           node: reportingNode,
           messageId,
+          data: createData(senderType),
         });
+
         return true;
       }
 
@@ -293,14 +302,11 @@ export default createRule({
         return false;
       }
 
-      const { sender, receiver } = result;
+      const { receiver, sender } = result;
       context.report({
         node: reportingNode,
         messageId: 'unsafeAssignment',
-        data: {
-          sender: checker.typeToString(sender),
-          receiver: checker.typeToString(receiver),
-        },
+        data: createData(sender, receiver),
       });
       return true;
     }
@@ -315,30 +321,26 @@ export default createRule({
           ComparisonType.None;
     }
 
-    return {
-      'VariableDeclarator[init != null]'(
-        node: TSESTree.VariableDeclarator,
-      ): void {
-        const init = nullThrows(
-          node.init,
-          NullThrowsReasons.MissingToken(node.type, 'init'),
-        );
-        let didReport = checkAssignment(
-          node.id,
-          init,
-          node,
-          getComparisonType(node.id.typeAnnotation),
-        );
+    function createData(
+      senderType: ts.Type,
+      receiverType?: ts.Type,
+    ): Readonly<Record<string, unknown>> | undefined {
+      if (receiverType) {
+        return {
+          receiver: `\`${checker.typeToString(receiverType)}\``,
+          sender: `\`${checker.typeToString(senderType)}\``,
+        };
+      }
+      return {
+        sender: tsutils.isIntrinsicErrorType(senderType)
+          ? 'error typed'
+          : '`any`',
+      };
+    }
 
-        if (!didReport) {
-          didReport = checkArrayDestructureHelper(node.id, init);
-        }
-        if (!didReport) {
-          checkObjectDestructureHelper(node.id, init);
-        }
-      },
-      'PropertyDefinition[value != null]'(
-        node: TSESTree.PropertyDefinition & { value: NonNullable<unknown> },
+    return {
+      'AccessorProperty[value != null]'(
+        node: { value: NonNullable<unknown> } & TSESTree.AccessorProperty,
       ): void {
         checkAssignment(
           node.key,
@@ -365,6 +367,37 @@ export default createRule({
           checkObjectDestructureHelper(node.left, node.right);
         }
       },
+      'PropertyDefinition[value != null]'(
+        node: { value: NonNullable<unknown> } & TSESTree.PropertyDefinition,
+      ): void {
+        checkAssignment(
+          node.key,
+          node.value,
+          node,
+          getComparisonType(node.typeAnnotation),
+        );
+      },
+      'VariableDeclarator[init != null]'(
+        node: TSESTree.VariableDeclarator,
+      ): void {
+        const init = nullThrows(
+          node.init,
+          NullThrowsReasons.MissingToken(node.type, 'init'),
+        );
+        let didReport = checkAssignment(
+          node.id,
+          init,
+          node,
+          getComparisonType(node.id.typeAnnotation),
+        );
+
+        if (!didReport) {
+          didReport = checkArrayDestructureHelper(node.id, init);
+        }
+        if (!didReport) {
+          checkObjectDestructureHelper(node.id, init);
+        }
+      },
       // object pattern props are checked via assignments
       ':not(ObjectPattern) > Property'(node: TSESTree.Property): void {
         if (
@@ -381,8 +414,9 @@ export default createRule({
         const restType = services.getTypeAtLocation(node.argument);
         if (isTypeAnyType(restType) || isTypeAnyArrayType(restType, checker)) {
           context.report({
-            node: node,
+            node,
             messageId: 'unsafeArraySpread',
+            data: createData(restType),
           });
         }
       },

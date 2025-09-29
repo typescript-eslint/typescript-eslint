@@ -9,9 +9,10 @@ export function createParserServices(
 ): ParserServices {
   if (!program) {
     return {
-      program,
       emitDecoratorMetadata: undefined,
       experimentalDecorators: undefined,
+      isolatedDeclarations: undefined,
+      program,
       // we always return the node maps because
       // (a) they don't require type info and
       // (b) they can be useful when using some of TS's internal non-type-aware AST utils
@@ -27,6 +28,7 @@ export function createParserServices(
     // not set in the config is the same as off
     emitDecoratorMetadata: compilerOptions.emitDecoratorMetadata ?? false,
     experimentalDecorators: compilerOptions.experimentalDecorators ?? false,
+    isolatedDeclarations: compilerOptions.isolatedDeclarations ?? false,
     ...astMaps,
     getSymbolAtLocation: node =>
       checker.getSymbolAtLocation(astMaps.esTreeNodeToTSNodeMap.get(node)),

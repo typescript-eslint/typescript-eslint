@@ -1,33 +1,37 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 // Passing an object or class instance to string concatenation:
 '' + {};
-     ~~ '{}' will evaluate to '[object Object]' when stringified.
+     ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
 
 class MyClass {}
 const value = new MyClass();
 value + '';
-~~~~~ 'value' will evaluate to '[object Object]' when stringified.
+~~~~~ 'value' will use Object's default stringification format ('[object Object]') when stringified.
 
-// Interpolation and manual .toString() calls too:
-\`Value: \${value}\`;
-          ~~~~~ 'value' will evaluate to '[object Object]' when stringified.
+// Interpolation and manual .toString() and `toLocaleString()` calls too:
+`Value: ${value}`;
+          ~~~~~ 'value' will use Object's default stringification format ('[object Object]') when stringified.
+String({});
+       ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
 ({}).toString();
- ~~ '{}' will evaluate to '[object Object]' when stringified.
-"
-`;
+ ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
+({}).toLocaleString();
+ ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
 
-exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 2`] = `
-"Correct
+// Stringifying objects or instances in an array with the `Array.prototype.join`.
+[{}, new MyClass()].join('');
+~~~~~~~~~~~~~~~~~~~ Using `join()` for [{}, new MyClass()] will use Object's default stringification format ('[object Object]') when stringified.
 
-// These types all have useful .toString()s
+Correct
+
+// These types all have useful .toString() and `toLocaleString()` methods
 'Text' + true;
-\`Value: \${123}\`;
-\`Arrays too: \${[1, 2, 3]}\`;
+`Value: ${123}`;
+`Arrays too: ${[1, 2, 3]}`;
 (() => {}).toString();
+String(42);
+(() => {}).toLocaleString();
 
 // Defining a custom .toString class is considered acceptable
 class CustomToString {
@@ -35,24 +39,26 @@ class CustomToString {
     return 'Hello, world!';
   }
 }
-\`Value: \${new CustomToString()}\`;
+`Value: ${new CustomToString()}`;
 
 const literalWithToString = {
   toString: () => 'Hello, world!',
 };
 
-\`Value: \${literalWithToString}\`;
-"
-`;
+`Value: ${literalWithToString}`;
 
-exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 3`] = `
-"Options: { "ignoredTypeNames": ["RegExp"] }
+Options: { "ignoredTypeNames": ["RegExp"] }
 
-\`\${/regex/}\`;
+`${/regex/}`;
 '' + /regex/;
 /regex/.toString();
 let value = /regex/;
 value.toString();
-let text = \`\${value}\`;
-"
-`;
+let text = `${value}`;
+String(/regex/);
+
+Options: { "checkUnknown": true }
+
+declare const x: unknown;
+String(x);
+       ~ 'x' may use Object's default stringification format ('[object Object]') when stringified.

@@ -1,3 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSImportEqualsDeclaration _error_ entity-name-invalid Babel - Error 1`] = `[SyntaxError: Unexpected token (1:11)]`;
+exports[`AST Fixtures > declaration > TSImportEqualsDeclaration > _error_ > entity-name-invalid > Babel - Error`]
+BabelError
+> 1 | import F = 1;
+    |            ^ Unexpected token (1:11)
+  2 |
+  

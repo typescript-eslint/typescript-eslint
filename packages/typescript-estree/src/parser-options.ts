@@ -2,6 +2,8 @@ import type {
   CacheDurationSeconds,
   DebugLevel,
   JSDocParsingMode,
+  ProjectServiceOptions,
+  SourceType,
 } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
@@ -12,6 +14,12 @@ import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 //////////////////////////////////////////////////////////
 
 interface ParseOptions {
+  /**
+   * Specify the `sourceType`.
+   * For more details, see https://github.com/typescript-eslint/typescript-eslint/pull/9121
+   */
+  sourceType?: SourceType;
+
   /**
    * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
    * This case only usually occurs when attempting to lint invalid code.
@@ -81,7 +89,7 @@ interface ParseOptions {
    * When value is `false`, no logging will occur.
    * When value is not provided, `console.log()` will be used.
    */
-  loggerFn?: false | ((message: string) => void);
+  loggerFn?: ((message: string) => void) | false;
 
   /**
    * Controls whether the `range` property is included on AST nodes.
@@ -101,60 +109,55 @@ interface ParseOptions {
   suppressDeprecatedPropertyWarnings?: boolean;
 }
 
-/**
- * Granular options to configure the project service.
- */
-export interface ProjectServiceOptions {
-  /**
-   * Globs of files to allow running with the default project compiler options.
-   */
-  allowDefaultProjectForFiles?: string[];
-
-  /**
-   * Path to a TSConfig to use instead of TypeScript's default project configuration.
-   */
-  defaultProject?: string;
-
-  /**
-   * The maximum number of files {@link allowDefaultProjectForFiles} may match.
-   * Each file match slows down linting, so if you do need to use this, please
-   * file an informative issue on typescript-eslint explaining why - so we can
-   * help you avoid using it!
-   * @default 8
-   */
-  maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING?: number;
-}
-
 interface ParseAndGenerateServicesOptions extends ParseOptions {
+  /**
+   * Granular control of the expiry lifetime of our internal caches.
+   * You can specify the number of seconds as an integer number, or the string
+   * 'Infinity' if you never want the cache to expire.
+   *
+   * By default cache entries will be evicted after 30 seconds, or will persist
+   * indefinitely if `disallowAutomaticSingleRunInference = false` AND the parser
+   * infers that it is a single run.
+   */
+  cacheLifetime?: {
+    /**
+     * Glob resolution for `parserOptions.project` values.
+     */
+    glob?: CacheDurationSeconds;
+  };
+
+  /**
+   * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
+   * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
+   * on a file in an IDE).
+   *
+   * When typescript-eslint handles TypeScript Program management behind the scenes, this distinction
+   * is important because there is significant overhead to managing the so called Watch Programs
+   * needed for the long-running use-case.
+   *
+   * By default, we will use common heuristics to infer whether ESLint is being
+   * used as part of a single run. This option disables those heuristics, and
+   * therefore the performance optimizations gained by them.
+   *
+   * In other words, typescript-eslint is faster by default, and this option
+   * disables an automatic performance optimization.
+   *
+   * This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN`
+   * environment variable to `"false"` or `"true"`.
+   * Otherwise, the default value is `false`.
+   */
+  disallowAutomaticSingleRunInference?: boolean;
+
   /**
    * Causes the parser to error if the TypeScript compiler returns any unexpected syntax/semantic errors.
    */
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
 
   /**
-   * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
-   *
-   * Whether to create a shared TypeScript server to power program creation.
-   *
-   * @see https://github.com/typescript-eslint/typescript-eslint/issues/6575
-   */
-  EXPERIMENTAL_useProjectService?: boolean | ProjectServiceOptions;
-
-  /**
-   * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
-   *
-   * Causes TS to use the source files for referenced projects instead of the compiled .d.ts files.
-   * This feature is not yet optimized, and is likely to cause OOMs for medium to large projects.
-   *
-   * This flag REQUIRES at least TS v3.9, otherwise it does nothing.
-   *
-   * @see https://github.com/typescript-eslint/typescript-eslint/issues/2094
-   */
-  EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean;
-
-  /**
    * When `project` is provided, this controls the non-standard file extensions which will be parsed.
    * It accepts an array of file extensions, each preceded by a `.`.
+   *
+   * NOTE: When used with {@link projectService}, full project reloads may occur.
    */
   extraFileExtensions?: string[];
 
@@ -182,8 +185,10 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * If this is provided, type information will be returned.
    *
    * If set to `false`, `null` or `undefined` type information will not be returned.
+   *
+   * Note that {@link projectService} is now preferred.
    */
-  project?: string[] | string | boolean | null;
+  project?: boolean | string | string[] | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -193,6 +198,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * By default, this is set to ["**\/node_modules/**"]
    */
   projectFolderIgnoreList?: string[];
+
+  /**
+   * Whether to create a shared TypeScript project service to power program creation.
+   */
+  projectService?: boolean | ProjectServiceOptions;
 
   /**
    * The absolute path to the root directory for all provided `project`s.
@@ -205,45 +215,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * All linted files must be part of the provided program(s).
    */
   programs?: ts.Program[] | null;
-
-  /**
-   * @deprecated - this flag will be removed in the next major.
-   * Do not rely on the behavior provided by this flag.
-   */
-  DEPRECATED__createDefaultProgram?: boolean;
-
-  /**
-   * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
-   * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
-   * on a file in an IDE).
-   *
-   * When typescript-eslint handles TypeScript Program management behind the scenes, this distinction
-   * is important because there is significant overhead to managing the so called Watch Programs
-   * needed for the long-running use-case.
-   *
-   * When allowAutomaticSingleRunInference is enabled, we will use common heuristics to infer
-   * whether or not ESLint is being used as part of a single run.
-   *
-   * This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN`
-   * environment variable to `"false"` or `"true"`.
-   */
-  allowAutomaticSingleRunInference?: boolean;
-
-  /**
-   * Granular control of the expiry lifetime of our internal caches.
-   * You can specify the number of seconds as an integer number, or the string
-   * 'Infinity' if you never want the cache to expire.
-   *
-   * By default cache entries will be evicted after 30 seconds, or will persist
-   * indefinitely if `allowAutomaticSingleRunInference = true` AND the parser
-   * infers that it is a single run.
-   */
-  cacheLifetime?: {
-    /**
-     * Glob resolution for `parserOptions.project` values.
-     */
-    glob?: CacheDurationSeconds;
-  };
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;
@@ -251,6 +222,8 @@ export type TSESTreeOptions = ParseAndGenerateServicesOptions;
 // This lets us use generics to type the return value, and removes the need to
 // handle the undefined type in the get method
 export interface ParserWeakMap<Key, ValueBase> {
+  // This is unsafe internally, so it should only be exposed via safe wrappers.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   get<Value extends ValueBase>(key: Key): Value;
   has(key: unknown): boolean;
 }
@@ -265,6 +238,7 @@ export interface ParserWeakMapESTreeToTSNode<
 export interface ParserServicesBase {
   emitDecoratorMetadata: boolean | undefined;
   experimentalDecorators: boolean | undefined;
+  isolatedDeclarations: boolean | undefined;
 }
 export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
@@ -273,9 +247,9 @@ export interface ParserServicesNodeMaps {
 export interface ParserServicesWithTypeInformation
   extends ParserServicesNodeMaps,
     ParserServicesBase {
-  program: ts.Program;
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
   getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
+  program: ts.Program;
 }
 export interface ParserServicesWithoutTypeInformation
   extends ParserServicesNodeMaps,

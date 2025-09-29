@@ -1,17 +1,18 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures expression BinaryExpression private-lhs-in Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: PrivateIdentifier {
               type: "PrivateIdentifier",
               name: "a",
@@ -22,6 +23,9 @@ Program {
                 end: { column: 4, line: 2 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             value: null,
 
@@ -34,9 +38,14 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "b",
+              optional: false,
 
               range: [18, 19],
               loc: {
@@ -44,6 +53,9 @@ Program {
                 end: { column: 3, line: 3 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             value: BinaryExpression {
               type: "BinaryExpression",
@@ -60,7 +72,9 @@ Program {
               operator: "in",
               right: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "A",
+                optional: false,
 
                 range: [28, 29],
                 loc: {
@@ -90,9 +104,13 @@ Program {
           end: { column: 1, line: 4 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "A",
+        optional: false,
 
         range: [6, 7],
         loc: {
@@ -100,6 +118,7 @@ Program {
           end: { column: 7, line: 1 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [0, 32],
@@ -117,4 +136,3 @@ Program {
     end: { column: 0, line: 5 },
   },
 }
-`;

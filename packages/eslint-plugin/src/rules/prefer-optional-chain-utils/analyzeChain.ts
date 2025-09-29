@@ -2,18 +2,27 @@ import type {
   ParserServicesWithTypeInformation,
   TSESTree,
 } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type {
   ReportDescriptor,
   ReportFixFunction,
   RuleContext,
   SourceCode,
 } from '@typescript-eslint/utils/ts-eslint';
-import { unionTypeParts } from 'ts-api-utils';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { unionConstituents } from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import type { ValidOperand } from './gatherLogicalOperands';
+import type {
+  PreferOptionalChainMessageIds,
+  PreferOptionalChainOptions,
+} from './PreferOptionalChainOptions';
+
 import {
+  getFixOrSuggest,
   getOperatorPrecedenceForNode,
+  isClosingParenToken,
   isOpeningParenToken,
   isTypeFlagSet,
   nullThrows,
@@ -22,12 +31,7 @@ import {
 } from '../../util';
 import { checkNullishAndReport } from './checkNullishAndReport';
 import { compareNodes, NodeComparisonResult } from './compareNodes';
-import type { ValidOperand } from './gatherLogicalOperands';
 import { NullishComparisonType } from './gatherLogicalOperands';
-import type {
-  PreferOptionalChainMessageIds,
-  PreferOptionalChainOptions,
-} from './PreferOptionalChainOptions';
 
 function includesType(
   parserServices: ParserServicesWithTypeInformation,
@@ -35,7 +39,7 @@ function includesType(
   typeFlagIn: ts.TypeFlags,
 ): boolean {
   const typeFlag = typeFlagIn | ts.TypeFlags.Any | ts.TypeFlags.Unknown;
-  const types = unionTypeParts(parserServices.getTypeAtLocation(node));
+  const types = unionConstituents(parserServices.getTypeAtLocation(node));
   for (const type of types) {
     if (isTypeFlagSet(type, typeFlag)) {
       return true;
@@ -53,7 +57,7 @@ type OperandAnalyzer = (
   operand: ValidOperand,
   index: number,
   chain: readonly ValidOperand[],
-) => readonly [ValidOperand] | readonly [ValidOperand, ValidOperand] | null;
+) => readonly [ValidOperand, ValidOperand] | readonly [ValidOperand] | null;
 const analyzeAndChainOperand: OperandAnalyzer = (
   parserServices,
   operand,
@@ -195,21 +199,56 @@ const analyzeOrChainOperand: OperandAnalyzer = (
   }
 };
 
-function getFixer(
+/**
+ * Returns the range that needs to be reported from the chain.
+ * @param chain The chain of logical expressions.
+ * @param boundary The boundary range that the range to report cannot fall outside.
+ * @param sourceCode The source code to get tokens.
+ * @returns The range to report.
+ */
+function getReportRange(
+  chain: ValidOperand[],
+  boundary: TSESTree.Range,
+  sourceCode: SourceCode,
+): TSESTree.Range {
+  const leftNode = chain[0].node;
+  const rightNode = chain[chain.length - 1].node;
+  let leftMost = nullThrows(
+    sourceCode.getFirstToken(leftNode),
+    NullThrowsReasons.MissingToken('any token', leftNode.type),
+  );
+  let rightMost = nullThrows(
+    sourceCode.getLastToken(rightNode),
+    NullThrowsReasons.MissingToken('any token', rightNode.type),
+  );
+
+  while (leftMost.range[0] > boundary[0]) {
+    const token = sourceCode.getTokenBefore(leftMost);
+    if (!token || !isOpeningParenToken(token) || token.range[0] < boundary[0]) {
+      break;
+    }
+    leftMost = token;
+  }
+
+  while (rightMost.range[1] < boundary[1]) {
+    const token = sourceCode.getTokenAfter(rightMost);
+    if (!token || !isClosingParenToken(token) || token.range[1] > boundary[1]) {
+      break;
+    }
+    rightMost = token;
+  }
+
+  return [leftMost.range[0], rightMost.range[1]];
+}
+
+function getReportDescriptor(
   sourceCode: SourceCode,
   parserServices: ParserServicesWithTypeInformation,
+  node: TSESTree.Node,
   operator: '&&' | '||',
   options: PreferOptionalChainOptions,
   chain: ValidOperand[],
-):
-  | {
-      suggest: NonNullable<
-        ReportDescriptor<PreferOptionalChainMessageIds>['suggest']
-      >;
-    }
-  | {
-      fix: NonNullable<ReportDescriptor<PreferOptionalChainMessageIds>['fix']>;
-    } {
+): ReportDescriptor<PreferOptionalChainMessageIds> {
   const lastOperand = chain[chain.length - 1];
 
   let useSuggestionFixer: boolean;
@@ -219,50 +258,44 @@ function getFixer(
   ) {
     // user has opted-in to the unsafe behavior
     useSuggestionFixer = false;
+  }
+  // optional chain specifically will union `undefined` into the final type
+  // so we need to make sure that there is at least one operand that includes
+  // `undefined`, or else we're going to change the final type - which is
+  // unsafe and might cause downstream type errors.
+  else if (
+    lastOperand.comparisonType === NullishComparisonType.EqualNullOrUndefined ||
+    lastOperand.comparisonType ===
+      NullishComparisonType.NotEqualNullOrUndefined ||
+    lastOperand.comparisonType === NullishComparisonType.StrictEqualUndefined ||
+    lastOperand.comparisonType ===
+      NullishComparisonType.NotStrictEqualUndefined ||
+    (operator === '||' &&
+      lastOperand.comparisonType === NullishComparisonType.NotBoolean)
+  ) {
+    // we know the last operand is an equality check - so the change in types
+    // DOES NOT matter and will not change the runtime result or cause a type
+    // check error
+    useSuggestionFixer = false;
   } else {
-    // optional chain specifically will union `undefined` into the final type
-    // so we need to make sure that there is at least one operand that includes
-    // `undefined`, or else we're going to change the final type - which is
-    // unsafe and might cause downstream type errors.
+    useSuggestionFixer = true;
 
-    if (
-      lastOperand.comparisonType ===
-        NullishComparisonType.EqualNullOrUndefined ||
-      lastOperand.comparisonType ===
-        NullishComparisonType.NotEqualNullOrUndefined ||
-      lastOperand.comparisonType ===
-        NullishComparisonType.StrictEqualUndefined ||
-      lastOperand.comparisonType ===
-        NullishComparisonType.NotStrictEqualUndefined ||
-      (operator === '||' &&
-        lastOperand.comparisonType === NullishComparisonType.NotBoolean)
-    ) {
-      // we know the last operand is an equality check - so the change in types
-      // DOES NOT matter and will not change the runtime result or cause a type
-      // check error
-      useSuggestionFixer = false;
-    } else {
-      useSuggestionFixer = true;
-
-      for (const operand of chain) {
-        if (
-          includesType(parserServices, operand.node, ts.TypeFlags.Undefined)
-        ) {
-          useSuggestionFixer = false;
-          break;
-        }
+    for (const operand of chain) {
+      if (includesType(parserServices, operand.node, ts.TypeFlags.Undefined)) {
+        useSuggestionFixer = false;
+        break;
       }
-
-      // TODO - we could further reduce the false-positive rate of this check by
-      //        checking for cases where the change in types don't matter like
-      //        the test location of an if/while/etc statement.
-      //        but it's quite complex to do this without false-negatives, so
-      //        for now we'll just be over-eager with our matching.
-      //
-      //        it's MUCH better to false-positive here and only provide a
-      //        suggestion fixer, rather than false-negative and autofix to
-      //        broken code.
     }
+
+    // TODO - we could further reduce the false-positive rate of this check by
+    //        checking for cases where the change in types don't matter like
+    //        the test location of an if/while/etc statement.
+    //        but it's quite complex to do this without false-negatives, so
+    //        for now we'll just be over-eager with our matching.
+    //
+    //        it's MUCH better to false-positive here and only provide a
+    //        suggestion fixer, rather than false-negative and autofix to
+    //        broken code.
   }
 
   // In its most naive form we could just slap `?.` for every single part of the
@@ -345,7 +378,7 @@ function getFixer(
       if (lastOperand.isYoda) {
         const unaryOperator =
           lastOperand.node.right.type === AST_NODE_TYPES.UnaryExpression
-            ? lastOperand.node.right.operator + ' '
+            ? `${lastOperand.node.right.operator} `
             : '';
 
         return {
@@ -355,7 +388,7 @@ function getFixer(
       }
       const unaryOperator =
         lastOperand.node.left.type === AST_NODE_TYPES.UnaryExpression
-          ? lastOperand.node.left.operator + ' '
+          ? `${lastOperand.node.left.operator} `
           : '';
       return {
         left: unaryOperator + newCode,
@@ -368,15 +401,25 @@ function getFixer(
     newCode = `!${newCode}`;
   }
 
-  const fix: ReportFixFunction = fixer =>
-    fixer.replaceTextRange(
-      [chain[0].node.range[0], lastOperand.node.range[1]],
-      newCode,
-    );
+  const reportRange = getReportRange(chain, node.range, sourceCode);
 
-  return useSuggestionFixer
-    ? { suggest: [{ fix, messageId: 'optionalChainSuggest' }] }
-    : { fix };
+  const fix: ReportFixFunction = fixer =>
+    fixer.replaceTextRange(reportRange, newCode);
+
+  return {
+    loc: {
+      end: sourceCode.getLocFromIndex(reportRange[1]),
+      start: sourceCode.getLocFromIndex(reportRange[0]),
+    },
+    messageId: 'preferOptionalChain',
+    ...getFixOrSuggest({
+      fixOrSuggest: useSuggestionFixer ? 'suggest' : 'fix',
+      suggestion: {
+        fix,
+        messageId: 'optionalChainSuggest',
+      },
+    }),
+  };
 
   interface FlattenedChain {
     nonNull: boolean;
@@ -475,6 +518,7 @@ export function analyzeChain(
   >,
   parserServices: ParserServicesWithTypeInformation,
   options: PreferOptionalChainOptions,
+  node: TSESTree.Node,
   operator: TSESTree.LogicalExpression['operator'],
   chain: ValidOperand[],
 ): void {
@@ -499,7 +543,7 @@ export function analyzeChain(
 
   // Things like x !== null && x !== undefined have two nodes, but they are
   // one logical unit here, so we'll allow them to be grouped.
-  let subChain: (ValidOperand | readonly ValidOperand[])[] = [];
+  let subChain: (readonly ValidOperand[] | ValidOperand)[] = [];
   const maybeReportThenReset = (
     newChainSeed?: readonly [ValidOperand, ...ValidOperand[]],
   ): void => {
@@ -510,20 +554,14 @@ export function analyzeChain(
         parserServices,
         options,
         subChainFlat.slice(0, -1).map(({ node }) => node),
-        {
-          messageId: 'preferOptionalChain',
-          loc: {
-            start: subChainFlat[0].node.loc.start,
-            end: subChainFlat[subChainFlat.length - 1].node.loc.end,
-          },
-          ...getFixer(
-            context.sourceCode,
-            parserServices,
-            operator,
-            options,
-            subChainFlat,
-          ),
-        },
+        getReportDescriptor(
+          context.sourceCode,
+          parserServices,
+          node,
+          operator,
+          options,
+          subChainFlat,
+        ),
       );
     }
 

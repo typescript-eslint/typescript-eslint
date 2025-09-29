@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-empty-function';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-function', rule, {
   valid: [
@@ -92,12 +90,22 @@ class Person {
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 29,
           data: {
             name: 'constructor',
           },
           line: 3,
-          column: 29,
+          messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+class Person {
+  constructor(name: string) { /* empty */ }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -109,12 +117,22 @@ class Person {
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 29,
           data: {
             name: "method 'otherMethod'",
           },
           line: 3,
-          column: 29,
+          messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+class Person {
+  otherMethod(name: string) { /* empty */ }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -126,12 +144,22 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 25,
           data: {
             name: 'constructor',
           },
           line: 3,
-          column: 25,
+          messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+class Foo {
+  private constructor() { /* empty */ }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -143,12 +171,22 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 27,
           data: {
             name: 'constructor',
           },
           line: 3,
-          column: 27,
+          messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+class Foo {
+  protected constructor() { /* empty */ }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -158,12 +196,20 @@ function foo() {}
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 16,
           data: {
             name: "function 'foo'",
           },
           line: 2,
-          column: 16,
+          messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+function foo() { /* empty */ }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -176,12 +222,23 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 9,
           data: {
             name: "method 'foo'",
           },
           line: 4,
-          column: 9,
+          messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+class Foo {
+  @decorator()
+  foo() { /* empty */ }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -193,12 +250,22 @@ class Foo extends Base {
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 18,
           data: {
             name: "method 'foo'",
           },
           line: 3,
-          column: 18,
+          messageId: 'unexpected',
+          suggestions: [
+            {
+              messageId: 'suggestComment',
+              output: `
+class Foo extends Base {
+  override foo() { /* empty */ }
+}
+      `,
+            },
+          ],
         },
       ],
     },

@@ -5,6 +5,6 @@ import type { Statement } from '../../unions/Statement';
 
 export interface WithStatement extends BaseNode {
   type: AST_NODE_TYPES.WithStatement;
-  object: Expression;
   body: Statement;
+  object: Expression;
 }

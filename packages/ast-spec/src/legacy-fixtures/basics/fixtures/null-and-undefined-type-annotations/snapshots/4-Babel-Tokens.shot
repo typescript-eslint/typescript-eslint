@@ -1,9 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics null-and-undefined-type-annotations Babel - Tokens 1`] = `
 [
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [73, 76],
@@ -52,8 +49,8 @@ exports[`AST Fixtures legacy-fixtures basics null-and-undefined-type-annotations
       end: { column: 12, line: 3 },
     },
   },
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [86, 89],
@@ -103,4 +100,3 @@ exports[`AST Fixtures legacy-fixtures basics null-and-undefined-type-annotations
     },
   },
 ]
-`;

@@ -1,0 +1,25 @@
+Incorrect
+
+function f() {
+  return Math.random() < 0.5 ? 42 : 'oops';
+}
+
+const z = f() as number;
+          ~~~~~~~~~~~~~ Unsafe type assertion: type 'number' is more narrow than the original type.
+
+const items = [1, '2', 3, '4'];
+
+const number = items[0] as number;
+               ~~~~~~~~~~~~~~~~~~ Unsafe type assertion: type 'number' is more narrow than the original type.
+
+Correct
+
+function f() {
+  return Math.random() < 0.5 ? 42 : 'oops';
+}
+
+const z = f() as number | string | boolean;
+
+const items = [1, '2', 3, '4'];
+
+const number = items[0] as number | string | undefined;

@@ -5,10 +5,10 @@ import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSTypeParameter extends BaseNode {
   type: AST_NODE_TYPES.TSTypeParameter;
-  name: Identifier;
+  const: boolean;
   constraint: TypeNode | undefined;
   default: TypeNode | undefined;
   in: boolean;
+  name: Identifier;
   out: boolean;
-  const: boolean;
 }

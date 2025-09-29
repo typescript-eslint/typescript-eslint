@@ -1,17 +1,115 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes only-throw-error 1`] = `
-"
 # SCHEMA:
 
 [
   {
     "additionalProperties": false,
     "properties": {
+      "allow": {
+        "description": "Type specifiers that can be thrown.",
+        "items": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "from": {
+                  "enum": ["file"],
+                  "type": "string"
+                },
+                "name": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 1,
+                      "type": "array",
+                      "uniqueItems": true
+                    }
+                  ]
+                },
+                "path": {
+                  "type": "string"
+                }
+              },
+              "required": ["from", "name"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "from": {
+                  "enum": ["lib"],
+                  "type": "string"
+                },
+                "name": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 1,
+                      "type": "array",
+                      "uniqueItems": true
+                    }
+                  ]
+                }
+              },
+              "required": ["from", "name"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "from": {
+                  "enum": ["package"],
+                  "type": "string"
+                },
+                "name": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 1,
+                      "type": "array",
+                      "uniqueItems": true
+                    }
+                  ]
+                },
+                "package": {
+                  "type": "string"
+                }
+              },
+              "required": ["from", "name", "package"],
+              "type": "object"
+            }
+          ]
+        },
+        "type": "array"
+      },
+      "allowRethrowing": {
+        "description": "Whether to allow rethrowing caught values that are not `Error` objects.",
+        "type": "boolean"
+      },
       "allowThrowingAny": {
+        "description": "Whether to always allow throwing values typed as `any`.",
         "type": "boolean"
       },
       "allowThrowingUnknown": {
+        "description": "Whether to always allow throwing values typed as `unknown`.",
         "type": "boolean"
       }
     },
@@ -24,9 +122,29 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Type specifiers that can be thrown. */
+    allow?: (
+      | {
+          from: 'file';
+          name: string | string[];
+          path?: string;
+        }
+      | {
+          from: 'lib';
+          name: string | string[];
+        }
+      | {
+          from: 'package';
+          name: string | string[];
+          package: string;
+        }
+      | string
+    )[];
+    /** Whether to allow rethrowing caught values that are not `Error` objects. */
+    allowRethrowing?: boolean;
+    /** Whether to always allow throwing values typed as `any`. */
     allowThrowingAny?: boolean;
+    /** Whether to always allow throwing values typed as `unknown`. */
     allowThrowingUnknown?: boolean;
   },
 ];
-"
-`;

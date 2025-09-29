@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > statement > ForOfStatement > _error_ > expr-not-assignment-target > TSESTree - Error`]
+TSError
+> 1 | for (1 of []) {}
+    |      ^ The left-hand side of a 'for...of' statement must be a variable or a property access.
+  2 |

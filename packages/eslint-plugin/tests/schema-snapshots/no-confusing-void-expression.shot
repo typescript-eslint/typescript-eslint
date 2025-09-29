@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-confusing-void-expression 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,9 +6,15 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "ignoreArrowShorthand": {
+        "description": "Whether to ignore \"shorthand\" `() =>` arrow functions: those without `{ ... }` braces.",
         "type": "boolean"
       },
       "ignoreVoidOperator": {
+        "description": "Whether to ignore returns that start with the `void` operator.",
+        "type": "boolean"
+      },
+      "ignoreVoidReturningFunctions": {
+        "description": "Whether to ignore returns from functions with explicit `void` return types and functions with contextual `void` return types.",
         "type": "boolean"
       }
     },
@@ -24,9 +27,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to ignore "shorthand" `() =>` arrow functions: those without `{ ... }` braces. */
     ignoreArrowShorthand?: boolean;
+    /** Whether to ignore returns that start with the `void` operator. */
     ignoreVoidOperator?: boolean;
+    /** Whether to ignore returns from functions with explicit `void` return types and functions with contextual `void` return types. */
+    ignoreVoidReturningFunctions?: boolean;
   },
 ];
-"
-`;

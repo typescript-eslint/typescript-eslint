@@ -1,0 +1,76 @@
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "foo",
+            optional: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSAnyKeyword {
+                type: "TSAnyKeyword",
+
+                range: [9, 12],
+                loc: {
+                  start: { column: 9, line: 1 },
+                  end: { column: 12, line: 1 },
+                },
+              },
+
+              range: [7, 12],
+              loc: {
+                start: { column: 7, line: 1 },
+                end: { column: 12, line: 1 },
+              },
+            },
+
+            range: [4, 12],
+            loc: {
+              start: { column: 4, line: 1 },
+              end: { column: 12, line: 1 },
+            },
+          },
+          init: Literal {
+            type: "Literal",
+            raw: "1",
+            value: 1,
+
+            range: [15, 16],
+            loc: {
+              start: { column: 15, line: 1 },
+              end: { column: 16, line: 1 },
+            },
+          },
+
+          range: [4, 16],
+          loc: {
+            start: { column: 4, line: 1 },
+            end: { column: 16, line: 1 },
+          },
+        },
+      ],
+      declare: false,
+      kind: "let",
+
+      range: [0, 17],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 17, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 18],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

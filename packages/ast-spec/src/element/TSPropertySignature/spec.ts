@@ -10,25 +10,25 @@ import type {
 
 interface TSPropertySignatureBase extends BaseNode {
   type: AST_NODE_TYPES.TSPropertySignature;
+  accessibility: Accessibility | undefined;
+  computed: boolean;
   key: PropertyName;
   optional: boolean;
-  computed: boolean;
-  typeAnnotation: TSTypeAnnotation | undefined;
   readonly: boolean;
   static: boolean;
-  accessibility: Accessibility | undefined;
+  typeAnnotation: TSTypeAnnotation | undefined;
 }
 
 export interface TSPropertySignatureComputedName
   extends TSPropertySignatureBase {
-  key: PropertyNameComputed;
   computed: true;
+  key: PropertyNameComputed;
 }
 
 export interface TSPropertySignatureNonComputedName
   extends TSPropertySignatureBase {
-  key: PropertyNameNonComputed;
   computed: false;
+  key: PropertyNameNonComputed;
 }
 
 export type TSPropertySignature =

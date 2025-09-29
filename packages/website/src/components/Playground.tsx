@@ -1,3 +1,5 @@
+import type { ImperativePanelHandle } from 'react-resizable-panels';
+
 import { useWindowSize } from '@docusaurus/theme-common';
 import clsx from 'clsx';
 import React, {
@@ -7,8 +9,10 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import type { ImperativePanelHandle } from 'react-resizable-panels';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+
+import type { UpdateModel } from './linter/types';
+import type { ErrorGroup, RuleDetails, SelectedRange, TabType } from './types';
 
 import ASTViewer from './ast/ASTViewer';
 import ConfigEslint from './config/ConfigEslint';
@@ -17,21 +21,23 @@ import { EditorEmbed } from './editor/EditorEmbed';
 import { LoadingEditor } from './editor/LoadingEditor';
 import { ErrorsViewer, ErrorViewer } from './ErrorsViewer';
 import { ESQueryFilter } from './ESQueryFilter';
-import useHashState from './hooks/useHashState';
+import { useHashState } from './hooks/useHashState';
 import EditorTabs from './layout/EditorTabs';
 import Loader from './layout/Loader';
-import type { UpdateModel } from './linter/types';
 import { defaultConfig, detailTabs } from './options';
 import OptionsSelector from './OptionsSelector';
 import styles from './Playground.module.css';
 import { TypesDetails } from './typeDetails/TypesDetails';
-import type { ErrorGroup, RuleDetails, SelectedRange, TabType } from './types';
 
 function Playground(): React.JSX.Element {
   const windowSize = useWindowSize();
   const [state, setState] = useHashState(defaultConfig);
   const [astModel, setAstModel] = useState<UpdateModel>();
-  const [markers, setMarkers] = useState<ErrorGroup[]>();
+  const [markers, setMarkers] = useState<Record<TabType, ErrorGroup[]>>({
+    code: [],
+    eslintrc: [],
+    tsconfig: [],
+  });
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
@@ -88,22 +94,22 @@ function Playground(): React.JSX.Element {
   return (
     <div className={styles.codeContainer}>
       <PanelGroup
-        className={styles.panelGroup}
         autoSaveId="playground-size"
+        className={styles.panelGroup}
         direction={windowSize === 'mobile' ? 'vertical' : 'horizontal'}
       >
         <Panel
-          id="playgroundMenu"
           className={styles.PanelColumn}
-          defaultSizePercentage={windowSize === 'mobile' ? 0 : optionsSize}
           collapsible={true}
+          defaultSize={windowSize === 'mobile' ? 0 : optionsSize}
+          id="playgroundMenu"
           ref={playgroundMenuRef}
         >
           <div className={styles.playgroundMenu}>
             <OptionsSelector
+              setState={setState}
               state={state}
               tsVersions={tsVersions}
-              setState={setState}
             />
           </div>
         </Panel>
@@ -112,32 +118,32 @@ function Playground(): React.JSX.Element {
           style={windowSize === 'mobile' ? { display: 'none' } : {}}
         />
         <Panel
-          id="playgroundEditor"
           className={styles.PanelColumn}
           collapsible={true}
+          id="playgroundEditor"
         >
           {isLoading && <Loader />}
           <EditorTabs
-            tabs={['code', 'tsconfig', 'eslintrc']}
             active={activeTab}
             change={setTab}
-            showVisualEditor={activeTab !== 'code'}
             showModal={onVisualEditor}
+            showVisualEditor={activeTab !== 'code'}
+            tabs={['code', 'tsconfig', 'eslintrc']}
           />
           {ActiveVisualEditor && (
             <ActiveVisualEditor
               className={styles.tabCode}
-              ruleOptions={ruleNames}
               config={state[activeTab]}
               onChange={setState}
+              ruleOptions={ruleNames}
             />
           )}
           <div
-            key="monacoEditor"
             className={clsx(
               styles.tabCode,
               ActiveVisualEditor && styles.hidden,
             )}
+            key="monacoEditor"
           >
             <EditorEmbed />
           </div>
@@ -145,29 +151,31 @@ function Playground(): React.JSX.Element {
             {...state}
             activeTab={activeTab}
             onASTChange={setAstModel}
-            onMarkersChange={setMarkers}
-            selectedRange={selectedRange}
             onChange={setState}
             onLoaded={onLoaded}
+            onMarkersChange={setMarkers}
             onSelect={setPosition}
+            selectedRange={selectedRange}
           />
         </Panel>
         <PanelResizeHandle className={styles.PanelResizeHandle} />
         <Panel
-          id="playgroundInfo"
           className={styles.PanelColumn}
           collapsible={true}
+          id="playgroundInfo"
         >
           <div>
             <EditorTabs
-              tabs={detailTabs}
               active={state.showAST ?? false}
-              change={showAST => setState({ showAST })}
               additionalTabsInfo={{
                 Errors:
-                  markers?.reduce((prev, cur) => prev + cur.items.length, 0) ||
-                  0,
+                  markers[activeTab].reduce(
+                    (prev, cur) => prev + cur.items.length,
+                    0,
+                  ) || 0,
               }}
+              change={showAST => setState({ showAST })}
+              tabs={detailTabs}
             />
             {state.showAST === 'es' && (
               <ESQueryFilter
@@ -182,39 +190,39 @@ function Playground(): React.JSX.Element {
           <div className={styles.playgroundInfoContainer}>
             {state.showAST === 'es' && esQueryError ? (
               <ErrorViewer
-                type="warning"
                 title="Invalid Selector"
+                type="warning"
                 value={esQueryError}
               />
             ) : state.showAST && astModel ? (
               state.showAST === 'types' && astModel.storedTsAST ? (
                 <TypesDetails
+                  cursorPosition={position}
+                  onHoverNode={setSelectedRange}
                   typeChecker={astModel.typeChecker}
                   value={astModel.storedTsAST}
-                  onHoverNode={setSelectedRange}
-                  cursorPosition={position}
                 />
               ) : (
                 <ASTViewer
-                  key={state.showAST}
+                  cursorPosition={position}
+                  enableScrolling={state.scroll}
                   filter={
                     state.showAST === 'es' ? state.esQuery?.selector : undefined
                   }
+                  key={state.showAST}
+                  onHoverNode={setSelectedRange}
+                  showTokens={state.showTokens}
                   value={
                     state.showAST === 'types'
                       ? undefined
                       : astModel[
-                          `stored${({ ts: 'TsAST', scope: 'Scope', es: 'AST' } as const)[state.showAST]}` as const
+                          `stored${({ es: 'AST', scope: 'Scope', ts: 'TsAST' } as const)[state.showAST]}` as const
                         ]
                   }
-                  showTokens={state.showTokens}
-                  enableScrolling={state.scroll}
-                  cursorPosition={position}
-                  onHoverNode={setSelectedRange}
                 />
               )
             ) : (
-              <ErrorsViewer value={markers} />
+              <ErrorsViewer value={markers[activeTab]} />
             )}
           </div>
         </Panel>

@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-empty-interface 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,6 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowSingleExtends": {
+        "description": "Whether to allow empty interfaces that extend a single other interface.",
         "type": "boolean"
       }
     },
@@ -21,8 +19,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to allow empty interfaces that extend a single other interface. */
     allowSingleExtends?: boolean;
   },
 ];
-"
-`;

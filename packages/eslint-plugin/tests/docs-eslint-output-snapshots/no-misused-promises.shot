@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 Options: { "checksConditionals": true }
 
 const promise = Promise.resolve('value');
@@ -14,71 +11,79 @@ if (promise) {
 const val = promise ? 123 : 456;
             ~~~~~~~ Expected non-Promise value in a boolean conditional.
 
+[1, 2, 3].filter(() => promise);
+                 ~~~~~~~~~~~~~ Expected a non-Promise value to be returned.
+
 while (promise) {
        ~~~~~~~ Expected non-Promise value in a boolean conditional.
   // Do something
 }
-"
-`;
 
-exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 Options: { "checksConditionals": true }
 
 const promise = Promise.resolve('value');
 
-// Always \`await\` the Promise in a conditional
+// Always `await` the Promise in a conditional
 if (await promise) {
   // Do something
 }
 
 const val = (await promise) ? 123 : 456;
 
+const returnVal = await promise;
+[1, 2, 3].filter(() => returnVal);
+
 while (await promise) {
   // Do something
 }
-"
-`;
 
-exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: { "checksVoidReturn": true }
 
 [1, 2, 3].forEach(async value => {
                   ~~~~~~~~~~~~~~~~ Promise returned in function argument where a void return was expected.
-  await doSomething(value);
+  await fetch(`/${value}`);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 });
 ~
 
-new Promise(async (resolve, reject) => {
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promise returned in function argument where a void return was expected.
-  await doSomething();
-~~~~~~~~~~~~~~~~~~~~~~
+new Promise<void>(async (resolve, reject) => {
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promise returned in function argument where a void return was expected.
+  await fetch('/');
+~~~~~~~~~~~~~~~~~~~
   resolve();
 ~~~~~~~~~~~~
 });
 ~
 
-const eventEmitter = new EventEmitter();
-eventEmitter.on('some-event', async () => {
-  synchronousCall();
-  await doSomething();
-  otherSynchronousCall();
+document.addEventListener('click', async () => {
+  console.log('synchronous call');
+  await fetch('/');
+  console.log('synchronous call');
 });
-"
-`;
 
-exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 4`] = `
-"Correct
+interface MySyncInterface {
+  setThing(): void;
+}
+class MyClass implements MySyncInterface {
+  async setThing(): Promise<void> {
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promise-returning method provided where a void return was expected by extended/implemented type 'MySyncInterface'.
+    this.thing = await fetchThing();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  }
+~~~
+}
+
+Correct
 Options: { "checksVoidReturn": true }
 
-// for-of puts \`await\` in outer context
+// for-of puts `await` in outer context
 for (const value of [1, 2, 3]) {
   await doSomething(value);
 }
 
-// If outer context is not \`async\`, handle error explicitly
+// If outer context is not `async`, handle error explicitly
 Promise.all(
   [1, 2, 3].map(async value => {
     await doSomething(value);
@@ -87,7 +92,7 @@ Promise.all(
 
 // Use an async IIFE wrapper
 new Promise((resolve, reject) => {
-  // combine with \`void\` keyword to tell \`no-floating-promises\` rule to ignore unhandled rejection
+  // combine with `void` keyword to tell `no-floating-promises` rule to ignore unhandled rejection
   void (async () => {
     await doSomething();
     resolve();
@@ -95,8 +100,7 @@ new Promise((resolve, reject) => {
 });
 
 // Name the async wrapper to call it later
-const eventEmitter = new EventEmitter();
-eventEmitter.on('some-event', () => {
+document.addEventListener('click', () => {
   const handler = async () => {
     await doSomething();
     otherSynchronousCall();
@@ -110,38 +114,40 @@ eventEmitter.on('some-event', () => {
 
   handler().catch(handleError);
 });
-"
-`;
 
-exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 5`] = `
-"Incorrect
+interface MyAsyncInterface {
+  setThing(): Promise<void>;
+}
+class MyClass implements MyAsyncInterface {
+  async setThing(): Promise<void> {
+    this.thing = await fetchThing();
+  }
+}
+
+Incorrect
 Options: { "checksSpreads": true }
 
-const getData = () => someAsyncOperation({ myArg: 'foo' });
+const getData = () => fetch('/');
 
-return { foo: 42, ...getData() };
+console.log({ foo: 42, ...getData() });
+                          ~~~~~~~~~ Expected a non-Promise value to be spreaded in an object.
 
-const getData2 = async () => {
-  await someAsyncOperation({ myArg: 'foo' });
+const awaitData = async () => {
+  await fetch('/');
 };
 
-return { foo: 42, ...getData2() };
-                     ~~~~~~~~~~ Expected a non-Promise value to be spreaded in an object.
-"
-`;
+console.log({ foo: 42, ...awaitData() });
+                          ~~~~~~~~~~~ Expected a non-Promise value to be spreaded in an object.
 
-exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 Options: { "checksSpreads": true }
 
-const getData = () => someAsyncOperation({ myArg: 'foo' });
+const getData = () => fetch('/');
 
-return { foo: 42, ...(await getData()) };
+console.log({ foo: 42, ...(await getData()) });
 
-const getData2 = async () => {
-  await someAsyncOperation({ myArg: 'foo' });
+const awaitData = async () => {
+  await fetch('/');
 };
 
-return { foo: 42, ...(await getData2()) };
-"
-`;
+console.log({ foo: 42, ...(await awaitData()) });

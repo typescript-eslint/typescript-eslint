@@ -46,6 +46,11 @@
   padding: var(--ifm-pre-padding);
 }
 
+.codeBlockLinesMorePadding {
+  padding: var(--ifm-pre-padding) var(--ifm-pre-padding)
+    calc(var(--ifm-pre-padding) * 2.5);
+}
+
 .codeBlockLinesWithNumbering {
   display: table;
   padding: var(--ifm-pre-padding) 0;

@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > named-string-literal > TSESTree - Error`]
+TSError
+> 1 | import { "😭" } from 'mod';
+    |          ^ Identifier expected.
+  2 |

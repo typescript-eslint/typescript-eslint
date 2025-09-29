@@ -1,13 +1,20 @@
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isFunction } from '../util';
 import type {
   FunctionExpression,
   FunctionInfo,
   FunctionNode,
 } from '../util/explicitReturnTypeUtils';
+
+import {
+  createRule,
+  hasOverloadSignatures,
+  isFunction,
+  isStaticMemberAccessOfValue,
+} from '../util';
 import {
   ancestorHasReturnType,
   checkFunctionExpressionReturnType,
@@ -16,16 +23,17 @@ import {
   isTypedFunctionExpression,
 } from '../util/explicitReturnTypeUtils';
 
-type Options = [
+export type Options = [
   {
     allowArgumentsExplicitlyTypedAsAny?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
     allowedNames?: string[];
     allowHigherOrderFunctions?: boolean;
     allowTypedFunctionExpressions?: boolean;
+    allowOverloadFunctions?: boolean;
   },
 ];
-type MessageIds =
+export type MessageIds =
   | 'anyTypedArg'
   | 'anyTypedArgUnnamed'
   | 'missingArgType'
@@ -41,51 +49,56 @@ export default createRule<Options, MessageIds>({
         "Require explicit return and argument types on exported functions' and classes' public class methods",
     },
     messages: {
-      missingReturnType: 'Missing return type on function.',
-      missingArgType: "Argument '{{name}}' should be typed.",
-      missingArgTypeUnnamed: '{{type}} argument should be typed.',
       anyTypedArg: "Argument '{{name}}' should be typed with a non-any type.",
       anyTypedArgUnnamed:
         '{{type}} argument should be typed with a non-any type.',
+      missingArgType: "Argument '{{name}}' should be typed.",
+      missingArgTypeUnnamed: '{{type}} argument should be typed.',
+      missingReturnType: 'Missing return type on function.',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowArgumentsExplicitlyTypedAsAny: {
+            type: 'boolean',
             description:
               'Whether to ignore arguments that are explicitly typed as `any`.',
-            type: 'boolean',
           },
           allowDirectConstAssertionInArrowFunctions: {
+            type: 'boolean',
             description: [
               'Whether to ignore return type annotations on body-less arrow functions that return an `as const` type assertion.',
               'You must still type the parameters of the function.',
             ].join('\n'),
-            type: 'boolean',
           },
           allowedNames: {
+            type: 'array',
             description:
               'An array of function/method names that will not have their arguments or return values checked.',
             items: {
               type: 'string',
             },
-            type: 'array',
           },
           allowHigherOrderFunctions: {
+            type: 'boolean',
             description: [
               'Whether to ignore return type annotations on functions immediately returning another function expression.',
               'You must still type the parameters of the function.',
             ].join('\n'),
+          },
+          allowOverloadFunctions: {
             type: 'boolean',
+            description:
+              'Whether to ignore return type annotations on functions with overload signatures.',
           },
           allowTypedFunctionExpressions: {
+            type: 'boolean',
             description:
               'Whether to ignore type annotations on the variable of a function expression.',
-            type: 'boolean',
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -95,6 +108,7 @@ export default createRule<Options, MessageIds>({
       allowDirectConstAssertionInArrowFunctions: true,
       allowedNames: [],
       allowHigherOrderFunctions: true,
+      allowOverloadFunctions: false,
       allowTypedFunctionExpressions: true,
     },
   ],
@@ -139,11 +153,14 @@ export default createRule<Options, MessageIds>({
     */
 
     return {
+      'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression':
+        enterFunction,
+      'ArrowFunctionExpression:exit': exitFunction,
       'ExportDefaultDeclaration:exit'(node): void {
         checkNode(node.declaration);
       },
       'ExportNamedDeclaration:not([source]):exit'(
-        node: TSESTree.ExportNamedDeclaration,
+        node: TSESTree.ExportNamedDeclarationWithoutSource,
       ): void {
         if (node.declaration) {
           checkNode(node.declaration);
@@ -153,12 +170,6 @@ export default createRule<Options, MessageIds>({
           }
         }
       },
-      'TSExportAssignment:exit'(node): void {
-        checkNode(node.expression);
-      },
-      'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression':
-        enterFunction,
-      'ArrowFunctionExpression:exit': exitFunction,
       'FunctionDeclaration:exit': exitFunction,
       'FunctionExpression:exit': exitFunction,
       'Program:exit'(): void {
@@ -171,6 +182,9 @@ export default createRule<Options, MessageIds>({
       ReturnStatement(node): void {
         const current = functionStack[functionStack.length - 1];
         functionReturnsMap.get(current)?.push(node);
+      },
+      'TSExportAssignment:exit'(node): void {
+        checkNode(node.expression);
       },
     };
 
@@ -262,27 +276,20 @@ export default createRule<Options, MessageIds>({
           node.id?.type === AST_NODE_TYPES.Identifier &&
           options.allowedNames.includes(node.id.name)
         );
-      } else if (
+      }
+
+      if (
         node.type === AST_NODE_TYPES.MethodDefinition ||
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
         (node.type === AST_NODE_TYPES.Property && node.method) ||
-        node.type === AST_NODE_TYPES.PropertyDefinition
+        node.type === AST_NODE_TYPES.PropertyDefinition ||
+        node.type === AST_NODE_TYPES.AccessorProperty
       ) {
-        if (
-          node.key.type === AST_NODE_TYPES.Literal &&
-          typeof node.key.value === 'string'
-        ) {
-          return options.allowedNames.includes(node.key.value);
-        }
-        if (
-          node.key.type === AST_NODE_TYPES.TemplateLiteral &&
-          node.key.expressions.length === 0
-        ) {
-          return options.allowedNames.includes(node.key.quasis[0].value.raw);
-        }
-        if (!node.computed && node.key.type === AST_NODE_TYPES.Identifier) {
-          return options.allowedNames.includes(node.key.name);
-        }
+        return isStaticMemberAccessOfValue(
+          node,
+          context,
+          ...options.allowedNames,
+        );
       }
 
       return false;
@@ -331,9 +338,9 @@ export default createRule<Options, MessageIds>({
         // cases we don't care about in this rule
         if (
           [
+            DefinitionType.CatchClause,
             DefinitionType.ImplicitGlobalVariable,
             DefinitionType.ImportBinding,
-            DefinitionType.CatchClause,
             DefinitionType.Parameter,
           ].includes(definition.type)
         ) {
@@ -375,6 +382,9 @@ export default createRule<Options, MessageIds>({
           return;
 
         case AST_NODE_TYPES.PropertyDefinition:
+        case AST_NODE_TYPES.AccessorProperty:
+        case AST_NODE_TYPES.MethodDefinition:
+        case AST_NODE_TYPES.TSAbstractMethodDefinition:
           if (
             node.accessibility === 'private' ||
             node.key.type === AST_NODE_TYPES.PrivateIdentifier
@@ -394,16 +404,6 @@ export default createRule<Options, MessageIds>({
           const returns = getReturnsInFunction(node);
           return checkFunction({ node, returns });
         }
-
-        case AST_NODE_TYPES.MethodDefinition:
-        case AST_NODE_TYPES.TSAbstractMethodDefinition:
-          if (
-            node.accessibility === 'private' ||
-            node.key.type === AST_NODE_TYPES.PrivateIdentifier
-          ) {
-            return;
-          }
-          return checkNode(node.value);
 
         case AST_NODE_TYPES.Identifier:
           return followReference(node);
@@ -468,14 +468,22 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
+      if (
+        options.allowOverloadFunctions &&
+        node.parent.type === AST_NODE_TYPES.MethodDefinition &&
+        hasOverloadSignatures(node.parent, context)
+      ) {
+        return;
+      }
+
       checkFunctionExpressionReturnType(
         { node, returns },
         options,
         context.sourceCode,
         loc => {
           context.report({
-            node,
             loc,
+            node,
             messageId: 'missingReturnType',
           });
         },
@@ -497,14 +505,21 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
+      if (
+        options.allowOverloadFunctions &&
+        hasOverloadSignatures(node, context)
+      ) {
+        return;
+      }
+
       checkFunctionReturnType(
         { node, returns },
         options,
         context.sourceCode,
         loc => {
           context.report({
-            node,
             loc,
+            node,
             messageId: 'missingReturnType',
           });
         },

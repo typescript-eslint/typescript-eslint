@@ -1,14 +1,14 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics type-import-type Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "A",
+        optional: false,
 
         range: [78, 79],
         loc: {
@@ -32,6 +32,7 @@ Program {
             },
           },
           options: null,
+          qualifier: null,
 
           range: [89, 100],
           loc: {
@@ -55,9 +56,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "B",
+        optional: false,
 
         range: [107, 108],
         loc: {
@@ -81,7 +85,9 @@ Program {
         options: null,
         qualifier: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "X",
+          optional: false,
 
           range: [123, 124],
           loc: {
@@ -96,7 +102,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "Y",
+                optional: false,
 
                 range: [125, 126],
                 loc: {
@@ -142,4 +150,3 @@ Program {
     end: { column: 0, line: 5 },
   },
 }
-`;

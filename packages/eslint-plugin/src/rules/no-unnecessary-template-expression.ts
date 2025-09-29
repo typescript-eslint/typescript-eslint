@@ -1,28 +1,53 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  getConstraintInfo,
+  getMovedNodeCode,
   getParserServices,
-  getStaticStringValue,
+  isNodeOfType,
   isTypeFlagSet,
   isUndefinedIdentifier,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
+import { rangeToLoc } from '../util/rangeToLoc';
 
-type MessageId = 'noUnnecessaryTemplateExpression';
+export type MessageId = 'noUnnecessaryTemplateExpression';
+
+type TemplateLiteralTypeOrValue =
+  | TSESTree.TemplateLiteral
+  | TSESTree.TSTemplateLiteralType;
+
+interface InterpolationInfo {
+  interpolation: TSESTree.Expression | TSESTree.TypeNode;
+  prevQuasi: TSESTree.TemplateElement;
+  nextQuasi: TSESTree.TemplateElement;
+}
+
+const evenNumOfBackslashesRegExp = /(?<!(?:[^\\]|^)(?:\\\\)*\\)/;
+
+// '\\$' <- false
+// '\\\\$' <- true
+// '\\\\\\$' <- false
+function endsWithUnescapedDollarSign(str: string): boolean {
+  return new RegExp(`${evenNumOfBackslashesRegExp.source}\\$$`).test(str);
+}
 
 export default createRule<[], MessageId>({
   name: 'no-unnecessary-template-expression',
   meta: {
-    fixable: 'code',
     type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary template expressions',
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
       noUnnecessaryTemplateExpression:
         'Template literal expression is unnecessary and can be simplified.',
@@ -32,47 +57,359 @@ export default createRule<[], MessageId>({
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
-    function isUnderlyingTypeString(
-      expression: TSESTree.Expression,
-    ): expression is TSESTree.StringLiteral | TSESTree.Identifier {
-      const type = getConstrainedTypeAtLocation(services, expression);
+    function isStringLike(type: ts.Type): boolean {
+      return isTypeFlagSet(type, ts.TypeFlags.StringLike);
+    }
 
-      const isString = (t: ts.Type): boolean => {
-        return isTypeFlagSet(t, ts.TypeFlags.StringLike);
-      };
-
+    function isUnderlyingTypeString(type: ts.Type): boolean {
       if (type.isUnion()) {
-        return type.types.every(isString);
+        return type.types.every(isStringLike);
       }
 
       if (type.isIntersection()) {
-        return type.types.some(isString);
+        return type.types.some(isStringLike);
       }
 
-      return isString(type);
+      return isStringLike(type);
     }
 
-    function isLiteral(expression: TSESTree.Expression): boolean {
-      return expression.type === AST_NODE_TYPES.Literal;
+    function isEnumMemberType(type: ts.Type): boolean {
+      return tsutils.typeConstituents(type).some(t => {
+        const symbol = t.getSymbol();
+        return !!(
+          symbol?.valueDeclaration && ts.isEnumMember(symbol.valueDeclaration)
+        );
+      });
     }
 
-    function isTemplateLiteral(expression: TSESTree.Expression): boolean {
-      return expression.type === AST_NODE_TYPES.TemplateLiteral;
+    const isLiteral = isNodeOfType(TSESTree.AST_NODE_TYPES.Literal);
+
+    function isTemplateLiteral(
+      node: TSESTree.Node,
+    ): node is TSESTree.TemplateLiteral {
+      return node.type === AST_NODE_TYPES.TemplateLiteral;
     }
 
-    function isInfinityIdentifier(expression: TSESTree.Expression): boolean {
+    function isInfinityIdentifier(node: TSESTree.Node): boolean {
       return (
-        expression.type === AST_NODE_TYPES.Identifier &&
-        expression.name === 'Infinity'
+        node.type === AST_NODE_TYPES.Identifier && node.name === 'Infinity'
       );
     }
 
-    function isNaNIdentifier(expression: TSESTree.Expression): boolean {
+    function isNaNIdentifier(node: TSESTree.Node): boolean {
+      return node.type === AST_NODE_TYPES.Identifier && node.name === 'NaN';
+    }
+
+    function isFixableIdentifier(node: TSESTree.Node): boolean {
       return (
-        expression.type === AST_NODE_TYPES.Identifier &&
-        expression.name === 'NaN'
+        isUndefinedIdentifier(node) ||
+        isInfinityIdentifier(node) ||
+        isNaNIdentifier(node)
       );
+    }
+
+    function hasCommentsBetweenQuasi(
+      startQuasi: TSESTree.TemplateElement,
+      endQuasi: TSESTree.TemplateElement,
+    ): boolean {
+      const startToken = nullThrows(
+        context.sourceCode.getTokenByRangeStart(startQuasi.range[0]),
+        NullThrowsReasons.MissingToken('`${', 'opening template literal'),
+      );
+      const endToken = nullThrows(
+        context.sourceCode.getTokenByRangeStart(endQuasi.range[0]),
+        NullThrowsReasons.MissingToken('}', 'closing template literal'),
+      );
+
+      return context.sourceCode.commentsExistBetween(startToken, endToken);
+    }
+
+    function isTrivialInterpolation(
+      node: TSESTree.TemplateLiteral | TSESTree.TSTemplateLiteralType,
+    ) {
+      return (
+        node.quasis.length === 2 &&
+        node.quasis[0].value.raw === '' &&
+        node.quasis[1].value.raw === ''
+      );
+    }
+
+    function getInterpolations(
+      node: TemplateLiteralTypeOrValue,
+    ): TSESTree.Expression[] | TSESTree.TypeNode[] {
+      if (node.type === AST_NODE_TYPES.TemplateLiteral) {
+        return node.expressions;
+      }
+      return node.types;
+    }
+
+    function getInterpolationInfos(
+      node: TemplateLiteralTypeOrValue,
+    ): InterpolationInfo[] {
+      return getInterpolations(node).map((interpolation, index) => ({
+        interpolation,
+        nextQuasi: node.quasis[index + 1],
+        prevQuasi: node.quasis[index],
+      }));
+    }
+
+    function getLiteral(
+      node: TSESTree.Expression | TSESTree.TypeNode,
+    ): TSESTree.Literal | null {
+      const maybeLiteral =
+        node.type === AST_NODE_TYPES.TSLiteralType ? node.literal : node;
+      return isLiteral(maybeLiteral) ? maybeLiteral : null;
+    }
+
+    function getTemplateLiteral(
+      node: TSESTree.Expression | TSESTree.TypeNode,
+    ): TSESTree.TemplateLiteral | null {
+      const maybeTemplateLiteral =
+        node.type === AST_NODE_TYPES.TSLiteralType ? node.literal : node;
+      return isTemplateLiteral(maybeTemplateLiteral)
+        ? maybeTemplateLiteral
+        : null;
+    }
+
+    function reportSingleInterpolation(node: TemplateLiteralTypeOrValue): void {
+      const interpolations = getInterpolations(node);
+      context.report({
+        loc: rangeToLoc(context.sourceCode, [
+          interpolations[0].range[0] - 2,
+          interpolations[0].range[1] + 1,
+        ]),
+        messageId: 'noUnnecessaryTemplateExpression',
+        fix(fixer): TSESLint.RuleFix | null {
+          const wrappingCode = getMovedNodeCode({
+            destinationNode: node,
+            nodeToMove: interpolations[0],
+            sourceCode: context.sourceCode,
+          });
+
+          return fixer.replaceText(node, wrappingCode);
+        },
+      });
+    }
+
+    function isUnncessaryValueInterpolation({
+      interpolation,
+      nextQuasi,
+      prevQuasi,
+    }: InterpolationInfo): boolean {
+      if (hasCommentsBetweenQuasi(prevQuasi, nextQuasi)) {
+        return false;
+      }
+
+      if (isFixableIdentifier(interpolation)) {
+        return true;
+      }
+
+      if (isLiteral(interpolation)) {
+        // allow trailing whitespace literal
+        if (startsWithNewLine(nextQuasi.value.raw)) {
+          return !(
+            typeof interpolation.value === 'string' &&
+            isWhitespace(interpolation.value)
+          );
+        }
+        return true;
+      }
+
+      if (isTemplateLiteral(interpolation)) {
+        // allow trailing whitespace literal
+        if (startsWithNewLine(nextQuasi.value.raw)) {
+          return !(
+            interpolation.quasis.length === 1 &&
+            isWhitespace(interpolation.quasis[0].value.raw)
+          );
+        }
+        return true;
+      }
+
+      return false;
+    }
+
+    function isUnncessaryTypeInterpolation({
+      interpolation,
+      nextQuasi,
+      prevQuasi,
+    }: InterpolationInfo): boolean {
+      if (hasCommentsBetweenQuasi(prevQuasi, nextQuasi)) {
+        return false;
+      }
+
+      const literal = getLiteral(interpolation);
+      if (literal) {
+        // allow trailing whitespace literal
+        if (startsWithNewLine(nextQuasi.value.raw)) {
+          return !(
+            typeof literal.value === 'string' && isWhitespace(literal.value)
+          );
+        }
+        return true;
+      }
+
+      if (
+        interpolation.type === AST_NODE_TYPES.TSNullKeyword ||
+        interpolation.type === AST_NODE_TYPES.TSUndefinedKeyword
+      ) {
+        return true;
+      }
+
+      const templateLiteral = getTemplateLiteral(interpolation);
+      if (templateLiteral) {
+        // allow trailing whitespace literal
+        if (startsWithNewLine(nextQuasi.value.raw)) {
+          return !(
+            templateLiteral.quasis.length === 1 &&
+            isWhitespace(templateLiteral.quasis[0].value.raw)
+          );
+        }
+        return true;
+      }
+
+      return false;
+    }
+
+    function getReportDescriptors(
+      infos: InterpolationInfo[],
+    ): TSESLint.ReportDescriptor<MessageId>[] {
+      let nextCharacterIsOpeningCurlyBrace = false;
+      const reportDescriptors: TSESLint.ReportDescriptor<MessageId>[] = [];
+      const reversedInfos = [...infos].reverse();
+      for (const { interpolation, nextQuasi, prevQuasi } of reversedInfos) {
+        const fixers: ((fixer: TSESLint.RuleFixer) => TSESLint.RuleFix[])[] =
+          [];
+
+        if (nextQuasi.value.raw !== '') {
+          nextCharacterIsOpeningCurlyBrace =
+            nextQuasi.value.raw.startsWith('{');
+        }
+
+        const literal = getLiteral(interpolation);
+        const templateLiteral = getTemplateLiteral(interpolation);
+        if (literal) {
+          let escapedValue = (
+            typeof literal.value === 'string'
+              ? // The value is already a string, so we're removing quotes:
+                // "'va`lue'" -> "va`lue"
+                literal.raw.slice(1, -1)
+              : // The value may be one of number | bigint | boolean | RegExp | null.
+                // In regular expressions, we escape every backslash
+                String(literal.value).replaceAll('\\', '\\\\')
+          )
+            // The string or RegExp may contain ` or ${.
+            // We want both of these to be escaped in the final template expression.
+            //
+            // A pair of backslashes means "escaped backslash", so backslashes
+            // from this pair won't escape ` or ${. Therefore, to escape these
+            // sequences in the resulting template expression, we need to escape
+            // all sequences that are preceded by an even number of backslashes.
+            //
+            // This RegExp does the following transformations:
+            // \` -> \`
+            // \\` -> \\\`
+            // \${ -> \${
+            // \\${ -> \\\${
+            .replaceAll(
+              new RegExp(`${evenNumOfBackslashesRegExp.source}(\`|\\\${)`, 'g'),
+              '\\$1',
+            );
+
+          // `...${'...$'}{...`
+          //           ^^^^
+          if (
+            nextCharacterIsOpeningCurlyBrace &&
+            endsWithUnescapedDollarSign(escapedValue)
+          ) {
+            escapedValue = escapedValue.replaceAll(/\$$/g, '\\$');
+          }
+
+          if (escapedValue.length !== 0) {
+            nextCharacterIsOpeningCurlyBrace = escapedValue.startsWith('{');
+          }
+
+          fixers.push(fixer => [fixer.replaceText(literal, escapedValue)]);
+        } else if (templateLiteral) {
+          // Since we iterate from the last expression to the first,
+          // a subsequent expression can tell the current expression
+          // that it starts with {.
+          //
+          // `... ${`... $`}${'{...'} ...`
+          //             ^     ^ subsequent expression starts with {
+          //             current expression ends with a dollar sign,
+          //             so '$' + '{' === '${' (bad news for us).
+          //             Let's escape the dollar sign at the end.
+          if (
+            nextCharacterIsOpeningCurlyBrace &&
+            endsWithUnescapedDollarSign(
+              templateLiteral.quasis[templateLiteral.quasis.length - 1].value
+                .raw,
+            )
+          ) {
+            fixers.push(fixer => [
+              fixer.replaceTextRange(
+                [templateLiteral.range[1] - 2, templateLiteral.range[1] - 2],
+                '\\',
+              ),
+            ]);
+          }
+          if (
+            templateLiteral.quasis.length === 1 &&
+            templateLiteral.quasis[0].value.raw.length !== 0
+          ) {
+            nextCharacterIsOpeningCurlyBrace =
+              templateLiteral.quasis[0].value.raw.startsWith('{');
+          }
+
+          // Remove the beginning and trailing backtick characters.
+          fixers.push(fixer => [
+            fixer.removeRange([
+              templateLiteral.range[0],
+              templateLiteral.range[0] + 1,
+            ]),
+            fixer.removeRange([
+              templateLiteral.range[1] - 1,
+              templateLiteral.range[1],
+            ]),
+          ]);
+        } else {
+          nextCharacterIsOpeningCurlyBrace = false;
+        }
+
+        // `... $${'{...'} ...`
+        //      ^^^^^
+        if (
+          nextCharacterIsOpeningCurlyBrace &&
+          endsWithUnescapedDollarSign(prevQuasi.value.raw)
+        ) {
+          fixers.push(fixer => [
+            fixer.replaceTextRange(
+              [prevQuasi.range[1] - 3, prevQuasi.range[1] - 2],
+              '\\$',
+            ),
+          ]);
+        }
+
+        const warnLocStart = prevQuasi.range[1] - 2;
+        const warnLocEnd = nextQuasi.range[0] + 1;
+        reportDescriptors.push({
+          loc: rangeToLoc(context.sourceCode, [warnLocStart, warnLocEnd]),
+          messageId: 'noUnnecessaryTemplateExpression',
+          fix(fixer): TSESLint.RuleFix[] {
+            return [
+              // Remove the quasis' parts that are related to the current expression.
+              fixer.removeRange([warnLocStart, interpolation.range[0]]),
+              fixer.removeRange([interpolation.range[1], warnLocEnd]),
+
+              ...fixers.flatMap(cb => cb(fixer)),
+            ];
+          },
+        });
+      }
+      return reportDescriptors;
     }
 
     return {
@@ -80,96 +417,73 @@ export default createRule<[], MessageId>({
         if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           return;
         }
-
-        const hasSingleStringVariable =
-          node.quasis.length === 2 &&
-          node.quasis[0].value.raw === '' &&
-          node.quasis[1].value.raw === '' &&
-          node.expressions.length === 1 &&
-          isUnderlyingTypeString(node.expressions[0]);
-
-        if (hasSingleStringVariable) {
-          context.report({
-            node: node.expressions[0],
-            messageId: 'noUnnecessaryTemplateExpression',
-            fix(fixer): TSESLint.RuleFix[] {
-              const [prevQuasi, nextQuasi] = node.quasis;
-
-              // Remove the quasis and backticks.
-              return [
-                fixer.removeRange([
-                  prevQuasi.range[1] - 3,
-                  node.expressions[0].range[0],
-                ]),
-
-                fixer.removeRange([
-                  node.expressions[0].range[1],
-                  nextQuasi.range[0] + 2,
-                ]),
-              ];
-            },
-          });
-
-          return;
+        if (
+          isTrivialInterpolation(node) &&
+          !hasCommentsBetweenQuasi(node.quasis[0], node.quasis[1])
+        ) {
+          const { constraintType } = getConstraintInfo(
+            checker,
+            services.getTypeAtLocation(node.expressions[0]),
+          );
+          if (constraintType && isUnderlyingTypeString(constraintType)) {
+            reportSingleInterpolation(node);
+            return;
+          }
         }
 
-        const fixableExpressions = node.expressions.filter(
-          expression =>
-            isLiteral(expression) ||
-            isTemplateLiteral(expression) ||
-            isUndefinedIdentifier(expression) ||
-            isInfinityIdentifier(expression) ||
-            isNaNIdentifier(expression),
+        const infos = getInterpolationInfos(node).filter(
+          isUnncessaryValueInterpolation,
         );
 
-        fixableExpressions.forEach(expression => {
-          context.report({
-            node: expression,
-            messageId: 'noUnnecessaryTemplateExpression',
-            fix(fixer): TSESLint.RuleFix[] {
-              const index = node.expressions.indexOf(expression);
-              const prevQuasi = node.quasis[index];
-              const nextQuasi = node.quasis[index + 1];
+        for (const reportDescriptor of getReportDescriptors(infos)) {
+          context.report(reportDescriptor);
+        }
+      },
+      TSTemplateLiteralType(node: TSESTree.TSTemplateLiteralType): void {
+        if (
+          isTrivialInterpolation(node) &&
+          !hasCommentsBetweenQuasi(node.quasis[0], node.quasis[1])
+        ) {
+          const { constraintType, isTypeParameter } = getConstraintInfo(
+            checker,
+            services.getTypeAtLocation(node.types[0]),
+          );
 
-              // Remove the quasis' parts that are related to the current expression.
-              const fixes = [
-                fixer.removeRange([
-                  prevQuasi.range[1] - 2,
-                  expression.range[0],
-                ]),
+          if (
+            constraintType &&
+            !isTypeParameter &&
+            isUnderlyingTypeString(constraintType) &&
+            !isEnumMemberType(constraintType)
+          ) {
+            reportSingleInterpolation(node);
+            return;
+          }
+        }
 
-                fixer.removeRange([
-                  expression.range[1],
-                  nextQuasi.range[0] + 1,
-                ]),
-              ];
+        const infos = getInterpolationInfos(node).filter(
+          isUnncessaryTypeInterpolation,
+        );
 
-              const stringValue = getStaticStringValue(expression);
-
-              if (stringValue != null) {
-                const escapedValue = stringValue.replace(/([`$\\])/g, '\\$1');
-
-                fixes.push(fixer.replaceText(expression, escapedValue));
-              } else if (isTemplateLiteral(expression)) {
-                // Note that some template literals get handled in the previous branch too.
-                // Remove the beginning and trailing backtick characters.
-                fixes.push(
-                  fixer.removeRange([
-                    expression.range[0],
-                    expression.range[0] + 1,
-                  ]),
-                  fixer.removeRange([
-                    expression.range[1] - 1,
-                    expression.range[1],
-                  ]),
-                );
-              }
-
-              return fixes;
-            },
-          });
-        });
+        for (const reportDescriptor of getReportDescriptors(infos)) {
+          context.report(reportDescriptor);
+        }
       },
     };
   },
 });
+
+function isWhitespace(x: string): boolean {
+  // allow empty string too since we went to allow
+  // `      ${''}
+  // `;
+  //
+  // in addition to
+  // `${'        '}
+  // `;
+  //
+  return /^\s*$/.test(x);
+}
+
+function startsWithNewLine(x: string): boolean {
+  return x.startsWith('\n') || x.startsWith('\r\n');
+}

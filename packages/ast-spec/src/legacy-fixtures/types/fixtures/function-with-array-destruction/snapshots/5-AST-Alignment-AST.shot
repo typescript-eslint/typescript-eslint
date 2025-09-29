@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types function-with-array-destruction AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > function-with-array-destruction > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,12 +10,12 @@ exports[`AST Fixtures legacy-fixtures types function-with-array-destruction AST 
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'foo',
--         optional: false,
+          optional: false,
 
           range: [78, 81],
           loc: {
@@ -29,13 +29,13 @@ exports[`AST Fixtures legacy-fixtures types function-with-array-destruction AST 
 +         parameters: Array [
             ArrayPattern {
               type: 'ArrayPattern',
--             decorators: Array [],
+              decorators: Array [],
               elements: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'a',
--                 optional: false,
+                  optional: false,
 
                   range: [86, 87],
                   loc: {
@@ -44,7 +44,7 @@ exports[`AST Fixtures legacy-fixtures types function-with-array-destruction AST 
                   },
                 },
               ],
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSAnyKeyword {
@@ -112,5 +112,4 @@ exports[`AST Fixtures legacy-fixtures types function-with-array-destruction AST 
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

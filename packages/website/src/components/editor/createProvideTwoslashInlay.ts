@@ -8,14 +8,9 @@ import type * as ts from 'typescript';
 import type { SandboxInstance } from './useSandboxServices';
 
 function findTwoshashQueries(code: string): RegExpExecArray[] {
-  let match: RegExpExecArray | null = null;
-  const matches: RegExpExecArray[] = [];
   // RegExp that matches '^<spaces>//?<spaces>$'
   const twoslashQueryRegex = /^(\s*\/\/\s*\^\?)\s*$/gm;
-  while ((match = twoslashQueryRegex.exec(code))) {
-    matches.push(match);
-  }
-  return matches;
+  return [...code.matchAll(twoslashQueryRegex)];
 }
 
 export function createTwoslashInlayProvider(
@@ -30,10 +25,10 @@ export function createTwoslashInlayProvider(
       const worker = await sandbox.getWorkerProcess();
       if (model.isDisposed() || cancel.isCancellationRequested) {
         return {
-          hints: [],
           dispose(): void {
             /* nop */
           },
+          hints: [],
         };
       }
 
@@ -50,10 +45,10 @@ export function createTwoslashInlayProvider(
       }
 
       return {
-        hints: results,
         dispose(): void {
           /* nop */
         },
+        hints: results,
       };
 
       async function resolveInlayHint(
@@ -68,7 +63,7 @@ export function createTwoslashInlayProvider(
         const inspectionOff = model.getOffsetAt(inspectionPos);
 
         const hint = await (worker.getQuickInfoAtPosition(
-          'file://' + model.uri.path,
+          `file://${model.uri.path}`,
           inspectionOff,
         ) as Promise<ts.QuickInfo | undefined>);
         if (!hint?.displayParts) {
@@ -78,19 +73,19 @@ export function createTwoslashInlayProvider(
         let text = hint.displayParts
           .map(d => d.text)
           .join('')
-          .replace(/\r?\n\s*/g, ' ');
+          .replaceAll(/\r?\n\s*/g, ' ');
         if (text.length > 120) {
-          text = text.slice(0, 119) + '...';
+          text = `${text.slice(0, 119)}...`;
         }
 
         return {
           kind: sandbox.monaco.languages.InlayHintKind.Type,
+          label: text,
+          paddingLeft: true,
           position: new sandbox.monaco.Position(
             endPos.lineNumber,
             endPos.column + 1,
           ),
-          label: text,
-          paddingLeft: true,
         };
       }
     },

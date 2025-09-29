@@ -1,6 +1,10 @@
-import type { AST as RegExpAST } from '@eslint-community/regexpp';
+import type {
+  NodeWithParent,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/utils';
+
 import { RegExpParser } from '@eslint-community/regexpp';
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -10,8 +14,10 @@ import {
   getStaticValue,
   getTypeName,
   isNotClosingParenToken,
+  isStaticMemberAccessOfValue,
   nullThrows,
   NullThrowsReasons,
+  skipChainExpression,
 } from '../util';
 
 const EQ_OPERATORS = /^[=!]=/;
@@ -25,12 +31,10 @@ export type Options = [
   },
 ];
 
-type MessageIds = 'preferEndsWith' | 'preferStartsWith';
+export type MessageIds = 'preferEndsWith' | 'preferStartsWith';
 
 export default createRule<Options, MessageIds>({
   name: 'prefer-string-starts-ends-with',
-  defaultOptions: [{ allowSingleElementEquality: 'never' }],
-
   meta: {
     type: 'suggestion',
     docs: {
@@ -39,26 +43,28 @@ export default createRule<Options, MessageIds>({
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
-      preferStartsWith: "Use 'String#startsWith' method instead.",
       preferEndsWith: "Use the 'String#endsWith' method instead.",
+      preferStartsWith: "Use 'String#startsWith' method instead.",
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowSingleElementEquality: {
+            type: 'string',
             description:
               'Whether to allow equality checks against the first or last element of a string.',
             enum: ['always', 'never'],
-            type: 'string',
           },
         },
-        type: 'object',
       },
     ],
-    fixable: 'code',
   },
+
+  defaultOptions: [{ allowSingleElementEquality: 'never' }],
 
   create(context, [{ allowSingleElementEquality }]) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
@@ -270,9 +276,7 @@ export default createRule<Options, MessageIds>({
       }
 
       // To string.
-      return String.fromCodePoint(
-        ...chars.map(c => (c as RegExpAST.Character).value),
-      );
+      return String.fromCodePoint(...chars.map(c => c.value));
     }
 
     /**
@@ -281,13 +285,13 @@ export default createRule<Options, MessageIds>({
      */
     function parseRegExp(
       node: TSESTree.Node,
-    ): { isStartsWith: boolean; isEndsWith: boolean; text: string } | null {
+    ): { isEndsWith: boolean; isStartsWith: boolean; text: string } | null {
       const evaluated = getStaticValue(node, globalScope);
       if (evaluated == null || !(evaluated.value instanceof RegExp)) {
         return null;
       }
 
-      const { source, flags } = evaluated.value;
+      const { flags, source } = evaluated.value;
       const isStartsWith = source.startsWith('^');
       const isEndsWith = source.endsWith('$');
       if (
@@ -307,18 +311,11 @@ export default createRule<Options, MessageIds>({
     }
 
     function getLeftNode(
-      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+      init: TSESTree.Expression | TSESTree.PrivateIdentifier,
     ): TSESTree.MemberExpression {
-      if (node.type === AST_NODE_TYPES.ChainExpression) {
-        return getLeftNode(node.expression);
-      }
-
-      let leftNode;
-      if (node.type === AST_NODE_TYPES.CallExpression) {
-        leftNode = node.callee;
-      } else {
-        leftNode = node;
-      }
+      const node = skipChainExpression(init);
+      const leftNode =
+        node.type === AST_NODE_TYPES.CallExpression ? node.callee : node;
 
       if (leftNode.type !== AST_NODE_TYPES.MemberExpression) {
         throw new Error(`Expected a MemberExpression, got ${leftNode.type}`);
@@ -383,13 +380,10 @@ export default createRule<Options, MessageIds>({
       yield fixer.removeRange([callNode.range[1], node.range[1]]);
     }
 
-    function getParent(node: TSESTree.Node): TSESTree.Node {
-      return nullThrows(
-        node.parent?.type === AST_NODE_TYPES.ChainExpression
-          ? node.parent.parent
-          : node.parent,
-        NullThrowsReasons.MissingParent,
-      );
+    function getParent(node: NodeWithParent): TSESTree.Node {
+      return node.parent.type === AST_NODE_TYPES.ChainExpression
+        ? node.parent.parent
+        : node.parent;
     }
 
     return {
@@ -537,11 +531,7 @@ export default createRule<Options, MessageIds>({
         const callNode = getParent(node) as TSESTree.CallExpression;
         const parentNode = getParent(callNode) as TSESTree.BinaryExpression;
 
-        if (
-          !isEqualityComparison(parentNode) ||
-          !isNull(parentNode.right) ||
-          !isStringType(node.object)
-        ) {
+        if (!isNull(parentNode.right) || !isStringType(node.object)) {
           return;
         }
 
@@ -583,11 +573,12 @@ export default createRule<Options, MessageIds>({
       // foo.substring(foo.length - 3) === 'bar'
       // foo.substring(foo.length - 3, foo.length) === 'bar'
       [[
-        'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="slice"][computed=false]',
-        'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="substring"][computed=false]',
-        'BinaryExpression > ChainExpression.left > CallExpression > MemberExpression.callee[property.name="slice"][computed=false]',
-        'BinaryExpression > ChainExpression.left > CallExpression > MemberExpression.callee[property.name="substring"][computed=false]',
+        'BinaryExpression > CallExpression.left > MemberExpression',
+        'BinaryExpression > ChainExpression.left > CallExpression > MemberExpression',
       ].join(', ')](node: TSESTree.MemberExpression): void {
+        if (!isStaticMemberAccessOfValue(node, context, 'slice', 'substring')) {
+          return;
+        }
         const callNode = getParent(node) as TSESTree.CallExpression;
         const parentNode = getParent(callNode);
 

@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isParenthesized } from '../util';
@@ -63,6 +64,7 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.TSTypeOperator:
     case AST_NODE_TYPES.TSInferType:
     case AST_NODE_TYPES.TSConstructorType:
+    case AST_NODE_TYPES.TSConditionalType:
       return true;
     case AST_NODE_TYPES.Identifier:
       return node.name === 'ReadonlyArray';
@@ -71,16 +73,18 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
   }
 }
 
-export type OptionString = 'array-simple' | 'array' | 'generic';
-type Options = [
+export type OptionString = 'array' | 'array-simple' | 'generic';
+export type Options = [
   {
     default: OptionString;
     readonly?: OptionString;
   },
 ];
-type MessageIds =
+export type MessageIds =
   | 'errorStringArray'
+  | 'errorStringArrayReadonly'
   | 'errorStringArraySimple'
+  | 'errorStringArraySimpleReadonly'
   | 'errorStringGeneric'
   | 'errorStringGenericSimple';
 
@@ -95,17 +99,22 @@ export default createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
-      errorStringGeneric:
-        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden. Use '{{className}}<{{type}}>' instead.",
       errorStringArray:
         "Array type using '{{className}}<{{type}}>' is forbidden. Use '{{readonlyPrefix}}{{type}}[]' instead.",
+      errorStringArrayReadonly:
+        "Array type using '{{className}}<{{type}}>' is forbidden. Use '{{readonlyPrefix}}{{type}}' instead.",
       errorStringArraySimple:
         "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}[]' instead.",
+      errorStringArraySimpleReadonly:
+        "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}' instead.",
+      errorStringGeneric:
+        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden. Use '{{className}}<{{type}}>' instead.",
       errorStringGenericSimple:
         "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
     },
     schema: [
       {
+        type: 'object',
         $defs: {
           arrayOption: {
             type: 'string',
@@ -124,7 +133,6 @@ export default createRule<Options, MessageIds>({
               'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
           },
         },
-        type: 'object',
       },
     ],
   },
@@ -172,9 +180,9 @@ export default createRule<Options, MessageIds>({
           node: errorNode,
           messageId,
           data: {
+            type: getMessageType(node.elementType),
             className: isReadonly ? 'ReadonlyArray' : 'Array',
             readonlyPrefix: isReadonly ? 'readonly ' : '',
-            type: getMessageType(node.elementType),
           },
           fix(fixer) {
             const typeNode = node.elementType;
@@ -199,13 +207,22 @@ export default createRule<Options, MessageIds>({
           node.typeName.type !== AST_NODE_TYPES.Identifier ||
           !(
             node.typeName.name === 'Array' ||
-            node.typeName.name === 'ReadonlyArray'
-          )
+            node.typeName.name === 'ReadonlyArray' ||
+            node.typeName.name === 'Readonly'
+          ) ||
+          (node.typeName.name === 'Readonly' &&
+            node.typeArguments?.params[0].type !== AST_NODE_TYPES.TSArrayType)
         ) {
           return;
         }
 
-        const isReadonlyArrayType = node.typeName.name === 'ReadonlyArray';
+        const isReadonlyWithGenericArrayType =
+          node.typeName.name === 'Readonly' &&
+          node.typeArguments?.params[0].type === AST_NODE_TYPES.TSArrayType;
+        const isReadonlyArrayType =
+          node.typeName.name === 'ReadonlyArray' ||
+          isReadonlyWithGenericArrayType;
+
         const currentOption = isReadonlyArrayType
           ? readonlyOption
           : defaultOption;
@@ -218,18 +235,22 @@ export default createRule<Options, MessageIds>({
         const typeParams = node.typeArguments?.params;
         const messageId =
           currentOption === 'array'
-            ? 'errorStringArray'
-            : 'errorStringArraySimple';
+            ? isReadonlyWithGenericArrayType
+              ? 'errorStringArrayReadonly'
+              : 'errorStringArray'
+            : isReadonlyArrayType && node.typeName.name !== 'ReadonlyArray'
+              ? 'errorStringArraySimpleReadonly'
+              : 'errorStringArraySimple';
 
-        if (!typeParams || typeParams.length === 0) {
+        if (!typeParams) {
           // Create an 'any' array
           context.report({
             node,
             messageId,
             data: {
+              type: 'any',
               className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
               readonlyPrefix,
-              type: 'any',
             },
             fix(fixer) {
               return fixer.replaceText(node, `${readonlyPrefix}any[]`);
@@ -256,15 +277,14 @@ export default createRule<Options, MessageIds>({
         const start = `${parentParens ? '(' : ''}${readonlyPrefix}${
           typeParens ? '(' : ''
         }`;
-        const end = `${typeParens ? ')' : ''}[]${parentParens ? ')' : ''}`;
-
+        const end = `${typeParens ? ')' : ''}${isReadonlyWithGenericArrayType ? '' : `[]`}${parentParens ? ')' : ''}`;
         context.report({
           node,
           messageId,
           data: {
-            className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
-            readonlyPrefix,
             type: getMessageType(type),
+            className: isReadonlyArrayType ? node.typeName.name : 'Array',
+            readonlyPrefix,
           },
           fix(fixer) {
             return [

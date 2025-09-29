@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ExportNamedDeclaration > _error_ > braced-number-literal-with-source > Babel - Error`]
+BabelError
+> 1 | export { 1 } from 'mod';
+    |          ^ Unexpected token (1:9)
+  2 |
+  

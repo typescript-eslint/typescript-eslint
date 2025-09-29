@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > TSImportEqualsDeclaration > _error_ > external-module-ref-non-string-2 > Babel - Error`]
+BabelError
+> 1 | import F = require(1 + 1);
+    |                    ^ Unexpected token (1:19)
+  2 |
+  

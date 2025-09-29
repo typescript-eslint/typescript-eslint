@@ -1,26 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import type * as ts from 'typescript';
 
-import { findSelectionPath } from '../ast/selectedRange';
+import React, { useEffect, useState } from 'react';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+
 import type { OnHoverNodeFn } from '../ast/types';
+
+import { findSelectionPath } from '../ast/selectedRange';
 import { isTSNode } from '../ast/utils';
 import styles from '../Playground.module.css';
 import { SimplifiedTreeView } from './SimplifiedTreeView';
 import { TypeInfo } from './TypeInfo';
 
 export interface TypesDetailsProps {
-  readonly value: ts.Node;
-  readonly typeChecker?: ts.TypeChecker;
   readonly cursorPosition?: number;
   readonly onHoverNode?: OnHoverNodeFn;
+  readonly typeChecker?: ts.TypeChecker;
+  readonly value: ts.Node;
 }
 
 export function TypesDetails({
   cursorPosition,
-  value,
-  typeChecker,
   onHoverNode,
+  typeChecker,
+  value,
 }: TypesDetailsProps): React.JSX.Element {
   const [selectedNode, setSelectedNode] = useState<ts.Node>(value);
 
@@ -36,22 +38,22 @@ export function TypesDetails({
   return (
     <PanelGroup autoSaveId="playground-types" direction="horizontal">
       <Panel
-        id="simplifiedTree"
-        defaultSizePercentage={35}
-        collapsible={true}
         className={styles.PanelColumn}
+        collapsible={true}
+        defaultSize={35}
+        id="simplifiedTree"
       >
         <div className={styles.playgroundInfoContainer}>
           <SimplifiedTreeView
             onHoverNode={onHoverNode}
-            selectedNode={selectedNode}
             onSelect={setSelectedNode}
+            selectedNode={selectedNode}
             value={value}
           />
         </div>
       </Panel>
       <PanelResizeHandle className={styles.PanelResizeHandle} />
-      <Panel id="typeInfo" collapsible={true} className={styles.PanelColumn}>
+      <Panel className={styles.PanelColumn} collapsible={true} id="typeInfo">
         <div className={styles.playgroundInfoContainer}>
           <TypeInfo
             onHoverNode={onHoverNode}

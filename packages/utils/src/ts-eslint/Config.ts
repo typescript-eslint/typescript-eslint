@@ -16,8 +16,18 @@ export namespace SharedConfig {
   export type RuleEntry = RuleLevel | RuleLevelAndOptions;
   export type RulesRecord = Partial<Record<string, RuleEntry>>;
 
-  export type GlobalVariableOptionBase = 'off' | 'readonly' | 'writable';
-  export type GlobalVariableOption = GlobalVariableOptionBase | boolean;
+  export type GlobalVariableOptionBase =
+    | 'off'
+    | /** @deprecated use `'readonly'` */ 'readable'
+    | 'readonly'
+    | 'writable'
+    | /** @deprecated use `'writable'` */ 'writeable';
+  export type GlobalVariableOptionBoolean =
+    | /** @deprecated use `'readonly'` */ false
+    | /** @deprecated use `'writable'` */ true;
+  export type GlobalVariableOption =
+    | GlobalVariableOptionBase
+    | GlobalVariableOptionBoolean;
 
   export interface GlobalsConfig {
     [name: string]: GlobalVariableOption;
@@ -63,13 +73,13 @@ export namespace ClassicConfig {
     /**
      * The path to other config files or the package name of shareable configs.
      */
-    extends?: string[] | string;
+    extends?: string | string[];
     /**
      * The global variable settings.
      */
     globals?: GlobalsConfig;
     /**
-     * The flag that disables directive comments.
+     * The flag that disables comment directives.
      */
     noInlineConfig?: boolean;
     /**
@@ -107,15 +117,15 @@ export namespace ClassicConfig {
   }
 
   export interface ConfigOverride extends BaseConfig {
-    excludedFiles?: string[] | string;
-    files: string[] | string;
+    excludedFiles?: string | string[];
+    files: string | string[];
   }
 
   export interface Config extends BaseConfig {
     /**
      * The glob patterns that ignore to lint.
      */
-    ignorePatterns?: string[] | string;
+    ignorePatterns?: string | string[];
     /**
      * The root flag.
      */
@@ -137,10 +147,10 @@ export namespace FlatConfig {
   export type Settings = SharedConfigurationSettings;
   export type Severity = SharedConfig.Severity;
   export type SeverityString = SharedConfig.SeverityString;
-  export type SourceType = ParserOptionsTypes.SourceType | 'commonjs';
+  export type SourceType = 'commonjs' | ParserOptionsTypes.SourceType;
 
   export interface SharedConfigs {
-    [key: string]: Config;
+    [key: string]: Config | ConfigArray;
   }
   export interface Plugin {
     /**
@@ -184,12 +194,22 @@ export namespace FlatConfig {
      * A severity string indicating if and how unused disable and enable
      * directives should be tracked and reported. For legacy compatibility, `true`
      * is equivalent to `"warn"` and `false` is equivalent to `"off"`.
-     * @default "off"
+     * @default "warn"
      */
     reportUnusedDisableDirectives?:
+      | boolean
       | SharedConfig.Severity
-      | SharedConfig.SeverityString
-      | boolean;
+      | SharedConfig.SeverityString;
+    /**
+     * A severity string indicating if and how unused inline directives
+     * should be tracked and reported.
+     *
+     * since ESLint 9.19.0
+     * @default "off"
+     */
+    reportUnusedInlineConfigs?:
+      | SharedConfig.Severity
+      | SharedConfig.SeverityString;
   }
 
   export interface LanguageOptions {
@@ -199,7 +219,7 @@ export namespace FlatConfig {
      * Set to `"latest"` for the most recent supported version.
      * @default "latest"
      */
-    ecmaVersion?: EcmaVersion;
+    ecmaVersion?: EcmaVersion | undefined;
     /**
      * An object specifying additional objects that should be added to the global scope during linting.
      */
@@ -212,7 +232,7 @@ export namespace FlatConfig {
      * require('espree')
      * ```
      */
-    parser?: Parser;
+    parser?: Parser | undefined;
     /**
      * An object specifying additional options that are passed directly to the parser.
      * The available options are parser-dependent.
@@ -229,30 +249,38 @@ export namespace FlatConfig {
      * "commonjs"
      * ```
      */
-    sourceType?: SourceType;
+    sourceType?: SourceType | undefined;
   }
 
   // it's not a json schema so it's nowhere near as nice to read and convert...
   // https://github.com/eslint/eslint/blob/v8.45.0/lib/config/flat-config-schema.js
   export interface Config {
     /**
-     * An string to identify the configuration object. Used in error messages and inspection tools.
+     * The base path for files and ignores.
+     *
+     * Note that this is not permitted inside an `extends` array.
+     *
+     * Since ESLint 9.30.0
      */
-    name?: string;
+    basePath?: string;
+
     /**
      * An array of glob patterns indicating the files that the configuration object should apply to.
      * If not specified, the configuration object applies to all files matched by any other configuration object.
      */
     files?: (
       | string
-      // yes, a single layer of array nesting is supported
-      | string[]
+      | string[] // yes, a single layer of array nesting is supported
     )[];
     /**
      * An array of glob patterns indicating the files that the configuration object should not apply to.
      * If not specified, the configuration object applies to all files matched by files.
      */
     ignores?: string[];
+    /**
+     * Language specifier in the form `namespace/language-name` where `namespace` is a plugin name set in the `plugins` field.
+     */
+    language?: string;
     /**
      * An object containing settings related to how JavaScript is configured for linting.
      */
@@ -261,6 +289,10 @@ export namespace FlatConfig {
      * An object containing settings related to the linting process.
      */
     linterOptions?: LinterOptions;
+    /**
+     * An string to identify the configuration object. Used in error messages and inspection tools.
+     */
+    name?: string;
     /**
      * An object containing a name-value mapping of plugin names to plugin objects.
      * When `files` is specified, these plugins are only available to the matching files.

@@ -1,0 +1,27 @@
+Incorrect
+
+async function returnNumber() {
+~~~~~~~~~~~~~~~~~~~~~~~~~~~ Async function 'returnNumber' has no 'await' expression.
+  return 1;
+}
+
+async function* asyncGenerator() {
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Async generator function 'asyncGenerator' has no 'await' expression.
+  yield 1;
+}
+
+const num = returnNumber();
+const callAsyncGenerator = () => asyncGenerator();
+
+Correct
+
+function returnNumber() {
+  return 1;
+}
+
+function* syncGenerator() {
+  yield 1;
+}
+
+const num = returnNumber();
+const callSyncGenerator = () => syncGenerator();

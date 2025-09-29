@@ -1,5 +1,6 @@
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -13,14 +14,13 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      recommended: 'recommended',
       description:
         'Enforce consistent usage of `AST_NODE_TYPES`, `AST_TOKEN_TYPES` and `DefinitionType` enums',
     },
+    fixable: 'code',
     messages: {
       preferEnum: 'Prefer {{ enumName }}.{{ literal }} over raw literal',
     },
-    fixable: 'code',
     schema: [],
   },
   defaultOptions: [],
@@ -30,9 +30,9 @@ export default createRule({
       literal: TSESTree.StringLiteral,
     ): void =>
       context.report({
-        data: { enumName, literal: literal.value },
-        messageId: 'preferEnum',
         node: literal,
+        messageId: 'preferEnum',
+        data: { enumName, literal: literal.value },
         fix: fixer =>
           fixer.replaceText(literal, `${enumName}.${literal.value}`),
       });
@@ -41,9 +41,8 @@ export default createRule({
       Literal(node: TSESTree.Literal): void {
         if (
           node.parent.type === AST_NODE_TYPES.TSEnumMember &&
-          node.parent.parent.type === AST_NODE_TYPES.TSEnumDeclaration &&
           ['AST_NODE_TYPES', 'AST_TOKEN_TYPES', 'DefinitionType'].includes(
-            node.parent.parent.id.name,
+            node.parent.parent.parent.id.name,
           )
         ) {
           return;
@@ -55,15 +54,15 @@ export default createRule({
 
         const value = node.value;
 
-        if (Object.prototype.hasOwnProperty.call(AST_NODE_TYPES, value)) {
+        if (Object.hasOwn(AST_NODE_TYPES, value)) {
           report('AST_NODE_TYPES', node);
         }
 
-        if (Object.prototype.hasOwnProperty.call(AST_TOKEN_TYPES, value)) {
+        if (Object.hasOwn(AST_TOKEN_TYPES, value)) {
           report('AST_TOKEN_TYPES', node);
         }
 
-        if (Object.prototype.hasOwnProperty.call(DefinitionType, value)) {
+        if (Object.hasOwn(DefinitionType, value)) {
           report('DefinitionType', node);
         }
       },

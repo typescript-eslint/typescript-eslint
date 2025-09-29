@@ -1,4 +1,4 @@
-import { normalize } from 'path';
+import path from 'node:path';
 
 import type { TSESTreeOptions } from '../parser-options';
 
@@ -15,6 +15,13 @@ import type { TSESTreeOptions } from '../parser-options';
  * @returns Whether this is part of a single run, rather than a long-running process.
  */
 export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
+  // https://github.com/typescript-eslint/typescript-eslint/issues/9504
+  // There's no support (yet?) for extraFileExtensions in single-run hosts.
+  // Only watch program hosts and project service can support that.
+  if (options?.extraFileExtensions?.length) {
+    return false;
+  }
+
   if (
     // single-run implies type-aware linting - no projects means we can't be in single-run mode
     options?.project == null ||
@@ -33,8 +40,8 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
     return true;
   }
 
-  // Currently behind a flag while we gather real-world feedback
-  if (options.allowAutomaticSingleRunInference) {
+  // Ideally, we'd like to try to auto-detect CI or CLI usage that lets us infer a single CLI run.
+  if (!options.disallowAutomaticSingleRunInference) {
     const possibleEslintBinPaths = [
       'node_modules/.bin/eslint', // npm or yarn repo
       'node_modules/eslint/bin/eslint.js', // pnpm repo
@@ -43,11 +50,13 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
       // Default to single runs for CI processes. CI=true is set by most CI providers by default.
       process.env.CI === 'true' ||
       // This will be true for invocations such as `npx eslint ...` and `./node_modules/.bin/eslint ...`
-      possibleEslintBinPaths.some(path =>
-        process.argv[1].endsWith(normalize(path)),
+      possibleEslintBinPaths.some(
+        binPath =>
+          process.argv.length > 1 &&
+          process.argv[1].endsWith(path.normalize(binPath)),
       )
     ) {
-      return true;
+      return !process.argv.includes('--fix');
     }
   }
 

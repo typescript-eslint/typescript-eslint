@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-type-imports 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,13 +6,16 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "disallowTypeAnnotations": {
+        "description": "Whether to disallow type imports in type annotations (`import()`).",
         "type": "boolean"
       },
       "fixStyle": {
+        "description": "The expected type modifier to be added when an import is detected as used only in the type position.",
         "enum": ["inline-type-imports", "separate-type-imports"],
         "type": "string"
       },
       "prefer": {
+        "description": "The expected import kind for type-only imports.",
         "enum": ["no-type-imports", "type-imports"],
         "type": "string"
       }
@@ -29,10 +29,17 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to disallow type imports in type annotations (`import()`). */
     disallowTypeAnnotations?: boolean;
-    fixStyle?: 'inline-type-imports' | 'separate-type-imports';
-    prefer?: 'no-type-imports' | 'type-imports';
+    /** The expected type modifier to be added when an import is detected as used only in the type position. */
+    fixStyle?:
+      | 'separate-type-imports'
+      /** The expected type modifier to be added when an import is detected as used only in the type position. */
+      | 'inline-type-imports';
+    /** The expected import kind for type-only imports. */
+    prefer?:
+      | 'type-imports'
+      /** The expected import kind for type-only imports. */
+      | 'no-type-imports';
   },
 ];
-"
-`;

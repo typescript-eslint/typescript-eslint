@@ -3,14 +3,893 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../../src/rules/no-shadow';
 
-const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-  },
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-shadow TS tests', rule, {
+  invalid: [
+    {
+      code: `
+type T = 1;
+{
+  type T = 2;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'T',
+            shadowedColumn: 6,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+type T = 1;
+function foo<T>(arg: T) {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'T',
+            shadowedColumn: 6,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+function foo<T>() {
+  return function <T>() {};
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'T',
+            shadowedColumn: 14,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+type T = string;
+function foo<T extends (arg: any) => void>(arg: T) {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'T',
+            shadowedColumn: 6,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+const x = 1;
+{
+  type x = string;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'x',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreTypeValueShadow: false }],
+    },
+    {
+      code: `
+type Foo = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'Foo',
+          },
+          messageId: 'noShadowGlobal',
+        },
+      ],
+      languageOptions: {
+        globals: {
+          Foo: 'writable',
+        },
+      },
+      options: [
+        {
+          builtinGlobals: true,
+          ignoreTypeValueShadow: false,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2447
+    {
+      code: `
+const test = 1;
+type Fn = (test: string) => typeof test;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'test',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+type Fn = (Foo: string) => typeof Foo;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'Foo',
+          },
+          messageId: 'noShadowGlobal',
+        },
+      ],
+      languageOptions: {
+        globals: {
+          Foo: 'writable',
+        },
+      },
+      options: [
+        {
+          builtinGlobals: true,
+          ignoreFunctionTypeParameterNameValueShadow: false,
+        },
+      ],
+    },
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6098
+    {
+      code: `
+const arg = 0;
+
+interface Test {
+  (arg: string): typeof arg;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+interface Test {
+  p1(arg: string): typeof arg;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare function test(arg: string): typeof arg;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare const test: (arg: string) => typeof arg;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare class Test {
+  p1(arg: string): typeof arg;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare const Test: {
+  new (arg: string): typeof arg;
+};
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+type Bar = new (arg: number) => typeof arg;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare namespace Lib {
+  function test(arg: string): typeof arg;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+import type { foo } from './foo';
+function doThing(foo: number) {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'foo',
+            shadowedColumn: 15,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ ignoreTypeValueShadow: false }],
+    },
+    {
+      code: `
+import { type foo } from './foo';
+function doThing(foo: number) {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'foo',
+            shadowedColumn: 15,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ ignoreTypeValueShadow: false }],
+    },
+    {
+      code: `
+import { foo } from './foo';
+function doThing(foo: number, bar: number) {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'foo',
+            shadowedColumn: 10,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ ignoreTypeValueShadow: true }],
+    },
+    {
+      code: `
+interface Foo {}
+
+declare module 'bar' {
+  export interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'Foo',
+            shadowedColumn: 11,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+import type { Foo } from 'bar';
+
+declare module 'baz' {
+  export interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'Foo',
+            shadowedColumn: 15,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'baz' {
+  export interface Foo {
+    x: string;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'Foo',
+            shadowedColumn: 15,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+let x = foo((x, y) => {});
+let y;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'x',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+        {
+          data: {
+            name: 'y',
+            shadowedColumn: 5,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+let x = foo((x, y) => {});
+let y;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'x',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+{
+  interface A {}
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+{
+  interface A {}
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+{
+  interface A {}
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+
+    {
+      code: `
+function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'args',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadowGlobal',
+        },
+      ],
+      languageOptions: {
+        globals: {
+          args: 'writable',
+        },
+      },
+      options: [
+        {
+          builtinGlobals: true,
+          ignoreTypeValueShadow: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const has = (environment: 'dev' | 'prod' | 'test') => boolean;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'has',
+          },
+          messageId: 'noShadowGlobal',
+        },
+      ],
+      languageOptions: {
+        globals: {
+          has: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare const has: (environment: 'dev' | 'prod' | 'test') => boolean;
+const fn = (has: string) => {};
+      `,
+      errors: [
+        {
+          data: {
+            name: 'has',
+            shadowedColumn: 15,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      filename: 'foo.d.ts',
+      languageOptions: {
+        globals: {
+          has: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+  ],
   valid: [
     'function foo<T = (arg: any) => any>(arg: T) {}',
     'function foo<T = ([arg]: [any]) => any>(arg: T) {}',
@@ -97,24 +976,28 @@ const x = 1;
       code: `
 type Foo = 1;
       `,
-      options: [{ ignoreTypeValueShadow: true }],
-      globals: {
-        Foo: 'writable',
+      languageOptions: {
+        globals: {
+          Foo: 'writable',
+        },
       },
+      options: [{ ignoreTypeValueShadow: true }],
     },
     {
       code: `
 type Foo = 1;
       `,
+      languageOptions: {
+        globals: {
+          Foo: 'writable',
+        },
+      },
       options: [
         {
-          ignoreTypeValueShadow: false,
           builtinGlobals: false,
+          ignoreTypeValueShadow: false,
         },
       ],
-      globals: {
-        Foo: 'writable',
-      },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2360
     `
@@ -135,15 +1018,17 @@ type Fn = (test: string) => typeof test;
       code: `
 type Fn = (Foo: string) => typeof Foo;
       `,
+      languageOptions: {
+        globals: {
+          Foo: 'writable',
+        },
+      },
       options: [
         {
-          ignoreFunctionTypeParameterNameValueShadow: true,
           builtinGlobals: false,
+          ignoreFunctionTypeParameterNameValueShadow: true,
         },
       ],
-      globals: {
-        Foo: 'writable',
-      },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/6098
     {
@@ -162,6 +1047,60 @@ const arg = 0;
 
 interface Test {
   p1(arg: string): typeof arg;
+}
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare function test(arg: string): typeof arg;
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare const test: (arg: string) => typeof arg;
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare class Test {
+  p1(arg: string): typeof arg;
+}
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare const Test: {
+  new (arg: string): typeof arg;
+};
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+type Bar = new (arg: number) => typeof arg;
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare namespace Lib {
+  function test(arg: string): typeof arg;
 }
       `,
       options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
@@ -353,8 +1292,8 @@ const person = [].find(match);
     },
     {
       code: "const person = { ...people.find(person => person.firstName.startsWith('s')) };",
+      languageOptions: { parserOptions: { ecmaVersion: 2021 } },
       options: [{ ignoreOnInitialization: true }],
-      parserOptions: { ecmaVersion: 2021 },
     },
     {
       code: `
@@ -364,8 +1303,8 @@ const person = {
     .map(person => person.firstName)[0],
 };
       `,
+      languageOptions: { parserOptions: { ecmaVersion: 2021 } },
       options: [{ ignoreOnInitialization: true }],
-      parserOptions: { ecmaVersion: 2021 },
     },
     {
       code: `
@@ -404,295 +1343,99 @@ const person = {
       options: [{ ignoreOnInitialization: true }],
     },
     { code: 'const [x = y => y] = [].map(y => y);' },
-  ],
-  invalid: [
+
     {
       code: `
-type T = 1;
+type Foo<A> = 1;
+type A = 1;
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
 {
-  type T = 2;
+  type A = 1;
 }
+type A = 1;
       `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'T',
-            shadowedLine: 2,
-            shadowedColumn: 6,
-          },
-        },
-      ],
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
-type T = 1;
-function foo<T>(arg: T) {}
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'T',
-            shadowedLine: 2,
-            shadowedColumn: 6,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-function foo<T>() {
-  return function <T>() {};
-}
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'T',
-            shadowedLine: 2,
-            shadowedColumn: 14,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-type T = string;
-function foo<T extends (arg: any) => void>(arg: T) {}
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'T',
-            shadowedLine: 2,
-            shadowedColumn: 6,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-const x = 1;
 {
-  type x = string;
+  interface Foo<A> {}
 }
+type A = 1;
       `,
-      options: [{ ignoreTypeValueShadow: false }],
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 2,
-            shadowedColumn: 7,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-type Foo = 1;
-      `,
-      options: [
-        {
-          ignoreTypeValueShadow: false,
-          builtinGlobals: true,
-        },
-      ],
-      globals: {
-        Foo: 'writable',
-      },
-      errors: [
-        {
-          messageId: 'noShadowGlobal',
-          data: {
-            name: 'Foo',
-          },
-        },
-      ],
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2447
-    {
-      code: `
-const test = 1;
-type Fn = (test: string) => typeof test;
-      `,
-      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'test',
-            shadowedLine: 2,
-            shadowedColumn: 7,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-type Fn = (Foo: string) => typeof Foo;
-      `,
-      options: [
-        {
-          ignoreFunctionTypeParameterNameValueShadow: false,
-          builtinGlobals: true,
-        },
-      ],
-      globals: {
-        Foo: 'writable',
-      },
-      errors: [
-        {
-          messageId: 'noShadowGlobal',
-          data: {
-            name: 'Foo',
-          },
-        },
-      ],
+      options: [{ hoist: 'never' }],
     },
 
-    // https://github.com/typescript-eslint/typescript-eslint/issues/6098
     {
       code: `
-const arg = 0;
-
-interface Test {
-  (arg: string): typeof arg;
+type Foo<A> = 1;
+type A = 1;
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
 }
+type A = 1;
       `,
-      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'arg',
-            shadowedLine: 2,
-            shadowedColumn: 7,
-          },
-        },
-      ],
+      options: [{ hoist: 'functions' }],
     },
     {
       code: `
-const arg = 0;
-
-interface Test {
-  p1(arg: string): typeof arg;
+{
+  interface Foo<A> {}
 }
+type A = 1;
       `,
-      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'arg',
-            shadowedLine: 2,
-            shadowedColumn: 7,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-import type { foo } from './foo';
-function doThing(foo: number) {}
-      `,
-      options: [{ ignoreTypeValueShadow: false }],
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'foo',
-            shadowedLine: 2,
-            shadowedColumn: 15,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-import { type foo } from './foo';
-function doThing(foo: number) {}
-      `,
-      options: [{ ignoreTypeValueShadow: false }],
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'foo',
-            shadowedLine: 2,
-            shadowedColumn: 15,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-import { foo } from './foo';
-function doThing(foo: number, bar: number) {}
-      `,
-      options: [{ ignoreTypeValueShadow: true }],
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'foo',
-            shadowedLine: 2,
-            shadowedColumn: 10,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {}
-
-declare module 'bar' {
-  export interface Foo {
-    x: string;
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'Foo',
-            shadowedLine: 2,
-            shadowedColumn: 11,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-import type { Foo } from 'bar';
-
-declare module 'baz' {
-  export interface Foo {
-    x: string;
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'Foo',
-            shadowedLine: 2,
-            shadowedColumn: 15,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
+      options: [{ hoist: 'functions' }],
     },
     {
       code: `
@@ -702,17 +1445,6 @@ declare module 'bar' {
   export type Foo = string;
 }
       `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'Foo',
-            shadowedLine: 2,
-            shadowedColumn: 15,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
     },
     {
       code: `
@@ -724,39 +1456,6 @@ declare module 'bar' {
   }
 }
       `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'Foo',
-            shadowedLine: 2,
-            shadowedColumn: 15,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-import { type Foo } from 'bar';
-
-declare module 'baz' {
-  export interface Foo {
-    x: string;
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'Foo',
-            shadowedLine: 2,
-            shadowedColumn: 15,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
     },
     {
       code: `
@@ -766,17 +1465,26 @@ declare module 'bar' {
   export type Foo = string;
 }
       `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'Foo',
-            shadowedLine: 2,
-            shadowedColumn: 15,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
+  export interface Foo {
+    x: string;
+  }
+}
+      `,
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
+  type Foo = string;
+}
+      `,
     },
     {
       code: `
@@ -788,69 +1496,135 @@ declare module 'bar' {
   }
 }
       `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'Foo',
-            shadowedLine: 2,
-            shadowedColumn: 15,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
     },
     {
       code: `
-let x = foo((x, y) => {});
-let y;
+declare const foo1: boolean;
       `,
-      parserOptions: { ecmaVersion: 6 },
-      options: [{ hoist: 'all' }],
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 2,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo1: false,
         },
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'y',
-            shadowedLine: 3,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}
-      `,
-      options: [
-        {
-          ignoreTypeValueShadow: false,
-          builtinGlobals: true,
-        },
-      ],
-      globals: {
-        args: 'writable',
       },
-      errors: [
-        {
-          messageId: 'noShadowGlobal',
-          data: {
-            name: 'args',
-            shadowedLine: 2,
-            shadowedColumn: 5,
-          },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare let foo2: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo2: false,
         },
-      ],
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare var foo3: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo3: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+function foo4(name: string): void;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo4: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare class Foopy1 {
+  name: string;
+}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy1: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare interface Foopy2 {
+  name: string;
+}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy2: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare type Foopy3 = {
+  x: number;
+};
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy3: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare enum Foopy4 {
+  x,
+}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy4: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare namespace Foopy5 {}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy5: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare;
+foo5: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo5: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
     },
   ],
 });

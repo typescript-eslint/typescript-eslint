@@ -1,0 +1,331 @@
+Program {
+  type: "Program",
+  body: [
+    ForInStatement {
+      type: "ForInStatement",
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [150, 153],
+        loc: {
+          start: { column: 21, line: 3 },
+          end: { column: 1, line: 4 },
+        },
+      },
+      left: ObjectPattern {
+        type: "ObjectPattern",
+        decorators: [],
+        optional: false,
+        properties: [
+          Property {
+            type: "Property",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "x",
+              optional: false,
+
+              range: [136, 137],
+              loc: {
+                start: { column: 7, line: 3 },
+                end: { column: 8, line: 3 },
+              },
+            },
+            kind: "init",
+            method: false,
+            optional: false,
+            shorthand: true,
+            value: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "x",
+              optional: false,
+
+              range: [136, 137],
+              loc: {
+                start: { column: 7, line: 3 },
+                end: { column: 8, line: 3 },
+              },
+            },
+
+            range: [136, 137],
+            loc: {
+              start: { column: 7, line: 3 },
+              end: { column: 8, line: 3 },
+            },
+          },
+          Property {
+            type: "Property",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "y",
+              optional: false,
+
+              range: [139, 140],
+              loc: {
+                start: { column: 10, line: 3 },
+                end: { column: 11, line: 3 },
+              },
+            },
+            kind: "init",
+            method: false,
+            optional: false,
+            shorthand: true,
+            value: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "y",
+              optional: false,
+
+              range: [139, 140],
+              loc: {
+                start: { column: 10, line: 3 },
+                end: { column: 11, line: 3 },
+              },
+            },
+
+            range: [139, 140],
+            loc: {
+              start: { column: 10, line: 3 },
+              end: { column: 11, line: 3 },
+            },
+          },
+        ],
+
+        range: [134, 142],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 13, line: 3 },
+        },
+      },
+      right: ArrayExpression {
+        type: "ArrayExpression",
+        elements: [],
+
+        range: [146, 148],
+        loc: {
+          start: { column: 17, line: 3 },
+          end: { column: 19, line: 3 },
+        },
+      },
+
+      range: [129, 153],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 4 },
+      },
+    },
+    ForInStatement {
+      type: "ForInStatement",
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [173, 176],
+        loc: {
+          start: { column: 19, line: 5 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      left: ArrayPattern {
+        type: "ArrayPattern",
+        decorators: [],
+        elements: [
+          Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "x",
+            optional: false,
+
+            range: [160, 161],
+            loc: {
+              start: { column: 6, line: 5 },
+              end: { column: 7, line: 5 },
+            },
+          },
+          Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "y",
+            optional: false,
+
+            range: [163, 164],
+            loc: {
+              start: { column: 9, line: 5 },
+              end: { column: 10, line: 5 },
+            },
+          },
+        ],
+        optional: false,
+
+        range: [159, 165],
+        loc: {
+          start: { column: 5, line: 5 },
+          end: { column: 11, line: 5 },
+        },
+      },
+      right: ArrayExpression {
+        type: "ArrayExpression",
+        elements: [],
+
+        range: [169, 171],
+        loc: {
+          start: { column: 15, line: 5 },
+          end: { column: 17, line: 5 },
+        },
+      },
+
+      range: [154, 176],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 1, line: 6 },
+      },
+    },
+    ForInStatement {
+      type: "ForInStatement",
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [193, 196],
+        loc: {
+          start: { column: 16, line: 7 },
+          end: { column: 1, line: 8 },
+        },
+      },
+      left: MemberExpression {
+        type: "MemberExpression",
+        computed: false,
+        object: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "x",
+          optional: false,
+
+          range: [182, 183],
+          loc: {
+            start: { column: 5, line: 7 },
+            end: { column: 6, line: 7 },
+          },
+        },
+        optional: false,
+        property: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "y",
+          optional: false,
+
+          range: [184, 185],
+          loc: {
+            start: { column: 7, line: 7 },
+            end: { column: 8, line: 7 },
+          },
+        },
+
+        range: [182, 185],
+        loc: {
+          start: { column: 5, line: 7 },
+          end: { column: 8, line: 7 },
+        },
+      },
+      right: ArrayExpression {
+        type: "ArrayExpression",
+        elements: [],
+
+        range: [189, 191],
+        loc: {
+          start: { column: 12, line: 7 },
+          end: { column: 14, line: 7 },
+        },
+      },
+
+      range: [177, 196],
+      loc: {
+        start: { column: 0, line: 7 },
+        end: { column: 1, line: 8 },
+      },
+    },
+    ForInStatement {
+      type: "ForInStatement",
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [216, 219],
+        loc: {
+          start: { column: 19, line: 9 },
+          end: { column: 1, line: 10 },
+        },
+      },
+      left: TSAsExpression {
+        type: "TSAsExpression",
+        expression: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "x",
+          optional: false,
+
+          range: [202, 203],
+          loc: {
+            start: { column: 5, line: 9 },
+            end: { column: 6, line: 9 },
+          },
+        },
+        typeAnnotation: TSTypeReference {
+          type: "TSTypeReference",
+          typeName: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "T",
+            optional: false,
+
+            range: [207, 208],
+            loc: {
+              start: { column: 10, line: 9 },
+              end: { column: 11, line: 9 },
+            },
+          },
+
+          range: [207, 208],
+          loc: {
+            start: { column: 10, line: 9 },
+            end: { column: 11, line: 9 },
+          },
+        },
+
+        range: [202, 208],
+        loc: {
+          start: { column: 5, line: 9 },
+          end: { column: 11, line: 9 },
+        },
+      },
+      right: ArrayExpression {
+        type: "ArrayExpression",
+        elements: [],
+
+        range: [212, 214],
+        loc: {
+          start: { column: 15, line: 9 },
+          end: { column: 17, line: 9 },
+        },
+      },
+
+      range: [197, 219],
+      loc: {
+        start: { column: 0, line: 9 },
+        end: { column: 1, line: 10 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [129, 220],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 11 },
+  },
+}

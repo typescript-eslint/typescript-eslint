@@ -1,0 +1,332 @@
+---
+id: performance
+slug: /troubleshooting/typed-linting/performance
+title: Performance
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+As mentioned in [Linting with Type Information](../../getting-started/Typed_Linting.mdx), if you're using type-aware linting, your lint times should be roughly the same as your build times.
+Most performance slowdowns in ESLint rules are from type-aware lint rules calling to TypeScript's type checking APIs.
+
+If you're experiencing lint times much slower than type-checking times, then there are a few common culprits.
+
+## Slow ESLint Rules
+
+ESLint includes a `TIMING=1` option documented in [Profile Rule Performance](https://eslint.org/docs/latest/extend/custom-rules#profile-rule-performance) that give a high-level overview of rule speeds.
+However, because TypeScript utilizes internal caching, a project's _first type-aware lint rule will almost always seem the slowest_.
+
+When investigating which lint rules are the slowest in your project, be sure to run them one at a time and compare those timing measurements separately.
+
+To enable more complete verbose logging, you can use any of:
+
+- [`eslint --debug`](https://eslint.org/docs/latest/use/command-line-interface#--debug): to enable all of ESLint's debug logs on the CLI
+- [`parserOptions.debugLevel`](https://github.com/typescript-eslint/typescript-eslint/blob/7ddadda10845bc53967eeec83ba6b7cdc71a079f/packages/typescript-estree/src/parser-options.ts#L36): a shortcut to set `eslint`, `typescript`, and/or `typescript-eslint`
+- Directly setting the `DEBUG` environment variable for [`debug`](https://github.com/debug-js/debug): e.g. `DEBUG=typescript-eslint:* eslint`
+
+## Slow TypeScript Types
+
+Running typed linting on a project is generally as slow as type checking that same project.
+If TypeScript's type checker runs slowly on your project, then typed linting will as well.
+
+The [TypeScript Wiki's Performance page](https://github.com/microsoft/TypeScript/wiki/Performance) includes general performance tips and steps to investigate slow type checking.
+In particular for typed linting:
+
+- [Investigating Issues](https://github.com/microsoft/TypeScript/wiki/Performance#investigating-issues) can spot slow types and type checking:
+  - [Running `tsc` alone](https://github.com/microsoft/TypeScript/wiki/Performance#running-tsc-alone) should provide a baseline for your full project's type checking speed.
+  - [Performance Tracing](https://github.com/microsoft/TypeScript/wiki/Performance#performance-tracing) can spotlight specific slow types within your project.
+- [Using Project References](https://github.com/microsoft/TypeScript/wiki/Performance#using-project-references) -which requires enabling the [new "project service" (`parserOptions.projectService`) in v8](/blog/announcing-typescript-eslint-v8-beta#project-service)- can be helpful to speed up type checking on larger projects.
+
+If none of the above work, you can try adjusting the `--max-semi-space-size` of Node. Increasing the max size of a semi-space can improve performance at the cost of more memory consumption. You can [read more about setting space size in Node.js here](https://nodejs.org/api/cli.html#--max-semi-space-sizesize-in-mib).
+
+You can enable the setting by prepending your ESLint command like:
+
+```bash
+NODE_OPTIONS=--max-semi-space-size=256 eslint <rest of your command>
+```
+
+## Wide includes in your `tsconfig`
+
+When using type-aware linting, you provide us with one or more tsconfigs.
+We then will pre-parse all files so that full and complete type information is available.
+
+If you provide very wide globs in your `include` (such as `**/*`), it can cause many more files than you expect to be included in this pre-parse.
+Additionally, if you provide no `include` in your tsconfig, then it is the same as providing the widest glob.
+
+Wide globs can cause TypeScript to parse things like build artifacts, which can heavily impact performance.
+Always ensure you provide globs targeted at the folders you are specifically wanting to lint.
+
+## Project Service Issues
+
+### Changes to `extraFileExtensions` with `projectService`
+
+Using a different [`extraFileExtensions`](../../packages/Parser.mdx#extrafileextensions) between files in the same project with
+the [`projectService`](../../packages/Parser.mdx#projectservice) option may cause performance degradations.
+For every file linted, we update the `projectService` whenever `extraFileExtensions` changes.
+This causes the underlying TypeScript server to perform a full project reload.
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+// @ts-check
+
+import tseslint from 'typescript-eslint';
+import vueParser from 'vue-eslint-parser';
+
+// Add this line
+const extraFileExtensions = ['.vue'];
+export default [
+  {
+    files: ['*.ts'],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        projectService: true,
+        // Add this line
+        extraFileExtensions,
+      },
+    },
+  },
+  {
+    files: ['*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        projectService: true,
+        parser: tseslint.parser,
+        // Remove this line
+        extraFileExtensions: ['.vue'],
+        // Add this line
+        extraFileExtensions,
+      },
+    },
+  },
+];
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
+// Add this line
+const extraFileExtensions = ['.vue'];
+module.exports = {
+  files: ['*.ts'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    projectService: true,
+    // Add this line
+    extraFileExtensions,
+  },
+  overrides: [
+    {
+      files: ['*.vue'],
+      parser: 'vue-eslint-parser',
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        projectService: true,
+        // Remove this line
+        extraFileExtensions: ['.vue'],
+        // Add this line
+        extraFileExtensions,
+      },
+    },
+  ],
+};
+```
+
+</TabItem>
+</Tabs>
+
+Project reloads can be observed using the [debug environment variable](../../packages/typescript-estree/#debugging): `DEBUG='typescript-eslint:typescript-estree:*'`.
+
+```
+typescript-estree:useProgramFromProjectService Updating extra file extensions: before=[]: after=[ '.vue' ]
+typescript-estree:tsserver:info reload projects.
+typescript-estree:useProgramFromProjectService Extra file extensions updated: [ '.vue' ]
+...
+typescript-estree:useProgramFromProjectService Updating extra file extensions: before=[ '.vue' ]: after=[]
+typescript-estree:tsserver:info reload projects.
+typescript-estree:useProgramFromProjectService Extra file extensions updated: []
+...
+typescript-estree:tsserver:info Scheduled: /path/to/tsconfig.src.json, Cancelled earlier one +0ms
+typescript-estree:tsserver:info Scheduled: *ensureProjectForOpenFiles*, Cancelled earlier one +0ms
+...
+typescript-estree:useProgramFromProjectService Updating extra file extensions: before=[]: after=[ '.vue' ]
+typescript-estree:tsserver:info reload projects.
+typescript-estree:useProgramFromProjectService Extra file extensions updated: [ '.vue' ]
+```
+
+## Traditional Project issues
+
+### Wide includes in your ESLint options
+
+:::tip
+The [new "project service" in v8](/blog/announcing-typescript-eslint-v8-beta#project-service) requires no additional configuration for wide TSConfig includes.
+If you're using `parserOptions.projectService`, this problem is solved for you.
+:::
+
+Specifying `tsconfig.json` paths in an ESLint `parserOptions.project` configuration is also likely to cause much more disk IO than expected.
+Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.mjs"
+// @ts-check
+
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig(
+  eslint.configs.recommended,
+  tseslint.configs.recommendedRequiringTypeChecking,
+  {
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+        // Remove this line
+        project: ['./**/tsconfig.json'],
+        // Add this line
+        project: ['./packages/*/tsconfig.json'],
+      },
+    },
+  },
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
+module.exports = {
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    // Remove this line
+    project: ['./**/tsconfig.json'],
+    // Add this line
+    project: ['./packages/*/tsconfig.json'],
+  },
+  plugins: ['@typescript-eslint'],
+  root: true,
+};
+```
+
+</TabItem>
+</Tabs>
+
+See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
+
+## Third-Party Plugins
+
+### `@stylistic/ts/indent` and other stylistic rules
+
+The [`@stylisic/ts/indent` rule](https://eslint.style/rules/ts/indent#ts-indent) helps ensure your codebase follows a consistent indentation pattern.
+However this involves a _lot_ of computations across every single token in a file.
+Across a large codebase, these can add up, and severely impact performance.
+
+We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/prettier) to enforce a standardized formatting.
+
+See our [documentation on formatting](../../users/What_About_Formatting.mdx) for more information.
+
+### `eslint-plugin-prettier`
+
+This plugin surfaces Prettier formatting problems at lint time, helping to ensure your code is always formatted.
+However this comes at a quite a large cost - in order to figure out if there is a difference, it has to do a Prettier format on every file being linted.
+This means that each file will be parsed twice - once by ESLint, and once by Prettier.
+This can add up for large codebases.
+
+Instead of using this plugin, we recommend using Prettier's `--check` flag to detect if a file has not been correctly formatted.
+For example, our CI is setup to run the following command automatically, which blocks PRs that have not been formatted:
+
+```bash npm2yarn
+npm run prettier --check .
+```
+
+See [Prettier's `--check` docs](https://prettier.io/docs/en/cli#--check) for more details.
+
+### `eslint-plugin-import`
+
+This is another great plugin that we use ourselves in this project.
+However there are a few rules which can cause your lints to be really slow, because they cause the plugin to do its own parsing, and file tracking.
+This double parsing adds up for large codebases.
+
+There are many rules that do single file static analysis, but we provide the following recommendations.
+
+We recommend you do not use the following rules, as TypeScript provides the same checks as part of standard type checking:
+
+- `import/named`
+- `import/namespace`
+- `import/default`
+- `import/no-named-as-default-member`
+- `import/no-unresolved` (as long as you are using [`import` over `require`](/rules/no-require-imports))
+
+The following rules do not have equivalent checks in TypeScript, so we recommend that you only run them at CI/push time, to lessen the local performance burden.
+
+- `import/no-named-as-default`
+- `import/no-cycle`
+- `import/no-unused-modules`
+- `import/no-deprecated`
+
+#### `import/extensions` enforcing extensions are used
+
+If you want to enforce file extensions are always used and you're **NOT** using `moduleResolution` `node16` or `nodenext`, then there's not really a good alternative for you, and you should continue using the `import/extensions` lint rule.
+
+If you want to enforce file extensions are always used and you **ARE** using `moduleResolution` `node16` or `nodenext`, then you don't need to use the lint rule at all because TypeScript will automatically enforce that you include extensions!
+
+#### `import/extensions` enforcing extensions are not used
+
+On the surface `import/extensions` seems like it should be fast for this use case, however the rule isn't just a pure AST-check - it has to resolve modules on disk so that it doesn't false positive on cases where you are importing modules with an extension as part of their name (eg `foo.js` resolves to `node_modules/foo.js/index.js`, so the `.js` is required). This disk lookup is costly and thus makes the rule slow.
+
+If your project doesn't use any `npm` packages with a file extension in their name, nor do you name your files with two extensions (like `bar.js.ts`), then this extra cost probably isn't worth it, and you can use a much simpler check using the [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax) lint rule.
+
+The below config is several orders of magnitude faster than `import/extensions` as it does not do disk lookups, however it will false-positive on cases like the aforementioned `foo.js` module.
+
+```js
+function banImportExtension(extension) {
+  const message = `Unexpected use of file extension (.${extension}) in import`;
+  const literalAttributeMatcher = `Literal[value=/\\.${extension}$/]`;
+  return [
+    {
+      // import foo from 'bar.js';
+      selector: `ImportDeclaration > ${literalAttributeMatcher}.source`,
+      message,
+    },
+    {
+      // const foo = import('bar.js');
+      selector: `ImportExpression > ${literalAttributeMatcher}.source`,
+      message,
+    },
+    {
+      // type Foo = typeof import('bar.js');
+      selector: `TSImportType > TSLiteralType > ${literalAttributeMatcher}`,
+      message,
+    },
+    {
+      // const foo = require('foo.js');
+      selector: `CallExpression[callee.name = "require"] > ${literalAttributeMatcher}.arguments`,
+      message,
+    },
+  ];
+}
+
+module.exports = {
+  // ... other config ...
+  rules: {
+    'no-restricted-syntax': [
+      'error',
+      ...banImportExtension('js'),
+      ...banImportExtension('jsx'),
+      ...banImportExtension('ts'),
+      ...banImportExtension('tsx'),
+    ],
+  },
+};
+```

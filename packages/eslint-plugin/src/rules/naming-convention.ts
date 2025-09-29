@@ -1,22 +1,27 @@
-import { PatternVisitor } from '@typescript-eslint/scope-manager';
+// This rule was feature-frozen before we enabled no-property-in-node.
+/* eslint-disable eslint-plugin/no-property-in-node */
+
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 import type { ScriptTarget } from 'typescript';
 
-import {
-  collectUnusedVariables,
-  createRule,
-  getParserServices,
-  requiresQuoting as _requiresQuoting,
-} from '../util';
+import { PatternVisitor } from '@typescript-eslint/scope-manager';
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
+
 import type {
   Context,
   Selector,
   ValidatorFunction,
 } from './naming-convention-utils';
+
+import {
+  requiresQuoting as _requiresQuoting,
+  collectVariables,
+  createRule,
+  getParserServices,
+} from '../util';
 import { Modifiers, parseOptions, SCHEMA } from './naming-convention-utils';
 
-type MessageIds =
+export type MessageIds =
   | 'doesNotMatchFormat'
   | 'doesNotMatchFormatTrimmed'
   | 'missingAffix'
@@ -27,59 +32,60 @@ type MessageIds =
 // Note that this intentionally does not strictly type the modifiers/types properties.
 // This is because doing so creates a huge headache, as the rule's code doesn't need to care.
 // The JSON Schema strictly types these properties, so we know the user won't input invalid config.
-type Options = Selector[];
+export type Options = Selector[];
 
 // This essentially mirrors ESLint's `camelcase` rule
 // note that that rule ignores leading and trailing underscores and only checks those in the middle of a variable name
 const defaultCamelCaseAllTheThingsConfig: Options = [
   {
-    selector: 'default',
     format: ['camelCase'],
     leadingUnderscore: 'allow',
+    selector: 'default',
     trailingUnderscore: 'allow',
   },
 
   {
-    selector: 'import',
     format: ['camelCase', 'PascalCase'],
+    selector: 'import',
   },
 
   {
-    selector: 'variable',
     format: ['camelCase', 'UPPER_CASE'],
     leadingUnderscore: 'allow',
+    selector: 'variable',
     trailingUnderscore: 'allow',
   },
 
   {
-    selector: 'typeLike',
     format: ['PascalCase'],
+    selector: 'typeLike',
   },
 ];
 
 export default createRule<Options, MessageIds>({
   name: 'naming-convention',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce naming conventions for everything across a codebase',
       // technically only requires type checking if the user uses "type" modifiers
+      frozen: true,
       requiresTypeChecking: true,
     },
-    type: 'suggestion',
     messages: {
-      unexpectedUnderscore:
-        '{{type}} name `{{name}}` must not have a {{position}} underscore.',
-      missingUnderscore:
-        '{{type}} name `{{name}}` must have {{count}} {{position}} underscore(s).',
-      missingAffix:
-        '{{type}} name `{{name}}` must have one of the following {{position}}es: {{affixes}}',
-      satisfyCustom:
-        '{{type}} name `{{name}}` must {{regexMatch}} the RegExp: {{regex}}',
       doesNotMatchFormat:
         '{{type}} name `{{name}}` must match one of the following formats: {{formats}}',
       doesNotMatchFormatTrimmed:
         '{{type}} name `{{name}}` trimmed as `{{processedName}}` must match one of the following formats: {{formats}}',
+      missingAffix:
+        '{{type}} name `{{name}}` must have one of the following {{position}}es: {{affixes}}',
+      missingUnderscore:
+        '{{type}} name `{{name}}` must have {{count}} {{position}} underscore(s).',
+      satisfyCustom:
+        '{{type}} name `{{name}}` must {{regexMatch}} the RegExp: {{regex}}',
+      unexpectedUnderscore:
+        '{{type}} name `{{name}}` must not have a {{position}} underscore.',
     },
     schema: SCHEMA,
   },
@@ -103,14 +109,14 @@ export default createRule<Options, MessageIds>({
     function handleMember(
       validator: ValidatorFunction,
       node:
+        | TSESTree.AccessorPropertyNonComputedName
         | TSESTree.MethodDefinitionNonComputedName
         | TSESTree.PropertyDefinitionNonComputedName
         | TSESTree.PropertyNonComputedName
         | TSESTree.TSAbstractMethodDefinitionNonComputedName
         | TSESTree.TSAbstractPropertyDefinitionNonComputedName
         | TSESTree.TSMethodSignatureNonComputedName
-        | TSESTree.TSPropertySignatureNonComputedName
-        | TSESTree.AccessorPropertyNonComputedName,
+        | TSESTree.TSPropertySignatureNonComputedName,
       modifiers: Set<Modifiers>,
     ): void {
       const key = node.key;
@@ -123,13 +129,13 @@ export default createRule<Options, MessageIds>({
 
     function getMemberModifiers(
       node:
+        | TSESTree.AccessorProperty
         | TSESTree.MethodDefinition
         | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractAccessorProperty
         | TSESTree.TSAbstractMethodDefinition
         | TSESTree.TSAbstractPropertyDefinition
-        | TSESTree.TSParameterProperty
-        | TSESTree.AccessorProperty
-        | TSESTree.TSAbstractAccessorProperty,
+        | TSESTree.TSParameterProperty,
     ): Set<Modifiers> {
       const modifiers = new Set<Modifiers>();
       if ('key' in node && node.key.type === AST_NODE_TYPES.PrivateIdentifier) {
@@ -159,7 +165,7 @@ export default createRule<Options, MessageIds>({
       return modifiers;
     }
 
-    const unusedVariables = collectUnusedVariables(context);
+    const { unusedVariables } = collectVariables(context);
     function isUnused(
       name: string,
       initialScope: TSESLint.Scope.Scope | null,
@@ -222,98 +228,16 @@ export default createRule<Options, MessageIds>({
 
     const selectors: {
       readonly [k in keyof TSESLint.RuleListener]: Readonly<{
-        validator: ValidatorFunction;
         handler: (
           node: Parameters<NonNullable<TSESLint.RuleListener[k]>>[0],
           validator: ValidatorFunction,
         ) => void;
+        validator: ValidatorFunction;
       }>;
     } = {
       // #region import
 
-      'ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier': {
-        validator: validators.import,
-        handler: (
-          node:
-            | TSESTree.ImportDefaultSpecifier
-            | TSESTree.ImportNamespaceSpecifier
-            | TSESTree.ImportSpecifier,
-          validator,
-        ): void => {
-          const modifiers = new Set<Modifiers>();
-
-          switch (node.type) {
-            case AST_NODE_TYPES.ImportDefaultSpecifier:
-              modifiers.add(Modifiers.default);
-              break;
-            case AST_NODE_TYPES.ImportNamespaceSpecifier:
-              modifiers.add(Modifiers.namespace);
-              break;
-            case AST_NODE_TYPES.ImportSpecifier:
-              // Handle `import { default as Foo }`
-              if (node.imported.name !== 'default') {
-                return;
-              }
-              modifiers.add(Modifiers.default);
-              break;
-          }
-
-          validator(node.local, modifiers);
-        },
-      },
-
-      // #endregion
-
-      // #region variable
-
-      VariableDeclarator: {
-        validator: validators.variable,
-        handler: (node, validator): void => {
-          const identifiers = getIdentifiersFromPattern(node.id);
-
-          const baseModifiers = new Set<Modifiers>();
-          const parent = node.parent;
-          if (parent.type === AST_NODE_TYPES.VariableDeclaration) {
-            if (parent.kind === 'const') {
-              baseModifiers.add(Modifiers.const);
-            }
-
-            if (isGlobal(context.sourceCode.getScope(node))) {
-              baseModifiers.add(Modifiers.global);
-            }
-          }
-
-          identifiers.forEach(id => {
-            const modifiers = new Set(baseModifiers);
-
-            if (isDestructured(id)) {
-              modifiers.add(Modifiers.destructured);
-            }
-
-            const scope = context.sourceCode.getScope(id);
-            if (isExported(parent, id.name, scope)) {
-              modifiers.add(Modifiers.exported);
-            }
-
-            if (isUnused(id.name, scope)) {
-              modifiers.add(Modifiers.unused);
-            }
-
-            if (isAsyncVariableIdentifier(id)) {
-              modifiers.add(Modifiers.async);
-            }
-
-            validator(id, modifiers);
-          });
-        },
-      },
-
-      // #endregion
-
-      // #region function
-
       'FunctionDeclaration, TSDeclareFunction, FunctionExpression': {
-        validator: validators.function,
         handler: (
           node:
             | TSESTree.FunctionDeclaration
@@ -347,14 +271,225 @@ export default createRule<Options, MessageIds>({
 
           validator(node.id, modifiers);
         },
+        validator: validators.function,
+      },
+
+      // #endregion
+
+      // #region variable
+
+      'ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier': {
+        handler: (
+          node:
+            | TSESTree.ImportDefaultSpecifier
+            | TSESTree.ImportNamespaceSpecifier
+            | TSESTree.ImportSpecifier,
+          validator,
+        ): void => {
+          const modifiers = new Set<Modifiers>();
+
+          switch (node.type) {
+            case AST_NODE_TYPES.ImportDefaultSpecifier:
+              modifiers.add(Modifiers.default);
+              break;
+            case AST_NODE_TYPES.ImportNamespaceSpecifier:
+              modifiers.add(Modifiers.namespace);
+              break;
+            case AST_NODE_TYPES.ImportSpecifier:
+              // Handle `import { default as Foo }`
+              if (
+                node.imported.type === AST_NODE_TYPES.Identifier &&
+                node.imported.name !== 'default'
+              ) {
+                return;
+              }
+              modifiers.add(Modifiers.default);
+              break;
+          }
+
+          validator(node.local, modifiers);
+        },
+        validator: validators.import,
+      },
+
+      // #endregion
+
+      // #region function
+
+      VariableDeclarator: {
+        handler: (node, validator): void => {
+          const identifiers = getIdentifiersFromPattern(node.id);
+
+          const baseModifiers = new Set<Modifiers>();
+          const parent = node.parent;
+          if (parent.kind === 'const') {
+            baseModifiers.add(Modifiers.const);
+          }
+
+          if (isGlobal(context.sourceCode.getScope(node))) {
+            baseModifiers.add(Modifiers.global);
+          }
+
+          identifiers.forEach(id => {
+            const modifiers = new Set(baseModifiers);
+
+            if (isDestructured(id)) {
+              modifiers.add(Modifiers.destructured);
+            }
+
+            const scope = context.sourceCode.getScope(id);
+            if (isExported(parent, id.name, scope)) {
+              modifiers.add(Modifiers.exported);
+            }
+
+            if (isUnused(id.name, scope)) {
+              modifiers.add(Modifiers.unused);
+            }
+
+            if (isAsyncVariableIdentifier(id)) {
+              modifiers.add(Modifiers.async);
+            }
+
+            validator(id, modifiers);
+          });
+        },
+        validator: validators.variable,
       },
 
       // #endregion function
 
       // #region parameter
+      ':matches(PropertyDefinition, TSAbstractPropertyDefinition)[computed = false][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]':
+        {
+          handler: (
+            node:
+              | TSESTree.PropertyDefinitionNonComputedName
+              | TSESTree.TSAbstractPropertyDefinitionNonComputedName,
+            validator,
+          ): void => {
+            const modifiers = getMemberModifiers(node);
+            handleMember(validator, node, modifiers);
+          },
+          validator: validators.classProperty,
+        },
+
+      // #endregion parameter
+
+      // #region parameterProperty
+
+      ':not(ObjectPattern) > Property[computed = false][kind = "init"][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]':
+        {
+          handler: (
+            node: TSESTree.PropertyNonComputedName,
+            validator,
+          ): void => {
+            const modifiers = new Set<Modifiers>([Modifiers.public]);
+            handleMember(validator, node, modifiers);
+          },
+          validator: validators.objectLiteralProperty,
+        },
+
+      // #endregion parameterProperty
+
+      // #region property
+
+      [[
+        ':matches(PropertyDefinition, TSAbstractPropertyDefinition)[computed = false][value.type = "ArrowFunctionExpression"]',
+        ':matches(PropertyDefinition, TSAbstractPropertyDefinition)[computed = false][value.type = "FunctionExpression"]',
+        ':matches(PropertyDefinition, TSAbstractPropertyDefinition)[computed = false][value.type = "TSEmptyBodyFunctionExpression"]',
+        ':matches(MethodDefinition, TSAbstractMethodDefinition)[computed = false][kind = "method"]',
+      ].join(', ')]: {
+        handler: (
+          node:
+            | TSESTree.MethodDefinitionNonComputedName
+            | TSESTree.PropertyDefinitionNonComputedName
+            | TSESTree.TSAbstractMethodDefinitionNonComputedName
+            | TSESTree.TSAbstractPropertyDefinitionNonComputedName,
+          validator,
+        ): void => {
+          const modifiers = getMemberModifiers(node);
+
+          if (isAsyncMemberOrProperty(node)) {
+            modifiers.add(Modifiers.async);
+          }
+
+          handleMember(validator, node, modifiers);
+        },
+        validator: validators.classMethod,
+      },
+
+      [[
+        'MethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])',
+        'TSAbstractMethodDefinition[computed = false]:matches([kind="get"], [kind="set"])',
+      ].join(', ')]: {
+        handler: (
+          node: TSESTree.MethodDefinitionNonComputedName,
+          validator,
+        ): void => {
+          const modifiers = getMemberModifiers(node);
+          handleMember(validator, node, modifiers);
+        },
+        validator: validators.classicAccessor,
+      },
+
+      [[
+        'Property[computed = false][kind = "init"][value.type = "ArrowFunctionExpression"]',
+        'Property[computed = false][kind = "init"][value.type = "FunctionExpression"]',
+        'Property[computed = false][kind = "init"][value.type = "TSEmptyBodyFunctionExpression"]',
+      ].join(', ')]: {
+        handler: (
+          node:
+            | TSESTree.PropertyNonComputedName
+            | TSESTree.TSMethodSignatureNonComputedName,
+          validator,
+        ): void => {
+          const modifiers = new Set<Modifiers>([Modifiers.public]);
+
+          if (isAsyncMemberOrProperty(node)) {
+            modifiers.add(Modifiers.async);
+          }
+
+          handleMember(validator, node, modifiers);
+        },
+        validator: validators.objectLiteralMethod,
+      },
+
+      // #endregion property
+
+      // #region method
+
+      [[
+        'TSMethodSignature[computed = false]',
+        'TSPropertySignature[computed = false][typeAnnotation.typeAnnotation.type = "TSFunctionType"]',
+      ].join(', ')]: {
+        handler: (
+          node:
+            | TSESTree.TSMethodSignatureNonComputedName
+            | TSESTree.TSPropertySignatureNonComputedName,
+          validator,
+        ): void => {
+          const modifiers = new Set<Modifiers>([Modifiers.public]);
+          handleMember(validator, node, modifiers);
+        },
+        validator: validators.typeMethod,
+      },
+
+      [[
+        AST_NODE_TYPES.AccessorProperty,
+        AST_NODE_TYPES.TSAbstractAccessorProperty,
+      ].join(', ')]: {
+        handler: (
+          node: TSESTree.AccessorPropertyNonComputedName,
+          validator,
+        ): void => {
+          const modifiers = getMemberModifiers(node);
+          handleMember(validator, node, modifiers);
+        },
+        validator: validators.autoAccessor,
+      },
+
       'FunctionDeclaration, TSDeclareFunction, TSEmptyBodyFunctionExpression, FunctionExpression, ArrowFunctionExpression':
         {
-          validator: validators.parameter,
           handler: (
             node:
               | TSESTree.ArrowFunctionExpression
@@ -386,14 +521,22 @@ export default createRule<Options, MessageIds>({
               });
             });
           },
+          validator: validators.parameter,
         },
 
-      // #endregion parameter
+      // #endregion method
 
-      // #region parameterProperty
+      // #region accessor
+
+      'Property[computed = false]:matches([kind = "get"], [kind = "set"])': {
+        handler: (node: TSESTree.PropertyNonComputedName, validator): void => {
+          const modifiers = new Set<Modifiers>([Modifiers.public]);
+          handleMember(validator, node, modifiers);
+        },
+        validator: validators.classicAccessor,
+      },
 
       TSParameterProperty: {
-        validator: validators.parameterProperty,
         handler: (node, validator): void => {
           const modifiers = getMemberModifiers(node);
 
@@ -403,41 +546,15 @@ export default createRule<Options, MessageIds>({
             validator(i, modifiers);
           });
         },
+        validator: validators.parameterProperty,
       },
 
-      // #endregion parameterProperty
+      // #endregion accessor
 
-      // #region property
-
-      ':not(ObjectPattern) > Property[computed = false][kind = "init"][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]':
-        {
-          validator: validators.objectLiteralProperty,
-          handler: (
-            node: TSESTree.PropertyNonComputedName,
-            validator,
-          ): void => {
-            const modifiers = new Set<Modifiers>([Modifiers.public]);
-            handleMember(validator, node, modifiers);
-          },
-        },
-
-      ':matches(PropertyDefinition, TSAbstractPropertyDefinition)[computed = false][value.type != "ArrowFunctionExpression"][value.type != "FunctionExpression"][value.type != "TSEmptyBodyFunctionExpression"]':
-        {
-          validator: validators.classProperty,
-          handler: (
-            node:
-              | TSESTree.PropertyDefinitionNonComputedName
-              | TSESTree.TSAbstractPropertyDefinitionNonComputedName,
-            validator,
-          ): void => {
-            const modifiers = getMemberModifiers(node);
-            handleMember(validator, node, modifiers);
-          },
-        },
+      // #region autoAccessor
 
       'TSPropertySignature[computed = false][typeAnnotation.typeAnnotation.type != "TSFunctionType"]':
         {
-          validator: validators.typeProperty,
           handler: (
             node: TSESTree.TSPropertySignatureNonComputedName,
             validator,
@@ -449,147 +566,15 @@ export default createRule<Options, MessageIds>({
 
             handleMember(validator, node, modifiers);
           },
+          validator: validators.typeProperty,
         },
-
-      // #endregion property
-
-      // #region method
-
-      [[
-        'Property[computed = false][kind = "init"][value.type = "ArrowFunctionExpression"]',
-        'Property[computed = false][kind = "init"][value.type = "FunctionExpression"]',
-        'Property[computed = false][kind = "init"][value.type = "TSEmptyBodyFunctionExpression"]',
-      ].join(', ')]: {
-        validator: validators.objectLiteralMethod,
-        handler: (
-          node:
-            | TSESTree.PropertyNonComputedName
-            | TSESTree.TSMethodSignatureNonComputedName,
-          validator,
-        ): void => {
-          const modifiers = new Set<Modifiers>([Modifiers.public]);
-
-          if (isAsyncMemberOrProperty(node)) {
-            modifiers.add(Modifiers.async);
-          }
-
-          handleMember(validator, node, modifiers);
-        },
-      },
-
-      [[
-        ':matches(PropertyDefinition, TSAbstractPropertyDefinition)[computed = false][value.type = "ArrowFunctionExpression"]',
-        ':matches(PropertyDefinition, TSAbstractPropertyDefinition)[computed = false][value.type = "FunctionExpression"]',
-        ':matches(PropertyDefinition, TSAbstractPropertyDefinition)[computed = false][value.type = "TSEmptyBodyFunctionExpression"]',
-        ':matches(MethodDefinition, TSAbstractMethodDefinition)[computed = false][kind = "method"]',
-      ].join(', ')]: {
-        validator: validators.classMethod,
-        handler: (
-          node:
-            | TSESTree.MethodDefinitionNonComputedName
-            | TSESTree.PropertyDefinitionNonComputedName
-            | TSESTree.TSAbstractMethodDefinitionNonComputedName
-            | TSESTree.TSAbstractPropertyDefinitionNonComputedName,
-          validator,
-        ): void => {
-          const modifiers = getMemberModifiers(node);
-
-          if (isAsyncMemberOrProperty(node)) {
-            modifiers.add(Modifiers.async);
-          }
-
-          handleMember(validator, node, modifiers);
-        },
-      },
-
-      [[
-        'TSMethodSignature[computed = false]',
-        'TSPropertySignature[computed = false][typeAnnotation.typeAnnotation.type = "TSFunctionType"]',
-      ].join(', ')]: {
-        validator: validators.typeMethod,
-        handler: (
-          node:
-            | TSESTree.TSMethodSignatureNonComputedName
-            | TSESTree.TSPropertySignatureNonComputedName,
-          validator,
-        ): void => {
-          const modifiers = new Set<Modifiers>([Modifiers.public]);
-          handleMember(validator, node, modifiers);
-        },
-      },
-
-      // #endregion method
-
-      // #region accessor
-
-      'Property[computed = false]:matches([kind = "get"], [kind = "set"])': {
-        validator: validators.classicAccessor,
-        handler: (node: TSESTree.PropertyNonComputedName, validator): void => {
-          const modifiers = new Set<Modifiers>([Modifiers.public]);
-          handleMember(validator, node, modifiers);
-        },
-      },
-
-      [[
-        'MethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])',
-        'TSAbstractMethodDefinition[computed = false]:matches([kind="get"], [kind="set"])',
-      ].join(', ')]: {
-        validator: validators.classicAccessor,
-        handler: (
-          node: TSESTree.MethodDefinitionNonComputedName,
-          validator,
-        ): void => {
-          const modifiers = getMemberModifiers(node);
-          handleMember(validator, node, modifiers);
-        },
-      },
-
-      // #endregion accessor
-
-      // #region autoAccessor
-
-      [[
-        AST_NODE_TYPES.AccessorProperty,
-        AST_NODE_TYPES.TSAbstractAccessorProperty,
-      ].join(', ')]: {
-        validator: validators.autoAccessor,
-        handler: (
-          node: TSESTree.AccessorPropertyNonComputedName,
-          validator,
-        ): void => {
-          const modifiers = getMemberModifiers(node);
-          handleMember(validator, node, modifiers);
-        },
-      },
 
       // #endregion autoAccessor
 
       // #region enumMember
 
       // computed is optional, so can't do [computed = false]
-      'TSEnumMember[computed != true]': {
-        validator: validators.enumMember,
-        handler: (
-          node: TSESTree.TSEnumMemberNonComputedName,
-          validator,
-        ): void => {
-          const id = node.id;
-          const modifiers = new Set<Modifiers>();
-
-          if (requiresQuoting(id, compilerOptions.target)) {
-            modifiers.add(Modifiers.requiresQuotes);
-          }
-
-          validator(id, modifiers);
-        },
-      },
-
-      // #endregion enumMember
-
-      // #region class
-
       'ClassDeclaration, ClassExpression': {
-        validator: validators.class,
         handler: (
           node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
           validator,
@@ -617,58 +602,14 @@ export default createRule<Options, MessageIds>({
 
           validator(id, modifiers);
         },
+        validator: validators.class,
       },
 
-      // #endregion class
+      // #endregion enumMember
 
-      // #region interface
-
-      TSInterfaceDeclaration: {
-        validator: validators.interface,
-        handler: (node, validator): void => {
-          const modifiers = new Set<Modifiers>();
-          const scope = context.sourceCode.getScope(node);
-
-          if (isExported(node, node.id.name, scope)) {
-            modifiers.add(Modifiers.exported);
-          }
-
-          if (isUnused(node.id.name, scope)) {
-            modifiers.add(Modifiers.unused);
-          }
-
-          validator(node.id, modifiers);
-        },
-      },
-
-      // #endregion interface
-
-      // #region typeAlias
-
-      TSTypeAliasDeclaration: {
-        validator: validators.typeAlias,
-        handler: (node, validator): void => {
-          const modifiers = new Set<Modifiers>();
-          const scope = context.sourceCode.getScope(node);
-
-          if (isExported(node, node.id.name, scope)) {
-            modifiers.add(Modifiers.exported);
-          }
-
-          if (isUnused(node.id.name, scope)) {
-            modifiers.add(Modifiers.unused);
-          }
-
-          validator(node.id, modifiers);
-        },
-      },
-
-      // #endregion typeAlias
-
-      // #region enum
+      // #region class
 
       TSEnumDeclaration: {
-        validator: validators.enum,
         handler: (node, validator): void => {
           const modifiers = new Set<Modifiers>();
           // enums create their own nested scope
@@ -684,6 +625,69 @@ export default createRule<Options, MessageIds>({
 
           validator(node.id, modifiers);
         },
+        validator: validators.enum,
+      },
+
+      // #endregion class
+
+      // #region interface
+
+      TSEnumMember: {
+        handler: (node: TSESTree.TSEnumMember, validator): void => {
+          const id = node.id;
+          const modifiers = new Set<Modifiers>();
+
+          if (requiresQuoting(id, compilerOptions.target)) {
+            modifiers.add(Modifiers.requiresQuotes);
+          }
+
+          validator(id, modifiers);
+        },
+        validator: validators.enumMember,
+      },
+
+      // #endregion interface
+
+      // #region typeAlias
+
+      TSInterfaceDeclaration: {
+        handler: (node, validator): void => {
+          const modifiers = new Set<Modifiers>();
+          const scope = context.sourceCode.getScope(node);
+
+          if (isExported(node, node.id.name, scope)) {
+            modifiers.add(Modifiers.exported);
+          }
+
+          if (isUnused(node.id.name, scope)) {
+            modifiers.add(Modifiers.unused);
+          }
+
+          validator(node.id, modifiers);
+        },
+        validator: validators.interface,
+      },
+
+      // #endregion typeAlias
+
+      // #region enum
+
+      TSTypeAliasDeclaration: {
+        handler: (node, validator): void => {
+          const modifiers = new Set<Modifiers>();
+          const scope = context.sourceCode.getScope(node);
+
+          if (isExported(node, node.id.name, scope)) {
+            modifiers.add(Modifiers.exported);
+          }
+
+          if (isUnused(node.id.name, scope)) {
+            modifiers.add(Modifiers.unused);
+          }
+
+          validator(node.id, modifiers);
+        },
+        validator: validators.typeAlias,
       },
 
       // #endregion enum
@@ -691,7 +695,6 @@ export default createRule<Options, MessageIds>({
       // #region typeParameter
 
       'TSTypeParameterDeclaration > TSTypeParameter': {
-        validator: validators.typeParameter,
         handler: (node: TSESTree.TSTypeParameter, validator): void => {
           const modifiers = new Set<Modifiers>();
           const scope = context.sourceCode.getScope(node);
@@ -702,13 +705,14 @@ export default createRule<Options, MessageIds>({
 
           validator(node.name, modifiers);
         },
+        validator: validators.typeParameter,
       },
 
       // #endregion typeParameter
     };
 
     return Object.fromEntries(
-      Object.entries(selectors).map(([selector, { validator, handler }]) => {
+      Object.entries(selectors).map(([selector, { handler, validator }]) => {
         return [
           selector,
           (node: Parameters<typeof handler>[0]): void => {
@@ -783,5 +787,3 @@ function requiresQuoting(
       : `${node.value}`;
   return _requiresQuoting(name, target);
 }
-
-export { MessageIds, Options };

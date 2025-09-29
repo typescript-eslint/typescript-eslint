@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-return 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,7 +6,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "treatUndefinedAsUnspecified": {
-        "default": false,
         "type": "boolean"
       }
     },
@@ -25,5 +21,3 @@ type Options = [
     treatUndefinedAsUnspecified?: boolean;
   },
 ];
-"
-`;

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics typed-this AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > typed-this > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -18,9 +18,9 @@ exports[`AST Fixtures legacy-fixtures basics typed-this AST Alignment - AST 1`] 
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'addClickListener',
--               optional: false,
+                optional: false,
 
                 range: [97, 113],
                 loc: {
@@ -29,14 +29,14 @@ exports[`AST Fixtures legacy-fixtures basics typed-this AST Alignment - AST 1`] 
                 },
               },
               kind: 'method',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'onclick',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSFunctionType {
@@ -45,9 +45,9 @@ exports[`AST Fixtures legacy-fixtures basics typed-this AST Alignment - AST 1`] 
 +                     parameters: Array [
                         Identifier {
                           type: 'Identifier',
--                         decorators: Array [],
+                          decorators: Array [],
                           name: 'this',
--                         optional: false,
+                          optional: false,
                           typeAnnotation: TSTypeAnnotation {
                             type: 'TSTypeAnnotation',
                             typeAnnotation: TSVoidKeyword {
@@ -75,18 +75,18 @@ exports[`AST Fixtures legacy-fixtures basics typed-this AST Alignment - AST 1`] 
                         },
                         Identifier {
                           type: 'Identifier',
--                         decorators: Array [],
+                          decorators: Array [],
                           name: 'e',
--                         optional: false,
+                          optional: false,
                           typeAnnotation: TSTypeAnnotation {
                             type: 'TSTypeAnnotation',
                             typeAnnotation: TSTypeReference {
                               type: 'TSTypeReference',
                               typeName: Identifier {
                                 type: 'Identifier',
--                               decorators: Array [],
+                                decorators: Array [],
                                 name: 'Event',
--                               optional: false,
+                                optional: false,
 
                                 range: [139, 144],
                                 loc: {
@@ -157,8 +157,9 @@ exports[`AST Fixtures legacy-fixtures basics typed-this AST Alignment - AST 1`] 
                   },
                 },
               ],
--             readonly: false,
+              readonly: false,
 -             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSVoidKeyword {
@@ -193,13 +194,13 @@ exports[`AST Fixtures legacy-fixtures basics typed-this AST Alignment - AST 1`] 
             end: { column: 1, line: 5 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'UIElement',
--         optional: false,
+          optional: false,
 
           range: [83, 92],
           loc: {
@@ -222,5 +223,4 @@ exports[`AST Fixtures legacy-fixtures basics typed-this AST Alignment - AST 1`] 
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

@@ -1,0 +1,48 @@
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "foo",
+            optional: false,
+
+            range: [12, 15],
+            loc: {
+              start: { column: 12, line: 1 },
+              end: { column: 15, line: 1 },
+            },
+          },
+          init: null,
+
+          range: [12, 15],
+          loc: {
+            start: { column: 12, line: 1 },
+            end: { column: 15, line: 1 },
+          },
+        },
+      ],
+      declare: true,
+      kind: "let",
+
+      range: [0, 16],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 16, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 17],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

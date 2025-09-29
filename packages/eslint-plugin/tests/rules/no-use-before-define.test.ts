@@ -3,9 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-use-before-define';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 const parserOptions = { ecmaVersion: 6 as const };
 
@@ -71,7 +69,7 @@ function a() {
   alert(a);
 })();
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     `
 a();
@@ -84,14 +82,14 @@ try {
 class A {}
 new A();
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     `
 var a = 0,
   b = a;
     `,
-    { code: 'var { a = 0, b = a } = {};', parserOptions },
-    { code: 'var [a = 0, b = a] = {};', parserOptions },
+    { code: 'var { a = 0, b = a } = {};', languageOptions: { parserOptions } },
+    { code: 'var [a = 0, b = a] = {};', languageOptions: { parserOptions } },
     `
 function foo() {
   foo();
@@ -113,7 +111,7 @@ var a;
 for (a of a) {
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
     },
 
     // Block-level bindings
@@ -125,7 +123,7 @@ a();
   function a() {}
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -135,8 +133,8 @@ a();
   function a() {}
 }
       `,
+      languageOptions: { parserOptions },
       options: ['nofunc'],
-      parserOptions,
     },
     {
       code: `
@@ -149,7 +147,7 @@ switch (foo) {
   }
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -158,7 +156,7 @@ a();
   let a = function () {};
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
     },
 
     // object style options
@@ -179,8 +177,8 @@ function a() {
   function a() {}
 }
       `,
+      languageOptions: { parserOptions },
       options: [{ functions: false }],
-      parserOptions,
     },
     {
       code: `
@@ -189,8 +187,8 @@ function foo() {
 }
 class A {}
       `,
+      languageOptions: { parserOptions },
       options: [{ classes: false }],
-      parserOptions,
     },
 
     // "variables" option
@@ -208,8 +206,8 @@ var bar;
 var foo = () => bar;
 var bar;
       `,
+      languageOptions: { parserOptions },
       options: [{ variables: false }],
-      parserOptions,
     },
 
     // "typedefs" option
@@ -274,7 +272,9 @@ export namespace Third {
   export let third = () => console.log('third');
 }
       `,
-      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      languageOptions: {
+        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      },
     },
     // https://github.com/eslint/typescript-eslint-parser/issues/550
     `
@@ -334,48 +334,48 @@ enum Foo {
 export { a };
 const a = 1;
       `,
+      languageOptions: { parserOptions },
       options: [{ allowNamedExports: true }],
-      parserOptions,
     },
     {
       code: `
 export { a as b };
 const a = 1;
       `,
+      languageOptions: { parserOptions },
       options: [{ allowNamedExports: true }],
-      parserOptions,
     },
     {
       code: `
 export { a, b };
 let a, b;
       `,
+      languageOptions: { parserOptions },
       options: [{ allowNamedExports: true }],
-      parserOptions,
     },
     {
       code: `
 export { a };
 var a;
       `,
+      languageOptions: { parserOptions },
       options: [{ allowNamedExports: true }],
-      parserOptions,
     },
     {
       code: `
 export { f };
 function f() {}
       `,
+      languageOptions: { parserOptions },
       options: [{ allowNamedExports: true }],
-      parserOptions,
     },
     {
       code: `
 export { C };
 class C {}
       `,
+      languageOptions: { parserOptions },
       options: [{ allowNamedExports: true }],
-      parserOptions,
     },
     {
       code: `
@@ -385,8 +385,8 @@ enum Foo {
   BAR,
 }
       `,
+      languageOptions: { parserOptions },
       options: [{ allowNamedExports: true }],
-      parserOptions,
     },
     {
       code: `
@@ -396,8 +396,8 @@ namespace Foo {
   export let bar = () => console.log('bar');
 }
       `,
+      languageOptions: { parserOptions },
       options: [{ allowNamedExports: true }],
-      parserOptions,
     },
     {
       code: `
@@ -410,8 +410,8 @@ enum Foo {
 let baz: Enum;
 enum Enum {}
       `,
+      languageOptions: { parserOptions },
       options: [{ allowNamedExports: true }],
-      parserOptions,
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2502
     {
@@ -420,10 +420,12 @@ import * as React from 'react';
 
 <div />;
       `,
-      parserOptions: {
-        sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          sourceType: 'module',
         },
       },
     },
@@ -433,10 +435,12 @@ import React from 'react';
 
 <div />;
       `,
-      parserOptions: {
-        sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          sourceType: 'module',
         },
       },
     },
@@ -446,11 +450,13 @@ import { h } from 'preact';
 
 <div />;
       `,
-      parserOptions: {
-        sourceType: 'module',
-        jsxPragma: 'h',
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxPragma: 'h',
+          sourceType: 'module',
         },
       },
     },
@@ -460,9 +466,11 @@ const React = require('react');
 
 <div />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -575,6 +583,13 @@ const baz = '';
       `,
       options: [{ ignoreTypeReferences: true }],
     },
+    `
+namespace A.X.Y {}
+
+import Z = A.X.Y;
+
+const X = 23;
+    `,
   ],
   invalid: [
     {
@@ -582,28 +597,16 @@ const baz = '';
 a++;
 var a = 19;
       `,
-      parserOptions: { sourceType: 'module' },
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
-    },
-    {
-      code: `
-a++;
-var a = 19;
-      `,
-      parserOptions,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
+      languageOptions: {
+        parserOptions: { sourceType: 'module' },
+      },
     },
     {
       code: `
@@ -612,8 +615,22 @@ var a = 19;
       `,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+a++;
+var a = 19;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
@@ -625,8 +642,8 @@ var a = function () {};
       `,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
@@ -638,8 +655,8 @@ var a = [1, 3];
       `,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
@@ -655,13 +672,13 @@ function a() {
       `,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'b' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
@@ -671,14 +688,14 @@ function a() {
 a();
 var a = function () {};
       `,
-      options: ['nofunc'],
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      options: ['nofunc'],
     },
     {
       code: `
@@ -687,45 +704,28 @@ var a = function () {};
   var a = 42;
 })();
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
 (() => a())();
 function a() {}
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
-    },
-    {
-      code: `
-'use strict';
-a();
-{
-  function a() {}
-}
-      `,
-      parser: require.resolve('espree'),
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -738,8 +738,8 @@ try {
       `,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
@@ -749,28 +749,28 @@ try {
 var f = () => a;
 var a;
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
 new A();
 class A {}
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'A' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -779,28 +779,28 @@ function foo() {
 }
 class A {}
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'A' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
 new A();
 var A = class {};
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'A' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -809,14 +809,14 @@ function foo() {
 }
 var A = class {};
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'A' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
 
     // Block-level bindings
@@ -827,14 +827,14 @@ a++;
   var a;
 }
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -844,14 +844,14 @@ a++;
   function a() {}
 }
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -860,14 +860,14 @@ a++;
   let a = 1;
 }
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -878,14 +878,14 @@ switch (foo) {
     let a;
 }
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -896,14 +896,14 @@ if (true) {
   let a;
 }
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
 
     // object style options
@@ -912,29 +912,29 @@ if (true) {
 a();
 var a = function () {};
       `,
-      options: [{ functions: false, classes: false }],
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      options: [{ classes: false, functions: false }],
     },
     {
       code: `
 new A();
 var A = class {};
       `,
-      options: [{ classes: false }],
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'A' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
+      options: [{ classes: false }],
     },
     {
       code: `
@@ -943,15 +943,15 @@ function foo() {
 }
 var A = class {};
       `,
-      options: [{ classes: false }],
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'A' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
+      options: [{ classes: false }],
     },
 
     // invalid initializers
@@ -959,110 +959,110 @@ var A = class {};
       code: 'var a = a;',
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
     {
       code: 'let a = a + b;',
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: 'const a = foo(a);',
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: 'function foo(a = a) {}',
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: 'var { a = a } = [];',
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: 'var [a = a] = [];',
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: 'var { b = a, a } = {};',
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: 'var [b = a, a] = {};',
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: 'var { a = 0 } = a;',
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: 'var [a = 0] = a;',
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -1071,8 +1071,8 @@ for (var a in a) {
       `,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
@@ -1082,14 +1082,14 @@ for (var a in a) {
 for (var a of a) {
 }
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
     },
 
     // "ignoreTypeReferences" option
@@ -1101,14 +1101,14 @@ interface Bar {
 
 const Foo = 2;
       `,
-      options: [{ ignoreTypeReferences: false }],
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'Foo' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      options: [{ ignoreTypeReferences: false }],
     },
     {
       code: `
@@ -1120,14 +1120,14 @@ class Foo {
   public static readonly FOO = '';
 }
       `,
-      options: [{ ignoreTypeReferences: false }],
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'Foo' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      options: [{ ignoreTypeReferences: false }],
     },
     {
       code: `
@@ -1141,14 +1141,14 @@ const Foo = {
   },
 };
       `,
-      options: [{ ignoreTypeReferences: false }],
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'Foo' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      options: [{ ignoreTypeReferences: false }],
     },
     {
       code: `
@@ -1160,14 +1160,14 @@ const foo = {
 
 const baz = '';
       `,
-      options: [{ ignoreTypeReferences: false }],
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'baz' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      options: [{ ignoreTypeReferences: false }],
     },
 
     // "variables" option
@@ -1179,15 +1179,15 @@ function foo() {
 }
 var bar;
       `,
-      parserOptions,
-      options: [{ variables: false }],
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'bar' },
+          messageId: 'noUseBeforeDefine',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
+      languageOptions: { parserOptions },
+      options: [{ variables: false }],
     },
     {
       code: `
@@ -1201,14 +1201,14 @@ enum Foo {
   FOO,
 }
       `,
-      options: [{ enums: true }],
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'Foo' },
           line: 4,
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      options: [{ enums: true }],
     },
     {
       code: `
@@ -1220,14 +1220,14 @@ enum Foo {
   FOO,
 }
       `,
-      options: [{ enums: true }],
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'Foo' },
           line: 3,
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      options: [{ enums: true }],
     },
     {
       code: `
@@ -1237,14 +1237,14 @@ enum Foo {
   FOO,
 }
       `,
-      options: [{ enums: true }],
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'Foo' },
           line: 2,
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      options: [{ enums: true }],
     },
     // "allowNamedExports" option
     {
@@ -1252,138 +1252,138 @@ enum Foo {
 export { a };
 const a = 1;
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
 export { a };
 const a = 1;
       `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
       options: [{}],
-      parserOptions,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
     },
     {
       code: `
 export { a };
 const a = 1;
       `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
       options: [{ allowNamedExports: false }],
-      parserOptions,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
     },
     {
       code: `
 export { a };
 const a = 1;
       `,
-      options: ['nofunc'],
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
+      options: ['nofunc'],
     },
     {
       code: `
 export { a as b };
 const a = 1;
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
 export { a, b };
 let a, b;
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
         },
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'b' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
 export { a };
 var a;
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
 export { f };
 function f() {}
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'f' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
 export { C };
 class C {}
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'C' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
 export const foo = a;
 const a = 1;
       `,
-      options: [{ allowNamedExports: true }],
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
     },
     {
       code: `
@@ -1392,15 +1392,14 @@ export function foo() {
 }
 const a = 1;
       `,
-      options: [{ allowNamedExports: true }],
-      parserOptions,
-
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
     },
     {
       code: `
@@ -1411,15 +1410,14 @@ export class C {
 }
 const a = 1;
       `,
-      options: [{ allowNamedExports: true }],
-      parserOptions,
-
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
     },
     {
       code: `
@@ -1429,13 +1427,13 @@ enum Foo {
   BAR,
 }
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'Foo' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -1445,13 +1443,13 @@ namespace Foo {
   export let bar = () => console.log('bar');
 }
       `,
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'Foo' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -1464,18 +1462,18 @@ enum Foo {
 let baz: Enum;
 enum Enum {}
       `,
-      options: [{ ignoreTypeReferences: true, allowNamedExports: false }],
-      parserOptions,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'Foo' },
+          messageId: 'noUseBeforeDefine',
         },
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'baz' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
+      languageOptions: { parserOptions },
+      options: [{ allowNamedExports: false, ignoreTypeReferences: true }],
     },
     {
       code: `
@@ -1484,8 +1482,8 @@ function f() {}
       `,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'f' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
     },
@@ -1496,8 +1494,8 @@ var a = 10;
       `,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
     },
@@ -1510,8 +1508,8 @@ function f() {
       `,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'f' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
     },
@@ -1522,8 +1520,8 @@ var a = { b: 5 };
       `,
       errors: [
         {
-          messageId: 'noUseBeforeDefine',
           data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
         },
       ],
     },

@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -13,8 +14,9 @@ import {
 export default createRule({
   name: 'non-nullable-type-assertion-style',
   meta: {
+    type: 'suggestion',
     docs: {
-      description: 'Enforce non-null assertions over explicit type casts',
+      description: 'Enforce non-null assertions over explicit type assertions',
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },
@@ -24,7 +26,6 @@ export default createRule({
         'Use a ! assertion to more succinctly remove null and undefined from the type.',
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
 
@@ -40,14 +41,16 @@ export default createRule({
         return undefined;
       }
 
-      return tsutils.unionTypeParts(type);
+      return tsutils.unionConstituents(type);
     };
 
     const couldBeNullish = (type: ts.Type): boolean => {
       if (type.flags & ts.TypeFlags.TypeParameter) {
         const constraint = type.getConstraint();
         return constraint == null || couldBeNullish(constraint);
-      } else if (tsutils.isUnionType(type)) {
+      }
+
+      if (tsutils.isUnionType(type)) {
         for (const part of type.types) {
           if (couldBeNullish(part)) {
             return true;
@@ -129,6 +132,8 @@ export default createRule({
             ) > OperatorPrecedence.Unary;
 
           context.report({
+            node,
+            messageId: 'preferNonNullAssertion',
             fix(fixer) {
               return fixer.replaceText(
                 node,
@@ -137,8 +142,6 @@ export default createRule({
                   : `(${expressionSourceCode})!`,
               );
             },
-            messageId: 'preferNonNullAssertion',
-            node,
           });
         }
       },

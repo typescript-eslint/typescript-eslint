@@ -51,7 +51,7 @@ class AssertionError extends Error {
           typeof stackStartFunction === 'function'
             ? stackStartFunction.name
             : stackStartFunction.toString();
-        const idx = out.indexOf('\n' + fn_name);
+        const idx = out.indexOf(`\n${fn_name}`);
         if (idx >= 0) {
           // once we have located the function frame
           // we need to strip out everything before it (and its line)
@@ -67,11 +67,11 @@ class AssertionError extends Error {
 
 function fail(actual, expected, message, operator, stackStartFunction) {
   throw new AssertionError({
-    message: message,
-    actual: actual,
-    expected: expected,
-    operator: operator,
-    stackStartFunction: stackStartFunction,
+    actual,
+    expected,
+    message,
+    operator,
+    stackStartFunction,
   });
 }
 

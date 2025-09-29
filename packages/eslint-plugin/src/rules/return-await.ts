@@ -1,18 +1,19 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
+  Awaitable,
   createRule,
+  getFixOrSuggest,
   getParserServices,
   isAwaitExpression,
   isAwaitKeyword,
-  isTypeAnyType,
-  isTypeUnknownType,
+  needsToBeAwaited,
   nullThrows,
+  isHigherPrecedenceThanAwait,
 } from '../util';
-import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
 
 type FunctionNode =
   | TSESTree.ArrowFunctionExpression
@@ -24,33 +25,65 @@ interface ScopeInfo {
   owningFunc: FunctionNode;
 }
 
+type Option =
+  | 'always'
+  | 'error-handling-correctness-only'
+  | 'in-try-catch'
+  | 'never';
+
 export default createRule({
   name: 'return-await',
   meta: {
+    type: 'problem',
     docs: {
-      description: 'Enforce consistent returning of awaited values',
+      description: 'Enforce consistent awaiting of returned promises',
+      recommended: {
+        strict: ['error-handling-correctness-only'],
+      },
       requiresTypeChecking: true,
-      extendsBaseRule: 'no-return-await',
     },
     fixable: 'code',
+    // eslint-disable-next-line eslint-plugin/require-meta-has-suggestions -- suggestions are exposed through a helper.
     hasSuggestions: true,
-    type: 'problem',
     messages: {
-      nonPromiseAwait:
-        'Returning an awaited value that is not a promise is not allowed.',
       disallowedPromiseAwait:
         'Returning an awaited promise is not allowed in this context.',
+      disallowedPromiseAwaitSuggestion:
+        'Remove `await` before the expression. Use caution as this may impact control flow.',
+      nonPromiseAwait:
+        'Returning an awaited value that is not a promise is not allowed.',
       requiredPromiseAwait:
         'Returning an awaited promise is required in this context.',
       requiredPromiseAwaitSuggestion:
         'Add `await` before the expression. Use caution as this may impact control flow.',
-      disallowedPromiseAwaitSuggestion:
-        'Remove `await` before the expression. Use caution as this may impact control flow.',
     },
     schema: [
       {
         type: 'string',
-        enum: ['in-try-catch', 'always', 'never'],
+        oneOf: [
+          {
+            type: 'string',
+            description: 'Requires that all returned promises be awaited.',
+            enum: ['always'],
+          },
+          {
+            type: 'string',
+            description:
+              'In error-handling contexts, the rule enforces that returned promises must be awaited. In ordinary contexts, the rule does not enforce any particular behavior around whether returned promises are awaited.',
+            enum: ['error-handling-correctness-only'],
+          },
+          {
+            type: 'string',
+            description:
+              'In error-handling contexts, the rule enforces that returned promises must be awaited. In ordinary contexts, the rule enforces that returned promises _must not_ be awaited.',
+            enum: ['in-try-catch'],
+          },
+          {
+            type: 'string',
+            description: 'Disallows awaiting any returned promises.',
+            enum: ['never'],
+          },
+        ],
       },
     ],
   },
@@ -73,6 +106,51 @@ export default createRule({
       scopeInfoStack.pop();
     }
 
+    function affectsExplicitResourceManagement(node: TSESTree.Node): boolean {
+      // just need to determine if there is a `using` declaration in scope.
+      let scope = context.sourceCode.getScope(node);
+      const functionScope = scope.variableScope;
+      while (true) {
+        for (const variable of scope.variables) {
+          if (variable.defs.length !== 1) {
+            // This can't be the case for `using` or `await using` since it's
+            // an error to redeclare those more than once in the same scope,
+            // unlike, say, `var` declarations.
+            continue;
+          }
+
+          const declaration = variable.defs[0];
+          const declaratorNode = declaration.node;
+          const declarationNode =
+            declaratorNode.parent as TSESTree.VariableDeclaration;
+
+          // if it's a using/await using declaration, and it comes _before_ the
+          // node we're checking, it affects control flow for that node.
+          if (
+            ['await using', 'using'].includes(declarationNode.kind) &&
+            declaratorNode.range[1] < node.range[0]
+          ) {
+            return true;
+          }
+        }
+
+        if (scope === functionScope) {
+          // We've checked all the relevant scopes
+          break;
+        }
+
+        // This should always exist, since the rule should only be checking
+        // contexts in which `return` statements are legal, which should always
+        // be inside a function.
+        scope = nullThrows(
+          scope.upper,
+          'Expected parent scope to exist. return-await should only operate on return statements within functions',
+        );
+      }
+
+      return false;
+    }
+
     /**
      * Tests whether a node is inside of an explicit error handling context
      * (try/catch/finally) in a way that throwing an exception will have an
@@ -90,13 +168,9 @@ export default createRule({
         return false;
       }
 
-      const { tryStatement, block } = tryAncestorResult;
+      const { block, tryStatement } = tryAncestorResult;
 
       switch (block) {
-        case 'try':
-          // Try blocks are always followed by either a catch or finally,
-          // so exceptions thrown here always affect control flow.
-          return true;
         case 'catch':
           // Exceptions thrown in catch blocks followed by a finally block affect
           // control flow.
@@ -108,6 +182,10 @@ export default createRule({
           return affectsExplicitErrorHandling(tryStatement);
         case 'finally':
           return affectsExplicitErrorHandling(tryStatement);
+        case 'try':
+          // Try blocks are always followed by either a catch or finally,
+          // so exceptions thrown here always affect control flow.
+          return true;
         default: {
           const __never: never = block;
           throw new Error(`Unexpected block type: ${String(__never)}`);
@@ -116,8 +194,8 @@ export default createRule({
     }
 
     interface FindContainingTryStatementResult {
+      block: 'catch' | 'finally' | 'try';
       tryStatement: ts.TryStatement;
-      block: 'try' | 'catch' | 'finally';
     }
 
     /**
@@ -134,7 +212,7 @@ export default createRule({
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (ts.isTryStatement(ancestor)) {
-          let block: 'try' | 'catch' | 'finally' | undefined;
+          let block: 'catch' | 'finally' | 'try' | undefined;
           if (child === ancestor.tryBlock) {
             block = 'try';
           } else if (child === ancestor.catchClause) {
@@ -144,11 +222,11 @@ export default createRule({
           }
 
           return {
-            tryStatement: ancestor,
             block: nullThrows(
               block,
               'Child of a try statement must be a try block, catch clause, or finally block',
             ),
+            tryStatement: ancestor,
           };
         }
         child = ancestor;
@@ -200,18 +278,6 @@ export default createRule({
       ];
     }
 
-    function isHigherPrecedenceThanAwait(node: ts.Node): boolean {
-      const operator = ts.isBinaryExpression(node)
-        ? node.operatorToken.kind
-        : ts.SyntaxKind.Unknown;
-      const nodePrecedence = getOperatorPrecedence(node.kind, operator);
-      const awaitPrecedence = getOperatorPrecedence(
-        ts.SyntaxKind.AwaitExpression,
-        ts.SyntaxKind.Unknown,
-      );
-      return nodePrecedence > awaitPrecedence;
-    }
-
     function test(node: TSESTree.Expression, expression: ts.Node): void {
       let child: ts.Node;
 
@@ -224,92 +290,75 @@ export default createRule({
       }
 
       const type = checker.getTypeAtLocation(child);
-      const isThenable = tsutils.isThenableType(checker, expression, type);
+      const certainty = needsToBeAwaited(checker, expression, type);
 
-      if (!isAwait && !isThenable) {
-        return;
-      }
+      // handle awaited _non_thenables
 
-      if (isAwait && !isThenable) {
-        // any/unknown could be thenable; do not auto-fix
-        const useAutoFix = !(isTypeAnyType(type) || isTypeUnknownType(type));
-
-        context.report({
-          messageId: 'nonPromiseAwait',
-          node,
-          ...fixOrSuggest(useAutoFix, {
+      if (certainty !== Awaitable.Always) {
+        if (isAwait) {
+          if (certainty === Awaitable.May) {
+            return;
+          }
+          context.report({
+            node,
             messageId: 'nonPromiseAwait',
             fix: fixer => removeAwait(fixer, node),
-          }),
-        });
+          });
+        }
         return;
       }
 
-      const affectsErrorHandling = affectsExplicitErrorHandling(expression);
+      // At this point it's definitely a thenable.
+
+      const affectsErrorHandling =
+        affectsExplicitErrorHandling(expression) ||
+        affectsExplicitResourceManagement(node);
       const useAutoFix = !affectsErrorHandling;
 
-      if (option === 'always') {
-        if (!isAwait && isThenable) {
-          context.report({
-            messageId: 'requiredPromiseAwait',
-            node,
-            ...fixOrSuggest(useAutoFix, {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              fix: fixer =>
-                insertAwait(
-                  fixer,
-                  node,
-                  isHigherPrecedenceThanAwait(expression),
-                ),
-            }),
-          });
-        }
+      const ruleConfiguration = getConfiguration(option as Option);
 
-        return;
-      }
+      const shouldAwaitInCurrentContext = affectsErrorHandling
+        ? ruleConfiguration.errorHandlingContext
+        : ruleConfiguration.ordinaryContext;
 
-      if (option === 'never') {
-        if (isAwait) {
-          context.report({
-            messageId: 'disallowedPromiseAwait',
-            node,
-            ...fixOrSuggest(useAutoFix, {
-              messageId: 'disallowedPromiseAwaitSuggestion',
-              fix: fixer => removeAwait(fixer, node),
-            }),
-          });
-        }
-
-        return;
-      }
-
-      if (option === 'in-try-catch') {
-        if (isAwait && !affectsErrorHandling) {
-          context.report({
-            messageId: 'disallowedPromiseAwait',
-            node,
-            ...fixOrSuggest(useAutoFix, {
-              messageId: 'disallowedPromiseAwaitSuggestion',
-              fix: fixer => removeAwait(fixer, node),
-            }),
-          });
-        } else if (!isAwait && affectsErrorHandling) {
-          context.report({
-            messageId: 'requiredPromiseAwait',
-            node,
-            ...fixOrSuggest(useAutoFix, {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              fix: fixer =>
-                insertAwait(
-                  fixer,
-                  node,
-                  isHigherPrecedenceThanAwait(expression),
-                ),
-            }),
-          });
-        }
-
-        return;
+      switch (shouldAwaitInCurrentContext) {
+        case 'await':
+          if (!isAwait) {
+            context.report({
+              node,
+              messageId: 'requiredPromiseAwait',
+              ...getFixOrSuggest({
+                fixOrSuggest: useAutoFix ? 'fix' : 'suggest',
+                suggestion: {
+                  messageId: 'requiredPromiseAwaitSuggestion',
+                  fix: fixer =>
+                    insertAwait(
+                      fixer,
+                      node,
+                      isHigherPrecedenceThanAwait(expression),
+                    ),
+                },
+              }),
+            });
+          }
+          break;
+        case "don't-care":
+          break;
+        case 'no-await':
+          if (isAwait) {
+            context.report({
+              node,
+              messageId: 'disallowedPromiseAwait',
+              ...getFixOrSuggest({
+                fixOrSuggest: useAutoFix ? 'fix' : 'suggest',
+                suggestion: {
+                  messageId: 'disallowedPromiseAwaitSuggestion',
+                  fix: fixer => removeAwait(fixer, node),
+                },
+              }),
+            });
+          }
+          break;
       }
     }
 
@@ -326,13 +375,13 @@ export default createRule({
     }
 
     return {
-      FunctionDeclaration: enterFunction,
-      FunctionExpression: enterFunction,
       ArrowFunctionExpression: enterFunction,
+      'ArrowFunctionExpression:exit': exitFunction,
+      FunctionDeclaration: enterFunction,
 
       'FunctionDeclaration:exit': exitFunction,
+      FunctionExpression: enterFunction,
       'FunctionExpression:exit': exitFunction,
-      'ArrowFunctionExpression:exit': exitFunction,
 
       // executes after less specific handler, so exitFunction is called
       'ArrowFunctionExpression[async = true]:exit'(
@@ -359,11 +408,34 @@ export default createRule({
   },
 });
 
-function fixOrSuggest<MessageId extends string>(
-  useFix: boolean,
-  suggestion: TSESLint.SuggestionReportDescriptor<MessageId>,
-):
-  | { fix: TSESLint.ReportFixFunction }
-  | { suggest: TSESLint.SuggestionReportDescriptor<MessageId>[] } {
-  return useFix ? { fix: suggestion.fix } : { suggest: [suggestion] };
+type WhetherToAwait = "don't-care" | 'await' | 'no-await';
+
+interface RuleConfiguration {
+  errorHandlingContext: WhetherToAwait;
+  ordinaryContext: WhetherToAwait;
+}
+
+function getConfiguration(option: Option): RuleConfiguration {
+  switch (option) {
+    case 'always':
+      return {
+        errorHandlingContext: 'await',
+        ordinaryContext: 'await',
+      };
+    case 'error-handling-correctness-only':
+      return {
+        errorHandlingContext: 'await',
+        ordinaryContext: "don't-care",
+      };
+    case 'in-try-catch':
+      return {
+        errorHandlingContext: 'await',
+        ordinaryContext: 'no-await',
+      };
+    case 'never':
+      return {
+        errorHandlingContext: 'no-await',
+        ordinaryContext: 'no-await',
+      };
+  }
 }

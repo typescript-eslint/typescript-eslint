@@ -1,4 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -20,11 +22,12 @@ type ParameterCapableTSNode =
   | ts.TypeQueryNode
   | ts.TypeReferenceNode;
 
-type MessageIds = 'unnecessaryTypeParameter';
+export type MessageIds = 'unnecessaryTypeParameter';
 
 export default createRule<[], MessageIds>({
   name: 'no-unnecessary-type-arguments',
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow type arguments that are equal to the default',
       recommended: 'strict',
@@ -36,7 +39,6 @@ export default createRule<[], MessageIds>({
         'This is the default value for this type parameter, so it can be omitted.',
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -110,8 +112,12 @@ export default createRule<[], MessageIds>({
     return {
       TSTypeParameterInstantiation(node): void {
         const expression = services.esTreeNodeToTSNodeMap.get(node);
+        const typeParameters = getTypeParametersFromNode(
+          node,
+          expression,
+          checker,
+        );
 
-        const typeParameters = getTypeParametersFromNode(expression, checker);
         if (typeParameters) {
           checkTSArgsAndParameters(node, typeParameters);
         }
@@ -121,29 +127,33 @@ export default createRule<[], MessageIds>({
 });
 
 function getTypeParametersFromNode(
-  node: ParameterCapableTSNode,
+  node: TSESTree.TSTypeParameterInstantiation,
+  tsNode: ParameterCapableTSNode,
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
-  if (ts.isExpressionWithTypeArguments(node)) {
-    return getTypeParametersFromType(node.expression, checker);
+  if (ts.isExpressionWithTypeArguments(tsNode)) {
+    return getTypeParametersFromType(node, tsNode.expression, checker);
   }
 
-  if (ts.isTypeReferenceNode(node)) {
-    return getTypeParametersFromType(node.typeName, checker);
+  if (ts.isTypeReferenceNode(tsNode)) {
+    return getTypeParametersFromType(node, tsNode.typeName, checker);
   }
 
   if (
-    ts.isCallExpression(node) ||
-    ts.isNewExpression(node) ||
-    ts.isTaggedTemplateExpression(node)
+    ts.isCallExpression(tsNode) ||
+    ts.isNewExpression(tsNode) ||
+    ts.isTaggedTemplateExpression(tsNode) ||
+    ts.isJsxOpeningElement(tsNode) ||
+    ts.isJsxSelfClosingElement(tsNode)
   ) {
-    return getTypeParametersFromCall(node, checker);
+    return getTypeParametersFromCall(node, tsNode, checker);
   }
 
   return undefined;
 }
 
 function getTypeParametersFromType(
+  node: TSESTree.TSTypeParameterInstantiation,
   type: ts.ClassDeclaration | ts.EntityName | ts.Expression,
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
@@ -159,24 +169,41 @@ function getTypeParametersFromType(
     return undefined;
   }
 
-  return findFirstResult(declarations, decl =>
-    ts.isClassLike(decl) ||
-    ts.isTypeAliasDeclaration(decl) ||
-    ts.isInterfaceDeclaration(decl)
-      ? decl.typeParameters
-      : undefined,
+  const sortedDeclaraions = sortDeclarationsByTypeValueContext(
+    node,
+    declarations,
   );
+  return findFirstResult(sortedDeclaraions, decl => {
+    if (
+      ts.isTypeAliasDeclaration(decl) ||
+      ts.isInterfaceDeclaration(decl) ||
+      ts.isClassLike(decl)
+    ) {
+      return decl.typeParameters;
+    }
+    if (ts.isVariableDeclaration(decl)) {
+      return getConstructSignatureDeclaration(symAtLocation, checker)
+        ?.typeParameters;
+    }
+    return undefined;
+  });
 }
 
 function getTypeParametersFromCall(
-  node: ts.CallExpression | ts.NewExpression | ts.TaggedTemplateExpression,
+  node: TSESTree.TSTypeParameterInstantiation,
+  tsNode:
+    | ts.CallExpression
+    | ts.JsxOpeningElement
+    | ts.JsxSelfClosingElement
+    | ts.NewExpression
+    | ts.TaggedTemplateExpression,
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
-  const sig = checker.getResolvedSignature(node);
+  const sig = checker.getResolvedSignature(tsNode);
   const sigDecl = sig?.getDeclaration();
   if (!sigDecl) {
-    return ts.isNewExpression(node)
-      ? getTypeParametersFromType(node.expression, checker)
+    return ts.isNewExpression(tsNode)
+      ? getTypeParametersFromType(node, tsNode.expression, checker)
       : undefined;
   }
 
@@ -190,4 +217,43 @@ function getAliasedSymbol(
   return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
     ? checker.getAliasedSymbol(symbol)
     : symbol;
+}
+
+function isInTypeContext(node: TSESTree.TSTypeParameterInstantiation) {
+  return (
+    node.parent.type === AST_NODE_TYPES.TSInterfaceHeritage ||
+    node.parent.type === AST_NODE_TYPES.TSTypeReference ||
+    node.parent.type === AST_NODE_TYPES.TSClassImplements
+  );
+}
+
+function isTypeContextDeclaration(decl: ts.Declaration) {
+  return ts.isTypeAliasDeclaration(decl) || ts.isInterfaceDeclaration(decl);
+}
+
+function typeFirstCompare(declA: ts.Declaration, declB: ts.Declaration) {
+  const aIsType = isTypeContextDeclaration(declA);
+  const bIsType = isTypeContextDeclaration(declB);
+
+  return Number(bIsType) - Number(aIsType);
+}
+
+function sortDeclarationsByTypeValueContext(
+  node: TSESTree.TSTypeParameterInstantiation,
+  declarations: ts.Declaration[],
+) {
+  const sorted = [...declarations].sort(typeFirstCompare);
+  if (isInTypeContext(node)) {
+    return sorted;
+  }
+  return sorted.reverse();
+}
+
+function getConstructSignatureDeclaration(
+  symbol: ts.Symbol,
+  checker: ts.TypeChecker,
+): ts.SignatureDeclaration | undefined {
+  const type = checker.getTypeOfSymbol(symbol);
+  const sig = type.getConstructSignatures();
+  return sig.at(0)?.getDeclaration();
 }

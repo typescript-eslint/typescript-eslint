@@ -6,8 +6,8 @@ import type { Statement } from '../../unions/Statement';
 
 export interface ForStatement extends BaseNode {
   type: AST_NODE_TYPES.ForStatement;
+  body: Statement;
   init: Expression | ForInitialiser | null;
   test: Expression | null;
   update: Expression | null;
-  body: Statement;
 }

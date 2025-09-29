@@ -3,14 +3,14 @@ import React from 'react';
 import styles from './InputLabel.module.css';
 
 export interface InputLabelProps {
-  readonly name: string;
   readonly children: React.ReactNode;
+  readonly name: string;
   readonly onClick: () => void;
 }
 
 function ActionLabel(props: InputLabelProps): React.JSX.Element {
   return (
-    <button onClick={props.onClick} className={styles.optionLabel}>
+    <button className={styles.optionLabel} onClick={props.onClick}>
       <span>{props.name}</span>
       {props.children}
     </button>

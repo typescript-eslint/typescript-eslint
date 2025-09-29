@@ -1,0 +1,141 @@
+---
+id: eslint
+sidebar_label: ESLint
+title: ESLint FAQs
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Why is a rule from ESLint core not working correctly with TypeScript code?
+
+This happens because TypeScript adds new features that ESLint doesn't know about.
+
+The first step is to [check our list of "extension" rules here](/rules/#extension-rules).
+An extension rule is a rule which extends the base ESLint rules to support TypeScript syntax.
+If you find it in there, give it a go to see if it works for you.
+You can configure it by disabling the base rule, and turning on the extension rule.
+Here's an example with the `semi` rule:
+
+```json
+{
+  "rules": {
+    "semi": "off",
+    "@typescript-eslint/semi": "error"
+  }
+}
+```
+
+If you don't find an existing extension rule, or the extension rule doesn't work for your case, then you can go ahead and check our issues.
+[The contributing guide outlines the best way to raise an issue](../../contributing/Issues.mdx).
+
+> We release a new version our tooling every week.
+> _Please_ ensure that you [check our the latest list of "extension" rules](/rules/#extension-rules) **_before_** filing an issue.
+
+## I get errors from the `no-undef` rule about global variables not being defined, even though there are no TypeScript errors
+
+The `no-undef` lint rule does not use TypeScript to determine the global variables that exist - instead, it relies upon ESLint's configuration.
+
+We strongly recommend that you do not use the `no-undef` lint rule on TypeScript projects.
+The checks it provides are already provided by TypeScript without the need for configuration - TypeScript just does this significantly better.
+
+As of our v4.0.0 release, this also applies to types.
+If you use global types from a 3rd party package (i.e. anything from an `@types` package), then you will have to configure ESLint appropriately to define these global types.
+For example; the `JSX` namespace from `@types/react` is a global 3rd party type that you must define in your ESLint config.
+
+Note, that for a mixed project including JavaScript and TypeScript, the `no-undef` rule (like any rule) can be turned off for TypeScript files alone as follows:
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.mjs"
+import { defineConfig } from 'eslint/config';
+
+export default defineConfig(
+  // ... the rest of your config ...
+  {
+    files: ['**/*.{ts,tsx,mts,cts}'],
+    rules: {
+      'no-undef': 'off',
+    },
+  },
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
+module.exports = {
+  // ... the rest of your config ...
+  overrides: [
+    {
+      files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
+      rules: {
+        'no-undef': 'off',
+      },
+    },
+  ],
+};
+```
+
+</TabItem>
+</Tabs>
+
+If you choose to leave on the ESLint `no-undef` lint rule, you can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring/language-options#specifying-environments).
+
+## I get errors from the `@typescript-eslint/no-namespace` and/or `no-var` rules about declaring global variables
+
+Two common solutions in TypeScript for declaring the existence of a global variable include:
+
+- `declare global` with a `var`, which violates [`no-var`](https://eslint.org/docs/latest/rules/no-var):
+
+  ```ts
+  declare global {
+    var myValue: string;
+    // Unexpected var, use let or const instead. eslint (no-var)
+  }
+
+  myValue;
+  ```
+
+- `declare namespace globalThis`, which violates [`@typescript-eslint/no-namespace`](https://typescript-eslint.io/rules/no-namespace):
+
+  ```ts
+  declare namespace globalThis {
+    // ES2015 module syntax is preferred over namespaces. eslint (@typescript-eslint/no-namespace)
+    let myValue: string;
+  }
+
+  globalThis.myValue;
+  ```
+
+[Using global variables is generally discouraged](https://stackoverflow.com/questions/10525582/why-are-global-variables-considered-bad-practice).
+If possible, it's best to avoid declaring globals altogether.
+
+If you absolutely must use one of the two strategies, then you can use an [ESLint configuration comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) to disable rules as needed.
+For example:
+
+```ts
+declare global {
+  // eslint-disable-next-line no-var -- Provided by an old third-party integration.
+  var myValue: string;
+}
+```
+
+:::tip
+Whenever you need to disable an ESLint rule, it's best to include an informative comment explaining why.
+:::
+
+See [#9582](https://github.com/typescript-eslint/typescript-eslint/issues/9582 'typescript-eslint/typescript-eslint#9582 Docs: globalThis without ignores of no-var and no-namespace') and [#7941](https://github.com/typescript-eslint/typescript-eslint/issues/7941 'typescript-eslint/typescript-eslint#7941 Base rule extension: no-var configuration for declarations') for discussions around typescript-eslint supporting these use cases.
+
+## Can I use ESLint's `--cache` with typescript-eslint?
+
+[ESLint's `--cache` option](https://eslint.org/docs/latest/use/command-line-interface#caching) caches on a per-file basis.
+You can use it, but it will only work reliably for untyped rules -- and even then, not always.
+
+Any ESLint rule that checks logic across files, including many rules from `eslint-plugin-import`, creates cross-file dependencies.
+[Typed lint rules](../../getting-started/Typed_Linting.mdx) almost always have dependencies on types across files in practice.
+ESLint's caching doesn't account for those cross-file dependencies.
+
+We don't recommend using `--cache`.

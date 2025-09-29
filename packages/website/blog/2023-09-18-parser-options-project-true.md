@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: /img/team/joshuakgoldberg.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
+authors: joshuakgoldberg
 description: Simplifying how many projects resolve their
 slug: parser-options-project-true
 tags: [parser, parser options, project, tsconfig]
@@ -51,7 +47,7 @@ Explicitly indicating which TSConfig files are used for typed linting can be use
 Developers like being given explicit control over their tooling.
 However, we've seen a few issues arise from this approach:
 
-- Particularly large repos can end up with so many TSConfig globs, they become confusing to developers or even cause [performance issues from overly permissive globs](/troubleshooting/performance-troubleshooting#wide-includes-in-your-eslint-options)
+- Particularly large repos can end up with so many TSConfig globs, they become confusing to developers or even cause [performance issues from overly permissive globs](/troubleshooting/typed-linting/performance#wide-includes-in-your-eslint-options)
 - Needing to change a template ESLint config every time it's used for a different repository structure is a pain
 - Using a TSConfig that's different from what your editor uses can result in different lint reports between the editor and the command-line
 
@@ -135,7 +131,7 @@ Manual Program creation logic comes with a few issues:
   - For example, [typescript-eslint does not yet support Project References](https://github.com/typescript-eslint/typescript-eslint/issues/2094).
 - The TypeScript compiler options used in the user's editor might differ from the compiler options in the TSConfigs they specified on disk.
 - Files not included in created Programs can't be linted with type information, even though editors still typically surface type information when editing those files.
-  - Most commonly, `.eslintrc.(c)js` files can be tricky to lint, resulting in the dreaded [_TSConfig does not include this file_ error](/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
+  - Most commonly, `.eslintrc.(c)js` files can be tricky to lint, resulting in the dreaded [_TSConfig does not include this file_ error](/troubleshooting/typed-linting/performance#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
 
 We're working on an option to instead call the same TypeScript "Project Service" APIs that editors such as VS Code use to create Programs for us instead.
 Project Services will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
@@ -144,9 +140,3 @@ We hope this option will eventually become the standard way to enable typed lint
 However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for at least all of the `6.X` versions.
 
 See [Packages > Parser > `EXPERIMENTAL_useProjectService`](/packages/parser#experimental_useprojectservice) for more information.
-
-## Supporting typescript-eslint
-
-If you enjoyed this blog post and/or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
-We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
-Thanks! 💖

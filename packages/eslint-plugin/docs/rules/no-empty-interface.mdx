@@ -9,6 +9,12 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-empty-interface** for documentation.
 
+:::danger Deprecated
+
+This rule has been deprecated in favour of the more comprehensive [`@typescript-eslint/no-empty-object-type`](./no-empty-object-type.mdx) rule.
+
+:::
+
 An empty interface in TypeScript does very little: any non-nullable value is assignable to `{}`.
 Using an empty interface is often a sign of programmer error, such as misunderstanding the concept of `{}` or forgetting to fill in fields.
 
@@ -56,8 +62,14 @@ interface Baz extends Foo, Bar {}
 
 ### `allowSingleExtends`
 
-`allowSingleExtends: true` will silence warnings about extending a single interface without adding additional members
+{/* insert option description */}
+
+`allowSingleExtends: true` will silence warnings about extending a single interface without adding additional members.
 
 ## When Not To Use It
 
 If you don't care about having empty/meaningless interfaces, then you will not need this rule.
+
+## Related To
+
+- [`no-empty-object-type`](./no-empty-object-type.mdx)

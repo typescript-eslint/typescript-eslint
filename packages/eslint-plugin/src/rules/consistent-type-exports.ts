@@ -1,6 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { SymbolFlags } from 'typescript';
+
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import * as ts from 'typescript';
 
 import {
   createRule,
@@ -12,27 +13,27 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     fixMixedExportsWithInlineTypeSpecifier: boolean;
   },
 ];
 
 interface SourceExports {
-  source: string;
   reportValueExports: ReportValueExport[];
+  source: string;
   typeOnlyNamedExport: TSESTree.ExportNamedDeclaration | null;
   valueOnlyNamedExport: TSESTree.ExportNamedDeclaration | null;
 }
 
 interface ReportValueExport {
+  inlineTypeSpecifiers: TSESTree.ExportSpecifier[];
   node: TSESTree.ExportNamedDeclaration;
   typeBasedSpecifiers: TSESTree.ExportSpecifier[];
   valueSpecifiers: TSESTree.ExportSpecifier[];
-  inlineTypeSpecifiers: TSESTree.ExportSpecifier[];
 }
 
-type MessageIds =
+export type MessageIds =
   | 'multipleExportsAreTypes'
   | 'singleExportIsType'
   | 'typeOverValue';
@@ -45,27 +46,28 @@ export default createRule<Options, MessageIds>({
       description: 'Enforce consistent usage of type exports',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
-      typeOverValue:
-        'All exports in the declaration are only used as types. Use `export type`.',
-
-      singleExportIsType:
-        'Type export {{exportNames}} is not a value and should be exported using `export type`.',
       multipleExportsAreTypes:
         'Type exports {{exportNames}} are not values and should be exported using `export type`.',
+      singleExportIsType:
+        'Type export {{exportNames}} is not a value and should be exported using `export type`.',
+      typeOverValue:
+        'All exports in the declaration are only used as types. Use `export type`.',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           fixMixedExportsWithInlineTypeSpecifier: {
             type: 'boolean',
+            description:
+              'Whether the rule will autofix "mixed" export cases using TS inline type specifiers.',
           },
         },
-        additionalProperties: false,
       },
     ],
-    fixable: 'code',
   },
   defaultOptions: [
     {
@@ -76,41 +78,119 @@ export default createRule<Options, MessageIds>({
   create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
     const sourceExportsMap: Record<string, SourceExports> = {};
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     /**
-     * Helper for identifying if an export specifier resolves to a
+     * Helper for identifying if a symbol resolves to a
      * JavaScript value or a TypeScript type.
      *
      * @returns True/false if is a type or not, or undefined if the specifier
      * can't be resolved.
      */
-    function isSpecifierTypeBased(
-      specifier: TSESTree.ExportSpecifier,
+    function isSymbolTypeBased(
+      symbol: ts.Symbol | undefined,
     ): boolean | undefined {
-      const checker = services.program.getTypeChecker();
-      const symbol = services.getSymbolAtLocation(specifier.exported);
-      if (!symbol) {
+      while (symbol && symbol.flags & ts.SymbolFlags.Alias) {
+        symbol = checker.getAliasedSymbol(symbol);
+        if (
+          symbol.getDeclarations()?.find(ts.isTypeOnlyImportOrExportDeclaration)
+        ) {
+          return true;
+        }
+      }
+      if (!symbol || checker.isUnknownSymbol(symbol)) {
         return undefined;
       }
-
-      const aliasedSymbol = checker.getAliasedSymbol(symbol);
-
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-      if (aliasedSymbol.escapedName === 'unknown') {
-        return undefined;
-      }
-
-      return !(aliasedSymbol.flags & SymbolFlags.Value);
+      return !(symbol.flags & ts.SymbolFlags.Value);
     }
 
     return {
+      ExportAllDeclaration(node): void {
+        if (node.exportKind === 'type') {
+          return;
+        }
+
+        const sourceModule = ts.resolveModuleName(
+          node.source.value,
+          context.filename,
+          services.program.getCompilerOptions(),
+          ts.sys,
+        );
+        if (sourceModule.resolvedModule == null) {
+          return;
+        }
+        const sourceFile = services.program.getSourceFile(
+          sourceModule.resolvedModule.resolvedFileName,
+        );
+        if (sourceFile == null) {
+          return;
+        }
+        const sourceFileSymbol = checker.getSymbolAtLocation(sourceFile);
+        if (sourceFileSymbol == null) {
+          return;
+        }
+
+        const sourceFileType = checker.getTypeOfSymbol(sourceFileSymbol);
+        // Module can explicitly export types or values, and it's not difficult
+        // to distinguish one from the other, since we can get the flags of
+        // the exported symbols or check if symbol export declaration has
+        // the "type" keyword in it.
+        //
+        // Things get a lot more complicated when we're dealing with
+        // export * from './module-with-type-only-exports'
+        // export type * from './module-with-type-and-value-exports'
+        //
+        // TS checker has an internal function getExportsOfModuleWorker that
+        // recursively visits all module exports, including "export *". It then
+        // puts type-only-star-exported symbols into the typeOnlyExportStarMap
+        // property of sourceFile's SymbolLinks. Since symbol links aren't
+        // exposed outside the checker, we cannot access it directly.
+        //
+        // Therefore, to filter out value properties, we use the following hack:
+        // checker.getPropertiesOfType returns all exports that were originally
+        // values, but checker.getPropertyOfType returns undefined for
+        // properties that are mentioned in the typeOnlyExportStarMap.
+        const isThereAnyExportedValue = checker
+          .getPropertiesOfType(sourceFileType)
+          .some(
+            propertyTypeSymbol =>
+              checker.getPropertyOfType(
+                sourceFileType,
+                propertyTypeSymbol.escapedName.toString(),
+              ) != null,
+          );
+        if (isThereAnyExportedValue) {
+          return;
+        }
+
+        context.report({
+          node,
+          messageId: 'typeOverValue',
+          fix(fixer) {
+            const asteriskToken = nullThrows(
+              context.sourceCode.getFirstToken(
+                node,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '*',
+              ),
+              NullThrowsReasons.MissingToken(
+                'asterisk',
+                'export all declaration',
+              ),
+            );
+
+            return fixer.insertTextBefore(asteriskToken, 'type ');
+          },
+        });
+      },
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void {
         // Coerce the source into a string for use as a lookup entry.
         const source = getSourceFromExport(node) ?? 'undefined';
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const sourceExports = (sourceExportsMap[source] ||= {
-          source,
           reportValueExports: [],
+          source,
           typeOnlyNamedExport: null,
           valueOnlyNamedExport: null,
         });
@@ -118,13 +198,11 @@ export default createRule<Options, MessageIds>({
         // Cache the first encountered exports for the package. We will need to come
         // back to these later when fixing the problems.
         if (node.exportKind === 'type') {
-          if (sourceExports.typeOnlyNamedExport == null) {
-            // The export is a type export
-            sourceExports.typeOnlyNamedExport = node;
-          }
-        } else if (sourceExports.valueOnlyNamedExport == null) {
+          // The export is a type export
+          sourceExports.typeOnlyNamedExport ??= node;
+        } else {
           // The export is a value export
-          sourceExports.valueOnlyNamedExport = node;
+          sourceExports.valueOnlyNamedExport ??= node;
         }
 
         // Next for the current export, we will separate type/value specifiers.
@@ -141,7 +219,9 @@ export default createRule<Options, MessageIds>({
               continue;
             }
 
-            const isTypeBased = isSpecifierTypeBased(specifier);
+            const isTypeBased = isSymbolTypeBased(
+              services.getSymbolAtLocation(specifier.exported),
+            );
 
             if (isTypeBased === true) {
               typeBasedSpecifiers.push(specifier);
@@ -158,9 +238,9 @@ export default createRule<Options, MessageIds>({
         ) {
           sourceExports.reportValueExports.push({
             node,
+            inlineTypeSpecifiers,
             typeBasedSpecifiers,
             valueSpecifiers,
-            inlineTypeSpecifiers,
           });
         }
       },
@@ -190,8 +270,10 @@ export default createRule<Options, MessageIds>({
             }
 
             // We have both type and value violations.
-            const allExportNames = report.typeBasedSpecifiers.map(
-              specifier => specifier.local.name,
+            const allExportNames = report.typeBasedSpecifiers.map(specifier =>
+              specifier.local.type === AST_NODE_TYPES.Identifier
+                ? specifier.local.name
+                : specifier.local.value,
             );
 
             if (allExportNames.length === 1) {
@@ -288,9 +370,9 @@ function* fixSeparateNamedExports(
   sourceCode: Readonly<TSESLint.SourceCode>,
   report: ReportValueExport,
 ): IterableIterator<TSESLint.RuleFix> {
-  const { node, typeBasedSpecifiers, inlineTypeSpecifiers, valueSpecifiers } =
+  const { node, inlineTypeSpecifiers, typeBasedSpecifiers, valueSpecifiers } =
     report;
-  const typeSpecifiers = typeBasedSpecifiers.concat(inlineTypeSpecifiers);
+  const typeSpecifiers = [...typeBasedSpecifiers, ...inlineTypeSpecifiers];
   const source = getSourceFromExport(node);
   const specifierNames = typeSpecifiers.map(getSpecifierText).join(', ');
 
@@ -359,9 +441,16 @@ function getSourceFromExport(
  * the proper formatting.
  */
 function getSpecifierText(specifier: TSESTree.ExportSpecifier): string {
-  return `${specifier.local.name}${
-    specifier.exported.name !== specifier.local.name
-      ? ` as ${specifier.exported.name}`
-      : ''
+  const exportedName =
+    specifier.exported.type === AST_NODE_TYPES.Literal
+      ? specifier.exported.raw
+      : specifier.exported.name;
+  const localName =
+    specifier.local.type === AST_NODE_TYPES.Literal
+      ? specifier.local.raw
+      : specifier.local.name;
+
+  return `${localName}${
+    exportedName !== localName ? ` as ${exportedName}` : ''
   }`;
 }

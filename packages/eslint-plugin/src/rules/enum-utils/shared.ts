@@ -34,7 +34,7 @@ function getBaseEnumType(typeChecker: ts.TypeChecker, type: ts.Type): ts.Type {
  */
 export function getEnumLiterals(type: ts.Type): ts.LiteralType[] {
   return tsutils
-    .unionTypeParts(type)
+    .unionConstituents(type)
     .filter((subType): subType is ts.LiteralType =>
       isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral),
     );
@@ -89,7 +89,7 @@ export function getEnumKeyForLiteral(
           return `${enumName}.${memberNameIdentifier.text}`;
 
         case ts.SyntaxKind.StringLiteral: {
-          const memberName = memberNameIdentifier.text.replace(/'/g, "\\'");
+          const memberName = memberNameIdentifier.text.replaceAll("'", "\\'");
 
           return `${enumName}['${memberName}']`;
         }

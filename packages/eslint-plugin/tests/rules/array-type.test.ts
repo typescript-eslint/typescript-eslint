@@ -3,12 +3,11 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import { TSESLint } from '@typescript-eslint/utils';
 
 import type { OptionString } from '../../src/rules/array-type';
+
 import rule from '../../src/rules/array-type';
 import { areOptionsValid } from '../areOptionsValid';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('array-type', rule, {
   valid: [
@@ -397,963 +396,971 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       code: 'let a: readonly Array<number>[] = [[]];',
       options: [{ default: 'generic', readonly: 'array' }],
     },
+    {
+      code: 'let a: Readonly = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: "const x: Readonly<string> = 'a';",
+      options: [{ default: 'array' }],
+    },
   ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
     {
       code: 'let a: Array<number> = [];',
-      output: 'let a: number[] = [];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'let a: number[] = [];',
     },
     {
       code: 'let a: Array<string | number> = [];',
-      output: 'let a: (string | number)[] = [];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'let a: (string | number)[] = [];',
     },
     {
       code: 'let a: ReadonlyArray<number> = [];',
-      output: 'let a: readonly number[] = [];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'let a: readonly number[] = [];',
     },
     {
       code: 'let a: ReadonlyArray<string | number> = [];',
-      output: 'let a: readonly (string | number)[] = [];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'let a: readonly (string | number)[] = [];',
     },
     {
       code: 'let a: Array<number> = [];',
-      output: 'let a: number[] = [];',
-      options: [{ default: 'array', readonly: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array', readonly: 'array' }],
+      output: 'let a: number[] = [];',
     },
     {
       code: 'let a: Array<string | number> = [];',
-      output: 'let a: (string | number)[] = [];',
-      options: [{ default: 'array', readonly: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array', readonly: 'array' }],
+      output: 'let a: (string | number)[] = [];',
     },
     {
       code: 'let a: ReadonlyArray<number> = [];',
-      output: 'let a: readonly number[] = [];',
-      options: [{ default: 'array', readonly: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array', readonly: 'array' }],
+      output: 'let a: readonly number[] = [];',
     },
     {
       code: 'let a: ReadonlyArray<string | number> = [];',
-      output: 'let a: readonly (string | number)[] = [];',
-      options: [{ default: 'array', readonly: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array', readonly: 'array' }],
+      output: 'let a: readonly (string | number)[] = [];',
     },
     {
       code: 'let a: Array<number> = [];',
-      output: 'let a: number[] = [];',
-      options: [{ default: 'array', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array', readonly: 'array-simple' }],
+      output: 'let a: number[] = [];',
     },
     {
       code: 'let a: Array<string | number> = [];',
-      output: 'let a: (string | number)[] = [];',
-      options: [{ default: 'array', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array', readonly: 'array-simple' }],
+      output: 'let a: (string | number)[] = [];',
     },
     {
       code: 'let a: ReadonlyArray<number> = [];',
-      output: 'let a: readonly number[] = [];',
-      options: [{ default: 'array', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'array', readonly: 'array-simple' }],
+      output: 'let a: readonly number[] = [];',
     },
     {
       code: 'let a: readonly (string | number)[] = [];',
-      output: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'array', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGenericSimple',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGenericSimple',
         },
       ],
+      options: [{ default: 'array', readonly: 'array-simple' }],
+      output: 'let a: ReadonlyArray<string | number> = [];',
     },
     {
       code: 'let a: Array<number> = [];',
-      output: 'let a: number[] = [];',
-      options: [{ default: 'array', readonly: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array', readonly: 'generic' }],
+      output: 'let a: number[] = [];',
     },
     {
       code: 'let a: Array<string | number> = [];',
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array', readonly: 'generic' }],
       output: 'let a: (string | number)[] = [];',
-      options: [{ default: 'array', readonly: 'generic' }],
-      errors: [
-        {
-          messageId: 'errorStringArray',
-          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
-          line: 1,
-          column: 8,
-        },
-      ],
     },
     {
       code: 'let a: readonly number[] = [];',
+      errors: [
+        {
+          column: 8,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'array', readonly: 'generic' }],
       output: 'let a: ReadonlyArray<number> = [];',
-      options: [{ default: 'array', readonly: 'generic' }],
-      errors: [
-        {
-          messageId: 'errorStringGeneric',
-          data: {
-            className: 'ReadonlyArray',
-            readonlyPrefix: 'readonly ',
-            type: 'number',
-          },
-          line: 1,
-          column: 8,
-        },
-      ],
     },
     {
       code: 'let a: readonly (string | number)[] = [];',
-      output: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'array', readonly: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'array', readonly: 'generic' }],
+      output: 'let a: ReadonlyArray<string | number> = [];',
     },
     {
       code: 'let a: Array<number> = [];',
-      output: 'let a: number[] = [];',
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: 'let a: number[] = [];',
     },
     {
       code: 'let a: (string | number)[] = [];',
-      output: 'let a: Array<string | number> = [];',
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGenericSimple',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGenericSimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: 'let a: Array<string | number> = [];',
     },
     {
       code: 'let a: ReadonlyArray<number> = [];',
-      output: 'let a: readonly number[] = [];',
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: 'let a: readonly number[] = [];',
     },
     {
       code: 'let a: readonly (string | number)[] = [];',
-      output: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGenericSimple',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGenericSimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: 'let a: ReadonlyArray<string | number> = [];',
     },
     {
       code: 'let a: Array<number> = [];',
-      output: 'let a: number[] = [];',
-      options: [{ default: 'array-simple', readonly: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'array-simple', readonly: 'array' }],
+      output: 'let a: number[] = [];',
     },
     {
       code: 'let a: (string | number)[] = [];',
-      output: 'let a: Array<string | number> = [];',
-      options: [{ default: 'array-simple', readonly: 'array' }],
       errors: [
         {
-          messageId: 'errorStringGenericSimple',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGenericSimple',
         },
       ],
+      options: [{ default: 'array-simple', readonly: 'array' }],
+      output: 'let a: Array<string | number> = [];',
     },
     {
       code: 'let a: ReadonlyArray<number> = [];',
-      output: 'let a: readonly number[] = [];',
-      options: [{ default: 'array-simple', readonly: 'array' }],
       errors: [
         {
+          column: 8,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'number',
+          },
+          line: 1,
           messageId: 'errorStringArray',
-          data: {
-            className: 'ReadonlyArray',
-            readonlyPrefix: 'readonly ',
-            type: 'number',
-          },
-          line: 1,
-          column: 8,
         },
       ],
+      options: [{ default: 'array-simple', readonly: 'array' }],
+      output: 'let a: readonly number[] = [];',
     },
     {
       code: 'let a: ReadonlyArray<string | number> = [];',
-      output: 'let a: readonly (string | number)[] = [];',
+      errors: [
+        {
+          column: 8,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'T',
+          },
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
       options: [{ default: 'array-simple', readonly: 'array' }],
-      errors: [
-        {
-          messageId: 'errorStringArray',
-          data: {
-            className: 'ReadonlyArray',
-            readonlyPrefix: 'readonly ',
-            type: 'T',
-          },
-          line: 1,
-          column: 8,
-        },
-      ],
+      output: 'let a: readonly (string | number)[] = [];',
     },
     {
       code: 'let a: Array<number> = [];',
-      output: 'let a: number[] = [];',
-      options: [{ default: 'array-simple', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'array-simple', readonly: 'array-simple' }],
+      output: 'let a: number[] = [];',
     },
     {
       code: 'let a: (string | number)[] = [];',
-      output: 'let a: Array<string | number> = [];',
-      options: [{ default: 'array-simple', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGenericSimple',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGenericSimple',
         },
       ],
+      options: [{ default: 'array-simple', readonly: 'array-simple' }],
+      output: 'let a: Array<string | number> = [];',
     },
     {
       code: 'let a: ReadonlyArray<number> = [];',
-      output: 'let a: readonly number[] = [];',
-      options: [{ default: 'array-simple', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'array-simple', readonly: 'array-simple' }],
+      output: 'let a: readonly number[] = [];',
     },
     {
       code: 'let a: readonly (string | number)[] = [];',
-      output: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'array-simple', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGenericSimple',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGenericSimple',
         },
       ],
+      options: [{ default: 'array-simple', readonly: 'array-simple' }],
+      output: 'let a: ReadonlyArray<string | number> = [];',
     },
     {
       code: 'let a: Array<number> = [];',
-      output: 'let a: number[] = [];',
-      options: [{ default: 'array-simple', readonly: 'generic' }],
       errors: [
         {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          line: 1,
           messageId: 'errorStringArraySimple',
-          data: { className: 'Array', readonlyPrefix: '', type: 'number' },
-          line: 1,
-          column: 8,
         },
       ],
+      options: [{ default: 'array-simple', readonly: 'generic' }],
+      output: 'let a: number[] = [];',
     },
     {
       code: 'let a: (string | number)[] = [];',
-      output: 'let a: Array<string | number> = [];',
-      options: [{ default: 'array-simple', readonly: 'generic' }],
       errors: [
         {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 1,
           messageId: 'errorStringGenericSimple',
-          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
-          line: 1,
-          column: 8,
         },
       ],
+      options: [{ default: 'array-simple', readonly: 'generic' }],
+      output: 'let a: Array<string | number> = [];',
     },
     {
       code: 'let a: readonly number[] = [];',
-      output: 'let a: ReadonlyArray<number> = [];',
-      options: [{ default: 'array-simple', readonly: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'array-simple', readonly: 'generic' }],
+      output: 'let a: ReadonlyArray<number> = [];',
     },
     {
       code: 'let a: readonly (string | number)[] = [];',
-      output: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'array-simple', readonly: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'array-simple', readonly: 'generic' }],
+      output: 'let a: ReadonlyArray<string | number> = [];',
     },
     {
       code: 'let a: number[] = [];',
-      output: 'let a: Array<number> = [];',
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: 'let a: Array<number> = [];',
     },
     {
       code: 'let a: (string | number)[] = [];',
-      output: 'let a: Array<string | number> = [];',
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: 'let a: Array<string | number> = [];',
     },
     {
       code: 'let a: readonly number[] = [];',
-      output: 'let a: ReadonlyArray<number> = [];',
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: 'let a: ReadonlyArray<number> = [];',
     },
     {
       code: 'let a: readonly (string | number)[] = [];',
-      output: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: 'let a: ReadonlyArray<string | number> = [];',
     },
     {
       code: 'let a: number[] = [];',
-      output: 'let a: Array<number> = [];',
-      options: [{ default: 'generic', readonly: 'array' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'array' }],
+      output: 'let a: Array<number> = [];',
     },
     {
       code: 'let a: (string | number)[] = [];',
-      output: 'let a: Array<string | number> = [];',
-      options: [{ default: 'generic', readonly: 'array' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'array' }],
+      output: 'let a: Array<string | number> = [];',
     },
     {
       code: 'let a: ReadonlyArray<number> = [];',
-      output: 'let a: readonly number[] = [];',
-      options: [{ default: 'generic', readonly: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'generic', readonly: 'array' }],
+      output: 'let a: readonly number[] = [];',
     },
     {
       code: 'let a: ReadonlyArray<string | number> = [];',
-      output: 'let a: readonly (string | number)[] = [];',
-      options: [{ default: 'generic', readonly: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'generic', readonly: 'array' }],
+      output: 'let a: readonly (string | number)[] = [];',
     },
     {
       code: 'let a: number[] = [];',
-      output: 'let a: Array<number> = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+      output: 'let a: Array<number> = [];',
     },
     {
       code: 'let a: (string | number)[] = [];',
-      output: 'let a: Array<string | number> = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+      output: 'let a: Array<string | number> = [];',
     },
     {
       code: 'let a: ReadonlyArray<number> = [];',
-      output: 'let a: readonly number[] = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+      output: 'let a: readonly number[] = [];',
     },
     {
       code: 'let a: readonly (string | number)[] = [];',
-      output: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGenericSimple',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGenericSimple',
         },
       ],
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+      output: 'let a: ReadonlyArray<string | number> = [];',
     },
     {
       code: 'let a: number[] = [];',
-      output: 'let a: Array<number> = [];',
-      options: [{ default: 'generic', readonly: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'generic' }],
+      output: 'let a: Array<number> = [];',
     },
     {
       code: 'let a: (string | number)[] = [];',
-      output: 'let a: Array<string | number> = [];',
-      options: [{ default: 'generic', readonly: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'generic' }],
+      output: 'let a: Array<string | number> = [];',
     },
     {
       code: 'let a: readonly number[] = [];',
-      output: 'let a: ReadonlyArray<number> = [];',
-      options: [{ default: 'generic', readonly: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'generic' }],
+      output: 'let a: ReadonlyArray<number> = [];',
     },
     {
       code: 'let a: readonly (string | number)[] = [];',
-      output: 'let a: ReadonlyArray<string | number> = [];',
-      options: [{ default: 'generic', readonly: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'generic' }],
+      output: 'let a: ReadonlyArray<string | number> = [];',
     },
     {
       code: 'let a: bigint[] = [];',
-      output: 'let a: Array<bigint> = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'bigint' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+      output: 'let a: Array<bigint> = [];',
     },
     {
       code: 'let a: (string | bigint)[] = [];',
-      output: 'let a: Array<string | bigint> = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+      output: 'let a: Array<string | bigint> = [];',
     },
     {
       code: 'let a: ReadonlyArray<bigint> = [];',
-      output: 'let a: readonly bigint[] = [];',
-      options: [{ default: 'generic', readonly: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'bigint',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'generic', readonly: 'array-simple' }],
+      output: 'let a: readonly bigint[] = [];',
     },
     {
       code: 'let a: (string | bigint)[] = [];',
-      output: 'let a: Array<string | bigint> = [];',
-      options: [{ default: 'generic', readonly: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'generic' }],
+      output: 'let a: Array<string | bigint> = [];',
     },
     {
       code: 'let a: readonly bigint[] = [];',
-      output: 'let a: ReadonlyArray<bigint> = [];',
-      options: [{ default: 'generic', readonly: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'bigint',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'generic' }],
+      output: 'let a: ReadonlyArray<bigint> = [];',
     },
     {
       code: 'let a: readonly (string | bigint)[] = [];',
-      output: 'let a: ReadonlyArray<string | bigint> = [];',
-      options: [{ default: 'generic', readonly: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic', readonly: 'generic' }],
+      output: 'let a: ReadonlyArray<string | bigint> = [];',
     },
 
     // End of base cases
 
     {
       code: 'let a: { foo: Array<Bar> }[] = [];',
-      output: 'let a: { foo: Bar[] }[] = [];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 15,
           data: { className: 'Array', readonlyPrefix: '', type: 'Bar' },
           line: 1,
-          column: 15,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'let a: { foo: Bar[] }[] = [];',
     },
     {
       code: 'let a: Array<{ foo: Bar[] }> = [];',
-      output: 'let a: Array<{ foo: Array<Bar> }> = [];',
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 21,
           data: { className: 'Array', readonlyPrefix: '', type: 'Bar' },
           line: 1,
-          column: 21,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: 'let a: Array<{ foo: Array<Bar> }> = [];',
     },
     {
       code: 'let a: Array<{ foo: Foo | Bar[] }> = [];',
-      output: 'let a: Array<{ foo: Foo | Array<Bar> }> = [];',
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 27,
           data: { className: 'Array', readonlyPrefix: '', type: 'Bar' },
           line: 1,
-          column: 27,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: 'let a: Array<{ foo: Foo | Array<Bar> }> = [];',
     },
     {
       code: 'function foo(a: Array<Bar>): Array<Bar> {}',
-      output: 'function foo(a: Bar[]): Bar[] {}',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 17,
           data: { className: 'Array', readonlyPrefix: '', type: 'Bar' },
           line: 1,
-          column: 17,
+          messageId: 'errorStringArray',
         },
         {
-          messageId: 'errorStringArray',
+          column: 30,
           data: { className: 'Array', readonlyPrefix: '', type: 'Bar' },
           line: 1,
-          column: 30,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'function foo(a: Bar[]): Bar[] {}',
     },
     {
       code: 'let x: Array<undefined> = [undefined] as undefined[];',
-      output: 'let x: undefined[] = [undefined] as undefined[];',
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'undefined' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: 'let x: undefined[] = [undefined] as undefined[];',
     },
     {
       code: "let y: string[] = <Array<string>>['2'];",
-      output: "let y: string[] = <string[]>['2'];",
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 20,
           data: { className: 'Array', readonlyPrefix: '', type: 'string' },
           line: 1,
-          column: 20,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: "let y: string[] = <string[]>['2'];",
     },
     {
       code: "let z: Array = [3, '4'];",
-      output: "let z: any[] = [3, '4'];",
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'any' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: "let z: any[] = [3, '4'];",
     },
     {
       code: "let ya = [[1, '2']] as [number, string][];",
-      output: "let ya = [[1, '2']] as Array<[number, string]>;",
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGenericSimple',
+          column: 24,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 24,
+          messageId: 'errorStringGenericSimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: "let ya = [[1, '2']] as Array<[number, string]>;",
     },
     {
       code: 'type Arr<T> = Array<T>;',
-      output: 'type Arr<T> = T[];',
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 15,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 15,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: 'type Arr<T> = T[];',
     },
     {
       code: `
 // Ignore user defined aliases
 let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
       `,
+      errors: [
+        {
+          column: 15,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 3,
+          messageId: 'errorStringGenericSimple',
+        },
+      ],
+      options: [{ default: 'array-simple' }],
       output: `
 // Ignore user defined aliases
 let yyyy: Arr<Array<Array<Arr<string>>>> = [[[['2']]]];
       `,
-      options: [{ default: 'array-simple' }],
-      errors: [
-        {
-          messageId: 'errorStringGenericSimple',
-          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
-          line: 3,
-          column: 15,
-        },
-      ],
     },
     {
       code: `
@@ -1364,6 +1371,15 @@ interface ArrayClass<T> {
   xyz: this[];
 }
       `,
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 3,
+          messageId: 'errorStringArraySimple',
+        },
+      ],
+      options: [{ default: 'array-simple' }],
       output: `
 interface ArrayClass<T> {
   foo: T[];
@@ -1372,15 +1388,6 @@ interface ArrayClass<T> {
   xyz: this[];
 }
       `,
-      options: [{ default: 'array-simple' }],
-      errors: [
-        {
-          messageId: 'errorStringArraySimple',
-          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
-          line: 3,
-          column: 8,
-        },
-      ],
     },
     {
       code: `
@@ -1388,160 +1395,160 @@ function barFunction(bar: ArrayClass<String>[]) {
   return bar.map(e => e.bar);
 }
       `,
+      errors: [
+        {
+          column: 27,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 2,
+          messageId: 'errorStringGenericSimple',
+        },
+      ],
+      options: [{ default: 'array-simple' }],
       output: `
 function barFunction(bar: Array<ArrayClass<String>>) {
   return bar.map(e => e.bar);
 }
       `,
-      options: [{ default: 'array-simple' }],
-      errors: [
-        {
-          messageId: 'errorStringGenericSimple',
-          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
-          line: 2,
-          column: 27,
-        },
-      ],
     },
     {
       code: 'let barVar: ((c: number) => number)[];',
-      output: 'let barVar: Array<(c: number) => number>;',
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGenericSimple',
+          column: 13,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 13,
+          messageId: 'errorStringGenericSimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: 'let barVar: Array<(c: number) => number>;',
     },
     {
       code: 'type barUnion = (string | number | boolean)[];',
-      output: 'type barUnion = Array<string | number | boolean>;',
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGenericSimple',
+          column: 17,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 17,
+          messageId: 'errorStringGenericSimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: 'type barUnion = Array<string | number | boolean>;',
     },
     {
       code: 'type barIntersection = (string & number)[];',
-      output: 'type barIntersection = Array<string & number>;',
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGenericSimple',
+          column: 24,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 24,
+          messageId: 'errorStringGenericSimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: 'type barIntersection = Array<string & number>;',
     },
     {
       code: "let v: Array<fooName.BarType> = [{ bar: 'bar' }];",
-      output: "let v: fooName.BarType[] = [{ bar: 'bar' }];",
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 8,
           data: {
             className: 'Array',
             readonlyPrefix: '',
             type: 'fooName.BarType',
           },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArraySimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: "let v: fooName.BarType[] = [{ bar: 'bar' }];",
     },
     {
       code: "let w: fooName.BazType<string>[] = [['baz']];",
-      output: "let w: Array<fooName.BazType<string>> = [['baz']];",
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringGenericSimple',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGenericSimple',
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: "let w: Array<fooName.BazType<string>> = [['baz']];",
     },
     {
       code: 'let x: Array<undefined> = [undefined] as undefined[];',
-      output: 'let x: undefined[] = [undefined] as undefined[];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'undefined' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'let x: undefined[] = [undefined] as undefined[];',
     },
     {
       code: "let y: string[] = <Array<string>>['2'];",
-      output: "let y: string[] = <string[]>['2'];",
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 20,
           data: { className: 'Array', readonlyPrefix: '', type: 'string' },
           line: 1,
-          column: 20,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: "let y: string[] = <string[]>['2'];",
     },
     {
       code: "let z: Array = [3, '4'];",
-      output: "let z: any[] = [3, '4'];",
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'any' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: "let z: any[] = [3, '4'];",
     },
     {
       code: 'type Arr<T> = Array<T>;',
-      output: 'type Arr<T> = T[];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 15,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 15,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'type Arr<T> = T[];',
     },
     {
       code: `
 // Ignore user defined aliases
 let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
       `,
+      errors: [
+        {
+          column: 15,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 3,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
       output: `
 // Ignore user defined aliases
 let yyyy: Arr<Arr<string>[][]> = [[[['2']]]];
       `,
-      options: [{ default: 'array' }],
-      errors: [
-        {
-          messageId: 'errorStringArray',
-          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
-          line: 3,
-          column: 15,
-        },
-      ],
     },
     {
       code: `
@@ -1551,6 +1558,15 @@ interface ArrayClass<T> {
   baz: Arr<T>;
 }
       `,
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 3,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
       output: `
 interface ArrayClass<T> {
   foo: T[];
@@ -1558,15 +1574,6 @@ interface ArrayClass<T> {
   baz: Arr<T>;
 }
       `,
-      options: [{ default: 'array' }],
-      errors: [
-        {
-          messageId: 'errorStringArray',
-          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
-          line: 3,
-          column: 8,
-        },
-      ],
     },
     {
       code: `
@@ -1574,168 +1581,143 @@ function fooFunction(foo: Array<ArrayClass<string>>) {
   return foo.map(e => e.foo);
 }
       `,
+      errors: [
+        {
+          column: 27,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 2,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
       output: `
 function fooFunction(foo: ArrayClass<string>[]) {
   return foo.map(e => e.foo);
 }
       `,
-      options: [{ default: 'array' }],
-      errors: [
-        {
-          messageId: 'errorStringArray',
-          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
-          line: 2,
-          column: 27,
-        },
-      ],
     },
     {
       code: 'let fooVar: Array<(c: number) => number>;',
-      output: 'let fooVar: ((c: number) => number)[];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 13,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 13,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'let fooVar: ((c: number) => number)[];',
     },
     {
       code: 'type fooUnion = Array<string | number | boolean>;',
-      output: 'type fooUnion = (string | number | boolean)[];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 17,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 17,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'type fooUnion = (string | number | boolean)[];',
     },
     {
       code: 'type fooIntersection = Array<string & number>;',
-      output: 'type fooIntersection = (string & number)[];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 24,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 24,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'type fooIntersection = (string & number)[];',
     },
     {
       code: 'let x: Array;',
-      output: 'let x: any[];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'any' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringArray',
         },
       ],
-    },
-    {
-      code: 'let x: Array<>;',
-      output: 'let x: any[];',
       options: [{ default: 'array' }],
-      errors: [
-        {
-          messageId: 'errorStringArray',
-          data: { className: 'Array', readonlyPrefix: '', type: 'any' },
-          line: 1,
-          column: 8,
-        },
-      ],
+      output: 'let x: any[];',
     },
     {
       code: 'let x: Array;',
-      output: 'let x: any[];',
-      options: [{ default: 'array-simple' }],
       errors: [
         {
-          messageId: 'errorStringArraySimple',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'any' },
           line: 1,
-          column: 8,
-        },
-      ],
-    },
-    {
-      code: 'let x: Array<>;',
-      output: 'let x: any[];',
-      options: [{ default: 'array-simple' }],
-      errors: [
-        {
           messageId: 'errorStringArraySimple',
-          line: 1,
-          column: 8,
         },
       ],
+      options: [{ default: 'array-simple' }],
+      output: 'let x: any[];',
     },
     {
       code: 'let x: Array<number> = [1] as number[];',
-      output: 'let x: Array<number> = [1] as Array<number>;',
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 31,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
           line: 1,
-          column: 31,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: 'let x: Array<number> = [1] as Array<number>;',
     },
     {
       code: "let y: string[] = <Array<string>>['2'];",
-      output: "let y: Array<string> = <Array<string>>['2'];",
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'string' },
           line: 1,
-          column: 8,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: "let y: Array<string> = <Array<string>>['2'];",
     },
     {
       code: "let ya = [[1, '2']] as [number, string][];",
-      output: "let ya = [[1, '2']] as Array<[number, string]>;",
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 24,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 24,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: "let ya = [[1, '2']] as Array<[number, string]>;",
     },
     {
       code: `
 // Ignore user defined aliases
 let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
       `,
+      errors: [
+        {
+          column: 15,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 3,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
       output: `
 // Ignore user defined aliases
 let yyyy: Arr<Array<Array<Arr<string>>>> = [[[['2']]]];
       `,
-      options: [{ default: 'generic' }],
-      errors: [
-        {
-          messageId: 'errorStringGeneric',
-          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
-          line: 3,
-          column: 15,
-        },
-      ],
     },
     {
       code: `
@@ -1745,6 +1727,15 @@ interface ArrayClass<T> {
   baz: Arr<T>;
 }
       `,
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 4,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
       output: `
 interface ArrayClass<T> {
   foo: Array<T>;
@@ -1752,15 +1743,6 @@ interface ArrayClass<T> {
   baz: Arr<T>;
 }
       `,
-      options: [{ default: 'generic' }],
-      errors: [
-        {
-          messageId: 'errorStringGeneric',
-          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
-          line: 4,
-          column: 8,
-        },
-      ],
     },
     {
       code: `
@@ -1768,59 +1750,59 @@ function barFunction(bar: ArrayClass<String>[]) {
   return bar.map(e => e.bar);
 }
       `,
+      errors: [
+        {
+          column: 27,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 2,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
       output: `
 function barFunction(bar: Array<ArrayClass<String>>) {
   return bar.map(e => e.bar);
 }
       `,
-      options: [{ default: 'generic' }],
-      errors: [
-        {
-          messageId: 'errorStringGeneric',
-          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
-          line: 2,
-          column: 27,
-        },
-      ],
     },
     {
       code: 'let barVar: ((c: number) => number)[];',
-      output: 'let barVar: Array<(c: number) => number>;',
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 13,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 13,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: 'let barVar: Array<(c: number) => number>;',
     },
     {
       code: 'type barUnion = (string | number | boolean)[];',
-      output: 'type barUnion = Array<string | number | boolean>;',
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 17,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 17,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: 'type barUnion = Array<string | number | boolean>;',
     },
     {
       code: 'type barIntersection = (string & number)[];',
-      output: 'type barIntersection = Array<string & number>;',
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 24,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 24,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: 'type barIntersection = Array<string & number>;',
     },
     {
       code: `
@@ -1828,95 +1810,160 @@ interface FooInterface {
   '.bar': { baz: string[] };
 }
       `,
+      errors: [
+        {
+          column: 18,
+          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          line: 3,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
       output: `
 interface FooInterface {
   '.bar': { baz: Array<string> };
 }
       `,
-      options: [{ default: 'generic' }],
-      errors: [
-        {
-          messageId: 'errorStringGeneric',
-          data: { className: 'Array', readonlyPrefix: '', type: 'string' },
-          line: 3,
-          column: 18,
-        },
-      ],
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/172
       code: 'type Unwrap<T> = T extends Array<infer E> ? E : T;',
-      output: 'type Unwrap<T> = T extends (infer E)[] ? E : T;',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 28,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 28,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'type Unwrap<T> = T extends (infer E)[] ? E : T;',
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/172
       code: 'type Unwrap<T> = T extends (infer E)[] ? E : T;',
-      output: 'type Unwrap<T> = T extends Array<infer E> ? E : T;',
-      options: [{ default: 'generic' }],
       errors: [
         {
-          messageId: 'errorStringGeneric',
+          column: 28,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 28,
+          messageId: 'errorStringGeneric',
         },
       ],
+      options: [{ default: 'generic' }],
+      output: 'type Unwrap<T> = T extends Array<infer E> ? E : T;',
     },
     {
       code: 'type Foo = ReadonlyArray<object>[];',
-      output: 'type Foo = (readonly object[])[];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 12,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'object',
           },
           line: 1,
-          column: 12,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'type Foo = (readonly object[])[];',
     },
     {
       code: 'const foo: Array<new (...args: any[]) => void> = [];',
-      output: 'const foo: (new (...args: any[]) => void)[] = [];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 12,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
           line: 1,
-          column: 12,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'const foo: (new (...args: any[]) => void)[] = [];',
     },
     {
       code: 'const foo: ReadonlyArray<new (...args: any[]) => void> = [];',
-      output: 'const foo: readonly (new (...args: any[]) => void)[] = [];',
-      options: [{ default: 'array' }],
       errors: [
         {
-          messageId: 'errorStringArray',
+          column: 12,
           data: {
             className: 'ReadonlyArray',
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
           line: 1,
-          column: 12,
+          messageId: 'errorStringArray',
         },
       ],
+      options: [{ default: 'array' }],
+      output: 'const foo: readonly (new (...args: any[]) => void)[] = [];',
+    },
+    {
+      code: "const x: Readonly<string[]> = ['a', 'b'];",
+      errors: [
+        {
+          data: {
+            className: 'Readonly',
+            readonlyPrefix: 'readonly ',
+            type: 'string[]',
+          },
+          messageId: 'errorStringArrayReadonly',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: "const x: readonly string[] = ['a', 'b'];",
+    },
+    {
+      code: 'declare function foo<E extends Readonly<string[]>>(extra: E): E;',
+      errors: [
+        {
+          data: {
+            className: 'Readonly',
+            readonlyPrefix: 'readonly ',
+            type: 'string[]',
+          },
+          messageId: 'errorStringArraySimpleReadonly',
+        },
+      ],
+      options: [{ default: 'array-simple' }],
+      output: 'declare function foo<E extends readonly string[]>(extra: E): E;',
+    },
+    {
+      code: 'type Conditional<T> = Array<T extends string ? string : number>;',
+      errors: [
+        {
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type Conditional<T> = (T extends string ? string : number)[];',
+    },
+    {
+      code: 'type Conditional<T> = (T extends string ? string : number)[];',
+      errors: [
+        {
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          messageId: 'errorStringGenericSimple',
+        },
+      ],
+      options: [{ default: 'array-simple' }],
+      output:
+        'type Conditional<T> = Array<T extends string ? string : number>;',
+    },
+    {
+      code: 'type Conditional<T> = (T extends string ? string : number)[];',
+      errors: [
+        {
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output:
+        'type Conditional<T> = Array<T extends string ? string : number>;',
     },
   ],
 });
@@ -1924,7 +1971,7 @@ interface FooInterface {
 // -- eslint rule tester is not working with multi-pass
 // https://github.com/eslint/eslint/issues/11187
 describe('array-type (nested)', () => {
-  const linter = new TSESLint.Linter();
+  const linter = new TSESLint.Linter({ configType: 'eslintrc' });
   linter.defineRule('array-type', rule);
   linter.defineParser('@typescript-eslint/parser', parser);
 
@@ -1939,13 +1986,13 @@ describe('array-type (nested)', () => {
         const result = linter.verifyAndFix(
           code,
           {
+            parser: '@typescript-eslint/parser',
             rules: {
               'array-type': [
                 2,
                 { default: defaultOption, readonly: readonlyOption },
               ],
             },
-            parser: '@typescript-eslint/parser',
           },
           {
             fix: true,
@@ -2053,7 +2100,6 @@ type BrokenArray = {
       'let yy: number[][] = [[4, 5], [6]];',
       'let yy: Array<Array<number>> = [[4, 5], [6]];',
     );
-    testOutput('array', 'let a: Array<>[] = [];', 'let a: any[][] = [];');
     testOutput('array', 'let a: Array<any[]> = [];', 'let a: any[][] = [];');
     testOutput(
       'array',
@@ -2061,11 +2107,6 @@ type BrokenArray = {
       'let a: any[][][] = [];',
     );
 
-    testOutput(
-      'generic',
-      'let a: Array<>[] = [];',
-      'let a: Array<Array<>> = [];',
-    );
     testOutput(
       'generic',
       'let a: Array<any[]> = [];',
@@ -2161,15 +2202,11 @@ type BrokenArray = {
 describe('schema validation', () => {
   // https://github.com/typescript-eslint/typescript-eslint/issues/6852
   test("array-type does not accept 'simple-array' option", () => {
-    if (areOptionsValid(rule, [{ default: 'simple-array' }])) {
-      throw new Error(`Options succeeded validation for bad options`);
-    }
+    expect(areOptionsValid(rule, [{ default: 'simple-array' }])).toBe(false);
   });
 
   // https://github.com/typescript-eslint/typescript-eslint/issues/6892
   test('array-type does not accept non object option', () => {
-    if (areOptionsValid(rule, ['array'])) {
-      throw new Error(`Options succeeded validation for bad options`);
-    }
+    expect(areOptionsValid(rule, ['array'])).toBe(false);
   });
 });

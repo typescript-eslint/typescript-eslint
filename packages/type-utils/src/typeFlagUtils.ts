@@ -9,7 +9,7 @@ const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 export function getTypeFlags(type: ts.Type): ts.TypeFlags {
   // @ts-expect-error Since typescript 5.0, this is invalid, but uses 0 as the default value of TypeFlags.
   let flags: ts.TypeFlags = 0;
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tsutils.unionConstituents(type)) {
     flags |= t.flags;
   }
   return flags;
@@ -27,10 +27,12 @@ export function getTypeFlags(type: ts.Type): ts.TypeFlags {
 export function isTypeFlagSet(
   type: ts.Type,
   flagsToCheck: ts.TypeFlags,
+  /** @deprecated This params is not used and will be removed in the future.*/
   isReceiver?: boolean,
 ): boolean {
   const flags = getTypeFlags(type);
 
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- not used
   if (isReceiver && flags & ANY_OR_UNKNOWN) {
     return true;
   }

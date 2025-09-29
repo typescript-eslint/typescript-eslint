@@ -1,13 +1,15 @@
-import { TSUtils } from '@typescript-eslint/utils';
 import type {
   JSONSchema4,
   JSONSchema4ArraySchema,
 } from '@typescript-eslint/utils/json-schema';
 
+import { TSUtils } from '@typescript-eslint/utils';
+
+import type { ArrayAST, AST, RefMap, TupleAST, UnionAST } from './types';
+
 import { NotSupportedError, UnexpectedError } from './errors';
 import { generateType } from './generateType';
 import { getCommentLines } from './getCommentLines';
-import type { ArrayAST, AST, RefMap, TupleAST, UnionAST } from './types';
 
 /**
  * If there are more than 20 tuple items then we will not make it a tuple type
@@ -38,41 +40,27 @@ export function generateArrayType(
     schema.maxItems != null && schema.maxItems < MAX_ITEMS_TO_TUPLIZE
       ? schema.maxItems
       : -1;
-  const hasMinItems = minItems > 0;
   const hasMaxItems = maxItems >= 0;
 
-  let items: JSONSchema4[];
+  if (!TSUtils.isArray(schema.items)) {
+    // While we could support `minItems` and `maxItems` with tuple types,
+    // for example `[T, ...T[]]`, it harms readability for documentation purposes.
+    // See https://github.com/typescript-eslint/typescript-eslint/issues/11117
+    return {
+      commentLines,
+      elementType: generateType(schema.items, refMap),
+      type: 'array',
+    };
+  }
+  // treat as a tuple
+  const items: JSONSchema4[] = schema.items;
   let spreadItemSchema: JSONSchema4 | null = null;
 
-  if (!TSUtils.isArray(schema.items)) {
-    if (hasMinItems || hasMaxItems) {
-      // treat as a tuple
-      items = Array<JSONSchema4>(
-        (hasMaxItems && maxItems) || minItems || 0,
-      ).fill(schema.items);
-      if (!hasMaxItems) {
-        spreadItemSchema =
-          typeof schema.additionalItems === 'object'
-            ? schema.additionalItems
-            : schema.items;
-      }
-    } else {
-      // treat as an array type
-      return {
-        type: 'array',
-        elementType: generateType(schema.items, refMap),
-        commentLines,
-      };
-    }
-  } else {
-    // treat as a tuple
-    items = schema.items;
-    if (hasMaxItems && items.length < maxItems) {
-      spreadItemSchema =
-        typeof schema.additionalItems === 'object'
-          ? schema.additionalItems
-          : { type: 'any' };
-    }
+  if (hasMaxItems && items.length < maxItems) {
+    spreadItemSchema =
+      typeof schema.additionalItems === 'object'
+        ? schema.additionalItems
+        : { type: 'any' };
   }
 
   // quick validation so we generate sensible types
@@ -128,17 +116,17 @@ export function generateArrayType(
     }
 
     return {
-      type: 'union',
-      elements: typesToUnion,
       commentLines,
+      elements: typesToUnion,
+      type: 'union',
     };
   }
 
   return {
-    type: 'tuple',
+    commentLines,
     elements: itemTypes,
     spreadType: spreadItem,
-    commentLines,
+    type: 'tuple',
   };
 }
 
@@ -149,8 +137,8 @@ function createTupleType(
   return {
     type: 'tuple',
     // clone the array because we know we'll keep mutating it
+    commentLines: [],
     elements: [...elements],
     spreadType,
-    commentLines: [],
   };
 }

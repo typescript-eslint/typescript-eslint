@@ -1,0 +1,4 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > TSDeclareFunction > _error_ > generator-ambient > Babel - Error`]
+NO ERROR

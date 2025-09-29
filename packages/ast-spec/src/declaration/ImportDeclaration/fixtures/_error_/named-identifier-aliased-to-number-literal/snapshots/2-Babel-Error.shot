@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > named-identifier-aliased-to-number-literal > Babel - Error`]
+BabelError
+> 1 | import { X as 1 } from 'mod';
+    |               ^ Unexpected token (1:14)
+  2 |
+  

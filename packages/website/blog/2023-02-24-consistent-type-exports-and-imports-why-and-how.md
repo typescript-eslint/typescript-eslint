@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: /img/team/joshuakgoldberg.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
+authors: joshuakgoldberg
 description: Why enforcing TypeScript imports use the `type` modifier when possible benefits some project setups.
 slug: consistent-type-imports-and-exports-why-and-how
 tags: [typescript, imports, exports, types, transpiling]
@@ -183,9 +179,3 @@ If it detects an import that only imports specifiers with inline `type` qualifie
 
 You can read more about the rules' configuration options in their docs pages.
 See [our Getting Started docs](/getting-started) for more information on linting your TypeScript code with typescript-eslint.
-
-## Supporting typescript-eslint
-
-If you enjoyed this blog post and/or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
-We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
-Thanks! 💖

@@ -9,7 +9,7 @@ export function debounce<X extends unknown[]>(
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       timeout = undefined;
-      func.call(null, ...args);
+      func(...args);
     }, wait);
   };
 }

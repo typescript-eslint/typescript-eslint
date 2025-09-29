@@ -1,0 +1,131 @@
+---
+id: what-about-formatting
+title: What About Formatting?
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+We recommend against using ESLint for formatting.
+We recommend using [Prettier](https://prettier.io), [dprint](https://dprint.dev), or an equivalent instead.
+
+## Formatters vs. Linters
+
+**Formatters** are tools that verify and correct whitespace issues in code, such as spacing and newlines.
+Formatters typically run very quickly because they are only concerned with changing whitespace, not code logic or naming.
+
+**Linters** are tools that verify and correct logical and non-whitespace style issues in code, such as naming consistency and bug detection.
+Linters often take seconds or more to run because they apply many logical rules to code.
+
+### Problems with Using Linters as Formatters
+
+Linters are designed to run in a parse, check, report, fix cycle. This means that there is a lot of intermediate work that needs to be done before a linter can fix a formatting issue with your code.
+
+Additionally linters typically run each rule isolated from one another. This has several problems with it such as:
+
+- any two lint rules can't share config, meaning one lint rule's fixer might introduce a violation of another lint rule's fixer (eg one lint rule might use the incorrect indentation character).
+- lint rule fixers can conflict (apply to the same code range), forcing the linter to perform an additional cycle to attempt to apply a fixer to a clean set of code.
+
+These problems cause a linter to be much slower - which can be much more of a problem in projects that enable [typed linting](../getting-started/Typed_Linting.mdx).
+Formatting with a linter is also much less consistent and less able to handle edge-cases than a purpose-built formatter.
+The maintenance cost of formatting-related lint rules is typically very high as a result.
+
+Modern formatters such as Prettier are architected in a way that applies formatting to all code regardless of original formatting.
+This design allows formatters to be much more comprehensive and consistent at much lower maintenance cost than linters.
+
+### Suggested Usage - Prettier
+
+Neither typescript-eslint nor ESLint core enable any formatting-related rules in any recommended presets.
+However, some third party plugin configurations may still enable that bad practice.
+
+If you see formatting rules enabled in your ESLint configuration, we recommend using [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable formatting rules in your ESLint configuration.
+You can then configure your formatter separately from ESLint.
+
+Using this config by adding it to the end of your `extends`:
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.mjs"
+// @ts-check
+
+import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import someOtherConfig from 'eslint-config-other-configuration-that-enables-formatting-rules';
+import prettierConfig from 'eslint-config-prettier';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig(
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  someOtherConfig,
+  // Add this line
+  prettierConfig,
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
+/* eslint-env node */
+module.exports = {
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'other-configuration-that-enables-formatting-rules',
+    // Add this line
+    'prettier',
+  ],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  root: true,
+};
+```
+
+</TabItem>
+</Tabs>
+
+Note that even if you use a formatter other than `prettier`, you can use `eslint-config-prettier` as it exclusively turns **off** all formatting rules.
+
+#### `eslint-plugin-prettier`
+
+`eslint-config-prettier` is not the same as [`eslint-plugin-prettier`](https://github.com/prettier/eslint-plugin-prettier).
+
+- The _config_ only disables rules from core and other plugins.
+- The _plugin_ loads and runs Prettier inside ESLint.
+
+Running Prettier inside ESLint can be slow: see [Performance Troubleshooting > `eslint-plugin-prettier`](../troubleshooting/typed-linting/Performance.mdx#eslint-plugin-prettier).
+However, because it doesn't re-implement Prettier's logic in ESLint, the caveats mentioned about using linters for formatting don't apply to `eslint-plugin-prettier` either.
+
+## ESLint Core and Formatting
+
+Most lint rules fall into one of two to three categories:
+
+- **Logical**: Rules that care about the logic in runtime behavior of code (such as missing `await`s or invalid logical checks).
+- **Stylistic**: Rules that care about style concerns which do impact runtime behavior of code, but generally not logic. These are mostly around naming or which roughly-equivalent syntax constructs to use (such as function declarations vs. arrow functions).
+  - **Formatting**: Stylistic rules that care only about trivia (semicolons, whitespace, etc.) without impacting the runtime behavior of the code. These rules conflict with dedicated formatters such as Prettier.
+
+Per [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2020/05/changes-to-rules-policies#what-are-the-changes), ESLint itself has moved away from _stylistic_ rules, including _formatting_ rules:
+
+> Stylistic rules are frozen - we won't be adding any more options to stylistic rules.
+> We've learned that there's no way to satisfy everyone's personal preferences, and most of the rules already have a lot of difficult-to-understand options.
+> Stylistic rules are those related to spacing, conventions, and generally anything that does not highlight an error or a better way to do something.
+
+We mirror the ESLint team's move away from _formatting_ and _stylistic_ rules.
+With the exception of bug fixes, no new formatting- or stylistic-related pull requests will be accepted into typescript-eslint.
+
+:::note
+The [`stylistic` configurations](../users/Shared_Configurations.mdx#stylistic) are not deprecated or recommended-against.
+We'll continue to include those configs and their rules to help enforce TypeScript-related stylistic consistency for the foreseeable future.
+:::
+
+## `eslint-stylistic`
+
+The downside of using a comprehensive formatter for formatting is that it will strictly apply opinions to code.
+Although you can [ignore code in Prettier](https://prettier.io/docs/en/ignore.html) and other formatters, including inline such as with [`// prettier-ignore` comments](https://prettier.io/docs/en/ignore.html#javascript), formatters are much more opinionated than lint rules.
+
+The [`eslint-stylistic`](https://eslint.style) project provides an ESLint plugin containing _formatting_ and _stylistic_ rules.
+That plugin can serve as your formatter if you strongly prefer not to use a dedicated formatter.
+
+See [ESLint Stylistic > Why?](https://eslint.style/guide/why) for more details on that project's motivation, and [ESLint Stylistic > Getting Started](https://eslint.style/guide/getting-started) for how to set it up.

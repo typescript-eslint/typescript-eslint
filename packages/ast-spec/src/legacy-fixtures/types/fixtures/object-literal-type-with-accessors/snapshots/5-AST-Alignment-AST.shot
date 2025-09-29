@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types object-literal-type-with-accessors AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > object-literal-type-with-accessors > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,12 +10,12 @@ exports[`AST Fixtures legacy-fixtures types object-literal-type-with-accessors A
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Thing',
--         optional: false,
+          optional: false,
 
           range: [78, 83],
           loc: {
@@ -31,9 +31,9 @@ exports[`AST Fixtures legacy-fixtures types object-literal-type-with-accessors A
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'size',
--               optional: false,
+                optional: false,
 
                 range: [94, 98],
                 loc: {
@@ -42,11 +42,12 @@ exports[`AST Fixtures legacy-fixtures types object-literal-type-with-accessors A
                 },
               },
               kind: 'get',
--             optional: false,
+              optional: false,
 -             params: Array [],
--             readonly: false,
--             returnType: TSTypeAnnotation {
 +             parameters: Array [],
+              readonly: false,
+-             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSNumberKeyword {
@@ -78,9 +79,9 @@ exports[`AST Fixtures legacy-fixtures types object-literal-type-with-accessors A
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'size',
--               optional: false,
+                optional: false,
 
                 range: [116, 120],
                 loc: {
@@ -89,14 +90,14 @@ exports[`AST Fixtures legacy-fixtures types object-literal-type-with-accessors A
                 },
               },
               kind: 'set',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'value',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSUnionType {
@@ -152,8 +153,8 @@ exports[`AST Fixtures legacy-fixtures types object-literal-type-with-accessors A
                   },
                 },
               ],
--             readonly: false,
--             static: false,
+              readonly: false,
+              static: false,
 
               range: [112, 155],
               loc: {
@@ -184,5 +185,4 @@ exports[`AST Fixtures legacy-fixtures types object-literal-type-with-accessors A
       start: { column: 0, line: 3 },
       end: { column: 0, line: 7 },
     },
-  }"
-`;
+  }

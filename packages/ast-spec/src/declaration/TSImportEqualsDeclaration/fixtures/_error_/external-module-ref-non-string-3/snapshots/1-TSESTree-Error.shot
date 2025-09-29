@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > TSImportEqualsDeclaration > _error_ > external-module-ref-non-string-3 > TSESTree - Error`]
+TSError
+> 1 | import F = require(`1`);
+    |                    ^^^ String literal expected.
+  2 |

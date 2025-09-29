@@ -11,7 +11,7 @@ const Playground = lazy(
 
 function Play(): React.JSX.Element {
   return (
-    <Layout title="Playground" description="Playground" noFooter={true}>
+    <Layout description="Playground" noFooter={true} title="Playground">
       <BrowserOnly fallback={<Loader />}>
         {(): React.JSX.Element => {
           return (

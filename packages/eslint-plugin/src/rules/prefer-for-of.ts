@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isAssignee } from '../util';
@@ -68,6 +69,7 @@ export default createRule({
       if (!node) {
         return false;
       }
+
       switch (node.type) {
         case AST_NODE_TYPES.UpdateExpression:
           // x++ or ++x
@@ -79,7 +81,8 @@ export default createRule({
             if (node.operator === '+=') {
               // x += 1
               return isLiteral(node.right, 1);
-            } else if (node.operator === '=') {
+            }
+            if (node.operator === '=') {
               // x = x + 1 or x = 1 + x
               const expr = node.right;
               return (

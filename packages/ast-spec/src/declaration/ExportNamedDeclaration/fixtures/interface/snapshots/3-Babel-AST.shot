@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration ExportNamedDeclaration interface Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -19,9 +16,13 @@ Program {
             end: { column: 23, line: 1 },
           },
         },
+        declare: false,
+        extends: [],
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "Foo",
+          optional: false,
 
           range: [17, 20],
           loc: {
@@ -47,7 +48,7 @@ Program {
       },
     },
   ],
-  sourceType: "script",
+  sourceType: "module",
 
   range: [0, 24],
   loc: {
@@ -55,4 +56,3 @@ Program {
     end: { column: 0, line: 2 },
   },
 }
-`;

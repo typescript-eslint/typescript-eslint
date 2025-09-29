@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures special TSTypeParameter class-expr-in-const-modifier TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -13,10 +10,10 @@ Program {
           type: "ClassBody",
           body: [],
 
-          range: [20, 22],
+          range: [19, 21],
           loc: {
-            start: { column: 20, line: 1 },
-            end: { column: 22, line: 1 },
+            start: { column: 19, line: 1 },
+            end: { column: 21, line: 1 },
           },
         },
         declare: false,
@@ -37,49 +34,48 @@ Program {
                 name: "T",
                 optional: false,
 
-                range: [17, 18],
+                range: [16, 17],
                 loc: {
-                  start: { column: 17, line: 1 },
-                  end: { column: 18, line: 1 },
+                  start: { column: 16, line: 1 },
+                  end: { column: 17, line: 1 },
                 },
               },
               out: false,
 
-              range: [8, 18],
+              range: [7, 17],
               loc: {
-                start: { column: 8, line: 1 },
-                end: { column: 18, line: 1 },
+                start: { column: 7, line: 1 },
+                end: { column: 17, line: 1 },
               },
             },
           ],
 
-          range: [7, 19],
+          range: [6, 18],
           loc: {
-            start: { column: 7, line: 1 },
-            end: { column: 19, line: 1 },
+            start: { column: 6, line: 1 },
+            end: { column: 18, line: 1 },
           },
         },
 
-        range: [1, 22],
+        range: [1, 21],
         loc: {
           start: { column: 1, line: 1 },
-          end: { column: 22, line: 1 },
+          end: { column: 21, line: 1 },
         },
       },
 
-      range: [0, 24],
+      range: [0, 23],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 24, line: 1 },
+        end: { column: 23, line: 1 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 25],
+  range: [0, 24],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },
   },
 }
-`;

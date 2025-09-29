@@ -1,15 +1,16 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isDefinitionFile } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowDeclarations?: boolean;
     allowDefinitionFiles?: boolean;
   },
 ];
-type MessageIds = 'moduleSyntaxIsPreferred';
+export type MessageIds = 'moduleSyntaxIsPreferred';
 
 export default createRule<Options, MessageIds>({
   name: 'no-namespace',
@@ -26,19 +27,19 @@ export default createRule<Options, MessageIds>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowDeclarations: {
+            type: 'boolean',
             description:
               'Whether to allow `declare` with custom TypeScript namespaces.',
-            type: 'boolean',
           },
           allowDefinitionFiles: {
+            type: 'boolean',
             description:
               'Whether to allow `declare` with custom TypeScript namespaces inside definition files.',
-            type: 'boolean',
           },
         },
-        additionalProperties: false,
       },
     ],
   },

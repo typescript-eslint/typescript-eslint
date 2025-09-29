@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics global-this Babel - Tokens 1`] = `
 [
   Keyword {
     type: "Keyword",
@@ -112,8 +109,8 @@ exports[`AST Fixtures legacy-fixtures basics global-this Babel - Tokens 1`] = `
       end: { column: 21, line: 8 },
     },
   },
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [165, 168],
@@ -223,4 +220,3 @@ exports[`AST Fixtures legacy-fixtures basics global-this Babel - Tokens 1`] = `
     },
   },
 ]
-`;

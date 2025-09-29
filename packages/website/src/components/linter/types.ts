@@ -13,27 +13,26 @@ export type { ParseSettings } from '@typescript-eslint/typescript-estree/use-at-
 
 export interface UpdateModel {
   storedAST?: TSESTree.Program;
-  storedTsAST?: ts.Node;
   storedScope?: ScopeManager;
+  storedTsAST?: ts.Node;
   typeChecker?: ts.TypeChecker;
 }
 
 export interface WebLinterModule {
-  createLinter: () => Linter;
   analyze: typeof analyze;
-  visitorKeys: SourceCode.VisitorKeys;
   astConverter: typeof astConverter;
-  esquery: typeof esquery;
   configs: Record<string, ClassicConfig.Config>;
+  createLinter: () => Linter;
+  esquery: typeof esquery;
+  visitorKeys: SourceCode.VisitorKeys;
 }
 
-export type PlaygroundSystem = Required<
-  Pick<ts.System, 'deleteFile' | 'watchFile'>
-> &
-  ts.System & {
-    removeFile: (fileName: string) => void;
-    searchFiles: (path: string) => string[];
-  };
+export type PlaygroundSystem = {
+  removeFile: (fileName: string) => void;
+  searchFiles: (path: string) => string[];
+  getScriptFileNames: () => string[];
+} & Required<Pick<ts.System, 'deleteFile' | 'watchFile'>> &
+  ts.System;
 
 export type LinterOnLint = (
   fileName: string,
@@ -41,3 +40,5 @@ export type LinterOnLint = (
 ) => void;
 
 export type LinterOnParse = (fileName: string, model: UpdateModel) => void;
+
+export type RegisterFile = (fileName: string, code: string) => void;

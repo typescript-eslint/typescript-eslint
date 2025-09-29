@@ -1,0 +1,46 @@
+
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowInterfaces": {
+        "description": "Whether to allow empty interfaces.",
+        "enum": ["always", "never", "with-single-extends"],
+        "type": "string"
+      },
+      "allowObjectTypes": {
+        "description": "Whether to allow empty object type literals.",
+        "enum": ["always", "never"],
+        "type": "string"
+      },
+      "allowWithName": {
+        "description": "A stringified regular expression to allow interfaces and object type aliases with the configured name.",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Whether to allow empty interfaces. */
+    allowInterfaces?:
+      | 'never'
+      | 'with-single-extends'
+      /** Whether to allow empty interfaces. */
+      | 'always';
+    /** Whether to allow empty object type literals. */
+    allowObjectTypes?:
+      | 'never'
+      /** Whether to allow empty object type literals. */
+      | 'always';
+    /** A stringified regular expression to allow interfaces and object type aliases with the configured name. */
+    allowWithName?: string;
+  },
+];

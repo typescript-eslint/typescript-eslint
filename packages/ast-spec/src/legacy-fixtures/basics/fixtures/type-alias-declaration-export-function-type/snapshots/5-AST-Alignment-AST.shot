@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export-function-type AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > type-alias-declaration-export-function-type > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -14,12 +14,12 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export-funct
 +       assertions: Array [],
         declaration: TSTypeAliasDeclaration {
           type: 'TSTypeAliasDeclaration',
--         declare: false,
+          declare: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'TestCallback',
--           optional: false,
+            optional: false,
 
             range: [85, 97],
             loc: {
@@ -33,9 +33,9 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export-funct
 +           parameters: Array [
               Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'a',
--               optional: false,
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: 'TSTypeAnnotation',
                   typeAnnotation: TSNumberKeyword {
@@ -106,13 +106,11 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export-funct
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [73, 121],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

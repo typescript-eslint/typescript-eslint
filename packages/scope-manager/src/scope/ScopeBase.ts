@@ -1,24 +1,26 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import { assert } from '../assert';
 import type { Definition } from '../definition';
+import type { ReferenceImplicitGlobal } from '../referencer/Reference';
+import type { ScopeManager } from '../ScopeManager';
+import type { FunctionScope } from './FunctionScope';
+import type { GlobalScope } from './GlobalScope';
+import type { ModuleScope } from './ModuleScope';
+import type { Scope } from './Scope';
+import type { TSModuleScope } from './TSModuleScope';
+
+import { assert } from '../assert';
 import { DefinitionType } from '../definition';
 import { createIdGenerator } from '../ID';
-import type { ReferenceImplicitGlobal } from '../referencer/Reference';
 import {
   Reference,
   ReferenceFlag,
   ReferenceTypeFlag,
 } from '../referencer/Reference';
-import type { ScopeManager } from '../ScopeManager';
 import { Variable } from '../variable';
-import type { FunctionScope } from './FunctionScope';
-import type { GlobalScope } from './GlobalScope';
-import type { ModuleScope } from './ModuleScope';
-import type { Scope } from './Scope';
 import { ScopeType } from './ScopeType';
-import type { TSModuleScope } from './TSModuleScope';
 
 /**
  * Test if scope is strict
@@ -132,7 +134,7 @@ const VARIABLE_SCOPE_TYPES = new Set([
 ]);
 
 type AnyScope = ScopeBase<ScopeType, TSESTree.Node, Scope | null>;
-abstract class ScopeBase<
+export abstract class ScopeBase<
   Type extends ScopeType,
   Block extends TSESTree.Node,
   Upper extends Scope | null,
@@ -216,6 +218,61 @@ abstract class ScopeBase<
    * For other scope types this is the *variableScope* value of the parent scope.
    * @public
    */
+  #dynamicCloseRef = (ref: Reference): void => {
+    // notify all names are through to global
+    let current = this as Scope | null;
+
+    do {
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      current!.through.push(ref);
+      current = current!.upper;
+      /* eslint-enable @typescript-eslint/no-non-null-assertion */
+    } while (current);
+  };
+
+  #globalCloseRef = (ref: Reference, scopeManager: ScopeManager): void => {
+    // let/const/class declarations should be resolved statically.
+    // others should be resolved dynamically.
+    if (this.shouldStaticallyCloseForGlobal(ref, scopeManager)) {
+      this.#staticCloseRef(ref);
+    } else {
+      this.#dynamicCloseRef(ref);
+    }
+  };
+
+  #staticCloseRef = (ref: Reference): void => {
+    const resolve = (): boolean => {
+      const name = ref.identifier.name;
+      const variable = this.set.get(name);
+
+      if (!variable) {
+        return false;
+      }
+
+      if (!this.isValidResolution(ref, variable)) {
+        return false;
+      }
+
+      // make sure we don't match a type reference to a value variable
+      const isValidTypeReference =
+        ref.isTypeReference && variable.isTypeVariable;
+      const isValidValueReference =
+        ref.isValueReference && variable.isValueVariable;
+      if (!isValidTypeReference && !isValidValueReference) {
+        return false;
+      }
+
+      variable.references.push(ref);
+      ref.resolved = variable;
+
+      return true;
+    };
+
+    if (!resolve()) {
+      this.delegateToUpperScope(ref);
+    }
+  };
+
   public readonly variableScope: VariableScope;
 
   constructor(
@@ -255,10 +312,6 @@ abstract class ScopeBase<
     return VARIABLE_SCOPE_TYPES.has(this.type);
   }
 
-  public shouldStaticallyClose(): boolean {
-    return !this.#dynamic;
-  }
-
   private shouldStaticallyCloseForGlobal(
     ref: Reference,
     scopeManager: ScopeManager,
@@ -293,61 +346,6 @@ abstract class ScopeBase<
     );
   }
 
-  #staticCloseRef = (ref: Reference): void => {
-    const resolve = (): boolean => {
-      const name = ref.identifier.name;
-      const variable = this.set.get(name);
-
-      if (!variable) {
-        return false;
-      }
-
-      if (!this.isValidResolution(ref, variable)) {
-        return false;
-      }
-
-      // make sure we don't match a type reference to a value variable
-      const isValidTypeReference =
-        ref.isTypeReference && variable.isTypeVariable;
-      const isValidValueReference =
-        ref.isValueReference && variable.isValueVariable;
-      if (!isValidTypeReference && !isValidValueReference) {
-        return false;
-      }
-
-      variable.references.push(ref);
-      ref.resolved = variable;
-
-      return true;
-    };
-
-    if (!resolve()) {
-      this.delegateToUpperScope(ref);
-    }
-  };
-
-  #dynamicCloseRef = (ref: Reference): void => {
-    // notify all names are through to global
-    let current = this as Scope | null;
-
-    do {
-      /* eslint-disable @typescript-eslint/no-non-null-assertion */
-      current!.through.push(ref);
-      current = current!.upper;
-      /* eslint-enable @typescript-eslint/no-non-null-assertion */
-    } while (current);
-  };
-
-  #globalCloseRef = (ref: Reference, scopeManager: ScopeManager): void => {
-    // let/const/class declarations should be resolved statically.
-    // others should be resolved dynamically.
-    if (this.shouldStaticallyCloseForGlobal(ref, scopeManager)) {
-      this.#staticCloseRef(ref);
-    } else {
-      this.#dynamicCloseRef(ref);
-    }
-  };
-
   public close(scopeManager: ScopeManager): Scope | null {
     let closeRef: (ref: Reference, scopeManager: ScopeManager) => void;
 
@@ -367,40 +365,16 @@ abstract class ScopeBase<
     return this.upper;
   }
 
+  public shouldStaticallyClose(): boolean {
+    return !this.#dynamic;
+  }
+
   /**
    * To override by function scopes.
    * References in default parameters isn't resolved to variables which are in their function body.
    */
-  protected isValidResolution(_ref: Reference, _variable: Variable): boolean {
-    return true;
-  }
-
-  protected delegateToUpperScope(ref: Reference): void {
-    (this.upper as AnyScope | undefined)?.leftToResolve?.push(ref);
-    this.through.push(ref);
-  }
-
-  private addDeclaredVariablesOfNode(
-    variable: Variable,
-    node: TSESTree.Node | null | undefined,
-  ): void {
-    if (node == null) {
-      return;
-    }
-
-    let variables = this.#declaredVariables.get(node);
-
-    if (variables == null) {
-      variables = [];
-      this.#declaredVariables.set(node, variables);
-    }
-    if (!variables.includes(variable)) {
-      variables.push(variable);
-    }
-  }
-
   protected defineVariable(
-    nameOrVariable: Variable | string,
+    nameOrVariable: string | Variable,
     set: Map<string, Variable>,
     variables: Variable[],
     node: TSESTree.Identifier | null,
@@ -428,6 +402,34 @@ abstract class ScopeBase<
     }
   }
 
+  protected delegateToUpperScope(ref: Reference): void {
+    (this.upper as AnyScope | undefined)?.leftToResolve?.push(ref);
+    this.through.push(ref);
+  }
+
+  protected isValidResolution(_ref: Reference, _variable: Variable): boolean {
+    return true;
+  }
+
+  private addDeclaredVariablesOfNode(
+    variable: Variable,
+    node: TSESTree.Node | null | undefined,
+  ): void {
+    if (node == null) {
+      return;
+    }
+
+    let variables = this.#declaredVariables.get(node);
+
+    if (variables == null) {
+      variables = [];
+      this.#declaredVariables.set(node, variables);
+    }
+    if (!variables.includes(variable)) {
+      variables.push(variable);
+    }
+  }
+
   public defineIdentifier(node: TSESTree.Identifier, def: Definition): void {
     this.defineVariable(node.name, this.set, this.variables, node, def);
   }
@@ -437,6 +439,36 @@ abstract class ScopeBase<
     def: Definition,
   ): void {
     this.defineVariable(node.value, this.set, this.variables, null, def);
+  }
+
+  public referenceDualValueType(node: TSESTree.Identifier): void {
+    const ref = new Reference(
+      node,
+      this as Scope,
+      ReferenceFlag.Read,
+      null,
+      null,
+      false,
+      ReferenceTypeFlag.Type | ReferenceTypeFlag.Value,
+    );
+
+    this.references.push(ref);
+    this.leftToResolve?.push(ref);
+  }
+
+  public referenceType(node: TSESTree.Identifier): void {
+    const ref = new Reference(
+      node,
+      this as Scope,
+      ReferenceFlag.Read,
+      null,
+      null,
+      false,
+      ReferenceTypeFlag.Type,
+    );
+
+    this.references.push(ref);
+    this.leftToResolve?.push(ref);
   }
 
   public referenceValue(
@@ -459,36 +491,4 @@ abstract class ScopeBase<
     this.references.push(ref);
     this.leftToResolve?.push(ref);
   }
-
-  public referenceType(node: TSESTree.Identifier): void {
-    const ref = new Reference(
-      node,
-      this as Scope,
-      ReferenceFlag.Read,
-      null,
-      null,
-      false,
-      ReferenceTypeFlag.Type,
-    );
-
-    this.references.push(ref);
-    this.leftToResolve?.push(ref);
-  }
-
-  public referenceDualValueType(node: TSESTree.Identifier): void {
-    const ref = new Reference(
-      node,
-      this as Scope,
-      ReferenceFlag.Read,
-      null,
-      null,
-      false,
-      ReferenceTypeFlag.Type | ReferenceTypeFlag.Value,
-    );
-
-    this.references.push(ref);
-    this.leftToResolve?.push(ref);
-  }
 }
-
-export { ScopeBase };

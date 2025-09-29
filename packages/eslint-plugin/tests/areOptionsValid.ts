@@ -1,7 +1,8 @@
-import { TSUtils } from '@typescript-eslint/utils';
 import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
-import Ajv from 'ajv';
 import type { JSONSchema4 } from 'json-schema';
+
+import { TSUtils } from '@typescript-eslint/utils';
+import Ajv from 'ajv';
 
 const ajv = new Ajv({ async: false });
 
@@ -29,16 +30,16 @@ function normalizeSchema(
 
   if (schema.length === 0) {
     return {
-      type: 'array',
-      minItems: 0,
       maxItems: 0,
+      minItems: 0,
+      type: 'array',
     };
   }
 
   return {
-    type: 'array',
     items: schema as JSONSchema4[],
-    minItems: 0,
     maxItems: schema.length,
+    minItems: 0,
+    type: 'array',
   };
 }

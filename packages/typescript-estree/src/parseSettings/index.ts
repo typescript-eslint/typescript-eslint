@@ -1,11 +1,11 @@
+import type { ProjectServiceAndMetadata } from '@typescript-eslint/project-service';
 import type * as ts from 'typescript';
 
-import type { ProjectServiceSettings } from '../create-program/createProjectService';
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
 import type { CacheLike } from './ExpiringCache';
 
-type DebugModule = 'eslint' | 'typescript-eslint' | 'typescript';
+type DebugModule = 'eslint' | 'typescript' | 'typescript-eslint';
 
 // Workaround to support new TS version features for consumers on old TS versions
 declare module 'typescript' {
@@ -30,7 +30,7 @@ export interface MutableParseSettings {
   /**
    * Code of the file being parsed, or raw source file containing it.
    */
-  code: ts.SourceFile | string;
+  code: string | ts.SourceFile;
 
   /**
    * Full text of the file being parsed.
@@ -48,13 +48,6 @@ export interface MutableParseSettings {
   comments: TSESTree.Comment[];
 
   /**
-   * @deprecated
-   * This is a legacy option that comes with severe performance penalties.
-   * Please do not use it.
-   */
-  DEPRECATED__createDefaultProgram: boolean;
-
-  /**
    * Which debug areas should be logged.
    */
   debugLevel: Set<DebugModule>;
@@ -70,20 +63,6 @@ export interface MutableParseSettings {
   errorOnUnknownASTType: boolean;
 
   /**
-   * Experimental: TypeScript server to power program creation.
-   */
-  EXPERIMENTAL_projectService: ProjectServiceSettings | undefined;
-
-  /**
-   * Whether TS should use the source files for referenced projects instead of the compiled .d.ts files.
-   *
-   * @remarks
-   * This feature is not yet optimized, and is likely to cause OOMs for medium to large projects.
-   * This flag REQUIRES at least TS v3.9, otherwise it does nothing.
-   */
-  EXPERIMENTAL_useSourceOfProjectReferenceRedirect: boolean;
-
-  /**
    * Any non-standard file extensions which will be parsed.
    */
   extraFileExtensions: string[];
@@ -92,6 +71,14 @@ export interface MutableParseSettings {
    * Path of the file being parsed.
    */
   filePath: string;
+
+  /**
+   * Sets the external module indicator on the source file.
+   * Used by Typescript to determine if a sourceFile is an external module.
+   *
+   * needed to always parsing `mjs`/`mts` files as ESM
+   */
+  setExternalModuleIndicator?: (file: ts.SourceFile) => void;
 
   /**
    * JSDoc parsing style to pass through to TypeScript
@@ -129,6 +116,11 @@ export interface MutableParseSettings {
    * Normalized paths to provided project paths.
    */
   projects: ReadonlyMap<CanonicalPath, string>;
+
+  /**
+   * TypeScript server to power program creation.
+   */
+  projectService: ProjectServiceAndMetadata | undefined;
 
   /**
    * Whether to add the `range` property to AST nodes.

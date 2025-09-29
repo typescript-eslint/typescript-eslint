@@ -6,22 +6,21 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
+    },
   },
 });
 
 ruleTester.run('no-unnecessary-type-arguments', rule, {
   valid: [
-    'f<>();',
+    'f();',
     'f<string>();',
-    'expect().toBe<>();',
-    'class Foo extends Bar<> {}',
+    'class Foo extends Bar {}',
     'class Foo extends Bar<string> {}',
-    'class Foo implements Bar<> {}',
+    'class Foo implements Bar {}',
     'class Foo implements Bar<string> {}',
     `
 function f<T = number>() {}
@@ -155,6 +154,60 @@ type A = Map<string, string>;
 type B<T = A> = T;
 type C2 = B<Map<string, number>>;
     `,
+    `
+interface Foo<T = string> {}
+declare var Foo: {
+  new <T>(type: T): any;
+};
+class Bar extends Foo<string> {}
+    `,
+    `
+interface Foo<T = string> {}
+class Foo<T> {}
+class Bar extends Foo<string> {}
+    `,
+    `
+class Foo<T = string> {}
+interface Foo<T> {}
+class Bar implements Foo<string> {}
+    `,
+    `
+class Foo<T> {}
+namespace Foo {
+  export class Bar {}
+}
+class Bar extends Foo<string> {}
+    `,
+    {
+      code: `
+function Button<T>() {
+  return <div></div>;
+}
+const button = <Button<string>></Button>;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+function Button<T>() {
+  return <div></div>;
+}
+const button = <Button<string> />;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
   ],
   invalid: [
     {
@@ -318,8 +371,8 @@ bar<F<string>>();
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -341,8 +394,8 @@ declare module 'bar' {
       `,
       errors: [
         {
-          line: 4,
           column: 12,
+          line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -450,6 +503,144 @@ type C = Map<string, string>;
 type D = C;
 type E<T = B> = T;
 type F = E;
+      `,
+    },
+    {
+      code: `
+interface Foo {}
+declare var Foo: {
+  new <T = string>(type: T): any;
+};
+class Bar extends Foo<string> {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+interface Foo {}
+declare var Foo: {
+  new <T = string>(type: T): any;
+};
+class Bar extends Foo {}
+      `,
+    },
+    {
+      code: `
+declare var Foo: {
+  new <T = string>(type: T): any;
+};
+interface Foo {}
+class Bar extends Foo<string> {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+declare var Foo: {
+  new <T = string>(type: T): any;
+};
+interface Foo {}
+class Bar extends Foo {}
+      `,
+    },
+    {
+      code: `
+class Foo<T> {}
+interface Foo<T = string> {}
+class Bar implements Foo<string> {}
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+class Foo<T> {}
+interface Foo<T = string> {}
+class Bar implements Foo {}
+      `,
+    },
+    {
+      code: `
+class Foo<T = string> {}
+namespace Foo {
+  export class Bar {}
+}
+class Bar extends Foo<string> {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+class Foo<T = string> {}
+namespace Foo {
+  export class Bar {}
+}
+class Bar extends Foo {}
+      `,
+    },
+    {
+      code: `
+function Button<T = string>() {
+  return <div></div>;
+}
+const button = <Button<string>></Button>;
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+      output: `
+function Button<T = string>() {
+  return <div></div>;
+}
+const button = <Button></Button>;
+      `,
+    },
+    {
+      code: `
+function Button<T = string>() {
+  return <div></div>;
+}
+const button = <Button<string> />;
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+      output: `
+function Button<T = string>() {
+  return <div></div>;
+}
+const button = <Button />;
       `,
     },
   ],

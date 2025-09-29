@@ -1,0 +1,97 @@
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: ObjectPattern {
+            type: "ObjectPattern",
+            decorators: [],
+            optional: false,
+            properties: [
+              Property {
+                type: "Property",
+                computed: false,
+                key: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "foo",
+                  optional: false,
+
+                  range: [6, 9],
+                  loc: {
+                    start: { column: 6, line: 1 },
+                    end: { column: 9, line: 1 },
+                  },
+                },
+                kind: "init",
+                method: false,
+                optional: false,
+                shorthand: true,
+                value: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "foo",
+                  optional: false,
+
+                  range: [6, 9],
+                  loc: {
+                    start: { column: 6, line: 1 },
+                    end: { column: 9, line: 1 },
+                  },
+                },
+
+                range: [6, 9],
+                loc: {
+                  start: { column: 6, line: 1 },
+                  end: { column: 9, line: 1 },
+                },
+              },
+            ],
+
+            range: [4, 11],
+            loc: {
+              start: { column: 4, line: 1 },
+              end: { column: 11, line: 1 },
+            },
+          },
+          init: Literal {
+            type: "Literal",
+            raw: "1",
+            value: 1,
+
+            range: [14, 15],
+            loc: {
+              start: { column: 14, line: 1 },
+              end: { column: 15, line: 1 },
+            },
+          },
+
+          range: [4, 15],
+          loc: {
+            start: { column: 4, line: 1 },
+            end: { column: 15, line: 1 },
+          },
+        },
+      ],
+      declare: false,
+      kind: "var",
+
+      range: [0, 16],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 16, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 17],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

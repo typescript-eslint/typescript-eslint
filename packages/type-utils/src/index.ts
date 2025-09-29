@@ -4,8 +4,6 @@ export * from './getConstrainedTypeAtLocation';
 export * from './getContextualType';
 export * from './getDeclaration';
 export * from './getSourceFileOfNode';
-export * from './getTokenAtPosition';
-export * from './getTypeArguments';
 export * from './getTypeName';
 export * from './isSymbolFromDefaultLibrary';
 export * from './isTypeReadonly';
@@ -13,8 +11,9 @@ export * from './isUnsafeAssignment';
 export * from './predicates';
 export * from './propertyTypes';
 export * from './requiresQuoting';
-export * from './TypeOrValueSpecifier';
 export * from './typeFlagUtils';
+export * from './TypeOrValueSpecifier';
+export * from './discriminateAnyType';
 export {
   getDecorators,
   getModifiers,

@@ -10,8 +10,9 @@ import type { BaseNode } from './BaseNode';
 export interface ClassBase extends BaseNode {
   /**
    * Whether the class is an abstract class.
-   * ```
-   * abstract class Foo {...}
+   * @example
+   * ```ts
+   * abstract class Foo {}
    * ```
    */
   abstract: boolean;
@@ -21,16 +22,18 @@ export interface ClassBase extends BaseNode {
   body: ClassBody;
   /**
    * Whether the class has been `declare`d:
-   * ```
-   * declare class Foo {...}
+   * @example
+   * ```ts
+   * declare class Foo {}
    * ```
    */
   declare: boolean;
   /**
    * The decorators declared for the class.
-   * ```
+   * @example
+   * ```ts
    * @deco
-   * class Foo {...}
+   * class Foo {}
    * ```
    */
   decorators: Decorator[];
@@ -53,10 +56,6 @@ export interface ClassBase extends BaseNode {
    * The generic type parameters passed to the superClass.
    */
   superTypeArguments: TSTypeParameterInstantiation | undefined;
-
-  /** @deprecated Use {@link `superTypeArguments`} instead. */
-  superTypeParameters: TSTypeParameterInstantiation | undefined;
-
   /**
    * The generic type parameters declared for the class.
    */

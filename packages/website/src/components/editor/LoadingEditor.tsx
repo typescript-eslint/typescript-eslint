@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { LoadedEditor } from './LoadedEditor';
 import type { CommonEditorProps } from './types';
 import type { SandboxServicesProps } from './useSandboxServices';
+
+import { LoadedEditor } from './LoadedEditor';
 import { useSandboxServices } from './useSandboxServices';
 
 export type LoadingEditorProps = CommonEditorProps & SandboxServicesProps;

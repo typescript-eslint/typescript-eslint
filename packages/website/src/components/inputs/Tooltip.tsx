@@ -4,11 +4,11 @@ import React from 'react';
 import styles from './Tooltip.module.css';
 
 export interface TooltipProps {
-  readonly children: (React.JSX.Element | false)[] | React.JSX.Element;
-  readonly text: string;
-  readonly position?: 'left' | 'right';
-  readonly open?: boolean;
+  readonly children: (false | React.JSX.Element)[] | React.JSX.Element;
   readonly hover?: boolean;
+  readonly open?: boolean;
+  readonly position?: 'left' | 'right';
+  readonly text: string;
 }
 
 function Tooltip(props: TooltipProps): React.JSX.Element {

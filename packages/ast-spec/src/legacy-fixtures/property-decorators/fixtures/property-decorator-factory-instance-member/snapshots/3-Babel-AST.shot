@@ -1,17 +1,16 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-factory-instance-member Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
             decorators: [
               Decorator {
                 type: "Decorator",
@@ -20,7 +19,9 @@ Program {
                   arguments: [],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "Input",
+                    optional: false,
 
                     range: [98, 103],
                     loc: {
@@ -44,9 +45,12 @@ Program {
                 },
               },
             ],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "data",
+              optional: false,
 
               range: [106, 110],
               loc: {
@@ -54,6 +58,9 @@ Program {
                 end: { column: 15, line: 4 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             value: null,
 
@@ -66,6 +73,7 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
             decorators: [
               Decorator {
                 type: "Decorator",
@@ -74,7 +82,9 @@ Program {
                   arguments: [],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "Output",
+                    optional: false,
 
                     range: [115, 121],
                     loc: {
@@ -98,9 +108,12 @@ Program {
                 },
               },
             ],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "click",
+              optional: false,
 
               range: [126, 131],
               loc: {
@@ -108,13 +121,18 @@ Program {
                 end: { column: 7, line: 6 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             value: NewExpression {
               type: "NewExpression",
               arguments: [],
               callee: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "EventEmitter",
+                optional: false,
 
                 range: [138, 150],
                 loc: {
@@ -144,9 +162,13 @@ Program {
           end: { column: 1, line: 7 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "SomeComponent",
+        optional: false,
 
         range: [79, 92],
         loc: {
@@ -154,6 +176,7 @@ Program {
           end: { column: 19, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 155],
@@ -171,4 +194,3 @@ Program {
     end: { column: 0, line: 8 },
   },
 }
-`;

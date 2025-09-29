@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier-multiple AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > special > TSTypeParameter > class-expr-const-modifier-multiple > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -12,104 +12,103 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier-multiple
         type: 'ExpressionStatement',
         expression: ClassExpression {
           type: 'ClassExpression',
--         abstract: false,
+          abstract: false,
           body: ClassBody {
             type: 'ClassBody',
             body: Array [],
 
-            range: [20, 22],
+            range: [19, 21],
             loc: {
-              start: { column: 20, line: 1 },
-              end: { column: 22, line: 1 },
+              start: { column: 19, line: 1 },
+              end: { column: 21, line: 1 },
             },
           },
--         declare: false,
--         decorators: Array [],
+          declare: false,
+          decorators: Array [],
           id: null,
--         implements: Array [],
+          implements: Array [],
           superClass: null,
           typeParameters: TSTypeParameterDeclaration {
             type: 'TSTypeParameterDeclaration',
             params: Array [
               TSTypeParameter {
                 type: 'TSTypeParameter',
--               const: false,
--               in: false,
+                const: false,
+                in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
 -                 decorators: Array [],
 -                 name: 'T',
 -                 optional: false,
 -
--                 range: [8, 9],
+-                 range: [7, 8],
 -                 loc: {
--                   start: { column: 8, line: 1 },
--                   end: { column: 9, line: 1 },
+-                   start: { column: 7, line: 1 },
+-                   end: { column: 8, line: 1 },
 -                 },
 -               },
--               out: false,
 +               name: 'T',
+                out: false,
 
-                range: [8, 9],
+                range: [7, 8],
                 loc: {
-                  start: { column: 8, line: 1 },
-                  end: { column: 9, line: 1 },
+                  start: { column: 7, line: 1 },
+                  end: { column: 8, line: 1 },
                 },
               },
               TSTypeParameter {
                 type: 'TSTypeParameter',
                 const: true,
--               in: false,
+                in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
 -                 decorators: Array [],
 -                 name: 'U',
 -                 optional: false,
 -
--                 range: [17, 18],
+-                 range: [16, 17],
 -                 loc: {
--                   start: { column: 17, line: 1 },
--                   end: { column: 18, line: 1 },
+-                   start: { column: 16, line: 1 },
+-                   end: { column: 17, line: 1 },
 -                 },
 -               },
--               out: false,
 +               name: 'U',
+                out: false,
 
-                range: [11, 18],
+                range: [10, 17],
                 loc: {
-                  start: { column: 11, line: 1 },
-                  end: { column: 18, line: 1 },
+                  start: { column: 10, line: 1 },
+                  end: { column: 17, line: 1 },
                 },
               },
             ],
 
-            range: [7, 19],
+            range: [6, 18],
             loc: {
-              start: { column: 7, line: 1 },
-              end: { column: 19, line: 1 },
+              start: { column: 6, line: 1 },
+              end: { column: 18, line: 1 },
             },
           },
 
-          range: [1, 22],
+          range: [1, 21],
           loc: {
             start: { column: 1, line: 1 },
-            end: { column: 22, line: 1 },
+            end: { column: 21, line: 1 },
           },
         },
 
-        range: [0, 24],
+        range: [0, 23],
         loc: {
           start: { column: 0, line: 1 },
-          end: { column: 24, line: 1 },
+          end: { column: 23, line: 1 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [0, 25],
+    range: [0, 24],
     loc: {
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

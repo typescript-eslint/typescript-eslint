@@ -1,0 +1,87 @@
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: ObjectPattern {
+            type: "ObjectPattern",
+            decorators: [],
+            optional: false,
+            properties: [
+              Property {
+                type: "Property",
+                computed: false,
+                key: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "foo",
+                  optional: false,
+
+                  range: [16, 19],
+                  loc: {
+                    start: { column: 16, line: 1 },
+                    end: { column: 19, line: 1 },
+                  },
+                },
+                kind: "init",
+                method: false,
+                optional: false,
+                shorthand: true,
+                value: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "foo",
+                  optional: false,
+
+                  range: [16, 19],
+                  loc: {
+                    start: { column: 16, line: 1 },
+                    end: { column: 19, line: 1 },
+                  },
+                },
+
+                range: [16, 19],
+                loc: {
+                  start: { column: 16, line: 1 },
+                  end: { column: 19, line: 1 },
+                },
+              },
+            ],
+
+            range: [14, 21],
+            loc: {
+              start: { column: 14, line: 1 },
+              end: { column: 21, line: 1 },
+            },
+          },
+          init: null,
+
+          range: [14, 21],
+          loc: {
+            start: { column: 14, line: 1 },
+            end: { column: 21, line: 1 },
+          },
+        },
+      ],
+      declare: true,
+      kind: "const",
+
+      range: [0, 22],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 22, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 23],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

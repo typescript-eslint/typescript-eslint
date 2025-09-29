@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-misused-promises 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,32 +6,46 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "checksConditionals": {
+        "description": "Whether to warn when a Promise is provided to conditional statements.",
         "type": "boolean"
       },
       "checksSpreads": {
+        "description": "Whether to warn when `...` spreading a `Promise`.",
         "type": "boolean"
       },
       "checksVoidReturn": {
+        "description": "Whether to warn when a Promise is returned from a function typed as returning `void`.",
         "oneOf": [
           {
+            "description": "Whether to disable checking all asynchronous functions.",
             "type": "boolean"
           },
           {
             "additionalProperties": false,
+            "description": "Which forms of functions may have checking disabled.",
             "properties": {
               "arguments": {
+                "description": "Disables checking an asynchronous function passed as argument where the parameter type expects a function that returns `void`.",
                 "type": "boolean"
               },
               "attributes": {
+                "description": "Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`.",
+                "type": "boolean"
+              },
+              "inheritedMethods": {
+                "description": "Disables checking an asynchronous method in a type that extends or implements another type expecting that method to return `void`.",
                 "type": "boolean"
               },
               "properties": {
+                "description": "Disables checking an asynchronous function passed as an object property expected to be a function that returns `void`.",
                 "type": "boolean"
               },
               "returns": {
+                "description": "Disables checking an asynchronous function returned in a function whose return type is a function that returns `void`.",
                 "type": "boolean"
               },
               "variables": {
+                "description": "Disables checking an asynchronous function used as a variable whose return type is a function that returns `void`.",
                 "type": "boolean"
               }
             },
@@ -52,18 +63,30 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to warn when a Promise is provided to conditional statements. */
     checksConditionals?: boolean;
+    /** Whether to warn when `...` spreading a `Promise`. */
     checksSpreads?: boolean;
-    checksVoidReturn?:
+    /** Whether to warn when a Promise is returned from a function typed as returning `void`. */
+    checksVoidReturn?: /**
+     * Whether to warn when a Promise is returned from a function typed as returning `void`.
+     * Whether to disable checking all asynchronous functions.
+     */
+    | boolean
+      /** Which forms of functions may have checking disabled. */
       | {
+          /** Disables checking an asynchronous function passed as argument where the parameter type expects a function that returns `void`. */
           arguments?: boolean;
+          /** Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`. */
           attributes?: boolean;
+          /** Disables checking an asynchronous method in a type that extends or implements another type expecting that method to return `void`. */
+          inheritedMethods?: boolean;
+          /** Disables checking an asynchronous function passed as an object property expected to be a function that returns `void`. */
           properties?: boolean;
+          /** Disables checking an asynchronous function returned in a function whose return type is a function that returns `void`. */
           returns?: boolean;
+          /** Disables checking an asynchronous function used as a variable whose return type is a function that returns `void`. */
           variables?: boolean;
-        }
-      | boolean;
+        };
   },
 ];
-"
-`;

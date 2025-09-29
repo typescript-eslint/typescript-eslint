@@ -21,7 +21,7 @@ export function emitDeprecationWarning(
   source: string,
   errorCode: keyof typeof deprecationWarningMessages,
 ): void {
-  const cacheKey = JSON.stringify({ source, errorCode });
+  const cacheKey = JSON.stringify({ errorCode, source });
 
   if (sourceFileErrorCache.has(cacheKey)) {
     return;

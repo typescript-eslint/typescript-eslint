@@ -1,9 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
-import { getParserServices } from '../../util';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import type { SelectorsString } from './enums';
+import type { Context, NormalizedSelector } from './types';
+
+import { getParserServices } from '../../util';
 import {
   MetaSelectors,
   Modifiers,
@@ -18,9 +21,8 @@ import {
   isMethodOrPropertySelector,
   selectorTypeToMessageString,
 } from './shared';
-import type { Context, NormalizedSelector } from './types';
 
-function createValidator(
+export function createValidator(
   type: SelectorsString,
   context: Context,
   allConfigs: NormalizedSelector[],
@@ -144,29 +146,28 @@ function createValidator(
   // centralizes the logic for formatting the report data
   function formatReportData({
     affixes,
+    count,
+    custom,
     formats,
     originalName,
-    processedName,
     position,
-    custom,
-    count,
+    processedName,
   }: {
     affixes?: string[];
+    count?: 'one' | 'two';
+    custom?: NonNullable<NormalizedSelector['custom']>;
     formats?: PredefinedFormats[];
     originalName: string;
-    processedName?: string;
     position?: 'leading' | 'prefix' | 'suffix' | 'trailing';
-    custom?: NonNullable<NormalizedSelector['custom']>;
-    count?: 'one' | 'two';
+    processedName?: string;
   }): Record<string, unknown> {
     return {
-      type: selectorTypeToMessageString(type),
-      name: originalName,
-      processedName,
-      position,
-      count,
       affixes: affixes?.join(', '),
+      count,
       formats: formats?.map(f => PredefinedFormats[f]).join(', '),
+      name: originalName,
+      position,
+      processedName,
       regex: custom?.regex.toString(),
       regexMatch:
         custom?.match === true
@@ -174,6 +175,7 @@ function createValidator(
           : custom?.match === false
             ? 'not match'
             : null,
+      type: selectorTypeToMessageString(type),
     };
   }
 
@@ -247,13 +249,13 @@ function createValidator(
       case UnderscoreOptions.forbid: {
         if (hasSingleUnderscore()) {
           context.report({
-            node,
-            messageId: 'unexpectedUnderscore',
             data: formatReportData({
+              count: 'one',
               originalName,
               position,
-              count: 'one',
             }),
+            messageId: 'unexpectedUnderscore',
+            node,
           });
           return null;
         }
@@ -265,13 +267,13 @@ function createValidator(
       case UnderscoreOptions.require: {
         if (!hasSingleUnderscore()) {
           context.report({
-            node,
-            messageId: 'missingUnderscore',
             data: formatReportData({
+              count: 'one',
               originalName,
               position,
-              count: 'one',
             }),
+            messageId: 'missingUnderscore',
+            node,
           });
           return null;
         }
@@ -282,13 +284,13 @@ function createValidator(
       case UnderscoreOptions.requireDouble: {
         if (!hasDoubleUnderscore()) {
           context.report({
-            node,
-            messageId: 'missingUnderscore',
             data: formatReportData({
+              count: 'two',
               originalName,
               position,
-              count: 'two',
             }),
+            messageId: 'missingUnderscore',
+            node,
           });
           return null;
         }
@@ -328,13 +330,13 @@ function createValidator(
     }
 
     context.report({
-      node,
-      messageId: 'missingAffix',
       data: formatReportData({
+        affixes,
         originalName,
         position,
-        affixes,
       }),
+      messageId: 'missingAffix',
+      node,
     });
     return null;
   }
@@ -362,12 +364,12 @@ function createValidator(
     }
 
     context.report({
-      node,
-      messageId: 'satisfyCustom',
       data: formatReportData({
-        originalName,
         custom,
+        originalName,
       }),
+      messageId: 'satisfyCustom',
+      node,
     });
     return false;
   }
@@ -397,16 +399,16 @@ function createValidator(
     }
 
     context.report({
-      node,
+      data: formatReportData({
+        formats,
+        originalName,
+        processedName: name,
+      }),
       messageId:
         originalName === name
           ? 'doesNotMatchFormat'
           : 'doesNotMatchFormatTrimmed',
-      data: formatReportData({
-        originalName,
-        processedName: name,
-        formats,
-      }),
+      node,
     });
     return false;
   }
@@ -493,5 +495,3 @@ function isAllTypesMatch(
 
   return cb(type);
 }
-
-export { createValidator };

@@ -1,10 +1,25 @@
 {
-  "extends": "./tsconfig.build.json",
-  "compilerOptions": {
-    "composite": false,
-    "target": "ES2022",
-    "rootDir": "."
-  },
-  "include": ["src", "typings", "tests", "index.d.ts"],
-  "references": [{ "path": "../utils/tsconfig.build.json" }]
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "../type-utils"
+    },
+    {
+      "path": "../scope-manager"
+    },
+    {
+      "path": "../rule-tester"
+    },
+    {
+      "path": "../utils"
+    },
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

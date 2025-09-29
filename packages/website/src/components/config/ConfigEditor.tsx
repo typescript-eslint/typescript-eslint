@@ -7,25 +7,25 @@ import Text from '../inputs/Text';
 import styles from './ConfigEditor.module.css';
 
 export interface ConfigOptionsField {
-  key: string;
-  type: 'boolean' | 'string';
-  label?: string;
   defaults?: unknown[];
   enum?: string[];
+  key: string;
+  label?: string;
+  type: 'boolean' | 'string';
 }
 
 export interface ConfigOptionsType {
-  heading: string;
   fields: ConfigOptionsField[];
+  heading: string;
 }
 
 export type ConfigEditorValues = Record<string, unknown>;
 
 export interface ConfigEditorProps {
+  readonly className?: string;
+  readonly onChange: (config: ConfigEditorValues) => void;
   readonly options: ConfigOptionsType[];
   readonly values: ConfigEditorValues;
-  readonly onChange: (config: ConfigEditorValues) => void;
-  readonly className?: string;
 }
 
 function filterConfig(
@@ -34,10 +34,10 @@ function filterConfig(
 ): ConfigOptionsType[] {
   return options
     .map(group => ({
-      heading: group.heading,
       fields: group.fields.filter(item =>
-        String(item.key.toLowerCase()).includes(filter.toLowerCase()),
+        item.key.toLowerCase().includes(filter.toLowerCase()),
       ),
+      heading: group.heading,
     }))
     .filter(group => group.fields.length > 0);
 }
@@ -48,14 +48,14 @@ function isDefault(value: unknown, defaults?: unknown[]): boolean {
 
 interface ConfigEditorFieldProps {
   readonly item: ConfigOptionsField;
-  readonly value: unknown;
   readonly onChange: (name: string, value: unknown) => void;
+  readonly value: unknown;
 }
 
 function ConfigEditorField({
   item,
-  value,
   onChange,
+  value,
 }: ConfigEditorFieldProps): React.JSX.Element {
   return (
     <label className={styles.searchResult}>
@@ -66,21 +66,24 @@ function ConfigEditorField({
       </span>
       {item.type === 'boolean' ? (
         <Checkbox
-          name={`config_${item.key}`}
-          value={item.key}
-          indeterminate={Boolean(value) && !isDefault(value, item.defaults)}
           checked={Boolean(value)}
+          indeterminate={Boolean(value) && !isDefault(value, item.defaults)}
+          name={`config_${item.key}`}
           onChange={(checked): void =>
-            onChange(item.key, checked ? item.defaults?.[0] ?? true : undefined)
+            onChange(
+              item.key,
+              checked ? (item.defaults?.[0] ?? true) : undefined,
+            )
           }
+          value={item.key}
         />
       ) : (
         item.enum && (
           <Dropdown
             name={`config_${item.key}`}
-            value={String(value)}
-            options={item.enum}
             onChange={(value): void => onChange(item.key, value)}
+            options={item.enum}
+            value={String(value)}
           />
         )
       )}
@@ -89,10 +92,10 @@ function ConfigEditorField({
 }
 
 function ConfigEditor({
-  onChange: onChangeProp,
-  values,
-  options,
   className,
+  onChange: onChangeProp,
+  options,
+  values,
 }: ConfigEditorProps): React.JSX.Element {
   const [filter, setFilter] = useState<string>('');
 
@@ -125,10 +128,10 @@ function ConfigEditor({
     >
       <div className={styles.searchBar}>
         <Text
-          type="search"
           name="config-filter"
-          value={filter}
           onChange={setFilter}
+          type="search"
+          value={filter}
         />
       </div>
       {filteredOptions.map(group => (
@@ -137,10 +140,10 @@ function ConfigEditor({
           <div>
             {group.fields.map(item => (
               <ConfigEditorField
-                key={item.key}
                 item={item}
-                value={values[item.key]}
+                key={item.key}
                 onChange={onChange}
+                value={values[item.key]}
               />
             ))}
           </div>

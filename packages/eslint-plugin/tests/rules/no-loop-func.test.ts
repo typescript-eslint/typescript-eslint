@@ -3,12 +3,17 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-loop-func';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-loop-func', rule, {
   valid: [
+    `
+for (let i = 0; i < 10; i++) {
+  function foo() {
+    console.log('A');
+  }
+}
+    `,
     `
 let someArray: MyType[] = [];
 for (let i = 0; i < 10; i += 1) {
@@ -22,8 +27,10 @@ for (let i = 0; i < 10; i += 1) {
   someArray = someArray.filter((item: MyType) => !!item);
 }
       `,
-      globals: {
-        MyType: 'readonly',
+      languageOptions: {
+        globals: {
+          MyType: 'readonly',
+        },
       },
     },
     {
@@ -33,8 +40,10 @@ for (let i = 0; i < 10; i += 1) {
   someArray = someArray.filter((item: MyType) => !!item);
 }
       `,
-      globals: {
-        MyType: 'writable',
+      languageOptions: {
+        globals: {
+          MyType: 'writable',
+        },
       },
     },
     `
@@ -48,7 +57,7 @@ for (let i = 0; i < 10; i += 1) {
   invalid: [],
 });
 
-// Forked from https://github.com/eslint/eslint/blob/bf2e367bf4f6fde9930af9de8b8d8bc3d8b5782f/tests/lib/rules/no-loop-func.js
+// Forked from https://github.com/eslint/eslint/blob/89a4a0a260b8eb11487fe3d5d4d80f4630933eb3/tests/lib/rules/no-loop-func.js
 ruleTester.run('no-loop-func ESLint tests', rule, {
   valid: [
     "string = 'function a() {}';",
@@ -81,7 +90,7 @@ for (var x of xs.filter(function (x) {
 })) {
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
 
     // no refers to variables that declared on upper scope.
@@ -101,7 +110,7 @@ for (var i of {}) {
   (function () {});
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
 
     // functions which are using unmodified variables are OK.
@@ -113,7 +122,7 @@ for (let i = 0; i < l; i++) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -124,7 +133,7 @@ for (let i in {}) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -134,7 +143,7 @@ for (const i of {}) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -143,7 +152,7 @@ for (let i = 0; i < 10; ++i) {
   }
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -154,7 +163,7 @@ for (let i = 0; i < l; i++) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -165,7 +174,7 @@ for (let i in {}) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -176,7 +185,7 @@ for (let i of {}) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -189,7 +198,7 @@ for (let i = 0; i < l; i++) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -202,7 +211,7 @@ for (let i in {}) {
   }
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -215,7 +224,7 @@ for (let i of {}) {
   };
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -226,7 +235,7 @@ for (let i = 0; i < l; i++) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -237,7 +246,7 @@ for (let i in {}) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -248,7 +257,7 @@ for (let i of {}) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: [
@@ -261,13 +270,200 @@ for (let i of {}) {
         '}',
         'result.__default = 6;',
       ].join('\n'),
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: ['while (true) {', '    (function() { a; });', '}', 'let a;'].join(
         '\n',
       ),
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    /*
+     * These loops _look_ like they might be unsafe, but because i is undeclared, they're fine
+     * at least as far as this rule is concerned - the loop doesn't declare/generate the variable.
+     */
+    `
+while (i) {
+  (function () {
+    i;
+  });
+}
+    `,
+    `
+do {
+  (function () {
+    i;
+  });
+} while (i);
+    `,
+
+    /**
+     * These loops _look_ like they might be unsafe, but because i is declared outside the loop
+     * and is not updated in or after the loop, they're fine as far as this rule is concerned.
+     * The variable that's captured is just the one variable shared by all the loops, but that's
+     * explicitly expected in these cases.
+     */
+    `
+var i;
+while (i) {
+  (function () {
+    i;
+  });
+}
+    `,
+    `
+var i;
+do {
+  (function () {
+    i;
+  });
+} while (i);
+    `,
+
+    /**
+     * These loops use an undeclared variable, and so shouldn't be flagged by this rule,
+     * they'll be picked up by no-undef.
+     */
+    {
+      code: `
+for (var i = 0; i < l; i++) {
+  (function () {
+    undeclared;
+  });
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+for (let i = 0; i < l; i++) {
+  (function () {
+    undeclared;
+  });
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+for (var i in {}) {
+  i = 7;
+  (function () {
+    undeclared;
+  });
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+for (let i in {}) {
+  i = 7;
+  (function () {
+    undeclared;
+  });
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+for (const i of {}) {
+  (function () {
+    undeclared;
+  });
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+for (let i = 0; i < 10; ++i) {
+  for (let x in xs.filter(x => x != undeclared)) {
+  }
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    // IIFE
+    {
+      code: `
+let current = getStart();
+while (current) {
+  (() => {
+    current;
+    current.a;
+    current.b;
+    current.c;
+    current.d;
+  })();
+
+  current = current.upper;
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    `
+for (
+  var i = 0;
+  (function () {
+    i;
+  })(),
+    i < l;
+  i++
+) {}
+    `,
+    `
+for (
+  var i = 0;
+  i < l;
+  (function () {
+    i;
+  })(),
+    i++
+) {}
+    `,
+    {
+      code: `
+for (var i = 0; i < 10; ++i) {
+  (() => {
+    i;
+  })();
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+for (var i = 0; i < 10; ++i) {
+  (function a() {
+    i;
+  })();
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var arr = [];
+for (var i = 0; i < 5; i++) {
+  arr.push((f => f)((() => i)()));
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var arr = [];
+for (var i = 0; i < 5; i++) {
+  arr.push(
+    (() => {
+      return (() => i)();
+    })(),
+  );
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
   ],
   invalid: [
@@ -281,8 +477,8 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
@@ -299,8 +495,8 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i', 'j'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
@@ -315,8 +511,8 @@ for (var i in {}) {
       `,
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
@@ -329,14 +525,14 @@ for (var i of {}) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -346,14 +542,14 @@ for (var i = 0; i < l; i++) {
   };
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.ArrowFunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -365,8 +561,8 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
@@ -382,79 +578,9 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionDeclaration,
-        },
-      ],
-    },
-    {
-      code: `
-for (
-  var i = 0;
-  (function () {
-    i;
-  })(),
-    i < l;
-  i++
-) {}
-      `,
-      errors: [
-        {
-          messageId: 'unsafeRefs',
-          data: { varNames: "'i'" },
-          type: AST_NODE_TYPES.FunctionExpression,
-        },
-      ],
-    },
-    {
-      code: `
-for (
-  var i = 0;
-  i < l;
-  (function () {
-    i;
-  })(),
-    i++
-) {}
-      `,
-      errors: [
-        {
-          messageId: 'unsafeRefs',
-          data: { varNames: "'i'" },
-          type: AST_NODE_TYPES.FunctionExpression,
-        },
-      ],
-    },
-    {
-      code: `
-while (i) {
-  (function () {
-    i;
-  });
-}
-      `,
-      errors: [
-        {
-          messageId: 'unsafeRefs',
-          data: { varNames: "'i'" },
-          type: AST_NODE_TYPES.FunctionExpression,
-        },
-      ],
-    },
-    {
-      code: `
-do {
-  (function () {
-    i;
-  });
-} while (i);
-      `,
-      errors: [
-        {
-          messageId: 'unsafeRefs',
-          data: { varNames: "'i'" },
-          type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
     },
@@ -470,14 +596,14 @@ for (let i = 0; i < l; i++) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -489,14 +615,14 @@ for (let i in {}) {
   a = 1;
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -508,14 +634,14 @@ for (let i of {}) {
 }
 a = 1;
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -529,14 +655,14 @@ for (let i = 0; i < l; i++) {
   a = 1;
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -550,14 +676,14 @@ for (let i in {}) {
   }
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionDeclaration,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -571,14 +697,14 @@ for (let i of {}) {
 }
 a = 1;
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.ArrowFunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -587,14 +713,14 @@ for (var i = 0; i < 10; ++i) {
   }
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.ArrowFunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -608,14 +734,14 @@ for (let x of xs) {
   }
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -627,14 +753,14 @@ for (var x of xs) {
   }
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'x'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -644,14 +770,14 @@ for (var x of xs) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'x'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -663,14 +789,14 @@ for (let x of xs) {
   });
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -682,14 +808,14 @@ for (let x of xs) {
   a = 1;
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -704,14 +830,14 @@ for (let x of xs) {
 }
 foo();
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -726,14 +852,14 @@ function foo() {
 }
 foo();
       `,
-      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
   ],
 });

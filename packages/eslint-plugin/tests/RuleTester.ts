@@ -2,7 +2,8 @@ import type {
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
-import * as path from 'path';
+
+import * as path from 'node:path';
 
 export function getFixturesRootDir(): string {
   return path.join(__dirname, 'fixtures');
@@ -44,7 +45,11 @@ export function batchedSingleLineTests<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
-  options: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
+  options:
+    | ValidTestCase<Options>
+    | ({
+        output?: string | null;
+      } & Omit<InvalidTestCase<MessageIds, Options>, 'output'>),
 ): (InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>)[] {
   // -- eslint counts lines from 1
   const lineOffset = options.code.startsWith('\n') ? 2 : 1;

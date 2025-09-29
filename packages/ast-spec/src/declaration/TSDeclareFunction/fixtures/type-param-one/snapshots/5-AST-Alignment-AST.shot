@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSDeclareFunction type-param-one AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > TSDeclareFunction > type-param-one > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -16,9 +16,9 @@ exports[`AST Fixtures declaration TSDeclareFunction type-param-one AST Alignment
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'foo',
--         optional: false,
+          optional: false,
 
           range: [17, 20],
           loc: {
@@ -32,8 +32,8 @@ exports[`AST Fixtures declaration TSDeclareFunction type-param-one AST Alignment
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -46,8 +46,8 @@ exports[`AST Fixtures declaration TSDeclareFunction type-param-one AST Alignment
 -                 end: { column: 22, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [21, 22],
               loc: {
@@ -78,5 +78,4 @@ exports[`AST Fixtures declaration TSDeclareFunction type-param-one AST Alignment
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

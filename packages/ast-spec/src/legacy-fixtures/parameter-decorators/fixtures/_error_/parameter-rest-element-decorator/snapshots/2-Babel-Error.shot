@@ -1,3 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures parameter-decorators _error_ parameter-rest-element-decorator Babel - Error 1`] = `[SyntaxError: Unexpected token (4:21)]`;
+exports[`AST Fixtures > legacy-fixtures > parameter-decorators > _error_ > parameter-rest-element-decorator > Babel - Error`]
+BabelError
+  2 |
+  3 | class Foo {
+> 4 |   bar(@special(true) ...foo: any) {}
+    |                      ^ Unexpected token (4:21)
+  5 | }
+  6 |
+  

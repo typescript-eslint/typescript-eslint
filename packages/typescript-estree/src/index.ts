@@ -1,25 +1,27 @@
-export {
-  AST,
-  parse,
-  parseAndGenerateServices,
-  ParseAndGenerateServicesResult,
-} from './parser';
-export {
-  ParserServices,
-  ParserServicesWithTypeInformation,
-  ParserServicesWithoutTypeInformation,
-  TSESTreeOptions,
-} from './parser-options';
-export { simpleTraverse } from './simple-traverse';
-export * from './ts-estree';
-export { createProgramFromConfigFile as createProgram } from './create-program/useProvidedPrograms';
+export * from './clear-caches';
 export * from './create-program/getScriptKind';
 export { getCanonicalFileName } from './create-program/shared';
-export { typescriptVersionIsAtLeast } from './version-check';
+export { createProgramFromConfigFile as createProgram } from './create-program/useProvidedPrograms';
 export * from './getModifiers';
 export { TSError } from './node-utils';
-export * from './clear-caches';
-
-// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-export const version: string = require('../package.json').version;
+export {
+  type AST,
+  parse,
+  parseAndGenerateServices,
+  type ParseAndGenerateServicesResult,
+} from './parser';
+export type {
+  ParserServices,
+  ParserServicesWithoutTypeInformation,
+  ParserServicesWithTypeInformation,
+  TSESTreeOptions,
+} from './parser-options';
+export {
+  addCandidateTSConfigRootDir,
+  clearCandidateTSConfigRootDirs,
+} from './parseSettings/candidateTSConfigRootDirs';
+export { simpleTraverse } from './simple-traverse';
+export * from './ts-estree';
+export { typescriptVersionIsAtLeast } from './version-check';
+export { version } from './version';
+export { withoutProjectParserOptions } from './withoutProjectParserOptions';

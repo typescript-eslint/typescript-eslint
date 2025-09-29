@@ -8,7 +8,7 @@ import type { TSESTree } from '../../ts-estree';
  *
  * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#getfunctionheadlocation}
  */
-const getFunctionHeadLocation = eslintUtils.getFunctionHeadLocation as (
+export const getFunctionHeadLocation = eslintUtils.getFunctionHeadLocation as (
   node:
     | TSESTree.ArrowFunctionExpression
     | TSESTree.FunctionDeclaration
@@ -21,7 +21,7 @@ const getFunctionHeadLocation = eslintUtils.getFunctionHeadLocation as (
  *
  * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#getfunctionnamewithkind}
  */
-const getFunctionNameWithKind = eslintUtils.getFunctionNameWithKind as (
+export const getFunctionNameWithKind = eslintUtils.getFunctionNameWithKind as (
   node:
     | TSESTree.ArrowFunctionExpression
     | TSESTree.FunctionDeclaration
@@ -36,7 +36,7 @@ const getFunctionNameWithKind = eslintUtils.getFunctionNameWithKind as (
  * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#getpropertyname}
  * @returns The property name of the node. If the property name is not constant then it returns `null`.
  */
-const getPropertyName = eslintUtils.getPropertyName as (
+export const getPropertyName = eslintUtils.getPropertyName as (
   node:
     | TSESTree.MemberExpression
     | TSESTree.MethodDefinition
@@ -56,7 +56,7 @@ const getPropertyName = eslintUtils.getPropertyName as (
  * @returns The `{ value: any }` shaped object. The `value` property is the static value. If it couldn't compute the
  * static value of the node, it returns `null`.
  */
-const getStaticValue = eslintUtils.getStaticValue as (
+export const getStaticValue = eslintUtils.getStaticValue as (
   node: TSESTree.Node,
   initialScope?: TSESLint.Scope.Scope,
 ) => { value: unknown } | null;
@@ -67,7 +67,7 @@ const getStaticValue = eslintUtils.getStaticValue as (
  *
  * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#getstringifconstant}
  */
-const getStringIfConstant = eslintUtils.getStringIfConstant as (
+export const getStringIfConstant = eslintUtils.getStringIfConstant as (
   node: TSESTree.Node,
   initialScope?: TSESLint.Scope.Scope,
 ) => string | null;
@@ -95,7 +95,7 @@ const getStringIfConstant = eslintUtils.getStringIfConstant as (
  *
  * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#hassideeffect}
  */
-const hasSideEffect = eslintUtils.hasSideEffect as (
+export const hasSideEffect = eslintUtils.hasSideEffect as (
   node: TSESTree.Node,
   sourceCode: TSESLint.SourceCode,
   options?: {
@@ -104,7 +104,13 @@ const hasSideEffect = eslintUtils.hasSideEffect as (
   },
 ) => boolean;
 
-const isParenthesized = eslintUtils.isParenthesized as {
+export const isParenthesized = eslintUtils.isParenthesized as {
+  (
+    times: number,
+    node: TSESTree.Node,
+    sourceCode: TSESLint.SourceCode,
+  ): boolean;
+
   /**
    * Check whether a given node is parenthesized or not.
    * This function detects it correctly even if it's parenthesized by specific syntax.
@@ -115,19 +121,4 @@ const isParenthesized = eslintUtils.isParenthesized as {
    * For example, `isParenthesized(2, node, sourceCode)` returns true for `((foo))`, but not for `(foo)`.
    */
   (node: TSESTree.Node, sourceCode: TSESLint.SourceCode): boolean;
-  (
-    times: number,
-    node: TSESTree.Node,
-    sourceCode: TSESLint.SourceCode,
-  ): boolean;
-};
-
-export {
-  getFunctionHeadLocation,
-  getFunctionNameWithKind,
-  getPropertyName,
-  getStaticValue,
-  getStringIfConstant,
-  hasSideEffect,
-  isParenthesized,
 };

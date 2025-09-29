@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > const-id-definite-type-no-init > TSESTree - Error`]
+TSError
+> 1 | const foo!: any;
+    |       ^^^^^^^^^ A definite assignment assertion '!' is not permitted in this context.
+  2 |

@@ -1,30 +1,14 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unused-expressions';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
-    ecmaFeatures: {},
+  languageOptions: {
+    parserOptions: {
+      ecmaVersion: 6,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
-
-type TestCaseError = Omit<TSESLint.TestCaseError<string>, 'messageId'>;
-
-// the base rule doesn't have messageIds
-function error(
-  messages: TestCaseError[],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any[] {
-  return messages.map(message => ({
-    ...message,
-    message:
-      'Expected an assignment or function call and instead saw an expression.',
-  }));
-}
 
 ruleTester.run('no-unused-expressions', rule, {
   valid: [
@@ -91,37 +75,40 @@ ruleTester.run('no-unused-expressions', rule, {
   ],
   invalid: [
     {
-      code: `
-if (0) 0;
-      `,
-      errors: error([
+      code: 'if (0) 0;',
+      errors: [
         {
-          line: 2,
           column: 8,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
-      code: `
-f(0), {};
-      `,
-      errors: error([
+      code: '(f(0), {});',
+      errors: [
         {
-          line: 2,
           column: 1,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
-      code: `
-a, b();
-      `,
-      errors: error([
+      code: '(a, b());',
+      errors: [
         {
-          line: 2,
           column: 1,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -130,100 +117,111 @@ a() &&
     f();
   };
       `,
-      errors: error([
+      errors: [
         {
-          line: 2,
           column: 1,
+          endColumn: 5,
+          endLine: 5,
+          line: 2,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
-      code: `
-a?.b;
-      `,
-      errors: error([
+      code: 'a?.b;',
+      errors: [
         {
-          line: 2,
           column: 1,
+          endColumn: 6,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
-      code: `
-(a?.b).c;
-      `,
-      errors: error([
+      code: '(a?.b).c;',
+      errors: [
         {
-          line: 2,
           column: 1,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
-      code: `
-a?.['b'];
-      `,
-      errors: error([
+      code: "a?.['b'];",
+      errors: [
         {
-          line: 2,
           column: 1,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
-      code: `
-(a?.['b']).c;
-      `,
-      errors: error([
+      code: "(a?.['b']).c;",
+      errors: [
         {
-          line: 2,
           column: 1,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
-      code: `
-a?.b()?.c;
-      `,
-      errors: error([
+      code: 'a?.b()?.c;',
+      errors: [
         {
-          line: 2,
           column: 1,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
-      code: `
-(a?.b()).c;
-      `,
-      errors: error([
+      code: '(a?.b()).c;',
+      errors: [
         {
-          line: 2,
           column: 1,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
-      code: `
-one[2]?.[3][4];
-      `,
-      errors: error([
+      code: 'one[2]?.[3][4];',
+      errors: [
         {
-          line: 2,
           column: 1,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
-      code: `
-one.two?.three.four;
-      `,
-      errors: error([
+      code: 'one.two?.three.four;',
+      errors: [
         {
-          line: 2,
           column: 1,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -232,14 +230,15 @@ module Foo {
   'use strict';
 }
       `,
-      errors: error([
+      errors: [
         {
-          line: 4,
-          endLine: 4,
           column: 3,
           endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
@@ -250,136 +249,146 @@ namespace Foo {
   'use strict';
 }
       `,
-      errors: error([
+      errors: [
         {
-          line: 6,
-          endLine: 6,
           column: 3,
           endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
-      code: noFormat`
+      code: `
 function foo() {
   const foo = true;
 
-  'use strict';
+  ('use strict');
 }
       `,
-      errors: error([
+      errors: [
         {
-          line: 5,
-          endLine: 5,
           column: 3,
-          endColumn: 16,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: 'foo && foo?.bar;',
-      options: [{ allowShortCircuit: true }],
-      errors: error([
+      errors: [
         {
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 17,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
+      options: [{ allowShortCircuit: true }],
     },
     {
       code: 'foo ? foo?.bar : bar.baz;',
-      options: [{ allowTernary: true }],
-      errors: error([
+      errors: [
         {
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 26,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
+      options: [{ allowTernary: true }],
     },
     {
-      code: noFormat`
+      code: `
 class Foo<T> {}
 Foo<string>;
       `,
-      errors: error([
+      errors: [
         {
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 13,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: 'Map<string, string>;',
-      errors: error([
+      errors: [
         {
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 declare const foo: number | undefined;
 foo;
       `,
-      errors: error([
+      errors: [
         {
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 declare const foo: number | undefined;
 foo as any;
       `,
-      errors: error([
+      errors: [
         {
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 declare const foo: number | undefined;
 <any>foo;
       `,
-      errors: error([
+      errors: [
         {
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
     {
       code: `
 declare const foo: number | undefined;
 foo!;
       `,
-      errors: error([
+      errors: [
         {
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedExpression',
         },
-      ]),
+      ],
     },
   ],
 });

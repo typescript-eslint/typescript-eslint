@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/prefer-namespace-keyword';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-namespace-keyword', rule, {
   valid: [
@@ -17,25 +15,25 @@ ruleTester.run('prefer-namespace-keyword', rule, {
   invalid: [
     {
       code: 'module foo {}',
-      output: 'namespace foo {}',
       errors: [
         {
-          messageId: 'useNamespace',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'useNamespace',
         },
       ],
+      output: 'namespace foo {}',
     },
     {
       code: 'declare module foo {}',
-      output: 'declare namespace foo {}',
       errors: [
         {
-          messageId: 'useNamespace',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'useNamespace',
         },
       ],
+      output: 'declare namespace foo {}',
     },
     {
       code: `
@@ -43,23 +41,23 @@ declare module foo {
   declare module bar {}
 }
       `,
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'useNamespace',
+        },
+        {
+          column: 3,
+          line: 3,
+          messageId: 'useNamespace',
+        },
+      ],
       output: `
 declare namespace foo {
   declare namespace bar {}
 }
       `,
-      errors: [
-        {
-          messageId: 'useNamespace',
-          line: 2,
-          column: 1,
-        },
-        {
-          messageId: 'useNamespace',
-          line: 3,
-          column: 3,
-        },
-      ],
     },
   ],
 });

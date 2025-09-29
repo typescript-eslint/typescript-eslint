@@ -1,12 +1,30 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes return-await 1`] = `
-"
 # SCHEMA:
 
 [
   {
-    "enum": ["always", "in-try-catch", "never"],
+    "oneOf": [
+      {
+        "description": "Requires that all returned promises be awaited.",
+        "enum": ["always"],
+        "type": "string"
+      },
+      {
+        "description": "In error-handling contexts, the rule enforces that returned promises must be awaited. In ordinary contexts, the rule does not enforce any particular behavior around whether returned promises are awaited.",
+        "enum": ["error-handling-correctness-only"],
+        "type": "string"
+      },
+      {
+        "description": "In error-handling contexts, the rule enforces that returned promises must be awaited. In ordinary contexts, the rule enforces that returned promises _must not_ be awaited.",
+        "enum": ["in-try-catch"],
+        "type": "string"
+      },
+      {
+        "description": "Disallows awaiting any returned promises.",
+        "enum": ["never"],
+        "type": "string"
+      }
+    ],
     "type": "string"
   }
 ]
@@ -14,6 +32,13 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
-type Options = ['always' | 'in-try-catch' | 'never'];
-"
-`;
+type Options = [
+  /** Disallows awaiting any returned promises. */
+  | 'never'
+  /** In error-handling contexts, the rule enforces that returned promises must be awaited. In ordinary contexts, the rule does not enforce any particular behavior around whether returned promises are awaited. */
+  | 'error-handling-correctness-only'
+  /** In error-handling contexts, the rule enforces that returned promises must be awaited. In ordinary contexts, the rule enforces that returned promises _must not_ be awaited. */
+  | 'in-try-catch'
+  /** Requires that all returned promises be awaited. */
+  | 'always',
+];

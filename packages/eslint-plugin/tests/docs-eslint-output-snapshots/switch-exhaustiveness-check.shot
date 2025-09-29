@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 1`] = `
-"Options: { "requireDefaultForNonUnion": true }
+Options: { "requireDefaultForNonUnion": true }
 
 const value: number = Math.floor(Math.random() * 3);
 
@@ -12,11 +9,30 @@ switch (value) {
   case 1:
     return 1;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 2`] = `
-"Incorrect
+Options: { "considerDefaultExhaustiveForUnions": true }
+
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+  default:
+    break;
+}
+
+Options: { "defaultCaseCommentPattern": "^skip default" }
+
+declare const value: 'a' | 'b';
+
+switch (value) {
+        ~~~~~ Switch is not exhaustive. Cases not matched: "b"
+  case 'a':
+    break;
+  // skip default
+}
+
+Incorrect
 
 type Day =
   | 'Monday'
@@ -36,11 +52,8 @@ switch (day) {
     result = 1;
     break;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 3`] = `
-"Correct
+Correct
 
 type Day =
   | 'Monday'
@@ -77,11 +90,11 @@ switch (day) {
     result = 7;
     break;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
+Options: { "considerDefaultExhaustiveForUnions": true }
+
+// requires `considerDefaultExhaustiveForUnions` to be set to true
 
 type Day =
   | 'Monday'
@@ -102,11 +115,8 @@ switch (day) {
   default:
     result = 42;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 5`] = `
-"Incorrect
+Incorrect
 
 enum Fruit {
   Apple,
@@ -122,11 +132,8 @@ switch (fruit) {
     console.log('an apple');
     break;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 
 enum Fruit {
   Apple,
@@ -149,11 +156,11 @@ switch (fruit) {
     console.log('a cherry');
     break;
 }
-"
-`;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 7`] = `
-"Correct
+Correct
+Options: { "considerDefaultExhaustiveForUnions": true }
+
+// requires `considerDefaultExhaustiveForUnions` to be set to true
 
 enum Fruit {
   Apple,
@@ -172,5 +179,3 @@ switch (fruit) {
     console.log('a fruit');
     break;
 }
-"
-`;

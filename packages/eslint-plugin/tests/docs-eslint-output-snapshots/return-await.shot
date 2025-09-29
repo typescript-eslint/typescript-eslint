@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs return-await.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 Options: "in-try-catch"
 
 async function invalidInTryCatch1() {
@@ -63,11 +60,14 @@ async function invalidInTryCatch6() {
   return await 'value';
          ~~~~~~~~~~~~~ Returning an awaited value that is not a promise is not allowed.
 }
-"
-`;
 
-exports[`Validating rule docs return-await.mdx code examples ESLint output 2`] = `
-"Correct
+async function invalidInTryCatch7() {
+  using x = createDisposable();
+  return Promise.reject('using in scope');
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is required in this context.
+}
+
+Correct
 Options: "in-try-catch"
 
 async function validInTryCatch1() {
@@ -120,11 +120,13 @@ async function validInTryCatch5() {
 async function validInTryCatch6() {
   return 'value';
 }
-"
-`;
 
-exports[`Validating rule docs return-await.mdx code examples ESLint output 3`] = `
-"Incorrect
+async function validInTryCatch7() {
+  using x = createDisposable();
+  return await Promise.reject('using in scope');
+}
+
+Incorrect
 Options: "always"
 
 async function invalidAlways1() {
@@ -143,11 +145,8 @@ async function invalidAlways3() {
   return await 'value';
          ~~~~~~~~~~~~~ Returning an awaited value that is not a promise is not allowed.
 }
-"
-`;
 
-exports[`Validating rule docs return-await.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 Options: "always"
 
 async function validAlways1() {
@@ -163,11 +162,19 @@ async function validAlways2() {
 async function validAlways3() {
   return 'value';
 }
-"
-`;
 
-exports[`Validating rule docs return-await.mdx code examples ESLint output 5`] = `
-"Incorrect
+Correct
+Options: "error-handling-correctness-only"
+
+async function asyncFunction(): Promise<void> {
+  if (Math.random() < 0.5) {
+    return await Promise.resolve();
+  } else {
+    return Promise.resolve();
+  }
+}
+
+Incorrect
 Options: "never"
 
 async function invalidNever1() {
@@ -186,11 +193,8 @@ async function invalidNever3() {
   return await 'value';
          ~~~~~~~~~~~~~ Returning an awaited value that is not a promise is not allowed.
 }
-"
-`;
 
-exports[`Validating rule docs return-await.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 Options: "never"
 
 async function validNever1() {
@@ -206,5 +210,3 @@ async function validNever2() {
 async function validNever3() {
   return 'value';
 }
-"
-`;

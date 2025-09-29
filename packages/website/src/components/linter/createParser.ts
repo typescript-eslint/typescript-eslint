@@ -3,13 +3,15 @@ import type { ParserOptions } from '@typescript-eslint/types';
 import type { Parser } from '@typescript-eslint/utils/ts-eslint';
 import type * as ts from 'typescript';
 
-import { defaultParseSettings } from './config';
 import type {
   ParseSettings,
   PlaygroundSystem,
+  RegisterFile,
   UpdateModel,
   WebLinterModule,
 } from './types';
+
+import { defaultParseSettings } from './config';
 
 export function createParser(
   system: PlaygroundSystem,
@@ -17,17 +19,16 @@ export function createParser(
   onUpdate: (filename: string, model: UpdateModel) => void,
   utils: WebLinterModule,
   vfs: typeof tsvfs,
-): Parser.ParserModule & {
+): {
   updateConfig: (compilerOptions: ts.CompilerOptions) => void;
-} {
-  const registeredFiles = new Set<string>();
-
+  registerFile: RegisterFile;
+} & Parser.ParserModule {
   const createEnv = (
     compilerOptions: ts.CompilerOptions,
   ): tsvfs.VirtualTypeScriptEnvironment => {
     return vfs.createVirtualTypeScriptEnvironment(
       system,
-      Array.from(registeredFiles),
+      system.getScriptFileNames(),
       window.ts,
       compilerOptions,
     );
@@ -36,9 +37,6 @@ export function createParser(
   let compilerHost = createEnv(compilerOptions);
 
   return {
-    updateConfig(compilerOptions): void {
-      compilerHost = createEnv(compilerOptions);
-    },
     parseForESLint: (
       text: string,
       options: ParserOptions = {},
@@ -48,18 +46,17 @@ export function createParser(
       // if text is empty use empty line to avoid error
       const code = text || '\n';
 
-      if (registeredFiles.has(filePath)) {
+      if (compilerHost.getSourceFile(filePath)) {
         compilerHost.updateFile(filePath, code);
       } else {
-        registeredFiles.add(filePath);
         compilerHost.createFile(filePath, code);
       }
 
       const parseSettings: ParseSettings = {
         ...defaultParseSettings,
-        code: code,
+        code,
         codeFullText: code,
-        filePath: filePath,
+        filePath,
       };
 
       const program = compilerHost.languageService.getProgram();
@@ -82,20 +79,19 @@ export function createParser(
 
       onUpdate(filePath, {
         storedAST: converted.estree,
-        storedTsAST: tsAst,
         storedScope: scopeManager,
+        storedTsAST: tsAst,
         typeChecker: checker,
       });
 
       return {
         ast: converted.estree,
+        scopeManager,
         services: {
-          program,
           emitDecoratorMetadata: compilerOptions.emitDecoratorMetadata ?? false,
+          esTreeNodeToTSNodeMap: converted.astMaps.esTreeNodeToTSNodeMap,
           experimentalDecorators:
             compilerOptions.experimentalDecorators ?? false,
-          esTreeNodeToTSNodeMap: converted.astMaps.esTreeNodeToTSNodeMap,
-          tsNodeToESTreeNodeMap: converted.astMaps.tsNodeToESTreeNodeMap,
           getSymbolAtLocation: node =>
             checker.getSymbolAtLocation(
               converted.astMaps.esTreeNodeToTSNodeMap.get(node),
@@ -104,10 +100,18 @@ export function createParser(
             checker.getTypeAtLocation(
               converted.astMaps.esTreeNodeToTSNodeMap.get(node),
             ),
+          isolatedDeclarations: compilerOptions.isolatedDeclarations ?? false,
+          program,
+          tsNodeToESTreeNodeMap: converted.astMaps.tsNodeToESTreeNodeMap,
         },
-        scopeManager,
         visitorKeys: utils.visitorKeys,
       };
+    },
+    registerFile(filePath: string, code: string): void {
+      compilerHost.createFile(filePath, code);
+    },
+    updateConfig(compilerOptions): void {
+      compilerHost = createEnv(compilerOptions);
     },
   };
 }

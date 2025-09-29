@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`ts-enum scope 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -18,19 +15,7 @@ ScopeManager {
     },
     Variable$3 {
       defs: [
-        TSEnumNameDefinition$2 {
-          name: Identifier<"Foo">,
-          node: TSEnumDeclaration$1,
-        },
-      ],
-      name: "Foo",
-      references: [],
-      isValueVariable: true,
-      isTypeVariable: true,
-    },
-    Variable$4 {
-      defs: [
-        TSEnumMemberDefinition$3 {
+        TSEnumMemberDefinition$2 {
           name: Identifier<"a">,
           node: TSEnumMember$2,
         },
@@ -40,9 +25,9 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$5 {
+    Variable$4 {
       defs: [
-        VariableDefinition$4 {
+        VariableDefinition$3 {
           name: Identifier<"unresolved">,
           node: VariableDeclarator$3,
         },
@@ -56,7 +41,7 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$5,
+          resolved: Variable$4,
           writeExpr: Identifier<"a">,
         },
       ],
@@ -82,14 +67,14 @@ ScopeManager {
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "Foo" => Variable$2,
-        "unresolved" => Variable$5,
+        "unresolved" => Variable$4,
       },
       type: "global",
       upper: null,
       variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
-        Variable$5,
+        Variable$4,
       ],
     },
     TSEnumScope$2 {
@@ -97,16 +82,13 @@ ScopeManager {
       isStrict: true,
       references: [],
       set: Map {
-        "Foo" => Variable$3,
-        "a" => Variable$4,
+        "a" => Variable$3,
       },
       type: "tsEnum",
       upper: GlobalScope$1,
       variables: [
         Variable$3,
-        Variable$4,
       ],
     },
   ],
 }
-`;

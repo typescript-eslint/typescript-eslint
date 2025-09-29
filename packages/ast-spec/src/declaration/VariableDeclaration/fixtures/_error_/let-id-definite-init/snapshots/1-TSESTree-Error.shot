@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > let-id-definite-init > TSESTree - Error`]
+TSError
+> 1 | let foo! = 1;
+    |     ^^^^^^^^ Declarations with initializers cannot also have definite assignment assertions.
+  2 |

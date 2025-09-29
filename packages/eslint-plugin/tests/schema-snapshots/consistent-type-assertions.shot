@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-type-assertions 1`] = `
-"
 # SCHEMA:
 
 [
@@ -11,6 +8,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "additionalProperties": false,
         "properties": {
           "assertionStyle": {
+            "description": "The expected assertion style to enforce.",
             "enum": ["never"],
             "type": "string"
           }
@@ -21,16 +19,22 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       {
         "additionalProperties": false,
         "properties": {
+          "arrayLiteralTypeAssertions": {
+            "description": "Whether to always prefer type declarations for array literals used as variable initializers, rather than type assertions.",
+            "enum": ["allow", "allow-as-parameter", "never"],
+            "type": "string"
+          },
           "assertionStyle": {
+            "description": "The expected assertion style to enforce.",
             "enum": ["angle-bracket", "as"],
             "type": "string"
           },
           "objectLiteralTypeAssertions": {
+            "description": "Whether to always prefer type declarations for object literals used as variable initializers, rather than type assertions.",
             "enum": ["allow", "allow-as-parameter", "never"],
             "type": "string"
           }
         },
-        "required": ["assertionStyle"],
         "type": "object"
       }
     ]
@@ -42,12 +46,27 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   | {
-      assertionStyle: 'angle-bracket' | 'as';
-      objectLiteralTypeAssertions?: 'allow' | 'allow-as-parameter' | 'never';
+      /** The expected assertion style to enforce. */
+      assertionStyle: /** The expected assertion style to enforce. */
+      'never';
     }
   | {
-      assertionStyle: 'never';
+      /** Whether to always prefer type declarations for array literals used as variable initializers, rather than type assertions. */
+      arrayLiteralTypeAssertions?:
+        | 'allow-as-parameter'
+        | 'never'
+        /** Whether to always prefer type declarations for array literals used as variable initializers, rather than type assertions. */
+        | 'allow';
+      /** The expected assertion style to enforce. */
+      assertionStyle?:
+        | 'as'
+        /** The expected assertion style to enforce. */
+        | 'angle-bracket';
+      /** Whether to always prefer type declarations for object literals used as variable initializers, rather than type assertions. */
+      objectLiteralTypeAssertions?:
+        | 'allow-as-parameter'
+        | 'never'
+        /** Whether to always prefer type declarations for object literals used as variable initializers, rather than type assertions. */
+        | 'allow';
     },
 ];
-"
-`;

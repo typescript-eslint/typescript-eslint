@@ -1,9 +1,14 @@
+import type {
+  ScopeManager,
+  ScopeVariable,
+} from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import {
   ImplicitLibVariable,
   ScopeType,
   Visitor,
 } from '@typescript-eslint/scope-manager';
-import type { TSESTree } from '@typescript-eslint/utils';
 import {
   AST_NODE_TYPES,
   ASTUtils,
@@ -11,42 +16,86 @@ import {
   TSESLint,
 } from '@typescript-eslint/utils';
 
-class UnusedVarsVisitor<
-  MessageIds extends string,
-  Options extends readonly unknown[],
-> extends Visitor {
+import { isTypeImport } from './isTypeImport';
+import { referenceContainsTypeQuery } from './referenceContainsTypeQuery';
+
+interface VariableAnalysis {
+  readonly unusedVariables: ReadonlySet<ScopeVariable>;
+  readonly usedVariables: ReadonlySet<ScopeVariable>;
+}
+interface MutableVariableAnalysis {
+  readonly unusedVariables: Set<ScopeVariable>;
+  readonly usedVariables: Set<ScopeVariable>;
+}
+
+/**
+ * This class leverages an AST visitor to mark variables as used via the
+ * `eslintUsed` property.
+ */
+class UnusedVarsVisitor extends Visitor {
+  /**
+   * We keep a weak cache so that multiple rules can share the calculation
+   */
   private static readonly RESULTS_CACHE = new WeakMap<
     TSESTree.Program,
-    ReadonlySet<TSESLint.Scope.Variable>
+    VariableAnalysis
   >();
 
-  readonly #scopeManager: TSESLint.Scope.ScopeManager;
-  // readonly #unusedVariables = new Set<TSESLint.Scope.Variable>();
+  protected ClassDeclaration = this.visitClass;
 
-  private constructor(context: TSESLint.RuleContext<MessageIds, Options>) {
+  protected ClassExpression = this.visitClass;
+
+  protected ForInStatement = this.visitForInForOf;
+
+  protected ForOfStatement = this.visitForInForOf;
+
+  //#region HELPERS
+
+  protected FunctionDeclaration = this.visitFunction;
+
+  protected FunctionExpression = this.visitFunction;
+  protected MethodDefinition = this.visitSetter;
+  protected Property = this.visitSetter;
+
+  protected TSCallSignatureDeclaration = this.visitFunctionTypeSignature;
+
+  protected TSConstructorType = this.visitFunctionTypeSignature;
+
+  protected TSConstructSignatureDeclaration = this.visitFunctionTypeSignature;
+
+  protected TSDeclareFunction = this.visitFunctionTypeSignature;
+
+  protected TSEmptyBodyFunctionExpression = this.visitFunctionTypeSignature;
+
+  //#endregion HELPERS
+
+  //#region VISITORS
+  // NOTE - This is a simple visitor - meaning it does not support selectors
+
+  protected TSFunctionType = this.visitFunctionTypeSignature;
+
+  protected TSMethodSignature = this.visitFunctionTypeSignature;
+
+  readonly #scopeManager: TSESLint.Scope.ScopeManager;
+
+  private constructor(scopeManager: ScopeManager) {
     super({
       visitChildrenEvenIfSelectorExists: true,
     });
 
-    this.#scopeManager = ESLintUtils.nullThrows(
-      context.sourceCode.scopeManager,
-      'Missing required scope manager',
-    );
+    this.#scopeManager = scopeManager;
   }
 
-  public static collectUnusedVariables<
-    MessageIds extends string,
-    Options extends readonly unknown[],
-  >(
-    context: TSESLint.RuleContext<MessageIds, Options>,
-  ): ReadonlySet<TSESLint.Scope.Variable> {
-    const program = context.sourceCode.ast;
+  public static collectUnusedVariables(
+    program: TSESTree.Program,
+    scopeManager: ScopeManager,
+  ): VariableAnalysis {
     const cached = this.RESULTS_CACHE.get(program);
     if (cached) {
       return cached;
     }
 
-    const visitor = new this(context);
+    const visitor = new this(scopeManager);
     visitor.visit(program);
 
     const unusedVars = visitor.collectUnusedVariables(
@@ -56,43 +105,108 @@ class UnusedVarsVisitor<
     return unusedVars;
   }
 
+  protected Identifier(node: TSESTree.Identifier): void {
+    const scope = this.getScope(node);
+    if (
+      scope.type === TSESLint.Scope.ScopeType.function &&
+      node.name === 'this' &&
+      // this parameters should always be considered used as they're pseudo-parameters
+      'params' in scope.block &&
+      scope.block.params.includes(node)
+    ) {
+      this.markVariableAsUsed(node);
+    }
+  }
+
+  protected TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
+    // enum members create variables because they can be referenced within the enum,
+    // but they obviously aren't unused variables for the purposes of this rule.
+    const scope = this.getScope(node);
+    for (const variable of scope.variables) {
+      this.markVariableAsUsed(variable);
+    }
+  }
+
+  protected TSMappedType(node: TSESTree.TSMappedType): void {
+    // mapped types create a variable for their type name, but it's not necessary to reference it,
+    // so we shouldn't consider it as unused for the purpose of this rule.
+    this.markVariableAsUsed(node.key);
+  }
+
+  protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
+    // -- global augmentation can be in any file, and they do not need exports
+    if (node.kind === 'global') {
+      this.markVariableAsUsed('global', node.parent);
+    }
+  }
+
+  protected TSParameterProperty(node: TSESTree.TSParameterProperty): void {
+    let identifier: TSESTree.Identifier | null = null;
+    switch (node.parameter.type) {
+      case AST_NODE_TYPES.AssignmentPattern:
+        if (node.parameter.left.type === AST_NODE_TYPES.Identifier) {
+          identifier = node.parameter.left;
+        }
+        break;
+
+      case AST_NODE_TYPES.Identifier:
+        identifier = node.parameter;
+        break;
+    }
+
+    if (identifier) {
+      this.markVariableAsUsed(identifier);
+    }
+  }
+
   private collectUnusedVariables(
     scope: TSESLint.Scope.Scope,
-    unusedVariables = new Set<TSESLint.Scope.Variable>(),
-  ): ReadonlySet<TSESLint.Scope.Variable> {
-    for (const variable of scope.variables) {
-      if (
-        // skip function expression names,
-        scope.functionExpressionScope ||
-        // variables marked with markVariableAsUsed(),
-        variable.eslintUsed ||
-        // implicit lib variables (from @typescript-eslint/scope-manager),
-        variable instanceof ImplicitLibVariable ||
-        // basic exported variables
-        isExported(variable) ||
-        // variables implicitly exported via a merged declaration
-        isMergableExported(variable) ||
-        // used variables
-        isUsedVariable(variable)
-      ) {
-        continue;
-      }
+    variables: MutableVariableAnalysis = {
+      unusedVariables: new Set(),
+      usedVariables: new Set(),
+    },
+  ): VariableAnalysis {
+    if (
+      // skip function expression names
+      // this scope is created just to house the variable that allows a function
+      // expression to self-reference if it has a name defined
+      !scope.functionExpressionScope
+    ) {
+      for (const variable of scope.variables) {
+        // cases that we don't want to treat as used or unused
+        if (
+          // implicit lib variables (from @typescript-eslint/scope-manager)
+          // these aren't variables that should be checked ever
+          variable instanceof ImplicitLibVariable
+        ) {
+          continue;
+        }
 
-      unusedVariables.add(variable);
+        if (
+          // variables marked with markVariableAsUsed()
+          variable.eslintUsed ||
+          // basic exported variables
+          isExported(variable) ||
+          // variables implicitly exported via a merged declaration
+          isMergableExported(variable) ||
+          // used variables
+          isUsedVariable(variable)
+        ) {
+          variables.usedVariables.add(variable);
+        } else {
+          variables.unusedVariables.add(variable);
+        }
+      }
     }
 
     for (const childScope of scope.childScopes) {
-      this.collectUnusedVariables(childScope, unusedVariables);
+      this.collectUnusedVariables(childScope, variables);
     }
 
-    return unusedVariables;
+    return variables;
   }
 
-  //#region HELPERS
-
-  private getScope<T extends TSESLint.Scope.Scope = TSESLint.Scope.Scope>(
-    currentNode: TSESTree.Node,
-  ): T {
+  private getScope(currentNode: TSESTree.Node): TSESLint.Scope.Scope {
     // On Program node, get the outermost scope to avoid return Node.js special function scope or ES modules scope.
     const inner = currentNode.type !== AST_NODE_TYPES.Program;
 
@@ -102,26 +216,23 @@ class UnusedVarsVisitor<
 
       if (scope) {
         if (scope.type === ScopeType.functionExpressionName) {
-          return scope.childScopes[0] as T;
+          return scope.childScopes[0];
         }
-        return scope as T;
+        return scope;
       }
 
       node = node.parent;
     }
 
-    return this.#scopeManager.scopes[0] as T;
+    return this.#scopeManager.scopes[0];
   }
 
   private markVariableAsUsed(
-    variableOrIdentifier: TSESLint.Scope.Variable | TSESTree.Identifier,
+    variableOrIdentifier: ScopeVariable | TSESTree.Identifier,
   ): void;
   private markVariableAsUsed(name: string, parent: TSESTree.Node): void;
   private markVariableAsUsed(
-    variableOrIdentifierOrName:
-      | TSESLint.Scope.Variable
-      | TSESTree.Identifier
-      | string,
+    variableOrIdentifierOrName: string | ScopeVariable | TSESTree.Identifier,
     parent?: TSESTree.Node,
   ): void {
     if (
@@ -162,7 +273,7 @@ class UnusedVarsVisitor<
     node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
   ): void {
     // skip a variable of class itself name in the class scope
-    const scope = this.getScope<TSESLint.Scope.Scopes.ClassScope>(node);
+    const scope = this.getScope(node) as TSESLint.Scope.Scopes.ClassScope;
     for (const variable of scope.variables) {
       if (variable.identifiers[0] === scope.block.id) {
         this.markVariableAsUsed(variable);
@@ -171,63 +282,9 @@ class UnusedVarsVisitor<
     }
   }
 
-  private visitFunction(
-    node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
+  private visitForInForOf(
+    node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
   ): void {
-    const scope = this.getScope(node);
-    // skip implicit "arguments" variable
-    const variable = scope.set.get('arguments');
-    if (variable?.defs.length === 0) {
-      this.markVariableAsUsed(variable);
-    }
-  }
-
-  private visitFunctionTypeSignature(
-    node:
-      | TSESTree.TSCallSignatureDeclaration
-      | TSESTree.TSConstructorType
-      | TSESTree.TSConstructSignatureDeclaration
-      | TSESTree.TSDeclareFunction
-      | TSESTree.TSEmptyBodyFunctionExpression
-      | TSESTree.TSFunctionType
-      | TSESTree.TSMethodSignature,
-  ): void {
-    // function type signature params create variables because they can be referenced within the signature,
-    // but they obviously aren't unused variables for the purposes of this rule.
-    for (const param of node.params) {
-      this.visitPattern(param, name => {
-        this.markVariableAsUsed(name);
-      });
-    }
-  }
-
-  private visitSetter(
-    node: TSESTree.MethodDefinition | TSESTree.Property,
-  ): void {
-    if (node.kind === 'set') {
-      // ignore setter parameters because they're syntactically required to exist
-      for (const param of (node.value as TSESTree.FunctionLike).params) {
-        this.visitPattern(param, id => {
-          this.markVariableAsUsed(id);
-        });
-      }
-    }
-  }
-
-  //#endregion HELPERS
-
-  //#region VISITORS
-  // NOTE - This is a simple visitor - meaning it does not support selectors
-
-  protected ClassDeclaration = this.visitClass;
-
-  protected ClassExpression = this.visitClass;
-
-  protected FunctionDeclaration = this.visitFunction;
-
-  protected FunctionExpression = this.visitFunction;
-
-  protected ForInStatement(node: TSESTree.ForInStatement): void {
     /**
      * (Brad Zacher): I hate that this has to exist.
      * But it is required for compat with the base ESLint rule.
@@ -276,75 +333,46 @@ class UnusedVarsVisitor<
     this.markVariableAsUsed(idOrVariable);
   }
 
-  protected Identifier(node: TSESTree.Identifier): void {
+  private visitFunction(
+    node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
+  ): void {
     const scope = this.getScope(node);
-    if (
-      scope.type === TSESLint.Scope.ScopeType.function &&
-      node.name === 'this'
-    ) {
-      // this parameters should always be considered used as they're pseudo-parameters
-      if ('params' in scope.block && scope.block.params.includes(node)) {
-        this.markVariableAsUsed(node);
-      }
-    }
-  }
-
-  protected MethodDefinition = this.visitSetter;
-
-  protected Property = this.visitSetter;
-
-  protected TSCallSignatureDeclaration = this.visitFunctionTypeSignature;
-
-  protected TSConstructorType = this.visitFunctionTypeSignature;
-
-  protected TSConstructSignatureDeclaration = this.visitFunctionTypeSignature;
-
-  protected TSDeclareFunction = this.visitFunctionTypeSignature;
-
-  protected TSEmptyBodyFunctionExpression = this.visitFunctionTypeSignature;
-
-  protected TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
-    // enum members create variables because they can be referenced within the enum,
-    // but they obviously aren't unused variables for the purposes of this rule.
-    const scope = this.getScope(node);
-    for (const variable of scope.variables) {
+    // skip implicit "arguments" variable
+    const variable = scope.set.get('arguments');
+    if (variable?.defs.length === 0) {
       this.markVariableAsUsed(variable);
     }
   }
 
-  protected TSFunctionType = this.visitFunctionTypeSignature;
-
-  protected TSMappedType(node: TSESTree.TSMappedType): void {
-    // mapped types create a variable for their type name, but it's not necessary to reference it,
-    // so we shouldn't consider it as unused for the purpose of this rule.
-    this.markVariableAsUsed(node.typeParameter.name);
-  }
-
-  protected TSMethodSignature = this.visitFunctionTypeSignature;
-
-  protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
-    // -- global augmentation can be in any file, and they do not need exports
-    if (node.global) {
-      this.markVariableAsUsed('global', node.parent);
+  private visitFunctionTypeSignature(
+    node:
+      | TSESTree.TSCallSignatureDeclaration
+      | TSESTree.TSConstructorType
+      | TSESTree.TSConstructSignatureDeclaration
+      | TSESTree.TSDeclareFunction
+      | TSESTree.TSEmptyBodyFunctionExpression
+      | TSESTree.TSFunctionType
+      | TSESTree.TSMethodSignature,
+  ): void {
+    // function type signature params create variables because they can be referenced within the signature,
+    // but they obviously aren't unused variables for the purposes of this rule.
+    for (const param of node.params) {
+      this.visitPattern(param, name => {
+        this.markVariableAsUsed(name);
+      });
     }
   }
 
-  protected TSParameterProperty(node: TSESTree.TSParameterProperty): void {
-    let identifier: TSESTree.Identifier | null = null;
-    switch (node.parameter.type) {
-      case AST_NODE_TYPES.AssignmentPattern:
-        if (node.parameter.left.type === AST_NODE_TYPES.Identifier) {
-          identifier = node.parameter.left;
-        }
-        break;
-
-      case AST_NODE_TYPES.Identifier:
-        identifier = node.parameter;
-        break;
-    }
-
-    if (identifier) {
-      this.markVariableAsUsed(identifier);
+  private visitSetter(
+    node: TSESTree.MethodDefinition | TSESTree.Property,
+  ): void {
+    if (node.kind === 'set') {
+      // ignore setter parameters because they're syntactically required to exist
+      for (const param of (node.value as TSESTree.FunctionLike).params) {
+        this.visitPattern(param, id => {
+          this.markVariableAsUsed(id);
+        });
+      }
     }
   }
 
@@ -388,17 +416,17 @@ function isSelfReference(
 }
 
 const MERGABLE_TYPES = new Set([
-  AST_NODE_TYPES.TSInterfaceDeclaration,
-  AST_NODE_TYPES.TSTypeAliasDeclaration,
-  AST_NODE_TYPES.TSModuleDeclaration,
   AST_NODE_TYPES.ClassDeclaration,
   AST_NODE_TYPES.FunctionDeclaration,
+  AST_NODE_TYPES.TSInterfaceDeclaration,
+  AST_NODE_TYPES.TSModuleDeclaration,
+  AST_NODE_TYPES.TSTypeAliasDeclaration,
 ]);
 /**
  * Determine if the variable is directly exported
  * @param variable the variable to check
  */
-function isMergableExported(variable: TSESLint.Scope.Variable): boolean {
+function isMergableExported(variable: ScopeVariable): boolean {
   // If all of the merged things are of the same type, TS will error if not all of them are exported - so we only need to find one
   for (const def of variable.defs) {
     // parameters can never be exported.
@@ -410,8 +438,8 @@ function isMergableExported(variable: TSESLint.Scope.Variable): boolean {
 
     if (
       (MERGABLE_TYPES.has(def.node.type) &&
-        def.node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
-      def.node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration
+        def.node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
+      def.node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
     ) {
       return true;
     }
@@ -425,38 +453,34 @@ function isMergableExported(variable: TSESLint.Scope.Variable): boolean {
  * @param variable eslint-scope variable object.
  * @returns True if the variable is exported, false if not.
  */
-function isExported(variable: TSESLint.Scope.Variable): boolean {
+function isExported(variable: ScopeVariable): boolean {
   return variable.defs.some(definition => {
     let node = definition.node;
 
     if (node.type === AST_NODE_TYPES.VariableDeclarator) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      node = node.parent!;
+      node = node.parent;
     } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
       return false;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return node.parent!.type.startsWith('Export');
+    return node.parent.type.startsWith('Export');
   });
 }
 
-const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['&&=', '||=', '??=']);
+const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['??=', '&&=', '||=']);
 
 /**
  * Determines if the variable is used.
  * @param variable The variable to check.
  * @returns True if the variable is used
  */
-function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
+function isUsedVariable(variable: ScopeVariable): boolean {
   /**
    * Gets a list of function definitions for a specified variable.
    * @param variable eslint-scope variable object.
    * @returns Function nodes.
    */
-  function getFunctionDefinitions(
-    variable: TSESLint.Scope.Variable,
-  ): Set<TSESTree.Node> {
+  function getFunctionDefinitions(variable: ScopeVariable): Set<TSESTree.Node> {
     const functionDefinitions = new Set<TSESTree.Node>();
 
     variable.defs.forEach(def => {
@@ -477,9 +501,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
     return functionDefinitions;
   }
 
-  function getTypeDeclarations(
-    variable: TSESLint.Scope.Variable,
-  ): Set<TSESTree.Node> {
+  function getTypeDeclarations(variable: ScopeVariable): Set<TSESTree.Node> {
     const nodes = new Set<TSESTree.Node>();
 
     variable.defs.forEach(def => {
@@ -494,13 +516,23 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
     return nodes;
   }
 
-  function getModuleDeclarations(
-    variable: TSESLint.Scope.Variable,
-  ): Set<TSESTree.Node> {
+  function getModuleDeclarations(variable: ScopeVariable): Set<TSESTree.Node> {
     const nodes = new Set<TSESTree.Node>();
 
     variable.defs.forEach(def => {
       if (def.node.type === AST_NODE_TYPES.TSModuleDeclaration) {
+        nodes.add(def.node);
+      }
+    });
+
+    return nodes;
+  }
+
+  function getEnumDeclarations(variable: ScopeVariable): Set<TSESTree.Node> {
+    const nodes = new Set<TSESTree.Node>();
+
+    variable.defs.forEach(def => {
+      if (def.node.type === AST_NODE_TYPES.TSEnumDeclaration) {
         nodes.add(def.node);
       }
     });
@@ -519,6 +551,31 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
       if (isInside(ref.identifier, node)) {
         return true;
       }
+    }
+
+    return false;
+  }
+
+  /**
+   * Checks whether a given node is unused expression or not.
+   * @param node The node itself
+   * @returns The node is an unused expression.
+   */
+  function isUnusedExpression(node: TSESTree.Expression): boolean {
+    const parent = node.parent;
+
+    if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
+      return true;
+    }
+
+    if (parent.type === AST_NODE_TYPES.SequenceExpression) {
+      const isLastExpression =
+        parent.expressions[parent.expressions.length - 1] === node;
+
+      if (!isLastExpression) {
+        return true;
+      }
+      return isUnusedExpression(parent);
     }
 
     return false;
@@ -566,8 +623,6 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
 
     const id = ref.identifier;
     const parent = id.parent;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const grandparent = parent.parent!;
     const refScope = ref.from.variableScope;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const varScope = ref.resolved!.scope.variableScope;
@@ -583,7 +638,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
 
     if (
       parent.type === AST_NODE_TYPES.AssignmentExpression &&
-      grandparent.type === AST_NODE_TYPES.ExpressionStatement &&
+      isUnusedExpression(parent) &&
       id === parent.left &&
       !canBeUsedLater
     ) {
@@ -701,19 +756,16 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
 
     const id = ref.identifier;
     const parent = id.parent;
-    // https://github.com/typescript-eslint/typescript-eslint/issues/6225
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const grandparent = parent.parent!;
 
     return (
       ref.isRead() && // in RHS of an assignment for itself. e.g. `a = a + 1`
       // self update. e.g. `a += 1`, `a++`
       ((parent.type === AST_NODE_TYPES.AssignmentExpression &&
         !LOGICAL_ASSIGNMENT_OPERATORS.has(parent.operator) &&
-        grandparent.type === AST_NODE_TYPES.ExpressionStatement &&
+        isUnusedExpression(parent) &&
         parent.left === id) ||
         (parent.type === AST_NODE_TYPES.UpdateExpression &&
-          grandparent.type === AST_NODE_TYPES.ExpressionStatement) ||
+          isUnusedExpression(parent)) ||
         (!!rhsNode &&
           isInside(id, rhsNode) &&
           !isInsideOfStorableFunction(id, rhsNode)))
@@ -729,6 +781,11 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
   const moduleDeclNodes = getModuleDeclarations(variable);
   const isModuleDecl = moduleDeclNodes.size > 0;
 
+  const enumDeclNodes = getEnumDeclarations(variable);
+  const isEnumDecl = enumDeclNodes.size > 0;
+
+  const isImportedAsType = variable.defs.every(isTypeImport);
+
   let rhsNode: TSESTree.Node | null = null;
 
   return variable.references.some(ref => {
@@ -739,9 +796,11 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
     return (
       ref.isRead() &&
       !forItself &&
+      !(!isImportedAsType && referenceContainsTypeQuery(ref.identifier)) &&
       !(isFunctionDefinition && isSelfReference(ref, functionNodes)) &&
       !(isTypeDecl && isInsideOneOf(ref, typeDeclNodes)) &&
-      !(isModuleDecl && isSelfReference(ref, moduleDeclNodes))
+      !(isModuleDecl && isSelfReference(ref, moduleDeclNodes)) &&
+      !(isEnumDecl && isSelfReference(ref, enumDeclNodes))
     );
   });
 }
@@ -755,13 +814,17 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
  * - variables within declaration files
  * - variables within ambient module declarations
  */
-function collectUnusedVariables<
+export function collectVariables<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
   context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
-): ReadonlySet<TSESLint.Scope.Variable> {
-  return UnusedVarsVisitor.collectUnusedVariables(context);
+): VariableAnalysis {
+  return UnusedVarsVisitor.collectUnusedVariables(
+    context.sourceCode.ast,
+    ESLintUtils.nullThrows(
+      context.sourceCode.scopeManager,
+      'Missing required scope manager',
+    ),
+  );
 }
-
-export { collectUnusedVariables };

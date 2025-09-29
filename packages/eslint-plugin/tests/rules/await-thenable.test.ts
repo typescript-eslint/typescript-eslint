@@ -4,15 +4,14 @@ import rule from '../../src/rules/await-thenable';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const messageId = 'await';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2018,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('await-thenable', rule, {
@@ -198,6 +197,507 @@ const doSomething = async (
   await callback?.();
 };
     `,
+    {
+      code: `
+async function* asyncYieldNumbers() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+for await (const value of asyncYieldNumbers()) {
+  console.log(value);
+}
+      `,
+    },
+    {
+      code: `
+declare const anee: any;
+async function forAwait() {
+  for await (const value of anee) {
+    console.log(value);
+  }
+}
+      `,
+    },
+    {
+      code: `
+declare const asyncIter: AsyncIterable<string> | Iterable<string>;
+for await (const s of asyncIter) {
+}
+      `,
+    },
+    {
+      code: `
+declare const d: AsyncDisposable;
+
+await using foo = d;
+
+export {};
+      `,
+    },
+    {
+      code: `
+using foo = {
+  [Symbol.dispose]() {},
+};
+
+export {};
+      `,
+    },
+    {
+      code: `
+await using foo = 3 as any;
+
+export {};
+      `,
+    },
+    {
+      // bad bad code but not this rule's problem
+      code: `
+using foo = {
+  async [Symbol.dispose]() {},
+};
+
+export {};
+      `,
+    },
+    {
+      code: `
+declare const maybeAsyncDisposable: Disposable | AsyncDisposable;
+async function foo() {
+  await using _ = maybeAsyncDisposable;
+}
+      `,
+    },
+    {
+      code: `
+async function iterateUsing(arr: Array<AsyncDisposable>) {
+  for (await using foo of arr) {
+  }
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends unknown>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends any>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends Promise<unknown>>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends number | Promise<unknown>>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+class C<T> {
+  async wrapper<T>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class C<R> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class C<R extends unknown> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
+
+    {
+      code: `
+// @ts-expect-error
+Promise.all();
+      `,
+    },
+    {
+      code: `
+Promise.all([,]);
+      `,
+    },
+    {
+      code: `
+declare const x: unknown;
+
+// @ts-expect-error
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: any;
+Promise.all(x);
+      `,
+    },
+
+    {
+      code: `
+declare const x: Array<Promise<unknown>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Array<Promise<number>> | Array<Promise<string>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Array<Promise<number> | Promise<string>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: Array<Promise<T>>) {
+  Promise.all(x);
+}
+      `,
+    },
+    {
+      code: `
+function f<T extends Promise<unknown>>(x: Array<T>) {
+  Promise.all(x);
+}
+      `,
+    },
+    {
+      code: `
+declare const x: Array<unknown>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Array<any>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: number | Array<Promise<number>>;
+
+// @ts-expect-error
+Promise.all(x);
+      `,
+    },
+
+    {
+      code: `
+declare const x: [Promise<unknown>, Promise<void>];
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: [Promise<number>] | [Promise<string>];
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: [Promise<number> | Promise<string>];
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: [Promise<T>]) {
+  Promise.all(x);
+}
+      `,
+    },
+    {
+      code: `
+function f<T extends Promise<unknown>>(x: [T]) {
+  Promise.all(x);
+}
+      `,
+    },
+    {
+      code: `
+declare const x: [unknown, any];
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: number | [Promise<number>];
+
+// @ts-expect-error
+Promise.all(x);
+      `,
+    },
+
+    {
+      code: `
+declare const x: Iterable<Promise<unknown>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Iterable<Promise<number>> | Iterable<Promise<string>>;
+
+// @ts-expect-error
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Iterable<Promise<number | string>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: Iterable<Promise<T>>) {
+  Promise.all(x);
+}
+      `,
+    },
+    {
+      code: `
+function f<T extends Promise<unknown>>(x: Iterable<T>) {
+  Promise.all(x);
+}
+      `,
+    },
+    {
+      code: `
+declare const x: Iterable<unknown>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Iterable<any>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: number | Iterable<Promise<number>>;
+
+// @ts-expect-error
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Iterable<Promise<unknown>, number>;
+Promise.all(x);
+      `,
+    },
+
+    {
+      code: `
+declare const x: Iterable<Promise<string>> | Array<Promise<string>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x:
+  | Iterable<Promise<string>>
+  | [Promise<string>, Promise<unknown>];
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Array<Promise<string>> | [Promise<string>, Promise<unknown>];
+Promise.all(x);
+      `,
+    },
+
+    {
+      code: `
+// @ts-expect-error
+Promise.all(1);
+      `,
+    },
+    {
+      code: `
+declare const x: Promise<number>;
+
+// @ts-expect-error
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+interface MyArray<Unused, T> extends Array<T> {}
+declare const x: MyArray<null, Promise<void>>;
+
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+function* x() {
+  yield Promise.resolve(1);
+  yield Promise.resolve(2);
+  yield Promise.resolve(3);
+}
+
+Promise.all(x());
+      `,
+    },
+    {
+      code: `
+function* x() {
+  yield 1 as unknown;
+}
+
+Promise.all(x());
+      `,
+    },
+    {
+      code: `
+function* x() {
+  yield 1 as any;
+}
+
+Promise.all(x());
+      `,
+    },
+    {
+      code: `
+declare const x: Generator<Promise<number>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Generator<unknown>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: Generator<any>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: ReadonlyArray<Promise<number>>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: ReadonlyArray<unknown>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: ReadonlyArray<any>;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+Promise.all([Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)]);
+      `,
+    },
+    {
+      code: `
+declare const _unknown_: unknown;
+
+Promise.all([
+  _unknown_,
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3),
+]);
+      `,
+    },
+    {
+      code: `
+declare const _any_: any;
+
+Promise.all([
+  _any_,
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3),
+]);
+      `,
+    },
+    {
+      code: `
+declare const _promise_: Promise<number | string>;
+
+Promise.all([
+  _promise_,
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3),
+]);
+      `,
+    },
+    {
+      code: `
+Promise.all([
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3),
+  ...[Promise.resolve(4), Promise.resolve(5), Promise.resolve(6)],
+]);
+      `,
+    },
+    {
+      code: `
+declare const maybePromise: Promise<number> | number;
+
+Promise.all([
+  maybePromise,
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3),
+]);
+      `,
+    },
   ],
 
   invalid: [
@@ -206,7 +706,7 @@ const doSomething = async (
       errors: [
         {
           line: 1,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -221,7 +721,7 @@ const doSomething = async (
       errors: [
         {
           line: 1,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -236,7 +736,7 @@ const doSomething = async (
       errors: [
         {
           line: 1,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -251,7 +751,7 @@ const doSomething = async (
       errors: [
         {
           line: 1,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -269,7 +769,7 @@ await new NonPromise();
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -296,7 +796,7 @@ async function test() {
       errors: [
         {
           line: 8,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -323,7 +823,7 @@ await callback?.();
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -344,7 +844,7 @@ await obj.a?.b?.();
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -365,7 +865,7 @@ await obj?.a.b.c?.();
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
@@ -375,6 +875,577 @@ declare const obj: { a: { b: { c?: () => void } } } | undefined;
       `,
             },
           ],
+        },
+      ],
+    },
+    {
+      code: `
+function* yieldNumbers() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+for await (const value of yieldNumbers()) {
+  console.log(value);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 42,
+          endLine: 7,
+          line: 7,
+          messageId: 'forAwaitOfNonAsyncIterable',
+          suggestions: [
+            {
+              messageId: 'convertToOrdinaryFor',
+              output: `
+function* yieldNumbers() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+for  (const value of yieldNumbers()) {
+  console.log(value);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function* yieldNumberPromises() {
+  yield Promise.resolve(1);
+  yield Promise.resolve(2);
+  yield Promise.resolve(3);
+}
+for await (const value of yieldNumberPromises()) {
+  console.log(value);
+}
+      `,
+      errors: [
+        {
+          messageId: 'forAwaitOfNonAsyncIterable',
+          suggestions: [
+            {
+              messageId: 'convertToOrdinaryFor',
+              output: `
+function* yieldNumberPromises() {
+  yield Promise.resolve(1);
+  yield Promise.resolve(2);
+  yield Promise.resolve(3);
+}
+for  (const value of yieldNumberPromises()) {
+  console.log(value);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const disposable: Disposable;
+async function foo() {
+  await using d = disposable;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const disposable: Disposable;
+async function foo() {
+   using d = disposable;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  await using _ = {
+    async [Symbol.dispose]() {},
+  };
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function foo() {
+   using _ = {
+    async [Symbol.dispose]() {},
+  };
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const disposable: Disposable;
+declare const asyncDisposable: AsyncDisposable;
+async function foo() {
+  await using a = disposable,
+    b = asyncDisposable,
+    c = disposable,
+    d = asyncDisposable,
+    e = disposable;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 29,
+          endLine: 5,
+          line: 5,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+        {
+          column: 9,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+        {
+          column: 9,
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+      ],
+    },
+    {
+      code: `
+declare const anee: any;
+declare const disposable: Disposable;
+async function foo() {
+  await using a = anee,
+    b = disposable;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+      ],
+    },
+    {
+      code: `
+async function wrapper<T extends number>(value: T) {
+  return await value;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function wrapper<T extends number>(value: T) {
+  return  value;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class C<T> {
+  async wrapper<T extends string>(value: T) {
+    return await value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+class C<T> {
+  async wrapper<T extends string>(value: T) {
+    return  value;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class C<R extends number> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+class C<R extends number> {
+  async wrapper<T extends R>(value: T) {
+    return  value;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const x: Array<number>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Array<number> | Array<Promise<number>>;
+Promise.race(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Array<number> | Array<string>;
+Promise.allSettled(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Array<number | Promise<number>>;
+Promise.any(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const x: [number];
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: [number] | [Promise<number>];
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: [number | Promise<number>];
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: [Promise<number>, number];
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const x: Iterable<number>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Iterable<number> | Iterable<Promise<number>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Iterable<number | Promise<number>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const x: Iterable<string> | Array<Promise<unknown>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Iterable<Promise<string>> | [string, Promise<unknown>];
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Array<string> | [Promise<string>, Promise<unknown>];
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Array<Array<Promise<number>>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyArray<Unused, T> extends Array<T> {}
+declare const x: MyArray<Promise<void>, null>;
+
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+function* x() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+Promise.all(x());
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+function* x() {
+  yield 1 as number;
+}
+
+Promise.all(x());
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+function* x() {
+  yield 1 as number | Promise<number>;
+}
+
+Promise.all(x());
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Generator<number>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: ReadonlyArray<number>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: ReadonlyArray<number | Promise<string>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.all([Promise.resolve(1), 2, Promise.resolve(3)]);
+      `,
+      errors: [
+        {
+          column: 34,
+          endColumn: 35,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.all([1, 2, Promise.resolve(3)]);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 15,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+        {
+          column: 17,
+          endColumn: 18,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.all([...[1, 2, 3]]);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 26,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
         },
       ],
     },

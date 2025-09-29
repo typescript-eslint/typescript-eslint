@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-namespace, no-restricted-syntax */
 
 import type { AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
 
@@ -12,4 +12,4 @@ namespace AST {
   export type Range = TSESTree.Range;
 }
 
-export { AST };
+export type { AST };

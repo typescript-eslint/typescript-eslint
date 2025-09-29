@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ExportNamedDeclaration > _error_ > braced-string-literal-aliased-to-number-literal-without-source > Babel - Error`]
+BabelError
+> 1 | export { 'a a' as 1 };
+    |                   ^ Unexpected token (1:18)
+  2 |
+  

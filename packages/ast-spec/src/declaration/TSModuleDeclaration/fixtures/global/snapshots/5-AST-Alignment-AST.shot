@@ -1,54 +1,5 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSModuleDeclaration global AST Alignment - AST 1`] = `
-"Snapshot Diff:
-- TSESTree
-+ Babel
-
-  Program {
-    type: 'Program',
-    body: Array [
-      TSModuleDeclaration {
-        type: 'TSModuleDeclaration',
-        body: TSModuleBlock {
-          type: 'TSModuleBlock',
-          body: Array [],
-
-          range: [15, 17],
-          loc: {
-            start: { column: 15, line: 1 },
-            end: { column: 17, line: 1 },
-          },
-        },
-        declare: true,
-        global: true,
-        id: Identifier {
-          type: 'Identifier',
--         decorators: Array [],
-          name: 'global',
--         optional: false,
-
-          range: [8, 14],
-          loc: {
-            start: { column: 8, line: 1 },
-            end: { column: 14, line: 1 },
-          },
-        },
--       kind: 'global',
-
-        range: [0, 17],
-        loc: {
-          start: { column: 0, line: 1 },
-          end: { column: 17, line: 1 },
-        },
-      },
-    ],
-    sourceType: 'script',
-
-    range: [0, 18],
-    loc: {
-      start: { column: 0, line: 1 },
-      end: { column: 0, line: 2 },
-    },
-  }"
-`;
+exports[`AST Fixtures > declaration > TSModuleDeclaration > global > AST Alignment - AST`]
+Snapshot Diff:
+Compared values have no visual difference.

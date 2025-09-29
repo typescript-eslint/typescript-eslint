@@ -1,12 +1,14 @@
-import { TSUtils } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+
+import { TSUtils } from '@typescript-eslint/utils';
+
+import type { AST, RefMap } from './types';
 
 import { NotSupportedError, UnexpectedError } from './errors';
 import { generateArrayType } from './generateArrayType';
 import { generateObjectType } from './generateObjectType';
 import { generateUnionType } from './generateUnionType';
 import { getCommentLines } from './getCommentLines';
-import type { AST, RefMap } from './types';
 
 // keywords we probably should support but currently do not support
 const UNSUPPORTED_KEYWORDS = new Set([
@@ -36,14 +38,14 @@ export function generateType(schema: JSONSchema4, refMap: RefMap): AST {
       throw new UnexpectedError(
         `Could not find definition for $ref ${
           schema.$ref
-        }.\nAvailable refs:\n${Array.from(refMap.keys()).join('\n')})`,
+        }.\nAvailable refs:\n${[...refMap.keys()].join('\n')})`,
         schema,
       );
     }
     return {
+      commentLines,
       type: 'type-reference',
       typeName: refName,
-      commentLines,
     };
   }
   if ('enum' in schema && schema.enum) {
@@ -81,24 +83,24 @@ export function generateType(schema: JSONSchema4, refMap: RefMap): AST {
   switch (schema.type) {
     case 'any':
       return {
+        commentLines,
         type: 'type-reference',
         typeName: 'unknown',
-        commentLines,
       };
 
     case 'null':
       return {
+        commentLines,
         type: 'type-reference',
         typeName: 'null',
-        commentLines,
       };
 
     case 'number':
     case 'string':
       return {
-        type: 'literal',
         code: schema.type,
         commentLines,
+        type: 'literal',
       };
 
     case 'array':
@@ -106,16 +108,16 @@ export function generateType(schema: JSONSchema4, refMap: RefMap): AST {
 
     case 'boolean':
       return {
+        commentLines,
         type: 'type-reference',
         typeName: 'boolean',
-        commentLines,
       };
 
     case 'integer':
       return {
+        commentLines,
         type: 'type-reference',
         typeName: 'number',
-        commentLines,
       };
 
     case 'object':

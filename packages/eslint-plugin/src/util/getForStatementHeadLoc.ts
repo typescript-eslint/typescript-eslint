@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { nullThrows } from '@typescript-eslint/utils/eslint-utils';
 
 /**
@@ -28,7 +29,7 @@ export function getForStatementHeadLoc(
     'for statement must have a closing parenthesis.',
   );
   return {
-    start: structuredClone(node.loc.start),
     end: structuredClone(closingParens.loc.end),
+    start: structuredClone(node.loc.start),
   };
 }

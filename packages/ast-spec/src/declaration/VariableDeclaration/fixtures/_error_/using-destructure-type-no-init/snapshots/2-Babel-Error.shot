@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > using-destructure-type-no-init > Babel - Error`]
+BabelError
+> 1 | using { foo }: any;
+    |       ^ Using declaration cannot have destructuring patterns. (1:6)
+  2 |
+  

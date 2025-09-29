@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > type-parameters-comments > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -15,9 +15,9 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
           arguments: Array [],
           callee: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'foo',
--           optional: false,
+            optional: false,
 
             range: [73, 76],
             loc: {
@@ -34,9 +34,9 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'A',
--                 optional: false,
+                  optional: false,
 
                   range: [93, 94],
                   loc: {
@@ -86,14 +86,14 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
             end: { column: 40, line: 4 },
           },
         },
--       declare: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'bar',
--         optional: false,
+          optional: false,
 
           range: [124, 127],
           loc: {
@@ -107,8 +107,8 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -121,8 +121,8 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
 -                 end: { column: 24, line: 4 },
 -               },
 -             },
--             out: false,
 +             name: 'A',
+              out: false,
 
               range: [138, 139],
               loc: {
@@ -158,14 +158,14 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
             end: { column: 46, line: 5 },
           },
         },
--       declare: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'baz',
--         optional: false,
+          optional: false,
 
           range: [165, 168],
           loc: {
@@ -179,14 +179,14 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
+              const: false,
               default: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'Foo',
--                 optional: false,
+                  optional: false,
 
                   range: [193, 196],
                   loc: {
@@ -201,7 +201,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
                   end: { column: 40, line: 5 },
                 },
               },
--             in: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -214,8 +214,8 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
 -                 end: { column: 24, line: 5 },
 -               },
 -             },
--             out: false,
 +             name: 'A',
+              out: false,
 
               range: [179, 196],
               loc: {
@@ -246,5 +246,4 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

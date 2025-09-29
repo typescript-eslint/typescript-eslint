@@ -9,6 +9,12 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-var-requires** for documentation.
 
+:::danger Deprecated
+
+This rule has been deprecated in favour of the [`@typescript-eslint/no-require-imports`](./no-require-imports.mdx) rule.
+
+:::
+
 In other words, the use of forms such as `var foo = require("foo")` are banned. Instead use ES6 style imports or `import foo = require("foo")` imports.
 
 ## Examples
@@ -37,6 +43,8 @@ import foo from 'foo';
 ## Options
 
 ### `allow`
+
+{/* insert option description */}
 
 A array of strings. These strings will be compiled into regular expressions with the `u` flag and be used to test against the imported path. A common use case is to allow importing `package.json`. This is because `package.json` commonly lives outside of the TS root directory, so statically importing it would lead to root directory conflicts, especially with `resolveJsonModule` enabled. You can also use it to allow importing any JSON if your environment doesn't support JSON modules, or use it for other cases where `import` statements cannot work.
 

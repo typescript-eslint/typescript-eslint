@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/prefer-literal-enum-member -- the enums come from TS so to make merging upstream easier we purposely avoid adding literal values. */
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { SyntaxKind } from 'typescript';
 
@@ -320,26 +321,26 @@ export function getOperatorPrecedence(
 
     case SyntaxKind.BinaryExpression:
       switch (operatorKind) {
-        case SyntaxKind.CommaToken:
-          return OperatorPrecedence.Comma;
-
-        case SyntaxKind.EqualsToken:
-        case SyntaxKind.PlusEqualsToken:
-        case SyntaxKind.MinusEqualsToken:
+        case SyntaxKind.AmpersandAmpersandEqualsToken:
+        case SyntaxKind.AmpersandEqualsToken:
         case SyntaxKind.AsteriskAsteriskEqualsToken:
         case SyntaxKind.AsteriskEqualsToken:
-        case SyntaxKind.SlashEqualsToken:
-        case SyntaxKind.PercentEqualsToken:
-        case SyntaxKind.LessThanLessThanEqualsToken:
+        case SyntaxKind.BarBarEqualsToken:
+        case SyntaxKind.BarEqualsToken:
+        case SyntaxKind.CaretEqualsToken:
+        case SyntaxKind.EqualsToken:
         case SyntaxKind.GreaterThanGreaterThanEqualsToken:
         case SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken:
-        case SyntaxKind.AmpersandEqualsToken:
-        case SyntaxKind.CaretEqualsToken:
-        case SyntaxKind.BarEqualsToken:
-        case SyntaxKind.BarBarEqualsToken:
-        case SyntaxKind.AmpersandAmpersandEqualsToken:
+        case SyntaxKind.LessThanLessThanEqualsToken:
+        case SyntaxKind.MinusEqualsToken:
+        case SyntaxKind.PercentEqualsToken:
+        case SyntaxKind.PlusEqualsToken:
         case SyntaxKind.QuestionQuestionEqualsToken:
+        case SyntaxKind.SlashEqualsToken:
           return OperatorPrecedence.Assignment;
+
+        case SyntaxKind.CommaToken:
+          return OperatorPrecedence.Comma;
 
         default:
           return getBinaryOperatorPrecedence(operatorKind);
@@ -410,81 +411,81 @@ export function getBinaryOperatorPrecedence(
   kind: SyntaxKind | TSESTreeOperatorKind,
 ): OperatorPrecedence {
   switch (kind) {
-    case SyntaxKind.QuestionQuestionToken:
-    case '??':
-      return OperatorPrecedence.Coalesce;
+    case '-':
+    case '+':
+    case SyntaxKind.MinusToken:
+    case SyntaxKind.PlusToken:
+      return OperatorPrecedence.Additive;
 
-    case SyntaxKind.BarBarToken:
-    case '||':
-      return OperatorPrecedence.LogicalOR;
-
-    case SyntaxKind.AmpersandAmpersandToken:
-    case '&&':
-      return OperatorPrecedence.LogicalAND;
-
-    case SyntaxKind.BarToken:
-    case '|':
-      return OperatorPrecedence.BitwiseOR;
-
-    case SyntaxKind.CaretToken:
-    case '^':
-      return OperatorPrecedence.BitwiseXOR;
-
-    case SyntaxKind.AmpersandToken:
-    case '&':
-      return OperatorPrecedence.BitwiseAND;
-
-    case SyntaxKind.EqualsEqualsToken:
-    case '==':
-    case SyntaxKind.ExclamationEqualsToken:
     case '!=':
-    case SyntaxKind.EqualsEqualsEqualsToken:
-    case '===':
-    case SyntaxKind.ExclamationEqualsEqualsToken:
     case '!==':
+    case '==':
+    case '===':
+    case SyntaxKind.EqualsEqualsEqualsToken:
+    case SyntaxKind.EqualsEqualsToken:
+    case SyntaxKind.ExclamationEqualsEqualsToken:
+    case SyntaxKind.ExclamationEqualsToken:
       return OperatorPrecedence.Equality;
 
-    case SyntaxKind.LessThanToken:
+    case '??':
+    case SyntaxKind.QuestionQuestionToken:
+      return OperatorPrecedence.Coalesce;
+
+    case '*':
+    case '/':
+    case '%':
+    case SyntaxKind.AsteriskToken:
+    case SyntaxKind.PercentToken:
+    case SyntaxKind.SlashToken:
+      return OperatorPrecedence.Multiplicative;
+
+    case '**':
+    case SyntaxKind.AsteriskAsteriskToken:
+      return OperatorPrecedence.Exponentiation;
+
+    case '&':
+    case SyntaxKind.AmpersandToken:
+      return OperatorPrecedence.BitwiseAND;
+
+    case '&&':
+    case SyntaxKind.AmpersandAmpersandToken:
+      return OperatorPrecedence.LogicalAND;
+
+    case '^':
+    case SyntaxKind.CaretToken:
+      return OperatorPrecedence.BitwiseXOR;
+
     case '<':
-    case SyntaxKind.GreaterThanToken:
-    case '>':
-    case SyntaxKind.LessThanEqualsToken:
     case '<=':
-    case SyntaxKind.GreaterThanEqualsToken:
+    case '>':
     case '>=':
-    case SyntaxKind.InstanceOfKeyword:
-    case 'instanceof':
-    case SyntaxKind.InKeyword:
     case 'in':
+    case 'instanceof':
     case SyntaxKind.AsKeyword:
+    case SyntaxKind.GreaterThanEqualsToken:
+    case SyntaxKind.GreaterThanToken:
+    case SyntaxKind.InKeyword:
+    case SyntaxKind.InstanceOfKeyword:
+    case SyntaxKind.LessThanEqualsToken:
+    case SyntaxKind.LessThanToken:
       // case 'as': -- we don't have a token for this
       return OperatorPrecedence.Relational;
 
-    case SyntaxKind.LessThanLessThanToken:
     case '<<':
-    case SyntaxKind.GreaterThanGreaterThanToken:
     case '>>':
-    case SyntaxKind.GreaterThanGreaterThanGreaterThanToken:
     case '>>>':
+    case SyntaxKind.GreaterThanGreaterThanGreaterThanToken:
+    case SyntaxKind.GreaterThanGreaterThanToken:
+    case SyntaxKind.LessThanLessThanToken:
       return OperatorPrecedence.Shift;
 
-    case SyntaxKind.PlusToken:
-    case '+':
-    case SyntaxKind.MinusToken:
-    case '-':
-      return OperatorPrecedence.Additive;
+    case '|':
+    case SyntaxKind.BarToken:
+      return OperatorPrecedence.BitwiseOR;
 
-    case SyntaxKind.AsteriskToken:
-    case '*':
-    case SyntaxKind.SlashToken:
-    case '/':
-    case SyntaxKind.PercentToken:
-    case '%':
-      return OperatorPrecedence.Multiplicative;
-
-    case SyntaxKind.AsteriskAsteriskToken:
-    case '**':
-      return OperatorPrecedence.Exponentiation;
+    case '||':
+    case SyntaxKind.BarBarToken:
+      return OperatorPrecedence.LogicalOR;
   }
 
   // -1 is lower than all other precedences.  Returning it will cause binary expression

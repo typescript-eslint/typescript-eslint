@@ -16,6 +16,15 @@ type LanguageServiceHost = ts.LanguageServiceHost;
 type CompilerHost = ts.CompilerHost;
 type SourceFile = ts.SourceFile;
 type TS = typeof ts;
+type FetchLike = (url: string) => Promise<{
+  json(): Promise<any>;
+  text(): Promise<string>;
+}>;
+interface LocalStorageLike {
+  getItem(key: string): string | null;
+  setItem(key: string, value: string): void;
+  removeItem(key: string): void;
+}
 export interface VirtualTypeScriptEnvironment {
   sys: System;
   languageService: ts.LanguageService;
@@ -26,6 +35,7 @@ export interface VirtualTypeScriptEnvironment {
     content: string,
     replaceTextSpan?: ts.TextSpan,
   ) => void;
+  deleteFile: (fileName: string) => void;
 }
 /**
  * Makes a virtual copy of the TypeScript environment. This is the main API you want to be using with
@@ -79,6 +89,10 @@ export declare const addAllFilesFromFolder: (
 export declare const addFilesForTypesIntoFolder: (
   map: Map<string, string>,
 ) => void;
+export interface LZString {
+  compressToUTF16(input: string): string;
+  decompressFromUTF16(compressed: string): string;
+}
 /**
  * Create a virtual FS Map with the lib files from a particular TypeScript
  * version based on the target, Always includes dom ATM.
@@ -96,9 +110,9 @@ export declare const createDefaultMapFromCDN: (
   version: string,
   cache: boolean,
   ts: TS,
-  lzstring?: typeof import('lz-string'),
-  fetcher?: typeof fetch,
-  storer?: typeof localStorage,
+  lzstring?: LZString,
+  fetcher?: FetchLike,
+  storer?: LocalStorageLike,
 ) => Promise<Map<string, string>>;
 /**
  * Creates an in-memory System object which can be used in a TypeScript program, this
@@ -128,6 +142,7 @@ export declare function createVirtualCompilerHost(
 ): {
   compilerHost: CompilerHost;
   updateFile: (sourceFile: SourceFile) => boolean;
+  deleteFile: (sourceFile: SourceFile) => boolean;
 };
 /**
  * Creates an object which can host a language service against the virtual file-system
@@ -141,5 +156,6 @@ export declare function createVirtualLanguageServiceHost(
 ): {
   languageServiceHost: LanguageServiceHost;
   updateFile: (sourceFile: ts.SourceFile) => void;
+  deleteFile: (sourceFile: ts.SourceFile) => void;
 };
 export {};

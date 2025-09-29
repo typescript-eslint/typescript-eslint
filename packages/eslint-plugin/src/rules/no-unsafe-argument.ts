@@ -1,6 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import type * as ts from 'typescript';
+import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import {
   createRule,
@@ -12,7 +14,7 @@ import {
   nullThrows,
 } from '../util';
 
-type MessageIds =
+export type MessageIds =
   | 'unsafeArgument'
   | 'unsafeArraySpread'
   | 'unsafeSpread'
@@ -25,23 +27,30 @@ const enum RestTypeKind {
 }
 type RestType =
   | {
-      type: ts.Type;
+      index: number;
       kind: RestTypeKind.Array;
-      index: number;
-    }
-  | {
       type: ts.Type;
-      kind: RestTypeKind.Other;
-      index: number;
     }
   | {
-      typeArguments: readonly ts.Type[];
-      kind: RestTypeKind.Tuple;
       index: number;
+      kind: RestTypeKind.Other;
+      type: ts.Type;
+    }
+  | {
+      index: number;
+      kind: RestTypeKind.Tuple;
+      typeArguments: readonly ts.Type[];
     };
 
 class FunctionSignature {
+  private hasConsumedArguments = false;
+
   private parameterTypeIndex = 0;
+
+  private constructor(
+    private paramTypes: ts.Type[],
+    private restType: RestType | null,
+  ) {}
 
   public static create(
     checker: ts.TypeChecker,
@@ -66,20 +75,20 @@ class FunctionSignature {
         if (checker.isArrayType(type)) {
           restType = {
             type: checker.getTypeArguments(type)[0],
-            kind: RestTypeKind.Array,
             index: i,
+            kind: RestTypeKind.Array,
           };
         } else if (checker.isTupleType(type)) {
           restType = {
-            typeArguments: checker.getTypeArguments(type),
-            kind: RestTypeKind.Tuple,
             index: i,
+            kind: RestTypeKind.Tuple,
+            typeArguments: checker.getTypeArguments(type),
           };
         } else {
           restType = {
             type,
-            kind: RestTypeKind.Other,
             index: i,
+            kind: RestTypeKind.Other,
           };
         }
         break;
@@ -91,12 +100,9 @@ class FunctionSignature {
     return new this(paramTypes, restType);
   }
 
-  private hasConsumedArguments = false;
-
-  private constructor(
-    private paramTypes: ts.Type[],
-    private restType: RestType | null,
-  ) {}
+  public consumeRemainingArguments(): void {
+    this.hasConsumedArguments = true;
+  }
 
   public getNextParameterType(): ts.Type | null {
     const index = this.parameterTypeIndex;
@@ -133,10 +139,6 @@ class FunctionSignature {
     }
     return this.paramTypes[index];
   }
-
-  public consumeRemainingArguments(): void {
-    this.hasConsumedArguments = true;
-  }
 }
 
 export default createRule<[], MessageIds>({
@@ -150,11 +152,11 @@ export default createRule<[], MessageIds>({
     },
     messages: {
       unsafeArgument:
-        'Unsafe argument of type `{{sender}}` assigned to a parameter of type `{{receiver}}`.',
+        'Unsafe argument of type {{sender}} assigned to a parameter of type {{receiver}}.',
+      unsafeArraySpread: 'Unsafe spread of an {{sender}} array type.',
+      unsafeSpread: 'Unsafe spread of an {{sender}} type.',
       unsafeTupleSpread:
-        'Unsafe spread of a tuple type. The argument is of type `{{sender}}` and is assigned to a parameter of type `{{receiver}}`.',
-      unsafeArraySpread: 'Unsafe spread of an `any` array type.',
-      unsafeSpread: 'Unsafe spread of an `any` type.',
+        'Unsafe spread of a tuple type. The argument is {{sender}} and is assigned to a parameter of type {{receiver}}.',
     },
     schema: [],
   },
@@ -163,9 +165,36 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
+    function describeType(type: ts.Type): string {
+      if (tsutils.isIntrinsicErrorType(type)) {
+        return 'error typed';
+      }
+
+      return `\`${checker.typeToString(type)}\``;
+    }
+
+    function describeTypeForSpread(type: ts.Type): string {
+      if (
+        checker.isArrayType(type) &&
+        tsutils.isIntrinsicErrorType(checker.getTypeArguments(type)[0])
+      ) {
+        return 'error';
+      }
+
+      return describeType(type);
+    }
+
+    function describeTypeForTuple(type: ts.Type): string {
+      if (tsutils.isIntrinsicErrorType(type)) {
+        return 'error typed';
+      }
+
+      return `of type \`${checker.typeToString(type)}\``;
+    }
+
     function checkUnsafeArguments(
-      args: TSESTree.Expression[] | TSESTree.CallExpressionArgument[],
-      callee: TSESTree.LeftHandSideExpression,
+      args: TSESTree.CallExpressionArgument[] | TSESTree.Expression[],
+      callee: TSESTree.Expression,
       node:
         | TSESTree.CallExpression
         | TSESTree.NewExpression
@@ -202,6 +231,7 @@ export default createRule<[], MessageIds>({
               context.report({
                 node: argument,
                 messageId: 'unsafeSpread',
+                data: { sender: describeType(spreadArgType) },
               });
             } else if (isTypeAnyArrayType(spreadArgType, checker)) {
               // foo(...any[])
@@ -210,6 +240,7 @@ export default createRule<[], MessageIds>({
               context.report({
                 node: argument,
                 messageId: 'unsafeArraySpread',
+                data: { sender: describeTypeForSpread(spreadArgType) },
               });
             } else if (checker.isTupleType(spreadArgType)) {
               // foo(...[tuple1, tuple2])
@@ -233,13 +264,15 @@ export default createRule<[], MessageIds>({
                     node: argument,
                     messageId: 'unsafeTupleSpread',
                     data: {
-                      sender: checker.typeToString(tupleType),
-                      receiver: checker.typeToString(parameterType),
+                      receiver: describeType(parameterType),
+                      sender: describeTypeForTuple(tupleType),
                     },
                   });
                 }
               }
-              if (spreadArgType.target.hasRestElement) {
+              if (
+                spreadArgType.target.combinedFlags & ts.ElementFlags.Variable
+              ) {
                 // the last element was a rest - so all remaining defined arguments can be considered "consumed"
                 // all remaining arguments should be compared against the rest type (if one exists)
                 signature.consumeRemainingArguments();
@@ -270,8 +303,8 @@ export default createRule<[], MessageIds>({
                 node: argument,
                 messageId: 'unsafeArgument',
                 data: {
-                  sender: checker.typeToString(argumentType),
-                  receiver: checker.typeToString(parameterType),
+                  receiver: describeType(parameterType),
+                  sender: describeType(argumentType),
                 },
               });
             }

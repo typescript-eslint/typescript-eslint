@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -8,6 +9,7 @@ import { createRule, getParserServices } from '../util';
 export default createRule({
   name: 'no-unnecessary-qualifier',
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary namespace qualifiers',
       requiresTypeChecking: true,
@@ -18,7 +20,6 @@ export default createRule({
         "Qualifier is unnecessary since '{{ name }}' is in scope.",
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -74,7 +75,7 @@ export default createRule({
       const namespaceSymbol = services.getSymbolAtLocation(qualifier);
 
       if (
-        namespaceSymbol === undefined ||
+        namespaceSymbol == null ||
         !symbolIsNamespaceInScope(namespaceSymbol)
       ) {
         return false;
@@ -82,7 +83,7 @@ export default createRule({
 
       const accessedSymbol = services.getSymbolAtLocation(name);
 
-      if (accessedSymbol === undefined) {
+      if (accessedSymbol == null) {
         return false;
       }
 
@@ -157,26 +158,16 @@ export default createRule({
     }
 
     return {
-      'TSModuleDeclaration > TSModuleBlock'(
-        node: TSESTree.TSModuleBlock,
-      ): void {
-        enterDeclaration(node.parent as TSESTree.TSModuleDeclaration);
-      },
-      TSEnumDeclaration: enterDeclaration,
-      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]':
-        enterDeclaration,
       'ExportNamedDeclaration[declaration.type="TSEnumDeclaration"]':
         enterDeclaration,
-      'TSModuleDeclaration:exit': exitDeclaration,
-      'TSEnumDeclaration:exit': exitDeclaration,
-      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]:exit':
-        exitDeclaration,
       'ExportNamedDeclaration[declaration.type="TSEnumDeclaration"]:exit':
         exitDeclaration,
-      TSQualifiedName(node: TSESTree.TSQualifiedName): void {
-        visitNamespaceAccess(node, node.left, node.right);
-      },
-      'MemberExpression[computed=false]': function (
+      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]':
+        enterDeclaration,
+      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]:exit':
+        exitDeclaration,
+      'MemberExpression:exit': resetCurrentNamespaceExpression,
+      'MemberExpression[computed=false]'(
         node: TSESTree.MemberExpression,
       ): void {
         const property = node.property as TSESTree.Identifier;
@@ -184,8 +175,18 @@ export default createRule({
           visitNamespaceAccess(node, node.object, property);
         }
       },
+      TSEnumDeclaration: enterDeclaration,
+      'TSEnumDeclaration:exit': exitDeclaration,
+      'TSModuleDeclaration:exit': exitDeclaration,
+      'TSModuleDeclaration > TSModuleBlock'(
+        node: TSESTree.TSModuleBlock,
+      ): void {
+        enterDeclaration(node.parent);
+      },
+      TSQualifiedName(node: TSESTree.TSQualifiedName): void {
+        visitNamespaceAccess(node, node.left, node.right);
+      },
       'TSQualifiedName:exit': resetCurrentNamespaceExpression,
-      'MemberExpression:exit': resetCurrentNamespaceExpression,
     };
   },
 });

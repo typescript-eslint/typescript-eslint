@@ -12,7 +12,7 @@ export interface TSInterfaceDeclaration extends BaseNode {
    */
   body: TSInterfaceBody;
   /**
-   * Whether the interface was `declare`d, `undefined` otherwise
+   * Whether the interface was `declare`d
    */
   declare: boolean;
   /**
@@ -24,7 +24,8 @@ export interface TSInterfaceDeclaration extends BaseNode {
    */
   id: Identifier;
   /**
-   * The generic type parameters declared for the interface.
+   * The generic type parameters declared for the interface. Empty declaration
+   * (`<>`) is different from no declaration.
    */
   typeParameters: TSTypeParameterDeclaration | undefined;
 }

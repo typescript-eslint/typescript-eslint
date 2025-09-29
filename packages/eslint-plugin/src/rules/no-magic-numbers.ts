@@ -1,18 +1,20 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule, deepMerge } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-magic-numbers');
 
-type Options = InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 // Extend base schema with additional property to ignore TS numeric literal types
 const schema = deepMerge(
@@ -22,17 +24,22 @@ const schema = deepMerge(
     : baseRule.meta.schema,
   {
     properties: {
-      ignoreNumericLiteralTypes: {
-        type: 'boolean',
-      },
       ignoreEnums: {
         type: 'boolean',
+        description: 'Whether enums used in TypeScript are considered okay.',
+      },
+      ignoreNumericLiteralTypes: {
+        type: 'boolean',
+        description:
+          'Whether numbers used in TypeScript numeric literal types are considered okay.',
       },
       ignoreReadonlyClassProperties: {
         type: 'boolean',
+        description: 'Whether `readonly` class properties are considered okay.',
       },
       ignoreTypeIndexes: {
         type: 'boolean',
+        description: 'Whether numbers used to index types are okay.',
       },
     },
   },
@@ -42,26 +49,31 @@ export default createRule<Options, MessageIds>({
   name: 'no-magic-numbers',
   meta: {
     type: 'suggestion',
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description: 'Disallow magic numbers',
       extendsBaseRule: true,
+      frozen: true,
     },
-    schema: [schema],
     messages: baseRule.meta.messages,
+    schema: [schema],
   },
   defaultOptions: [
     {
+      detectObjects: false,
+      enforceConst: false,
       ignore: [],
       ignoreArrayIndexes: false,
-      enforceConst: false,
-      detectObjects: false,
-      ignoreNumericLiteralTypes: false,
       ignoreEnums: false,
+      ignoreNumericLiteralTypes: false,
       ignoreReadonlyClassProperties: false,
+      ignoreTypeIndexes: false,
     },
   ],
   create(context, [options]) {
     const rules = baseRule.create(context);
+
+    const ignored = new Set((options.ignore ?? []).map(normalizeIgnoreValue));
 
     return {
       Literal(node): void {
@@ -76,8 +88,12 @@ export default createRule<Options, MessageIds>({
         // not one of our exception cases, and we’ll fall back to the base rule.
         let isAllowed: boolean | undefined;
 
+        // Check if the node is ignored
+        if (ignored.has(normalizeLiteralValue(node, node.value))) {
+          isAllowed = true;
+        }
         // Check if the node is a TypeScript enum declaration
-        if (isParentTSEnumDeclaration(node)) {
+        else if (isParentTSEnumDeclaration(node)) {
           isAllowed = options.ignoreEnums === true;
         }
         // Check TypeScript specific nodes for Numeric Literal
@@ -98,11 +114,10 @@ export default createRule<Options, MessageIds>({
           return;
         }
         // If the ignore option is *not* set we can report it now
-        else if (isAllowed === false) {
+        if (isAllowed === false) {
           let fullNumberNode: TSESTree.Literal | TSESTree.UnaryExpression =
             node;
           let raw = node.raw;
-
           if (
             node.parent.type === AST_NODE_TYPES.UnaryExpression &&
             // the base rule only shows the operator for negative numbers
@@ -112,10 +127,9 @@ export default createRule<Options, MessageIds>({
             fullNumberNode = node.parent;
             raw = `${node.parent.operator}${node.raw}`;
           }
-
           context.report({
-            messageId: 'noMagic',
             node: fullNumberNode,
+            messageId: 'noMagic',
             data: { raw },
           });
 
@@ -128,6 +142,41 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+/**
+ * Convert the value to bigint if it's a string. Otherwise, return the value as-is.
+ * @param value The value to normalize.
+ * @returns The normalized value.
+ */
+function normalizeIgnoreValue(
+  value: bigint | number | string,
+): bigint | number {
+  if (typeof value === 'string') {
+    return BigInt(value.slice(0, -1));
+  }
+
+  return value;
+}
+
+/**
+ * Converts the node to its numeric value, handling prefixed numbers (-1 / +1)
+ * @param node the node to normalize.
+ * @param value the node's value.
+ */
+function normalizeLiteralValue(
+  node: TSESTree.BigIntLiteral | TSESTree.NumberLiteral,
+  value: bigint | number,
+): bigint | number {
+  if (
+    node.parent.type === AST_NODE_TYPES.UnaryExpression &&
+    ['-', '+'].includes(node.parent.operator) &&
+    node.parent.operator === '-'
+  ) {
+    return -value;
+  }
+
+  return value;
+}
 
 /**
  * Gets the true parent of the literal, handling prefixed numbers (-1 / +1)

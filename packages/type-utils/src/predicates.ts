@@ -4,32 +4,19 @@ import * as ts from 'typescript';
 
 import { isTypeFlagSet } from './typeFlagUtils';
 
-const log = debug('typescript-eslint:eslint-plugin:utils:types');
-
-export interface IsNullableTypeOptions {
-  /**
-   * @deprecated - this flag no longer does anything and will be removed in the next major
-   */
-  isReceiver?: boolean;
-  /**
-   * @deprecated - this flag no longer does anything and will be removed in the next major
-   */
-  allowUndefined?: boolean;
-}
+const log = debug('typescript-eslint:type-utils:predicates');
 
 /**
  * Checks if the given type is (or accepts) nullable
  */
-export function isNullableType(
-  type: ts.Type,
-  _deprecated?: IsNullableTypeOptions,
-): boolean {
+export function isNullableType(type: ts.Type): boolean {
   return isTypeFlagSet(
     type,
     ts.TypeFlags.Any |
       ts.TypeFlags.Unknown |
       ts.TypeFlags.Null |
-      ts.TypeFlags.Undefined,
+      ts.TypeFlags.Undefined |
+      ts.TypeFlags.Void,
   );
 }
 
@@ -41,7 +28,7 @@ export function isTypeArrayTypeOrUnionOfArrayTypes(
   type: ts.Type,
   checker: ts.TypeChecker,
 ): boolean {
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tsutils.unionConstituents(type)) {
     if (!checker.isArrayType(t)) {
       return false;
     }
@@ -119,29 +106,6 @@ export function isTypeUnknownArrayType(
     checker.isArrayType(type) &&
     isTypeUnknownType(checker.getTypeArguments(type)[0])
   );
-}
-
-export enum AnyType {
-  Any,
-  AnyArray,
-  Safe,
-}
-/**
- * @returns `AnyType.Any` if the type is `any`, `AnyType.AnyArray` if the type is `any[]` or `readonly any[]`,
- *          otherwise it returns `AnyType.Safe`.
- */
-export function isAnyOrAnyArrayTypeDiscriminated(
-  node: ts.Node,
-  checker: ts.TypeChecker,
-): AnyType {
-  const type = checker.getTypeAtLocation(node);
-  if (isTypeAnyType(type)) {
-    return AnyType.Any;
-  }
-  if (isTypeAnyArrayType(type, checker)) {
-    return AnyType.AnyArray;
-  }
-  return AnyType.Safe;
 }
 
 /**

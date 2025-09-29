@@ -1,5 +1,5 @@
-import glob = require('glob');
-import * as path from 'path';
+import * as glob from 'glob';
+import * as path from 'node:path';
 
 import { createProgramFromConfigFile as createProgramFromConfigFileOriginal } from '../../src/create-program/useProvidedPrograms';
 import {
@@ -9,21 +9,21 @@ import {
 } from '../../src/parser';
 
 const mockProgram = {
+  getCompilerOptions(): unknown {
+    return {};
+  },
   getSourceFile(): void {
     return;
   },
   getTypeChecker(): void {
     return;
   },
-  getCompilerOptions(): unknown {
-    return {};
-  },
 };
 
-jest.mock('../../src/ast-converter', () => {
+vi.mock('../../src/ast-converter.js', () => {
   return {
     astConverter(): unknown {
-      return { estree: {}, astMaps: {} };
+      return { astMaps: {}, estree: {} };
     },
   };
 });
@@ -32,10 +32,12 @@ interface MockProgramWithConfigFile {
   __FROM_CONFIG_FILE__?: string;
 }
 
-jest.mock('../../src/create-program/shared.ts', () => {
+vi.mock(import('../../src/create-program/shared.js'), async importOriginal => {
+  const actual = await importOriginal();
+
   return {
-    ...jest.requireActual('../../src/create-program/shared.ts'),
-    getAstFromProgram(program: MockProgramWithConfigFile): unknown {
+    ...actual,
+    getAstFromProgram: ((program: MockProgramWithConfigFile): unknown => {
       if (
         program.__FROM_CONFIG_FILE__?.endsWith('non-matching-tsconfig.json')
       ) {
@@ -44,39 +46,49 @@ jest.mock('../../src/create-program/shared.ts', () => {
       // Remove temporary tracking value for the config added by mock createProgramFromConfigFile() below
       delete program.__FROM_CONFIG_FILE__;
       return { ast: {}, program };
-    },
+    }) as unknown as typeof actual.getAstFromProgram,
   };
 });
 
-jest.mock('../../src/create-program/useProvidedPrograms.ts', () => {
-  return {
-    ...jest.requireActual('../../src/create-program/useProvidedPrograms.ts'),
-    createProgramFromConfigFile: jest
-      .fn()
-      .mockImplementation((configFile): MockProgramWithConfigFile => {
-        return {
-          // So we can differentiate our mock return values based on which tsconfig this is
-          __FROM_CONFIG_FILE__: configFile,
-          ...mockProgram,
-        };
-      }),
-  };
-});
+vi.mock(
+  import('../../src/create-program/useProvidedPrograms.js'),
+  async importOriginal => {
+    const actual = await importOriginal();
 
-jest.mock('../../src/create-program/getWatchProgramsForProjects', () => {
-  return {
-    ...jest.requireActual(
-      '../../src/create-program/getWatchProgramsForProjects',
-    ),
-    getWatchProgramsForProjects: jest.fn(() => [mockProgram]),
-  };
-});
+    return {
+      ...actual,
+      createProgramFromConfigFile: vi.fn(
+        (configFile): MockProgramWithConfigFile => {
+          return {
+            // So we can differentiate our mock return values based on which tsconfig this is
+            __FROM_CONFIG_FILE__: configFile,
+            ...mockProgram,
+          };
+        },
+      ) as unknown as typeof actual.createProgramFromConfigFile,
+    };
+  },
+);
 
-const createProgramFromConfigFile = jest.mocked(
+vi.mock(
+  import('../../src/create-program/getWatchProgramsForProjects.js'),
+  async importOriginal => {
+    const actual = await importOriginal();
+
+    return {
+      ...actual,
+      getWatchProgramsForProjects: vi.fn(() => [
+        mockProgram,
+      ]) as unknown as typeof actual.getWatchProgramsForProjects,
+    };
+  },
+);
+
+const createProgramFromConfigFile = vi.mocked(
   createProgramFromConfigFileOriginal,
 );
 
-const FIXTURES_DIR = './tests/fixtures/semanticInfo';
+const FIXTURES_DIR = path.join(__dirname, '..', 'fixtures', 'semanticInfo');
 const testFiles = glob.sync(`**/*.src.ts`, {
   cwd: FIXTURES_DIR,
 });
@@ -85,15 +97,14 @@ const code = 'const foo = 5;';
 // File will not be found in the first Program, but will be in the second
 const tsconfigs = ['./non-matching-tsconfig.json', './tsconfig.json'];
 const options = {
+  allowAutomaticSingleRunInference: true,
   filePath: testFiles[0],
-  tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
   loggerFn: false,
   project: tsconfigs,
-  allowAutomaticSingleRunInference: true,
+  tsconfigRootDir: FIXTURES_DIR,
 } as const;
 
-const resolvedProject = (p: string): string =>
-  path.resolve(path.join(process.cwd(), FIXTURES_DIR), p);
+const resolvedProject = (p: string): string => path.resolve(FIXTURES_DIR, p);
 
 describe('semanticInfo - singleRun', () => {
   beforeEach(() => {
@@ -107,8 +118,7 @@ describe('semanticInfo - singleRun', () => {
 
   it('should not create any programs ahead of time by default when there is no way to infer singleRun=true', () => {
     // For when these tests themselves are running in CI, we need to ignore that for this particular spec
-    const originalEnvCI = process.env.CI;
-    process.env.CI = 'false';
+    vi.stubEnv('CI', 'false');
 
     /**
      * At this point there is nothing to indicate it is a single run, so createProgramFromConfigFile should
@@ -116,38 +126,29 @@ describe('semanticInfo - singleRun', () => {
      */
     parseAndGenerateServices(code, options);
     expect(createProgramFromConfigFile).not.toHaveBeenCalled();
-
-    // Restore process data
-    process.env.CI = originalEnvCI;
   });
 
   it('should not create any programs ahead of time when when TSESTREE_SINGLE_RUN=false, even if other inferrence criteria apply', () => {
-    const originalTSESTreeSingleRun = process.env.TSESTREE_SINGLE_RUN;
-    process.env.TSESTREE_SINGLE_RUN = 'false';
+    vi.stubEnv('TSESTREE_SINGLE_RUN', 'false');
 
     // Normally CI=true would be used to infer singleRun=true, but TSESTREE_SINGLE_RUN is explicitly set to false
-    const originalEnvCI = process.env.CI;
-    process.env.CI = 'true';
+    vi.stubEnv('CI', 'true');
 
     parseAndGenerateServices(code, options);
     expect(createProgramFromConfigFile).not.toHaveBeenCalled();
-
-    // Restore process data
-    process.env.TSESTREE_SINGLE_RUN = originalTSESTreeSingleRun;
-    process.env.CI = originalEnvCI;
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
-    it('should lazily create the required program out of the provided "parserOptions.project" one time when TSESTREE_SINGLE_RUN=true', () => {
+  it.runIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true')(
+    'should lazily create the required program out of the provided "parserOptions.project" one time when TSESTREE_SINGLE_RUN=true',
+    () => {
       /**
        * Single run because of explicit environment variable TSESTREE_SINGLE_RUN
        */
-      const originalTSESTreeSingleRun = process.env.TSESTREE_SINGLE_RUN;
-      process.env.TSESTREE_SINGLE_RUN = 'true';
+      vi.stubEnv('TSESTREE_SINGLE_RUN', 'true');
 
       const resultProgram = parseAndGenerateServices(code, options).services
         .program;
-      expect(resultProgram).toEqual(mockProgram);
+      expect(resultProgram).toStrictEqual(mockProgram);
 
       // Call parseAndGenerateServices() again to ensure caching of Programs is working correctly...
       parseAndGenerateServices(code, options);
@@ -164,22 +165,21 @@ describe('semanticInfo - singleRun', () => {
         2,
         resolvedProject(tsconfigs[1]),
       );
+    },
+  );
 
-      // Restore process data
-      process.env.TSESTREE_SINGLE_RUN = originalTSESTreeSingleRun;
-    });
-
-    it('should lazily create the required program out of the provided "parserOptions.project" one time when singleRun is inferred from CI=true', () => {
+  it.runIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true')(
+    'should lazily create the required program out of the provided "parserOptions.project" one time when singleRun is inferred from CI=true',
+    () => {
       /**
        * Single run because of CI=true (we need to make sure we respect the original value
        * so that we won't interfere with our own usage of the variable)
        */
-      const originalEnvCI = process.env.CI;
-      process.env.CI = 'true';
+      vi.stubEnv('CI', 'true');
 
       const resultProgram = parseAndGenerateServices(code, options).services
         .program;
-      expect(resultProgram).toEqual(mockProgram);
+      expect(resultProgram).toStrictEqual(mockProgram);
 
       // Call parseAndGenerateServices() again to ensure caching of Programs is working correctly...
       parseAndGenerateServices(code, options);
@@ -196,21 +196,23 @@ describe('semanticInfo - singleRun', () => {
         2,
         resolvedProject(tsconfigs[1]),
       );
+    },
+  );
 
-      // Restore process data
-      process.env.CI = originalEnvCI;
-    });
-
-    it('should lazily create the required program out of the provided "parserOptions.project" one time when singleRun is inferred from process.argv', () => {
+  it.runIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true')(
+    'should lazily create the required program out of the provided "parserOptions.project" one time when singleRun is inferred from process.argv',
+    () => {
       /**
        * Single run because of process.argv
        */
-      const originalProcessArgv = process.argv;
-      process.argv = ['', path.normalize('node_modules/.bin/eslint'), ''];
+      vi.stubGlobal('process', {
+        ...process,
+        argv: ['', path.normalize('node_modules/.bin/eslint'), ''],
+      });
 
       const resultProgram = parseAndGenerateServices(code, options).services
         .program;
-      expect(resultProgram).toEqual(mockProgram);
+      expect(resultProgram).toStrictEqual(mockProgram);
 
       // Call parseAndGenerateServices() again to ensure caching of Programs is working correctly...
       parseAndGenerateServices(code, options);
@@ -227,17 +229,16 @@ describe('semanticInfo - singleRun', () => {
         2,
         resolvedProject(tsconfigs[1]),
       );
+    },
+  );
 
-      // Restore process data
-      process.argv = originalProcessArgv;
-    });
-
-    it('should stop iterating through and lazily creating programs for the given "parserOptions.project" once a matching one has been found', () => {
+  it.runIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true')(
+    'should stop iterating through and lazily creating programs for the given "parserOptions.project" once a matching one has been found',
+    () => {
       /**
        * Single run because of explicit environment variable TSESTREE_SINGLE_RUN
        */
-      const originalTSESTreeSingleRun = process.env.TSESTREE_SINGLE_RUN;
-      process.env.TSESTREE_SINGLE_RUN = 'true';
+      vi.stubEnv('TSESTREE_SINGLE_RUN', 'true');
 
       const optionsWithReversedTsconfigs = {
         ...options,
@@ -249,20 +250,14 @@ describe('semanticInfo - singleRun', () => {
         code,
         optionsWithReversedTsconfigs,
       ).services.program;
-      expect(resultProgram).toEqual(mockProgram);
+      expect(resultProgram).toStrictEqual(mockProgram);
 
       // Call parseAndGenerateServices() again to ensure caching of Programs is working correctly...
       parseAndGenerateServices(code, options);
-      // ...by asserting this was only called only once
-      expect(createProgramFromConfigFile).toHaveBeenCalledTimes(1);
 
-      expect(createProgramFromConfigFile).toHaveBeenNthCalledWith(
-        1,
+      expect(createProgramFromConfigFile).toHaveBeenCalledExactlyOnceWith(
         resolvedProject(tsconfigs[1]),
       );
-
-      // Restore process data
-      process.env.TSESTREE_SINGLE_RUN = originalTSESTreeSingleRun;
-    });
-  }
+    },
+  );
 });

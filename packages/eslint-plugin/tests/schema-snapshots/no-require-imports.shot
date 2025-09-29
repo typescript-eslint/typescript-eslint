@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-require-imports 1`] = `
-"
 # SCHEMA:
 
 [
@@ -14,6 +11,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "type": "string"
         },
         "type": "array"
+      },
+      "allowAsImport": {
+        "description": "Allows `require` statements in import declarations.",
+        "type": "boolean"
       }
     },
     "type": "object"
@@ -27,7 +28,7 @@ type Options = [
   {
     /** Patterns of import paths to allow requiring from. */
     allow?: string[];
+    /** Allows `require` statements in import declarations. */
+    allowAsImport?: boolean;
   },
 ];
-"
-`;

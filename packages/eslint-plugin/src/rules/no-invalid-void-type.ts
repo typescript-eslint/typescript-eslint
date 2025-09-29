@@ -1,14 +1,15 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, hasOverloadSignatures } from '../util';
 
-interface Options {
-  allowInGenericTypeArguments?: [string, ...string[]] | boolean;
+export interface Options {
   allowAsThisParameter?: boolean;
+  allowInGenericTypeArguments?: boolean | [string, ...string[]];
 }
 
-type MessageIds =
+export type MessageIds =
   | 'invalidVoidForGeneric'
   | 'invalidVoidNotReturn'
   | 'invalidVoidNotReturnOrGeneric'
@@ -27,9 +28,9 @@ export default createRule<[Options], MessageIds>({
     messages: {
       invalidVoidForGeneric:
         '{{ generic }} may not have void as a type argument.',
+      invalidVoidNotReturn: 'void is only valid as a return type.',
       invalidVoidNotReturnOrGeneric:
         'void is only valid as a return type or generic type argument.',
-      invalidVoidNotReturn: 'void is only valid as a return type.',
       invalidVoidNotReturnOrThisParam:
         'void is only valid as return type or type of `this` parameter.',
       invalidVoidNotReturnOrThisParamOrGeneric:
@@ -40,29 +41,39 @@ export default createRule<[Options], MessageIds>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
+          allowAsThisParameter: {
+            type: 'boolean',
+            description:
+              'Whether a `this` parameter of a function may be `void`.',
+          },
           allowInGenericTypeArguments: {
+            description:
+              'Whether `void` can be used as a valid value for generic type parameters.',
             oneOf: [
-              { type: 'boolean' },
+              {
+                type: 'boolean',
+                description:
+                  'Whether `void` can be used as a valid value for all generic type parameters.',
+              },
               {
                 type: 'array',
+                description:
+                  'Allowlist of types that may accept `void` as a generic type parameter.',
                 items: { type: 'string' },
                 minItems: 1,
               },
             ],
           },
-          allowAsThisParameter: {
-            type: 'boolean',
-          },
         },
-        additionalProperties: false,
       },
     ],
   },
   defaultOptions: [
-    { allowInGenericTypeArguments: true, allowAsThisParameter: false },
+    { allowAsThisParameter: false, allowInGenericTypeArguments: true },
   ],
-  create(context, [{ allowInGenericTypeArguments, allowAsThisParameter }]) {
+  create(context, [{ allowAsThisParameter, allowInGenericTypeArguments }]) {
     const validParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSTypeAnnotation, //
     ];
@@ -70,6 +81,7 @@ export default createRule<[Options], MessageIds>({
       AST_NODE_TYPES.TSPropertySignature,
       AST_NODE_TYPES.CallExpression,
       AST_NODE_TYPES.PropertyDefinition,
+      AST_NODE_TYPES.AccessorProperty,
       AST_NODE_TYPES.Identifier,
     ];
     const validUnionMembers: AST_NODE_TYPES[] = [
@@ -84,7 +96,7 @@ export default createRule<[Options], MessageIds>({
     /**
      * @brief check if the given void keyword is used as a valid generic type
      *
-     * reports if the type parametrized by void is not in the whitelist, or
+     * reports if the type parametrized by void is not in the allowlist, or
      * allowInGenericTypeArguments is false.
      * no-op if the given void keyword is not used as generic type
      */
@@ -99,21 +111,21 @@ export default createRule<[Options], MessageIds>({
         return;
       }
 
-      // check whitelist
+      // check allowlist
       if (Array.isArray(allowInGenericTypeArguments)) {
         const fullyQualifiedName = context.sourceCode
           .getText(node.parent.parent.typeName)
-          .replace(/ /gu, '');
+          .replaceAll(' ', '');
 
         if (
           !allowInGenericTypeArguments
-            .map(s => s.replace(/ /gu, ''))
+            .map(s => s.replaceAll(' ', ''))
             .includes(fullyQualifiedName)
         ) {
           context.report({
+            node,
             messageId: 'invalidVoidForGeneric',
             data: { generic: fullyQualifiedName },
-            node,
           });
         }
         return;
@@ -121,10 +133,10 @@ export default createRule<[Options], MessageIds>({
 
       if (!allowInGenericTypeArguments) {
         context.report({
+          node,
           messageId: allowAsThisParameter
             ? 'invalidVoidNotReturnOrThisParam'
             : 'invalidVoidNotReturn',
-          node,
         });
       }
     }
@@ -138,8 +150,8 @@ export default createRule<[Options], MessageIds>({
     ): void {
       if (parentNode.default !== node) {
         context.report({
-          messageId: getNotReturnOrGenericMessageId(node),
           node,
+          messageId: getNotReturnOrGenericMessageId(node),
         });
       }
     }
@@ -192,6 +204,20 @@ export default createRule<[Options], MessageIds>({
           return;
         }
 
+        // using `void` as part of the return type of function overloading implementation
+        if (node.parent.type === AST_NODE_TYPES.TSUnionType) {
+          const declaringFunction = getParentFunctionDeclarationNode(
+            node.parent,
+          );
+
+          if (
+            declaringFunction &&
+            hasOverloadSignatures(declaringFunction, context)
+          ) {
+            return;
+          }
+        }
+
         // this parameter is ok to be void.
         if (
           allowAsThisParameter &&
@@ -213,6 +239,7 @@ export default createRule<[Options], MessageIds>({
         }
 
         context.report({
+          node,
           messageId:
             allowInGenericTypeArguments && allowAsThisParameter
               ? 'invalidVoidNotReturnOrThisParamOrGeneric'
@@ -221,7 +248,6 @@ export default createRule<[Options], MessageIds>({
                 : allowAsThisParameter
                   ? 'invalidVoidNotReturnOrThisParam'
                   : 'invalidVoidNotReturn',
-          node,
         });
       },
     };
@@ -234,4 +260,26 @@ function getNotReturnOrGenericMessageId(
   return node.parent.type === AST_NODE_TYPES.TSUnionType
     ? 'invalidVoidUnionConstituent'
     : 'invalidVoidNotReturnOrGeneric';
+}
+
+function getParentFunctionDeclarationNode(
+  node: TSESTree.Node,
+): TSESTree.FunctionDeclaration | TSESTree.MethodDefinition | null {
+  let current = node.parent;
+  while (current) {
+    if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
+      return current;
+    }
+
+    if (
+      current.type === AST_NODE_TYPES.MethodDefinition &&
+      current.value.body != null
+    ) {
+      return current;
+    }
+
+    current = current.parent;
+  }
+
+  return null;
 }

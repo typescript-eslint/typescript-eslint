@@ -1,0 +1,80 @@
+Program {
+  type: "Program",
+  body: [
+    ForOfStatement {
+      type: "ForOfStatement",
+      await: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [25, 28],
+        loc: {
+          start: { column: 25, line: 1 },
+          end: { column: 1, line: 2 },
+        },
+      },
+      left: VariableDeclaration {
+        type: "VariableDeclaration",
+        declarations: [
+          VariableDeclarator {
+            type: "VariableDeclarator",
+            definite: false,
+            id: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "a",
+              optional: false,
+
+              range: [17, 18],
+              loc: {
+                start: { column: 17, line: 1 },
+                end: { column: 18, line: 1 },
+              },
+            },
+            init: null,
+
+            range: [17, 18],
+            loc: {
+              start: { column: 17, line: 1 },
+              end: { column: 18, line: 1 },
+            },
+          },
+        ],
+        declare: false,
+        kind: "await using",
+
+        range: [5, 18],
+        loc: {
+          start: { column: 5, line: 1 },
+          end: { column: 18, line: 1 },
+        },
+      },
+      right: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "b",
+        optional: false,
+
+        range: [22, 23],
+        loc: {
+          start: { column: 22, line: 1 },
+          end: { column: 23, line: 1 },
+        },
+      },
+
+      range: [0, 28],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 1, line: 2 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 29],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 3 },
+  },
+}

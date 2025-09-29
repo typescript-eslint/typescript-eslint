@@ -2,31 +2,34 @@ import type {
   AnalyzeOptions,
   ScopeManager,
 } from '@typescript-eslint/scope-manager';
-import { analyze } from '@typescript-eslint/scope-manager';
-import type { Lib, TSESTree } from '@typescript-eslint/types';
-import { ParserOptions } from '@typescript-eslint/types';
+import type { Lib, ParserOptions, TSESTree } from '@typescript-eslint/types';
 import type {
+  AST,
   ParserServices,
   TSESTreeOptions,
 } from '@typescript-eslint/typescript-estree';
-import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
 import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
+import type * as ts from 'typescript';
+
+import { analyze } from '@typescript-eslint/scope-manager';
+import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import debug from 'debug';
-import type * as ts from 'typescript';
 import { ScriptTarget } from 'typescript';
 
 const log = debug('typescript-eslint:parser:parser');
 
+interface ESLintProgram extends AST<{ comment: true; tokens: true }> {
+  comments: TSESTree.Comment[];
+  range: [number, number];
+  tokens: TSESTree.Token[];
+}
+
 interface ParseForESLintResult {
-  ast: TSESTree.Program & {
-    range?: [number, number];
-    tokens?: TSESTree.Token[];
-    comments?: TSESTree.Comment[];
-  };
+  ast: ESLintProgram;
+  scopeManager: ScopeManager;
   services: ParserServices;
   visitorKeys: VisitorKeys;
-  scopeManager: ScopeManager;
 }
 
 function validateBoolean(
@@ -42,99 +45,103 @@ function validateBoolean(
 const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.[cm]?ts$/;
 function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
   if (compilerOptions.lib) {
-    return compilerOptions.lib.reduce<Lib[]>((acc, lib) => {
-      const match = LIB_FILENAME_REGEX.exec(lib.toLowerCase());
-      if (match) {
-        acc.push(match[1] as Lib);
-      }
-
-      return acc;
-    }, []);
+    return compilerOptions.lib
+      .map(lib => LIB_FILENAME_REGEX.exec(lib.toLowerCase())?.[1])
+      .filter((lib): lib is Lib => !!lib);
   }
 
   const target = compilerOptions.target ?? ScriptTarget.ES5;
   // https://github.com/microsoft/TypeScript/blob/ae582a22ee1bb052e19b7c1bc4cac60509b574e0/src/compiler/utilitiesPublic.ts#L13-L36
   switch (target) {
-    case ScriptTarget.ESNext:
-      return ['esnext.full'];
-    case ScriptTarget.ES2022:
-      return ['es2022.full'];
-    case ScriptTarget.ES2021:
-      return ['es2021.full'];
-    case ScriptTarget.ES2020:
-      return ['es2020.full'];
-    case ScriptTarget.ES2019:
-      return ['es2019.full'];
-    case ScriptTarget.ES2018:
-      return ['es2018.full'];
-    case ScriptTarget.ES2017:
-      return ['es2017.full'];
-    case ScriptTarget.ES2016:
-      return ['es2016.full'];
     case ScriptTarget.ES2015:
       return ['es6'];
+    case ScriptTarget.ES2016:
+      return ['es2016.full'];
+    case ScriptTarget.ES2017:
+      return ['es2017.full'];
+    case ScriptTarget.ES2018:
+      return ['es2018.full'];
+    case ScriptTarget.ES2019:
+      return ['es2019.full'];
+    case ScriptTarget.ES2020:
+      return ['es2020.full'];
+    case ScriptTarget.ES2021:
+      return ['es2021.full'];
+    case ScriptTarget.ES2022:
+      return ['es2022.full'];
+    case ScriptTarget.ES2023:
+      return ['es2023.full'];
+    case ScriptTarget.ES2024:
+      return ['es2024.full'];
+    case ScriptTarget.ESNext:
+      return ['esnext.full'];
     default:
       return ['lib'];
   }
 }
 
-function parse(
-  code: ts.SourceFile | string,
+export function parse(
+  code: string | ts.SourceFile,
   options?: ParserOptions,
 ): ParseForESLintResult['ast'] {
   return parseForESLint(code, options).ast;
 }
 
-function parseForESLint(
-  code: ts.SourceFile | string,
-  options?: ParserOptions | null,
+export function parseForESLint(
+  code: string | ts.SourceFile,
+  parserOptions?: ParserOptions | null,
 ): ParseForESLintResult {
-  if (!options || typeof options !== 'object') {
-    options = {};
+  if (!parserOptions || typeof parserOptions !== 'object') {
+    parserOptions = {};
   } else {
-    options = { ...options };
+    parserOptions = { ...parserOptions };
   }
   // https://eslint.org/docs/user-guide/configuring#specifying-parser-options
   // if sourceType is not provided by default eslint expect that it will be set to "script"
-  if (options.sourceType !== 'module' && options.sourceType !== 'script') {
-    options.sourceType = 'script';
+  if (
+    parserOptions.sourceType !== 'module' &&
+    parserOptions.sourceType !== 'script'
+  ) {
+    parserOptions.sourceType = 'script';
   }
-  if (typeof options.ecmaFeatures !== 'object') {
-    options.ecmaFeatures = {};
+  if (typeof parserOptions.ecmaFeatures !== 'object') {
+    parserOptions.ecmaFeatures = {};
   }
-
-  const parserOptions: TSESTreeOptions = {
-    ...options,
-    jsx: validateBoolean(options.ecmaFeatures.jsx),
-    /**
-     * Override errorOnTypeScriptSyntacticAndSemanticIssues and set it to false to prevent use from user config
-     * https://github.com/typescript-eslint/typescript-eslint/issues/8681#issuecomment-2000411834
-     */
-    errorOnTypeScriptSyntacticAndSemanticIssues: false,
-  };
-  const analyzeOptions: AnalyzeOptions = {
-    globalReturn: options.ecmaFeatures.globalReturn,
-    jsxPragma: options.jsxPragma,
-    jsxFragmentName: options.jsxFragmentName,
-    lib: options.lib,
-    sourceType: options.sourceType,
-  };
 
   /**
    * Allow the user to suppress the warning from typescript-estree if they are using an unsupported
    * version of TypeScript
    */
   const warnOnUnsupportedTypeScriptVersion = validateBoolean(
-    options.warnOnUnsupportedTypeScriptVersion,
+    parserOptions.warnOnUnsupportedTypeScriptVersion,
     true,
   );
 
-  if (!warnOnUnsupportedTypeScriptVersion) {
-    parserOptions.loggerFn = false;
-  }
+  const tsestreeOptions = {
+    jsx: validateBoolean(parserOptions.ecmaFeatures.jsx),
+    ...(!warnOnUnsupportedTypeScriptVersion && { loggerFn: false }),
+    ...parserOptions,
+    // Override errorOnTypeScriptSyntacticAndSemanticIssues and set it to false to prevent use from user config
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8681#issuecomment-2000411834
+    errorOnTypeScriptSyntacticAndSemanticIssues: false,
+    // comment, loc, range, and tokens should always be set for ESLint usage
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8347
+    comment: true,
+    loc: true,
+    range: true,
+    tokens: true,
+  } satisfies TSESTreeOptions;
 
-  const { ast, services } = parseAndGenerateServices(code, parserOptions);
-  ast.sourceType = options.sourceType;
+  const analyzeOptions: AnalyzeOptions = {
+    globalReturn: parserOptions.ecmaFeatures.globalReturn,
+    jsxFragmentName: parserOptions.jsxFragmentName,
+    jsxPragma: parserOptions.jsxPragma,
+    lib: parserOptions.lib,
+    sourceType: parserOptions.sourceType,
+  };
+
+  const { ast, services } = parseAndGenerateServices(code, tsestreeOptions);
+  ast.sourceType = parserOptions.sourceType;
 
   if (services.program) {
     // automatically apply the options configured for the program
@@ -144,6 +151,7 @@ function parseForESLint(
       log('Resolved libs from program: %o', analyzeOptions.lib);
     }
     if (
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
       analyzeOptions.jsxPragma === undefined &&
       compilerOptions.jsxFactory != null
     ) {
@@ -153,6 +161,7 @@ function parseForESLint(
       log('Resolved jsxPragma from program: %s', analyzeOptions.jsxPragma);
     }
     if (
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
       analyzeOptions.jsxFragmentName === undefined &&
       compilerOptions.jsxFragmentFactory != null
     ) {
@@ -168,13 +177,16 @@ function parseForESLint(
     }
   }
 
-  // if not defined - override from the parserOptions
-  services.emitDecoratorMetadata ??= options.emitDecoratorMetadata === true;
-  services.experimentalDecorators ??= options.experimentalDecorators === true;
-
   const scopeManager = analyze(ast, analyzeOptions);
 
-  return { ast, services, scopeManager, visitorKeys };
+  // if not defined - override from the parserOptions
+  services.emitDecoratorMetadata ??=
+    parserOptions.emitDecoratorMetadata === true;
+  services.experimentalDecorators ??=
+    parserOptions.experimentalDecorators === true;
+  services.isolatedDeclarations ??= parserOptions.isolatedDeclarations === true;
+
+  return { ast, scopeManager, services, visitorKeys };
 }
 
-export { parse, parseForESLint, ParserOptions };
+export type { ParserOptions } from '@typescript-eslint/types';

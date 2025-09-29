@@ -1,14 +1,14 @@
+import type { RunTests } from '@typescript-eslint/rule-tester';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import type { MessageIds, Options } from '../../../src/rules/member-ordering';
+
 import rule from '../../../src/rules/member-ordering';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
-const grouped: TSESLint.RunTests<MessageIds, Options> = {
+const grouped: RunTests<MessageIds, Options> = {
   valid: [
     // optionalityOrder - required-first
     {
@@ -23,8 +23,8 @@ interface X {
         {
           default: {
             memberTypes: 'never',
-            order: 'alphabetically',
             optionalityOrder: 'required-first',
+            order: 'alphabetically',
           },
         },
       ],
@@ -41,8 +41,8 @@ interface X {
         {
           default: {
             memberTypes: 'never',
-            order: 'as-written',
             optionalityOrder: 'required-first',
+            order: 'as-written',
           },
         },
       ],
@@ -59,8 +59,8 @@ interface X {
         {
           default: {
             memberTypes: 'never',
-            order: 'as-written',
             optionalityOrder: 'required-first',
+            order: 'as-written',
           },
         },
       ],
@@ -77,8 +77,8 @@ class X {
         {
           default: {
             memberTypes: 'never',
-            order: 'alphabetically',
             optionalityOrder: 'required-first',
+            order: 'alphabetically',
           },
         },
       ],
@@ -95,8 +95,8 @@ class X {
         {
           default: {
             memberTypes: 'never',
-            order: 'alphabetically',
             optionalityOrder: 'required-first',
+            order: 'alphabetically',
           },
         },
       ],
@@ -113,8 +113,8 @@ class X {
         {
           default: {
             memberTypes: 'never',
-            order: 'alphabetically',
             optionalityOrder: 'required-first',
+            order: 'alphabetically',
           },
         },
       ],
@@ -131,8 +131,8 @@ class X {
         {
           default: {
             memberTypes: 'never',
-            order: 'alphabetically',
             optionalityOrder: 'required-first',
+            order: 'alphabetically',
           },
         },
       ],
@@ -149,8 +149,8 @@ interface X {
         {
           default: {
             memberTypes: 'never',
-            order: 'alphabetically',
             optionalityOrder: 'required-first',
+            order: 'alphabetically',
           },
         },
       ],
@@ -168,8 +168,8 @@ interface X {
         {
           default: {
             memberTypes: 'never',
-            order: 'alphabetically',
             optionalityOrder: 'required-first',
+            order: 'alphabetically',
           },
         },
       ],
@@ -187,8 +187,8 @@ interface X {
         {
           default: {
             memberTypes: 'never',
-            order: 'alphabetically',
             optionalityOrder: 'optional-first',
+            order: 'alphabetically',
           },
         },
       ],
@@ -205,8 +205,8 @@ interface X {
         {
           default: {
             memberTypes: 'never',
-            order: 'as-written',
             optionalityOrder: 'optional-first',
+            order: 'as-written',
           },
         },
       ],
@@ -223,8 +223,8 @@ interface X {
         {
           default: {
             memberTypes: 'never',
-            order: 'as-written',
             optionalityOrder: 'optional-first',
+            order: 'as-written',
           },
         },
       ],
@@ -241,8 +241,8 @@ class X {
         {
           default: {
             memberTypes: 'never',
-            order: 'alphabetically',
             optionalityOrder: 'optional-first',
+            order: 'alphabetically',
           },
         },
       ],
@@ -258,24 +258,24 @@ interface X {
   b?: string;
 }
       `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'd',
+            member: 'b',
+          },
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
       options: [
         {
           default: {
             memberTypes: 'never',
-            order: 'alphabetically',
             optionalityOrder: 'required-first',
+            order: 'alphabetically',
           },
-        },
-      ],
-      errors: [
-        {
-          data: {
-            member: 'b',
-            beforeMember: 'd',
-          },
-          messageId: 'incorrectOrder',
-          line: 5,
-          column: 3,
         },
       ],
     },
@@ -287,23 +287,23 @@ interface X {
   c: string;
 }
       `,
-      options: [
-        {
-          default: {
-            memberTypes: ['call-signature', 'field', 'method'],
-            order: 'as-written',
-            optionalityOrder: 'required-first',
-          },
-        },
-      ],
       errors: [
         {
-          messageId: 'incorrectRequiredMembersOrder',
-          line: 4,
           column: 3,
           data: {
             member: 'b',
             optionalOrRequired: 'required',
+          },
+          line: 4,
+          messageId: 'incorrectRequiredMembersOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['call-signature', 'field', 'method'],
+            optionalityOrder: 'required-first',
+            order: 'as-written',
           },
         },
       ],
@@ -316,23 +316,23 @@ class X {
   b?: string;
 }
       `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'as-written',
-            optionalityOrder: 'required-first',
-          },
-        },
-      ],
       errors: [
         {
-          messageId: 'incorrectRequiredMembersOrder',
-          line: 3,
           column: 3,
           data: {
             member: 'a',
             optionalOrRequired: 'required',
+          },
+          line: 3,
+          messageId: 'incorrectRequiredMembersOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            optionalityOrder: 'required-first',
+            order: 'as-written',
           },
         },
       ],
@@ -344,24 +344,24 @@ class X {
   a: string;
 }
       `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+            optionalOrRequired: 'required',
+          },
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
       options: [
         {
           default: {
             memberTypes: 'never',
-            order: 'natural-case-insensitive',
             optionalityOrder: 'required-first',
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          line: 4,
-          column: 3,
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-            optionalOrRequired: 'required',
+            order: 'natural-case-insensitive',
           },
         },
       ],
@@ -375,20 +375,20 @@ interface X {
   m: string;
 }
       `,
+      errors: [
+        {
+          column: 3,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
       options: [
         {
           default: {
             memberTypes: 'never',
-            order: 'alphabetically',
             optionalityOrder: 'optional-first',
+            order: 'alphabetically',
           },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          line: 4,
-          column: 3,
         },
       ],
     },
@@ -400,23 +400,23 @@ interface X {
   c?: string;
 }
       `,
-      options: [
-        {
-          default: {
-            memberTypes: ['call-signature', 'field', 'method'],
-            order: 'as-written',
-            optionalityOrder: 'optional-first',
-          },
-        },
-      ],
       errors: [
         {
-          messageId: 'incorrectRequiredMembersOrder',
-          line: 4,
           column: 3,
           data: {
             member: 'b',
             optionalOrRequired: 'optional',
+          },
+          line: 4,
+          messageId: 'incorrectRequiredMembersOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['call-signature', 'field', 'method'],
+            optionalityOrder: 'optional-first',
+            order: 'as-written',
           },
         },
       ],
@@ -433,23 +433,23 @@ class Test {
   h: string;
 }
       `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'as-written',
-            optionalityOrder: 'optional-first',
-          },
-        },
-      ],
       errors: [
         {
-          messageId: 'incorrectRequiredMembersOrder',
-          line: 5,
           column: 3,
           data: {
             member: 'f',
             optionalOrRequired: 'optional',
+          },
+          line: 5,
+          messageId: 'incorrectRequiredMembersOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            optionalityOrder: 'optional-first',
+            order: 'as-written',
           },
         },
       ],
@@ -464,23 +464,23 @@ class Test {
   d?: string;
 }
       `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'as-written',
-            optionalityOrder: 'optional-first',
-          },
-        },
-      ],
       errors: [
         {
-          messageId: 'incorrectRequiredMembersOrder',
-          line: 3,
           column: 3,
           data: {
             member: 'a',
             optionalOrRequired: 'optional',
+          },
+          line: 3,
+          messageId: 'incorrectRequiredMembersOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            optionalityOrder: 'optional-first',
+            order: 'as-written',
           },
         },
       ],

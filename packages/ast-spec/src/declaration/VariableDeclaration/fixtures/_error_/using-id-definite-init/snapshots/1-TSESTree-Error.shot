@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > using-id-definite-init > TSESTree - Error`]
+TSError
+> 1 | using foo! = 1;
+    |       ^^^^^^^^ Declarations with initializers cannot also have definite assignment assertions.
+  2 |

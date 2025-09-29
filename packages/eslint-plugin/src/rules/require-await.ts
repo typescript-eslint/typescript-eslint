@@ -1,22 +1,27 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
+import type { AST, RuleFix } from '@typescript-eslint/utils/ts-eslint';
 import type * as ts from 'typescript';
+
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
   getFunctionHeadLoc,
   getFunctionNameWithKind,
   getParserServices,
+  isStartOfExpressionStatement,
+  needsPrecedingSemicolon,
+  nullThrows,
   upperCaseFirst,
 } from '../util';
 
 interface ScopeInfo {
-  upper: ScopeInfo | null;
-  hasAwait: boolean;
   hasAsync: boolean;
-  isGen: boolean;
+  hasAwait: boolean;
   isAsyncYield: boolean;
+  isGen: boolean;
+  upper: ScopeInfo | null;
 }
 type FunctionNode =
   | TSESTree.ArrowFunctionExpression
@@ -30,14 +35,16 @@ export default createRule({
     docs: {
       description:
         'Disallow async functions which do not return promises and have no `await` expression',
+      extendsBaseRule: true,
       recommended: 'recommended',
       requiresTypeChecking: true,
-      extendsBaseRule: true,
     },
-    schema: [],
+    hasSuggestions: true,
     messages: {
       missingAwait: "{{name}} has no 'await' expression.",
+      removeAsync: "Remove 'async'.",
     },
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -51,11 +58,11 @@ export default createRule({
      */
     function enterFunction(node: FunctionNode): void {
       scopeInfo = {
-        upper: scopeInfo,
-        hasAwait: false,
         hasAsync: node.async,
-        isGen: node.generator || false,
+        hasAwait: false,
         isAsyncYield: false,
+        isGen: node.generator || false,
+        upper: scopeInfo,
       };
     }
 
@@ -75,13 +82,128 @@ export default createRule({
         !isEmptyFunction(node) &&
         !(scopeInfo.isGen && scopeInfo.isAsyncYield)
       ) {
+        // If the function belongs to a method definition or
+        // property, then the function's range may not include the
+        // `async` keyword and we should look at the parent instead.
+        const nodeWithAsyncKeyword =
+          (node.parent.type === AST_NODE_TYPES.MethodDefinition &&
+            node.parent.value === node) ||
+          (node.parent.type === AST_NODE_TYPES.Property &&
+            node.parent.method &&
+            node.parent.value === node)
+            ? node.parent
+            : node;
+
+        const asyncToken = nullThrows(
+          context.sourceCode.getFirstToken(
+            nodeWithAsyncKeyword,
+            token => token.value === 'async',
+          ),
+          'The node is an async function, so it must have an "async" token.',
+        );
+
+        const asyncRange: Readonly<AST.Range> = [
+          asyncToken.range[0],
+          nullThrows(
+            context.sourceCode.getTokenAfter(asyncToken, {
+              includeComments: true,
+            }),
+            'There will always be a token after the "async" keyword.',
+          ).range[0],
+        ] as const;
+
+        // Removing the `async` keyword can cause parsing errors if the
+        // current statement is relying on automatic semicolon insertion.
+        // If ASI is currently being used, then we should replace the
+        // `async` keyword with a semicolon.
+        const nextToken = nullThrows(
+          context.sourceCode.getTokenAfter(asyncToken),
+          'There will always be a token after the "async" keyword.',
+        );
+        const addSemiColon =
+          nextToken.type === AST_TOKEN_TYPES.Punctuator &&
+          (nextToken.value === '[' || nextToken.value === '(') &&
+          (nodeWithAsyncKeyword.type === AST_NODE_TYPES.MethodDefinition ||
+            isStartOfExpressionStatement(nodeWithAsyncKeyword)) &&
+          needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);
+
+        const changes = [
+          { range: asyncRange, replacement: addSemiColon ? ';' : undefined },
+        ];
+
+        // If there's a return type annotation and it's a
+        // `Promise<T>`, we can also change the return type
+        // annotation to just `T` as part of the suggestion.
+        // Alternatively, if the function is a generator and
+        // the return type annotation is `AsyncGenerator<T>`,
+        // then we can change it to `Generator<T>`.
+        if (
+          node.returnType?.typeAnnotation.type ===
+          AST_NODE_TYPES.TSTypeReference
+        ) {
+          if (scopeInfo.isGen) {
+            if (hasTypeName(node.returnType.typeAnnotation, 'AsyncGenerator')) {
+              changes.push({
+                range: node.returnType.typeAnnotation.typeName.range,
+                replacement: 'Generator',
+              });
+            }
+          } else if (
+            hasTypeName(node.returnType.typeAnnotation, 'Promise') &&
+            node.returnType.typeAnnotation.typeArguments != null
+          ) {
+            const openAngle = nullThrows(
+              context.sourceCode.getFirstToken(
+                node.returnType.typeAnnotation,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '<',
+              ),
+              'There are type arguments, so the angle bracket will exist.',
+            );
+            const closeAngle = nullThrows(
+              context.sourceCode.getLastToken(
+                node.returnType.typeAnnotation,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '>',
+              ),
+              'There are type arguments, so the angle bracket will exist.',
+            );
+            changes.push(
+              // Remove the closing angled bracket.
+              { range: closeAngle.range, replacement: undefined },
+              // Remove the "Promise" identifier
+              // and the opening angled bracket.
+              {
+                range: [
+                  node.returnType.typeAnnotation.typeName.range[0],
+                  openAngle.range[1],
+                ],
+                replacement: undefined,
+              },
+            );
+          }
+        }
+
         context.report({
-          node,
           loc: getFunctionHeadLoc(node, context.sourceCode),
+          node,
           messageId: 'missingAwait',
           data: {
             name: upperCaseFirst(getFunctionNameWithKind(node)),
           },
+          suggest: [
+            {
+              messageId: 'removeAsync',
+              fix: (fixer): RuleFix[] =>
+                changes.map(change =>
+                  change.replacement != null
+                    ? fixer.replaceTextRange(change.range, change.replacement)
+                    : fixer.removeRange(change.range),
+                ),
+            },
+          ],
         });
       }
 
@@ -139,7 +261,7 @@ export default createRule({
           'asyncIterator',
           checker,
         );
-        if (asyncIterator !== undefined) {
+        if (asyncIterator != null) {
           scopeInfo.isAsyncYield = true;
           break;
         }
@@ -147,16 +269,16 @@ export default createRule({
     }
 
     return {
-      FunctionDeclaration: enterFunction,
-      FunctionExpression: enterFunction,
       ArrowFunctionExpression: enterFunction,
-      'FunctionDeclaration:exit': exitFunction,
-      'FunctionExpression:exit': exitFunction,
       'ArrowFunctionExpression:exit': exitFunction,
-
       AwaitExpression: markAsHasAwait,
-      'VariableDeclaration[kind = "await using"]': markAsHasAwait,
       'ForOfStatement[await = true]': markAsHasAwait,
+      FunctionDeclaration: enterFunction,
+      'FunctionDeclaration:exit': exitFunction,
+
+      FunctionExpression: enterFunction,
+      'FunctionExpression:exit': exitFunction,
+      'VariableDeclaration[kind = "await using"]': markAsHasAwait,
       YieldExpression: visitYieldExpression,
 
       // check body-less async arrow function.
@@ -199,4 +321,14 @@ function expandUnionOrIntersectionType(type: ts.Type): ts.Type[] {
     return type.types.flatMap(expandUnionOrIntersectionType);
   }
   return [type];
+}
+
+function hasTypeName(
+  typeReference: TSESTree.TSTypeReference,
+  typeName: string,
+): boolean {
+  return (
+    typeReference.typeName.type === AST_NODE_TYPES.Identifier &&
+    typeReference.typeName.name === typeName
+  );
 }

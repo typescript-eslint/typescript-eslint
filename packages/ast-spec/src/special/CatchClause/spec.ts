@@ -5,6 +5,6 @@ import type { BindingName } from '../../unions/BindingName';
 
 export interface CatchClause extends BaseNode {
   type: AST_NODE_TYPES.CatchClause;
-  param: BindingName | null;
   body: BlockStatement;
+  param: BindingName | null;
 }

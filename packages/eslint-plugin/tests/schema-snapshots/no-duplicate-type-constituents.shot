@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-duplicate-type-constituents 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,9 +6,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "ignoreIntersections": {
+        "description": "Whether to ignore `&` intersections.",
         "type": "boolean"
       },
       "ignoreUnions": {
+        "description": "Whether to ignore `|` unions.",
         "type": "boolean"
       }
     },
@@ -24,9 +23,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to ignore `&` intersections. */
     ignoreIntersections?: boolean;
+    /** Whether to ignore `|` unions. */
     ignoreUnions?: boolean;
   },
 ];
-"
-`;

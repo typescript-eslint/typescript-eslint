@@ -1,11 +1,13 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/repo-tools
+// npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
+
 import { TYPE } from './base-config';
 
-export const es2017_string = {
-  String: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const es2017_string: LibDefinition = {
+  libs: [],
+  variables: [['String', TYPE]],
+};

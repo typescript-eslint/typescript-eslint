@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > TSInterfaceDeclaration > type-param-many > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -20,13 +20,13 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
             end: { column: 23, line: 1 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'F',
--         optional: false,
+          optional: false,
 
           range: [10, 11],
           loc: {
@@ -39,8 +39,8 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -53,8 +53,8 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
 -                 end: { column: 13, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [12, 13],
               loc: {
@@ -64,8 +64,8 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -78,8 +78,8 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
 -                 end: { column: 16, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'U',
+              out: false,
 
               range: [15, 16],
               loc: {
@@ -89,8 +89,8 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -103,8 +103,8 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
 -                 end: { column: 19, line: 1 },
 -               },
 -             },
--             out: false,
 +             name: 'V',
+              out: false,
 
               range: [18, 19],
               loc: {
@@ -135,5 +135,4 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

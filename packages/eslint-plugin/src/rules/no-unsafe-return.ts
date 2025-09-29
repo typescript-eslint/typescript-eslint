@@ -1,22 +1,23 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
   AnyType,
   createRule,
+  discriminateAnyType,
   getConstrainedTypeAtLocation,
   getContextualType,
   getParserServices,
   getThisExpression,
-  isAnyOrAnyArrayTypeDiscriminated,
   isTypeAnyType,
   isTypeFlagSet,
   isTypeUnknownArrayType,
   isTypeUnknownType,
   isUnsafeAssignment,
 } from '../util';
+import { getParentFunctionNode } from '../util/getParentFunctionNode';
 
 export default createRule({
   name: 'no-unsafe-return',
@@ -28,13 +29,13 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeReturn: 'Unsafe return of an `{{type}}` typed value.',
-      unsafeReturnThis: [
-        'Unsafe return of an `{{type}}` typed value. `this` is typed as `any`.',
-        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
-      ].join('\n'),
+      unsafeReturn: 'Unsafe return of a value of type {{type}}.',
       unsafeReturnAssignment:
         'Unsafe return of type `{{sender}}` from function with return type `{{receiver}}`.',
+      unsafeReturnThis: [
+        'Unsafe return of a value of type `{{type}}`. `this` is typed as `any`.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
     },
     schema: [],
   },
@@ -48,37 +49,19 @@ export default createRule({
       'noImplicitThis',
     );
 
-    function getParentFunctionNode(
-      node: TSESTree.Node,
-    ):
-      | TSESTree.ArrowFunctionExpression
-      | TSESTree.FunctionDeclaration
-      | TSESTree.FunctionExpression
-      | null {
-      let current = node.parent;
-      while (current) {
-        if (
-          current.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-          current.type === AST_NODE_TYPES.FunctionDeclaration ||
-          current.type === AST_NODE_TYPES.FunctionExpression
-        ) {
-          return current;
-        }
-
-        current = current.parent;
-      }
-
-      // this shouldn't happen in correct code, but someone may attempt to parse bad code
-      // the parser won't error, so we shouldn't throw here
-      /* istanbul ignore next */ return null;
-    }
-
     function checkReturn(
       returnNode: TSESTree.Node,
       reportingNode: TSESTree.Node = returnNode,
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(returnNode);
-      const anyType = isAnyOrAnyArrayTypeDiscriminated(tsNode, checker);
+      const type = checker.getTypeAtLocation(tsNode);
+
+      const anyType = discriminateAnyType(
+        type,
+        checker,
+        services.program,
+        tsNode,
+      );
       const functionNode = getParentFunctionNode(returnNode);
       /* istanbul ignore if */ if (!functionNode) {
         return;
@@ -97,22 +80,39 @@ export default createRule({
         ts.isArrowFunction(functionTSNode)
           ? getContextualType(checker, functionTSNode)
           : services.getTypeAtLocation(functionNode);
-      if (!functionType) {
-        functionType = services.getTypeAtLocation(functionNode);
-      }
-
+      functionType ??= services.getTypeAtLocation(functionNode);
+      const callSignatures = tsutils.getCallSignaturesOfType(functionType);
       // If there is an explicit type annotation *and* that type matches the actual
       // function return type, we shouldn't complain (it's intentional, even if unsafe)
       if (functionTSNode.type) {
-        for (const signature of tsutils.getCallSignaturesOfType(functionType)) {
+        for (const signature of callSignatures) {
+          const signatureReturnType = signature.getReturnType();
+
           if (
-            returnNodeType === signature.getReturnType() ||
+            returnNodeType === signatureReturnType ||
             isTypeFlagSet(
-              signature.getReturnType(),
+              signatureReturnType,
               ts.TypeFlags.Any | ts.TypeFlags.Unknown,
             )
           ) {
             return;
+          }
+          if (functionNode.async) {
+            const awaitedSignatureReturnType =
+              checker.getAwaitedType(signatureReturnType);
+
+            const awaitedReturnNodeType =
+              checker.getAwaitedType(returnNodeType);
+            if (
+              awaitedReturnNodeType === awaitedSignatureReturnType ||
+              (awaitedSignatureReturnType &&
+                isTypeFlagSet(
+                  awaitedSignatureReturnType,
+                  ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+                ))
+            ) {
+              return;
+            }
           }
         }
       }
@@ -120,7 +120,7 @@ export default createRule({
       if (anyType !== AnyType.Safe) {
         // Allow cases when the declared return type of the function is either unknown or unknown[]
         // and the function is returning any or any[].
-        for (const signature of functionType.getCallSignatures()) {
+        for (const signature of callSignatures) {
           const functionReturnType = signature.getReturnType();
           if (
             anyType === AnyType.Any &&
@@ -134,9 +134,22 @@ export default createRule({
           ) {
             return;
           }
+          const awaitedType = checker.getAwaitedType(functionReturnType);
+          if (
+            awaitedType &&
+            anyType === AnyType.PromiseAny &&
+            isTypeUnknownType(awaitedType)
+          ) {
+            return;
+          }
+        }
+
+        if (anyType === AnyType.PromiseAny && !functionNode.async) {
+          return;
         }
 
         let messageId: 'unsafeReturn' | 'unsafeReturnThis' = 'unsafeReturn';
+        const isErrorType = tsutils.isIntrinsicErrorType(returnNodeType);
 
         if (!isNoImplicitThis) {
           // `return this`
@@ -156,12 +169,19 @@ export default createRule({
           node: reportingNode,
           messageId,
           data: {
-            type: anyType === AnyType.Any ? 'any' : 'any[]',
+            type: isErrorType
+              ? 'error'
+              : anyType === AnyType.Any
+                ? '`any`'
+                : anyType === AnyType.PromiseAny
+                  ? '`Promise<any>`'
+                  : '`any[]`',
           },
         });
       }
 
-      for (const signature of functionType.getCallSignatures()) {
+      const signature = functionType.getCallSignatures().at(0);
+      if (signature) {
         const functionReturnType = signature.getReturnType();
         const result = isUnsafeAssignment(
           returnNodeType,
@@ -173,19 +193,20 @@ export default createRule({
           return;
         }
 
-        const { sender, receiver } = result;
+        const { receiver, sender } = result;
         return context.report({
           node: reportingNode,
           messageId: 'unsafeReturnAssignment',
           data: {
-            sender: checker.typeToString(sender),
             receiver: checker.typeToString(receiver),
+            sender: checker.typeToString(sender),
           },
         });
       }
     }
 
     return {
+      'ArrowFunctionExpression > :not(BlockStatement).body': checkReturn,
       ReturnStatement(node): void {
         const argument = node.argument;
         if (!argument) {
@@ -194,7 +215,6 @@ export default createRule({
 
         checkReturn(argument, node);
       },
-      'ArrowFunctionExpression > :not(BlockStatement).body': checkReturn,
     };
   },
 });

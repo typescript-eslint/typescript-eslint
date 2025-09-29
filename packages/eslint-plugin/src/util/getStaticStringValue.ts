@@ -1,6 +1,7 @@
 // adapted from https://github.com/eslint/eslint/blob/5bdaae205c3a0089ea338b382df59e21d5b06436/lib/rules/utils/ast-utils.js#L191-L230
 
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { isNullLiteral } from './isNullLiteral';
@@ -17,7 +18,7 @@ import { isNullLiteral } from './isNullLiteral';
 export function getStaticStringValue(node: TSESTree.Node): string | null {
   switch (node.type) {
     case AST_NODE_TYPES.Literal:
-      // eslint-disable-next-line eqeqeq -- intentional strict comparison for literal value
+      // eslint-disable-next-line eqeqeq, @typescript-eslint/internal/eqeq-nullish -- intentional strict comparison for literal value
       if (node.value === null) {
         if (isNullLiteral(node)) {
           return String(node.value); // "null"
