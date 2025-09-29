@@ -1,3 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration ImportDeclaration _error_ non-string-source Babel - Error 1`] = `[SyntaxError: Unexpected token (1:19)]`;
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > non-string-source > Babel - Error`]
+BabelError
+> 1 | import * as x from module;
+    |                    ^ Unexpected token (1:19)
+  2 |
+  

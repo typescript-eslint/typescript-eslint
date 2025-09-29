@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-unnecessary-type-parameters.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 function second<A, B>(a: A, b: B): B {
                 ~ Type parameter A is used only once in the function signature.
@@ -17,11 +14,8 @@ function printProperty<T, K extends keyof T>(obj: T, key: K) {
                           ~~~~~~~~~~~~~~~~~ Type parameter K is used only once in the function signature.
   console.log(obj[key]);
 }
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-type-parameters.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 function second<B>(a: unknown, b: B): B {
   return b;
@@ -45,5 +39,12 @@ function identity<T>(arg: T): T {
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
   return obj[key];
 }
-"
-`;
+
+Incorrect
+
+declare function length<T>(array: ReadonlyArray<T>): number;
+                        ~ Type parameter T is used only once in the function signature.
+
+Correct
+
+declare function length(array: ReadonlyArray<unknown>): number;

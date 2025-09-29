@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-extends-generic > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,7 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic AST Alig
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -21,13 +21,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic AST Alig
             end: { column: 30, line: 3 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [79, 82],
           loc: {
@@ -35,12 +35,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic AST Alig
             end: { column: 9, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Bar',
--         optional: false,
+          optional: false,
 
           range: [94, 97],
           loc: {
@@ -56,9 +56,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic AST Alig
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'B',
--               optional: false,
+                optional: false,
 
                 range: [98, 99],
                 loc: {
@@ -86,8 +86,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic AST Alig
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -100,8 +100,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic AST Alig
 -                 end: { column: 11, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'A',
+              out: false,
 
               range: [83, 84],
               loc: {
@@ -132,5 +132,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic AST Alig
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

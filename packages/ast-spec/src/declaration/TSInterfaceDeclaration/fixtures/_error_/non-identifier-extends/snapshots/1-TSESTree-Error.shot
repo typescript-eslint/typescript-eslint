@@ -1,3 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSInterfaceDeclaration _error_ non-identifier-extends TSESTree - Error 1`] = `"NO ERROR"`;
+exports[`AST Fixtures > declaration > TSInterfaceDeclaration > _error_ > non-identifier-extends > TSESTree - Error`]
+TSError
+> 1 | interface F extends 1 {}
+    |                     ^ Interface declaration can only extend an identifier/qualified name with optional type arguments.
+  2 |

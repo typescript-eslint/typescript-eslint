@@ -3,7 +3,7 @@ import type {
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
 
 import type {
@@ -202,22 +202,6 @@ declare let x: boolean;
 !x ? y : x;
       `,
       `
-declare let x: any;
-x ? x : y;
-      `,
-      `
-declare let x: any;
-!x ? y : x;
-      `,
-      `
-declare let x: unknown;
-x ? x : y;
-      `,
-      `
-declare let x: unknown;
-!x ? y : x;
-      `,
-      `
 declare let x: object;
 x ? x : y;
       `,
@@ -274,6 +258,24 @@ declare let x: () => string | null | undefined;
 !x ? y : x;
       `,
       `
+declare let x: () => string | null;
+x() ? x() : y;
+      `,
+      `
+declare let x: () => string | null;
+!x() ? y : x();
+      `,
+      `
+const a = 'foo';
+declare let x: (a: string | null) => string | null;
+x(a) ? x(a) : y;
+      `,
+      `
+const a = 'foo';
+declare let x: (a: string | null) => string | null;
+!x(a) ? y : x(a);
+      `,
+      `
 declare let x: { n: string };
 x.n ? x.n : y;
       `,
@@ -314,22 +316,6 @@ declare let x: { n: boolean };
 !x.n ? y : x.n;
       `,
       `
-declare let x: { n: any };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: any };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: unknown };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: unknown };
-!x.n ? y : x.n;
-      `,
-      `
 declare let x: { n: object };
 x ? x : y;
       `,
@@ -339,56 +325,223 @@ declare let x: { n: object };
       `,
       `
 declare let x: { n: string[] };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: string[] };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: Function };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: Function };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: () => string };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: () => string };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: () => string | null };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: () => string | null };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: () => string | undefined };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: () => string | undefined };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: () => string | null | undefined };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: () => string | null | undefined };
-!x ? y : x;
+!x.n ? y : x.n;
+      `,
+      `
+declare let foo: string;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  if (!foo) {
+    foo = makeFoo();
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo) {
+    foo = makeFoo();
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo != null) {
+    foo = makeFoo();
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo = makeFoo();
+    return foo;
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo = makeFoo();
+  } else {
+    return 'bar';
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo = makeFoo();
+  } else if (foo.a) {
+    return 'bar';
+  }
+}
+      `,
+      `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+function shadowed() {
+  if (foo == null) {
+    const foo = makeFoo();
+  }
+}
+      `,
+      `
+declare let foo: { foo: string } | null;
+declare function makeFoo(): { foo: { foo: string } };
+function weirdDestructuringAssignment() {
+  if (foo == null) {
+    ({ foo } = makeFoo());
+  }
+}
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject !== undefined && null !== null
+  ? nullOrObject
+  : 42;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject !== undefined && null != null
+  ? nullOrObject
+  : 42;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject !== undefined && null != undefined
+  ? nullOrObject
+  : 42;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject === undefined || null === null
+  ? 42
+  : nullOrObject;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject === undefined || null == null
+  ? 42
+  : nullOrObject;
+      `,
+      `
+declare const nullOrObject: null | { a: string };
+
+const test = nullOrObject === undefined || null == undefined
+  ? 42
+  : nullOrObject;
+      `,
+      `
+const a = 'b';
+declare let x: { a: string, b: string } | null
+
+x?.a != null ? x[a] : 'foo'
+      `,
+      `
+const a = 'b';
+declare let x: { a: string, b: string } | null
+
+x?.[a] != null ? x.a : 'foo'
+      `,
+      `
+declare let x: { a: string } | null
+declare let y: { a: string } | null
+
+x?.a ? y?.a : 'foo'
       `,
     ].map(code => ({
       code,
       options: [{ ignoreTernaryTests: false }] as const,
     })),
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (!foo) {
+    foo = makeFoo();
+  }
+}
+      `,
+      options: [{ ignoreIfStatements: true }],
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (!foo) foo = makeFoo();
+}
+      `,
+      options: [{ ignoreIfStatements: true }],
+    },
 
     // ignoreConditionalTests
     ...nullishTypeTest((nullish, type, equals) => ({
@@ -537,39 +690,9 @@ declare let x: (${type} & { __brand?: any }) | undefined;
       options: [{ ignorePrimitives: true }],
     })),
     `
-      declare let x: any;
-      declare let y: number;
-      x || y;
-    `,
-    `
-      declare let x: unknown;
-      declare let y: number;
-      x || y;
-    `,
-    `
       declare let x: never;
       declare let y: number;
       x || y;
-    `,
-    `
-      declare let x: any;
-      declare let y: number;
-      x ? x : y;
-    `,
-    `
-      declare let x: any;
-      declare let y: number;
-      !x ? y : x;
-    `,
-    `
-      declare let x: unknown;
-      declare let y: number;
-      x ? x : y;
-    `,
-    `
-      declare let x: unknown;
-      declare let y: number;
-      !x ? y : x;
     `,
     `
       declare let x: never;
@@ -580,6 +703,46 @@ declare let x: (${type} & { __brand?: any }) | undefined;
       declare let x: never;
       declare let y: number;
       !x ? y : x;
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== null ? defaultBoxOptional.a?.b : getFallbackBox();
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | null } };
+
+defaultBoxOptional.a?.b !== null ? defaultBoxOptional.a?.b : getFallbackBox();
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | null } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a?.b
+  : getFallbackBox();
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | null } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a.b
+  : getFallbackBox();
     `,
     {
       code: `
@@ -1333,7 +1496,53 @@ if (c || (!a ? b : a)) {
         },
       ],
     },
+
+    {
+      code: `
+declare const a: any;
+declare const b: any;
+a ? a : b;
+      `,
+      options: [
+        {
+          ignorePrimitives: true,
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const a: any;
+declare const b: any;
+a ? a : b;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const a: unknown;
+const b = a || 'bar';
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: false,
+            string: false,
+          },
+        },
+      ],
+    },
   ],
+
   invalid: [
     ...nullishTypeTest((nullish, type, equals) => ({
       code: `
@@ -1981,6 +2190,312 @@ declare let x: { n: (() => string) | null | undefined };
               output: `
 ${code.split('\n')[1]}
 x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }] as const,
+      output: null,
+    })),
+
+    ...[
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a !== undefined ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a !== undefined ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a !== undefined ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a != undefined ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a != undefined ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a != undefined ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a != null ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a != null ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x.n?.a != null ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x.n?.a !== undefined && x.n.a !== null ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x.n?.a !== undefined && x.n.a !== null ? x.n.a : y;
+      `,
+    ].map(code => ({
+      code,
+      errors: [
+        {
+          column: 1,
+          endColumn: code.split('\n')[2].length,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary' as const,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: `
+${code.split('\n')[1]}
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }] as const,
+      output: null,
+    })),
+    ...[
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? (x?.n)?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? (x.n)?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? (x?.n).a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? (x.n).a : y;
+      `,
+    ].map(code => ({
+      code,
+      errors: [
+        {
+          column: 1,
+          endColumn: code.split('\n')[2].length,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary' as const,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: `
+${code.split('\n')[1]}
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }] as const,
+      output: null,
+    })),
+    ...[
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? (x?.n)?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? (x.n)?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x?.n)?.a ? (x?.n).a : y;
+      `,
+    ].map(code => ({
+      code,
+      errors: [
+        {
+          column: 1,
+          endColumn: code.split('\n')[2].length,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary' as const,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: `
+${code.split('\n')[1]}
+(x?.n)?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }] as const,
+      output: null,
+    })),
+
+    ...[
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? x.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? (x?.n)?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? (x.n)?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+(x.n)?.a ? (x?.n).a : y;
+      `,
+    ].map(code => ({
+      code,
+      errors: [
+        {
+          column: 1,
+          endColumn: code.split('\n')[2].length,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary' as const,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: `
+${code.split('\n')[1]}
+(x.n)?.a ?? y;
       `,
             },
           ],
@@ -4696,6 +5211,1112 @@ defaultBox ?? getFallbackBox();
         },
       ],
       options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b != null ? defaultBoxOptional.a?.b : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare const x: any;
+declare const y: any;
+x || y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: any;
+declare const y: any;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const x: unknown;
+declare const y: any;
+x || y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: unknown;
+declare const y: any;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b != null ? defaultBoxOptional.a.b : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ? defaultBoxOptional.a?.b : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ? defaultBoxOptional.a.b : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a?.b
+  : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a.b
+  : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== undefined && defaultBoxOptional.a?.b !== null
+  ? defaultBoxOptional.a?.b
+  : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== undefined && defaultBoxOptional.a?.b !== null
+  ? defaultBoxOptional.a.b
+  : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: unknown;
+declare let y: number;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: unknown;
+declare let y: number;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare let x: unknown;
+declare let y: number;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: unknown;
+declare let y: number;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare let x: { n: unknown };
+!x.n ? y : x.n;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n: unknown };
+x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: { a: string } | null;
+
+x?.['a'] != null ? x['a'] : 'foo';
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { a: string } | null;
+
+x?.['a'] ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { a: string } | null;
+
+x?.['a'] != null ? x.a : 'foo';
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { a: string } | null;
+
+x?.['a'] ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { a: string } | null;
+
+x?.a != null ? x['a'] : 'foo';
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { a: string } | null;
+
+x?.a ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const a = 'b';
+declare let x: { a: string; b: string } | null;
+
+x?.[a] != null ? x[a] : 'foo';
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+const a = 'b';
+declare let x: { a: string; b: string } | null;
+
+x?.[a] ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (!foo) {
+    foo = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo ??= makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo ||= makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) {
+    foo ??= makeFoo();
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo === null) {
+    foo = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) foo = makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) foo ??= makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) foo ||= makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo == null) foo ??= makeFoo();
+  const bar = 42;
+  return bar;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | undefined;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo === undefined) {
+    foo = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | undefined;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null | undefined;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  if (foo === undefined || foo === null) {
+    foo = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null | undefined;
+declare function makeFoo(): { a: string };
+
+function lazyInitialize() {
+  foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  if (foo.a == null) {
+    foo.a = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  foo.a ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  if (foo?.a == null) {
+    foo.a = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string } | null;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  foo.a ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: string | null;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  if (foo == null) {
+    // comment
+    foo = makeFoo();
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: string | null;
+declare function makeFoo(): string;
+
+function lazyInitialize() {
+  // comment
+foo ??= makeFoo();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: string | null;
+declare function makeFoo(): string;
+
+if (foo == null) {
+  // comment before 1
+  /* comment before 2 */
+  /* comment before 3
+    which is multiline
+  */
+  /**
+   * comment before 4
+   * which is also multiline
+   */
+  foo = makeFoo(); // comment inline
+  // comment after 1
+  /* comment after 2 */
+  /* comment after 3
+    which is multiline
+  */
+  /**
+   * comment after 4
+   * which is also multiline
+   */
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: string | null;
+declare function makeFoo(): string;
+
+// comment before 1
+/* comment before 2 */
+/* comment before 3
+    which is multiline
+  */
+/**
+   * comment before 4
+   * which is also multiline
+   */
+foo ??= makeFoo(); // comment inline
+// comment after 1
+/* comment after 2 */
+/* comment after 3
+    which is multiline
+  */
+/**
+   * comment after 4
+   * which is also multiline
+   */
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let foo: string | null;
+declare function makeFoo(): string;
+
+if (foo == null) /* comment before 1 */ /* comment before 2 */ foo = makeFoo(); // comment inline
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: string | null;
+declare function makeFoo(): string;
+
+/* comment before 1 */ /* comment before 2 */ foo ??= makeFoo(); // comment inline
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+declare let foo: { a: string | null };
+declare function makeString(): string;
+
+function weirdParens() {
+  if (((((foo.a)) == null))) {
+    ((((((((foo).a))))) = makeString()));
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let foo: { a: string | null };
+declare function makeString(): string;
+
+function weirdParens() {
+  ((foo).a) ??= makeString();
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+let a: string | undefined;
+let b: { message: string } | undefined;
+
+const foo = a ? a : b ? 1 : 2;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | undefined;
+let b: { message: string } | undefined;
+
+const foo = a ?? (b ? 1 : 2);
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+let a: string | undefined;
+let b: { message: string } | undefined;
+
+const foo = a ? a : (b ? 1 : 2);
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | undefined;
+let b: { message: string } | undefined;
+
+const foo = a ?? (b ? 1 : 2);
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const c: string | null;
+c !== null ? c : c ? 1 : 2;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const c: string | null;
+c ?? (c ? 1 : 2);
+      `,
+            },
+          ],
+        },
+      ],
       output: null,
     },
   ],

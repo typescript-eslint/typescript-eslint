@@ -1,19 +1,9 @@
-import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
-
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-
-import type {
-  InferMessageIdsTypeFromRule,
-  InferOptionsTypeFromRule,
-} from '../../src/util';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/prefer-readonly-parameter-types';
 import { readonlynessOptionsDefaults } from '../../src/util';
-import { dedupeTestCases } from '../dedupeTestCases';
 import { getFixturesRootDir } from '../RuleTester';
-
-type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
-type Options = InferOptionsTypeFromRule<typeof rule>;
 
 const rootPath = getFixturesRootDir();
 
@@ -26,54 +16,23 @@ const ruleTester = new RuleTester({
   },
 });
 
-const primitives = [
-  'boolean',
-  'true',
-  'string',
-  "'a'",
-  'number',
-  '1',
-  'symbol',
-  'any',
-  'unknown',
-  'never',
-  'null',
-  'undefined',
-];
-const arrays = [
-  'readonly string[]',
-  'Readonly<string[]>',
-  'ReadonlyArray<string>',
-  'readonly [string]',
-  'Readonly<[string]>',
-];
-const objects = [
-  '{ foo: "" }',
-  '{ foo: readonly string[] }',
-  '{ foo(): void }',
-];
-const weirdIntersections = [
-  `
-    interface Test {
-      (): void
-      readonly property: boolean
-    }
-    function foo(arg: Test) {}
-  `,
-  `
-    type Test = (() => void) & {
-      readonly property: boolean
-    };
-    function foo(arg: Test) {}
-  `,
-];
-
 ruleTester.run('prefer-readonly-parameter-types', rule, {
   valid: [
     'function foo() {}',
 
     // primitives
-    ...primitives.map(type => `function foo(arg: ${type}) {}`),
+    'function foo(arg: boolean) {}',
+    'function foo(arg: true) {}',
+    'function foo(arg: string) {}',
+    "function foo(arg: 'a') {}",
+    'function foo(arg: number) {}',
+    'function foo(arg: 1) {}',
+    'function foo(arg: symbol) {}',
+    'function foo(arg: any) {}',
+    'function foo(arg: unknown) {}',
+    'function foo(arg: never) {}',
+    'function foo(arg: null) {}',
+    'function foo(arg: undefined) {}',
     `
       const symb = Symbol('a');
       function foo(arg: typeof symb) {}
@@ -87,7 +46,12 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     `,
 
     // arrays
-    ...arrays.map(type => `function foo(arg: ${type}) {}`),
+    'function foo(arg: readonly string[]) {}',
+    'function foo(arg: Readonly<string[]>) {}',
+    'function foo(arg: ReadonlyArray<string>) {}',
+    'function foo(arg: readonly [string]) {}',
+    'function foo(arg: Readonly<[string]>) {}',
+
     // nested arrays
     'function foo(arg: readonly (readonly string[])[]) {}',
     'function foo(arg: Readonly<Readonly<string[]>[]>) {}',
@@ -103,7 +67,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     'function foo(arg: ReadonlyArray<string> | ReadonlyArray<number>) {}',
 
     // objects
-    ...objects.map(type => `function foo(arg: Readonly<${type}>) {}`),
+    "function foo(arg: Readonly<{ foo: '' }>) {}",
+    'function foo(arg: Readonly<{ foo: readonly string[] }>) {}',
+    'function foo(arg: Readonly<{ foo(): void }>) {}',
     `
       function foo(arg: {
         readonly foo: {
@@ -123,7 +89,19 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     `,
 
     // weird other cases
-    ...weirdIntersections.map(code => code),
+    `
+interface Test {
+  (): void;
+  readonly property: boolean;
+}
+function foo(arg: Test) {}
+    `,
+    `
+type Test = (() => void) & {
+  readonly property: boolean;
+};
+function foo(arg: Test) {}
+    `,
     `
       interface Test extends ReadonlyArray<string> {
         readonly property: boolean;
@@ -479,24 +457,36 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
   invalid: [
     // arrays
     // Removing readonly causes duplicates
-    ...dedupeTestCases(
-      arrays.map<InvalidTestCase<MessageIds, Options>>(baseType => {
-        const type = baseType
-          .replaceAll('readonly ', '')
-          .replaceAll(/Readonly<(.+?)>/g, '$1')
-          .replaceAll('ReadonlyArray', 'Array');
-        return {
-          code: `function foo(arg: ${type}) {}`,
-          errors: [
-            {
-              column: 14,
-              endColumn: 19 + type.length,
-              messageId: 'shouldBeReadonly',
-            },
-          ],
-        };
-      }),
-    ),
+    {
+      code: 'function foo(arg: string[]) {}',
+      errors: [
+        {
+          column: 14,
+          endColumn: 27,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
+    {
+      code: 'function foo(arg: Array<string>) {}',
+      errors: [
+        {
+          column: 14,
+          endColumn: 32,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
+    {
+      code: 'function foo(arg: [string]) {}',
+      errors: [
+        {
+          column: 14,
+          endColumn: 27,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
     // nested arrays
     {
       code: 'function foo(arg: readonly string[][]) {}',
@@ -530,18 +520,36 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
 
     // objects
-    ...objects.map<InvalidTestCase<MessageIds, Options>>(type => {
-      return {
-        code: `function foo(arg: ${type}) {}`,
-        errors: [
-          {
-            column: 14,
-            endColumn: 19 + type.length,
-            messageId: 'shouldBeReadonly',
-          },
-        ],
-      };
-    }),
+    {
+      code: "function foo(arg: { foo: '' }) {}",
+      errors: [
+        {
+          column: 14,
+          endColumn: 30,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
+    {
+      code: 'function foo(arg: { foo: readonly string[] }) {}',
+      errors: [
+        {
+          column: 14,
+          endColumn: 45,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
+    {
+      code: 'function foo(arg: { foo(): void }) {}',
+      errors: [
+        {
+          column: 14,
+          endColumn: 34,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
     {
       code: `
         function foo(arg: {
@@ -591,15 +599,41 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
 
     // weird intersections
-    ...weirdIntersections.map<InvalidTestCase<MessageIds, Options>>(
-      baseCode => {
-        const code = baseCode.replaceAll('readonly ', '');
-        return {
-          code,
-          errors: [{ messageId: 'shouldBeReadonly' }],
-        };
-      },
-    ),
+    {
+      code: `
+interface Test {
+  (): void;
+  property: boolean;
+}
+function foo(arg: Test) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 23,
+          endLine: 6,
+          line: 6,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+type Test = (() => void) & {
+  property: boolean;
+};
+function foo(arg: Test) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
     {
       code: `
         interface Test extends Array<string> {
@@ -1053,7 +1087,17 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       ],
       options: [
         {
-          allow: [{ from: 'file', name: 'RegExp' }],
+          allow: [
+            {
+              from: 'file',
+              name: 'RegExp',
+              path: path.posix.join(
+                ...path
+                  .relative(process.cwd(), path.join(__dirname, '..', '..'))
+                  .split(path.sep),
+              ),
+            },
+          ],
         },
       ],
     },

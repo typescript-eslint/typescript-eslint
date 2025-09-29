@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics function-with-await Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -16,7 +13,9 @@ Program {
               type: "AwaitExpression",
               argument: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "future",
+                optional: false,
 
                 range: [111, 117],
                 loc: {
@@ -46,11 +45,14 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "hope",
+        optional: false,
 
         range: [88, 92],
         loc: {
@@ -61,7 +63,9 @@ Program {
       params: [
         Identifier {
           type: "Identifier",
+          decorators: [],
           name: "future",
+          optional: false,
 
           range: [93, 99],
           loc: {
@@ -86,4 +90,3 @@ Program {
     end: { column: 0, line: 6 },
   },
 }
-`;

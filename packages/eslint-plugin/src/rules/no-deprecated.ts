@@ -12,11 +12,13 @@ import {
   nullThrows,
   typeOrValueSpecifiersSchema,
   typeMatchesSomeSpecifier,
+  valueMatchesSomeSpecifier,
 } from '../util';
 
 type IdentifierLike =
   | TSESTree.Identifier
   | TSESTree.JSXIdentifier
+  | TSESTree.PrivateIdentifier
   | TSESTree.Super;
 
 type MessageIds = 'deprecated' | 'deprecatedWithReason';
@@ -160,17 +162,17 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function isInsideExportOrImport(node: TSESTree.Node): boolean {
+    function isInsideImport(node: TSESTree.Node): boolean {
       let current = node;
 
       while (true) {
         switch (current.type) {
-          case AST_NODE_TYPES.ExportAllDeclaration:
-          case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.ImportDeclaration:
             return true;
 
           case AST_NODE_TYPES.ArrowFunctionExpression:
+          case AST_NODE_TYPES.ExportAllDeclaration:
+          case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.BlockStatement:
           case AST_NODE_TYPES.ClassDeclaration:
           case AST_NODE_TYPES.TSInterfaceDeclaration:
@@ -350,6 +352,7 @@ export default createRule<Options, MessageIds>({
           propertySymbol?.valueDeclaration,
         );
         return (
+          searchForDeprecationInAliasesChain(propertySymbol, true) ??
           getJsDocDeprecation(property) ??
           getJsDocDeprecation(propertySymbol) ??
           getJsDocDeprecation(valueSymbol)
@@ -363,21 +366,25 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkIdentifier(node: IdentifierLike): void {
-      if (isDeclaration(node) || isInsideExportOrImport(node)) {
+      if (isDeclaration(node) || isInsideImport(node)) {
         return;
       }
 
       const reason = getDeprecationReason(node);
+
       if (reason == null) {
         return;
       }
 
       const type = services.getTypeAtLocation(node);
-      if (typeMatchesSomeSpecifier(type, allow, services.program)) {
+      if (
+        typeMatchesSomeSpecifier(type, allow, services.program) ||
+        valueMatchesSomeSpecifier(node, allow, services.program, type)
+      ) {
         return;
       }
 
-      const name = node.type === AST_NODE_TYPES.Super ? 'super' : node.name;
+      const name = getReportedNodeName(node);
 
       context.report({
         ...(reason
@@ -393,14 +400,94 @@ export default createRule<Options, MessageIds>({
       });
     }
 
+    function checkMemberExpression(node: TSESTree.MemberExpression): void {
+      if (!node.computed) {
+        return;
+      }
+
+      const propertyType = services.getTypeAtLocation(node.property);
+
+      if (propertyType.isLiteral()) {
+        const objectType = services.getTypeAtLocation(node.object);
+
+        const propertyName = propertyType.isStringLiteral()
+          ? propertyType.value
+          : String(propertyType.value as number);
+
+        const property = objectType.getProperty(propertyName);
+
+        const reason = getJsDocDeprecation(property);
+        if (reason == null) {
+          return;
+        }
+
+        if (typeMatchesSomeSpecifier(objectType, allow, services.program)) {
+          return;
+        }
+
+        context.report({
+          ...(reason
+            ? {
+                messageId: 'deprecatedWithReason',
+                data: { name: propertyName, reason },
+              }
+            : {
+                messageId: 'deprecated',
+                data: { name: propertyName },
+              }),
+          node: node.property,
+        });
+      }
+    }
+
     return {
-      Identifier: checkIdentifier,
+      Identifier(node): void {
+        const { parent } = node;
+
+        if (
+          parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
+          parent.type === AST_NODE_TYPES.ExportAllDeclaration
+        ) {
+          return;
+        }
+
+        if (parent.type === AST_NODE_TYPES.ExportSpecifier) {
+          // only deal with the alias (exported) side, not the local binding
+          if (parent.exported !== node) {
+            return;
+          }
+
+          const symbol = services.getSymbolAtLocation(node);
+          const aliasDeprecation = getJsDocDeprecation(symbol);
+
+          if (aliasDeprecation != null) {
+            return;
+          }
+        }
+
+        // whether it's a plain identifier or the exported alias
+        checkIdentifier(node);
+      },
       JSXIdentifier(node): void {
         if (node.parent.type !== AST_NODE_TYPES.JSXClosingElement) {
           checkIdentifier(node);
         }
       },
+      MemberExpression: checkMemberExpression,
+      PrivateIdentifier: checkIdentifier,
       Super: checkIdentifier,
     };
   },
 });
+
+function getReportedNodeName(node: IdentifierLike): string {
+  if (node.type === AST_NODE_TYPES.Super) {
+    return 'super';
+  }
+
+  if (node.type === AST_NODE_TYPES.PrivateIdentifier) {
+    return `#${node.name}`;
+  }
+
+  return node.name;
+}

@@ -1,20 +1,21 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures special Decorator decorator-class-member-super-without-parens Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "m",
+              optional: false,
 
               range: [38, 39],
               loc: {
@@ -23,6 +24,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -32,6 +35,7 @@ Program {
                 body: [
                   ClassDeclaration {
                     type: "ClassDeclaration",
+                    abstract: false,
                     body: ClassBody {
                       type: "ClassBody",
                       body: [
@@ -56,7 +60,9 @@ Program {
                                 optional: false,
                                 property: Identifier {
                                   type: "Identifier",
+                                  decorators: [],
                                   name: "decorate",
+                                  optional: false,
 
                                   range: [72, 80],
                                   loc: {
@@ -81,7 +87,9 @@ Program {
                           ],
                           key: Identifier {
                             type: "Identifier",
+                            decorators: [],
                             name: "method2",
+                            optional: false,
 
                             range: [120, 127],
                             loc: {
@@ -90,6 +98,8 @@ Program {
                             },
                           },
                           kind: "method",
+                          optional: false,
+                          override: false,
                           static: false,
                           value: FunctionExpression {
                             type: "FunctionExpression",
@@ -104,6 +114,7 @@ Program {
                                 end: { column: 18, line: 5 },
                               },
                             },
+                            declare: false,
                             expression: false,
                             generator: false,
                             id: null,
@@ -130,9 +141,13 @@ Program {
                         end: { column: 5, line: 6 },
                       },
                     },
+                    declare: false,
+                    decorators: [],
                     id: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "C",
+                      optional: false,
 
                       range: [54, 55],
                       loc: {
@@ -140,6 +155,7 @@ Program {
                         end: { column: 11, line: 3 },
                       },
                     },
+                    implements: [],
                     superClass: null,
 
                     range: [48, 138],
@@ -156,6 +172,7 @@ Program {
                   end: { column: 3, line: 7 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -182,9 +199,13 @@ Program {
           end: { column: 1, line: 8 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "D",
+        optional: false,
 
         range: [6, 7],
         loc: {
@@ -192,9 +213,12 @@ Program {
           end: { column: 7, line: 1 },
         },
       },
+      implements: [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "DecoratorProvider",
+        optional: false,
 
         range: [16, 33],
         loc: {
@@ -218,4 +242,3 @@ Program {
     end: { column: 0, line: 9 },
   },
 }
-`;

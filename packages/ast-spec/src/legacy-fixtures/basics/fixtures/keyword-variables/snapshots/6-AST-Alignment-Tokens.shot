@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > keyword-variables > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -2238,7 +2238,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - T
     },
     String {
       type: 'String',
-      value: '\\'fake-module\\'',
+      value: '\'fake-module\'',
 
       range: [1004, 1017],
       loc: {
@@ -2596,10 +2596,8 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - T
         end: { column: 18, line: 76 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Keyword {
+      type: 'Keyword',
       value: 'let',
 
       range: [1130, 1133],
@@ -2628,10 +2626,8 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - T
         end: { column: 11, line: 77 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Keyword {
+      type: 'Keyword',
       value: 'yield',
 
       range: [1138, 1143],
@@ -2670,5 +2666,4 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - T
         end: { column: 1, line: 79 },
       },
     },
-  ]"
-`;
+  ]

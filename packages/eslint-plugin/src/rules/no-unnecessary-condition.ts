@@ -12,12 +12,10 @@ import {
   getTypeName,
   getTypeOfPropertyOfName,
   getValueOfLiteralType,
-  isAlwaysNullish,
   isArrayMethodCallWithPredicate,
   isIdentifier,
   isNullableType,
   isPossiblyFalsy,
-  isPossiblyNullish,
   isPossiblyTruthy,
   isTypeAnyType,
   isTypeFlagSet,
@@ -31,6 +29,25 @@ import {
 } from '../util/assertionFunctionUtils';
 
 // #region
+
+const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
+
+function isNullishType(type: ts.Type): boolean {
+  return tsutils.isTypeFlagSet(type, nullishFlag);
+}
+
+function isAlwaysNullish(type: ts.Type): boolean {
+  return tsutils.unionConstituents(type).every(isNullishType);
+}
+
+/**
+ * Note that this differs from {@link isNullableType} in that it doesn't consider
+ * `any` or `unknown` to be nullable.
+ */
+function isPossiblyNullish(type: ts.Type): boolean {
+  return tsutils.unionConstituents(type).some(isNullishType);
+}
+
 function toStaticValue(
   type: ts.Type,
 ):
@@ -135,6 +152,7 @@ export type MessageId =
   | 'neverOptionalChain'
   | 'noOverlapBooleanExpression'
   | 'noStrictNullCheck'
+  | 'suggestRemoveOptionalChain'
   | 'typeGuardAlreadyIsType';
 
 export default createRule<Options, MessageId>({
@@ -147,7 +165,7 @@ export default createRule<Options, MessageId>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
+    hasSuggestions: true,
     messages: {
       alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
       alwaysFalsyFunc:
@@ -167,6 +185,7 @@ export default createRule<Options, MessageId>({
         'Unnecessary conditional, the types have no overlap.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      suggestRemoveOptionalChain: 'Remove unnecessary optional chain',
       typeGuardAlreadyIsType:
         'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
     },
@@ -255,14 +274,14 @@ export default createRule<Options, MessageId>({
     function nodeIsArrayType(node: TSESTree.Expression): boolean {
       const nodeType = getConstrainedTypeAtLocation(services, node);
       return tsutils
-        .unionTypeParts(nodeType)
+        .unionConstituents(nodeType)
         .some(part => checker.isArrayType(part));
     }
 
     function nodeIsTupleType(node: TSESTree.Expression): boolean {
       const nodeType = getConstrainedTypeAtLocation(services, node);
       return tsutils
-        .unionTypeParts(nodeType)
+        .unionConstituents(nodeType)
         .some(part => checker.isTupleType(part));
     }
 
@@ -284,7 +303,7 @@ export default createRule<Options, MessageId>({
     //    `any` or `unknown` or a naked type variable
     function isConditionalAlwaysNecessary(type: ts.Type): boolean {
       return tsutils
-        .unionTypeParts(type)
+        .unionConstituents(type)
         .some(
           part =>
             isTypeAnyType(part) ||
@@ -340,7 +359,7 @@ export default createRule<Options, MessageId>({
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
-      if (isArrayIndexExpression(expression)) {
+      if (!isNoUncheckedIndexedAccess && isArrayIndexExpression(expression)) {
         return;
       }
 
@@ -407,12 +426,13 @@ export default createRule<Options, MessageId>({
         //  possibility of out-of-bounds access, if we're indexing into an array
         //  just skip the check, to avoid false positives
         if (
-          !isArrayIndexExpression(node) &&
-          !(
-            node.type === AST_NODE_TYPES.ChainExpression &&
-            node.expression.type !== AST_NODE_TYPES.TSNonNullExpression &&
-            optionChainContainsOptionArrayIndex(node.expression)
-          )
+          isNoUncheckedIndexedAccess ||
+          (!isArrayIndexExpression(node) &&
+            !(
+              node.type === AST_NODE_TYPES.ChainExpression &&
+              node.expression.type !== AST_NODE_TYPES.TSNonNullExpression &&
+              optionChainContainsOptionArrayIndex(node.expression)
+            ))
         ) {
           messageId = 'neverNullish';
         }
@@ -818,7 +838,10 @@ export default createRule<Options, MessageId>({
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
-      if (optionChainContainsOptionArrayIndex(node)) {
+      if (
+        !isNoUncheckedIndexedAccess &&
+        optionChainContainsOptionArrayIndex(node)
+      ) {
         return;
       }
 
@@ -842,9 +865,14 @@ export default createRule<Options, MessageId>({
         loc: questionDotOperator.loc,
         node,
         messageId: 'neverOptionalChain',
-        fix(fixer) {
-          return fixer.replaceText(questionDotOperator, fix);
-        },
+        suggest: [
+          {
+            messageId: 'suggestRemoveOptionalChain',
+            fix(fixer) {
+              return fixer.replaceText(questionDotOperator, fix);
+            },
+          },
+        ],
       });
     }
 

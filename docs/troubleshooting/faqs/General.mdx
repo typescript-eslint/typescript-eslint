@@ -36,7 +36,7 @@ Some examples
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   // ... the rest of your config ...
   {
     rules: {
@@ -242,9 +242,10 @@ For example, the following config enables only the recommended config's type-che
 {/* prettier-ignore */}
 ```js title="eslint.config.mjs"
 import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
   tseslint.configs.recommendedTypeCheckedOnly,
   {
     languageOptions: {

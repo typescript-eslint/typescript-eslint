@@ -1123,87 +1123,6 @@ ruleTester.run('no-unsafe-enum-comparison', rule, {
     },
     {
       code: `
-        enum ComputedKey {
-          ['test-key' /* with comment */] = 1,
-        }
-        declare const computedKey: ComputedKey;
-        computedKey === 1;
-      `,
-      errors: [
-        {
-          messageId: 'mismatchedCondition',
-          suggestions: [
-            {
-              messageId: 'replaceValueWithEnum',
-              output: `
-        enum ComputedKey {
-          ['test-key' /* with comment */] = 1,
-        }
-        declare const computedKey: ComputedKey;
-        computedKey === ComputedKey['test-key'];
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-        enum ComputedKey {
-          [\`test-key\` /* with comment */] = 1,
-        }
-        declare const computedKey: ComputedKey;
-        computedKey === 1;
-      `,
-      errors: [
-        {
-          messageId: 'mismatchedCondition',
-          suggestions: [
-            {
-              messageId: 'replaceValueWithEnum',
-              output: `
-        enum ComputedKey {
-          [\`test-key\` /* with comment */] = 1,
-        }
-        declare const computedKey: ComputedKey;
-        computedKey === ComputedKey[\`test-key\`];
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-        enum ComputedKey {
-          [\`test-
-          key\` /* with comment */] = 1,
-        }
-        declare const computedKey: ComputedKey;
-        computedKey === 1;
-      `,
-      errors: [
-        {
-          messageId: 'mismatchedCondition',
-          suggestions: [
-            {
-              messageId: 'replaceValueWithEnum',
-              output: `
-        enum ComputedKey {
-          [\`test-
-          key\` /* with comment */] = 1,
-        }
-        declare const computedKey: ComputedKey;
-        computedKey === ComputedKey[\`test-
-          key\`];
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
         enum Fruit {
           Apple,
         }
@@ -1245,6 +1164,82 @@ ruleTester.run('no-unsafe-enum-comparison', rule, {
         }
       `,
       errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+enum NUMBER_ENUM {
+  First = 0,
+  Second = 1,
+}
+
+type NumberUnion = 0 | 1;
+
+declare const numberUnion: NumberUnion;
+
+switch (numberUnion) {
+  case NUMBER_ENUM.First:
+  case NUMBER_ENUM.Second:
+    break;
+}
+      `,
+      errors: [
+        {
+          line: 12,
+          messageId: 'mismatchedCase',
+        },
+        {
+          line: 13,
+          messageId: 'mismatchedCase',
+        },
+      ],
+    },
+    {
+      code: `
+enum STRING_ENUM {
+  First = 'one',
+  Second = 'two',
+}
+
+type StringUnion = 'one' | 'two';
+
+declare const stringUnion: StringUnion;
+
+switch (stringUnion) {
+  case STRING_ENUM.First:
+  case STRING_ENUM.Second:
+    break;
+}
+      `,
+      errors: [
+        {
+          line: 12,
+          messageId: 'mismatchedCase',
+        },
+        {
+          line: 13,
+          messageId: 'mismatchedCase',
+        },
+      ],
+    },
+    {
+      code: `
+declare const stringUnion: 'foo' | 'bar';
+
+enum StringEnum {
+  FOO = 'foo',
+  BAR = 'bar',
+}
+
+declare const stringEnum: StringEnum;
+
+stringUnion === stringEnum;
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
   ],
 });

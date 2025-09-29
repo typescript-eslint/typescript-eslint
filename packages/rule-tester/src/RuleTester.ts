@@ -210,7 +210,7 @@ export class RuleTester extends TestFramework {
     // file name (`foo.ts`), don't change the base path.
     if (
       filename != null &&
-      (path.isAbsolute(filename) || filename.startsWith('..'))
+      (path.isAbsolute(filename) || path.normalize(filename).startsWith('..'))
     ) {
       basePath = path.parse(
         path.resolve(basePath ?? process.cwd(), filename),
@@ -761,8 +761,8 @@ export class RuleTester extends TestFramework {
 
     // Verify the code.
     let initialMessages: Linter.LintMessage[] | null = null;
-    let messages: Linter.LintMessage[] | null = null;
-    let fixedResult: SourceCodeFixer.AppliedFixes | null = null;
+    let messages: Linter.LintMessage[];
+    let fixedResult: SourceCodeFixer.AppliedFixes;
     let passNumber = 0;
     const outputs: string[] = [];
     const configWithoutCustomKeys = omitCustomConfigProperties(config);
@@ -771,14 +771,19 @@ export class RuleTester extends TestFramework {
     do {
       passNumber++;
 
+      const SourceCodePrototype = SourceCode.prototype as Record<
+        ForbiddenMethodName,
+        ForbiddenFunction
+      >;
+
       const { applyInlineConfig, applyLanguageOptions, finalize } =
-        SourceCode.prototype;
+        SourceCodePrototype;
 
       try {
         forbiddenMethods.forEach(methodName => {
-          SourceCode.prototype[methodName] = throwForbiddenMethodError(
+          SourceCodePrototype[methodName] = throwForbiddenMethodError(
             methodName,
-            SourceCode.prototype,
+            SourceCodePrototype,
           );
         });
 
@@ -798,9 +803,9 @@ export class RuleTester extends TestFramework {
         });
         messages = linter.verify(code, actualConfig, filename);
       } finally {
-        SourceCode.prototype.applyInlineConfig = applyInlineConfig;
-        SourceCode.prototype.applyLanguageOptions = applyLanguageOptions;
-        SourceCode.prototype.finalize = finalize;
+        SourceCodePrototype.applyInlineConfig = applyInlineConfig;
+        SourceCodePrototype.applyLanguageOptions = applyLanguageOptions;
+        SourceCodePrototype.finalize = finalize;
       }
 
       initialMessages ??= messages;

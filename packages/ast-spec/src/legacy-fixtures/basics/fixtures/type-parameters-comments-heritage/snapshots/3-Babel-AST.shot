@@ -1,11 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -16,9 +14,13 @@ Program {
           end: { column: 70, line: 3 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -26,9 +28,12 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "bar",
+        optional: false,
 
         range: [114, 117],
         loc: {
@@ -43,7 +48,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "A",
+              optional: false,
 
               range: [128, 129],
               loc: {
@@ -71,7 +78,10 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "A",
+            out: false,
 
             range: [93, 94],
             loc: {
@@ -96,6 +106,7 @@ Program {
     },
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -106,9 +117,13 @@ Program {
           end: { column: 39, line: 6 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "foo2",
+        optional: false,
 
         range: [150, 154],
         loc: {
@@ -116,9 +131,12 @@ Program {
           end: { column: 10, line: 4 },
         },
       },
+      implements: [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "bar",
+        optional: false,
 
         range: [205, 208],
         loc: {
@@ -133,7 +151,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "A",
+              optional: false,
 
               range: [219, 220],
               loc: {
@@ -161,6 +181,7 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             default: TSLiteralType {
               type: "TSLiteralType",
               literal: Literal {
@@ -181,7 +202,9 @@ Program {
                 end: { column: 27, line: 5 },
               },
             },
+            in: false,
             name: "A",
+            out: false,
 
             range: [168, 183],
             loc: {
@@ -216,12 +239,15 @@ Program {
           end: { column: 75, line: 7 },
         },
       },
+      declare: false,
       extends: [
         TSExpressionWithTypeArguments {
           type: "TSExpressionWithTypeArguments",
           expression: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "bar2",
+            optional: false,
 
             range: [280, 284],
             loc: {
@@ -236,7 +262,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "A",
+                  optional: false,
 
                   range: [295, 296],
                   loc: {
@@ -269,7 +297,9 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "bar",
+        optional: false,
 
         range: [245, 248],
         loc: {
@@ -282,7 +312,10 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "A",
+            out: false,
 
             range: [259, 260],
             loc: {
@@ -317,12 +350,15 @@ Program {
           end: { column: 39, line: 9 },
         },
       },
+      declare: false,
       extends: [
         TSExpressionWithTypeArguments {
           type: "TSExpressionWithTypeArguments",
           expression: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "bar",
+            optional: false,
 
             range: [373, 376],
             loc: {
@@ -337,7 +373,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "A",
+                  optional: false,
 
                   range: [387, 388],
                   loc: {
@@ -370,7 +408,9 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "bar2",
+        optional: false,
 
         range: [321, 325],
         loc: {
@@ -383,6 +423,7 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             default: TSLiteralType {
               type: "TSLiteralType",
               literal: Literal {
@@ -403,7 +444,9 @@ Program {
                 end: { column: 40, line: 8 },
               },
             },
+            in: false,
             name: "A",
+            out: false,
 
             range: [336, 351],
             loc: {
@@ -435,4 +478,3 @@ Program {
     end: { column: 0, line: 10 },
   },
 }
-`;

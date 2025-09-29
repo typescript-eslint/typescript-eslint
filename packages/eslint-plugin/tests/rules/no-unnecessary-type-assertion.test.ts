@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 
-const rootDir = path.resolve(__dirname, '../fixtures/');
+const rootDir = path.join(__dirname, '..', 'fixtures');
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
@@ -416,25 +416,48 @@ enum T {
 const b = 1 as T.Value2;
       `,
     },
-  ],
-
-  invalid: [
-    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    `
+const foo: unknown = {};
+const baz: {} = foo!;
+    `,
+    `
+const foo: unknown = {};
+const bar: object = foo!;
+    `,
+    `
+declare function foo<T extends unknown>(bar: T): T;
+const baz: unknown = {};
+foo(baz!);
+    `,
     {
       code: 'const a = `a` as const;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      output: 'const a = `a`;',
     },
     {
       code: "const a = 'a' as const;",
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      output: "const a = 'a';",
     },
     {
       code: "const a = <const>'a';",
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      output: "const a = 'a';",
     },
+    {
+      code: `
+class T {
+  readonly a = 'a' as const;
+}
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+declare const a: T.Value1;
+const b = a as const;
+      `,
+    },
+  ],
+
+  invalid: [
     {
       code: 'const foo = <3>3;',
       errors: [{ column: 13, line: 1, messageId: 'unnecessaryAssertion' }],
@@ -1197,24 +1220,6 @@ var x = 1;
     {
       code: `
 class T {
-  readonly a = 'a' as const;
-}
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'unnecessaryAssertion',
-        },
-      ],
-      output: `
-class T {
-  readonly a = 'a';
-}
-      `,
-    },
-    {
-      code: `
-class T {
   readonly a = 3 as 3;
 }
       `,
@@ -1312,6 +1317,112 @@ const b = a;
     },
     {
       code: `
+const foo: unknown = {};
+const bar: unknown = foo!;
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+const foo: unknown = {};
+const bar: unknown = foo;
+      `,
+    },
+    {
+      code: `
+function foo(bar: unknown) {}
+const baz: unknown = {};
+foo(baz!);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function foo(bar: unknown) {}
+const baz: unknown = {};
+foo(baz);
+      `,
+    },
+    {
+      code: 'const a = true as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = true;',
+    },
+    {
+      code: 'const a = <const>true;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = true;',
+    },
+    {
+      code: 'const a = 1 as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = 1;',
+    },
+    {
+      code: 'const a = <const>1;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = 1;',
+    },
+    {
+      code: 'const a = 1n as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = 1n;',
+    },
+    {
+      code: 'const a = <const>1n;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = 1n;',
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    {
+      code: 'const a = `a` as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = `a`;',
+    },
+    {
+      code: "const a = 'a' as const;",
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: "const a = 'a';",
+    },
+    {
+      code: "const a = <const>'a';",
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: "const a = 'a';",
+    },
+    {
+      code: `
+class T {
+  readonly a = 'a' as const;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+class T {
+  readonly a = 'a';
+}
+      `,
+    },
+    {
+      code: `
 enum T {
   Value1,
   Value2,
@@ -1325,6 +1436,7 @@ const b = a as const;
           messageId: 'unnecessaryAssertion',
         },
       ],
+      options: [{ checkLiteralConstAssertions: true }],
       output: `
 enum T {
   Value1,

@@ -1,3 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ empty-type-parameters-in-method Babel - Error 1`] = `[SyntaxError: Type parameter list cannot be empty. (4:6)]`;
+exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > empty-type-parameters-in-method > Babel - Error`]
+BabelError
+  2 |
+  3 | class foo {
+> 4 |   test<>() {}
+    |       ^ Type parameter list cannot be empty. (4:6)
+  5 | }
+  6 |
+  

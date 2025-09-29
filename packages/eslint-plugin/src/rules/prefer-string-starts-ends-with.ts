@@ -1,4 +1,8 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type {
+  NodeWithParent,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/utils';
 
 import { RegExpParser } from '@eslint-community/regexpp';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -13,6 +17,7 @@ import {
   isStaticMemberAccessOfValue,
   nullThrows,
   NullThrowsReasons,
+  skipChainExpression,
 } from '../util';
 
 const EQ_OPERATORS = /^[=!]=/;
@@ -306,18 +311,11 @@ export default createRule<Options, MessageIds>({
     }
 
     function getLeftNode(
-      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+      init: TSESTree.Expression | TSESTree.PrivateIdentifier,
     ): TSESTree.MemberExpression {
-      if (node.type === AST_NODE_TYPES.ChainExpression) {
-        return getLeftNode(node.expression);
-      }
-
-      let leftNode;
-      if (node.type === AST_NODE_TYPES.CallExpression) {
-        leftNode = node.callee;
-      } else {
-        leftNode = node;
-      }
+      const node = skipChainExpression(init);
+      const leftNode =
+        node.type === AST_NODE_TYPES.CallExpression ? node.callee : node;
 
       if (leftNode.type !== AST_NODE_TYPES.MemberExpression) {
         throw new Error(`Expected a MemberExpression, got ${leftNode.type}`);
@@ -382,13 +380,10 @@ export default createRule<Options, MessageIds>({
       yield fixer.removeRange([callNode.range[1], node.range[1]]);
     }
 
-    function getParent(node: TSESTree.Node): TSESTree.Node {
-      return nullThrows(
-        node.parent?.type === AST_NODE_TYPES.ChainExpression
-          ? node.parent.parent
-          : node.parent,
-        NullThrowsReasons.MissingParent,
-      );
+    function getParent(node: NodeWithParent): TSESTree.Node {
+      return node.parent.type === AST_NODE_TYPES.ChainExpression
+        ? node.parent.parent
+        : node.parent;
     }
 
     return {

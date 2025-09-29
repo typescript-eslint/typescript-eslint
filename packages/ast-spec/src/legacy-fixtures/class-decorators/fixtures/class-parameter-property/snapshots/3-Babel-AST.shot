@@ -1,20 +1,21 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures class-decorators class-parameter-property Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "constructor",
+              optional: false,
 
               range: [85, 96],
               loc: {
@@ -23,6 +24,8 @@ Program {
               },
             },
             kind: "constructor",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -37,6 +40,7 @@ Program {
                   end: { column: 38, line: 4 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -49,7 +53,9 @@ Program {
                       type: "Decorator",
                       expression: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "d",
+                        optional: false,
 
                         range: [98, 99],
                         loc: {
@@ -65,9 +71,12 @@ Program {
                       },
                     },
                   ],
+                  override: false,
                   parameter: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "x",
+                    optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: "TSTypeAnnotation",
                       typeAnnotation: TSNumberKeyword {
@@ -93,10 +102,12 @@ Program {
                       end: { column: 34, line: 4 },
                     },
                   },
+                  readonly: false,
+                  static: false,
 
-                  range: [100, 117],
+                  range: [97, 117],
                   loc: {
-                    start: { column: 17, line: 4 },
+                    start: { column: 14, line: 4 },
                     end: { column: 34, line: 4 },
                   },
                 },
@@ -123,9 +134,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "A",
+        optional: false,
 
         range: [79, 80],
         loc: {
@@ -133,6 +148,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 123],
@@ -150,4 +166,3 @@ Program {
     end: { column: 0, line: 6 },
   },
 }
-`;

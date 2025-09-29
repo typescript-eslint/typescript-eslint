@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types union-intersection AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > union-intersection > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -58,10 +58,8 @@ exports[`AST Fixtures legacy-fixtures types union-intersection AST Alignment - T
         end: { column: 19, line: 3 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Null {
-+     type: 'Null',
+    Null {
+      type: 'Null',
       value: 'null',
 
       range: [93, 97],
@@ -396,5 +394,4 @@ exports[`AST Fixtures legacy-fixtures types union-intersection AST Alignment - T
         end: { column: 45, line: 6 },
       },
     },
-  ]"
-`;
+  ]

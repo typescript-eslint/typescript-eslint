@@ -23,7 +23,7 @@ export type Options = [
   },
 ];
 
-interface ChecksVoidReturnOptions {
+export interface ChecksVoidReturnOptions {
   arguments?: boolean;
   attributes?: boolean;
   inheritedMethods?: boolean;
@@ -686,7 +686,9 @@ export default createRule<Options, MessageId>({
 function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
 
-  for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
+  for (const subType of tsutils.unionConstituents(
+    checker.getApparentType(type),
+  )) {
     if (tsutils.isThenableType(checker, node, subType)) {
       return true;
     }
@@ -702,7 +704,9 @@ function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
 function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
 
-  for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
+  for (const subType of tsutils.unionConstituents(
+    checker.getApparentType(type),
+  )) {
     const thenProp = subType.getProperty('then');
 
     // If one of the alternates has no then property, it is not thenable in all
@@ -716,7 +720,7 @@ function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
     // be of the right form to consider it thenable.
     const thenType = checker.getTypeOfSymbolAtLocation(thenProp, node);
     let hasThenableSignature = false;
-    for (const subType of tsutils.unionTypeParts(thenType)) {
+    for (const subType of tsutils.unionConstituents(thenType)) {
       for (const signature of subType.getCallSignatures()) {
         if (
           signature.parameters.length !== 0 &&
@@ -754,7 +758,7 @@ function isFunctionParam(
   const type: ts.Type | undefined = checker.getApparentType(
     checker.getTypeOfSymbolAtLocation(param, node),
   );
-  for (const subType of tsutils.unionTypeParts(type)) {
+  for (const subType of tsutils.unionConstituents(type)) {
     if (subType.getCallSignatures().length !== 0) {
       return true;
     }
@@ -818,7 +822,7 @@ function voidFunctionArguments(
   // We can't use checker.getResolvedSignature because it prefers an early '() => void' over a later '() => Promise<void>'
   // See https://github.com/microsoft/TypeScript/issues/48077
 
-  for (const subType of tsutils.unionTypeParts(type)) {
+  for (const subType of tsutils.unionConstituents(type)) {
     // Standard function calls and `new` have two different types of signatures
     const signatures = ts.isCallExpression(node)
       ? subType.getCallSignatures()
@@ -915,7 +919,7 @@ function isThenableReturningFunctionType(
   node: ts.Node,
   type: ts.Type,
 ): boolean {
-  for (const subType of tsutils.unionTypeParts(type)) {
+  for (const subType of tsutils.unionConstituents(type)) {
     if (anySignatureIsThenableType(checker, node, subType)) {
       return true;
     }
@@ -934,7 +938,7 @@ function isVoidReturningFunctionType(
 ): boolean {
   let hadVoidReturn = false;
 
-  for (const subType of tsutils.unionTypeParts(type)) {
+  for (const subType of tsutils.unionConstituents(type)) {
     for (const signature of subType.getCallSignatures()) {
       const returnType = signature.getReturnType();
 
@@ -957,7 +961,7 @@ function isVoidReturningFunctionType(
 function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getApparentType(checker.getTypeAtLocation(node));
   return tsutils
-    .unionTypeParts(type)
+    .unionConstituents(type)
     .some(t => anySignatureIsThenableType(checker, node, t));
 }
 

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures declare enum AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > declare > enum > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -15,16 +15,18 @@ exports[`AST Fixtures legacy-fixtures declare enum AST Alignment - AST 1`] = `
 -         members: Array [
 -           TSEnumMember {
 -             type: 'TSEnumMember',
--             computed: false,
 -             id: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
 -               name: 'Bar',
 -               optional: false,
++       const: false,
 +       declare: true,
 +       id: Identifier {
 +         type: 'Identifier',
++         decorators: Array [],
 +         name: 'Foo',
++         optional: false,
 
 -               range: [94, 97],
 -               loc: {
@@ -41,9 +43,12 @@ exports[`AST Fixtures legacy-fixtures declare enum AST Alignment - AST 1`] = `
 +       members: Array [
 +         TSEnumMember {
 +           type: 'TSEnumMember',
++           computed: false,
 +           id: Identifier {
 +             type: 'Identifier',
++             decorators: Array [],
 +             name: 'Bar',
++             optional: false,
 
               range: [94, 97],
               loc: {
@@ -53,7 +58,6 @@ exports[`AST Fixtures legacy-fixtures declare enum AST Alignment - AST 1`] = `
             },
 -           TSEnumMember {
 -             type: 'TSEnumMember',
--             computed: false,
 -             id: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -74,9 +78,12 @@ exports[`AST Fixtures legacy-fixtures declare enum AST Alignment - AST 1`] = `
 +         },
 +         TSEnumMember {
 +           type: 'TSEnumMember',
++           computed: false,
 +           id: Identifier {
 +             type: 'Identifier',
++             decorators: Array [],
 +             name: 'Baz',
++             optional: false,
 
               range: [101, 104],
               loc: {
@@ -90,7 +97,12 @@ exports[`AST Fixtures legacy-fixtures declare enum AST Alignment - AST 1`] = `
 -         loc: {
 -           start: { column: 17, line: 3 },
 -           end: { column: 1, line: 6 },
--         },
++           range: [101, 104],
++           loc: {
++             start: { column: 2, line: 5 },
++             end: { column: 5, line: 5 },
++           },
+          },
 -       },
 -       const: false,
 -       declare: true,
@@ -104,12 +116,7 @@ exports[`AST Fixtures legacy-fixtures declare enum AST Alignment - AST 1`] = `
 -         loc: {
 -           start: { column: 13, line: 3 },
 -           end: { column: 16, line: 3 },
-+           range: [101, 104],
-+           loc: {
-+             start: { column: 2, line: 5 },
-+             end: { column: 5, line: 5 },
-+           },
-          },
+-         },
 -       },
 +       ],
 
@@ -127,5 +134,4 @@ exports[`AST Fixtures legacy-fixtures declare enum AST Alignment - AST 1`] = `
       start: { column: 0, line: 3 },
       end: { column: 0, line: 7 },
     },
-  }"
-`;
+  }

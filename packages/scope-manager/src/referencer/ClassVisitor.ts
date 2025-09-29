@@ -9,27 +9,22 @@ import { TypeVisitor } from './TypeVisitor';
 import { Visitor } from './Visitor';
 
 export class ClassVisitor extends Visitor {
-  readonly #classNode: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
   readonly #referencer: Referencer;
 
-  constructor(
-    referencer: Referencer,
-    node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
-  ) {
+  constructor(referencer: Referencer) {
     super(referencer);
     this.#referencer = referencer;
-    this.#classNode = node;
   }
 
   static visit(
     referencer: Referencer,
     node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
   ): void {
-    const classVisitor = new ClassVisitor(referencer, node);
+    const classVisitor = new ClassVisitor(referencer);
     classVisitor.visitClass(node);
   }
 
-  visit(node: TSESTree.Node | null | undefined): void {
+  override visit(node: TSESTree.Node | null | undefined): void {
     // make sure we only handle the nodes we are designed to handle
     if (node && node.type in this) {
       super.visit(node);
@@ -97,7 +92,7 @@ export class ClassVisitor extends Visitor {
     }
 
     if (node.value.type === AST_NODE_TYPES.FunctionExpression) {
-      this.visitMethodFunction(node.value, node);
+      this.visitMethodFunction(node.value);
     } else {
       this.#referencer.visit(node.value);
     }
@@ -105,10 +100,7 @@ export class ClassVisitor extends Visitor {
     node.decorators.forEach(d => this.#referencer.visit(d));
   }
 
-  protected visitMethodFunction(
-    node: TSESTree.FunctionExpression,
-    methodNode: TSESTree.MethodDefinition,
-  ): void {
+  protected visitMethodFunction(node: TSESTree.FunctionExpression): void {
     if (node.id) {
       // FunctionExpression with name creates its special scope;
       // FunctionExpressionNameScope.
@@ -121,71 +113,6 @@ export class ClassVisitor extends Visitor {
 
     // Consider this function is in the MethodDefinition.
     this.#referencer.scopeManager.nestFunctionScope(node, true);
-
-    /**
-     * class A {
-     *   @meta     // <--- check this
-     *   foo(a: Type) {}
-     *
-     *   @meta     // <--- check this
-     *   foo(): Type {}
-     * }
-     */
-    let withMethodDecorators = !!methodNode.decorators.length;
-    /**
-     * class A {
-     *   foo(
-     *     @meta    // <--- check this
-     *     a: Type
-     *   ) {}
-     *
-     *   set foo(
-     *     @meta    // <--- EXCEPT this. TS do nothing for this
-     *     a: Type
-     *   ) {}
-     * }
-     */
-    withMethodDecorators ||=
-      methodNode.kind !== 'set' &&
-      node.params.some(param => param.decorators.length);
-    if (!withMethodDecorators && methodNode.kind === 'set') {
-      const keyName = getLiteralMethodKeyName(methodNode);
-
-      /**
-       * class A {
-       *   @meta      // <--- check this
-       *   get a() {}
-       *   set ['a'](v: Type) {}
-       * }
-       */
-      if (
-        keyName != null &&
-        this.#classNode.body.body.find(
-          (node): node is TSESTree.MethodDefinition =>
-            node !== methodNode &&
-            node.type === AST_NODE_TYPES.MethodDefinition &&
-            // Node must both be static or not
-            node.static === methodNode.static &&
-            getLiteralMethodKeyName(node) === keyName,
-        )?.decorators.length
-      ) {
-        withMethodDecorators = true;
-      }
-    }
-
-    /**
-     * @meta      // <--- check this
-     * class A {
-     *   constructor(a: Type) {}
-     * }
-     */
-    if (
-      !withMethodDecorators &&
-      methodNode.kind === 'constructor' &&
-      this.#classNode.decorators.length
-    ) {
-      withMethodDecorators = true;
-    }
 
     // Process parameter declarations.
     for (const param of node.params) {
@@ -336,40 +263,4 @@ export class ClassVisitor extends Visitor {
   protected TSIndexSignature(node: TSESTree.TSIndexSignature): void {
     this.visitType(node);
   }
-}
-
-/**
- * Only if key is one of [identifier, string, number], ts will combine metadata of accessors .
- * class A {
- *   get a() {}
- *   set ['a'](v: Type) {}
- *
- *   get [1]() {}
- *   set [1](v: Type) {}
- *
- *   // Following won't be combined
- *   get [key]() {}
- *   set [key](v: Type) {}
- *
- *   get [true]() {}
- *   set [true](v: Type) {}
- *
- *   get ['a'+'b']() {}
- *   set ['a'+'b']() {}
- * }
- */
-function getLiteralMethodKeyName(
-  node: TSESTree.MethodDefinition,
-): number | string | null {
-  if (node.computed && node.key.type === AST_NODE_TYPES.Literal) {
-    if (
-      typeof node.key.value === 'string' ||
-      typeof node.key.value === 'number'
-    ) {
-      return node.key.value;
-    }
-  } else if (!node.computed && node.key.type === AST_NODE_TYPES.Identifier) {
-    return node.key.name;
-  }
-  return null;
 }

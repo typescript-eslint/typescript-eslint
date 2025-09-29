@@ -1,14 +1,14 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types optional-variance-out Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Provider",
+        optional: false,
 
         range: [78, 86],
         loc: {
@@ -25,7 +25,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [102, 103],
               loc: {
@@ -59,6 +61,8 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "T",
             out: true,
 
@@ -92,4 +96,3 @@ Program {
     end: { column: 0, line: 4 },
   },
 }
-`;

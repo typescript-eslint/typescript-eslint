@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-properties AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > abstract-class-with-abstract-properties > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -20,14 +20,14 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
 +             type: 'PropertyDefinition',
 +             abstract: true,
               computed: false,
--             declare: false,
--             decorators: Array [],
--             definite: false,
+              declare: false,
+              decorators: Array [],
+              definite: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'bar',
--               optional: false,
+                optional: false,
 
                 range: [105, 108],
                 loc: {
@@ -35,9 +35,9 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
                   end: { column: 14, line: 4 },
                 },
               },
--             optional: false,
--             override: false,
--             readonly: false,
+              optional: false,
+              override: false,
+              readonly: false,
               static: false,
               value: null,
 
@@ -53,14 +53,14 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
 +             type: 'PropertyDefinition',
 +             abstract: true,
               computed: false,
--             declare: false,
--             decorators: Array [],
--             definite: false,
+              declare: false,
+              decorators: Array [],
+              definite: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'baz',
--               optional: false,
+                optional: false,
 
                 range: [121, 124],
                 loc: {
@@ -68,9 +68,9 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
                   end: { column: 14, line: 5 },
                 },
               },
--             optional: false,
--             override: false,
--             readonly: false,
+              optional: false,
+              override: false,
+              readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -106,13 +106,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
             end: { column: 1, line: 6 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [88, 91],
           loc: {
@@ -120,7 +120,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
             end: { column: 18, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
 
         range: [73, 135],
@@ -137,5 +137,4 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
       start: { column: 0, line: 3 },
       end: { column: 0, line: 7 },
     },
-  }"
-`;
+  }

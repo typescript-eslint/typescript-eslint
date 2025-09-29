@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics export-declare-named-enum AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > export-declare-named-enum > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -19,16 +19,18 @@ exports[`AST Fixtures legacy-fixtures basics export-declare-named-enum AST Align
 -           members: Array [
 -             TSEnumMember {
 -               type: 'TSEnumMember',
--               computed: false,
 -               id: Identifier {
 -                 type: 'Identifier',
 -                 decorators: Array [],
 -                 name: 'foo',
 -                 optional: false,
++         const: false,
 +         declare: true,
 +         id: Identifier {
 +           type: 'Identifier',
++           decorators: Array [],
 +           name: 'Foo',
++           optional: false,
 
 -                 range: [101, 104],
 -                 loc: {
@@ -49,9 +51,12 @@ exports[`AST Fixtures legacy-fixtures basics export-declare-named-enum AST Align
 +         members: Array [
 +           TSEnumMember {
 +             type: 'TSEnumMember',
++             computed: false,
 +             id: Identifier {
 +               type: 'Identifier',
++               decorators: Array [],
 +               name: 'foo',
++               optional: false,
 
 -                 range: [107, 108],
 -                 loc: {
@@ -79,7 +84,6 @@ exports[`AST Fixtures legacy-fixtures basics export-declare-named-enum AST Align
               },
 -             TSEnumMember {
 -               type: 'TSEnumMember',
--               computed: false,
 -               id: Identifier {
 -                 type: 'Identifier',
 -                 decorators: Array [],
@@ -100,9 +104,12 @@ exports[`AST Fixtures legacy-fixtures basics export-declare-named-enum AST Align
 +           },
 +           TSEnumMember {
 +             type: 'TSEnumMember',
++             computed: false,
 +             id: Identifier {
 +               type: 'Identifier',
++               decorators: Array [],
 +               name: 'bar',
++               optional: false,
 
                 range: [112, 115],
                 loc: {
@@ -111,12 +118,17 @@ exports[`AST Fixtures legacy-fixtures basics export-declare-named-enum AST Align
                 },
               },
 -           ],
--
+
 -           range: [97, 118],
 -           loc: {
 -             start: { column: 24, line: 3 },
 -             end: { column: 1, line: 6 },
--           },
++             range: [112, 115],
++             loc: {
++               start: { column: 2, line: 5 },
++               end: { column: 5, line: 5 },
++             },
+            },
 -         },
 -         const: false,
 -         declare: true,
@@ -125,17 +137,12 @@ exports[`AST Fixtures legacy-fixtures basics export-declare-named-enum AST Align
 -           decorators: Array [],
 -           name: 'Foo',
 -           optional: false,
-
+-
 -           range: [93, 96],
 -           loc: {
 -             start: { column: 20, line: 3 },
 -             end: { column: 23, line: 3 },
-+             range: [112, 115],
-+             loc: {
-+               start: { column: 2, line: 5 },
-+               end: { column: 5, line: 5 },
-+             },
-            },
+-           },
 -         },
 +         ],
 
@@ -156,13 +163,11 @@ exports[`AST Fixtures legacy-fixtures basics export-declare-named-enum AST Align
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [73, 119],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 0, line: 7 },
     },
-  }"
-`;
+  }

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-one AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > TSImportEqualsDeclaration > entity-name-one > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -12,9 +12,9 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-one AST 
         type: 'TSImportEqualsDeclaration',
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'F',
--         optional: false,
+          optional: false,
 
           range: [7, 8],
           loc: {
@@ -26,9 +26,9 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-one AST 
 +       isExport: false,
         moduleReference: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'A',
--         optional: false,
+          optional: false,
 
           range: [11, 12],
           loc: {
@@ -51,5 +51,4 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-one AST 
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

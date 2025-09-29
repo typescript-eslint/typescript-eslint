@@ -35,9 +35,10 @@ Next, create an `eslint.config.mjs` config file in the root of your project, and
 // @ts-check
 
 import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommended,
 );
@@ -45,18 +46,18 @@ export default tseslint.config(
 
 This code will enable our [recommended configuration](../users/Shared_Configurations.mdx) for linting.
 
+#### Details
+
+- `defineConfig(...)` is an optional helper function built in to current versions of ESLint. See [the ESLint configuration docs](https://eslint.org/docs/latest/use/configure/configuration-files) for more detail.
+- `'@eslint/js'` / `eslint.configs.recommended` turns on [eslint's recommended config](https://www.npmjs.com/package/@eslint/js).
+- `tseslint.configs.recommended` turns on [our recommended config](../users/Shared_Configurations.mdx#recommended).
+
 <details>
 <summary>Aside on file extensions</summary>
 
 The `.mjs` extension makes the file use the [ES modules (ESM)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) format. Node interprets `.js` files in the [CommonJS (CJS)](https://nodejs.org/api/modules.html) format by default, but if you have `"type": "module"` in your `package.json`, you can also use `eslint.config.js`.
 
 </details>
-
-#### Details
-
-- `tseslint.config(...)` is an **_optional_** helper function — [read more about it here](../packages/TypeScript_ESLint.mdx#config).
-- `'@eslint/js'` / `eslint.configs.recommended` turns on [eslint's recommended config](https://www.npmjs.com/package/@eslint/js).
-- `tseslint.configs.recommended` turns on [our recommended config](../users/Shared_Configurations.mdx#recommended).
 
 ### Step 3: Running ESLint
 
@@ -100,7 +101,7 @@ We recommend you consider enabling the following two configs:
 - [`stylistic`](../users/Shared_Configurations.mdx#stylistic): additional rules that enforce consistent styling without significantly catching bugs or changing logic.
 
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   // Remove this line
   tseslint.configs.recommended,

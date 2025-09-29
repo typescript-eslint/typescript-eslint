@@ -1,15 +1,18 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "composite": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "resolveJsonModule": true
-  },
-  "include": ["src"],
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {},
   "references": [
-    { "path": "../scope-manager/tsconfig.build.json" },
-    { "path": "../types/tsconfig.build.json" },
-    { "path": "../typescript-estree/tsconfig.build.json" }
+    {
+      "path": "../visitor-keys/tsconfig.build.json"
+    },
+    {
+      "path": "../typescript-estree/tsconfig.build.json"
+    },
+    {
+      "path": "../types/tsconfig.build.json"
+    },
+    {
+      "path": "../scope-manager/tsconfig.build.json"
+    }
   ]
 }

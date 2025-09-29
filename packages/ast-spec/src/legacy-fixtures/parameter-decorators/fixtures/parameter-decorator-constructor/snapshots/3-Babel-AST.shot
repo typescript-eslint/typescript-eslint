@@ -1,20 +1,21 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-constructor Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "constructor",
+              optional: false,
 
               range: [91, 102],
               loc: {
@@ -23,6 +24,8 @@ Program {
               },
             },
             kind: "constructor",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -49,7 +52,9 @@ Program {
                         optional: false,
                         property: Identifier {
                           type: "Identifier",
+                          decorators: [],
                           name: "title",
+                          optional: false,
 
                           range: [153, 158],
                           loc: {
@@ -70,7 +75,9 @@ Program {
                         computed: false,
                         object: Identifier {
                           type: "Identifier",
+                          decorators: [],
                           name: "config",
+                          optional: false,
 
                           range: [161, 167],
                           loc: {
@@ -81,7 +88,9 @@ Program {
                         optional: false,
                         property: Identifier {
                           type: "Identifier",
+                          decorators: [],
                           name: "title",
+                          optional: false,
 
                           range: [168, 173],
                           loc: {
@@ -118,6 +127,7 @@ Program {
                   end: { column: 3, line: 6 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -132,7 +142,9 @@ Program {
                         arguments: [
                           Identifier {
                             type: "Identifier",
+                            decorators: [],
                             name: "APP_CONFIG",
+                            optional: false,
 
                             range: [111, 121],
                             loc: {
@@ -143,7 +155,9 @@ Program {
                         ],
                         callee: Identifier {
                           type: "Identifier",
+                          decorators: [],
                           name: "Inject",
+                          optional: false,
 
                           range: [104, 110],
                           loc: {
@@ -168,13 +182,16 @@ Program {
                     },
                   ],
                   name: "config",
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSTypeReference {
                       type: "TSTypeReference",
                       typeName: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "AppConfig",
+                        optional: false,
 
                         range: [131, 140],
                         loc: {
@@ -226,9 +243,13 @@ Program {
           end: { column: 1, line: 7 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Service",
+        optional: false,
 
         range: [79, 86],
         loc: {
@@ -236,6 +257,7 @@ Program {
           end: { column: 13, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 180],
@@ -253,4 +275,3 @@ Program {
     end: { column: 0, line: 8 },
   },
 }
-`;

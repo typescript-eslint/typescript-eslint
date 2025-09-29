@@ -1,20 +1,21 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-method Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: [],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "isBar",
+              optional: false,
 
               range: [94, 99],
               loc: {
@@ -23,6 +24,8 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
+            override: false,
             static: false,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -48,6 +51,7 @@ Program {
                   end: { column: 3, line: 6 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -115,9 +119,14 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "isBaz",
+              optional: false,
 
               range: [146, 151],
               loc: {
@@ -125,6 +134,9 @@ Program {
                 end: { column: 7, line: 7 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             value: ArrowFunctionExpression {
               type: "ArrowFunctionExpression",
@@ -222,9 +234,13 @@ Program {
           end: { column: 1, line: 10 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "AssertsFoo",
+        optional: false,
 
         range: [79, 89],
         loc: {
@@ -232,6 +248,7 @@ Program {
           end: { column: 16, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 204],
@@ -249,4 +266,3 @@ Program {
     end: { column: 0, line: 11 },
   },
 }
-`;

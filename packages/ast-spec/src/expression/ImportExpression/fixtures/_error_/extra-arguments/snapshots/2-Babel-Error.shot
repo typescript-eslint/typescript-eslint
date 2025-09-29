@@ -1,3 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures expression ImportExpression _error_ extra-arguments Babel - Error 1`] = `[SyntaxError: \`import()\` requires exactly one or two arguments. (1:0)]`;
+exports[`AST Fixtures > expression > ImportExpression > _error_ > extra-arguments > Babel - Error`]
+BabelError
+> 1 | import(
+    | ^ `import()` requires exactly one or two arguments. (1:0)
+  2 |   "./source.json",
+  3 |   {assert: {type: "json"}},
+  4 |   extraArgument
+  

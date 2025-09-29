@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures declare abstract-class Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -18,9 +15,12 @@ Program {
         },
       },
       declare: true,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [96, 99],
         loc: {
@@ -28,6 +28,7 @@ Program {
           end: { column: 26, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 102],
@@ -45,4 +46,3 @@ Program {
     end: { column: 0, line: 4 },
   },
 }
-`;

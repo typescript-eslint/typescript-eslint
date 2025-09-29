@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics cast-as-expression Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -12,7 +9,9 @@ Program {
           type: "BinaryExpression",
           left: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "x",
+            optional: false,
 
             range: [74, 75],
             loc: {
@@ -23,7 +22,9 @@ Program {
           operator: "<",
           right: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "y",
+            optional: false,
 
             range: [78, 79],
             loc: {
@@ -70,4 +71,3 @@ Program {
     end: { column: 0, line: 4 },
   },
 }
-`;

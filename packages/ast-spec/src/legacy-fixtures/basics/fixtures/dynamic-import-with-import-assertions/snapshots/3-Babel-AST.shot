@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertions Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -16,7 +13,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "assert",
+                optional: false,
 
                 range: [89, 95],
                 loc: {
@@ -26,6 +25,7 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: false,
               value: ObjectExpression {
                 type: "ObjectExpression",
@@ -35,7 +35,9 @@ Program {
                     computed: false,
                     key: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "type",
+                      optional: false,
 
                       range: [99, 103],
                       loc: {
@@ -45,6 +47,7 @@ Program {
                     },
                     kind: "init",
                     method: false,
+                    optional: false,
                     shorthand: false,
                     value: Literal {
                       type: "Literal",
@@ -95,7 +98,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "assert",
+                optional: false,
 
                 range: [89, 95],
                 loc: {
@@ -105,6 +110,7 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: false,
               value: ObjectExpression {
                 type: "ObjectExpression",
@@ -114,7 +120,9 @@ Program {
                     computed: false,
                     key: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "type",
+                      optional: false,
 
                       range: [99, 103],
                       loc: {
@@ -124,6 +132,7 @@ Program {
                     },
                     kind: "init",
                     method: false,
+                    optional: false,
                     shorthand: false,
                     value: Literal {
                       type: "Literal",
@@ -200,4 +209,3 @@ Program {
     end: { column: 0, line: 4 },
   },
 }
-`;

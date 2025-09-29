@@ -1,6 +1,6 @@
-import { requiresQuoting } from '../src';
+import { requiresQuoting } from '../src/index.js';
 
-describe('getDeclaration', () => {
+describe(requiresQuoting, () => {
   describe('valid identifier', () => {
     it('upper and lower case alphabet', () => {
       const name = 'c';

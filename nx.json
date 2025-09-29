@@ -1,6 +1,28 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
+  "plugins": [
+    {
+      "plugin": "@nx/js/typescript",
+      "exclude": ["packages/integration-tests/fixtures/**"],
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        },
+        "build": {
+          "targetName": "build",
+          "configName": "tsconfig.build.json"
+        }
+      }
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "exclude": ["*"],
+      "options": {
+        "testTargetName": "test",
+        "typecheckTargetName": "vite:typecheck"
+      }
+    }
+  ],
   "release": {
     "projects": [
       "!repo",
@@ -22,57 +44,21 @@
     }
   },
   "targetDefaults": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"],
-      "cache": true
-    },
-    "test": {
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/jest.config.js",
-        "{workspaceRoot}/jest.config.base.js"
-      ],
-      "outputs": ["{projectRoot}/coverage"],
-      "cache": true
-    },
-    "@nx/jest:jest": {
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/jest.config.js",
-        "{workspaceRoot}/jest.config.base.js"
-      ],
-      "outputs": ["{projectRoot}/coverage"],
-      "cache": true,
+    "lint": {
+      "cache": false,
+      "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
       "options": {
-        "jestConfig": "{projectRoot}/jest.config.js",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
+        "cwd": "{workspaceRoot}",
+        "config": "{workspaceRoot}/eslint.config.mjs",
+        "args": ["{projectRoot}"]
       }
     },
-    "lint": {
-      "dependsOn": [
-        "eslint-plugin:build",
-        "eslint-plugin-internal:build",
-        "typescript-eslint:build"
-      ],
-      "inputs": [
-        "default",
-        "{workspaceRoot}/eslint.config.js",
-        "{workspaceRoot}/eslint.config.mjs",
-        {
-          "dependentTasksOutputFiles": "**/*.js",
-          "transitive": false
-        }
-      ],
-      "cache": true
+    "test": {
+      "dependsOn": ["^build"],
+      "options": {
+        "config": "vitest.config.mts"
+      },
+      "outputs": ["{projectRoot}/coverage"]
     }
   },
   "namedInputs": {
@@ -83,19 +69,20 @@
         "runtime": "node -v"
       },
       {
-        "runtime": "echo $NETLIFY"
-      },
-      {
         "runtime": "yarn -v"
       },
-      "{workspaceRoot}/yarn.lock"
+      {
+        "runtime": "echo $NETLIFY"
+      }
     ],
     "production": [
       "default",
-      "!{projectRoot}/**/?(*.)+(test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/**/?(*.)+(test).?(m|c)[jt]s?(x)?(.snap|.shot)",
+      "!{projectRoot}/tests",
+      "!{projectRoot}/tools",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
-      "!{projectRoot}/src/test-setup.[jt]s"
+      "!{projectRoot}/vitest.config.mts"
     ]
-  }
+  },
+  "nxCloudId": "60b38765e74d975e3faae5ad"
 }

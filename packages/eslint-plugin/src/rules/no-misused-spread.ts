@@ -1,5 +1,6 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -9,11 +10,13 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  getWrappingFixer,
   isBuiltinSymbolLike,
   isPromiseLike,
   isTypeFlagSet,
   readonlynessOptionsSchema,
   typeMatchesSomeSpecifier,
+  isHigherPrecedenceThanAwait,
 } from '../util';
 
 type Options = [
@@ -23,6 +26,7 @@ type Options = [
 ];
 
 type MessageIds =
+  | 'addAwait'
   | 'noArraySpreadInObject'
   | 'noClassDeclarationSpreadInObject'
   | 'noClassInstanceSpreadInObject'
@@ -30,7 +34,8 @@ type MessageIds =
   | 'noIterableSpreadInObject'
   | 'noMapSpreadInObject'
   | 'noPromiseSpreadInObject'
-  | 'noStringSpread';
+  | 'noStringSpread'
+  | 'replaceMapSpreadInObject';
 
 export default createRule<Options, MessageIds>({
   name: 'no-misused-spread',
@@ -42,7 +47,9 @@ export default createRule<Options, MessageIds>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
+      addAwait: 'Add await operator.',
       noArraySpreadInObject:
         'Using the spread operator on an array in an object will result in a list of indices.',
       noClassDeclarationSpreadInObject:
@@ -64,6 +71,8 @@ export default createRule<Options, MessageIds>({
         'Consider using `Intl.Segmenter` for locale-aware string decomposition.',
         "Otherwise, if you don't need to preserve emojis or other non-Ascii characters, disable this lint rule on this line or configure the 'allow' rule option.",
       ].join('\n'),
+      replaceMapSpreadInObject:
+        'Replace map spread in object with `Object.fromEntries()`',
     },
     schema: [
       {
@@ -104,6 +113,65 @@ export default createRule<Options, MessageIds>({
       }
     }
 
+    function getMapSpreadSuggestions(
+      node: TSESTree.JSXSpreadAttribute | TSESTree.SpreadElement,
+      type: ts.Type,
+    ): TSESLint.ReportSuggestionArray<MessageIds> | null {
+      const types = tsutils.unionConstituents(type);
+      if (types.some(t => !isMap(services.program, t))) {
+        return null;
+      }
+
+      if (
+        node.parent.type === AST_NODE_TYPES.ObjectExpression &&
+        node.parent.properties.length === 1
+      ) {
+        return [
+          {
+            messageId: 'replaceMapSpreadInObject',
+            fix: getWrappingFixer({
+              node: node.parent,
+              innerNode: node.argument,
+              sourceCode: context.sourceCode,
+              wrap: code => `Object.fromEntries(${code})`,
+            }),
+          },
+        ];
+      }
+
+      return [
+        {
+          messageId: 'replaceMapSpreadInObject',
+          fix: getWrappingFixer({
+            node: node.argument,
+            sourceCode: context.sourceCode,
+            wrap: code => `Object.fromEntries(${code})`,
+          }),
+        },
+      ];
+    }
+
+    function getPromiseSpreadSuggestions(
+      node: TSESTree.Expression,
+    ): TSESLint.ReportSuggestionArray<MessageIds> {
+      const isHighPrecendence = isHigherPrecedenceThanAwait(
+        services.esTreeNodeToTSNodeMap.get(node),
+      );
+
+      return [
+        {
+          messageId: 'addAwait',
+          fix: fixer =>
+            isHighPrecendence
+              ? fixer.insertTextBefore(node, 'await ')
+              : [
+                  fixer.insertTextBefore(node, 'await ('),
+                  fixer.insertTextAfter(node, ')'),
+                ],
+        },
+      ];
+    }
+
     function checkObjectSpread(
       node: TSESTree.JSXSpreadAttribute | TSESTree.SpreadElement,
     ): void {
@@ -117,6 +185,7 @@ export default createRule<Options, MessageIds>({
         context.report({
           node,
           messageId: 'noPromiseSpreadInObject',
+          suggest: getPromiseSpreadSuggestions(node.argument),
         });
 
         return;
@@ -135,6 +204,7 @@ export default createRule<Options, MessageIds>({
         context.report({
           node,
           messageId: 'noMapSpreadInObject',
+          suggest: getMapSpreadSuggestions(node, type),
         });
 
         return;
@@ -190,7 +260,7 @@ export default createRule<Options, MessageIds>({
 
 function isIterable(type: ts.Type, checker: ts.TypeChecker): boolean {
   return tsutils
-    .typeParts(type)
+    .typeConstituents(type)
     .some(
       t => !!tsutils.getWellKnownSymbolPropertyOfType(t, 'iterator', checker),
     );

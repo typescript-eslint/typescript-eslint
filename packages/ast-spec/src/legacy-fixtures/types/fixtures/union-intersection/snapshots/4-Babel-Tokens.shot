@@ -1,9 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types union-intersection Babel - Tokens 1`] = `
 [
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [73, 76],
@@ -92,8 +89,8 @@ exports[`AST Fixtures legacy-fixtures types union-intersection Babel - Tokens 1`
       end: { column: 37, line: 3 },
     },
   },
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [111, 114],
@@ -162,8 +159,8 @@ exports[`AST Fixtures legacy-fixtures types union-intersection Babel - Tokens 1`
       end: { column: 34, line: 4 },
     },
   },
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [146, 149],
@@ -272,8 +269,8 @@ exports[`AST Fixtures legacy-fixtures types union-intersection Babel - Tokens 1`
       end: { column: 45, line: 5 },
     },
   },
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [192, 195],
@@ -383,4 +380,3 @@ exports[`AST Fixtures legacy-fixtures types union-intersection Babel - Tokens 1`
     },
   },
 ]
-`;

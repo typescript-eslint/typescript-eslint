@@ -1,17 +1,17 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration TSDeclareFunction async-overload Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     TSDeclareFunction {
       type: "TSDeclareFunction",
       async: true,
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "foo",
+        optional: false,
 
         range: [15, 18],
         loc: {
@@ -58,11 +58,14 @@ Program {
           end: { column: 28, line: 2 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "foo",
+        optional: false,
 
         range: [42, 45],
         loc: {
@@ -105,4 +108,3 @@ Program {
     end: { column: 0, line: 3 },
   },
 }
-`;

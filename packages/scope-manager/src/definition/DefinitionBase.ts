@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/types';
+import type { NodeWithParent, TSESTree } from '@typescript-eslint/types';
 
 import type { DefinitionType } from './DefinitionType';
 
@@ -8,7 +8,7 @@ const generator = createIdGenerator();
 
 export abstract class DefinitionBase<
   Type extends DefinitionType,
-  Node extends TSESTree.Node,
+  Node extends NodeWithParent,
   Parent extends TSESTree.Node | null,
   Name extends TSESTree.Node,
 > {

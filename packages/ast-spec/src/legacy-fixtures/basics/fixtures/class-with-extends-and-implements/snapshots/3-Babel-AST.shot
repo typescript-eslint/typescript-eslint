@@ -1,11 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics class-with-extends-and-implements Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -16,9 +14,13 @@ Program {
           end: { column: 80, line: 3 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "ClassWithParentAndInterface",
+        optional: false,
 
         range: [79, 106],
         loc: {
@@ -31,7 +33,9 @@ Program {
           type: "TSExpressionWithTypeArguments",
           expression: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "MyInterface",
+            optional: false,
 
             range: [139, 150],
             loc: {
@@ -49,7 +53,9 @@ Program {
       ],
       superClass: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "MyOtherClass",
+        optional: false,
 
         range: [115, 127],
         loc: {
@@ -73,4 +79,3 @@ Program {
     end: { column: 0, line: 4 },
   },
 }
-`;

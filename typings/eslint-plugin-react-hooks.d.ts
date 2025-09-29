@@ -1,3 +1,4 @@
+// TODO: Move this to DefinitelyTyped
 declare module 'eslint-plugin-react-hooks' {
   import type {
     ClassicConfig,

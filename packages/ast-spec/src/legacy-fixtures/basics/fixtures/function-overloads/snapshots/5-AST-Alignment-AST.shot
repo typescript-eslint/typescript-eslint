@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics function-overloads AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > function-overloads > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -15,14 +15,14 @@ exports[`AST Fixtures legacy-fixtures basics function-overloads AST Alignment - 
         declaration: TSDeclareFunction {
           type: 'TSDeclareFunction',
           async: false,
--         declare: false,
+          declare: false,
           expression: false,
           generator: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'f',
--           optional: false,
+            optional: false,
 
             range: [89, 90],
             loc: {
@@ -33,9 +33,9 @@ exports[`AST Fixtures legacy-fixtures basics function-overloads AST Alignment - 
           params: Array [
             Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'x',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSNumberKeyword {
@@ -104,14 +104,14 @@ exports[`AST Fixtures legacy-fixtures basics function-overloads AST Alignment - 
         declaration: TSDeclareFunction {
           type: 'TSDeclareFunction',
           async: false,
--         declare: false,
+          declare: false,
           expression: false,
           generator: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'f',
--           optional: false,
+            optional: false,
 
             range: [127, 128],
             loc: {
@@ -122,9 +122,9 @@ exports[`AST Fixtures legacy-fixtures basics function-overloads AST Alignment - 
           params: Array [
             Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'x',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSStringKeyword {
@@ -200,9 +200,9 @@ exports[`AST Fixtures legacy-fixtures basics function-overloads AST Alignment - 
                 type: 'ReturnStatement',
                 argument: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'x',
--                 optional: false,
+                  optional: false,
 
                   range: [215, 216],
                   loc: {
@@ -225,14 +225,14 @@ exports[`AST Fixtures legacy-fixtures basics function-overloads AST Alignment - 
               end: { column: 1, line: 7 },
             },
           },
--         declare: false,
+          declare: false,
           expression: false,
           generator: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'f',
--           optional: false,
+            optional: false,
 
             range: [165, 166],
             loc: {
@@ -243,9 +243,9 @@ exports[`AST Fixtures legacy-fixtures basics function-overloads AST Alignment - 
           params: Array [
             Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'x',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSUnionType {
@@ -355,5 +355,4 @@ exports[`AST Fixtures legacy-fixtures basics function-overloads AST Alignment - 
       start: { column: 0, line: 3 },
       end: { column: 0, line: 8 },
     },
-  }"
-`;
+  }

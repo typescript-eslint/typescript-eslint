@@ -40,7 +40,7 @@ export function TypesDetails({
       <Panel
         className={styles.PanelColumn}
         collapsible={true}
-        defaultSizePercentage={35}
+        defaultSize={35}
         id="simplifiedTree"
       >
         <div className={styles.playgroundInfoContainer}>

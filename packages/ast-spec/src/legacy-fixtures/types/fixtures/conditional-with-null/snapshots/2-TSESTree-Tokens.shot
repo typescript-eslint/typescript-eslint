@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types conditional-with-null TSESTree - Tokens 1`] = `
 [
   Keyword {
     type: "Keyword",
@@ -92,8 +89,8 @@ exports[`AST Fixtures legacy-fixtures types conditional-with-null TSESTree - Tok
       end: { column: 40, line: 3 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Null {
+    type: "Null",
     value: "null",
 
     range: [114, 118],
@@ -113,4 +110,3 @@ exports[`AST Fixtures legacy-fixtures types conditional-with-null TSESTree - Tok
     },
   },
 ]
-`;
