@@ -9,7 +9,6 @@
       "request": "launch",
       "name": "Test Current eslint-plugin Rule",
       "cwd": "${workspaceFolder}/packages/eslint-plugin/",
-      "runtimeExecutable": "/Users/josh/.nvm/versions/node/v24.3.0/bin/node",
       "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
       "args": [
         "--no-cache",
