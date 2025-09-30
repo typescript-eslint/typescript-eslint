@@ -86,6 +86,7 @@ export default createRule<Options, MessageIds>({
         oneOf: [
           {
             type: 'string',
+            description: 'Broad setting for unused variables to target.',
             enum: ['all', 'local'],
           },
           {

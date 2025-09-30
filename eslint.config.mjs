@@ -479,7 +479,6 @@ export default defineConfig(
       // TODO (43081j): maybe enable these one day?
       'eslint-plugin/no-meta-replaced-by': 'off',
       'eslint-plugin/require-meta-default-options': 'off',
-      'eslint-plugin/require-meta-schema-description': 'off',
     },
   },
   {
