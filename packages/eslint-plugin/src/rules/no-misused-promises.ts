@@ -6,10 +6,13 @@ import * as ts from 'typescript';
 
 import {
   createRule,
+  getConstrainedTypeAtLocation,
   getFunctionHeadLoc,
   getParserServices,
+  getStaticMemberAccessValue,
   isArrayMethodCallWithPredicate,
   isFunction,
+  isPromiseLike,
   isRestParameterDeclaration,
   nullThrows,
   NullThrowsReasons,
@@ -360,6 +363,13 @@ export default createRule<Options, MessageId>({
     function checkArguments(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
+      if (
+        node.type === AST_NODE_TYPES.CallExpression &&
+        isPromiseFinallyMethod(node)
+      ) {
+        return;
+      }
+
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const voidArgs = voidFunctionArguments(checker, tsNode);
       if (voidArgs.size === 0) {
@@ -561,6 +571,26 @@ export default createRule<Options, MessageId>({
           messageId: 'voidReturnReturnValue',
         });
       }
+    }
+
+    function isPromiseFinallyMethod(node: TSESTree.CallExpression): boolean {
+      if (node.callee.type !== AST_NODE_TYPES.MemberExpression) {
+        return false;
+      }
+
+      const staticAccessValue = getStaticMemberAccessValue(
+        node.callee,
+        context,
+      );
+
+      if (staticAccessValue !== 'finally') {
+        return false;
+      }
+
+      return isPromiseLike(
+        services.program,
+        getConstrainedTypeAtLocation(services, node.callee.object),
+      );
     }
 
     function checkClassLikeOrInterfaceNode(
