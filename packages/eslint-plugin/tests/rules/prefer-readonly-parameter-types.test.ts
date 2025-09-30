@@ -322,78 +322,78 @@ function foo(arg: Test) {}
     `,
     `
 type TaggedString = bigint & {
-  readonly '__tag': unique symbol;
+  readonly __tag: unique symbol;
 };
 function custom1(arg: TaggedString) {}
     `,
     `
 type TaggedString = number & {
-  readonly '__tag': unique symbol;
+  readonly __tag: unique symbol;
 };
 function custom1(arg: TaggedString) {}
     `,
     `
 type TaggedString = string & {
-  readonly '__tag': unique symbol;
+  readonly __tag: unique symbol;
 };
 function custom1(arg: TaggedString) {}
     `,
     `
 type TaggedString = string & {
-  readonly '__tagA': unique symbol;
-  readonly '__tagB': unique symbol;
+  readonly __tagA: unique symbol;
+  readonly __tagB: unique symbol;
 };
 function custom1(arg: TaggedString) {}
     `,
     `
 type TaggedString = string & {
-  readonly '__tag': unique symbol;
+  readonly __tag: unique symbol;
 };
 
 type OtherSpecialString = string & {
   readonly ' __other_tag': unique symbol;
 };
 
-function custom1(arg: TaggedString | OtherSpecialString) { }
+function custom1(arg: TaggedString | OtherSpecialString) {}
     `,
     `
 type TaggedNumber = 1 & {
-  readonly '__tag': unique symbol;
+  readonly __tag: unique symbol;
 };
 
-function custom1(arg: TaggedNumber) { }
+function custom1(arg: TaggedNumber) {}
     `,
     `
 type TaggedNumber = (1 | 2) & {
-  readonly '__tag': unique symbol;
+  readonly __tag: unique symbol;
 };
 
-function custom1(arg: TaggedNumber) { }
+function custom1(arg: TaggedNumber) {}
     `,
     `
 type TaggedString = ('a' | 'b') & {
-  readonly '__tag': unique symbol;
+  readonly __tag: unique symbol;
 };
 
-function custom1(arg: TaggedString) { }
+function custom1(arg: TaggedString) {}
     `,
     `
 type Strings = 'one' | 'two' | 'three';
 
 type TaggedString = Strings & {
-  readonly '__tag': unique symbol;
+  readonly __tag: unique symbol;
 };
 
-function custom1(arg: TaggedString) { }
+function custom1(arg: TaggedString) {}
     `,
     `
 type Strings = 'one' | 'two' | 'three';
 
 type TaggedString = Strings & {
-  '__tag': unique symbol;
+  __tag: unique symbol;
 };
 
-function custom1(arg: TaggedString) { }
+function custom1(arg: TaggedString) {}
     `,
     `
 type TaggedString = string & {
@@ -401,7 +401,7 @@ type TaggedString = string & {
 } & {
   __tag: unique symbol;
 };
-function custom1(arg: TaggedString) { }
+function custom1(arg: TaggedString) {}
     `,
     `
 type TaggedString = string & {
@@ -409,7 +409,7 @@ type TaggedString = string & {
 } & {
   __tagB: unique symbol;
 };
-function custom1(arg: TaggedString) { }
+function custom1(arg: TaggedString) {}
     `,
     `
 type TaggedString = string &
@@ -418,7 +418,7 @@ function custom1(arg: TaggedString) {}
     `,
     `
 type TaggedFunction = (() => void) & {
-  readonly '__tag': unique symbol;
+  readonly __tag: unique symbol;
 };
 function custom1(arg: TaggedFunction) {}
     `,
