@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
@@ -7,7 +8,7 @@ import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getParserServices,
-  isTypeBrandedLiteral,
+  isTypeBrandedLiteralLike,
   isTypeReadonly,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
@@ -130,7 +131,7 @@ export default createRule<Options, MessageIds>({
             treatMethodsAsReadonly: !!treatMethodsAsReadonly,
           });
 
-          if (!isReadOnly && !isTypeBrandedLiteral(type)) {
+          if (!isReadOnly && !isTypeBrandedLiteralLike(type)) {
             context.report({
               node: actualParam,
               messageId: 'shouldBeReadonly',
