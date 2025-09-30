@@ -1,6 +1,6 @@
 import naturalCompare from 'natural-compare';
 
-import type { SchemaAST, TupleAST } from './types';
+import type { SchemaAST, TupleAST } from './types.js';
 
 export function printTypeAlias(aliasName: string, ast: SchemaAST): string {
   return `${printComment(ast)}type ${aliasName} = ${printAST(ast).code}`;

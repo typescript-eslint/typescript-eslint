@@ -3,10 +3,10 @@ import type { JSONSchema4ObjectSchema } from '@typescript-eslint/utils/json-sche
 import { requiresQuoting } from '@typescript-eslint/type-utils';
 import { TSUtils } from '@typescript-eslint/utils';
 
-import type { SchemaAST, ObjectAST, RefMap } from './types';
+import type { SchemaAST, ObjectAST, RefMap } from './types.js';
 
-import { generateType } from './generateType';
-import { getCommentLines } from './getCommentLines';
+import { generateType } from './generateType.js';
+import { getCommentLines } from './getCommentLines.js';
 
 export function generateObjectType(
   schema: JSONSchema4ObjectSchema,

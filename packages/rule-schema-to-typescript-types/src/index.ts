@@ -2,11 +2,11 @@ import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import { TSUtils } from '@typescript-eslint/utils';
 
-import type { SchemaAST } from './types';
+import type { SchemaAST } from './types.js';
 
-import { generateType } from './generateType';
-import { optimizeAST } from './optimizeAST';
-import { printTypeAlias } from './printAST';
+import { generateType } from './generateType.js';
+import { optimizeAST } from './optimizeAST.js';
+import { printTypeAlias } from './printAST.js';
 
 /**
  * Converts rule options schema(s) to the equivalent TypeScript type string.

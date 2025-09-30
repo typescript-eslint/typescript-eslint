@@ -1,4 +1,4 @@
-import type { SchemaAST, UnionAST } from './types';
+import type { SchemaAST, UnionAST } from './types.js';
 
 export function optimizeAST(ast: SchemaAST | null): void {
   if (ast == null) {

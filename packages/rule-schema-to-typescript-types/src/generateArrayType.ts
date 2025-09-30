@@ -5,11 +5,17 @@ import type {
 
 import { TSUtils } from '@typescript-eslint/utils';
 
-import type { ArrayAST, SchemaAST, RefMap, TupleAST, UnionAST } from './types';
+import type {
+  ArrayAST,
+  SchemaAST,
+  RefMap,
+  TupleAST,
+  UnionAST,
+} from './types.js';
 
-import { NotSupportedError, UnexpectedError } from './errors';
-import { generateType } from './generateType';
-import { getCommentLines } from './getCommentLines';
+import { NotSupportedError, UnexpectedError } from './errors.js';
+import { generateType } from './generateType.js';
+import { getCommentLines } from './getCommentLines.js';
 
 /**
  * If there are more than 20 tuple items then we will not make it a tuple type

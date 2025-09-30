@@ -1,4 +1,4 @@
-import { schemaToTypes } from '../src/index';
+import { schemaToTypes } from '../src/index.js';
 
 describe(schemaToTypes, () => {
   it('returns a [] type when the schema is an empty array', () => {

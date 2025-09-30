@@ -3,10 +3,10 @@ import type {
   JSONSchema4Type,
 } from '@typescript-eslint/utils/json-schema';
 
-import type { SchemaAST, RefMap, UnionAST } from './types';
+import type { SchemaAST, RefMap, UnionAST } from './types.js';
 
-import { NotSupportedError } from './errors';
-import { generateType } from './generateType';
+import { NotSupportedError } from './errors.js';
+import { generateType } from './generateType.js';
 
 export function generateUnionType(
   members: (JSONSchema4 | JSONSchema4Type)[],
