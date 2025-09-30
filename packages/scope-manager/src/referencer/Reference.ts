@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/types';
+import type { NodeWithParent, TSESTree } from '@typescript-eslint/types';
 
 import type { Scope } from '../scope';
 import type { Variable } from '../variable';
@@ -12,7 +12,7 @@ export enum ReferenceFlag {
 }
 
 export interface ReferenceImplicitGlobal {
-  node: TSESTree.Node;
+  node: NodeWithParent;
   pattern: TSESTree.BindingName;
   ref?: Reference;
 }

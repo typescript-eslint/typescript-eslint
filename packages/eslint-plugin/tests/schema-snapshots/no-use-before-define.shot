@@ -5,6 +5,7 @@
   {
     "oneOf": [
       {
+        "description": "Broadly set functions and allowNamedExports to false.",
         "enum": ["nofunc"],
         "type": "string"
       },
@@ -50,7 +51,6 @@
 # TYPES:
 
 type Options = [
-  | 'nofunc'
   | {
       /** Whether to ignore named exports. */
       allowNamedExports?: boolean;
@@ -66,5 +66,7 @@ type Options = [
       typedefs?: boolean;
       /** Whether to ignore references to variables. */
       variables?: boolean;
-    },
+    }
+  /** Broadly set functions and allowNamedExports to false. */
+  | 'nofunc',
 ];
