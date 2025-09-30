@@ -6,7 +6,7 @@
     "additionalProperties": false,
     "properties": {
       "allowOptionalChaining": {
-        "description": "Whether to allow `?.` optional chains on any values.",
+        "description": "Whether to allow `?.` optional chains on `any` values.",
         "type": "boolean"
       }
     },
@@ -19,7 +19,7 @@
 
 type Options = [
   {
-    /** Whether to allow `?.` optional chains on any values. */
+    /** Whether to allow `?.` optional chains on `any` values. */
     allowOptionalChaining?: boolean;
   },
 ];
