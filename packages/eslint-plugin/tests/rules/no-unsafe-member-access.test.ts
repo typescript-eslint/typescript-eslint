@@ -504,5 +504,25 @@ value.outer.middle?.inner;
       ],
       options: [{ allowOptionalChaining: true }],
     },
+    {
+      code: `
+function foo(x: { a: number }, y: NotKnown) {
+  x[y];
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            property: '[y]',
+            type: '`error` typed',
+          },
+          endColumn: 6,
+          line: 3,
+          messageId: 'unsafeComputedMemberAccess',
+        },
+      ],
+      options: [{ allowOptionalChaining: true }],
+    },
   ],
 });

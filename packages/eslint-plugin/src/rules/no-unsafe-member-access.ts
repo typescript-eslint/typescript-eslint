@@ -60,7 +60,8 @@ export default createRule<Options, MessageIds>({
         properties: {
           allowOptionalChaining: {
             type: 'boolean',
-            description: 'Whether to allow `?.` optional chains on `any` values.',
+            description:
+              'Whether to allow `?.` optional chains on `any` values.',
           },
         },
       },
