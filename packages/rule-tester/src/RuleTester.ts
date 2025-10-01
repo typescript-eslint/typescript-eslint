@@ -1102,14 +1102,6 @@ export class RuleTester extends TestFramework {
             );
           }
 
-          if (error.type) {
-            assert.strictEqual(
-              message.nodeType,
-              error.type,
-              `Error type should be ${error.type}, found ${message.nodeType}`,
-            );
-          }
-
           if (hasOwnProperty(error, 'line')) {
             assert.strictEqual(
               message.line,
