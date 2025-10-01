@@ -254,6 +254,13 @@ ruleTester.run('no-deprecated', rule, {
       export import Bar = Foo;
     `,
     `
+      /**
+       * @deprecated
+       */
+      export import Bar = require('./deprecated');
+    `,
+
+    `
       interface Props {
         anchor: 'foo';
       }
