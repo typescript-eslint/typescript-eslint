@@ -1,7 +1,7 @@
 import rule from '../../src/rules/restrict-template-expressions';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('restrict-template-expressions', rule, {
   valid: [

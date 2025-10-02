@@ -1,9 +1,9 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/await-thenable';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('await-thenable', rule, {
   valid: [

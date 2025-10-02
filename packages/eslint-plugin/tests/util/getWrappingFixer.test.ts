@@ -1,13 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { createRule, getWrappingFixer } from '../../src/util';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester({
+const ruleTester = createRuleTesterWithTypes({
   languageOptions: {
     parserOptions: {
       project: './tsconfig.json',
-      projectService: false,
     },
   },
 });

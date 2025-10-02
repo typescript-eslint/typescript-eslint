@@ -1,7 +1,7 @@
 import rule from '../../src/rules/require-array-sort-compare';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('require-array-sort-compare', rule, {
   valid: [

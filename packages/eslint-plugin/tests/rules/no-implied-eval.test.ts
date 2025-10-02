@@ -1,7 +1,7 @@
 import rule from '../../src/rules/no-implied-eval';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-implied-eval', rule, {
   valid: [

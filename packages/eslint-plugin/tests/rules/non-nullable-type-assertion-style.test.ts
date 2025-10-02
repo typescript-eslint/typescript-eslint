@@ -1,7 +1,7 @@
 import rule from '../../src/rules/non-nullable-type-assertion-style';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('non-nullable-type-assertion-style', rule, {
   valid: [
@@ -235,7 +235,7 @@ const b = (a || undefined)!;
   ],
 });
 
-const ruleTesterWithNoUncheckedIndexAccess = getTypedRuleTester({
+const ruleTesterWithNoUncheckedIndexAccess = createRuleTesterWithTypes({
   languageOptions: {
     parserOptions: {
       project: './tsconfig.noUncheckedIndexedAccess.json',

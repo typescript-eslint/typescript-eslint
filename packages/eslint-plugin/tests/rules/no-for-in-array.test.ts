@@ -1,10 +1,10 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-for-in-array';
-import { getTypedRuleTester, getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-for-in-array', rule, {
   valid: [

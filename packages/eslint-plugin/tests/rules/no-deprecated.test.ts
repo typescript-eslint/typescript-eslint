@@ -1,8 +1,8 @@
 import rule from '../../src/rules/no-deprecated';
-import { getFixturesRootDir, getTypedRuleTester } from '../RuleTester';
+import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const ruleTester = getTypedRuleTester({
+const ruleTester = createRuleTesterWithTypes({
   languageOptions: {
     parserOptions: {
       ecmaFeatures: {

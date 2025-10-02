@@ -1,7 +1,7 @@
 import rule from '../../src/rules/prefer-reduce-type-parameter';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-reduce-type-parameter', rule, {
   valid: [

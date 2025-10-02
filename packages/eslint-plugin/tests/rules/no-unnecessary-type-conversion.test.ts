@@ -1,7 +1,7 @@
 import rule from '../../src/rules/no-unnecessary-type-conversion';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-type-conversion', rule, {
   valid: [

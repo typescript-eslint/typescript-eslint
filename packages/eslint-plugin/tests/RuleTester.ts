@@ -7,14 +7,14 @@ import type {
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
 
-export function getTypedRuleTester(
+export function createRuleTesterWithTypes(
   testerConfig: RuleTesterConfig | undefined = {},
 ): RuleTester {
   const providedParserOptions =
     testerConfig.languageOptions?.parserOptions ?? {};
 
-  // If the requested config specifies how to provide types, use that.
   const parserOptions =
+    // If the requested config specifies how to provide types, use that.
     providedParserOptions.project || providedParserOptions.projectService
       ? providedParserOptions
       : {
@@ -29,8 +29,8 @@ export function getTypedRuleTester(
     languageOptions: {
       ...testerConfig.languageOptions,
       parserOptions: {
-        tsconfigRootDir: getFixturesRootDir(),
         ...parserOptions,
+        tsconfigRootDir: parserOptions.tsconfigRootDir ?? getFixturesRootDir(),
       },
     },
   });

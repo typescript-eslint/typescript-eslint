@@ -1,10 +1,10 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
-import { getFixturesRootDir, getTypedRuleTester } from '../RuleTester';
+import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('switch-exhaustiveness-check', switchExhaustivenessCheck, {
   valid: [

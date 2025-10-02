@@ -1,9 +1,9 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/prefer-string-starts-ends-with';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-string-starts-ends-with', rule, {
   valid: [

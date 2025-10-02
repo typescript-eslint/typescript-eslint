@@ -1,7 +1,7 @@
 import rule from '../../src/rules/no-unsafe-declaration-merging';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unsafe-declaration-merging', rule, {
   valid: [

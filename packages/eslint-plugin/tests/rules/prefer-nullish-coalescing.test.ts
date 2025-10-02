@@ -12,10 +12,10 @@ import type {
 } from '../../src/rules/prefer-nullish-coalescing';
 
 import rule from '../../src/rules/prefer-nullish-coalescing';
-import { getTypedRuleTester, getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 const types = ['string', 'number', 'boolean', 'object'];
 const nullishTypes = ['null', 'undefined', 'null | undefined'];

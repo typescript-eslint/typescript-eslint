@@ -9,10 +9,10 @@ import type {
 } from '../../src/rules/no-unnecessary-condition';
 
 import rule from '../../src/rules/no-unnecessary-condition';
-import { getTypedRuleTester, getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 const optionsWithExactOptionalPropertyTypes = {
   project: './tsconfig.exactOptionalPropertyTypes.json',

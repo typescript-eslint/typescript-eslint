@@ -1,15 +1,14 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
-import { getFixturesRootDir, getTypedRuleTester } from '../RuleTester';
+import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
-const ruleTester = getTypedRuleTester({
+const ruleTester = createRuleTesterWithTypes({
   languageOptions: {
     parserOptions: {
       project: './tsconfig.json',
-      projectService: false,
     },
   },
 });

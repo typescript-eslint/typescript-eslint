@@ -2,10 +2,13 @@ import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/prefer-optional-chain';
 import { dedupeTestCases } from '../../dedupeTestCases';
-import { getFixturesRootDir, getTypedRuleTester } from '../../RuleTester';
+import {
+  getFixturesRootDir,
+  createRuleTesterWithTypes,
+} from '../../RuleTester';
 import { BaseCases, identity } from './base-cases';
 
-const ruleTester = getTypedRuleTester({
+const ruleTester = createRuleTesterWithTypes({
   languageOptions: {
     parserOptions: {
       // todo: this too?

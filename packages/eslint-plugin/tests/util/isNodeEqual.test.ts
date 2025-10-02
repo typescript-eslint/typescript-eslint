@@ -1,7 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { createRule, isNodeEqual } from '../../src/util';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
 const rule = createRule({
   create(context) {
@@ -41,11 +41,10 @@ const rule = createRule({
   name: 'no-useless-expression',
 });
 
-const ruleTester = getTypedRuleTester({
+const ruleTester = createRuleTesterWithTypes({
   languageOptions: {
     parserOptions: {
       project: './tsconfig.json',
-      projectService: false,
     },
   },
 });

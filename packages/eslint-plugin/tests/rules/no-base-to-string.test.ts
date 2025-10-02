@@ -1,8 +1,8 @@
 import rule from '../../src/rules/no-base-to-string';
-import { getTypedRuleTester, getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 /**
  * ref: https://github.com/typescript-eslint/typescript-eslint/issues/11043

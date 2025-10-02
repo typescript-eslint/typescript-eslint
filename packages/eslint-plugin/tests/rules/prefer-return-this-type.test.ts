@@ -1,7 +1,7 @@
 import rule from '../../src/rules/prefer-return-this-type';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-return-this-type', rule, {
   valid: [

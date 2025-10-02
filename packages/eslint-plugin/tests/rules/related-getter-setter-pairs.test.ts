@@ -1,7 +1,7 @@
 import rule from '../../src/rules/related-getter-setter-pairs';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('related-getter-setter-pairs', rule, {
   valid: [

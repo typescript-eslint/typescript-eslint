@@ -1,10 +1,10 @@
 import * as path from 'node:path';
 
 import rule from '../../src/rules/no-floating-promises';
-import { getTypedRuleTester, getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-floating-promises', rule, {
   valid: [

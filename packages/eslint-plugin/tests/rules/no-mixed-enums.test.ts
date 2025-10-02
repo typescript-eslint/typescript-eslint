@@ -1,7 +1,7 @@
 import rule from '../../src/rules/no-mixed-enums';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-mixed-enums', rule, {
   valid: [

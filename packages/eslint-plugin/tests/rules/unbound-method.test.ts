@@ -3,9 +3,9 @@ import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 import type { MessageIds, Options } from '../../src/rules/unbound-method';
 
 import rule from '../../src/rules/unbound-method';
-import { getTypedRuleTester } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = getTypedRuleTester();
+const ruleTester = createRuleTesterWithTypes();
 
 function addContainsMethodsClass(code: string): string {
   return `
