@@ -7,6 +7,7 @@ const ruleTester = getTypedRuleTester({
   languageOptions: {
     parserOptions: {
       project: './tsconfig-with-dom.json',
+      projectService: false,
     },
   },
 });

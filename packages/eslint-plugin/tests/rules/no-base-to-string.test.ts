@@ -1373,6 +1373,7 @@ declare const foo: Bar & Foo;
       languageOptions: {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
           tsconfigRootDir: rootDir,
         },
       },
@@ -1623,6 +1624,7 @@ declare const foo: Bar & Foo;
       languageOptions: {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
           tsconfigRootDir: rootDir,
         },
       },
@@ -1873,6 +1875,7 @@ declare const foo: Bar & Foo;
       languageOptions: {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
           tsconfigRootDir: rootDir,
         },
       },
@@ -2123,6 +2126,7 @@ declare const foo: Bar & Foo;
       languageOptions: {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
           tsconfigRootDir: rootDir,
         },
       },
