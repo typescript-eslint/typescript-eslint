@@ -44,7 +44,7 @@ function addToMapGroup<Key, Value>(
 }
 
 function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
-  return !!(
+  return (
     node.parent.type === AST_NODE_TYPES.TSTypeAnnotation &&
     isFunctionOrFunctionType(node.parent.parent)
   );
