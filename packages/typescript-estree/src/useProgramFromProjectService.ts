@@ -113,9 +113,7 @@ function openClientFileFromProjectService(
         [
           baseMessage,
           `allowDefaultProject is set to ${JSON.stringify(allowDefaultProject)}, which does not match '${relativeFilePath}'.`,
-        ]
-          .filter(Boolean)
-          .join('\n'),
+        ].join('\n'),
       );
     }
   }
