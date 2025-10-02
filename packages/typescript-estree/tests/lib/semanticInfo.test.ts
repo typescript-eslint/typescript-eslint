@@ -41,6 +41,10 @@ describe('semanticInfo', async () => {
     clearCaches();
 
     vi.stubEnv('TSESTREE_SINGLE_RUN', '');
+    vi.stubEnv(
+      'TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR',
+      'true',
+    );
   });
 
   vi.stubEnv(
