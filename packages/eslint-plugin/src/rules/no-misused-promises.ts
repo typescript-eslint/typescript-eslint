@@ -9,7 +9,6 @@ import {
   getConstrainedTypeAtLocation,
   getFunctionHeadLoc,
   getParserServices,
-  getStaticMemberAccessValue,
   isArrayMethodCallWithPredicate,
   isFunction,
   isPromiseLike,
@@ -17,6 +16,7 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { parseFinallyCall } from '../util/promiseUtils';
 
 export type Options = [
   {
@@ -574,22 +574,14 @@ export default createRule<Options, MessageId>({
     }
 
     function isPromiseFinallyMethod(node: TSESTree.CallExpression): boolean {
-      if (node.callee.type !== AST_NODE_TYPES.MemberExpression) {
-        return false;
-      }
+      const promiseFinallyCall = parseFinallyCall(node, context);
 
-      const staticAccessValue = getStaticMemberAccessValue(
-        node.callee,
-        context,
-      );
-
-      if (staticAccessValue !== 'finally') {
-        return false;
-      }
-
-      return isPromiseLike(
-        services.program,
-        getConstrainedTypeAtLocation(services, node.callee.object),
+      return (
+        promiseFinallyCall != null &&
+        isPromiseLike(
+          services.program,
+          getConstrainedTypeAtLocation(services, promiseFinallyCall.object),
+        )
       );
     }
 
