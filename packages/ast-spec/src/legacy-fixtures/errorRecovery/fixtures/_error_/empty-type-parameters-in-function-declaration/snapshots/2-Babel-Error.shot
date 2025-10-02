@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > empty-type-parameters-in-function-declaration > Babel - Error`]
+BabelError
+> 1 | function f1<>() {}
+    |            ^ Type parameter list cannot be empty. (1:11)
+  2 |
+  

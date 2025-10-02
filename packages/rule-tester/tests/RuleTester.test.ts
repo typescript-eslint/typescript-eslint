@@ -144,7 +144,6 @@ describe(RuleTester, () => {
                 line: 0,
                 message: 'error',
                 messageId: 'error',
-                nodeType: AST_NODE_TYPES.Program,
                 ruleId: 'my-rule',
                 severity: 2,
                 source: null,
