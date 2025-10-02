@@ -1,8 +1,5 @@
 import type { ClassDeclarationWithOptionalName } from '../declaration/ClassDeclaration/spec';
-import type {
-  FunctionDeclarationWithName,
-  FunctionDeclarationWithOptionalName,
-} from '../declaration/FunctionDeclaration/spec';
+import type { FunctionDeclaration } from '../declaration/FunctionDeclaration/spec';
 import type { TSDeclareFunction } from '../declaration/TSDeclareFunction/spec';
 import type { TSEnumDeclaration } from '../declaration/TSEnumDeclaration/spec';
 import type { TSImportEqualsDeclaration } from '../declaration/TSImportEqualsDeclaration/spec';
@@ -17,7 +14,7 @@ import type { Expression } from './Expression';
 export type DefaultExportDeclarations =
   | ClassDeclarationWithOptionalName
   | Expression
-  | FunctionDeclarationWithOptionalName
+  | FunctionDeclaration
   | TSDeclareFunction
   | TSEnumDeclaration
   | TSInterfaceDeclaration
@@ -29,9 +26,7 @@ export type DefaultExportDeclarations =
 // ClassDeclarationWithOptionalName, FunctionDeclarationWithOptionalName
 export type NamedExportDeclarations =
   | ClassDeclarationWithOptionalName
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-  | FunctionDeclarationWithName
-  | FunctionDeclarationWithOptionalName
+  | FunctionDeclaration
   | TSDeclareFunction
   | TSEnumDeclaration
   | TSImportEqualsDeclaration
@@ -43,5 +38,4 @@ export type NamedExportDeclarations =
 // TODO - breaking change remove this in the next major
 export type ExportDeclaration =
   | DefaultExportDeclarations
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   | NamedExportDeclarations;

@@ -11,26 +11,26 @@ interface FunctionDeclarationBase extends FunctionBase {
 }
 
 /**
- * A normal function declaration:
+ * A function expression that may or may not have a name.
+ * Standalone function declarations do:
  * ```
  * function f() {}
  * ```
- */
-export interface FunctionDeclarationWithName extends FunctionDeclarationBase {
-  id: Identifier;
-}
-
-/**
  * Default-exported function declarations have optional names:
  * ```
  * export default function () {}
  * ```
  */
-export interface FunctionDeclarationWithOptionalName
-  extends FunctionDeclarationBase {
+export interface FunctionDeclaration extends FunctionDeclarationBase {
   id: Identifier | null;
 }
 
-export type FunctionDeclaration =
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-  FunctionDeclarationWithName | FunctionDeclarationWithOptionalName;
+/**
+ * A function declaration that definitely has a name (is not anonymous):
+ * ```
+ * function f() {}
+ * ```
+ */
+export interface FunctionDeclarationWithName extends FunctionDeclaration {
+  id: Identifier;
+}
