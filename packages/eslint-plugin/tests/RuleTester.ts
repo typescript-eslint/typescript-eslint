@@ -10,16 +10,27 @@ import * as path from 'node:path';
 export function getTypedRuleTester(
   testerConfig: RuleTesterConfig | undefined = {},
 ): RuleTester {
+  const providedParserOptions =
+    testerConfig.languageOptions?.parserOptions ?? {};
+
+  // If the requested config specifies how to provide types, use that.
+  const parserOptions =
+    providedParserOptions.project || providedParserOptions.projectService
+      ? providedParserOptions
+      : {
+          // Otherwise, use the corresponding provider for the CI/local environment.
+          [process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+            ? 'projectService'
+            : 'project']: true,
+        };
+
   return new RuleTester({
     ...testerConfig,
     languageOptions: {
       ...testerConfig.languageOptions,
       parserOptions: {
-        ...(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
-          ? { projectService: true }
-          : { project: true }),
         tsconfigRootDir: getFixturesRootDir(),
-        ...testerConfig.languageOptions?.parserOptions,
+        ...parserOptions,
       },
     },
   });
