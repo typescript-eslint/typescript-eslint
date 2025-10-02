@@ -555,10 +555,6 @@ export default createRule<Options, MessageIds>({
         AST_NODE_TYPES.ArrayExpression,
         AST_NODE_TYPES.ObjectExpression,
       ].join(' > ')]: checkInvalidTest,
-      // special case for our batchedSingleLineTests utility
-      'CallExpression[callee.name = "batchedSingleLineTests"] > ObjectExpression':
-        checkInvalidTest,
-
       /**
        * generic, type-aware handling for any old object
        * this is a fallback to handle random variables people declare or object
