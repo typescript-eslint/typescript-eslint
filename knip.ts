@@ -116,11 +116,7 @@ export default {
     },
 
     'packages/types': {
-      project: [
-        'src/**/*.ts!',
-        '!src/generated/**/*.ts',
-        'tools/copy-ast-spec.mts',
-      ],
+      project: ['src/**/*.ts!', '!src/generated/**/*.ts'],
     },
 
     'packages/typescript-estree': {
@@ -179,7 +175,6 @@ export default {
         '@docusaurus/useDocusaurusContext',
         '@docusaurus/useBaseUrl',
         '@docusaurus/BrowserOnly',
-        '@docusaurus/module-type-aliases',
         '@generated/docusaurus.config',
         '^@site/.*',
         '^@theme/.*',
@@ -203,7 +198,7 @@ export default {
       ],
       ignoreDependencies: [
         // virtual module
-        'vt',
+        'vt:*',
       ],
     },
     'tools/dummypkg': {},

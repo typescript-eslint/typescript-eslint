@@ -223,6 +223,7 @@ export default {
 };
 
 export {
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   config,
   type ConfigWithExtends,
   type InfiniteDepthConfigWithExtends,
