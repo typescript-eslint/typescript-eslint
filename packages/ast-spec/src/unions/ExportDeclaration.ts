@@ -1,4 +1,4 @@
-import type { ClassDeclarationWithOptionalName } from '../declaration/ClassDeclaration/spec';
+import type { ClassDeclaration } from '../declaration/ClassDeclaration/spec';
 import type { FunctionDeclaration } from '../declaration/FunctionDeclaration/spec';
 import type { TSDeclareFunction } from '../declaration/TSDeclareFunction/spec';
 import type { TSEnumDeclaration } from '../declaration/TSEnumDeclaration/spec';
@@ -12,7 +12,7 @@ import type { Expression } from './Expression';
 // TODO(#1852) - the following are disallowed syntactically, but allowed by TS error recovery:
 // TSEnumDeclaration, TSModuleDeclaration, TSTypeAliasDeclaration, VariableDeclaration
 export type DefaultExportDeclarations =
-  | ClassDeclarationWithOptionalName
+  | ClassDeclaration
   | Expression
   | FunctionDeclaration
   | TSDeclareFunction
@@ -25,7 +25,7 @@ export type DefaultExportDeclarations =
 // TODO(#1852) - the following are disallowed syntactically, but allowed by TS error recovery:
 // ClassDeclarationWithOptionalName, FunctionDeclarationWithOptionalName
 export type NamedExportDeclarations =
-  | ClassDeclarationWithOptionalName
+  | ClassDeclaration
   | FunctionDeclaration
   | TSDeclareFunction
   | TSEnumDeclaration
