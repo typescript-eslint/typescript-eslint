@@ -11,8 +11,7 @@
     "paths": {
       "@site/*": ["./*"]
     },
-    "lib": ["DOM", "ES2023"],
-    "types": ["@docusaurus/module-type-aliases"]
+    "lib": ["DOM", "ES2023"]
   },
   "include": [
     "src",
