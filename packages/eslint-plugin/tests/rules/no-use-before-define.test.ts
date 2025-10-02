@@ -1,5 +1,4 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-use-before-define';
 
@@ -601,7 +600,6 @@ var a = 19;
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: {
@@ -617,7 +615,6 @@ var a = 19;
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -631,7 +628,6 @@ var a = 19;
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -644,7 +640,6 @@ var a = function () {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -657,7 +652,6 @@ var a = [1, 3];
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -674,12 +668,10 @@ function a() {
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
         {
           data: { name: 'b' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -692,7 +684,6 @@ var a = function () {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: ['nofunc'],
@@ -708,7 +699,6 @@ var a = function () {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -722,7 +712,6 @@ function a() {}
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -740,7 +729,6 @@ try {
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -753,7 +741,6 @@ var a;
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -767,7 +754,6 @@ class A {}
         {
           data: { name: 'A' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -783,7 +769,6 @@ class A {}
         {
           data: { name: 'A' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -797,7 +782,6 @@ var A = class {};
         {
           data: { name: 'A' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -813,7 +797,6 @@ var A = class {};
         {
           data: { name: 'A' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -831,7 +814,6 @@ a++;
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -848,7 +830,6 @@ a++;
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -864,7 +845,6 @@ a++;
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -882,7 +862,6 @@ switch (foo) {
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -900,7 +879,6 @@ if (true) {
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -916,7 +894,6 @@ var a = function () {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ classes: false, functions: false }],
@@ -930,7 +907,6 @@ var A = class {};
         {
           data: { name: 'A' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -947,7 +923,6 @@ var A = class {};
         {
           data: { name: 'A' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -961,7 +936,6 @@ var A = class {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -971,7 +945,6 @@ var A = class {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -982,7 +955,6 @@ var A = class {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -993,7 +965,6 @@ var A = class {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -1004,7 +975,6 @@ var A = class {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -1015,7 +985,6 @@ var A = class {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -1026,7 +995,6 @@ var A = class {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -1037,7 +1005,6 @@ var A = class {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -1048,7 +1015,6 @@ var A = class {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -1059,7 +1025,6 @@ var A = class {};
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -1073,7 +1038,6 @@ for (var a in a) {
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -1086,7 +1050,6 @@ for (var a of a) {
         {
           data: { name: 'a' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
@@ -1105,7 +1068,6 @@ const Foo = 2;
         {
           data: { name: 'Foo' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ ignoreTypeReferences: false }],
@@ -1124,7 +1086,6 @@ class Foo {
         {
           data: { name: 'Foo' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ ignoreTypeReferences: false }],
@@ -1145,7 +1106,6 @@ const Foo = {
         {
           data: { name: 'Foo' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ ignoreTypeReferences: false }],
@@ -1164,7 +1124,6 @@ const baz = '';
         {
           data: { name: 'baz' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ ignoreTypeReferences: false }],
@@ -1183,7 +1142,6 @@ var bar;
         {
           data: { name: 'bar' },
           messageId: 'noUseBeforeDefine',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions },
