@@ -10,7 +10,7 @@ Snapshot Diff:
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -21,13 +21,13 @@ Snapshot Diff:
             end: { column: 80, line: 3 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'ClassWithParentAndInterface',
--         optional: false,
+          optional: false,
 
           range: [79, 106],
           loc: {
@@ -42,9 +42,9 @@ Snapshot Diff:
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'MyInterface',
--             optional: false,
+              optional: false,
 
               range: [139, 150],
               loc: {
@@ -62,9 +62,9 @@ Snapshot Diff:
         ],
         superClass: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'MyOtherClass',
--         optional: false,
+          optional: false,
 
           range: [115, 127],
           loc: {

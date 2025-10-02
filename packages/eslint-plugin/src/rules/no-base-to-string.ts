@@ -21,9 +21,17 @@ enum Usefulness {
 export type Options = [
   {
     ignoredTypeNames?: string[];
+    checkUnknown?: boolean;
   },
 ];
 export type MessageIds = 'baseArrayJoin' | 'baseToString';
+const canHaveTypeParameters = (declaration: ts.Declaration) => {
+  return (
+    ts.isTypeAliasDeclaration(declaration) ||
+    ts.isInterfaceDeclaration(declaration) ||
+    ts.isClassDeclaration(declaration)
+  );
+};
 
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
@@ -46,6 +54,10 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          checkUnknown: {
+            type: 'boolean',
+            description: 'Whether to also check values of type `unknown`',
+          },
           ignoredTypeNames: {
             type: 'array',
             description:
@@ -60,6 +72,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      checkUnknown: false,
       ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
     },
   ],
@@ -76,6 +89,7 @@ export default createRule<Options, MessageIds>({
         type ?? services.getTypeAtLocation(node),
         new Set(),
       );
+
       if (certainty === Usefulness.Always) {
         return;
       }
@@ -198,6 +212,36 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Always;
     }
 
+    function hasBaseTypes(type: ts.Type): type is ts.InterfaceType {
+      return (
+        tsutils.isObjectType(type) &&
+        tsutils.isObjectFlagSet(
+          type,
+          ts.ObjectFlags.Interface | ts.ObjectFlags.Class,
+        )
+      );
+    }
+
+    function isIgnoredTypeOrBase(
+      type: ts.Type,
+      seen = new Set<ts.Type>(),
+    ): boolean {
+      if (seen.has(type)) {
+        return false;
+      }
+
+      seen.add(type);
+
+      const typeName = getTypeName(checker, type);
+      return (
+        ignoredTypeNames.includes(typeName) ||
+        (hasBaseTypes(type) &&
+          checker
+            .getBaseTypes(type)
+            .some(base => isIgnoredTypeOrBase(base, seen)))
+      );
+    }
+
     function collectToStringCertainty(
       type: ts.Type,
       visited: Set<ts.Type>,
@@ -213,7 +257,7 @@ export default createRule<Options, MessageIds>({
           return collectToStringCertainty(constraint, visited);
         }
         // unconstrained generic means `unknown`
-        return Usefulness.Always;
+        return option.checkUnknown ? Usefulness.Sometimes : Usefulness.Always;
       }
 
       // the Boolean type definition missing toString()
@@ -224,7 +268,18 @@ export default createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (ignoredTypeNames.includes(getTypeName(checker, type))) {
+      const symbol = type.aliasSymbol ?? type.getSymbol();
+      const decl = symbol?.getDeclarations()?.[0];
+      if (
+        decl &&
+        canHaveTypeParameters(decl) &&
+        decl.typeParameters &&
+        ignoredTypeNames.includes(symbol.name)
+      ) {
+        return Usefulness.Always;
+      }
+
+      if (isIgnoredTypeOrBase(type)) {
         return Usefulness.Always;
       }
 
@@ -251,8 +306,13 @@ export default createRule<Options, MessageIds>({
       const toString =
         checker.getPropertyOfType(type, 'toString') ??
         checker.getPropertyOfType(type, 'toLocaleString');
+
       if (!toString) {
-        // e.g. any/unknown
+        // unknown
+        if (option.checkUnknown && type.flags === ts.TypeFlags.Unknown) {
+          return Usefulness.Sometimes;
+        }
+        // e.g. any
         return Usefulness.Always;
       }
 

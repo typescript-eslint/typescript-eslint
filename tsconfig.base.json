@@ -4,7 +4,7 @@
     "allowSyntheticDefaultImports": true,
     "composite": true,
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
     "emitDeclarationOnly": true,
     "emitDecoratorMetadata": false,
     "esModuleInterop": true,
@@ -13,7 +13,7 @@
     "importHelpers": false,
     "incremental": true,
     "isolatedModules": true,
-    "lib": ["es2022"],
+    "lib": ["ES2022"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "noEmitOnError": true,
@@ -21,12 +21,21 @@
     "noImplicitReturns": true,
     "pretty": true,
     "removeComments": false,
-    "resolveJsonModule": false,
+    "resolveJsonModule": true,
+    "rootDir": "${configDir}/",
     "skipDefaultLibCheck": false,
     "skipLibCheck": true,
     "sourceMap": false,
     "strict": true,
-    "target": "es2022",
+    "target": "ES2022",
+    "types": ["vitest/globals", "vitest/importMeta"],
     "verbatimModuleSyntax": false
-  }
+  },
+  "include": [
+    "${configDir}/vitest.config.mts",
+    "${configDir}/package.json",
+    "${configDir}/tests",
+    "${configDir}/typings"
+  ],
+  "exclude": ["${configDir}/**/fixtures/**"]
 }

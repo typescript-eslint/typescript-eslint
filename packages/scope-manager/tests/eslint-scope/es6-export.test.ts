@@ -1,12 +1,5 @@
-import {
-  expectToBeFunctionNameDefinition,
-  expectToBeFunctionScope,
-  expectToBeGlobalScope,
-  expectToBeModuleScope,
-  expectToBeVariableDefinition,
-  getRealVariables,
-  parseAndAnalyze,
-} from '../test-utils';
+import { DefinitionType, ScopeType } from '../../src/index.js';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('export declaration', () => {
   // http://people.mozilla.org/~jorendorff/es6-draft.html#sec-static-and-runtme-semantics-module-records
@@ -17,16 +10,16 @@ describe('export declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('v');
-    expectToBeVariableDefinition(variables[0].defs[0]);
+    assert.isDefinitionOfType(variables[0].defs[0], DefinitionType.Variable);
     expect(scope.references).toHaveLength(0);
   });
 
@@ -40,21 +33,24 @@ describe('export declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('f');
-    expectToBeFunctionNameDefinition(variables[0].defs[0]);
+    assert.isDefinitionOfType(
+      variables[0].defs[0],
+      DefinitionType.FunctionName,
+    );
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[2];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0);
@@ -70,19 +66,19 @@ describe('export declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[2];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0);
@@ -95,13 +91,13 @@ describe('export declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
   });
@@ -116,13 +112,13 @@ describe('export declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(variables).toHaveLength(1);
     expect(scope.references).toHaveLength(2);
     expect(scope.references[0].identifier.name).toBe('x');
@@ -139,13 +135,13 @@ describe('export declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(variables).toHaveLength(1);
     expect(scope.references).toHaveLength(2);
     expect(scope.references[0].identifier.name).toBe('v');
@@ -162,13 +158,13 @@ describe('export declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
   });
@@ -183,13 +179,13 @@ describe('export declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
   });
@@ -201,13 +197,13 @@ describe('export declaration', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeModuleScope(scope);
+    assert.isScopeOfType(scope, ScopeType.module);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
   });

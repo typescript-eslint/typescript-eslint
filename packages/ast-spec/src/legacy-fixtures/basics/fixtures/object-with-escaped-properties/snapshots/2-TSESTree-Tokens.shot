@@ -39,8 +39,8 @@
       end: { column: 6, line: 3 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Null {
+    type: "Null",
     value: "null",
 
     range: [80, 84],
@@ -239,8 +239,8 @@
       end: { column: 10, line: 7 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Null {
+    type: "Null",
     value: "null",
 
     range: [117, 121],
@@ -329,8 +329,8 @@
       end: { column: 8, line: 10 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Null {
+    type: "Null",
     value: "null",
 
     range: [146, 150],

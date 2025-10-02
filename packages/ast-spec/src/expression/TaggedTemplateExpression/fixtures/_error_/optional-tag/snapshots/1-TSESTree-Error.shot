@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > TaggedTemplateExpression > _error_ > optional-tag > TSESTree - Error`]
+TSError
+> 1 | a?.b`...`
+    | ^^^^^^^^^ Tagged template expressions are not permitted in an optional chain.
+  2 |

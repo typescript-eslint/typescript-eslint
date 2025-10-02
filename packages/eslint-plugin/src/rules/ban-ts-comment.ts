@@ -86,14 +86,29 @@ export default createRule<Options, MessageIds>({
         properties: {
           minimumDescriptionLength: {
             type: 'number',
-            default: defaultMinimumDescriptionLength,
             description:
               'A minimum character length for descriptions when `allow-with-description` is enabled.',
           },
-          'ts-check': { $ref: '#/items/0/$defs/directiveConfigSchema' },
-          'ts-expect-error': { $ref: '#/items/0/$defs/directiveConfigSchema' },
-          'ts-ignore': { $ref: '#/items/0/$defs/directiveConfigSchema' },
-          'ts-nocheck': { $ref: '#/items/0/$defs/directiveConfigSchema' },
+          'ts-check': {
+            $ref: '#/items/0/$defs/directiveConfigSchema',
+            description:
+              'Whether allow ts-check directives, and with which restrictions.',
+          },
+          'ts-expect-error': {
+            $ref: '#/items/0/$defs/directiveConfigSchema',
+            description:
+              'Whether and when expect-error directives, and with which restrictions.',
+          },
+          'ts-ignore': {
+            $ref: '#/items/0/$defs/directiveConfigSchema',
+            description:
+              'Whether allow ts-ignore directives, and with which restrictions.',
+          },
+          'ts-nocheck': {
+            $ref: '#/items/0/$defs/directiveConfigSchema',
+            description:
+              'Whether allow ts-nocheck directives, and with which restrictions.',
+          },
         },
       },
     ],

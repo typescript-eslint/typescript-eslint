@@ -1,4 +1,5 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-floating-promises';
 import { getFixturesRootDir } from '../RuleTester';
@@ -111,18 +112,18 @@ async function test() {
     `,
     `
 async function test() {
-  Promise.resolve().catch(() => {}), 123;
-  123,
+  (Promise.resolve().catch(() => {}), 123);
+  (123,
     Promise.resolve().then(
       () => {},
       () => {},
-    );
-  123,
+    ));
+  (123,
     Promise.resolve().then(
       () => {},
       () => {},
     ),
-    123;
+    123);
 }
     `,
     `
@@ -511,7 +512,7 @@ interface SafeThenable<T> {
   ): SafeThenable<TResult1 | TResult2>;
 }
 let promise: SafeThenable<number> = Promise.resolve(5);
-0, promise;
+(0, promise);
       `,
       options: [
         {
@@ -593,7 +594,7 @@ interface SafeThenable<T> {
   ): SafeThenable<TResult1 | TResult2>;
 }
 let promise: () => SafeThenable<number> = () => Promise.resolve(5);
-0, promise();
+(0, promise());
       `,
       options: [
         {
@@ -710,7 +711,10 @@ myTag\`abc\`;
               // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
               path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
                 ? 'file.ts'
-                : 'tests/fixtures/file.ts',
+                : path.posix.join(
+                    ...path.relative(process.cwd(), rootDir).split(path.sep),
+                    'file.ts',
+                  ),
             },
           ],
         },
@@ -820,6 +824,8 @@ promise().then(() => {});
       ],
     },
     {
+      // TODO: Skipped pending resolution of https://github.com/typescript-eslint/typescript-eslint/issues/11504
+      skip: true,
       code: `
         import { it } from 'node:test';
 
@@ -862,6 +868,34 @@ declare function createMyThenable(): MyThenable;
 
 createMyThenable();
     `,
+    {
+      code: `
+const randomAsyncFunction = async () => {
+  return Promise.resolve(true);
+};
+
+randomAsyncFunction();
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: ['randomAsyncFunction'],
+        },
+      ],
+    },
+    {
+      code: `
+async function myAsyncFunction() {
+  return Promise.resolve('test');
+}
+
+myAsyncFunction();
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: ['myAsyncFunction'],
+        },
+      ],
+    },
   ],
 
   invalid: [
@@ -1996,9 +2030,9 @@ async function test() {
     {
       code: `
 async function test() {
-  Promise.resolve(), 123;
-  123, Promise.resolve();
-  123, Promise.resolve(), 123;
+  (Promise.resolve(), 123);
+  (123, Promise.resolve());
+  (123, Promise.resolve(), 123);
 }
       `,
       errors: [
@@ -2011,8 +2045,8 @@ async function test() {
               output: `
 async function test() {
   void (Promise.resolve(), 123);
-  123, Promise.resolve();
-  123, Promise.resolve(), 123;
+  (123, Promise.resolve());
+  (123, Promise.resolve(), 123);
 }
       `,
             },
@@ -2021,8 +2055,8 @@ async function test() {
               output: `
 async function test() {
   await (Promise.resolve(), 123);
-  123, Promise.resolve();
-  123, Promise.resolve(), 123;
+  (123, Promise.resolve());
+  (123, Promise.resolve(), 123);
 }
       `,
             },
@@ -2036,9 +2070,9 @@ async function test() {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  Promise.resolve(), 123;
+  (Promise.resolve(), 123);
   void (123, Promise.resolve());
-  123, Promise.resolve(), 123;
+  (123, Promise.resolve(), 123);
 }
       `,
             },
@@ -2046,9 +2080,9 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  Promise.resolve(), 123;
+  (Promise.resolve(), 123);
   await (123, Promise.resolve());
-  123, Promise.resolve(), 123;
+  (123, Promise.resolve(), 123);
 }
       `,
             },
@@ -2062,8 +2096,8 @@ async function test() {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  Promise.resolve(), 123;
-  123, Promise.resolve();
+  (Promise.resolve(), 123);
+  (123, Promise.resolve());
   void (123, Promise.resolve(), 123);
 }
       `,
@@ -2072,8 +2106,8 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  Promise.resolve(), 123;
-  123, Promise.resolve();
+  (Promise.resolve(), 123);
+  (123, Promise.resolve());
   await (123, Promise.resolve(), 123);
 }
       `,
@@ -2190,7 +2224,7 @@ await /* ... */ returnsPromise();
 async function returnsPromise() {
   return 'value';
 }
-1, returnsPromise();
+(1, returnsPromise());
       `,
       errors: [
         {
@@ -4512,7 +4546,7 @@ await promiseIntersection.finally(() => {});
     },
     {
       code: `
-Promise.resolve().finally(() => {}), 123;
+(Promise.resolve().finally(() => {}), 123);
       `,
       errors: [
         {
@@ -5487,6 +5521,102 @@ void (<Promise<number>>{});
               messageId: 'floatingFixAwait',
               output: `
 await (<Promise<number>>{});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').then();
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('foo').then();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('foo').then();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').finally();
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('foo').finally();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('foo').finally();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').finally(...[], () => {});
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('foo').finally(...[], () => {});
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('foo').finally(...[], () => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject('foo').then(...[], () => {});
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('foo').then(...[], () => {});
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('foo').then(...[], () => {});
       `,
             },
           ],

@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { isUnionType } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, forEachReturnStatement, getParserServices } from '../util';
@@ -62,7 +63,7 @@ export default createRule({
 
     function isThisSpecifiedInParameters(originalFunc: FunctionLike): boolean {
       const firstArg = originalFunc.params.at(0);
-      return !!(
+      return (
         firstArg?.type === AST_NODE_TYPES.Identifier && firstArg.name === 'this'
       );
     }
@@ -114,6 +115,14 @@ export default createRule({
         if (classType.thisType === type) {
           hasReturnThis = true;
           return;
+        }
+
+        if (
+          isUnionType(type) &&
+          type.types.some(typePart => typePart === classType)
+        ) {
+          hasReturnClassType = true;
+          return true;
         }
 
         return;

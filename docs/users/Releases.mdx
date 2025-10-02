@@ -8,13 +8,44 @@ import useIsBrowser from '@docusaurus/useIsBrowser';
 
 export function LocalTimeOfRelease() {
   const isBrowser = useIsBrowser();
-  // An arbitrary Monday at 17:00 UTC.
-  const date = new Date('1970-01-05T17:00Z');
-  const formatted = date.toLocaleTimeString('en-US', {
+  if (!isBrowser) {
+    // An arbitrary Monday at 17:00 UTC.
+    const arbitraryMonday = new Date('1970-01-05T17:00Z');
+    return arbitraryMonday.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'short',
+      timeZone: 'UTC',
+    });
+  }
+  const now = new Date();
+  const daysAgoToMonday = (now.getUTCDay() + 6) % 7;
+  // Calculate the previous Monday at 17:00 UTC.
+  const previousReleaseDate = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() - daysAgoToMonday,
+      17,
+    ),
+  );
+  // This will happen if the current time is before 17:00 UTC on Monday.
+  if (previousReleaseDate > now) {
+    previousReleaseDate.setUTCDate(previousReleaseDate.getUTCDate() - 7);
+  }
+  // Next release is 7 days later.
+  const nextReleaseDate = new Date(previousReleaseDate.getTime());
+  nextReleaseDate.setUTCDate(previousReleaseDate.getUTCDate() + 7);
+  // If we're near a DST time change, we want to display the time of the release that has the same UTC offset as now.
+  // If, for some reason, neither does, just display the local time of the next release.
+  const releaseWithSameUtcOffset =
+    [nextReleaseDate, previousReleaseDate].find(
+      date => date.getTimezoneOffset() === now.getTimezoneOffset(),
+    ) ?? nextReleaseDate;
+  const formatted = releaseWithSameUtcOffset.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
     timeZoneName: 'short',
-    timeZone: isBrowser ? undefined : 'UTC',
   });
   // Specify the day of week if it's not a Monday.
   const dayNames = [
@@ -26,8 +57,10 @@ export function LocalTimeOfRelease() {
     'Friday',
     'Saturday',
   ];
-  if (date.getDay() !== date.getUTCDay()) {
-    return `${dayNames[date.getDay()]}s at ${formatted}`;
+  if (
+    releaseWithSameUtcOffset.getDay() !== releaseWithSameUtcOffset.getUTCDay()
+  ) {
+    return `${dayNames[releaseWithSameUtcOffset.getDay()]}s at ${formatted}`;
   }
   return formatted;
 }
@@ -98,7 +131,23 @@ We assess need on a case-by-case basis though generally an emergency is defined 
 
 These releases are done manually by a maintainer with the required access privileges.
 
-## Back-Porting Releases
+## Older Versions
+
+Older major versions of typescript-eslint are never maintained or supported.
+They may crash with the latest versions of TypeScript.
+Using the latest version of typescript-eslint is strongly recommended for getting the latest rule features and fixes, supporting the latest TypeScript features and syntax, and continuous performance and stability improvements.
+
+### Back-Porting Releases
 
 We **_do not_** back port releases to previously released major/minor versions.
 We only ever release forward.
+
+### Old Release Documentation
+
+You can find the last version of some older major versions under their dedicated branch deploys:
+
+- v7: [v7--typescript-eslint.netlify.app](https://v7--typescript-eslint.netlify.app)
+- v6: [v6--typescript-eslint.netlify.app](https://v6--typescript-eslint.netlify.app)
+
+Note that older documentation pages may contain outdated information and links.
+We strongly recommend using the latest version of typescript-eslint and its documentation.

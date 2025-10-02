@@ -16,6 +16,7 @@ export const webworker_iterable: LibDefinition = {
     ['Cache', TYPE],
     ['CanvasPath', TYPE],
     ['CanvasPathDrawingStyles', TYPE],
+    ['CookieStoreManager', TYPE],
     ['DOMStringList', TYPE],
     ['FileList', TYPE],
     ['FontFaceSet', TYPE],

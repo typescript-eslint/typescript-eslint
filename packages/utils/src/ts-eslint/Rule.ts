@@ -25,6 +25,11 @@ export interface RuleMetaDataDocs {
    * The URL of the rule's docs.
    */
   url?: string;
+
+  /**
+   * Mark this rule as feature-frozen.
+   */
+  frozen?: boolean;
 }
 
 export interface ExternalSpecifier {
@@ -133,7 +138,7 @@ export interface RuleMetaData<
   /**
    * Specifies default options for the rule. If present, any user-provided options in their config will be merged on top of them recursively.
    * This merging will be applied directly to `context.options`.
-   * If you want backwards-compatible support for earlier ESLint version; consider using the top-level `defaultOptions` instead.
+   * If you want backwards-compatible support for earlier ESLint version, consider using the top-level `defaultOptions` instead.
    *
    * since ESLint 9.15.0
    */
@@ -766,11 +771,11 @@ export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<
  */
 export type LooseRuleDefinition =
   // TODO - remove RuleCreateFunction once we no longer support ESLint 8
+  | LooseRuleCreateFunction
   | {
       create: LooseRuleCreateFunction;
       meta?: object | undefined;
-    }
-  | LooseRuleCreateFunction;
+    };
 /*
 eslint-disable-next-line @typescript-eslint/no-explicit-any --
 intentionally using `any` to allow bi-directional assignment (unknown and

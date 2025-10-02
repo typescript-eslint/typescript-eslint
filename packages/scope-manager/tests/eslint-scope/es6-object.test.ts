@@ -1,11 +1,7 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import {
-  expectToBeFunctionScope,
-  expectToBeGlobalScope,
-  getRealVariables,
-  parseAndAnalyze,
-} from '../test-utils';
+import { ScopeType } from '../../src/index.js';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('ES6 object', () => {
   it('method definition', () => {
@@ -20,15 +16,16 @@ describe('ES6 object', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
+    expect(variables).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.FunctionExpression);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0);
@@ -52,15 +49,16 @@ describe('ES6 object', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
+    expect(variables).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.FunctionExpression);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(2);
     expect(variables[0].name).toBe('arguments');
     expect(variables[1].name).toBe('yuyushiki');

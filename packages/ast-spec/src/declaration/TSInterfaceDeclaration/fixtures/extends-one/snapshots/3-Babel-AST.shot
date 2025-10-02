@@ -13,12 +13,15 @@ Program {
           end: { column: 24, line: 1 },
         },
       },
+      declare: false,
       extends: [
         TSExpressionWithTypeArguments {
           type: "TSExpressionWithTypeArguments",
           expression: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "A",
+            optional: false,
 
             range: [20, 21],
             loc: {
@@ -36,7 +39,9 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "F",
+        optional: false,
 
         range: [10, 11],
         loc: {

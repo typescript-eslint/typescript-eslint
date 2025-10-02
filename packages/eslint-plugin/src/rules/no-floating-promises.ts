@@ -1,23 +1,29 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
 
 import {
   createRule,
-  getOperatorPrecedence,
+  getOperatorPrecedenceForNode,
   getParserServices,
-  getStaticMemberAccessValue,
   isBuiltinSymbolLike,
+  isParenthesized,
   OperatorPrecedence,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
   skipChainExpression,
   typeMatchesSomeSpecifier,
+  valueMatchesSomeSpecifier,
 } from '../util';
+import {
+  parseCatchCall,
+  parseFinallyCall,
+  parseThenCall,
+} from '../util/promiseUtils';
 
 export type Options = [
   {
@@ -138,7 +144,7 @@ export default createRule<Options, MessageId>({
 
         const expression = skipChainExpression(node.expression);
 
-        if (isKnownSafePromiseReturn(expression)) {
+        if (isKnownSafePromiseCall(expression)) {
           return;
         }
 
@@ -163,10 +169,11 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'floatingFixVoid',
                   fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
-                    const tsNode = services.esTreeNodeToTSNodeMap.get(
-                      node.expression,
-                    );
-                    if (isHigherPrecedenceThanUnary(tsNode)) {
+                    if (
+                      isParenthesized(expression, context.sourceCode) ||
+                      getOperatorPrecedenceForNode(expression) >
+                        OperatorPrecedence.Unary
+                    ) {
                       return fixer.insertTextBefore(node, 'void ');
                     }
                     return [
@@ -218,8 +225,10 @@ export default createRule<Options, MessageId>({
           'await',
         );
       }
-      const tsNode = services.esTreeNodeToTSNodeMap.get(node.expression);
-      if (isHigherPrecedenceThanUnary(tsNode)) {
+      if (
+        isParenthesized(expression, context.sourceCode) ||
+        getOperatorPrecedenceForNode(expression) > OperatorPrecedence.Unary
+      ) {
         return fixer.insertTextBefore(node, 'await ');
       }
       return [
@@ -231,26 +240,29 @@ export default createRule<Options, MessageId>({
       ];
     }
 
-    function isKnownSafePromiseReturn(node: TSESTree.Node): boolean {
+    function isKnownSafePromiseCall(node: TSESTree.Node): boolean {
       if (node.type !== AST_NODE_TYPES.CallExpression) {
         return false;
       }
 
       const type = services.getTypeAtLocation(node.callee);
 
+      if (
+        valueMatchesSomeSpecifier(
+          node.callee,
+          allowForKnownSafeCalls,
+          services.program,
+          type,
+        )
+      ) {
+        return true;
+      }
+
       return typeMatchesSomeSpecifier(
         type,
         allowForKnownSafeCalls,
         services.program,
       );
-    }
-
-    function isHigherPrecedenceThanUnary(node: ts.Node): boolean {
-      const operator = ts.isBinaryExpression(node)
-        ? node.operatorToken.kind
-        : ts.SyntaxKind.Unknown;
-      const nodePrecedence = getOperatorPrecedence(node.kind, operator);
-      return nodePrecedence > OperatorPrecedence.Unary;
     }
 
     function isAsyncIife(node: TSESTree.ExpressionStatement): boolean {
@@ -336,38 +348,23 @@ export default createRule<Options, MessageId>({
         // If the outer expression is a call, a `.catch()` or `.then()` with
         // rejection handler handles the promise.
 
-        const { callee } = node;
-        if (callee.type === AST_NODE_TYPES.MemberExpression) {
-          const methodName = getStaticMemberAccessValue(callee, context);
-          const catchRejectionHandler =
-            methodName === 'catch' && node.arguments.length >= 1
-              ? node.arguments[0]
-              : undefined;
-          if (catchRejectionHandler) {
-            if (isValidRejectionHandler(catchRejectionHandler)) {
+        const promiseHandlingMethodCall =
+          parseCatchCall(node, context) ?? parseThenCall(node, context);
+        if (promiseHandlingMethodCall != null) {
+          const onRejected = promiseHandlingMethodCall.onRejected;
+          if (onRejected != null) {
+            if (isValidRejectionHandler(onRejected)) {
               return { isUnhandled: false };
             }
             return { isUnhandled: true, nonFunctionHandler: true };
           }
+          return { isUnhandled: true };
+        }
 
-          const thenRejectionHandler =
-            methodName === 'then' && node.arguments.length >= 2
-              ? node.arguments[1]
-              : undefined;
-          if (thenRejectionHandler) {
-            if (isValidRejectionHandler(thenRejectionHandler)) {
-              return { isUnhandled: false };
-            }
-            return { isUnhandled: true, nonFunctionHandler: true };
-          }
+        const promiseFinallyCall = parseFinallyCall(node, context);
 
-          // `x.finally()` is transparent to resolution of the promise, so check `x`.
-          // ("object" in this context is the `x` in `x.finally()`)
-          const promiseFinallyObject =
-            methodName === 'finally' ? callee.object : undefined;
-          if (promiseFinallyObject) {
-            return isUnhandledPromise(checker, promiseFinallyObject);
-          }
+        if (promiseFinallyCall != null) {
+          return isUnhandledPromise(checker, promiseFinallyCall.object);
         }
 
         // All other cases are unhandled.
@@ -399,7 +396,7 @@ export default createRule<Options, MessageId>({
     function isPromiseArray(node: ts.Node): boolean {
       const type = checker.getTypeAtLocation(node);
       for (const ty of tsutils
-        .unionTypeParts(type)
+        .unionConstituents(type)
         .map(t => checker.getApparentType(t))) {
         if (checker.isArrayType(ty)) {
           const arrayType = checker.getTypeArguments(ty)[0];
@@ -434,7 +431,9 @@ export default createRule<Options, MessageId>({
       }
 
       // Otherwise, we always consider the built-in Promise to be Promise-like...
-      const typeParts = tsutils.unionTypeParts(checker.getApparentType(type));
+      const typeParts = tsutils.unionConstituents(
+        checker.getApparentType(type),
+      );
       if (
         typeParts.some(typePart =>
           isBuiltinSymbolLike(services.program, typePart, 'Promise'),
@@ -480,7 +479,7 @@ function hasMatchingSignature(
   type: ts.Type,
   matcher: (signature: ts.Signature) => boolean,
 ): boolean {
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tsutils.unionConstituents(type)) {
     if (t.getCallSignatures().some(matcher)) {
       return true;
     }
@@ -497,7 +496,7 @@ function isFunctionParam(
   const type: ts.Type | undefined = checker.getApparentType(
     checker.getTypeOfSymbolAtLocation(param, node),
   );
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tsutils.unionConstituents(type)) {
     if (t.getCallSignatures().length !== 0) {
       return true;
     }

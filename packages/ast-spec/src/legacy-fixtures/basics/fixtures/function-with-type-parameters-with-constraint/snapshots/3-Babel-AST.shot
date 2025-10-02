@@ -11,7 +11,9 @@ Program {
             type: "ReturnStatement",
             argument: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "b",
+              optional: false,
 
               range: [118, 119],
               loc: {
@@ -34,11 +36,14 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "a",
+        optional: false,
 
         range: [82, 83],
         loc: {
@@ -49,14 +54,18 @@ Program {
       params: [
         Identifier {
           type: "Identifier",
+          decorators: [],
           name: "b",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "X",
+                optional: false,
 
                 range: [101, 102],
                 loc: {
@@ -92,7 +101,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "X",
+            optional: false,
 
             range: [105, 106],
             loc: {
@@ -119,6 +130,7 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSTypeLiteral {
               type: "TSTypeLiteral",
               members: [],
@@ -129,7 +141,9 @@ Program {
                 end: { column: 23, line: 3 },
               },
             },
+            in: false,
             name: "X",
+            out: false,
 
             range: [84, 96],
             loc: {

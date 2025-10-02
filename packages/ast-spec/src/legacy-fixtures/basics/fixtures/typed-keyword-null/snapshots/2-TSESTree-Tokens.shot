@@ -29,8 +29,8 @@
       end: { column: 10, line: 3 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Null {
+    type: "Null",
     value: "null",
 
     range: [84, 88],

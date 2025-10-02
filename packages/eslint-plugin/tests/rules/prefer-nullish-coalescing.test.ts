@@ -1253,32 +1253,6 @@ const test = Boolean(((a = b), b || c));
     },
     {
       code: `
-let a: string | true | undefined;
-let b: string | boolean | undefined;
-
-const x = Boolean(a ? a : b);
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-
-const test = Boolean(!a ? b : a);
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
 let a: string | boolean | undefined;
 let b: string | boolean | undefined;
 let c: string | boolean | undefined;
@@ -5089,6 +5063,64 @@ const x = Boolean(1 + (a ?? b));
 let a: string | true | undefined;
 let b: string | boolean | undefined;
 
+const x = Boolean(a ? a : b);
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a ?? b);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+
+const test = Boolean(!a ? b : a);
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+
+const test = Boolean(a ?? b);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
 declare function f(x: unknown): unknown;
 
 if (f(a || b)) {
@@ -6241,6 +6273,77 @@ declare function makeString(): string;
 function weirdParens() {
   ((foo).a) ??= makeString();
 }
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+let a: string | undefined;
+let b: { message: string } | undefined;
+
+const foo = a ? a : b ? 1 : 2;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | undefined;
+let b: { message: string } | undefined;
+
+const foo = a ?? (b ? 1 : 2);
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+let a: string | undefined;
+let b: { message: string } | undefined;
+
+const foo = a ? a : (b ? 1 : 2);
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | undefined;
+let b: { message: string } | undefined;
+
+const foo = a ?? (b ? 1 : 2);
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const c: string | null;
+c !== null ? c : c ? 1 : 2;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const c: string | null;
+c ?? (c ? 1 : 2);
       `,
             },
           ],

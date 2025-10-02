@@ -34,9 +34,9 @@ Snapshot Diff:
                   type: 'ImportDefaultSpecifier',
                   local: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'fs',
--                   optional: false,
+                    optional: false,
 
                     range: [114, 116],
                     loc: {
@@ -68,7 +68,7 @@ Snapshot Diff:
           },
         },
         declare: true,
--       global: false,
+        global: false,
         id: Literal {
           type: 'Literal',
           raw: '\'i-use-things\'',

@@ -1,4 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > empty-type-parameters > Babel - Error`]
-SyntaxError: Type parameter list cannot be empty. (3:11)

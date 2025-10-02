@@ -3,9 +3,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "x",
+        optional: false,
 
         range: [78, 79],
         loc: {
@@ -20,7 +23,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "foo",
+            optional: false,
 
             range: [88, 91],
             loc: {

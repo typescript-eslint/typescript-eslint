@@ -5,6 +5,7 @@ Program {
       type: "ExportDefaultDeclaration",
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
+        abstract: false,
         body: ClassBody {
           type: "ClassBody",
           body: [],
@@ -15,9 +16,13 @@ Program {
             end: { column: 27, line: 1 },
           },
         },
+        declare: false,
+        decorators: [],
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "Foo",
+          optional: false,
 
           range: [21, 24],
           loc: {
@@ -25,6 +30,7 @@ Program {
             end: { column: 24, line: 1 },
           },
         },
+        implements: [],
         superClass: null,
 
         range: [15, 27],

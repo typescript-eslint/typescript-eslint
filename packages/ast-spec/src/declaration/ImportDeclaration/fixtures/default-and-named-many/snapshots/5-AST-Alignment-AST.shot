@@ -29,9 +29,9 @@ Snapshot Diff:
             type: 'ImportDefaultSpecifier',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'a',
--             optional: false,
+              optional: false,
 
               range: [7, 8],
               loc: {
@@ -50,9 +50,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'b',
--             optional: false,
+              optional: false,
 
               range: [12, 13],
               loc: {
@@ -63,9 +63,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'b',
--             optional: false,
+              optional: false,
 
               range: [12, 13],
               loc: {
@@ -84,9 +84,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'c',
--             optional: false,
+              optional: false,
 
               range: [15, 16],
               loc: {
@@ -97,9 +97,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'c',
--             optional: false,
+              optional: false,
 
               range: [15, 16],
               loc: {
@@ -118,9 +118,9 @@ Snapshot Diff:
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'd',
--             optional: false,
+              optional: false,
 
               range: [18, 19],
               loc: {
@@ -131,9 +131,9 @@ Snapshot Diff:
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'd',
--             optional: false,
+              optional: false,
 
               range: [18, 19],
               loc: {

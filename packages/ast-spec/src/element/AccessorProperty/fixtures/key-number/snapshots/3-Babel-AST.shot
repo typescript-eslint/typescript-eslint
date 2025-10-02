@@ -3,12 +3,16 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
-          ClassAccessorProperty {
-            type: "ClassAccessorProperty",
+          AccessorProperty {
+            type: "AccessorProperty",
             computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
             key: Literal {
               type: "Literal",
               raw: "1",
@@ -20,6 +24,9 @@ Program {
                 end: { column: 12, line: 2 },
               },
             },
+            optional: false,
+            override: false,
+            readonly: false,
             static: false,
             value: Literal {
               type: "Literal",
@@ -47,9 +54,13 @@ Program {
           end: { column: 1, line: 3 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [6, 9],
         loc: {
@@ -57,6 +68,7 @@ Program {
           end: { column: 9, line: 1 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [0, 31],

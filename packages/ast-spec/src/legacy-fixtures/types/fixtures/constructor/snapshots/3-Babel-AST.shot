@@ -6,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "f",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSConstructorType {
@@ -17,7 +20,9 @@ Program {
                 parameters: [
                   Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "a",
+                    optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: "TSTypeAnnotation",
                       typeAnnotation: TSNumberKeyword {
@@ -45,6 +50,7 @@ Program {
                   },
                   Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "b",
                     optional: true,
                     typeAnnotation: TSTypeAnnotation {
@@ -121,6 +127,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [73, 116],

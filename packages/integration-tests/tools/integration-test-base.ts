@@ -74,14 +74,15 @@ export function eslintIntegrationTest(
           `"filePath": "<root>/${path.relative(testFolder, testFile)}"`,
       )
       .replaceAll(/C:\\\\(usr)\\\\(linked)\\\\(tsconfig.json)/g, '/$1/$2/$3');
+    let lintOutput: unknown;
     try {
-      const lintOutput = JSON.parse(lintOutputRAW);
-      expect(lintOutput).toMatchSnapshot();
+      lintOutput = JSON.parse(lintOutputRAW);
     } catch {
       throw new Error(
         `Lint output could not be parsed as JSON: \`${lintOutputRAW}\`.`,
       );
     }
+    expect(lintOutput).toMatchSnapshot();
   });
 }
 

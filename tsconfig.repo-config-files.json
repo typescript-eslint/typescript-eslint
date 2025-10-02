@@ -1,8 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist/out-tsc/root/eslint",
-    "types": ["@types/node"],
+    "outDir": "./dist",
     "allowJs": true,
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true
@@ -12,9 +11,6 @@
     "tools/**/*.ts",
     "tools/**/*.mts",
     "eslint.config.mjs",
-    "jest.config.base.js",
-    "jest.config.js",
-    "jest.preset.js",
     "knip.ts",
     ".github/**/*.js"
   ],

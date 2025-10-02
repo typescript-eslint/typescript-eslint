@@ -3,6 +3,7 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -13,9 +14,13 @@ Program {
           end: { column: 30, line: 3 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -23,9 +28,12 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Bar",
+        optional: false,
 
         range: [94, 97],
         loc: {
@@ -40,7 +48,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "B",
+              optional: false,
 
               range: [98, 99],
               loc: {
@@ -68,7 +78,10 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "A",
+            out: false,
 
             range: [83, 84],
             loc: {

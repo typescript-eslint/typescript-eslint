@@ -1,15 +1,8 @@
-/* eslint-disable @typescript-eslint/no-deprecated -- TODO - migrate this test away from `batchedSingleLineTests` */
-
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
 
-import type {
-  MessageId,
-  Options,
-} from '../../src/rules/strict-boolean-expressions';
-
 import rule from '../../src/rules/strict-boolean-expressions';
-import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -645,67 +638,99 @@ declare function f(x: string | null): boolean;
 
   invalid: [
     // non-boolean in RHS of test expression
-    ...batchedSingleLineTests<MessageId, Options>({
-      code: noFormat`
-        if (true && (1 + 1)) {}
-        while (false || "a" + "b") {}
-        (x: object) => true || false || x ? true : false;
+    {
+      code: `
+if (true && 1 + 1) {
+}
       `,
       errors: [
         {
-          column: 14,
-          data: {
-            context: 'conditional',
-          },
+          column: 13,
+          data: { context: 'conditional' },
           line: 2,
           messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
-              output: 'if (true && ((1 + 1) !== 0)) {}',
+              output: `
+if (true && ((1 + 1) !== 0)) {
+}
+      `,
             },
             {
               messageId: 'conditionFixCompareNaN',
-              output: 'if (true && (!Number.isNaN((1 + 1)))) {}',
+              output: `
+if (true && (!Number.isNaN((1 + 1)))) {
+}
+      `,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: 'if (true && (Boolean((1 + 1)))) {}',
+              output: `
+if (true && (Boolean((1 + 1)))) {
+}
+      `,
             },
           ],
         },
+      ],
+      options: [
         {
-          column: 25,
-          line: 3,
+          allowNullableObject: false,
+          allowNumber: false,
+          allowString: false,
+        },
+      ],
+    },
+    {
+      code: "while (false || 'a' + 'b') {}",
+      errors: [
+        {
+          column: 17,
+          line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
-              output: '        while (false || (("a" + "b").length > 0)) {}',
+              output: "while (false || (('a' + 'b').length > 0)) {}",
             },
             {
               messageId: 'conditionFixCompareEmptyString',
-              output: '        while (false || (("a" + "b") !== "")) {}',
+              output: `while (false || (('a' + 'b') !== "")) {}`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        while (false || (Boolean(("a" + "b")))) {}',
+              output: "while (false || (Boolean(('a' + 'b')))) {}",
             },
           ],
         },
+      ],
+      options: [
         {
-          column: 41,
-          data: {
-            context: 'conditional',
-          },
-          line: 4,
+          allowNullableObject: false,
+          allowNumber: false,
+          allowString: false,
+        },
+      ],
+    },
+    {
+      code: '(x: object) => (true || false || x ? true : false);',
+      errors: [
+        {
+          column: 34,
+          data: { context: 'conditional' },
+          line: 1,
           messageId: 'conditionErrorObject',
         },
       ],
       options: [
-        { allowNullableObject: false, allowNumber: false, allowString: false },
+        {
+          allowNullableObject: false,
+          allowNumber: false,
+          allowString: false,
+        },
       ],
-    }),
+    },
 
     // check if all and only the outermost operands are checked
     {
@@ -1538,269 +1563,445 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
     },
 
     // nullish in boolean context
-    ...batchedSingleLineTests<MessageId, Options>({
-      code: noFormat`
-        null || {};
-        undefined && [];
-        declare const x: null; if (x) {}
-        (x: undefined) => !x;
-        <T extends null | undefined>(x: T) => x ? 1 : 0;
-        <T extends null>(x: T) => x ? 1 : 0;
-        <T extends undefined>(x: T) => x ? 1 : 0;
+    {
+      code: 'null || {};',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'conditionErrorNullish',
+        },
+      ],
+    },
+    {
+      code: 'undefined && [];',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'conditionErrorNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: null;
+if (x) {
+}
       `,
       errors: [
-        { column: 1, line: 2, messageId: 'conditionErrorNullish' },
-        { column: 9, line: 3, messageId: 'conditionErrorNullish' },
-        { column: 36, line: 4, messageId: 'conditionErrorNullish' },
-        { column: 28, line: 5, messageId: 'conditionErrorNullish' },
-        { column: 47, line: 6, messageId: 'conditionErrorNullish' },
-        { column: 35, line: 7, messageId: 'conditionErrorNullish' },
-        { column: 40, line: 8, messageId: 'conditionErrorNullish' },
+        {
+          column: 5,
+          line: 3,
+          messageId: 'conditionErrorNullish',
+        },
       ],
-    }),
+    },
+    {
+      code: '(x: undefined) => !x;',
+      errors: [
+        {
+          column: 20,
+          line: 1,
+          messageId: 'conditionErrorNullish',
+        },
+      ],
+    },
+    {
+      code: '<T extends null | undefined>(x: T) => (x ? 1 : 0);',
+      errors: [
+        {
+          column: 40,
+          line: 1,
+          messageId: 'conditionErrorNullish',
+        },
+      ],
+    },
+    {
+      code: '<T extends null>(x: T) => (x ? 1 : 0);',
+      errors: [
+        {
+          column: 28,
+          line: 1,
+          messageId: 'conditionErrorNullish',
+        },
+      ],
+    },
+    {
+      code: '<T extends undefined>(x: T) => (x ? 1 : 0);',
+      errors: [
+        {
+          column: 33,
+          line: 1,
+          messageId: 'conditionErrorNullish',
+        },
+      ],
+    },
 
     // object in boolean context
-    ...batchedSingleLineTests<MessageId, Options>({
-      code: noFormat`
-        [] || 1;
-        ({}) && "a";
-        declare const x: symbol; if (x) {}
-        (x: () => void) => !x;
-        <T extends object>(x: T) => x ? 1 : 0;
-        <T extends Object | Function>(x: T) => x ? 1 : 0;
-        <T extends { a: number }>(x: T) => x ? 1 : 0;
-        <T extends () => void>(x: T) => x ? 1 : 0;
-      `,
+    {
+      code: '[] || 1;',
       errors: [
         {
           column: 1,
           data: {
             context: 'conditional',
           },
-          line: 2,
+          line: 1,
           messageId: 'conditionErrorObject',
         },
+      ],
+    },
+    {
+      code: "({}) && 'a';",
+      errors: [
         {
-          column: 10,
+          column: 2,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorObject',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: symbol;
+if (x) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
           data: {
             context: 'conditional',
           },
           line: 3,
           messageId: 'conditionErrorObject',
         },
+      ],
+    },
+    {
+      code: '(x: () => void) => !x;',
+      errors: [
         {
-          column: 38,
+          column: 21,
           data: {
             context: 'conditional',
           },
-          line: 4,
+          line: 1,
           messageId: 'conditionErrorObject',
         },
+      ],
+    },
+    {
+      code: '<T extends object>(x: T) => (x ? 1 : 0);',
+      errors: [
         {
-          column: 29,
+          column: 30,
           data: {
             context: 'conditional',
           },
-          line: 5,
+          line: 1,
           messageId: 'conditionErrorObject',
         },
-        {
-          column: 37,
-          data: {
-            context: 'conditional',
-          },
-          line: 6,
-          messageId: 'conditionErrorObject',
-        },
-        {
-          column: 48,
-          data: {
-            context: 'conditional',
-          },
-          line: 7,
-          messageId: 'conditionErrorObject',
-        },
-        {
-          column: 44,
-          data: {
-            context: 'conditional',
-          },
-          line: 8,
-          messageId: 'conditionErrorObject',
-        },
+      ],
+    },
+    {
+      code: '<T extends Object | Function>(x: T) => (x ? 1 : 0);',
+      errors: [
         {
           column: 41,
           data: {
             context: 'conditional',
           },
-          line: 9,
+          line: 1,
           messageId: 'conditionErrorObject',
         },
       ],
-    }),
-
-    // string in boolean context
-    ...batchedSingleLineTests<MessageId, Options>({
-      code: noFormat`
-        while ("") {}
-        for (; "foo";) {}
-        declare const x: string; if (x) {}
-        (x: string) => (!x);
-        <T extends string>(x: T) => x ? 1 : 0;
-      `,
+    },
+    {
+      code: '<T extends { a: number }>(x: T) => (x ? 1 : 0);',
       errors: [
-        {
-          column: 8,
-          data: {
-            context: 'conditional',
-          },
-          line: 2,
-          messageId: 'conditionErrorString',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareStringLength',
-              output: `while ("".length > 0) {}`,
-            },
-            {
-              messageId: 'conditionFixCompareEmptyString',
-              output: `while ("" !== "") {}`,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `while (Boolean("")) {}`,
-            },
-          ],
-        },
-        {
-          column: 16,
-          data: {
-            context: 'conditional',
-          },
-          line: 3,
-          messageId: 'conditionErrorString',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareStringLength',
-              output: `        for (; "foo".length > 0;) {}`,
-            },
-            {
-              messageId: 'conditionFixCompareEmptyString',
-              output: `        for (; "foo" !== "";) {}`,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `        for (; Boolean("foo");) {}`,
-            },
-          ],
-        },
-        {
-          column: 38,
-          data: {
-            context: 'conditional',
-          },
-          line: 4,
-          messageId: 'conditionErrorString',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareStringLength',
-              output: `        declare const x: string; if (x.length > 0) {}`,
-            },
-            {
-              messageId: 'conditionFixCompareEmptyString',
-              output: `        declare const x: string; if (x !== "") {}`,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `        declare const x: string; if (Boolean(x)) {}`,
-            },
-          ],
-        },
-        {
-          column: 26,
-          data: {
-            context: 'conditional',
-          },
-          line: 5,
-          messageId: 'conditionErrorString',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareStringLength',
-              output: `        (x: string) => (x.length === 0);`,
-            },
-            {
-              messageId: 'conditionFixCompareEmptyString',
-              output: `        (x: string) => (x === "");`,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `        (x: string) => (!Boolean(x));`,
-            },
-          ],
-        },
         {
           column: 37,
           data: {
             context: 'conditional',
           },
-          line: 6,
-          messageId: 'conditionErrorString',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareStringLength',
-              output: `        <T extends string>(x: T) => (x.length > 0) ? 1 : 0;`,
-            },
-            {
-              messageId: 'conditionFixCompareEmptyString',
-              output: `        <T extends string>(x: T) => (x !== "") ? 1 : 0;`,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `        <T extends string>(x: T) => (Boolean(x)) ? 1 : 0;`,
-            },
-          ],
+          line: 1,
+          messageId: 'conditionErrorObject',
         },
       ],
-      options: [{ allowString: false }],
-    }),
+    },
+    {
+      code: '<T extends () => void>(x: T) => (x ? 1 : 0);',
+      errors: [
+        {
+          column: 34,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorObject',
+        },
+      ],
+    },
 
-    // number in boolean context
-    ...batchedSingleLineTests<MessageId, Options>({
-      code: noFormat`
-        while (0n) {}
-        for (; 123;) {}
-        declare const x: number; if (x) {}
-        (x: bigint) => !x;
-        <T extends number>(x: T) => (x) ? 1 : 0;
-        ![]["length"]; // doesn't count as array.length when computed
-        declare const a: any[] & { notLength: number }; if (a.notLength) {}
-      `,
+    // string in boolean context
+    {
+      code: "while ('') {}",
       errors: [
         {
           column: 8,
           data: {
             context: 'conditional',
           },
-          line: 2,
+          line: 1,
+          messageId: 'conditionErrorString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: "while (''.length > 0) {}",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `while ('' !== "") {}`,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "while (Boolean('')) {}",
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowString: false,
+        },
+      ],
+    },
+    {
+      code: "for (; 'foo'; ) {}",
+      errors: [
+        {
+          column: 8,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: "for (; 'foo'.length > 0; ) {}",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `for (; 'foo' !== ""; ) {}`,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "for (; Boolean('foo'); ) {}",
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowString: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: string;
+if (x) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: `
+declare const x: string;
+if (x.length > 0) {
+}
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `
+declare const x: string;
+if (x !== "") {
+}
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const x: string;
+if (Boolean(x)) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowString: false,
+        },
+      ],
+    },
+    {
+      code: '(x: string) => !x;',
+      errors: [
+        {
+          column: 17,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: '(x: string) => x.length === 0;',
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: '(x: string) => x === "";',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: '(x: string) => !Boolean(x);',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowString: false,
+        },
+      ],
+    },
+    {
+      code: '<T extends string>(x: T) => (x ? 1 : 0);',
+      errors: [
+        {
+          column: 30,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: '<T extends string>(x: T) => ((x.length > 0) ? 1 : 0);',
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: '<T extends string>(x: T) => ((x !== "") ? 1 : 0);',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: '<T extends string>(x: T) => ((Boolean(x)) ? 1 : 0);',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowString: false,
+        },
+      ],
+    },
+
+    // number in boolean context
+    {
+      code: 'while (0n) {}',
+      errors: [
+        {
+          column: 8,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
               // TODO: fix compare zero suggestion for bigint
-              output: `while (0n !== 0) {}`,
+              output: 'while (0n !== 0) {}',
             },
             {
               // TODO: remove check NaN suggestion for bigint
               messageId: 'conditionFixCompareNaN',
-              output: `while (!Number.isNaN(0n)) {}`,
+              output: 'while (!Number.isNaN(0n)) {}',
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: `while (Boolean(0n)) {}`,
+              output: 'while (Boolean(0n)) {}',
             },
           ],
         },
+      ],
+      options: [
         {
-          column: 16,
+          allowNumber: false,
+        },
+      ],
+    },
+    {
+      code: 'for (; 123; ) {}',
+      errors: [
+        {
+          column: 8,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: 'for (; 123 !== 0; ) {}',
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: 'for (; !Number.isNaN(123); ) {}',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: 'for (; Boolean(123); ) {}',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowNumber: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: number;
+if (x) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
           data: {
             context: 'conditional',
           },
@@ -1809,133 +2010,185 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
-              output: `        for (; 123 !== 0;) {}`,
+              output: `
+declare const x: number;
+if (x !== 0) {
+}
+      `,
             },
             {
               messageId: 'conditionFixCompareNaN',
-              output: `        for (; !Number.isNaN(123);) {}`,
+              output: `
+declare const x: number;
+if (!Number.isNaN(x)) {
+}
+      `,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: `        for (; Boolean(123);) {}`,
-            },
-          ],
-        },
-        {
-          column: 38,
-          data: {
-            context: 'conditional',
-          },
-          line: 4,
-          messageId: 'conditionErrorNumber',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareZero',
-              output: `        declare const x: number; if (x !== 0) {}`,
-            },
-            {
-              messageId: 'conditionFixCompareNaN',
-              output: `        declare const x: number; if (!Number.isNaN(x)) {}`,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `        declare const x: number; if (Boolean(x)) {}`,
-            },
-          ],
-        },
-        {
-          column: 25,
-          data: {
-            context: 'conditional',
-          },
-          line: 5,
-          messageId: 'conditionErrorNumber',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareZero',
-              // TODO: fix compare zero suggestion for bigint
-              output: `        (x: bigint) => x === 0;`,
-            },
-            {
-              // TODO: remove check NaN suggestion for bigint
-              messageId: 'conditionFixCompareNaN',
-              output: `        (x: bigint) => Number.isNaN(x);`,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `        (x: bigint) => !Boolean(x);`,
-            },
-          ],
-        },
-        {
-          column: 38,
-          data: {
-            context: 'conditional',
-          },
-          line: 6,
-          messageId: 'conditionErrorNumber',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareZero',
-              output: `        <T extends number>(x: T) => (x !== 0) ? 1 : 0;`,
-            },
-            {
-              messageId: 'conditionFixCompareNaN',
-              output: `        <T extends number>(x: T) => (!Number.isNaN(x)) ? 1 : 0;`,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `        <T extends number>(x: T) => (Boolean(x)) ? 1 : 0;`,
-            },
-          ],
-        },
-        {
-          column: 10,
-          data: {
-            context: 'conditional',
-          },
-          line: 7,
-          messageId: 'conditionErrorNumber',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareZero',
-              output: `        []["length"] === 0; // doesn't count as array.length when computed`,
-            },
-            {
-              messageId: 'conditionFixCompareNaN',
-              output: `        Number.isNaN([]["length"]); // doesn't count as array.length when computed`,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `        !Boolean([]["length"]); // doesn't count as array.length when computed`,
-            },
-          ],
-        },
-        {
-          column: 61,
-          data: {
-            context: 'conditional',
-          },
-          line: 8,
-          messageId: 'conditionErrorNumber',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareZero',
-              output: `        declare const a: any[] & { notLength: number }; if (a.notLength !== 0) {}`,
-            },
-            {
-              messageId: 'conditionFixCompareNaN',
-              output: `        declare const a: any[] & { notLength: number }; if (!Number.isNaN(a.notLength)) {}`,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `        declare const a: any[] & { notLength: number }; if (Boolean(a.notLength)) {}`,
+              output: `
+declare const x: number;
+if (Boolean(x)) {
+}
+      `,
             },
           ],
         },
       ],
-      options: [{ allowNumber: false }],
-    }),
+      options: [
+        {
+          allowNumber: false,
+        },
+      ],
+    },
+    {
+      code: '(x: bigint) => !x;',
+      errors: [
+        {
+          column: 17,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              // TODO: fix compare zero suggestion for bigint
+              messageId: 'conditionFixCompareZero',
+              output: '(x: bigint) => x === 0;',
+            },
+            {
+              // TODO: remove check NaN suggestion for bigint
+              messageId: 'conditionFixCompareNaN',
+              output: '(x: bigint) => Number.isNaN(x);',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: '(x: bigint) => !Boolean(x);',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowNumber: false,
+        },
+      ],
+    },
+    {
+      code: '<T extends number>(x: T) => (x ? 1 : 0);',
+      errors: [
+        {
+          column: 30,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: '<T extends number>(x: T) => ((x !== 0) ? 1 : 0);',
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                '<T extends number>(x: T) => ((!Number.isNaN(x)) ? 1 : 0);',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: '<T extends number>(x: T) => ((Boolean(x)) ? 1 : 0);',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowNumber: false,
+        },
+      ],
+    },
+    {
+      code: "![]['length']; // doesn't count as array.length when computed",
+      errors: [
+        {
+          column: 2,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output:
+                "[]['length'] === 0; // doesn't count as array.length when computed",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                "Number.isNaN([]['length']); // doesn't count as array.length when computed",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output:
+                "!Boolean([]['length']); // doesn't count as array.length when computed",
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowNumber: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const a: any[] & { notLength: number };
+if (a.notLength) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { context: 'conditional' },
+          line: 3,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: `
+declare const a: any[] & { notLength: number };
+if (a.notLength !== 0) {
+}
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: `
+declare const a: any[] & { notLength: number };
+if (!Number.isNaN(a.notLength)) {
+}
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const a: any[] & { notLength: number };
+if (Boolean(a.notLength)) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowNumber: false,
+        },
+      ],
+    },
 
     // number (array.length) in boolean context
 
@@ -2017,48 +2270,54 @@ if ([].length === 0) {
     },
 
     // mixed `string | number` value in boolean context
-    ...batchedSingleLineTests<MessageId, Options>({
-      code: noFormat`
-        declare const x: string | number; if (x) {}
-        (x: bigint | string) => !x;
-        <T extends number | bigint | string>(x: T) => x ? 1 : 0;
+    {
+      code: `
+declare const x: string | number;
+if (x) {
+}
       `,
       errors: [
-        { column: 39, line: 2, messageId: 'conditionErrorOther' },
-        { column: 34, line: 3, messageId: 'conditionErrorOther' },
-        { column: 55, line: 4, messageId: 'conditionErrorOther' },
+        {
+          column: 5,
+          line: 3,
+          messageId: 'conditionErrorOther',
+        },
       ],
       options: [{ allowNumber: true, allowString: true }],
-    }),
+    },
+    {
+      code: '(x: bigint | string) => !x;',
+      errors: [
+        {
+          column: 26,
+          line: 1,
+          messageId: 'conditionErrorOther',
+        },
+      ],
+      options: [{ allowNumber: true, allowString: true }],
+    },
+    {
+      code: '<T extends number | bigint | string>(x: T) => (x ? 1 : 0);',
+      errors: [
+        {
+          column: 48,
+          line: 1,
+          messageId: 'conditionErrorOther',
+        },
+      ],
+      options: [{ allowNumber: true, allowString: true }],
+    },
 
     // nullable boolean in boolean context
-    ...batchedSingleLineTests<MessageId, Options>({
-      code: noFormat`
-        declare const x: boolean | null; if (x) {}
-        (x?: boolean) => !x;
-        <T extends boolean | null | undefined>(x: T) => x ? 1 : 0;
+    {
+      code: `
+declare const x: boolean | null;
+if (x) {
+}
       `,
       errors: [
         {
-          column: 38,
-          data: {
-            context: 'conditional',
-          },
-          line: 2,
-          messageId: 'conditionErrorNullableBoolean',
-          suggestions: [
-            {
-              messageId: 'conditionFixDefaultFalse',
-              output: `declare const x: boolean | null; if (x ?? false) {}`,
-            },
-            {
-              messageId: 'conditionFixCompareTrue',
-              output: `declare const x: boolean | null; if (x === true) {}`,
-            },
-          ],
-        },
-        {
-          column: 27,
+          column: 5,
           data: {
             context: 'conditional',
           },
@@ -2067,114 +2326,148 @@ if ([].length === 0) {
           suggestions: [
             {
               messageId: 'conditionFixDefaultFalse',
-              output: `        (x?: boolean) => !(x ?? false);`,
-            },
-            {
-              messageId: 'conditionFixCompareFalse',
-              output: `        (x?: boolean) => x === false;`,
-            },
-          ],
-        },
-        {
-          column: 57,
-          data: {
-            context: 'conditional',
-          },
-          line: 4,
-          messageId: 'conditionErrorNullableBoolean',
-          suggestions: [
-            {
-              messageId: 'conditionFixDefaultFalse',
-              output: `        <T extends boolean | null | undefined>(x: T) => (x ?? false) ? 1 : 0;`,
+              output: `
+declare const x: boolean | null;
+if (x ?? false) {
+}
+      `,
             },
             {
               messageId: 'conditionFixCompareTrue',
-              output: `        <T extends boolean | null | undefined>(x: T) => (x === true) ? 1 : 0;`,
+              output: `
+declare const x: boolean | null;
+if (x === true) {
+}
+      `,
             },
           ],
         },
       ],
       options: [{ allowNullableBoolean: false }],
-    }),
-
-    // nullable object in boolean context
-    ...batchedSingleLineTests<MessageId, Options>({
-      code: noFormat`
-        declare const x: object | null; if (x) {}
-        (x?: { a: number }) => !x;
-        <T extends {} | null | undefined>(x: T) => x ? 1 : 0;
-      `,
+    },
+    {
+      code: '(x?: boolean) => !x;',
       errors: [
         {
-          column: 37,
-          line: 2,
-          messageId: 'conditionErrorNullableObject',
+          column: 19,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNullableBoolean',
           suggestions: [
             {
-              messageId: 'conditionFixCompareNullish',
-              output: 'declare const x: object | null; if (x != null) {}',
+              messageId: 'conditionFixDefaultFalse',
+              output: '(x?: boolean) => !(x ?? false);',
+            },
+            {
+              messageId: 'conditionFixCompareFalse',
+              output: '(x?: boolean) => x === false;',
             },
           ],
         },
+      ],
+      options: [{ allowNullableBoolean: false }],
+    },
+    {
+      code: '<T extends boolean | null | undefined>(x: T) => (x ? 1 : 0);',
+      errors: [
         {
-          column: 33,
+          column: 50,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNullableBoolean',
+          suggestions: [
+            {
+              messageId: 'conditionFixDefaultFalse',
+              output:
+                '<T extends boolean | null | undefined>(x: T) => ((x ?? false) ? 1 : 0);',
+            },
+            {
+              messageId: 'conditionFixCompareTrue',
+              output:
+                '<T extends boolean | null | undefined>(x: T) => ((x === true) ? 1 : 0);',
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableBoolean: false }],
+    },
+
+    // nullable object in boolean context
+    {
+      code: `
+declare const x: object | null;
+if (x) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
           line: 3,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
-              output: `        (x?: { a: number }) => x == null;`,
-            },
-          ],
-        },
-        {
-          column: 52,
-          line: 4,
-          messageId: 'conditionErrorNullableObject',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output: `        <T extends {} | null | undefined>(x: T) => (x != null) ? 1 : 0;`,
+              output: `
+declare const x: object | null;
+if (x != null) {
+}
+      `,
             },
           ],
         },
       ],
       options: [{ allowNullableObject: false }],
-    }),
+    },
+    {
+      code: '(x?: { a: number }) => !x;',
+      errors: [
+        {
+          column: 25,
+          line: 1,
+          messageId: 'conditionErrorNullableObject',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: '(x?: { a: number }) => x == null;',
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableObject: false }],
+    },
+    {
+      code: '<T extends {} | null | undefined>(x: T) => (x ? 1 : 0);',
+      errors: [
+        {
+          column: 45,
+          line: 1,
+          messageId: 'conditionErrorNullableObject',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output:
+                '<T extends {} | null | undefined>(x: T) => ((x != null) ? 1 : 0);',
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableObject: false }],
+    },
 
     // nullable string in boolean context
-    ...batchedSingleLineTests<MessageId, Options>({
-      code: noFormat`
-        declare const x: string | null; if (x) {}
-        (x?: string) => !x;
-        <T extends string | null | undefined>(x: T) => x ? 1 : 0;
-        function foo(x: '' | 'bar' | null) { if (!x) {} }
+    {
+      code: `
+declare const x: string | null;
+if (x) {
+}
       `,
       errors: [
         {
-          column: 37,
-          data: {
-            context: 'conditional',
-          },
-          line: 2,
-          messageId: 'conditionErrorNullableString',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output: 'declare const x: string | null; if (x != null) {}',
-            },
-            {
-              messageId: 'conditionFixDefaultEmptyString',
-              output: 'declare const x: string | null; if (x ?? "") {}',
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: 'declare const x: string | null; if (Boolean(x)) {}',
-            },
-          ],
-        },
-        {
-          column: 26,
+          column: 5,
           data: {
             context: 'conditional',
           },
@@ -2183,104 +2476,143 @@ if ([].length === 0) {
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
-              output: '        (x?: string) => x == null;',
+              output: `
+declare const x: string | null;
+if (x != null) {
+}
+      `,
             },
             {
               messageId: 'conditionFixDefaultEmptyString',
-              output: '        (x?: string) => !(x ?? "");',
+              output: `
+declare const x: string | null;
+if (x ?? "") {
+}
+      `,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        (x?: string) => !Boolean(x);',
-            },
-          ],
-        },
-        {
-          column: 56,
-          data: {
-            context: 'conditional',
-          },
-          line: 4,
-          messageId: 'conditionErrorNullableString',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output:
-                '        <T extends string | null | undefined>(x: T) => (x != null) ? 1 : 0;',
-            },
-            {
-              messageId: 'conditionFixDefaultEmptyString',
-              output:
-                '        <T extends string | null | undefined>(x: T) => (x ?? "") ? 1 : 0;',
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output:
-                '        <T extends string | null | undefined>(x: T) => (Boolean(x)) ? 1 : 0;',
-            },
-          ],
-        },
-        {
-          column: 51,
-          data: {
-            context: 'conditional',
-          },
-          line: 5,
-          messageId: 'conditionErrorNullableString',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output:
-                "        function foo(x: '' | 'bar' | null) { if (x == null) {} }",
-            },
-            {
-              messageId: 'conditionFixDefaultEmptyString',
-              output:
-                "        function foo(x: '' | 'bar' | null) { if (!(x ?? \"\")) {} }",
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output:
-                "        function foo(x: '' | 'bar' | null) { if (!Boolean(x)) {} }",
+              output: `
+declare const x: string | null;
+if (Boolean(x)) {
+}
+      `,
             },
           ],
         },
       ],
-    }),
+    },
+    {
+      code: '(x?: string) => !x;',
+      errors: [
+        {
+          column: 18,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNullableString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: '(x?: string) => x == null;',
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: '(x?: string) => !(x ?? "");',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: '(x?: string) => !Boolean(x);',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '<T extends string | null | undefined>(x: T) => (x ? 1 : 0);',
+      errors: [
+        {
+          column: 49,
+          data: { context: 'conditional' },
+          line: 1,
+          messageId: 'conditionErrorNullableString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output:
+                '<T extends string | null | undefined>(x: T) => ((x != null) ? 1 : 0);',
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output:
+                '<T extends string | null | undefined>(x: T) => ((x ?? "") ? 1 : 0);',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output:
+                '<T extends string | null | undefined>(x: T) => ((Boolean(x)) ? 1 : 0);',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function foo(x: '' | 'bar' | null) {
+  if (!x) {
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { context: 'conditional' },
+          line: 3,
+          messageId: 'conditionErrorNullableString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+function foo(x: '' | 'bar' | null) {
+  if (x == null) {
+  }
+}
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+function foo(x: '' | 'bar' | null) {
+  if (!(x ?? "")) {
+  }
+}
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+function foo(x: '' | 'bar' | null) {
+  if (!Boolean(x)) {
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
 
     // nullable number in boolean context
-    ...batchedSingleLineTests<MessageId, Options>({
-      code: noFormat`
-        declare const x: number | null; if (x) {}
-        (x?: number) => !x;
-        <T extends number | null | undefined>(x: T) => x ? 1 : 0;
-        function foo(x: 0 | 1 | null) { if (!x) {} }
+    {
+      code: `
+declare const x: number | null;
+if (x) {
+}
       `,
       errors: [
         {
-          column: 37,
-          data: {
-            context: 'conditional',
-          },
-          line: 2,
-          messageId: 'conditionErrorNullableNumber',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output: 'declare const x: number | null; if (x != null) {}',
-            },
-            {
-              messageId: 'conditionFixDefaultZero',
-              output: 'declare const x: number | null; if (x ?? 0) {}',
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: 'declare const x: number | null; if (Boolean(x)) {}',
-            },
-          ],
-        },
-        {
-          column: 26,
+          column: 5,
           data: {
             context: 'conditional',
           },
@@ -2289,70 +2621,136 @@ if ([].length === 0) {
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
-              output: '        (x?: number) => x == null;',
+              output: `
+declare const x: number | null;
+if (x != null) {
+}
+      `,
             },
             {
               messageId: 'conditionFixDefaultZero',
-              output: '        (x?: number) => !(x ?? 0);',
+              output: `
+declare const x: number | null;
+if (x ?? 0) {
+}
+      `,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        (x?: number) => !Boolean(x);',
-            },
-          ],
-        },
-        {
-          column: 56,
-          data: {
-            context: 'conditional',
-          },
-          line: 4,
-          messageId: 'conditionErrorNullableNumber',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output:
-                '        <T extends number | null | undefined>(x: T) => (x != null) ? 1 : 0;',
-            },
-            {
-              messageId: 'conditionFixDefaultZero',
-              output:
-                '        <T extends number | null | undefined>(x: T) => (x ?? 0) ? 1 : 0;',
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output:
-                '        <T extends number | null | undefined>(x: T) => (Boolean(x)) ? 1 : 0;',
-            },
-          ],
-        },
-        {
-          column: 46,
-          data: {
-            context: 'conditional',
-          },
-          line: 5,
-          messageId: 'conditionErrorNullableNumber',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output:
-                '        function foo(x: 0 | 1 | null) { if (x == null) {} }',
-            },
-            {
-              messageId: 'conditionFixDefaultZero',
-              output:
-                '        function foo(x: 0 | 1 | null) { if (!(x ?? 0)) {} }',
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output:
-                '        function foo(x: 0 | 1 | null) { if (!Boolean(x)) {} }',
+              output: `
+declare const x: number | null;
+if (Boolean(x)) {
+}
+      `,
             },
           ],
         },
       ],
-    }),
+    },
+    {
+      code: '(x?: number) => !x;',
+      errors: [
+        {
+          column: 18,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNullableNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: '(x?: number) => x == null;',
+            },
+            {
+              messageId: 'conditionFixDefaultZero',
+              output: '(x?: number) => !(x ?? 0);',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: '(x?: number) => !Boolean(x);',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '<T extends number | null | undefined>(x: T) => (x ? 1 : 0);',
+      errors: [
+        {
+          column: 49,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorNullableNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output:
+                '<T extends number | null | undefined>(x: T) => ((x != null) ? 1 : 0);',
+            },
+            {
+              messageId: 'conditionFixDefaultZero',
+              output:
+                '<T extends number | null | undefined>(x: T) => ((x ?? 0) ? 1 : 0);',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output:
+                '<T extends number | null | undefined>(x: T) => ((Boolean(x)) ? 1 : 0);',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function foo(x: 0 | 1 | null) {
+  if (!x) {
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            context: 'conditional',
+          },
+          line: 3,
+          messageId: 'conditionErrorNullableNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+function foo(x: 0 | 1 | null) {
+  if (x == null) {
+  }
+}
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultZero',
+              output: `
+function foo(x: 0 | 1 | null) {
+  if (!(x ?? 0)) {
+  }
+}
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+function foo(x: 0 | 1 | null) {
+  if (!Boolean(x)) {
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
 
     // nullable enum in boolean context
     {
@@ -2765,12 +3163,10 @@ if ([].length === 0) {
     },
 
     // any in boolean context
-    ...batchedSingleLineTests<MessageId, Options>({
-      code: noFormat`
-        if (x) {}
-        x => !x;
-        <T extends any>(x: T) => x ? 1 : 0;
-        <T>(x: T) => x ? 1 : 0;
+    {
+      code: `
+if (x) {
+}
       `,
       errors: [
         {
@@ -2783,54 +3179,72 @@ if ([].length === 0) {
           suggestions: [
             {
               messageId: 'conditionFixCastBoolean',
-              output: 'if (Boolean(x)) {}',
-            },
-          ],
-        },
-        {
-          column: 15,
-          data: {
-            context: 'conditional',
-          },
-          line: 3,
-          messageId: 'conditionErrorAny',
-          suggestions: [
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: '        x => !(Boolean(x));',
-            },
-          ],
-        },
-        {
-          column: 34,
-          data: {
-            context: 'conditional',
-          },
-          line: 4,
-          messageId: 'conditionErrorAny',
-          suggestions: [
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: '        <T extends any>(x: T) => (Boolean(x)) ? 1 : 0;',
-            },
-          ],
-        },
-        {
-          column: 22,
-          data: {
-            context: 'conditional',
-          },
-          line: 5,
-          messageId: 'conditionErrorAny',
-          suggestions: [
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: '        <T>(x: T) => (Boolean(x)) ? 1 : 0;',
+              output: `
+if (Boolean(x)) {
+}
+      `,
             },
           ],
         },
       ],
-    }),
+    },
+    {
+      code: 'x => !x;',
+      errors: [
+        {
+          column: 7,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorAny',
+          suggestions: [
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: 'x => !(Boolean(x));',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '<T extends any>(x: T) => (x ? 1 : 0);',
+      errors: [
+        {
+          column: 27,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorAny',
+          suggestions: [
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: '<T extends any>(x: T) => ((Boolean(x)) ? 1 : 0);',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '<T,>(x: T) => (x ? 1 : 0);',
+      errors: [
+        {
+          column: 16,
+          data: {
+            context: 'conditional',
+          },
+          line: 1,
+          messageId: 'conditionErrorAny',
+          suggestions: [
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: '<T,>(x: T) => ((Boolean(x)) ? 1 : 0);',
+            },
+          ],
+        },
+      ],
+    },
 
     // noStrictNullCheck
     {
@@ -3130,6 +3544,7 @@ assert(foo, Boolean(nullableString));
       // a bug.
       //
       // See https://github.com/microsoft/TypeScript/issues/59707
+      skip: true,
       code: `
 function asserts1(x: string | number | undefined): asserts x {}
 function asserts2(x: string | number | undefined): asserts x {}
@@ -3194,7 +3609,6 @@ someAssert(Boolean(maybeString));
         },
       ],
       output: null,
-      skip: true,
     },
     {
       // The implementation signature doesn't count towards the call signatures

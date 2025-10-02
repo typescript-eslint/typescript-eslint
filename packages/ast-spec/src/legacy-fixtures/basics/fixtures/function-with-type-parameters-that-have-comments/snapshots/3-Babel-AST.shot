@@ -14,11 +14,14 @@ Program {
           end: { column: 36, line: 3 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "compare",
+        optional: false,
 
         range: [82, 89],
         loc: {
@@ -32,7 +35,10 @@ Program {
         params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
+            in: false,
             name: "T",
+            out: false,
 
             range: [102, 103],
             loc: {

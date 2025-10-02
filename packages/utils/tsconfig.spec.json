@@ -1,20 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/utils",
-    "module": "NodeNext",
-    "resolveJsonModule": true,
-    "types": ["node", "vitest/globals", "vitest/importMeta"]
+    "outDir": "../../dist/packages/utils"
   },
-  "include": [
-    "vitest.config.*",
-    "package.json",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts",
-    "tests",
-    "typings"
-  ],
   "references": [
     {
       "path": "./tsconfig.build.json"

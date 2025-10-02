@@ -1,11 +1,7 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import {
-  expectToBeFunctionScope,
-  expectToBeGlobalScope,
-  getRealVariables,
-  parseAndAnalyze,
-} from '../test-utils';
+import { ScopeType } from '../../src/index.js';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('ES6 arrow function expression', () => {
   it('materialize scope for arrow function expression', () => {
@@ -21,16 +17,16 @@ describe('ES6 arrow function expression', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(1);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ArrowFunctionExpression);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(2);
 
     // There's no "arguments"
@@ -45,16 +41,16 @@ describe('ES6 arrow function expression', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(1);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ArrowFunctionExpression);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(4);
 
     // There's no "arguments"
@@ -74,16 +70,16 @@ describe('ES6 arrow function expression', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(1);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ArrowFunctionExpression);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(0);
   });
 
@@ -98,16 +94,16 @@ describe('ES6 arrow function expression', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(scope.block.type).toBe(AST_NODE_TYPES.Program);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(1);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ArrowFunctionExpression);
-    expect(scope.isStrict).toBeTruthy();
+    expect(scope.isStrict).toBe(true);
     expect(variables).toHaveLength(0);
   });
 
@@ -119,9 +115,9 @@ describe('ES6 arrow function expression', () => {
     const scope = scopeManager.scopes[1];
     const variables = getRealVariables(scope.variables);
 
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(scope.block.type).toBe(AST_NODE_TYPES.ArrowFunctionExpression);
-    expect(scope.isStrict).toBeFalsy();
+    expect(scope.isStrict).toBe(false);
     expect(variables).toHaveLength(1);
   });
 });

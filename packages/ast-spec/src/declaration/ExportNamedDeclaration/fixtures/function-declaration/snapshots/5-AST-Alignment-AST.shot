@@ -25,14 +25,14 @@ Snapshot Diff:
               end: { column: 24, line: 1 },
             },
           },
--         declare: false,
+          declare: false,
           expression: false,
           generator: false,
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'foo',
--           optional: false,
+            optional: false,
 
             range: [16, 19],
             loc: {

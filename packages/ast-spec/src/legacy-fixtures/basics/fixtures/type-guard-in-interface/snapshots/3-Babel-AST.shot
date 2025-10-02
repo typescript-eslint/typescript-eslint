@@ -11,7 +11,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "isString",
+              optional: false,
 
               range: [91, 99],
               loc: {
@@ -20,10 +22,13 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             parameters: [
               Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "node",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSAnyKeyword {
@@ -50,6 +55,8 @@ Program {
                 },
               },
             ],
+            readonly: false,
+            static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypePredicate {
@@ -57,7 +64,9 @@ Program {
                 asserts: false,
                 parameterName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "node",
+                  optional: false,
 
                   range: [112, 116],
                   loc: {
@@ -112,9 +121,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      extends: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [83, 86],
         loc: {

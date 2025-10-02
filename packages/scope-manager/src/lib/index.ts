@@ -95,6 +95,7 @@ import { esnext_bigint } from './esnext.bigint';
 import { esnext_collection } from './esnext.collection';
 import { esnext_decorators } from './esnext.decorators';
 import { esnext_disposable } from './esnext.disposable';
+import { esnext_error } from './esnext.error';
 import { esnext_float16 } from './esnext.float16';
 import { esnext_full } from './esnext.full';
 import { esnext_intl } from './esnext.intl';
@@ -102,6 +103,7 @@ import { esnext_iterator } from './esnext.iterator';
 import { esnext_object } from './esnext.object';
 import { esnext_promise } from './esnext.promise';
 import { esnext_regexp } from './esnext.regexp';
+import { esnext_sharedmemory } from './esnext.sharedmemory';
 import { esnext_string } from './esnext.string';
 import { esnext_symbol } from './esnext.symbol';
 import { esnext_weakref } from './esnext.weakref';
@@ -209,6 +211,8 @@ export const lib: ReadonlyMap<string, LibDefinition> = new Map<
   ['esnext.regexp', esnext_regexp],
   ['esnext.iterator', esnext_iterator],
   ['esnext.float16', esnext_float16],
+  ['esnext.error', esnext_error],
+  ['esnext.sharedmemory', esnext_sharedmemory],
   ['decorators', decorators],
   ['decorators.legacy', decorators_legacy],
   ['es2016.full', es2016_full],

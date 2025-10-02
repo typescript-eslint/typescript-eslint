@@ -37,9 +37,9 @@ Snapshot Diff:
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'U',
--                   optional: false,
+                    optional: false,
 
                     range: [17, 18],
                     loc: {
@@ -54,7 +54,7 @@ Snapshot Diff:
                     end: { column: 18, line: 1 },
                   },
                 },
--               in: false,
+                in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
 -                 decorators: Array [],
@@ -67,8 +67,8 @@ Snapshot Diff:
 -                   end: { column: 8, line: 1 },
 -                 },
 -               },
--               out: false,
 +               name: 'T',
+                out: false,
 
                 range: [1, 18],
                 loc: {

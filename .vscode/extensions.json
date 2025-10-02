@@ -5,8 +5,8 @@
       "editorconfig.editorconfig",
       "esbenp.prettier-vscode",
       "streetsidesoftware.code-spell-checker",
-      "tlent.jest-snapshot-language-support",
-      "mrmlnc.vscode-json5"
+      "mrmlnc.vscode-json5",
+      "vitest.explorer"
   ],
   "unwantedRecommendations": ["hookyqr.beautify", "dbaeumer.jshint"]
 }

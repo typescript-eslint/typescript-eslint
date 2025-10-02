@@ -33,7 +33,11 @@ function Playground(): React.JSX.Element {
   const windowSize = useWindowSize();
   const [state, setState] = useHashState(defaultConfig);
   const [astModel, setAstModel] = useState<UpdateModel>();
-  const [markers, setMarkers] = useState<ErrorGroup[]>();
+  const [markers, setMarkers] = useState<Record<TabType, ErrorGroup[]>>({
+    code: [],
+    eslintrc: [],
+    tsconfig: [],
+  });
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
@@ -97,7 +101,7 @@ function Playground(): React.JSX.Element {
         <Panel
           className={styles.PanelColumn}
           collapsible={true}
-          defaultSizePercentage={windowSize === 'mobile' ? 0 : optionsSize}
+          defaultSize={windowSize === 'mobile' ? 0 : optionsSize}
           id="playgroundMenu"
           ref={playgroundMenuRef}
         >
@@ -165,8 +169,10 @@ function Playground(): React.JSX.Element {
               active={state.showAST ?? false}
               additionalTabsInfo={{
                 Errors:
-                  markers?.reduce((prev, cur) => prev + cur.items.length, 0) ||
-                  0,
+                  markers[activeTab].reduce(
+                    (prev, cur) => prev + cur.items.length,
+                    0,
+                  ) || 0,
               }}
               change={showAST => setState({ showAST })}
               tabs={detailTabs}
@@ -216,7 +222,7 @@ function Playground(): React.JSX.Element {
                 />
               )
             ) : (
-              <ErrorsViewer value={markers} />
+              <ErrorsViewer value={markers[activeTab]} />
             )}
           </div>
         </Panel>
