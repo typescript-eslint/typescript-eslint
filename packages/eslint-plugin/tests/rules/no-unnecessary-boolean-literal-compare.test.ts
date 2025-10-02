@@ -1,18 +1,11 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
 
 import rule from '../../src/rules/no-unnecessary-boolean-literal-compare';
-import { getFixturesRootDir } from '../RuleTester';
+import { getTypedRuleTester, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
-  },
-});
+const ruleTester = getTypedRuleTester();
 
 ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
   valid: [

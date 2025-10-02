@@ -1,17 +1,8 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import rule from '../../src/rules/no-base-to-string';
-import { getFixturesRootDir } from '../RuleTester';
+import { getTypedRuleTester, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
-  },
-});
+const ruleTester = getTypedRuleTester();
 
 /**
  * ref: https://github.com/typescript-eslint/typescript-eslint/issues/11043

@@ -1,20 +1,11 @@
 import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-template-expression';
-import { getFixturesRootDir } from '../RuleTester';
+import { getTypedRuleTester } from '../RuleTester';
 
-const rootPath = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
-});
+const ruleTester = getTypedRuleTester();
 
 const invalidCases = [
   {

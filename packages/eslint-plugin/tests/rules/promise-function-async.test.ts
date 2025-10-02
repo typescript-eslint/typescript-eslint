@@ -1,18 +1,9 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/promise-function-async';
-import { getFixturesRootDir } from '../RuleTester';
+import { getTypedRuleTester } from '../RuleTester';
 
-const rootDir = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
-  },
-});
+const ruleTester = getTypedRuleTester();
 
 ruleTester.run('promise-function-async', rule, {
   valid: [

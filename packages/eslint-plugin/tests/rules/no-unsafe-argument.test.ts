@@ -1,16 +1,7 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import rule from '../../src/rules/no-unsafe-argument';
-import { getFixturesRootDir } from '../RuleTester';
+import { getTypedRuleTester } from '../RuleTester';
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: getFixturesRootDir(),
-    },
-  },
-});
+const ruleTester = getTypedRuleTester();
 
 ruleTester.run('no-unsafe-argument', rule, {
   valid: [

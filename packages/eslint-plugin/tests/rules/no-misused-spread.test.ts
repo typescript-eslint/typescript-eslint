@@ -1,15 +1,12 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-misused-spread';
-import { getFixturesRootDir } from '../RuleTester';
+import { getTypedRuleTester } from '../RuleTester';
 
-const rootPath = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
+const ruleTester = getTypedRuleTester({
   languageOptions: {
     parserOptions: {
       project: './tsconfig-with-dom.json',
-      tsconfigRootDir: rootPath,
     },
   },
 });

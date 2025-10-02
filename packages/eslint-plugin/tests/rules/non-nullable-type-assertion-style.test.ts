@@ -1,16 +1,7 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import rule from '../../src/rules/non-nullable-type-assertion-style';
-import { getFixturesRootDir } from '../RuleTester';
+import { getTypedRuleTester } from '../RuleTester';
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: getFixturesRootDir(),
-    },
-  },
-});
+const ruleTester = getTypedRuleTester();
 
 ruleTester.run('non-nullable-type-assertion-style', rule, {
   valid: [
@@ -244,13 +235,11 @@ const b = (a || undefined)!;
   ],
 });
 
-const ruleTesterWithNoUncheckedIndexAccess = new RuleTester({
+const ruleTesterWithNoUncheckedIndexAccess = getTypedRuleTester({
   languageOptions: {
     parserOptions: {
       project: './tsconfig.noUncheckedIndexedAccess.json',
       projectService: false,
-      sourceType: 'module',
-      tsconfigRootDir: getFixturesRootDir(),
     },
   },
 });

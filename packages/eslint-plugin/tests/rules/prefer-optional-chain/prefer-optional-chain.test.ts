@@ -1,14 +1,14 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/prefer-optional-chain';
 import { dedupeTestCases } from '../../dedupeTestCases';
-import { getFixturesRootDir } from '../../RuleTester';
+import { getFixturesRootDir, getTypedRuleTester } from '../../RuleTester';
 import { BaseCases, identity } from './base-cases';
 
-const ruleTester = new RuleTester({
+const ruleTester = getTypedRuleTester({
   languageOptions: {
     parserOptions: {
-      project: './tsconfig.json',
+      // todo: this too?
       tsconfigRootDir: getFixturesRootDir(),
     },
   },

@@ -1,9 +1,29 @@
 import type {
+  RuleTesterConfig,
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
 
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
+
+export function getTypedRuleTester(
+  testerConfig: RuleTesterConfig | undefined = {},
+): RuleTester {
+  return new RuleTester({
+    ...testerConfig,
+    languageOptions: {
+      ...testerConfig.languageOptions,
+      parserOptions: {
+        ...(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+          ? { projectService: true }
+          : { project: true }),
+        tsconfigRootDir: getFixturesRootDir(),
+        ...testerConfig.languageOptions?.parserOptions,
+      },
+    },
+  });
+}
 
 export function getFixturesRootDir(): string {
   return path.join(__dirname, 'fixtures');

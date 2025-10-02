@@ -1,14 +1,13 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unsafe-assignment';
-import { getFixturesRootDir } from '../RuleTester';
+import { getTypedRuleTester } from '../RuleTester';
 
-const ruleTester = new RuleTester({
+const ruleTester = getTypedRuleTester({
   languageOptions: {
     parserOptions: {
       project: './tsconfig.noImplicitThis.json',
       projectService: false,
-      tsconfigRootDir: getFixturesRootDir(),
     },
   },
 });

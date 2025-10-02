@@ -1,22 +1,11 @@
 import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import type { MessageIds, Options } from '../../src/rules/unbound-method';
 
 import rule from '../../src/rules/unbound-method';
-import { getFixturesRootDir } from '../RuleTester';
+import { getTypedRuleTester } from '../RuleTester';
 
-const rootPath = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
-});
+const ruleTester = getTypedRuleTester();
 
 function addContainsMethodsClass(code: string): string {
   return `

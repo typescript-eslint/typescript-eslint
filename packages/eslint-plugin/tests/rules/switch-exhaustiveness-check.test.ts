@@ -1,18 +1,10 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import path from 'node:path';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
+import { getFixturesRootDir, getTypedRuleTester } from '../RuleTester';
 
-const rootPath = path.join(__dirname, '..', 'fixtures');
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
-});
+const rootDir = getFixturesRootDir();
+const ruleTester = getTypedRuleTester();
 
 ruleTester.run('switch-exhaustiveness-check', switchExhaustivenessCheck, {
   valid: [
@@ -928,7 +920,7 @@ function foo(x: string[]) {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
           projectService: false,
-          tsconfigRootDir: rootPath,
+          tsconfigRootDir: rootDir,
         },
       },
     },
@@ -951,7 +943,7 @@ function foo(x: string[], y: string | undefined) {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
           projectService: false,
-          tsconfigRootDir: rootPath,
+          tsconfigRootDir: rootDir,
         },
       },
     },
@@ -2802,7 +2794,7 @@ function foo(x: string[]) {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
           projectService: false,
-          tsconfigRootDir: rootPath,
+          tsconfigRootDir: rootDir,
         },
       },
     },
