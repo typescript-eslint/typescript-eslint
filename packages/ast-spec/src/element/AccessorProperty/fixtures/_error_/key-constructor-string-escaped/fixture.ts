@@ -1,3 +1,3 @@
 class Foo {
-  accessor '\u{63}onstructor'
+  accessor 'construct\u{6f}r'
 }
