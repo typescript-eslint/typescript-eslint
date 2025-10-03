@@ -25,6 +25,13 @@ export type Options = [
   },
 ];
 export type MessageIds = 'baseArrayJoin' | 'baseToString';
+const canHaveTypeParameters = (declaration: ts.Declaration) => {
+  return (
+    ts.isTypeAliasDeclaration(declaration) ||
+    ts.isInterfaceDeclaration(declaration) ||
+    ts.isClassDeclaration(declaration)
+  );
+};
 
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
@@ -53,8 +60,7 @@ export default createRule<Options, MessageIds>({
           },
           ignoredTypeNames: {
             type: 'array',
-            description:
-              'Stringified regular expressions of type names to ignore.',
+            description: 'Stringified type names to ignore.',
             items: {
               type: 'string',
             },
@@ -205,6 +211,36 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Always;
     }
 
+    function hasBaseTypes(type: ts.Type): type is ts.InterfaceType {
+      return (
+        tsutils.isObjectType(type) &&
+        tsutils.isObjectFlagSet(
+          type,
+          ts.ObjectFlags.Interface | ts.ObjectFlags.Class,
+        )
+      );
+    }
+
+    function isIgnoredTypeOrBase(
+      type: ts.Type,
+      seen = new Set<ts.Type>(),
+    ): boolean {
+      if (seen.has(type)) {
+        return false;
+      }
+
+      seen.add(type);
+
+      const typeName = getTypeName(checker, type);
+      return (
+        ignoredTypeNames.includes(typeName) ||
+        (hasBaseTypes(type) &&
+          checker
+            .getBaseTypes(type)
+            .some(base => isIgnoredTypeOrBase(base, seen)))
+      );
+    }
+
     function collectToStringCertainty(
       type: ts.Type,
       visited: Set<ts.Type>,
@@ -231,7 +267,18 @@ export default createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (ignoredTypeNames.includes(getTypeName(checker, type))) {
+      const symbol = type.aliasSymbol ?? type.getSymbol();
+      const decl = symbol?.getDeclarations()?.[0];
+      if (
+        decl &&
+        canHaveTypeParameters(decl) &&
+        decl.typeParameters &&
+        ignoredTypeNames.includes(symbol.name)
+      ) {
+        return Usefulness.Always;
+      }
+
+      if (isIgnoredTypeOrBase(type)) {
         return Usefulness.Always;
       }
 

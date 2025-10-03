@@ -28,7 +28,7 @@ interface Test {
     `,
     `
 interface Test {
-  'f!': </* a */>(/* b */ x: any /* c */) => void;
+  'f!': </* a */ T>(/* b */ x: any /* c */) => void;
 }
     `,
     `
@@ -82,7 +82,7 @@ interface Test {
     {
       code: `
         interface Test {
-          'f!'</* a */>(/* b */ x: any /* c */): void;
+          'f!'</* a */ T>(/* b */ x: any /* c */): void;
         }
       `,
       options: ['method'],
@@ -190,13 +190,13 @@ interface Test {
     {
       code: `
         interface Test {
-          'f!'</* a */>(/* b */ x: any /* c */): void;
+          'f!'</* a */ T>(/* b */ x: any /* c */): void;
         }
       `,
       errors: [{ messageId: 'errorMethod' }],
       output: `
         interface Test {
-          'f!': </* a */>(/* b */ x: any /* c */) => void;
+          'f!': </* a */ T>(/* b */ x: any /* c */) => void;
         }
       `,
     },
@@ -295,14 +295,14 @@ interface Test {
     {
       code: `
         interface Test {
-          'f!': </* a */>(/* b */ x: any /* c */) => void;
+          'f!': </* a */ T>(/* b */ x: any /* c */) => void;
         }
       `,
       errors: [{ messageId: 'errorProperty' }],
       options: ['method'],
       output: `
         interface Test {
-          'f!'</* a */>(/* b */ x: any /* c */): void;
+          'f!'</* a */ T>(/* b */ x: any /* c */): void;
         }
       `,
     },

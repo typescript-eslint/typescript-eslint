@@ -1,3 +1,33 @@
+## 8.45.0 (2025-09-29)
+
+This was a version bump only for scope-manager to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.44.1 (2025-09-22)
+
+This was a version bump only for scope-manager to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.44.0 (2025-09-15)
+
+This was a version bump only for scope-manager to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.43.0 (2025-09-08)
+
+### 🩹 Fixes
+
+- **scope-manager:** exclude Program from DefinitionBase node types ([#11469](https://github.com/typescript-eslint/typescript-eslint/pull/11469))
+
+### ❤️ Thank You
+
+- Dima @dbarabashh
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.42.0 (2025-09-02)
 
 This was a version bump only for scope-manager to align it with other projects, there were no code changes.

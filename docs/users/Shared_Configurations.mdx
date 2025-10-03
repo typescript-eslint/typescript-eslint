@@ -67,14 +67,21 @@ module.exports = {
 
 If your project enables [typed linting](../getting-started/Typed_Linting.mdx), we suggest enabling the [`recommended-type-checked`](#recommended-type-checked) and [`stylistic-type-checked`](#stylistic-type-checked) configurations to start:
 
+:::note
+To use type-checking, you also need to configure `languageOptions.parserOptions` as shown in [typed linting docs](../getting-started/Typed_Linting.mdx).
+:::
+
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
 export default defineConfig(
   eslint.configs.recommended,
+  // Added lines start
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
+  // Added lines end
+  // Other configuration...
 );
 ```
 
@@ -85,9 +92,12 @@ export default defineConfig(
 module.exports = {
   extends: [
     'eslint:recommended',
+    // Added lines start
     'plugin:@typescript-eslint/recommended-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
+    // Added lines end
   ],
+  // Other configuration...
 };
 ```
 

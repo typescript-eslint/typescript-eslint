@@ -868,6 +868,34 @@ declare function createMyThenable(): MyThenable;
 
 createMyThenable();
     `,
+    {
+      code: `
+const randomAsyncFunction = async () => {
+  return Promise.resolve(true);
+};
+
+randomAsyncFunction();
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: ['randomAsyncFunction'],
+        },
+      ],
+    },
+    {
+      code: `
+async function myAsyncFunction() {
+  return Promise.resolve('test');
+}
+
+myAsyncFunction();
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: ['myAsyncFunction'],
+        },
+      ],
+    },
   ],
 
   invalid: [
@@ -2016,7 +2044,7 @@ async function test() {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  void ((Promise.resolve(), 123));
+  void (Promise.resolve(), 123);
   (123, Promise.resolve());
   (123, Promise.resolve(), 123);
 }
@@ -2026,7 +2054,7 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  await ((Promise.resolve(), 123));
+  await (Promise.resolve(), 123);
   (123, Promise.resolve());
   (123, Promise.resolve(), 123);
 }
@@ -2043,7 +2071,7 @@ async function test() {
               output: `
 async function test() {
   (Promise.resolve(), 123);
-  void ((123, Promise.resolve()));
+  void (123, Promise.resolve());
   (123, Promise.resolve(), 123);
 }
       `,
@@ -2053,7 +2081,7 @@ async function test() {
               output: `
 async function test() {
   (Promise.resolve(), 123);
-  await ((123, Promise.resolve()));
+  await (123, Promise.resolve());
   (123, Promise.resolve(), 123);
 }
       `,
@@ -2070,7 +2098,7 @@ async function test() {
 async function test() {
   (Promise.resolve(), 123);
   (123, Promise.resolve());
-  void ((123, Promise.resolve(), 123));
+  void (123, Promise.resolve(), 123);
 }
       `,
             },
@@ -2080,7 +2108,7 @@ async function test() {
 async function test() {
   (Promise.resolve(), 123);
   (123, Promise.resolve());
-  await ((123, Promise.resolve(), 123));
+  await (123, Promise.resolve(), 123);
 }
       `,
             },
@@ -2209,7 +2237,7 @@ async function returnsPromise() {
 async function returnsPromise() {
   return 'value';
 }
-await ((1, returnsPromise()));
+await (1, returnsPromise());
       `,
             },
           ],
@@ -4528,13 +4556,13 @@ await promiseIntersection.finally(() => {});
             {
               messageId: 'floatingFixVoid',
               output: `
-void ((Promise.resolve().finally(() => {}), 123));
+void (Promise.resolve().finally(() => {}), 123);
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-await ((Promise.resolve().finally(() => {}), 123));
+await (Promise.resolve().finally(() => {}), 123);
       `,
             },
           ],

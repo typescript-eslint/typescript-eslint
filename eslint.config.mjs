@@ -242,6 +242,7 @@ export default defineConfig(
       'no-useless-call': 'error',
       'no-useless-computed-key': 'error',
       'no-useless-concat': 'error',
+      'no-useless-rename': 'error',
       'no-var': 'error',
       'no-void': ['error', { allowAsStatement: true }],
       'object-shorthand': 'error',
@@ -321,6 +322,7 @@ export default defineConfig(
       'jsdoc/tag-lines': 'off',
 
       'regexp/no-dupe-disjunctions': 'error',
+      'regexp/no-missing-g-flag': 'error',
       'regexp/no-useless-character-class': 'error',
       'regexp/no-useless-flag': 'error',
       'regexp/no-useless-lazy': 'error',
@@ -379,6 +381,7 @@ export default defineConfig(
           '@typescript-eslint/no-unsafe-call': 'off',
           '@typescript-eslint/no-unsafe-member-access': 'off',
           '@typescript-eslint/no-unsafe-return': 'off',
+          'vitest/hoisted-apis-on-top': 'error',
           'vitest/no-alias-methods': 'error',
           'vitest/no-disabled-tests': 'error',
           'vitest/no-focused-tests': 'error',
@@ -476,7 +479,6 @@ export default defineConfig(
       // TODO (43081j): maybe enable these one day?
       'eslint-plugin/no-meta-replaced-by': 'off',
       'eslint-plugin/require-meta-default-options': 'off',
-      'eslint-plugin/require-meta-schema-description': 'off',
     },
   },
   {

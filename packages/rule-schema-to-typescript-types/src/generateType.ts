@@ -2,13 +2,13 @@ import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import { TSUtils } from '@typescript-eslint/utils';
 
-import type { AST, RefMap } from './types';
+import type { SchemaAST, RefMap } from './types.js';
 
-import { NotSupportedError, UnexpectedError } from './errors';
-import { generateArrayType } from './generateArrayType';
-import { generateObjectType } from './generateObjectType';
-import { generateUnionType } from './generateUnionType';
-import { getCommentLines } from './getCommentLines';
+import { NotSupportedError, UnexpectedError } from './errors.js';
+import { generateArrayType } from './generateArrayType.js';
+import { generateObjectType } from './generateObjectType.js';
+import { generateUnionType } from './generateUnionType.js';
+import { getCommentLines } from './getCommentLines.js';
 
 // keywords we probably should support but currently do not support
 const UNSUPPORTED_KEYWORDS = new Set([
@@ -22,7 +22,7 @@ const UNSUPPORTED_KEYWORDS = new Set([
   'patternProperties',
 ]);
 
-export function generateType(schema: JSONSchema4, refMap: RefMap): AST {
+export function generateType(schema: JSONSchema4, refMap: RefMap): SchemaAST {
   const unsupportedProps = Object.keys(schema).filter(key =>
     UNSUPPORTED_KEYWORDS.has(key),
   );
