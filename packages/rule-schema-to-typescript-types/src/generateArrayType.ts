@@ -5,11 +5,17 @@ import type {
 
 import { TSUtils } from '@typescript-eslint/utils';
 
-import type { ArrayAST, AST, RefMap, TupleAST, UnionAST } from './types';
+import type {
+  ArrayAST,
+  SchemaAST,
+  RefMap,
+  TupleAST,
+  UnionAST,
+} from './types.js';
 
-import { NotSupportedError, UnexpectedError } from './errors';
-import { generateType } from './generateType';
-import { getCommentLines } from './getCommentLines';
+import { NotSupportedError, UnexpectedError } from './errors.js';
+import { generateType } from './generateType.js';
+import { getCommentLines } from './getCommentLines.js';
 
 /**
  * If there are more than 20 tuple items then we will not make it a tuple type
@@ -95,7 +101,7 @@ export function generateArrayType(
     const b: B = ['a', undefined, 'c'] // TS error
     */
     const cumulativeTypesList = itemTypes.slice(0, minItems);
-    const typesToUnion: AST[] = [];
+    const typesToUnion: SchemaAST[] = [];
     if (cumulativeTypesList.length > 0) {
       // actually has minItems, so add the initial state
       typesToUnion.push(createTupleType(cumulativeTypesList));
@@ -131,8 +137,8 @@ export function generateArrayType(
 }
 
 function createTupleType(
-  elements: AST[],
-  spreadType: AST | null = null,
+  elements: SchemaAST[],
+  spreadType: SchemaAST | null = null,
 ): TupleAST {
   return {
     type: 'tuple',
