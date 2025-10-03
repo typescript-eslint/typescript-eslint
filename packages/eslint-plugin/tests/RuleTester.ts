@@ -16,14 +16,14 @@ export function createRuleTesterWithTypes(
       providedParserOptions.tsconfigRootDir ?? getFixturesRootDir(),
   };
 
-  // If the requested config doesn't specify how to provide types,
-  // provide our own using the corresponding provider for the CI/local environment.
-  if (!parserOptions.project && !parserOptions.projectService) {
-    parserOptions[
-      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
-        ? 'projectService'
-        : 'project'
-    ] = true;
+  // If the test has requested a specific project, disable projectService
+  // (regardless of whether it's being switched to by TYPESCRIPT_ESLINT_PROJECT_SERVICE)
+  if (parserOptions.project) {
+    parserOptions.projectService = false;
+  }
+  // Otherwise, use the project service for types if requested in the env
+  else if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE) {
+    parserOptions.projectService = true;
   }
 
   return new RuleTester({
