@@ -25,6 +25,11 @@ export function createRuleTesterWithTypes(
   else if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE) {
     parserOptions.projectService = true;
   }
+  // Finally, default to project: true as the standard (legacy) behavior
+  // See: https://github.com/typescript-eslint/typescript-eslint/issues/11676
+  else {
+    parserOptions.project = true;
+  }
 
   return new RuleTester({
     languageOptions: { parserOptions },
