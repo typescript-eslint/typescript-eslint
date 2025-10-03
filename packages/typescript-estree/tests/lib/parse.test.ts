@@ -68,6 +68,10 @@ describe(parser.parseAndGenerateServices, () => {
   beforeEach(() => {
     vi.clearAllMocks();
     clearGlobResolutionCache();
+    vi.stubEnv(
+      'TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR',
+      'true',
+    );
   });
 
   afterAll(() => {

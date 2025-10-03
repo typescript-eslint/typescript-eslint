@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
 import * as ts from 'typescript';
 
 import {
@@ -9,16 +8,10 @@ import {
   getParserServices,
 } from '../../src/util';
 import { getWrappedCode } from '../../src/util/getWrappedCode';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootPath = getFixturesRootDir();
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
+const ruleTester = createRuleTesterWithTypes({
+  project: './tsconfig.json',
 });
 
 const removeFunctionRule = createRule({

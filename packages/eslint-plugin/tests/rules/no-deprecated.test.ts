@@ -1,19 +1,12 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import rule from '../../src/rules/no-deprecated';
-import { getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      ecmaFeatures: {
-        jsx: true,
-      },
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
+const ruleTester = createRuleTesterWithTypes({
+  ecmaFeatures: {
+    jsx: true,
   },
+  project: './tsconfig.json',
 });
 
 ruleTester.run('no-deprecated', rule, {

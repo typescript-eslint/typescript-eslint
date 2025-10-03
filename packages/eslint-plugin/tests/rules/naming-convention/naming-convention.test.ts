@@ -11,6 +11,7 @@ const ruleTester = new RuleTester();
 const rootDir = getFixturesRootDir();
 const parserOptions = {
   project: './tsconfig.json',
+  projectService: false,
   tsconfigRootDir: rootDir,
 };
 

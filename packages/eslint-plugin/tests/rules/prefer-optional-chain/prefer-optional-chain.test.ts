@@ -1,18 +1,11 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/prefer-optional-chain';
 import { dedupeTestCases } from '../../dedupeTestCases';
-import { getFixturesRootDir } from '../../RuleTester';
+import { createRuleTesterWithTypes } from '../../RuleTester';
 import { BaseCases, identity } from './base-cases';
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: getFixturesRootDir(),
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 describe('|| {}', () => {
   ruleTester.run('prefer-optional-chain', rule, {

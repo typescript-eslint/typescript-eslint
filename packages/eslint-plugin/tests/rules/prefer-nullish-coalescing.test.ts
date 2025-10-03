@@ -3,7 +3,7 @@ import type {
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
 
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
 
 import type {
@@ -12,18 +12,10 @@ import type {
 } from '../../src/rules/prefer-nullish-coalescing';
 
 import rule from '../../src/rules/prefer-nullish-coalescing';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
-});
+const rootDir = getFixturesRootDir();
+const ruleTester = createRuleTesterWithTypes();
 
 const types = ['string', 'number', 'boolean', 'object'];
 const nullishTypes = ['null', 'undefined', 'null | undefined'];
@@ -2495,7 +2487,7 @@ if (x) {
       ],
       languageOptions: {
         parserOptions: {
-          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+          tsconfigRootDir: path.join(rootDir, 'unstrict'),
         },
       },
       output: null,
