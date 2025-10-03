@@ -2,8 +2,6 @@
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > empty-type-parameters-in-function-expression > TSESTree - Error`]
 TSError
-  1 | // TODO: This fixture might be too large, and if so should be split up.
-  2 |
-> 3 | const foo = function<>() {}
+> 1 | const foo = function<>() {}
     |                     ^^ Type parameter list cannot be empty.
-  4 |
+  2 |
