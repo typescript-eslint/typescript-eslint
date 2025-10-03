@@ -381,7 +381,17 @@ function f() {
     },
     {
       code: "import x from 'y';",
-      errors: [definedError('x')],
+      errors: [
+        {
+          ...definedError('x'),
+          suggestions: [
+            {
+              messageId: 'unusedVarSuggestion',
+              output: '',
+            },
+          ],
+        },
+      ],
       languageOptions: {
         parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       },
