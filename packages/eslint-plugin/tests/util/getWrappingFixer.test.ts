@@ -4,11 +4,7 @@ import { createRule, getWrappingFixer } from '../../src/util';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-    },
-  },
+  project: './tsconfig.json',
 });
 
 const voidEverythingRule = createRule({

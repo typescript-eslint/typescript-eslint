@@ -11,11 +11,7 @@ import { getWrappedCode } from '../../src/util/getWrappedCode';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-    },
-  },
+  project: './tsconfig.json',
 });
 
 const removeFunctionRule = createRule({

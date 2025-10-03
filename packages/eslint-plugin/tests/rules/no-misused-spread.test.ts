@@ -4,12 +4,7 @@ import rule from '../../src/rules/no-misused-spread';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig-with-dom.json',
-      projectService: false,
-    },
-  },
+  project: './tsconfig-with-dom.json',
 });
 
 ruleTester.run('no-misused-spread', rule, {

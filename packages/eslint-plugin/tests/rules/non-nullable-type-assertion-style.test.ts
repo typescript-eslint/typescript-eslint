@@ -236,12 +236,7 @@ const b = (a || undefined)!;
 });
 
 const ruleTesterWithNoUncheckedIndexAccess = createRuleTesterWithTypes({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.noUncheckedIndexedAccess.json',
-      projectService: false,
-    },
-  },
+  project: './tsconfig.noUncheckedIndexedAccess.json',
 });
 
 ruleTesterWithNoUncheckedIndexAccess.run(

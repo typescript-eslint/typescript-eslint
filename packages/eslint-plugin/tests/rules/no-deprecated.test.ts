@@ -3,13 +3,10 @@ import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes({
-  languageOptions: {
-    parserOptions: {
-      ecmaFeatures: {
-        jsx: true,
-      },
-    },
+  ecmaFeatures: {
+    jsx: true,
   },
+  project: './tsconfig.json',
 });
 
 ruleTester.run('no-deprecated', rule, {

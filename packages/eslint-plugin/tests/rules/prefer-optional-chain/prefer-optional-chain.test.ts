@@ -2,20 +2,10 @@ import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/prefer-optional-chain';
 import { dedupeTestCases } from '../../dedupeTestCases';
-import {
-  getFixturesRootDir,
-  createRuleTesterWithTypes,
-} from '../../RuleTester';
+import { createRuleTesterWithTypes } from '../../RuleTester';
 import { BaseCases, identity } from './base-cases';
 
-const ruleTester = createRuleTesterWithTypes({
-  languageOptions: {
-    parserOptions: {
-      // todo: this too?
-      tsconfigRootDir: getFixturesRootDir(),
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 describe('|| {}', () => {
   ruleTester.run('prefer-optional-chain', rule, {

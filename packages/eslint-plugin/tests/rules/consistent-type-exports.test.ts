@@ -5,11 +5,7 @@ import rule from '../../src/rules/consistent-type-exports';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-    },
-  },
+  project: './tsconfig.json',
 });
 
 ruleTester.run('consistent-type-exports', rule, {

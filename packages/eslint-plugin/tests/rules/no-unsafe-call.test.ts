@@ -4,12 +4,7 @@ import rule from '../../src/rules/no-unsafe-call';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.noImplicitThis.json',
-      projectService: false,
-    },
-  },
+  project: './tsconfig.noImplicitThis.json',
 });
 
 ruleTester.run('no-unsafe-call', rule, {

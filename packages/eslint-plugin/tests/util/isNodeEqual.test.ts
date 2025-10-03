@@ -42,11 +42,7 @@ const rule = createRule({
 });
 
 const ruleTester = createRuleTesterWithTypes({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-    },
-  },
+  project: './tsconfig.json',
 });
 
 ruleTester.run('isNodeEqual', rule, {

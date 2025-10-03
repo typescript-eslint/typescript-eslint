@@ -1,38 +1,33 @@
 import type {
-  RuleTesterConfig,
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
+import type { ParserOptions } from '@typescript-eslint/utils/ts-eslint';
 
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
 
 export function createRuleTesterWithTypes(
-  testerConfig: RuleTesterConfig | undefined = {},
+  providedParserOptions: ParserOptions | undefined = {},
 ): RuleTester {
-  const providedParserOptions =
-    testerConfig.languageOptions?.parserOptions ?? {};
+  const parserOptions = {
+    ...providedParserOptions,
+    tsconfigRootDir:
+      providedParserOptions.tsconfigRootDir ?? getFixturesRootDir(),
+  };
 
-  const parserOptions =
-    // If the requested config specifies how to provide types, use that.
-    providedParserOptions.project || providedParserOptions.projectService
-      ? providedParserOptions
-      : {
-          // Otherwise, use the corresponding provider for the CI/local environment.
-          [process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
-            ? 'projectService'
-            : 'project']: true,
-        };
+  // If the requested config doesn't specify how to provide types,
+  // provide our own using the corresponding provider for the CI/local environment.
+  if (!parserOptions.project && !parserOptions.projectService) {
+    parserOptions[
+      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+        ? 'projectService'
+        : 'project'
+    ] = true;
+  }
 
   return new RuleTester({
-    ...testerConfig,
-    languageOptions: {
-      ...testerConfig.languageOptions,
-      parserOptions: {
-        ...parserOptions,
-        tsconfigRootDir: parserOptions.tsconfigRootDir ?? getFixturesRootDir(),
-      },
-    },
+    languageOptions: { parserOptions },
   });
 }
 

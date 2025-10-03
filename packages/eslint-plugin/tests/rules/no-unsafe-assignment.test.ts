@@ -4,12 +4,7 @@ import rule from '../../src/rules/no-unsafe-assignment';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.noImplicitThis.json',
-      projectService: false,
-    },
-  },
+  project: './tsconfig.noImplicitThis.json',
 });
 
 ruleTester.run('no-unsafe-assignment', rule, {
