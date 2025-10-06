@@ -2411,7 +2411,7 @@ export class Converter {
         ) {
           this.#throwError(
             node.left,
-            "Private identifiers are only allowed on the left-hand-side of an 'in' expression.",
+            "Private identifiers cannot appear on the right-hand-side of an 'in' expression.",
           );
         } else if (node.right.kind === SyntaxKind.PrivateIdentifier) {
           this.#throwError(
