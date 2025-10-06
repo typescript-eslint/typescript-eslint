@@ -1,3 +1,27 @@
+## 8.45.0 (2025-09-29)
+
+### 🩹 Fixes
+
+- **ast-spec:** narrow ArrowFunctionExpression.generator to false ([#11636](https://github.com/typescript-eslint/typescript-eslint/pull/11636))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.44.1 (2025-09-22)
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid class property with name `constructor` ([#11590](https://github.com/typescript-eslint/typescript-eslint/pull/11590))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.44.0 (2025-09-15)
 
 This was a version bump only for ast-spec to align it with other projects, there were no code changes.

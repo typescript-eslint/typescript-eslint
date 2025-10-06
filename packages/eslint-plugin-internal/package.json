@@ -3,6 +3,7 @@
   "private": true,
   "main": "dist/index.js",
   "types": "index.d.ts",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",

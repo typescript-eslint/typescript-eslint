@@ -9,9 +9,11 @@
         "description": "Whether to ignore constant loop conditions, such as `while (true)`.",
         "oneOf": [
           {
+            "description": "Always ignore or not ignore the loop conditions",
             "type": "boolean"
           },
           {
+            "description": "Which situations to ignore constant conditions in.",
             "enum": ["always", "never", "only-allowed-literals"],
             "type": "string"
           }
@@ -37,11 +39,15 @@ type Options = [
   {
     /** Whether to ignore constant loop conditions, such as `while (true)`. */
     allowConstantLoopConditions?:
-      | 'always'
       | 'never'
       | 'only-allowed-literals'
-      /** Whether to ignore constant loop conditions, such as `while (true)`. */
-      | boolean;
+      /**
+       * Whether to ignore constant loop conditions, such as `while (true)`.
+       * Always ignore or not ignore the loop conditions
+       */
+      | boolean
+      /** Which situations to ignore constant conditions in. */
+      | 'always';
     /** Whether to not error when running with a tsconfig that has strictNullChecks turned. */
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     /** Whether to check the asserted argument of a type predicate function for unnecessary conditions */

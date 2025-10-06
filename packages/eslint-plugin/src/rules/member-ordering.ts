@@ -790,18 +790,23 @@ export default createRule<Options, MessageIds>({
         properties: {
           classes: {
             $ref: '#/items/0/$defs/baseConfig',
+            description: 'Which ordering to enforce for classes.',
           },
           classExpressions: {
             $ref: '#/items/0/$defs/baseConfig',
+            description: 'Which ordering to enforce for classExpressions.',
           },
           default: {
             $ref: '#/items/0/$defs/baseConfig',
+            description: 'Which ordering to enforce for default.',
           },
           interfaces: {
             $ref: '#/items/0/$defs/typesConfig',
+            description: 'Which ordering to enforce for interfaces.',
           },
           typeLiterals: {
             $ref: '#/items/0/$defs/typesConfig',
+            description: 'Which ordering to enforce for typeLiterals.',
           },
         },
       },

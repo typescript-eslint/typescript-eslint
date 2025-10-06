@@ -246,6 +246,21 @@ ruleTester.run('no-deprecated', rule, {
       const { anchor = '' } = x;
     `,
     `
+      namespace Foo {}
+
+      /**
+       * @deprecated
+       */
+      export import Bar = Foo;
+    `,
+    `
+      /**
+       * @deprecated
+       */
+      export import Bar = require('./deprecated');
+    `,
+
+    `
       interface Props {
         anchor: 'foo';
       }

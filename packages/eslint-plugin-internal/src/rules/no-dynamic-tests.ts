@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule } from '../util/index.js';
 
 export default createRule({
   name: 'no-dynamic-tests',

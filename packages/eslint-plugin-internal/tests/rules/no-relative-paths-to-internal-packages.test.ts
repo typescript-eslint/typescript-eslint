@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import rule, {
   PACKAGES_DIR,
-} from '../../src/rules/no-relative-paths-to-internal-packages';
+} from '../../src/rules/no-relative-paths-to-internal-packages.js';
 
 const ruleTester = new RuleTester({
   languageOptions: {
