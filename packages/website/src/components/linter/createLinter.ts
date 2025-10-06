@@ -94,7 +94,6 @@ export function createLinter(
         column: 1,
         line: 1,
         message: String(e instanceof Error ? e.stack : e),
-        nodeType: '',
         ruleId: '',
         severity: 2,
         source: 'eslint',
