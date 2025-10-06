@@ -321,16 +321,16 @@ function foo(arg: Test) {}
       const willNotCrash = (foo: Readonly<WithSymbol>) => {};
     `,
     `
-type TaggedString = bigint & {
+type TaggedBigInt = bigint & {
   readonly __tag: unique symbol;
 };
-function custom1(arg: TaggedString) {}
+function custom1(arg: TaggedBigInt) {}
     `,
     `
-type TaggedString = number & {
+type TaggedNumber = number & {
   readonly __tag: unique symbol;
 };
-function custom1(arg: TaggedString) {}
+function custom1(arg: TaggedNumber) {}
     `,
     `
 type TaggedString = string & {
@@ -355,6 +355,12 @@ type OtherSpecialString = string & {
 };
 
 function custom1(arg: TaggedString | OtherSpecialString) {}
+    `,
+    `
+type TaggedTemplateLiteral = \`\${string}-\${string}\` & {
+  readonly __tag: unique symbol;
+};
+function custom1(arg: TaggedTemplateLiteral) {}
     `,
     `
 type TaggedNumber = 1 & {

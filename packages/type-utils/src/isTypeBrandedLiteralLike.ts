@@ -2,29 +2,24 @@ import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 function isLiteralOrTaggablePrimitiveLike(type: ts.Type): boolean {
-  if (tsutils.isUnionOrIntersectionType(type)) {
-    return type.types.every(isLiteralOrTaggablePrimitiveLike);
-  }
-
   return (
     type.isLiteral() ||
     tsutils.isTypeFlagSet(
       type,
-      ts.TypeFlags.BigInt | ts.TypeFlags.Number | ts.TypeFlags.String,
+      ts.TypeFlags.BigInt |
+        ts.TypeFlags.Number |
+        ts.TypeFlags.String |
+        ts.TypeFlags.TemplateLiteral,
     )
   );
 }
 
 function isObjectLiteralLike(type: ts.Type): boolean {
-  if (tsutils.isUnionOrIntersectionType(type)) {
-    return type.types.every(isObjectLiteralLike);
-  }
-
-  if (type.getCallSignatures().length || type.getConstructSignatures().length) {
-    return false;
-  }
-
-  return tsutils.isObjectType(type);
+  return (
+    !type.getCallSignatures().length &&
+    !type.getConstructSignatures().length &&
+    tsutils.isObjectType(type)
+  );
 }
 
 function isTypeBrandedLiteral(type: ts.Type): boolean {
