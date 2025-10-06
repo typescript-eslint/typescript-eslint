@@ -45,6 +45,6 @@ function isTypeBrandedLiteral(type: ts.Type): boolean {
 
 export function isTypeBrandedLiteralLike(type: ts.Type): boolean {
   return type.isUnion()
-    ? type.types.some(isTypeBrandedLiteral)
+    ? type.types.every(isTypeBrandedLiteral)
     : isTypeBrandedLiteral(type);
 }
