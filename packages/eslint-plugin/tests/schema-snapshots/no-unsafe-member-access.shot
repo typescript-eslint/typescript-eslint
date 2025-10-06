@@ -1,10 +1,25 @@
 
 # SCHEMA:
 
-[]
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowOptionalChaining": {
+        "description": "Whether to allow `?.` optional chains on `any` values.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
 
 
 # TYPES:
 
-/** No options declared */
-type Options = [];
+type Options = [
+  {
+    /** Whether to allow `?.` optional chains on `any` values. */
+    allowOptionalChaining?: boolean;
+  },
+];

@@ -15,6 +15,7 @@ import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
   createError,
+  declarationNameToString,
   findNextToken,
   getBinaryExpressionType,
   getDeclarationKind,
@@ -1356,6 +1357,18 @@ export class Converter {
       }
       // otherwise, it is a non-type accessor - intentional fallthrough
       case SyntaxKind.MethodDeclaration: {
+        const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
+
+        if (isAbstract && node.body) {
+          this.#throwError(
+            node.name,
+            node.kind === SyntaxKind.GetAccessor ||
+              node.kind === SyntaxKind.SetAccessor
+              ? 'An abstract accessor cannot have an implementation.'
+              : `Method '${declarationNameToString(node.name, this.ast)}' cannot have an implementation because it is marked abstract.`,
+          );
+        }
+
         const method = this.createNode<
           TSESTree.FunctionExpression | TSESTree.TSEmptyBodyFunctionExpression
         >(node, {
@@ -1411,10 +1424,7 @@ export class Converter {
           /**
            * TypeScript class methods can be defined as "abstract"
            */
-          const methodDefinitionType = hasModifier(
-            SyntaxKind.AbstractKeyword,
-            node,
-          )
+          const methodDefinitionType = isAbstract
             ? AST_NODE_TYPES.TSAbstractMethodDefinition
             : AST_NODE_TYPES.MethodDefinition;
 
@@ -2162,6 +2172,21 @@ export class Converter {
       // Binary Operations
 
       case SyntaxKind.BinaryExpression: {
+        if (
+          node.operatorToken.kind !== SyntaxKind.InKeyword &&
+          node.left.kind === SyntaxKind.PrivateIdentifier
+        ) {
+          this.#throwError(
+            node.left,
+            "Private identifiers cannot appear on the right-hand-side of an 'in' expression.",
+          );
+        } else if (node.right.kind === SyntaxKind.PrivateIdentifier) {
+          this.#throwError(
+            node.right,
+            "Private identifiers are only allowed on the left-hand-side of an 'in' expression.",
+          );
+        }
+
         // TypeScript uses BinaryExpression for sequences as well
         if (isComma(node.operatorToken)) {
           const result = this.createNode<TSESTree.SequenceExpression>(node, {

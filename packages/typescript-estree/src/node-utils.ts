@@ -803,3 +803,12 @@ export function getNamespaceModifiers(
   }
   return modifiers;
 }
+
+// `ts.declarationNameToString`
+export function declarationNameToString(
+  name: ts.Node,
+  ast: ts.SourceFile,
+): string {
+  const text = ast.text.slice(name.pos, name.end).trimStart();
+  return text || '(Missing)';
+}

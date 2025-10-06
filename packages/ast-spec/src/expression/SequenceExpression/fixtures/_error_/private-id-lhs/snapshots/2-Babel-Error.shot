@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > SequenceExpression > _error_ > private-id-lhs > Babel - Error`]
+BabelError
+  1 | class A {
+  2 |   #a;
+> 3 |   c = (#a, 1);
+    |        ^ Private names are only allowed in property accesses (`obj.#a`) or in `in` expressions (`#a in obj`). (3:7)
+  4 | }
+  5 |
+  

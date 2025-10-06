@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > SequenceExpression > _error_ > private-id-rhs > TSESTree - Error`]
+TSError
+  1 | class A {
+  2 |   #a;
+> 3 |   c = (1, #a);
+    |           ^^ Private identifiers are only allowed on the left-hand-side of an 'in' expression.
+  4 | }
+  5 |
