@@ -632,7 +632,7 @@ ruleTester.run('naming-convention', rule, {
     {
       code: `
         class Ignored {
-          private static abstract some_name() {}
+          private static some_name() {}
           IgnoredDueToModifiers() {}
         }
       `,
@@ -644,7 +644,7 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           format: ['UPPER_CASE'],
-          modifiers: ['abstract', 'static'],
+          modifiers: ['static'],
           selector: 'classMethod',
         },
       ],
@@ -1875,7 +1875,7 @@ ruleTester.run('naming-convention', rule, {
     {
       code: `
         class Ignored {
-          private static abstract some_name() {}
+          private static some_name() {}
           IgnoredDueToModifiers() {}
         }
       `,
@@ -1886,7 +1886,7 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           format: ['snake_case'],
-          modifiers: ['abstract', 'static'],
+          modifiers: ['static'],
           selector: 'classMethod',
         },
       ],
@@ -2118,10 +2118,10 @@ ruleTester.run('naming-convention', rule, {
           }
         }
         abstract class foo {
-          public abstract Bar() {
+          public Bar() {
             return 42;
           }
-          public abstract async async_bar() {
+          public async async_bar() {
             return 42;
           }
         }
