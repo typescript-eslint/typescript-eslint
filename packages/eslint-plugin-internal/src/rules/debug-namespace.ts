@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { getStaticValue } from '@typescript-eslint/utils/ast-utils';
 
-import { createRule } from '../util';
+import { createRule } from '../util/index.js';
 
 function filePathToNamespace(filePath: string) {
   const relativePath = filePath
@@ -20,7 +20,7 @@ function filePathToNamespace(filePath: string) {
 }
 
 export default createRule({
-  name: __filename,
+  name: 'debug-namespace',
   meta: {
     type: 'problem',
     docs: {

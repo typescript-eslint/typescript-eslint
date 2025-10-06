@@ -1,17 +1,12 @@
 import type { Linter } from '@typescript-eslint/utils/ts-eslint';
 
-import rules from './rules';
+import rules from './rules/index.js';
+import packageJson from './util/packagejson.js';
 
-// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
-const { name, version } = require('../package.json') as {
-  name: string;
-  version: string;
-};
-
-export = {
+export default {
   meta: {
-    name,
-    version,
+    name: packageJson.name,
+    version: packageJson.version,
   },
   rules,
 } satisfies Linter.Plugin;

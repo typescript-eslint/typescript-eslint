@@ -324,6 +324,47 @@ error.toString();
       `,
       options: [{ ignoredTypeNames: ['MyError'] }],
     },
+    {
+      code: `
+interface Animal {}
+interface Serializable {}
+interface Cat extends Animal, Serializable {}
+
+declare const whiskers: Cat;
+whiskers.toString();
+      `,
+      options: [{ ignoredTypeNames: ['Animal'] }],
+    },
+    {
+      code: `
+interface MyError extends Error {}
+
+declare const error: MyError;
+error.toString();
+      `,
+    },
+    {
+      code: `
+class UnknownBase {}
+class CustomError extends UnknownBase {}
+
+declare const err: CustomError;
+err.toString();
+      `,
+      options: [{ ignoredTypeNames: ['UnknownBase'] }],
+    },
+    {
+      code: `
+interface Animal {}
+interface Dog extends Animal {}
+interface Cat extends Animal {}
+
+declare const dog: Dog;
+declare const cat: Cat;
+cat.toString();
+      `,
+      options: [{ ignoredTypeNames: ['Animal'] }],
+    },
     `
 function String(value) {
   return value;
@@ -2262,6 +2303,61 @@ v.join();
             name: 'v',
           },
           messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+interface Dog extends Animal {}
+
+declare const labrador: Dog;
+labrador.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'labrador',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+interface A extends B {}
+interface B extends A {}
+
+declare const a: A;
+a.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'a',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Base {}
+        interface Left extends Base {}
+        interface Right extends Base {}
+        interface Diamond extends Left, Right {}
+
+        declare const d: Diamond;
+        d.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'd',
+          },
+          messageId: 'baseToString',
         },
       ],
     },
