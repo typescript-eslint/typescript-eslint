@@ -1,16 +1,17 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
 
 import {
   createRule,
-  getOperatorPrecedence,
+  getOperatorPrecedenceForNode,
   getParserServices,
   isBuiltinSymbolLike,
+  isParenthesized,
   OperatorPrecedence,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
@@ -168,10 +169,11 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'floatingFixVoid',
                   fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
-                    const tsNode = services.esTreeNodeToTSNodeMap.get(
-                      node.expression,
-                    );
-                    if (isHigherPrecedenceThanUnary(tsNode)) {
+                    if (
+                      isParenthesized(expression, context.sourceCode) ||
+                      getOperatorPrecedenceForNode(expression) >
+                        OperatorPrecedence.Unary
+                    ) {
                       return fixer.insertTextBefore(node, 'void ');
                     }
                     return [
@@ -223,8 +225,10 @@ export default createRule<Options, MessageId>({
           'await',
         );
       }
-      const tsNode = services.esTreeNodeToTSNodeMap.get(node.expression);
-      if (isHigherPrecedenceThanUnary(tsNode)) {
+      if (
+        isParenthesized(expression, context.sourceCode) ||
+        getOperatorPrecedenceForNode(expression) > OperatorPrecedence.Unary
+      ) {
         return fixer.insertTextBefore(node, 'await ');
       }
       return [
@@ -259,14 +263,6 @@ export default createRule<Options, MessageId>({
         allowForKnownSafeCalls,
         services.program,
       );
-    }
-
-    function isHigherPrecedenceThanUnary(node: ts.Node): boolean {
-      const operator = ts.isBinaryExpression(node)
-        ? node.operatorToken.kind
-        : ts.SyntaxKind.Unknown;
-      const nodePrecedence = getOperatorPrecedence(node.kind, operator);
-      return nodePrecedence > OperatorPrecedence.Unary;
     }
 
     function isAsyncIife(node: TSESTree.ExpressionStatement): boolean {
