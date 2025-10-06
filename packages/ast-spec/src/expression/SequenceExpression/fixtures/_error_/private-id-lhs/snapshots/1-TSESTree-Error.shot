@@ -5,6 +5,6 @@ TSError
   1 | class A {
   2 |   #a;
 > 3 |   c = (#a, 1);
-    |        ^^ Private identifiers are only allowed on the left-hand-side of an 'in' expression.
+    |        ^^ Private identifiers cannot appear on the right-hand-side of an 'in' expression.
   4 | }
   5 |
