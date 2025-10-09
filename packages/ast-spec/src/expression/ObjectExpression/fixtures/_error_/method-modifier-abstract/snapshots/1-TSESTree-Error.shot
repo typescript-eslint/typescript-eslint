@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > method-modifier-abstract > TSESTree - Error`]
+TSError
+> 1 | ({abstract method(){}})
+    |   ^^^^^^^^ 'abstract' modifier cannot be used here.
+  2 |

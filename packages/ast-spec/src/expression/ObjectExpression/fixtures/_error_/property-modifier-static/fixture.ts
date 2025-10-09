@@ -1,0 +1,1 @@
+({static property: 1})

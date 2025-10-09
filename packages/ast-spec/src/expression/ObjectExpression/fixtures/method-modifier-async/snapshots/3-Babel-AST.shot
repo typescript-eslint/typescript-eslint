@@ -1,0 +1,83 @@
+Program {
+  type: "Program",
+  body: [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: ObjectExpression {
+        type: "ObjectExpression",
+        properties: [
+          Property {
+            type: "Property",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "method",
+              optional: false,
+
+              range: [9, 15],
+              loc: {
+                start: { column: 9, line: 1 },
+                end: { column: 15, line: 1 },
+              },
+            },
+            kind: "init",
+            method: true,
+            optional: false,
+            shorthand: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: true,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [],
+
+                range: [18, 20],
+                loc: {
+                  start: { column: 18, line: 1 },
+                  end: { column: 20, line: 1 },
+                },
+              },
+              declare: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: [],
+
+              range: [15, 20],
+              loc: {
+                start: { column: 15, line: 1 },
+                end: { column: 20, line: 1 },
+              },
+            },
+
+            range: [3, 20],
+            loc: {
+              start: { column: 3, line: 1 },
+              end: { column: 20, line: 1 },
+            },
+          },
+        ],
+
+        range: [1, 22],
+        loc: {
+          start: { column: 1, line: 1 },
+          end: { column: 22, line: 1 },
+        },
+      },
+
+      range: [0, 24],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 24, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 25],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

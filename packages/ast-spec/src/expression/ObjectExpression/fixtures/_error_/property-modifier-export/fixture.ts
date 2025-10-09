@@ -1,0 +1,1 @@
+({export property: 1})

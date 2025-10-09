@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > property-modifier-override > Babel - Error`]
+BabelError
+> 1 | ({override property: 1})
+    |            ^ Unexpected token, expected "," (1:11)
+  2 |
+  

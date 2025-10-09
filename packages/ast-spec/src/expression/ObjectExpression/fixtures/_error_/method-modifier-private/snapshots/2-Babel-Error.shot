@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > method-modifier-private > Babel - Error`]
+BabelError
+> 1 | ({private method(){}})
+    |   ^ Unexpected reserved word 'private'. (1:2)
+  2 |
+  

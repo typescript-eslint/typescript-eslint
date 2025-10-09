@@ -1,0 +1,1 @@
+({abstract set setter(v){}})

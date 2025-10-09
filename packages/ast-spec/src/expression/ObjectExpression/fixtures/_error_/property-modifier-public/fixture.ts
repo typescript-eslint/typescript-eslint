@@ -1,0 +1,1 @@
+({public property: 1})

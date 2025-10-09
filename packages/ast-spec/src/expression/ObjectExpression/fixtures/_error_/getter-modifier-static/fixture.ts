@@ -1,0 +1,1 @@
+({static get getter(){}})

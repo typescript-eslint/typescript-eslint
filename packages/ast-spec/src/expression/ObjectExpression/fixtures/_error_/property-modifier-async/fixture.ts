@@ -1,0 +1,1 @@
+({async property: 1})

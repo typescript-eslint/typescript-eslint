@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > setter-modifier-static > Babel - Error`]
+BabelError
+> 1 | ({static set setter(v){}})
+    |   ^ Unexpected reserved word 'static'. (1:2)
+  2 |
+  

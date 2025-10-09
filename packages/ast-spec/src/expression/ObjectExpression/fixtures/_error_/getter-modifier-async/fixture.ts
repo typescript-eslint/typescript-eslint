@@ -1,0 +1,1 @@
+({async get getter(){}})
