@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > property-modifier-async > TSESTree - Error`]
+TSError
+> 1 | ({async property: 1})
+    |   ^^^^^ 'async' modifier cannot be used here.
+  2 |

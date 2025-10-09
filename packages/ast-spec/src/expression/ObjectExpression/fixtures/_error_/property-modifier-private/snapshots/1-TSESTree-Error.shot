@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > property-modifier-private > TSESTree - Error`]
+TSError
+> 1 | ({private property: 1})
+    |   ^^^^^^^ 'private' modifier cannot be used here.
+  2 |

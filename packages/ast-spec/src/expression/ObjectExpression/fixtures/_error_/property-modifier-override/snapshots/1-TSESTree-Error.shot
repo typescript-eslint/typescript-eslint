@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > property-modifier-override > TSESTree - Error`]
+TSError
+> 1 | ({override property: 1})
+    |   ^^^^^^^^ 'override' modifier cannot be used here.
+  2 |
