@@ -15,10 +15,10 @@ Program {
               name: "method",
               optional: false,
 
-              range: [8, 14],
+              range: [9, 15],
               loc: {
-                start: { column: 8, line: 1 },
-                end: { column: 14, line: 1 },
+                start: { column: 9, line: 1 },
+                end: { column: 15, line: 1 },
               },
             },
             kind: "init",
@@ -32,10 +32,10 @@ Program {
                 type: "BlockStatement",
                 body: [],
 
-                range: [16, 18],
+                range: [18, 20],
                 loc: {
-                  start: { column: 16, line: 1 },
-                  end: { column: 18, line: 1 },
+                  start: { column: 18, line: 1 },
+                  end: { column: 20, line: 1 },
                 },
               },
               declare: false,
@@ -44,38 +44,38 @@ Program {
               id: null,
               params: [],
 
-              range: [14, 18],
+              range: [15, 20],
               loc: {
-                start: { column: 14, line: 1 },
-                end: { column: 18, line: 1 },
+                start: { column: 15, line: 1 },
+                end: { column: 20, line: 1 },
               },
             },
 
-            range: [2, 18],
+            range: [3, 20],
             loc: {
-              start: { column: 2, line: 1 },
-              end: { column: 18, line: 1 },
+              start: { column: 3, line: 1 },
+              end: { column: 20, line: 1 },
             },
           },
         ],
 
-        range: [1, 19],
+        range: [1, 22],
         loc: {
           start: { column: 1, line: 1 },
-          end: { column: 19, line: 1 },
+          end: { column: 22, line: 1 },
         },
       },
 
-      range: [0, 20],
+      range: [0, 24],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 20, line: 1 },
+        end: { column: 24, line: 1 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 21],
+  range: [0, 25],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },
