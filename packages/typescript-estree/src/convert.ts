@@ -159,6 +159,16 @@ export class Converter {
     checkModifiers(node);
   }
 
+  #isValidEscape(text: string): boolean {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-implied-eval
+      new Function(`return \`${text}\`;`)();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   #throwError(node: number | ts.Node | TSESTree.Range, message: string): never {
     let start;
     let end;
@@ -1677,7 +1687,12 @@ export class Converter {
 
       // Template Literals
 
-      case SyntaxKind.NoSubstitutionTemplateLiteral:
+      case SyntaxKind.NoSubstitutionTemplateLiteral: {
+        const rawText = this.ast.text.slice(
+          node.getStart(this.ast) + 1,
+          node.end - 1,
+        );
+
         return this.createNode<TSESTree.TemplateLiteral>(node, {
           type: AST_NODE_TYPES.TemplateLiteral,
           expressions: [],
@@ -1686,15 +1701,17 @@ export class Converter {
               type: AST_NODE_TYPES.TemplateElement,
               tail: true,
               value: {
-                cooked: node.text,
-                raw: this.ast.text.slice(
-                  node.getStart(this.ast) + 1,
-                  node.end - 1,
-                ),
+                cooked:
+                  node.parent.kind === SyntaxKind.TaggedTemplateExpression &&
+                  !this.#isValidEscape(rawText)
+                    ? null
+                    : node.text,
+                raw: rawText,
               },
             }),
           ],
         });
+      }
 
       case SyntaxKind.TemplateExpression: {
         const result = this.createNode<TSESTree.TemplateLiteral>(node, {
@@ -1721,32 +1738,43 @@ export class Converter {
             'Tagged template expressions are not permitted in an optional chain.',
           );
         }
-        return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
-          type: AST_NODE_TYPES.TaggedTemplateExpression,
-          quasi: this.convertChild(node.template),
-          tag: this.convertChild(node.tag),
-          typeArguments:
-            node.typeArguments &&
-            this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            ),
-        });
+        const result = this.createNode<TSESTree.TaggedTemplateExpression>(
+          node,
+          {
+            type: AST_NODE_TYPES.TaggedTemplateExpression,
+            quasi: this.convertChild(node.template),
+            tag: this.convertChild(node.tag),
+            typeArguments:
+              node.typeArguments &&
+              this.convertTypeArgumentsToTypeParameterInstantiation(
+                node.typeArguments,
+                node,
+              ),
+          },
+        );
+        return result;
       }
-
       case SyntaxKind.TemplateHead:
       case SyntaxKind.TemplateMiddle:
       case SyntaxKind.TemplateTail: {
         const tail = node.kind === SyntaxKind.TemplateTail;
+        const rawText = this.ast.text.slice(
+          node.getStart(this.ast) + 1,
+          node.end - (tail ? 1 : 2),
+        );
+        const isTagged =
+          node.kind === SyntaxKind.TemplateHead
+            ? node.parent.parent.kind === SyntaxKind.TaggedTemplateExpression
+            : node.parent.parent.parent.kind ===
+              SyntaxKind.TaggedTemplateExpression;
+
         return this.createNode<TSESTree.TemplateElement>(node, {
           type: AST_NODE_TYPES.TemplateElement,
           tail,
           value: {
-            cooked: node.text,
-            raw: this.ast.text.slice(
-              node.getStart(this.ast) + 1,
-              node.end - (tail ? 1 : 2),
-            ),
+            cooked:
+              isTagged && !this.#isValidEscape(rawText) ? null : node.text,
+            raw: rawText,
           },
         });
       }
