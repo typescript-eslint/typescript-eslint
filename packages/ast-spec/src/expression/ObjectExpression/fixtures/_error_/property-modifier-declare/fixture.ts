@@ -1,1 +1,0 @@
-({declare property: 1})
