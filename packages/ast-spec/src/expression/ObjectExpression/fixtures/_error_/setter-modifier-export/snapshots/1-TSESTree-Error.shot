@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > setter-modifier-export > TSESTree - Error`]
+TSError
+> 1 | ({export set setter(v){}})
+    |   ^^^^^^ 'export' modifier cannot be used here.
+  2 |
