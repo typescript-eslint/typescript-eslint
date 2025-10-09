@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > getter-modifier-protected > TSESTree - Error`]
+TSError
+> 1 | ({protected get getter(){}})
+    |   ^^^^^^^^^ 'protected' modifier cannot be used here.
+  2 |
