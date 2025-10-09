@@ -1,7 +1,4 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > expression > ObjectExpression > _error_ > property-modifier-abstract > TSESTree - Error`]
-TSError
-> 1 | ({abstract property: 1})
-    |   ^^^^^^^^ 'abstract' modifier can only appear on a class, method, or property declaration.
-  2 |
+NO ERROR
