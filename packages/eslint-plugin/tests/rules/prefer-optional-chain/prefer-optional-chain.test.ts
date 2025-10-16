@@ -3138,7 +3138,6 @@ describe('base cases', () => {
             mutateCode: c => c.replaceAll('&&', '!== null &&'),
             mutateOutput: identity,
             operator: '&&',
-            skipIds: [20, 26],
           }),
           // but if the type is just `| null` - then it covers the cases and is
           // a valid conversion
@@ -3150,45 +3149,6 @@ describe('base cases', () => {
               operator: '&&',
               useSuggestionFixer: true,
             }),
-            {
-              code: `
-                declare const foo: {
-                  bar: () =>
-                    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
-                    | null
-                    | undefined;
-                };
-                foo.bar !== null &&
-                  foo.bar() !== null &&
-                  foo.bar().baz !== null &&
-                  foo.bar().baz.buzz !== null &&
-                  foo.bar().baz.buzz();
-              `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
-                declare const foo: {
-                  bar: () =>
-                    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
-                    | null
-                    | undefined;
-                };
-                foo.bar?.() !== null &&
-                  foo.bar().baz !== null &&
-                  foo.bar().baz.buzz !== null &&
-                  foo.bar().baz.buzz();
-              `,
-            },
-            {
-              code: `
-                declare const foo: { bar: () => { baz: number } | null | undefined };
-                foo.bar !== null && foo.bar?.() !== null && foo.bar?.().baz;
-              `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
-                declare const foo: { bar: () => { baz: number } | null | undefined };
-                foo.bar?.() !== null && foo.bar?.().baz;
-              `,
-            },
           ],
         });
       });
@@ -3303,7 +3263,6 @@ describe('base cases', () => {
             mutateCode: c => c.replaceAll('||', '=== null ||'),
             mutateOutput: identity,
             operator: '||',
-            skipIds: [20, 26],
           }),
           // but if the type is just `| null` - then it covers the cases and is
           // a valid conversion
@@ -3320,45 +3279,6 @@ describe('base cases', () => {
               operator: '||',
               useSuggestionFixer: true,
             }),
-            {
-              code: `
-                declare const foo: {
-                  bar: () =>
-                    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
-                    | null
-                    | undefined;
-                };
-                foo.bar === null ||
-                  foo.bar() === null ||
-                  foo.bar().baz === null ||
-                  foo.bar().baz.buzz === null ||
-                  foo.bar().baz.buzz();
-              `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
-                declare const foo: {
-                  bar: () =>
-                    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
-                    | null
-                    | undefined;
-                };
-                foo.bar?.() === null ||
-                  foo.bar().baz === null ||
-                  foo.bar().baz.buzz === null ||
-                  foo.bar().baz.buzz();
-              `,
-            },
-            {
-              code: `
-                declare const foo: { bar: () => { baz: number } | null | undefined };
-                foo.bar === null || foo.bar?.() === null || foo.bar?.().baz;
-              `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
-                declare const foo: { bar: () => { baz: number } | null | undefined };
-                foo.bar?.() === null || foo.bar?.().baz;
-              `,
-            },
           ],
         });
       });
