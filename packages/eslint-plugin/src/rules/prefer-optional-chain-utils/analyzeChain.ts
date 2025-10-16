@@ -10,7 +10,7 @@ import type {
 } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { isFalsyType, unionConstituents } from 'ts-api-utils';
+import { unionConstituents } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { LastChainOperand, ValidOperand } from './gatherLogicalOperands';

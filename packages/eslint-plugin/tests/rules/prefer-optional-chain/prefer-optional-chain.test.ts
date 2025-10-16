@@ -1879,11 +1879,11 @@ describe('chain ending with comparison', () => {
       'foo != null || foo.bar !== null;',
       `
         declare const record: Record<string, { kind: string }>;
-        record['key'] && record['key'].kind !== '1'
+        record['key'] && record['key'].kind !== '1';
       `,
       `
         declare const array: { b?: string }[];
-        !array[1] || array[1].b === "foo"
+        !array[1] || array[1].b === 'foo';
       `,
     ],
   });
