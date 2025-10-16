@@ -1877,6 +1877,14 @@ describe('chain ending with comparison', () => {
       'foo != null || foo.bar !== false;',
       'foo != null || foo.bar !== true;',
       'foo != null || foo.bar !== null;',
+      `
+        declare const record: Record<string, { kind: string }>;
+        record['key'] && record['key'].kind !== '1'
+      `,
+      `
+        declare const array: { b?: string }[];
+        !array[1] || array[1].b === "foo"
+      `,
     ],
   });
 });
