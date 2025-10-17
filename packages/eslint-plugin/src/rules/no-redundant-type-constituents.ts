@@ -43,7 +43,10 @@ function addToMapGroup<Key, Value>(
   }
 }
 
-function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
+function isUnionNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
+  if (node.parent.type === AST_NODE_TYPES.TSUnionType) {
+    return isUnionNodeInsideReturnType(node.parent);
+  }
   return (
     node.parent.type === AST_NODE_TYPES.TSTypeAnnotation &&
     isFunctionOrFunctionType(node.parent.parent)
@@ -565,7 +568,7 @@ export default createRule({
 
           if (
             typeFlags === ts.TypeFlags.Never &&
-            !isNodeInsideReturnType(node)
+            !isUnionNodeInsideReturnType(node)
           ) {
             context.report({
               node: typeNode,

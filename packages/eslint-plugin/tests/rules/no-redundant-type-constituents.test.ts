@@ -166,6 +166,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type U = T & string;
     `,
     "declare function fn(): never | 'foo';",
+    "declare function fn(): (never | 'foo') | 123;",
+    "declare function fn(): ( ( never | 4 ) | 'foo') | 123;",
     'type Foo = { a: string } | { a: number };',
     "type Foo = { a: string } | { a: 'b' | 'c' | 0 };",
     "type Foo = { a: 'b' | 'c' | 0 } | ({ a: 1 } | { a: 'a' });",
@@ -213,7 +215,6 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type R = K | { a: 1 };
     `,
   ],
-
   invalid: [
     {
       code: 'type T = number | any;',
@@ -1898,6 +1899,30 @@ type C = A & B;
           },
           endColumn: 18,
           messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: "declare function fn(): (never | 'foo') & string;",
+      errors: [
+        {
+          column: 25,
+          data: {
+            container: 'union',
+            typeName: 'never',
+          },
+          messageId: 'overridden',
+          endColumn: 30,
+        },
+        {
+          column: 42,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '"foo"',
+            redundantType: 'string',
+          },
+          messageId: 'typeOverridden',
+          endColumn: 48,
         },
       ],
     },
