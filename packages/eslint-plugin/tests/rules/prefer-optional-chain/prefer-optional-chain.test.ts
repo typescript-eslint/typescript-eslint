@@ -1347,10 +1347,10 @@ describe('chain ending with comparison', () => {
       },
     ],
     valid: [
-      'foo && foo.bar == x;',
+      'foo && foo.bar == undeclaredVar;',
       'foo && foo.bar == null;',
       'foo && foo.bar == undefined;',
-      'foo && foo.bar === x;',
+      'foo && foo.bar === undeclaredVar;',
       'foo && foo.bar === undefined;',
       'foo && foo.bar !== 0;',
       'foo && foo.bar !== 1;',
@@ -1359,18 +1359,18 @@ describe('chain ending with comparison', () => {
       'foo && foo.bar !== false;',
       'foo && foo.bar !== true;',
       'foo && foo.bar !== null;',
-      'foo && foo.bar !== x;',
+      'foo && foo.bar !== undeclaredVar;',
       'foo && foo.bar != 0;',
       'foo && foo.bar != 1;',
       "foo && foo.bar != '123';",
       'foo && foo.bar != {};',
       'foo && foo.bar != false;',
       'foo && foo.bar != true;',
-      'foo && foo.bar != x;',
-      'foo != null && foo.bar == x;',
+      'foo && foo.bar != undeclaredVar;',
+      'foo != null && foo.bar == undeclaredVar;',
       'foo != null && foo.bar == null;',
       'foo != null && foo.bar == undefined;',
-      'foo != null && foo.bar === x;',
+      'foo != null && foo.bar === undeclaredVar;',
       'foo != null && foo.bar === undefined;',
       'foo != null && foo.bar !== 0;',
       'foo != null && foo.bar !== 1;',
@@ -1379,17 +1379,17 @@ describe('chain ending with comparison', () => {
       'foo != null && foo.bar !== false;',
       'foo != null && foo.bar !== true;',
       'foo != null && foo.bar !== null;',
-      'foo != null && foo.bar !== x;',
+      'foo != null && foo.bar !== undeclaredVar;',
       'foo != null && foo.bar != 0;',
       'foo != null && foo.bar != 1;',
       "foo != null && foo.bar != '123';",
       'foo != null && foo.bar != {};',
       'foo != null && foo.bar != false;',
       'foo != null && foo.bar != true;',
-      'foo != null && foo.bar != x;',
+      'foo != null && foo.bar != undeclaredVar;',
       `
         declare const foo: { bar: number };
-        foo && foo.bar == x;
+        foo && foo.bar == undeclaredVar;
       `,
       `
         declare const foo: { bar: number };
@@ -1401,7 +1401,7 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number };
-        foo && foo.bar === x;
+        foo && foo.bar === undeclaredVar;
       `,
       `
         declare const foo: { bar: number };
@@ -1437,7 +1437,7 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number };
-        foo && foo.bar !== x;
+        foo && foo.bar !== undeclaredVar;
       `,
       `
         declare const foo: { bar: number };
@@ -1465,11 +1465,11 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number };
-        foo && foo.bar != x;
+        foo && foo.bar != undeclaredVar;
       `,
       `
         declare const foo: { bar: number };
-        foo != null && foo.bar == x;
+        foo != null && foo.bar == undeclaredVar;
       `,
       `
         declare const foo: { bar: number };
@@ -1481,7 +1481,7 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number };
-        foo != null && foo.bar === x;
+        foo != null && foo.bar === undeclaredVar;
       `,
       `
         declare const foo: { bar: number };
@@ -1517,7 +1517,7 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number };
-        foo != null && foo.bar !== x;
+        foo != null && foo.bar !== undeclaredVar;
       `,
       `
         declare const foo: { bar: number };
@@ -1545,19 +1545,19 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number };
-        foo != null && foo.bar != x;
+        foo != null && foo.bar != undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | 1;
-        foo && foo.bar == x;
+        foo && foo.bar == undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | 0;
-        foo != null && foo.bar == x;
+        foo != null && foo.bar == undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
-        foo && foo.bar == x;
+        foo && foo.bar == undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
@@ -1569,7 +1569,7 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number } | null;
-        foo && foo.bar === x;
+        foo && foo.bar === undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
@@ -1605,11 +1605,11 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number } | null;
-        foo && foo.bar !== x;
+        foo && foo.bar !== undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
-        foo != null && foo.bar == x;
+        foo != null && foo.bar == undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
@@ -1621,7 +1621,7 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number } | null;
-        foo != null && foo.bar === x;
+        foo != null && foo.bar === undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
@@ -1657,7 +1657,7 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number } | null;
-        foo != null && foo.bar !== x;
+        foo != null && foo.bar !== undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
@@ -1727,15 +1727,15 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number };
-        !foo || foo.bar == x;
+        !foo || foo.bar == undeclaredVar;
       `,
       `
         declare const foo: { bar: number };
-        !foo || foo.bar === x;
+        !foo || foo.bar === undeclaredVar;
       `,
       `
         declare const foo: { bar: number };
-        !foo || foo.bar !== x;
+        !foo || foo.bar !== undeclaredVar;
       `,
       `
         declare const foo: { bar: number };
@@ -1743,7 +1743,7 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number };
-        !foo || foo.bar != x;
+        !foo || foo.bar != undeclaredVar;
       `,
       '!foo && foo.bar == 0;',
       '!foo && foo.bar == 1;',
@@ -1793,7 +1793,7 @@ describe('chain ending with comparison', () => {
         declare const x: 0n | { a: string };
         x && x.a;
       `,
-      '!foo || foo.bar != x;',
+      '!foo || foo.bar != undeclaredVar;',
       '!foo || foo.bar != null;',
       '!foo || foo.bar != undefined;',
       '!foo || foo.bar === 0;',
@@ -1803,29 +1803,29 @@ describe('chain ending with comparison', () => {
       '!foo || foo.bar === false;',
       '!foo || foo.bar === true;',
       '!foo || foo.bar === null;',
-      '!foo || foo.bar === x;',
+      '!foo || foo.bar === undeclaredVar;',
       '!foo || foo.bar == 0;',
       '!foo || foo.bar == 1;',
       "!foo || foo.bar == '123';",
       '!foo || foo.bar == {};',
       '!foo || foo.bar == false;',
       '!foo || foo.bar == true;',
-      '!foo || foo.bar == x;',
-      '!foo || foo.bar !== x;',
+      '!foo || foo.bar == undeclaredVar;',
+      '!foo || foo.bar !== undeclaredVar;',
       '!foo || foo.bar !== undefined;',
       `
         declare const foo: { bar: number };
-        foo == null || foo.bar == x;
+        foo == null || foo.bar == undeclaredVar;
       `,
       `
         declare const foo: { bar: number };
-        foo == null || foo.bar === x;
+        foo == null || foo.bar === undeclaredVar;
       `,
       `
         declare const foo: { bar: number };
-        foo == null || foo.bar !== x;
+        foo == null || foo.bar !== undeclaredVar;
       `,
-      'foo == null || foo.bar != x;',
+      'foo == null || foo.bar != undeclaredVar;',
       'foo == null || foo.bar != null;',
       'foo == null || foo.bar != undefined;',
       'foo == null || foo.bar === 0;',
@@ -1835,15 +1835,15 @@ describe('chain ending with comparison', () => {
       'foo == null || foo.bar === false;',
       'foo == null || foo.bar === true;',
       'foo == null || foo.bar === null;',
-      'foo == null || foo.bar === x;',
+      'foo == null || foo.bar === undeclaredVar;',
       'foo == null || foo.bar == 0;',
       'foo == null || foo.bar == 1;',
       "foo == null || foo.bar == '123';",
       'foo == null || foo.bar == {};',
       'foo == null || foo.bar == false;',
       'foo == null || foo.bar == true;',
-      'foo == null || foo.bar == x;',
-      'foo == null || foo.bar !== x;',
+      'foo == null || foo.bar == undeclaredVar;',
+      'foo == null || foo.bar !== undeclaredVar;',
       'foo == null || foo.bar !== undefined;',
       'foo || foo.bar != 0;',
       'foo || foo.bar != 1;',
