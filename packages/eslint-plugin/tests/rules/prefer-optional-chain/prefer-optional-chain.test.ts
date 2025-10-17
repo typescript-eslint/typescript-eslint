@@ -1778,20 +1778,20 @@ describe('chain ending with comparison', () => {
       'foo == null && foo.bar != null;',
       'foo == null && foo.bar != undefined;',
       `
-        declare const x: false | { a: string };
-        x && x.a == x;
+        declare const foo: false | { a: string };
+        foo && foo.a == undeclaredVar;
       `,
       `
-        declare const x: '' | { a: string };
-        x && x.a == x;
+        declare const foo: '' | { a: string };
+        foo && foo.a == undeclaredVar;
       `,
       `
-        declare const x: 0 | { a: string };
-        x && x.a == x;
+        declare const foo: 0 | { a: string };
+        foo && foo.a == undeclaredVar;
       `,
       `
-        declare const x: 0n | { a: string };
-        x && x.a;
+        declare const foo: 0n | { a: string };
+        foo && foo.a;
       `,
       '!foo || foo.bar != undeclaredVar;',
       '!foo || foo.bar != null;',
