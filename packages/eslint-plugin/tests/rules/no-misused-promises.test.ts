@@ -1096,6 +1096,13 @@ declare const useCallback: <T extends (...args: unknown[]) => unknown>(
 ) => T;
 useCallback<ReturnsVoid | ReturnsPromiseVoid>(async () => {});
     `,
+    `
+Promise.reject(3).finally(async () => {});
+    `,
+    `
+const f = 'finally';
+Promise.reject(3)[f](async () => {});
+    `,
   ],
 
   invalid: [

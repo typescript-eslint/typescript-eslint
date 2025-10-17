@@ -27,6 +27,7 @@
     "check-format": "prettier --check .",
     "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\" --no-progress --show-context --show-suggestions",
     "clean": "nx run-many -t clean --parallel=20",
+    "deduplicate": "yarn-berry-deduplicate",
     "format": "prettier --ignore-path=$PROJECT_CWD/.prettierignore --config=$PROJECT_CWD/.prettierrc.json --write $INIT_CWD",
     "generate-breaking-changes": "nx run eslint-plugin:generate-breaking-changes",
     "generate-configs": "tsx tools/scripts/generate-configs.mts",
@@ -37,6 +38,7 @@
     "lint-markdown-fix": "yarn lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
     "lint-stylelint": "nx lint website stylelint",
+    "lint-prune-suppressions": "nx run-many -t lint --projects=eslint-plugin-internal,eslint-plugin --prune-suppressions",
     "lint": "nx run-many -t lint",
     "postinstall": "tsx tools/scripts/postinstall.mts",
     "pre-commit": "lint-staged",
@@ -102,7 +104,8 @@
     "typescript-eslint": "workspace:^",
     "vite": "^6.3.5",
     "vitest": "^3.1.3",
-    "yargs": "17.7.2"
+    "yargs": "17.7.2",
+    "yarn-berry-deduplicate": "^6.1.3"
   },
   "resolutions": {
     "@types/eslint-scope": "link:./tools/dummypkg",

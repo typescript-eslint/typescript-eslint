@@ -1,6 +1,6 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/eqeq-nullish';
+import rule from '../../src/rules/eqeq-nullish.js';
 
 const ruleTester = new RuleTester();
 

@@ -60,8 +60,7 @@ export default createRule<Options, MessageIds>({
           },
           ignoredTypeNames: {
             type: 'array',
-            description:
-              'Stringified regular expressions of type names to ignore.',
+            description: 'Stringified type names to ignore.',
             items: {
               type: 'string',
             },
@@ -318,6 +317,7 @@ export default createRule<Options, MessageIds>({
 
       const declarations = toString.getDeclarations();
 
+      // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
       if (declarations == null || declarations.length !== 1) {
         // If there are multiple declarations, at least one of them must not be
         // the default object toString.

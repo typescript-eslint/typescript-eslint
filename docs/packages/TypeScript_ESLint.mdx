@@ -22,6 +22,7 @@ This package exports the following:
 | `configs`             | [Shared ESLint (flat) configs](../users/Shared_Configurations.mdx)                                |
 | `parser`              | A re-export of [`@typescript-eslint/parser`](./Parser.mdx)                                        |
 | `plugin`              | A re-export of [`@typescript-eslint/eslint-plugin`](./ESLint_Plugin.mdx)                          |
+| `FlatConfig`          | A re-export of the type from [`@typescript-eslint/utils`](./Utils.mdx)                            |
 
 ## Installation
 
@@ -269,7 +270,6 @@ export default defineConfig({
     parser: tseslint.parser,
     parserOptions: {
       projectService: true,
-      tsconfigRootDir: import.meta.dirname,
     },
   },
   rules: {
