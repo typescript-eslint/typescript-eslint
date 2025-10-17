@@ -137,14 +137,12 @@ function isTargetTypeRedundantInIntersection(
       sourceType,
       targetType,
     );
-
-    const targetHasOnlyOptionalProperty = targetOnlyAddsOptionalProperties(
-      sourceType,
-      targetType,
-      checker,
-    );
-
-    return sourceAssignableToTarget && !targetHasOnlyOptionalProperty;
+    if (!sourceAssignableToTarget) {
+      return false;
+    }
+    const hasTargetOnlyAddsOptionalProperties =
+      targetOnlyAddsOptionalProperties(sourceType, targetType, checker);
+    return !hasTargetOnlyAddsOptionalProperties;
   }
   return checker.isTypeAssignableTo(sourceType, targetType);
 }
@@ -220,19 +218,20 @@ function targetOnlyAddsOptionalProperties(
       continue;
     }
     const sourcePropertyType = checker.getTypeOfSymbol(sourceProp);
+    if (!tsutils.isObjectType(sourcePropertyType)) {
+      continue;
+    }
     const targetPropertyType = checker.getTypeOfSymbol(targetProp);
-    if (
-      tsutils.isObjectType(sourcePropertyType) &&
-      tsutils.isObjectType(targetPropertyType)
-    ) {
-      const res = targetOnlyAddsOptionalProperties(
-        sourcePropertyType,
-        targetPropertyType,
-        checker,
-      );
-      if (res) {
-        return true;
-      }
+    if (!tsutils.isObjectType(targetPropertyType)) {
+      continue;
+    }
+    const res = targetOnlyAddsOptionalProperties(
+      sourcePropertyType,
+      targetPropertyType,
+      checker,
+    );
+    if (res) {
+      return true;
     }
   }
   return false;
