@@ -382,17 +382,17 @@ export default createRule({
       ];
     }
 
-    function getInterSectionTypePart(
+    function getIntersectionTypePart(
       typeNode: ts.Node,
       checker: ts.TypeChecker,
     ): TypeWithName[] {
       if (ts.isParenthesizedTypeNode(typeNode)) {
-        return getInterSectionTypePart(typeNode.type, checker);
+        return getIntersectionTypePart(typeNode.type, checker);
       }
 
       if (ts.isIntersectionTypeNode(typeNode)) {
         return typeNode.types.flatMap(typeNode =>
-          getInterSectionTypePart(typeNode, checker),
+          getIntersectionTypePart(typeNode, checker),
         );
       }
 
@@ -403,7 +403,7 @@ export default createRule({
       ) {
         const node = getTypeNodeFromReferenceType(type);
         if (node && node !== typeNode) {
-          return getInterSectionTypePart(node, checker);
+          return getIntersectionTypePart(node, checker);
         }
       }
       return [
@@ -452,7 +452,7 @@ export default createRule({
 
         for (const typeNode of node.types) {
           const tsTypeNode = services.esTreeNodeToTSNodeMap.get(typeNode);
-          const typeParts = getInterSectionTypePart(tsTypeNode, checker);
+          const typeParts = getIntersectionTypePart(tsTypeNode, checker);
 
           for (const typePart of typeParts) {
             if (
