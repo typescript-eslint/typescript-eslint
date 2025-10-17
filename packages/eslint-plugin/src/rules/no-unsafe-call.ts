@@ -73,7 +73,7 @@ export default createRule<[], MessageIds>({
           node: reportingNode,
           messageId,
           data: {
-            type: isErrorType ? '`error` type' : '`any`',
+            type: isErrorType ? 'unresolved due to error' : '`any`',
           },
         });
         return;

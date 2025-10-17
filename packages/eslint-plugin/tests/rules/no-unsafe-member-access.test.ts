@@ -207,7 +207,7 @@ value.property;
           column: 7,
           data: {
             property: '.property',
-            type: '`error` typed',
+            type: 'unresolved due to error',
           },
           endColumn: 15,
           line: 4,
@@ -340,7 +340,7 @@ function foo(x: { a: number }, y: NotKnown) {
           column: 5,
           data: {
             property: '[y]',
-            type: '`error` typed',
+            type: 'unresolved due to error',
           },
           endColumn: 6,
           line: 3,
@@ -515,7 +515,7 @@ function foo(x: { a: number }, y: NotKnown) {
           column: 5,
           data: {
             property: '[y]',
-            type: '`error` typed',
+            type: 'unresolved due to error',
           },
           endColumn: 6,
           line: 3,
