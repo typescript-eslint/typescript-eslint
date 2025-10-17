@@ -94,10 +94,7 @@ function isTargetTypeRedundantInIntersection(
   targetType: ts.Type,
   checker: ts.TypeChecker,
 ): boolean {
-  if (
-    tsutils.isUnionType(sourceType) &&
-    !tsutils.isIntrinsicBooleanType(sourceType)
-  ) {
+  if (tsutils.isUnionType(sourceType)) {
     for (const typePart of sourceType.types) {
       const isRedundant = isTargetTypeRedundantInIntersection(
         typePart,
@@ -141,7 +138,7 @@ function isTargetTypeRedundantInIntersection(
       targetType,
     );
 
-    const targetHasOnlyOptionalProperty = hasTargetOnlyOptionalProps(
+    const targetHasOnlyOptionalProperty = targetOnlyAddsOptionalProperties(
       sourceType,
       targetType,
       checker,
@@ -201,7 +198,7 @@ function getGroupTypeRelationsByNonRedundantType(
   return groups;
 }
 
-function hasTargetOnlyOptionalProps(
+function targetOnlyAddsOptionalProperties(
   sourceType: ts.ObjectType,
   targetType: ts.ObjectType,
   checker: ts.TypeChecker,
@@ -228,7 +225,7 @@ function hasTargetOnlyOptionalProps(
       tsutils.isObjectType(sourcePropertyType) &&
       tsutils.isObjectType(targetPropertyType)
     ) {
-      const res = hasTargetOnlyOptionalProps(
+      const res = targetOnlyAddsOptionalProperties(
         sourcePropertyType,
         targetPropertyType,
         checker,
@@ -415,7 +412,7 @@ export default createRule({
     }
 
     return {
-      'TSIntersectionType:exit'(node: TSESTree.TSIntersectionType): void {
+      TSIntersectionType(node: TSESTree.TSIntersectionType): void {
         const seenTypes = new Set<TypeWithNameAndParentNode>();
         const redundantTypes = new Map<
           TSESTree.TypeNode,
@@ -536,7 +533,7 @@ export default createRule({
         }
         reportRedundantTypes(redundantTypes, 'intersection');
       },
-      'TSUnionType:exit'(node: TSESTree.TSUnionType): void {
+      TSUnionType(node: TSESTree.TSUnionType): void {
         const seenTypes = new Set<TypeWithNameAndParentNode>();
         const redundantTypes = new Map<
           TSESTree.TypeNode,
