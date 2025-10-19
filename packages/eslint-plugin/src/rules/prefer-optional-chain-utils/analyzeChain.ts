@@ -10,7 +10,7 @@ import type {
 } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { isFalsyType, unionConstituents } from 'ts-api-utils';
+import { unionConstituents } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { LastChainOperand, ValidOperand } from './gatherLogicalOperands';
@@ -46,40 +46,6 @@ function includesType(
     }
   }
   return false;
-}
-
-function isAlwaysTruthyOperand(
-  comparedName: TSESTree.Node,
-  nullishComparisonType: NullishComparisonType,
-  parserServices: ParserServicesWithTypeInformation,
-): boolean {
-  const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
-  const comparedNameType = parserServices.getTypeAtLocation(comparedName);
-
-  if (isTypeFlagSet(comparedNameType, ANY_UNKNOWN_FLAGS)) {
-    return false;
-  }
-  switch (nullishComparisonType) {
-    case NullishComparisonType.Boolean:
-    case NullishComparisonType.NotBoolean: {
-      const types = unionConstituents(comparedNameType);
-      return types.every(type => !isFalsyType(type));
-    }
-    case NullishComparisonType.NotStrictEqualUndefined:
-    case NullishComparisonType.NotStrictEqualNull:
-    case NullishComparisonType.StrictEqualNull:
-    case NullishComparisonType.StrictEqualUndefined:
-      return !isTypeFlagSet(
-        comparedNameType,
-        ts.TypeFlags.Null | ts.TypeFlags.Undefined,
-      );
-    case NullishComparisonType.NotEqualNullOrUndefined:
-    case NullishComparisonType.EqualNullOrUndefined:
-      return !isTypeFlagSet(
-        comparedNameType,
-        ts.TypeFlags.Null | ts.TypeFlags.Undefined,
-      );
-  }
 }
 
 function isValidAndLastChainOperand(
@@ -710,20 +676,6 @@ export function analyzeChain(
             }
             break;
           }
-          case NullishComparisonType.StrictEqualNull:
-          case NullishComparisonType.NotStrictEqualNull: {
-            if (
-              comparisonResult === NodeComparisonResult.Subset &&
-              isAlwaysTruthyOperand(
-                lastOperand.comparedName,
-                lastOperand.comparisonType,
-                parserServices,
-              )
-            ) {
-              lastChain = operand;
-            }
-            break;
-          }
         }
       }
       maybeReportThenReset();
@@ -768,16 +720,11 @@ export function analyzeChain(
         : isValidOrLastChainOperand;
     if (
       comparisonResult === NodeComparisonResult.Subset &&
-      (isAlwaysTruthyOperand(
-        lastOperand.comparedName,
-        lastOperand.comparisonType,
+      isValidLastChainOperand(
+        lastChainOperand.comparisonValue,
+        lastChainOperand.comparisonType,
         parserServices,
-      ) ||
-        isValidLastChainOperand(
-          lastChainOperand.comparisonValue,
-          lastChainOperand.comparisonType,
-          parserServices,
-        ))
+      )
     ) {
       lastChain = lastChainOperand;
     }
