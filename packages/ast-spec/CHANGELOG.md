@@ -1,3 +1,15 @@
+## 8.46.1 (2025-10-13)
+
+### 🩹 Fixes
+
+- **ast-spec:** cleanup `TSLiteralType` ([#11624](https://github.com/typescript-eslint/typescript-eslint/pull/11624))
+
+### ❤️ Thank You
+
+- Abraham Guo
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.46.0 (2025-10-06)
 
 ### 🚀 Features

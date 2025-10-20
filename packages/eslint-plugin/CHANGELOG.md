@@ -1,3 +1,17 @@
+## 8.46.1 (2025-10-13)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-misused-promises] special-case `.finally` not to report when a promise returning function is provided as an argument ([#11667](https://github.com/typescript-eslint/typescript-eslint/pull/11667))
+- **eslint-plugin:** [prefer-optional-chain] include mixed "nullish comparison style" chains in checks ([#11533](https://github.com/typescript-eslint/typescript-eslint/pull/11533))
+
+### ❤️ Thank You
+
+- mdm317
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.46.0 (2025-10-06)
 
 ### 🚀 Features
