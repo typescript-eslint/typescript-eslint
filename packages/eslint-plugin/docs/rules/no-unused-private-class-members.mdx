@@ -47,18 +47,24 @@ class A {
 
 This rule does not detect the following cases:
 
-(1) Private members only used using private only without `this`:
+(1) Private members only used via a variable that would require type analysis to resolve the type.
 
 ```ts
+type T = Foo;
 class Foo {
   private prop = 123;
 
-  method(a: Foo) {
+  method1(a: Foo) {
     // ✅ Detected as a usage
     const prop = this.prop;
 
-    // ❌ NOT detected as a usage
+    // ✅ Detected as a usage (variables with explicit and simple type annotations are handled)
     const otherProp = a.prop;
+  }
+
+  method2(a: T) {
+    // ❌ NOT detected as a usage (complex type annotation that requires type information to handle)
+    const prop = a.prop;
   }
 }
 ```
@@ -73,6 +79,37 @@ class Foo {
 const instance = new Foo();
 // ❌ NOT detected as a usage
 console.log(foo['prop']);
+```
+
+(3) Reassignments of `this` multiple times:
+
+```ts
+class Foo {
+  private prop = 123;
+
+  foo() {
+    const self1 = this;
+    const self2 = self1;
+    return self2.prop;
+  }
+}
+```
+
+(4) Mutable reassignments of `this`:
+
+```ts
+class Foo {
+  private prop = 123;
+  private parent: Foo | null;
+
+  foo() {
+    let self = this;
+    while (self.parent != null) {
+      self = self.parent;
+    }
+    return self.prop;
+  }
+}
 ```
 
 ## When Not To Use It

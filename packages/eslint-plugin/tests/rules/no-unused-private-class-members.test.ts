@@ -107,6 +107,34 @@ class Test1 {
   }
 }
     `,
+    `
+class Foo {
+  private prop: number;
+
+  method(thing: Foo) {
+    return thing.prop;
+  }
+}
+    `,
+    `
+class Foo {
+  private static staticProp: number;
+
+  method(thing: typeof Foo) {
+    return thing.staticProp;
+  }
+}
+    `,
+    `
+class Foo {
+  private prop: number;
+
+  method() {
+    const self = this;
+    return self.prop;
+  }
+}
+    `,
 
     ...[
       `
@@ -384,22 +412,8 @@ class Test1 {
       errors: [definedError('parameterProperty', false)],
     },
 
-    // intentionally not handled cases
     {
-      code: `
-class C {
-  private usedInInnerClass;
-
-  method(a: C) {
-    return class {
-      foo = a.usedInInnerClass;
-    };
-  }
-}
-      `,
-      errors: [definedError('usedInInnerClass', false)],
-    },
-    {
+      // usage of a property outside the class
       code: `
 class C {
   private usedOutsideClass;
@@ -409,6 +423,33 @@ const instance = new C();
 console.log(instance.usedOutsideClass);
       `,
       errors: [definedError('usedOutsideClass', false)],
+    },
+    {
+      // usage of a property outside the class
+      code: `
+class C {
+  private usedOutsideClass;
+}
+
+const instance = new C();
+console.log(instance['usedOutsideClass']);
+      `,
+      errors: [definedError('usedOutsideClass', false)],
+    },
+    {
+      // too much indirection so we just bail
+      code: `
+  class Foo {
+    private prop: number;
+
+    method() {
+      const self1 = this;
+      const self2 = self1;
+      return self2.prop;
+    }
+  }
+      `,
+      errors: [definedError('prop', false)],
     },
 
     ...[

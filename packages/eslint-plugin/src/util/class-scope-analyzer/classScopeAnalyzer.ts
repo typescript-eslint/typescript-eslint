@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-this-alias -- we do a bunch of "start iterating from here" code which isn't actually aliasing `this` */
-import type { ScopeManager } from '@typescript-eslint/scope-manager';
+import type {
+  Scope,
+  ScopeManager,
+  Variable,
+} from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { Visitor } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { ClassNode, Key, MemberNode } from './types';
-import { nullThrows, NullThrowsReasons } from '..';
+import { findVariable, nullThrows, NullThrowsReasons } from '..';
 
 import {
   extractNameForMember,
@@ -239,6 +243,38 @@ abstract class ThisScope extends Visitor {
     }
   }
 
+  private findNearestScope(node: TSESTree.Node): Scope | null {
+    let currentScope = null;
+    let currentNode = node;
+    let i = 0;
+    do {
+      currentScope = this.scopeManager.acquire(currentNode);
+      if (currentNode?.parent == null) {
+        break;
+      }
+      currentNode = currentNode?.parent;
+    } while (currentScope == null);
+    return currentScope;
+  }
+  private findVariableInScope(
+    node: TSESTree.Node,
+    name: string,
+  ): Variable | null {
+    let currentScope = this.findNearestScope(node);
+    let variable = null;
+
+    while (currentScope != null) {
+      variable = currentScope.set.get(name) ?? null;
+      if (variable != null) {
+        break;
+      }
+
+      currentScope = currentScope.upper;
+    }
+
+    return variable;
+  }
+
   private getObjectClass(node: TSESTree.MemberExpression): {
     thisContext: ThisScope['thisContext'];
     type: 'instance' | 'static';
@@ -260,16 +296,100 @@ abstract class ThisScope extends Visitor {
           return { thisContext, type: 'static' };
         }
 
-        // TODO -- use scope analysis to do some basic type resolution to handle cases like:
-        // ```
-        // class Foo {
-        //   private prop: number;
-        //   method(thing: Foo) {
-        //     // this references the private instance member but not via `this` so we can't see it
-        //     thing.prop = 1;
-        //   }
-        // }
+        // the following code does some very rudimentary scope analysis to handle some trivial cases
+        const variable = this.findVariableInScope(node, node.object.name);
+        if (variable == null || variable.defs.length === 0) {
+          return null;
+        }
 
+        const firstDef = variable.defs[0];
+        switch (firstDef.node.type) {
+          // detect simple reassignment of `this`
+          // ```
+          // class Foo {
+          //   private prop: number;
+          //   method(thing: Foo) {
+          //     const self = this;
+          //     return self.prop;
+          //   }
+          // }
+          // ```
+          case AST_NODE_TYPES.VariableDeclarator: {
+            const value = firstDef.node.init;
+            if (value == null || value.type !== AST_NODE_TYPES.ThisExpression) {
+              return null;
+            }
+
+            if (
+              variable.references.filter(
+                ref => ref.isWrite() && ref.init !== true,
+              ).length > 0
+            ) {
+              // variable is assigned to multiple times so we can't be sure that it's still the same class
+              return null;
+            }
+
+            // we have a case like `const self = this` or `let self = this` that is not reassigned
+            // so we can safely assume that it's still the same class!
+            return {
+              thisContext: this.thisContext,
+              type: this.isStaticThisContext ? 'static' : 'instance',
+            };
+          }
+
+          // Look for variables typed as the current class:
+          // ```
+          // class Foo {
+          //   private prop: number;
+          //   method(thing: Foo) {
+          //     // this references the private instance member but not via `this` so we can't see it
+          //     thing.prop = 1;
+          //   }
+          // }
+          // ```
+          default: {
+            const typeAnnotation = (() => {
+              if (
+                'typeAnnotation' in firstDef.name &&
+                firstDef.name.typeAnnotation != null &&
+                firstDef.name.typeAnnotation.type ===
+                  AST_NODE_TYPES.TSTypeAnnotation
+              ) {
+                return firstDef.name.typeAnnotation.typeAnnotation;
+              }
+
+              return null;
+            })();
+
+            if (typeAnnotation == null) {
+              return null;
+            }
+
+            // Cases like `method(thing: Foo) { ... }`
+            if (
+              typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
+              typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier
+            ) {
+              const typeName = typeAnnotation.typeName.name;
+              const typeScope = this.findClassScopeWithName(typeName);
+              if (typeScope != null) {
+                return { thisContext: typeScope, type: 'instance' };
+              }
+            }
+
+            // Cases like `method(thing: typeof Foo) { ... }`
+            if (
+              typeAnnotation.type === AST_NODE_TYPES.TSTypeQuery &&
+              typeAnnotation.exprName.type === AST_NODE_TYPES.Identifier
+            ) {
+              const exprName = typeAnnotation.exprName.name;
+              const exprScope = this.findClassScopeWithName(exprName);
+              if (exprScope != null) {
+                return { thisContext: exprScope, type: 'static' };
+              }
+            }
+          }
+        }
         return null;
       }
       case AST_NODE_TYPES.MemberExpression:
@@ -460,6 +580,7 @@ class IntermediateScope extends ThisScope {
     // function with a `this` parameter
     if (
       upper != null &&
+      node.params.length > 0 &&
       node.params[0].type === AST_NODE_TYPES.Identifier &&
       node.params[0].name === 'this'
     ) {
