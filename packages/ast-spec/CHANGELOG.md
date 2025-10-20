@@ -1,3 +1,15 @@
+## 8.46.2 (2025-10-20)
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid invalid modifiers in object methods ([#11689](https://github.com/typescript-eslint/typescript-eslint/pull/11689))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.46.1 (2025-10-13)
 
 ### 🩹 Fixes
