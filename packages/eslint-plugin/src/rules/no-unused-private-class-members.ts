@@ -48,7 +48,7 @@ export default createRule<Options, MessageIds>({
             }
 
             context.report({
-              node: member.node.key,
+              node: member.nameNode,
               messageId: 'unusedPrivateClassMember',
               data: { classMemberName: member.name },
             });

@@ -83,6 +83,30 @@ class C {
 }
       `,
     },
+    `
+class Test1 {
+  constructor(private parameterProperty: number) {}
+  method() {
+    return this.parameterProperty;
+  }
+}
+    `,
+    `
+class Test1 {
+  constructor(private readonly parameterProperty: number) {}
+  method() {
+    return this.parameterProperty;
+  }
+}
+    `,
+    `
+class Test1 {
+  constructor(private readonly parameterProperty: number = 1) {}
+  method() {
+    return this.parameterProperty;
+  }
+}
+    `,
 
     ...[
       `
@@ -334,6 +358,30 @@ class C {
 }
       `,
       errors: [definedError('staticMember', false)],
+    },
+    {
+      code: `
+class Test1 {
+  constructor(private parameterProperty: number) {}
+}
+      `,
+      errors: [definedError('parameterProperty', false)],
+    },
+    {
+      code: `
+class Test1 {
+  constructor(private readonly parameterProperty: number) {}
+}
+      `,
+      errors: [definedError('parameterProperty', false)],
+    },
+    {
+      code: `
+class Test1 {
+  constructor(private readonly parameterProperty: number = 1) {}
+}
+      `,
+      errors: [definedError('parameterProperty', false)],
     },
 
     // intentionally not handled cases

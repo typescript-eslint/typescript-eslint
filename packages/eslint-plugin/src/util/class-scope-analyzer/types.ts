@@ -7,7 +7,8 @@ export type MemberNode =
   | TSESTree.PropertyDefinition
   | TSESTree.TSAbstractAccessorProperty
   | TSESTree.TSAbstractMethodDefinition
-  | TSESTree.TSAbstractPropertyDefinition;
+  | TSESTree.TSAbstractPropertyDefinition
+  | TSESTree.TSParameterProperty;
 export type PrivateKey = string & { __brand: 'private-key' };
 export type PublicKey = string & { __brand: 'public-key' };
 export type Key = PrivateKey | PublicKey;

@@ -31,6 +31,12 @@ export class Member {
   public readonly name: string;
 
   /**
+   * The node that represents the member name in the source code.
+   * Used for reporting errors.
+   */
+  public readonly nameNode: TSESTree.Node;
+
+  /**
    * The number of writes to this member.
    */
   public writeCount = 0;
@@ -40,21 +46,30 @@ export class Member {
    */
   public readCount = 0;
 
-  private constructor(node: MemberNode, key: Key, name: string) {
+  private constructor(
+    node: MemberNode,
+    key: Key,
+    name: string,
+    nameNode: TSESTree.Node,
+  ) {
     this.node = node;
     this.key = key;
     this.name = name;
+    this.nameNode = nameNode;
   }
   public static create(node: MemberNode): Member | null {
     const name = extractNameForMember(node);
     if (name == null) {
       return null;
     }
-    return new Member(node, ...name);
+    return new Member(node, name.key, name.codeName, name.nameNode);
   }
 
   public isHashPrivate(): boolean {
-    return this.node.key.type === AST_NODE_TYPES.PrivateIdentifier;
+    return (
+      'key' in this.node &&
+      this.node.key.type === AST_NODE_TYPES.PrivateIdentifier
+    );
   }
 
   public isPrivate(): boolean {
@@ -345,7 +360,7 @@ abstract class ThisScope extends Visitor {
       objectClassName.type === 'instance'
         ? objectClassName.thisContext.members.instance
         : objectClassName.thisContext.members.static;
-    const member = members.get(propertyName[0]);
+    const member = members.get(propertyName.key);
     if (member == null) {
       return;
     }
@@ -510,8 +525,26 @@ class ClassScope extends ThisScope implements ClassScopeResult {
 
     for (const memberNode of theClass.body.body) {
       switch (memberNode.type) {
-        case AST_NODE_TYPES.AccessorProperty:
         case AST_NODE_TYPES.MethodDefinition:
+          if (memberNode.kind === 'constructor') {
+            for (let parameter of memberNode.value.params) {
+              if (parameter.type !== AST_NODE_TYPES.TSParameterProperty) {
+                continue;
+              }
+
+              const member = Member.create(parameter);
+              if (member == null) {
+                continue;
+              }
+
+              this.members.instance.set(member.key, member);
+            }
+
+            // break instead of falling through because the constructor is not a "member" we track
+            break;
+          }
+        // intentional fall through
+        case AST_NODE_TYPES.AccessorProperty:
         case AST_NODE_TYPES.PropertyDefinition:
         case AST_NODE_TYPES.TSAbstractAccessorProperty:
         case AST_NODE_TYPES.TSAbstractMethodDefinition:
