@@ -248,6 +248,21 @@ export type NodeWithKey =
   | TSESTree.TSAbstractMethodDefinition
   | TSESTree.TSAbstractPropertyDefinition;
 
+export function isNodeWithKey(node: TSESTree.Node): node is NodeWithKey {
+  switch (node.type) {
+    case AST_NODE_TYPES.AccessorProperty:
+    case AST_NODE_TYPES.MemberExpression:
+    case AST_NODE_TYPES.MethodDefinition:
+    case AST_NODE_TYPES.Property:
+    case AST_NODE_TYPES.PropertyDefinition:
+    case AST_NODE_TYPES.TSAbstractMethodDefinition:
+    case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+      return true;
+    default:
+      return false;
+  }
+}
+
 /**
  * Gets a member being accessed or declared if its value can be determined statically, and
  * resolves it to the string or symbol value that will be used as the actual member
