@@ -301,7 +301,11 @@ export default createRule<Options, MessageIds>({
 
       if (
         ignoreBooleanCoercion === true &&
-        isBooleanConstructorContext(node, context)
+        isBooleanConstructorContext(node, context) &&
+        !(
+          node.type === AST_NODE_TYPES.ConditionalExpression &&
+          node.parent.type === AST_NODE_TYPES.CallExpression
+        )
       ) {
         return false;
       }

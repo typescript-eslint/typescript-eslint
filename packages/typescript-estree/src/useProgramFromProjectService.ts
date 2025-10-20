@@ -1,4 +1,4 @@
-import type { ProjectServiceAndMetadata as ProjectServiceAndMetadata } from '@typescript-eslint/project-service';
+import type { ProjectServiceAndMetadata } from '@typescript-eslint/project-service';
 
 import debug from 'debug';
 import { minimatch } from 'minimatch';
@@ -96,8 +96,24 @@ function openClientFileFromProjectService(
     }
 
     if (!isDefaultProjectAllowed) {
+      const baseMessage = `${wasNotFound}. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`;
+      const allowDefaultProject =
+        parseSettings.projectService?.allowDefaultProject;
+
+      if (!allowDefaultProject) {
+        throw new Error(baseMessage);
+      }
+
+      const relativeFilePath = path.relative(
+        parseSettings.tsconfigRootDir,
+        filePathAbsolute,
+      );
+
       throw new Error(
-        `${wasNotFound}. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
+        [
+          baseMessage,
+          `allowDefaultProject is set to ${JSON.stringify(allowDefaultProject)}, which does not match '${relativeFilePath}'.`,
+        ].join('\n'),
       );
     }
   }
@@ -316,5 +332,7 @@ function filePathMatchedBy(
   filePath: string,
   allowDefaultProject: string[] | undefined,
 ): boolean {
-  return !!allowDefaultProject?.some(pattern => minimatch(filePath, pattern));
+  return !!allowDefaultProject?.some(pattern =>
+    minimatch(filePath, pattern, { dot: true }),
+  );
 }

@@ -20,9 +20,10 @@ To enable typed linting, there are two small changes you need to make to your co
 
 ```js title="eslint.config.mjs"
 import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   // Remove this line
   tseslint.configs.recommended,
@@ -32,7 +33,6 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
       },
     },
   },
@@ -99,7 +99,7 @@ If you enabled the [`strict` shared config](../users/Shared_Configurations.mdx#s
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   // Removed lines start
   tseslint.configs.strict,

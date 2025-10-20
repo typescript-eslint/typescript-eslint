@@ -1,5 +1,4 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-extraneous-class';
 
@@ -176,12 +175,7 @@ export default class {
   static hello() {}
 }
       `,
-      errors: [
-        {
-          ...onlyStatic,
-          type: AST_NODE_TYPES.ClassDeclaration,
-        },
-      ],
+      errors: [onlyStatic],
     },
     {
       code: `

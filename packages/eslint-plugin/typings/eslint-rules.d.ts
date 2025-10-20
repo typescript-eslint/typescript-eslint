@@ -163,7 +163,7 @@ declare module 'eslint/lib/rules/no-empty-function' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'unexpected',
+    'suggestComment' | 'unexpected',
     [
       {
         allow?: string[];

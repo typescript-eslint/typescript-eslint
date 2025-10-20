@@ -1,4 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > empty-type-parameters-in-function-expression > TSESTree - Error`]
-NO ERROR
+TSError
+> 1 | const foo = function<>() {}
+    |                     ^^ Type parameter list cannot be empty.
+  2 |

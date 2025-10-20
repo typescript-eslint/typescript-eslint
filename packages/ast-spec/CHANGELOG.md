@@ -1,3 +1,113 @@
+## 8.46.1 (2025-10-13)
+
+### 🩹 Fixes
+
+- **ast-spec:** cleanup `TSLiteralType` ([#11624](https://github.com/typescript-eslint/typescript-eslint/pull/11624))
+
+### ❤️ Thank You
+
+- Abraham Guo
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.0 (2025-10-06)
+
+### 🚀 Features
+
+- **typescript-estree:** private identifiers can only appear on LHS of in expressions ([#9232](https://github.com/typescript-eslint/typescript-eslint/pull/9232))
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid abstract method and accessor to have implementation ([#11657](https://github.com/typescript-eslint/typescript-eslint/pull/11657))
+- **typescript-estree:** forbid `abstract` modifier in object methods ([#11656](https://github.com/typescript-eslint/typescript-eslint/pull/11656))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+- Joshua Chen
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.45.0 (2025-09-29)
+
+### 🩹 Fixes
+
+- **ast-spec:** narrow ArrowFunctionExpression.generator to false ([#11636](https://github.com/typescript-eslint/typescript-eslint/pull/11636))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.44.1 (2025-09-22)
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid class property with name `constructor` ([#11590](https://github.com/typescript-eslint/typescript-eslint/pull/11590))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.44.0 (2025-09-15)
+
+This was a version bump only for ast-spec to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.43.0 (2025-09-08)
+
+### 🚀 Features
+
+- **typescript-estree:** disallow empty type parameter/argument lists ([#11563](https://github.com/typescript-eslint/typescript-eslint/pull/11563))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.42.0 (2025-09-02)
+
+This was a version bump only for ast-spec to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.41.0 (2025-08-25)
+
+### 🩹 Fixes
+
+- **deps:** update dependency prettier to v3.6.2 ([#11496](https://github.com/typescript-eslint/typescript-eslint/pull/11496))
+- **deps:** update babel monorepo ([#11174](https://github.com/typescript-eslint/typescript-eslint/pull/11174))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.40.0 (2025-08-18)
+
+### 🚀 Features
+
+- **typescript-estree:** forbid invalid keys in `EnumMember` ([#11232](https://github.com/typescript-eslint/typescript-eslint/pull/11232))
+
+### 🩹 Fixes
+
+- **typescript-estree:** correct range of import assertion with trailing comma ([#11478](https://github.com/typescript-eslint/typescript-eslint/pull/11478))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.39.1 (2025-08-11)
+
+This was a version bump only for ast-spec to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.39.0 (2025-08-04)
 
 ### 🚀 Features

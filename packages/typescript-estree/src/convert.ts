@@ -10,13 +10,14 @@ import type {
 import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 
+import { checkModifiers } from './check-modifiers';
 import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
   createError,
+  declarationNameToString,
   findNextToken,
   getBinaryExpressionType,
-  getContainingFunction,
   getDeclarationKind,
   getLastModifier,
   getLineAndCharacterFor,
@@ -34,9 +35,6 @@ import {
   isOptional,
   isThisInTypeQuery,
   isValidAssignmentTarget,
-  nodeCanBeDecorated,
-  nodeHasIllegalDecorators,
-  nodeIsPresent,
   unescapeStringLiteralText,
 } from './node-utils';
 import { AST_NODE_TYPES } from './ts-estree';
@@ -158,253 +156,15 @@ export class Converter {
       return;
     }
 
-    // typescript<5.0.0
-    if (nodeHasIllegalDecorators(node)) {
-      this.#throwError(
-        node.illegalDecorators[0],
-        'Decorators are not valid here.',
-      );
-    }
-
-    for (const decorator of getDecorators(
-      node,
-      /* includeIllegalDecorators */ true,
-    ) ?? []) {
-      // `checkGrammarModifiers` function in typescript
-      if (!nodeCanBeDecorated(node as TSNode)) {
-        if (ts.isMethodDeclaration(node) && !nodeIsPresent(node.body)) {
-          this.#throwError(
-            decorator,
-            'A decorator can only decorate a method implementation, not an overload.',
-          );
-        } else {
-          this.#throwError(decorator, 'Decorators are not valid here.');
-        }
-      }
-    }
-
-    for (const modifier of getModifiers(
-      node,
-      /* includeIllegalModifiers */ true,
-    ) ?? []) {
-      if (modifier.kind !== SyntaxKind.ReadonlyKeyword) {
-        if (
-          node.kind === SyntaxKind.PropertySignature ||
-          node.kind === SyntaxKind.MethodSignature
-        ) {
-          this.#throwError(
-            modifier,
-            `'${ts.tokenToString(
-              modifier.kind,
-            )}' modifier cannot appear on a type member`,
-          );
-        }
-
-        if (
-          node.kind === SyntaxKind.IndexSignature &&
-          (modifier.kind !== SyntaxKind.StaticKeyword ||
-            !ts.isClassLike(node.parent))
-        ) {
-          this.#throwError(
-            modifier,
-            `'${ts.tokenToString(
-              modifier.kind,
-            )}' modifier cannot appear on an index signature`,
-          );
-        }
-      }
-
-      if (
-        modifier.kind !== SyntaxKind.InKeyword &&
-        modifier.kind !== SyntaxKind.OutKeyword &&
-        modifier.kind !== SyntaxKind.ConstKeyword &&
-        node.kind === SyntaxKind.TypeParameter
-      ) {
-        this.#throwError(
-          modifier,
-          `'${ts.tokenToString(
-            modifier.kind,
-          )}' modifier cannot appear on a type parameter`,
-        );
-      }
-
-      if (
-        (modifier.kind === SyntaxKind.InKeyword ||
-          modifier.kind === SyntaxKind.OutKeyword) &&
-        (node.kind !== SyntaxKind.TypeParameter ||
-          !(
-            ts.isInterfaceDeclaration(node.parent) ||
-            ts.isClassLike(node.parent) ||
-            ts.isTypeAliasDeclaration(node.parent)
-          ))
-      ) {
-        this.#throwError(
-          modifier,
-          `'${ts.tokenToString(
-            modifier.kind,
-          )}' modifier can only appear on a type parameter of a class, interface or type alias`,
-        );
-      }
-
-      if (
-        modifier.kind === SyntaxKind.ReadonlyKeyword &&
-        node.kind !== SyntaxKind.PropertyDeclaration &&
-        node.kind !== SyntaxKind.PropertySignature &&
-        node.kind !== SyntaxKind.IndexSignature &&
-        node.kind !== SyntaxKind.Parameter
-      ) {
-        this.#throwError(
-          modifier,
-          "'readonly' modifier can only appear on a property declaration or index signature.",
-        );
-      }
-
-      if (
-        modifier.kind === SyntaxKind.DeclareKeyword &&
-        ts.isClassLike(node.parent) &&
-        !ts.isPropertyDeclaration(node)
-      ) {
-        this.#throwError(
-          modifier,
-          `'${ts.tokenToString(
-            modifier.kind,
-          )}' modifier cannot appear on class elements of this kind.`,
-        );
-      }
-
-      if (
-        modifier.kind === SyntaxKind.DeclareKeyword &&
-        ts.isVariableStatement(node)
-      ) {
-        const declarationKind = getDeclarationKind(node.declarationList);
-        if (declarationKind === 'using' || declarationKind === 'await using') {
-          this.#throwError(
-            modifier,
-            `'declare' modifier cannot appear on a '${declarationKind}' declaration.`,
-          );
-        }
-      }
-
-      if (
-        modifier.kind === SyntaxKind.AbstractKeyword &&
-        node.kind !== SyntaxKind.ClassDeclaration &&
-        node.kind !== SyntaxKind.ConstructorType &&
-        node.kind !== SyntaxKind.MethodDeclaration &&
-        node.kind !== SyntaxKind.PropertyDeclaration &&
-        node.kind !== SyntaxKind.GetAccessor &&
-        node.kind !== SyntaxKind.SetAccessor
-      ) {
-        this.#throwError(
-          modifier,
-          `'${ts.tokenToString(
-            modifier.kind,
-          )}' modifier can only appear on a class, method, or property declaration.`,
-        );
-      }
-
-      if (
-        (modifier.kind === SyntaxKind.StaticKeyword ||
-          modifier.kind === SyntaxKind.PublicKeyword ||
-          modifier.kind === SyntaxKind.ProtectedKeyword ||
-          modifier.kind === SyntaxKind.PrivateKeyword) &&
-        (node.parent.kind === SyntaxKind.ModuleBlock ||
-          node.parent.kind === SyntaxKind.SourceFile)
-      ) {
-        this.#throwError(
-          modifier,
-          `'${ts.tokenToString(
-            modifier.kind,
-          )}' modifier cannot appear on a module or namespace element.`,
-        );
-      }
-
-      if (
-        modifier.kind === SyntaxKind.AccessorKeyword &&
-        node.kind !== SyntaxKind.PropertyDeclaration
-      ) {
-        this.#throwError(
-          modifier,
-          "'accessor' modifier can only appear on a property declaration.",
-        );
-      }
-
-      // `checkGrammarAsyncModifier` function in `typescript`
-      if (
-        modifier.kind === SyntaxKind.AsyncKeyword &&
-        node.kind !== SyntaxKind.MethodDeclaration &&
-        node.kind !== SyntaxKind.FunctionDeclaration &&
-        node.kind !== SyntaxKind.FunctionExpression &&
-        node.kind !== SyntaxKind.ArrowFunction
-      ) {
-        this.#throwError(modifier, "'async' modifier cannot be used here.");
-      }
-
-      // `checkGrammarModifiers` function in `typescript`
-      if (
-        node.kind === SyntaxKind.Parameter &&
-        (modifier.kind === SyntaxKind.StaticKeyword ||
-          modifier.kind === SyntaxKind.ExportKeyword ||
-          modifier.kind === SyntaxKind.DeclareKeyword ||
-          modifier.kind === SyntaxKind.AsyncKeyword)
-      ) {
-        this.#throwError(
-          modifier,
-          `'${ts.tokenToString(
-            modifier.kind,
-          )}' modifier cannot appear on a parameter.`,
-        );
-      }
-
-      // `checkGrammarModifiers` function in `typescript`
-      if (
-        modifier.kind === SyntaxKind.PublicKeyword ||
-        modifier.kind === SyntaxKind.ProtectedKeyword ||
-        modifier.kind === SyntaxKind.PrivateKeyword
-      ) {
-        for (const anotherModifier of getModifiers(node) ?? []) {
-          if (
-            anotherModifier !== modifier &&
-            (anotherModifier.kind === SyntaxKind.PublicKeyword ||
-              anotherModifier.kind === SyntaxKind.ProtectedKeyword ||
-              anotherModifier.kind === SyntaxKind.PrivateKeyword)
-          ) {
-            this.#throwError(
-              anotherModifier,
-              `Accessibility modifier already seen.`,
-            );
-          }
-        }
-      }
-
-      // `checkParameter` function in `typescript`
-      if (
-        node.kind === SyntaxKind.Parameter &&
-        // In `typescript` package, it's `ts.hasSyntacticModifier(node, ts.ModifierFlags.ParameterPropertyModifier)`
-        // https://github.com/typescript-eslint/typescript-eslint/pull/6615#discussion_r1136489935
-        (modifier.kind === SyntaxKind.PublicKeyword ||
-          modifier.kind === SyntaxKind.PrivateKeyword ||
-          modifier.kind === SyntaxKind.ProtectedKeyword ||
-          modifier.kind === SyntaxKind.ReadonlyKeyword ||
-          modifier.kind === SyntaxKind.OverrideKeyword)
-      ) {
-        const func = getContainingFunction(node)!;
-
-        if (
-          !(func.kind === SyntaxKind.Constructor && nodeIsPresent(func.body))
-        ) {
-          this.#throwError(
-            modifier,
-            'A parameter property is only allowed in a constructor implementation.',
-          );
-        }
-      }
-    }
+    checkModifiers(node);
   }
 
-  #throwError(node: number | ts.Node, message: string): asserts node is never {
+  #throwError(node: number | ts.Node | TSESTree.Range, message: string): never {
     let start;
     let end;
-    if (typeof node === 'number') {
+    if (Array.isArray(node)) {
+      [start, end] = node;
+    } else if (typeof node === 'number') {
       start = end = node;
     } else {
       start = node.getStart(this.ast);
@@ -415,7 +175,7 @@ export class Converter {
   }
 
   #throwUnlessAllowInvalidAST(
-    node: number | ts.Node,
+    node: number | ts.Node | TSESTree.Range,
     message: string,
   ): asserts node is never {
     if (!this.options.allowInvalidAST) {
@@ -476,7 +236,7 @@ export class Converter {
   >(
     node: Properties,
     deprecatedKey: Key,
-    preferredKey: string,
+    preferredKey: string | undefined,
     value: Value,
   ): Properties & Record<Key, Value> {
     let warned = false;
@@ -487,10 +247,13 @@ export class Converter {
         ? (): Value => value
         : (): Value => {
             if (!warned) {
-              process.emitWarning(
-                `The '${deprecatedKey}' property is deprecated on ${node.type} nodes. Use ${preferredKey} instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
-                'DeprecationWarning',
-              );
+              let message = `The '${deprecatedKey}' property is deprecated on ${node.type} nodes.`;
+              if (preferredKey) {
+                message += ` Use ${preferredKey} instead.`;
+              }
+              message +=
+                ' See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.';
+              process.emitWarning(message, 'DeprecationWarning');
               warned = true;
             }
 
@@ -639,6 +402,19 @@ export class Converter {
   }
 
   /**
+   * Converts TypeScript node array into an ESTree node list.
+   * @param children the child `ts.NodeArray` or `ts.Node[]`
+   * @param parent parentNode
+   * @returns the converted ESTree node list
+   */
+  private convertChildren(
+    children: ts.Node[] | ts.NodeArray<ts.Node>,
+    parent?: ts.Node,
+  ): any[] {
+    return children.map(child => this.converter(child, parent, false));
+  }
+
+  /**
    * Converts a TypeScript node into an ESTree node.
    * @param child the child ts.Node
    * @param parent parentNode
@@ -688,13 +464,16 @@ export class Converter {
     node: TSESTreeToTSNode<TSESTree.TSTypeParameterInstantiation>,
   ): TSESTree.TSTypeParameterInstantiation {
     const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
+    const range: TSESTree.Range = [typeArguments.pos - 1, greaterThanToken.end];
+
+    if (typeArguments.length === 0) {
+      this.#throwError(range, 'Type argument list cannot be empty.');
+    }
 
     return this.createNode<TSESTree.TSTypeParameterInstantiation>(node, {
       type: AST_NODE_TYPES.TSTypeParameterInstantiation,
-      range: [typeArguments.pos - 1, greaterThanToken.end],
-      params: typeArguments.map(typeArgument =>
-        this.convertChild(typeArgument),
-      ),
+      range,
+      params: this.convertChildren(typeArguments),
     });
   }
 
@@ -712,13 +491,15 @@ export class Converter {
       greaterThanToken.end,
     ];
 
+    if (typeParameters.length === 0) {
+      this.#throwError(range, 'Type parameter list cannot be empty.');
+    }
+
     return {
       type: AST_NODE_TYPES.TSTypeParameterDeclaration,
       loc: getLocFor(range, this.ast),
       range,
-      params: typeParameters.map(typeParameter =>
-        this.convertChild(typeParameter),
-      ),
+      params: this.convertChildren(typeParameters),
     } as TSESTree.TSTypeParameterDeclaration;
   }
 
@@ -736,8 +517,9 @@ export class Converter {
     return parameters.map(param => {
       const convertedParam = this.convertChild(param) as TSESTree.Parameter;
 
-      convertedParam.decorators =
-        getDecorators(param)?.map(el => this.convertChild(el)) ?? [];
+      convertedParam.decorators = this.convertChildren(
+        getDecorators(param) ?? [],
+      );
 
       return convertedParam;
     });
@@ -781,11 +563,11 @@ export class Converter {
   }
 
   private convertImportAttributes(
-    node: ts.ImportAttributes | undefined,
+    node: ts.ExportDeclaration | ts.ImportDeclaration,
   ): TSESTree.ImportAttribute[] {
-    return node == null
-      ? []
-      : node.elements.map(element => this.convertChild(element));
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    const attributes = node.attributes ?? node.assertClause;
+    return this.convertChildren(attributes?.elements ?? []);
   }
 
   private convertJSXIdentifier(
@@ -1046,7 +828,7 @@ export class Converter {
 
         return this.createNode<TSESTree.SwitchStatement>(node, {
           type: AST_NODE_TYPES.SwitchStatement,
-          cases: node.caseBlock.clauses.map(el => this.convertChild(el)),
+          cases: this.convertChildren(node.caseBlock.clauses),
           discriminant: this.convertChild(node.expression),
         });
 
@@ -1055,7 +837,7 @@ export class Converter {
         return this.createNode<TSESTree.SwitchCase>(node, {
           type: AST_NODE_TYPES.SwitchCase,
           // expression is present in case only
-          consequent: node.statements.map(el => this.convertChild(el)),
+          consequent: this.convertChildren(node.statements),
           test:
             node.kind === SyntaxKind.CaseClause
               ? this.convertChild(node.expression)
@@ -1245,9 +1027,7 @@ export class Converter {
       case SyntaxKind.VariableStatement: {
         const result = this.createNode<TSESTree.VariableDeclaration>(node, {
           type: AST_NODE_TYPES.VariableDeclaration,
-          declarations: node.declarationList.declarations.map(el =>
-            this.convertChild(el),
-          ),
+          declarations: this.convertChildren(node.declarationList.declarations),
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
           kind: getDeclarationKind(node.declarationList),
         });
@@ -1324,7 +1104,7 @@ export class Converter {
       case SyntaxKind.VariableDeclarationList: {
         const result = this.createNode<TSESTree.VariableDeclaration>(node, {
           type: AST_NODE_TYPES.VariableDeclaration,
-          declarations: node.declarations.map(el => this.convertChild(el)),
+          declarations: this.convertChildren(node.declarations),
           declare: false,
           kind: getDeclarationKind(node),
         });
@@ -1375,7 +1155,7 @@ export class Converter {
         }
         return this.createNode<TSESTree.ArrayExpression>(node, {
           type: AST_NODE_TYPES.ArrayExpression,
-          elements: node.elements.map(el => this.convertChild(el)),
+          elements: this.convertChildren(node.elements),
         });
       }
 
@@ -1510,6 +1290,16 @@ export class Converter {
           );
         }
 
+        if (
+          node.name.kind === SyntaxKind.StringLiteral &&
+          node.name.text === 'constructor'
+        ) {
+          this.#throwError(
+            node.name,
+            "Classes may not have a field named 'constructor'.",
+          );
+        }
+
         const isAccessor = hasModifier(SyntaxKind.AccessorKeyword, node);
         const type = (() => {
           if (isAccessor) {
@@ -1537,8 +1327,7 @@ export class Converter {
           accessibility: getTSNodeAccessibility(node),
           computed: isComputedProperty(node.name),
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
-          decorators:
-            getDecorators(node)?.map(el => this.convertChild(el)) ?? [],
+          decorators: this.convertChildren(getDecorators(node) ?? []),
           definite: !!node.exclamationToken,
           key,
           optional:
@@ -1568,6 +1357,18 @@ export class Converter {
       }
       // otherwise, it is a non-type accessor - intentional fallthrough
       case SyntaxKind.MethodDeclaration: {
+        const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
+
+        if (isAbstract && node.body) {
+          this.#throwError(
+            node.name,
+            node.kind === SyntaxKind.GetAccessor ||
+              node.kind === SyntaxKind.SetAccessor
+              ? 'An abstract accessor cannot have an implementation.'
+              : `Method '${declarationNameToString(node.name, this.ast)}' cannot have an implementation because it is marked abstract.`,
+          );
+        }
+
         const method = this.createNode<
           TSESTree.FunctionExpression | TSESTree.TSEmptyBodyFunctionExpression
         >(node, {
@@ -1600,7 +1401,7 @@ export class Converter {
           | TSESTree.TSAbstractMethodDefinition;
 
         if (parent.kind === SyntaxKind.ObjectLiteralExpression) {
-          method.params = node.parameters.map(el => this.convertChild(el));
+          method.params = this.convertChildren(node.parameters);
 
           result = this.createNode<TSESTree.Property>(node, {
             type: AST_NODE_TYPES.Property,
@@ -1623,10 +1424,7 @@ export class Converter {
           /**
            * TypeScript class methods can be defined as "abstract"
            */
-          const methodDefinitionType = hasModifier(
-            SyntaxKind.AbstractKeyword,
-            node,
-          )
+          const methodDefinitionType = isAbstract
             ? AST_NODE_TYPES.TSAbstractMethodDefinition
             : AST_NODE_TYPES.MethodDefinition;
 
@@ -1636,8 +1434,7 @@ export class Converter {
             type: methodDefinitionType,
             accessibility: getTSNodeAccessibility(node),
             computed: isComputedProperty(node.name),
-            decorators:
-              getDecorators(node)?.map(el => this.convertChild(el)) ?? [],
+            decorators: this.convertChildren(getDecorators(node) ?? []),
             key: this.convertChild(node.name),
             kind: 'method',
             optional: !!node.questionToken,
@@ -2119,16 +1916,14 @@ export class Converter {
           body: this.createNode<TSESTree.ClassBody>(node, {
             type: AST_NODE_TYPES.ClassBody,
             range: [node.members.pos - 1, node.end],
-            body: node.members
-              .filter(isESTreeClassMember)
-              .map(el => this.convertChild(el)),
+            body: this.convertChildren(
+              node.members.filter(isESTreeClassMember),
+            ),
           }),
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
-          decorators:
-            getDecorators(node)?.map(el => this.convertChild(el)) ?? [],
+          decorators: this.convertChildren(getDecorators(node) ?? []),
           id: this.convertChild(node.name),
-          implements:
-            implementsClause?.types.map(el => this.convertChild(el)) ?? [],
+          implements: this.convertChildren(implementsClause?.types ?? []),
           superClass: extendsClause?.types[0]
             ? this.convertChild(extendsClause.types[0].expression)
             : null,
@@ -2166,10 +1961,7 @@ export class Converter {
           this.#withDeprecatedAliasGetter(
             {
               type: AST_NODE_TYPES.ImportDeclaration,
-              attributes: this.convertImportAttributes(
-                // eslint-disable-next-line @typescript-eslint/no-deprecated
-                node.attributes ?? node.assertClause,
-              ),
+              attributes: this.convertImportAttributes(node),
               importKind: 'value',
               source: this.convertChild(node.moduleSpecifier),
               specifiers: [],
@@ -2205,9 +1997,9 @@ export class Converter {
                 break;
               case SyntaxKind.NamedImports:
                 result.specifiers.push(
-                  ...node.importClause.namedBindings.elements.map(
-                    el => this.convertChild(el) as TSESTree.ImportClause,
-                  ),
+                  ...(this.convertChildren(
+                    node.importClause.namedBindings.elements,
+                  ) as TSESTree.ImportClause[]),
                 );
                 break;
             }
@@ -2247,15 +2039,13 @@ export class Converter {
             this.#withDeprecatedAliasGetter(
               {
                 type: AST_NODE_TYPES.ExportNamedDeclaration,
-                attributes: this.convertImportAttributes(
-                  // eslint-disable-next-line @typescript-eslint/no-deprecated
-                  node.attributes ?? node.assertClause,
-                ),
+                attributes: this.convertImportAttributes(node),
                 declaration: null,
                 exportKind: node.isTypeOnly ? 'type' : 'value',
                 source: this.convertChild(node.moduleSpecifier),
-                specifiers: node.exportClause.elements.map(el =>
-                  this.convertChild(el, node),
+                specifiers: this.convertChildren(
+                  node.exportClause.elements,
+                  node,
                 ),
               },
               'assertions',
@@ -2270,10 +2060,7 @@ export class Converter {
           this.#withDeprecatedAliasGetter(
             {
               type: AST_NODE_TYPES.ExportAllDeclaration,
-              attributes: this.convertImportAttributes(
-                // eslint-disable-next-line @typescript-eslint/no-deprecated
-                node.attributes ?? node.assertClause,
-              ),
+              attributes: this.convertImportAttributes(node),
               exported:
                 node.exportClause?.kind === SyntaxKind.NamespaceExport
                   ? this.convertChild(node.exportClause.name)
@@ -2385,6 +2172,21 @@ export class Converter {
       // Binary Operations
 
       case SyntaxKind.BinaryExpression: {
+        if (
+          node.operatorToken.kind !== SyntaxKind.InKeyword &&
+          node.left.kind === SyntaxKind.PrivateIdentifier
+        ) {
+          this.#throwError(
+            node.left,
+            "Private identifiers cannot appear on the right-hand-side of an 'in' expression.",
+          );
+        } else if (node.right.kind === SyntaxKind.PrivateIdentifier) {
+          this.#throwError(
+            node.right,
+            "Private identifiers are only allowed on the left-hand-side of an 'in' expression.",
+          );
+        }
+
         // TypeScript uses BinaryExpression for sequences as well
         if (isComma(node.operatorToken)) {
           const result = this.createNode<TSESTree.SequenceExpression>(node, {
@@ -2494,7 +2296,7 @@ export class Converter {
         }
 
         const callee = this.convertChild(node.expression);
-        const args = node.arguments.map(el => this.convertChild(el));
+        const args = this.convertChildren(node.arguments);
         const typeArguments =
           node.typeArguments &&
           this.convertTypeArgumentsToTypeParameterInstantiation(
@@ -2524,9 +2326,7 @@ export class Converter {
         // NOTE - NewExpression cannot have an optional chain in it
         return this.createNode<TSESTree.NewExpression>(node, {
           type: AST_NODE_TYPES.NewExpression,
-          arguments: node.arguments
-            ? node.arguments.map(el => this.convertChild(el))
-            : [],
+          arguments: this.convertChildren(node.arguments ?? []),
           callee: this.convertChild(node.expression),
           typeArguments,
         });
@@ -2664,7 +2464,7 @@ export class Converter {
       case SyntaxKind.JsxElement:
         return this.createNode<TSESTree.JSXElement>(node, {
           type: AST_NODE_TYPES.JSXElement,
-          children: node.children.map(el => this.convertChild(el)),
+          children: this.convertChildren(node.children),
           closingElement: this.convertChild(node.closingElement),
           openingElement: this.convertChild(node.openingElement),
         });
@@ -2672,7 +2472,7 @@ export class Converter {
       case SyntaxKind.JsxFragment:
         return this.createNode<TSESTree.JSXFragment>(node, {
           type: AST_NODE_TYPES.JSXFragment,
-          children: node.children.map(el => this.convertChild(el)),
+          children: this.convertChildren(node.children),
           closingFragment: this.convertChild(node.closingFragment),
           openingFragment: this.convertChild(node.openingFragment),
         });
@@ -2689,9 +2489,7 @@ export class Converter {
           openingElement: this.createNode<TSESTree.JSXOpeningElement>(node, {
             type: AST_NODE_TYPES.JSXOpeningElement,
             range: getRange(node, this.ast),
-            attributes: node.attributes.properties.map(el =>
-              this.convertChild(el),
-            ),
+            attributes: this.convertChildren(node.attributes.properties),
             name: this.convertJSXTagName(node.tagName, node),
             selfClosing: true,
             typeArguments: node.typeArguments
@@ -2707,9 +2505,7 @@ export class Converter {
       case SyntaxKind.JsxOpeningElement: {
         return this.createNode<TSESTree.JSXOpeningElement>(node, {
           type: AST_NODE_TYPES.JSXOpeningElement,
-          attributes: node.attributes.properties.map(el =>
-            this.convertChild(el),
-          ),
+          attributes: this.convertChildren(node.attributes.properties),
           name: this.convertJSXTagName(node.tagName, node),
           selfClosing: false,
           typeArguments:
@@ -2852,7 +2648,7 @@ export class Converter {
       case SyntaxKind.TypeLiteral: {
         return this.createNode<TSESTree.TSTypeLiteral>(node, {
           type: AST_NODE_TYPES.TSTypeLiteral,
-          members: node.members.map(el => this.convertChild(el)),
+          members: this.convertChildren(node.members),
         });
       }
 
@@ -2976,7 +2772,7 @@ export class Converter {
         return this.createNode<TSESTree.TSIndexSignature>(node, {
           type: AST_NODE_TYPES.TSIndexSignature,
           accessibility: getTSNodeAccessibility(node),
-          parameters: node.parameters.map(el => this.convertChild(el)),
+          parameters: this.convertChildren(node.parameters),
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node),
           static: hasModifier(SyntaxKind.StaticKeyword, node),
           typeAnnotation:
@@ -3102,7 +2898,7 @@ export class Converter {
           body: this.createNode<TSESTree.TSInterfaceBody>(node, {
             type: AST_NODE_TYPES.TSInterfaceBody,
             range: [node.members.pos - 1, node.end],
-            body: node.members.map(member => this.convertChild(member)),
+            body: this.convertChildren(node.members),
           }),
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
           extends: interfaceExtends,
@@ -3166,11 +2962,16 @@ export class Converter {
 
           const commaToken = findNextToken(node.argument, node, this.ast)!;
           const openBraceToken = findNextToken(commaToken, node, this.ast)!;
-          const closeBraceToken = findNextToken(
+          const tokenAfterAttributes = findNextToken(
             node.attributes,
             node,
             this.ast,
           )!;
+          // Since TS 5.9, there could be a trailing comma, i.e. `{ with: { ... }, }`
+          const closeBraceToken =
+            tokenAfterAttributes.kind === ts.SyntaxKind.CommaToken
+              ? findNextToken(tokenAfterAttributes, node, this.ast)!
+              : tokenAfterAttributes;
           const withOrAssertToken = findNextToken(
             openBraceToken,
             node,
@@ -3233,7 +3034,7 @@ export class Converter {
       }
 
       case SyntaxKind.EnumDeclaration: {
-        const members = node.members.map(el => this.convertChild(el));
+        const members = this.convertChildren(node.members);
         const result = this.createNode<TSESTree.TSEnumDeclaration>(
           node,
           this.#withDeprecatedGetter(
@@ -3250,7 +3051,7 @@ export class Converter {
             },
             'members',
             `'body.members'`,
-            node.members.map(el => this.convertChild(el)),
+            this.convertChildren(node.members),
           ),
         );
 
@@ -3258,12 +3059,38 @@ export class Converter {
       }
 
       case SyntaxKind.EnumMember: {
-        return this.createNode<TSESTree.TSEnumMember>(node, {
-          type: AST_NODE_TYPES.TSEnumMember,
-          computed: node.name.kind === ts.SyntaxKind.ComputedPropertyName,
-          id: this.convertChild(node.name),
-          initializer: node.initializer && this.convertChild(node.initializer),
-        });
+        const computed = node.name.kind === ts.SyntaxKind.ComputedPropertyName;
+        if (computed) {
+          this.#throwUnlessAllowInvalidAST(
+            node.name,
+            'Computed property names are not allowed in enums.',
+          );
+        }
+
+        if (
+          node.name.kind === SyntaxKind.NumericLiteral ||
+          node.name.kind === SyntaxKind.BigIntLiteral
+        ) {
+          this.#throwUnlessAllowInvalidAST(
+            node.name,
+            'An enum member cannot have a numeric name.',
+          );
+        }
+
+        return this.createNode<TSESTree.TSEnumMember>(
+          node,
+          this.#withDeprecatedGetter(
+            {
+              type: AST_NODE_TYPES.TSEnumMember,
+              id: this.convertChild(node.name),
+              initializer:
+                node.initializer && this.convertChild(node.initializer),
+            },
+            'computed',
+            undefined,
+            computed,
+          ),
+        );
       }
 
       case SyntaxKind.ModuleDeclaration: {
@@ -3401,13 +3228,13 @@ export class Converter {
       case SyntaxKind.UnionType: {
         return this.createNode<TSESTree.TSUnionType>(node, {
           type: AST_NODE_TYPES.TSUnionType,
-          types: node.types.map(el => this.convertChild(el)),
+          types: this.convertChildren(node.types),
         });
       }
       case SyntaxKind.IntersectionType: {
         return this.createNode<TSESTree.TSIntersectionType>(node, {
           type: AST_NODE_TYPES.TSIntersectionType,
-          types: node.types.map(el => this.convertChild(el)),
+          types: this.convertChildren(node.types),
         });
       }
       case SyntaxKind.AsExpression: {
@@ -3481,7 +3308,7 @@ export class Converter {
 
       // Tuple
       case SyntaxKind.TupleType: {
-        const elementTypes = node.elements.map(el => this.convertChild(el));
+        const elementTypes = this.convertChildren(node.elements);
 
         return this.createNode<TSESTree.TSTupleType>(node, {
           type: AST_NODE_TYPES.TSTupleType,
@@ -3640,7 +3467,7 @@ export class Converter {
     }
     const decorators = getDecorators(node);
     if (decorators?.length) {
-      result.decorators = decorators.map(el => this.convertChild(el));
+      result.decorators = this.convertChildren(decorators);
     }
 
     // keys we never want to clone from the base typescript node as they
@@ -3672,7 +3499,7 @@ export class Converter {
       .filter(([key]) => !KEYS_TO_NOT_COPY.has(key))
       .forEach(([key, value]) => {
         if (Array.isArray(value)) {
-          result[key] = value.map(el => this.convertChild(el as TSNode));
+          result[key] = this.convertChildren(value);
         } else if (value && typeof value === 'object' && value.kind) {
           // need to check node[key].kind to ensure we don't try to convert a symbol
           result[key] = this.convertChild(value as TSNode);

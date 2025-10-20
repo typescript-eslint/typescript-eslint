@@ -4,6 +4,7 @@ import type { MockInstance } from 'vitest';
 
 import * as parser from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import path from 'node:path';
 
 import type { InvalidTestCase, RuleTesterConfig, ValidTestCase } from '../src';
 import type { RuleTesterTestFrameworkFunctionBase } from '../src/TestFramework';
@@ -95,6 +96,19 @@ const NOOP_RULE: RuleModule<'error'> = {
   },
 };
 
+function windowsToPosixPath(p: string): string {
+  if (process.platform !== 'win32') {
+    return p;
+  }
+  const parsed = path.parse(p);
+  const hasDriveLetter = /^[a-zA-Z]:/.test(parsed.root);
+  let rv = p;
+  if (hasDriveLetter) {
+    rv = rv.substring(2);
+  }
+  return rv.replaceAll('\\', '/');
+}
+
 describe(RuleTester, () => {
   const runRuleForItemSpy: MockInstance<
     (
@@ -130,7 +144,6 @@ describe(RuleTester, () => {
                 line: 0,
                 message: 'error',
                 messageId: 'error',
-                nodeType: AST_NODE_TYPES.Program,
                 ruleId: 'my-rule',
                 severity: 2,
                 source: null,
@@ -143,7 +156,20 @@ describe(RuleTester, () => {
 
   function getTestConfigFromCall(): unknown[] {
     return runRuleForItemSpy.mock.calls.map(c => {
-      return { ...c[2], filename: c[2].filename?.replaceAll('\\', '/') };
+      const copy = structuredClone(c[2]);
+      if (copy.filename) {
+        // @ts-expect-error -- readonly-ness
+        copy.filename = windowsToPosixPath(copy.filename);
+      }
+
+      if (copy.languageOptions?.parserOptions?.tsconfigRootDir) {
+        // @ts-expect-error -- readonly-ness
+        copy.languageOptions.parserOptions.tsconfigRootDir = windowsToPosixPath(
+          copy.languageOptions.parserOptions.tsconfigRootDir,
+        );
+      }
+
+      return copy;
     });
   }
 
@@ -277,7 +303,7 @@ describe(RuleTester, () => {
           parser,
           parserOptions: {
             project: 'tsconfig.json',
-            tsconfigRootDir: '/some/path/that/totally/exists/',
+            tsconfigRootDir: path.resolve('/some/path/that/totally/exists/'),
           },
         },
       });
@@ -337,7 +363,7 @@ describe(RuleTester, () => {
         parser,
         parserOptions: {
           project: 'tsconfig.json',
-          tsconfigRootDir: '/some/path/that/totally/exists/',
+          tsconfigRootDir: path.resolve('/some/path/that/totally/exists/'),
         },
       },
     });
@@ -375,7 +401,7 @@ describe(RuleTester, () => {
         parser,
         parserOptions: {
           project: 'tsconfig.json',
-          tsconfigRootDir: '/some/path/that/totally/exists/',
+          tsconfigRootDir: path.resolve('/some/path/that/totally/exists/'),
         },
       },
     });

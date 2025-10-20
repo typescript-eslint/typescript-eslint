@@ -180,13 +180,12 @@ Instead of globs that use `**` to recursively check all folders, prefer paths th
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommendedRequiringTypeChecking,
   {
     languageOptions: {
       parserOptions: {
-        tsconfigRootDir: import.meta.dirname,
         // Remove this line
         project: ['./**/tsconfig.json'],
         // Add this line
@@ -226,7 +225,7 @@ See [Glob pattern in parser's option "project" slows down linting](https://githu
 
 ## Third-Party Plugins
 
-### `@stylistic/ts/indent` and other stylistic rules rules
+### `@stylistic/ts/indent` and other stylistic rules
 
 The [`@stylisic/ts/indent` rule](https://eslint.style/rules/ts/indent#ts-indent) helps ensure your codebase follows a consistent indentation pattern.
 However this involves a _lot_ of computations across every single token in a file.

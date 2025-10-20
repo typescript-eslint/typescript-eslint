@@ -1,19 +1,15 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-this-alias';
 
 const idError = {
   messageId: 'thisAssignment' as const,
-  type: AST_NODE_TYPES.Identifier,
 };
 const destructureError = {
   messageId: 'thisDestructure' as const,
-  type: AST_NODE_TYPES.ObjectPattern,
 };
 const arrayDestructureError = {
   messageId: 'thisDestructure' as const,
-  type: AST_NODE_TYPES.ArrayPattern,
 };
 
 const ruleTester = new RuleTester();
