@@ -46,6 +46,10 @@ class A {
 const a = function (a: Foo = new Foo<string>()) {};
     `,
     {
+      code: 'let a: Uint8Array<ArrayBufferLike> = new Uint8Array();',
+      options: ['constructor', { ignore: ['Uint8Array'] }],
+    },
+    {
       code: `
 const foo: Foo<string> = new Foo();
       `,
