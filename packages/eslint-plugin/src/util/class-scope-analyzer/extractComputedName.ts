@@ -55,7 +55,7 @@ function extractNonComputedName(
 }
 /**
  * Extracts the string name for a member.
- * @returns `null` if the name cannot be extracted due to it being a computed.
+ * @returns `null` if the name cannot be extracted due to it being computed.
  */
 export function extractNameForMember(node: MemberNode): ExtractedName | null {
   if (node.type === AST_NODE_TYPES.TSParameterProperty) {
