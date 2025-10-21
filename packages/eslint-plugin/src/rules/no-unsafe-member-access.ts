@@ -18,9 +18,9 @@ const enum State {
   Chained = 3,
 }
 
-function createDataType(type: ts.Type): '`any`' | '`error` typed' {
+function createDataType(type: ts.Type): '`any`' | 'unresolved due to error' {
   const isErrorType = tsutils.isIntrinsicErrorType(type);
-  return isErrorType ? '`error` typed' : '`any`';
+  return isErrorType ? 'unresolved due to error' : '`any`';
 }
 
 export type Options = [
