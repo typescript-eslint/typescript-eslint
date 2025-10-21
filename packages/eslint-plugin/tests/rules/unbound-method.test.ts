@@ -463,7 +463,11 @@ class Foo {
 type foo = new ({ unbound }: Foo) => void;
     `,
     'const { unbound } = { unbound: () => {} };',
-    'function foo({ unbound }: { unbound: () => void } = { unbound: () => {} }) {}',
+    `
+function foo(
+  { unbound }: { unbound: (this: void) => void } = { unbound: () => {} },
+) {}
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/1866
     `
 class BaseClass {
@@ -479,6 +483,30 @@ class OtherClass extends BaseClass {
 }
 const oc = new OtherClass();
 oc.superLogThis();
+    `,
+    `
+interface Foo {
+  bound: (this: void) => number;
+}
+
+declare const foo: Foo;
+foo.bound;
+    `,
+    `
+interface Foo {
+  bound: (this: void) => number;
+}
+
+declare const foo: Foo;
+const { bound } = foo;
+    `,
+    `
+type Foo = {
+  bound: (this: void) => number;
+};
+
+declare const foo: Foo;
+const { bound } = foo;
     `,
   ],
   invalid: [
@@ -965,7 +993,7 @@ function foo({ unbound }: { unbound: () => string } | Foo) {}
       errors: [
         {
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -1248,6 +1276,70 @@ const f = objectLiteral.f;
       errors: [
         {
           line: 5,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bound: () => number;
+}
+
+declare const foo: Foo;
+foo.bound;
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bound: () => number;
+}
+
+declare const foo: Foo;
+const { bound } = foo;
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bound: (this: Foo) => number;
+}
+
+declare const foo: Foo;
+foo.bound;
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  bound: () => number;
+};
+
+declare const foo: Foo;
+foo.bound;
+      `,
+      errors: [
+        {
+          line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
