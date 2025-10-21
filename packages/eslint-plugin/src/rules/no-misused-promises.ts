@@ -502,10 +502,10 @@ export default createRule<Options, MessageId>({
         if (objType == null) {
           return;
         }
-        const propertySymbol = checker.getPropertyOfType(
-          objType,
-          tsNode.name.text,
-        );
+        const propertySymbol = tsutils
+          .unionConstituents(objType)
+          .map(t => checker.getPropertyOfType(t, tsNode.name.getText()))
+          .find(p => p);
         if (propertySymbol == null) {
           return;
         }
