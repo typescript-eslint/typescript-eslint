@@ -46,8 +46,7 @@ export interface VariableDeclaratorDefiniteAssignment
 
 export type LetOrConstOrVarDeclarator =
   | VariableDeclaratorDefiniteAssignment
-  | VariableDeclaratorMaybeInit
-  | VariableDeclaratorNoInit;
+  | VariableDeclaratorMaybeInit;
 
 export interface UsingInNormalContextDeclarator extends VariableDeclaratorBase {
   definite: false;
@@ -65,4 +64,4 @@ export type UsingDeclarator =
   | UsingInForOfDeclarator
   | UsingInNormalContextDeclarator;
 
-export type VariableDeclarator = LetOrConstOrVarDeclarator | UsingDeclarator;
+export type VariableDeclarator = LetOrConstOrVarDeclarator;
