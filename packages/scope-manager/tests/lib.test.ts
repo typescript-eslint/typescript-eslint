@@ -126,4 +126,32 @@ describe('implicit lib definitions', () => {
       });
     }).toThrow('invalid+lib');
   });
+
+  it('should merge duplicate variable definitions with different properties', () => {
+    // taken from https://github.com/eslint/eslint/pull/19695/files#diff-a82bd73f60a34f613614f30df6bbb802c8d9294735b8f9ffe8e7a8ce5d51629aR3841
+    const { scopeManager } = parseAndAnalyze(
+      'Object; Boolean; String; Math; Date; Array; Map; Set;',
+      {
+        lib: ['es2015'],
+      },
+    );
+
+    const variables = scopeManager.variables;
+    const globalVariables = variables.filter(
+      v =>
+        v.name === 'Object' ||
+        v.name === 'Boolean' ||
+        v.name === 'String' ||
+        v.name === 'Math' ||
+        v.name === 'Date' ||
+        v.name === 'Array' ||
+        v.name === 'Map' ||
+        v.name === 'Set',
+    );
+    expect(globalVariables).toHaveLength(8);
+
+    for (const globalVariable of globalVariables) {
+      expect(globalVariable.references).toHaveLength(1);
+    }
+  });
 });

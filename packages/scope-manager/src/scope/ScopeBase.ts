@@ -21,6 +21,7 @@ import {
 } from '../referencer/Reference';
 import { Variable } from '../variable';
 import { ScopeType } from './ScopeType';
+import { ImplicitLibVariable } from '../variable/ImplicitLibVariable';
 
 /**
  * Test if scope is strict
@@ -390,6 +391,11 @@ export abstract class ScopeBase<
           : nameOrVariable;
       set.set(name, variable);
       variables.push(variable);
+    } else if (variable instanceof ImplicitLibVariable && nameOrVariable instanceof ImplicitLibVariable) {
+      // @ts-expect-error
+      variable.isTypeVariable ||= nameOrVariable.isTypeVariable;
+      // @ts-expect-error
+      variable.isValueVariable ||= nameOrVariable.isValueVariable;
     }
 
     if (def) {
