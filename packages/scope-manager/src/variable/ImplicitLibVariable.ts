@@ -25,12 +25,12 @@ export class ImplicitLibVariable
   /**
    * `true` if the variable is valid in a type context, false otherwise
    */
-  public readonly isTypeVariable: boolean;
+  public isTypeVariable: boolean;
 
   /**
    * `true` if the variable is valid in a value context, false otherwise
    */
-  public readonly isValueVariable: boolean;
+  public isValueVariable: boolean;
 
   public constructor(
     scope: Scope,
