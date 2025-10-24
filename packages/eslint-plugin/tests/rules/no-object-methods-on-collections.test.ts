@@ -52,50 +52,6 @@ ruleTester.run('no-object-methods-on-collections', rule, {
         Object.entries(test);
       `,
     },
-    /*
-    {
-      options: [{checkObjectKeysForMap: false}],
-      code: `
-        const map = new Map();
-        const result = Object.keys(map);
-      `,
-    },
-    {
-      options: [{checkObjectEntriesForMap: false}],
-      code: `
-        const map = new Map();
-        const result = Object.entries(map);
-      `,
-    },
-    {
-      options: [{checkObjectValuesForMap: false}],
-      code: `
-        const map = new Map();
-        const result = Object.values(map);
-      `,
-    },
-    {
-      options: [{checkObjectKeysForSet: false}],
-      code: `
-        const set = new Set();
-        const result = Object.keys(set);
-      `,
-    },
-    {
-      options: [{checkObjectEntriesForSet: false}],
-      code: `
-        const set = new Set();
-        const result = Object.entries(set);
-      `,
-    },
-    {
-      options: [{checkObjectValuesForSet: false}],
-      code: `
-        const set = new Set();
-        const result = Object.values(set);
-      `,
-    },
-    */
     {
       code: `
         const test = 123;
