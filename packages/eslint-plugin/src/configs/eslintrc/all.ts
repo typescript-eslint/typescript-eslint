@@ -80,6 +80,7 @@ export = {
     '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
     '@typescript-eslint/no-non-null-assertion': 'error',
+    '@typescript-eslint/no-object-methods-on-collections': 'error',
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'error',
     '@typescript-eslint/no-redundant-type-constituents': 'error',
