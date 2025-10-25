@@ -25,12 +25,6 @@ function Bar({ foo = '' }: { foo: string }) {
 const { foo = '' } = { foo: 'bar' };
 
 [1, 2, 3].map((a = 42) => a + 1);
-
-function test(a: string = 'default') {
-  return a;
-}
-
-const test = (a: string = 'default') => a;
 ```
 
 </TabItem>
@@ -41,25 +35,13 @@ function Bar({ foo = '' }: { foo?: string }) {
   return foo;
 }
 
-[1, 2, 3, undefined].map((a = 42) => a + 1);
-
 const obj: { a?: string } = {};
 const { a = 'default' } = obj;
 
 const obj: { a: string | undefined } = { a: undefined };
 const { a = 'default' } = obj;
 
-function test(a: string | undefined = 'default') {
-  return a;
-}
-
-function test(a: any = 'default') {
-  return a;
-}
-
-function test(a: unknown = 'default') {
-  return a;
-}
+[1, 2, 3, undefined].map((a = 42) => a + 1);
 ```
 
 </TabItem>
