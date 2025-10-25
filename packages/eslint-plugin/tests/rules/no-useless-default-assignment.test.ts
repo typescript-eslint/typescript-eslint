@@ -16,53 +16,48 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-useless-default-assignment', rule, {
   valid: [
-    // React props destructuring with optional property
+    // Default is valid when property type is optional
     `
       function Bar({ foo = '' }: { foo?: string }) {
         return foo;
       }
     `,
-    // Destructuring assignment - no default needed when property exists
+    // No default value used in destructuring
     `
       const { foo } = { foo: 'bar' };
     `,
-    // Default parameter with undefined in union
+    // Default is valid when array contains undefined
     `
       [1, 2, 3, undefined].map((a = 42) => a + 1);
     `,
-    // Default parameter with optional parameter type
+    // Default is valid for optional parameter
     `
       function test(a?: number) {
         return a;
       }
     `,
-    // Object destructuring with optional property
+    // Default is valid when destructuring optional property
     `
       const obj: { a?: string } = {};
       const { a = 'default' } = obj;
     `,
-    // Object destructuring with optional property
-    `
-      const obj: { 'literal-key': string } = { 'literal-key': 'value' };
-      const { 'literal-key': literalKey = 'default' } = obj;
-    `,
-    // Function parameter with union including undefined
+    // Default is valid when union type includes undefined
     `
       function test(a: string | undefined = 'default') {
         return a;
       }
     `,
-    // Function parameter as arrow function with non-optional type
+    // Default on arrow function parameter is not checked
     `
       (a: string = 'default') => a;
     `,
-    // Function parameter with non-optional type
+    // Default on regular function parameter is not checked
     `
       function test(a: string = 'default') {
         return a;
       }
     `,
-    // Class method parameter with non-optional type
+    // Default on class method parameter is not checked
     `
       class C {
         public test(a: string = 'default') {
@@ -70,42 +65,42 @@ ruleTester.run('no-useless-default-assignment', rule, {
         }
       }
     `,
-    // Destructuring with union type including undefined
+    // Default is valid when union type includes undefined
     `
       const obj: { a: string | undefined } = { a: undefined };
       const { a = 'default' } = obj;
     `,
-    // Array parameter that can be undefined
+    // Default is valid when union type includes undefined
     `
       function test(arr: number[] | undefined = []) {
         return arr;
       }
     `,
-    // Complex destructuring with optional
+    // Default is valid for nested optional properties
     `
       function Bar({ nested: { foo = '' } = {} }: { nested?: { foo?: string } }) {
         return foo;
       }
     `,
-    // Default with any type (should not error)
+    // Default is valid for any type
     `
       function test(a: any = 'default') {
         return a;
       }
     `,
-    // Default with unknown type (should not error)
+    // Default is valid for unknown type
     `
       function test(a: unknown = 'default') {
         return a;
       }
     `,
-    // Function parameter without type annotation - default makes it optional
+    // Default on parameter without type annotation is not checked
     `
       function test(a = 5) {
         return a;
       }
     `,
-    // Don't use default values for parameters without type annotations
+    // Default on callback parameter without type annotation is not checked
     `
       function createValidator(): () => void {
         return (param = 5) => {};
@@ -113,7 +108,7 @@ ruleTester.run('no-useless-default-assignment', rule, {
     `,
   ],
   invalid: [
-    // React props destructuring - property is not optional
+    // Default is useless when property type is required
     {
       code: `
         function Bar({ foo = '' }: { foo: string }) {
@@ -122,7 +117,9 @@ ruleTester.run('no-useless-default-assignment', rule, {
       `,
       errors: [
         {
+          column: 30,
           data: { type: 'property' },
+          endColumn: 32,
           line: 2,
           messageId: 'uselessDefaultAssignment',
           suggestions: [
@@ -138,7 +135,7 @@ ruleTester.run('no-useless-default-assignment', rule, {
         },
       ],
     },
-    // Class method parameter - property is not optional
+    // Default is useless when destructured property type is required
     {
       code: `
         class C {
@@ -149,7 +146,9 @@ ruleTester.run('no-useless-default-assignment', rule, {
       `,
       errors: [
         {
+          column: 33,
           data: { type: 'property' },
+          endColumn: 35,
           line: 3,
           messageId: 'uselessDefaultAssignment',
           suggestions: [
@@ -167,35 +166,39 @@ ruleTester.run('no-useless-default-assignment', rule, {
         },
       ],
     },
-    // Destructuring assignment - property is not optional
+    // Default is useless when destructuring required property with literal key
     {
       code: `
-        const { foo = '' } = { foo: 'bar' };
+        const { 'literal-key': literalKey = 'default' } = { 'literal-key': 'value' };
       `,
       errors: [
         {
+          column: 45,
           data: { type: 'property' },
+          endColumn: 54,
           line: 2,
           messageId: 'uselessDefaultAssignment',
           suggestions: [
             {
               messageId: 'suggestRemoveDefault',
               output: `
-        const { foo } = { foo: 'bar' };
+        const { 'literal-key': literalKey } = { 'literal-key': 'value' };
       `,
             },
           ],
         },
       ],
     },
-    // Default parameter - array elements are never undefined
+    // Default is useless when array elements cannot be undefined
     {
       code: `
         [1, 2, 3].map((a = 42) => a + 1);
       `,
       errors: [
         {
+          column: 28,
           data: { type: 'parameter' },
+          endColumn: 30,
           line: 2,
           messageId: 'uselessDefaultAssignment',
           suggestions: [

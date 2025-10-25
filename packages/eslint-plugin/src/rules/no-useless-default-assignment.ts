@@ -155,19 +155,16 @@ export default createRule<Options, MessageId>({
         // This is a property in an object destructuring pattern
         const objectPattern = parent.parent as TSESTree.ObjectPattern;
 
-        // Get the source type being destructured
         const sourceType = getSourceTypeForPattern(objectPattern);
         if (!sourceType) {
           return;
         }
 
-        // Get the property name
         const propertyName = getPropertyName(parent.key);
         if (!propertyName) {
           return;
         }
 
-        // Get the type of this specific property
         const propertyType = getPropertyType(sourceType, propertyName);
         if (!propertyType) {
           return;
