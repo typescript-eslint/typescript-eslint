@@ -47,6 +47,24 @@ ruleTester.run('no-useless-default-assignment', rule, {
         return a;
       }
     `,
+    // Function parameter as arrow function with non-optional type
+    `
+      (a: string = 'default') => a;
+    `,
+    // Function parameter with non-optional type
+    `
+      function test(a: string = 'default') {
+        return a;
+      }
+    `,
+    // Class method parameter with non-optional type
+    `
+      class C {
+        public test(a: string = 'default') {
+          return a;
+        }
+      }
+    `,
     // Destructuring with union type including undefined
     `
       const obj: { a: string | undefined } = { a: undefined };
@@ -82,6 +100,12 @@ ruleTester.run('no-useless-default-assignment', rule, {
         return a;
       }
     `,
+    // Don't use default values for parameters without type annotations
+    `
+      function createValidator(): () => void {
+        return (param = 5) => {};
+      }
+    `,
   ],
   invalid: [
     // React props destructuring - property is not optional
@@ -102,6 +126,35 @@ ruleTester.run('no-useless-default-assignment', rule, {
               output: `
         function Bar({ foo }: { foo: string }) {
           return foo;
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    // Class method parameter - property is not optional
+    {
+      code: `
+        class C {
+          public method({ foo = '' }: { foo: string }) {
+            return foo;
+          }
+        }
+      `,
+      errors: [
+        {
+          data: { type: 'property' },
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveDefault',
+              output: `
+        class C {
+          public method({ foo }: { foo: string }) {
+            return foo;
+          }
         }
       `,
             },

@@ -103,6 +103,21 @@ export default createRule<Options, MessageId>({
       return checker.getTypeOfSymbol(symbol);
     }
 
+    function isCallbackFunction(
+      functionNode:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionExpression,
+    ): boolean {
+      const parentType = functionNode.parent.type;
+      return (
+        parentType !== AST_NODE_TYPES.MethodDefinition &&
+        parentType !== AST_NODE_TYPES.VariableDeclarator &&
+        parentType !== AST_NODE_TYPES.Property &&
+        parentType !== AST_NODE_TYPES.ExpressionStatement &&
+        parentType !== AST_NODE_TYPES.ReturnStatement
+      );
+    }
+
     function checkAssignmentPattern(node: TSESTree.AssignmentPattern): void {
       const parent = node.parent;
 
@@ -113,6 +128,11 @@ export default createRule<Options, MessageId>({
       ) {
         const paramIndex = parent.params.indexOf(node);
         if (paramIndex !== -1) {
+          // Only check if this is actually a callback, not a regular function
+          if (!isCallbackFunction(parent)) {
+            return;
+          }
+
           const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
           if (ts.isFunctionLike(tsFunc)) {
             const signature = checker.getSignatureFromDeclaration(tsFunc);
