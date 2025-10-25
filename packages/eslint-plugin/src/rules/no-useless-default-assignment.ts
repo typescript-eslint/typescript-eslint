@@ -153,10 +153,7 @@ export default createRule<Options, MessageId>({
       // Handle destructuring patterns
       if (parent.type === AST_NODE_TYPES.Property) {
         // This is a property in an object destructuring pattern
-        const objectPattern = parent.parent as TSESTree.ObjectPattern | null;
-        if (!objectPattern) {
-          return;
-        }
+        const objectPattern = parent.parent as TSESTree.ObjectPattern;
 
         // Get the source type being destructured
         const sourceType = getSourceTypeForPattern(objectPattern);
@@ -214,25 +211,12 @@ export default createRule<Options, MessageId>({
         const paramIndex = parent.params.indexOf(
           currentNode as TSESTree.Parameter,
         );
-        if (paramIndex === -1) {
-          return null;
-        }
-
         const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
-        if (!ts.isFunctionLike(tsFunc)) {
-          return null;
-        }
-
         const signature = checker.getSignatureFromDeclaration(tsFunc);
         if (!signature) {
           return null;
         }
-
         const params = signature.getParameters();
-        if (paramIndex >= params.length) {
-          return null;
-        }
-
         return checker.getTypeOfSymbol(params[paramIndex]);
       }
 
@@ -264,16 +248,11 @@ export default createRule<Options, MessageId>({
           {
             messageId: 'suggestRemoveDefault',
             fix(fixer) {
-              // Remove the ` = default_value` part
-              const leftNode = node.left;
-              const tokenBefore = context.sourceCode.getTokenBefore(node.right);
-              if (!tokenBefore?.value || tokenBefore.value !== '=') {
-                return null;
-              }
               // Remove from before the = to the end of the default value
               // Find the start position (including whitespace before =)
-              const leftEnd = leftNode.range[1];
-              return fixer.removeRange([leftEnd, node.range[1]]);
+              const start = node.left.range[1];
+              const end = node.range[1];
+              return fixer.removeRange([start, end]);
             },
           },
         ],

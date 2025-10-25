@@ -41,6 +41,11 @@ ruleTester.run('no-useless-default-assignment', rule, {
       const obj: { a?: string } = {};
       const { a = 'default' } = obj;
     `,
+    // Object destructuring with optional property
+    `
+      const obj: { 'literal-key': string } = { 'literal-key': 'value' };
+      const { 'literal-key': literalKey = 'default' } = obj;
+    `,
     // Function parameter with union including undefined
     `
       function test(a: string | undefined = 'default') {
