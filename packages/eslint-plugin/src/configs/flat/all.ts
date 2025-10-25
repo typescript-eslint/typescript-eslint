@@ -132,6 +132,7 @@ export default (
       '@typescript-eslint/no-use-before-define': 'error',
       'no-useless-constructor': 'off',
       '@typescript-eslint/no-useless-constructor': 'error',
+      '@typescript-eslint/no-useless-default-assignment': 'error',
       '@typescript-eslint/no-useless-empty-export': 'error',
       '@typescript-eslint/no-wrapper-object-types': 'error',
       '@typescript-eslint/non-nullable-type-assertion-style': 'error',

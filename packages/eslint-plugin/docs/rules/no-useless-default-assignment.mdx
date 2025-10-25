@@ -1,0 +1,88 @@
+---
+description: 'Disallow default values that will never be used.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-useless-default-assignment** for documentation.
+
+[Default parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters) and [default values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value) are only used if the parameter or property is `undefined` (either because its value is `undefined` or because it is missing).
+If the type of a parameter or property can never be `undefined`, then the default is never actually used.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function Bar({ foo = '' }: { foo: string }) {
+  return foo;
+}
+
+const { foo = '' } = { foo: 'bar' };
+
+[1, 2, 3].map((a = 42) => a + 1);
+
+function test(a: string = 'default') {
+  return a;
+}
+
+const test = (a: string = 'default') => a;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function Bar({ foo = '' }: { foo?: string }) {
+  return foo;
+}
+
+[1, 2, 3, undefined].map((a = 42) => a + 1);
+
+const obj: { a?: string } = {};
+const { a = 'default' } = obj;
+
+const obj: { a: string | undefined } = { a: undefined };
+const { a = 'default' } = obj;
+
+function test(a: string | undefined = 'default') {
+  return a;
+}
+
+function test(a: any = 'default') {
+  return a;
+}
+
+function test(a: unknown = 'default') {
+  return a;
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Options
+
+### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
+
+{/* insert option description */}
+
+:::danger Deprecated
+This option will be removed in the next major version of typescript-eslint.
+:::
+
+If this is set to `false`, then the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
+
+Without `strictNullChecks`, TypeScript essentially erases `undefined` and `null` from the types. This means when this rule inspects the types from a variable, **it will not be able to tell that the variable might be `null` or `undefined`**, which essentially makes this rule useless.
+
+You should be using `strictNullChecks` to ensure complete type-safety in your codebase.
+
+If for some reason you cannot turn on `strictNullChecks`, but still want to use this rule - you can use this option to allow it - but know that the behavior of this rule is _undefined_ with the compiler option turned off. We will not accept bug reports if you are using this option.
+
+## When Not To Use It
+
+If your project is not accurately typed or `strictNullChecks` is disabled.

@@ -1,0 +1,46 @@
+Incorrect
+
+function Bar({ foo = '' }: { foo: string }) {
+                     ~~ Default value is useless because the property is not optional.
+  return foo;
+}
+
+const { foo = '' } = { foo: 'bar' };
+              ~~ Default value is useless because the property is not optional.
+
+[1, 2, 3].map((a = 42) => a + 1);
+                   ~~ Default value is useless because the parameter is not optional.
+
+function test(a: string = 'default') {
+                          ~~~~~~~~~ Default value is useless because the parameter is not optional.
+  return a;
+}
+
+const test = (a: string = 'default') => a;
+                          ~~~~~~~~~ Default value is useless because the parameter is not optional.
+
+Correct
+
+function Bar({ foo = '' }: { foo?: string }) {
+  return foo;
+}
+
+[1, 2, 3, undefined].map((a = 42) => a + 1);
+
+const obj: { a?: string } = {};
+const { a = 'default' } = obj;
+
+const obj: { a: string | undefined } = { a: undefined };
+const { a = 'default' } = obj;
+
+function test(a: string | undefined = 'default') {
+  return a;
+}
+
+function test(a: any = 'default') {
+  return a;
+}
+
+function test(a: unknown = 'default') {
+  return a;
+}
