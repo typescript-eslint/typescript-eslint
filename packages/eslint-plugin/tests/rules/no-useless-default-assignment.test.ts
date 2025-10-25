@@ -1,4 +1,5 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-useless-default-assignment';
 import { getFixturesRootDir } from '../RuleTester';
@@ -106,6 +107,18 @@ ruleTester.run('no-useless-default-assignment', rule, {
         return (param = 5) => {};
       }
     `,
+    // Default is valid when property type is any
+    `
+      function Bar({ foo = '' }: { foo: any }) {
+        return foo;
+      }
+    `,
+    // Default is valid when property type is unknown
+    `
+      function Bar({ foo = '' }: { foo: unknown }) {
+        return foo;
+      }
+    `,
   ],
   invalid: [
     // Default is useless when property type is required
@@ -209,6 +222,24 @@ ruleTester.run('no-useless-default-assignment', rule, {
       `,
             },
           ],
+        },
+      ],
+    },
+    {
+      code: '',
+      errors: [
+        {
+          messageId: 'noStrictNullCheck',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
+      },
+      options: [
+        {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
         },
       ],
     },
