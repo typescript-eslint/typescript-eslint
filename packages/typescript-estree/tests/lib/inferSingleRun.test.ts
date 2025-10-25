@@ -143,7 +143,7 @@ describe(inferSingleRun, () => {
     expect(actual).toBe(false);
   });
 
-  it('returns true when singleRun can be inferred options.extraFileExtensions contains entires with projectService', () => {
+  it('returns true when options.extraFileExtensions contains entries and projectService is true', () => {
     vi.stubEnv('CI', 'true');
 
     const actual = inferSingleRun({
