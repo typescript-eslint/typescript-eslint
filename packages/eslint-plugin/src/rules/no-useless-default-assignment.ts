@@ -103,22 +103,64 @@ export default createRule<Options, MessageId>({
       return checker.getTypeOfSymbol(symbol);
     }
 
-    function checkAssignmentPattern(node: TSESTree.AssignmentPattern): void {
-      const parent = node.parent;
-
-      // Handle direct function parameters (not destructured)
+    function shouldSkipParameterCheck(
+      node: TSESTree.AssignmentPattern,
+      functionNode:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): boolean {
+      // If the parameter has an explicit type annotation, don't skip
       if (
-        parent.type === AST_NODE_TYPES.FunctionExpression ||
-        parent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-        parent.type === AST_NODE_TYPES.FunctionDeclaration
+        node.left.type !== AST_NODE_TYPES.Identifier ||
+        node.left.typeAnnotation
       ) {
-        const tsNode = services.esTreeNodeToTSNodeMap.get(node.left);
-        const type = checker.getTypeAtLocation(tsNode);
-        if (!canBeUndefined(type)) {
-          reportUselessDefault(node, 'parameter');
-        }
-        return;
+        return false;
       }
+
+      // Only skip the check for function declarations and named function expressions
+      // that are not callbacks (i.e., they are statements or variable initializers).
+      // For callbacks, TypeScript infers the type from context, so we should still
+      // check if the default is useless.
+      return (
+        functionNode.type === AST_NODE_TYPES.FunctionDeclaration ||
+        (functionNode.type === AST_NODE_TYPES.FunctionExpression &&
+          functionNode.parent.type === AST_NODE_TYPES.VariableDeclarator)
+      );
+    }
+
+    function checkAssignmentPattern(node: TSESTree.AssignmentPattern): void {
+      let current: TSESTree.Node | undefined = node.parent;
+
+      // For function parameters, the AssignmentPattern might be directly in the params array
+      // So we need to check if any ancestor is a function
+      while (current != null) {
+        if (
+          current.type === AST_NODE_TYPES.FunctionExpression ||
+          current.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          current.type === AST_NODE_TYPES.FunctionDeclaration
+        ) {
+          // Check if this AssignmentPattern is a direct parameter (not in a destructuring)
+          const isDirectParameter = current.params.some(
+            param => param === node,
+          );
+
+          if (isDirectParameter) {
+            if (!shouldSkipParameterCheck(node, current)) {
+              const tsNode = services.esTreeNodeToTSNodeMap.get(node.left);
+              const type = checker.getTypeAtLocation(tsNode);
+              if (!canBeUndefined(type)) {
+                reportUselessDefault(node, 'parameter');
+              }
+            }
+            return;
+          }
+          break;
+        }
+        current = current.parent;
+      }
+
+      const parent = node.parent;
 
       // Handle destructuring patterns
       if (parent.type === AST_NODE_TYPES.Property) {

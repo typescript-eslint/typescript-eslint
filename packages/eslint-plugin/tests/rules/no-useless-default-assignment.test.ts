@@ -76,6 +76,12 @@ ruleTester.run('no-useless-default-assignment', rule, {
         return a;
       }
     `,
+    // Function parameter without type annotation - default makes it optional
+    `
+      function test(a = 5) {
+        return a;
+      }
+    `,
   ],
   invalid: [
     // React props destructuring - property is not optional
