@@ -3082,6 +3082,34 @@ export { A };
     },
     {
       code: `
+const A = 0;
+type A = 0;
+export { A };
+      `,
+    },
+    {
+      code: `
+const A = 0;
+interface A {}
+export { A };
+      `,
+    },
+    {
+      code: `
+interface A {}
+const A = 0;
+export { A };
+      `,
+    },
+    {
+      code: `
+type A = 0;
+const A = 0;
+export { A };
+      `,
+    },
+    {
+      code: `
 class A {}
 export type B = A;
       `,
@@ -3094,8 +3122,26 @@ export interface Foo {}
     },
     {
       code: `
+export interface Foo {}
+export const Foo = 0;
+      `,
+    },
+    {
+      code: `
 export const Foo = 0;
 export type Foo = typeof Foo;
+      `,
+    },
+    {
+      code: `
+export const Foo = 0;
+export type Foo = 0;
+      `,
+    },
+    {
+      code: `
+export type Foo = 0;
+export const Foo = 0;
       `,
     },
   ],
