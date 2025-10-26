@@ -59,39 +59,6 @@ function isObjectOrIntersectionType(
   return tsutils.isObjectType(type) || tsutils.isIntersectionType(type);
 }
 
-enum TypeAssignability {
-  Equal,
-  SourceToTargetAssignable,
-  TargetToSourceAssignable,
-  NotAssignable,
-}
-
-function checkTypeAssignability(
-  sourceType: ts.Type,
-  targetType: ts.Type,
-  checker: ts.TypeChecker,
-): TypeAssignability {
-  const isSourceAssignableToTarget = checker.isTypeAssignableTo(
-    sourceType,
-    targetType,
-  );
-  const isTargetAssignableToSource = checker.isTypeAssignableTo(
-    targetType,
-    sourceType,
-  );
-
-  if (isSourceAssignableToTarget && isTargetAssignableToSource) {
-    return TypeAssignability.Equal;
-  }
-  if (isSourceAssignableToTarget) {
-    return TypeAssignability.SourceToTargetAssignable;
-  }
-  if (isTargetAssignableToSource) {
-    return TypeAssignability.TargetToSourceAssignable;
-  }
-  return TypeAssignability.NotAssignable;
-}
-
 function isTargetTypeRedundantInIntersection(
   sourceType: ts.Type,
   targetType: ts.Type,
@@ -148,6 +115,51 @@ function isTargetTypeRedundantInIntersection(
     return !hasTargetOnlyAddsOptionalProperties;
   }
   return checker.isTypeAssignableTo(sourceType, targetType);
+}
+
+function isTargetTypeRedundantInUnion(
+  sourceType: ts.Type,
+  targetType: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  if (tsutils.isUnionType(sourceType)) {
+    for (const typePart of sourceType.types) {
+      const isRedundant = isTargetTypeRedundantInUnion(
+        typePart,
+        targetType,
+        checker,
+      );
+      if (isRedundant) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  if (
+    tsutils.isUnionType(targetType) &&
+    !tsutils.isIntrinsicBooleanType(targetType)
+  ) {
+    for (const typePart of targetType.types) {
+      const isRedundant = isTargetTypeRedundantInUnion(
+        sourceType,
+        typePart,
+        checker,
+      );
+      if (!isRedundant) {
+        return false;
+      }
+    }
+    return true;
+  }
+  if (
+    isObjectOrIntersectionType(sourceType) &&
+    isObjectOrIntersectionType(targetType) &&
+    !hasSameKeys(sourceType, targetType, checker)
+  ) {
+    return false;
+  }
+  return checker.isTypeAssignableTo(targetType, sourceType);
 }
 
 function mergeTypeNames(
@@ -241,27 +253,11 @@ function targetOnlyAddsOptionalProperties(
 }
 
 function hasSameKeys(
-  typeA: ts.Type,
-  typeB: ts.Type,
+  typeA: ts.IntersectionType | ts.ObjectType,
+  typeB: ts.IntersectionType | ts.ObjectType,
   typeChecker: ts.TypeChecker,
 ): boolean {
   if (typeA === typeB) {
-    return true;
-  }
-  if (tsutils.isUnionType(typeA)) {
-    return typeA.types.some(unionMember =>
-      hasSameKeys(unionMember, typeB, typeChecker),
-    );
-  }
-  if (tsutils.isUnionType(typeB)) {
-    return typeB.types.some(unionMember =>
-      hasSameKeys(typeA, unionMember, typeChecker),
-    );
-  }
-  if (
-    !isObjectOrIntersectionType(typeA) ||
-    !isObjectOrIntersectionType(typeB)
-  ) {
     return true;
   }
   const propsA = typeA.getProperties();
@@ -610,40 +606,45 @@ export default createRule({
                 parentTypeNode,
                 typeName: sourceTypeName,
               } = seenType;
-              if (!hasSameKeys(sourceType, targetType, checker)) {
-                continue;
-              }
-
-              const typeAssignability = checkTypeAssignability(
+              const targetTypeIsRedundant = isTargetTypeRedundantInUnion(
                 sourceType,
                 targetType,
                 checker,
               );
-
-              switch (typeAssignability) {
-                case TypeAssignability.SourceToTargetAssignable:
-                  addToMapGroup(redundantTypes, parentTypeNode, {
-                    nonRedundantTypeWithName: {
-                      type: targetType,
-                      typeName: targetTypeName,
-                    },
-                    redundantTypeWithName: {
-                      type: sourceType,
-                      typeName: sourceTypeName,
-                    },
-                  });
-                  continue;
-                case TypeAssignability.TargetToSourceAssignable:
-                  addToMapGroup(redundantTypes, typeNode, {
-                    nonRedundantTypeWithName: {
-                      type: sourceType,
-                      typeName: sourceTypeName,
-                    },
-                    redundantTypeWithName: {
-                      type: targetType,
-                      typeName: targetTypeName,
-                    },
-                  });
+              const sourceTypeIsRedundant = isTargetTypeRedundantInUnion(
+                targetType,
+                sourceType,
+                checker,
+              );
+              if (
+                targetTypeIsRedundant &&
+                targetTypeIsRedundant === sourceTypeIsRedundant
+              ) {
+                continue;
+              }
+              if (sourceTypeIsRedundant) {
+                addToMapGroup(redundantTypes, parentTypeNode, {
+                  nonRedundantTypeWithName: {
+                    type: targetType,
+                    typeName: targetTypeName,
+                  },
+                  redundantTypeWithName: {
+                    type: sourceType,
+                    typeName: sourceTypeName,
+                  },
+                });
+              }
+              if (targetTypeIsRedundant) {
+                addToMapGroup(redundantTypes, typeNode, {
+                  nonRedundantTypeWithName: {
+                    type: sourceType,
+                    typeName: sourceTypeName,
+                  },
+                  redundantTypeWithName: {
+                    type: targetType,
+                    typeName: targetTypeName,
+                  },
+                });
               }
             }
           }

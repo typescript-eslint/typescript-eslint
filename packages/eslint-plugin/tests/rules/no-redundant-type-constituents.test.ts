@@ -1926,5 +1926,50 @@ type C = A & B;
         },
       ],
     },
+    {
+      code: 'type T = { a: 1 } | ({ a: 1 } & ({ a: 1 } | { b: 1 }));',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: 1; } & ({ a: 1; } | { b: 1; })',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 18,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1; b: 1 } | ({ a: 1 } & ({ b: number } | { b: number }));',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: 1; } & ({ b: number; } | { b: number; })',
+            redundantType: '{ a: 1; b: 1; }',
+          },
+          endColumn: 24,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = ({ a: 1 } & ({ a: 1 } | { b: 1 })) | { a: 1 };',
+      errors: [
+        {
+          column: 47,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: 1; } & ({ a: 1; } | { b: 1; })',
+            redundantType: '{ a: 1; }',
+          },
+          endColumn: 55,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
   ],
 });
