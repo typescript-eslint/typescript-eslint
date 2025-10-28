@@ -214,6 +214,43 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type K = U<'a'>;
       type R = K | { a: 1 };
     `,
+    "type T = (() => string) | (() => '123');",
+    "type T = (() => string) & (() => '123');",
+    'type T = (() => { a: 1; b: 1 }) & (() => { a: 1 });',
+    'type T = (() => { a: 1; b: 1 }) | (() => { a: 1 });',
+    `
+      class A {
+        a: string;
+      }
+      class B {
+        a: '132';
+      }
+      type T = A | B;
+    `,
+    `
+      class A {
+        a: string;
+      }
+      class B {
+        a: '132';
+      }
+      type T = A & B;
+    `,
+    `
+      interface A {
+        a: 1;
+        m(): string;
+      }
+      interface B {
+        a: 1;
+        m(): '123';
+      }
+      type T = A & B;
+    `,
+    "type T = { a: { b: () => string } } | { a: { b: () => '123' } };",
+    "type T = { a: { b: () => string } } & { a: { b: () => '123' } };",
+    "type T = (() => '123') & (() => string);",
+    "type T = (() => '123') | (() => string);",
   ],
   invalid: [
     {

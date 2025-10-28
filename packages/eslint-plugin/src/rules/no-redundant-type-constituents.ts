@@ -59,6 +59,46 @@ function isObjectOrIntersectionType(
   return tsutils.isObjectType(type) || tsutils.isIntersectionType(type);
 }
 
+function shouldCheckTypeRedundancy(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  if (tsutils.isObjectType(type)) {
+    const symbol = type.getSymbol();
+    if (!symbol) {
+      return false;
+    }
+    const declarations = symbol.getDeclarations();
+    const declaration = declarations?.[0];
+    if (!declaration) {
+      return false;
+    }
+    if (
+      declaration.kind !== ts.SyntaxKind.TypeLiteral &&
+      declaration.kind !== ts.SyntaxKind.InterfaceDeclaration &&
+      declaration.kind !== ts.SyntaxKind.MappedType
+    ) {
+      return false;
+    }
+  }
+  if (isObjectOrIntersectionType(type)) {
+    const props = type.getProperties();
+    for (const prop of props) {
+      const type = checker.getTypeOfSymbol(prop);
+      if (!shouldCheckTypeRedundancy(type, checker)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  if (tsutils.isUnionType(type)) {
+    return type.types.every(typePart =>
+      shouldCheckTypeRedundancy(typePart, checker),
+    );
+  }
+  return true;
+}
+
 function isTargetTypeRedundantInIntersection(
   sourceType: ts.Type,
   targetType: ts.Type,
@@ -95,6 +135,12 @@ function isTargetTypeRedundantInIntersection(
     return true;
   }
   if (tsutils.isObjectType(sourceType) && tsutils.isObjectType(targetType)) {
+    if (
+      !shouldCheckTypeRedundancy(sourceType, checker) ||
+      !shouldCheckTypeRedundancy(targetType, checker)
+    ) {
+      return false;
+    }
     const sourceTypeProperties = sourceType.getProperties();
     const targetTypeProperties = targetType.getProperties();
     if (
@@ -155,7 +201,9 @@ function isTargetTypeRedundantInUnion(
   if (
     isObjectOrIntersectionType(sourceType) &&
     isObjectOrIntersectionType(targetType) &&
-    !hasSameKeys(sourceType, targetType, checker)
+    (!shouldCheckTypeRedundancy(sourceType, checker) ||
+      !shouldCheckTypeRedundancy(targetType, checker) ||
+      !hasSameKeys(sourceType, targetType, checker))
   ) {
     return false;
   }
@@ -360,6 +408,11 @@ export default createRule({
         );
       }
       const type = checker.getTypeAtLocation(typeNode);
+
+      if (!shouldCheckTypeRedundancy(type, checker)) {
+        return [];
+      }
+
       if (
         ts.isTypeReferenceNode(typeNode) &&
         tsutils.isUnionOrIntersectionType(type)
@@ -392,6 +445,11 @@ export default createRule({
       }
 
       const type = checker.getTypeAtLocation(typeNode);
+
+      if (!shouldCheckTypeRedundancy(type, checker)) {
+        return [];
+      }
+
       if (
         ts.isTypeReferenceNode(typeNode) &&
         tsutils.isUnionOrIntersectionType(type)
