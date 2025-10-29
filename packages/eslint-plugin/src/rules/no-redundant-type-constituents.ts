@@ -168,20 +168,6 @@ function isTargetTypeRedundantInUnion(
   targetType: ts.Type,
   checker: ts.TypeChecker,
 ): boolean {
-  if (tsutils.isUnionType(sourceType)) {
-    for (const typePart of sourceType.types) {
-      const isRedundant = isTargetTypeRedundantInUnion(
-        typePart,
-        targetType,
-        checker,
-      );
-      if (isRedundant) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   if (
     tsutils.isUnionType(targetType) &&
     !tsutils.isIntrinsicBooleanType(targetType)
@@ -198,18 +184,63 @@ function isTargetTypeRedundantInUnion(
     }
     return true;
   }
+  if (tsutils.isUnionType(sourceType)) {
+    for (const typePart of sourceType.types) {
+      const isRedundant = isTargetTypeRedundantInUnion(
+        typePart,
+        targetType,
+        checker,
+      );
+      if (isRedundant) {
+        return true;
+      }
+    }
+    return false;
+  }
   if (
     isObjectOrIntersectionType(sourceType) &&
-    isObjectOrIntersectionType(targetType) &&
-    (!shouldCheckTypeRedundancy(sourceType, checker) ||
-      !shouldCheckTypeRedundancy(targetType, checker) ||
-      !hasSameKeys(sourceType, targetType, checker))
+    isObjectOrIntersectionType(targetType)
   ) {
-    return false;
+    const sourceProps = sourceType.getProperties();
+    const targetProps = targetType.getProperties();
+
+    if (sourceProps.length !== targetProps.length) {
+      return false;
+    }
+    if (targetProps.length === 0) {
+      return checker.isTypeAssignableTo(targetType, sourceType);
+    }
+
+    for (const targetProp of targetProps) {
+      const sourceProp = sourceProps.find(
+        prop => prop.getName() === targetProp.getName(),
+      );
+
+      if (!sourceProp) {
+        return false;
+      }
+
+      const sourcePropType = checker.getTypeOfSymbol(sourceProp);
+      if (!shouldCheckTypeRedundancy(sourcePropType, checker)) {
+        return false;
+      }
+      const targetPropType = checker.getTypeOfSymbol(targetProp);
+      if (!shouldCheckTypeRedundancy(targetPropType, checker)) {
+        return false;
+      }
+      const targetPropTypeIsRedundant = isTargetTypeRedundantInUnion(
+        sourcePropType,
+        targetPropType,
+        checker,
+      );
+      if (!targetPropTypeIsRedundant) {
+        return false;
+      }
+    }
+    return true;
   }
   return checker.isTypeAssignableTo(targetType, sourceType);
 }
-
 function mergeTypeNames(
   typeWithNames: TypeWithName[],
   operator: '&' | '|',
@@ -298,45 +329,6 @@ function targetOnlyAddsOptionalProperties(
     }
   }
   return false;
-}
-
-function hasSameKeys(
-  typeA: ts.IntersectionType | ts.ObjectType,
-  typeB: ts.IntersectionType | ts.ObjectType,
-  typeChecker: ts.TypeChecker,
-): boolean {
-  if (typeA === typeB) {
-    return true;
-  }
-  const propsA = typeA.getProperties();
-  const propsB = typeB.getProperties();
-
-  if (propsA.length !== propsB.length) {
-    return false;
-  }
-  if (propsA.length === 0) {
-    return true;
-  }
-
-  for (const propA of propsA) {
-    const propB = propsB.find(prop => prop.getName() === propA.getName());
-
-    if (!propB) {
-      return false;
-    }
-
-    const propTypeA = typeChecker.getTypeOfSymbol(propA);
-    const propTypeB = typeChecker.getTypeOfSymbol(propB);
-
-    if (
-      isObjectOrIntersectionType(propTypeA) &&
-      isObjectOrIntersectionType(propTypeB) &&
-      !hasSameKeys(propTypeA, propTypeB, typeChecker)
-    ) {
-      return false;
-    }
-  }
-  return true;
 }
 
 export default createRule({

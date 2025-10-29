@@ -251,6 +251,8 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     "type T = { a: { b: () => string } } & { a: { b: () => '123' } };",
     "type T = (() => '123') & (() => string);",
     "type T = (() => '123') | (() => string);",
+    'type T = { a: 1 | { a: 1; b: 1 } } | { a: 1 | { b: 1 } };',
+    'type T = { a: 1 | 3 | (() => void) } | { a: 1 | 3 | 5 };',
   ],
   invalid: [
     {
@@ -2004,6 +2006,36 @@ type C = A & B;
             redundantType: '{ a: 1; }',
           },
           endColumn: 55,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 | 3 } | { a: 1 | 3 | 5 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: 1 | 3 | 5; }',
+            redundantType: '{ a: 1 | 3; }',
+          },
+          endColumn: 22,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 | 3 | { b: 1 } } | { a: 1 | 3 | 5 | { b: 1 | 2 } };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: 1 | 3 | 5 | { b: 1 | 2; }; }',
+            redundantType: '{ a: 1 | 3 | { b: 1; }; }',
+          },
+          endColumn: 33,
           messageId: 'typeOverridden',
         },
       ],
