@@ -233,7 +233,7 @@ function isTargetTypeRedundantInUnion(
       return false;
     }
     if (targetProps.length === 0) {
-      return checker.isTypeAssignableTo(targetType, sourceType);
+      return false;
     }
 
     for (const targetProp of targetProps) {

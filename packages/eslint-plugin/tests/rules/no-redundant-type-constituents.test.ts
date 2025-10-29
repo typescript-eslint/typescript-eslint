@@ -1743,21 +1743,6 @@ type U = T | { a: number };
       ],
     },
     {
-      code: 'type U = { [key: string]: 1 } | { [key: string]: number };',
-      errors: [
-        {
-          column: 10,
-          data: {
-            container: 'union',
-            nonRedundantType: '{ [key: string]: number; }',
-            redundantType: '{ [key: string]: 1; }',
-          },
-          endColumn: 30,
-          messageId: 'typeOverridden',
-        },
-      ],
-    },
-    {
       code: `
 type T = { a: '1'; b: '2' };
 type U<Type> = {
@@ -1896,36 +1881,6 @@ type C = A & B;
           },
           endColumn: 11,
           line: 8,
-          messageId: 'typeOverridden',
-        },
-      ],
-    },
-    {
-      code: 'type T = Record<string, 1> & Record<string, number>;',
-      errors: [
-        {
-          column: 30,
-          data: {
-            container: 'intersection',
-            nonRedundantType: 'Record<string, 1>',
-            redundantType: 'Record<string, number>',
-          },
-          endColumn: 52,
-          messageId: 'typeOverridden',
-        },
-      ],
-    },
-    {
-      code: 'type T = Record<string, 1> | Record<string, number>;',
-      errors: [
-        {
-          column: 10,
-          data: {
-            container: 'union',
-            nonRedundantType: 'Record<string, number>',
-            redundantType: 'Record<string, 1>',
-          },
-          endColumn: 27,
           messageId: 'typeOverridden',
         },
       ],
