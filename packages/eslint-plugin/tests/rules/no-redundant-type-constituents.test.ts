@@ -260,6 +260,13 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     'type T = { a: { c: 1 } | { b: 1 } } & { a: { b: 1 } };',
     'type T = { a: { c: 1 } | { a?: 1; b: 1 } } & { a: { b: 1 } | { a?: 1; b: 1 } };',
     'type T = { a: { d: number } | { b: number } } & { a: { b: 1 } | { d: 1 } };',
+    `
+      type Node = {
+        value: string;
+        next?: Node;
+      };
+      type T = Node & { next: Node };
+    `,
   ],
   invalid: [
     {

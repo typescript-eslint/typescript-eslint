@@ -62,7 +62,11 @@ function isObjectOrIntersectionType(
 function shouldCheckTypeRedundancy(
   type: ts.Type,
   checker: ts.TypeChecker,
+  depth = 0,
 ): boolean {
+  if (depth > 10) {
+    return false;
+  }
   if (tsutils.isObjectType(type)) {
     const symbol = type.getSymbol();
     if (!symbol) {
@@ -85,7 +89,7 @@ function shouldCheckTypeRedundancy(
     const props = type.getProperties();
     for (const prop of props) {
       const type = checker.getTypeOfSymbol(prop);
-      if (!shouldCheckTypeRedundancy(type, checker)) {
+      if (!shouldCheckTypeRedundancy(type, checker, depth + 1)) {
         return false;
       }
     }
@@ -93,7 +97,7 @@ function shouldCheckTypeRedundancy(
   }
   if (tsutils.isUnionType(type)) {
     return type.types.every(typePart =>
-      shouldCheckTypeRedundancy(typePart, checker),
+      shouldCheckTypeRedundancy(typePart, checker, depth),
     );
   }
   return true;
