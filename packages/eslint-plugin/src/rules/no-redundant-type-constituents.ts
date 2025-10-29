@@ -106,6 +106,9 @@ function isTargetTypeRedundantInIntersection(
 ): boolean {
   if (tsutils.isUnionType(sourceType)) {
     for (const typePart of sourceType.types) {
+      if (!tsutils.isObjectType(typePart)) {
+        continue;
+      }
       const isRedundant = isTargetTypeRedundantInIntersection(
         typePart,
         targetType,
@@ -115,7 +118,7 @@ function isTargetTypeRedundantInIntersection(
         return false;
       }
     }
-    return true;
+    return checker.isTypeAssignableTo(sourceType, targetType);
   }
 
   if (
@@ -123,6 +126,9 @@ function isTargetTypeRedundantInIntersection(
     !tsutils.isIntrinsicBooleanType(targetType)
   ) {
     for (const typePart of targetType.types) {
+      if (!tsutils.isObjectType(typePart)) {
+        continue;
+      }
       const isRedundant = isTargetTypeRedundantInIntersection(
         sourceType,
         typePart,
@@ -132,7 +138,7 @@ function isTargetTypeRedundantInIntersection(
         return false;
       }
     }
-    return true;
+    return checker.isTypeAssignableTo(sourceType, targetType);
   }
   if (tsutils.isObjectType(sourceType) && tsutils.isObjectType(targetType)) {
     if (
@@ -141,24 +147,39 @@ function isTargetTypeRedundantInIntersection(
     ) {
       return false;
     }
-    const sourceTypeProperties = sourceType.getProperties();
-    const targetTypeProperties = targetType.getProperties();
-    if (
-      (sourceTypeProperties.length === 0) !==
-      (targetTypeProperties.length === 0)
-    ) {
+    const sourceProps = sourceType.getProperties();
+    const targetProps = targetType.getProperties();
+    if (targetProps.length === 0) {
       return false;
     }
-    const sourceAssignableToTarget = checker.isTypeAssignableTo(
-      sourceType,
-      targetType,
-    );
-    if (!sourceAssignableToTarget) {
-      return false;
+
+    for (const targetProp of targetProps) {
+      const sourceProp = sourceProps.find(
+        prop => prop.getName() === targetProp.getName(),
+      );
+
+      if (!sourceProp) {
+        return false;
+      }
+
+      const sourcePropType = checker.getTypeOfSymbol(sourceProp);
+      if (!shouldCheckTypeRedundancy(sourcePropType, checker)) {
+        return false;
+      }
+      const targetPropType = checker.getTypeOfSymbol(targetProp);
+      if (!shouldCheckTypeRedundancy(targetPropType, checker)) {
+        return false;
+      }
+      const targetPropTypeIsRedundant = isTargetTypeRedundantInIntersection(
+        sourcePropType,
+        targetPropType,
+        checker,
+      );
+      if (!targetPropTypeIsRedundant) {
+        return false;
+      }
     }
-    const hasTargetOnlyAddsOptionalProperties =
-      targetOnlyAddsOptionalProperties(sourceType, targetType, checker);
-    return !hasTargetOnlyAddsOptionalProperties;
+    return true;
   }
   return checker.isTypeAssignableTo(sourceType, targetType);
 }
@@ -288,47 +309,6 @@ function getGroupTypeRelationsByNonRedundantType(
     );
   }
   return groups;
-}
-
-function targetOnlyAddsOptionalProperties(
-  sourceType: ts.ObjectType,
-  targetType: ts.ObjectType,
-  checker: ts.TypeChecker,
-) {
-  if (sourceType === targetType) {
-    return false;
-  }
-  const targetProps = targetType.getProperties();
-  for (const targetProp of targetProps) {
-    const sourceProp = checker.getPropertyOfType(
-      sourceType,
-      targetProp.getName(),
-    );
-
-    if (!sourceProp) {
-      if (targetProp.flags & ts.SymbolFlags.Optional) {
-        return true;
-      }
-      continue;
-    }
-    const sourcePropertyType = checker.getTypeOfSymbol(sourceProp);
-    if (!tsutils.isObjectType(sourcePropertyType)) {
-      continue;
-    }
-    const targetPropertyType = checker.getTypeOfSymbol(targetProp);
-    if (!tsutils.isObjectType(targetPropertyType)) {
-      continue;
-    }
-    const res = targetOnlyAddsOptionalProperties(
-      sourcePropertyType,
-      targetPropertyType,
-      checker,
-    );
-    if (res) {
-      return true;
-    }
-  }
-  return false;
 }
 
 export default createRule({

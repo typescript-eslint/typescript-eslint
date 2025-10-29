@@ -253,6 +253,13 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     "type T = (() => '123') | (() => string);",
     'type T = { a: 1 | { a: 1; b: 1 } } | { a: 1 | { b: 1 } };',
     'type T = { a: 1 | 3 | (() => void) } | { a: 1 | 3 | 5 };',
+    'type T = { a: 1 | 3 | { c: 1 } } & { a: 1 | { b: 1 } };',
+    'type T = { a: 1 | 3 | { b: 1; c: 1 } } & { a: 1 | { b: 1 } };',
+    'type T = { a: 1 | 3 | { c: 1 } | (() => void) } & { a: 1 | { b: 1 } };',
+    "type T = { a: '1' | { b: 1 } } & { a: 1 | { b: 1 } };",
+    'type T = { a: { c: 1 } | { b: 1 } } & { a: { b: 1 } };',
+    'type T = { a: { c: 1 } | { a?: 1; b: 1 } } & { a: { b: 1 } | { a?: 1; b: 1 } };',
+    'type T = { a: { d: number } | { b: number } } & { a: { b: 1 } | { d: 1 } };',
   ],
   invalid: [
     {
@@ -2033,6 +2040,66 @@ type C = A & B;
           data: {
             container: 'union',
             nonRedundantType: '{ a: 1 | 3 | 5 | { b: 1 | 2; }; }',
+            redundantType: '{ a: 1 | 3 | { b: 1; }; }',
+          },
+          endColumn: 33,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 | 3 } & { a: 1 | 3 | 5 };',
+      errors: [
+        {
+          column: 25,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1 | 3; }',
+            redundantType: '{ a: 1 | 3 | 5; }',
+          },
+          endColumn: 41,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 | { a?: 1; b: 1 } } & { a: 1 | { b: 1 } };',
+      errors: [
+        {
+          column: 39,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1 | { a?: 1 | undefined; b: 1; }; }',
+            redundantType: '{ a: 1 | { b: 1; }; }',
+          },
+          endColumn: 58,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 | 3 | { b: 1 } } & { a: 1 | { b: 1 } };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1 | { b: 1; }; }',
+            redundantType: '{ a: 1 | 3 | { b: 1; }; }',
+          },
+          endColumn: 33,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 | 3 | { b: 1 } } & { a: 1 | { b: 1; c: 1 } };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1 | { b: 1; c: 1; }; }',
             redundantType: '{ a: 1 | 3 | { b: 1; }; }',
           },
           endColumn: 33,
