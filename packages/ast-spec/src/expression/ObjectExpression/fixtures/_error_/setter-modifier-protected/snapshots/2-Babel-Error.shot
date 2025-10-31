@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > setter-modifier-protected > Babel - Error`]
+BabelError
+> 1 | ({protected set setter(v){}})
+    |   ^ Unexpected reserved word 'protected'. (1:2)
+  2 |
+  
