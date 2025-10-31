@@ -289,7 +289,7 @@ value();
         {
           column: 1,
           data: {
-            type: '`error` type',
+            type: 'unresolved due to error',
           },
           endColumn: 6,
           line: 3,
