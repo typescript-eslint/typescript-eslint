@@ -2653,5 +2653,22 @@ const obj: O = {
         },
       ],
     },
+    {
+      code: `
+type A = { f: () => void } | undefined;
+const a: A = {
+  async f() {},
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
   ],
 });
