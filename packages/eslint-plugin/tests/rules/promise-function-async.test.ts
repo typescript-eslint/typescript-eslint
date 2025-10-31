@@ -962,7 +962,7 @@ function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
       ],
       options: [{ allowAny: false }],
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/XXXXX
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11729
     {
       code: `
 class Base {
