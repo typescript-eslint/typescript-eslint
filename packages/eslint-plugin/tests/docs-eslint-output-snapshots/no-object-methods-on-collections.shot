@@ -1,0 +1,10 @@
+Incorrect
+
+console.log(Object.values(new Set('abc')));
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Using Object.values() on a Set always returns an empty array. Use Array.from(set.values()) instead.
+	Object.assign(new Map(), { k: 'v' });
+
+Correct
+
+console.log([...new Set('abc').values()]);
+	new Map().set('k', 'v');
