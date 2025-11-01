@@ -388,12 +388,16 @@ export default createRule<Options, MessageIds>({
     function getIsTypeParameter(
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
     ): IsTypeParameter {
-      if (typeParameters == null) {
+      if (!typeParameters || !typeParameters.params) {
         return (() => false) as IsTypeParameter;
       }
 
       const set = new Set<string>();
       for (const t of typeParameters.params) {
+        // sometimes type parameters don't have names e.g. Promise<{foo: number}>
+        if (t.name == null) {
+            continue;
+        }
         set.add(t.name.name);
       }
       return (typeName => set.has(typeName)) as IsTypeParameter;
