@@ -196,6 +196,7 @@ describe('Validating rule docs', () => {
     'switch-exhaustiveness-check',
     'unbound-method',
     'no-unnecessary-boolean-literal-compare',
+    'no-useless-default-assignment',
   ]);
 
   it('All rules must have a corresponding rule doc', async () => {

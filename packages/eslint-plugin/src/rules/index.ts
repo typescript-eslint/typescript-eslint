@@ -91,6 +91,7 @@ import noUnusedExpressions from './no-unused-expressions';
 import noUnusedVars from './no-unused-vars';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
+import noUselessDefaultAssignment from './no-useless-default-assignment';
 import noUselessEmptyExport from './no-useless-empty-export';
 import noVarRequires from './no-var-requires';
 import noWrapperObjectTypes from './no-wrapper-object-types';
@@ -225,6 +226,7 @@ const rules = {
   'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
+  'no-useless-default-assignment': noUselessDefaultAssignment,
   'no-useless-empty-export': noUselessEmptyExport,
   'no-var-requires': noVarRequires,
   'no-wrapper-object-types': noWrapperObjectTypes,
