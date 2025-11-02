@@ -287,19 +287,6 @@ function mergeTypeNames(
   return typeWithNames.map(wrapType).join(` ${operator} `);
 }
 
-function getTypeNodeFromReferenceType(type: ts.Type): ts.Node | undefined {
-  const symbol = type.getSymbol() ?? type.aliasSymbol;
-  const declaration = symbol?.getDeclarations()?.[0];
-
-  if (declaration) {
-    if (ts.isTypeAliasDeclaration(declaration)) {
-      return declaration.type;
-    }
-    return declaration;
-  }
-  return;
-}
-
 function getGroupTypeRelationsByNonRedundantType(
   typeRedundancyRelations: TypeRedundancyRelation[],
 ) {
@@ -389,15 +376,6 @@ export default createRule({
         return [];
       }
 
-      if (
-        ts.isTypeReferenceNode(typeNode) &&
-        tsutils.isUnionOrIntersectionType(type)
-      ) {
-        const node = getTypeNodeFromReferenceType(type);
-        if (node && node !== typeNode) {
-          return getUnionTypePart(node, checker);
-        }
-      }
       return [
         {
           type,
@@ -426,15 +404,6 @@ export default createRule({
         return [];
       }
 
-      if (
-        ts.isTypeReferenceNode(typeNode) &&
-        tsutils.isUnionOrIntersectionType(type)
-      ) {
-        const node = getTypeNodeFromReferenceType(type);
-        if (node && node !== typeNode) {
-          return getIntersectionTypePart(node, checker);
-        }
-      }
       return [
         {
           type,
