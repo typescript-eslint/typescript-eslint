@@ -1138,6 +1138,55 @@ isString('falafel');
       `,
       options: [{ checkTypePredicates: true }],
     },
+
+    {
+      code: `
+const items: number[] | null = [1, 2, 3];
+if (Array.isArray(items)) {
+  console.log('items is an array');
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+const items: number[] | string = [1, 2, 3];
+if (Array.isArray(items)) {
+  console.log('items is an array');
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+const items: unknown = [1, 2, 3];
+if (Array.isArray(items)) {
+  console.log('items is an array');
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+function process(value: string | number[]) {
+  if (Array.isArray(value)) {
+    return value.length;
+  }
+  return value.length;
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+const items: number[] = [1, 2, 3];
+if (Array.isArray(items)) {
+  console.log('items is an array');
+}
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+
     `
 type A = { [name in Lowercase<string>]?: A };
 declare const a: A;
@@ -3513,6 +3562,68 @@ isString('fa' + 'lafel');
       errors: [
         {
           line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+const items: number[] = [1, 2, 3];
+if (Array.isArray(items)) {
+  console.log('items is an array');
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+const items: string[] = ['a', 'b'];
+Array.isArray(items);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+const matrix: number[][] = [
+  [1, 2],
+  [3, 4],
+];
+if (Array.isArray(matrix)) {
+  console.log('matrix is an array');
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+function processArray(arr: readonly string[]) {
+  if (Array.isArray(arr)) {
+    return arr.length;
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
           messageId: 'typeGuardAlreadyIsType',
         },
       ],
