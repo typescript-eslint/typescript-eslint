@@ -875,13 +875,13 @@ exists('/foo');
     {
       code: `
         /** @deprecated */ const a = { b: 1 };
-        console.log(a);
+        a;
       `,
       errors: [
         {
-          column: 21,
+          column: 9,
           data: { name: 'a' },
-          endColumn: 22,
+          endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'deprecated',
@@ -926,13 +926,13 @@ exists('/foo');
     {
       code: `
         /** @deprecated */ const a = { b: 1 };
-        console.log(a.b);
+        a.b;
       `,
       errors: [
         {
-          column: 21,
+          column: 9,
           data: { name: 'a' },
-          endColumn: 22,
+          endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'deprecated',
@@ -946,9 +946,9 @@ exists('/foo');
       `,
       errors: [
         {
-          column: 21,
+          column: 9,
           data: { name: 'a' },
-          endColumn: 22,
+          endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'deprecated',
@@ -958,13 +958,13 @@ exists('/foo');
     {
       code: `
         /** @deprecated */ const a = { b: 1 };
-        console.log(a?.b);
+        a?.b;
       `,
       errors: [
         {
-          column: 21,
+          column: 9,
           data: { name: 'a' },
-          endColumn: 22,
+          endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'deprecated',
@@ -974,13 +974,13 @@ exists('/foo');
     {
       code: `
         /** @deprecated */ const a = { b: 1 };
-        console.log(a?.['b']);
+        a?.['b'];
       `,
       errors: [
         {
-          column: 21,
+          column: 9,
           data: { name: 'a' },
-          endColumn: 22,
+          endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'deprecated',
