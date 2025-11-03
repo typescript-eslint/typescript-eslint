@@ -248,6 +248,7 @@ export default createRule<Options, MessageIds>({
      * type information for non-scoped information such as enum keys as needed.
      */
     function getPropertyNameFromScopeOrTypes(node: TSESTree.MemberExpression) {
+      // console.log({ node: context.sourceCode.getText(node) });
       const fromScope = getPropertyName(
         node,
         context.sourceCode.getScope(node),
@@ -258,12 +259,12 @@ export default createRule<Options, MessageIds>({
 
       const type = services.getTypeAtLocation(node.property);
 
-      if (type.isStringLiteral()) {
-        return type.value;
+      if (type.isNumberLiteral()) {
+        return String(type.value);
       }
 
-      if (type.isLiteral()) {
-        return String(type.value as number);
+      if (type.isStringLiteral()) {
+        return type.value;
       }
 
       return undefined;
@@ -389,10 +390,6 @@ export default createRule<Options, MessageIds>({
 
       if (node.type === AST_NODE_TYPES.PrivateIdentifier) {
         return `#${node.name}`;
-      }
-
-      if (node.type === AST_NODE_TYPES.Literal) {
-        return String(node.value);
       }
 
       if (

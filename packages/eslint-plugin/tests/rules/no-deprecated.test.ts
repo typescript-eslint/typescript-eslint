@@ -3859,6 +3859,31 @@ exists('/foo');
     },
     {
       code: `
+        declare const Keys: {
+          a: 1;
+        };
+
+        const a = {
+          /** @deprecated reason for deprecation */
+          [1]: 'string',
+        };
+
+        const key = Keys.a;
+        const c = a[key];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: '1', reason: 'reason for deprecation' },
+          endColumn: 24,
+          endLine: 12,
+          line: 12,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
         const a = {
           /** @deprecated */
           b: 'string',
