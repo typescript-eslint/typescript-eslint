@@ -288,71 +288,6 @@ export default createRule<Options, MessageId>({
         .some(part => checker.isTupleType(part));
     }
 
-    function typeIsExclusivelyArrayOrTuple(type: ts.Type): boolean {
-      return tsutils
-        .unionConstituents(type)
-        .every(part => checker.isArrayType(part) || checker.isTupleType(part));
-    }
-
-    function getDeclaredTypesOfExpression(
-      node: TSESTree.Expression,
-    ): ts.Type[] {
-      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      const symbol = checker.getSymbolAtLocation(tsNode);
-
-      if (!symbol) {
-        return [];
-      }
-
-      const declarations = symbol.getDeclarations();
-
-      if (!declarations || declarations.length === 0) {
-        return [];
-      }
-
-      function getTypeNodeFromDeclaration(
-        declaration: ts.Declaration,
-      ): ts.TypeNode | undefined {
-        if (
-          ts.isParameter(declaration) ||
-          ts.isPropertySignature(declaration) ||
-          ts.isPropertyDeclaration(declaration) ||
-          ts.isVariableDeclaration(declaration)
-        ) {
-          return declaration.type ?? undefined;
-        }
-
-        if (ts.isBindingElement(declaration)) {
-          const bindingPattern = declaration.parent;
-          const parentDeclaration = bindingPattern.parent;
-
-          if (
-            ts.isVariableDeclaration(parentDeclaration) ||
-            ts.isParameter(parentDeclaration) ||
-            ts.isPropertyDeclaration(parentDeclaration) ||
-            ts.isPropertySignature(parentDeclaration)
-          ) {
-            return parentDeclaration.type ?? undefined;
-          }
-        }
-
-        return undefined;
-      }
-
-      const types: ts.Type[] = [];
-
-      for (const declaration of declarations) {
-        const typeNode = getTypeNodeFromDeclaration(declaration);
-        if (!typeNode) {
-          continue;
-        }
-
-        types.push(checker.getTypeFromTypeNode(typeNode));
-      }
-
-      return types;
-    }
-
     function isArrayIndexExpression(node: TSESTree.Expression): boolean {
       return (
         // Is an index signature
@@ -689,14 +624,15 @@ export default createRule<Options, MessageId>({
             services,
             typeGuardAssertedArgument.argument,
           );
-          if (
-            typeOfArgument === typeGuardAssertedArgument.type ||
-            (isArrayIsArrayCall(node) &&
-              typeIsExclusivelyArrayOrTuple(typeOfArgument) &&
-              getDeclaredTypesOfExpression(
-                typeGuardAssertedArgument.argument,
-              ).every(typeIsExclusivelyArrayOrTuple))
-          ) {
+          const isArrayCheck = isArrayIsArrayCall(node);
+          const typesMatch = isArrayCheck
+            ? checker.isTypeAssignableTo(
+                typeOfArgument,
+                typeGuardAssertedArgument.type,
+              )
+            : typeOfArgument === typeGuardAssertedArgument.type;
+
+          if (typesMatch) {
             context.report({
               node: typeGuardAssertedArgument.argument,
               messageId: 'typeGuardAlreadyIsType',

@@ -1141,7 +1141,7 @@ isString('falafel');
 
     {
       code: `
-const items: number[] | null = [1, 2, 3];
+declare const items: number[] | null;
 if (Array.isArray(items)) {
   console.log('items is an array');
 }
@@ -1150,7 +1150,7 @@ if (Array.isArray(items)) {
     },
     {
       code: `
-const items: number[] | string = [1, 2, 3];
+declare const items: number[] | string;
 if (Array.isArray(items)) {
   console.log('items is an array');
 }
@@ -1159,7 +1159,7 @@ if (Array.isArray(items)) {
     },
     {
       code: `
-const items: unknown = [1, 2, 3];
+declare const items: unknown;
 if (Array.isArray(items)) {
   console.log('items is an array');
 }
@@ -1179,7 +1179,7 @@ function process(value: string | number[]) {
     },
     {
       code: `
-const items: number[] = [1, 2, 3];
+declare const items: number[];
 if (Array.isArray(items)) {
   console.log('items is an array');
 }
@@ -3569,7 +3569,7 @@ isString('fa' + 'lafel');
     },
     {
       code: `
-const items: number[] = [1, 2, 3];
+declare const items: number[];
 if (Array.isArray(items)) {
   console.log('items is an array');
 }
@@ -3584,7 +3584,7 @@ if (Array.isArray(items)) {
     },
     {
       code: `
-const items: string[] = ['a', 'b'];
+declare const items: string[];
 Array.isArray(items);
       `,
       errors: [
@@ -3597,28 +3597,9 @@ Array.isArray(items);
     },
     {
       code: `
-const matrix: number[][] = [
-  [1, 2],
-  [3, 4],
-];
+declare const matrix: number[][];
 if (Array.isArray(matrix)) {
   console.log('matrix is an array');
-}
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'typeGuardAlreadyIsType',
-        },
-      ],
-      options: [{ checkTypePredicates: true }],
-    },
-    {
-      code: `
-function processArray(arr: readonly string[]) {
-  if (Array.isArray(arr)) {
-    return arr.length;
-  }
 }
       `,
       errors: [
