@@ -43,4 +43,28 @@ describe(ESLintUtils.RuleCreator, () => {
       type: 'problem',
     });
   });
+
+  it('withoutDocs should not add docs url', () => {
+    const rule = ESLintUtils.RuleCreator.withoutDocs({
+      create() {
+        return {};
+      },
+      defaultOptions: [],
+      meta: {
+        docs: {
+          description: 'some description',
+        },
+        messages: {
+          foo: 'some message',
+        },
+        schema: [],
+        type: 'problem',
+      },
+    });
+
+    expect(rule.meta.docs).toEqual({
+      description: 'some description',
+    });
+    expect(rule.name).toBe('');
+  });
 });
