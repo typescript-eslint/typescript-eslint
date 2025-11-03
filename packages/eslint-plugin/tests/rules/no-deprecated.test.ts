@@ -942,7 +942,7 @@ exists('/foo');
     {
       code: `
         /** @deprecated */ const a = { b: 1 };
-        console.log(a['b']);
+        a['b'];
       `,
       errors: [
         {
