@@ -1476,6 +1476,7 @@ exists('/foo');
       ],
     },
     {
+      // only: true,
       code: `
         declare class A {
           /** @deprecated */
@@ -3919,6 +3920,50 @@ exists('/foo');
           endColumn: 30,
           endLine: 7,
           line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        declare function x(): 'b';
+
+        const a = {
+          /** @deprecated */
+          b: 'string',
+        };
+
+        const c = a[x()];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: 'b' },
+          endColumn: 24,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        declare const x: { y: 'b' };
+
+        const a = {
+          /** @deprecated */
+          b: 'string',
+        };
+
+        const c = a[x.y];
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { name: 'b' },
+          endColumn: 24,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],

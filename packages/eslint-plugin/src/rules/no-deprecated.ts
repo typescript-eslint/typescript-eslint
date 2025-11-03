@@ -1,7 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getPropertyName } from '@typescript-eslint/utils/ast-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -11,23 +10,16 @@ import {
   createRule,
   getParserServices,
   nullThrows,
-  typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
+  typeMatchesSomeSpecifier,
   valueMatchesSomeSpecifier,
 } from '../util';
 
 type IdentifierLike =
   | TSESTree.Identifier
   | TSESTree.JSXIdentifier
-  | TSESTree.Literal
   | TSESTree.PrivateIdentifier
-  | TSESTree.Super
-  | TSESTree.TemplateLiteral;
-
-type IdentifierInComputedProperty =
-  | TSESTree.Identifier
-  | TSESTree.Literal
-  | TSESTree.TemplateLiteral;
+  | TSESTree.Super;
 
 type MessageIds = 'deprecated' | 'deprecatedWithReason';
 
@@ -165,6 +157,10 @@ export default createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSTypeParameter:
           return true;
 
+        // treat `export import Bar = Foo;` (and `import Foo = require('...')`) as declarations
+        case AST_NODE_TYPES.TSImportEqualsDeclaration:
+          return parent.id === node;
+
         default:
           return false;
       }
@@ -197,19 +193,6 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function isInComputedProperty(
-      node: IdentifierLike,
-    ): node is IdentifierInComputedProperty {
-      return (
-        node.parent.type === AST_NODE_TYPES.MemberExpression &&
-        node.parent.computed &&
-        node === node.parent.property &&
-        (node.type === AST_NODE_TYPES.Literal ||
-          node.type === AST_NODE_TYPES.TemplateLiteral ||
-          node.type === AST_NODE_TYPES.Identifier)
-      );
-    }
-
     function getJsDocDeprecation(
       symbol: ts.Signature | ts.Symbol | undefined,
     ): string | undefined {
@@ -231,48 +214,13 @@ export default createRule<Options, MessageIds>({
       return displayParts ? ts.displayPartsToString(displayParts) : '';
     }
 
-    function getComputedPropertyDeprecation(node: TSESTree.MemberExpression) {
-      const objectType = services.getTypeAtLocation(node.object);
-      const propertyName = getPropertyNameFromScopeOrTypes(node);
-      if (!propertyName) {
-        return undefined;
-      }
+    type CallLikeNode =
+      | TSESTree.CallExpression
+      | TSESTree.JSXOpeningElement
+      | TSESTree.NewExpression
+      | TSESTree.TaggedTemplateExpression;
 
-      const property = objectType.getProperty(propertyName);
-      return getJsDocDeprecation(property);
-    }
-
-    /**
-     * Gets the static name of a MemberExpression's .property. This first attempts
-     * a quick lookup from the ESTree scope, then falls back as needed to slower
-     * type information for non-scoped information such as enum keys as needed.
-     */
-    function getPropertyNameFromScopeOrTypes(node: TSESTree.MemberExpression) {
-      // console.log({ node: context.sourceCode.getText(node) });
-      const fromScope = getPropertyName(
-        node,
-        context.sourceCode.getScope(node),
-      );
-      if (fromScope) {
-        return fromScope;
-      }
-
-      const type = services.getTypeAtLocation(node.property);
-
-      if (type.isNumberLiteral()) {
-        return String(type.value);
-      }
-
-      if (type.isStringLiteral()) {
-        return type.value;
-      }
-
-      return undefined;
-    }
-
-    type CalleeNode = TSESTree.Expression | TSESTree.JSXTagNameExpression;
-
-    function isNodeCalleeOfParent(node: TSESTree.Node): node is CalleeNode {
+    function isNodeCalleeOfParent(node: TSESTree.Node): node is CallLikeNode {
       switch (node.parent?.type) {
         case AST_NODE_TYPES.NewExpression:
         case AST_NODE_TYPES.CallExpression:
@@ -289,7 +237,7 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function getCalleeNode(node: TSESTree.Node): CalleeNode | undefined {
+    function getCallLikeNode(node: TSESTree.Node): CallLikeNode | undefined {
       let callee = node;
 
       while (
@@ -302,7 +250,7 @@ export default createRule<Options, MessageIds>({
       return isNodeCalleeOfParent(callee) ? callee : undefined;
     }
 
-    function getCallLikeDeprecation(node: CalleeNode): string | undefined {
+    function getCallLikeDeprecation(node: CallLikeNode): string | undefined {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node.parent);
 
       // If the node is a direct function call, we look for its signature.
@@ -383,37 +331,8 @@ export default createRule<Options, MessageIds>({
       return getJsDocDeprecation(symbol);
     }
 
-    function getReportedNodeName(node: IdentifierLike): string {
-      if (node.type === AST_NODE_TYPES.Super) {
-        return 'super';
-      }
-
-      if (node.type === AST_NODE_TYPES.PrivateIdentifier) {
-        return `#${node.name}`;
-      }
-
-      if (
-        node.type === AST_NODE_TYPES.TemplateLiteral ||
-        isInComputedProperty(node)
-      ) {
-        return (
-          getPropertyNameFromScopeOrTypes(
-            node.parent as TSESTree.MemberExpression,
-          ) || ''
-        );
-      }
-
-      return node.name;
-    }
-
-    function getDeprecationReason(node: IdentifierLike) {
-      if (isInComputedProperty(node)) {
-        return getComputedPropertyDeprecation(
-          node.parent as TSESTree.MemberExpression,
-        );
-      }
-
-      const callLikeNode = getCalleeNode(node);
+    function getDeprecationReason(node: IdentifierLike): string | undefined {
+      const callLikeNode = getCallLikeNode(node);
       if (callLikeNode) {
         return getCallLikeDeprecation(callLikeNode);
       }
@@ -456,24 +375,11 @@ export default createRule<Options, MessageIds>({
       }
 
       const reason = getDeprecationReason(node);
-
       if (reason == null) {
         return;
       }
 
       const type = services.getTypeAtLocation(node);
-
-      // TypeScript doesn't allow non-literal keys for computed properties,
-      // even though in cases like String('...') we can still find a deprecation.
-      if (
-        node.parent.type === AST_NODE_TYPES.MemberExpression &&
-        node.parent.computed &&
-        node.parent.property === node &&
-        !type.isLiteral()
-      ) {
-        return;
-      }
-
       if (
         typeMatchesSomeSpecifier(type, allow, services.program) ||
         valueMatchesSomeSpecifier(node, allow, services.program, type)
@@ -497,6 +403,46 @@ export default createRule<Options, MessageIds>({
       });
     }
 
+    function checkMemberExpression(node: TSESTree.MemberExpression): void {
+      if (!node.computed) {
+        return;
+      }
+
+      const propertyType = services.getTypeAtLocation(node.property);
+
+      if (propertyType.isLiteral()) {
+        const objectType = services.getTypeAtLocation(node.object);
+
+        const propertyName = propertyType.isStringLiteral()
+          ? propertyType.value
+          : String(propertyType.value as number);
+
+        const property = objectType.getProperty(propertyName);
+
+        const reason = getJsDocDeprecation(property);
+        if (reason == null) {
+          return;
+        }
+
+        if (typeMatchesSomeSpecifier(objectType, allow, services.program)) {
+          return;
+        }
+
+        context.report({
+          ...(reason
+            ? {
+                messageId: 'deprecatedWithReason',
+                data: { name: propertyName, reason },
+              }
+            : {
+                messageId: 'deprecated',
+                data: { name: propertyName },
+              }),
+          node: node.property,
+        });
+      }
+    }
+
     return {
       Identifier(node): void {
         const { parent } = node;
@@ -504,6 +450,15 @@ export default createRule<Options, MessageIds>({
         if (
           parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
           parent.type === AST_NODE_TYPES.ExportAllDeclaration
+        ) {
+          return;
+        }
+
+        // Computed identifier expressions are handled by checkMemberExpression
+        if (
+          parent.type === AST_NODE_TYPES.MemberExpression &&
+          parent.computed &&
+          parent.property === node
         ) {
           return;
         }
@@ -530,10 +485,21 @@ export default createRule<Options, MessageIds>({
           checkIdentifier(node);
         }
       },
-      'MemberExpression > Literal': checkIdentifier,
-      'MemberExpression > TemplateLiteral': checkIdentifier,
+      MemberExpression: checkMemberExpression,
       PrivateIdentifier: checkIdentifier,
       Super: checkIdentifier,
     };
   },
 });
+
+function getReportedNodeName(node: IdentifierLike): string {
+  if (node.type === AST_NODE_TYPES.Super) {
+    return 'super';
+  }
+
+  if (node.type === AST_NODE_TYPES.PrivateIdentifier) {
+    return `#${node.name}`;
+  }
+
+  return node.name;
+}
