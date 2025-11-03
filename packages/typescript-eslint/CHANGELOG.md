@@ -1,3 +1,39 @@
+## 8.46.3 (2025-11-03)
+
+This was a version bump only for typescript-eslint to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.2 (2025-10-20)
+
+This was a version bump only for typescript-eslint to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.1 (2025-10-13)
+
+This was a version bump only for typescript-eslint to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.0 (2025-10-06)
+
+### 🚀 Features
+
+- **typescript-eslint:** export util types ([#10848](https://github.com/typescript-eslint/typescript-eslint/pull/10848), [#10849](https://github.com/typescript-eslint/typescript-eslint/pull/10849))
+
+### ❤️ Thank You
+
+- Mister-Hope @Mister-Hope
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.45.0 (2025-09-29)
+
+This was a version bump only for typescript-eslint to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.44.1 (2025-09-22)
 
 This was a version bump only for typescript-eslint to align it with other projects, there were no code changes.

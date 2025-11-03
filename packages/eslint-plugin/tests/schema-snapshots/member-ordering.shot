@@ -311,19 +311,24 @@
     "additionalProperties": false,
     "properties": {
       "classes": {
-        "$ref": "#/items/0/$defs/baseConfig"
+        "$ref": "#/items/0/$defs/baseConfig",
+        "description": "Which ordering to enforce for classes."
       },
       "classExpressions": {
-        "$ref": "#/items/0/$defs/baseConfig"
+        "$ref": "#/items/0/$defs/baseConfig",
+        "description": "Which ordering to enforce for classExpressions."
       },
       "default": {
-        "$ref": "#/items/0/$defs/baseConfig"
+        "$ref": "#/items/0/$defs/baseConfig",
+        "description": "Which ordering to enforce for default."
       },
       "interfaces": {
-        "$ref": "#/items/0/$defs/typesConfig"
+        "$ref": "#/items/0/$defs/typesConfig",
+        "description": "Which ordering to enforce for interfaces."
       },
       "typeLiterals": {
-        "$ref": "#/items/0/$defs/typesConfig"
+        "$ref": "#/items/0/$defs/typesConfig",
+        "description": "Which ordering to enforce for typeLiterals."
       }
     },
     "type": "object"
@@ -525,10 +530,15 @@ type TypesConfig =
 
 type Options = [
   {
+    /** Which ordering to enforce for classExpressions. */
     classExpressions?: BaseConfig;
+    /** Which ordering to enforce for classes. */
     classes?: BaseConfig;
+    /** Which ordering to enforce for default. */
     default?: BaseConfig;
+    /** Which ordering to enforce for interfaces. */
     interfaces?: TypesConfig;
+    /** Which ordering to enforce for typeLiterals. */
     typeLiterals?: TypesConfig;
   },
 ];

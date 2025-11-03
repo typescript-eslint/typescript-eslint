@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > BinaryExpression > _error_ > private-lhs-not-in > TSESTree - Error`]
+TSError
+  1 | class A {
+  2 |   #a;
+> 3 |   b = #a + 1;
+    |       ^^ Private identifiers cannot appear on the right-hand-side of an 'in' expression.
+  4 | }
+  5 |

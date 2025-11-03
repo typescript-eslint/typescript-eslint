@@ -145,6 +145,86 @@ interface Garply {
 }
 ```
 
+## Alternatives to `any`
+
+If you do know the properties that exist on an object value, it's generally best to use an `interface` or `type` to describe those properties.
+If a straightforward object type isn't sufficient, then you can choose between several strategies instead of `any`.
+The following headings describe some of the more common strategies.
+
+### `unknown`
+
+If you don't know the data shape of a value, the `unknown` type is safer than `any`.
+Like `any`, `unknown` indicates the value might be any kind of data with any properties.
+Unlike `any`, `unknown` doesn't allow arbitrary property accesses: it requires the value be narrowed to a more specific type before being used.
+See [The `unknown` type in TypeScript](https://mariusschulz.com/blog/the-unknown-type-in-typescript) for more information on `unknown`.
+
+### Index Signatures
+
+Some objects are used with arbitrary keys, especially in code that predates [`Map`s](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) and [`Set`s](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set).
+TypeScript interfaces may be given an _"index signature"_ to indicate arbitrary keys are allowed on objects.
+
+For example, this type defines an object that must have an `apple` property with a `number` value, and may have any other string keys with `number | undefined` values:
+
+```ts
+interface AllowsAnyStrings {
+  apple: number;
+  [i: string]: number | undefined;
+}
+
+let fruits: AllowsAnyStrings;
+
+fruits = { apple: 0 }; // Ok
+fruits.banana = 1; // Ok
+fruits.cherry = undefined; // Ok
+```
+
+See [What does a TypeScript index signature actually mean?](https://stackoverflow.com/questions/58458308/what-does-a-typescript-index-signature-actually-mean) for more information on index signatures.
+
+### Union Types
+
+Some values can be one of multiple types.
+TypeScript allows representing these with _"union"_ types: types that include a list of possible shapes for data.
+
+Union types are often used to describe "nullable" values: those that can either be a data type or `null` and/or `undefined`.
+For example, the following `StringLike` type describes data that is either a `string` or `undefined`:
+
+```ts
+type StringLike = string | undefined;
+
+let fruit: StringLike;
+
+fruit = 'apple'; // Ok
+fruit = undefined; // Ok
+```
+
+See [TypeScript Handbook: Everyday Types > Union Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) for more information on union types.
+
+### Type Parameter Constraints
+
+"Generic" type parameters are often used to represent a value of an unknown type.
+It can be tempting to use `any` as a type parameter constraint, but this is not recommended.
+
+First, `extends any` on its own does nothing: `<T extends any>` is equivalent to `<T>`.
+See [`@typescript-eslint/no-unnecessary-type-constraint`](./no-unnecessary-type-constraint.mdx) for more information.
+
+Within type parameters, `never` and `unknown` otherwise can generally be used instead.
+For example, the following code uses those two types in `AnyFunction` instead of `any`s to constrain `Callback` to any function type:
+
+```ts
+type AnyFunction = (...args: never[]) => unknown;
+
+function curry<Greeter extends AnyFunction>(greeter: Greeter, prefix: string) {
+  return (...args: Parameters<Greeter>) => `${prefix}: ${greeter(...args)}`;
+}
+
+const greet = (name: string) => `Hello, ${name}!`;
+const greetWithDate = curry(greet, 'Logged: ');
+
+greetWithDate('linter'); // => "Logged: Hello, linter!"
+```
+
+See [When to use `never` and `unknown` in TypeScript](https://blog.logrocket.com/when-to-use-never-unknown-typescript) for more information on those types.
+
 ## When Not To Use It
 
 `any` is always a dangerous escape hatch.

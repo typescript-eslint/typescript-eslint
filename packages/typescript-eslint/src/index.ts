@@ -16,6 +16,8 @@ import type {
 import { config } from './config-helper';
 import { getTSConfigRootDirFromStack } from './getTSConfigRootDirFromStack';
 
+export type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
+
 export const parser: CompatibleParser =
   rawPlugin.parser as CompatibleParser satisfies FlatConfig.Parser;
 

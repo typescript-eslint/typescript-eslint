@@ -1096,6 +1096,13 @@ declare const useCallback: <T extends (...args: unknown[]) => unknown>(
 ) => T;
 useCallback<ReturnsVoid | ReturnsPromiseVoid>(async () => {});
     `,
+    `
+Promise.reject(3).finally(async () => {});
+    `,
+    `
+const f = 'finally';
+Promise.reject(3)[f](async () => {});
+    `,
   ],
 
   invalid: [
@@ -2640,6 +2647,23 @@ const obj: O = {
         {
           column: 16,
           endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type A = { f: () => void } | undefined;
+const a: A = {
+  async f() {},
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 10,
           endLine: 4,
           line: 4,
           messageId: 'voidReturnProperty',

@@ -3,8 +3,14 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import prettier from '@prettier/sync';
 import { getContextualType } from '@typescript-eslint/type-utils';
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import { createRule } from '../util';
+import { createRule } from '../util/index.js';
+
+// Replace with import.meta.dirname when minimum node version supports it
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /*
 The strings that are used for eslint plugins will not be checked for formatting.
@@ -145,6 +151,8 @@ export default createRule<Options, MessageIds>({
         properties: {
           formatWithPrettier: {
             type: 'boolean',
+            description:
+              'Whether to enforce formatting of code snippets using Prettier.',
           },
         },
       },
@@ -553,10 +561,6 @@ export default createRule<Options, MessageIds>({
         AST_NODE_TYPES.ArrayExpression,
         AST_NODE_TYPES.ObjectExpression,
       ].join(' > ')]: checkInvalidTest,
-      // special case for our batchedSingleLineTests utility
-      'CallExpression[callee.name = "batchedSingleLineTests"] > ObjectExpression':
-        checkInvalidTest,
-
       /**
        * generic, type-aware handling for any old object
        * this is a fallback to handle random variables people declare or object

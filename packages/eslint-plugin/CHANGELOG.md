@@ -1,3 +1,90 @@
+## 8.46.3 (2025-11-03)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-duplicate-enum-values] support signed numbers ([#11722](https://github.com/typescript-eslint/typescript-eslint/pull/11722), [#11723](https://github.com/typescript-eslint/typescript-eslint/pull/11723))
+- **eslint-plugin:** [no-misused-promises] expand union type to retrieve target property ([#11706](https://github.com/typescript-eslint/typescript-eslint/pull/11706))
+
+### ❤️ Thank You
+
+- Evgeny Stepanovych @undsoft
+- tao
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.2 (2025-10-20)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] skip optional chaining when it could change the result ([#11702](https://github.com/typescript-eslint/typescript-eslint/pull/11702))
+
+### ❤️ Thank You
+
+- mdm317
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.1 (2025-10-13)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-misused-promises] special-case `.finally` not to report when a promise returning function is provided as an argument ([#11667](https://github.com/typescript-eslint/typescript-eslint/pull/11667))
+- **eslint-plugin:** [prefer-optional-chain] include mixed "nullish comparison style" chains in checks ([#11533](https://github.com/typescript-eslint/typescript-eslint/pull/11533))
+
+### ❤️ Thank You
+
+- mdm317
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.0 (2025-10-06)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-member-access] add allowOptionalChaining option ([#11659](https://github.com/typescript-eslint/typescript-eslint/pull/11659))
+- **rule-schema-to-typescript-types:** clean up and make public ([#11633](https://github.com/typescript-eslint/typescript-eslint/pull/11633))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-readonly-parameter-types] ignore tagged primitives ([#11660](https://github.com/typescript-eslint/typescript-eslint/pull/11660))
+- **typescript-estree:** forbid abstract method and accessor to have implementation ([#11657](https://github.com/typescript-eslint/typescript-eslint/pull/11657))
+- **eslint-plugin:** removed error type previously deprecated ([#11674](https://github.com/typescript-eslint/typescript-eslint/pull/11674))
+- **eslint-plugin:** [no-deprecated] ignore deprecated `export import`s ([#11603](https://github.com/typescript-eslint/typescript-eslint/pull/11603))
+- **eslint-plugin:** [unbound-method] improve wording around `this: void` and binding ([#11634](https://github.com/typescript-eslint/typescript-eslint/pull/11634))
+- **rule-tester:** deprecate TestCaseError#type and LintMessage#nodeType ([#11628](https://github.com/typescript-eslint/typescript-eslint/pull/11628))
+- **eslint-plugin:** [no-floating-promises] remove excess parentheses in suggestions ([#11487](https://github.com/typescript-eslint/typescript-eslint/pull/11487))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+- Mark de Dios @peanutenthusiast
+- Richard Torres @richardtorres314
+- Victor Genaev @mainframev
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.45.0 (2025-09-29)
+
+### 🚀 Features
+
+- **eslint-plugin:** expose rule name via RuleModule interface ([#11616](https://github.com/typescript-eslint/typescript-eslint/pull/11616))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-nullish-coalescing] ignoreBooleanCoercion should not apply to top-level ternary expressions ([#11614](https://github.com/typescript-eslint/typescript-eslint/pull/11614))
+- **eslint-plugin:** [no-base-to-string] check if superclass is ignored ([#11617](https://github.com/typescript-eslint/typescript-eslint/pull/11617))
+
+### ❤️ Thank You
+
+- mdm317
+- Moses Odutusin @thebolarin
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.44.1 (2025-09-22)
 
 ### 🩹 Fixes
