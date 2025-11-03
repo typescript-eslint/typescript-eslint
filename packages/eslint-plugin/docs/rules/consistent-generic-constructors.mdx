@@ -79,37 +79,6 @@ const set: Set<string> = new Set<string>();
 </TabItem>
 </Tabs>
 
-### `ignore`
-
-{/* insert option description */}
-
-Some constructors have different type signatures between their type and value, for example like Uint8Array.
-
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts option='"constructor"'
-// Incorrect because Uint8Array has deffenrent type signature and not in ignorelist
-let a: Uint8Array<ArrayBufferLike> = new Uint8Array();
-
-// Incorrect because type arguments appear in type-annotation and not in ignorelist
-let a: UserConstructor<Type> = new UserConstructor();
-```
-
-</TabItem>
-<TabItem value="✅ Correct">
-
-```ts option='"constructor", { "ignore": ["Uint8Array", "UserConstructor"] }' showPlaygroundButton
-// Correct because Uint8Array has deffenrent type signature but are included in the ignorelist.
-let a: Uint8Array<ArrayBufferLike> = new Uint8Array();
-
-// Correct because type arguments appear in type-annotations but are included in the ignorelist.
-let a: UserConstructor<Type> = new UserConstructor();
-```
-
-</TabItem>
-</Tabs>
-
 ## When Not To Use It
 
 You can turn this rule off if you don't want to enforce one kind of generic constructor style over the other.

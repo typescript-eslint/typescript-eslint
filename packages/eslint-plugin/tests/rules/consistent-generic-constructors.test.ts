@@ -45,10 +45,38 @@ class A {
     `
 const a = function (a: Foo = new Foo<string>()) {};
     `,
-    {
-      code: 'let a: Uint8Array<ArrayBufferLike> = new Uint8Array();',
-      options: ['constructor', { ignore: ['Uint8Array'] }],
-    },
+    `
+const a: Float32Array<ArrayBufferLike> = new Float32Array();
+export {};
+    `,
+    `
+const a: Float64Array<ArrayBufferLike> = new Float64Array();
+export {};
+    `,
+    `
+const a: Int16Array<ArrayBufferLike> = new Int16Array();
+export {};
+    `,
+    `
+const a: Int8Array<ArrayBufferLike> = new Int8Array();
+export {};
+    `,
+    `
+const a: Uint16Array<ArrayBufferLike> = new Uint16Array();
+export {};
+    `,
+    `
+const a: Uint32Array<ArrayBufferLike> = new Uint32Array();
+export {};
+    `,
+    `
+const a: Uint8Array<ArrayBufferLike> = new Uint8Array();
+export {};
+    `,
+    `
+const a: Uint8ClampedArray<ArrayBufferLike> = new Uint8ClampedArray();
+export {};
+    `,
     {
       code: `
 const foo: Foo<string> = new Foo();
@@ -594,6 +622,23 @@ const a = function (a = new Foo<string>()) {};
       options: ['type-annotation'],
       output: `
 const a = function (a: Foo<string> = new Foo()) {};
+      `,
+    },
+    {
+      code: `
+class Float32Array<T> {}
+const a: Float32Array<ArrayBufferLike> = new Float32Array();
+export {};
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+class Float32Array<T> {}
+const a = new Float32Array<ArrayBufferLike>();
+export {};
       `,
     },
   ],
