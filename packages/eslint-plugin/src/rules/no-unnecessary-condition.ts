@@ -580,31 +580,6 @@ export default createRule<Options, MessageId>({
       checkNode(node.test);
     }
 
-    function isArrayIsArrayCall(node: TSESTree.CallExpression): boolean {
-      if (node.callee.type !== AST_NODE_TYPES.MemberExpression) {
-        return false;
-      }
-
-      const { computed, object, property } = node.callee;
-
-      if (!isIdentifier(object) || object.name !== 'Array') {
-        return false;
-      }
-
-      if (computed) {
-        return (
-          node.callee.property.type === AST_NODE_TYPES.Literal &&
-          node.callee.property.value === 'isArray'
-        );
-      }
-
-      return (
-        isIdentifier(property) &&
-        property.name === 'isArray' &&
-        !node.callee.optional
-      );
-    }
-
     function checkCallExpression(node: TSESTree.CallExpression): void {
       if (checkTypePredicates) {
         const truthinessAssertedArgument = findTruthinessAssertedArgument(
@@ -624,15 +599,12 @@ export default createRule<Options, MessageId>({
             services,
             typeGuardAssertedArgument.argument,
           );
-          const isArrayCheck = isArrayIsArrayCall(node);
-          const typesMatch = isArrayCheck
-            ? checker.isTypeAssignableTo(
-                typeOfArgument,
-                typeGuardAssertedArgument.type,
-              )
-            : typeOfArgument === typeGuardAssertedArgument.type;
-
-          if (typesMatch) {
+          if (
+            checker.isTypeAssignableTo(
+              typeOfArgument,
+              typeGuardAssertedArgument.type,
+            )
+          ) {
             context.report({
               node: typeGuardAssertedArgument.argument,
               messageId: 'typeGuardAlreadyIsType',
