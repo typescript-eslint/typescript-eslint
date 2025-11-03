@@ -4,7 +4,7 @@ import type * as ts from 'typescript';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { SelectorsString } from './enums';
-import type { Context, NormalizedSelector } from './types';
+import type { Context, NormalizedSelector, ValidatorFunction } from './types';
 
 import { getParserServices } from '../../util';
 import {
@@ -26,9 +26,7 @@ export function createValidator(
   type: SelectorsString,
   context: Context,
   allConfigs: NormalizedSelector[],
-): (
-  node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
-) => void {
+): ValidatorFunction {
   // make sure the "highest priority" configs are checked first
   const selectorType = Selectors[type];
   const configs = allConfigs
@@ -72,10 +70,7 @@ export function createValidator(
       return b.selector - a.selector;
     });
 
-  return (
-    node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
-    modifiers: Set<Modifiers> = new Set<Modifiers>(),
-  ): void => {
+  return (node, modifiers = new Set<Modifiers>()): void => {
     const originalName =
       node.type === AST_NODE_TYPES.Identifier ||
       node.type === AST_NODE_TYPES.PrivateIdentifier
