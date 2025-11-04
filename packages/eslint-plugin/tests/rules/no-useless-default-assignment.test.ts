@@ -1,5 +1,4 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import * as path from 'node:path';
 
 import rule from '../../src/rules/no-useless-default-assignment';
 import { getFixturesRootDir } from '../RuleTester';
@@ -222,24 +221,6 @@ ruleTester.run('no-useless-default-assignment', rule, {
       `,
             },
           ],
-        },
-      ],
-    },
-    {
-      code: '',
-      errors: [
-        {
-          messageId: 'noStrictNullCheck',
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootPath, 'unstrict'),
-        },
-      },
-      options: [
-        {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
         },
       ],
     },
