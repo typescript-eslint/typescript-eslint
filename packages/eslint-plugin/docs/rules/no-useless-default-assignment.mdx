@@ -9,8 +9,9 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-useless-default-assignment** for documentation.
 
-[Default parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters) and [default values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value) are only used if the parameter or property is `undefined` (either because its value is `undefined` or because it is missing).
-If the type of a parameter or property can never be `undefined`, then the default is never actually used.
+[Default parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters) and [default values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value) are only used if the parameter or property is `undefined`.
+That can happen when a value is missing, or when one is provided and set to `undefined`.
+If a non-`undefined` value is guaranteed to be provided, then there is no need to define a default.
 
 ## Examples
 
