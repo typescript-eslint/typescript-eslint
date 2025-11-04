@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/visitor-keys",
-  "version": "8.46.2",
+  "version": "8.46.3",
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "files": [
     "dist",
@@ -45,7 +45,7 @@
     "typecheck": "yarn run -BT nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "8.46.2",
+    "@typescript-eslint/types": "8.46.3",
     "eslint-visitor-keys": "^4.2.1"
   },
   "devDependencies": {
