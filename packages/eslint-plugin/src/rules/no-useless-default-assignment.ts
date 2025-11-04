@@ -20,6 +20,7 @@ export default createRule<[], MessageId>({
     type: 'suggestion',
     docs: {
       description: 'Disallow default values that will never be used',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
