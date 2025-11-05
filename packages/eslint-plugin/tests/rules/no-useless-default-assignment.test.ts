@@ -114,6 +114,20 @@ ruleTester.run('no-useless-default-assignment', rule, {
         return value;
       }
     `,
+    `
+      const { value = 'default' } = someUnknownFunction();
+    `,
+    `
+      const [value = 'default'] = someUnknownFunction();
+    `,
+    `
+      for (const { value = 'default' } of []) {
+      }
+    `,
+    `
+      for (const [value = 'default'] of []) {
+      }
+    `,
   ],
   invalid: [
     {
