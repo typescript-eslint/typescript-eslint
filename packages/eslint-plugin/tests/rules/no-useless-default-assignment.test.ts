@@ -115,18 +115,13 @@ ruleTester.run('no-useless-default-assignment', rule, {
           endColumn: 32,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-          suggestions: [
-            {
-              messageId: 'suggestRemoveDefault',
-              output: `
+        },
+      ],
+      output: `
         function Bar({ foo }: { foo: string }) {
           return foo;
         }
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -143,20 +138,15 @@ ruleTester.run('no-useless-default-assignment', rule, {
           endColumn: 35,
           line: 3,
           messageId: 'uselessDefaultAssignment',
-          suggestions: [
-            {
-              messageId: 'suggestRemoveDefault',
-              output: `
+        },
+      ],
+      output: `
         class C {
           public method({ foo }: { foo: string }) {
             return foo;
           }
         }
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -169,16 +159,11 @@ ruleTester.run('no-useless-default-assignment', rule, {
           endColumn: 54,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-          suggestions: [
-            {
-              messageId: 'suggestRemoveDefault',
-              output: `
-        const { 'literal-key': literalKey } = { 'literal-key': 'value' };
-      `,
-            },
-          ],
         },
       ],
+      output: `
+        const { 'literal-key': literalKey } = { 'literal-key': 'value' };
+      `,
     },
     {
       code: `
@@ -191,16 +176,11 @@ ruleTester.run('no-useless-default-assignment', rule, {
           endColumn: 30,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-          suggestions: [
-            {
-              messageId: 'suggestRemoveDefault',
-              output: `
-        [1, 2, 3].map((a) => a + 1);
-      `,
-            },
-          ],
         },
       ],
+      output: `
+        [1, 2, 3].map((a) => a + 1);
+      `,
     },
   ],
 });

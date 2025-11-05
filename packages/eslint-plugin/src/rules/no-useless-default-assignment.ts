@@ -12,7 +12,7 @@ import {
   isTypeUnknownType,
 } from '../util';
 
-type MessageId = 'suggestRemoveDefault' | 'uselessDefaultAssignment';
+type MessageId = 'uselessDefaultAssignment';
 
 export default createRule<[], MessageId>({
   name: 'no-useless-default-assignment',
@@ -23,9 +23,8 @@ export default createRule<[], MessageId>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
-    hasSuggestions: true,
+    fixable: 'code',
     messages: {
-      suggestRemoveDefault: 'Remove useless default value',
       uselessDefaultAssignment:
         'Default value is useless because the {{ type }} is not optional.',
     },
@@ -202,18 +201,13 @@ export default createRule<[], MessageId>({
         node: node.right,
         messageId: 'uselessDefaultAssignment',
         data: { type },
-        suggest: [
-          {
-            messageId: 'suggestRemoveDefault',
-            fix(fixer) {
-              // Remove from before the = to the end of the default value
-              // Find the start position (including whitespace before =)
-              const start = node.left.range[1];
-              const end = node.range[1];
-              return fixer.removeRange([start, end]);
-            },
-          },
-        ],
+        fix(fixer) {
+          // Remove from before the = to the end of the default value
+          // Find the start position (including whitespace before =)
+          const start = node.left.range[1];
+          const end = node.range[1];
+          return fixer.removeRange([start, end]);
+        },
       });
     }
 
