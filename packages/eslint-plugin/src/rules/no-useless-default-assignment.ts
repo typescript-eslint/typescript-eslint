@@ -63,6 +63,20 @@ export default createRule<[], MessageId>({
       return checker.getTypeOfSymbol(symbol);
     }
 
+    function getArrayElementType(
+      arrayType: ts.Type,
+      elementIndex: number,
+    ): ts.Type | null {
+      if (checker.isTupleType(arrayType)) {
+        const tupleArgs = checker.getTypeArguments(arrayType);
+        if (elementIndex < tupleArgs.length) {
+          return tupleArgs[elementIndex];
+        }
+      }
+
+      return null;
+    }
+
     function isCallbackFunction(
       functionNode:
         | TSESTree.ArrowFunctionExpression
@@ -131,6 +145,26 @@ export default createRule<[], MessageId>({
         }
 
         if (!canBeUndefined(propertyType)) {
+          reportUselessDefault(node, 'property');
+        }
+      } else if (parent.type === AST_NODE_TYPES.ArrayPattern) {
+        // This is an element in an array destructuring pattern
+        const sourceType = getSourceTypeForPattern(parent);
+        if (!sourceType) {
+          return;
+        }
+
+        const elementIndex = parent.elements.indexOf(node);
+        if (elementIndex === -1) {
+          return;
+        }
+
+        const elementType = getArrayElementType(sourceType, elementIndex);
+        if (!elementType) {
+          return;
+        }
+
+        if (!canBeUndefined(elementType)) {
           reportUselessDefault(node, 'property');
         }
       }

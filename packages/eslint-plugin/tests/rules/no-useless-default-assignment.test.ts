@@ -100,6 +100,20 @@ ruleTester.run('no-useless-default-assignment', rule, {
         return foo;
       }
     `,
+    `
+      function getValue(): undefined;
+      function getValue(box: { value: string }): string;
+      function getValue({ value = undefined }: { value?: string } = {}):
+        | string
+        | undefined {
+        return value;
+      }
+    `,
+    `
+      function getValueObject({ value = '' }: Partial<{ value: string }>) {
+        return value;
+      }
+    `,
   ],
   invalid: [
     {
@@ -180,6 +194,56 @@ ruleTester.run('no-useless-default-assignment', rule, {
       ],
       output: `
         [1, 2, 3].map((a) => a + 1);
+      `,
+    },
+    {
+      code: `
+        function getValue(): undefined;
+        function getValue(box: { value: string }): string;
+        function getValue({ value = undefined }: { value: string } = {}):
+          | string
+          | undefined {
+          return value;
+        }
+      `,
+      errors: [
+        {
+          column: 37,
+          data: { type: 'property' },
+          endColumn: 46,
+          line: 4,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        function getValue(): undefined;
+        function getValue(box: { value: string }): string;
+        function getValue({ value }: { value: string } = {}):
+          | string
+          | undefined {
+          return value;
+        }
+      `,
+    },
+    {
+      code: `
+        function getValue([value = '']: [string]) {
+          return value;
+        }
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { type: 'property' },
+          endColumn: 38,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        function getValue([value]: [string]) {
+          return value;
+        }
       `,
     },
   ],
