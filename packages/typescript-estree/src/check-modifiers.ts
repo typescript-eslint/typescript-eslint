@@ -375,7 +375,7 @@ export function checkModifiers(node: ts.Node): void {
     // There are more cases in `checkGrammarObjectLiteralExpression` in TypeScript.
     // We may add more validations for them here in the future.
     if (
-      modifier.kind === SyntaxKind.AbstractKeyword &&
+      modifier.kind !== SyntaxKind.AsyncKeyword &&
       node.kind === SyntaxKind.MethodDeclaration &&
       node.parent.kind === SyntaxKind.ObjectLiteralExpression
     ) {
