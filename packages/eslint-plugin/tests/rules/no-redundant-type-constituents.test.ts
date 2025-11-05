@@ -268,7 +268,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type T = Node & { next: Node };
     `,
     `
-      type R = { a: 1 } | { a: 2 };
+      type R = { a: 1 } | { a: 4 };
       type T = { a: 1 | 2 } | { a: 3 };
       type U = R | T;
     `,
@@ -2070,6 +2070,26 @@ type C = A & B;
             redundantType: '{ a: 1 | 3 | { b: 1; }; }',
           },
           endColumn: 33,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type R = { a: 1 } | { a: 2 };
+        type T = { a: 1 | 2 } | { a: 3 };
+        type U = R | T;
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            container: 'union',
+            nonRedundantType: 'T',
+            redundantType: 'R',
+          },
+          endColumn: 19,
+          line: 4,
           messageId: 'typeOverridden',
         },
       ],
