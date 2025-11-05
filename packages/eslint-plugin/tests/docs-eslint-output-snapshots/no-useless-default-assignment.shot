@@ -8,6 +8,9 @@ function Bar({ foo = '' }: { foo: string }) {
 const { foo = '' } = { foo: 'bar' };
               ~~ Default value is useless because the property is not optional.
 
+const [foo = ''] = ['bar'];
+             ~~ Default value is useless because the property is not optional.
+
 [1, 2, 3].map((a = 42) => a + 1);
                    ~~ Default value is useless because the parameter is not optional.
 
@@ -17,10 +20,8 @@ function Bar({ foo = '' }: { foo?: string }) {
   return foo;
 }
 
-const obj: { a?: string } = {};
-const { a = 'default' } = obj;
+const { foo = '' } = { foo: undefined };
 
-const obj: { a: string | undefined } = { a: undefined };
-const { a = 'default' } = obj;
+const [foo = ''] = [undefined];
 
 [1, 2, 3, undefined].map((a = 42) => a + 1);
