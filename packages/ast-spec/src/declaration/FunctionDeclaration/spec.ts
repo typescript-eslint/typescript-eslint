@@ -11,26 +11,26 @@ interface FunctionDeclarationBase extends FunctionBase {
 }
 
 /**
- * A function expression that may or may not have a name.
- * Standalone function declarations do:
+ * A normal function declaration:
  * ```
  * function f() {}
  * ```
+ */
+export interface FunctionDeclarationWithName extends FunctionDeclarationBase {
+  id: Identifier;
+}
+
+/**
  * Default-exported function declarations have optional names:
  * ```
  * export default function () {}
  * ```
  */
-export interface FunctionDeclaration extends FunctionDeclarationBase {
+export interface FunctionDeclarationWithOptionalName
+  extends FunctionDeclarationBase {
   id: Identifier | null;
 }
 
-/**
- * A function declaration that definitely has a name (is not anonymous):
- * ```
- * function f() {}
- * ```
- */
-export interface FunctionDeclarationWithName extends FunctionDeclaration {
-  id: Identifier;
-}
+export type FunctionDeclaration =
+  | FunctionDeclarationWithName
+  | FunctionDeclarationWithOptionalName;

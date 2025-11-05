@@ -7,26 +7,25 @@ interface ClassDeclarationBase extends ClassBase {
 }
 
 /**
- * A class declaration that may or may not have a name.
- * Standalone class declarations do:
+ * A normal class declaration:
  * ```
  * class A {}
  * ```
- * Default-exported class declarations may have optional names:
+ */
+export interface ClassDeclarationWithName extends ClassDeclarationBase {
+  id: Identifier;
+}
+
+/**
+ * Default-exported class declarations have optional names:
  * ```
  * export default class {}
  * ```
  */
-export interface ClassDeclaration extends ClassDeclarationBase {
+export interface ClassDeclarationWithOptionalName extends ClassDeclarationBase {
   id: Identifier | null;
 }
 
-/**
- * A class declaration that definitely has a name (is not anonymous):
- * ```
- * class A {}
- * ```
- */
-export interface ClassDeclarationWithName extends ClassDeclaration {
-  id: Identifier;
-}
+export type ClassDeclaration =
+  | ClassDeclarationWithName
+  | ClassDeclarationWithOptionalName;

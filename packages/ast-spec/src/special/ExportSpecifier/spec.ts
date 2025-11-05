@@ -21,4 +21,6 @@ export interface ExportSpecifierWithStringOrLiteralLocal
   local: Identifier | StringLiteral;
 }
 
-export type ExportSpecifier = ExportSpecifierWithStringOrLiteralLocal;
+export type ExportSpecifier =
+  | ExportSpecifierWithIdentifierLocal
+  | ExportSpecifierWithStringOrLiteralLocal;
