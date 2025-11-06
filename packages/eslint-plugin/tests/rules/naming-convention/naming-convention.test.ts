@@ -2058,7 +2058,7 @@ ruleTester.run('naming-convention', rule, {
             'enumMember',
           ],
         },
-        // making sure the `requoresQuotes` modifier appropriately overrides this
+        // making sure the `requiresQuotes` modifier appropriately overrides this
         {
           format: ['PascalCase'],
           selector: [
