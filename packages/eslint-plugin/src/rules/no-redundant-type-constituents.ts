@@ -69,6 +69,9 @@ function shouldCheckTypeRedundancy(
   }
   if (tsutils.isObjectType(type)) {
     const symbol = type.getSymbol();
+    if (checker.isArrayLikeType(type)) {
+      return true;
+    }
     if (!symbol) {
       return false;
     }
@@ -144,6 +147,74 @@ function isTargetTypeRedundantInIntersection(
     }
     return checker.isTypeAssignableTo(sourceType, targetType);
   }
+
+  if (checker.isTupleType(targetType)) {
+    if (checker.isTupleType(sourceType)) {
+      const sourceArguments = sourceType.typeArguments;
+      const targetArguments = targetType.typeArguments;
+
+      if (!sourceArguments || !targetArguments) {
+        return false;
+      }
+      if (targetArguments.length !== sourceArguments.length) {
+        return false;
+      }
+      for (let i = 0; i < targetArguments.length; ++i) {
+        const sourceTypeArgument = sourceArguments[i];
+        const targetTypeArgument = targetArguments[i];
+        if (
+          !isTargetTypeRedundantInIntersection(
+            sourceTypeArgument,
+            targetTypeArgument,
+            checker,
+          )
+        ) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
+  if (checker.isArrayType(targetType)) {
+    if (checker.isArrayType(sourceType)) {
+      const sourceArgumentType = sourceType.typeArguments?.[0];
+      const targetArgumentType = targetType.typeArguments?.[0];
+
+      if (!sourceArgumentType || !targetArgumentType) {
+        return false;
+      }
+      return isTargetTypeRedundantInIntersection(
+        sourceArgumentType,
+        targetArgumentType,
+        checker,
+      );
+    }
+    if (checker.isTupleType(sourceType)) {
+      const targetArgumentType = targetType.typeArguments?.[0];
+      if (!targetArgumentType) {
+        return false;
+      }
+      const sourceArgumentTypes = sourceType.typeArguments;
+      if (!sourceArgumentTypes) {
+        return true;
+      }
+      for (const sourceTypeArgument of sourceArgumentTypes) {
+        if (
+          !isTargetTypeRedundantInIntersection(
+            sourceTypeArgument,
+            targetArgumentType,
+            checker,
+          )
+        ) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
   if (tsutils.isObjectType(sourceType) && tsutils.isObjectType(targetType)) {
     if (
       !shouldCheckTypeRedundancy(sourceType, checker) ||
@@ -216,6 +287,71 @@ function isTargetTypeRedundantInUnion(
       }
     }
     return false;
+  }
+
+  if (checker.isTupleType(targetType)) {
+    if (checker.isArrayType(sourceType)) {
+      const sourceArgumentType = sourceType.typeArguments?.[0];
+      if (!sourceArgumentType) {
+        return false;
+      }
+      const targetArguments = targetType.typeArguments;
+      if (!targetArguments) {
+        return true;
+      }
+      for (const targetTypeArgument of targetArguments) {
+        if (
+          !isTargetTypeRedundantInUnion(
+            sourceArgumentType,
+            targetTypeArgument,
+            checker,
+          )
+        ) {
+          return false;
+        }
+      }
+      return true;
+    }
+    if (checker.isTupleType(sourceType)) {
+      const sourceArguments = sourceType.typeArguments;
+      const targetArguments = targetType.typeArguments;
+
+      if (!sourceArguments || !targetArguments) {
+        return false;
+      }
+      if (targetArguments.length !== sourceArguments.length) {
+        return false;
+      }
+      for (let i = 0; i < targetArguments.length; ++i) {
+        const sourceTypeArgument = sourceArguments[i];
+        const targetTypeArgument = targetArguments[i];
+        if (
+          !isTargetTypeRedundantInUnion(
+            sourceTypeArgument,
+            targetTypeArgument,
+            checker,
+          )
+        ) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
+  if (checker.isArrayType(sourceType) && checker.isArrayType(targetType)) {
+    const sourceArgumentType = sourceType.typeArguments?.[0];
+    const targetArgumentType = targetType.typeArguments?.[0];
+
+    if (!sourceArgumentType || !targetArgumentType) {
+      return false;
+    }
+    return isTargetTypeRedundantInUnion(
+      sourceArgumentType,
+      targetArgumentType,
+      checker,
+    );
   }
   if (
     isObjectOrIntersectionType(sourceType) &&

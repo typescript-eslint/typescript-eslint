@@ -279,6 +279,20 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type T = { a: 1 | 2 } | { a: 3 };
       type U = R | T;
     `,
+    'type T = [1, 2] | [1];',
+    'type T = [1, 2, 3] | [1, 2, 4];',
+    'type T = [] | [1];',
+    'type T = Array<number> | Array<string>;',
+    'type T = Array<number> | string[];',
+    'type T = [1, 2, 3] | [1, 2, 3, 4];',
+    'type T = [{ a: 1 }] | [{ a: 1; b: 1 }];',
+    'type T = [{ a: number }] | [{ a: 1; b: 1 }];',
+    'type T = [1, 2] & [1];',
+    'type T = Array<string> & [1];',
+    'type T = Array<number> & Array<string>;',
+    'type T = Array<number> & string[];',
+    'type T = [{ a: 1 }] & [{ a: 1; b?: 1 }];',
+    'type T = [{ a: number }] & [{ a: 1; b: 1 }];',
   ],
   invalid: [
     {
@@ -2097,6 +2111,171 @@ type C = A & B;
           },
           endColumn: 19,
           line: 4,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = [] | number[];',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            nonRedundantType: 'number[]',
+            redundantType: '[]',
+          },
+          endColumn: 12,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Array<number> | [1, 2, 3, 4];',
+      errors: [
+        {
+          column: 26,
+          data: {
+            container: 'union',
+            nonRedundantType: 'number[]',
+            redundantType: '[1, 2, 3, 4]',
+          },
+          endColumn: 38,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Array<number> | Array<1>;',
+      errors: [
+        {
+          column: 26,
+          data: {
+            container: 'union',
+            nonRedundantType: 'number[]',
+            redundantType: '1[]',
+          },
+          endColumn: 34,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = [{ a: number }] | [{ a: 1 }];',
+      errors: [
+        {
+          column: 28,
+          data: {
+            container: 'union',
+            nonRedundantType: '[{ a: number; }]',
+            redundantType: '[{ a: 1; }]',
+          },
+          endColumn: 38,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Array<{ a: number }> | Array<{ a: 1 }>;',
+      errors: [
+        {
+          column: 33,
+          data: {
+            container: 'union',
+            nonRedundantType: '{ a: number; }[]',
+            redundantType: '{ a: 1; }[]',
+          },
+          endColumn: 48,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = [] & number[];',
+      errors: [
+        {
+          column: 15,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '[]',
+            redundantType: 'number[]',
+          },
+          endColumn: 23,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = [1, 2, 3, 4] & Array<number>;',
+      errors: [
+        {
+          column: 25,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '[1, 2, 3, 4]',
+            redundantType: 'number[]',
+          },
+          endColumn: 38,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Array<number> & Array<1>;',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '1[]',
+            redundantType: 'number[]',
+          },
+          endColumn: 23,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = [{ a: number }] & [{ a: 1 }];',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '[{ a: 1; }]',
+            redundantType: '[{ a: number; }]',
+          },
+          endColumn: 25,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Array<{ a: number }> & Array<{ a: 1 }>;',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; }[]',
+            redundantType: '{ a: number; }[]',
+          },
+          endColumn: 30,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = Array<{ a: number }> & Array<{ a: 1; b: 1 }>;',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '{ a: 1; b: 1; }[]',
+            redundantType: '{ a: number; }[]',
+          },
+          endColumn: 30,
           messageId: 'typeOverridden',
         },
       ],
