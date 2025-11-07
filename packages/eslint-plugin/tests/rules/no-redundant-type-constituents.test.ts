@@ -268,6 +268,13 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type T = Node & { next: Node };
     `,
     `
+      type Node = {
+        value: string;
+        next: Node;
+      };
+      type T = Node | { next: Node };
+    `,
+    `
       type R = { a: 1 } | { a: 4 };
       type T = { a: 1 | 2 } | { a: 3 };
       type U = R | T;

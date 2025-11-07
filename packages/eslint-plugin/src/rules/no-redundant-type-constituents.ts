@@ -167,13 +167,8 @@ function isTargetTypeRedundantInIntersection(
       }
 
       const sourcePropType = checker.getTypeOfSymbol(sourceProp);
-      if (!shouldCheckTypeRedundancy(sourcePropType, checker)) {
-        return false;
-      }
       const targetPropType = checker.getTypeOfSymbol(targetProp);
-      if (!shouldCheckTypeRedundancy(targetPropType, checker)) {
-        return false;
-      }
+
       const targetPropTypeIsRedundant = isTargetTypeRedundantInIntersection(
         sourcePropType,
         targetPropType,
@@ -226,6 +221,12 @@ function isTargetTypeRedundantInUnion(
     isObjectOrIntersectionType(sourceType) &&
     isObjectOrIntersectionType(targetType)
   ) {
+    if (
+      !shouldCheckTypeRedundancy(sourceType, checker) ||
+      !shouldCheckTypeRedundancy(targetType, checker)
+    ) {
+      return false;
+    }
     const sourceProps = sourceType.getProperties();
     const targetProps = targetType.getProperties();
 
@@ -246,13 +247,8 @@ function isTargetTypeRedundantInUnion(
       }
 
       const sourcePropType = checker.getTypeOfSymbol(sourceProp);
-      if (!shouldCheckTypeRedundancy(sourcePropType, checker)) {
-        return false;
-      }
       const targetPropType = checker.getTypeOfSymbol(targetProp);
-      if (!shouldCheckTypeRedundancy(targetPropType, checker)) {
-        return false;
-      }
+
       const targetPropTypeIsRedundant = isTargetTypeRedundantInUnion(
         sourcePropType,
         targetPropType,
@@ -372,10 +368,6 @@ export default createRule({
       }
       const type = checker.getTypeAtLocation(typeNode);
 
-      if (!shouldCheckTypeRedundancy(type, checker)) {
-        return [];
-      }
-
       return [
         {
           type,
@@ -399,10 +391,6 @@ export default createRule({
       }
 
       const type = checker.getTypeAtLocation(typeNode);
-
-      if (!shouldCheckTypeRedundancy(type, checker)) {
-        return [];
-      }
 
       return [
         {
