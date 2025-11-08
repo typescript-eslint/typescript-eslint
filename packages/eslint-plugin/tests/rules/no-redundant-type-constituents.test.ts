@@ -291,8 +291,6 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     'type T = Array<string> & [1];',
     'type T = Array<number> & Array<string>;',
     'type T = Array<number> & string[];',
-    'type T = [{ a: 1 }] & [{ a: 1; b?: 1 }];',
-    'type T = [{ a: number }] & [{ a: 1; b: 1 }];',
   ],
   invalid: [
     {
@@ -2276,6 +2274,36 @@ type C = A & B;
             redundantType: '{ a: number; }[]',
           },
           endColumn: 30,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = [{ a: 1 }] & [{ a: 1; b?: 1 }];',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '[{ a: 1; b?: 1 | undefined; }]',
+            redundantType: '[{ a: 1; }]',
+          },
+          endColumn: 20,
+          messageId: 'typeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = [{ a: number }] & [{ a: 1; b: 1 }];',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            nonRedundantType: '[{ a: 1; b: 1; }]',
+            redundantType: '[{ a: number; }]',
+          },
+          endColumn: 25,
           messageId: 'typeOverridden',
         },
       ],
