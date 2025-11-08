@@ -111,6 +111,12 @@ function isTargetTypeRedundantInIntersection(
   targetType: ts.Type,
   checker: ts.TypeChecker,
 ): boolean {
+  if (
+    !shouldCheckTypeRedundancy(sourceType, checker) ||
+    !shouldCheckTypeRedundancy(targetType, checker)
+  ) {
+    return false;
+  }
   if (tsutils.isUnionType(sourceType)) {
     for (const typePart of sourceType.types) {
       if (!tsutils.isObjectType(typePart)) {
@@ -216,12 +222,6 @@ function isTargetTypeRedundantInIntersection(
     return false;
   }
   if (tsutils.isObjectType(sourceType) && tsutils.isObjectType(targetType)) {
-    if (
-      !shouldCheckTypeRedundancy(sourceType, checker) ||
-      !shouldCheckTypeRedundancy(targetType, checker)
-    ) {
-      return false;
-    }
     const sourceProps = sourceType.getProperties();
     const targetProps = targetType.getProperties();
     if (targetProps.length === 0) {
@@ -259,6 +259,12 @@ function isTargetTypeRedundantInUnion(
   targetType: ts.Type,
   checker: ts.TypeChecker,
 ): boolean {
+  if (
+    !shouldCheckTypeRedundancy(sourceType, checker) ||
+    !shouldCheckTypeRedundancy(targetType, checker)
+  ) {
+    return false;
+  }
   if (
     tsutils.isUnionType(targetType) &&
     !tsutils.isIntrinsicBooleanType(targetType)
@@ -357,12 +363,6 @@ function isTargetTypeRedundantInUnion(
     isObjectOrIntersectionType(sourceType) &&
     isObjectOrIntersectionType(targetType)
   ) {
-    if (
-      !shouldCheckTypeRedundancy(sourceType, checker) ||
-      !shouldCheckTypeRedundancy(targetType, checker)
-    ) {
-      return false;
-    }
     const sourceProps = sourceType.getProperties();
     const targetProps = targetType.getProperties();
 
