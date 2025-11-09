@@ -93,7 +93,10 @@ export class Referencer extends Visitor {
   public currentScope(throwOnNull: true): Scope | null;
   public currentScope(dontThrowOnNull?: true): Scope | null {
     if (!dontThrowOnNull) {
-      assert(this.scopeManager.currentScope, 'aaa');
+      assert(
+        this.scopeManager.currentScope,
+        'analyze() is passed Program in the general expectation and scope-manager requires ranges on the AST.',
+      );
     }
     return this.scopeManager.currentScope;
   }
