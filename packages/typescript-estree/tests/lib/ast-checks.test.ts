@@ -1,5 +1,7 @@
 import * as ts from 'typescript';
+
 import type { TSESTree } from '../../src/ts-estree';
+
 import { checkForStatementDeclaration } from '../../src/ast-checks';
 
 describe(checkForStatementDeclaration, () => {
