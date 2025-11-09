@@ -95,7 +95,7 @@ export class Referencer extends Visitor {
     if (!dontThrowOnNull) {
       assert(
         this.scopeManager.currentScope,
-        'analyze() is passed Program in the general expectation and scope-manager requires ranges on the AST.',
+        'Expected currentScope to exist. This usually happens when analyze() is called with an incomplete AST node instead of a complete Program node.',
       );
     }
     return this.scopeManager.currentScope;
