@@ -1123,10 +1123,26 @@ isString(a);
       options: [{ checkTypePredicates: false }],
     },
     {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+assertString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function isString(x: unknown): x is string;
+isString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
       code: `
 declare const items: number[] | null;
 if (Array.isArray(items)) {
-  console.log('items is an array');
+  console.log(items.length);
 }
       `,
       options: [{ checkTypePredicates: true }],
@@ -1135,7 +1151,7 @@ if (Array.isArray(items)) {
       code: `
 declare const items: number[] | string;
 if (Array.isArray(items)) {
-  console.log('items is an array');
+  console.log(items.length);
 }
       `,
       options: [{ checkTypePredicates: true }],
@@ -1144,18 +1160,26 @@ if (Array.isArray(items)) {
       code: `
 declare const items: unknown;
 if (Array.isArray(items)) {
-  console.log('items is an array');
+  console.log(items.length);
 }
       `,
       options: [{ checkTypePredicates: true }],
     },
     {
       code: `
-function process(value: string | number[]) {
-  if (Array.isArray(value)) {
-    return value.length;
-  }
-  return value.length;
+declare const items: any;
+if (Array.isArray(items)) {
+  console.log(items.length);
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare const MaybeArray: typeof Array | undefined;
+declare const items: number[];
+if (MaybeArray?.isArray(items)) {
+  console.log(items.length);
 }
       `,
       options: [{ checkTypePredicates: true }],
@@ -1163,13 +1187,22 @@ function process(value: string | number[]) {
     {
       code: `
 declare const items: number[];
-if (Array.isArray(items)) {
-  console.log('items is an array');
+if (Array['isArray'](items)) {
+  console.log(items.length);
 }
       `,
-      options: [{ checkTypePredicates: false }],
+      options: [{ checkTypePredicates: true }],
     },
-
+    {
+      code: `
+function process<T>(value: T) {
+  if (Array.isArray(value)) {
+    console.log(value.length);
+  }
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
     `
 type A = { [name in Lowercase<string>]?: A };
 declare const a: A;
@@ -3554,7 +3587,7 @@ isString('fa' + 'lafel');
       code: `
 declare const items: number[];
 if (Array.isArray(items)) {
-  console.log('items is an array');
+  console.log(items.length);
 }
       `,
       errors: [
@@ -3580,9 +3613,9 @@ Array.isArray(items);
     },
     {
       code: `
-declare const matrix: number[][];
-if (Array.isArray(matrix)) {
-  console.log('matrix is an array');
+const tuple: [string, number] = ['a', 1];
+if (Array.isArray(tuple)) {
+  console.log(tuple[0]);
 }
       `,
       errors: [
@@ -3595,32 +3628,20 @@ if (Array.isArray(matrix)) {
     },
     {
       code: `
-declare function isString(x: unknown): x is string;
-isString('falafel');
+declare const items: string[] | number[];
+if (Array.isArray(items)) {
+  console.log(items.length);
+}
       `,
       errors: [
         {
-          column: 10,
           line: 3,
           messageId: 'typeGuardAlreadyIsType',
         },
       ],
       options: [{ checkTypePredicates: true }],
     },
-    {
-      code: `
-declare function assertString(x: unknown): asserts x is string;
-assertString('falafel');
-      `,
-      errors: [
-        {
-          column: 14,
-          line: 3,
-          messageId: 'typeGuardAlreadyIsType',
-        },
-      ],
-      options: [{ checkTypePredicates: true }],
-    },
+
     // "branded" types
     unnecessaryConditionTest('"" & {}', 'alwaysFalsy'),
     unnecessaryConditionTest('"" & { __brand: string }', 'alwaysFalsy'),
