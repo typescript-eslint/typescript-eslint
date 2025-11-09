@@ -10,6 +10,7 @@ import type {
 import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 
+import { checkForStatementDeclaration } from './ast-checks';
 import { checkModifiers } from './check-modifiers';
 import { getDecorators, getModifiers } from './getModifiers';
 import {
@@ -109,46 +110,7 @@ export class Converter {
     initializer: ts.ForInitializer,
     kind: ts.SyntaxKind.ForInStatement | ts.SyntaxKind.ForOfStatement,
   ): void {
-    const loop =
-      kind === ts.SyntaxKind.ForInStatement ? 'for...in' : 'for...of';
-    if (ts.isVariableDeclarationList(initializer)) {
-      if (initializer.declarations.length !== 1) {
-        this.#throwError(
-          initializer,
-          `Only a single variable declaration is allowed in a '${loop}' statement.`,
-        );
-      }
-      const declaration = initializer.declarations[0];
-      if (declaration.initializer) {
-        this.#throwError(
-          declaration,
-          `The variable declaration of a '${loop}' statement cannot have an initializer.`,
-        );
-      } else if (declaration.type) {
-        this.#throwError(
-          declaration,
-          `The variable declaration of a '${loop}' statement cannot have a type annotation.`,
-        );
-      }
-      if (
-        kind === ts.SyntaxKind.ForInStatement &&
-        initializer.flags & ts.NodeFlags.Using
-      ) {
-        this.#throwError(
-          initializer,
-          "The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
-        );
-      }
-    } else if (
-      !isValidAssignmentTarget(initializer) &&
-      initializer.kind !== ts.SyntaxKind.ObjectLiteralExpression &&
-      initializer.kind !== ts.SyntaxKind.ArrayLiteralExpression
-    ) {
-      this.#throwError(
-        initializer,
-        `The left-hand side of a '${loop}' statement must be a variable or a property access.`,
-      );
-    }
+    checkForStatementDeclaration(initializer, kind, this.#throwError);
   }
 
   #checkModifiers(node: ts.Node): void {
