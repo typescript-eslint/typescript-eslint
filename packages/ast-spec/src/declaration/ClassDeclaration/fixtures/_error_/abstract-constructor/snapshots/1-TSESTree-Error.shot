@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ClassDeclaration > _error_ > abstract-constructor > TSESTree - Error`]
+TSError
+  1 | abstract class Foo  {
+> 2 |   abstract constructor() { }
+    |   ^^^^^^^^ 'abstract' modifier can only appear on a class, method, or property declaration.
+  3 | }
+  4 |

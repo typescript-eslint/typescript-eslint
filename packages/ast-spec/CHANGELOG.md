@@ -1,3 +1,51 @@
+## 8.46.3 (2025-11-03)
+
+This was a version bump only for ast-spec to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.2 (2025-10-20)
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid invalid modifiers in object methods ([#11689](https://github.com/typescript-eslint/typescript-eslint/pull/11689))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.1 (2025-10-13)
+
+### 🩹 Fixes
+
+- **ast-spec:** cleanup `TSLiteralType` ([#11624](https://github.com/typescript-eslint/typescript-eslint/pull/11624))
+
+### ❤️ Thank You
+
+- Abraham Guo
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.0 (2025-10-06)
+
+### 🚀 Features
+
+- **typescript-estree:** private identifiers can only appear on LHS of in expressions ([#9232](https://github.com/typescript-eslint/typescript-eslint/pull/9232))
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid abstract method and accessor to have implementation ([#11657](https://github.com/typescript-eslint/typescript-eslint/pull/11657))
+- **typescript-estree:** forbid `abstract` modifier in object methods ([#11656](https://github.com/typescript-eslint/typescript-eslint/pull/11656))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+- Joshua Chen
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.45.0 (2025-09-29)
 
 ### 🩹 Fixes

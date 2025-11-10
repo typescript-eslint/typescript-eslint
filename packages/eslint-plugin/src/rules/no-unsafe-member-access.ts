@@ -15,6 +15,7 @@ import {
 const enum State {
   Unsafe = 1,
   Safe = 2,
+  Chained = 3,
 }
 
 function createDataType(type: ts.Type): '`any`' | '`error` typed' {
@@ -22,7 +23,18 @@ function createDataType(type: ts.Type): '`any`' | '`error` typed' {
   return isErrorType ? '`error` typed' : '`any`';
 }
 
-export default createRule({
+export type Options = [
+  {
+    allowOptionalChaining?: boolean;
+  },
+];
+
+export type MessageIds =
+  | 'unsafeComputedMemberAccess'
+  | 'unsafeMemberExpression'
+  | 'unsafeThisMemberExpression';
+
+export default createRule<Options, MessageIds>({
   name: 'no-unsafe-member-access',
   meta: {
     type: 'problem',
@@ -41,10 +53,26 @@ export default createRule({
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowOptionalChaining: {
+            type: 'boolean',
+            description:
+              'Whether to allow `?.` optional chains on `any` values.',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      allowOptionalChaining: false,
+    },
+  ],
+  create(context, [{ allowOptionalChaining }]) {
     const services = getParserServices(context);
     const compilerOptions = services.program.getCompilerOptions();
     const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
@@ -54,7 +82,20 @@ export default createRule({
 
     const stateCache = new Map<TSESTree.Node, State>();
 
+    // Case notes:
+    // value?.outer.middle.inner
+    // The ChainExpression is a child of the root expression, and a parent of all the MemberExpressions.
+    // But the left-most expression is what we want to report on: the inner-most expressions.
+    // In fact, this is true even if the chain is on the inside!
+    // value.outer.middle?.inner;
+    // It was already true that every `object` (MemberExpression) has optional: boolean
+
     function checkMemberExpression(node: TSESTree.MemberExpression): State {
+      if (allowOptionalChaining && node.optional) {
+        stateCache.set(node, State.Chained);
+        return State.Chained;
+      }
+
       const cachedState = stateCache.get(node);
       if (cachedState) {
         return cachedState;
@@ -77,8 +118,7 @@ export default createRule({
       if (state === State.Unsafe) {
         const propertyName = context.sourceCode.getText(node.property);
 
-        let messageId: 'unsafeMemberExpression' | 'unsafeThisMemberExpression' =
-          'unsafeMemberExpression';
+        let messageId: MessageIds = 'unsafeMemberExpression';
 
         if (!isNoImplicitThis) {
           // `this.foo` or `this.foo[bar]`
@@ -114,6 +154,13 @@ export default createRule({
       'MemberExpression[computed = true] > *.property'(
         node: TSESTree.Expression,
       ): void {
+        if (
+          allowOptionalChaining &&
+          (node.parent as TSESTree.MemberExpression).optional
+        ) {
+          return;
+        }
+
         if (
           // x[1]
           node.type === AST_NODE_TYPES.Literal ||

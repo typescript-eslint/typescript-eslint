@@ -43,3 +43,20 @@ arr[1];
 let idx = 1;
 arr[idx];
 arr[idx++];
+
+Incorrect
+
+declare const outer: any;
+
+outer.inner;
+      ~~~~~ Unsafe member access .inner on an `any` value.
+outer.middle.inner;
+      ~~~~~~ Unsafe member access .middle on an `any` value.
+
+Correct
+Options: { "allowOptionalChaining": true }
+
+declare const outer: any;
+
+outer?.inner;
+outer?.middle?.inner;

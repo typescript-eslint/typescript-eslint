@@ -66,7 +66,6 @@ export default defineConfig(
         project: true,
         // Add this line
         project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
-        tsconfigRootDir: import.meta.dirname,
       },
     },
   },
@@ -89,7 +88,6 @@ module.exports = {
     project: true,
     // Add this line
     project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
-    tsconfigRootDir: import.meta.dirname,
   },
   plugins: ['@typescript-eslint'],
   root: true,
@@ -118,7 +116,6 @@ export default defineConfig(
         project: ['./tsconfig.eslint.json', './**/tsconfig.json'],
         // Add this line
         project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
-        tsconfigRootDir: import.meta.dirname,
       },
     },
   },

@@ -147,11 +147,6 @@ function foo(): Promise<string> | boolean {
       code: `
 abstract class Test {
   abstract test1(): Promise<number>;
-
-  // abstract method with body is always an error but it still parses into valid AST
-  abstract test2(): Promise<number> {
-    return Promise.resolve(1);
-  }
 }
       `,
     },
@@ -218,6 +213,26 @@ function overloadingThatIncludeAny(a?: boolean): any | number {
       `,
       options: [{ allowAny: true }],
     },
+    `
+class Base {
+  async foo() {
+    return Promise.resolve(42);
+  }
+}
+
+class Derived extends Base {
+  override async foo() {
+    return Promise.resolve(2000);
+  }
+}
+    `,
+    `
+class Test {
+  public override async method() {
+    return Promise.resolve(1);
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -937,6 +952,63 @@ function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
         },
       ],
       options: [{ allowAny: false }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11729
+    {
+      code: `
+class Base {
+  async foo() {
+    return Promise.resolve(42);
+  }
+}
+
+class Derived extends Base {
+  override foo() {
+    return Promise.resolve(2000);
+  }
+}
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'missingAsync',
+        },
+      ],
+      output: `
+class Base {
+  async foo() {
+    return Promise.resolve(42);
+  }
+}
+
+class Derived extends Base {
+  override async foo() {
+    return Promise.resolve(2000);
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  public override method() {
+    return Promise.resolve(1);
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'missingAsync',
+        },
+      ],
+      output: `
+class Test {
+  public override async method() {
+    return Promise.resolve(1);
+  }
+}
+      `,
     },
   ],
 });

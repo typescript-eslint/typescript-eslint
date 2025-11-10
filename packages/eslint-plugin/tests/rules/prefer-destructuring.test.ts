@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import rule from '../../src/rules/prefer-destructuring';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -472,7 +470,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       options: [
@@ -487,7 +484,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       options: [
@@ -502,7 +498,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       options: [
@@ -525,7 +520,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       output: null,
@@ -539,7 +533,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       output: null,
@@ -553,7 +546,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       output: null,
@@ -567,7 +559,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       output: null,
@@ -583,7 +574,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       output: null,
@@ -599,7 +589,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       output: null,
@@ -613,7 +602,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       output: null,
@@ -627,7 +615,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       output: null,
@@ -641,7 +628,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       output: null,
@@ -655,7 +641,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       output: null,
@@ -669,7 +654,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       output: null,
@@ -683,7 +667,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'array' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       output: null,
@@ -697,7 +680,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       options: [{ object: true }, { enforceForRenamedProperties: true }],
@@ -712,7 +694,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       options: [{ object: true }, { enforceForRenamedProperties: true }],
@@ -727,7 +708,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       options: [
@@ -748,7 +728,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       options: [
@@ -770,7 +749,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       options: [
@@ -789,7 +767,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       options: [
@@ -808,7 +785,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       options: [
@@ -827,7 +803,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       options: [
@@ -846,7 +821,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       options: [
@@ -865,7 +839,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       options: [
@@ -883,7 +856,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       options: [{ object: true }, { enforceForRenamedProperties: true }],
@@ -898,7 +870,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       options: [{ object: true }, { enforceForRenamedProperties: true }],
@@ -915,7 +886,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       output: `
@@ -933,7 +903,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       output: `
@@ -948,7 +917,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       output: 'const {call} = () => null;',
@@ -963,7 +931,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       output: `
@@ -981,7 +948,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       output: `
@@ -998,7 +964,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       output: `
@@ -1017,7 +982,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       options: [{ object: true }, { enforceForRenamedProperties: true }],
@@ -1033,7 +997,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       options: [{ object: true }, { enforceForRenamedProperties: true }],
@@ -1049,7 +1012,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
       options: [{ object: true }, { enforceForRenamedProperties: true }],
@@ -1066,7 +1028,6 @@ ruleTester.run('prefer-destructuring', rule, {
         {
           data: { type: 'object' },
           messageId: 'preferDestructuring',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
       options: [{ object: true }, { enforceForRenamedProperties: true }],

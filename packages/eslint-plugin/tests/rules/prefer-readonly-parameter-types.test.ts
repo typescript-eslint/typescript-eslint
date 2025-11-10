@@ -311,6 +311,114 @@ function foo(arg: Test) {}
 
       const willNotCrash = (foo: Readonly<WithSymbol>) => {};
     `,
+    `
+type TaggedBigInt = bigint & {
+  readonly __tag: unique symbol;
+};
+function custom1(arg: TaggedBigInt) {}
+    `,
+    `
+type TaggedNumber = number & {
+  readonly __tag: unique symbol;
+};
+function custom1(arg: TaggedNumber) {}
+    `,
+    `
+type TaggedString = string & {
+  readonly __tag: unique symbol;
+};
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type TaggedString = string & {
+  readonly __tagA: unique symbol;
+  readonly __tagB: unique symbol;
+};
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type TaggedString = string & {
+  readonly __tag: unique symbol;
+};
+
+type OtherSpecialString = string & {
+  readonly ' __other_tag': unique symbol;
+};
+
+function custom1(arg: TaggedString | OtherSpecialString) {}
+    `,
+    `
+type TaggedTemplateLiteral = \`\${string}-\${string}\` & {
+  readonly __tag: unique symbol;
+};
+function custom1(arg: TaggedTemplateLiteral) {}
+    `,
+    `
+type TaggedNumber = 1 & {
+  readonly __tag: unique symbol;
+};
+
+function custom1(arg: TaggedNumber) {}
+    `,
+    `
+type TaggedNumber = (1 | 2) & {
+  readonly __tag: unique symbol;
+};
+
+function custom1(arg: TaggedNumber) {}
+    `,
+    `
+type TaggedString = ('a' | 'b') & {
+  readonly __tag: unique symbol;
+};
+
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type Strings = 'one' | 'two' | 'three';
+
+type TaggedString = Strings & {
+  readonly __tag: unique symbol;
+};
+
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type Strings = 'one' | 'two' | 'three';
+
+type TaggedString = Strings & {
+  __tag: unique symbol;
+};
+
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type TaggedString = string & {
+  __tag: unique symbol;
+} & {
+  __tag: unique symbol;
+};
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type TaggedString = string & {
+  __tagA: unique symbol;
+} & {
+  __tagB: unique symbol;
+};
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type TaggedString = string &
+  ({ __tag: unique symbol } | { __tag: unique symbol });
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type TaggedFunction = (() => void) & {
+  readonly __tag: unique symbol;
+};
+function custom1(arg: TaggedFunction) {}
+    `,
     {
       code: `
         type Callback<T> = (options: T) => void;
@@ -896,6 +1004,23 @@ function foo(arg: Test) {}
           column: 22,
           endColumn: 30,
           line: 8,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+class ClassExample {}
+type Test = typeof ClassExample & {
+  readonly property: boolean;
+};
+function foo(arg: Test) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 23,
+          line: 6,
           messageId: 'shouldBeReadonly',
         },
       ],

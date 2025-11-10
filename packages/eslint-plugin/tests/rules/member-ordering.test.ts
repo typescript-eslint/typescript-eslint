@@ -4465,7 +4465,7 @@ abstract class Foo {
   B: string;
   public C() {}
   private D() {}
-  abstract E() {}
+  E() {}
 }
       `,
       errors: [
@@ -4476,6 +4476,15 @@ abstract class Foo {
             rank: 'public abstract field',
           },
           line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'E',
+            rank: 'private instance method',
+          },
+          line: 7,
           messageId: 'incorrectGroupOrder',
         },
       ],
