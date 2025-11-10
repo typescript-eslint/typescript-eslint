@@ -146,7 +146,7 @@ if (returnsPromise?.call()) {
     `,
     'Promise.resolve() ?? false;',
     `
-function test(a: Promise<void> | undefinded) {
+function test(a: Promise<void> | undefined) {
   const foo = a ?? Promise.reject();
 }
     `,

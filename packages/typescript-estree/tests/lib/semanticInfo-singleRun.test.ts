@@ -128,7 +128,7 @@ describe('semanticInfo - singleRun', () => {
     expect(createProgramFromConfigFile).not.toHaveBeenCalled();
   });
 
-  it('should not create any programs ahead of time when when TSESTREE_SINGLE_RUN=false, even if other inferrence criteria apply', () => {
+  it('should not create any programs ahead of time when when TSESTREE_SINGLE_RUN=false, even if other inference criteria apply', () => {
     vi.stubEnv('TSESTREE_SINGLE_RUN', 'false');
 
     // Normally CI=true would be used to infer singleRun=true, but TSESTREE_SINGLE_RUN is explicitly set to false
