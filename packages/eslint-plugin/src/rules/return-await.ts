@@ -267,9 +267,9 @@ export default createRule({
     function insertAwait(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.Expression,
-      isHighPrecendence: boolean,
+      isHighPrecedence: boolean,
     ): TSESLint.RuleFix | TSESLint.RuleFix[] {
-      if (isHighPrecendence) {
+      if (isHighPrecedence) {
         return fixer.insertTextBefore(node, 'await ');
       }
       return [

@@ -88,7 +88,7 @@ export default createRule<Options, MessageId>({
     messages: {
       conditional: 'Expected non-Promise value in a boolean conditional.',
       predicate: 'Expected a non-Promise value to be returned.',
-      spread: 'Expected a non-Promise value to be spreaded in an object.',
+      spread: 'Expected a non-Promise value to be spread in an object.',
       voidReturnArgument:
         'Promise returned in function argument where a void return was expected.',
       voidReturnAttribute:

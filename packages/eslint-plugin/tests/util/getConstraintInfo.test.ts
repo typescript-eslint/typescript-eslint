@@ -14,6 +14,7 @@ const DEFAULT_PARSER_OPTIONS = {
   disallowAutomaticSingleRunInference: true,
   filePath: path.join(FIXTURES_DIR, 'file.ts'),
   project: './tsconfig.json',
+  projectService: false,
   tsconfigRootDir: FIXTURES_DIR,
 } as const satisfies ParserOptions;
 

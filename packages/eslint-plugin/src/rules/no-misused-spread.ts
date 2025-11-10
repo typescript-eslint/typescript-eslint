@@ -154,7 +154,7 @@ export default createRule<Options, MessageIds>({
     function getPromiseSpreadSuggestions(
       node: TSESTree.Expression,
     ): TSESLint.ReportSuggestionArray<MessageIds> {
-      const isHighPrecendence = isHigherPrecedenceThanAwait(
+      const isHighPrecedence = isHigherPrecedenceThanAwait(
         services.esTreeNodeToTSNodeMap.get(node),
       );
 
@@ -162,7 +162,7 @@ export default createRule<Options, MessageIds>({
         {
           messageId: 'addAwait',
           fix: fixer =>
-            isHighPrecendence
+            isHighPrecedence
               ? fixer.insertTextBefore(node, 'await ')
               : [
                   fixer.insertTextBefore(node, 'await ('),

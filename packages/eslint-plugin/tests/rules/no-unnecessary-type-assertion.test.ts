@@ -1,17 +1,12 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import path from 'node:path';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
+import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
 
-const rootDir = path.join(__dirname, '..', 'fixtures');
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      projectService: false,
-      tsconfigRootDir: rootDir,
-    },
-  },
+const rootDir = getFixturesRootDir();
+
+const ruleTester = createRuleTesterWithTypes({
+  project: './tsconfig.json',
 });
 
 const optionsWithOnUncheckedIndexedAccess = {

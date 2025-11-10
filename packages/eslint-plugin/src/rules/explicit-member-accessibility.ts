@@ -232,14 +232,14 @@ export default createRule<Options, MessageIds>({
           token.value === 'public'
         ) {
           keywordRange = structuredClone(token.range);
-          const commensAfterPublicKeyword =
+          const commentsAfterPublicKeyword =
             context.sourceCode.getCommentsAfter(token);
-          if (commensAfterPublicKeyword.length) {
+          if (commentsAfterPublicKeyword.length) {
             // public /* Hi there! */ static foo()
             // ^^^^^^^
             rangeToRemove = [
               token.range[0],
-              commensAfterPublicKeyword[0].range[0],
+              commentsAfterPublicKeyword[0].range[0],
             ];
             break;
           } else {
