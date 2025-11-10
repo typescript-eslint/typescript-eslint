@@ -1,3 +1,19 @@
+## 8.46.4 (2025-11-10)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] fix double-report on computed literal identifiers ([#11006](https://github.com/typescript-eslint/typescript-eslint/pull/11006), [#10958](https://github.com/typescript-eslint/typescript-eslint/issues/10958))
+- **eslint-plugin:** handle override modifier in promise-function-async fixer ([#11730](https://github.com/typescript-eslint/typescript-eslint/pull/11730))
+- **parser:** error when both `projectService` and `project` are set ([#11333](https://github.com/typescript-eslint/typescript-eslint/pull/11333))
+
+### ❤️ Thank You
+
+- Evgeny Stepanovych @undsoft
+- Kentaro Suzuki @sushichan044
+- Maria Solano @MariaSolOs
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.46.3 (2025-11-03)
 
 ### 🩹 Fixes
