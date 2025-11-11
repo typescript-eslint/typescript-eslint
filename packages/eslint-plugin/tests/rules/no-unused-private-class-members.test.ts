@@ -678,7 +678,7 @@ class Foo {
       errors: [
         {
           data: {
-            classMemberName: '#privateMember',
+            classMemberName: 'privateMember',
           },
           messageId: 'unusedPrivateClassMember',
         },

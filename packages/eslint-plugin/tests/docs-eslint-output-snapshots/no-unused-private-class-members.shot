@@ -1,17 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-unused-private-class-members.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 class A {
   private foo = 123;
-          ~~~ 'foo' is defined but never used.
+          ~~~ Private class member 'foo' is defined but never used.
 }
-"
-`;
 
-exports[`Validating rule docs no-unused-private-class-members.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 class A {
   private foo = 123;
@@ -20,5 +14,3 @@ class A {
     console.log(this.foo);
   }
 }
-"
-`;
