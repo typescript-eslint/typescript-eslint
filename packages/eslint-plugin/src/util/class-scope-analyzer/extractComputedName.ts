@@ -6,11 +6,11 @@ import type { Key, MemberNode } from './types';
 
 import { privateKey, publicKey } from './types';
 
-export type ExtractedName = {
+export interface ExtractedName {
   key: Key;
   codeName: string;
   nameNode: TSESTree.Node;
-};
+}
 
 function extractComputedName(
   computedName: TSESTree.Expression,
@@ -18,8 +18,8 @@ function extractComputedName(
   if (computedName.type === AST_NODE_TYPES.Literal) {
     const name = computedName.value?.toString() ?? 'null';
     return {
-      key: publicKey(name),
       codeName: name,
+      key: publicKey(name),
       nameNode: computedName,
     };
   }
@@ -29,8 +29,8 @@ function extractComputedName(
   ) {
     const name = computedName.quasis[0].value.raw;
     return {
-      key: publicKey(name),
       codeName: name,
+      key: publicKey(name),
       nameNode: computedName,
     };
   }
@@ -42,14 +42,14 @@ function extractNonComputedName(
   const name = nonComputedName.name;
   if (nonComputedName.type === AST_NODE_TYPES.PrivateIdentifier) {
     return {
-      key: privateKey(nonComputedName),
       codeName: `#${name}`,
+      key: privateKey(nonComputedName),
       nameNode: nonComputedName,
     };
   }
   return {
-    key: publicKey(name),
     codeName: name,
+    key: publicKey(name),
     nameNode: nonComputedName,
   };
 }

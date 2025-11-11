@@ -2,28 +2,11 @@
 // Original Code: https://github.com/eslint/eslint/blob/522d8a32f326c52886c531f43cf6a1ff15af8286/tests/lib/rules/no-unused-private-class-members.js
 // License      : https://github.com/eslint/eslint/blob/522d8a32f326c52886c531f43cf6a1ff15af8286/LICENSE
 
-import type { TestCaseError } from '@typescript-eslint/rule-tester';
-
 import { RuleTester } from '@typescript-eslint/rule-tester';
-
-import type { MessageIds } from '../../src/rules/no-unused-private-class-members';
 
 import rule from '../../src/rules/no-unused-private-class-members';
 
 const ruleTester = new RuleTester();
-
-/** Returns an expected error for defined-but-not-used private class member. */
-function definedError(
-  classMemberName: string,
-  addHashTag = true,
-): TestCaseError<MessageIds> {
-  return {
-    data: {
-      classMemberName: addHashTag ? `#${classMemberName}` : classMemberName,
-    },
-    messageId: 'unusedPrivateClassMember',
-  };
-}
 
 ruleTester.run('no-unused-private-class-members', rule, {
   valid: [
@@ -136,166 +119,312 @@ class Foo {
 }
     `,
 
-    ...[
-      `
+    `
 class Foo {
-  @# = 42;
+  #privateMember = 42;
   method() {
-    return this.#;
+    return this.#privateMember;
   }
 }
-      `,
-      `
+    `,
+    `
 class Foo {
-  @# = 42;
-  anotherMember = this.#;
+  private privateMember = 42;
+  method() {
+    return this.privateMember;
+  }
 }
-      `,
-      `
+    `,
+    `
 class Foo {
-  @# = 42;
+  #privateMember = 42;
+  anotherMember = this.#privateMember;
+}
+    `,
+    `
+class Foo {
+  private privateMember = 42;
+  anotherMember = this.privateMember;
+}
+    `,
+    `
+class Foo {
+  #privateMember = 42;
   foo() {
-    anotherMember = this.#;
+    anotherMember = this.#privateMember;
   }
 }
-      `,
-      `
+    `,
+    `
+class Foo {
+  private privateMember = 42;
+  foo() {
+    anotherMember = this.privateMember;
+  }
+}
+    `,
+    `
 class C {
-  @#;
+  #privateMember;
 
   foo() {
-    bar((this.# += 1));
+    bar((this.#privateMember += 1));
   }
 }
-      `,
-      `
-class Foo {
-  @# = 42;
-  method() {
-    return someGlobalMethod(this.#);
-  }
-}
-      `,
-      `
+    `,
+    `
 class C {
-  @#;
+  private privateMember;
+
+  foo() {
+    bar((this.privateMember += 1));
+  }
+}
+    `,
+    `
+class Foo {
+  #privateMember = 42;
+  method() {
+    return someGlobalMethod(this.#privateMember);
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember = 42;
+  method() {
+    return someGlobalMethod(this.privateMember);
+  }
+}
+    `,
+    `
+class C {
+  #privateMember;
 
   foo() {
     return class {};
   }
 
   bar() {
-    return this.#;
+    return this.#privateMember;
   }
 }
-      `,
-      `
-class Foo {
-  @#;
-  method() {
-    for (const bar in this.#) {
-    }
-  }
-}
-      `,
-      `
-class Foo {
-  @#;
-  method() {
-    for (const bar of this.#) {
-    }
-  }
-}
-      `,
-      `
-class Foo {
-  @#;
-  method() {
-    [bar = 1] = this.#;
-  }
-}
-      `,
-      `
-class Foo {
-  @#;
-  method() {
-    [bar] = this.#;
-  }
-}
-      `,
-      `
+    `,
+    `
 class C {
-  @#;
+  private privateMember;
+
+  foo() {
+    return class {};
+  }
+
+  bar() {
+    return this.privateMember;
+  }
+}
+    `,
+    `
+class Foo {
+  #privateMember;
+  method() {
+    for (const bar in this.#privateMember) {
+    }
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember;
+  method() {
+    for (const bar in this.privateMember) {
+    }
+  }
+}
+    `,
+    `
+class Foo {
+  #privateMember;
+  method() {
+    for (const bar of this.#privateMember) {
+    }
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember;
+  method() {
+    for (const bar of this.privateMember) {
+    }
+  }
+}
+    `,
+    `
+class Foo {
+  #privateMember;
+  method() {
+    [bar = 1] = this.#privateMember;
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember;
+  method() {
+    [bar = 1] = this.privateMember;
+  }
+}
+    `,
+    `
+class Foo {
+  #privateMember;
+  method() {
+    [bar] = this.#privateMember;
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember;
+  method() {
+    [bar] = this.privateMember;
+  }
+}
+    `,
+    `
+class C {
+  #privateMember;
 
   method() {
-    ({ [this.#]: a } = foo);
+    ({ [this.#privateMember]: a } = foo);
   }
 }
-      `,
-      `
+    `,
+    `
 class C {
-  @set #(value) {
+  private privateMember;
+
+  method() {
+    ({ [this.privateMember]: a } = foo);
+  }
+}
+    `,
+    `
+class C {
+  set #privateMember(value) {
     doSomething(value);
   }
-  @get #() {
+  get #privateMember() {
     return something();
   }
   method() {
-    this.# += 1;
+    this.#privateMember += 1;
   }
 }
-      `,
-      `
+    `,
+    `
+class C {
+  private set privateMember(value) {
+    doSomething(value);
+  }
+  private get privateMember() {
+    return something();
+  }
+  method() {
+    this.privateMember += 1;
+  }
+}
+    `,
+    `
 class Foo {
-  @set #(value) {}
+  set #privateMember(value) {}
 
   method(a) {
-    [this.#] = a;
+    [this.#privateMember] = a;
   }
 }
-      `,
-      `
+    `,
+    `
+class Foo {
+  private set privateMember(value) {}
+
+  method(a) {
+    [this.privateMember] = a;
+  }
+}
+    `,
+    `
 class C {
-  @get #() {
+  get #privateMember() {
     return something();
   }
-  @set #(value) {
+  set #privateMember(value) {
     doSomething(value);
   }
   method() {
-    this.# += 1;
+    this.#privateMember += 1;
   }
 }
-      `,
+    `,
+    `
+class C {
+  private get privateMember() {
+    return something();
+  }
+  private set privateMember(value) {
+    doSomething(value);
+  }
+  method() {
+    this.privateMember += 1;
+  }
+}
+    `,
 
-      //--------------------------------------------------------------------------
-      // Method definitions
-      //--------------------------------------------------------------------------
-      `
+    //--------------------------------------------------------------------------
+    // Method definitions
+    //--------------------------------------------------------------------------
+    `
 class Foo {
-  @#() {
+  #privateMember() {
     return 42;
   }
   anotherMethod() {
-    return this.#();
+    return this.#privateMember();
   }
 }
-      `,
-      `
+    `,
+    `
+class Foo {
+  private privateMember() {
+    return 42;
+  }
+  anotherMethod() {
+    return this.privateMember();
+  }
+}
+    `,
+    `
 class C {
-  @set #(value) {
+  set #privateMember(value) {
     doSomething(value);
   }
 
   foo() {
-    this.# = 1;
+    this.#privateMember = 1;
   }
 }
-      `,
-    ].flatMap(code => [
-      code.replaceAll('#', '#privateMember').replaceAll('@', ''),
-      code.replaceAll('#', 'privateMember').replaceAll('@', 'private '),
-    ]),
+    `,
+    `
+class C {
+  private set privateMember(value) {
+    doSomething(value);
+  }
+
+  foo() {
+    this.privateMember = 1;
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -314,7 +443,14 @@ class C {
   }
 }
       `,
-      errors: [definedError('unusedInOuterClass')],
+      errors: [
+        {
+          data: {
+            classMemberName: '#unusedInOuterClass',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
     },
     {
       code: `
@@ -342,7 +478,14 @@ class C {
   }
 }
       `,
-      errors: [definedError('unusedOnlyInSecondNestedClass')],
+      errors: [
+        {
+          data: {
+            classMemberName: '#unusedOnlyInSecondNestedClass',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
     },
     {
       code: `
@@ -366,8 +509,11 @@ class C {
       `,
       errors: [
         {
-          ...definedError('usedOnlyInTheSecondInnerClass'),
+          data: {
+            classMemberName: '#usedOnlyInTheSecondInnerClass',
+          },
           line: 3,
+          messageId: 'unusedPrivateClassMember',
         },
       ],
     },
@@ -377,7 +523,14 @@ class C {
   private accessor accessorMember = 42;
 }
       `,
-      errors: [definedError('accessorMember', false)],
+      errors: [
+        {
+          data: {
+            classMemberName: 'accessorMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
     },
     {
       code: `
@@ -385,7 +538,14 @@ class C {
   private static staticMember = 42;
 }
       `,
-      errors: [definedError('staticMember', false)],
+      errors: [
+        {
+          data: {
+            classMemberName: 'staticMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
     },
     {
       code: `
@@ -393,7 +553,14 @@ class Test1 {
   constructor(private parameterProperty: number) {}
 }
       `,
-      errors: [definedError('parameterProperty', false)],
+      errors: [
+        {
+          data: {
+            classMemberName: 'parameterProperty',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
     },
     {
       code: `
@@ -401,7 +568,14 @@ class Test1 {
   constructor(private readonly parameterProperty: number) {}
 }
       `,
-      errors: [definedError('parameterProperty', false)],
+      errors: [
+        {
+          data: {
+            classMemberName: 'parameterProperty',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
     },
     {
       code: `
@@ -409,7 +583,14 @@ class Test1 {
   constructor(private readonly parameterProperty: number = 1) {}
 }
       `,
-      errors: [definedError('parameterProperty', false)],
+      errors: [
+        {
+          data: {
+            classMemberName: 'parameterProperty',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
     },
 
     {
@@ -422,7 +603,14 @@ class C {
 const instance = new C();
 console.log(instance.usedOutsideClass);
       `,
-      errors: [definedError('usedOutsideClass', false)],
+      errors: [
+        {
+          data: {
+            classMemberName: 'usedOutsideClass',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
     },
     {
       // usage of a property outside the class
@@ -434,221 +622,611 @@ class C {
 const instance = new C();
 console.log(instance['usedOutsideClass']);
       `,
-      errors: [definedError('usedOutsideClass', false)],
+      errors: [
+        {
+          data: {
+            classMemberName: 'usedOutsideClass',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
     },
     {
       // too much indirection so we just bail
       code: `
-  class Foo {
-    private prop: number;
+class Foo {
+  private prop: number;
 
-    method() {
-      const self1 = this;
-      const self2 = self1;
-      return self2.prop;
-    }
+  method() {
+    const self1 = this;
+    const self2 = self1;
+    return self2.prop;
   }
+}
       `,
-      errors: [definedError('prop', false)],
+      errors: [
+        {
+          data: {
+            classMemberName: 'prop',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
     },
 
-    ...[
-      {
-        code: `
+    {
+      code: `
 class Foo {
-  @# = 5;
+  #privateMember = 5;
 }
       `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private privateMember = 5;
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
 class First {}
 class Second {
-  @# = 5;
+  #privateMember = 5;
 }
       `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class First {}
+class Second {
+  private privateMember = 5;
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
 class First {
-  @# = 5;
+  #privateMember = 5;
 }
 class Second {}
       `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
 class First {
-  @# = 5;
-  @#2 = 5;
+  private privateMember = 5;
+}
+class Second {}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class First {
+  #privateMember = 5;
+  #privateMember2 = 5;
 }
       `,
-        errors: [definedError('#', false), definedError('#2', false)],
-      },
-      {
-        code: `
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+        {
+          data: {
+            classMemberName: '#privateMember2',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class First {
+  private privateMember = 5;
+  private privateMember2 = 5;
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+        {
+          data: {
+            classMemberName: 'privateMember2',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {
-  @# = 5;
+  #privateMember = 5;
   method() {
-    this.# = 42;
+    this.#privateMember = 42;
   }
 }
       `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {
-  @# = 5;
+  private privateMember = 5;
   method() {
-    this.# += 42;
+    this.privateMember = 42;
   }
 }
       `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  #privateMember = 5;
+  method() {
+    this.#privateMember += 42;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private privateMember = 5;
+  method() {
+    this.privateMember += 42;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
 class C {
-  @#;
+  #privateMember;
 
   foo() {
-    this.#++;
+    this.#privateMember++;
   }
 }
       `,
-        errors: [definedError('#', false)],
-      },
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class C {
+  private privateMember;
 
-      //--------------------------------------------------------------------------
-      // Unused method definitions
-      //--------------------------------------------------------------------------
-      {
-        code: `
-class Foo {
-  @#() {}
+  foo() {
+    this.privateMember++;
+  }
 }
       `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+
+    //--------------------------------------------------------------------------
+    // Unused method definitions
+    //--------------------------------------------------------------------------
+    {
+      code: `
 class Foo {
-  @#() {}
-  @#Used() {
+  #privateMember() {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private privateMember() {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  #privateMember() {}
+  #privateMemberUsed() {
     return 42;
   }
   publicMethod() {
-    return this.#Used();
+    return this.#privateMemberUsed();
   }
 }
       `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {
-  @set #(value) {}
+  private privateMember() {}
+  private privateMemberUsed() {
+    return 42;
+  }
+  publicMethod() {
+    return this.privateMemberUsed();
+  }
 }
       `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {
-  @#;
+  set #privateMember(value) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private set privateMember(value) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  #privateMember;
   method() {
-    for (this.# in bar) {
+    for (this.#privateMember in bar) {
     }
   }
 }
       `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {
-  @#;
+  private privateMember;
   method() {
-    for (this.# of bar) {
+    for (this.privateMember in bar) {
     }
   }
 }
       `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
-class Foo {
-  @#;
-  method() {
-    ({ x: this.# } = bar);
-  }
-}
-      `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
-class Foo {
-  @#;
-  method() {
-    [...this.#] = bar;
-  }
-}
-      `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
-class Foo {
-  @#;
-  method() {
-    [this.# = 1] = bar;
-  }
-}
-      `,
-        errors: [definedError('#', false)],
-      },
-      {
-        code: `
-class Foo {
-  @#;
-  method() {
-    [this.#] = bar;
-  }
-}
-      `,
-        errors: [definedError('#', false)],
-      },
-    ].flatMap(({ code, errors }) => [
-      {
-        code: code.replaceAll('#', '#privateMember').replaceAll('@', ''),
-        errors: errors.map(error => ({
-          ...error,
+      errors: [
+        {
           data: {
-            classMemberName: (error.data?.classMemberName as string).replaceAll(
-              '#',
-              '#privateMember',
-            ),
+            classMemberName: 'privateMember',
           },
-        })),
-      },
-      {
-        code: code.replaceAll('#', 'privateMember').replaceAll('@', 'private '),
-        errors: errors.map(error => ({
-          ...error,
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  #privateMember;
+  method() {
+    for (this.#privateMember of bar) {
+    }
+  }
+}
+      `,
+      errors: [
+        {
           data: {
-            classMemberName: (error.data?.classMemberName as string).replaceAll(
-              '#',
-              'privateMember',
-            ),
+            classMemberName: '#privateMember',
           },
-        })),
-      },
-    ]),
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private privateMember;
+  method() {
+    for (this.privateMember of bar) {
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  #privateMember;
+  method() {
+    ({ x: this.#privateMember } = bar);
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private privateMember;
+  method() {
+    ({ x: this.privateMember } = bar);
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  #privateMember;
+  method() {
+    [...this.#privateMember] = bar;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private privateMember;
+  method() {
+    [...this.privateMember] = bar;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  #privateMember;
+  method() {
+    [this.#privateMember = 1] = bar;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private privateMember;
+  method() {
+    [this.privateMember = 1] = bar;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  #privateMember;
+  method() {
+    [this.#privateMember] = bar;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: '#privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private privateMember;
+  method() {
+    [this.privateMember] = bar;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
   ],
 });

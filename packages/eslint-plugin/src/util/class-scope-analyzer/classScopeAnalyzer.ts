@@ -10,8 +10,8 @@ import { Visitor } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { ClassNode, Key, MemberNode } from './types';
-import { findVariable, nullThrows, NullThrowsReasons } from '..';
 
+import { nullThrows, NullThrowsReasons } from '..';
 import {
   extractNameForMember,
   extractNameForMemberExpression,
@@ -69,6 +69,20 @@ export class Member {
     return new Member(node, name.key, name.codeName, name.nameNode);
   }
 
+  public isAccessor(): boolean {
+    if (
+      this.node.type === AST_NODE_TYPES.MethodDefinition ||
+      this.node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
+    ) {
+      return this.node.kind === 'set' || this.node.kind === 'get';
+    }
+
+    return (
+      this.node.type === AST_NODE_TYPES.AccessorProperty ||
+      this.node.type === AST_NODE_TYPES.TSAbstractAccessorProperty
+    );
+  }
+
   public isHashPrivate(): boolean {
     return (
       'key' in this.node &&
@@ -82,20 +96,6 @@ export class Member {
 
   public isStatic(): boolean {
     return this.node.static;
-  }
-
-  public isAccessor(): boolean {
-    if (
-      this.node.type === AST_NODE_TYPES.MethodDefinition ||
-      this.node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
-    ) {
-      return this.node.kind === 'set' || this.node.kind === 'get';
-    }
-
-    return (
-      this.node.type === AST_NODE_TYPES.AccessorProperty ||
-      this.node.type === AST_NODE_TYPES.TSAbstractAccessorProperty
-    );
   }
 
   public isUsed(): boolean {
@@ -172,13 +172,13 @@ function countReference(identifierParent: TSESTree.Node, member: Member) {
   }
 
   // [...this.#unusedInRestPattern] = bar;
-  if (identifierGrandparent.type === 'RestElement') {
+  if (identifierGrandparent.type === AST_NODE_TYPES.RestElement) {
     member.writeCount += 1;
     return;
   }
 
   // [this.#unusedInAssignmentPattern] = bar;
-  if (identifierGrandparent.type === 'ArrayPattern') {
+  if (identifierGrandparent.type === AST_NODE_TYPES.ArrayPattern) {
     member.writeCount += 1;
     return;
   }
@@ -244,15 +244,14 @@ abstract class ThisScope extends Visitor {
   }
 
   private findNearestScope(node: TSESTree.Node): Scope | null {
-    let currentScope = null;
-    let currentNode = node;
-    let i = 0;
+    let currentScope: Scope | null | undefined;
+    let currentNode: TSESTree.Node | undefined = node;
     do {
       currentScope = this.scopeManager.acquire(currentNode);
-      if (currentNode?.parent == null) {
+      if (currentNode.parent == null) {
         break;
       }
-      currentNode = currentNode?.parent;
+      currentNode = currentNode.parent;
     } while (currentScope == null);
     return currentScope;
   }
@@ -321,9 +320,9 @@ abstract class ThisScope extends Visitor {
             }
 
             if (
-              variable.references.filter(
+              variable.references.some(
                 ref => ref.isWrite() && ref.init !== true,
-              ).length > 0
+              )
             ) {
               // variable is assigned to multiple times so we can't be sure that it's still the same class
               return null;
@@ -351,9 +350,7 @@ abstract class ThisScope extends Visitor {
             const typeAnnotation = (() => {
               if (
                 'typeAnnotation' in firstDef.name &&
-                firstDef.name.typeAnnotation != null &&
-                firstDef.name.typeAnnotation.type ===
-                  AST_NODE_TYPES.TSTypeAnnotation
+                firstDef.name.typeAnnotation != null
               ) {
                 return firstDef.name.typeAnnotation.typeAnnotation;
               }
@@ -648,7 +645,7 @@ class ClassScope extends ThisScope implements ClassScopeResult {
       switch (memberNode.type) {
         case AST_NODE_TYPES.MethodDefinition:
           if (memberNode.kind === 'constructor') {
-            for (let parameter of memberNode.value.params) {
+            for (const parameter of memberNode.value.params) {
               if (parameter.type !== AST_NODE_TYPES.TSParameterProperty) {
                 continue;
               }
@@ -664,7 +661,7 @@ class ClassScope extends ThisScope implements ClassScopeResult {
             // break instead of falling through because the constructor is not a "member" we track
             break;
           }
-        // intentional fall through
+        // intentional fallthrough
         case AST_NODE_TYPES.AccessorProperty:
         case AST_NODE_TYPES.PropertyDefinition:
         case AST_NODE_TYPES.TSAbstractAccessorProperty:
