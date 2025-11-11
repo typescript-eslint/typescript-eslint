@@ -1479,7 +1479,46 @@ export class Converter {
           expression: false, // is not present in ESTreeNode
           generator: false,
           id: null,
-          params: this.convertParameters(node.parameters),
+          params: node.parameters.map((param: ts.ParameterDeclaration) => {
+            const parameter = this.convertChild(param) as TSESTree.Parameter;
+            parameter.decorators = this.convertChildren(
+              getDecorators(param) ?? [],
+            );
+
+            const hasAccessModifier =
+              hasModifier(param, SyntaxKind.PrivateKeyword) ||
+              hasModifier(param, SyntaxKind.PublicKeyword) ||
+              hasModifier(param, SyntaxKind.ProtectedKeyword);
+            const hasReadonlyModifier = hasModifier(
+              param,
+              SyntaxKind.ReadonlyKeyword,
+            );
+
+            if (hasAccessModifier || hasReadonlyModifier) {
+              const isIdentifier = parameter.type === AST_NODE_TYPES.Identifier;
+              const isAssignmentToIdentifier =
+                parameter.type === AST_NODE_TYPES.AssignmentPattern &&
+                (parameter.left as TSESTree.Node).type ===
+                  AST_NODE_TYPES.Identifier;
+
+              if (!isIdentifier && !isAssignmentToIdentifier) {
+                this.#throwError(
+                  param,
+                  'Invalid TS parameter property: only `Identifier` or `AssignmentPattern` (with Identifier left-hand side) are allowed.',
+                );
+              }
+              return this.createNode(param, {
+                type: AST_NODE_TYPES.TSParameterProperty,
+                accessibility: getTSNodeAccessibility(param),
+                readonly: hasReadonlyModifier,
+                override: hasModifier(param, SyntaxKind.OverrideKeyword),
+                static: hasModifier(param, SyntaxKind.StaticKeyword),
+                decorators: this.convertChildren(getDecorators(param) ?? []),
+                parameter,
+              });
+            }
+            return parameter;
+          }),
           returnType: node.type && this.convertTypeAnnotation(node.type, node),
           typeParameters:
             node.typeParameters &&
