@@ -1,3 +1,33 @@
+## 8.46.4 (2025-11-10)
+
+### 🩹 Fixes
+
+- **parser:** error when both `projectService` and `project` are set ([#11333](https://github.com/typescript-eslint/typescript-eslint/pull/11333))
+
+### ❤️ Thank You
+
+- Maria Solano @MariaSolOs
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.3 (2025-11-03)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.2 (2025-10-20)
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid invalid modifiers in object methods ([#11689](https://github.com/typescript-eslint/typescript-eslint/pull/11689))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.46.1 (2025-10-13)
 
 This was a version bump only for typescript-estree to align it with other projects, there were no code changes.

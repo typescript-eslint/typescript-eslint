@@ -208,14 +208,16 @@ export default createRule<Options, MessageIds>({
                 );
               }
 
-              // if current token is a keyword like `static` or `public` then skip it
+              // if current token is a keyword like `static` or `public`, or the `override` modifier, then skip it
               while (
-                keyToken.type === AST_TOKEN_TYPES.Keyword &&
+                (keyToken.type === AST_TOKEN_TYPES.Keyword ||
+                  (keyToken.type === AST_TOKEN_TYPES.Identifier &&
+                    keyToken.value === 'override')) &&
                 keyToken.range[0] < method.key.range[0]
               ) {
                 keyToken = nullThrows(
                   context.sourceCode.getTokenAfter(keyToken),
-                  NullThrowsReasons.MissingToken('token', 'keyword'),
+                  NullThrowsReasons.MissingToken('token', 'modifier keyword'),
                 );
               }
 

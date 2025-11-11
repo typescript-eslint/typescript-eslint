@@ -11,6 +11,7 @@ const ruleTester = new RuleTester();
 const rootDir = getFixturesRootDir();
 const parserOptions = {
   project: './tsconfig.json',
+  projectService: false,
   tsconfigRootDir: rootDir,
 };
 
@@ -2058,7 +2059,7 @@ ruleTester.run('naming-convention', rule, {
             'enumMember',
           ],
         },
-        // making sure the `requoresQuotes` modifier appropriately overrides this
+        // making sure the `requiresQuotes` modifier appropriately overrides this
         {
           format: ['PascalCase'],
           selector: [

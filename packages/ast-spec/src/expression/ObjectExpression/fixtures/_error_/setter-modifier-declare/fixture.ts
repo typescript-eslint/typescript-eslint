@@ -1,0 +1,1 @@
+({declare set setter(v){}})
