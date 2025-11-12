@@ -120,6 +120,7 @@ import preferTsExpectError from './prefer-ts-expect-error';
 import promiseFunctionAsync from './promise-function-async';
 import relatedGetterSetterPairs from './related-getter-setter-pairs';
 import requireArraySortCompare from './require-array-sort-compare';
+import requireExplicitArrayTypes from './require-explicit-array-types';
 import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
 import restrictTemplateExpressions from './restrict-template-expressions';
@@ -255,6 +256,7 @@ const rules = {
   'promise-function-async': promiseFunctionAsync,
   'related-getter-setter-pairs': relatedGetterSetterPairs,
   'require-array-sort-compare': requireArraySortCompare,
+  'require-explicit-array-types': requireExplicitArrayTypes,
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
   'restrict-template-expressions': restrictTemplateExpressions,

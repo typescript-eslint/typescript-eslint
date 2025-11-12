@@ -1,0 +1,29 @@
+Incorrect
+
+const arr = [];
+      ~~~~~~~~ Empty array assigned to variable must have an explicit type annotation. Use `const arr: Type[] = []` instead.
+const items = [];
+      ~~~~~~~~~~ Empty array assigned to variable must have an explicit type annotation. Use `const items: Type[] = []` instead.
+let data = [];
+    ~~~~~~~~~ Empty array assigned to variable must have an explicit type annotation. Use `let data: Type[] = []` instead.
+var list = [];
+    ~~~~~~~~~ Empty array assigned to variable must have an explicit type annotation. Use `var list: Type[] = []` instead.
+
+Correct
+
+const arr: string[] = [];
+const items: number[] = [];
+let data: boolean[] = [];
+var list: any[] = [];
+
+// If you intentionally want never[], you can be explicit about it
+// Placeholder that will be replaced later
+const placeholder: never[] = [];
+
+// Non-empty arrays don't require explicit types
+const numbers = [1, 2, 3];
+const strings = ['a', 'b'];
+
+// Type assertions are also acceptable
+const typedArr = [] as string[];
+const typedItems = [] as number[];
