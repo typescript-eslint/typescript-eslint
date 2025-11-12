@@ -10018,14 +10018,14 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-eslint-plugin@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "eslint-plugin-eslint-plugin@npm:7.0.0"
+  version: 7.2.0
+  resolution: "eslint-plugin-eslint-plugin@npm:7.2.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.4.0
     estraverse: ^5.3.0
   peerDependencies:
     eslint: ">=9.0.0"
-  checksum: b67099bbb56a2abc28e09f296ae9b04e23401c72cf2f611c50010644f8a5ab732801c7367f1784c6522ca4e727e1144d4590878065c84b384bb634b70c4d0f5e
+  checksum: f099c2d55b8d890fb60586a5786ebe69fe645580b9da5a79280cc6f27a4c64b8aa3027edb161bc8fd3a2ca36390c9c01a612ab25e6beb7908aafbf677b4ab3d2
   languageName: node
   linkType: hard
 
