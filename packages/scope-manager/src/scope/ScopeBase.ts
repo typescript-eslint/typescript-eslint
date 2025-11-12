@@ -21,6 +21,7 @@ import {
 } from '../referencer/Reference';
 import { Variable } from '../variable';
 import { ScopeType } from './ScopeType';
+import { ImplicitLibVariable } from '../variable/ImplicitLibVariable';
 
 /**
  * Test if scope is strict
@@ -325,6 +326,11 @@ export abstract class ScopeBase<
     }
     // variable exists on the scope
 
+    // implicit lib variables should always be resolved statically
+    if (variable instanceof ImplicitLibVariable) {
+      return true;
+    }
+
     // in module mode, we can statically resolve everything, regardless of its decl type
     if (scopeManager.isModule()) {
       return true;
@@ -390,6 +396,12 @@ export abstract class ScopeBase<
           : nameOrVariable;
       set.set(name, variable);
       variables.push(variable);
+    } else if (
+      variable instanceof ImplicitLibVariable &&
+      nameOrVariable instanceof ImplicitLibVariable
+    ) {
+      variable.isTypeVariable ||= nameOrVariable.isTypeVariable;
+      variable.isValueVariable ||= nameOrVariable.isValueVariable;
     }
 
     if (def) {
