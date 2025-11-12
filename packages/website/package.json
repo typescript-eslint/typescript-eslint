@@ -69,7 +69,7 @@
     "@typescript-eslint/utils": "workspace:*",
     "copy-webpack-plugin": "^13.0.0",
     "cross-fetch": "*",
-    "history": "^4.9.0",
+    "history": "^5.0.0",
     "make-dir": "*",
     "mdast-util-from-markdown": "^2.0.1",
     "mdast-util-mdx": "^3.0.0",
