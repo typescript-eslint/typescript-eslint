@@ -370,6 +370,24 @@ export function checkModifiers(node: ts.Node): void {
           'A parameter property is only allowed in a constructor implementation.',
         );
       }
+      const param = node as ts.ParameterDeclaration;
+
+      if (param.dotDotDotToken) {
+        throwError(
+          modifier,
+          'A parameter property cannot be a rest parameter.',
+        );
+      }
+
+      if (
+        param.name.kind === SyntaxKind.ArrayBindingPattern ||
+        param.name.kind === SyntaxKind.ObjectBindingPattern
+      ) {
+        throwError(
+          modifier,
+          'A parameter property may not be declared using a binding pattern.',
+        );
+      }
     }
 
     // There are more cases in `checkGrammarObjectLiteralExpression` in TypeScript.
