@@ -2,7 +2,11 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, nullThrows } from '../util';
+import {
+  createRule,
+  getParameterPropertyIdentifier,
+  nullThrows,
+} from '../util';
 
 type Modifier =
   | 'private'
@@ -107,14 +111,7 @@ export default createRule<Options, MessageIds>({
           const modifiers = getModifiers(node);
 
           if (!allow.includes(modifiers)) {
-            const name =
-              node.parameter.type === AST_NODE_TYPES.Identifier
-                ? node.parameter.name
-                : // parameter.left is always Identifier after #11708
-                  (
-                    (node.parameter as TSESTree.AssignmentPattern)
-                      .left as TSESTree.Identifier
-                  ).name;
+            const name = getParameterPropertyIdentifier(node.parameter).name;
 
             context.report({
               node,

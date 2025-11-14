@@ -4,6 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { Key, MemberNode } from './types';
 
+import { getParameterPropertyIdentifier } from '../getParameterPropertyIdentifier';
 import { privateKey, publicKey } from './types';
 
 export interface ExtractedName {
@@ -60,12 +61,9 @@ function extractNonComputedName(
 export function extractNameForMember(node: MemberNode): ExtractedName | null {
   if (node.type === AST_NODE_TYPES.TSParameterProperty) {
     // After #11708, parameter can only be Identifier or AssignmentPattern
-    return node.parameter.type === AST_NODE_TYPES.Identifier
-      ? extractNonComputedName(node.parameter)
-      : extractNonComputedName(
-          (node.parameter as TSESTree.AssignmentPattern)
-            .left as TSESTree.Identifier,
-        );
+    return extractNonComputedName(
+      getParameterPropertyIdentifier(node.parameter),
+    );
   }
 
   if (node.computed) {

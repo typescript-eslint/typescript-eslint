@@ -5,6 +5,7 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import {
   createRule,
   getNameFromMember,
+  getParameterPropertyIdentifier,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -359,14 +360,7 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.TSParameterProperty,
     ): void {
       const nodeType = 'parameter property';
-      const nodeName =
-        node.parameter.type === AST_NODE_TYPES.Identifier
-          ? node.parameter.name
-          : // parameter.left is always Identifier after #11708
-            (
-              (node.parameter as TSESTree.AssignmentPattern)
-                .left as TSESTree.Identifier
-            ).name;
+      const nodeName = getParameterPropertyIdentifier(node.parameter).name;
 
       switch (paramPropCheck) {
         case 'explicit': {
