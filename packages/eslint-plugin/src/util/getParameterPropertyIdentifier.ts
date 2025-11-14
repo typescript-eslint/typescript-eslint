@@ -14,6 +14,9 @@ export function getParameterPropertyIdentifier(
   if (parameter.type === AST_NODE_TYPES.Identifier) {
     return parameter;
   }
+  if (!('left' in parameter)) {
+    throw new Error('Invalid parameter property pattern');
+  }
   if (parameter.left.type !== AST_NODE_TYPES.Identifier) {
     throw new Error(
       'Parameter property binding pattern should have been rejected by parser',
