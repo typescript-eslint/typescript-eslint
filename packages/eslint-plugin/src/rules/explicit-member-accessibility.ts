@@ -362,8 +362,11 @@ export default createRule<Options, MessageIds>({
       const nodeName =
         node.parameter.type === AST_NODE_TYPES.Identifier
           ? node.parameter.name
-          : // has to be an Identifier or TSC will throw an error
-            (node.parameter.left as TSESTree.Identifier).name;
+          : // parameter.left is always Identifier after #11708
+            (
+              (node.parameter as TSESTree.AssignmentPattern)
+                .left as TSESTree.Identifier
+            ).name;
 
       switch (paramPropCheck) {
         case 'explicit': {

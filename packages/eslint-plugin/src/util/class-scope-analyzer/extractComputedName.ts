@@ -59,16 +59,10 @@ function extractNonComputedName(
  */
 export function extractNameForMember(node: MemberNode): ExtractedName | null {
   if (node.type === AST_NODE_TYPES.TSParameterProperty) {
-    switch (node.parameter.type) {
-      case AST_NODE_TYPES.AssignmentPattern:
-        // parameter.left is always Identifier after #11708
-        return extractNonComputedName(
-          node.parameter.left as TSESTree.Identifier,
-        );
-
-      case AST_NODE_TYPES.Identifier:
-        return extractNonComputedName(node.parameter);
-    }
+    // After #11708, parameter can only be Identifier or AssignmentPattern
+    return node.parameter.type === AST_NODE_TYPES.Identifier
+      ? extractNonComputedName(node.parameter)
+      : extractNonComputedName(node.parameter.left as TSESTree.Identifier);
   }
 
   if (node.computed) {
