@@ -1,13 +1,14 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { getParameterPropertyIdentifier } from '../../src/util/getParameterPropertyIdentifier';
 
-describe('getParameterPropertyIdentifier', () => {
+describe(getParameterPropertyIdentifier, () => {
   it('returns identifier directly', () => {
     const identifier: TSESTree.Identifier = {
-      type: AST_NODE_TYPES.Identifier,
       name: 'foo',
+      type: AST_NODE_TYPES.Identifier,
     } as TSESTree.Identifier;
 
     expect(getParameterPropertyIdentifier(identifier)).toBe(identifier);
@@ -15,14 +16,14 @@ describe('getParameterPropertyIdentifier', () => {
 
   it('extracts identifier from assignment pattern', () => {
     const leftIdentifier: TSESTree.Identifier = {
-      type: AST_NODE_TYPES.Identifier,
       name: 'foo',
+      type: AST_NODE_TYPES.Identifier,
     } as TSESTree.Identifier;
 
     const assignmentPattern: TSESTree.AssignmentPattern = {
-      type: AST_NODE_TYPES.AssignmentPattern,
       left: leftIdentifier,
       right: {} as TSESTree.Expression,
+      type: AST_NODE_TYPES.AssignmentPattern,
     } as TSESTree.AssignmentPattern;
 
     expect(getParameterPropertyIdentifier(assignmentPattern)).toBe(
@@ -42,14 +43,14 @@ describe('getParameterPropertyIdentifier', () => {
 
   it('throws on binding pattern in assignment', () => {
     const arrayPattern: TSESTree.ArrayPattern = {
-      type: AST_NODE_TYPES.ArrayPattern,
       elements: [],
+      type: AST_NODE_TYPES.ArrayPattern,
     } as unknown as TSESTree.ArrayPattern;
 
     const assignmentPattern = {
-      type: AST_NODE_TYPES.AssignmentPattern,
       left: arrayPattern,
       right: {} as TSESTree.Expression,
+      type: AST_NODE_TYPES.AssignmentPattern,
     } as unknown as TSESTree.AssignmentPattern;
 
     expect(() => getParameterPropertyIdentifier(assignmentPattern)).toThrow(
