@@ -1382,27 +1382,16 @@ export class Test {
     {
       code: `
 export class Test {
-  constructor(
-    public foo,
-    private ...bar,
-  ) {}
+  constructor(public foo) {}
 }
       `,
       errors: [
         {
-          column: 12,
+          column: 22,
           data: {
             name: 'foo',
           },
-          line: 4,
-          messageId: 'missingArgType',
-        },
-        {
-          column: 5,
-          data: {
-            name: 'bar',
-          },
-          line: 5,
+          line: 3,
           messageId: 'missingArgType',
         },
       ],
