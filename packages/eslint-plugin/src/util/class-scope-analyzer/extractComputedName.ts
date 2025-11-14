@@ -62,7 +62,10 @@ export function extractNameForMember(node: MemberNode): ExtractedName | null {
     // After #11708, parameter can only be Identifier or AssignmentPattern
     return node.parameter.type === AST_NODE_TYPES.Identifier
       ? extractNonComputedName(node.parameter)
-      : extractNonComputedName(node.parameter.left as TSESTree.Identifier);
+      : extractNonComputedName(
+          (node.parameter as TSESTree.AssignmentPattern)
+            .left as TSESTree.Identifier,
+        );
   }
 
   if (node.computed) {
