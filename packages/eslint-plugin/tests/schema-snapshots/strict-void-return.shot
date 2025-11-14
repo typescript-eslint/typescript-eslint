@@ -1,0 +1,25 @@
+
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowReturnAny": {
+        "description": "Whether to allow functions returning `any` to be used in place expecting a `void` function.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Whether to allow functions returning `any` to be used in place expecting a `void` function. */
+    allowReturnAny?: boolean;
+  },
+];
