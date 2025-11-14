@@ -107,14 +107,6 @@ export default createRule<Options, MessageIds>({
           const modifiers = getModifiers(node);
 
           if (!allow.includes(modifiers)) {
-            // HAS to be an identifier or assignment or TSC will throw
-            if (
-              node.parameter.type !== AST_NODE_TYPES.Identifier &&
-              node.parameter.type !== AST_NODE_TYPES.AssignmentPattern
-            ) {
-              return;
-            }
-
             const name =
               node.parameter.type === AST_NODE_TYPES.Identifier
                 ? node.parameter.name
