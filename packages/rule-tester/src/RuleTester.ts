@@ -444,9 +444,10 @@ export class RuleTester extends TestFramework {
     return normalizedTests;
   }
 
-  defineRule(name: string, rule: AnyRuleModule): void {
+  defineRule(name: string, rule: Omit<AnyRuleModule, 'name'>): void {
     this.#rules[name] = {
       ...rule,
+      name,
       // Create a wrapper rule that freezes the `context` properties.
       create(context): RuleListener {
         freezeDeeply(context.options);
