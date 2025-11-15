@@ -1,0 +1,252 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
+
+import {
+  createRule,
+  getParserServices,
+  isTypeAnyType,
+  isTypeFlagSet,
+  isTypeUnknownType,
+} from '../util';
+
+type MessageId = 'uselessDefaultAssignment';
+
+export default createRule<[], MessageId>({
+  name: 'no-useless-default-assignment',
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow default values that will never be used',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      uselessDefaultAssignment:
+        'Default value is useless because the {{ type }} is not optional.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {},
+      },
+    ],
+  },
+  defaultOptions: [],
+  create(context) {
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
+
+    function canBeUndefined(type: ts.Type): boolean {
+      // any and unknown can be undefined
+      if (isTypeAnyType(type) || isTypeUnknownType(type)) {
+        return true;
+      }
+      // Check if any part of the union includes undefined
+      return tsutils
+        .unionConstituents(type)
+        .some(part => isTypeFlagSet(part, ts.TypeFlags.Undefined));
+    }
+
+    function getPropertyType(
+      objectType: ts.Type,
+      propertyName: string,
+    ): ts.Type | null {
+      const symbol = objectType.getProperty(propertyName);
+      if (!symbol) {
+        return null;
+      }
+      return checker.getTypeOfSymbol(symbol);
+    }
+
+    function getArrayElementType(
+      arrayType: ts.Type,
+      elementIndex: number,
+    ): ts.Type | null {
+      if (checker.isTupleType(arrayType)) {
+        const tupleArgs = checker.getTypeArguments(arrayType);
+        if (elementIndex < tupleArgs.length) {
+          return tupleArgs[elementIndex];
+        }
+      }
+
+      return null;
+    }
+
+    function isCallbackFunction(
+      functionNode:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionExpression,
+    ): boolean {
+      const parentType = functionNode.parent.type;
+      return (
+        parentType !== AST_NODE_TYPES.MethodDefinition &&
+        parentType !== AST_NODE_TYPES.VariableDeclarator &&
+        parentType !== AST_NODE_TYPES.Property &&
+        parentType !== AST_NODE_TYPES.ExpressionStatement &&
+        parentType !== AST_NODE_TYPES.ReturnStatement
+      );
+    }
+
+    function checkAssignmentPattern(node: TSESTree.AssignmentPattern): void {
+      const parent = node.parent;
+
+      // Handle callback parameters (like array.map((a = 42) => ...))
+      if (
+        parent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+        parent.type === AST_NODE_TYPES.FunctionExpression
+      ) {
+        const paramIndex = parent.params.indexOf(node);
+        if (paramIndex !== -1) {
+          // Only check if this is actually a callback, not a regular function
+          if (!isCallbackFunction(parent)) {
+            return;
+          }
+
+          const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
+          if (ts.isFunctionLike(tsFunc)) {
+            const signature = checker.getSignatureFromDeclaration(tsFunc);
+            if (signature) {
+              const params = signature.getParameters();
+              if (paramIndex < params.length) {
+                const paramType = checker.getTypeOfSymbol(params[paramIndex]);
+                if (!canBeUndefined(paramType)) {
+                  reportUselessDefault(node, 'parameter');
+                }
+              }
+            }
+          }
+        }
+        return;
+      }
+
+      // Handle destructuring patterns
+      if (parent.type === AST_NODE_TYPES.Property) {
+        // This is a property in an object destructuring pattern
+        const objectPattern = parent.parent as TSESTree.ObjectPattern;
+
+        const sourceType = getSourceTypeForPattern(objectPattern);
+        if (!sourceType) {
+          return;
+        }
+
+        const propertyName = getPropertyName(parent.key);
+        if (!propertyName) {
+          return;
+        }
+
+        const propertyType = getPropertyType(sourceType, propertyName);
+        if (!propertyType) {
+          return;
+        }
+
+        if (!canBeUndefined(propertyType)) {
+          reportUselessDefault(node, 'property');
+        }
+      } else if (parent.type === AST_NODE_TYPES.ArrayPattern) {
+        // This is an element in an array destructuring pattern
+        const sourceType = getSourceTypeForPattern(parent);
+        if (!sourceType) {
+          return;
+        }
+
+        const elementIndex = parent.elements.indexOf(node);
+        if (elementIndex === -1) {
+          return;
+        }
+
+        const elementType = getArrayElementType(sourceType, elementIndex);
+        if (!elementType) {
+          return;
+        }
+
+        if (!canBeUndefined(elementType)) {
+          reportUselessDefault(node, 'property');
+        }
+      }
+    }
+
+    function getSourceTypeForPattern(
+      pattern: TSESTree.ArrayPattern | TSESTree.ObjectPattern,
+    ): ts.Type | null {
+      let currentNode: TSESTree.Node = pattern;
+
+      // Walk up through nested patterns
+      while (
+        currentNode.parent.type === AST_NODE_TYPES.AssignmentPattern ||
+        currentNode.parent.type === AST_NODE_TYPES.Property ||
+        currentNode.parent.type === AST_NODE_TYPES.ObjectPattern ||
+        currentNode.parent.type === AST_NODE_TYPES.ArrayPattern
+      ) {
+        currentNode = currentNode.parent;
+      }
+
+      const parent = currentNode.parent;
+
+      // Handle variable declarator
+      if (parent.type === AST_NODE_TYPES.VariableDeclarator && parent.init) {
+        const tsNode = services.esTreeNodeToTSNodeMap.get(parent.init);
+        return checker.getTypeAtLocation(tsNode);
+      }
+
+      // Handle function parameter
+      if (
+        parent.type === AST_NODE_TYPES.FunctionExpression ||
+        parent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+        parent.type === AST_NODE_TYPES.FunctionDeclaration
+      ) {
+        const paramIndex = parent.params.indexOf(
+          currentNode as TSESTree.Parameter,
+        );
+        const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
+        const signature = checker.getSignatureFromDeclaration(tsFunc);
+        if (!signature) {
+          return null;
+        }
+        const params = signature.getParameters();
+        return checker.getTypeOfSymbol(params[paramIndex]);
+      }
+
+      return null;
+    }
+
+    function getPropertyName(
+      key: TSESTree.Expression | TSESTree.PrivateIdentifier,
+    ): string | null {
+      switch (key.type) {
+        case AST_NODE_TYPES.Identifier:
+          return key.name;
+        case AST_NODE_TYPES.Literal:
+          return String(key.value);
+        default:
+          return null;
+      }
+    }
+
+    function reportUselessDefault(
+      node: TSESTree.AssignmentPattern,
+      type: 'parameter' | 'property',
+    ): void {
+      context.report({
+        node: node.right,
+        messageId: 'uselessDefaultAssignment',
+        data: { type },
+        fix(fixer) {
+          // Remove from before the = to the end of the default value
+          // Find the start position (including whitespace before =)
+          const start = node.left.range[1];
+          const end = node.range[1];
+          return fixer.removeRange([start, end]);
+        },
+      });
+    }
+
+    return {
+      AssignmentPattern: checkAssignmentPattern,
+    };
+  },
+});
