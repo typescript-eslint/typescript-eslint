@@ -6,7 +6,6 @@ import {
   checkForStatementDeclaration,
   checkTSNode,
 } from '../../src/ast-checks';
-import { checkModifiers } from '../../src/check-modifiers';
 
 describe(checkForStatementDeclaration, () => {
   let throwError: (
@@ -162,13 +161,28 @@ describe(checkTSNode, () => {
     }) as unknown as typeof throwError;
   });
 
-  it('calls checkModifiers for a node', () => {
+  it('does not throw for a normal identifier node', () => {
     const node = ts.factory.createIdentifier('x');
-    checkTSNode(node, throwError);
-    expect(checkModifiers).toHaveBeenCalledWith(node);
+    expect(() => checkTSNode(node, throwError)).not.toThrow();
   });
 
-  it('calls checkForStatementDeclaration for ForOfStatement', () => {
+  it('throws when ForOfStatement initializer is invalid', () => {
+    const initializer = ts.factory.createNumericLiteral(42);
+    const node = ts.factory.createForOfStatement(
+      undefined,
+      initializer,
+      ts.factory.createIdentifier('arr'),
+      ts.factory.createBlock([], true),
+    );
+
+    expect(() =>
+      checkTSNode(node, throwError, initializer, ts.SyntaxKind.ForOfStatement),
+    ).toThrow(
+      "The left-hand side of a 'for...of' statement must be a variable or a property access.",
+    );
+  });
+
+  it('does not throw for valid ForOfStatement initializer', () => {
     const initializer = ts.factory.createVariableDeclarationList([
       ts.factory.createVariableDeclaration('x'),
     ]);
@@ -179,12 +193,8 @@ describe(checkTSNode, () => {
       ts.factory.createBlock([], true),
     );
 
-    checkTSNode(node, throwError, initializer, ts.SyntaxKind.ForOfStatement);
-
-    expect(checkForStatementDeclaration).toHaveBeenCalledWith(
-      initializer,
-      ts.SyntaxKind.ForOfStatement,
-      throwError,
-    );
+    expect(() =>
+      checkTSNode(node, throwError, initializer, ts.SyntaxKind.ForOfStatement),
+    ).not.toThrow();
   });
 });
