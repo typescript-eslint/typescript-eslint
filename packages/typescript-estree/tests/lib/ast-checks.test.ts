@@ -2,7 +2,11 @@ import * as ts from 'typescript';
 
 import type { TSESTree } from '../../src/ts-estree';
 
-import { checkForStatementDeclaration } from '../../src/ast-checks';
+import {
+  checkForStatementDeclaration,
+  checkTSNode,
+} from '../../src/ast-checks';
+import { checkModifiers } from '../../src/check-modifiers';
 
 describe(checkForStatementDeclaration, () => {
   let throwError: (
@@ -142,5 +146,45 @@ describe(checkForStatementDeclaration, () => {
         throwError,
       ),
     ).not.toThrow();
+  });
+});
+
+describe(checkTSNode, () => {
+  let throwError: (
+    node: number | ts.Node | TSESTree.Range,
+    message: string,
+  ) => never;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    throwError = vi.fn((node, message: string) => {
+      throw new Error(message);
+    }) as unknown as typeof throwError;
+  });
+
+  it('calls checkModifiers for a node', () => {
+    const node = ts.factory.createIdentifier('x');
+    checkTSNode(node, throwError);
+    expect(checkModifiers).toHaveBeenCalledWith(node);
+  });
+
+  it('calls checkForStatementDeclaration for ForOfStatement', () => {
+    const initializer = ts.factory.createVariableDeclarationList([
+      ts.factory.createVariableDeclaration('x'),
+    ]);
+    const node = ts.factory.createForOfStatement(
+      undefined,
+      initializer,
+      ts.factory.createIdentifier('arr'),
+      ts.factory.createBlock([], true),
+    );
+
+    checkTSNode(node, throwError, initializer, ts.SyntaxKind.ForOfStatement);
+
+    expect(checkForStatementDeclaration).toHaveBeenCalledWith(
+      initializer,
+      ts.SyntaxKind.ForOfStatement,
+      throwError,
+    );
   });
 });

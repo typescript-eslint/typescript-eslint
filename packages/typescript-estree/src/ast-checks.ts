@@ -2,9 +2,8 @@ import * as ts from 'typescript';
 
 import type { TSESTree } from './ts-estree';
 
-import { isValidAssignmentTarget } from './node-utils';
-
 import { checkModifiers } from './check-modifiers';
+import { isValidAssignmentTarget } from './node-utils';
 
 export function checkTSNode(
   node: ts.Node,
