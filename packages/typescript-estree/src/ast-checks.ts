@@ -4,6 +4,33 @@ import type { TSESTree } from './ts-estree';
 
 import { isValidAssignmentTarget } from './node-utils';
 
+import { checkModifiers } from './check-modifiers';
+
+export function checkTSNode(
+  node: ts.Node,
+  throwError: (
+    node: number | ts.Node | TSESTree.Range,
+    message: string,
+  ) => never,
+  initializer?: ts.ForInitializer,
+  kind?: ts.SyntaxKind.ForInStatement | ts.SyntaxKind.ForOfStatement,
+): void {
+  checkModifiers(node);
+
+  switch (node.kind) {
+    case ts.SyntaxKind.ForInStatement:
+    case ts.SyntaxKind.ForOfStatement: {
+      if (initializer && kind) {
+        checkForStatementDeclaration(initializer, kind, throwError);
+      }
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
 export function checkForStatementDeclaration(
   initializer: ts.ForInitializer,
   kind: ts.SyntaxKind.ForInStatement | ts.SyntaxKind.ForOfStatement,

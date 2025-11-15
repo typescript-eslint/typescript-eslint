@@ -10,8 +10,7 @@ import type {
 import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 
-import { checkForStatementDeclaration } from './ast-checks';
-import { checkModifiers } from './check-modifiers';
+import { checkTSNode } from './ast-checks';
 import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
@@ -106,19 +105,16 @@ export class Converter {
     this.options = { ...options };
   }
 
-  #checkForStatementDeclaration(
-    initializer: ts.ForInitializer,
-    kind: ts.SyntaxKind.ForInStatement | ts.SyntaxKind.ForOfStatement,
+  #checkTSNode(
+    node: ts.Node,
+    initializer?: ts.ForInitializer,
+    kind?: ts.SyntaxKind.ForInStatement | ts.SyntaxKind.ForOfStatement,
   ): void {
-    checkForStatementDeclaration(initializer, kind, this.#throwError);
-  }
-
-  #checkModifiers(node: ts.Node): void {
     if (this.options.allowInvalidAST) {
       return;
     }
 
-    checkModifiers(node);
+    checkTSNode(node, this.#throwError, initializer, kind);
   }
 
   #throwError(node: number | ts.Node | TSESTree.Range, message: string): never {
@@ -506,7 +502,7 @@ export class Converter {
       return null;
     }
 
-    this.#checkModifiers(node);
+    this.#checkTSNode(node);
 
     const pattern = this.allowPattern;
     if (allowPattern != null) {
@@ -877,7 +873,7 @@ export class Converter {
         });
 
       case SyntaxKind.ForInStatement:
-        this.#checkForStatementDeclaration(node.initializer, node.kind);
+        this.#checkTSNode(node, node.initializer, node.kind);
         return this.createNode<TSESTree.ForInStatement>(node, {
           type: AST_NODE_TYPES.ForInStatement,
           body: this.convertChild(node.statement),
@@ -886,7 +882,7 @@ export class Converter {
         });
 
       case SyntaxKind.ForOfStatement: {
-        this.#checkForStatementDeclaration(node.initializer, node.kind);
+        this.#checkTSNode(node, node.initializer, node.kind);
         return this.createNode<TSESTree.ForOfStatement>(node, {
           type: AST_NODE_TYPES.ForOfStatement,
           await: Boolean(
