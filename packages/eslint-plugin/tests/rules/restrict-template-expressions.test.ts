@@ -344,6 +344,18 @@ ruleTester.run('restrict-template-expressions', rule, {
     'const msg = `arg = ${undefined}`;',
     'const msg = `arg = ${123}`;',
     "const msg = `arg = ${'abc'}`;",
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11759
+    // allow should check base types
+    {
+      code: `
+        class Base { }
+        class Derived extends Base { }
+        const foo = new Base();
+        const bar = new Derived();
+        \`\${foo}\${bar}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Base' }] }],
+    },
   ],
 
   invalid: [

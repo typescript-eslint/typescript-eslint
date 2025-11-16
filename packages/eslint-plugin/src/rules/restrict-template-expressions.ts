@@ -1,12 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type { Type, TypeChecker } from 'typescript';
+import type { Type, InterfaceType, TypeChecker } from 'typescript';
+import { ObjectFlags, TypeFlags } from 'typescript';
 
 import {
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
 } from '@typescript-eslint/type-utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { TypeFlags } from 'typescript';
+import { isObjectFlagSet, isObjectType } from 'ts-api-utils';
 
 import type { TypeOrValueSpecifier } from '../util';
 
@@ -130,6 +131,36 @@ export default createRule<Options, MessageId>({
       ({ option }) => options[option],
     );
 
+    function hasBaseTypes(type: Type): type is InterfaceType {
+      return (
+        isObjectType(type) &&
+        isObjectFlagSet(type, ObjectFlags.Interface | ObjectFlags.Class)
+      );
+    }
+
+    function isAllowedTypeOrBase(
+      type: Type,
+      seen = new Set<Type>(),
+    ): boolean {
+      if (seen.has(type)) {
+        return false;
+      }
+
+      seen.add(type);
+
+      if (typeMatchesSomeSpecifier(type, allow, program)) {
+        return true;
+      }
+
+      if (hasBaseTypes(type)) {
+        return checker
+          .getBaseTypes(type)
+          .some(base => isAllowedTypeOrBase(base, seen));
+      }
+
+      return false;
+    }
+
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         // don't check tagged template literals
@@ -165,7 +196,7 @@ export default createRule<Options, MessageId>({
 
       return (
         isTypeFlagSet(innerType, TypeFlags.StringLike) ||
-        typeMatchesSomeSpecifier(innerType, allow, program) ||
+        isAllowedTypeOrBase(innerType) ||
         enabledOptionTesters.some(({ tester }) =>
           tester(innerType, checker, recursivelyCheckType),
         )
