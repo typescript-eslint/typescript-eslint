@@ -356,6 +356,17 @@ ruleTester.run('restrict-template-expressions', rule, {
       `,
       options: [{ allow: [{ from: 'file', name: 'Base' }] }],
     },
+    // allow should check base types - multi-level inheritance
+    {
+      code: `
+        class Base { }
+        class Derived extends Base { }
+        class DerivedTwice extends Derived { }
+        const value = new DerivedTwice();
+        \`\${value}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Base' }] }],
+    },
   ],
 
   invalid: [
@@ -625,6 +636,23 @@ ruleTester.run('restrict-template-expressions', rule, {
         },
       ],
       options: [{ allowAny: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11759
+    // derived type should error when base type is not in allow list
+    {
+      code: `
+        class Base { }
+        class Derived extends Base { }
+        const bar = new Derived();
+        \`\${bar}\`;
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'Derived' },
+        },
+      ],
+      options: [{ allow: [] }],
     },
   ],
 });
