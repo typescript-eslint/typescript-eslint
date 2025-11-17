@@ -348,8 +348,8 @@ ruleTester.run('restrict-template-expressions', rule, {
     // allow should check base types
     {
       code: `
-        class Base { }
-        class Derived extends Base { }
+        class Base {}
+        class Derived extends Base {}
         const foo = new Base();
         const bar = new Derived();
         \`\${foo}\${bar}\`;
@@ -359,13 +359,36 @@ ruleTester.run('restrict-template-expressions', rule, {
     // allow should check base types - multi-level inheritance
     {
       code: `
-        class Base { }
-        class Derived extends Base { }
-        class DerivedTwice extends Derived { }
+        class Base {}
+        class Derived extends Base {}
+        class DerivedTwice extends Derived {}
         const value = new DerivedTwice();
         \`\${value}\`;
       `,
       options: [{ allow: [{ from: 'file', name: 'Base' }] }],
+    },
+    // allow should check base types - interface inheritance
+    {
+      code: `
+        interface Base {
+          value: string;
+        }
+        interface Derived extends Base {
+          extra: number;
+        }
+        declare const obj: Derived;
+        \`\${obj}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Base' }] }],
+    },
+    // allow list with type alias without base types
+    {
+      code: `
+        type Custom = { value: string };
+        declare const obj: Custom;
+        \`\${obj}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Custom' }] }],
     },
   ],
 
@@ -641,15 +664,35 @@ ruleTester.run('restrict-template-expressions', rule, {
     // derived type should error when base type is not in allow list
     {
       code: `
-        class Base { }
-        class Derived extends Base { }
+        class Base {}
+        class Derived extends Base {}
         const bar = new Derived();
         \`\${bar}\`;
       `,
       errors: [
         {
-          messageId: 'invalidType',
           data: { type: 'Derived' },
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allow: [] }],
+    },
+    // derived interface should error when base type is not in allow list
+    {
+      code: `
+        interface Base {
+          value: string;
+        }
+        interface Derived extends Base {
+          extra: number;
+        }
+        declare const obj: Derived;
+        \`\${obj}\`;
+      `,
+      errors: [
+        {
+          data: { type: 'Derived' },
+          messageId: 'invalidType',
         },
       ],
       options: [{ allow: [] }],

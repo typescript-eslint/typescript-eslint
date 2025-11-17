@@ -1,15 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type { InterfaceType, Type, TypeChecker } from 'typescript';
+
 import {
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
 } from '@typescript-eslint/type-utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
-import type { InterfaceType, Type, TypeChecker } from 'typescript';
-
-import { ObjectFlags, TypeFlags } from 'typescript';
-
 import { isObjectFlagSet, isObjectType } from 'ts-api-utils';
+import { ObjectFlags, TypeFlags } from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
 
