@@ -141,10 +141,10 @@ class UnusedVarsVisitor extends Visitor {
   }
 
   protected TSParameterProperty(node: TSESTree.TSParameterProperty): void {
-    let identifier: TSESTree.Identifier | null = null;
+    let identifier: TSESTree.Identifier;
     switch (node.parameter.type) {
       case AST_NODE_TYPES.AssignmentPattern:
-        identifier = node.parameter.left;
+        identifier = node.parameter.left as TSESTree.Identifier;
         break;
 
       case AST_NODE_TYPES.Identifier:
@@ -152,9 +152,7 @@ class UnusedVarsVisitor extends Visitor {
         break;
     }
 
-    if (identifier) {
-      this.markVariableAsUsed(identifier);
-    }
+    this.markVariableAsUsed(identifier);
   }
 
   private collectUnusedVariables(
