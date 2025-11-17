@@ -1,6 +1,5 @@
 import debug from 'debug';
-import { sync as globSync } from 'fast-glob';
-import isGlob from 'is-glob';
+import { globSync, isDynamicPattern } from 'tinyglobby';
 
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
@@ -57,10 +56,7 @@ export function resolveProjectList(
 
   const projectFolderIgnoreList = (
     options.projectFolderIgnoreList ?? ['**/node_modules/**']
-  )
-    .filter(folder => typeof folder === 'string')
-    // prefix with a ! for not match glob
-    .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
+  ).filter(folder => typeof folder === 'string');
 
   const cacheKey = getHash({
     project: sanitizedProjects,
@@ -86,18 +82,22 @@ export function resolveProjectList(
   }
 
   // Transform glob patterns into paths
-  const nonGlobProjects = sanitizedProjects.filter(project => !isGlob(project));
-  const globProjects = sanitizedProjects.filter(project => isGlob(project));
+  const nonGlobProjects = sanitizedProjects.filter(
+    project => !isDynamicPattern(project),
+  );
+  const globProjects = sanitizedProjects.filter(project =>
+    isDynamicPattern(project),
+  );
 
   let globProjectPaths: string[] = [];
 
   if (globProjects.length > 0) {
-    // Although fast-glob supports multiple patterns, fast-glob returns arbitrary order of results
-    // to improve performance. To ensure the order is correct, we need to call fast-glob for each pattern
+    // To ensure the order is correct, we need to glob for each pattern
     // separately and then concatenate the results in patterns' order.
     globProjectPaths = globProjects.flatMap(pattern =>
       globSync(pattern, {
         cwd: options.tsconfigRootDir,
+        expandDirectories: false,
         ignore: projectFolderIgnoreList,
       }),
     );
