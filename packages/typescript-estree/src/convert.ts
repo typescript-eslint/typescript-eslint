@@ -1832,9 +1832,7 @@ export class Converter {
             accessibility: getTSNodeAccessibility(node),
             decorators: [],
             override: hasModifier(SyntaxKind.OverrideKeyword, node),
-            parameter: result as
-              | TSESTree.AssignmentPattern
-              | TSESTree.Identifier,
+            parameter: result as TSESTree.TSParameterProperty['parameter'],
             readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node),
             static: hasModifier(SyntaxKind.StaticKeyword, node),
           });
