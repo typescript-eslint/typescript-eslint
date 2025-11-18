@@ -739,7 +739,7 @@ export interface RuleModule<
   /**
    * Rule name
    */
-  name: string;
+  name?: string;
 }
 
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;

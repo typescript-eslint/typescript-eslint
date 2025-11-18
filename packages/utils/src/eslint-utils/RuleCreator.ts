@@ -104,7 +104,7 @@ function createRule<
     },
     defaultOptions,
     meta,
-    name: name ?? '',
+    name,
   };
 }
 
