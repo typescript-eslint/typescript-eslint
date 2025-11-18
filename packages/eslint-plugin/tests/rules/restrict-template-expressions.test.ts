@@ -377,6 +377,60 @@ ruleTester.run('restrict-template-expressions', rule, {
       `,
       options: [{ allow: [{ from: 'file', name: 'Base' }] }],
     },
+    {
+      code: `
+        interface Base {
+          value: string;
+        }
+        interface Other {
+          other: number;
+        }
+        interface Derived extends Base, Other {
+          extra: boolean;
+        }
+        declare const obj: Derived;
+        \`\${obj}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Base' }] }],
+    },
+    {
+      code: `
+        interface Base {
+          value: string;
+        }
+        interface Other {
+          other: number;
+        }
+        interface Derived extends Base, Other {
+          extra: boolean;
+        }
+        declare const obj: Derived;
+        \`\${obj}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Other' }] }],
+    },
+    {
+      code: `
+        interface Root {
+          root: string;
+        }
+        interface Another {
+          another: string;
+        }
+        interface Base extends Root, Another {
+          value: string;
+        }
+        interface Other {
+          other: number;
+        }
+        interface Derived extends Base, Other {
+          extra: boolean;
+        }
+        declare const obj: Derived;
+        \`\${obj}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Another' }] }],
+    },
     // allow list with type alias without base types
     {
       code: `
@@ -678,6 +732,28 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
         interface Derived extends Base {
           extra: number;
+        }
+        declare const obj: Derived;
+        \`\${obj}\`;
+      `,
+      errors: [
+        {
+          data: { type: 'Derived' },
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allow: [] }],
+    },
+    {
+      code: `
+        interface Base {
+          value: string;
+        }
+        interface Other {
+          other: number;
+        }
+        interface Derived extends Base, Other {
+          extra: boolean;
         }
         declare const obj: Derived;
         \`\${obj}\`;
