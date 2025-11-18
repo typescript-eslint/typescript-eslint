@@ -344,8 +344,6 @@ ruleTester.run('restrict-template-expressions', rule, {
     'const msg = `arg = ${undefined}`;',
     'const msg = `arg = ${123}`;',
     "const msg = `arg = ${'abc'}`;",
-    // https://github.com/typescript-eslint/typescript-eslint/issues/11759
-    // allow should check base types
     {
       code: `
         class Base {}
@@ -356,7 +354,6 @@ ruleTester.run('restrict-template-expressions', rule, {
       `,
       options: [{ allow: [{ from: 'file', name: 'Base' }] }],
     },
-    // allow should check base types - multi-level inheritance
     {
       code: `
         class Base {}

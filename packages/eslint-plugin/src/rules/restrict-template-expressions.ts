@@ -1,13 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type { InterfaceType, Type, TypeChecker } from 'typescript';
+import type { Type, TypeChecker } from 'typescript';
 
 import {
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
 } from '@typescript-eslint/type-utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { isObjectFlagSet, isObjectType } from 'ts-api-utils';
-import { ObjectFlags, TypeFlags } from 'typescript';
+import { TypeFlags } from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
 
@@ -19,6 +18,7 @@ import {
   isTypeAnyType,
   isTypeFlagSet,
   isTypeNeverType,
+  matchesTypeOrBaseType,
 } from '../util';
 
 type OptionTester = (
@@ -131,33 +131,6 @@ export default createRule<Options, MessageId>({
       ({ option }) => options[option],
     );
 
-    function hasBaseTypes(type: Type): type is InterfaceType {
-      return (
-        isObjectType(type) &&
-        isObjectFlagSet(type, ObjectFlags.Interface | ObjectFlags.Class)
-      );
-    }
-
-    function isAllowedTypeOrBase(type: Type, seen = new Set<Type>()): boolean {
-      if (seen.has(type)) {
-        return false;
-      }
-
-      seen.add(type);
-
-      if (typeMatchesSomeSpecifier(type, allow, program)) {
-        return true;
-      }
-
-      if (hasBaseTypes(type)) {
-        return checker
-          .getBaseTypes(type)
-          .some(base => isAllowedTypeOrBase(base, seen));
-      }
-
-      return false;
-    }
-
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         // don't check tagged template literals
@@ -193,7 +166,11 @@ export default createRule<Options, MessageId>({
 
       return (
         isTypeFlagSet(innerType, TypeFlags.StringLike) ||
-        isAllowedTypeOrBase(innerType) ||
+        matchesTypeOrBaseType(
+          services,
+          type => typeMatchesSomeSpecifier(type, allow, program),
+          innerType,
+        ) ||
         enabledOptionTesters.some(({ tester }) =>
           tester(innerType, checker, recursivelyCheckType),
         )
