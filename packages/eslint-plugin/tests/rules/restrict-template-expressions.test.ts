@@ -364,7 +364,6 @@ ruleTester.run('restrict-template-expressions', rule, {
       `,
       options: [{ allow: [{ from: 'file', name: 'Base' }] }],
     },
-    // allow should check base types - interface inheritance
     {
       code: `
         interface Base {
@@ -657,8 +656,6 @@ ruleTester.run('restrict-template-expressions', rule, {
       ],
       options: [{ allowAny: true }],
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/11759
-    // derived type should error when base type is not in allow list
     {
       code: `
         class Base {}
@@ -674,7 +671,6 @@ ruleTester.run('restrict-template-expressions', rule, {
       ],
       options: [{ allow: [] }],
     },
-    // derived interface should error when base type is not in allow list
     {
       code: `
         interface Base {
