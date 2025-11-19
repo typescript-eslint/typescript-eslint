@@ -6086,6 +6086,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
+    "@babel/helper-string-parser": ^7.27.1
     "@types/is-glob": ^4.0.4
     "@typescript-eslint/project-service": 8.43.0
     "@typescript-eslint/tsconfig-utils": 8.43.0

@@ -52,6 +52,7 @@
     "typecheck": "yarn run -BT nx typecheck"
   },
   "dependencies": {
+    "@babel/helper-string-parser": "^7.27.1",
     "@typescript-eslint/project-service": "8.43.0",
     "@typescript-eslint/tsconfig-utils": "8.43.0",
     "@typescript-eslint/types": "8.43.0",
