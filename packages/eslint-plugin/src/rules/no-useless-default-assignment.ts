@@ -29,13 +29,7 @@ export default createRule<[], MessageId>({
       uselessDefaultAssignment:
         'Default value is useless because the {{ type }} is not optional.',
     },
-    schema: [
-      {
-        type: 'object',
-        additionalProperties: false,
-        properties: {},
-      },
-    ],
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
