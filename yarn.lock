@@ -6086,7 +6086,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
-    "@babel/helper-string-parser": ^7.27.1
     "@types/is-glob": ^4.0.4
     "@typescript-eslint/project-service": 8.43.0
     "@typescript-eslint/tsconfig-utils": 8.43.0
@@ -6103,6 +6102,7 @@ __metadata:
     semver: ^7.6.0
     ts-api-utils: ^2.1.0
     typescript: "*"
+    unraw: ^3.0.0
     vitest: ^3.1.3
   peerDependencies:
     typescript: ">=4.8.4 <6.0.0"
@@ -19589,6 +19589,13 @@ __metadata:
   version: 1.0.0
   resolution: "unpipe@npm:1.0.0"
   checksum: 4fa18d8d8d977c55cb09715385c203197105e10a6d220087ec819f50cb68870f02942244f1017565484237f1f8c5d3cd413631b1ae104d3096f24fdfde1b4aa2
+  languageName: node
+  linkType: hard
+
+"unraw@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "unraw@npm:3.0.0"
+  checksum: 19eee0bc500ce197d262b79723a2c8c81c1d716baaa2a62c48a4d0d6b9e1fd9d350c5df86262e51343d591ab9c8a47ed150317d0b867b2b65795cdc17ef69873
   languageName: node
   linkType: hard
 

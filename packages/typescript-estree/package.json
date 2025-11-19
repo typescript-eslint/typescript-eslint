@@ -52,7 +52,6 @@
     "typecheck": "yarn run -BT nx typecheck"
   },
   "dependencies": {
-    "@babel/helper-string-parser": "^7.27.1",
     "@typescript-eslint/project-service": "8.43.0",
     "@typescript-eslint/tsconfig-utils": "8.43.0",
     "@typescript-eslint/types": "8.43.0",
@@ -62,7 +61,8 @@
     "is-glob": "^4.0.3",
     "minimatch": "^9.0.4",
     "semver": "^7.6.0",
-    "ts-api-utils": "^2.1.0"
+    "ts-api-utils": "^2.1.0",
+    "unraw": "^3.0.0"
   },
   "devDependencies": {
     "@types/is-glob": "^4.0.4",
