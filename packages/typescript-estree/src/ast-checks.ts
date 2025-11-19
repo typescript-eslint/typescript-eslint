@@ -12,7 +12,7 @@ export function checkTSNode(
     message: string,
   ) => never,
   initializer?: ts.ForInitializer,
-  kind?: ts.SyntaxKind.ForInStatement | ts.SyntaxKind.ForOfStatement,
+  kind?: ts.SyntaxKind,
 ): void {
   checkModifiers(node);
 
@@ -32,7 +32,7 @@ export function checkTSNode(
 
 export function checkForStatementDeclaration(
   initializer: ts.ForInitializer,
-  kind: ts.SyntaxKind.ForInStatement | ts.SyntaxKind.ForOfStatement,
+  kind: ts.SyntaxKind,
   throwError: (
     node: number | ts.Node | TSESTree.Range,
     message: string,

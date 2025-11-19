@@ -108,7 +108,7 @@ export class Converter {
   #checkTSNode(
     node: ts.Node,
     initializer?: ts.ForInitializer,
-    kind?: ts.SyntaxKind.ForInStatement | ts.SyntaxKind.ForOfStatement,
+    kind?: ts.SyntaxKind,
   ): void {
     if (this.options.allowInvalidAST) {
       return;
@@ -684,6 +684,12 @@ export class Converter {
    * @returns the converted ESTree node
    */
   private convertNode(node: TSNode, parent: TSNode): TSESTree.Node | null {
+    this.#checkTSNode(
+      node,
+      (node as ts.ForInStatement | ts.ForOfStatement).initializer,
+      node.kind,
+    );
+
     switch (node.kind) {
       case SyntaxKind.SourceFile: {
         return this.createNode<TSESTree.Program>(node, {
@@ -873,7 +879,6 @@ export class Converter {
         });
 
       case SyntaxKind.ForInStatement:
-        this.#checkTSNode(node, node.initializer, node.kind);
         return this.createNode<TSESTree.ForInStatement>(node, {
           type: AST_NODE_TYPES.ForInStatement,
           body: this.convertChild(node.statement),
@@ -882,7 +887,6 @@ export class Converter {
         });
 
       case SyntaxKind.ForOfStatement: {
-        this.#checkTSNode(node, node.initializer, node.kind);
         return this.createNode<TSESTree.ForOfStatement>(node, {
           type: AST_NODE_TYPES.ForOfStatement,
           await: Boolean(
