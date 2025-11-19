@@ -42,11 +42,9 @@ export default createRule<[], MessageId>({
     const checker = services.program.getTypeChecker();
 
     function canBeUndefined(type: ts.Type): boolean {
-      // any and unknown can be undefined
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
         return true;
       }
-      // Check if any part of the union includes undefined
       return tsutils
         .unionConstituents(type)
         .some(part => isTypeFlagSet(part, ts.TypeFlags.Undefined));
@@ -102,7 +100,6 @@ export default createRule<[], MessageId>({
       ) {
         const paramIndex = parent.params.indexOf(node);
         if (paramIndex !== -1) {
-          // Only check if this is actually a callback, not a regular function
           if (!isCallbackFunction(parent)) {
             return;
           }
@@ -124,9 +121,7 @@ export default createRule<[], MessageId>({
         return;
       }
 
-      // Handle destructuring patterns
       if (parent.type === AST_NODE_TYPES.Property) {
-        // This is a property in an object destructuring pattern
         const objectPattern = parent.parent as TSESTree.ObjectPattern;
 
         const sourceType = getSourceTypeForPattern(objectPattern);
@@ -148,7 +143,6 @@ export default createRule<[], MessageId>({
           reportUselessDefault(node, 'property');
         }
       } else if (parent.type === AST_NODE_TYPES.ArrayPattern) {
-        // This is an element in an array destructuring pattern
         const sourceType = getSourceTypeForPattern(parent);
         if (!sourceType) {
           return;
@@ -187,13 +181,11 @@ export default createRule<[], MessageId>({
 
       const parent = currentNode.parent;
 
-      // Handle variable declarator
       if (parent.type === AST_NODE_TYPES.VariableDeclarator && parent.init) {
         const tsNode = services.esTreeNodeToTSNodeMap.get(parent.init);
         return checker.getTypeAtLocation(tsNode);
       }
 
-      // Handle function parameter
       if (
         parent.type === AST_NODE_TYPES.FunctionExpression ||
         parent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
