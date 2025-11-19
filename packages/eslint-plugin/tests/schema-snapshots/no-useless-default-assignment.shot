@@ -1,15 +1,10 @@
 
 # SCHEMA:
 
-[
-  {
-    "additionalProperties": false,
-    "properties": {},
-    "type": "object"
-  }
-]
+[]
 
 
 # TYPES:
 
-type Options = [{}];
+/** No options declared */
+type Options = [];
