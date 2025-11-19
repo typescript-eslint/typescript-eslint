@@ -126,6 +126,8 @@ export default (
       '@typescript-eslint/no-unsafe-unary-minus': 'error',
       'no-unused-expressions': 'off',
       '@typescript-eslint/no-unused-expressions': 'error',
+      'no-unused-private-class-members': 'off',
+      '@typescript-eslint/no-unused-private-class-members': 'error',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'error',
       'no-use-before-define': 'off',
