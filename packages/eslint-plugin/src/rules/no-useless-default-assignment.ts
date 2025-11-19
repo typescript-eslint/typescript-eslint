@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  isFunction,
   isTypeAnyType,
   isTypeFlagSet,
   isTypeUnknownType,
@@ -186,11 +187,7 @@ export default createRule<[], MessageId>({
         return checker.getTypeAtLocation(tsNode);
       }
 
-      if (
-        parent.type === AST_NODE_TYPES.FunctionExpression ||
-        parent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-        parent.type === AST_NODE_TYPES.FunctionDeclaration
-      ) {
+      if (isFunction(parent)) {
         const paramIndex = parent.params.indexOf(
           currentNode as TSESTree.Parameter,
         );
