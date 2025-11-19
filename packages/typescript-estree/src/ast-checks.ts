@@ -11,17 +11,17 @@ export function checkTSNode(
     node: number | ts.Node | TSESTree.Range,
     message: string,
   ) => never,
-  initializer?: ts.ForInitializer,
-  kind?: ts.SyntaxKind,
 ): void {
   checkModifiers(node);
 
   switch (node.kind) {
     case ts.SyntaxKind.ForInStatement:
     case ts.SyntaxKind.ForOfStatement: {
-      if (initializer && kind) {
-        checkForStatementDeclaration(initializer, kind, throwError);
-      }
+      checkForStatementDeclaration(
+        (node as ts.ForInStatement | ts.ForOfStatement).initializer,
+        node.kind,
+        throwError,
+      );
       break;
     }
     default: {

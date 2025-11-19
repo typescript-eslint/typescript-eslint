@@ -175,9 +175,7 @@ describe(checkTSNode, () => {
       ts.factory.createBlock([], true),
     );
 
-    expect(() =>
-      checkTSNode(node, throwError, initializer, ts.SyntaxKind.ForOfStatement),
-    ).toThrow(
+    expect(() => checkTSNode(node, throwError)).toThrow(
       "The left-hand side of a 'for...of' statement must be a variable or a property access.",
     );
   });
@@ -193,8 +191,6 @@ describe(checkTSNode, () => {
       ts.factory.createBlock([], true),
     );
 
-    expect(() =>
-      checkTSNode(node, throwError, initializer, ts.SyntaxKind.ForOfStatement),
-    ).not.toThrow();
+    expect(() => checkTSNode(node, throwError)).not.toThrow();
   });
 });

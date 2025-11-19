@@ -105,16 +105,12 @@ export class Converter {
     this.options = { ...options };
   }
 
-  #checkTSNode(
-    node: ts.Node,
-    initializer?: ts.ForInitializer,
-    kind?: ts.SyntaxKind,
-  ): void {
+  #checkTSNode(node: ts.Node): void {
     if (this.options.allowInvalidAST) {
       return;
     }
 
-    checkTSNode(node, this.#throwError, initializer, kind);
+    checkTSNode(node, this.#throwError);
   }
 
   #throwError(node: number | ts.Node | TSESTree.Range, message: string): never {
@@ -684,12 +680,6 @@ export class Converter {
    * @returns the converted ESTree node
    */
   private convertNode(node: TSNode, parent: TSNode): TSESTree.Node | null {
-    this.#checkTSNode(
-      node,
-      (node as ts.ForInStatement | ts.ForOfStatement).initializer,
-      node.kind,
-    );
-
     switch (node.kind) {
       case SyntaxKind.SourceFile: {
         return this.createNode<TSESTree.Program>(node, {
