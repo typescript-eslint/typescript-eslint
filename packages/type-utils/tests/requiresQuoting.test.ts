@@ -14,12 +14,12 @@ describe(requiresQuoting, () => {
       expect(result).toBe(false);
     });
 
-    it('start with dollorSign', () => {
+    it('start with dollarSign', () => {
       const name = '$bar';
       const result = requiresQuoting(name);
       expect(result).toBe(false);
     });
-    it('include dollorSign not start position', () => {
+    it('include dollarSign not start position', () => {
       const name = 'foo$bar';
       const result = requiresQuoting(name);
       expect(result).toBe(false);
