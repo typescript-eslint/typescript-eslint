@@ -62,6 +62,11 @@ import * as Foo from './consistent-type-exports';
 type Foo = 1;
 export { Foo }
     `,
+    `
+import { Type3 } from './consistent-type-exports';
+const Type3 = { foo: 'bar' };
+export { Type3 };
+    `,
   ],
   invalid: [
     {
