@@ -60,6 +60,9 @@
   },
   "nx": {
     "name": "types",
+    "implicitDependencies": [
+      "ast-spec"
+    ],
     "includedScripts": [
       "clean"
     ],

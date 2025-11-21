@@ -113,18 +113,6 @@ class Foo {
       `,
       options: [{ allow: ['public readonly', 'private'] }],
     },
-    // Semantically invalid test case
-    `
-class Foo {
-  constructor(private ...name: string[]) {}
-}
-    `,
-    // Semantically invalid test case
-    `
-class Foo {
-  constructor(private [test]: [string]) {}
-}
-    `,
     {
       code: `
 class Foo {

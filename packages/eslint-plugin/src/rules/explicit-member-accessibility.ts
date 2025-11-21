@@ -359,19 +359,10 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.TSParameterProperty,
     ): void {
       const nodeType = 'parameter property';
-      // HAS to be an identifier or assignment or TSC will throw
-      if (
-        node.parameter.type !== AST_NODE_TYPES.Identifier &&
-        node.parameter.type !== AST_NODE_TYPES.AssignmentPattern
-      ) {
-        return;
-      }
-
       const nodeName =
         node.parameter.type === AST_NODE_TYPES.Identifier
           ? node.parameter.name
-          : // has to be an Identifier or TSC will throw an error
-            (node.parameter.left as TSESTree.Identifier).name;
+          : (node.parameter.left as TSESTree.Identifier).name;
 
       switch (paramPropCheck) {
         case 'explicit': {

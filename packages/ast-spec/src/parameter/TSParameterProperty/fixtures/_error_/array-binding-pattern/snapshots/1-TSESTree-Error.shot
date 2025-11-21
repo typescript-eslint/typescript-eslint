@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > parameter > TSParameterProperty > _error_ > array-binding-pattern > TSESTree - Error`]
+TSError
+> 1 | class Test { constructor(private [foo] = [1]) {} }
+    |                          ^^^^^^^ A parameter property may not be declared using a binding pattern.
+  2 |

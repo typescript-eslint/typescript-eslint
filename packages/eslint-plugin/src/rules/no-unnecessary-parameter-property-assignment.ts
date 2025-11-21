@@ -109,8 +109,7 @@ export default createRule({
         ((node.parameter.type === AST_NODE_TYPES.Identifier && // constructor (public foo) {}
           node.parameter.name === name) ||
           (node.parameter.type === AST_NODE_TYPES.AssignmentPattern && // constructor (public foo = 1) {}
-            node.parameter.left.type === AST_NODE_TYPES.Identifier &&
-            node.parameter.left.name === name))
+            (node.parameter.left as TSESTree.Identifier).name === name))
       );
     }
 

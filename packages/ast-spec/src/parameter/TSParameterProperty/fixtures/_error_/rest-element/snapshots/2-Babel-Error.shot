@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > parameter > TSParameterProperty > _error_ > rest-element > Babel - Error`]
+BabelError
+> 1 | class Test { constructor(private ...baz) {} }
+    |                                  ^ Unexpected token (1:33)
+  2 |
+  
