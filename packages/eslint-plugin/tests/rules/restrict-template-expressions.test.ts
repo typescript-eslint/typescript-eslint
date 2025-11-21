@@ -344,6 +344,102 @@ ruleTester.run('restrict-template-expressions', rule, {
     'const msg = `arg = ${undefined}`;',
     'const msg = `arg = ${123}`;',
     "const msg = `arg = ${'abc'}`;",
+    {
+      code: `
+        class Base {}
+        class Derived extends Base {}
+        const foo = new Base();
+        const bar = new Derived();
+        \`\${foo}\${bar}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Base' }] }],
+    },
+    {
+      code: `
+        class Base {}
+        class Derived extends Base {}
+        class DerivedTwice extends Derived {}
+        const value = new DerivedTwice();
+        \`\${value}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Base' }] }],
+    },
+    {
+      code: `
+        interface Base {
+          value: string;
+        }
+        interface Derived extends Base {
+          extra: number;
+        }
+        declare const obj: Derived;
+        \`\${obj}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Base' }] }],
+    },
+    {
+      code: `
+        interface Base {
+          value: string;
+        }
+        interface Other {
+          other: number;
+        }
+        interface Derived extends Base, Other {
+          extra: boolean;
+        }
+        declare const obj: Derived;
+        \`\${obj}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Base' }] }],
+    },
+    {
+      code: `
+        interface Base {
+          value: string;
+        }
+        interface Other {
+          other: number;
+        }
+        interface Derived extends Base, Other {
+          extra: boolean;
+        }
+        declare const obj: Derived;
+        \`\${obj}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Other' }] }],
+    },
+    {
+      code: `
+        interface Root {
+          root: string;
+        }
+        interface Another {
+          another: string;
+        }
+        interface Base extends Root, Another {
+          value: string;
+        }
+        interface Other {
+          other: number;
+        }
+        interface Derived extends Base, Other {
+          extra: boolean;
+        }
+        declare const obj: Derived;
+        \`\${obj}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Another' }] }],
+    },
+    // allow list with type alias without base types
+    {
+      code: `
+        type Custom = { value: string };
+        declare const obj: Custom;
+        \`\${obj}\`;
+      `,
+      options: [{ allow: [{ from: 'file', name: 'Custom' }] }],
+    },
   ],
 
   invalid: [
@@ -613,6 +709,62 @@ ruleTester.run('restrict-template-expressions', rule, {
         },
       ],
       options: [{ allowAny: true }],
+    },
+    {
+      code: `
+        class Base {}
+        class Derived extends Base {}
+        const bar = new Derived();
+        \`\${bar}\`;
+      `,
+      errors: [
+        {
+          data: { type: 'Derived' },
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allow: [] }],
+    },
+    {
+      code: `
+        interface Base {
+          value: string;
+        }
+        interface Derived extends Base {
+          extra: number;
+        }
+        declare const obj: Derived;
+        \`\${obj}\`;
+      `,
+      errors: [
+        {
+          data: { type: 'Derived' },
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allow: [] }],
+    },
+    {
+      code: `
+        interface Base {
+          value: string;
+        }
+        interface Other {
+          other: number;
+        }
+        interface Derived extends Base, Other {
+          extra: boolean;
+        }
+        declare const obj: Derived;
+        \`\${obj}\`;
+      `,
+      errors: [
+        {
+          data: { type: 'Derived' },
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allow: [] }],
     },
   ],
 });

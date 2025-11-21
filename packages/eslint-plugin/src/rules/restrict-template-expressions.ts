@@ -18,6 +18,7 @@ import {
   isTypeAnyType,
   isTypeFlagSet,
   isTypeNeverType,
+  matchesTypeOrBaseType,
 } from '../util';
 
 type OptionTester = (
@@ -165,7 +166,11 @@ export default createRule<Options, MessageId>({
 
       return (
         isTypeFlagSet(innerType, TypeFlags.StringLike) ||
-        typeMatchesSomeSpecifier(innerType, allow, program) ||
+        matchesTypeOrBaseType(
+          services,
+          type => typeMatchesSomeSpecifier(type, allow, program),
+          innerType,
+        ) ||
         enabledOptionTesters.some(({ tester }) =>
           tester(innerType, checker, recursivelyCheckType),
         )

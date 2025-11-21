@@ -9,6 +9,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
+  matchesTypeOrBaseType,
   nullThrows,
 } from '../util';
 
@@ -77,7 +78,8 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [option]) {
     const services = getParserServices(context);
-    const checker = services.program.getTypeChecker();
+    const { program } = services;
+    const checker = program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
     function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
@@ -211,36 +213,6 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Always;
     }
 
-    function hasBaseTypes(type: ts.Type): type is ts.InterfaceType {
-      return (
-        tsutils.isObjectType(type) &&
-        tsutils.isObjectFlagSet(
-          type,
-          ts.ObjectFlags.Interface | ts.ObjectFlags.Class,
-        )
-      );
-    }
-
-    function isIgnoredTypeOrBase(
-      type: ts.Type,
-      seen = new Set<ts.Type>(),
-    ): boolean {
-      if (seen.has(type)) {
-        return false;
-      }
-
-      seen.add(type);
-
-      const typeName = getTypeName(checker, type);
-      return (
-        ignoredTypeNames.includes(typeName) ||
-        (hasBaseTypes(type) &&
-          checker
-            .getBaseTypes(type)
-            .some(base => isIgnoredTypeOrBase(base, seen)))
-      );
-    }
-
     function collectToStringCertainty(
       type: ts.Type,
       visited: Set<ts.Type>,
@@ -278,7 +250,13 @@ export default createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (isIgnoredTypeOrBase(type)) {
+      if (
+        matchesTypeOrBaseType(
+          services,
+          type => ignoredTypeNames.includes(getTypeName(checker, type)),
+          type,
+        )
+      ) {
         return Usefulness.Always;
       }
 
