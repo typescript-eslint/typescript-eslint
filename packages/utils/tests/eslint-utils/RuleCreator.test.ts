@@ -65,6 +65,6 @@ describe(ESLintUtils.RuleCreator, () => {
     expect(rule.meta.docs).toEqual({
       description: 'some description',
     });
-    expect(rule.name).toBe('');
+    expect(rule.name).toBeUndefined();
   });
 });
