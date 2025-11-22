@@ -70,42 +70,35 @@ export default createRule<[], MessageId>({
       return arrayType.getNumberIndexType() ?? null;
     }
 
-    function isCallbackFunction(
-      functionNode:
-        | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionExpression,
-    ): boolean {
-      const parentType = functionNode.parent.type;
-      return (
-        parentType !== AST_NODE_TYPES.MethodDefinition &&
-        parentType !== AST_NODE_TYPES.VariableDeclarator &&
-        parentType !== AST_NODE_TYPES.Property &&
-        parentType !== AST_NODE_TYPES.ExpressionStatement &&
-        parentType !== AST_NODE_TYPES.ReturnStatement
-      );
-    }
-
     function checkAssignmentPattern(node: TSESTree.AssignmentPattern): void {
       const parent = node.parent;
 
-      // Handle callback parameters (like array.map((a = 42) => ...))
       if (
         parent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
         parent.type === AST_NODE_TYPES.FunctionExpression
       ) {
         const paramIndex = parent.params.indexOf(node);
         if (paramIndex !== -1) {
-          if (!isCallbackFunction(parent)) {
-            return;
-          }
-
           const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
           if (ts.isFunctionLike(tsFunc)) {
-            const signature = checker.getSignatureFromDeclaration(tsFunc);
-            if (signature) {
-              const params = signature.getParameters();
-              if (paramIndex < params.length) {
-                const paramType = checker.getTypeOfSymbol(params[paramIndex]);
+            const contextualType = checker.getContextualType(
+              tsFunc as ts.Expression,
+            );
+            if (!contextualType) {
+              return;
+            }
+
+            const signatures = contextualType.getCallSignatures();
+            if (signatures.length === 0) {
+              return;
+            }
+
+            const signature = signatures[0];
+            const params = signature.getParameters();
+            if (paramIndex < params.length) {
+              const paramSymbol = params[paramIndex];
+              if ((paramSymbol.flags & ts.SymbolFlags.Optional) === 0) {
+                const paramType = checker.getTypeOfSymbol(paramSymbol);
                 if (!canBeUndefined(paramType)) {
                   reportUselessDefault(node, 'parameter');
                 }

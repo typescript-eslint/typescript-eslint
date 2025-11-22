@@ -121,6 +121,17 @@ ruleTester.run('no-useless-default-assignment', rule, {
       declare const x: [[number | undefined]];
       const [[a = 1]] = x;
     `,
+    `
+      function foo(x: string = '') {}
+    `,
+    `
+      class C {
+        method(x: string = '') {}
+      }
+    `,
+    `
+      const foo = (x: string = '') => {};
+    `,
   ],
   invalid: [
     {
@@ -301,6 +312,35 @@ ruleTester.run('no-useless-default-assignment', rule, {
         const {
           hello: [{ world }],
         } = x;
+      `,
+    },
+    {
+      code: `
+        interface B {
+          foo: (b: boolean | string) => void;
+        }
+
+        const h: B = {
+          foo: (b = false) => {},
+        };
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { type: 'parameter' },
+          endColumn: 26,
+          line: 7,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        interface B {
+          foo: (b: boolean | string) => void;
+        }
+
+        const h: B = {
+          foo: (b) => {},
+        };
       `,
     },
   ],
