@@ -117,6 +117,10 @@ ruleTester.run('no-useless-default-assignment', rule, {
       for (const [value = 'default'] of []) {
       }
     `,
+    `
+      declare const x: [[number | undefined]];
+      const [[a = 1]] = x;
+    `,
   ],
   invalid: [
     {
