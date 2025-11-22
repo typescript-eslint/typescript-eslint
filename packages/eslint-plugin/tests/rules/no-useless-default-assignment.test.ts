@@ -249,5 +249,55 @@ ruleTester.run('no-useless-default-assignment', rule, {
         }
       `,
     },
+    {
+      code: `
+        declare const x: { hello: { world: string } };
+
+        const {
+          hello: { world = '' },
+        } = x;
+      `,
+      errors: [
+        {
+          column: 28,
+          data: { type: 'property' },
+          endColumn: 30,
+          line: 5,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        declare const x: { hello: { world: string } };
+
+        const {
+          hello: { world },
+        } = x;
+      `,
+    },
+    {
+      code: `
+        declare const x: { hello: Array<{ world: string }> };
+
+        const {
+          hello: [{ world = '' }],
+        } = x;
+      `,
+      errors: [
+        {
+          column: 29,
+          data: { type: 'property' },
+          endColumn: 31,
+          line: 5,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        declare const x: { hello: Array<{ world: string }> };
+
+        const {
+          hello: [{ world }],
+        } = x;
+      `,
+    },
   ],
 });

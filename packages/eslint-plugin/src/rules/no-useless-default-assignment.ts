@@ -67,7 +67,7 @@ export default createRule<[], MessageId>({
         }
       }
 
-      return null;
+      return arrayType.getNumberIndexType() ?? null;
     }
 
     function isCallbackFunction(
@@ -159,22 +159,11 @@ export default createRule<[], MessageId>({
       }
     }
 
-    function getSourceTypeForPattern(
-      pattern: TSESTree.ArrayPattern | TSESTree.ObjectPattern,
-    ): ts.Type | null {
-      let currentNode: TSESTree.Node = pattern;
-
-      // Walk up through nested patterns
-      while (
-        currentNode.parent.type === AST_NODE_TYPES.AssignmentPattern ||
-        currentNode.parent.type === AST_NODE_TYPES.Property ||
-        currentNode.parent.type === AST_NODE_TYPES.ObjectPattern ||
-        currentNode.parent.type === AST_NODE_TYPES.ArrayPattern
-      ) {
-        currentNode = currentNode.parent;
+    function getSourceTypeForPattern(pattern: TSESTree.Node): ts.Type | null {
+      const parent = pattern.parent;
+      if (!parent) {
+        return null;
       }
-
-      const parent = currentNode.parent;
 
       if (parent.type === AST_NODE_TYPES.VariableDeclarator && parent.init) {
         const tsNode = services.esTreeNodeToTSNodeMap.get(parent.init);
@@ -182,9 +171,7 @@ export default createRule<[], MessageId>({
       }
 
       if (isFunction(parent)) {
-        const paramIndex = parent.params.indexOf(
-          currentNode as TSESTree.Parameter,
-        );
+        const paramIndex = parent.params.indexOf(pattern as TSESTree.Parameter);
         const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
         const signature = checker.getSignatureFromDeclaration(tsFunc);
         if (!signature) {
@@ -192,6 +179,38 @@ export default createRule<[], MessageId>({
         }
         const params = signature.getParameters();
         return checker.getTypeOfSymbol(params[paramIndex]);
+      }
+
+      if (parent.type === AST_NODE_TYPES.AssignmentPattern) {
+        return getSourceTypeForPattern(parent);
+      }
+
+      if (parent.type === AST_NODE_TYPES.Property) {
+        const objectPattern = parent.parent as TSESTree.ObjectPattern;
+        const objectType = getSourceTypeForPattern(objectPattern);
+        if (!objectType) {
+          return null;
+        }
+        const propertyName = getPropertyName(parent.key);
+        if (!propertyName) {
+          return null;
+        }
+        return getPropertyType(objectType, propertyName);
+      }
+
+      if (parent.type === AST_NODE_TYPES.ArrayPattern) {
+        const arrayPattern = parent;
+        const arrayType = getSourceTypeForPattern(arrayPattern);
+        if (!arrayType) {
+          return null;
+        }
+        const elementIndex = arrayPattern.elements.indexOf(
+          pattern as TSESTree.DestructuringPattern,
+        );
+        if (elementIndex === -1) {
+          return null;
+        }
+        return getArrayElementType(arrayType, elementIndex);
       }
 
       return null;
