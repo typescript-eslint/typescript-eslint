@@ -159,7 +159,13 @@ export class Converter {
     checkModifiers(node);
   }
 
-  #throwError(node: number | ts.Node | TSESTree.Range, message: string): never {
+  #throwError(
+    node: number | ts.Node | TSESTree.Range,
+    message: string,
+  ): asserts node is never {
+    if (this.options.allowInvalidAST) {
+      return;
+    }
     let start;
     let end;
     if (Array.isArray(node)) {
@@ -172,15 +178,6 @@ export class Converter {
     }
 
     throw createError(message, this.ast, start, end);
-  }
-
-  #throwUnlessAllowInvalidAST(
-    node: number | ts.Node | TSESTree.Range,
-    message: string,
-  ): asserts node is never {
-    if (!this.options.allowInvalidAST) {
-      this.#throwError(node, message);
-    }
   }
 
   /**
@@ -276,17 +273,14 @@ export class Converter {
     allowNull: boolean,
   ): void {
     if (!allowNull && node.moduleSpecifier == null) {
-      this.#throwUnlessAllowInvalidAST(
-        node,
-        'Module specifier must be a string literal.',
-      );
+      this.#throwError(node, 'Module specifier must be a string literal.');
     }
 
     if (
       node.moduleSpecifier &&
       node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
     ) {
-      this.#throwUnlessAllowInvalidAST(
+      this.#throwError(
         node.moduleSpecifier,
         'Module specifier must be a string literal.',
       );
@@ -848,10 +842,7 @@ export class Converter {
 
       case SyntaxKind.ThrowStatement:
         if (node.expression.end === node.expression.pos) {
-          this.#throwUnlessAllowInvalidAST(
-            node,
-            'A throw statement must throw an expression.',
-          );
+          this.#throwError(node, 'A throw statement must throw an expression.');
         }
 
         return this.createNode<TSESTree.ThrowStatement>(node, {
@@ -1033,7 +1024,7 @@ export class Converter {
         });
 
         if (!result.declarations.length) {
-          this.#throwUnlessAllowInvalidAST(
+          this.#throwError(
             node,
             'A variable declaration list must have at least one variable declarator.',
           );
@@ -1179,7 +1170,7 @@ export class Converter {
               property.kind === SyntaxKind.MethodDeclaration) &&
             !property.body
           ) {
-            this.#throwUnlessAllowInvalidAST(property.end - 1, "'{' expected.");
+            this.#throwError(property.end - 1, "'{' expected.");
           }
 
           properties.push(this.convertChild(property) as TSESTree.Property);
@@ -1848,7 +1839,7 @@ export class Converter {
           (!hasModifier(ts.SyntaxKind.ExportKeyword, node) ||
             !hasModifier(ts.SyntaxKind.DefaultKeyword, node))
         ) {
-          this.#throwUnlessAllowInvalidAST(
+          this.#throwError(
             node,
             "A class declaration without the 'default' modifier must have a name.",
           );
@@ -1867,7 +1858,7 @@ export class Converter {
           const { token, types } = heritageClause;
 
           if (types.length === 0) {
-            this.#throwUnlessAllowInvalidAST(
+            this.#throwError(
               heritageClause,
               `'${ts.tokenToString(token)}' list cannot be empty.`,
             );
@@ -1875,21 +1866,21 @@ export class Converter {
 
           if (token === SyntaxKind.ExtendsKeyword) {
             if (extendsClause) {
-              this.#throwUnlessAllowInvalidAST(
+              this.#throwError(
                 heritageClause,
                 "'extends' clause already seen.",
               );
             }
 
             if (implementsClause) {
-              this.#throwUnlessAllowInvalidAST(
+              this.#throwError(
                 heritageClause,
                 "'extends' clause must precede 'implements' clause.",
               );
             }
 
             if (types.length > 1) {
-              this.#throwUnlessAllowInvalidAST(
+              this.#throwError(
                 types[1],
                 'Classes can only extend a single class.',
               );
@@ -1898,7 +1889,7 @@ export class Converter {
             extendsClause ??= heritageClause;
           } else if (token === SyntaxKind.ImplementsKeyword) {
             if (implementsClause) {
-              this.#throwUnlessAllowInvalidAST(
+              this.#throwError(
                 heritageClause,
                 "'implements' clause already seen.",
               );
@@ -2118,7 +2109,7 @@ export class Converter {
          */
         if (operator === '++' || operator === '--') {
           if (!isValidAssignmentTarget(node.operand)) {
-            this.#throwUnlessAllowInvalidAST(
+            this.#throwError(
               node.operand,
               'Invalid left-hand side expression in unary operation',
             );
@@ -2273,7 +2264,7 @@ export class Converter {
       case SyntaxKind.CallExpression: {
         if (node.expression.kind === SyntaxKind.ImportKeyword) {
           if (node.arguments.length !== 1 && node.arguments.length !== 2) {
-            this.#throwUnlessAllowInvalidAST(
+            this.#throwError(
               node.arguments[2] ?? node,
               'Dynamic import requires exactly one or two arguments.',
             );
@@ -2691,7 +2682,7 @@ export class Converter {
 
       case SyntaxKind.MappedType: {
         if (node.members && node.members.length > 0) {
-          this.#throwUnlessAllowInvalidAST(
+          this.#throwError(
             node.members[0],
             'A mapped type may not declare properties or methods.',
           );
@@ -3061,7 +3052,7 @@ export class Converter {
       case SyntaxKind.EnumMember: {
         const computed = node.name.kind === ts.SyntaxKind.ComputedPropertyName;
         if (computed) {
-          this.#throwUnlessAllowInvalidAST(
+          this.#throwError(
             node.name,
             'Computed property names are not allowed in enums.',
           );
@@ -3071,7 +3062,7 @@ export class Converter {
           node.name.kind === SyntaxKind.NumericLiteral ||
           node.name.kind === SyntaxKind.BigIntLiteral
         ) {
-          this.#throwUnlessAllowInvalidAST(
+          this.#throwError(
             node.name,
             'An enum member cannot have a numeric name.',
           );
@@ -3116,13 +3107,13 @@ export class Converter {
                 body == null ||
                 body.type === AST_NODE_TYPES.TSModuleDeclaration
               ) {
-                this.#throwUnlessAllowInvalidAST(
+                this.#throwError(
                   node.body ?? node,
                   'Expected a valid module body',
                 );
               }
               if (id.type !== AST_NODE_TYPES.Identifier) {
-                this.#throwUnlessAllowInvalidAST(
+                this.#throwError(
                   node.name,
                   'global module augmentation must have an Identifier id',
                 );
@@ -3154,10 +3145,10 @@ export class Converter {
             // with the innermost node's body as the actual node body.
 
             if (node.body == null) {
-              this.#throwUnlessAllowInvalidAST(node, 'Expected a module body');
+              this.#throwError(node, 'Expected a module body');
             }
             if (node.name.kind !== ts.SyntaxKind.Identifier) {
-              this.#throwUnlessAllowInvalidAST(
+              this.#throwError(
                 node.name,
                 '`namespace`s must have an Identifier id',
               );
