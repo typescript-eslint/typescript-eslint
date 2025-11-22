@@ -143,6 +143,17 @@ describe(inferSingleRun, () => {
     expect(actual).toBe(false);
   });
 
+  it('returns true when options.extraFileExtensions contains entries and projectService is true', () => {
+    vi.stubEnv('CI', 'true');
+
+    const actual = inferSingleRun({
+      extraFileExtensions: ['.vue'],
+      projectService: true,
+    });
+
+    expect(actual).toBe(true);
+  });
+
   it('returns false when there is no way to infer singleRun', () => {
     const actual = inferSingleRun({
       programs: null,
@@ -156,5 +167,12 @@ describe(inferSingleRun, () => {
     const actual = inferSingleRun({ project: true });
 
     expect(actual).toBe(false);
+  });
+
+  it('returns true for project service in single run', () => {
+    vi.stubEnv('CI', 'true');
+    const actual = inferSingleRun({ projectService: true });
+
+    expect(actual).toBe(true);
   });
 });
