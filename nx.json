@@ -15,11 +15,11 @@
       }
     },
     {
-      "plugin": "@nx/vite/plugin",
+      "plugin": "@nx/vitest",
       "exclude": ["*"],
       "options": {
         "testTargetName": "test",
-        "typecheckTargetName": "vite:typecheck"
+        "typecheckTargetName": "vitest:typecheck"
       }
     }
   ],

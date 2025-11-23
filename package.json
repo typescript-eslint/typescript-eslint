@@ -58,7 +58,7 @@
     "@eslint/js": "^9.26.0",
     "@nx/devkit": "22.1.1",
     "@nx/js": "22.1.1",
-    "@nx/vite": "22.1.1",
+    "@nx/vitest": "22.1.1",
     "@nx/workspace": "22.1.1",
     "@swc/core": "^1.4.12",
     "@types/debug": "^4.1.12",
