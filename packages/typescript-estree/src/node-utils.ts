@@ -701,13 +701,17 @@ export function createError(
     endIndex = node.getEnd();
   }
 
+  if (!sourceFile) {
+    throw new Error('`sourceFile` is required.');
+  }
+
   const [start, end] = [startIndex, endIndex].map(offset => {
     const { character: column, line } =
-      sourceFile!.getLineAndCharacterOfPosition(offset);
+      sourceFile.getLineAndCharacterOfPosition(offset);
     return { column, line: line + 1, offset };
   });
 
-  return new TSError(message, sourceFile!.fileName, { end, start });
+  return new TSError(message, sourceFile.fileName, { end, start });
 }
 
 export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
