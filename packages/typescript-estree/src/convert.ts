@@ -1023,6 +1023,11 @@ export class Converter {
               }
             }
           }
+
+          if (
+            variableDeclarationList.parent.kind === SyntaxKind.VariableStatement
+          ) {
+          }
         }
 
         const init = this.convertChild(node.initializer);
@@ -1040,19 +1045,22 @@ export class Converter {
       }
 
       case SyntaxKind.VariableStatement: {
-        const result = this.createNode<TSESTree.VariableDeclaration>(node, {
-          type: AST_NODE_TYPES.VariableDeclaration,
-          declarations: this.convertChildren(node.declarationList.declarations),
-          declare: hasModifier(SyntaxKind.DeclareKeyword, node),
-          kind: getDeclarationKind(node.declarationList),
-        });
+        const declarations = node.declarationList.declarations;
 
-        if (!result.declarations.length) {
+        if (!declarations.length) {
           this.#throwError(
             node,
             'A variable declaration list must have at least one variable declarator.',
           );
         }
+
+        const result = this.createNode<TSESTree.VariableDeclaration>(node, {
+          type: AST_NODE_TYPES.VariableDeclaration,
+          declarations: this.convertChildren(declarations),
+          declare: hasModifier(SyntaxKind.DeclareKeyword, node),
+          kind: getDeclarationKind(node.declarationList),
+        });
+
         if (result.kind === 'using' || result.kind === 'await using') {
           node.declarationList.declarations.forEach((declaration, i) => {
             if (result.declarations[i].init == null) {
