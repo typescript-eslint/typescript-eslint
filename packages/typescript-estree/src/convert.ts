@@ -1000,6 +1000,31 @@ export class Converter {
           }
         }
 
+        if (node.parent.kind === SyntaxKind.VariableDeclarationList) {
+          const variableDeclarationList = node.parent;
+          const kind = getDeclarationKind(variableDeclarationList);
+
+          if (
+            variableDeclarationList.parent.kind === SyntaxKind.ForInStatement ||
+            variableDeclarationList.parent.kind === SyntaxKind.ForStatement
+          ) {
+            if (kind === 'using' || kind === 'await using') {
+              if (!node.initializer) {
+                this.#throwError(
+                  node,
+                  `'${kind}' declarations may not be initialized in for statement.`,
+                );
+              }
+              if (node.name.kind !== SyntaxKind.Identifier) {
+                this.#throwError(
+                  node.name,
+                  `'${kind}' declarations may not have binding patterns.`,
+                );
+              }
+            }
+          }
+        }
+
         const init = this.convertChild(node.initializer);
         const id = this.convertBindingNameWithTypeAnnotation(
           node.name,
@@ -1092,30 +1117,12 @@ export class Converter {
 
       // mostly for for-of, for-in
       case SyntaxKind.VariableDeclarationList: {
-        const result = this.createNode<TSESTree.VariableDeclaration>(node, {
+        return this.createNode<TSESTree.VariableDeclaration>(node, {
           type: AST_NODE_TYPES.VariableDeclaration,
           declarations: this.convertChildren(node.declarations),
           declare: false,
           kind: getDeclarationKind(node),
         });
-
-        if (result.kind === 'using' || result.kind === 'await using') {
-          node.declarations.forEach((declaration, i) => {
-            if (result.declarations[i].init != null) {
-              this.#throwError(
-                declaration,
-                `'${result.kind}' declarations may not be initialized in for statement.`,
-              );
-            }
-            if (result.declarations[i].id.type !== AST_NODE_TYPES.Identifier) {
-              this.#throwError(
-                declaration.name,
-                `'${result.kind}' declarations may not have binding patterns.`,
-              );
-            }
-          });
-        }
-        return result;
       }
 
       // Expressions
