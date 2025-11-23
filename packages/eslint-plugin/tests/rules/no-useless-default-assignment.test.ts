@@ -92,9 +92,7 @@ ruleTester.run('no-useless-default-assignment', rule, {
     `
       function getValue(): undefined;
       function getValue(box: { value: string }): string;
-      function getValue({ value = undefined }: { value?: string } = {}):
-        | string
-        | undefined {
+      function getValue({ value = '' }: { value?: string } = {}): string | undefined {
         return value;
       }
     `,
@@ -218,9 +216,7 @@ ruleTester.run('no-useless-default-assignment', rule, {
       code: `
         function getValue(): undefined;
         function getValue(box: { value: string }): string;
-        function getValue({ value = undefined }: { value: string } = {}):
-          | string
-          | undefined {
+        function getValue({ value = '' }: { value: string } = {}): string | undefined {
           return value;
         }
       `,
@@ -228,7 +224,7 @@ ruleTester.run('no-useless-default-assignment', rule, {
         {
           column: 37,
           data: { type: 'property' },
-          endColumn: 46,
+          endColumn: 39,
           line: 4,
           messageId: 'uselessDefaultAssignment',
         },
@@ -236,9 +232,7 @@ ruleTester.run('no-useless-default-assignment', rule, {
       output: `
         function getValue(): undefined;
         function getValue(box: { value: string }): string;
-        function getValue({ value }: { value: string } = {}):
-          | string
-          | undefined {
+        function getValue({ value }: { value: string } = {}): string | undefined {
           return value;
         }
       `,
@@ -341,6 +335,74 @@ ruleTester.run('no-useless-default-assignment', rule, {
         const h: B = {
           foo: (b) => {},
         };
+      `,
+    },
+    {
+      code: `
+        function foo(a = undefined) {}
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { type: 'parameter' },
+          endColumn: 35,
+          line: 2,
+          messageId: 'uselessUndefined',
+        },
+      ],
+      output: `
+        function foo(a) {}
+      `,
+    },
+    {
+      code: `
+        const { a = undefined } = {};
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { type: 'property' },
+          endColumn: 30,
+          line: 2,
+          messageId: 'uselessUndefined',
+        },
+      ],
+      output: `
+        const { a } = {};
+      `,
+    },
+    {
+      code: `
+        const [a = undefined] = [];
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { type: 'property' },
+          endColumn: 29,
+          line: 2,
+          messageId: 'uselessUndefined',
+        },
+      ],
+      output: `
+        const [a] = [];
+      `,
+    },
+    {
+      code: `
+        function foo({ a = undefined }) {}
+      `,
+      errors: [
+        {
+          column: 28,
+          data: { type: 'property' },
+          endColumn: 37,
+          line: 2,
+          messageId: 'uselessUndefined',
+        },
+      ],
+      output: `
+        function foo({ a }) {}
       `,
     },
   ],

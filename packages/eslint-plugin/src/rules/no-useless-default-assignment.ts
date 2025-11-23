@@ -13,7 +13,7 @@ import {
   isTypeUnknownType,
 } from '../util';
 
-type MessageId = 'uselessDefaultAssignment';
+type MessageId = 'uselessDefaultAssignment' | 'uselessUndefined';
 
 export default createRule<[], MessageId>({
   name: 'no-useless-default-assignment',
@@ -28,6 +28,8 @@ export default createRule<[], MessageId>({
     messages: {
       uselessDefaultAssignment:
         'Default value is useless because the {{ type }} is not optional.',
+      uselessUndefined:
+        'Default value is useless because it is undefined. Optional {{ type }}s are already undefined by default.',
     },
     schema: [],
   },
@@ -71,6 +73,19 @@ export default createRule<[], MessageId>({
     }
 
     function checkAssignmentPattern(node: TSESTree.AssignmentPattern): void {
+      if (
+        node.right.type === AST_NODE_TYPES.Identifier &&
+        node.right.name === 'undefined'
+      ) {
+        const type =
+          node.parent.type === AST_NODE_TYPES.Property ||
+          node.parent.type === AST_NODE_TYPES.ArrayPattern
+            ? 'property'
+            : 'parameter';
+        reportUselessDefault(node, type, 'uselessUndefined');
+        return;
+      }
+
       const parent = node.parent;
 
       if (
@@ -100,7 +115,11 @@ export default createRule<[], MessageId>({
               if ((paramSymbol.flags & ts.SymbolFlags.Optional) === 0) {
                 const paramType = checker.getTypeOfSymbol(paramSymbol);
                 if (!canBeUndefined(paramType)) {
-                  reportUselessDefault(node, 'parameter');
+                  reportUselessDefault(
+                    node,
+                    'parameter',
+                    'uselessDefaultAssignment',
+                  );
                 }
               }
             }
@@ -128,7 +147,7 @@ export default createRule<[], MessageId>({
         }
 
         if (!canBeUndefined(propertyType)) {
-          reportUselessDefault(node, 'property');
+          reportUselessDefault(node, 'property', 'uselessDefaultAssignment');
         }
       } else if (parent.type === AST_NODE_TYPES.ArrayPattern) {
         const sourceType = getSourceTypeForPattern(parent);
@@ -147,7 +166,7 @@ export default createRule<[], MessageId>({
         }
 
         if (!canBeUndefined(elementType)) {
-          reportUselessDefault(node, 'property');
+          reportUselessDefault(node, 'property', 'uselessDefaultAssignment');
         }
       }
     }
@@ -225,10 +244,11 @@ export default createRule<[], MessageId>({
     function reportUselessDefault(
       node: TSESTree.AssignmentPattern,
       type: 'parameter' | 'property',
+      messageId: MessageId,
     ): void {
       context.report({
         node: node.right,
-        messageId: 'uselessDefaultAssignment',
+        messageId,
         data: { type },
         fix(fixer) {
           // Remove from before the = to the end of the default value
