@@ -685,7 +685,7 @@ export function createError(
   sourceFile: ts.SourceFile,
 ): TSError;
 export function createError(
-  node: number | TSESTree.Range | ts.Node,
+  node: number | ts.Node | TSESTree.Range,
   message: string,
   sourceFile?: ts.SourceFile,
 ): TSError {
