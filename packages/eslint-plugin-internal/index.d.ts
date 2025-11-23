@@ -2,8 +2,8 @@ import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
 import type rules from './rules';
 
-declare const cjsExport: {
+declare const defaultExport: {
   meta: FlatConfig.PluginMeta;
   rules: typeof rules;
 };
-export = cjsExport;
+export default defaultExport;

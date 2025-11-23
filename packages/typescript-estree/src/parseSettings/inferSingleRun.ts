@@ -18,13 +18,13 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
   // https://github.com/typescript-eslint/typescript-eslint/issues/9504
   // There's no support (yet?) for extraFileExtensions in single-run hosts.
   // Only watch program hosts and project service can support that.
-  if (options?.extraFileExtensions?.length) {
+  if (options?.extraFileExtensions?.length && options.project) {
     return false;
   }
 
   if (
     // single-run implies type-aware linting - no projects means we can't be in single-run mode
-    options?.project == null ||
+    (options?.project == null && !options?.projectService) ||
     // programs passed via options means the user should be managing the programs, so we shouldn't
     // be creating our own single-run programs accidentally
     options.programs != null

@@ -6,14 +6,17 @@ import * as ts from 'typescript';
 
 import {
   createRule,
+  getConstrainedTypeAtLocation,
   getFunctionHeadLoc,
   getParserServices,
   isArrayMethodCallWithPredicate,
   isFunction,
+  isPromiseLike,
   isRestParameterDeclaration,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { parseFinallyCall } from '../util/promiseUtils';
 
 export type Options = [
   {
@@ -85,7 +88,7 @@ export default createRule<Options, MessageId>({
     messages: {
       conditional: 'Expected non-Promise value in a boolean conditional.',
       predicate: 'Expected a non-Promise value to be returned.',
-      spread: 'Expected a non-Promise value to be spreaded in an object.',
+      spread: 'Expected a non-Promise value to be spread in an object.',
       voidReturnArgument:
         'Promise returned in function argument where a void return was expected.',
       voidReturnAttribute:
@@ -360,6 +363,13 @@ export default createRule<Options, MessageId>({
     function checkArguments(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
+      if (
+        node.type === AST_NODE_TYPES.CallExpression &&
+        isPromiseFinallyMethod(node)
+      ) {
+        return;
+      }
+
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const voidArgs = voidFunctionArguments(checker, tsNode);
       if (voidArgs.size === 0) {
@@ -492,10 +502,10 @@ export default createRule<Options, MessageId>({
         if (objType == null) {
           return;
         }
-        const propertySymbol = checker.getPropertyOfType(
-          objType,
-          tsNode.name.text,
-        );
+        const propertySymbol = tsutils
+          .unionConstituents(objType)
+          .map(t => checker.getPropertyOfType(t, tsNode.name.getText()))
+          .find(p => p);
         if (propertySymbol == null) {
           return;
         }
@@ -561,6 +571,18 @@ export default createRule<Options, MessageId>({
           messageId: 'voidReturnReturnValue',
         });
       }
+    }
+
+    function isPromiseFinallyMethod(node: TSESTree.CallExpression): boolean {
+      const promiseFinallyCall = parseFinallyCall(node, context);
+
+      return (
+        promiseFinallyCall != null &&
+        isPromiseLike(
+          services.program,
+          getConstrainedTypeAtLocation(services, promiseFinallyCall.object),
+        )
+      );
     }
 
     function checkClassLikeOrInterfaceNode(

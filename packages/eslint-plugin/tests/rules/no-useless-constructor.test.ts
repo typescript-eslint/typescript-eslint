@@ -1,5 +1,4 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-useless-constructor';
 
@@ -228,7 +227,6 @@ ${'  '}
       `,
             },
           ],
-          type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
     },
@@ -253,7 +251,6 @@ ${'  '}
       `,
             },
           ],
-          type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
     },
@@ -278,7 +275,6 @@ ${'  '}
       `,
             },
           ],
-          type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
     },
@@ -303,7 +299,6 @@ ${'  '}
       `,
             },
           ],
-          type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
     },
@@ -328,7 +323,6 @@ ${'  '}
       `,
             },
           ],
-          type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
     },
@@ -353,7 +347,6 @@ ${'  '}
       `,
             },
           ],
-          type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
     },
@@ -378,7 +371,6 @@ ${'  '}
       `,
             },
           ],
-          type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
     },
@@ -403,7 +395,6 @@ ${'  '}
       `,
             },
           ],
-          type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
     },
@@ -426,7 +417,6 @@ ${'  '}
       `,
             },
           ],
-          type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
     },

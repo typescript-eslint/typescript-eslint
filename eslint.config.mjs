@@ -44,7 +44,6 @@ export default defineConfig(
       // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
       ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
       ['perfectionist']: perfectionistPlugin,
-      // @ts-expect-error -- https://github.com/vitest-dev/eslint-plugin-vitest/issues/737
       ['vitest']: vitestPlugin,
       // https://github.com/facebook/react/issues/28313
       ['react']: reactPlugin,
@@ -322,6 +321,7 @@ export default defineConfig(
       'jsdoc/tag-lines': 'off',
 
       'regexp/no-dupe-disjunctions': 'error',
+      'regexp/no-missing-g-flag': 'error',
       'regexp/no-useless-character-class': 'error',
       'regexp/no-useless-flag': 'error',
       'regexp/no-useless-lazy': 'error',
@@ -427,6 +427,7 @@ export default defineConfig(
     ],
     name: 'eslint-plugin-and-eslint-plugin-internal/test-files/rules',
     rules: {
+      '@typescript-eslint/internal/no-dynamic-tests': 'error',
       '@typescript-eslint/internal/plugin-test-formatting': 'error',
     },
   },
@@ -478,7 +479,6 @@ export default defineConfig(
       // TODO (43081j): maybe enable these one day?
       'eslint-plugin/no-meta-replaced-by': 'off',
       'eslint-plugin/require-meta-default-options': 'off',
-      'eslint-plugin/require-meta-schema-description': 'off',
     },
   },
   {

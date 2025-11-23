@@ -39,6 +39,7 @@ jobs:
             eslint-plugin-internal
             parser
             project-service
+            rule-schema-to-typescript-types
             rule-tester
             scope-manager
             tsconfig-utils

@@ -25,6 +25,7 @@ const enum ComparisonValueType {
 }
 export const enum OperandValidity {
   Valid = 'Valid',
+  Last = 'Last',
   Invalid = 'Invalid',
 }
 export const enum NullishComparisonType {
@@ -48,6 +49,12 @@ export const enum NullishComparisonType {
   /** `x` */
   Boolean = 'Boolean', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
 }
+export const enum ComparisonType {
+  NotEqual = 'NotEqual',
+  Equal = 'Equal',
+  NotStrictEqual = 'NotStrictEqual',
+  StrictEqual = 'StrictEqual',
+}
 export interface ValidOperand {
   comparedName: TSESTree.Node;
   comparisonType: NullishComparisonType;
@@ -55,10 +62,18 @@ export interface ValidOperand {
   node: TSESTree.Expression;
   type: OperandValidity.Valid;
 }
+export interface LastChainOperand {
+  comparedName: TSESTree.Node;
+  comparisonType: ComparisonType;
+  comparisonValue: TSESTree.Node;
+  isYoda: boolean;
+  node: TSESTree.BinaryExpression;
+  type: OperandValidity.Last;
+}
 export interface InvalidOperand {
   type: OperandValidity.Invalid;
 }
-type Operand = InvalidOperand | ValidOperand;
+type Operand = InvalidOperand | LastChainOperand | ValidOperand;
 
 const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(
@@ -182,61 +197,101 @@ export function gatherLogicalOperands(
           continue;
         }
 
-        switch (operand.operator) {
-          case '!=':
-          case '==':
-            if (
-              comparedValue === ComparisonValueType.Null ||
-              comparedValue === ComparisonValueType.Undefined
-            ) {
-              // x == null, x == undefined
+        if (operand.operator.startsWith('!') !== (node.operator === '||')) {
+          switch (operand.operator) {
+            case '!=':
+            case '==':
+              if (
+                comparedValue === ComparisonValueType.Null ||
+                comparedValue === ComparisonValueType.Undefined
+              ) {
+                // x == null, x == undefined
+                result.push({
+                  comparedName: comparedExpression,
+                  comparisonType: operand.operator.startsWith('!')
+                    ? NullishComparisonType.NotEqualNullOrUndefined
+                    : NullishComparisonType.EqualNullOrUndefined,
+                  isYoda,
+                  node: operand,
+                  type: OperandValidity.Valid,
+                });
+                continue;
+              }
+              break;
+
+            case '!==':
+            case '===': {
+              const comparedName = comparedExpression;
+              switch (comparedValue) {
+                case ComparisonValueType.Null:
+                  result.push({
+                    comparedName,
+                    comparisonType: operand.operator.startsWith('!')
+                      ? NullishComparisonType.NotStrictEqualNull
+                      : NullishComparisonType.StrictEqualNull,
+                    isYoda,
+                    node: operand,
+                    type: OperandValidity.Valid,
+                  });
+                  continue;
+
+                case ComparisonValueType.Undefined:
+                  result.push({
+                    comparedName,
+                    comparisonType: operand.operator.startsWith('!')
+                      ? NullishComparisonType.NotStrictEqualUndefined
+                      : NullishComparisonType.StrictEqualUndefined,
+                    isYoda,
+                    node: operand,
+                    type: OperandValidity.Valid,
+                  });
+                  continue;
+              }
+            }
+          }
+        }
+
+        // x == something :(
+        // x === something :(
+        // x != something :(
+        // x !== something :(
+        const binaryComparisonChain = getBinaryComparisonChain(operand);
+        if (binaryComparisonChain) {
+          const { comparedName, comparedValue, isYoda } = binaryComparisonChain;
+
+          switch (operand.operator) {
+            case '==':
+            case '===': {
+              const comparisonType =
+                operand.operator === '=='
+                  ? ComparisonType.Equal
+                  : ComparisonType.StrictEqual;
               result.push({
-                comparedName: comparedExpression,
-                comparisonType: operand.operator.startsWith('!')
-                  ? NullishComparisonType.NotEqualNullOrUndefined
-                  : NullishComparisonType.EqualNullOrUndefined,
+                comparedName,
+                comparisonType,
+                comparisonValue: comparedValue,
                 isYoda,
                 node: operand,
-                type: OperandValidity.Valid,
+                type: OperandValidity.Last,
               });
               continue;
             }
-            // x == something :(
-            result.push({ type: OperandValidity.Invalid });
-            continue;
 
-          case '!==':
-          case '===': {
-            const comparedName = comparedExpression;
-            switch (comparedValue) {
-              case ComparisonValueType.Null:
-                result.push({
-                  comparedName,
-                  comparisonType: operand.operator.startsWith('!')
-                    ? NullishComparisonType.NotStrictEqualNull
-                    : NullishComparisonType.StrictEqualNull,
-                  isYoda,
-                  node: operand,
-                  type: OperandValidity.Valid,
-                });
-                continue;
-
-              case ComparisonValueType.Undefined:
-                result.push({
-                  comparedName,
-                  comparisonType: operand.operator.startsWith('!')
-                    ? NullishComparisonType.NotStrictEqualUndefined
-                    : NullishComparisonType.StrictEqualUndefined,
-                  isYoda,
-                  node: operand,
-                  type: OperandValidity.Valid,
-                });
-                continue;
-
-              default:
-                // x === something :(
-                result.push({ type: OperandValidity.Invalid });
-                continue;
+            case '!=':
+            case '!==': {
+              const comparisonType =
+                operand.operator === '!='
+                  ? ComparisonType.NotEqual
+                  : ComparisonType.NotStrictEqual;
+              result.push({
+                comparedName,
+                comparisonType,
+                comparisonValue: comparedValue,
+                isYoda,
+                node: operand,
+                type: OperandValidity.Last,
+              });
+              continue;
             }
           }
         }
@@ -372,6 +427,34 @@ export function gatherLogicalOperands(
         return null;
     }
 
+    return null;
+  }
+
+  function getBinaryComparisonChain(node: TSESTree.BinaryExpression) {
+    const { left, right } = node;
+    let isYoda = false;
+    const isLeftMemberExpression =
+      left.type === AST_NODE_TYPES.MemberExpression;
+    const isRightMemberExpression =
+      right.type === AST_NODE_TYPES.MemberExpression;
+    if (isLeftMemberExpression && !isRightMemberExpression) {
+      const [comparedName, comparedValue] = [left, right];
+      return {
+        comparedName,
+        comparedValue,
+        isYoda,
+      };
+    }
+    if (!isLeftMemberExpression && isRightMemberExpression) {
+      const [comparedName, comparedValue] = [right, left];
+
+      isYoda = true;
+      return {
+        comparedName,
+        comparedValue,
+        isYoda,
+      };
+    }
     return null;
   }
 }

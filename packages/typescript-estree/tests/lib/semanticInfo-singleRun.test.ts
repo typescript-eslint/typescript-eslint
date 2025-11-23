@@ -114,6 +114,11 @@ describe('semanticInfo - singleRun', () => {
     createProgramFromConfigFile.mockClear();
     // Do not track invocations per file across tests
     clearParseAndGenerateServicesCalls();
+
+    vi.stubEnv(
+      'TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR',
+      'true',
+    );
   });
 
   it('should not create any programs ahead of time by default when there is no way to infer singleRun=true', () => {
@@ -128,7 +133,7 @@ describe('semanticInfo - singleRun', () => {
     expect(createProgramFromConfigFile).not.toHaveBeenCalled();
   });
 
-  it('should not create any programs ahead of time when when TSESTREE_SINGLE_RUN=false, even if other inferrence criteria apply', () => {
+  it('should not create any programs ahead of time when when TSESTREE_SINGLE_RUN=false, even if other inference criteria apply', () => {
     vi.stubEnv('TSESTREE_SINGLE_RUN', 'false');
 
     // Normally CI=true would be used to infer singleRun=true, but TSESTREE_SINGLE_RUN is explicitly set to false
