@@ -678,18 +678,36 @@ export class TSError extends Error {
   }
 }
 
+export function createError(node: ts.Node, message: string): TSError;
 export function createError(
+  node: number | ts.Node | TSESTree.Range,
   message: string,
-  ast: ts.SourceFile,
-  startIndex: number,
-  endIndex: number = startIndex,
+  sourceFile: ts.SourceFile,
+): TSError;
+export function createError(
+  node: number | TSESTree.Range | ts.Node,
+  message: string,
+  sourceFile?: ts.SourceFile,
 ): TSError {
+  let startIndex;
+  let endIndex;
+  if (Array.isArray(node)) {
+    [startIndex, endIndex] = node;
+  } else if (typeof node === 'number') {
+    startIndex = endIndex = node;
+  } else {
+    sourceFile ??= node.getSourceFile();
+    startIndex = node.getStart(sourceFile);
+    endIndex = node.getEnd();
+  }
+
   const [start, end] = [startIndex, endIndex].map(offset => {
     const { character: column, line } =
-      ast.getLineAndCharacterOfPosition(offset);
+      sourceFile!.getLineAndCharacterOfPosition(offset);
     return { column, line: line + 1, offset };
   });
-  return new TSError(message, ast.fileName, { end, start });
+
+  return new TSError(message, sourceFile!.fileName, { end, start });
 }
 
 export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
