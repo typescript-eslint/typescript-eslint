@@ -1027,6 +1027,59 @@ export class Converter {
           if (
             variableDeclarationList.parent.kind === SyntaxKind.VariableStatement
           ) {
+            const variableStatement = variableDeclarationList.parent;
+
+            if (kind === 'using' || kind === 'await using') {
+              if (!node.initializer) {
+                this.#throwError(
+                  node,
+                  `'${kind}' declarations must be initialized.`,
+                );
+              }
+              if (node.name.kind !== SyntaxKind.Identifier) {
+                this.#throwError(
+                  node.name,
+                  `'${kind}' declarations may not have binding patterns.`,
+                );
+              }
+            }
+
+            const hasDeclareKeyword = hasModifier(
+              SyntaxKind.DeclareKeyword,
+              variableStatement,
+            );
+
+            // Definite assignment only allowed for non-declare let and var
+            if (
+              hasDeclareKeyword ||
+              ['await using', 'const', 'using'].includes(kind)
+            ) {
+              if (hasExclamationToken) {
+                this.#throwError(
+                  node,
+                  `A definite assignment assertion '!' is not permitted in this context.`,
+                );
+              }
+            }
+
+            if (hasDeclareKeyword) {
+              if (
+                node.initializer &&
+                (['let', 'var'].includes(kind) || node.type)
+              ) {
+                this.#throwError(
+                  node,
+                  `Initializers are not permitted in ambient contexts.`,
+                );
+              }
+              // Theoretically, only certain initializers are allowed for declare const,
+              // (TS1254: A 'const' initializer in an ambient context must be a string
+              // or numeric literal or literal enum reference.) but we just allow
+              // all expressions
+            }
+            // Note! No-declare does not mean the variable is not ambient, because
+            // it can be further nested in other declare contexts. Therefore we cannot
+            // check for const initializers.
           }
         }
 
@@ -1060,58 +1113,6 @@ export class Converter {
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
           kind: getDeclarationKind(node.declarationList),
         });
-
-        if (result.kind === 'using' || result.kind === 'await using') {
-          node.declarationList.declarations.forEach((declaration, i) => {
-            if (result.declarations[i].init == null) {
-              this.#throwError(
-                declaration,
-                `'${result.kind}' declarations must be initialized.`,
-              );
-            }
-            if (result.declarations[i].id.type !== AST_NODE_TYPES.Identifier) {
-              this.#throwError(
-                declaration.name,
-                `'${result.kind}' declarations may not have binding patterns.`,
-              );
-            }
-          });
-        }
-        // Definite assignment only allowed for non-declare let and var
-        if (
-          result.declare ||
-          ['await using', 'const', 'using'].includes(result.kind)
-        ) {
-          node.declarationList.declarations.forEach((declaration, i) => {
-            if (result.declarations[i].definite) {
-              this.#throwError(
-                declaration,
-                `A definite assignment assertion '!' is not permitted in this context.`,
-              );
-            }
-          });
-        }
-        if (result.declare) {
-          node.declarationList.declarations.forEach((declaration, i) => {
-            if (
-              result.declarations[i].init &&
-              (['let', 'var'].includes(result.kind) ||
-                result.declarations[i].id.typeAnnotation)
-            ) {
-              this.#throwError(
-                declaration,
-                `Initializers are not permitted in ambient contexts.`,
-              );
-            }
-          });
-          // Theoretically, only certain initializers are allowed for declare const,
-          // (TS1254: A 'const' initializer in an ambient context must be a string
-          // or numeric literal or literal enum reference.) but we just allow
-          // all expressions
-        }
-        // Note! No-declare does not mean the variable is not ambient, because
-        // it can be further nested in other declare contexts. Therefore we cannot
-        // check for const initializers.
 
         /**
          * Semantically, decorators are not allowed on variable declarations,
