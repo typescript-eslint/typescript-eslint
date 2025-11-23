@@ -984,9 +984,9 @@ export class Converter {
       }
 
       case SyntaxKind.VariableDeclaration: {
-        const definite = !!node.exclamationToken;
+        const hasExclamationToken = !!node.exclamationToken;
 
-        if (definite) {
+        if (hasExclamationToken) {
           if (node.initializer) {
             this.#throwError(
               node,
@@ -1008,7 +1008,7 @@ export class Converter {
         );
         return this.createNode<TSESTree.VariableDeclarator>(node, {
           type: AST_NODE_TYPES.VariableDeclarator,
-          definite,
+          definite: hasExclamationToken,
           id,
           init,
         });
