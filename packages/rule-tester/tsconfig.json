@@ -4,15 +4,6 @@
   "include": [],
   "references": [
     {
-      "path": "../utils"
-    },
-    {
-      "path": "../typescript-estree"
-    },
-    {
-      "path": "../parser"
-    },
-    {
       "path": "./tsconfig.build.json"
     },
     {
