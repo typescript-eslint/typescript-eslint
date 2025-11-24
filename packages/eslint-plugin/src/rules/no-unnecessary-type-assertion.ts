@@ -190,7 +190,11 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function isTypeUnchanged(uncast: ts.Type, cast: ts.Type): boolean {
+    function isTypeUnchanged(
+      expression: TSESTree.Expression,
+      uncast: ts.Type,
+      cast: ts.Type,
+    ): boolean {
       if (uncast === cast) {
         return true;
       }
@@ -219,11 +223,50 @@ export default createRule<Options, MessageIds>({
         return castParts.every(part => uncastPartsSet.has(part));
       }
 
-      return false;
+      if (isConceptuallyLiteral(expression)) {
+        return false;
+      }
+
+      return (
+        !isTypeFlagSet(uncast, ts.TypeFlags.Any) &&
+        !isTypeFlagSet(cast, ts.TypeFlags.Any) &&
+        checker.isTypeAssignableTo(uncast, cast) &&
+        checker.isTypeAssignableTo(cast, uncast)
+      );
     }
 
     function isTypeLiteral(type: ts.Type) {
       return type.isLiteral() || tsutils.isBooleanLiteralType(type);
+    }
+
+    function getOriginalExpression(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): TSESTree.Expression {
+      let current = node.expression;
+      while (
+        current.type === AST_NODE_TYPES.TSAsExpression ||
+        current.type === AST_NODE_TYPES.TSTypeAssertion
+      ) {
+        current = current.expression;
+      }
+      return current;
+    }
+
+    function isConceptuallyLiteral(node: TSESTree.Node): boolean {
+      switch (node.type) {
+        case AST_NODE_TYPES.Literal:
+        case AST_NODE_TYPES.ArrayExpression:
+        case AST_NODE_TYPES.ObjectExpression:
+        case AST_NODE_TYPES.TemplateLiteral:
+        case AST_NODE_TYPES.ClassExpression:
+        case AST_NODE_TYPES.FunctionExpression:
+        case AST_NODE_TYPES.ArrowFunctionExpression:
+        case AST_NODE_TYPES.JSXElement:
+        case AST_NODE_TYPES.JSXFragment:
+          return true;
+        default:
+          return false;
+      }
     }
 
     return {
@@ -253,68 +296,114 @@ export default createRule<Options, MessageIds>({
         }
 
         const uncastType = services.getTypeAtLocation(node.expression);
-        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
+        const typeIsUnchanged = isTypeUnchanged(
+          node.expression,
+          uncastType,
+          castType,
+        );
         const wouldSameTypeBeInferred = castTypeIsLiteral
           ? isImplicitlyNarrowedLiteralDeclaration(node)
           : !typeAnnotationIsConstAssertion;
+
+        const reportFix: ReportFixFunction = fixer => {
+          if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
+            const openingAngleBracket = nullThrows(
+              context.sourceCode.getTokenBefore(
+                node.typeAnnotation,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '<',
+              ),
+              NullThrowsReasons.MissingToken('<', 'type annotation'),
+            );
+            const closingAngleBracket = nullThrows(
+              context.sourceCode.getTokenAfter(
+                node.typeAnnotation,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '>',
+              ),
+              NullThrowsReasons.MissingToken('>', 'type annotation'),
+            );
+
+            // < ( number ) > ( 3 + 5 )
+            // ^---remove---^
+            return fixer.removeRange([
+              openingAngleBracket.range[0],
+              closingAngleBracket.range[1],
+            ]);
+          }
+          // `as` is always present in TSAsExpression
+          const asToken = nullThrows(
+            context.sourceCode.getTokenAfter(
+              node.expression,
+              token =>
+                token.type === AST_TOKEN_TYPES.Identifier &&
+                token.value === 'as',
+            ),
+            NullThrowsReasons.MissingToken('>', 'type annotation'),
+          );
+          const tokenBeforeAs = nullThrows(
+            context.sourceCode.getTokenBefore(asToken, {
+              includeComments: true,
+            }),
+            NullThrowsReasons.MissingToken('comment', 'as'),
+          );
+
+          // ( 3 + 5 )  as  number
+          //          ^--remove--^
+          return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
+        };
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
-            fix(fixer) {
-              if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
-                const openingAngleBracket = nullThrows(
-                  context.sourceCode.getTokenBefore(
-                    node.typeAnnotation,
-                    token =>
-                      token.type === AST_TOKEN_TYPES.Punctuator &&
-                      token.value === '<',
-                  ),
-                  NullThrowsReasons.MissingToken('<', 'type annotation'),
-                );
-                const closingAngleBracket = nullThrows(
-                  context.sourceCode.getTokenAfter(
-                    node.typeAnnotation,
-                    token =>
-                      token.type === AST_TOKEN_TYPES.Punctuator &&
-                      token.value === '>',
-                  ),
-                  NullThrowsReasons.MissingToken('>', 'type annotation'),
-                );
-
-                // < ( number ) > ( 3 + 5 )
-                // ^---remove---^
-                return fixer.removeRange([
-                  openingAngleBracket.range[0],
-                  closingAngleBracket.range[1],
-                ]);
-              }
-              // `as` is always present in TSAsExpression
-              const asToken = nullThrows(
-                context.sourceCode.getTokenAfter(
-                  node.expression,
-                  token =>
-                    token.type === AST_TOKEN_TYPES.Identifier &&
-                    token.value === 'as',
-                ),
-                NullThrowsReasons.MissingToken('>', 'type annotation'),
-              );
-              const tokenBeforeAs = nullThrows(
-                context.sourceCode.getTokenBefore(asToken, {
-                  includeComments: true,
-                }),
-                NullThrowsReasons.MissingToken('comment', 'as'),
-              );
-
-              // ( 3 + 5 )  as  number
-              //          ^--remove--^
-              return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
-            },
+            fix: reportFix,
           });
+          return;
         }
 
-        // TODO - add contextually unnecessary check for this
+        const originalNode = services.esTreeNodeToTSNodeMap.get(node);
+        const contextualType = getContextualType(checker, originalNode);
+
+        if (
+          contextualType &&
+          !typeAnnotationIsConstAssertion &&
+          !isTypeFlagSet(uncastType, ts.TypeFlags.Any) &&
+          checker.isTypeAssignableTo(uncastType, contextualType)
+        ) {
+          context.report({
+            node,
+            messageId: 'contextuallyUnnecessary',
+            fix: reportFix,
+          });
+          return;
+        }
+
+        if (
+          node.expression.type === AST_NODE_TYPES.TSAsExpression ||
+          node.expression.type === AST_NODE_TYPES.TSTypeAssertion
+        ) {
+          const originalExpr = getOriginalExpression(node);
+          const originalType = services.getTypeAtLocation(originalExpr);
+
+          if (
+            isTypeUnchanged(node.expression, originalType, castType) &&
+            !isTypeFlagSet(castType, ts.TypeFlags.Any)
+          ) {
+            context.report({
+              node,
+              messageId: 'unnecessaryAssertion',
+              fix(fixer) {
+                return fixer.replaceText(
+                  node,
+                  context.sourceCode.getText(originalExpr),
+                );
+              },
+            });
+          }
+        }
       },
       TSNonNullExpression(node): void {
         const removeExclamationFix: ReportFixFunction = fixer => {

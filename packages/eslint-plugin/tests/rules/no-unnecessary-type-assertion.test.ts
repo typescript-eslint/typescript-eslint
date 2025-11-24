@@ -450,6 +450,17 @@ declare const a: T.Value1;
 const b = a as const;
       `,
     },
+    {
+      code: `
+function fn<T>(items: ReadonlyArray<T>) {}
+fn([42] as const);
+      `,
+    },
+    `
+declare const a: any;
+declare function foo(arg: string): void;
+foo(a as string);
+    `,
   ],
 
   invalid: [
@@ -1440,6 +1451,222 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    {
+      code: `
+function doThing(a: number) {}
+doThing(5 as any);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function doThing(a: number) {}
+doThing(5);
+      `,
+    },
+    {
+      code: `
+interface A {
+  required: string;
+  alsoRequired: number;
+}
+function doThing(a: A) {}
+doThing({ required: 'yes', alsoRequired: 1 } as any);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  required: string;
+  alsoRequired: number;
+}
+function doThing(a: A) {}
+doThing({ required: 'yes', alsoRequired: 1 });
+      `,
+    },
+    {
+      code: 'const x = 5 as any as 5;',
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: 'const x = 5;',
+    },
+    {
+      code: `
+const v: number = 5;
+const x = v as unknown as number;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const v: number = 5;
+const x = v;
+      `,
+    },
+    {
+      code: `
+const v: number = 5;
+const x = v as any as number;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const v: number = 5;
+const x = v;
+      `,
+    },
+    {
+      code: `
+const x = (1 + 1) as any as number;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const x = 1 + 1;
+      `,
+    },
+    {
+      code: `
+const x = 2 * ((1 + 1) as any as number);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const x = 2 * (1 + 1);
+      `,
+    },
+    {
+      code: `
+const v: number = 5;
+const x = <number>(<any>v);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const v: number = 5;
+const x = v;
+      `,
+    },
+    {
+      code: `
+const obj = { id: '' };
+const obj2 = obj as { id: string };
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const obj = { id: '' };
+const obj2 = obj;
+      `,
+    },
+    {
+      code: `
+const obj = { id: '' };
+const obj2 = obj as any as { id: string };
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const obj = { id: '' };
+const obj2 = obj;
+      `,
+    },
+    {
+      code: `
+const obj = { id: '' };
+const obj2 = obj as unknown as { id: string };
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const obj = { id: '' };
+const obj2 = obj;
+      `,
+    },
+    {
+      code: `
+const array = ['a', 'b'];
+const array2 = array as any as string[];
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const array = ['a', 'b'];
+const array2 = array;
+      `,
+    },
+    {
+      code: `
+const array = ['a', 'b'];
+const array2 = array as unknown as string[];
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const array = ['a', 'b'];
+const array2 = array;
+      `,
+    },
+    {
+      code: `
+type A = 'a';
+type B = 'b';
+type AorB = A | B;
+function fn(aorb: AorB) {}
+const a: A = 'a';
+fn(a as AorB);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+type A = 'a';
+type B = 'b';
+type AorB = A | B;
+function fn(aorb: AorB) {}
+const a: A = 'a';
+fn(a);
       `,
     },
   ],
