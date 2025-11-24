@@ -25,30 +25,17 @@ Snapshot Diff:
         },
         typeAnnotation: TSImportType {
           type: 'TSImportType',
--         argument: TSLiteralType {
--           type: 'TSLiteralType',
--           literal: Literal {
--             type: 'Literal',
--             raw: '"A"',
--             value: 'A',
 +         argument: Literal {
 +           type: 'Literal',
 +           raw: '"A"',
 +           value: 'A',
-
--             range: [28, 31],
--             loc: {
--               start: { column: 28, line: 1 },
--               end: { column: 31, line: 1 },
--             },
--           },
--
-            range: [28, 31],
-            loc: {
-              start: { column: 28, line: 1 },
-              end: { column: 31, line: 1 },
-            },
-          },
++
++           range: [28, 31],
++           loc: {
++             start: { column: 28, line: 1 },
++             end: { column: 31, line: 1 },
++           },
++         },
           options: ObjectExpression {
             type: 'ObjectExpression',
             properties: Array [
@@ -134,6 +121,17 @@ Snapshot Diff:
             },
           },
           qualifier: null,
+-         source: Literal {
+-           type: 'Literal',
+-           raw: '"A"',
+-           value: 'A',
+-
+-           range: [28, 31],
+-           loc: {
+-             start: { column: 28, line: 1 },
+-             end: { column: 31, line: 1 },
+-           },
+-         },
 -         typeArguments: null,
 
           range: [21, 78],
