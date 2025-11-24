@@ -4,21 +4,6 @@
   "include": [],
   "references": [
     {
-      "path": "../visitor-keys"
-    },
-    {
-      "path": "../typescript-estree"
-    },
-    {
-      "path": "../scope-manager"
-    },
-    {
-      "path": "../parser"
-    },
-    {
-      "path": "../eslint-plugin"
-    },
-    {
       "path": "./tsconfig.build.json"
     }
   ]

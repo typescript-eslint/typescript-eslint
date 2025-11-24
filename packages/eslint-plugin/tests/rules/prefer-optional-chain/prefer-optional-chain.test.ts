@@ -1,18 +1,11 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/prefer-optional-chain';
 import { dedupeTestCases } from '../../dedupeTestCases';
-import { getFixturesRootDir } from '../../RuleTester';
+import { createRuleTesterWithTypes } from '../../RuleTester';
 import { BaseCases, identity } from './base-cases';
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: getFixturesRootDir(),
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 describe('|| {}', () => {
   ruleTester.run('prefer-optional-chain', rule, {
@@ -864,215 +857,6 @@ describe('chain ending with comparison', () => {
       {
         code: `
           declare const foo: { bar: number };
-          foo && foo.bar == x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar == x;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar == null;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar == null;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar == undefined;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar == undefined;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar === x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar === x;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar === undefined;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar === undefined;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar !== 0;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== 0;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar !== 1;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== 1;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar !== '123';
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== '123';
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar !== {};
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== {};
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar !== false;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== false;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar !== true;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== true;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar !== null;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== null;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar !== x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== x;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar != 0;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != 0;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar != 1;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != 1;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar != '123';
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != '123';
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar != {};
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != {};
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar != false;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != false;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo && foo.bar != true;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != true;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
           foo && foo.bar != null;
         `,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
@@ -1084,265 +868,12 @@ describe('chain ending with comparison', () => {
       {
         code: `
           declare const foo: { bar: number };
-          foo && foo.bar != x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != x;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar == x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar == x;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar == null;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar == null;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar == undefined;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar == undefined;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar === x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar === x;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar === undefined;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar === undefined;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar !== 0;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== 0;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar !== 1;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== 1;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar !== '123';
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== '123';
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar !== {};
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== {};
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar !== false;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== false;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar !== true;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== true;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar !== null;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== null;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar !== x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== x;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar != 0;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != 0;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar != 1;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != 1;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar != '123';
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != '123';
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar != {};
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != {};
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar != false;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != false;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar != true;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != true;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
           foo != null && foo.bar != null;
         `,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         output: `
           declare const foo: { bar: number };
           foo?.bar != null;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo != null && foo.bar != x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != x;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number } | 1;
-          foo && foo.bar == x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number } | 1;
-          foo?.bar == x;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number } | 0;
-          foo != null && foo.bar == x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number } | 0;
-          foo?.bar == x;
         `,
       },
       {
@@ -1508,17 +1039,6 @@ describe('chain ending with comparison', () => {
       {
         code: `
           declare const foo: { bar: number };
-          !foo || foo.bar == x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar == x;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
           !foo || foo.bar == null;
         `,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
@@ -1536,17 +1056,6 @@ describe('chain ending with comparison', () => {
         output: `
           declare const foo: { bar: number };
           foo?.bar == undefined;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          !foo || foo.bar === x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar === x;
         `,
       },
       {
@@ -1640,17 +1149,6 @@ describe('chain ending with comparison', () => {
       {
         code: `
           declare const foo: { bar: number };
-          !foo || foo.bar !== x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== x;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
           !foo || foo.bar != 0;
         `,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
@@ -1717,40 +1215,6 @@ describe('chain ending with comparison', () => {
       {
         code: `
           declare const foo: { bar: number };
-          !foo || foo.bar != null;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != null;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          !foo || foo.bar != x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar != x;
-        `,
-      },
-
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo == null || foo.bar == x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar == x;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
           foo == null || foo.bar == null;
         `,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
@@ -1768,17 +1232,6 @@ describe('chain ending with comparison', () => {
         output: `
           declare const foo: { bar: number };
           foo?.bar == undefined;
-        `,
-      },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo == null || foo.bar === x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar === x;
         `,
       },
       {
@@ -1869,17 +1322,6 @@ describe('chain ending with comparison', () => {
           foo?.bar !== null;
         `,
       },
-      {
-        code: `
-          declare const foo: { bar: number };
-          foo == null || foo.bar !== x;
-        `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
-          declare const foo: { bar: number };
-          foo?.bar !== x;
-        `,
-      },
       // yoda case
       {
         code: "foo != null && null != foo.bar && '123' == foo.bar.baz;",
@@ -1898,10 +1340,10 @@ describe('chain ending with comparison', () => {
       },
     ],
     valid: [
-      'foo && foo.bar == x;',
+      'foo && foo.bar == undeclaredVar;',
       'foo && foo.bar == null;',
       'foo && foo.bar == undefined;',
-      'foo && foo.bar === x;',
+      'foo && foo.bar === undeclaredVar;',
       'foo && foo.bar === undefined;',
       'foo && foo.bar !== 0;',
       'foo && foo.bar !== 1;',
@@ -1910,18 +1352,18 @@ describe('chain ending with comparison', () => {
       'foo && foo.bar !== false;',
       'foo && foo.bar !== true;',
       'foo && foo.bar !== null;',
-      'foo && foo.bar !== x;',
+      'foo && foo.bar !== undeclaredVar;',
       'foo && foo.bar != 0;',
       'foo && foo.bar != 1;',
       "foo && foo.bar != '123';",
       'foo && foo.bar != {};',
       'foo && foo.bar != false;',
       'foo && foo.bar != true;',
-      'foo && foo.bar != x;',
-      'foo != null && foo.bar == x;',
+      'foo && foo.bar != undeclaredVar;',
+      'foo != null && foo.bar == undeclaredVar;',
       'foo != null && foo.bar == null;',
       'foo != null && foo.bar == undefined;',
-      'foo != null && foo.bar === x;',
+      'foo != null && foo.bar === undeclaredVar;',
       'foo != null && foo.bar === undefined;',
       'foo != null && foo.bar !== 0;',
       'foo != null && foo.bar !== 1;',
@@ -1930,17 +1372,185 @@ describe('chain ending with comparison', () => {
       'foo != null && foo.bar !== false;',
       'foo != null && foo.bar !== true;',
       'foo != null && foo.bar !== null;',
-      'foo != null && foo.bar !== x;',
+      'foo != null && foo.bar !== undeclaredVar;',
       'foo != null && foo.bar != 0;',
       'foo != null && foo.bar != 1;',
       "foo != null && foo.bar != '123';",
       'foo != null && foo.bar != {};',
       'foo != null && foo.bar != false;',
       'foo != null && foo.bar != true;',
-      'foo != null && foo.bar != x;',
+      'foo != null && foo.bar != undeclaredVar;',
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar == undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar == null;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar == undefined;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar === undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar === undefined;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar !== 0;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar !== 1;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar !== '123';
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar !== {};
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar !== false;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar !== true;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar !== null;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar !== undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar != 0;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar != 1;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar != '123';
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar != {};
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar != false;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar != true;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo && foo.bar != undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar == undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar == null;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar == undefined;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar === undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar === undefined;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar !== 0;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar !== 1;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar !== '123';
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar !== {};
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar !== false;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar !== true;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar !== null;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar !== undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar != 0;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar != 1;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar != '123';
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar != {};
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar != false;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar != true;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo != null && foo.bar != undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number } | 1;
+        foo && foo.bar == undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number } | 0;
+        foo != null && foo.bar == undeclaredVar;
+      `,
       `
         declare const foo: { bar: number } | null;
-        foo && foo.bar == x;
+        foo && foo.bar == undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
@@ -1952,7 +1562,7 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number } | null;
-        foo && foo.bar === x;
+        foo && foo.bar === undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
@@ -1988,11 +1598,11 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number } | null;
-        foo && foo.bar !== x;
+        foo && foo.bar !== undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
-        foo != null && foo.bar == x;
+        foo != null && foo.bar == undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
@@ -2004,7 +1614,7 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number } | null;
-        foo != null && foo.bar === x;
+        foo != null && foo.bar === undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
@@ -2040,7 +1650,7 @@ describe('chain ending with comparison', () => {
       `,
       `
         declare const foo: { bar: number } | null;
-        foo != null && foo.bar !== x;
+        foo != null && foo.bar !== undeclaredVar;
       `,
       `
         declare const foo: { bar: number } | null;
@@ -2107,6 +1717,26 @@ describe('chain ending with comparison', () => {
       `
         declare const foo: { bar: number } | undefined;
         foo !== undefined && foo !== undefined && foo.bar != 1;
+      `,
+      `
+        declare const foo: { bar: number };
+        !foo || foo.bar == undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number };
+        !foo || foo.bar === undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number };
+        !foo || foo.bar !== undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number };
+        !foo || foo.bar != null;
+      `,
+      `
+        declare const foo: { bar: number };
+        !foo || foo.bar != undeclaredVar;
       `,
       '!foo && foo.bar == 0;',
       '!foo && foo.bar == 1;',
@@ -2141,22 +1771,22 @@ describe('chain ending with comparison', () => {
       'foo == null && foo.bar != null;',
       'foo == null && foo.bar != undefined;',
       `
-        declare const x: false | { a: string };
-        x && x.a == x;
+        declare const foo: false | { a: string };
+        foo && foo.a == undeclaredVar;
       `,
       `
-        declare const x: '' | { a: string };
-        x && x.a == x;
+        declare const foo: '' | { a: string };
+        foo && foo.a == undeclaredVar;
       `,
       `
-        declare const x: 0 | { a: string };
-        x && x.a == x;
+        declare const foo: 0 | { a: string };
+        foo && foo.a == undeclaredVar;
       `,
       `
-        declare const x: 0n | { a: string };
-        x && x.a;
+        declare const foo: 0n | { a: string };
+        foo && foo.a;
       `,
-      '!foo || foo.bar != x;',
+      '!foo || foo.bar != undeclaredVar;',
       '!foo || foo.bar != null;',
       '!foo || foo.bar != undefined;',
       '!foo || foo.bar === 0;',
@@ -2166,17 +1796,29 @@ describe('chain ending with comparison', () => {
       '!foo || foo.bar === false;',
       '!foo || foo.bar === true;',
       '!foo || foo.bar === null;',
-      '!foo || foo.bar === x;',
+      '!foo || foo.bar === undeclaredVar;',
       '!foo || foo.bar == 0;',
       '!foo || foo.bar == 1;',
       "!foo || foo.bar == '123';",
       '!foo || foo.bar == {};',
       '!foo || foo.bar == false;',
       '!foo || foo.bar == true;',
-      '!foo || foo.bar == x;',
-      '!foo || foo.bar !== x;',
+      '!foo || foo.bar == undeclaredVar;',
+      '!foo || foo.bar !== undeclaredVar;',
       '!foo || foo.bar !== undefined;',
-      'foo == null || foo.bar != x;',
+      `
+        declare const foo: { bar: number };
+        foo == null || foo.bar == undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo == null || foo.bar === undeclaredVar;
+      `,
+      `
+        declare const foo: { bar: number };
+        foo == null || foo.bar !== undeclaredVar;
+      `,
+      'foo == null || foo.bar != undeclaredVar;',
       'foo == null || foo.bar != null;',
       'foo == null || foo.bar != undefined;',
       'foo == null || foo.bar === 0;',
@@ -2186,15 +1828,15 @@ describe('chain ending with comparison', () => {
       'foo == null || foo.bar === false;',
       'foo == null || foo.bar === true;',
       'foo == null || foo.bar === null;',
-      'foo == null || foo.bar === x;',
+      'foo == null || foo.bar === undeclaredVar;',
       'foo == null || foo.bar == 0;',
       'foo == null || foo.bar == 1;',
       "foo == null || foo.bar == '123';",
       'foo == null || foo.bar == {};',
       'foo == null || foo.bar == false;',
       'foo == null || foo.bar == true;',
-      'foo == null || foo.bar == x;',
-      'foo == null || foo.bar !== x;',
+      'foo == null || foo.bar == undeclaredVar;',
+      'foo == null || foo.bar !== undeclaredVar;',
       'foo == null || foo.bar !== undefined;',
       'foo || foo.bar != 0;',
       'foo || foo.bar != 1;',
@@ -2228,6 +1870,14 @@ describe('chain ending with comparison', () => {
       'foo != null || foo.bar !== false;',
       'foo != null || foo.bar !== true;',
       'foo != null || foo.bar !== null;',
+      `
+        declare const record: Record<string, { kind: string }>;
+        record['key'] && record['key'].kind !== '1';
+      `,
+      `
+        declare const array: { b?: string }[];
+        !array[1] || array[1].b === 'foo';
+      `,
     ],
   });
 });
@@ -3489,7 +3139,6 @@ describe('base cases', () => {
             mutateCode: c => c.replaceAll('&&', '!== null &&'),
             mutateOutput: identity,
             operator: '&&',
-            skipIds: [20, 26],
           }),
           // but if the type is just `| null` - then it covers the cases and is
           // a valid conversion
@@ -3501,45 +3150,6 @@ describe('base cases', () => {
               operator: '&&',
               useSuggestionFixer: true,
             }),
-            {
-              code: `
-                declare const foo: {
-                  bar: () =>
-                    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
-                    | null
-                    | undefined;
-                };
-                foo.bar !== null &&
-                  foo.bar() !== null &&
-                  foo.bar().baz !== null &&
-                  foo.bar().baz.buzz !== null &&
-                  foo.bar().baz.buzz();
-              `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
-                declare const foo: {
-                  bar: () =>
-                    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
-                    | null
-                    | undefined;
-                };
-                foo.bar?.() !== null &&
-                  foo.bar().baz !== null &&
-                  foo.bar().baz.buzz !== null &&
-                  foo.bar().baz.buzz();
-              `,
-            },
-            {
-              code: `
-                declare const foo: { bar: () => { baz: number } | null | undefined };
-                foo.bar !== null && foo.bar?.() !== null && foo.bar?.().baz;
-              `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
-                declare const foo: { bar: () => { baz: number } | null | undefined };
-                foo.bar?.() !== null && foo.bar?.().baz;
-              `,
-            },
           ],
         });
       });
@@ -3654,7 +3264,6 @@ describe('base cases', () => {
             mutateCode: c => c.replaceAll('||', '=== null ||'),
             mutateOutput: identity,
             operator: '||',
-            skipIds: [20, 26],
           }),
           // but if the type is just `| null` - then it covers the cases and is
           // a valid conversion
@@ -3671,45 +3280,6 @@ describe('base cases', () => {
               operator: '||',
               useSuggestionFixer: true,
             }),
-            {
-              code: `
-                declare const foo: {
-                  bar: () =>
-                    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
-                    | null
-                    | undefined;
-                };
-                foo.bar === null ||
-                  foo.bar() === null ||
-                  foo.bar().baz === null ||
-                  foo.bar().baz.buzz === null ||
-                  foo.bar().baz.buzz();
-              `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
-                declare const foo: {
-                  bar: () =>
-                    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
-                    | null
-                    | undefined;
-                };
-                foo.bar?.() === null ||
-                  foo.bar().baz === null ||
-                  foo.bar().baz.buzz === null ||
-                  foo.bar().baz.buzz();
-              `,
-            },
-            {
-              code: `
-                declare const foo: { bar: () => { baz: number } | null | undefined };
-                foo.bar === null || foo.bar?.() === null || foo.bar?.().baz;
-              `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
-                declare const foo: { bar: () => { baz: number } | null | undefined };
-                foo.bar?.() === null || foo.bar?.().baz;
-              `,
-            },
           ],
         });
       });

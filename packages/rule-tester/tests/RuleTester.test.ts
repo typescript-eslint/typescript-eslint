@@ -965,7 +965,7 @@ describe(RuleTester, () => {
     });
 
     describe('constructor constraints', () => {
-      it('skips all tests if a constructor constraint is not satisifed', () => {
+      it('skips all tests if a constructor constraint is not satisfied', () => {
         satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(false);
         const ruleTester = new RuleTester({
           dependencyConstraints: {
@@ -998,7 +998,7 @@ describe(RuleTester, () => {
         `);
       });
 
-      it('does not skip all tests if a constructor constraint is satisifed', () => {
+      it('does not skip all tests if a constructor constraint is satisfied', () => {
         satisfiesAllDependencyConstraintsMock.mockReturnValueOnce(true);
         const ruleTester = new RuleTester({
           dependencyConstraints: {
@@ -1646,7 +1646,7 @@ describe('RuleTester - run types', () => {
   };
 
   describe('infer from `rule` parameter', () => {
-    it('should correctly infer `options` or `messageIds` types from the `rule` paramter', () => {
+    it('should correctly infer `options` or `messageIds` types from the `rule` parameter', () => {
       expect(() =>
         ruleTester.run('my-rule', ruleModule, {
           invalid: [],

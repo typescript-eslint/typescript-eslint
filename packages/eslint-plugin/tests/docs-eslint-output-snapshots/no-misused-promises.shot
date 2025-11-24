@@ -130,14 +130,14 @@ Options: { "checksSpreads": true }
 const getData = () => fetch('/');
 
 console.log({ foo: 42, ...getData() });
-                          ~~~~~~~~~ Expected a non-Promise value to be spreaded in an object.
+                          ~~~~~~~~~ Expected a non-Promise value to be spread in an object.
 
 const awaitData = async () => {
   await fetch('/');
 };
 
 console.log({ foo: 42, ...awaitData() });
-                          ~~~~~~~~~~~ Expected a non-Promise value to be spreaded in an object.
+                          ~~~~~~~~~~~ Expected a non-Promise value to be spread in an object.
 
 Correct
 Options: { "checksSpreads": true }

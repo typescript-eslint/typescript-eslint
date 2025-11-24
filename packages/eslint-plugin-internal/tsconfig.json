@@ -4,18 +4,6 @@
   "include": [],
   "references": [
     {
-      "path": "../type-utils"
-    },
-    {
-      "path": "../scope-manager"
-    },
-    {
-      "path": "../rule-tester"
-    },
-    {
-      "path": "../utils"
-    },
-    {
       "path": "./tsconfig.build.json"
     },
     {
