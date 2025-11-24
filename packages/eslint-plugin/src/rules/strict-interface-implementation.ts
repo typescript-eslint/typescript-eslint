@@ -1,5 +1,6 @@
+import * as tsutils from 'ts-api-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
-import type * as ts from 'typescript';
+import * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
@@ -41,8 +42,12 @@ export default createRule({
 
     function checkClassImplements(
       node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
-      base: ts.Type,
+      base: ts.Symbol | undefined,
     ) {
+      if (!base) {
+        return;
+      }
+
       for (const element of node.body.body) {
         if (element.type === AST_NODE_TYPES.MethodDefinition) {
           checkMethod(element, base);
@@ -52,13 +57,13 @@ export default createRule({
       }
     }
 
-    function checkMethod(element: TSESTree.MethodDefinition, base: ts.Type) {
+    function checkMethod(element: TSESTree.MethodDefinition, base: ts.Symbol) {
       const methodName = getStaticMemberAccessValue(element, context);
       if (typeof methodName !== 'string') {
         return;
       }
 
-      const baseMethod = base.getProperty(methodName);
+      const baseMethod = base.members?.get(methodName as ts.__String);
       if (!baseMethod?.valueDeclaration) {
         return;
       }
@@ -75,7 +80,7 @@ export default createRule({
         messageId: 'unassignable',
         data: {
           name: methodName,
-          interface: checker.typeToString(base),
+          interface: checker.symbolToString(base),
           target: 'method',
         },
       });
@@ -105,13 +110,13 @@ export default createRule({
       return true;
     }
 
-    function checkProperty(element: NodeWithStaticKey, base: ts.Type) {
+    function checkProperty(element: NodeWithStaticKey, base: ts.Symbol) {
       const propertyName = getStaticMemberAccessValue(element, context);
       if (typeof propertyName !== 'string') {
         return;
       }
 
-      const baseProperty = base.getProperty(propertyName);
+      const baseProperty = base.members?.get(propertyName as ts.__String);
       if (!baseProperty?.valueDeclaration) {
         return;
       }
@@ -128,29 +133,40 @@ export default createRule({
         messageId: 'unassignable',
         data: {
           name: propertyName,
-          interface: checker.typeToString(base),
+          interface: checker.symbolToString(base),
           target: 'property',
         },
       });
     }
 
-    function getSuperClassImplements(
-      superClass: TSESTree.LeftHandSideExpression,
-    ) {
-      // TODO
+    function* getSuperClassImplements(
+      superType: ts.Type,
+    ): Generator<ts.Symbol | undefined> {
+      yield superType.getSymbol();
+
+      for (const baseType of checker.getBaseTypes(
+        superType as ts.InterfaceType,
+      )) {
+        yield* getSuperClassImplements(baseType);
+      }
     }
 
     return {
       'ClassDeclaration, ClassExpression'(
         node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
       ) {
-        for (const base of node.implements) {
-          checkClassImplements(node, services.getTypeAtLocation(base));
+        for (const implemented of node.implements) {
+          checkClassImplements(
+            node,
+            services.getSymbolAtLocation(implemented.expression),
+          );
         }
 
-        if (node.superClass) {
-          for (const base of getSuperClassImplements(node.superClass)) {
-            checkClassImplements(node, base);
+        if (node.superClass && node.body.body.length) {
+          for (const implemented of getSuperClassImplements(
+            services.getTypeAtLocation(node.superClass),
+          )) {
+            checkClassImplements(node, implemented);
           }
         }
       },

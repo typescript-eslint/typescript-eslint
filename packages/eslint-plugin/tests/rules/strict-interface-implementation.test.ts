@@ -103,5 +103,49 @@ class Derived implements Base {
         },
       ],
     },
+    {
+      code: `
+class Base {
+  process(value?: string) {}
+}
+
+class Derived extends Base {
+  public process(value: string) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            interface: 'Base',
+            name: 'process',
+            target: 'method',
+          },
+          messageId: 'unassignable',
+        },
+      ],
+    },
+    {
+      code: `
+class Root {
+  process(value?: string) {}
+}
+
+class Base extends Root {}
+
+class Derived extends Base {
+  public process(value: string) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            interface: 'Root',
+            name: 'process',
+            target: 'method',
+          },
+          messageId: 'unassignable',
+        },
+      ],
+    },
   ],
 });
