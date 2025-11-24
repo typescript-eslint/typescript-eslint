@@ -1,0 +1,16 @@
+Incorrect
+
+class A {
+  private foo = 123;
+          ~~~ Private class member 'foo' is defined but never used.
+}
+
+Correct
+
+class A {
+  private foo = 123;
+
+  constructor() {
+    console.log(this.foo);
+  }
+}
