@@ -52,7 +52,7 @@ vi.mock('tinyglobby', async importOriginal => {
 const createDefaultCompilerOptionsFromExtra = vi.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
-// eslint-disable-next-line @typescript-eslint/no-deprecated -- seems like a bug in the rule
+// eslint-disable-next-line @typescript-eslint/no-deprecated -- see #10215
 const globSyncMock = vi.mocked(tinyGlobbyModule.globSync);
 
 /**
