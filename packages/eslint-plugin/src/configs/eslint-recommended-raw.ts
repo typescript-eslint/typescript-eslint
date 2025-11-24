@@ -31,7 +31,7 @@ const config = (
      // "no-new-symbol" was deprecated in ESLint 9.0.0 and will be removed in
      // ESLint v11.0.0. See:
      // https://eslint.org/docs/latest/rules/no-new-symbol
-     // We need to keep the rule disabled until TSESlint drops support for
+     // We need to keep the rule disabled until TSESLint drops support for
      // ESlint 8. See:
      // https://github.com/typescript-eslint/typescript-eslint/pull/8895
     'no-new-symbol': 'off', // ts(7009)
