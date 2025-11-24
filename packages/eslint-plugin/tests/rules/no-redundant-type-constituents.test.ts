@@ -269,6 +269,10 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type T = { a: 1 | 2 } | { a: 3 };
       type U = R | T;
     `,
+    `
+      type T = { a: string; b?: T[] };
+      type R = T & { b?: T[] };
+    `,
     'type T = [1, 2] | [1];',
     'type T = [1, 2, 3] | [1, 2, 4];',
     'type T = [] | [1];',
