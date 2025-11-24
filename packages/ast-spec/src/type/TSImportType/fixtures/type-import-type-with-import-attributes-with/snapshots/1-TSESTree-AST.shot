@@ -18,26 +18,6 @@ Program {
       },
       typeAnnotation: TSImportType {
         type: "TSImportType",
-        argument: TSLiteralType {
-          type: "TSLiteralType",
-          literal: Literal {
-            type: "Literal",
-            raw: "'A'",
-            value: "A",
-
-            range: [16, 19],
-            loc: {
-              start: { column: 16, line: 1 },
-              end: { column: 19, line: 1 },
-            },
-          },
-
-          range: [16, 19],
-          loc: {
-            start: { column: 16, line: 1 },
-            end: { column: 19, line: 1 },
-          },
-        },
         options: ObjectExpression {
           type: "ObjectExpression",
           properties: [
@@ -124,6 +104,17 @@ Program {
           },
         },
         qualifier: null,
+        source: Literal {
+          type: "Literal",
+          raw: "'A'",
+          value: "A",
+
+          range: [16, 19],
+          loc: {
+            start: { column: 16, line: 1 },
+            end: { column: 19, line: 1 },
+          },
+        },
         typeArguments: null,
 
         range: [9, 48],
