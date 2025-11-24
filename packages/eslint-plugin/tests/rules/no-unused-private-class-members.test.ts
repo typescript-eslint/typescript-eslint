@@ -379,7 +379,36 @@ class C {
   }
 }
     `,
+    `
+class Foo {
+  private privateMember;
+  private privateMember2;
 
+  method() {
+    const { privateMember, privateMember2 } = this;
+    console.log(privateMember, privateMember2);
+  }
+}
+    `,
+    `
+class Foo {
+  private static staticMember = 1;
+  static method() {
+    const { staticMember } = this;
+    console.log(staticMember);
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember = 1;
+  method() {
+    const { privateMember } = this;
+    const obj = { privateMember };
+    return obj;
+  }
+}
+    `,
     //--------------------------------------------------------------------------
     // Method definitions
     //--------------------------------------------------------------------------
@@ -1216,6 +1245,44 @@ class Foo {
   private privateMember;
   method() {
     [this.privateMember] = bar;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private privateMember;
+  method() {
+    const { privateMember } = this;
+    const obj = { privateMember: 1 };
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private privateMember = 1;
+
+  method() {
+    const { privateMember } = this;
   }
 }
       `,
