@@ -4,15 +4,6 @@
   "include": [],
   "references": [
     {
-      "path": "../visitor-keys"
-    },
-    {
-      "path": "../types"
-    },
-    {
-      "path": "../typescript-estree"
-    },
-    {
       "path": "./tsconfig.build.json"
     },
     {
