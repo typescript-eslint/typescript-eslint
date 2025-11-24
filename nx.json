@@ -40,7 +40,8 @@
       }
     },
     "version": {
-      "conventionalCommits": true
+      "conventionalCommits": true,
+      "preserveMatchingDependencyRanges": false
     }
   },
   "targetDefaults": {
