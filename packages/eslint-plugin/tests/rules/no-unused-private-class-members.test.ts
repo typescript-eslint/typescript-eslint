@@ -415,6 +415,25 @@ class Foo {
   }
 }
     `,
+    `
+class Foo {
+  private privateMember = 1;
+
+  method() {
+    let privateMember;
+    ({ privateMember } = this);
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember = 1;
+
+  method() {
+    const foo = ({ privateMember } = this) => {};
+  }
+}
+    `,
     //--------------------------------------------------------------------------
     // Method definitions
     //--------------------------------------------------------------------------

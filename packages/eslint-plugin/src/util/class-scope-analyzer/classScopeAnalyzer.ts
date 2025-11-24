@@ -435,6 +435,28 @@ abstract class ThisScope extends Visitor {
   // Visit selectors //
   /////////////////////
 
+  protected AssignmentExpression(node: TSESTree.AssignmentExpression): void {
+    this.visitChildren(node);
+
+    if (
+      node.right.type === AST_NODE_TYPES.ThisExpression &&
+      node.left.type === AST_NODE_TYPES.ObjectPattern
+    ) {
+      this.handleThisDestructuring(node.left);
+    }
+  }
+
+  protected AssignmentPattern(node: TSESTree.AssignmentPattern): void {
+    this.visitChildren(node);
+
+    if (
+      node.right.type === AST_NODE_TYPES.ThisExpression &&
+      node.left.type === AST_NODE_TYPES.ObjectPattern
+    ) {
+      this.handleThisDestructuring(node.left);
+    }
+  }
+
   protected ClassDeclaration(node: TSESTree.ClassDeclaration): void {
     this.visitClass(node);
   }
@@ -532,18 +554,24 @@ abstract class ThisScope extends Visitor {
   protected VariableDeclarator(node: TSESTree.VariableDeclarator): void {
     this.visitChildren(node);
 
-    // Handle destructuring from `this`
-    // Example: const { a, b } = this;
     if (
-      node.init == null ||
-      node.init.type !== AST_NODE_TYPES.ThisExpression ||
-      node.id.type !== AST_NODE_TYPES.ObjectPattern ||
-      this.thisContext == null
+      node.init?.type === AST_NODE_TYPES.ThisExpression &&
+      node.id.type === AST_NODE_TYPES.ObjectPattern
     ) {
+      this.handleThisDestructuring(node.id);
+    }
+  }
+
+  /**
+   * Handles destructuring from `this` in ObjectPattern.
+   * Example: const { property } = this;
+   */
+  private handleThisDestructuring(pattern: TSESTree.ObjectPattern): void {
+    if (this.thisContext == null) {
       return;
     }
 
-    for (const prop of node.id.properties) {
+    for (const prop of pattern.properties) {
       if (prop.type !== AST_NODE_TYPES.Property) {
         continue;
       }
@@ -562,7 +590,6 @@ abstract class ThisScope extends Visitor {
         continue;
       }
 
-      // Destructuring from `this` is a read access
       countReference(prop.key, member);
     }
   }
