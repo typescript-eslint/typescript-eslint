@@ -220,12 +220,6 @@ abstract class ThisScope extends Visitor {
    */
   protected readonly thisContext: ClassScope | null;
 
-  /**
-   * Map of variable names destructured from `this` to their property names.
-   * Example: const { privateMember } = this; => { 'privateMember' => true }
-   */
-  private readonly destructuredThisProperties = new Map<string, boolean>();
-
   constructor(
     scopeManager: ScopeManager,
     upper: ThisScope | null,
@@ -457,44 +451,6 @@ abstract class ThisScope extends Visitor {
     this.visitIntermediate(node);
   }
 
-  protected Identifier(node: TSESTree.Identifier): void {
-    if (node.parent.type === AST_NODE_TYPES.MemberExpression) {
-      // will be handled by the MemberExpression visitor
-      return;
-    }
-
-    // Skip property keys in object literals
-    // const obj = { privateMember: 123 } - skip the 'privateMember' key
-    // const obj = { privateMember } - don't skip, this is usage of 'privateMember'
-    if (
-      node.parent.type === AST_NODE_TYPES.Property &&
-      node.parent.key === node &&
-      !node.parent.shorthand
-    ) {
-      return;
-    }
-
-    if (!this.destructuredThisProperties.get(node.name)) {
-      return;
-    }
-
-    if (this.thisContext == null) {
-      return;
-    }
-
-    const memberKey = publicKey(node.name);
-    const members = this.isStaticThisContext
-      ? this.thisContext.members.static
-      : this.thisContext.members.instance;
-    const member = members.get(memberKey);
-
-    if (member == null) {
-      return;
-    }
-
-    countReference(node, member);
-  }
-
   protected MemberExpression(node: TSESTree.MemberExpression): void {
     this.visitChildren(node);
 
@@ -576,12 +532,14 @@ abstract class ThisScope extends Visitor {
   protected VariableDeclarator(node: TSESTree.VariableDeclarator): void {
     this.visitChildren(node);
 
-    const init = node.init;
-    if (init == null || init.type !== AST_NODE_TYPES.ThisExpression) {
-      return;
-    }
-
-    if (node.id.type !== AST_NODE_TYPES.ObjectPattern) {
+    // Handle destructuring from `this`
+    // Example: const { a, b } = this;
+    if (
+      node.init == null ||
+      node.init.type !== AST_NODE_TYPES.ThisExpression ||
+      node.id.type !== AST_NODE_TYPES.ObjectPattern ||
+      this.thisContext == null
+    ) {
       return;
     }
 
@@ -594,11 +552,18 @@ abstract class ThisScope extends Visitor {
         continue;
       }
 
-      if (!prop.shorthand) {
+      const memberKey = publicKey(prop.key.name);
+      const members = this.isStaticThisContext
+        ? this.thisContext.members.static
+        : this.thisContext.members.instance;
+      const member = members.get(memberKey);
+
+      if (member == null) {
         continue;
       }
 
-      this.destructuredThisProperties.set(prop.key.name, true);
+      // Destructuring from `this` is a read access
+      countReference(prop.key, member);
     }
   }
 }

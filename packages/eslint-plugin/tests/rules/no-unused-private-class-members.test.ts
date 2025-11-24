@@ -404,8 +404,14 @@ class Foo {
   private privateMember = 1;
   method() {
     const { privateMember } = this;
-    const obj = { privateMember };
-    return obj;
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember = 1;
+  method() {
+    const { privateMember: privateMember2 } = this;
   }
 }
     `,
@@ -1245,44 +1251,6 @@ class Foo {
   private privateMember;
   method() {
     [this.privateMember] = bar;
-  }
-}
-      `,
-      errors: [
-        {
-          data: {
-            classMemberName: 'privateMember',
-          },
-          messageId: 'unusedPrivateClassMember',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  private privateMember;
-  method() {
-    const { privateMember } = this;
-    const obj = { privateMember: 1 };
-  }
-}
-      `,
-      errors: [
-        {
-          data: {
-            classMemberName: 'privateMember',
-          },
-          messageId: 'unusedPrivateClassMember',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  private privateMember = 1;
-
-  method() {
-    const { privateMember } = this;
   }
 }
       `,
