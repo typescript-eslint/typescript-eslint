@@ -81,7 +81,7 @@ const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
  * Takes an AST and returns the analyzed scopes.
  */
 export function analyze(
-  tree: TSESTree.Node,
+  tree: TSESTree.Program,
   providedOptions?: AnalyzeOptions,
 ): ScopeManager {
   const options: Required<AnalyzeOptions> = {

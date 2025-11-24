@@ -4,30 +4,6 @@
   "include": [],
   "references": [
     {
-      "path": "../website-eslint"
-    },
-    {
-      "path": "../utils"
-    },
-    {
-      "path": "../typescript-estree"
-    },
-    {
-      "path": "../types"
-    },
-    {
-      "path": "../scope-manager"
-    },
-    {
-      "path": "../rule-schema-to-typescript-types"
-    },
-    {
-      "path": "../eslint-plugin"
-    },
-    {
-      "path": "../parser"
-    },
-    {
       "path": "./tsconfig.build.json"
     }
   ]
