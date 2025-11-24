@@ -130,6 +130,20 @@ ruleTester.run('no-useless-default-assignment', rule, {
     `
       const foo = (x: string = '') => {};
     `,
+    `
+      const obj = { ab: { x: 1 } };
+      const {
+        ['a' + 'b']: { x = 1 },
+      } = obj;
+    `,
+    `
+      const obj = { ab: 1 };
+      const { ['a' + 'b']: x = 1 } = obj;
+    `,
+    `
+      for ([[a = 1]] of []) {
+      }
+    `,
   ],
   invalid: [
     {

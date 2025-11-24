@@ -11,6 +11,8 @@ import {
   isTypeAnyType,
   isTypeFlagSet,
   isTypeUnknownType,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 type MessageId = 'uselessDefaultAssignment' | 'uselessUndefined';
@@ -104,12 +106,7 @@ export default createRule<[], MessageId>({
             }
 
             const signatures = contextualType.getCallSignatures();
-            if (signatures.length === 0) {
-              return;
-            }
-
-            const signature = signatures[0];
-            const params = signature.getParameters();
+            const params = signatures[0].getParameters();
             if (paramIndex < params.length) {
               const paramSymbol = params[paramIndex];
               if ((paramSymbol.flags & ts.SymbolFlags.Optional) === 0) {
@@ -129,19 +126,7 @@ export default createRule<[], MessageId>({
       }
 
       if (parent.type === AST_NODE_TYPES.Property) {
-        const objectPattern = parent.parent as TSESTree.ObjectPattern;
-
-        const sourceType = getSourceTypeForPattern(objectPattern);
-        if (!sourceType) {
-          return;
-        }
-
-        const propertyName = getPropertyName(parent.key);
-        if (!propertyName) {
-          return;
-        }
-
-        const propertyType = getPropertyType(sourceType, propertyName);
+        const propertyType = getTypeOfProperty(parent);
         if (!propertyType) {
           return;
         }
@@ -156,10 +141,6 @@ export default createRule<[], MessageId>({
         }
 
         const elementIndex = parent.elements.indexOf(node);
-        if (elementIndex === -1) {
-          return;
-        }
-
         const elementType = getArrayElementType(sourceType, elementIndex);
         if (!elementType) {
           return;
@@ -171,11 +152,26 @@ export default createRule<[], MessageId>({
       }
     }
 
-    function getSourceTypeForPattern(pattern: TSESTree.Node): ts.Type | null {
-      const parent = pattern.parent;
-      if (!parent) {
+    function getTypeOfProperty(node: TSESTree.Property): ts.Type | null {
+      const objectPattern = node.parent as TSESTree.ObjectPattern;
+      const sourceType = getSourceTypeForPattern(objectPattern);
+      if (!sourceType) {
         return null;
       }
+
+      const propertyName = getPropertyName(node.key);
+      if (!propertyName) {
+        return null;
+      }
+
+      return getPropertyType(sourceType, propertyName);
+    }
+
+    function getSourceTypeForPattern(pattern: TSESTree.Node): ts.Type | null {
+      const parent = nullThrows(
+        pattern.parent,
+        NullThrowsReasons.MissingParent,
+      );
 
       if (parent.type === AST_NODE_TYPES.VariableDeclarator && parent.init) {
         const tsNode = services.esTreeNodeToTSNodeMap.get(parent.init);
@@ -185,10 +181,10 @@ export default createRule<[], MessageId>({
       if (isFunction(parent)) {
         const paramIndex = parent.params.indexOf(pattern as TSESTree.Parameter);
         const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
-        const signature = checker.getSignatureFromDeclaration(tsFunc);
-        if (!signature) {
-          return null;
-        }
+        const signature = nullThrows(
+          checker.getSignatureFromDeclaration(tsFunc),
+          NullThrowsReasons.MissingToken('signature', 'function'),
+        );
         const params = signature.getParameters();
         return checker.getTypeOfSymbol(params[paramIndex]);
       }
@@ -198,16 +194,7 @@ export default createRule<[], MessageId>({
       }
 
       if (parent.type === AST_NODE_TYPES.Property) {
-        const objectPattern = parent.parent as TSESTree.ObjectPattern;
-        const objectType = getSourceTypeForPattern(objectPattern);
-        if (!objectType) {
-          return null;
-        }
-        const propertyName = getPropertyName(parent.key);
-        if (!propertyName) {
-          return null;
-        }
-        return getPropertyType(objectType, propertyName);
+        return getTypeOfProperty(parent as TSESTree.Property);
       }
 
       if (parent.type === AST_NODE_TYPES.ArrayPattern) {
@@ -219,9 +206,6 @@ export default createRule<[], MessageId>({
         const elementIndex = arrayPattern.elements.indexOf(
           pattern as TSESTree.DestructuringPattern,
         );
-        if (elementIndex === -1) {
-          return null;
-        }
         return getArrayElementType(arrayType, elementIndex);
       }
 
