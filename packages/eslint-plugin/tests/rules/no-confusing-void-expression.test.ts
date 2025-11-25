@@ -110,13 +110,13 @@ ruleTester.run('no-confusing-void-expression', rule, {
 
     `
 function cool(input: string) {
-  return console.log(input), input;
+  return (console.log(input), input);
 }
     `,
     {
       code: `
 function cool(input: string) {
-  return input, console.log(input), input;
+  return (input, console.log(input), input);
 }
       `,
     },
@@ -487,10 +487,10 @@ test((() => {
     {
       code: `
 function notcool(input: string) {
-  return input, console.log(input);
+  return (input, console.log(input));
 }
       `,
-      errors: [{ column: 17, line: 3, messageId: 'invalidVoidExpr' }],
+      errors: [{ column: 18, line: 3, messageId: 'invalidVoidExpr' }],
       output: null,
     },
     {

@@ -15,6 +15,7 @@ Snapshot Diff:
 -         members: Array [
 -           TSEnumMember {
 -             type: 'TSEnumMember',
+-             computed: false,
 -             id: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
