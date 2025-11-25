@@ -2345,7 +2345,7 @@ export class Converter {
           type: AST_NODE_TYPES.MetaProperty,
           meta: this.createNode<TSESTree.Identifier>(
             // TODO: do we really want to convert it to Token?
-            node.getFirstToken()! as ts.Token<typeof node.keywordToken>,
+            node.getFirstToken()!,
             {
               type: AST_NODE_TYPES.Identifier,
               decorators: [],
@@ -3254,12 +3254,9 @@ export class Converter {
         if (node.literal.kind === SyntaxKind.NullKeyword) {
           // 4.0 started nesting null types inside a LiteralType node
           // but our AST is designed around the old way of null being a keyword
-          return this.createNode<TSESTree.TSNullKeyword>(
-            node.literal as ts.NullLiteral,
-            {
-              type: AST_NODE_TYPES.TSNullKeyword,
-            },
-          );
+          return this.createNode<TSESTree.TSNullKeyword>(node.literal, {
+            type: AST_NODE_TYPES.TSNullKeyword,
+          });
         }
 
         return this.createNode<TSESTree.TSLiteralType>(node, {
@@ -3557,15 +3554,12 @@ export class Converter {
       result.loc = getLocFor(result.range, this.ast);
 
       if (declarationIsDefault) {
-        return this.createNode<TSESTree.ExportDefaultDeclaration>(
-          node as Exclude<typeof node, ts.ImportEqualsDeclaration>,
-          {
-            type: AST_NODE_TYPES.ExportDefaultDeclaration,
-            range: [exportKeyword.getStart(this.ast), result.range[1]],
-            declaration: result as TSESTree.DefaultExportDeclarations,
-            exportKind: 'value',
-          },
-        );
+        return this.createNode<TSESTree.ExportDefaultDeclaration>(node, {
+          type: AST_NODE_TYPES.ExportDefaultDeclaration,
+          range: [exportKeyword.getStart(this.ast), result.range[1]],
+          declaration: result as TSESTree.DefaultExportDeclarations,
+          exportKind: 'value',
+        });
       }
       const isType =
         result.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
