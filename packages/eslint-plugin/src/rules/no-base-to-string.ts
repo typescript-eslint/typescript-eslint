@@ -216,26 +216,15 @@ export default createRule<Options, MessageIds>({
         return [];
       }
 
-      let interfaceType: ts.InterfaceType | undefined;
+      const interfaceTarget = tsutils.isTypeReference(type)
+        ? type.target
+        : type;
 
-      if (tsutils.isTypeReference(type)) {
-        const target = type.target;
-        if (
-          tsutils.isObjectFlagSet(
-            target,
-            ts.ObjectFlags.Interface | ts.ObjectFlags.Class,
-          )
-        ) {
-          interfaceType = target;
-        }
-      } else if (
+      const interfaceType =
         tsutils.isObjectFlagSet(
-          type,
+          interfaceTarget,
           ts.ObjectFlags.Interface | ts.ObjectFlags.Class,
-        )
-      ) {
-        interfaceType = type as ts.InterfaceType;
-      }
+        ) && (interfaceTarget as ts.InterfaceType);
 
       if (!interfaceType) {
         return [];
@@ -254,13 +243,9 @@ export default createRule<Options, MessageIds>({
 
       seen.add(type);
 
-      const typeName = getTypeName(checker, type);
-      if (ignoredTypeNames.includes(typeName)) {
-        return true;
-      }
-
-      return getBaseTypesForType(type).some(base =>
-        isIgnoredTypeOrBase(base, seen),
+      return (
+        ignoredTypeNames.includes(getTypeName(checker, type)) ||
+        getBaseTypesForType(type).some(base => isIgnoredTypeOrBase(base, seen))
       );
     }
 
