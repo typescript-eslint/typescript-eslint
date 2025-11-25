@@ -1770,6 +1770,46 @@ export interface A {}
         },
       ],
     },
+    {
+      code: `
+interface Foo {
+  bar: string;
+}
+export const Foo = 'bar';
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'Foo',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+export const Foo = 'bar';
+interface Foo {
+  bar: string;
+}
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
   ],
 
   valid: [
@@ -2828,18 +2868,6 @@ export class Foo {
 }
       `,
     },
-    `
-interface Foo {
-  bar: string;
-}
-export const Foo = 'bar';
-    `,
-    `
-export const Foo = 'bar';
-interface Foo {
-  bar: string;
-}
-    `,
     `
 let foo = 1;
 foo ??= 2;
