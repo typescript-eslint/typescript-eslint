@@ -39,8 +39,9 @@ This project exists thanks to the awesome people who contribute code and documen
 In addition to submitting code and documentation updates, you can help us sustain our community by becoming a financial contributor [[Click here to contribute - every little bit helps!](https://opencollective.com/typescript-eslint/contribute)]
 
 <a href="https://www.netlify.com">
-  <img src="https://www.netlify.com/img/global/badges/netlify-light.svg" alt="Deploys by Netlify" />
+  <img src="https://www.netlify.com/img/global/badges/netlify-light.svg" alt="Deploys by Netlify">
 </a>
+
 
 ## License
 
