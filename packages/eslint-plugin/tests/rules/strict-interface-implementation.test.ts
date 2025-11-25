@@ -63,27 +63,27 @@ class Derived implements Base1, Base2 {
     `
 const Root = class {
   ['process'](value: string) {}
-}
+};
 
 class Base extends Root {}
 
 const Derived = class extends Base {
   public ['process'](value: string) {}
-}
-`,
+};
+    `,
     `
-const key = 'process'
+const key = 'process';
 
 const Root = class {
   [key](value: string) {}
-}
+};
 
 class Base extends Root {}
 
 const Derived = class extends Base {
   public [key](value: string) {}
-}
-`,
+};
+    `,
   ],
   invalid: [
     {
@@ -197,13 +197,13 @@ class Derived extends Base {
       code: `
 const Root = class {
   process(value?: string) {}
-}
+};
 
 class Base extends Root {}
 
 const Derived = class extends Base {
   public process(value: string) {}
-}
+};
       `,
       errors: [
         {
@@ -277,8 +277,8 @@ interface Base {
 }
 
 const Derived = class implements Base {
-  public ['process'](value: string) { }
-}
+  public ['process'](value: string) {}
+};
       `,
       errors: [
         {
