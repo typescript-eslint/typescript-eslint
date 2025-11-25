@@ -1779,13 +1779,13 @@ export const Foo = 'bar';
       `,
       errors: [
         {
-          column: 11,
+          column: 14,
           data: {
             action: 'assigned a value',
             additional: '',
             varName: 'Foo',
           },
-          line: 2,
+          line: 5,
           messageId: 'unusedVar',
         },
       ],
@@ -1799,9 +1799,9 @@ interface Foo {
       `,
       errors: [
         {
-          column: 6,
+          column: 14,
           data: {
-            action: 'defined',
+            action: 'assigned a value',
             additional: '',
             varName: 'Foo',
           },

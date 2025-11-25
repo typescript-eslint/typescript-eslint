@@ -472,21 +472,55 @@ function isMergeableExported(variable: Variable): boolean {
  * @returns True if the variable is exported, false if not.
  */
 function isExported(variable: Variable): boolean {
-  return variable.defs.some(definition => {
-    let node = definition.node;
-
+  const isStartsWithExport = (node: TSESTree.Node): boolean =>
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    node.parent!.type.startsWith('Export');
+  const getNode = (node: TSESTree.Node): TSESTree.Node => {
     if (node.type === AST_NODE_TYPES.VariableDeclarator) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      node = node.parent!;
-    } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
-      return false;
+      return node.parent;
+    }
+    return node;
+  };
+  const isMerged = variable.isTypeVariable && variable.isValueVariable;
+
+  if (!isMerged) {
+    return variable.defs.some(definition => {
+      const node = getNode(definition.node);
+      if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
+        return false;
+      }
+
+      return isStartsWithExport(node);
+    });
+  }
+
+  let hasExportedValue = false;
+  let hasExportedType = false;
+  for (const definition of variable.defs) {
+    if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
+      continue;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const isExportedFlag = node.parent!.type.startsWith('Export');
+    const node = getNode(definition.node);
+    if (
+      node.type === AST_NODE_TYPES.TSEnumDeclaration ||
+      node.type === AST_NODE_TYPES.TSModuleDeclaration ||
+      node.type === AST_NODE_TYPES.ClassDeclaration ||
+      node.type === AST_NODE_TYPES.TSImportEqualsDeclaration
+    ) {
+      return isStartsWithExport(node);
+    }
 
-    return isExportedFlag && !isMergedTypeDeclaration(variable, node);
-  });
+    if (isMergedTypeDeclaration(variable, node)) {
+      if (isStartsWithExport(node)) {
+        hasExportedType = true;
+      }
+    } else if (isStartsWithExport(node)) {
+      hasExportedValue = true;
+    }
+  }
+
+  return hasExportedValue && hasExportedType;
 }
 
 const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['??=', '&&=', '||=']);
