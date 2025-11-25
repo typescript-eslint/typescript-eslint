@@ -1682,5 +1682,43 @@ const a: A = 'a';
 fn(a);
       `,
     },
+    {
+      code: `
+interface Props {
+  a: number;
+}
+const x = { a: 1 } as unknown as Props;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+interface Props {
+  a: number;
+}
+const x = ({ a: 1 });
+      `,
+    },
+    {
+      code: `
+interface Props {
+  a: number;
+}
+const fn = (): Props => ({ a: 1 }) as unknown as Props;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+interface Props {
+  a: number;
+}
+const fn = (): Props => ({ a: 1 });
+      `,
+    },
   ],
 });

@@ -421,10 +421,13 @@ export default createRule<Options, MessageIds>({
               node,
               messageId: 'unnecessaryAssertion',
               fix(fixer) {
-                return fixer.replaceText(
-                  node,
-                  context.sourceCode.getText(originalExpr),
-                );
+                let text = context.sourceCode.getText(originalExpr);
+
+                if (originalExpr.type === AST_NODE_TYPES.ObjectExpression) {
+                  text = `(${text})`;
+                }
+
+                return fixer.replaceText(node, text);
               },
             });
           }
