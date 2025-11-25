@@ -1,4 +1,3 @@
-import * as tsutils from 'ts-api-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -58,20 +57,11 @@ export default createRule({
     }
 
     function checkMethod(element: TSESTree.MethodDefinition, base: ts.Symbol) {
-      const methodName = getStaticMemberAccessValue(element, context);
-      if (typeof methodName !== 'string') {
-        return;
-      }
-
-      const baseMethod = base.members?.get(methodName as ts.__String);
-      if (!baseMethod?.valueDeclaration) {
-        return;
-      }
-
-      const baseType = checker.getTypeAtLocation(baseMethod.valueDeclaration);
-      const derivedType = services.getTypeAtLocation(element);
-
-      if (isMethodAssignable(baseType, derivedType)) {
+      const metadata = getFieldMetadata(element, base);
+      if (
+        !metadata ||
+        isMethodAssignable(metadata.baseType, metadata.derivedType)
+      ) {
         return;
       }
 
@@ -79,7 +69,7 @@ export default createRule({
         node: element.key,
         messageId: 'unassignable',
         data: {
-          name: methodName,
+          name: metadata.fieldName,
           interface: checker.symbolToString(base),
           target: 'method',
         },
@@ -110,21 +100,29 @@ export default createRule({
       return true;
     }
 
-    function checkProperty(element: NodeWithStaticKey, base: ts.Symbol) {
-      const propertyName = getStaticMemberAccessValue(element, context);
-      if (typeof propertyName !== 'string') {
-        return;
+    function getFieldMetadata(element: NodeWithStaticKey, base: ts.Symbol) {
+      const fieldName = getStaticMemberAccessValue(element, context);
+      if (typeof fieldName !== 'string') {
+        return undefined;
       }
 
-      const baseProperty = base.members?.get(propertyName as ts.__String);
+      const baseProperty = base.members?.get(fieldName as ts.__String);
       if (!baseProperty?.valueDeclaration) {
-        return;
+        return undefined;
       }
 
       const baseType = checker.getTypeAtLocation(baseProperty.valueDeclaration);
       const derivedType = services.getTypeAtLocation(element);
 
-      if (checker.isTypeAssignableTo(baseType, derivedType)) {
+      return { baseType, derivedType, fieldName };
+    }
+
+    function checkProperty(element: NodeWithStaticKey, base: ts.Symbol) {
+      const metadata = getFieldMetadata(element, base);
+      if (
+        !metadata ||
+        checker.isTypeAssignableTo(metadata.baseType, metadata.derivedType)
+      ) {
         return;
       }
 
@@ -132,7 +130,7 @@ export default createRule({
         node: element.key,
         messageId: 'unassignable',
         data: {
-          name: propertyName,
+          name: metadata.fieldName,
           interface: checker.symbolToString(base),
           target: 'property',
         },
