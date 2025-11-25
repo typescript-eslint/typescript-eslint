@@ -227,12 +227,37 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
+      if (
+        isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
+        !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)
+      ) {
+        return false;
+      }
+
+      if (hasIndexSignature(uncast) && !hasIndexSignature(cast)) {
+        return false;
+      }
+
+      if (containsAny(uncast) || containsAny(cast)) {
+        return false;
+      }
+
       return (
-        !isTypeFlagSet(uncast, ts.TypeFlags.Any) &&
-        !isTypeFlagSet(cast, ts.TypeFlags.Any) &&
         checker.isTypeAssignableTo(uncast, cast) &&
         checker.isTypeAssignableTo(cast, uncast)
       );
+    }
+
+    function hasIndexSignature(type: ts.Type): boolean {
+      return checker.getIndexInfosOfType(type).length > 0;
+    }
+
+    function containsAny(type: ts.Type): boolean {
+      if (isTypeFlagSet(type, ts.TypeFlags.Any)) {
+        return true;
+      }
+      const typeArgs = checker.getTypeArguments(type as ts.TypeReference);
+      return typeArgs.length > 0 && typeArgs.some(containsAny);
     }
 
     function isTypeLiteral(type: ts.Type) {
@@ -370,7 +395,7 @@ export default createRule<Options, MessageIds>({
         if (
           contextualType &&
           !typeAnnotationIsConstAssertion &&
-          !isTypeFlagSet(uncastType, ts.TypeFlags.Any) &&
+          !containsAny(uncastType) &&
           checker.isTypeAssignableTo(uncastType, contextualType)
         ) {
           context.report({

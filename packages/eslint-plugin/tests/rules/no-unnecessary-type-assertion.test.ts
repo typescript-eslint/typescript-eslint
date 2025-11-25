@@ -461,6 +461,19 @@ declare const a: any;
 declare function foo(arg: string): void;
 foo(a as string);
     `,
+    `
+declare const a: object;
+const b = a as { id?: number };
+    `,
+    `
+declare const array: any[];
+function foo(strings: string[]): void {}
+foo(array as string[]);
+    `,
+    `
+declare const record: Record<string, unknown>;
+const obj = record as { id?: number };
+    `,
   ],
 
   invalid: [
