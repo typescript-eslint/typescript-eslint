@@ -112,9 +112,16 @@ export default createRule({
 
       for (let i = 0; i < derivedSignature.parameters.length; i += 1) {
         const baseType = checker.getTypeOfSymbol(baseSignature.parameters[i]);
+        if (baseType.isTypeParameter()) {
+          continue;
+        }
+
         const derivedType = checker.getTypeOfSymbol(
           derivedSignature.parameters[i],
         );
+        if (derivedType.isTypeParameter()) {
+          continue;
+        }
 
         if (!checker.isTypeAssignableTo(baseType, derivedType)) {
           indices.push(i);
@@ -138,7 +145,14 @@ export default createRule({
       }
 
       const baseType = checker.getTypeAtLocation(baseProperty.valueDeclaration);
+      if (baseType.isTypeParameter()) {
+        return undefined;
+      }
+
       const derivedType = services.getTypeAtLocation(element);
+      if (derivedType.isTypeParameter()) {
+        return undefined;
+      }
 
       return { baseType, derivedType, fieldName };
     }

@@ -107,6 +107,31 @@ class Derived extends ImplementsNotResolved {
   process(prefix: string, value: string) {}
 }
     `,
+    `
+interface Base<T> {
+  value: T;
+}
+
+class Derived<T> implements Base<T> {
+  value: T;
+}
+    `,
+    `
+interface CacheLike<Key, Value> {
+  get(key: Key): Value | undefined;
+  set(key: Key, value: Value): this;
+}
+
+class ExpiringCache<Key, Value> implements CacheLike<Key, Value> {
+  get(key: Key): Value | undefined {
+    return undefined;
+  }
+
+  set(key: Key, value: Value): this {
+    return this;
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -383,6 +408,106 @@ const Derived = class extends Base {
     },
     {
       code: `
+interface Root {
+  process(value?: string): void;
+}
+
+abstract class Base implements Root {
+  process(value?: string): void;
+}
+
+abstract class Derived extends Base {
+  process(value: string): void;
+}
+      `,
+      errors: [
+        {
+          data: {
+            index: 0,
+            interface: 'Root',
+            name: 'process',
+          },
+          messageId: 'methodParameter',
+        },
+      ],
+    },
+    {
+      code: `
+interface Root {
+  process(value?: string): void;
+}
+
+abstract class Base implements Root {
+  process(value?: string): void {}
+}
+
+abstract class Derived extends Base {
+  process(value: string) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            index: 0,
+            interface: 'Root',
+            name: 'process',
+          },
+          messageId: 'methodParameter',
+        },
+      ],
+    },
+    {
+      code: `
+interface Root {
+  process(value?: string): void;
+}
+
+abstract class Base implements Root {
+  process(value?: string): void {}
+}
+
+const Derived = class extends Base {
+  process(value: string) {}
+};
+      `,
+      errors: [
+        {
+          data: {
+            index: 0,
+            interface: 'Root',
+            name: 'process',
+          },
+          messageId: 'methodParameter',
+        },
+      ],
+    },
+    {
+      code: `
+interface Root {
+  process(value?: string): void;
+}
+
+abstract class Base implements Root {
+  process(value?: string): void;
+}
+
+const Derived = class extends Base {
+  process(value: string) {}
+};
+      `,
+      errors: [
+        {
+          data: {
+            index: 0,
+            interface: 'Root',
+            name: 'process',
+          },
+          messageId: 'methodParameter',
+        },
+      ],
+    },
+    {
+      code: `
 interface Base1 {
   value?: string;
 }
@@ -463,7 +588,6 @@ class Derived implements Base3, Base2 {
           messageId: 'unassignable',
         },
       ],
-      only: true,
     },
     {
       code: `
@@ -497,7 +621,62 @@ class Derived implements Base3, Base2 {
           messageId: 'unassignable',
         },
       ],
-      only: true,
+    },
+    {
+      code: `
+interface CacheLike<Value> {
+  get(key: string): Value | undefined;
+  set(key: string | undefined, value: Value): this;
+}
+
+class ExpiringCache<Value> implements CacheLike<Value> {
+  get(key: string): Value | undefined {
+    return undefined;
+  }
+
+  set(key: string, value: Value): this {
+    return this;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            index: 0,
+            interface: 'CacheLike',
+            name: 'set',
+          },
+          messageId: 'methodParameter',
+        },
+      ],
+    },
+    {
+      code: `
+interface CacheLike<Key> {
+  get(key: Key): unknown | undefined;
+  set(key: Key, value: unknown[] | undefined): this;
+}
+
+class ExpiringCache<Key> implements CacheLike<Key> {
+  get(key: Key): unknown | undefined {
+    return undefined;
+  }
+
+  set(key: Key, value: unknown[]): this {
+    return this;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            index: 1,
+            interface: 'CacheLike',
+            name: 'set',
+          },
+          messageId: 'methodParameter',
+        },
+      ],
     },
   ],
 });
