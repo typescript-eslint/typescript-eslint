@@ -14,6 +14,9 @@ declare module 'typescript' {
 
     getContextualTypeForArgumentAtIndex(node: Node, argIndex: number): Type;
 
+    // TODO - technically this is not a valid type predicate, since the
+    // contrapositive is not correct.
+
     /**
      * @returns `true` if the given type is an array type:
      * - `Array<foo>`

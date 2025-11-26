@@ -19,6 +19,7 @@ import {
   isPossiblyTruthy,
   isTypeAnyType,
   isTypeFlagSet,
+  isTypeNeverType,
   isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
@@ -596,18 +597,47 @@ export default createRule<Options, MessageId>({
           node,
         );
         if (typeGuardAssertedArgument != null) {
-          // Use the widened type to bypass excess property checking
-          const argumentType = toWidenedType(
-            checker,
-            services.getTypeAtLocation(typeGuardAssertedArgument.argument),
-          );
+          const shouldReport = (() => {
+            const argumentType = services.getTypeAtLocation(
+              typeGuardAssertedArgument.argument,
+            );
 
-          if (
-            checker.isTypeAssignableTo(
-              argumentType,
-              typeGuardAssertedArgument.type,
-            )
-          ) {
+            const assertedType = typeGuardAssertedArgument.type;
+            if (isTypeAnyType(argumentType) && isTypeAnyType(assertedType)) {
+              return true;
+            }
+
+            if (isTypeAnyType(argumentType)) {
+              return false;
+            }
+
+            if (
+              isTypeNeverType(argumentType) &&
+              isTypeNeverType(assertedType)
+            ) {
+              return true;
+            }
+
+            if (isTypeNeverType(argumentType)) {
+              return false;
+            }
+
+            if (
+              checker.isTypeAssignableTo(
+                // Use the widened type to bypass excess property checking
+                toWidenedType(checker, argumentType),
+                assertedType,
+              )
+            ) {
+              // ... unless the asserted type actually does narrow the argument,
+              // for example by granting it additional optional properties?
+              return true;
+            }
+
+            return false;
+          })();
+
+          if (shouldReport) {
             context.report({
               node: typeGuardAssertedArgument.argument,
               messageId: 'typeAssertionArgumentAlreadyAssignable',

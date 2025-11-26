@@ -1157,6 +1157,57 @@ isUnion(u);
       `,
       options: [{ checkTypePredicates: true }],
     },
+    {
+      // TODO - what do we do with this case?
+      //
+      // The two types are mutually assignable, but the type predicate does have
+      // an observable effect.
+      skip: true,
+      code: `
+interface Wider {
+  a: string;
+}
+
+interface Narrower {
+  a: string;
+  b?: number;
+}
+
+declare function isNarrower(x: unknown): x is Narrower;
+
+declare const w: Wider;
+
+if (isNarrower(w)) {
+  w.b?.toFixed();
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // any is still narrowed, but it's pathologically assignable to anything
+      code: `
+declare const a: any;
+
+declare function isNumber(x: number | string): x is number;
+
+if (isNumber(a)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // never is badly behaved
+      code: `
+declare const _never: never;
+
+declare function isNumber(x: unknown): x is number;
+
+if (isNumber(_never)) {
+  // _never still has type never
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
   ],
 
   invalid: [
