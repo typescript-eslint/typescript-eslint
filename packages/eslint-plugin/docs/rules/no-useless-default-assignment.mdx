@@ -50,5 +50,4 @@ const [foo = ''] = [undefined];
 
 ## When Not To Use It
 
-If your codebase is still onboarding to TypeScript and/or has many existing `any`s or areas of loosely typed code, it may be difficult to enable this rule.
-You might consider using ESLint disable comments for those specific situations instead of completely disabling this rule.
+If you use default values defensively against runtime values that bypass type checking, or for documentation purposes, you may want to disable this rule.
