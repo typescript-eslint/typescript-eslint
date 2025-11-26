@@ -154,7 +154,7 @@ export type MessageId =
   | 'noOverlapBooleanExpression'
   | 'noStrictNullCheck'
   | 'suggestRemoveOptionalChain'
-  | 'typeGuardAlreadyIsType';
+  | 'typeAssertionArgumentAlreadyAssignable';
 
 export default createRule<Options, MessageId>({
   name: 'no-unnecessary-condition',
@@ -187,8 +187,8 @@ export default createRule<Options, MessageId>({
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
       suggestRemoveOptionalChain: 'Remove unnecessary optional chain',
-      typeGuardAlreadyIsType:
-        'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
+      typeAssertionArgumentAlreadyAssignable:
+        'Unnecessary conditional, expression is already assignable to the type being checked by {{typeGuardOrAssertionFunction}}.',
     },
     schema: [
       {
@@ -610,7 +610,7 @@ export default createRule<Options, MessageId>({
           ) {
             context.report({
               node: typeGuardAssertedArgument.argument,
-              messageId: 'typeGuardAlreadyIsType',
+              messageId: 'typeAssertionArgumentAlreadyAssignable',
               data: {
                 typeGuardOrAssertionFunction: typeGuardAssertedArgument.asserts
                   ? 'assertion function'

@@ -3476,7 +3476,7 @@ assertsString(a);
       errors: [
         {
           line: 4,
-          messageId: 'typeGuardAlreadyIsType',
+          messageId: 'typeAssertionArgumentAlreadyAssignable',
         },
       ],
       options: [{ checkTypePredicates: true }],
@@ -3490,7 +3490,7 @@ isString(a);
       errors: [
         {
           line: 4,
-          messageId: 'typeGuardAlreadyIsType',
+          messageId: 'typeAssertionArgumentAlreadyAssignable',
         },
       ],
       options: [{ checkTypePredicates: true }],
@@ -3504,7 +3504,7 @@ isString('fa' + 'lafel');
       errors: [
         {
           line: 4,
-          messageId: 'typeGuardAlreadyIsType',
+          messageId: 'typeAssertionArgumentAlreadyAssignable',
         },
       ],
       options: [{ checkTypePredicates: true }],
@@ -3855,7 +3855,7 @@ assertString('falafel');
           endColumn: 23,
           endLine: 3,
           line: 3,
-          messageId: 'typeGuardAlreadyIsType',
+          messageId: 'typeAssertionArgumentAlreadyAssignable',
         },
       ],
       options: [{ checkTypePredicates: true }],
@@ -3871,7 +3871,7 @@ isString('falafel');
           endColumn: 19,
           endLine: 3,
           line: 3,
-          messageId: 'typeGuardAlreadyIsType',
+          messageId: 'typeAssertionArgumentAlreadyAssignable',
         },
       ],
       options: [{ checkTypePredicates: true }],
@@ -3887,7 +3887,7 @@ isUnion({ a: 'foo' });
       `,
       errors: [
         {
-          messageId: 'typeGuardAlreadyIsType',
+          messageId: 'typeAssertionArgumentAlreadyAssignable',
         },
       ],
       options: [{ checkTypePredicates: true }],
@@ -3902,7 +3902,7 @@ isUnion({ a: 'foo', excess: 'property' });
       `,
       errors: [
         {
-          messageId: 'typeGuardAlreadyIsType',
+          messageId: 'typeAssertionArgumentAlreadyAssignable',
         },
       ],
       options: [{ checkTypePredicates: true }],
@@ -3920,7 +3920,7 @@ isUnion(u);
       `,
       errors: [
         {
-          messageId: 'typeGuardAlreadyIsType',
+          messageId: 'typeAssertionArgumentAlreadyAssignable',
         },
       ],
       options: [{ checkTypePredicates: true }],
@@ -3943,7 +3943,7 @@ isT1(t2);
       `,
       errors: [
         {
-          messageId: 'typeGuardAlreadyIsType',
+          messageId: 'typeAssertionArgumentAlreadyAssignable',
         },
       ],
       options: [{ checkTypePredicates: true }],
