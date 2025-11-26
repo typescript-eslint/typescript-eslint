@@ -9,7 +9,10 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/strict-interface-implementation** for documentation.
 
-todo explain
+TypeScript allows classes to implement interfaces even if the class's methods or properties have only partially overlapping types with the interface's equivalents.
+This can lead to subtle bugs when instances of the class are used in contexts expecting the interface's type.
+
+This rule enforces more strictly than TypeScript that if a class implements an interface, all methods and parameters on the class are fully assignable to each base interface equivalent.
 
 ## Examples
 
@@ -17,14 +20,100 @@ todo explain
 <TabItem value="❌ Incorrect">
 
 ```ts
-todo;
+interface NullableBox {
+  value: string | undefined;
+}
+
+class ValueBox implements NullableBox {
+  value: string;
+
+  constructor(value: string) {
+    this.value = value;
+  }
+}
+
+const box: NullableBox = new ValueBox('...');
+
+// Not allowed for a ValueBox, but allowed for NullableBox
+box.value = undefined;
+```
+
+```ts
+interface GetterAndSetter {
+  getValue(): string | undefined;
+  setValue(value: string | undefined): void;
+}
+
+class HasPrivateValue implements GetterAndSetter {
+  #value: string | undefined;
+
+  constructor(value: string) {
+    this.#value = value;
+  }
+
+  getValue(): string | undefined {
+    return this.#value;
+  }
+
+  setValue(value: string) {
+    this.#value = value;
+  }
+}
+
+const container: GetterAndSetter = new HasPrivateValue('...');
+
+// Not allowed for a HasPrivateValue, but allowed for GetterAndSetter
+container.setValue(undefined);
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
 ```ts
-todo;
+interface NullableBox {
+  value: string | undefined;
+}
+
+class ValueBox implements NullableBox {
+  value: string | undefined;
+
+  constructor(value: string | undefined) {
+    this.value = value;
+  }
+}
+
+const box: NullableBox = new ValueBox('...');
+
+// Now is allowed for a ValueBox, as well as NullableBox
+box.value = undefined;
+```
+
+```ts
+interface GetterAndSetter {
+  getValue(): string | undefined;
+  setValue(value: string | undefined): void;
+}
+
+class HasPrivateValue implements GetterAndSetter {
+  #value: string | undefined;
+
+  constructor(value: string) {
+    this.#value = value;
+  }
+
+  getValue(): string | undefined {
+    return this.#value;
+  }
+
+  setValue(value: string | undefined) {
+    this.#value = value;
+  }
+}
+
+const container: GetterAndSetter = new HasPrivateValue('...');
+
+// Now is allowed for a HasPrivateValue, as well as GetterAndSetter
+container.setValue(undefined);
 ```
 
 </TabItem>
@@ -32,8 +121,10 @@ todo;
 
 ## When Not To Use It
 
-todo
+If you intentionally use class polymorphism in a way that doesn't play well with stricter inheritance checking, this rule might get in your way.
+For example, if you know the difference between "covariance" and "contravariance" and have strong opinions about them that differ from this rule, this rule might not be for you.
 
 ## Further Reading
 
 - [TypeScript Handbook > Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html)
+- [StackOverflow: Difference between Variance, Covariance, Contravariance, Bivariance and Invariance in TypeScript](https://stackoverflow.com/questions/66410115/difference-between-variance-covariance-contravariance-bivariance-and-invarian)

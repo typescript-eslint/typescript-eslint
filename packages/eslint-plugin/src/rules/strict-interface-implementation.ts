@@ -86,7 +86,7 @@ export default createRule({
         return false;
       }
 
-      for (let i = 0; i < baseSignature.parameters.length; i += 1) {
+      for (let i = 0; i < derivedSignature.parameters.length; i += 1) {
         const baseType = checker.getTypeOfSymbol(baseSignature.parameters[i]);
         const derivedType = checker.getTypeOfSymbol(
           derivedSignature.parameters[i],
