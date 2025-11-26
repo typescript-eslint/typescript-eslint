@@ -188,6 +188,19 @@ class ExpiringCache<Key, Value> implements CacheLike<Key, Value> {
   }
 }
     `,
+    {
+      code: `
+interface WithPrefix {
+  take(prefix: string, ...args: string[]): void;
+}
+
+class OnlyRest implements WithPrefix {
+  take(...args: string[]): void {}
+}
+      `,
+      // TODO: this and all its gross sibling test cases...
+      // only: true,
+    },
   ],
   invalid: [
     {
@@ -780,3 +793,6 @@ class ExpiringCache<Key> implements CacheLike<Key> {
 });
 
 // todo: variadic parameters (mixed and equivalent)
+
+// TODO: handle overloads
+// see the getMethodAssignabilityFailure base.getCallSignatures()[0];
