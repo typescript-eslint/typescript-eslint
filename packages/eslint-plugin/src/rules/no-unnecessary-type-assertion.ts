@@ -242,26 +242,31 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      const uncastProps = uncast.getProperties();
-      const castProps = cast.getProperties();
-      if (uncastProps.length !== castProps.length) {
+      if (!hasSameProperties(uncast, cast)) {
         return false;
-      }
-
-      for (const prop of uncastProps) {
-        const name = prop.getEscapedName();
-        if (
-          tsutils.isPropertyReadonlyInType(uncast, name, checker) !==
-          tsutils.isPropertyReadonlyInType(cast, name, checker)
-        ) {
-          return false;
-        }
       }
 
       return (
         checker.isTypeAssignableTo(uncast, cast) &&
         checker.isTypeAssignableTo(cast, uncast)
       );
+    }
+
+    function hasSameProperties(uncast: ts.Type, cast: ts.Type): boolean {
+      const uncastProps = uncast.getProperties();
+      const castProps = cast.getProperties();
+
+      if (uncastProps.length !== castProps.length) {
+        return false;
+      }
+
+      return uncastProps.every(prop => {
+        const name = prop.getEscapedName();
+        return (
+          tsutils.isPropertyReadonlyInType(uncast, name, checker) ===
+          tsutils.isPropertyReadonlyInType(cast, name, checker)
+        );
+      });
     }
 
     function hasIndexSignature(type: ts.Type): boolean {
