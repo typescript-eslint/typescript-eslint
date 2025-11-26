@@ -485,6 +485,26 @@ const obj2 = obj as Obj;
 declare const record: Record<string, unknown>;
 const obj = record as { [additionalProperties: string]: unknown; id?: number };
     `,
+    `
+interface PropsA {
+  a?: number;
+}
+interface PropsB extends PropsA {
+  b?: string;
+}
+declare const propsB: PropsB;
+const propsA = propsB as PropsA;
+    `,
+    `
+interface PropsA {
+  a?: number;
+}
+interface PropsB extends PropsA {
+  b?: string;
+}
+declare const propsB: PropsB[];
+const propsA = propsB as PropsA[];
+    `,
   ],
 
   invalid: [

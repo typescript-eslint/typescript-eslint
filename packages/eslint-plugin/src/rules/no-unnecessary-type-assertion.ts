@@ -246,6 +246,19 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
+      const uncastTypeArgs = checker.getTypeArguments(
+        uncast as ts.TypeReference,
+      );
+      const castTypeArgs = checker.getTypeArguments(cast as ts.TypeReference);
+      if (uncastTypeArgs.length !== castTypeArgs.length) {
+        return false;
+      }
+      for (let i = 0; i < uncastTypeArgs.length; i++) {
+        if (uncastTypeArgs[i] !== castTypeArgs[i]) {
+          return false;
+        }
+      }
+
       return (
         checker.isTypeAssignableTo(uncast, cast) &&
         checker.isTypeAssignableTo(cast, uncast)
