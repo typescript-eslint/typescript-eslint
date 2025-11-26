@@ -188,6 +188,12 @@ function assertIsString(value: unknown): asserts value is string {
 }
 
 assertIsString(s); // Unnecessary; s is always a string.
+
+declare function assertIsStringOrNumber(
+  value: unknown,
+): asserts value is string | number;
+
+assertIsStringOrNumber(s); // Unnecessary; s is assignable to string | number.
 ```
 
 Whether this option makes sense for your project may vary.
