@@ -59,22 +59,11 @@ function extractNonComputedName(
  */
 export function extractNameForMember(node: MemberNode): ExtractedName | null {
   if (node.type === AST_NODE_TYPES.TSParameterProperty) {
-    switch (node.parameter.type) {
-      case AST_NODE_TYPES.ArrayPattern:
-      case AST_NODE_TYPES.ObjectPattern:
-      case AST_NODE_TYPES.RestElement:
-        // Nonsensical properties -- see https://github.com/typescript-eslint/typescript-eslint/issues/11708
-        return null;
-
-      case AST_NODE_TYPES.AssignmentPattern:
-        if (node.parameter.left.type !== AST_NODE_TYPES.Identifier) {
-          return null;
-        }
-        return extractNonComputedName(node.parameter.left);
-
-      case AST_NODE_TYPES.Identifier:
-        return extractNonComputedName(node.parameter);
-    }
+    const identifier =
+      node.parameter.type === AST_NODE_TYPES.Identifier
+        ? node.parameter
+        : (node.parameter.left as TSESTree.Identifier);
+    return extractNonComputedName(identifier);
   }
 
   if (node.computed) {
