@@ -107,6 +107,7 @@ export = {
       'error',
       'error-handling-correctness-only',
     ],
+    '@typescript-eslint/strict-interface-implementation': 'error',
     '@typescript-eslint/triple-slash-reference': 'error',
     '@typescript-eslint/unbound-method': 'error',
     '@typescript-eslint/unified-signatures': 'error',

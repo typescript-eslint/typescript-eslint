@@ -25,9 +25,9 @@ export default createRule({
     docs: {
       description:
         'Enforce classes are fully assignable to any interfaces they implement',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     messages: {
       unassignable:
         'This {{target}} is not fully assignable to the interface {{interface}} type for {{name}}.',

@@ -87,6 +87,7 @@ export default (
         'error',
         'error-handling-correctness-only',
       ],
+      '@typescript-eslint/strict-interface-implementation': 'error',
       '@typescript-eslint/unbound-method': 'error',
       '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
     },
