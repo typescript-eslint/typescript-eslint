@@ -4,18 +4,6 @@
   "include": [],
   "references": [
     {
-      "path": "../visitor-keys"
-    },
-    {
-      "path": "../typescript-estree"
-    },
-    {
-      "path": "../types"
-    },
-    {
-      "path": "../scope-manager"
-    },
-    {
       "path": "./tsconfig.build.json"
     },
     {
