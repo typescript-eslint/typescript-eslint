@@ -29,6 +29,7 @@ export * from './getValueOfLiteralType';
 export * from './isHigherPrecedenceThanAwait';
 export * from './skipChainExpression';
 export * from './truthinessUtils';
+export * from './isObjectType.js';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';

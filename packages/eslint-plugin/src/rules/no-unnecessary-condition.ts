@@ -22,6 +22,7 @@ import {
   isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
+  toWidenedType,
 } from '../util';
 import {
   findTruthinessAssertedArgument,
@@ -595,11 +596,18 @@ export default createRule<Options, MessageId>({
           node,
         );
         if (typeGuardAssertedArgument != null) {
-          const typeOfArgument = getConstrainedTypeAtLocation(
-            services,
-            typeGuardAssertedArgument.argument,
+          // Use the widened type to bypass excess property checking
+          const argumentType = toWidenedType(
+            checker,
+            services.getTypeAtLocation(typeGuardAssertedArgument.argument),
           );
-          if (typeOfArgument === typeGuardAssertedArgument.type) {
+
+          if (
+            checker.isTypeAssignableTo(
+              argumentType,
+              typeGuardAssertedArgument.type,
+            )
+          ) {
             context.report({
               node: typeGuardAssertedArgument.argument,
               messageId: 'typeGuardAlreadyIsType',

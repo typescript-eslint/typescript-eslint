@@ -1115,22 +1115,7 @@ isString(a);
       `,
       options: [{ checkTypePredicates: false }],
     },
-    {
-      // Technically, this has type 'falafel' and not string.
-      code: `
-declare function assertString(x: unknown): asserts x is string;
-assertString('falafel');
-      `,
-      options: [{ checkTypePredicates: true }],
-    },
-    {
-      // Technically, this has type 'falafel' and not string.
-      code: `
-declare function isString(x: unknown): x is string;
-isString('falafel');
-      `,
-      options: [{ checkTypePredicates: true }],
-    },
+
     `
 type A = { [name in Lowercase<string>]?: A };
 declare const a: A;
@@ -1159,6 +1144,19 @@ declare const t: T;
 t.a.a.a.value;
 t.A?.A?.A?.VALUE;
     `,
+    {
+      code: `
+type T1 = { a: string };
+type T2 = { b: number };
+
+declare function isIntersection(x: unknown): x is T1 & T2;
+
+declare const u: T1 | T2;
+
+isUnion(u);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
   ],
 
   invalid: [
@@ -3845,6 +3843,110 @@ if (arr[42] && arr[42]) {
           tsconfigRootDir: getFixturesRootDir(),
         },
       },
+    },
+    {
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+assertString('falafel');
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+isString('falafel');
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+type T1 = { a: string };
+type T2 = { b: number };
+
+declare function isUnion(x: unknown): x is T1 | T2;
+
+isUnion({ a: 'foo' });
+      `,
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+type Foo = { a: string };
+
+declare function isUnion(x: unknown): x is Foo;
+
+isUnion({ a: 'foo', excess: 'property' });
+      `,
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+type T1 = { a: string };
+type T2 = { b: number };
+
+declare function isUnion(x: unknown): x is T1 | T2;
+
+declare const u: T1 | T2;
+
+isUnion(u);
+      `,
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface T1 {
+  a: string;
+}
+
+interface T2 {
+  a: string;
+}
+
+declare function isT1(x: unknown): x is T1;
+
+declare const t2: T2;
+
+isT1(t2);
+      `,
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
     },
   ],
 });
