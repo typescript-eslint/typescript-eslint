@@ -1,4 +1,3 @@
-import { checkServerIdentity } from 'node:tls';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
