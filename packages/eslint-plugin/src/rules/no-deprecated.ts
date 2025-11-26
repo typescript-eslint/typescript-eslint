@@ -416,7 +416,8 @@ export default createRule<Options, MessageIds>({
 
         const propertyName = propertyType.isStringLiteral()
           ? propertyType.value
-          : String(propertyType.value as number);
+          : // eslint-disable-next-line @typescript-eslint/no-base-to-string
+            String(propertyType.value);
 
         const property = objectType.getProperty(propertyName);
 
