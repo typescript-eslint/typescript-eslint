@@ -1005,22 +1005,24 @@ export class Converter {
           const kind = getDeclarationKind(variableDeclarationList);
 
           if (
-            variableDeclarationList.parent.kind === SyntaxKind.ForInStatement ||
-            variableDeclarationList.parent.kind === SyntaxKind.ForStatement
+            (variableDeclarationList.parent.kind ===
+              SyntaxKind.ForInStatement ||
+              variableDeclarationList.parent.kind ===
+                SyntaxKind.ForStatement) &&
+            (kind === 'using' || kind === 'await using')
           ) {
-            if (kind === 'using' || kind === 'await using') {
-              if (!node.initializer) {
-                this.#throwError(
-                  node,
-                  `'${kind}' declarations may not be initialized in for statement.`,
-                );
-              }
-              if (node.name.kind !== SyntaxKind.Identifier) {
-                this.#throwError(
-                  node.name,
-                  `'${kind}' declarations may not have binding patterns.`,
-                );
-              }
+            if (!node.initializer) {
+              this.#throwError(
+                node,
+                `'${kind}' declarations may not be initialized in for statement.`,
+              );
+            }
+
+            if (node.name.kind !== SyntaxKind.Identifier) {
+              this.#throwError(
+                node.name,
+                `'${kind}' declarations may not have binding patterns.`,
+              );
             }
           }
 
@@ -1051,32 +1053,31 @@ export class Converter {
 
             // Definite assignment only allowed for non-declare let and var
             if (
-              hasDeclareKeyword ||
-              ['await using', 'const', 'using'].includes(kind)
+              (hasDeclareKeyword ||
+                ['await using', 'const', 'using'].includes(kind)) &&
+              hasExclamationToken
             ) {
-              if (hasExclamationToken) {
-                this.#throwError(
-                  node,
-                  `A definite assignment assertion '!' is not permitted in this context.`,
-                );
-              }
+              this.#throwError(
+                node,
+                `A definite assignment assertion '!' is not permitted in this context.`,
+              );
             }
 
-            if (hasDeclareKeyword) {
-              if (
-                node.initializer &&
-                (['let', 'var'].includes(kind) || node.type)
-              ) {
-                this.#throwError(
-                  node,
-                  `Initializers are not permitted in ambient contexts.`,
-                );
-              }
-              // Theoretically, only certain initializers are allowed for declare const,
-              // (TS1254: A 'const' initializer in an ambient context must be a string
-              // or numeric literal or literal enum reference.) but we just allow
-              // all expressions
+            if (
+              hasDeclareKeyword &&
+              node.initializer &&
+              (['let', 'var'].includes(kind) || node.type)
+            ) {
+              this.#throwError(
+                node,
+                `Initializers are not permitted in ambient contexts.`,
+              );
             }
+            // Theoretically, only certain initializers are allowed for declare const,
+            // (TS1254: A 'const' initializer in an ambient context must be a string
+            // or numeric literal or literal enum reference.) but we just allow
+            // all expressions
+
             // Note! No-declare does not mean the variable is not ambient, because
             // it can be further nested in other declare contexts. Therefore we cannot
             // check for const initializers.
