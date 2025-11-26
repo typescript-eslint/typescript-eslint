@@ -505,6 +505,16 @@ interface PropsB extends PropsA {
 declare const propsB: PropsB[];
 const propsA = propsB as PropsA[];
     `,
+    `
+class Box<T> {
+  value: T;
+}
+class PairBox<T, U> {
+  value: T;
+}
+declare const pairBox: PairBox<string, number>;
+const box = pairBox as Box<string>;
+    `,
   ],
 
   invalid: [
