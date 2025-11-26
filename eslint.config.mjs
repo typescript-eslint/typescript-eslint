@@ -161,7 +161,6 @@ export default defineConfig(
           varsIgnorePattern: '^_',
         },
       ],
-      '@typescript-eslint/no-useless-default-assignment': 'error',
       '@typescript-eslint/no-var-requires': 'off',
       '@typescript-eslint/prefer-literal-enum-member': [
         'error',
