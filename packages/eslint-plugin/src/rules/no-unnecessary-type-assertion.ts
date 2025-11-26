@@ -242,7 +242,13 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      for (const prop of uncast.getProperties()) {
+      const uncastProps = uncast.getProperties();
+      const castProps = cast.getProperties();
+      if (uncastProps.length !== castProps.length) {
+        return false;
+      }
+
+      for (const prop of uncastProps) {
         const name = prop.getEscapedName();
         if (
           tsutils.isPropertyReadonlyInType(uncast, name, checker) !==

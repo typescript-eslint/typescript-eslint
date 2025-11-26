@@ -481,6 +481,10 @@ interface Obj {
 declare const obj: Readonly<Obj>;
 const obj2 = obj as Obj;
     `,
+    `
+declare const record: Record<string, unknown>;
+const obj = record as { [additionalProperties: string]: unknown; id?: number };
+    `,
   ],
 
   invalid: [
