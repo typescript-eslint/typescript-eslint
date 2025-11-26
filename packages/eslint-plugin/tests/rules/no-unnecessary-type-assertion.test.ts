@@ -474,6 +474,13 @@ foo(array as string[]);
 declare const record: Record<string, unknown>;
 const obj = record as { id?: number };
     `,
+    `
+interface Obj {
+  id: number;
+}
+declare const obj: Readonly<Obj>;
+const obj2 = obj as Obj;
+    `,
   ],
 
   invalid: [

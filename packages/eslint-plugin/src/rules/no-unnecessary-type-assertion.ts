@@ -242,6 +242,16 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
+      for (const prop of uncast.getProperties()) {
+        const name = prop.getEscapedName();
+        if (
+          tsutils.isPropertyReadonlyInType(uncast, name, checker) !==
+          tsutils.isPropertyReadonlyInType(cast, name, checker)
+        ) {
+          return false;
+        }
+      }
+
       return (
         checker.isTypeAssignableTo(uncast, cast) &&
         checker.isTypeAssignableTo(cast, uncast)
