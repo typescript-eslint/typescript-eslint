@@ -371,7 +371,7 @@ export function checkModifiers(node: ts.Node): void {
       const param = node as ts.ParameterDeclaration;
 
       if (param.dotDotDotToken) {
-        throwError(
+        throw createError(
           modifier,
           'A parameter property cannot be a rest parameter.',
         );
@@ -381,7 +381,7 @@ export function checkModifiers(node: ts.Node): void {
         param.name.kind === SyntaxKind.ArrayBindingPattern ||
         param.name.kind === SyntaxKind.ObjectBindingPattern
       ) {
-        throwError(
+        throw createError(
           modifier,
           'A parameter property may not be declared using a binding pattern.',
         );
