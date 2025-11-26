@@ -51,11 +51,11 @@ class Derived implements Base1, Base2 {
 }
     `,
     `
-const Root = class {
-  ['process'](value: string) {}
-};
+interface Root {
+  ['process'](value: string): void;
+}
 
-class Base extends Root {}
+class Base implements Root {}
 
 const Derived = class extends Base {
   public ['process'](value: string) {}
@@ -64,15 +64,48 @@ const Derived = class extends Base {
     `
 const key = 'process';
 
-const Root = class {
-  [key](value: string) {}
-};
+interface Root {
+  [key](value: string): void;
+}
 
-class Base extends Root {}
+class Base implements Root {}
 
 const Derived = class extends Base {
   public [key](value: string) {}
 };
+    `,
+    `
+class Base {
+  process(prefix: string | null) {}
+}
+
+class Derived extends Base {
+  process(prefix: string, value: string) {}
+}
+    `,
+    `
+class Derived implements NotResolved {
+  process(prefix: string, value: string) {}
+}
+    `,
+    `
+class Derived extends NotResolved {
+  process(prefix: string, value: string) {}
+}
+    `,
+    `
+class ExtendsNotResolved extends NotResolved {}
+
+class Derived extends ExtendsNotResolved {
+  process(prefix: string, value: string) {}
+}
+    `,
+    `
+class ImplementsNotResolved implements NotResolved {}
+
+class Derived extends ImplementsNotResolved {
+  process(prefix: string, value: string) {}
+}
     `,
   ],
   invalid: [
@@ -103,7 +136,7 @@ interface Base {
 }
 
 class Derived implements Base {
-  public process(value: string) {}
+  process(value: string) {}
 }
       `,
       errors: [
@@ -124,7 +157,7 @@ interface Base {
 }
 
 class Derived implements Base {
-  public process(prefix: string, value: string) {}
+  process(prefix: string, value: string) {}
 }
       `,
       errors: [
@@ -145,7 +178,7 @@ interface Base {
 }
 
 class Derived implements Base {
-  public process(prefix: string | null, value: string) {}
+  process(prefix: string | null, value: string) {}
 }
       `,
       errors: [
@@ -166,7 +199,7 @@ interface Base {
 }
 
 class Derived implements Base {
-  public process(prefix: string, value: string) {}
+  process(prefix: string, value: string) {}
 }
       `,
       errors: [
@@ -195,7 +228,7 @@ interface Base {
 }
 
 class Derived implements Base {
-  public process(prefix: string, value: string, suffix: number) {}
+  process(prefix: string, value: string, suffix: number) {}
 }
       `,
       errors: [
@@ -224,7 +257,7 @@ interface Base {
 }
 
 class Derived implements Base {
-  public process(value: string) {}
+  process(value: string) {}
 }
       `,
       errors: [
@@ -240,35 +273,76 @@ class Derived implements Base {
     },
     {
       code: `
-class Base {
-  process(value?: string) {}
+interface Base {
+  process(first: string): void;
 }
 
-class Derived extends Base {
-  public process(value: string) {}
+class Derived implements Base {
+  process(first: string, second: string) {}
 }
       `,
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Base',
             name: 'process',
           },
-          messageId: 'methodParameter',
+          messageId: 'methodExcessParameters',
         },
       ],
     },
     {
       code: `
-class Root {
+interface Base {
+  process(first: string, second: string): void;
+}
+
+class Derived implements Base {
+  process(first: string, second: string, third: string) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            interface: 'Base',
+            name: 'process',
+          },
+          messageId: 'methodExcessParameters',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {
+  process(first: string, second?: string): void;
+}
+
+class Derived implements Base {
+  process(first: string, second: string, third: string) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            interface: 'Base',
+            name: 'process',
+          },
+          messageId: 'methodExcessParameters',
+        },
+      ],
+    },
+    {
+      code: `
+interface Root {
+  process(value?: string): void;
+}
+
+class Base implements Root {
   process(value?: string) {}
 }
 
-class Base extends Root {}
-
 class Derived extends Base {
-  public process(value: string) {}
+  process(value: string) {}
 }
       `,
       errors: [
@@ -284,14 +358,16 @@ class Derived extends Base {
     },
     {
       code: `
-const Root = class {
-  process(value?: string) {}
-};
+interface Root {
+  process(value?: string): void;
+}
 
-class Base extends Root {}
+class Base implements Root {
+  process(value?: string): void {}
+}
 
 const Derived = class extends Base {
-  public process(value: string) {}
+  process(value: string) {}
 };
       `,
       errors: [
@@ -358,24 +434,70 @@ class Derived implements Base1, Base2 {
     },
     {
       code: `
-interface Base {
-  ['process'](value?: string): void;
+interface Base1 {
+  value?: string;
 }
-
-const Derived = class implements Base {
-  public ['process'](value: string) {}
-};
+interface Base2 extends Base1 {
+  unrelated?: boolean;
+}
+interface Base3 {
+  value: string | undefined;
+}
+class Derived implements Base3, Base2 {
+  value: string;
+}
       `,
       errors: [
         {
           data: {
-            index: 0,
-            interface: 'Base',
-            name: 'process',
+            interface: 'Base3',
+            name: 'value',
           },
-          messageId: 'methodParameter',
+          messageId: 'unassignable',
+        },
+        {
+          data: {
+            interface: 'Base1',
+            name: 'value',
+          },
+          messageId: 'unassignable',
         },
       ],
+      only: true,
+    },
+    {
+      code: `
+interface Base1 {
+  value1?: string;
+}
+interface Base2 extends Base1 {
+  unrelated?: boolean;
+}
+interface Base3 {
+  value3: string | undefined;
+}
+class Derived implements Base3, Base2 {
+  value1: string;
+  value3: string;
+}
+      `,
+      errors: [
+        {
+          data: {
+            interface: 'Base1',
+            name: 'value1',
+          },
+          messageId: 'unassignable',
+        },
+        {
+          data: {
+            interface: 'Base3',
+            name: 'value3',
+          },
+          messageId: 'unassignable',
+        },
+      ],
+      only: true,
     },
   ],
 });

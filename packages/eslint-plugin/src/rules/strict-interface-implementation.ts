@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as ts from 'typescript';
 
 import type { NodeWithKey } from '../util';
 
@@ -165,12 +165,34 @@ export default createRule({
     function* getSuperClassImplements(
       superType: ts.Type,
     ): Generator<ts.Symbol | undefined> {
-      yield superType.getSymbol();
+      const superSymbol = superType.getSymbol();
+      if (!superSymbol) {
+        return;
+      }
 
-      for (const baseType of checker.getBaseTypes(
-        superType as ts.InterfaceType,
-      )) {
-        yield* getSuperClassImplements(baseType);
+      const valueDeclaration =
+        superSymbol.valueDeclaration ??
+        superSymbol.getDeclarations()?.find(ts.isInterfaceDeclaration);
+
+      if (!valueDeclaration) {
+        return;
+      }
+
+      if (ts.isInterfaceDeclaration(valueDeclaration)) {
+        yield superSymbol;
+      }
+
+      if (
+        (ts.isClassLike(valueDeclaration) ||
+          ts.isInterfaceDeclaration(valueDeclaration)) &&
+        valueDeclaration.heritageClauses
+      ) {
+        for (const heritageClause of valueDeclaration.heritageClauses) {
+          for (const typeNode of heritageClause.types) {
+            const baseType = checker.getTypeAtLocation(typeNode);
+            yield* getSuperClassImplements(baseType);
+          }
+        }
       }
     }
 
@@ -178,18 +200,13 @@ export default createRule({
       'ClassDeclaration, ClassExpression'(
         node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
       ) {
-        for (const implemented of node.implements) {
-          checkClassImplements(
-            node,
-            services.getSymbolAtLocation(implemented.expression),
-          );
-        }
-
-        if (node.superClass && node.body.body.length) {
-          for (const implemented of getSuperClassImplements(
-            services.getTypeAtLocation(node.superClass),
-          )) {
-            checkClassImplements(node, implemented);
+        for (const base of [...node.implements, node.superClass]) {
+          if (base) {
+            for (const target of getSuperClassImplements(
+              services.getTypeAtLocation(base),
+            )) {
+              checkClassImplements(node, target);
+            }
           }
         }
       },
