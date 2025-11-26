@@ -29,8 +29,12 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
+      methodExcessParameters:
+        "This method has more parameters than its implemented interface {{interface}}'s type for {{name}}.",
+      methodParameter:
+        "This method's parameter {{index}} is not assignable to the implemented interface {{interface}}'s parameter {{index}} type for {{name}}.",
       unassignable:
-        'This {{target}} is not fully assignable to the interface {{interface}} type for {{name}}.',
+        "This property is not fully assignable to the implemented interface {{interface}}'s type for {{name}}.",
     },
     schema: [],
   },
@@ -58,33 +62,53 @@ export default createRule({
 
     function checkMethod(element: TSESTree.MethodDefinition, base: ts.Symbol) {
       const metadata = getFieldMetadata(element, base);
-      if (
-        !metadata ||
-        isMethodAssignable(metadata.baseType, metadata.derivedType)
-      ) {
+      if (!metadata) {
         return;
       }
+      const failure = getMethodAssignabilityFailure(
+        metadata.baseType,
+        metadata.derivedType,
+      );
 
-      context.report({
-        node: element.key,
-        messageId: 'unassignable',
-        data: {
-          name: metadata.fieldName,
-          interface: checker.symbolToString(base),
-          target: 'method',
-        },
-      });
+      switch (failure?.reason) {
+        case 'excess-parameters':
+          context.report({
+            node: element.key,
+            messageId: 'methodExcessParameters',
+            data: {
+              name: metadata.fieldName,
+              interface: checker.symbolToString(base),
+            },
+          });
+          break;
+
+        case 'parameter':
+          for (const index of failure.indices) {
+            context.report({
+              node: element.value.params[index],
+              messageId: 'methodParameter',
+              data: {
+                name: metadata.fieldName,
+                index,
+                interface: checker.symbolToString(base),
+              },
+            });
+          }
+          break;
+      }
     }
 
-    function isMethodAssignable(base: ts.Type, derived: ts.Type) {
+    function getMethodAssignabilityFailure(base: ts.Type, derived: ts.Type) {
       const baseSignature = base.getCallSignatures()[0];
       const derivedSignature = derived.getCallSignatures()[0];
 
       if (
         derivedSignature.parameters.length > baseSignature.parameters.length
       ) {
-        return false;
+        return { reason: 'excess-parameters' } as const;
       }
+
+      const indices: number[] = [];
 
       for (let i = 0; i < derivedSignature.parameters.length; i += 1) {
         const baseType = checker.getTypeOfSymbol(baseSignature.parameters[i]);
@@ -93,11 +117,13 @@ export default createRule({
         );
 
         if (!checker.isTypeAssignableTo(baseType, derivedType)) {
-          return false;
+          indices.push(i);
         }
       }
 
-      return true;
+      return indices.length > 0
+        ? ({ indices, reason: 'parameter' } as const)
+        : undefined;
     }
 
     function getFieldMetadata(element: NodeWithStaticKey, base: ts.Symbol) {
@@ -132,7 +158,6 @@ export default createRule({
         data: {
           name: metadata.fieldName,
           interface: checker.symbolToString(base),
-          target: 'property',
         },
       });
     }

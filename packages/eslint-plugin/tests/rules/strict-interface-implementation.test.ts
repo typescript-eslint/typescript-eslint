@@ -91,7 +91,6 @@ class Derived implements Base {
           data: {
             interface: 'Base',
             name: 'value',
-            target: 'property',
           },
           messageId: 'unassignable',
         },
@@ -110,11 +109,111 @@ class Derived implements Base {
       errors: [
         {
           data: {
+            index: 0,
             interface: 'Base',
             name: 'process',
-            target: 'method',
           },
-          messageId: 'unassignable',
+          messageId: 'methodParameter',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {
+  process(prefix: string, value: string | null): void;
+}
+
+class Derived implements Base {
+  public process(prefix: string, value: string) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            index: 1,
+            interface: 'Base',
+            name: 'process',
+          },
+          messageId: 'methodParameter',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {
+  process(prefix: string | null, value: string | null): void;
+}
+
+class Derived implements Base {
+  public process(prefix: string | null, value: string) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            index: 1,
+            interface: 'Base',
+            name: 'process',
+          },
+          messageId: 'methodParameter',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {
+  process(prefix: string | null, value: string | null): void;
+}
+
+class Derived implements Base {
+  public process(prefix: string, value: string) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            index: 0,
+            interface: 'Base',
+            name: 'process',
+          },
+          messageId: 'methodParameter',
+        },
+        {
+          data: {
+            index: 1,
+            interface: 'Base',
+            name: 'process',
+          },
+          messageId: 'methodParameter',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {
+  process(prefix: string | null, value: string | null, suffix: number): void;
+}
+
+class Derived implements Base {
+  public process(prefix: string, value: string, suffix: number) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            index: 0,
+            interface: 'Base',
+            name: 'process',
+          },
+          messageId: 'methodParameter',
+        },
+        {
+          data: {
+            index: 1,
+            interface: 'Base',
+            name: 'process',
+          },
+          messageId: 'methodParameter',
         },
       ],
     },
@@ -131,11 +230,11 @@ class Derived implements Base {
       errors: [
         {
           data: {
+            index: 0,
             interface: 'Base',
             name: 'process',
-            target: 'method',
           },
-          messageId: 'unassignable',
+          messageId: 'methodParameter',
         },
       ],
     },
@@ -152,11 +251,11 @@ class Derived extends Base {
       errors: [
         {
           data: {
+            index: 0,
             interface: 'Base',
             name: 'process',
-            target: 'method',
           },
-          messageId: 'unassignable',
+          messageId: 'methodParameter',
         },
       ],
     },
@@ -175,11 +274,11 @@ class Derived extends Base {
       errors: [
         {
           data: {
+            index: 0,
             interface: 'Root',
             name: 'process',
-            target: 'method',
           },
-          messageId: 'unassignable',
+          messageId: 'methodParameter',
         },
       ],
     },
@@ -198,11 +297,11 @@ const Derived = class extends Base {
       errors: [
         {
           data: {
+            index: 0,
             interface: 'Root',
             name: 'process',
-            target: 'method',
           },
-          messageId: 'unassignable',
+          messageId: 'methodParameter',
         },
       ],
     },
@@ -223,7 +322,6 @@ class Derived implements Base1, Base2 {
           data: {
             interface: 'Base1',
             name: 'value',
-            target: 'property',
           },
           messageId: 'unassignable',
         },
@@ -246,7 +344,6 @@ class Derived implements Base1, Base2 {
           data: {
             interface: 'Base1',
             name: 'value',
-            target: 'property',
           },
           messageId: 'unassignable',
         },
@@ -254,7 +351,6 @@ class Derived implements Base1, Base2 {
           data: {
             interface: 'Base2',
             name: 'value',
-            target: 'property',
           },
           messageId: 'unassignable',
         },
@@ -273,11 +369,11 @@ const Derived = class implements Base {
       errors: [
         {
           data: {
+            index: 0,
             interface: 'Base',
             name: 'process',
-            target: 'method',
           },
-          messageId: 'unassignable',
+          messageId: 'methodParameter',
         },
       ],
     },
