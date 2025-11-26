@@ -33,7 +33,7 @@ export default createRule({
         "This method has more parameters than its implemented interface {{interface}}'s type for {{name}}.",
       methodParameter:
         "This method's parameter {{index}} is not assignable to the implemented interface {{interface}}'s parameter {{index}} type for {{name}}.",
-      unassignable:
+      property:
         "This property is not fully assignable to the implemented interface {{interface}}'s type for {{name}}.",
     },
     schema: [],
@@ -112,18 +112,11 @@ export default createRule({
 
       for (let i = 0; i < derivedSignature.parameters.length; i += 1) {
         const baseType = checker.getTypeOfSymbol(baseSignature.parameters[i]);
-        if (baseType.isTypeParameter()) {
-          continue;
-        }
-
         const derivedType = checker.getTypeOfSymbol(
           derivedSignature.parameters[i],
         );
-        if (derivedType.isTypeParameter()) {
-          continue;
-        }
 
-        if (!checker.isTypeAssignableTo(baseType, derivedType)) {
+        if (!isTypeOrConstraintAssignableTo(baseType, derivedType)) {
           indices.push(i);
         }
       }
@@ -131,6 +124,23 @@ export default createRule({
       return indices.length > 0
         ? ({ indices, reason: 'parameter' } as const)
         : undefined;
+    }
+
+    function isTypeOrConstraintAssignableTo(
+      baseType: ts.Type,
+      derivedType: ts.Type,
+    ) {
+      const baseConstrained =
+        baseType.isTypeParameter() && checker.getBaseConstraintOfType(baseType);
+
+      if (baseConstrained == null) {
+        return true;
+      }
+
+      return checker.isTypeAssignableTo(
+        baseConstrained || baseType,
+        checker.getBaseConstraintOfType(derivedType) ?? derivedType,
+      );
     }
 
     function getFieldMetadata(element: NodeWithStaticKey, base: ts.Symbol) {
@@ -145,14 +155,7 @@ export default createRule({
       }
 
       const baseType = checker.getTypeAtLocation(baseProperty.valueDeclaration);
-      if (baseType.isTypeParameter()) {
-        return undefined;
-      }
-
       const derivedType = services.getTypeAtLocation(element);
-      if (derivedType.isTypeParameter()) {
-        return undefined;
-      }
 
       return { baseType, derivedType, fieldName };
     }
@@ -161,14 +164,14 @@ export default createRule({
       const metadata = getFieldMetadata(element, base);
       if (
         !metadata ||
-        checker.isTypeAssignableTo(metadata.baseType, metadata.derivedType)
+        isTypeOrConstraintAssignableTo(metadata.baseType, metadata.derivedType)
       ) {
         return;
       }
 
       context.report({
         node: element.key,
-        messageId: 'unassignable',
+        messageId: 'property',
         data: {
           name: metadata.fieldName,
           interface: checker.symbolToString(base),

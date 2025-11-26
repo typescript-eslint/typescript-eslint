@@ -117,6 +117,62 @@ class Derived<T> implements Base<T> {
 }
     `,
     `
+interface Base<T> {
+  value: T;
+}
+
+class Derived<T extends string> implements Base<T> {
+  value: T;
+}
+    `,
+    `
+interface Base<T extends string | undefined> {
+  value: T;
+}
+
+class Derived<T extends string | undefined> implements Base<T> {
+  value: T;
+}
+    `,
+    `
+interface Base<Key> {
+  get(key: Key): object | undefined;
+}
+
+class Derived<Key> implements Base<Key> {
+  get(key: Key): object | undefined {
+    return undefined;
+  }
+}
+    `,
+    `
+interface Base<Key> {
+  get(key: Key): object | undefined;
+}
+
+class Derived<Key extends string> implements Base<Key> {
+  get(key: Key): object | undefined {
+    return undefined;
+  }
+}
+    `,
+    `
+interface Base<Key> {
+  get(key: Key): object | undefined;
+  set(key: Key, value: object): this;
+}
+
+class Derived<Key> implements Base<Key> {
+  get(key: Key): object | undefined {
+    return undefined;
+  }
+
+  set(key: Key, value: object): this {
+    return this;
+  }
+}
+    `,
+    `
 interface CacheLike<Key, Value> {
   get(key: Key): Value | undefined;
   set(key: Key, value: Value): this;
@@ -150,7 +206,7 @@ class Derived implements Base {
             interface: 'Base',
             name: 'value',
           },
-          messageId: 'unassignable',
+          messageId: 'property',
         },
       ],
     },
@@ -524,7 +580,7 @@ class Derived implements Base1, Base2 {
             interface: 'Base1',
             name: 'value',
           },
-          messageId: 'unassignable',
+          messageId: 'property',
         },
       ],
     },
@@ -546,14 +602,14 @@ class Derived implements Base1, Base2 {
             interface: 'Base1',
             name: 'value',
           },
-          messageId: 'unassignable',
+          messageId: 'property',
         },
         {
           data: {
             interface: 'Base2',
             name: 'value',
           },
-          messageId: 'unassignable',
+          messageId: 'property',
         },
       ],
     },
@@ -578,14 +634,14 @@ class Derived implements Base3, Base2 {
             interface: 'Base3',
             name: 'value',
           },
-          messageId: 'unassignable',
+          messageId: 'property',
         },
         {
           data: {
             interface: 'Base1',
             name: 'value',
           },
-          messageId: 'unassignable',
+          messageId: 'property',
         },
       ],
     },
@@ -611,14 +667,56 @@ class Derived implements Base3, Base2 {
             interface: 'Base1',
             name: 'value1',
           },
-          messageId: 'unassignable',
+          messageId: 'property',
         },
         {
           data: {
             interface: 'Base3',
             name: 'value3',
           },
-          messageId: 'unassignable',
+          messageId: 'property',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base<T extends object> {
+  value: T | undefined;
+}
+
+class Derived<T extends object> implements Base<T> {
+  value: T;
+}
+      `,
+      errors: [
+        {
+          data: {
+            index: 0,
+            interface: 'Base',
+            name: 'value',
+          },
+          messageId: 'property',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base<T extends object | undefined> {
+  value: T;
+}
+
+class Derived<T extends object> implements Base<T> {
+  value: T;
+}
+      `,
+      errors: [
+        {
+          data: {
+            index: 0,
+            interface: 'Base',
+            name: 'value',
+          },
+          messageId: 'property',
         },
       ],
     },
@@ -680,3 +778,5 @@ class ExpiringCache<Key> implements CacheLike<Key> {
     },
   ],
 });
+
+// todo: variadic parameters (mixed and equivalent)
