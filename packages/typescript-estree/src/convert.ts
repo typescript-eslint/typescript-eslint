@@ -10,7 +10,7 @@ import type {
 import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 
-import { checkTSNode } from './ast-checks';
+import { checkSyntaxError } from './check-syntax-errors';
 import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
@@ -105,12 +105,12 @@ export class Converter {
     this.options = { ...options };
   }
 
-  #checkTSNode(node: ts.Node): void {
+  #checkSyntaxError(node: ts.Node): void {
     if (this.options.allowInvalidAST) {
       return;
     }
 
-    checkTSNode(node, this.#throwError);
+    checkSyntaxError(node);
   }
 
   #throwError(node: number | ts.Node | TSESTree.Range, message: string): never {
@@ -498,7 +498,7 @@ export class Converter {
       return null;
     }
 
-    this.#checkTSNode(node);
+    this.#checkSyntaxError(node);
 
     const pattern = this.allowPattern;
     if (allowPattern != null) {
