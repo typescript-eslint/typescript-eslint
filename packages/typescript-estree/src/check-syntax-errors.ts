@@ -1,17 +1,21 @@
 import * as ts from 'typescript';
 
+import type { TSNode } from './ts-estree';
+
 import { checkModifiers } from './check-modifiers';
 import { isValidAssignmentTarget, createError } from './node-utils';
 
-export function checkSyntaxError(node: ts.Node): void {
-  checkModifiers(node);
+const SyntaxKind = ts.SyntaxKind;
+
+export function checkSyntaxError(tsNode: ts.Node): void {
+  checkModifiers(tsNode);
+
+  const node = tsNode as TSNode;
 
   switch (node.kind) {
-    case ts.SyntaxKind.ForInStatement:
-    case ts.SyntaxKind.ForOfStatement: {
-      checkForStatementDeclaration(
-        node as ts.ForInStatement | ts.ForOfStatement,
-      );
+    case SyntaxKind.ForInStatement:
+    case SyntaxKind.ForOfStatement: {
+      checkForStatementDeclaration(node);
       break;
     }
     default: {
@@ -24,7 +28,7 @@ function checkForStatementDeclaration(
   node: ts.ForInStatement | ts.ForOfStatement,
 ): void {
   const { initializer, kind } = node;
-  const loop = kind === ts.SyntaxKind.ForInStatement ? 'for...in' : 'for...of';
+  const loop = kind === SyntaxKind.ForInStatement ? 'for...in' : 'for...of';
   if (ts.isVariableDeclarationList(initializer)) {
     if (initializer.declarations.length !== 1) {
       throw createError(
@@ -45,7 +49,7 @@ function checkForStatementDeclaration(
       );
     }
     if (
-      kind === ts.SyntaxKind.ForInStatement &&
+      kind === SyntaxKind.ForInStatement &&
       initializer.flags & ts.NodeFlags.Using
     ) {
       throw createError(
@@ -55,8 +59,8 @@ function checkForStatementDeclaration(
     }
   } else if (
     !isValidAssignmentTarget(initializer) &&
-    initializer.kind !== ts.SyntaxKind.ObjectLiteralExpression &&
-    initializer.kind !== ts.SyntaxKind.ArrayLiteralExpression
+    initializer.kind !== SyntaxKind.ObjectLiteralExpression &&
+    initializer.kind !== SyntaxKind.ArrayLiteralExpression
   ) {
     throw createError(
       initializer,
