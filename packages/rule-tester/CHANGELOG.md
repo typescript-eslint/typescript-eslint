@@ -1,3 +1,15 @@
+## 8.48.0 (2025-11-24)
+
+### 🚀 Features
+
+- **rule-tester:** remove workaround for jest circular structure error ([#11772](https://github.com/typescript-eslint/typescript-eslint/pull/11772))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.47.0 (2025-11-17)
 
 This was a version bump only for rule-tester to align it with other projects, there were no code changes.
