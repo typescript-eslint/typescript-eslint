@@ -9,7 +9,7 @@ export function getStringLength(value: string): number {
     return value.length;
   }
 
-  segmenter = new Intl.Segmenter();
+  segmenter ??= new Intl.Segmenter();
 
   return [...segmenter.segment(value)].length;
 }
