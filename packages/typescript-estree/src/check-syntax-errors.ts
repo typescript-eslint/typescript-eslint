@@ -10,8 +10,7 @@ export function checkSyntaxError(node: ts.Node): void {
     case ts.SyntaxKind.ForInStatement:
     case ts.SyntaxKind.ForOfStatement: {
       checkForStatementDeclaration(
-        (node as ts.ForInStatement | ts.ForOfStatement).initializer,
-        node.kind,
+        node as ts.ForInStatement | ts.ForOfStatement,
       );
       break;
     }
@@ -22,9 +21,9 @@ export function checkSyntaxError(node: ts.Node): void {
 }
 
 function checkForStatementDeclaration(
-  initializer: ts.ForInitializer,
-  kind: ts.SyntaxKind,
+  node: ts.ForInStatement | ts.ForOfStatement,
 ): void {
+  const { initializer, kind } = node;
   const loop = kind === ts.SyntaxKind.ForInStatement ? 'for...in' : 'for...of';
   if (ts.isVariableDeclarationList(initializer)) {
     if (initializer.declarations.length !== 1) {
