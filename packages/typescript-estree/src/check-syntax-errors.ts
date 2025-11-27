@@ -29,26 +29,20 @@ function checkForStatementDeclaration(
   if (ts.isVariableDeclarationList(initializer)) {
     if (initializer.declarations.length !== 1) {
       throw createError(
+        initializer,
         `Only a single variable declaration is allowed in a '${loop}' statement.`,
-        initializer.getSourceFile(),
-        initializer.getStart(),
-        initializer.getEnd(),
       );
     }
     const declaration = initializer.declarations[0];
     if (declaration.initializer) {
       throw createError(
+        declaration,
         `The variable declaration of a '${loop}' statement cannot have an initializer.`,
-        declaration.getSourceFile(),
-        declaration.getStart(),
-        declaration.getEnd(),
       );
     } else if (declaration.type) {
       throw createError(
+        declaration,
         `The variable declaration of a '${loop}' statement cannot have a type annotation.`,
-        declaration.getSourceFile(),
-        declaration.getStart(),
-        declaration.getEnd(),
       );
     }
     if (
@@ -56,10 +50,8 @@ function checkForStatementDeclaration(
       initializer.flags & ts.NodeFlags.Using
     ) {
       throw createError(
+        initializer,
         "The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
-        initializer.getSourceFile(),
-        initializer.getStart(),
-        initializer.getEnd(),
       );
     }
   } else if (
@@ -68,10 +60,8 @@ function checkForStatementDeclaration(
     initializer.kind !== ts.SyntaxKind.ArrayLiteralExpression
   ) {
     throw createError(
+      initializer,
       `The left-hand side of a '${loop}' statement must be a variable or a property access.`,
-      initializer.getSourceFile(),
-      initializer.getStart(),
-      initializer.getEnd(),
     );
   }
 }
