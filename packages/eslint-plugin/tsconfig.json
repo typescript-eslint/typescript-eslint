@@ -4,27 +4,6 @@
   "include": [],
   "references": [
     {
-      "path": "../visitor-keys"
-    },
-    {
-      "path": "../type-utils"
-    },
-    {
-      "path": "../scope-manager"
-    },
-    {
-      "path": "../rule-tester"
-    },
-    {
-      "path": "../rule-schema-to-typescript-types"
-    },
-    {
-      "path": "../parser"
-    },
-    {
-      "path": "../utils"
-    },
-    {
       "path": "./tsconfig.build.json"
     },
     {

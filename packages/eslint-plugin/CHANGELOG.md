@@ -1,3 +1,51 @@
+## 8.48.0 (2025-11-24)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-redundant-type-constituents] use assignability checking for redundancy checks ([#10744](https://github.com/typescript-eslint/typescript-eslint/pull/10744))
+
+### 🩹 Fixes
+
+- **typescript-estree:** disallow binding patterns in parameter properties ([#11760](https://github.com/typescript-eslint/typescript-eslint/pull/11760))
+- **eslint-plugin:** [consistent-generic-constructors] ignore when constructor is  typed array ([#10477](https://github.com/typescript-eslint/typescript-eslint/pull/10477))
+
+### ❤️ Thank You
+
+- Dima Barabash @dbarabashh
+- JamesHenry @JamesHenry
+- Josh Goldberg
+- mdm317 @gen-ip-1
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.47.0 (2025-11-17)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unused-private-class-members] new extension rule ([#10913](https://github.com/typescript-eslint/typescript-eslint/pull/10913))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.4 (2025-11-10)
+
+### 🩹 Fixes
+
+- **parser:** error when both `projectService` and `project` are set ([#11333](https://github.com/typescript-eslint/typescript-eslint/pull/11333))
+- **eslint-plugin:** handle override modifier in promise-function-async fixer ([#11730](https://github.com/typescript-eslint/typescript-eslint/pull/11730))
+- **eslint-plugin:** [no-deprecated] fix double-report on computed literal identifiers ([#11006](https://github.com/typescript-eslint/typescript-eslint/pull/11006), [#10958](https://github.com/typescript-eslint/typescript-eslint/issues/10958))
+
+### ❤️ Thank You
+
+- Evgeny Stepanovych @undsoft
+- Kentaro Suzuki @sushichan044
+- Maria Solano @MariaSolOs
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.46.3 (2025-11-03)
 
 ### 🩹 Fixes

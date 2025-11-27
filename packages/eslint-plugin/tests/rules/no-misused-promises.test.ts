@@ -1,18 +1,7 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import rule from '../../src/rules/no-misused-promises';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootDir = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-misused-promises', rule, {
   valid: [
@@ -146,7 +135,7 @@ if (returnsPromise?.call()) {
     `,
     'Promise.resolve() ?? false;',
     `
-function test(a: Promise<void> | undefinded) {
+function test(a: Promise<void> | undefined) {
   const foo = a ?? Promise.reject();
 }
     `,

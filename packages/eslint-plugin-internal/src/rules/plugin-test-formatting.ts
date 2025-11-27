@@ -419,7 +419,7 @@ export default createRule<Options, MessageIds>({
 
       if (isNoFormatTagged) {
         if (literal.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
-          checkForUnnecesaryNoFormat(code, literal.parent);
+          checkForUnnecessaryNoFormat(code, literal.parent);
         }
         return;
       }
@@ -455,7 +455,7 @@ export default createRule<Options, MessageIds>({
       return tag.type === AST_NODE_TYPES.Identifier && tag.name === 'noFormat';
     }
 
-    function checkForUnnecesaryNoFormat(
+    function checkForUnnecessaryNoFormat(
       text: string,
       expr: TSESTree.TaggedTemplateExpression,
     ): void {
@@ -480,7 +480,7 @@ export default createRule<Options, MessageIds>({
     ): void {
       if (isNoFormatTemplateTag(expr.tag)) {
         const { cooked } = expr.quasi.quasis[0].value;
-        checkForUnnecesaryNoFormat(cooked, expr);
+        checkForUnnecessaryNoFormat(cooked, expr);
       } else {
         return;
       }
