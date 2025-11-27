@@ -1,0 +1,95 @@
+Incorrect
+
+interface NullableBox {
+  value: string | undefined;
+}
+
+class ValueBox implements NullableBox {
+  value: string;
+  ~~~~~ This property is not fully assignable to the implemented interface `NullableBox`'s type for `value` property.
+
+  constructor(value: string) {
+    this.value = value;
+  }
+}
+
+const box: NullableBox = new ValueBox('...');
+
+// Not allowed for a ValueBox, but allowed for NullableBox
+box.value = undefined;
+
+Incorrect
+
+interface GetterAndSetter {
+  getValue(): string | undefined;
+  setValue(value: string | undefined): void;
+}
+
+class HasPrivateValue implements GetterAndSetter {
+  #value: string | undefined;
+
+  constructor(value: string) {
+    this.#value = value;
+  }
+
+  getValue(): string | undefined {
+    return this.#value;
+  }
+
+  setValue(value: string) {
+           ~~~~~~~~~~~~~ This method's parameter `value` is not assignable to the implemented interface `GetterAndSetter`'s parameter `value` type under the `setValue` method.
+    this.#value = value;
+  }
+}
+
+const container: GetterAndSetter = new HasPrivateValue('...');
+
+// Not allowed for a HasPrivateValue, but allowed for GetterAndSetter
+container.setValue(undefined);
+
+Correct
+
+interface NullableBox {
+  value: string | undefined;
+}
+
+class ValueBox implements NullableBox {
+  value: string | undefined;
+
+  constructor(value: string | undefined) {
+    this.value = value;
+  }
+}
+
+const box: NullableBox = new ValueBox('...');
+
+// Now is allowed for a ValueBox, as well as NullableBox
+box.value = undefined;
+
+Correct
+
+interface GetterAndSetter {
+  getValue(): string | undefined;
+  setValue(value: string | undefined): void;
+}
+
+class HasPrivateValue implements GetterAndSetter {
+  #value: string | undefined;
+
+  constructor(value: string) {
+    this.#value = value;
+  }
+
+  getValue(): string | undefined {
+    return this.#value;
+  }
+
+  setValue(value: string | undefined) {
+    this.#value = value;
+  }
+}
+
+const container: GetterAndSetter = new HasPrivateValue('...');
+
+// Now is allowed for a HasPrivateValue, as well as GetterAndSetter
+container.setValue(undefined);

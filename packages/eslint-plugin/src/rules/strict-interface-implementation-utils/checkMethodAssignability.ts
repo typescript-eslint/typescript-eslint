@@ -34,11 +34,6 @@ export function checkMethodAssignability(
   const baseSignature = base.getCallSignatures()[0];
   const derivedSignature = derived.getCallSignatures()[0];
 
-  // TODO: add back in at the end?
-  //   if (derivedSignature.parameters.length > baseSignature.parameters.length) {
-  //     return { reason: 'excess-parameters' } as const;
-  //   }
-
   const failures: FailingParameters[] = [];
 
   // Check parameters, using pointers that each stop progressing upon hitting any rest parameter
@@ -53,6 +48,11 @@ export function checkMethodAssignability(
       }
 
       return { reason: 'excess-parameters' };
+    }
+
+    // If only derived exhausts its parameters list, base is safe to extend.
+    if (derivedParameterIndex === derivedSignature.parameters.length) {
+      break;
     }
 
     const baseParameter = baseSignature.parameters[baseParameterIndex];
