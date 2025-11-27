@@ -7,7 +7,7 @@ import type {
 } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
-import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
+import type { TSESTree, TSESTreeToTSNode, TSToken } from './ts-estree';
 
 //////////////////////////////////////////////////////////
 // MAKE SURE THIS IS KEPT IN SYNC WITH THE WEBSITE DOCS //
@@ -242,7 +242,7 @@ export interface ParserServicesBase {
 }
 export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
-  tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
+  tsNodeToESTreeNodeMap: ParserWeakMap<TSToken, TSESTree.Node>;
 }
 export interface ParserServicesWithTypeInformation
   extends ParserServicesNodeMaps,
