@@ -188,8 +188,7 @@ class ExpiringCache<Key, Value> implements CacheLike<Key, Value> {
   }
 }
     `,
-    {
-      code: `
+    `
 interface WithPrefix {
   take(prefix: string, ...args: string[]): void;
 }
@@ -197,10 +196,7 @@ interface WithPrefix {
 class OnlyRest implements WithPrefix {
   take(...args: string[]): void {}
 }
-      `,
-      // TODO: this and all its gross sibling test cases...
-      // only: true,
-    },
+    `,
   ],
   invalid: [
     {
@@ -217,7 +213,7 @@ class Derived implements Base {
         {
           data: {
             interface: 'Base',
-            name: 'value',
+            property: 'value',
           },
           messageId: 'property',
         },
@@ -236,9 +232,32 @@ class Derived implements Base {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Base',
-            name: 'process',
+            method: 'process',
+            nameBase: 'value',
+            nameDerived: 'value',
+          },
+          messageId: 'methodParameter',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {
+  process(valueBase: string | null): void;
+}
+
+class Derived implements Base {
+  process(valueDerived: string) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            interface: 'Base',
+            method: 'process',
+            nameBase: 'valueBase',
+            nameDerived: 'valueDerived',
           },
           messageId: 'methodParameter',
         },
@@ -257,9 +276,10 @@ class Derived implements Base {
       errors: [
         {
           data: {
-            index: 1,
             interface: 'Base',
-            name: 'process',
+            method: 'process',
+            nameBase: 'value',
+            nameDerived: 'value',
           },
           messageId: 'methodParameter',
         },
@@ -278,9 +298,10 @@ class Derived implements Base {
       errors: [
         {
           data: {
-            index: 1,
             interface: 'Base',
-            name: 'process',
+            method: 'process',
+            nameBase: 'value',
+            nameDerived: 'value',
           },
           messageId: 'methodParameter',
         },
@@ -299,17 +320,19 @@ class Derived implements Base {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Base',
-            name: 'process',
+            method: 'process',
+            nameBase: 'prefix',
+            nameDerived: 'prefix',
           },
           messageId: 'methodParameter',
         },
         {
           data: {
-            index: 1,
             interface: 'Base',
-            name: 'process',
+            method: 'process',
+            nameBase: 'value',
+            nameDerived: 'value',
           },
           messageId: 'methodParameter',
         },
@@ -328,17 +351,19 @@ class Derived implements Base {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Base',
-            name: 'process',
+            method: 'process',
+            nameBase: 'prefix',
+            nameDerived: 'prefix',
           },
           messageId: 'methodParameter',
         },
         {
           data: {
-            index: 1,
             interface: 'Base',
-            name: 'process',
+            method: 'process',
+            nameBase: 'value',
+            nameDerived: 'value',
           },
           messageId: 'methodParameter',
         },
@@ -357,9 +382,10 @@ class Derived implements Base {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Base',
-            name: 'process',
+            method: 'process',
+            nameBase: 'value',
+            nameDerived: 'value',
           },
           messageId: 'methodParameter',
         },
@@ -379,7 +405,7 @@ class Derived implements Base {
         {
           data: {
             interface: 'Base',
-            name: 'process',
+            method: 'process',
           },
           messageId: 'methodExcessParameters',
         },
@@ -399,7 +425,7 @@ class Derived implements Base {
         {
           data: {
             interface: 'Base',
-            name: 'process',
+            method: 'process',
           },
           messageId: 'methodExcessParameters',
         },
@@ -419,7 +445,7 @@ class Derived implements Base {
         {
           data: {
             interface: 'Base',
-            name: 'process',
+            method: 'process',
           },
           messageId: 'methodExcessParameters',
         },
@@ -442,9 +468,10 @@ class Derived extends Base {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Root',
-            name: 'process',
+            method: 'process',
+            nameBase: 'value',
+            nameDerived: 'value',
           },
           messageId: 'methodParameter',
         },
@@ -467,9 +494,10 @@ const Derived = class extends Base {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Root',
-            name: 'process',
+            method: 'process',
+            nameBase: 'value',
+            nameDerived: 'value',
           },
           messageId: 'methodParameter',
         },
@@ -492,9 +520,10 @@ abstract class Derived extends Base {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Root',
-            name: 'process',
+            method: 'process',
+            nameBase: 'value',
+            nameDerived: 'value',
           },
           messageId: 'methodParameter',
         },
@@ -517,9 +546,10 @@ abstract class Derived extends Base {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Root',
-            name: 'process',
+            method: 'process',
+            nameBase: 'value',
+            nameDerived: 'value',
           },
           messageId: 'methodParameter',
         },
@@ -542,9 +572,10 @@ const Derived = class extends Base {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Root',
-            name: 'process',
+            method: 'process',
+            nameBase: 'value',
+            nameDerived: 'value',
           },
           messageId: 'methodParameter',
         },
@@ -567,9 +598,10 @@ const Derived = class extends Base {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Root',
-            name: 'process',
+            method: 'process',
+            nameBase: 'value',
+            nameDerived: 'value',
           },
           messageId: 'methodParameter',
         },
@@ -591,7 +623,7 @@ class Derived implements Base1, Base2 {
         {
           data: {
             interface: 'Base1',
-            name: 'value',
+            property: 'value',
           },
           messageId: 'property',
         },
@@ -613,14 +645,14 @@ class Derived implements Base1, Base2 {
         {
           data: {
             interface: 'Base1',
-            name: 'value',
+            property: 'value',
           },
           messageId: 'property',
         },
         {
           data: {
             interface: 'Base2',
-            name: 'value',
+            property: 'value',
           },
           messageId: 'property',
         },
@@ -645,14 +677,14 @@ class Derived implements Base3, Base2 {
         {
           data: {
             interface: 'Base3',
-            name: 'value',
+            property: 'value',
           },
           messageId: 'property',
         },
         {
           data: {
             interface: 'Base1',
-            name: 'value',
+            property: 'value',
           },
           messageId: 'property',
         },
@@ -678,16 +710,39 @@ class Derived implements Base3, Base2 {
         {
           data: {
             interface: 'Base1',
-            name: 'value1',
+            property: 'value1',
           },
           messageId: 'property',
         },
         {
           data: {
             interface: 'Base3',
-            name: 'value3',
+            property: 'value3',
           },
           messageId: 'property',
+        },
+      ],
+    },
+
+    {
+      code: `
+interface WithPrefix {
+  take(prefix: string | undefined, ...args: string[]): void;
+}
+
+class OnlyRest implements WithPrefix {
+  take(...args: string[]): void {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            interface: 'WithPrefix',
+            method: 'take',
+            nameBase: 'prefix',
+            nameDerived: 'args',
+          },
+          messageId: 'methodParameter',
         },
       ],
     },
@@ -704,9 +759,8 @@ class Derived<T extends object> implements Base<T> {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Base',
-            name: 'value',
+            property: 'value',
           },
           messageId: 'property',
         },
@@ -725,9 +779,8 @@ class Derived<T extends object> implements Base<T> {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'Base',
-            name: 'value',
+            property: 'value',
           },
           messageId: 'property',
         },
@@ -753,9 +806,10 @@ class ExpiringCache<Value> implements CacheLike<Value> {
       errors: [
         {
           data: {
-            index: 0,
             interface: 'CacheLike',
-            name: 'set',
+            method: 'set',
+            nameBase: 'key',
+            nameDerived: 'key',
           },
           messageId: 'methodParameter',
         },
@@ -781,9 +835,10 @@ class ExpiringCache<Key> implements CacheLike<Key> {
       errors: [
         {
           data: {
-            index: 1,
             interface: 'CacheLike',
-            name: 'set',
+            method: 'set',
+            nameBase: 'value',
+            nameDerived: 'value',
           },
           messageId: 'methodParameter',
         },

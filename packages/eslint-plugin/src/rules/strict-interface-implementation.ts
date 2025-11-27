@@ -11,6 +11,8 @@ import {
   getStaticMemberAccessValue,
   isNodeWithKey,
 } from '../util';
+import { checkMethodAssignability } from './strict-interface-implementation-utils/checkMethodAssignability';
+import { isTypeOrConstraintAssignableTo } from './strict-interface-implementation-utils/isTypeOrConstraintAssignableTo';
 
 type NodeWithStaticKey = Exclude<
   NodeWithKey,
@@ -30,11 +32,11 @@ export default createRule({
     },
     messages: {
       methodExcessParameters:
-        "This method has more parameters than its implemented interface {{interface}}'s type for {{name}}.",
+        "This method has more parameters than its implemented interface `{{interface}}`'s type for the `{{method}}` method.",
       methodParameter:
-        "This method's parameter {{index}} is not assignable to the implemented interface {{interface}}'s parameter {{index}} type for {{name}}.",
+        "This method's parameter `{{nameDerived}}` is not assignable to the implemented interface `{{interface}}`'s parameter `{{nameBase}}` type under the `{{method}}` method.",
       property:
-        "This property is not fully assignable to the implemented interface {{interface}}'s type for {{name}}.",
+        "This property is not fully assignable to the implemented interface `{{interface}}`'s type for `{{property}}` property.",
     },
     schema: [],
   },
@@ -65,7 +67,8 @@ export default createRule({
       if (!metadata) {
         return;
       }
-      const failure = getMethodAssignabilityFailure(
+      const failure = checkMethodAssignability(
+        checker,
         metadata.baseType,
         metadata.derivedType,
       );
@@ -76,71 +79,27 @@ export default createRule({
             node: element.key,
             messageId: 'methodExcessParameters',
             data: {
-              name: metadata.fieldName,
               interface: checker.symbolToString(base),
+              method: metadata.fieldName,
             },
           });
           break;
 
         case 'parameter':
-          for (const index of failure.indices) {
+          for (const params of failure.params) {
             context.report({
-              node: element.value.params[index],
+              node: element.value.params[params.derived.index],
               messageId: 'methodParameter',
               data: {
-                name: metadata.fieldName,
-                index,
                 interface: checker.symbolToString(base),
+                method: metadata.fieldName,
+                nameBase: params.base.name,
+                nameDerived: params.derived.name,
               },
             });
           }
           break;
       }
-    }
-
-    function getMethodAssignabilityFailure(base: ts.Type, derived: ts.Type) {
-      const baseSignature = base.getCallSignatures()[0];
-      const derivedSignature = derived.getCallSignatures()[0];
-
-      if (
-        derivedSignature.parameters.length > baseSignature.parameters.length
-      ) {
-        return { reason: 'excess-parameters' } as const;
-      }
-
-      const indices: number[] = [];
-
-      for (let i = 0; i < derivedSignature.parameters.length; i += 1) {
-        const baseType = checker.getTypeOfSymbol(baseSignature.parameters[i]);
-        const derivedType = checker.getTypeOfSymbol(
-          derivedSignature.parameters[i],
-        );
-
-        if (!isTypeOrConstraintAssignableTo(baseType, derivedType)) {
-          indices.push(i);
-        }
-      }
-
-      return indices.length > 0
-        ? ({ indices, reason: 'parameter' } as const)
-        : undefined;
-    }
-
-    function isTypeOrConstraintAssignableTo(
-      baseType: ts.Type,
-      derivedType: ts.Type,
-    ) {
-      const baseConstrained =
-        baseType.isTypeParameter() && checker.getBaseConstraintOfType(baseType);
-
-      if (baseConstrained == null) {
-        return true;
-      }
-
-      return checker.isTypeAssignableTo(
-        baseConstrained || baseType,
-        checker.getBaseConstraintOfType(derivedType) ?? derivedType,
-      );
     }
 
     function getFieldMetadata(element: NodeWithStaticKey, base: ts.Symbol) {
@@ -164,7 +123,11 @@ export default createRule({
       const metadata = getFieldMetadata(element, base);
       if (
         !metadata ||
-        isTypeOrConstraintAssignableTo(metadata.baseType, metadata.derivedType)
+        isTypeOrConstraintAssignableTo(
+          checker,
+          metadata.baseType,
+          metadata.derivedType,
+        )
       ) {
         return;
       }
@@ -173,8 +136,8 @@ export default createRule({
         node: element.key,
         messageId: 'property',
         data: {
-          name: metadata.fieldName,
           interface: checker.symbolToString(base),
+          property: metadata.fieldName,
         },
       });
     }
