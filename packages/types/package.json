@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "8.46.4",
+  "version": "8.48.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -60,6 +60,9 @@
   },
   "nx": {
     "name": "types",
+    "implicitDependencies": [
+      "ast-spec"
+    ],
     "includedScripts": [
       "clean"
     ],

@@ -1,3 +1,23 @@
+## 8.48.0 (2025-11-24)
+
+### 🩹 Fixes
+
+- **typescript-estree:** disallow binding patterns in parameter properties ([#11760](https://github.com/typescript-eslint/typescript-eslint/pull/11760))
+
+### ❤️ Thank You
+
+- Dima Barabash @dbarabashh
+- JamesHenry @JamesHenry
+- Josh Goldberg
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.47.0 (2025-11-17)
+
+This was a version bump only for ast-spec to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.46.4 (2025-11-10)
 
 This was a version bump only for ast-spec to align it with other projects, there were no code changes.

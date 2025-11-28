@@ -303,14 +303,6 @@ class Test {
     {
       code: `
 class Test {
-  constructor(private { x }: any[]) {}
-}
-      `,
-      options: [{ accessibility: 'no-public' }],
-    },
-    {
-      code: `
-class Test {
   #foo = 1;
   #bar() {}
 }

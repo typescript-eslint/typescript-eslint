@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -82,30 +81,6 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
 
     /**
-     * Check if the export specifier is shadowed by a local value definition.
-     *
-     * @returns True if shadowed by a local value, false otherwise.
-     */
-    function isShadowedByLocalValue(
-      specifier: TSESTree.ExportSpecifier,
-    ): boolean {
-      const scope = context.sourceCode.getScope(specifier);
-      const localName =
-        specifier.local.type === AST_NODE_TYPES.Identifier
-          ? specifier.local.name
-          : specifier.local.value;
-      const variable = scope.set.get(localName);
-      return Boolean(
-        variable?.defs.some(
-          def =>
-            def.type === DefinitionType.Variable ||
-            def.type === DefinitionType.FunctionName ||
-            def.type === DefinitionType.ClassName,
-        ),
-      );
-    }
-
-    /**
      * Helper for identifying if a symbol resolves to a
      * JavaScript value or a TypeScript type.
      *
@@ -114,25 +89,21 @@ export default createRule<Options, MessageIds>({
      */
     function isSymbolTypeBased(
       symbol: ts.Symbol | undefined,
-      specifier: TSESTree.ExportSpecifier,
     ): boolean | undefined {
-      // Check if any imported type is shadowed by a local value definition
-      if (isShadowedByLocalValue(specifier)) {
-        return false;
-      }
-
-      while (symbol && symbol.flags & ts.SymbolFlags.Alias) {
-        symbol = checker.getAliasedSymbol(symbol);
-        if (
-          symbol.getDeclarations()?.find(ts.isTypeOnlyImportOrExportDeclaration)
-        ) {
-          return true;
-        }
-      }
       if (!symbol || checker.isUnknownSymbol(symbol)) {
         return undefined;
       }
-      return !(symbol.flags & ts.SymbolFlags.Value);
+      if (
+        symbol.getDeclarations()?.some(ts.isTypeOnlyImportOrExportDeclaration)
+      ) {
+        return true;
+      }
+      if (symbol.flags & ts.SymbolFlags.Value) {
+        return false;
+      }
+      return symbol.flags & ts.SymbolFlags.Alias
+        ? isSymbolTypeBased(checker.getImmediateAliasedSymbol(symbol))
+        : true;
     }
 
     return {
@@ -252,7 +223,6 @@ export default createRule<Options, MessageIds>({
 
             const isTypeBased = isSymbolTypeBased(
               services.getSymbolAtLocation(specifier.exported),
-              specifier,
             );
 
             if (isTypeBased === true) {
