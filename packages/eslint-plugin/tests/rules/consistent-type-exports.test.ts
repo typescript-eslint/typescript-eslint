@@ -68,9 +68,18 @@ const Type1 = 1;
 export { Type1 };
     `,
     `
-import { Type3 } from './consistent-type-exports';
-const Type3 = { foo: 'bar' };
-export { Type3 };
+export { A } from './consistent-type-exports/reexport-2-named';
+    `,
+    `
+import { A } from './consistent-type-exports/reexport-2-named';
+export { A };
+    `,
+    `
+export { A } from './consistent-type-exports/reexport-2-namespace';
+    `,
+    `
+import { A } from './consistent-type-exports/reexport-2-namespace';
+export { A };
     `,
   ],
   invalid: [
