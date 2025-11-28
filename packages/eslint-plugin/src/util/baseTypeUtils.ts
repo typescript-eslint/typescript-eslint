@@ -2,12 +2,36 @@ import type { ParserServicesWithTypeInformation } from '@typescript-eslint/utils
 import type { InterfaceType, Type } from 'typescript';
 
 import { isObjectFlagSet, isObjectType } from 'ts-api-utils';
-import { ObjectFlags } from 'typescript';
+import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
+
+function getBaseTypesForType(
+  checker: ts.TypeChecker,
+  type: ts.Type,
+): readonly ts.Type[] {
+  if (!tsutils.isObjectType(type)) {
+    return [];
+  }
+
+  const interfaceTarget = tsutils.isTypeReference(type) ? type.target : type;
+
+  const interfaceType =
+    tsutils.isObjectFlagSet(
+      interfaceTarget,
+      ts.ObjectFlags.Interface | ts.ObjectFlags.Class,
+    ) && (interfaceTarget as ts.InterfaceType);
+
+  if (!interfaceType) {
+    return [];
+  }
+
+  return checker.getBaseTypes(interfaceType);
+}
 
 export function hasBaseTypes(type: Type): type is InterfaceType {
   return (
     isObjectType(type) &&
-    isObjectFlagSet(type, ObjectFlags.Interface | ObjectFlags.Class)
+    isObjectFlagSet(type, ts.ObjectFlags.Interface | ts.ObjectFlags.Class)
   );
 }
 
@@ -36,12 +60,9 @@ export function matchesTypeOrBaseType(
     return true;
   }
 
-  if (hasBaseTypes(type)) {
-    const checker = services.program.getTypeChecker();
-    return checker
-      .getBaseTypes(type)
-      .some(base => matchesTypeOrBaseType(services, matcher, base, seen));
-  }
+  const checker = services.program.getTypeChecker();
 
-  return false;
+  return getBaseTypesForType(checker, type).some(base =>
+    matchesTypeOrBaseType(services, matcher, base, seen),
+  );
 }
