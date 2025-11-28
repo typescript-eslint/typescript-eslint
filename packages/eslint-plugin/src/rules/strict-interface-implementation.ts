@@ -35,6 +35,8 @@ export default createRule({
         "This method has more parameters than its implemented interface `{{interface}}`'s type for the `{{method}}` method.",
       methodParameter:
         "This method's parameter `{{nameDerived}}` is not assignable to the implemented interface `{{interface}}`'s parameter `{{nameBase}}` type under the `{{method}}` method.",
+      methodReturn:
+        "This method's return type is not assignable to its implemented interface `{{interface}}`'s type for the `{{method}}` method.",
       property:
         "This property is not fully assignable to the implemented interface `{{interface}}`'s type for `{{property}}` property.",
     },
@@ -98,6 +100,17 @@ export default createRule({
               },
             });
           }
+          break;
+
+        case 'return':
+          context.report({
+            node: element.key,
+            messageId: 'methodReturn',
+            data: {
+              interface: checker.symbolToString(base),
+              method: metadata.fieldName,
+            },
+          });
           break;
       }
     }

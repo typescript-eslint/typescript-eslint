@@ -108,6 +108,46 @@ class Derived extends ImplementsNotResolved {
 }
     `,
     `
+interface NullableGet {
+  get(): string | undefined;
+}
+
+class ReturnsStringOrUndefined implements NullableGet {
+  get(): string | undefined;
+}
+    `,
+    `
+interface GetThis {
+  get(): this;
+}
+
+class ReturnsThis implements GetThis {
+  get(): this;
+}
+    `,
+    `
+interface GetThisUnion {
+  get(): this | undefined;
+}
+
+class ReturnsThisUnion implements GetThisUnion {
+  get(): this | undefined;
+}
+    `,
+    `
+interface Box<T> {
+  value: T;
+}
+
+interface GetThisBox {
+  get(): Box<this>;
+}
+
+class ReturnsThisBox implements GetThisBox {
+  get(): Box<this>;
+}
+    `,
+    `
 interface Base<T> {
   value: T;
 }
@@ -723,7 +763,6 @@ class Derived implements Base3, Base2 {
         },
       ],
     },
-
     {
       code: `
 interface WithPrefix {
@@ -743,6 +782,26 @@ class OnlyRest implements WithPrefix {
             nameDerived: 'args',
           },
           messageId: 'methodParameter',
+        },
+      ],
+    },
+    {
+      code: `
+interface NullableGet {
+  get(): string | undefined;
+}
+
+class ReturnsString implements NullableGet {
+  get(): string;
+}
+      `,
+      errors: [
+        {
+          data: {
+            interface: 'NullableGet',
+            method: 'get',
+          },
+          messageId: 'methodReturn',
         },
       ],
     },
@@ -847,7 +906,4 @@ class ExpiringCache<Key> implements CacheLike<Key> {
   ],
 });
 
-// todo: variadic parameters (mixed and equivalent)
-
 // TODO: handle overloads
-// see the getMethodAssignabilityFailure base.getCallSignatures()[0];

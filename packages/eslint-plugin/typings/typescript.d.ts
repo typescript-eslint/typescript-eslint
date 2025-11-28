@@ -30,4 +30,8 @@ declare module 'typescript' {
      */
     isTupleType(type: Type): type is TupleTypeReference;
   }
+
+  interface Type {
+    isThisType: boolean;
+  }
 }

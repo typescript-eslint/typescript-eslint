@@ -1,14 +1,19 @@
-import type * as ts from 'typescript';
+import * as ts from 'typescript';
 
 import { isRestParameterDeclaration } from '../../util';
 import { isTypeOrConstraintAssignableTo } from './isTypeOrConstraintAssignableTo';
 
 export type MethodAssignabilityFailure =
   | MethodExcessParametersFailure
-  | MethodParameterFailure;
+  | MethodParameterFailure
+  | MethodReturn;
 
 export interface MethodExcessParametersFailure {
   reason: 'excess-parameters';
+}
+
+export interface MethodReturn {
+  reason: 'return';
 }
 
 export interface MethodParameterFailure {
@@ -122,11 +127,13 @@ export function checkMethodAssignability(
     return { params: failures, reason: 'parameter' };
   }
 
-  // Following that, if there was a parameter count mismatch, report that.
+  // Following all parameter checks, the final check is on return type.
+  const baseReturn = checker.getReturnTypeOfSignature(baseSignature);
+  const derivedReturn = checker.getReturnTypeOfSignature(derivedSignature);
+  if (!isReturnAssignableTo(checker, baseReturn, derivedReturn, new Set())) {
+    return { reason: 'return' };
+  }
 
-  // TODO: return types?
-
-  // Otherwise, finally, there were no issues.
   return undefined;
 
   function addFailure(baseParameter: ts.Symbol, derivedParameter: ts.Symbol) {
@@ -135,6 +142,40 @@ export function checkMethodAssignability(
       derived: { index: derivedParameterIndex, name: derivedParameter.name },
     });
   }
+}
+
+function isReturnAssignableTo(
+  checker: ts.TypeChecker,
+  baseReturn: ts.Type,
+  derivedReturn: ts.Type,
+  seen: Set<ts.Type>,
+): boolean {
+  if (baseReturn.isThisType && derivedReturn.isThisType) {
+    return true;
+  }
+
+  if (seen.has(baseReturn) && seen.has(derivedReturn)) {
+    return true;
+  }
+
+  seen.add(baseReturn);
+  seen.add(derivedReturn);
+
+  if (
+    (baseReturn.isIntersection() && derivedReturn.isIntersection()) ||
+    (baseReturn.isUnion() && derivedReturn.isUnion())
+  ) {
+    return (
+      baseReturn.types.length === derivedReturn.types.length &&
+      baseReturn.types.every(baseType =>
+        derivedReturn.types.some(derivedType =>
+          isReturnAssignableTo(checker, derivedType, baseType, seen),
+        ),
+      )
+    );
+  }
+
+  return checker.isTypeAssignableTo(baseReturn, derivedReturn);
 }
 
 function isSignatureRestParameter(parameter: ts.Symbol) {
