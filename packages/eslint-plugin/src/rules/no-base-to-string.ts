@@ -211,14 +211,26 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Always;
     }
 
-    function hasBaseTypes(type: ts.Type): type is ts.InterfaceType {
-      return (
-        tsutils.isObjectType(type) &&
+    function getBaseTypesForType(type: ts.Type): readonly ts.Type[] {
+      if (!tsutils.isObjectType(type)) {
+        return [];
+      }
+
+      const interfaceTarget = tsutils.isTypeReference(type)
+        ? type.target
+        : type;
+
+      const interfaceType =
         tsutils.isObjectFlagSet(
-          type,
+          interfaceTarget,
           ts.ObjectFlags.Interface | ts.ObjectFlags.Class,
-        )
-      );
+        ) && (interfaceTarget as ts.InterfaceType);
+
+      if (!interfaceType) {
+        return [];
+      }
+
+      return checker.getBaseTypes(interfaceType);
     }
 
     function isIgnoredTypeOrBase(
@@ -231,13 +243,9 @@ export default createRule<Options, MessageIds>({
 
       seen.add(type);
 
-      const typeName = getTypeName(checker, type);
       return (
-        ignoredTypeNames.includes(typeName) ||
-        (hasBaseTypes(type) &&
-          checker
-            .getBaseTypes(type)
-            .some(base => isIgnoredTypeOrBase(base, seen)))
+        ignoredTypeNames.includes(getTypeName(checker, type)) ||
+        getBaseTypesForType(type).some(base => isIgnoredTypeOrBase(base, seen))
       );
     }
 
