@@ -160,12 +160,9 @@ function isTargetTypeRedundantInIntersection(
 
   if (checker.isTupleType(targetType)) {
     if (checker.isTupleType(sourceType)) {
-      const sourceArguments = sourceType.typeArguments;
-      const targetArguments = targetType.typeArguments;
+      const sourceArguments = checker.getTypeArguments(sourceType);
+      const targetArguments = checker.getTypeArguments(targetType);
 
-      if (!sourceArguments || !targetArguments) {
-        return false;
-      }
       if (targetArguments.length !== sourceArguments.length) {
         return false;
       }
@@ -189,12 +186,9 @@ function isTargetTypeRedundantInIntersection(
 
   if (checker.isArrayType(targetType)) {
     if (checker.isArrayType(sourceType)) {
-      const sourceArgumentType = sourceType.typeArguments?.[0];
-      const targetArgumentType = targetType.typeArguments?.[0];
+      const sourceArgumentType = checker.getTypeArguments(sourceType)[0];
+      const targetArgumentType = checker.getTypeArguments(targetType)[0];
 
-      if (!sourceArgumentType || !targetArgumentType) {
-        return false;
-      }
       return isTargetTypeRedundantInIntersection(
         sourceArgumentType,
         targetArgumentType,
@@ -202,18 +196,13 @@ function isTargetTypeRedundantInIntersection(
       );
     }
     if (checker.isTupleType(sourceType)) {
-      const targetArgumentType = targetType.typeArguments?.[0];
-      if (!targetArgumentType) {
-        return false;
-      }
-      const sourceArgumentTypes = sourceType.typeArguments;
-      if (!sourceArgumentTypes) {
-        return true;
-      }
-      for (const sourceTypeArgument of sourceArgumentTypes) {
+      const sourceArguments = checker.getTypeArguments(sourceType);
+      const targetArgumentType = checker.getTypeArguments(targetType)[0];
+
+      for (const sourceArgumentType of sourceArguments) {
         if (
           !isTargetTypeRedundantInIntersection(
-            sourceTypeArgument,
+            sourceArgumentType,
             targetArgumentType,
             checker,
           )
@@ -301,14 +290,9 @@ function isTargetTypeRedundantInUnion(
 
   if (checker.isTupleType(targetType)) {
     if (checker.isArrayType(sourceType)) {
-      const sourceArgumentType = sourceType.typeArguments?.[0];
-      if (!sourceArgumentType) {
-        return false;
-      }
-      const targetArguments = targetType.typeArguments;
-      if (!targetArguments) {
-        return true;
-      }
+      const sourceArgumentType = checker.getTypeArguments(sourceType)[0];
+      const targetArguments = checker.getTypeArguments(targetType);
+
       for (const targetTypeArgument of targetArguments) {
         if (
           !isTargetTypeRedundantInUnion(
@@ -323,12 +307,9 @@ function isTargetTypeRedundantInUnion(
       return true;
     }
     if (checker.isTupleType(sourceType)) {
-      const sourceArguments = sourceType.typeArguments;
-      const targetArguments = targetType.typeArguments;
+      const sourceArguments = checker.getTypeArguments(sourceType);
+      const targetArguments = checker.getTypeArguments(targetType);
 
-      if (!sourceArguments || !targetArguments) {
-        return false;
-      }
       if (targetArguments.length !== sourceArguments.length) {
         return false;
       }
@@ -351,12 +332,9 @@ function isTargetTypeRedundantInUnion(
   }
 
   if (checker.isArrayType(sourceType) && checker.isArrayType(targetType)) {
-    const sourceArgumentType = sourceType.typeArguments?.[0];
-    const targetArgumentType = targetType.typeArguments?.[0];
+    const sourceArgumentType = checker.getTypeArguments(sourceType)[0];
+    const targetArgumentType = checker.getTypeArguments(targetType)[0];
 
-    if (!sourceArgumentType || !targetArgumentType) {
-      return false;
-    }
     return isTargetTypeRedundantInUnion(
       sourceArgumentType,
       targetArgumentType,
