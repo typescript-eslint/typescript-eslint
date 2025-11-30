@@ -68,10 +68,22 @@ function shouldCheckTypeRedundancy(
     return false;
   }
   if (tsutils.isObjectType(type)) {
-    const symbol = type.getSymbol();
-    if (checker.isArrayLikeType(type)) {
-      return true;
+    if (checker.isTupleType(type)) {
+      if (!type.typeArguments) {
+        return true;
+      }
+      return type.typeArguments.every(typePart =>
+        shouldCheckTypeRedundancy(typePart, checker, depth + 1),
+      );
     }
+    if (checker.isArrayType(type)) {
+      const typeArgument = type.typeArguments?.[0];
+      if (!typeArgument) {
+        return true;
+      }
+      return shouldCheckTypeRedundancy(typeArgument, checker, depth + 1);
+    }
+    const symbol = type.getSymbol();
     if (!symbol) {
       return false;
     }

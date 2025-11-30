@@ -281,6 +281,70 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     'type T = Array<string> & [1];',
     'type T = Array<number> & Array<string>;',
     'type T = Array<number> & string[];',
+    `
+      type T0 = number | T0[];
+      type T1 = T0 | T0;
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = T0 | T0[];
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = T0[] | T0[];
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = [T0] | T0[];
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = [T0, 4] | T0[];
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = [number, T0] | [number, T0];
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = { t: T0 } | { t: T0 };
+    `,
+    `
+      type Nested<T> = T | Nested<T>[];
+      type U<T> = Nested<T> | Nested<T>;
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = T0 & T0;
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = T0 & T0[];
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = T0[] & T0[];
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = [T0] & T0[];
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = [T0, 4] & T0[];
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = [number, T0] & [number, T0];
+    `,
+    `
+      type T0 = number | T0[];
+      type T1 = { t: T0 } & { t: T0 };
+    `,
+    `
+      type Nested<T> = T | Nested<T>[];
+      type U<T> = Nested<T> & Nested<T>;
+    `,
   ],
   invalid: [
     {
