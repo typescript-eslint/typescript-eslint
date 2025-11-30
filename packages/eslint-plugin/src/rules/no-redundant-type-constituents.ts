@@ -69,25 +69,17 @@ function shouldCheckTypeRedundancy(
   }
   if (tsutils.isObjectType(type)) {
     if (checker.isTupleType(type)) {
-      if (!type.typeArguments) {
-        return true;
-      }
-      return type.typeArguments.every(typePart =>
+      const typeArguments = checker.getTypeArguments(type);
+      return typeArguments.every(typePart =>
         shouldCheckTypeRedundancy(typePart, checker, depth + 1),
       );
     }
     if (checker.isArrayType(type)) {
-      const typeArgument = type.typeArguments?.[0];
-      if (!typeArgument) {
-        return true;
-      }
+      const typeArgument = checker.getTypeArguments(type)[0];
       return shouldCheckTypeRedundancy(typeArgument, checker, depth + 1);
     }
-    const symbol = type.getSymbol();
-    if (!symbol) {
-      return false;
-    }
-    const declarations = symbol.getDeclarations();
+
+    const declarations = type.getSymbol()?.getDeclarations();
     const declaration = declarations?.[0];
     if (!declaration) {
       return false;
