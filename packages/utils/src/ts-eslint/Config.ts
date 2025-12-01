@@ -147,7 +147,7 @@ export namespace FlatConfig {
   export type Settings = SharedConfigurationSettings;
   export type Severity = SharedConfig.Severity;
   export type SeverityString = SharedConfig.SeverityString;
-  export type SourceType = 'commonjs' | ParserOptionsTypes.SourceType;
+  export type SourceType = ParserOptionsTypes.SourceType;
 
   export interface SharedConfigs {
     [key: string]: Config | ConfigArray;
@@ -219,7 +219,7 @@ export namespace FlatConfig {
      * Set to `"latest"` for the most recent supported version.
      * @default "latest"
      */
-    ecmaVersion?: EcmaVersion | undefined;
+    ecmaVersion?: EcmaVersion;
     /**
      * An object specifying additional objects that should be added to the global scope during linting.
      */
