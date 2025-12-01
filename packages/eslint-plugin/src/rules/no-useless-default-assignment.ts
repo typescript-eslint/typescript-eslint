@@ -39,6 +39,11 @@ export default createRule<[], MessageId>({
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+    const compilerOptions = services.program.getCompilerOptions();
+    const isNoUncheckedIndexedAccess = tsutils.isCompilerOptionEnabled(
+      compilerOptions,
+      'noUncheckedIndexedAccess',
+    );
 
     function canBeUndefined(type: ts.Type): boolean {
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
@@ -69,6 +74,10 @@ export default createRule<[], MessageId>({
         if (elementIndex < tupleArgs.length) {
           return tupleArgs[elementIndex];
         }
+      }
+
+      if (isNoUncheckedIndexedAccess) {
+        return null;
       }
 
       return arrayType.getNumberIndexType() ?? null;
