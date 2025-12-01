@@ -158,41 +158,41 @@ export default createRule<Options, MessageIds>({
               context.report({
                 node: methodNode,
                 messageId: 'errorMethod',
-                fix:
-                  canFix &&
-                  function* fix(fixer) {
-                    const methodNodes = [
-                      methodNode,
-                      ...duplicatedKeyMethodNodes,
-                    ].sort((a, b) => (a.range[0] < b.range[0] ? -1 : 1));
-                    const typeString = methodNodes
-                      .map(node => {
-                        const params = getMethodParams(node);
-                        const returnType = getMethodReturnType(node);
-                        return `(${params} => ${returnType})`;
-                      })
-                      .join(' & ');
-                    const key = getMethodKey(methodNode);
-                    const delimiter = getDelimiter(methodNode);
-                    yield fixer.replaceText(
-                      methodNode,
-                      `${key}: ${typeString}${delimiter}`,
-                    );
-                    for (const node of duplicatedKeyMethodNodes) {
-                      const lastToken = context.sourceCode.getLastToken(node);
-                      if (lastToken) {
-                        const nextToken =
-                          context.sourceCode.getTokenAfter(lastToken);
-                        if (nextToken) {
-                          yield fixer.remove(node);
-                          yield fixer.replaceTextRange(
-                            [lastToken.range[1], nextToken.range[0]],
-                            '',
-                          );
+                fix: canFix
+                  ? undefined
+                  : function* fix(fixer) {
+                      const methodNodes = [
+                        methodNode,
+                        ...duplicatedKeyMethodNodes,
+                      ].sort((a, b) => (a.range[0] < b.range[0] ? -1 : 1));
+                      const typeString = methodNodes
+                        .map(node => {
+                          const params = getMethodParams(node);
+                          const returnType = getMethodReturnType(node);
+                          return `(${params} => ${returnType})`;
+                        })
+                        .join(' & ');
+                      const key = getMethodKey(methodNode);
+                      const delimiter = getDelimiter(methodNode);
+                      yield fixer.replaceText(
+                        methodNode,
+                        `${key}: ${typeString}${delimiter}`,
+                      );
+                      for (const node of duplicatedKeyMethodNodes) {
+                        const lastToken = context.sourceCode.getLastToken(node);
+                        if (lastToken) {
+                          const nextToken =
+                            context.sourceCode.getTokenAfter(lastToken);
+                          if (nextToken) {
+                            yield fixer.remove(node);
+                            yield fixer.replaceTextRange(
+                              [lastToken.range[1], nextToken.range[0]],
+                              '',
+                            );
+                          }
                         }
                       }
-                    }
-                  },
+                    },
               });
             }
             return;
@@ -207,18 +207,18 @@ export default createRule<Options, MessageIds>({
             context.report({
               node: methodNode,
               messageId: 'errorMethod',
-              fix:
-                canFix &&
-                (fixer => {
-                  const key = getMethodKey(methodNode);
-                  const params = getMethodParams(methodNode);
-                  const returnType = getMethodReturnType(methodNode);
-                  const delimiter = getDelimiter(methodNode);
-                  return fixer.replaceText(
-                    methodNode,
-                    `${key}: ${params} => ${returnType}${delimiter}`,
-                  );
-                }),
+              fix: canFix
+                ? undefined
+                : fixer => {
+                    const key = getMethodKey(methodNode);
+                    const params = getMethodParams(methodNode);
+                    const returnType = getMethodReturnType(methodNode);
+                    const delimiter = getDelimiter(methodNode);
+                    return fixer.replaceText(
+                      methodNode,
+                      `${key}: ${params} => ${returnType}${delimiter}`,
+                    );
+                  },
             });
           }
         },
