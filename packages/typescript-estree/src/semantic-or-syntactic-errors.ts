@@ -1,4 +1,9 @@
-import type { Diagnostic, Program, SourceFile } from 'typescript';
+import type {
+  Diagnostic,
+  DiagnosticWithLocation,
+  Program,
+  SourceFile,
+} from 'typescript';
 
 import { flattenDiagnosticMessageText, sys } from 'typescript';
 
@@ -54,8 +59,8 @@ export function getFirstSemanticOrSyntacticError(
 }
 
 function allowlistSupportedDiagnostics(
-  diagnostics: readonly Diagnostic[],
-): readonly Diagnostic[] {
+  diagnostics: readonly (Diagnostic | DiagnosticWithLocation)[],
+): readonly (Diagnostic | DiagnosticWithLocation)[] {
   return diagnostics.filter(diagnostic => {
     switch (diagnostic.code) {
       case 1013: // "A rest parameter or binding pattern may not have a trailing comma."
