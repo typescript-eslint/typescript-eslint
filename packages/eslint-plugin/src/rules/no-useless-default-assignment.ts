@@ -194,7 +194,7 @@ export default createRule<[], MessageId>({
       }
 
       if (parent.type === AST_NODE_TYPES.Property) {
-        return getTypeOfProperty(parent as TSESTree.Property);
+        return getTypeOfProperty(parent);
       }
 
       if (parent.type === AST_NODE_TYPES.ArrayPattern) {
