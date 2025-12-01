@@ -3006,19 +3006,30 @@ export class Converter {
           });
         }
 
-        const result = this.createNode<TSESTree.TSImportType>(node, {
-          type: AST_NODE_TYPES.TSImportType,
-          range,
-          argument: this.convertChild(node.argument),
-          options,
-          qualifier: this.convertChild(node.qualifier),
-          typeArguments: node.typeArguments
-            ? this.convertTypeArgumentsToTypeParameterInstantiation(
-                node.typeArguments,
-                node,
-              )
-            : null,
-        });
+        const argument = this.convertChild(node.argument);
+        const source = argument.literal;
+
+        const result = this.createNode<TSESTree.TSImportType>(
+          node,
+          this.#withDeprecatedGetter(
+            {
+              type: AST_NODE_TYPES.TSImportType,
+              range,
+              options,
+              qualifier: this.convertChild(node.qualifier),
+              source,
+              typeArguments: node.typeArguments
+                ? this.convertTypeArgumentsToTypeParameterInstantiation(
+                    node.typeArguments,
+                    node,
+                  )
+                : null,
+            },
+            'argument',
+            'source',
+            argument,
+          ),
+        );
 
         if (node.isTypeOf) {
           return this.createNode<TSESTree.TSTypeQuery>(node, {
