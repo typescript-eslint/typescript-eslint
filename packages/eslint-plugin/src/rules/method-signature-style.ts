@@ -132,7 +132,7 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const canFix = !returnTypeReferencesThisType(methodNode.returnType);
+          const skipFix = returnTypeReferencesThisType(methodNode.returnType);
           const parent = methodNode.parent;
           const members =
             parent.type === AST_NODE_TYPES.TSInterfaceBody
@@ -158,7 +158,7 @@ export default createRule<Options, MessageIds>({
               context.report({
                 node: methodNode,
                 messageId: 'errorMethod',
-                fix: canFix
+                fix: skipFix
                   ? undefined
                   : function* fix(fixer) {
                       const methodNodes = [
@@ -207,7 +207,7 @@ export default createRule<Options, MessageIds>({
             context.report({
               node: methodNode,
               messageId: 'errorMethod',
-              fix: canFix
+              fix: skipFix
                 ? undefined
                 : fixer => {
                     const key = getMethodKey(methodNode);
