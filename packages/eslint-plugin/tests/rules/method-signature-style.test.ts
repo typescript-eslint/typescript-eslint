@@ -41,26 +41,6 @@ interface Test {
   set f(value: number): void;
 }
     `,
-    `
-interface Test {
-  f(value: number): this;
-}
-    `,
-    `
-interface Test {
-  f(value: number): this | undefined;
-}
-    `,
-    `
-interface Test {
-  f(value: number): Promise<this>;
-}
-    `,
-    `
-interface Test {
-  f(value: number): Promise<this | undefined>;
-}
-    `,
     'type Test = { readonly f: (a: string) => number };',
     "type Test = { ['f']?: (a: boolean) => void };",
     'type Test = { readonly f?: <T>(a?: T) => T };',
@@ -689,6 +669,58 @@ interface MyInterface {
   methodReturningImplicitAny: () => any;
 }
       `,
+    },
+    {
+      code: `
+interface Test {
+  f(value: number): this;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface Test {
+  f(value: number): this | undefined;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface Test {
+  f(value: number): Promise<this>;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface Test {
+  f(value: number): Promise<this | undefined>;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
     },
   ],
 });
