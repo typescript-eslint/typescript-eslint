@@ -63,7 +63,6 @@
     "@typescript-eslint/type-utils": "8.48.0",
     "@typescript-eslint/utils": "8.48.0",
     "@typescript-eslint/visitor-keys": "8.48.0",
-    "graphemer": "^1.4.0",
     "ignore": "^7.0.0",
     "natural-compare": "^1.4.0",
     "ts-api-utils": "^2.1.0"
