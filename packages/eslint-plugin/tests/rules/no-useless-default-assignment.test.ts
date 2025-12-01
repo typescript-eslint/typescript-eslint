@@ -419,5 +419,43 @@ ruleTester.run('no-useless-default-assignment', rule, {
         function foo({ a }) {}
       `,
     },
+    {
+      code: `
+        declare const g: Record<string, string>;
+        const { hello = '' } = g;
+      `,
+      errors: [
+        {
+          column: 25,
+          data: { type: 'property' },
+          endColumn: 27,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        declare const g: Record<string, string>;
+        const { hello } = g;
+      `,
+    },
+    {
+      code: `
+        declare const h: { [key: string]: string };
+        const { world = '' } = h;
+      `,
+      errors: [
+        {
+          column: 25,
+          data: { type: 'property' },
+          endColumn: 27,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        declare const h: { [key: string]: string };
+        const { world } = h;
+      `,
+    },
   ],
 });
