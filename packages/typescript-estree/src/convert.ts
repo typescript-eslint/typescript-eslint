@@ -166,6 +166,7 @@ export class Converter {
     if (this.options.allowInvalidAST) {
       return;
     }
+
     throw createError(node, message, this.ast);
   }
 
