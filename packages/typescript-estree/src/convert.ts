@@ -57,9 +57,9 @@ export function convertError(
   error: SemanticOrSyntacticError | ts.DiagnosticWithLocation,
 ): TSError {
   return createError(
+    error.start!,
     ('message' in error && error.message) || (error.messageText as string),
     error.file!,
-    error.start!,
   );
 }
 
@@ -166,18 +166,7 @@ export class Converter {
     if (this.options.allowInvalidAST) {
       return;
     }
-    let start;
-    let end;
-    if (Array.isArray(node)) {
-      [start, end] = node;
-    } else if (typeof node === 'number') {
-      start = end = node;
-    } else {
-      start = node.getStart(this.ast);
-      end = node.getEnd();
-    }
-
-    throw createError(message, this.ast, start, end);
+    throw createError(node, message, this.ast);
   }
 
   /**
