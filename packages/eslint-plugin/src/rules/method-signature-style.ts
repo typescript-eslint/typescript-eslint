@@ -4,6 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  forEachChildESTree,
   isClosingParenToken,
   isCommaToken,
   isOpeningParenToken,
@@ -127,7 +128,10 @@ export default createRule<Options, MessageIds>({
     return {
       ...(mode === 'property' && {
         TSMethodSignature(methodNode): void {
-          if (methodNode.kind !== 'method') {
+          if (
+            methodNode.kind !== 'method' ||
+            returnTypeReferencesThisType(methodNode.returnType)
+          ) {
             return;
           }
 
@@ -243,3 +247,15 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function returnTypeReferencesThisType(
+  node: TSESTree.TSTypeAnnotation | undefined,
+) {
+  return (
+    node &&
+    forEachChildESTree(
+      node.typeAnnotation,
+      child => child.type === AST_NODE_TYPES.TSThisType,
+    )
+  );
+}
