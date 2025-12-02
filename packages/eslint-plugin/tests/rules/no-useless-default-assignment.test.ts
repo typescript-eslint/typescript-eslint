@@ -158,6 +158,32 @@ ruleTester.run('no-useless-default-assignment', rule, {
         },
       },
     },
+    {
+      code: `
+        declare const g: Record<string, string>;
+        const { foo = '' } = g;
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
+        },
+      },
+    },
+    {
+      code: `
+        declare const h: { [key: string]: string };
+        const { bar = '' } = h;
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
+        },
+      },
+    },
   ],
   invalid: [
     {

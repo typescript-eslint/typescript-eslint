@@ -60,6 +60,9 @@ export default createRule<[], MessageId>({
     ): ts.Type | null {
       const symbol = objectType.getProperty(propertyName);
       if (!symbol) {
+        if (isNoUncheckedIndexedAccess) {
+          return null;
+        }
         return objectType.getStringIndexType() ?? null;
       }
       return checker.getTypeOfSymbol(symbol);
