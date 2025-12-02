@@ -434,6 +434,15 @@ class Foo {
   }
 }
     `,
+    `
+class Foo {
+  private privateMember;
+
+  method() {
+    const { privateMember: used } = this;
+  }
+}
+    `,
     //--------------------------------------------------------------------------
     // Method definitions
     //--------------------------------------------------------------------------
@@ -1270,6 +1279,25 @@ class Foo {
   private privateMember;
   method() {
     [this.privateMember] = bar;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private privateMember;
+
+  method() {
+    const { unused: privateMember } = this;
   }
 }
       `,
