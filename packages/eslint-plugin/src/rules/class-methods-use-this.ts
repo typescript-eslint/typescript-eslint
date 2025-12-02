@@ -173,7 +173,7 @@ export default createRule<Options, MessageIds>({
      */
     function isIncludedInstanceMethod(
       node: NonNullable<Stack['member']>,
-    ): node is NonNullable<Stack['member']> {
+    ): boolean {
       if (
         node.static ||
         (node.type === AST_NODE_TYPES.MethodDefinition &&

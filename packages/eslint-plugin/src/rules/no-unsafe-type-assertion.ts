@@ -1,14 +1,16 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
 import * as tsutils from 'ts-api-utils';
-import * as ts from 'typescript';
 
 import {
   createRule,
   getParserServices,
+  isObjectLiteralType,
   isTypeAnyType,
   isTypeUnknownType,
   isUnsafeAssignment,
+  toWidenedType,
 } from '../util';
 
 export default createRule({
@@ -40,13 +42,6 @@ export default createRule({
 
     function getAnyTypeName(type: ts.Type): string {
       return tsutils.isIntrinsicErrorType(type) ? 'error typed' : '`any`';
-    }
-
-    function isObjectLiteralType(type: ts.Type): boolean {
-      return (
-        tsutils.isObjectType(type) &&
-        tsutils.isObjectFlagSet(type, ts.ObjectFlags.ObjectLiteral)
-      );
     }
 
     function checkExpression(
@@ -110,11 +105,8 @@ export default createRule({
         return;
       }
 
-      // Use the widened type in case of an object literal so `isTypeAssignableTo()`
-      // won't fail on excess property check.
-      const expressionWidenedType = isObjectLiteralType(expressionType)
-        ? checker.getWidenedType(expressionType)
-        : expressionType;
+      // Use the widened type to bypass excess property checking
+      const expressionWidenedType = toWidenedType(checker, expressionType);
 
       const isAssertionSafe = checker.isTypeAssignableTo(
         expressionWidenedType,

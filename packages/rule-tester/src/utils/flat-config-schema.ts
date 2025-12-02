@@ -1,6 +1,7 @@
 // Forked from https://github.com/eslint/eslint/blob/4b23ffd6454cfb1a269430f5fe28e7d1c37b9d3e/lib/config/flat-config-schema.js
 
 import type {
+  Linter,
   Processor,
   SharedConfig,
 } from '@typescript-eslint/utils/ts-eslint';
@@ -498,6 +499,7 @@ const rulesSchema = {
 
       assertIsRuleOptions(ruleId, ruleOptions);
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- the type of `ruleOptions` is incorrect.
       if (Array.isArray(ruleOptions)) {
         assertIsRuleSeverity(ruleId, ruleOptions[0]);
       } else {
