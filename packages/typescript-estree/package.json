@@ -61,8 +61,7 @@
     "is-glob": "^4.0.3",
     "minimatch": "^9.0.4",
     "semver": "^7.6.0",
-    "ts-api-utils": "^2.1.0",
-    "unraw": "^3.0.0"
+    "ts-api-utils": "^2.1.0"
   },
   "devDependencies": {
     "@types/is-glob": "^4.0.4",
