@@ -670,5 +670,57 @@ interface MyInterface {
 }
       `,
     },
+    {
+      code: `
+interface Test {
+  f(value: number): this;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface Test {
+  f(value: number): this | undefined;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface Test {
+  f(value: number): Promise<this>;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface Test {
+  f(value: number): Promise<this | undefined>;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+    },
   ],
 });

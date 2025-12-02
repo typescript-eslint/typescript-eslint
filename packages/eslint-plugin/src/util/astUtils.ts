@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
+import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import * as ts from 'typescript';
 
 import { escapeRegExp } from './escapeRegExp';
@@ -78,4 +79,59 @@ export function forEachReturnStatement<T>(
 
     return undefined;
   }
+}
+
+function isESTreeNodeLike(node: unknown): node is TSESTree.Node {
+  return (
+    typeof node === 'object' &&
+    node != null &&
+    'type' in node &&
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+    typeof (node as any).type === 'string'
+  );
+}
+
+/**
+ * Rough equivalent to ts.forEachChild for ESTree nodes.
+ * It returns the first truthy value returned by the callback, if any.
+ */
+export function forEachChildESTree<Result>(
+  node: TSESTree.Node,
+  callback: (child: TSESTree.Node) => false | Result | null | undefined,
+): Result | undefined {
+  function visit(currentNode: TSESTree.Node): Result | undefined {
+    const result = callback(currentNode);
+    if (result) {
+      return result;
+    }
+
+    const currentKeys = visitorKeys[currentNode.type];
+    if (!currentKeys) {
+      return undefined;
+    }
+
+    for (const key of currentKeys) {
+      const currentProperty = currentNode[key as keyof typeof currentNode];
+
+      if (Array.isArray(currentProperty)) {
+        for (const child of currentProperty) {
+          if (isESTreeNodeLike(child)) {
+            const result = visit(child);
+            if (result) {
+              return result;
+            }
+          }
+        }
+      } else if (isESTreeNodeLike(currentProperty)) {
+        const result = visit(currentProperty);
+        if (result) {
+          return result;
+        }
+      }
+    }
+
+    return undefined;
+  }
+
+  return visit(node);
 }
