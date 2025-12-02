@@ -450,6 +450,71 @@ declare const a: T.Value1;
 const b = a as const;
       `,
     },
+    {
+      code: `
+function fn<T>(items: ReadonlyArray<T>) {}
+fn([42] as const);
+      `,
+    },
+    `
+declare const a: any;
+declare function foo(arg: string): void;
+foo(a as string);
+    `,
+    `
+declare const a: object;
+const b = a as { id?: number };
+    `,
+    `
+declare const array: any[];
+function foo(strings: string[]): void {}
+foo(array as string[]);
+    `,
+    `
+declare const record: Record<string, unknown>;
+const obj = record as { id?: number };
+    `,
+    `
+interface Obj {
+  id: number;
+}
+declare const obj: Readonly<Obj>;
+const obj2 = obj as Obj;
+    `,
+    `
+declare const record: Record<string, unknown>;
+const obj = record as { [additionalProperties: string]: unknown; id?: number };
+    `,
+    `
+interface PropsA {
+  a?: number;
+}
+interface PropsB extends PropsA {
+  b?: string;
+}
+declare const propsB: PropsB;
+const propsA = propsB as PropsA;
+    `,
+    `
+interface PropsA {
+  a?: number;
+}
+interface PropsB extends PropsA {
+  b?: string;
+}
+declare const propsB: PropsB[];
+const propsA = propsB as PropsA[];
+    `,
+    `
+class Box<T> {
+  value: T;
+}
+class PairBox<T, U> {
+  value: T;
+}
+declare const pairBox: PairBox<string, number>;
+const box = pairBox as Box<string>;
+    `,
   ],
 
   invalid: [
@@ -1440,6 +1505,260 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    {
+      code: `
+function doThing(a: number) {}
+doThing(5 as any);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function doThing(a: number) {}
+doThing(5);
+      `,
+    },
+    {
+      code: `
+interface A {
+  required: string;
+  alsoRequired: number;
+}
+function doThing(a: A) {}
+doThing({ required: 'yes', alsoRequired: 1 } as any);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  required: string;
+  alsoRequired: number;
+}
+function doThing(a: A) {}
+doThing({ required: 'yes', alsoRequired: 1 });
+      `,
+    },
+    {
+      code: 'const x = 5 as any as 5;',
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: 'const x = 5;',
+    },
+    {
+      code: `
+const v: number = 5;
+const x = v as unknown as number;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const v: number = 5;
+const x = v;
+      `,
+    },
+    {
+      code: `
+const v: number = 5;
+const x = v as any as number;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const v: number = 5;
+const x = v;
+      `,
+    },
+    {
+      code: `
+const x = (1 + 1) as any as number;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const x = 1 + 1;
+      `,
+    },
+    {
+      code: `
+const x = 2 * ((1 + 1) as any as number);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const x = 2 * (1 + 1);
+      `,
+    },
+    {
+      code: `
+const v: number = 5;
+const x = <number>(<any>v);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const v: number = 5;
+const x = v;
+      `,
+    },
+    {
+      code: `
+const obj = { id: '' };
+const obj2 = obj as { id: string };
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const obj = { id: '' };
+const obj2 = obj;
+      `,
+    },
+    {
+      code: `
+const obj = { id: '' };
+const obj2 = obj as any as { id: string };
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const obj = { id: '' };
+const obj2 = obj;
+      `,
+    },
+    {
+      code: `
+const obj = { id: '' };
+const obj2 = obj as unknown as { id: string };
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const obj = { id: '' };
+const obj2 = obj;
+      `,
+    },
+    {
+      code: `
+const array = ['a', 'b'];
+const array2 = array as any as string[];
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const array = ['a', 'b'];
+const array2 = array;
+      `,
+    },
+    {
+      code: `
+const array = ['a', 'b'];
+const array2 = array as unknown as string[];
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const array = ['a', 'b'];
+const array2 = array;
+      `,
+    },
+    {
+      code: `
+type A = 'a';
+type B = 'b';
+type AorB = A | B;
+function fn(aorb: AorB) {}
+const a: A = 'a';
+fn(a as AorB);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+type A = 'a';
+type B = 'b';
+type AorB = A | B;
+function fn(aorb: AorB) {}
+const a: A = 'a';
+fn(a);
+      `,
+    },
+    {
+      code: `
+interface Props {
+  a: number;
+}
+const x = { a: 1 } as unknown as Props;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+interface Props {
+  a: number;
+}
+const x = ({ a: 1 });
+      `,
+    },
+    {
+      code: `
+interface Props {
+  a: number;
+}
+const fn = (): Props => ({ a: 1 }) as unknown as Props;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+interface Props {
+  a: number;
+}
+const fn = (): Props => ({ a: 1 });
       `,
     },
   ],

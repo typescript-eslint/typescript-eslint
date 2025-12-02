@@ -387,12 +387,12 @@ export function findFirstMatchingAncestor(
   node: ts.Node,
   predicate: (node: ts.Node) => boolean,
 ): ts.Node | undefined {
-  let current: ts.Node | undefined = node;
+  let current = node as ts.Node | undefined;
   while (current) {
     if (predicate(current)) {
       return current;
     }
-    current = current.parent as ts.Node | undefined;
+    current = current.parent;
   }
   return undefined;
 }

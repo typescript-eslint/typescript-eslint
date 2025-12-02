@@ -144,7 +144,7 @@ class UnusedVarsVisitor extends Visitor {
     let identifier: TSESTree.Identifier;
     switch (node.parameter.type) {
       case AST_NODE_TYPES.AssignmentPattern:
-        identifier = node.parameter.left as TSESTree.Identifier;
+        identifier = node.parameter.left;
         break;
 
       case AST_NODE_TYPES.Identifier:
