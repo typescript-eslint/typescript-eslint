@@ -73,7 +73,7 @@
     "make-dir": "*",
     "mdast-util-from-markdown": "^2.0.1",
     "mdast-util-mdx": "^3.0.0",
-    "monaco-editor": "~0.54.0",
+    "monaco-editor": "~0.55.0",
     "raw-loader": "^4.0.2",
     "rimraf": "*",
     "stylelint": "^16.3.1",
