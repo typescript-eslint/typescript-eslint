@@ -69,10 +69,10 @@ type Options = [
     checksSpreads?: boolean;
     /** Whether to warn when a Promise is returned from a function typed as returning `void`. */
     checksVoidReturn?: /**
-     * Whether to warn when a Promise is returned from a function typed as returning `void`.
-     * Whether to disable checking all asynchronous functions.
-     */
-    | boolean
+       * Whether to warn when a Promise is returned from a function typed as returning `void`.
+       * Whether to disable checking all asynchronous functions.
+       */
+      | boolean
       /** Which forms of functions may have checking disabled. */
       | {
           /** Disables checking an asynchronous function passed as argument where the parameter type expects a function that returns `void`. */

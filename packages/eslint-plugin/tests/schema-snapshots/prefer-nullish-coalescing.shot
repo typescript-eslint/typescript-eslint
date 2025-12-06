@@ -84,10 +84,10 @@ type Options = [
     ignoreMixedLogicalExpressions?: boolean;
     /** Whether to ignore all (`true`) or some (an object with properties) primitive types. */
     ignorePrimitives?: /**
-     * Whether to ignore all (`true`) or some (an object with properties) primitive types.
-     * Which primitives types may be ignored.
-     */
-    | {
+       * Whether to ignore all (`true`) or some (an object with properties) primitive types.
+       * Which primitives types may be ignored.
+       */
+      | {
           /** Ignore bigint primitive types. */
           bigint?: boolean;
           /** Ignore boolean primitive types. */
