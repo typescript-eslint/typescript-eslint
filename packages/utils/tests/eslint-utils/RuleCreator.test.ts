@@ -42,6 +42,7 @@ describe(ESLintUtils.RuleCreator, () => {
       schema: [],
       type: 'problem',
     });
+    expect(rule.name).toBe('test');
   });
 
   it('withoutDocs should work without a `name`', () => {
