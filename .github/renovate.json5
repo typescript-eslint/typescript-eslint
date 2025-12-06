@@ -48,7 +48,7 @@
     'yarnDedupeHighest',
   ],
 
-  // By default renovate will auto-rebase whenever the dep pranch falls behind main.
+  // By default renovate will auto-rebase whenever the dep branch falls behind main.
   // This is annoying as it spams notifications and creates unnecessary action runs.
   // Instead only auto-rebase when conflicted, and we can trigger a manual rebase if required.
   rebaseWhen: 'conflicted',

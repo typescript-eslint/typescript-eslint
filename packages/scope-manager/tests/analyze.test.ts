@@ -11,6 +11,6 @@ describe('analyze()', () => {
     expect(() => {
       // @ts-expect-error -- to reproduce https://github.com/typescript-eslint/typescript-eslint/issues/11727
       analyze(partialNode);
-    }).toThrow();
+    }).toThrowError();
   });
 });
