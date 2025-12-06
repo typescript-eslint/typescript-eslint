@@ -44,7 +44,7 @@ describe(ESLintUtils.RuleCreator, () => {
     });
   });
 
-  it('withoutDocs should not add docs url', () => {
+  it('withoutDocs should work without a `name`', () => {
     const rule = ESLintUtils.RuleCreator.withoutDocs({
       create() {
         return {};
@@ -66,5 +66,30 @@ describe(ESLintUtils.RuleCreator, () => {
       description: 'some description',
     });
     expect(rule.name).toBeUndefined();
+  });
+
+  it('withoutDocs should work with a `name`', () => {
+    const rule = ESLintUtils.RuleCreator.withoutDocs({
+      create() {
+        return {};
+      },
+      defaultOptions: [],
+      meta: {
+        docs: {
+          description: 'some description',
+        },
+        messages: {
+          foo: 'some message',
+        },
+        schema: [],
+        type: 'problem',
+      },
+      name: 'some-name',
+    });
+
+    expect(rule.meta.docs).toEqual({
+      description: 'some description',
+    });
+    expect(rule.name).toBe('some-name');
   });
 });

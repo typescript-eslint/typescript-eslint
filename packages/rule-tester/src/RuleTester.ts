@@ -444,7 +444,7 @@ export class RuleTester extends TestFramework {
     return normalizedTests;
   }
 
-  defineRule(name: string, rule: Omit<AnyRuleModule, 'name'>): void {
+  defineRule(name: string, rule: AnyRuleModule): void {
     this.#rules[name] = {
       ...rule,
       name,
