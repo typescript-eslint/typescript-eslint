@@ -210,19 +210,19 @@ export default createRule<Options, MessageIds>({
     ): boolean {
       return Boolean(
         'value' in propertyOrMemberNode &&
-          propertyOrMemberNode.value &&
-          'async' in propertyOrMemberNode.value &&
-          propertyOrMemberNode.value.async,
+        propertyOrMemberNode.value &&
+        'async' in propertyOrMemberNode.value &&
+        propertyOrMemberNode.value.async,
       );
     }
 
     function isAsyncVariableIdentifier(id: TSESTree.Identifier): boolean {
       return Boolean(
         ('async' in id.parent && id.parent.async) ||
-          ('init' in id.parent &&
-            id.parent.init &&
-            'async' in id.parent.init &&
-            id.parent.init.async),
+        ('init' in id.parent &&
+          id.parent.init &&
+          'async' in id.parent.init &&
+          id.parent.init.async),
       );
     }
 

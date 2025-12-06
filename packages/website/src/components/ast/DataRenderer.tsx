@@ -30,8 +30,9 @@ export interface JsonRenderProps<T> {
   readonly value: T;
 }
 
-export interface ExpandableRenderProps
-  extends JsonRenderProps<object | unknown[]> {
+export interface ExpandableRenderProps extends JsonRenderProps<
+  object | unknown[]
+> {
   readonly closeBracket: string;
   readonly data: [string, unknown][];
   readonly openBracket: string;

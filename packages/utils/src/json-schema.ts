@@ -201,7 +201,8 @@ export interface JSONSchema4OneOfSchema extends JSONSchema4Base {
 }
 
 export interface JSONSchema4MultiSchema
-  extends Omit<JSONSchema4ObjectSchema, 'enum' | 'type'>,
+  extends
+    Omit<JSONSchema4ObjectSchema, 'enum' | 'type'>,
     Omit<JSONSchema4ArraySchema, 'enum' | 'type'>,
     Omit<JSONSchema4StringSchema, 'enum' | 'type'>,
     Omit<JSONSchema4NumberSchema, 'enum' | 'type'>,

@@ -910,7 +910,7 @@ export class Converter {
           type: AST_NODE_TYPES.ForOfStatement,
           await: Boolean(
             node.awaitModifier &&
-              node.awaitModifier.kind === SyntaxKind.AwaitKeyword,
+            node.awaitModifier.kind === SyntaxKind.AwaitKeyword,
           ),
           body: this.convertChild(node.statement),
           left: this.convertPattern(node.initializer),
@@ -1599,7 +1599,7 @@ export class Converter {
             type: AST_NODE_TYPES.Property,
             computed: Boolean(
               node.propertyName &&
-                node.propertyName.kind === SyntaxKind.ComputedPropertyName,
+              node.propertyName.kind === SyntaxKind.ComputedPropertyName,
             ),
             key: this.convertChild(node.propertyName ?? node.name),
             kind: 'init',

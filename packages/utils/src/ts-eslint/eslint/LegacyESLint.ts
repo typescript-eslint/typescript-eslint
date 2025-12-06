@@ -22,8 +22,7 @@ declare class LegacyESLintBase extends Shared.ESLintBase<
  */
 export class LegacyESLint extends (ESLintLegacyESLint as typeof LegacyESLintBase) {}
 export namespace LegacyESLint {
-  export interface ESLintOptions
-    extends Shared.ESLintOptions<ClassicConfig.Config> {
+  export interface ESLintOptions extends Shared.ESLintOptions<ClassicConfig.Config> {
     /**
      * If you pass directory paths to the eslint.lintFiles() method, ESLint checks the files in those directories that
      * have the given extensions. For example, when passing the src/ directory and extensions is [".js", ".ts"], ESLint

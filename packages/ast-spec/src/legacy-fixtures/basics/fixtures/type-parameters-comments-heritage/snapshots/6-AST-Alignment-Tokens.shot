@@ -434,97 +434,37 @@ Snapshot Diff:
       type: 'Identifier',
       value: 'A',
 
-      range: [336, 337],
+      range: [339, 340],
       loc: {
-        start: { column: 25, line: 8 },
-        end: { column: 26, line: 8 },
+        start: { column: 12, line: 9 },
+        end: { column: 13, line: 9 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '=',
 
-      range: [348, 349],
+      range: [351, 352],
       loc: {
-        start: { column: 37, line: 8 },
-        end: { column: 38, line: 8 },
+        start: { column: 24, line: 9 },
+        end: { column: 25, line: 9 },
       },
     },
     Numeric {
       type: 'Numeric',
       value: '2',
 
-      range: [350, 351],
+      range: [353, 354],
       loc: {
-        start: { column: 39, line: 8 },
-        end: { column: 40, line: 8 },
+        start: { column: 26, line: 9 },
+        end: { column: 27, line: 9 },
       },
     },
     Punctuator {
       type: 'Punctuator',
-      value: '>',
+      value: ',',
 
-      range: [361, 362],
-      loc: {
-        start: { column: 50, line: 8 },
-        end: { column: 51, line: 8 },
-      },
-    },
-    Keyword {
-      type: 'Keyword',
-      value: 'extends',
-
-      range: [365, 372],
-      loc: {
-        start: { column: 2, line: 9 },
-        end: { column: 9, line: 9 },
-      },
-    },
-    Identifier {
-      type: 'Identifier',
-      value: 'bar',
-
-      range: [373, 376],
-      loc: {
-        start: { column: 10, line: 9 },
-        end: { column: 13, line: 9 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: '<',
-
-      range: [376, 377],
-      loc: {
-        start: { column: 13, line: 9 },
-        end: { column: 14, line: 9 },
-      },
-    },
-    Identifier {
-      type: 'Identifier',
-      value: 'A',
-
-      range: [387, 388],
-      loc: {
-        start: { column: 24, line: 9 },
-        end: { column: 25, line: 9 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: '>',
-
-      range: [398, 399],
-      loc: {
-        start: { column: 35, line: 9 },
-        end: { column: 36, line: 9 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: '{',
-
-      range: [400, 401],
+      range: [364, 365],
       loc: {
         start: { column: 37, line: 9 },
         end: { column: 38, line: 9 },
@@ -532,12 +472,82 @@ Snapshot Diff:
     },
     Punctuator {
       type: 'Punctuator',
-      value: '}',
+      value: '>',
+
+      range: [366, 367],
+      loc: {
+        start: { column: 0, line: 10 },
+        end: { column: 1, line: 10 },
+      },
+    },
+    Keyword {
+      type: 'Keyword',
+      value: 'extends',
+
+      range: [368, 375],
+      loc: {
+        start: { column: 2, line: 10 },
+        end: { column: 9, line: 10 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'bar',
+
+      range: [376, 379],
+      loc: {
+        start: { column: 10, line: 10 },
+        end: { column: 13, line: 10 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '<',
+
+      range: [379, 380],
+      loc: {
+        start: { column: 13, line: 10 },
+        end: { column: 14, line: 10 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'A',
+
+      range: [390, 391],
+      loc: {
+        start: { column: 24, line: 10 },
+        end: { column: 25, line: 10 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '>',
 
       range: [401, 402],
       loc: {
-        start: { column: 38, line: 9 },
-        end: { column: 39, line: 9 },
+        start: { column: 35, line: 10 },
+        end: { column: 36, line: 10 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '{',
+
+      range: [403, 404],
+      loc: {
+        start: { column: 37, line: 10 },
+        end: { column: 38, line: 10 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '}',
+
+      range: [404, 405],
+      loc: {
+        start: { column: 38, line: 10 },
+        end: { column: 39, line: 10 },
       },
     },
   ]

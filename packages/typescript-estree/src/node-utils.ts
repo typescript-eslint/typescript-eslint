@@ -22,8 +22,7 @@ const LOGICAL_OPERATORS: ReadonlySet<LogicalOperatorKind> = new Set([
 ]);
 
 interface TokenToText
-  extends TSESTree.PunctuatorTokenToText,
-    TSESTree.BinaryOperatorToText {
+  extends TSESTree.PunctuatorTokenToText, TSESTree.BinaryOperatorToText {
   [SyntaxKind.ImportKeyword]: 'import';
   [SyntaxKind.KeyOfKeyword]: 'keyof';
   [SyntaxKind.NewKeyword]: 'new';

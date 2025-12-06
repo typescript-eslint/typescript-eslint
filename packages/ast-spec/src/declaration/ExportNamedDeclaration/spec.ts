@@ -65,8 +65,7 @@ interface ExportNamedDeclarationBase extends BaseNode {
  * export { a, b };
  * ```
  */
-export interface ExportNamedDeclarationWithoutSourceWithMultiple
-  extends ExportNamedDeclarationBase {
+export interface ExportNamedDeclarationWithoutSourceWithMultiple extends ExportNamedDeclarationBase {
   /**
    * This will always be an empty array.
    * @deprecated Replaced with {@link `attributes`}.
@@ -88,8 +87,7 @@ export interface ExportNamedDeclarationWithoutSourceWithMultiple
  * export const x = 1;
  * ```
  */
-export interface ExportNamedDeclarationWithoutSourceWithSingle
-  extends ExportNamedDeclarationBase {
+export interface ExportNamedDeclarationWithoutSourceWithSingle extends ExportNamedDeclarationBase {
   /**
    * This will always be an empty array.
    * @deprecated Replaced with {@link `attributes`}.
@@ -113,8 +111,7 @@ export interface ExportNamedDeclarationWithoutSourceWithSingle
  * export { a, b } from 'mod';
  * ```
  */
-export interface ExportNamedDeclarationWithSource
-  extends ExportNamedDeclarationBase {
+export interface ExportNamedDeclarationWithSource extends ExportNamedDeclarationBase {
   declaration: null;
   source: StringLiteral;
 }

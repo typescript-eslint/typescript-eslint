@@ -86,8 +86,7 @@ interface TSModuleDeclarationModuleBase extends TSModuleDeclarationBase {
  * module 'foo' {}
  * ```
  */
-export interface TSModuleDeclarationModuleWithStringIdNotDeclared
-  extends TSModuleDeclarationModuleBase {
+export interface TSModuleDeclarationModuleWithStringIdNotDeclared extends TSModuleDeclarationModuleBase {
   body: TSModuleBlock;
   declare: false;
   id: StringLiteral;
@@ -100,8 +99,7 @@ export interface TSModuleDeclarationModuleWithStringIdNotDeclared
  * declare module 'foo';
  * ```
  */
-export interface TSModuleDeclarationModuleWithStringIdDeclared
-  extends TSModuleDeclarationModuleBase {
+export interface TSModuleDeclarationModuleWithStringIdDeclared extends TSModuleDeclarationModuleBase {
   body?: TSModuleBlock;
   declare: true;
   id: StringLiteral;
@@ -113,8 +111,7 @@ export interface TSModuleDeclarationModuleWithStringIdDeclared
  * module A {}
  * ```
  */
-export interface TSModuleDeclarationModuleWithIdentifierId
-  extends TSModuleDeclarationModuleBase {
+export interface TSModuleDeclarationModuleWithIdentifierId extends TSModuleDeclarationModuleBase {
   // Maybe not worth fixing since it's legacy
   body: TSModuleBlock;
   id: Identifier;

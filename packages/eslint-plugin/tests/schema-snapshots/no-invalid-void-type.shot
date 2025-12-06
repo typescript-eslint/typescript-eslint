@@ -40,10 +40,10 @@ type Options = [
     allowAsThisParameter?: boolean;
     /** Whether `void` can be used as a valid value for generic type parameters. */
     allowInGenericTypeArguments?: /**
-     * Whether `void` can be used as a valid value for generic type parameters.
-     * Whether `void` can be used as a valid value for all generic type parameters.
-     */
-    | boolean
+       * Whether `void` can be used as a valid value for generic type parameters.
+       * Whether `void` can be used as a valid value for all generic type parameters.
+       */
+      | boolean
       /** Allowlist of types that may accept `void` as a generic type parameter. */
       | string[];
   },

@@ -26,8 +26,7 @@ export interface FunctionDeclarationWithName extends FunctionDeclarationBase {
  * export default function () {}
  * ```
  */
-export interface FunctionDeclarationWithOptionalName
-  extends FunctionDeclarationBase {
+export interface FunctionDeclarationWithOptionalName extends FunctionDeclarationBase {
   id: Identifier | null;
 }
 

@@ -4,8 +4,7 @@ import type {
   MethodDefinitionNonComputedNameBase,
 } from '../../base/MethodDefinitionBase';
 
-export interface TSAbstractMethodDefinitionComputedName
-  extends MethodDefinitionComputedNameBase {
+export interface TSAbstractMethodDefinitionComputedName extends MethodDefinitionComputedNameBase {
   type: AST_NODE_TYPES.TSAbstractMethodDefinition;
 }
 

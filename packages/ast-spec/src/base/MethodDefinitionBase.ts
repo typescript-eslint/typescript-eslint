@@ -28,14 +28,12 @@ export interface MethodDefinitionComputedNameBase extends MethodDefinitionBase {
   key: PropertyNameComputed;
 }
 
-export interface MethodDefinitionNonComputedNameBase
-  extends MethodDefinitionBase {
+export interface MethodDefinitionNonComputedNameBase extends MethodDefinitionBase {
   computed: false;
   key: PropertyNameNonComputed;
 }
 
-export interface ClassMethodDefinitionNonComputedNameBase
-  extends MethodDefinitionBase {
+export interface ClassMethodDefinitionNonComputedNameBase extends MethodDefinitionBase {
   computed: false;
   key: ClassPropertyNameNonComputed;
 }
