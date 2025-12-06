@@ -4,13 +4,11 @@ import type {
   PropertyDefinitionComputedNameBase,
 } from '../../base/PropertyDefinitionBase';
 
-export interface PropertyDefinitionComputedName
-  extends PropertyDefinitionComputedNameBase {
+export interface PropertyDefinitionComputedName extends PropertyDefinitionComputedNameBase {
   type: AST_NODE_TYPES.PropertyDefinition;
 }
 
-export interface PropertyDefinitionNonComputedName
-  extends ClassPropertyDefinitionNonComputedNameBase {
+export interface PropertyDefinitionNonComputedName extends ClassPropertyDefinitionNonComputedNameBase {
   type: AST_NODE_TYPES.PropertyDefinition;
 }
 

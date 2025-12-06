@@ -19,14 +19,12 @@ interface TSPropertySignatureBase extends BaseNode {
   typeAnnotation: TSTypeAnnotation | undefined;
 }
 
-export interface TSPropertySignatureComputedName
-  extends TSPropertySignatureBase {
+export interface TSPropertySignatureComputedName extends TSPropertySignatureBase {
   computed: true;
   key: PropertyNameComputed;
 }
 
-export interface TSPropertySignatureNonComputedName
-  extends TSPropertySignatureBase {
+export interface TSPropertySignatureNonComputedName extends TSPropertySignatureBase {
   computed: false;
   key: PropertyNameNonComputed;
 }
