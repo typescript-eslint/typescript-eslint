@@ -140,7 +140,7 @@ describe(useProgramFromProjectService, () => {
         true,
         new Set(),
       ),
-    ).toThrow(
+    ).toThrowError(
       `${mockParseSettings.filePath} was included by allowDefaultProject but also was found in the project service. Consider removing it from allowDefaultProject.`,
     );
   });
@@ -161,7 +161,7 @@ describe(useProgramFromProjectService, () => {
         true,
         new Set(),
       ),
-    ).toThrow(
+    ).toThrowError(
       `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
     );
     expect(service.reloadProjects).not.toHaveBeenCalled();
@@ -183,7 +183,7 @@ describe(useProgramFromProjectService, () => {
         true,
         new Set(),
       ),
-    ).toThrow(
+    ).toThrowError(
       `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
     );
     expect(service.reloadProjects).toHaveBeenCalledOnce();
@@ -214,7 +214,7 @@ describe(useProgramFromProjectService, () => {
         true,
         new Set(),
       ),
-    ).toThrow(
+    ).toThrowError(
       [
         `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
         `allowDefaultProject is set to ["a.js","b.js"], which does not match '${path.normalize('path/PascalCaseDirectory/camelCaseFile.ts')}'.`,
@@ -268,7 +268,7 @@ describe(useProgramFromProjectService, () => {
         true,
         new Set(['a', 'b']),
       ),
-    ).toThrow(`Too many files (>2) have matched the default project.
+    ).toThrowError(`Too many files (>2) have matched the default project.
 
 Having many files run with the default project is known to cause performance issues and slow down linting.
 
@@ -302,7 +302,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
         true,
         new Set(Array.from({ length: 100 }, (_, i) => String(i))),
       ),
-    ).toThrow(`Too many files (>2) have matched the default project.
+    ).toThrowError(`Too many files (>2) have matched the default project.
 
 Having many files run with the default project is known to cause performance issues and slow down linting.
 
@@ -625,7 +625,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
         true,
         new Set(),
       ),
-    ).toThrow(
+    ).toThrowError(
       `${filePath} was not found by the project service because the extension for the file (\`${path.extname(
         filePath,
       )}\`) is non-standard. You should add \`parserOptions.extraFileExtensions\` to your config.`,
@@ -652,7 +652,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
         true,
         new Set(),
       ),
-    ).toThrow(
+    ).toThrowError(
       `${filePath} was not found by the project service because the extension for the file (\`${path.extname(
         filePath,
       )}\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`.`,
