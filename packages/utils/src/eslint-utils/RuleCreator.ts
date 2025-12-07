@@ -48,6 +48,15 @@ export interface RuleWithMetaAndName<
   name: string;
 }
 
+type RuleModuleWithName<
+  MessageIds extends string,
+  Options extends readonly unknown[] = [],
+  Docs = unknown,
+  ExtendedRuleListener extends RuleListener = RuleListener,
+> = RuleModule<MessageIds, Options, Docs, ExtendedRuleListener> & {
+  name: string;
+};
+
 /**
  * Creates reusable function to create rules with default options and docs URLs.
  *
@@ -68,8 +77,8 @@ export function RuleCreator<PluginDocs = unknown>(
     ...rule
   }: Readonly<
     RuleWithMetaAndName<Options, MessageIds, PluginDocs>
-  >): RuleModule<MessageIds, Options, PluginDocs> {
-    return createRule<Options, MessageIds, PluginDocs>({
+  >): RuleModuleWithName<MessageIds, Options, PluginDocs> {
+    const ruleWithDocs = createRule<Options, MessageIds, PluginDocs>({
       meta: {
         ...meta,
         docs: {
@@ -80,6 +89,11 @@ export function RuleCreator<PluginDocs = unknown>(
       name,
       ...rule,
     });
+
+    return {
+      ...ruleWithDocs,
+      name,
+    };
   };
 }
 
