@@ -450,6 +450,22 @@ declare const a: T.Value1;
 const b = a as const;
       `,
     },
+    {
+      code: `
+const UNDEFINED = (() => { })() as undefined;
+      `,
+    },
+    {
+      code: `
+const f = () => { };
+const UNDEFINED2 = f() as undefined;
+      `,
+    },
+    {
+      code: `
+const UNDEFINED3 = (function() {})() as undefined;
+      `,
+    },
   ],
 
   invalid: [
@@ -1440,6 +1456,32 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    {
+      code: `
+const EXPLICIT_UNDEFINED = ((): undefined => {})() as undefined;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const EXPLICIT_UNDEFINED = ((): undefined => {})();
+      `,
+    },
+    {
+      code: `
+const NUMBER_IIFE = (() => 1)() as number;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const NUMBER_IIFE = (() => 1)();
       `,
     },
   ],
