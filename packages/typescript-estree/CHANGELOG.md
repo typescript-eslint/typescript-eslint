@@ -1,3 +1,36 @@
+## 8.48.1 (2025-12-02)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.48.0 (2025-11-24)
+
+### 🚀 Features
+
+- **typescript-estree:** replace fast-glob with tinyglobby ([#11740](https://github.com/typescript-eslint/typescript-eslint/pull/11740))
+- **eslint-plugin:** [no-redundant-type-constituents] use assignability checking for redundancy checks ([#10744](https://github.com/typescript-eslint/typescript-eslint/pull/10744))
+- **typescript-estree:** gate all errors behind allowInvalidAST ([#11693](https://github.com/typescript-eslint/typescript-eslint/pull/11693))
+
+### 🩹 Fixes
+
+- **typescript-estree:** disallow binding patterns in parameter properties ([#11760](https://github.com/typescript-eslint/typescript-eslint/pull/11760))
+- **typescript-estree:** infers singleRun as true for project service ([#11327](https://github.com/typescript-eslint/typescript-eslint/pull/11327))
+
+### ❤️ Thank You
+
+- Ben McCann @benmccann
+- Dima Barabash @dbarabashh
+- fisker Cheung @fisker
+- James Henry @JamesHenry
+- JamesHenry @JamesHenry
+- Josh Goldberg
+- Josh Goldberg ✨
+- mdm317 @gen-ip-1
+- Younsang Na @nayounsang
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.47.0 (2025-11-17)
 
 This was a version bump only for typescript-estree to align it with other projects, there were no code changes.

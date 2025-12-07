@@ -204,9 +204,8 @@ describe(getProjectConfigFiles, () => {
       });
 
       try {
-        const { getProjectConfigFiles } = await import(
-          '../../src/parseSettings/getProjectConfigFiles.js'
-        );
+        const { getProjectConfigFiles } =
+          await import('../../src/parseSettings/getProjectConfigFiles.js');
 
         mockExistsSync.mockReturnValue(false);
 
@@ -227,9 +226,8 @@ describe(getProjectConfigFiles, () => {
         return { ...actualPath.posix, default: actualPath.posix };
       });
       try {
-        const { getProjectConfigFiles } = await import(
-          '../../src/parseSettings/getProjectConfigFiles.js'
-        );
+        const { getProjectConfigFiles } =
+          await import('../../src/parseSettings/getProjectConfigFiles.js');
 
         mockExistsSync.mockReturnValue(false);
 

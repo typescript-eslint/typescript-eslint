@@ -28,8 +28,7 @@ export interface TSMethodSignatureComputedName extends TSMethodSignatureBase {
   computed: true;
   key: PropertyNameComputed;
 }
-export interface TSMethodSignatureNonComputedName
-  extends TSMethodSignatureBase {
+export interface TSMethodSignatureNonComputedName extends TSMethodSignatureBase {
   computed: false;
   key: PropertyNameNonComputed;
 }
