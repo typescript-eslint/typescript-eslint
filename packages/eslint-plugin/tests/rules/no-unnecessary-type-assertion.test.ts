@@ -452,18 +452,18 @@ const b = a as const;
     },
     {
       code: `
-const UNDEFINED = (() => { })() as undefined;
+const UNDEFINED = (() => {})() as undefined;
       `,
     },
     {
       code: `
-const f = () => { };
+const f = () => {};
 const UNDEFINED2 = f() as undefined;
       `,
     },
     {
       code: `
-const UNDEFINED3 = (function() {})() as undefined;
+const UNDEFINED3 = (function () {})() as undefined;
       `,
     },
   ],
