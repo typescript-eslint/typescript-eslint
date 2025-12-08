@@ -3,6 +3,7 @@ import type {
   TypeScriptProjectService,
 } from '@typescript-eslint/project-service';
 
+import fs from 'node:fs';
 import path from 'node:path';
 import * as ts from 'typescript';
 
@@ -684,5 +685,125 @@ If you absolutely need more files included, set parserOptions.projectService.max
     );
 
     expect(actual).toBe(program);
+  });
+
+  it('treats virtual child paths under an existing file as allowed by the default project', () => {
+    const { service } = createMockProjectService();
+    const program = { getSourceFile: vi.fn() };
+
+    const virtualFilePath = `path/docs/example.md/0.ts`;
+
+    mockGetProgram.mockReturnValueOnce(program);
+    mockCreateProjectProgram.mockReturnValueOnce(program);
+    // Simulate that the project service does not associate the virtual path
+    // with a specific tsconfig (default project scenario).
+    service.openClientFile.mockReturnValueOnce({});
+
+    const filePathAbsolute = path.normalize(
+      `${currentDirectory}/${virtualFilePath}`,
+    );
+    const parentMarkdownPath = path.normalize(
+      `${currentDirectory}/path/docs/example.md`,
+    );
+
+    const existsSpy = vi.spyOn(fs, 'existsSync');
+    const statSpy = vi.spyOn(fs, 'statSync');
+
+    existsSpy.mockImplementation(p => {
+      const normalized = path.normalize(String(p));
+      if (normalized === filePathAbsolute) {
+        // The virtual child itself does not exist on disk.
+        return false;
+      }
+
+      // For all other paths we conservatively say they don't exist, since
+      // isVirtualFilePath only cares about the exact child path existing.
+      return false;
+    });
+
+    statSpy.mockImplementation(p => {
+      const normalized = path.normalize(String(p));
+
+      if (normalized === parentMarkdownPath) {
+        // Pretend the parent Markdown file exists on disk.
+        return {
+          isFile: () => true,
+        } as unknown as fs.Stats;
+      }
+
+      // Simulate a missing path for all other ancestors.
+      const error = new Error('ENOENT');
+      // @ts-expect-error - augmenting error for realism; not important to the test
+      error.code = 'ENOENT';
+      throw error;
+    });
+
+    const actual = useProgramFromProjectService(
+      createProjectServiceSettings({
+        // No allowDefaultProject globs: virtual children should still be allowed.
+        allowDefaultProject: [],
+        service,
+      }),
+      {
+        ...mockParseSettings,
+        filePath: virtualFilePath,
+      },
+      true,
+      new Set(),
+    );
+
+    expect(actual).toBe(program);
+
+    existsSpy.mockRestore();
+    statSpy.mockRestore();
+  });
+
+  it('falls back to non-virtual behavior if virtual-path detection throws', () => {
+    const { service } = createMockProjectService();
+    const program = { getSourceFile: vi.fn() };
+
+    const virtualFilePath = `path/docs/example.md/0.ts`;
+
+    mockGetProgram.mockReturnValueOnce(program);
+    mockCreateProjectProgram.mockReturnValueOnce(program);
+    // Simulate that the project service does not associate the path with a
+    // specific tsconfig (default project scenario).
+    service.openClientFile.mockReturnValueOnce({});
+
+    const filePathAbsolute = path.normalize(
+      `${currentDirectory}/${virtualFilePath}`,
+    );
+
+    const existsSpy = vi.spyOn(fs, 'existsSync');
+
+    existsSpy.mockImplementation(p => {
+      const normalized = path.normalize(String(p));
+      if (normalized === filePathAbsolute) {
+        // Force an unexpected filesystem error so that isVirtualFilePath
+        // hits its outer try/catch and falls back to "non-virtual".
+        throw new Error('boom');
+      }
+
+      return false;
+    });
+
+    const actual = useProgramFromProjectService(
+      createProjectServiceSettings({
+        // allowDefaultProject globs should still be honored even if virtual
+        // detection fails and returns false.
+        allowDefaultProject: ['**/*.ts'],
+        service,
+      }),
+      {
+        ...mockParseSettings,
+        filePath: virtualFilePath,
+      },
+      true,
+      new Set(),
+    );
+
+    expect(actual).toBe(program);
+
+    existsSpy.mockRestore();
   });
 });

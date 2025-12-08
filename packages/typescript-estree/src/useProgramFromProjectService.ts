@@ -2,6 +2,7 @@ import type { ProjectServiceAndMetadata } from '@typescript-eslint/project-servi
 
 import debug from 'debug';
 import { minimatch } from 'minimatch';
+import fs from 'node:fs';
 import path from 'node:path';
 import util from 'node:util';
 import * as ts from 'typescript';
@@ -277,10 +278,21 @@ export function useProgramFromProjectService(
     parseSettings.tsconfigRootDir,
     filePathAbsolute,
   );
-  const isDefaultProjectAllowed = filePathMatchedBy(
-    filePathRelative,
-    serviceAndSettings.allowDefaultProject,
-  );
+
+  // Heuristic: treat paths that are nested under a real file on disk as
+  // "virtual" children (for example, Markdown/MDX processor children such as
+  // "docs/example.md/0.ts"). These will never be present in a tsconfig, but
+  // TypeScript's project service can still provide type information for them
+  // via the default project.
+  //
+  // For such virtual paths we implicitly allow the default project, so users
+  // don't have to add fragile allowDefaultProject globs for processor
+  // children. Real files still respect allowDefaultProject as before.
+  const isVirtualFile = isVirtualFilePath(filePathAbsolute);
+
+  const isDefaultProjectAllowed =
+    isVirtualFile ||
+    filePathMatchedBy(filePathRelative, serviceAndSettings.allowDefaultProject);
 
   // Type-aware linting is disabled for this file.
   // However, type-aware lint rules might still rely on its contents.
@@ -335,4 +347,50 @@ function filePathMatchedBy(
   return !!allowDefaultProject?.some(pattern =>
     minimatch(filePath, pattern, { dot: true }),
   );
+}
+
+function isVirtualFilePath(filePathAbsolute: string): boolean {
+  try {
+    // If the path exists on disk, it's a normal file, not a virtual child.
+    if (fs.existsSync(filePathAbsolute)) {
+      return false;
+    }
+
+    /*
+     * Walk up the path looking for an ancestor that is a real file.
+     *
+     * This detects processor-style virtual children such as
+     *   "<project>/docs/example.md/0.ts"
+     * where "docs/example.md" exists on disk but "0.ts" is a virtual child.
+     *
+     * We intentionally require a *file* ancestor, not just any directory, to
+     * avoid treating arbitrary non-existent paths as virtual.
+     */
+    let current = filePathAbsolute;
+
+    while (true) {
+      const parent = path.dirname(current);
+      if (parent === current) {
+        // Reached filesystem root.
+        break;
+      }
+
+      let stat: fs.Stats | undefined;
+      try {
+        stat = fs.statSync(parent);
+      } catch {
+        // Ignore errors (e.g. path segment doesn't exist) and continue upward.
+      }
+
+      if (stat?.isFile()) {
+        return true;
+      }
+
+      current = parent;
+    }
+  } catch {
+    // On any unexpected error, fall back to treating the path as non-virtual.
+  }
+
+  return false;
 }
