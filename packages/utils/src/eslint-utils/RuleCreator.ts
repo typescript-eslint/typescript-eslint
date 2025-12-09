@@ -90,10 +90,7 @@ export function RuleCreator<PluginDocs = unknown>(
       ...rule,
     });
 
-    return {
-      ...ruleWithDocs,
-      name,
-    };
+    return ruleWithDocs as RuleModuleWithName<MessageIds, Options, PluginDocs>;
   };
 }
 
