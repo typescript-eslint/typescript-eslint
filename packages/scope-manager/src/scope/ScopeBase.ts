@@ -331,9 +331,8 @@ export abstract class ScopeBase<
     }
 
     if (!scopeManager.shouldResolveGlobalVarsInScript()) {
-      // Legacy/ESLint 9 behavior: in script mode, only certain cases should be statically resolved.
-      // Example: a `var` decl is ignored by the runtime if it clashes with a global name, so
-      // we should not resolve the reference to the variable.
+      // ESLint 8/9 behavior: in script mode, only certain cases should be statically resolved.
+      // Example: a `var` decl is ignored by the runtime if it clashes with a global name, so do not resolve it here.
       // In effect: resolve only if no definition is a `var` declaration.
       const defs = variable.defs;
       return (
