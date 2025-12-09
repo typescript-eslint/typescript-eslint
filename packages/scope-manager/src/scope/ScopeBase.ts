@@ -330,20 +330,27 @@ export abstract class ScopeBase<
       return true;
     }
 
-    // in script mode, only certain cases should be statically resolved
-    // Example:
-    // a `var` decl is ignored by the runtime if it clashes with a global name
-    // this means that we should not resolve the reference to the variable
-    const defs = variable.defs;
-    return (
-      defs.length > 0 &&
-      defs.every(def => {
-        if (def.type === DefinitionType.Variable && def.parent.kind === 'var') {
-          return false;
-        }
-        return true;
-      })
-    );
+    if (!scopeManager.shouldResolveGlobalVarsInScript()) {
+      // Legacy/ESLint 9 behavior: in script mode, only certain cases should be statically resolved.
+      // Example: a `var` decl is ignored by the runtime if it clashes with a global name, so
+      // we should not resolve the reference to the variable.
+      // In effect: resolve only if no definition is a `var` declaration.
+      const defs = variable.defs;
+      return (
+        defs.length > 0 &&
+        defs.every(
+          def =>
+            def.type !== DefinitionType.Variable ||
+            !(
+              def.parent.type === AST_NODE_TYPES.VariableDeclaration &&
+              def.parent.kind === 'var'
+            ),
+        )
+      );
+    }
+
+    // ESLint 10 behavior: resolve references to globals declared with var/function even in script mode.
+    return variable.defs.length > 0;
   }
 
   public close(scopeManager: ScopeManager): Scope | null {

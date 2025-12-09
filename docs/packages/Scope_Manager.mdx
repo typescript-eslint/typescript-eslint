@@ -68,6 +68,17 @@ interface AnalyzeOptions {
   sourceType?: 'script' | 'module';
 
   /**
+   * Whether to resolve references to global `var`/function declarations when `sourceType` is `script`.
+   *
+   * - Defaults to `false` (matches ESLint 8/9 behavior): global `var`/function references stay in `through`.
+   * - Set to `true` to opt into ESLint 10 behavior: script-mode global `var`/function references are resolved before rules run.
+   *
+   * This is mainly relevant for ESLint 10 users; ESLint 8/9 users don’t need to change anything.
+   */
+  resolveGlobalVarsInScript?: boolean;
+  // Injected globals are value-only by default; type references will not bind unless the variable is marked type-capable.
+
+  /**
    * Emit design-type metadata for decorated declarations in source.
    * Defaults to `false`.
    */
@@ -89,6 +100,16 @@ const ast = parse(code, {
 const scope = analyze(ast, {
   sourceType: 'module',
 });
+
+// ESLint 10 script-mode global resolution (opt-in):
+// const scopeScript = analyze(astScript, {
+//   sourceType: 'script',
+//   resolveGlobalVarsInScript: true, // resolve global var/function refs before rules run
+// });
+// Note: ESLint 8/9 users should leave `resolveGlobalVarsInScript` unset (default false).
+// ESLint 10 users should set it to true to match ESLint 10's script-mode contract.
+
+// Changelog note: addGlobals + resolveGlobalVarsInScript support ESLint 10. ESLint 8/9 users need no change; ESLint 10 users should opt in for script mode.
 ```
 
 ## References

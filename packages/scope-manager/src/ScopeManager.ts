@@ -1,5 +1,6 @@
 import type { SourceType, TSESTree } from '@typescript-eslint/types';
 
+import type { Reference } from './referencer/Reference';
 import type { Scope } from './scope';
 import type { Variable } from './variable';
 
@@ -30,6 +31,11 @@ interface ScopeManagerOptions {
   globalReturn?: boolean;
   impliedStrict?: boolean;
   sourceType?: SourceType;
+  /**
+   * When true, references to global var/function declarations are resolved in script mode.
+   * Defaults to false (ESLint 8/9 behavior): global `var` references remain in `through`.
+   */
+  resolveGlobalVarsInScript?: boolean;
 }
 
 /**
@@ -82,6 +88,11 @@ export class ScopeManager {
 
   public isStrictModeSupported(): boolean {
     return true;
+  }
+
+  public shouldResolveGlobalVarsInScript(): boolean {
+    // Default false (ESLint 9 behavior). Opt in to ESLint 10 script-mode resolution by setting true.
+    return this.#options.resolveGlobalVarsInScript === true;
   }
 
   public get variables(): Variable[] {
@@ -259,6 +270,76 @@ export class ScopeManager {
     return this.nestScope(new WithScope(this, this.currentScope, node));
   }
 
+  /**
+   * Adds declared globals to the global scope.
+   *
+   * Used by ESLint to inject configured globals; required by ESLint 10+.
+   *
+   * We default to value-only globals (`isTypeVariable: false`, `isValueVariable: true`)
+   * so we don’t accidentally satisfy type-only references and hide missing ambient types.
+   * Unresolved references are rebound when names match.
+   * If a future use case needs type-capable injected globals, set `isTypeVariable: true`
+   * so type references can bind; the guard below will honor it.
+   */
+  public addGlobals(names: string[]): void {
+    const globalScope = this.globalScope;
+    if (!globalScope || !Array.isArray(names)) {
+      return;
+    }
+
+    const unique = new Set<string>();
+    for (const name of names) {
+      if (typeof name === 'string' && name.length > 0) {
+        unique.add(name);
+      }
+    }
+    if (unique.size === 0) {
+      return;
+    }
+
+    for (const name of unique) {
+      if (!globalScope.set.has(name)) {
+        // mimic implicit global definition (no defs/identifiers) but ensure bookkeeping is consistent
+        globalScope.defineImplicitVariable(name, {
+          isTypeVariable: false,
+          isValueVariable: true,
+        });
+      }
+    }
+
+    const remainingThrough: typeof globalScope.through = [];
+    for (const ref of globalScope.through) {
+      const refName = ref.identifier.name;
+      const variable = unique.has(refName)
+        ? globalScope.set.get(refName)
+        : null;
+      // Injected globals are value-only by default; bind value refs, and only bind type refs when the variable is marked type-capable.
+      const canBind =
+        variable &&
+        ((ref.isValueReference && variable.isValueVariable) ||
+          (ref.isTypeReference && variable.isTypeVariable));
+      if (canBind) {
+        variable.references.push(ref);
+        ref.resolved = variable;
+        continue;
+      }
+      remainingThrough.push(ref);
+    }
+    globalScope.through.length = 0;
+    globalScope.through.push(...remainingThrough);
+
+    // Optional parity with eslint-scope: drop matching entries from implicit left-to-be-resolved.
+    // Access GlobalScope's private `implicit` field for eslint-scope compatibility; safe because
+    // implicit.leftToBeResolved is part of the eslint-scope contract. If eslint-scope changes this
+    // shape, we should revisit.
+    const implicit = getImplicit(globalScope);
+    if (implicit) {
+      implicit.leftToBeResolved = implicit.leftToBeResolved.filter(
+        ref => !unique.has(ref.identifier.name),
+      );
+    }
+  }
+
   // Scope helpers
 
   protected nestScope<T extends Scope>(scope: T): T;
@@ -270,4 +351,21 @@ export class ScopeManager {
     this.currentScope = scope;
     return scope;
   }
+}
+
+interface ImplicitState {
+  leftToBeResolved: Reference[];
+}
+
+function getImplicit(scope: GlobalScope | null): ImplicitState | undefined {
+  const candidate = scope as unknown as { implicit?: ImplicitState } | null;
+  // eslint-scope compat: implicit is a private field; we intentionally reach it to
+  // mirror eslint-scope's cleanup of implicit.leftToBeResolved on global injection.
+  if (!candidate?.implicit) {
+    return undefined;
+  }
+  if (!Array.isArray(candidate.implicit.leftToBeResolved)) {
+    return undefined;
+  }
+  return candidate.implicit;
 }
