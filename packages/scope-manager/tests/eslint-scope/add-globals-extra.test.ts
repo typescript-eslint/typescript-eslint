@@ -1,3 +1,4 @@
+import { ScopeManager } from '../../src/ScopeManager';
 import { parseAndAnalyze } from '../test-utils';
 
 describe('addGlobals (extra cases)', () => {
@@ -194,5 +195,43 @@ describe('addGlobals (extra cases)', () => {
     const varGlobal = globalScope.set.get('GlobalType');
     expect(varGlobal).toBeDefined();
     expect(varGlobal!.references.some(ref => ref.isTypeReference)).toBe(false);
+  });
+
+  it('no-ops when globalScope is null', () => {
+    const scopeManager = new ScopeManager({ sourceType: 'script' });
+    scopeManager.addGlobals(['foo']);
+    expect(scopeManager.globalScope).toBeNull();
+  });
+
+  it('tolerates missing implicit state', () => {
+    const { scopeManager } = parseAndAnalyze('foo;', {
+      resolveGlobalVarsInScript: false,
+      sourceType: 'script',
+    });
+
+    const globalScope = scopeManager.globalScope!;
+    delete (globalScope as unknown as { implicit?: unknown }).implicit;
+
+    scopeManager.addGlobals(['foo']);
+    expect(globalScope.through.some(ref => ref.identifier.name === 'foo')).toBe(
+      false,
+    );
+  });
+
+  it('tolerates non-array implicit leftToBeResolved', () => {
+    const { scopeManager } = parseAndAnalyze('foo;', {
+      resolveGlobalVarsInScript: false,
+      sourceType: 'script',
+    });
+
+    const globalScope = scopeManager.globalScope!;
+    (
+      globalScope as unknown as { implicit?: { leftToBeResolved: unknown } }
+    ).implicit = { leftToBeResolved: null };
+
+    scopeManager.addGlobals(['foo']);
+    expect(globalScope.through.some(ref => ref.identifier.name === 'foo')).toBe(
+      false,
+    );
   });
 });
