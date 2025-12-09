@@ -122,8 +122,8 @@ describe('addGlobals', () => {
 
   it('resolves references to global var declarations in script mode', () => {
     const { scopeManager } = parseAndAnalyze('var foo; console.log(foo);', {
-      sourceType: 'script',
       resolveGlobalVarsInScript: true,
+      sourceType: 'script',
     });
     const scope = scopeManager.globalScope!;
 

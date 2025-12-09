@@ -8,7 +8,7 @@ describe('module var scoping (flag has no effect)', () => {
       var a = 1;
       a;
     `,
-      { sourceType: 'module', resolveGlobalVarsInScript: true },
+      { resolveGlobalVarsInScript: true, sourceType: 'module' },
     );
 
     const globalScope = scopeManager.globalScope!;

@@ -6,7 +6,7 @@ describe('addGlobals (extra cases)', () => {
       `
       console.log(a, b);
     `,
-      { sourceType: 'script' },
+      { resolveGlobalVarsInScript: false, sourceType: 'script' },
     );
 
     scopeManager.addGlobals(['a', 'a', 'b']);
@@ -33,6 +33,7 @@ describe('addGlobals (extra cases)', () => {
 
   it('ignores non-string/empty names', () => {
     const { scopeManager } = parseAndAnalyze('console.log(x);', {
+      resolveGlobalVarsInScript: false,
       sourceType: 'script',
     });
 
@@ -42,7 +43,7 @@ describe('addGlobals (extra cases)', () => {
     const globalScope = scopeManager.globalScope!;
     const varX = globalScope.set.get('x');
     expect(varX).toBeDefined();
-    expect(varX!.references.length).toBeGreaterThan(0);
+    expect(varX!.references).toHaveLength(1);
 
     expect(
       globalScope.through.some(ref => ref.identifier.name === 'console'),
@@ -55,7 +56,7 @@ describe('addGlobals (extra cases)', () => {
       var a = 1;
       console.log(a);
     `,
-      { sourceType: 'script', resolveGlobalVarsInScript: true },
+      { resolveGlobalVarsInScript: true, sourceType: 'script' },
     );
 
     const beforeThrough = [...scopeManager.globalScope!.through];
@@ -74,9 +75,7 @@ describe('addGlobals (extra cases)', () => {
       false,
     );
     // sanity: through size does not grow after addGlobals
-    expect(globalScope.through.length).toBeLessThanOrEqual(
-      beforeThrough.length,
-    );
+    expect(globalScope.through).toHaveLength(beforeThrough.length);
   });
 
   it('removes implicit unresolved when injected', () => {
@@ -84,7 +83,7 @@ describe('addGlobals (extra cases)', () => {
       `
       foo = 1;
     `,
-      { sourceType: 'script' },
+      { resolveGlobalVarsInScript: false, sourceType: 'script' },
     );
 
     const globalScope = scopeManager.globalScope!;
@@ -100,14 +99,20 @@ describe('addGlobals (extra cases)', () => {
   });
 
   it('handles an empty names array as a no-op', () => {
-    const { scopeManager } = parseAndAnalyze('foo;');
+    const { scopeManager } = parseAndAnalyze('foo;', {
+      resolveGlobalVarsInScript: false,
+      sourceType: 'script',
+    });
     const throughBefore = scopeManager.globalScope!.through.length;
     scopeManager.addGlobals([]);
-    expect(scopeManager.globalScope!.through.length).toBe(throughBefore);
+    expect(scopeManager.globalScope!.through).toHaveLength(throughBefore);
   });
 
   it('handles multiple addGlobals calls with different names', () => {
-    const { scopeManager } = parseAndAnalyze('foo; bar; baz;');
+    const { scopeManager } = parseAndAnalyze('foo; bar; baz;', {
+      resolveGlobalVarsInScript: false,
+      sourceType: 'script',
+    });
 
     scopeManager.addGlobals(['foo']);
     scopeManager.addGlobals(['bar']);
@@ -119,15 +124,21 @@ describe('addGlobals (extra cases)', () => {
   });
 
   it('is a no-op when names is not an array', () => {
-    const { scopeManager } = parseAndAnalyze('foo;');
+    const { scopeManager } = parseAndAnalyze('foo;', {
+      resolveGlobalVarsInScript: false,
+      sourceType: 'script',
+    });
     const throughBefore = scopeManager.globalScope!.through.length;
     // @ts-expect-error testing defensive branch
     scopeManager.addGlobals(null);
-    expect(scopeManager.globalScope!.through.length).toBe(throughBefore);
+    expect(scopeManager.globalScope!.through).toHaveLength(throughBefore);
   });
 
   it('typeof query in type position does not bind to value-only globals', () => {
-    const { scopeManager } = parseAndAnalyze('type X = typeof foo;');
+    const { scopeManager } = parseAndAnalyze('type X = typeof foo;', {
+      resolveGlobalVarsInScript: false,
+      sourceType: 'script',
+    });
     const globalScope = scopeManager.globalScope!;
 
     scopeManager.addGlobals(['foo']);
@@ -144,7 +155,7 @@ describe('addGlobals (extra cases)', () => {
       class MyErr extends Error {}
       new MyErr();
     `,
-      { sourceType: 'script' },
+      { resolveGlobalVarsInScript: false, sourceType: 'script' },
     );
 
     const globalScope = scopeManager.globalScope!;
@@ -172,7 +183,7 @@ describe('addGlobals (extra cases)', () => {
       `
       type Only = GlobalType;
     `,
-      { sourceType: 'script' },
+      { resolveGlobalVarsInScript: false, sourceType: 'script' },
     );
 
     scopeManager.addGlobals(['GlobalType']);

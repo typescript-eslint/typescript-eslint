@@ -8,7 +8,7 @@ describe('script globals: default vs opt-in', () => {
       console.log(a);
       var a = 1;
     `,
-      { sourceType: 'script' },
+      { resolveGlobalVarsInScript: false, sourceType: 'script' },
     );
 
     const globalScope = scopeManager.globalScope!;
@@ -31,7 +31,7 @@ describe('script globals: default vs opt-in', () => {
       console.log(a);
       var a = 1;
     `,
-      { sourceType: 'script', resolveGlobalVarsInScript: true },
+      { resolveGlobalVarsInScript: true, sourceType: 'script' },
     );
 
     const globalScope = scopeManager.globalScope!;
@@ -54,7 +54,7 @@ describe('script globals: default vs opt-in', () => {
       `
       const x: typeof Foo = Foo;
     `,
-      { sourceType: 'script', resolveGlobalVarsInScript: true },
+      { resolveGlobalVarsInScript: true, sourceType: 'script' },
     );
 
     scopeManager.addGlobals(['Foo']);
@@ -76,7 +76,7 @@ describe('script globals: default vs opt-in', () => {
       function foo() {}
       foo();
     `,
-      { sourceType: 'script', resolveGlobalVarsInScript: true },
+      { resolveGlobalVarsInScript: true, sourceType: 'script' },
     );
 
     const globalScope = scopeManager.globalScope!;
@@ -95,7 +95,7 @@ describe('script globals: default vs opt-in', () => {
       const b = 2;
       console.log(a, b);
     `,
-      { sourceType: 'script', resolveGlobalVarsInScript: false },
+      { resolveGlobalVarsInScript: false, sourceType: 'script' },
     );
 
     const globalScope = scopeManager.globalScope!;
@@ -116,7 +116,7 @@ describe('script globals: default vs opt-in', () => {
       var a = 1;
       a;
     `,
-      { sourceType: 'module', resolveGlobalVarsInScript: false },
+      { resolveGlobalVarsInScript: false, sourceType: 'module' },
     );
 
     // module scopes do not place var in the global scope set
@@ -129,7 +129,7 @@ describe('script globals: default vs opt-in', () => {
       class Foo {}
       new Foo();
     `,
-      { sourceType: 'script', resolveGlobalVarsInScript: false },
+      { resolveGlobalVarsInScript: false, sourceType: 'script' },
     );
 
     const globalScope = scopeManager.globalScope!;

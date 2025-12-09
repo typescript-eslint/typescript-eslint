@@ -339,11 +339,7 @@ export abstract class ScopeBase<
         defs.length > 0 &&
         defs.every(
           def =>
-            def.type !== DefinitionType.Variable ||
-            !(
-              def.parent.type === AST_NODE_TYPES.VariableDeclaration &&
-              def.parent.kind === 'var'
-            ),
+            def.type !== DefinitionType.Variable || def.parent.kind !== 'var',
         )
       );
     }

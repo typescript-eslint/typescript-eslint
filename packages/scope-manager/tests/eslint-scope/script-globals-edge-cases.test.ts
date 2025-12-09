@@ -7,7 +7,7 @@ describe('script globals: edge cases', () => {
       console.log(a);
       let a = 1;
     `,
-      { sourceType: 'script', resolveGlobalVarsInScript: false },
+      { resolveGlobalVarsInScript: false, sourceType: 'script' },
     );
 
     const globalScope = scopeManager.globalScope!;
@@ -27,7 +27,7 @@ describe('script globals: edge cases', () => {
       }
       var a = 1;
     `,
-      { sourceType: 'script', resolveGlobalVarsInScript: true },
+      { resolveGlobalVarsInScript: true, sourceType: 'script' },
     );
 
     const globalScope = scopeManager.globalScope!;
@@ -47,7 +47,7 @@ describe('script globals: edge cases', () => {
       var a = 2;
       a;
     `,
-      { sourceType: 'script', resolveGlobalVarsInScript: true },
+      { resolveGlobalVarsInScript: true, sourceType: 'script' },
     );
 
     const globalScope = scopeManager.globalScope!;
@@ -66,7 +66,7 @@ describe('script globals: edge cases', () => {
       eval('');
       a;
     `,
-      { sourceType: 'script', resolveGlobalVarsInScript: true },
+      { resolveGlobalVarsInScript: true, sourceType: 'script' },
     );
 
     const globalScope = scopeManager.globalScope!;

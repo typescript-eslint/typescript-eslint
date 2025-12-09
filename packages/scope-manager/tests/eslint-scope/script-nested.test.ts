@@ -12,7 +12,7 @@ describe('Global resolution in script mode', () => {
         }
       }
     `,
-      { sourceType: 'script', resolveGlobalVarsInScript: true },
+      { resolveGlobalVarsInScript: true, sourceType: 'script' },
     );
 
     const globalScope = scopeManager.globalScope!;
@@ -36,7 +36,7 @@ describe('Global resolution in script mode', () => {
       var a = 1;
       console.log(b);
     `,
-      { sourceType: 'script', resolveGlobalVarsInScript: true },
+      { resolveGlobalVarsInScript: true, sourceType: 'script' },
     );
 
     scopeManager.addGlobals(['b']);
