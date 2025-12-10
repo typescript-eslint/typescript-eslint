@@ -45,6 +45,11 @@ const x = [1, 2] as const;
 foo(...x);
     `,
     `
+declare const fromLib: { foo: number };
+declare function fn(x: { foo: number }): string;
+fn(fromLib);
+    `,
+    `
 declare function foo(arg: any, arg2: number): void;
 const x = [1 as any, 2] as const;
 foo(...x);
@@ -125,6 +130,18 @@ foo(1 as any);
           },
           endColumn: 13,
           line: 3,
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare const fromLib: { foo: any };
+declare function fn(x: { foo: number }): string;
+fn(fromLib);
+      `,
+      errors: [
+        {
           messageId: 'unsafeArgument',
         },
       ],

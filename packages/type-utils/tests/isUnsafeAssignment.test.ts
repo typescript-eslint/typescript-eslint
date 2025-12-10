@@ -50,6 +50,18 @@ describe(isUnsafeAssignment, () => {
         senderStr: 'any',
       });
     });
+
+    it('object property any to non-any (nested)', () => {
+      expect(`
+type Sender = { foo: any };
+type Receiver = { foo: number };
+const test: Receiver = {} as Sender;
+      `).toHaveTypes({
+        declarationIndex: 2,
+        receiverStr: 'Receiver',
+        senderStr: 'Sender',
+      });
+    });
   });
 
   describe('safe', () => {
@@ -118,6 +130,14 @@ describe(isUnsafeAssignment, () => {
         declarationIndex: 1,
         passSenderNode: true,
       });
+    });
+
+    it('object property with no any remains safe', () => {
+      expect(`
+type Sender = { foo: number };
+type Receiver = { foo: number };
+const test: Receiver = {} as Sender;
+      `).toBeSafeAssignment({ declarationIndex: 2 });
     });
   });
 });
