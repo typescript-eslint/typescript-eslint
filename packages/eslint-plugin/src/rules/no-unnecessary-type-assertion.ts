@@ -311,6 +311,43 @@ export default createRule<Options, MessageIds>({
       return current;
     }
 
+    function isDoubleAssertionUnnecessary(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      contextualType: ts.Type | undefined,
+    ): boolean {
+      const innerExpression = node.expression;
+      if (
+        innerExpression.type !== AST_NODE_TYPES.TSAsExpression &&
+        innerExpression.type !== AST_NODE_TYPES.TSTypeAssertion
+      ) {
+        return false;
+      }
+
+      const originalExpr = getOriginalExpression(node);
+      const originalType = services.getTypeAtLocation(originalExpr);
+      const castType = services.getTypeAtLocation(node);
+
+      if (
+        isTypeUnchanged(innerExpression, originalType, castType) &&
+        !isTypeFlagSet(castType, ts.TypeFlags.Any)
+      ) {
+        return true;
+      }
+
+      if (contextualType) {
+        const intermediateType = services.getTypeAtLocation(innerExpression);
+        if (
+          (isTypeFlagSet(intermediateType, ts.TypeFlags.Any) ||
+            isTypeFlagSet(intermediateType, ts.TypeFlags.Unknown)) &&
+          checker.isTypeAssignableTo(originalType, contextualType)
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     function isConceptuallyLiteral(node: TSESTree.Node): boolean {
       switch (node.type) {
         case AST_NODE_TYPES.Literal:
@@ -440,31 +477,21 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (
-          node.expression.type === AST_NODE_TYPES.TSAsExpression ||
-          node.expression.type === AST_NODE_TYPES.TSTypeAssertion
-        ) {
+        if (isDoubleAssertionUnnecessary(node, contextualType)) {
           const originalExpr = getOriginalExpression(node);
-          const originalType = services.getTypeAtLocation(originalExpr);
+          context.report({
+            node,
+            messageId: 'unnecessaryAssertion',
+            fix(fixer) {
+              let text = context.sourceCode.getText(originalExpr);
 
-          if (
-            isTypeUnchanged(node.expression, originalType, castType) &&
-            !isTypeFlagSet(castType, ts.TypeFlags.Any)
-          ) {
-            context.report({
-              node,
-              messageId: 'unnecessaryAssertion',
-              fix(fixer) {
-                let text = context.sourceCode.getText(originalExpr);
+              if (originalExpr.type === AST_NODE_TYPES.ObjectExpression) {
+                text = `(${text})`;
+              }
 
-                if (originalExpr.type === AST_NODE_TYPES.ObjectExpression) {
-                  text = `(${text})`;
-                }
-
-                return fixer.replaceText(node, text);
-              },
-            });
-          }
+              return fixer.replaceText(node, text);
+            },
+          });
         }
       },
       TSNonNullExpression(node): void {

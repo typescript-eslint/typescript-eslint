@@ -1761,5 +1761,35 @@ interface Props {
 const fn = (): Props => ({ a: 1 });
       `,
     },
+    {
+      code: `
+declare function fn(param: number): void;
+fn(42 as unknown as number);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare function fn(param: number): void;
+fn(42);
+      `,
+    },
+    {
+      code: `
+declare function fn(param: number): void;
+fn(42 as any as number);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare function fn(param: number): void;
+fn(42);
+      `,
+    },
   ],
 });
