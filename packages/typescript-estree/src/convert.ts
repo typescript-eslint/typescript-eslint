@@ -3490,7 +3490,7 @@ export class Converter {
       .filter(([key]) => !KEYS_TO_NOT_COPY.has(key))
       .forEach(([key, value]) => {
         if (Array.isArray(value)) {
-          result[key] = this.convertChildren(value);
+          result[key] = this.convertChildren(value as ts.Node[]);
         } else if (value && typeof value === 'object' && value.kind) {
           // need to check node[key].kind to ensure we don't try to convert a symbol
           result[key] = this.convertChild(value as TSNode);
