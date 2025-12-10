@@ -908,10 +908,7 @@ export class Converter {
         this.#checkForStatementDeclaration(node.initializer, node.kind);
         return this.createNode<TSESTree.ForOfStatement>(node, {
           type: AST_NODE_TYPES.ForOfStatement,
-          await: Boolean(
-            node.awaitModifier &&
-            node.awaitModifier.kind === SyntaxKind.AwaitKeyword,
-          ),
+          await: node.awaitModifier?.kind === SyntaxKind.AwaitKeyword,
           body: this.convertChild(node.statement),
           left: this.convertPattern(node.initializer),
           right: this.convertChild(node.expression),
@@ -1597,10 +1594,8 @@ export class Converter {
         } else {
           result = this.createNode<TSESTree.Property>(node, {
             type: AST_NODE_TYPES.Property,
-            computed: Boolean(
-              node.propertyName &&
-              node.propertyName.kind === SyntaxKind.ComputedPropertyName,
-            ),
+            computed:
+              node.propertyName?.kind === SyntaxKind.ComputedPropertyName,
             key: this.convertChild(node.propertyName ?? node.name),
             kind: 'init',
             method: false,
