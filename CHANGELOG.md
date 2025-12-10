@@ -1,3 +1,37 @@
+## 8.49.0 (2025-12-08)
+
+### 🚀 Features
+
+- **eslint-plugin:** use `Intl.Segmenter` instead of `graphemer` ([#11804](https://github.com/typescript-eslint/typescript-eslint/pull/11804))
+
+### 🩹 Fixes
+
+- **deps:** update dependency prettier to v3.7.2 ([#11820](https://github.com/typescript-eslint/typescript-eslint/pull/11820))
+
+### ❤️ Thank You
+
+- Justin McBride
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.48.1 (2025-12-02)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [consistent-type-exports] check value flag before resolving alias ([#11769](https://github.com/typescript-eslint/typescript-eslint/pull/11769))
+- **eslint-plugin:** honor ignored base types on generic classes ([#11767](https://github.com/typescript-eslint/typescript-eslint/pull/11767))
+- **eslint-plugin:** [restrict-template-expressions] check base types in allow list ([#11764](https://github.com/typescript-eslint/typescript-eslint/pull/11764), [#11759](https://github.com/typescript-eslint/typescript-eslint/issues/11759))
+
+### ❤️ Thank You
+
+- Josh Goldberg
+- OleksandraKordonets
+- SangheeSon @Higangssh
+- tao
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.48.0 (2025-11-24)
 
 ### 🚀 Features

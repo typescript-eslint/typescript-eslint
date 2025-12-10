@@ -4,8 +4,7 @@ import type {
   PropertyDefinitionNonComputedNameBase,
 } from '../../base/PropertyDefinitionBase';
 
-export interface TSAbstractAccessorPropertyComputedName
-  extends PropertyDefinitionComputedNameBase {
+export interface TSAbstractAccessorPropertyComputedName extends PropertyDefinitionComputedNameBase {
   type: AST_NODE_TYPES.TSAbstractAccessorProperty;
   value: null;
 }

@@ -1,32 +1,76 @@
-import type { TSESTree } from '@typescript-eslint/utils';
-
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
+  arrayGroupByToMap,
   createRule,
   getParserServices,
   isFunctionOrFunctionType,
+  isTypeAnyType,
+  isTypeBigIntLiteralType,
+  isTypeNeverType,
+  isTypeTemplateLiteralType,
+  isTypeUnknownType,
 } from '../util';
+
+const literalToPrimitiveTypeFlags = {
+  [ts.TypeFlags.BigIntLiteral]: ts.TypeFlags.BigInt,
+  [ts.TypeFlags.BooleanLiteral]: ts.TypeFlags.Boolean,
+  [ts.TypeFlags.NumberLiteral]: ts.TypeFlags.Number,
+  [ts.TypeFlags.StringLiteral]: ts.TypeFlags.String,
+  [ts.TypeFlags.TemplateLiteral]: ts.TypeFlags.String,
+} as const;
+
+const literalTypeFlags = [
+  ts.TypeFlags.BigIntLiteral,
+  ts.TypeFlags.BooleanLiteral,
+  ts.TypeFlags.NumberLiteral,
+  ts.TypeFlags.StringLiteral,
+  ts.TypeFlags.TemplateLiteral,
+] as const;
+
+const primitiveTypeFlags = [
+  ts.TypeFlags.BigInt,
+  ts.TypeFlags.Boolean,
+  ts.TypeFlags.Number,
+  ts.TypeFlags.String,
+] as const;
+
+const primitiveTypeFlagNames = {
+  [ts.TypeFlags.BigInt]: 'bigint',
+  [ts.TypeFlags.Boolean]: 'boolean',
+  [ts.TypeFlags.Number]: 'number',
+  [ts.TypeFlags.String]: 'string',
+} as const;
+
+const primitiveTypeFlagTypes = {
+  bigint: ts.TypeFlags.BigIntLiteral,
+  boolean: ts.TypeFlags.BooleanLiteral,
+  number: ts.TypeFlags.NumberLiteral,
+  string: ts.TypeFlags.StringLiteral,
+} as const;
+
+const keywordNodeTypesToTsTypes = new Map([
+  [TSESTree.AST_NODE_TYPES.TSAnyKeyword, ts.TypeFlags.Any],
+  [TSESTree.AST_NODE_TYPES.TSBigIntKeyword, ts.TypeFlags.BigInt],
+  [TSESTree.AST_NODE_TYPES.TSBooleanKeyword, ts.TypeFlags.Boolean],
+  [TSESTree.AST_NODE_TYPES.TSNeverKeyword, ts.TypeFlags.Never],
+  [TSESTree.AST_NODE_TYPES.TSNumberKeyword, ts.TypeFlags.Number],
+  [TSESTree.AST_NODE_TYPES.TSStringKeyword, ts.TypeFlags.String],
+  [TSESTree.AST_NODE_TYPES.TSUnknownKeyword, ts.TypeFlags.Unknown],
+]);
+
+type PrimitiveTypeFlag = (typeof primitiveTypeFlags)[number];
 
 interface TypeFlagsWithName {
   typeFlags: ts.TypeFlags;
   typeName: string;
 }
 
-interface TypeWithName {
-  type: ts.Type;
-  typeName: string;
-}
-
-interface TypeRedundancyRelation {
-  redundantTypeWithName: TypeWithName;
-  nonRedundantTypeWithName: TypeWithName;
-}
-
-interface TypeWithNameAndParentNode extends TypeWithName {
-  parentTypeNode: TSESTree.TypeNode;
+interface TypeNodeWithValue {
+  literalValue: unknown;
+  typeNode: TSESTree.TypeNode;
 }
 
 function addToMapGroup<Key, Value>(
@@ -43,395 +87,107 @@ function addToMapGroup<Key, Value>(
   }
 }
 
-function isUnionNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
-  if (node.parent.type === AST_NODE_TYPES.TSUnionType) {
-    return isUnionNodeInsideReturnType(node.parent);
+function describeLiteralType(type: ts.Type): string {
+  if (type.isStringLiteral()) {
+    return JSON.stringify(type.value);
   }
+
+  if (isTypeBigIntLiteralType(type)) {
+    return `${type.value.negative ? '-' : ''}${type.value.base10Value}n`;
+  }
+
+  if (type.isLiteral()) {
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    return type.value.toString();
+  }
+
+  if (tsutils.isIntrinsicErrorType(type) && type.aliasSymbol) {
+    return type.aliasSymbol.escapedName.toString();
+  }
+
+  if (isTypeAnyType(type)) {
+    return 'any';
+  }
+
+  if (isTypeNeverType(type)) {
+    return 'never';
+  }
+
+  if (isTypeUnknownType(type)) {
+    return 'unknown';
+  }
+
+  if (isTypeTemplateLiteralType(type)) {
+    return 'template literal type';
+  }
+
+  if (isTypeBigIntLiteralType(type)) {
+    return `${type.value.negative ? '-' : ''}${type.value.base10Value}n`;
+  }
+
+  if (tsutils.isTrueLiteralType(type)) {
+    return 'true';
+  }
+
+  if (tsutils.isFalseLiteralType(type)) {
+    return 'false';
+  }
+
+  return 'literal type';
+}
+
+function describeLiteralTypeNode(typeNode: TSESTree.TypeNode): string {
+  switch (typeNode.type) {
+    case AST_NODE_TYPES.TSAnyKeyword:
+      return 'any';
+    case AST_NODE_TYPES.TSBooleanKeyword:
+      return 'boolean';
+    case AST_NODE_TYPES.TSNeverKeyword:
+      return 'never';
+    case AST_NODE_TYPES.TSNumberKeyword:
+      return 'number';
+    case AST_NODE_TYPES.TSStringKeyword:
+      return 'string';
+    case AST_NODE_TYPES.TSUnknownKeyword:
+      return 'unknown';
+    case AST_NODE_TYPES.TSLiteralType:
+      switch (typeNode.literal.type) {
+        case TSESTree.AST_NODE_TYPES.Literal:
+          switch (typeof typeNode.literal.value) {
+            case 'bigint':
+              return `${typeNode.literal.value < 0 ? '-' : ''}${
+                typeNode.literal.value
+              }n`;
+            case 'string':
+              return JSON.stringify(typeNode.literal.value);
+            default:
+              return `${typeNode.literal.value}`;
+          }
+        case TSESTree.AST_NODE_TYPES.TemplateLiteral:
+          return 'template literal type';
+      }
+  }
+
+  return 'literal type';
+}
+
+function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
   return (
     node.parent.type === AST_NODE_TYPES.TSTypeAnnotation &&
     isFunctionOrFunctionType(node.parent.parent)
   );
 }
 
-function isObjectOrIntersectionType(
-  type: ts.Type,
-): type is ts.IntersectionType | ts.ObjectType {
-  return tsutils.isObjectType(type) || tsutils.isIntersectionType(type);
-}
-
-function shouldCheckTypeRedundancy(
-  type: ts.Type,
-  checker: ts.TypeChecker,
-  depth = 0,
-): boolean {
-  if (depth > 10) {
-    return false;
-  }
-  if (tsutils.isObjectType(type)) {
-    const symbol = type.getSymbol();
-    if (checker.isArrayLikeType(type)) {
-      return true;
-    }
-    if (!symbol) {
-      return false;
-    }
-    const declarations = symbol.getDeclarations();
-    const declaration = declarations?.[0];
-    if (!declaration) {
-      return false;
-    }
-    if (
-      declaration.kind !== ts.SyntaxKind.TypeLiteral &&
-      declaration.kind !== ts.SyntaxKind.InterfaceDeclaration &&
-      declaration.kind !== ts.SyntaxKind.MappedType
-    ) {
-      return false;
-    }
-  }
-  if (isObjectOrIntersectionType(type)) {
-    const props = type.getProperties();
-    for (const prop of props) {
-      const type = checker.getTypeOfSymbol(prop);
-      if (!shouldCheckTypeRedundancy(type, checker, depth + 1)) {
-        return false;
-      }
-    }
-    return true;
-  }
-  if (tsutils.isUnionType(type)) {
-    return type.types.every(typePart =>
-      shouldCheckTypeRedundancy(typePart, checker, depth),
-    );
-  }
-  return true;
-}
-
-function isTargetTypeRedundantInIntersection(
-  sourceType: ts.Type,
-  targetType: ts.Type,
-  checker: ts.TypeChecker,
-): boolean {
-  if (
-    !shouldCheckTypeRedundancy(sourceType, checker) ||
-    !shouldCheckTypeRedundancy(targetType, checker)
-  ) {
-    return false;
-  }
-  if (tsutils.isUnionType(sourceType)) {
-    for (const typePart of sourceType.types) {
-      if (!tsutils.isObjectType(typePart)) {
-        continue;
-      }
-      const isRedundant = isTargetTypeRedundantInIntersection(
-        typePart,
-        targetType,
-        checker,
-      );
-      if (!isRedundant) {
-        return false;
-      }
-    }
-    return checker.isTypeAssignableTo(sourceType, targetType);
-  }
-
-  if (
-    tsutils.isUnionType(targetType) &&
-    !tsutils.isIntrinsicBooleanType(targetType)
-  ) {
-    for (const typePart of targetType.types) {
-      if (!tsutils.isObjectType(typePart)) {
-        continue;
-      }
-      const isRedundant = isTargetTypeRedundantInIntersection(
-        sourceType,
-        typePart,
-        checker,
-      );
-      if (!isRedundant) {
-        return false;
-      }
-    }
-    return checker.isTypeAssignableTo(sourceType, targetType);
-  }
-
-  if (checker.isTupleType(targetType)) {
-    if (checker.isTupleType(sourceType)) {
-      const sourceArguments = sourceType.typeArguments;
-      const targetArguments = targetType.typeArguments;
-
-      if (!sourceArguments || !targetArguments) {
-        return false;
-      }
-      if (targetArguments.length !== sourceArguments.length) {
-        return false;
-      }
-      for (let i = 0; i < targetArguments.length; ++i) {
-        const sourceTypeArgument = sourceArguments[i];
-        const targetTypeArgument = targetArguments[i];
-        if (
-          !isTargetTypeRedundantInIntersection(
-            sourceTypeArgument,
-            targetTypeArgument,
-            checker,
-          )
-        ) {
-          return false;
-        }
-      }
-      return true;
-    }
-    return false;
-  }
-
-  if (checker.isArrayType(targetType)) {
-    if (checker.isArrayType(sourceType)) {
-      const sourceArgumentType = sourceType.typeArguments?.[0];
-      const targetArgumentType = targetType.typeArguments?.[0];
-
-      if (!sourceArgumentType || !targetArgumentType) {
-        return false;
-      }
-      return isTargetTypeRedundantInIntersection(
-        sourceArgumentType,
-        targetArgumentType,
-        checker,
-      );
-    }
-    if (checker.isTupleType(sourceType)) {
-      const targetArgumentType = targetType.typeArguments?.[0];
-      if (!targetArgumentType) {
-        return false;
-      }
-      const sourceArgumentTypes = sourceType.typeArguments;
-      if (!sourceArgumentTypes) {
-        return true;
-      }
-      for (const sourceTypeArgument of sourceArgumentTypes) {
-        if (
-          !isTargetTypeRedundantInIntersection(
-            sourceTypeArgument,
-            targetArgumentType,
-            checker,
-          )
-        ) {
-          return false;
-        }
-      }
-      return true;
-    }
-    return false;
-  }
-  if (tsutils.isObjectType(sourceType) && tsutils.isObjectType(targetType)) {
-    const sourceProps = sourceType.getProperties();
-    const targetProps = targetType.getProperties();
-    if (targetProps.length === 0) {
-      return false;
-    }
-
-    for (const targetProp of targetProps) {
-      const sourceProp = sourceProps.find(
-        prop => prop.getName() === targetProp.getName(),
-      );
-
-      if (!sourceProp) {
-        return false;
-      }
-
-      const sourcePropType = checker.getTypeOfSymbol(sourceProp);
-      const targetPropType = checker.getTypeOfSymbol(targetProp);
-
-      const targetPropTypeIsRedundant = isTargetTypeRedundantInIntersection(
-        sourcePropType,
-        targetPropType,
-        checker,
-      );
-      if (!targetPropTypeIsRedundant) {
-        return false;
-      }
-    }
-    return true;
-  }
-  return checker.isTypeAssignableTo(sourceType, targetType);
-}
-
-function isTargetTypeRedundantInUnion(
-  sourceType: ts.Type,
-  targetType: ts.Type,
-  checker: ts.TypeChecker,
-): boolean {
-  if (
-    !shouldCheckTypeRedundancy(sourceType, checker) ||
-    !shouldCheckTypeRedundancy(targetType, checker)
-  ) {
-    return false;
-  }
-  if (
-    tsutils.isUnionType(targetType) &&
-    !tsutils.isIntrinsicBooleanType(targetType)
-  ) {
-    for (const typePart of targetType.types) {
-      const isRedundant = isTargetTypeRedundantInUnion(
-        sourceType,
-        typePart,
-        checker,
-      );
-      if (!isRedundant) {
-        return false;
-      }
-    }
-    return true;
-  }
-  if (tsutils.isUnionType(sourceType)) {
-    for (const typePart of sourceType.types) {
-      const isRedundant = isTargetTypeRedundantInUnion(
-        typePart,
-        targetType,
-        checker,
-      );
-      if (isRedundant) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  if (checker.isTupleType(targetType)) {
-    if (checker.isArrayType(sourceType)) {
-      const sourceArgumentType = sourceType.typeArguments?.[0];
-      if (!sourceArgumentType) {
-        return false;
-      }
-      const targetArguments = targetType.typeArguments;
-      if (!targetArguments) {
-        return true;
-      }
-      for (const targetTypeArgument of targetArguments) {
-        if (
-          !isTargetTypeRedundantInUnion(
-            sourceArgumentType,
-            targetTypeArgument,
-            checker,
-          )
-        ) {
-          return false;
-        }
-      }
-      return true;
-    }
-    if (checker.isTupleType(sourceType)) {
-      const sourceArguments = sourceType.typeArguments;
-      const targetArguments = targetType.typeArguments;
-
-      if (!sourceArguments || !targetArguments) {
-        return false;
-      }
-      if (targetArguments.length !== sourceArguments.length) {
-        return false;
-      }
-      for (let i = 0; i < targetArguments.length; ++i) {
-        const sourceTypeArgument = sourceArguments[i];
-        const targetTypeArgument = targetArguments[i];
-        if (
-          !isTargetTypeRedundantInUnion(
-            sourceTypeArgument,
-            targetTypeArgument,
-            checker,
-          )
-        ) {
-          return false;
-        }
-      }
-      return true;
-    }
-    return false;
-  }
-
-  if (checker.isArrayType(sourceType) && checker.isArrayType(targetType)) {
-    const sourceArgumentType = sourceType.typeArguments?.[0];
-    const targetArgumentType = targetType.typeArguments?.[0];
-
-    if (!sourceArgumentType || !targetArgumentType) {
-      return false;
-    }
-    return isTargetTypeRedundantInUnion(
-      sourceArgumentType,
-      targetArgumentType,
-      checker,
-    );
-  }
-  if (
-    isObjectOrIntersectionType(sourceType) &&
-    isObjectOrIntersectionType(targetType)
-  ) {
-    const sourceProps = sourceType.getProperties();
-    const targetProps = targetType.getProperties();
-
-    if (sourceProps.length !== targetProps.length) {
-      return false;
-    }
-    if (targetProps.length === 0) {
-      return false;
-    }
-
-    for (const targetProp of targetProps) {
-      const sourceProp = sourceProps.find(
-        prop => prop.getName() === targetProp.getName(),
-      );
-
-      if (!sourceProp) {
-        return false;
-      }
-
-      const sourcePropType = checker.getTypeOfSymbol(sourceProp);
-      const targetPropType = checker.getTypeOfSymbol(targetProp);
-
-      const targetPropTypeIsRedundant = isTargetTypeRedundantInUnion(
-        sourcePropType,
-        targetPropType,
-        checker,
-      );
-      if (!targetPropTypeIsRedundant) {
-        return false;
-      }
-    }
-    return true;
-  }
-  return checker.isTypeAssignableTo(targetType, sourceType);
-}
-function mergeTypeNames(
-  typeWithNames: TypeWithName[],
-  operator: '&' | '|',
-): string {
-  if (typeWithNames.length === 1) {
-    return typeWithNames[0].typeName;
-  }
-
-  const wrapType = (typeWithName: TypeWithName) => {
-    if (operator === '|' && typeWithName.type.isIntersection()) {
-      return `(${typeWithName.typeName})`;
-    }
-    if (operator === '&' && typeWithName.type.isUnion()) {
-      return `(${typeWithName.typeName})`;
-    }
-    return typeWithName.typeName;
-  };
-
-  return typeWithNames.map(wrapType).join(` ${operator} `);
-}
-
-function getGroupTypeRelationsByNonRedundantType(
-  typeRedundancyRelations: TypeRedundancyRelation[],
-) {
-  const groups = new Map<ts.Type, TypeRedundancyRelation[]>();
-
-  for (const typeRedundancyRelation of typeRedundancyRelations) {
-    addToMapGroup(
-      groups,
-      typeRedundancyRelation.nonRedundantTypeWithName.type,
-      typeRedundancyRelation,
-    );
-  }
-  return groups;
+/**
+ * @remarks TypeScript stores boolean types as the union false | true, always.
+ */
+function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
+  return type.isUnion() &&
+    type.types.length === 2 &&
+    tsutils.isFalseLiteralType(type.types[0]) &&
+    tsutils.isTrueLiteralType(type.types[1])
+    ? [type]
+    : tsutils.unionConstituents(type);
 }
 
 export default createRule({
@@ -446,102 +202,83 @@ export default createRule({
     },
     messages: {
       errorTypeOverrides: `'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.`,
+      literalOverridden: `{{literal}} is overridden by {{primitive}} in this union type.`,
       overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
       overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
-      typeOverridden: `{{redundantType}} is overridden by {{nonRedundantType}} in this {{container}} type.`,
+      primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
     },
     schema: [],
   },
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
-    const checker = services.program.getTypeChecker();
+    const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
 
-    function reportRedundantTypes(
-      redundantTypes: Map<TSESTree.TypeNode, TypeRedundancyRelation[]>,
-      container: 'intersection' | 'union',
-    ) {
-      for (const [typeNode, typeRelations] of redundantTypes) {
-        const groupTypeRelationsByNonRedundantType =
-          getGroupTypeRelationsByNonRedundantType(typeRelations);
-
-        for (const [
-          nonRedundantType,
-          typeRelationAndNames,
-        ] of groupTypeRelationsByNonRedundantType) {
-          const nonRedundantTypeName = checker.typeToString(nonRedundantType);
-          const mergedRedundantTypeName = mergeTypeNames(
-            typeRelationAndNames.map(
-              ({ redundantTypeWithName }) => redundantTypeWithName,
-            ),
-            container === 'union' ? '|' : '&',
-          );
-
-          context.report({
-            node: typeNode,
-            messageId: 'typeOverridden',
-            data: {
-              container,
-              nonRedundantType: nonRedundantTypeName,
-              redundantType: mergedRedundantTypeName,
-            },
-          });
-        }
+    function getTypeNodeTypePartFlags(
+      typeNode: TSESTree.TypeNode,
+    ): TypeFlagsWithName[] {
+      const keywordTypeFlags = keywordNodeTypesToTsTypes.get(typeNode.type);
+      if (keywordTypeFlags) {
+        return [
+          {
+            typeFlags: keywordTypeFlags,
+            typeName: describeLiteralTypeNode(typeNode),
+          },
+        ];
       }
+
+      if (
+        typeNode.type === AST_NODE_TYPES.TSLiteralType &&
+        typeNode.literal.type === AST_NODE_TYPES.Literal
+      ) {
+        return [
+          {
+            typeFlags:
+              primitiveTypeFlagTypes[
+                typeof typeNode.literal
+                  .value as keyof typeof primitiveTypeFlagTypes
+              ],
+            typeName: describeLiteralTypeNode(typeNode),
+          },
+        ];
+      }
+
+      if (typeNode.type === AST_NODE_TYPES.TSUnionType) {
+        return typeNode.types.flatMap(getTypeNodeTypePartFlags);
+      }
+
+      const nodeType = services.getTypeAtLocation(typeNode);
+      const typeParts = unionTypePartsUnlessBoolean(nodeType);
+
+      return typeParts.map(typePart => ({
+        typeFlags: typePart.flags,
+        typeName: describeLiteralType(typePart),
+      }));
     }
 
-    function getUnionTypePart(
-      typeNode: ts.Node,
-      checker: ts.TypeChecker,
-    ): TypeWithName[] {
-      if (ts.isParenthesizedTypeNode(typeNode)) {
-        return getUnionTypePart(typeNode.type, checker);
-      }
-      if (ts.isUnionTypeNode(typeNode)) {
-        return typeNode.types.flatMap(typeNode =>
-          getUnionTypePart(typeNode, checker),
-        );
-      }
-      const type = checker.getTypeAtLocation(typeNode);
-
-      return [
-        {
-          type,
-          typeName: checker.typeToString(type),
-        },
-      ];
-    }
-
-    function getIntersectionTypePart(
-      typeNode: ts.Node,
-      checker: ts.TypeChecker,
-    ): TypeWithName[] {
-      if (ts.isParenthesizedTypeNode(typeNode)) {
-        return getIntersectionTypePart(typeNode.type, checker);
+    function getTypeNodeTypePartFlagsCached(
+      typeNode: TSESTree.TypeNode,
+    ): TypeFlagsWithName[] {
+      const existing = typesCache.get(typeNode);
+      if (existing) {
+        return existing;
       }
 
-      if (ts.isIntersectionTypeNode(typeNode)) {
-        return typeNode.types.flatMap(typeNode =>
-          getIntersectionTypePart(typeNode, checker),
-        );
-      }
-
-      const type = checker.getTypeAtLocation(typeNode);
-
-      return [
-        {
-          type,
-          typeName: checker.typeToString(type),
-        },
-      ];
+      const created = getTypeNodeTypePartFlags(typeNode);
+      typesCache.set(typeNode, created);
+      return created;
     }
 
     return {
-      TSIntersectionType(node: TSESTree.TSIntersectionType): void {
-        const seenTypes = new Set<TypeWithNameAndParentNode>();
-        const redundantTypes = new Map<
+      'TSIntersectionType:exit'(node: TSESTree.TSIntersectionType): void {
+        const seenLiteralTypes = new Map<PrimitiveTypeFlag, string[]>();
+        const seenPrimitiveTypes = new Map<
+          PrimitiveTypeFlag,
+          TSESTree.TypeNode[]
+        >();
+        const seenUnionTypes = new Map<
           TSESTree.TypeNode,
-          TypeRedundancyRelation[]
+          TypeFlagsWithName[]
         >();
 
         function checkIntersectionBottomAndTopTypes(
@@ -573,97 +310,107 @@ export default createRule({
         }
 
         for (const typeNode of node.types) {
-          const tsTypeNode = services.esTreeNodeToTSNodeMap.get(typeNode);
-          const typeParts = getIntersectionTypePart(tsTypeNode, checker);
+          const typePartFlags = getTypeNodeTypePartFlagsCached(typeNode);
 
-          for (const typePart of typeParts) {
-            if (
-              typePart.type.flags & ts.TypeFlags.Never ||
-              typePart.type.flags & ts.TypeFlags.Any ||
-              typePart.type.flags & ts.TypeFlags.Unknown
-            ) {
-              checkIntersectionBottomAndTopTypes(
-                {
-                  typeFlags: typePart.type.flags,
-                  typeName: typePart.typeName,
-                },
-                typeNode,
-              );
+          for (const typePart of typePartFlags) {
+            if (checkIntersectionBottomAndTopTypes(typePart, typeNode)) {
               continue;
             }
-            const { type: targetType, typeName: targetTypeName } = typePart;
 
-            for (const seenType of seenTypes) {
-              const {
-                type: sourceType,
-                parentTypeNode,
-                typeName: sourceTypeName,
-              } = seenType;
-              const targetTypeIsRedundant = isTargetTypeRedundantInIntersection(
-                sourceType,
-                targetType,
-                checker,
-              );
-              const sourceTypeIsRedundant = isTargetTypeRedundantInIntersection(
-                targetType,
-                sourceType,
-                checker,
-              );
-              if (
-                targetTypeIsRedundant &&
-                targetTypeIsRedundant === sourceTypeIsRedundant
-              ) {
-                continue;
+            for (const literalTypeFlag of literalTypeFlags) {
+              if (typePart.typeFlags === literalTypeFlag) {
+                addToMapGroup(
+                  seenLiteralTypes,
+                  literalToPrimitiveTypeFlags[literalTypeFlag],
+                  typePart.typeName,
+                );
+                break;
               }
-              if (sourceTypeIsRedundant) {
-                addToMapGroup(redundantTypes, parentTypeNode, {
-                  nonRedundantTypeWithName: {
-                    type: targetType,
-                    typeName: targetTypeName,
-                  },
-                  redundantTypeWithName: {
-                    type: sourceType,
-                    typeName: sourceTypeName,
-                  },
-                });
-              }
-              if (targetTypeIsRedundant) {
-                addToMapGroup(redundantTypes, typeNode, {
-                  nonRedundantTypeWithName: {
-                    type: sourceType,
-                    typeName: sourceTypeName,
-                  },
-                  redundantTypeWithName: {
-                    type: targetType,
-                    typeName: targetTypeName,
-                  },
-                });
+            }
+
+            for (const primitiveTypeFlag of primitiveTypeFlags) {
+              if (typePart.typeFlags === primitiveTypeFlag) {
+                addToMapGroup(seenPrimitiveTypes, primitiveTypeFlag, typeNode);
               }
             }
           }
-          for (const typePart of typeParts) {
-            if (
-              typePart.type.flags === ts.TypeFlags.Any ||
-              typePart.type.flags === ts.TypeFlags.Unknown ||
-              typePart.type.flags === ts.TypeFlags.Never
-            ) {
-              continue;
-            }
-
-            seenTypes.add({
-              ...typePart,
-              parentTypeNode: typeNode,
-            });
+          // if any typeNode is TSTypeReference and typePartFlags have more than 1 element, than the referenced type is definitely a union.
+          if (typePartFlags.length >= 2) {
+            seenUnionTypes.set(typeNode, typePartFlags);
           }
         }
-        reportRedundantTypes(redundantTypes, 'intersection');
+        /**
+         * @example
+         * ```ts
+         * type F = "a"|2|"b";
+         * type I = F & string;
+         * ```
+         * This function checks if all the union members of `F` are assignable to the other member of `I`. If every member is assignable, then its reported else not.
+         */
+        const checkIfUnionsAreAssignable = (): undefined => {
+          for (const [typeRef, typeValues] of seenUnionTypes) {
+            let primitive: number | undefined = undefined;
+            for (const { typeFlags } of typeValues) {
+              if (
+                seenPrimitiveTypes.has(
+                  literalToPrimitiveTypeFlags[
+                    typeFlags as keyof typeof literalToPrimitiveTypeFlags
+                  ],
+                )
+              ) {
+                primitive =
+                  literalToPrimitiveTypeFlags[
+                    typeFlags as keyof typeof literalToPrimitiveTypeFlags
+                  ];
+              } else {
+                primitive = undefined;
+                break;
+              }
+            }
+            if (Number.isInteger(primitive)) {
+              context.report({
+                node: typeRef,
+                messageId: 'primitiveOverridden',
+                data: {
+                  literal: typeValues.map(name => name.typeName).join(' | '),
+                  primitive:
+                    primitiveTypeFlagNames[
+                      primitive as keyof typeof primitiveTypeFlagNames
+                    ],
+                },
+              });
+            }
+          }
+        };
+        if (seenUnionTypes.size > 0) {
+          checkIfUnionsAreAssignable();
+          return;
+        }
+        // For each primitive type of all the seen primitive types,
+        // if there was a literal type seen that overrides it,
+        // report each of the primitive type's type nodes
+        for (const [primitiveTypeFlag, typeNodes] of seenPrimitiveTypes) {
+          const matchedLiteralTypes = seenLiteralTypes.get(primitiveTypeFlag);
+          if (matchedLiteralTypes) {
+            for (const typeNode of typeNodes) {
+              context.report({
+                node: typeNode,
+                messageId: 'primitiveOverridden',
+                data: {
+                  literal: matchedLiteralTypes.join(' | '),
+                  primitive: primitiveTypeFlagNames[primitiveTypeFlag],
+                },
+              });
+            }
+          }
+        }
       },
-      TSUnionType(node: TSESTree.TSUnionType): void {
-        const seenTypes = new Set<TypeWithNameAndParentNode>();
-        const redundantTypes = new Map<
-          TSESTree.TypeNode,
-          TypeRedundancyRelation[]
+      'TSUnionType:exit'(node: TSESTree.TSUnionType): void {
+        const seenLiteralTypes = new Map<
+          PrimitiveTypeFlag,
+          TypeNodeWithValue[]
         >();
+        const seenPrimitiveTypes = new Set<PrimitiveTypeFlag>();
 
         function checkUnionBottomAndTopTypes(
           { typeFlags, typeName }: TypeFlagsWithName,
@@ -691,7 +438,7 @@ export default createRule({
 
           if (
             typeFlags === ts.TypeFlags.Never &&
-            !isUnionNodeInsideReturnType(node)
+            !isNodeInsideReturnType(node)
           ) {
             context.report({
               node: typeNode,
@@ -708,90 +455,79 @@ export default createRule({
         }
 
         for (const typeNode of node.types) {
-          const tsTypeNode = services.esTreeNodeToTSNodeMap.get(typeNode);
-          const typeParts = getUnionTypePart(tsTypeNode, checker);
-          for (const typePart of typeParts) {
-            if (
-              typePart.type.flags & ts.TypeFlags.Never ||
-              typePart.type.flags & ts.TypeFlags.Any ||
-              typePart.type.flags & ts.TypeFlags.Unknown
-            ) {
-              checkUnionBottomAndTopTypes(
-                {
-                  typeFlags: typePart.type.flags,
-                  typeName: typePart.typeName,
-                },
-                typeNode,
-              );
+          const typePartFlags = getTypeNodeTypePartFlagsCached(typeNode);
+
+          for (const typePart of typePartFlags) {
+            if (checkUnionBottomAndTopTypes(typePart, typeNode)) {
               continue;
             }
 
-            const { type: targetType, typeName: targetTypeName } = typePart;
-            for (const seenType of seenTypes) {
-              const {
-                type: sourceType,
-                parentTypeNode,
-                typeName: sourceTypeName,
-              } = seenType;
-              const targetTypeIsRedundant = isTargetTypeRedundantInUnion(
-                sourceType,
-                targetType,
-                checker,
-              );
-              const sourceTypeIsRedundant = isTargetTypeRedundantInUnion(
-                targetType,
-                sourceType,
-                checker,
-              );
-              if (
-                targetTypeIsRedundant &&
-                targetTypeIsRedundant === sourceTypeIsRedundant
-              ) {
-                continue;
-              }
-              if (sourceTypeIsRedundant) {
-                addToMapGroup(redundantTypes, parentTypeNode, {
-                  nonRedundantTypeWithName: {
-                    type: targetType,
-                    typeName: targetTypeName,
+            for (const literalTypeFlag of literalTypeFlags) {
+              if (typePart.typeFlags === literalTypeFlag) {
+                addToMapGroup(
+                  seenLiteralTypes,
+                  literalToPrimitiveTypeFlags[literalTypeFlag],
+                  {
+                    literalValue: typePart.typeName,
+                    typeNode,
                   },
-                  redundantTypeWithName: {
-                    type: sourceType,
-                    typeName: sourceTypeName,
-                  },
-                });
-              }
-              if (targetTypeIsRedundant) {
-                addToMapGroup(redundantTypes, typeNode, {
-                  nonRedundantTypeWithName: {
-                    type: sourceType,
-                    typeName: sourceTypeName,
-                  },
-                  redundantTypeWithName: {
-                    type: targetType,
-                    typeName: targetTypeName,
-                  },
-                });
+                );
+                break;
               }
             }
-          }
 
-          for (const typePart of typeParts) {
-            if (
-              typePart.type.flags === ts.TypeFlags.Any ||
-              typePart.type.flags === ts.TypeFlags.Unknown ||
-              typePart.type.flags === ts.TypeFlags.Never
-            ) {
-              continue;
+            for (const primitiveTypeFlag of primitiveTypeFlags) {
+              if ((typePart.typeFlags & primitiveTypeFlag) !== 0) {
+                seenPrimitiveTypes.add(primitiveTypeFlag);
+              }
             }
-            seenTypes.add({
-              ...typePart,
-              parentTypeNode: typeNode,
-            });
           }
         }
 
-        reportRedundantTypes(redundantTypes, 'union');
+        interface TypeFlagWithText {
+          literalValue: unknown;
+          primitiveTypeFlag: PrimitiveTypeFlag;
+        }
+
+        const overriddenTypeNodes = new Map<
+          TSESTree.TypeNode,
+          TypeFlagWithText[]
+        >();
+
+        // For each primitive type of all the seen literal types,
+        // if there was a primitive type seen that overrides it,
+        // upsert the literal text and primitive type under the backing type node
+        for (const [primitiveTypeFlag, typeNodesWithText] of seenLiteralTypes) {
+          if (seenPrimitiveTypes.has(primitiveTypeFlag)) {
+            for (const { literalValue, typeNode } of typeNodesWithText) {
+              addToMapGroup(overriddenTypeNodes, typeNode, {
+                literalValue,
+                primitiveTypeFlag,
+              });
+            }
+          }
+        }
+
+        // For each type node that had at least one overridden literal,
+        // group those literals by their primitive type,
+        // then report each primitive type with all its literals
+        for (const [typeNode, typeFlagsWithText] of overriddenTypeNodes) {
+          const grouped = arrayGroupByToMap(
+            typeFlagsWithText,
+            pair => pair.primitiveTypeFlag,
+          );
+
+          for (const [primitiveTypeFlag, pairs] of grouped) {
+            context.report({
+              node: typeNode,
+              messageId: 'literalOverridden',
+              data: {
+                literal: pairs.map(pair => pair.literalValue).join(' | '),
+                primitive: primitiveTypeFlagNames[primitiveTypeFlag],
+              },
+            });
+          }
+        }
       },
     };
   },

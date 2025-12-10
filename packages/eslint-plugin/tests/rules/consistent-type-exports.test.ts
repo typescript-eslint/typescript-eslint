@@ -62,6 +62,25 @@ import * as Foo from './consistent-type-exports';
 type Foo = 1;
 export { Foo }
     `,
+    `
+import { Type1 } from './consistent-type-exports';
+const Type1 = 1;
+export { Type1 };
+    `,
+    `
+export { A } from './consistent-type-exports/reexport-2-named';
+    `,
+    `
+import { A } from './consistent-type-exports/reexport-2-named';
+export { A };
+    `,
+    `
+export { A } from './consistent-type-exports/reexport-2-namespace';
+    `,
+    `
+import { A } from './consistent-type-exports/reexport-2-namespace';
+export { A };
+    `,
   ],
   invalid: [
     {
@@ -499,6 +518,25 @@ export {
       output: `
         import type * as Foo from './consistent-type-exports';
         type Foo = 1;
+        export type { Foo };
+      `,
+    },
+    {
+      code: `
+        import { type NAME as Foo } from './consistent-type-exports';
+        export { Foo };
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'typeOverValue',
+        },
+      ],
+      output: `
+        import { type NAME as Foo } from './consistent-type-exports';
         export type { Foo };
       `,
     },

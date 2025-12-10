@@ -1,3 +1,21 @@
+## 8.49.0 (2025-12-08)
+
+### 🩹 Fixes
+
+- **deps:** update dependency prettier to v3.7.2 ([#11820](https://github.com/typescript-eslint/typescript-eslint/pull/11820))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.48.1 (2025-12-02)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.48.0 (2025-11-24)
 
 ### 🚀 Features

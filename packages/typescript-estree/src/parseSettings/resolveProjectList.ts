@@ -72,7 +72,7 @@ export function resolveProjectList(
       options.singleRun
         ? 'Infinity'
         : (options.cacheLifetime?.glob ??
-          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS),
+            DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS),
     );
   } else {
     const cached = RESOLUTION_CACHE.get(cacheKey);

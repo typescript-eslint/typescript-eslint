@@ -22,8 +22,7 @@ const LOGICAL_OPERATORS: ReadonlySet<LogicalOperatorKind> = new Set([
 ]);
 
 interface TokenToText
-  extends TSESTree.PunctuatorTokenToText,
-    TSESTree.BinaryOperatorToText {
+  extends TSESTree.PunctuatorTokenToText, TSESTree.BinaryOperatorToText {
   [SyntaxKind.ImportKeyword]: 'import';
   [SyntaxKind.KeyOfKeyword]: 'keyof';
   [SyntaxKind.NewKeyword]: 'new';
@@ -638,6 +637,8 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
 }
 
 export class TSError extends Error {
+  override name = 'TSError';
+
   constructor(
     message: string,
     public readonly fileName: string,
@@ -655,11 +656,6 @@ export class TSError extends Error {
     },
   ) {
     super(message);
-    Object.defineProperty(this, 'name', {
-      configurable: true,
-      enumerable: false,
-      value: new.target.name,
-    });
   }
 
   // For old version of ESLint https://github.com/typescript-eslint/typescript-eslint/pull/6556#discussion_r1123237311
