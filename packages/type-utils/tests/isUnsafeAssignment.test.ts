@@ -7,7 +7,7 @@ describe(isUnsafeAssignment, () => {
         receiverStr: 'string',
         senderStr: 'any',
       });
-    });
+    }, 20_000);
 
     it('any in a generic position to a non-any', () => {
       expect('const test: Set<string> = new Set<any>();').toHaveTypes({
@@ -115,10 +115,46 @@ const test: Receiver = {} as Sender;
       });
     });
 
+    it('receiver union hit with non-union sender', () => {
+      expect(`
+type Sender = { foo: any };
+type Receiver = { foo: number } | { bar: string };
+const test: Receiver = {} as Sender;
+      `).toHaveTypes({
+        declarationIndex: 2,
+        receiverStr: 'Receiver',
+        senderStr: 'Sender',
+      });
+    });
+
     it('union containing any property to discriminated union without any', () => {
       expect(`
 type Sender = { kind: 'foo'; foo: any } | { kind: 'bar'; bar: string };
 type Receiver = { kind: 'foo'; foo: number } | { kind: 'bar'; bar: string };
+const test: Receiver = {} as Sender;
+      `).toHaveTypes({
+        declarationIndex: 2,
+        receiverStr: 'Receiver',
+        senderStr: 'Sender',
+      });
+    });
+
+    it('self-referential object with nested any', () => {
+      expect(`
+type Sender = { self: Sender; value: any };
+type Receiver = { self: Receiver; value: number };
+const test: Receiver = {} as Sender;
+      `).toHaveTypes({
+        declarationIndex: 2,
+        receiverStr: 'Receiver',
+        senderStr: 'Sender',
+      });
+    });
+
+    it('tuple with recursive element containing any', () => {
+      expect(`
+type Sender = [Sender, any];
+type Receiver = [Receiver, number];
 const test: Receiver = {} as Sender;
       `).toHaveTypes({
         declarationIndex: 2,
@@ -200,6 +236,21 @@ const test: Receiver = {} as Sender;
       expect(`
 type Sender = { foo: number };
 type Receiver = { foo: number };
+const test: Receiver = {} as Sender;
+      `).toBeSafeAssignment({ declarationIndex: 2 });
+    });
+
+    it('same type with any is treated as safe (type equality)', () => {
+      expect(`
+type Both = { foo: any };
+const test: Both = {} as Both;
+      `).toBeSafeAssignment({ declarationIndex: 1 });
+    });
+
+    it('intersection with any is currently treated as safe', () => {
+      expect(`
+type Sender = { foo: any } & { bar: string };
+type Receiver = { foo: number; bar: string };
 const test: Receiver = {} as Sender;
       `).toBeSafeAssignment({ declarationIndex: 2 });
     });

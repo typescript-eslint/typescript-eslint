@@ -138,6 +138,46 @@ function isUnsafeAssignmentWorker(
     visited.set(type, new Set([receiver]));
   }
 
+  if (checker.isTupleType(type) && checker.isTupleType(receiver)) {
+    const senderElements = checker.getTypeArguments(type);
+    const receiverElements = checker.getTypeArguments(receiver);
+    const length = Math.min(senderElements.length, receiverElements.length);
+
+    for (let i = 0; i < length; i += 1) {
+      const unsafe = isUnsafeAssignmentWorker(
+        senderElements[i],
+        receiverElements[i],
+        checker,
+        senderNode,
+        visited,
+      );
+      if (unsafe) {
+        return { deep: true, receiver, sender: type };
+      }
+    }
+
+    return false;
+  }
+
+  if (checker.isArrayType(type) && checker.isArrayType(receiver)) {
+    const senderElementType = checker.getTypeArguments(type)[0];
+    const receiverElementType = checker.getTypeArguments(receiver)[0];
+
+    const unsafe = isUnsafeAssignmentWorker(
+      senderElementType,
+      receiverElementType,
+      checker,
+      senderNode,
+      visited,
+    );
+
+    if (unsafe) {
+      return { deep: true, receiver, sender: type };
+    }
+
+    return false;
+  }
+
   if (tsutils.isTypeReference(type) && tsutils.isTypeReference(receiver)) {
     // TODO - figure out how to handle cases like this,
     // where the types are assignable, but not the same type
@@ -222,46 +262,6 @@ function isUnsafeAssignmentWorker(
         return { deep: true, receiver, sender: type };
       }
     }
-    return false;
-  }
-
-  if (checker.isTupleType(type) && checker.isTupleType(receiver)) {
-    const senderElements = checker.getTypeArguments(type);
-    const receiverElements = checker.getTypeArguments(receiver);
-    const length = Math.min(senderElements.length, receiverElements.length);
-
-    for (let i = 0; i < length; i += 1) {
-      const unsafe = isUnsafeAssignmentWorker(
-        senderElements[i],
-        receiverElements[i],
-        checker,
-        senderNode,
-        visited,
-      );
-      if (unsafe) {
-        return { deep: true, receiver, sender: type };
-      }
-    }
-
-    return false;
-  }
-
-  if (checker.isArrayType(type) && checker.isArrayType(receiver)) {
-    const senderElementType = checker.getTypeArguments(type)[0];
-    const receiverElementType = checker.getTypeArguments(receiver)[0];
-
-    const unsafe = isUnsafeAssignmentWorker(
-      senderElementType,
-      receiverElementType,
-      checker,
-      senderNode,
-      visited,
-    );
-
-    if (unsafe) {
-      return { deep: true, receiver, sender: type };
-    }
-
     return false;
   }
 
