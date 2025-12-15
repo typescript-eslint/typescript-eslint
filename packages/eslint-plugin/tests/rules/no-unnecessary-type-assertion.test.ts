@@ -452,18 +452,37 @@ const b = a as const;
     },
     {
       code: `
-const UNDEFINED = (() => {})() as undefined;
+(() => {})() as undefined;
       `,
     },
     {
       code: `
 const f = () => {};
-const UNDEFINED2 = f() as undefined;
+f() as undefined;
       `,
     },
     {
       code: `
-const UNDEFINED3 = (function () {})() as undefined;
+(function () {})() as undefined;
+      `,
+    },
+    {
+      code: `
+interface Overloaded {
+  (): undefined; // or void?
+  (value: string): void; // or undefined?
+}
+
+((value => {}) as Overloaded)('') as undefined;
+      `,
+    },
+    {
+      code: `
+interface Unioned {
+  (): undefined | void;
+}
+
+((() => {}) as Unioned)() as undefined;
       `,
     },
   ],
