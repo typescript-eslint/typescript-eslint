@@ -118,6 +118,10 @@ export default createRule<[], MessageId>({
             }
 
             const signatures = contextualType.getCallSignatures();
+            if (signatures.length === 0) {
+              return;
+            }
+
             const params = signatures[0].getParameters();
             if (paramIndex < params.length) {
               const paramSymbol = params[paramIndex];

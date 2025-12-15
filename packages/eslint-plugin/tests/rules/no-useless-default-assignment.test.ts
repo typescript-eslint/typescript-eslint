@@ -184,6 +184,16 @@ ruleTester.run('no-useless-default-assignment', rule, {
         },
       },
     },
+    // https://github.com/typescript-eslint/typescript-eslint/pull/11720#issuecomment-3657141976
+    `
+      type Merge = boolean | ((incoming: string[]) => void);
+
+      const policy: { merge: Merge } = {
+        merge: (incoming: string[] = []) => {
+          incoming;
+        },
+      };
+    `,
   ],
   invalid: [
     {
