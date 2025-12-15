@@ -643,6 +643,20 @@ describe('|| {}', () => {
           },
         ],
       },
+      {
+        // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+        code: `
+          declare const foo: { bar: number | null } | undefined;
+          if (foo === undefined || foo.bar === null) {
+          }
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [], // This should not offer suggestions as it's not a true error
+          },
+        ],
+      },
     ],
     valid: [
       'foo || {};',

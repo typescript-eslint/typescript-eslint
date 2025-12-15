@@ -467,6 +467,52 @@ function getReportDescriptor(
   const fix: ReportFixFunction = fixer =>
     fixer.replaceTextRange(reportRange, newCode);
 
+  // #11840: Don't suggest optional-chain + strict-null when OR-chain has undefined check
+  if (
+    node.type === AST_NODE_TYPES.LogicalExpression &&
+    node.operator === '||' &&
+    parts.some(part => part.optional) &&
+    lastOperand.node.type === AST_NODE_TYPES.BinaryExpression &&
+    (lastOperand.node.operator === '===' ||
+      lastOperand.node.operator === '!==') &&
+    ((lastOperand.node.left.type === AST_NODE_TYPES.Literal &&
+      lastOperand.node.left.value == null) ||
+      (lastOperand.node.right.type === AST_NODE_TYPES.Literal &&
+        lastOperand.node.right.value == null))
+  ) {
+    // Check if any part of the OR-chain is "x === undefined" or "x !== undefined"
+    const checkForUndefined = (expr: TSESTree.Node): boolean => {
+      if (
+        expr.type === AST_NODE_TYPES.BinaryExpression &&
+        (expr.operator === '===' || expr.operator === '!==')
+      ) {
+        return (
+          (expr.left.type === AST_NODE_TYPES.Identifier &&
+            expr.left.name === 'undefined') ||
+          (expr.right.type === AST_NODE_TYPES.Identifier &&
+            expr.right.name === 'undefined')
+        );
+      }
+      if (
+        expr.type === AST_NODE_TYPES.LogicalExpression &&
+        expr.operator === '||'
+      ) {
+        return checkForUndefined(expr.left) || checkForUndefined(expr.right);
+      }
+      return false;
+    };
+
+    if (checkForUndefined(node)) {
+      return {
+        loc: {
+          end: sourceCode.getLocFromIndex(reportRange[1]),
+          start: sourceCode.getLocFromIndex(reportRange[0]),
+        },
+        messageId: 'preferOptionalChain',
+      };
+    }
+  }
+
   return {
     loc: {
       end: sourceCode.getLocFromIndex(reportRange[1]),
