@@ -156,7 +156,7 @@ ruleTester.run('no-useless-default-assignment', rule, {
       declare const h: { [key: string]: string };
       const { bar = '' } = h;
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/pull/11720#issuecomment-3657141976
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11849
     `
       type Merge = boolean | ((incoming: string[]) => void);
 
