@@ -75,7 +75,7 @@ const parseStateFromUrl = (
       );
     }
 
-    let esQuery: ConfigModel['esQuery'];
+    let esQuery: ConfigModel['esQuery'] | undefined;
     if (searchParams.has('esQuery')) {
       esQuery = JSON.parse(
         readQueryParam(searchParams.get('esQuery'), ''),

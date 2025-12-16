@@ -4,13 +4,11 @@ import type {
   MethodDefinitionComputedNameBase,
 } from '../../base/MethodDefinitionBase';
 
-export interface MethodDefinitionComputedName
-  extends MethodDefinitionComputedNameBase {
+export interface MethodDefinitionComputedName extends MethodDefinitionComputedNameBase {
   type: AST_NODE_TYPES.MethodDefinition;
 }
 
-export interface MethodDefinitionNonComputedName
-  extends ClassMethodDefinitionNonComputedNameBase {
+export interface MethodDefinitionNonComputedName extends ClassMethodDefinitionNonComputedNameBase {
   type: AST_NODE_TYPES.MethodDefinition;
 }
 

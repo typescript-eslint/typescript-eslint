@@ -910,7 +910,7 @@ export class Converter {
           type: AST_NODE_TYPES.ForOfStatement,
           await: Boolean(
             node.awaitModifier &&
-              node.awaitModifier.kind === SyntaxKind.AwaitKeyword,
+            node.awaitModifier.kind === SyntaxKind.AwaitKeyword,
           ),
           body: this.convertChild(node.statement),
           left: this.convertPattern(node.initializer),
@@ -975,28 +975,27 @@ export class Converter {
 
       case SyntaxKind.VariableDeclaration: {
         const definite = !!node.exclamationToken;
-        const init = this.convertChild(node.initializer);
-        const id = this.convertBindingNameWithTypeAnnotation(
-          node.name,
-          node.type,
-          node,
-        );
+
         if (definite) {
-          if (init) {
+          if (node.initializer) {
             this.#throwError(
               node,
               'Declarations with initializers cannot also have definite assignment assertions.',
             );
-          } else if (
-            id.type !== AST_NODE_TYPES.Identifier ||
-            !id.typeAnnotation
-          ) {
+          } else if (node.name.kind !== SyntaxKind.Identifier || !node.type) {
             this.#throwError(
               node,
               'Declarations with definite assignment assertions must also have type annotations.',
             );
           }
         }
+
+        const init = this.convertChild(node.initializer);
+        const id = this.convertBindingNameWithTypeAnnotation(
+          node.name,
+          node.type,
+          node,
+        );
         return this.createNode<TSESTree.VariableDeclarator>(node, {
           type: AST_NODE_TYPES.VariableDeclarator,
           definite,
@@ -1600,7 +1599,7 @@ export class Converter {
             type: AST_NODE_TYPES.Property,
             computed: Boolean(
               node.propertyName &&
-                node.propertyName.kind === SyntaxKind.ComputedPropertyName,
+              node.propertyName.kind === SyntaxKind.ComputedPropertyName,
             ),
             key: this.convertChild(node.propertyName ?? node.name),
             kind: 'init',

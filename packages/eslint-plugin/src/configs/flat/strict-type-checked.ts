@@ -81,6 +81,7 @@ export default (
       '@typescript-eslint/no-unused-vars': 'error',
       'no-useless-constructor': 'off',
       '@typescript-eslint/no-useless-constructor': 'error',
+      '@typescript-eslint/no-useless-default-assignment': 'error',
       '@typescript-eslint/no-wrapper-object-types': 'error',
       'no-throw-literal': 'off',
       '@typescript-eslint/only-throw-error': 'error',

@@ -2,21 +2,23 @@ import { validateDefaultProjectForFilesGlob } from '../../src/create-program/val
 
 describe(validateDefaultProjectForFilesGlob, () => {
   it('does not throw when options.allowDefaultProject is an empty array', () => {
-    expect(() => validateDefaultProjectForFilesGlob([])).not.toThrow();
+    expect(() => validateDefaultProjectForFilesGlob([])).not.toThrowError();
   });
 
   it('does not throw when options.allowDefaultProject contains a non-** glob', () => {
-    expect(() => validateDefaultProjectForFilesGlob(['*.js'])).not.toThrow();
+    expect(() =>
+      validateDefaultProjectForFilesGlob(['*.js']),
+    ).not.toThrowError();
   });
 
   it('throws when options.allowDefaultProject contains a * glob', () => {
-    expect(() => validateDefaultProjectForFilesGlob(['*'])).toThrow(
+    expect(() => validateDefaultProjectForFilesGlob(['*'])).toThrowError(
       /allowDefaultProject contains the overly wide '\*'\./,
     );
   });
 
   it('throws when options.allowDefaultProject contains a ** glob', () => {
-    expect(() => validateDefaultProjectForFilesGlob(['**/*.js'])).toThrow(
+    expect(() => validateDefaultProjectForFilesGlob(['**/*.js'])).toThrowError(
       /allowDefaultProject glob '\*\*\/\*\.js' contains a disallowed '\*\*'\./,
     );
   });

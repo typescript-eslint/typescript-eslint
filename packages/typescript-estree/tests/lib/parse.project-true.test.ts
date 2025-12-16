@@ -41,7 +41,7 @@ describe(parser.parseAndGenerateServices, () => {
           ...config,
           filePath: join(PROJECT_DIR, 'notIncluded.ts'),
         }),
-      ).toThrow(
+      ).toThrowError(
         /project was set to `true` but couldn't find any tsconfig.json relative to '.+[/\\]tests[/\\]fixtures[/\\]projectTrue[/\\]notIncluded.ts' within '.+[/\\]tests[/\\]fixtures[/\\]projectTrue'./,
       );
     });

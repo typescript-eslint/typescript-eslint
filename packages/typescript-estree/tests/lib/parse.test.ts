@@ -519,10 +519,10 @@ describe(parser.parseAndGenerateServices, () => {
 
       describe('project includes', () => {
         it("doesn't error for matched files", () => {
-          expect(testParse('ts/included01.ts')).not.toThrow();
-          expect(testParse('ts/included02.tsx')).not.toThrow();
-          expect(testParse('js/included01.js')).not.toThrow();
-          expect(testParse('js/included02.jsx')).not.toThrow();
+          expect(testParse('ts/included01.ts')).not.toThrowError();
+          expect(testParse('ts/included02.tsx')).not.toThrowError();
+          expect(testParse('js/included01.js')).not.toThrowError();
+          expect(testParse('js/included02.jsx')).not.toThrowError();
         });
 
         it('errors for not included files', () => {
@@ -567,7 +567,7 @@ describe(parser.parseAndGenerateServices, () => {
 
       describe('"parserOptions.extraFileExtensions" is empty', () => {
         it('should not error', () => {
-          expect(testParse('ts/included01.ts', [])).not.toThrow();
+          expect(testParse('ts/included01.ts', [])).not.toThrowError();
         });
 
         it('the extension does not match', () => {
@@ -582,7 +582,7 @@ describe(parser.parseAndGenerateServices, () => {
       describe('"parserOptions.extraFileExtensions" is non-empty', () => {
         describe('the extension matches', () => {
           it('the file is included', () => {
-            expect(testParse('other/included.vue')).not.toThrow();
+            expect(testParse('other/included.vue')).not.toThrowError();
           });
 
           it("the file isn't included", () => {
@@ -634,19 +634,23 @@ describe(parser.parseAndGenerateServices, () => {
           it('the file is included', () => {
             expect(
               testExtraFileExtensions('other/included.vue', ['.vue']),
-            ).not.toThrow();
+            ).not.toThrowError();
           });
 
           it("the file isn't included", () => {
             expect(
               testExtraFileExtensions('other/notIncluded.vue', ['.vue']),
-            ).toThrow(/notIncluded\.vue was not found by the project service/);
+            ).toThrowError(
+              /notIncluded\.vue was not found by the project service/,
+            );
           });
 
           it('duplicate extension', () => {
             expect(
               testExtraFileExtensions('ts/notIncluded.ts', ['.ts']),
-            ).toThrow(/notIncluded\.ts was not found by the project service/);
+            ).toThrowError(
+              /notIncluded\.ts was not found by the project service/,
+            );
           });
         });
 
@@ -655,7 +659,7 @@ describe(parser.parseAndGenerateServices, () => {
             testExtraFileExtensions('other/unknownFileType.unknown', [
               '.unknown',
             ]),
-          ).toThrow(
+          ).toThrowError(
             /unknownFileType\.unknown was not found by the project service/,
           );
         });
@@ -663,7 +667,7 @@ describe(parser.parseAndGenerateServices, () => {
         it('the extension does not match the file name', () => {
           expect(
             testExtraFileExtensions('other/unknownFileType.unknown', ['.vue']),
-          ).toThrow(
+          ).toThrowError(
             /unknownFileType\.unknown was not found by the project service/,
           );
         });
@@ -765,7 +769,7 @@ describe(parser.parseAndGenerateServices, () => {
             project: ['./tsconfig-that-doesnt-exist.json'],
           }),
         ) // should throw because the file and tsconfig don't exist
-          .toThrow();
+          .toThrowError();
         expect(createDefaultCompilerOptionsFromExtra).toHaveBeenCalledOnce();
         expect(createDefaultCompilerOptionsFromExtra).toHaveLastReturnedWith(
           expect.objectContaining({
@@ -813,16 +817,16 @@ describe(parser.parseAndGenerateServices, () => {
         };
 
       it('ignores nothing when given nothing', () => {
-        expect(testParse('ignoreme')).not.toThrow();
-        expect(testParse('includeme')).not.toThrow();
+        expect(testParse('ignoreme')).not.toThrowError();
+        expect(testParse('includeme')).not.toThrowError();
       });
 
       it('ignores a folder when given a string glob', () => {
         const ignore = ['**/ignoreme/**'];
         // cspell:disable-next-line
-        expect(testParse('ignoreme', ignore)).toThrow();
+        expect(testParse('ignoreme', ignore)).toThrowError();
         // cspell:disable-next-line
-        expect(testParse('includeme', ignore)).not.toThrow();
+        expect(testParse('includeme', ignore)).not.toThrowError();
       });
     },
   );

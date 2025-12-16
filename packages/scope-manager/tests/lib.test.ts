@@ -124,6 +124,6 @@ describe('implicit lib definitions', () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         lib: ['invalid+lib' as any],
       });
-    }).toThrow('invalid+lib');
+    }).toThrowError('invalid+lib');
   });
 });
