@@ -190,7 +190,11 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function isTypeUnchanged(uncast: ts.Type, cast: ts.Type): boolean {
+    function isTypeUnchanged(
+      expression: TSESTree.Expression,
+      uncast: ts.Type,
+      cast: ts.Type,
+    ): boolean {
       if (uncast === cast) {
         return true;
       }
@@ -219,11 +223,146 @@ export default createRule<Options, MessageIds>({
         return castParts.every(part => uncastPartsSet.has(part));
       }
 
-      return false;
+      if (isConceptuallyLiteral(expression)) {
+        return false;
+      }
+
+      if (
+        isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
+        !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)
+      ) {
+        return false;
+      }
+
+      if (hasIndexSignature(uncast) && !hasIndexSignature(cast)) {
+        return false;
+      }
+
+      if (containsAny(uncast) || containsAny(cast)) {
+        return false;
+      }
+
+      if (!hasSameProperties(uncast, cast)) {
+        return false;
+      }
+
+      const uncastTypeArgs = checker.getTypeArguments(
+        uncast as ts.TypeReference,
+      );
+      const castTypeArgs = checker.getTypeArguments(cast as ts.TypeReference);
+      if (uncastTypeArgs.length !== castTypeArgs.length) {
+        return false;
+      }
+      for (let i = 0; i < uncastTypeArgs.length; i++) {
+        if (uncastTypeArgs[i] !== castTypeArgs[i]) {
+          return false;
+        }
+      }
+
+      return (
+        checker.isTypeAssignableTo(uncast, cast) &&
+        checker.isTypeAssignableTo(cast, uncast)
+      );
+    }
+
+    function hasSameProperties(uncast: ts.Type, cast: ts.Type): boolean {
+      const uncastProps = uncast.getProperties();
+      const castProps = cast.getProperties();
+
+      if (uncastProps.length !== castProps.length) {
+        return false;
+      }
+
+      return uncastProps.every(prop => {
+        const name = prop.getEscapedName();
+        return (
+          tsutils.isPropertyReadonlyInType(uncast, name, checker) ===
+          tsutils.isPropertyReadonlyInType(cast, name, checker)
+        );
+      });
+    }
+
+    function hasIndexSignature(type: ts.Type): boolean {
+      return checker.getIndexInfosOfType(type).length > 0;
+    }
+
+    function containsAny(type: ts.Type): boolean {
+      if (isTypeFlagSet(type, ts.TypeFlags.Any)) {
+        return true;
+      }
+      const typeArgs = checker.getTypeArguments(type as ts.TypeReference);
+      return typeArgs.length > 0 && typeArgs.some(containsAny);
     }
 
     function isTypeLiteral(type: ts.Type) {
       return type.isLiteral() || tsutils.isBooleanLiteralType(type);
+    }
+
+    function getOriginalExpression(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): TSESTree.Expression {
+      let current = node.expression;
+      while (
+        current.type === AST_NODE_TYPES.TSAsExpression ||
+        current.type === AST_NODE_TYPES.TSTypeAssertion
+      ) {
+        current = current.expression;
+      }
+      return current;
+    }
+
+    function isDoubleAssertionUnnecessary(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      contextualType: ts.Type | undefined,
+    ): boolean {
+      const innerExpression = node.expression;
+      if (
+        innerExpression.type !== AST_NODE_TYPES.TSAsExpression &&
+        innerExpression.type !== AST_NODE_TYPES.TSTypeAssertion
+      ) {
+        return false;
+      }
+
+      const originalExpr = getOriginalExpression(node);
+      const originalType = services.getTypeAtLocation(originalExpr);
+      const castType = services.getTypeAtLocation(node);
+
+      if (
+        isTypeUnchanged(innerExpression, originalType, castType) &&
+        !isTypeFlagSet(castType, ts.TypeFlags.Any)
+      ) {
+        return true;
+      }
+
+      if (contextualType) {
+        const intermediateType = services.getTypeAtLocation(innerExpression);
+        if (
+          (isTypeFlagSet(intermediateType, ts.TypeFlags.Any) ||
+            isTypeFlagSet(intermediateType, ts.TypeFlags.Unknown)) &&
+          checker.isTypeAssignableTo(originalType, contextualType)
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    function isConceptuallyLiteral(node: TSESTree.Node): boolean {
+      switch (node.type) {
+        case AST_NODE_TYPES.Literal:
+        case AST_NODE_TYPES.ArrayExpression:
+        case AST_NODE_TYPES.ObjectExpression:
+        case AST_NODE_TYPES.TemplateLiteral:
+        case AST_NODE_TYPES.ClassExpression:
+        case AST_NODE_TYPES.FunctionExpression:
+        case AST_NODE_TYPES.ArrowFunctionExpression:
+        case AST_NODE_TYPES.JSXElement:
+        case AST_NODE_TYPES.JSXFragment:
+          return true;
+        default:
+          return false;
+      }
     }
 
     return {
@@ -253,68 +392,107 @@ export default createRule<Options, MessageIds>({
         }
 
         const uncastType = services.getTypeAtLocation(node.expression);
-        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
+        const typeIsUnchanged = isTypeUnchanged(
+          node.expression,
+          uncastType,
+          castType,
+        );
         const wouldSameTypeBeInferred = castTypeIsLiteral
           ? isImplicitlyNarrowedLiteralDeclaration(node)
           : !typeAnnotationIsConstAssertion;
+
+        const reportFix: ReportFixFunction = fixer => {
+          if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
+            const openingAngleBracket = nullThrows(
+              context.sourceCode.getTokenBefore(
+                node.typeAnnotation,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '<',
+              ),
+              NullThrowsReasons.MissingToken('<', 'type annotation'),
+            );
+            const closingAngleBracket = nullThrows(
+              context.sourceCode.getTokenAfter(
+                node.typeAnnotation,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '>',
+              ),
+              NullThrowsReasons.MissingToken('>', 'type annotation'),
+            );
+
+            // < ( number ) > ( 3 + 5 )
+            // ^---remove---^
+            return fixer.removeRange([
+              openingAngleBracket.range[0],
+              closingAngleBracket.range[1],
+            ]);
+          }
+          // `as` is always present in TSAsExpression
+          const asToken = nullThrows(
+            context.sourceCode.getTokenAfter(
+              node.expression,
+              token =>
+                token.type === AST_TOKEN_TYPES.Identifier &&
+                token.value === 'as',
+            ),
+            NullThrowsReasons.MissingToken('>', 'type annotation'),
+          );
+          const tokenBeforeAs = nullThrows(
+            context.sourceCode.getTokenBefore(asToken, {
+              includeComments: true,
+            }),
+            NullThrowsReasons.MissingToken('comment', 'as'),
+          );
+
+          // ( 3 + 5 )  as  number
+          //          ^--remove--^
+          return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
+        };
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
+            fix: reportFix,
+          });
+          return;
+        }
+
+        const originalNode = services.esTreeNodeToTSNodeMap.get(node);
+        const contextualType = getContextualType(checker, originalNode);
+
+        if (
+          contextualType &&
+          !typeAnnotationIsConstAssertion &&
+          !containsAny(uncastType) &&
+          checker.isTypeAssignableTo(uncastType, contextualType)
+        ) {
+          context.report({
+            node,
+            messageId: 'contextuallyUnnecessary',
+            fix: reportFix,
+          });
+          return;
+        }
+
+        if (isDoubleAssertionUnnecessary(node, contextualType)) {
+          const originalExpr = getOriginalExpression(node);
+          context.report({
+            node,
+            messageId: 'unnecessaryAssertion',
             fix(fixer) {
-              if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
-                const openingAngleBracket = nullThrows(
-                  context.sourceCode.getTokenBefore(
-                    node.typeAnnotation,
-                    token =>
-                      token.type === AST_TOKEN_TYPES.Punctuator &&
-                      token.value === '<',
-                  ),
-                  NullThrowsReasons.MissingToken('<', 'type annotation'),
-                );
-                const closingAngleBracket = nullThrows(
-                  context.sourceCode.getTokenAfter(
-                    node.typeAnnotation,
-                    token =>
-                      token.type === AST_TOKEN_TYPES.Punctuator &&
-                      token.value === '>',
-                  ),
-                  NullThrowsReasons.MissingToken('>', 'type annotation'),
-                );
+              let text = context.sourceCode.getText(originalExpr);
 
-                // < ( number ) > ( 3 + 5 )
-                // ^---remove---^
-                return fixer.removeRange([
-                  openingAngleBracket.range[0],
-                  closingAngleBracket.range[1],
-                ]);
+              if (originalExpr.type === AST_NODE_TYPES.ObjectExpression) {
+                text = `(${text})`;
               }
-              // `as` is always present in TSAsExpression
-              const asToken = nullThrows(
-                context.sourceCode.getTokenAfter(
-                  node.expression,
-                  token =>
-                    token.type === AST_TOKEN_TYPES.Identifier &&
-                    token.value === 'as',
-                ),
-                NullThrowsReasons.MissingToken('>', 'type annotation'),
-              );
-              const tokenBeforeAs = nullThrows(
-                context.sourceCode.getTokenBefore(asToken, {
-                  includeComments: true,
-                }),
-                NullThrowsReasons.MissingToken('comment', 'as'),
-              );
 
-              // ( 3 + 5 )  as  number
-              //          ^--remove--^
-              return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
+              return fixer.replaceText(node, text);
             },
           });
         }
-
-        // TODO - add contextually unnecessary check for this
       },
       TSNonNullExpression(node): void {
         const removeExclamationFix: ReportFixFunction = fixer => {
