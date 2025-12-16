@@ -469,11 +469,30 @@ f() as undefined;
     {
       code: `
 interface Overloaded {
-  (): undefined; // or void?
-  (value: string): void; // or undefined?
+  (): undefined;
+  (value: string): void;
 }
 
 ((value => {}) as Overloaded)('') as undefined;
+      `,
+    },
+    {
+      code: `
+interface Overloaded {
+  (): void;
+  (value: string): undefined;
+}
+
+((() => {}) as Overloaded)() as undefined;
+      `,
+    },
+    {
+      code: `
+interface GenericOverloaded {
+  <T extends string>(value: T): void;
+  (): undefined;
+}
+((value => {}) as GenericOverloaded)('') as undefined;
       `,
     },
     {
@@ -1479,7 +1498,7 @@ const b = a;
     },
     {
       code: `
-const EXPLICIT_UNDEFINED = ((): undefined => {})() as undefined;
+((): undefined => {})() as undefined;
       `,
       errors: [
         {
@@ -1487,12 +1506,12 @@ const EXPLICIT_UNDEFINED = ((): undefined => {})() as undefined;
         },
       ],
       output: `
-const EXPLICIT_UNDEFINED = ((): undefined => {})();
+((): undefined => {})();
       `,
     },
     {
       code: `
-const NUMBER_IIFE = (() => 1)() as number;
+(() => 1)() as number;
       `,
       errors: [
         {
@@ -1500,7 +1519,30 @@ const NUMBER_IIFE = (() => 1)() as number;
         },
       ],
       output: `
-const NUMBER_IIFE = (() => 1)();
+(() => 1)();
+      `,
+    },
+    {
+      code: `
+interface Overloaded {
+  (): void;
+  (value: string): undefined;
+}
+
+((value => {}) as Overloaded)('') as undefined;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+interface Overloaded {
+  (): void;
+  (value: string): undefined;
+}
+
+((value => {}) as Overloaded)("");
       `,
     },
   ],
