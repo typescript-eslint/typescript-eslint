@@ -190,6 +190,10 @@ ruleTester.run('no-useless-default-assignment', rule, {
     `
       function foo({ a = undefined }) {}
     `,
+    `
+      declare const tuple: [string];
+      const [a, b = 'default'] = tuple;
+    `,
   ],
   invalid: [
     {

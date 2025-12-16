@@ -178,8 +178,11 @@ export default createRule<[], MessageId>({
         }
 
         const tupleArgs = checker.getTypeArguments(sourceType);
+        if (elementIndex < 0 || elementIndex >= tupleArgs.length) {
+          return;
+        }
         const elementType = tupleArgs[elementIndex];
-        if (elementType && !canBeUndefined(elementType)) {
+        if (!canBeUndefined(elementType)) {
           reportUselessDefault(node, 'property', 'uselessDefaultAssignment');
         }
       }
