@@ -39,11 +39,6 @@ export default createRule<[], MessageId>({
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const compilerOptions = services.program.getCompilerOptions();
-    const isNoUncheckedIndexedAccess = tsutils.isCompilerOptionEnabled(
-      compilerOptions,
-      'noUncheckedIndexedAccess',
-    );
 
     function canBeUndefined(type: ts.Type): boolean {
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
@@ -60,10 +55,7 @@ export default createRule<[], MessageId>({
     ): ts.Type | null {
       const symbol = objectType.getProperty(propertyName);
       if (!symbol) {
-        if (isNoUncheckedIndexedAccess) {
-          return null;
-        }
-        return objectType.getStringIndexType() ?? null;
+        return null;
       }
       return checker.getTypeOfSymbol(symbol);
     }
@@ -79,11 +71,27 @@ export default createRule<[], MessageId>({
         }
       }
 
-      if (isNoUncheckedIndexedAccess) {
-        return null;
-      }
-
       return arrayType.getNumberIndexType() ?? null;
+    }
+
+    function isInsideFunctionParameter(node: TSESTree.Node): boolean {
+      let current: TSESTree.Node | undefined = node.parent;
+      while (current) {
+        if (isFunction(current)) {
+          return true;
+        }
+        if (
+          current.type !== AST_NODE_TYPES.Property &&
+          current.type !== AST_NODE_TYPES.ArrayPattern &&
+          current.type !== AST_NODE_TYPES.ObjectPattern &&
+          current.type !== AST_NODE_TYPES.AssignmentPattern &&
+          current.type !== AST_NODE_TYPES.RestElement
+        ) {
+          return false;
+        }
+        current = current.parent;
+      }
+      return false;
     }
 
     function checkAssignmentPattern(node: TSESTree.AssignmentPattern): void {
@@ -91,9 +99,14 @@ export default createRule<[], MessageId>({
         node.right.type === AST_NODE_TYPES.Identifier &&
         node.right.name === 'undefined'
       ) {
+        if (isInsideFunctionParameter(node)) {
+          return;
+        }
+
+        const parent = node.parent;
         const type =
-          node.parent.type === AST_NODE_TYPES.Property ||
-          node.parent.type === AST_NODE_TYPES.ArrayPattern
+          parent.type === AST_NODE_TYPES.Property ||
+          parent.type === AST_NODE_TYPES.ArrayPattern
             ? 'property'
             : 'parameter';
         reportUselessDefault(node, type, 'uselessUndefined');
@@ -118,7 +131,10 @@ export default createRule<[], MessageId>({
             }
 
             const signatures = contextualType.getCallSignatures();
-            if (signatures.length === 0) {
+            if (
+              signatures.length === 0 ||
+              signatures[0].getDeclaration() === tsFunc
+            ) {
               return;
             }
 
@@ -157,11 +173,17 @@ export default createRule<[], MessageId>({
         }
 
         const elementIndex = parent.elements.indexOf(node);
-        const elementType = getArrayElementType(sourceType, elementIndex);
-        if (!elementType) {
+
+        if (!checker.isTupleType(sourceType)) {
           return;
         }
 
+        const tupleArgs = checker.getTypeArguments(sourceType);
+        if (elementIndex < 0 || elementIndex >= tupleArgs.length) {
+          return;
+        }
+
+        const elementType = tupleArgs[elementIndex];
         if (!canBeUndefined(elementType)) {
           reportUselessDefault(node, 'property', 'uselessDefaultAssignment');
         }

@@ -1,7 +1,6 @@
 import rule from '../../src/rules/no-useless-default-assignment';
-import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-useless-default-assignment', rule, {
@@ -145,45 +144,18 @@ ruleTester.run('no-useless-default-assignment', rule, {
       for ([[a = 1]] of []) {
       }
     `,
-    {
-      code: `
-        declare const g: Array<string>;
-        const [foo = ''] = g;
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
-        },
-      },
-    },
-    {
-      code: `
-        declare const g: Record<string, string>;
-        const { foo = '' } = g;
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
-        },
-      },
-    },
-    {
-      code: `
-        declare const h: { [key: string]: string };
-        const { bar = '' } = h;
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
-        },
-      },
-    },
+    `
+      declare const g: Array<string>;
+      const [foo = ''] = g;
+    `,
+    `
+      declare const g: Record<string, string>;
+      const { foo = '' } = g;
+    `,
+    `
+      declare const h: { [key: string]: string };
+      const { bar = '' } = h;
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/pull/11720#issuecomment-3657141976
     `
       type Merge = boolean | ((incoming: string[]) => void);
@@ -193,6 +165,30 @@ ruleTester.run('no-useless-default-assignment', rule, {
           incoming;
         },
       };
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11846
+    `
+      const [a, b = ''] = 'somestr'.split('.');
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11846
+    `
+      declare const params: string[];
+      const [c = '123'] = params;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11846
+    `
+      declare function useCallback<T>(callback: T);
+      useCallback((value: number[] = []) => {});
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11847
+    `
+      function myFunction(p: number | undefined = undefined) {}
+    `,
+    `
+      function foo(a = undefined) {}
+    `,
+    `
+      function foo({ a = undefined }) {}
     `,
   ],
   invalid: [
@@ -401,23 +397,7 @@ ruleTester.run('no-useless-default-assignment', rule, {
         };
       `,
     },
-    {
-      code: `
-        function foo(a = undefined) {}
-      `,
-      errors: [
-        {
-          column: 26,
-          data: { type: 'parameter' },
-          endColumn: 35,
-          line: 2,
-          messageId: 'uselessUndefined',
-        },
-      ],
-      output: `
-        function foo(a) {}
-      `,
-    },
+
     {
       code: `
         const { a = undefined } = {};
@@ -450,80 +430,6 @@ ruleTester.run('no-useless-default-assignment', rule, {
       ],
       output: `
         const [a] = [];
-      `,
-    },
-    {
-      code: `
-        function foo({ a = undefined }) {}
-      `,
-      errors: [
-        {
-          column: 28,
-          data: { type: 'property' },
-          endColumn: 37,
-          line: 2,
-          messageId: 'uselessUndefined',
-        },
-      ],
-      output: `
-        function foo({ a }) {}
-      `,
-    },
-    {
-      code: `
-        declare const g: Record<string, string>;
-        const { hello = '' } = g;
-      `,
-      errors: [
-        {
-          column: 25,
-          data: { type: 'property' },
-          endColumn: 27,
-          line: 3,
-          messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
-        declare const g: Record<string, string>;
-        const { hello } = g;
-      `,
-    },
-    {
-      code: `
-        declare const h: { [key: string]: string };
-        const { world = '' } = h;
-      `,
-      errors: [
-        {
-          column: 25,
-          data: { type: 'property' },
-          endColumn: 27,
-          line: 3,
-          messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
-        declare const h: { [key: string]: string };
-        const { world } = h;
-      `,
-    },
-    {
-      code: `
-        declare const g: Array<string>;
-        const [foo = ''] = g;
-      `,
-      errors: [
-        {
-          column: 22,
-          data: { type: 'property' },
-          endColumn: 24,
-          line: 3,
-          messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
-        declare const g: Array<string>;
-        const [foo] = g;
       `,
     },
   ],
