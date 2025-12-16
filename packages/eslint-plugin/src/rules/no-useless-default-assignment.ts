@@ -103,10 +103,9 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const parent = node.parent;
         const type =
-          parent.type === AST_NODE_TYPES.Property ||
-          parent.type === AST_NODE_TYPES.ArrayPattern
+          node.parent.type === AST_NODE_TYPES.Property ||
+          node.parent.type === AST_NODE_TYPES.ArrayPattern
             ? 'property'
             : 'parameter';
         reportUselessDefault(node, type, 'uselessUndefined');
