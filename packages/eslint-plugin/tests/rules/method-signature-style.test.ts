@@ -682,6 +682,26 @@ interface Test {
           messageId: 'errorMethod',
         },
       ],
+      output: null,
+    },
+    {
+      code: `
+interface Test {
+  foo(): this;
+  foo(): Promise<this>;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+        {
+          line: 4,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -695,6 +715,7 @@ interface Test {
           messageId: 'errorMethod',
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -708,6 +729,7 @@ interface Test {
           messageId: 'errorMethod',
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -721,6 +743,7 @@ interface Test {
           messageId: 'errorMethod',
         },
       ],
+      output: null,
     },
   ],
 });
