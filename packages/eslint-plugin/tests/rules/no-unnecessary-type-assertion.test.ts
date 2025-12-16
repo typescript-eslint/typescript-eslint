@@ -1542,7 +1542,7 @@ interface Overloaded {
   (value: string): undefined;
 }
 
-((value => {}) as Overloaded)("");
+((value => {}) as Overloaded)('');
       `,
     },
   ],
