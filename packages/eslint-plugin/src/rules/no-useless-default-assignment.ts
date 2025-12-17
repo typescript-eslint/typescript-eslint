@@ -74,35 +74,11 @@ export default createRule<[], MessageId>({
       return arrayType.getNumberIndexType() ?? null;
     }
 
-    function isInsideFunctionParameter(node: TSESTree.Node): boolean {
-      let current: TSESTree.Node | undefined = node.parent;
-      while (current) {
-        if (isFunction(current)) {
-          return true;
-        }
-        if (
-          current.type !== AST_NODE_TYPES.Property &&
-          current.type !== AST_NODE_TYPES.ArrayPattern &&
-          current.type !== AST_NODE_TYPES.ObjectPattern &&
-          current.type !== AST_NODE_TYPES.AssignmentPattern &&
-          current.type !== AST_NODE_TYPES.RestElement
-        ) {
-          return false;
-        }
-        current = current.parent;
-      }
-      return false;
-    }
-
     function checkAssignmentPattern(node: TSESTree.AssignmentPattern): void {
       if (
         node.right.type === AST_NODE_TYPES.Identifier &&
         node.right.name === 'undefined'
       ) {
-        if (isInsideFunctionParameter(node)) {
-          return;
-        }
-
         const type =
           node.parent.type === AST_NODE_TYPES.Property ||
           node.parent.type === AST_NODE_TYPES.ArrayPattern

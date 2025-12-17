@@ -180,16 +180,6 @@ ruleTester.run('no-useless-default-assignment', rule, {
       declare function useCallback<T>(callback: T);
       useCallback((value: number[] = []) => {});
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/11847
-    `
-      function myFunction(p: number | undefined = undefined) {}
-    `,
-    `
-      function foo(a = undefined) {}
-    `,
-    `
-      function foo({ a = undefined }) {}
-    `,
     `
       declare const tuple: [string];
       const [a, b = 'default'] = tuple;
