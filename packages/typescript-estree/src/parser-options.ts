@@ -252,16 +252,14 @@ export interface ParserServicesNodeMaps {
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
 }
 export interface ParserServicesWithTypeInformation
-  extends ParserServicesNodeMaps,
-    ParserServicesBase {
+  extends ParserServicesNodeMaps, ParserServicesBase {
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
   getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
   program: ts.Program;
   host: ts.ModuleResolutionHost;
 }
 export interface ParserServicesWithoutTypeInformation
-  extends ParserServicesNodeMaps,
-    ParserServicesBase {
+  extends ParserServicesNodeMaps, ParserServicesBase {
   program: null;
   host: null;
 }

@@ -90,18 +90,20 @@ export default createRule<Options, MessageIds>({
     function isSymbolTypeBased(
       symbol: ts.Symbol | undefined,
     ): boolean | undefined {
-      while (symbol && symbol.flags & ts.SymbolFlags.Alias) {
-        symbol = checker.getAliasedSymbol(symbol);
-        if (
-          symbol.getDeclarations()?.find(ts.isTypeOnlyImportOrExportDeclaration)
-        ) {
-          return true;
-        }
-      }
       if (!symbol || checker.isUnknownSymbol(symbol)) {
         return undefined;
       }
-      return !(symbol.flags & ts.SymbolFlags.Value);
+      if (
+        symbol.getDeclarations()?.some(ts.isTypeOnlyImportOrExportDeclaration)
+      ) {
+        return true;
+      }
+      if (symbol.flags & ts.SymbolFlags.Value) {
+        return false;
+      }
+      return symbol.flags & ts.SymbolFlags.Alias
+        ? isSymbolTypeBased(checker.getImmediateAliasedSymbol(symbol))
+        : true;
     }
 
     return {

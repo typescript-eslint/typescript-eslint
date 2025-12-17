@@ -95,8 +95,9 @@ export interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
   services: ParserServices;
 }
-interface ParseWithNodeMapsResult<T extends TSESTreeOptions>
-  extends ParserServicesNodeMaps {
+interface ParseWithNodeMapsResult<
+  T extends TSESTreeOptions,
+> extends ParserServicesNodeMaps {
   ast: AST<T>;
 }
 

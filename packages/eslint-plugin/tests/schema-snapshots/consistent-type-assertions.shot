@@ -47,8 +47,7 @@
 type Options = [
   | {
       /** The expected assertion style to enforce. */
-      assertionStyle: /** The expected assertion style to enforce. */
-      'never';
+      assertionStyle /** The expected assertion style to enforce. */: 'never';
     }
   | {
       /** Whether to always prefer type declarations for array literals used as variable initializers, rather than type assertions. */

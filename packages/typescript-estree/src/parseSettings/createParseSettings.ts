@@ -180,7 +180,7 @@ export function createParseSettings(
       singleRun
         ? 'Infinity'
         : (tsestreeOptions.cacheLifetime?.glob ??
-          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS),
+            DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS),
     )),
     tsconfigRootDir,
   };

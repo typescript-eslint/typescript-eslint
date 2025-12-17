@@ -28,8 +28,7 @@ interface TSImportEqualsDeclarationBase extends BaseNode {
   moduleReference: Identifier | TSExternalModuleReference | TSQualifiedName;
 }
 
-export interface TSImportEqualsNamespaceDeclaration
-  extends TSImportEqualsDeclarationBase {
+export interface TSImportEqualsNamespaceDeclaration extends TSImportEqualsDeclarationBase {
   /**
    * The kind of the import.
    */
@@ -44,8 +43,7 @@ export interface TSImportEqualsNamespaceDeclaration
   moduleReference: Identifier | TSQualifiedName;
 }
 
-export interface TSImportEqualsRequireDeclaration
-  extends TSImportEqualsDeclarationBase {
+export interface TSImportEqualsRequireDeclaration extends TSImportEqualsDeclarationBase {
   /**
    * The kind of the import.
    */

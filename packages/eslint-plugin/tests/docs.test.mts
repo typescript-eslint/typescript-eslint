@@ -387,7 +387,7 @@ describe('Validating rule docs', () => {
               range: true,
               sourceType: 'module',
             });
-          }).not.toThrow();
+          }).not.toThrowError();
         });
       },
     );
