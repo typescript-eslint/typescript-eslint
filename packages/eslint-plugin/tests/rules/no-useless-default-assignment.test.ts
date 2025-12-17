@@ -1,6 +1,7 @@
 import rule from '../../src/rules/no-useless-default-assignment';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
+const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-useless-default-assignment', rule, {
@@ -144,6 +145,45 @@ ruleTester.run('no-useless-default-assignment', rule, {
       for ([[a = 1]] of []) {
       }
     `,
+    {
+      code: `
+        declare const g: Array<string>;
+        const [foo = ''] = g;
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
+        },
+      },
+    },
+    {
+      code: `
+        declare const g: Record<string, string>;
+        const { foo = '' } = g;
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
+        },
+      },
+    },
+    {
+      code: `
+        declare const h: { [key: string]: string };
+        const { bar = '' } = h;
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
+        },
+      },
+    },
     `
       declare const g: Array<string>;
       const [foo = ''] = g;
