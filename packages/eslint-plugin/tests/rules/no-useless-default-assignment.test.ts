@@ -184,6 +184,12 @@ ruleTester.run('no-useless-default-assignment', rule, {
         },
       },
     },
+    {
+      code: `
+const { hmm = 'default' } = Math.random() < 0.5 ? { hmm: 'foo' } : {};
+      `,
+      only: true,
+    },
   ],
   invalid: [
     {

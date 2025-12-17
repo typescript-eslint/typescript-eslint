@@ -65,6 +65,9 @@ export default createRule<[], MessageId>({
         }
         return objectType.getStringIndexType() ?? null;
       }
+      if (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Optional)) {
+        return null;
+      }
       return checker.getTypeOfSymbol(symbol);
     }
 
