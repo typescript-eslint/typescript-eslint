@@ -3,9 +3,65 @@ import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/consistent-type-exports';
 import { createRuleTesterWithTypes } from '../RuleTester';
+import * as vfs from '../vfs';
+
+const sys = vfs.fixture`
+// @filename: /tsconfig.json
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "lib": ["es2015", "es2017", "esnext"],
+    "types": [],
+    "experimentalDecorators": true
+  },
+  "exclude": ["/lib*", "node_modules"]
+}
+// @filename: /consistent-type-exports/index.ts
+export type Type1 = 1;
+export type Type2 = 1;
+export const value1 = 2;
+export const value2 = 2;
+
+export class Class1 {}
+
+// @filename: /consistent-type-exports/type-only-exports.ts
+export type TypeFoo = 1;
+
+export interface InterfaceFoo {
+  foo: 'bar';
+}
+
+class LocalClass {}
+
+export type { LocalClass };
+
+// @filename: /consistent-type-exports/type-only-reexport.ts
+export * from './type-only-exports';
+
+export type * as typeOnlyExports from './type-only-exports';
+
+export type * from './index';
+
+export type * as indexExports from './index';
+
+export { Type1 as AliasedType1 } from './index';
+
+import { Class1 } from './index';
+
+export { type Class1 as AliasedClass1 };
+
+// @filename: /consistent-type-exports/value-reexport.ts
+export * from './index';
+`;
 
 const ruleTester = createRuleTesterWithTypes({
   project: './tsconfig.json',
+  sys,
+  tsconfigRootDir: '/',
 });
 
 ruleTester.run('consistent-type-exports', rule, {

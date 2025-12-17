@@ -251,7 +251,7 @@ function createWatchProgram(
   const watchCompilerHost = ts.createWatchCompilerHost(
     tsconfigPath,
     createDefaultCompilerOptionsFromExtra(parseSettings),
-    ts.sys,
+    parseSettings.sys ?? ts.sys,
     ts.createAbstractBuilder,
     diagnosticReporter,
     // TODO: file issue on TypeScript to suggest making optional?

@@ -229,6 +229,7 @@ describe(parser.parseAndGenerateServices, () => {
             services: {
               ...result.services,
               // Reduce noise in snapshot by not printing the TS program
+              host: result.services.host == null ? 'No Host' : 'With Host',
               program:
                 result.services.program == null ? 'No Program' : 'With Program',
             },

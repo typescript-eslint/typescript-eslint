@@ -153,10 +153,14 @@ export function createParseSettings(
       (tsestreeOptions.project &&
         tsestreeOptions.projectService !== false &&
         process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')
-        ? populateProjectService(tsestreeOptions.projectService, {
-            jsDocParsingMode,
-            tsconfigRootDir,
-          })
+        ? populateProjectService(
+            tsestreeOptions.projectService,
+            {
+              jsDocParsingMode,
+              tsconfigRootDir,
+            },
+            tsestreeOptions.sys,
+          )
         : undefined,
     setExternalModuleIndicator:
       tsestreeOptions.sourceType === 'module' ||
@@ -170,6 +174,7 @@ export function createParseSettings(
     suppressDeprecatedPropertyWarnings:
       tsestreeOptions.suppressDeprecatedPropertyWarnings ??
       process.env.NODE_ENV !== 'test',
+    sys: tsestreeOptions.sys,
     tokens: tsestreeOptions.tokens === true ? [] : null,
     tsconfigMatchCache: (TSCONFIG_MATCH_CACHE ??= new ExpiringCache(
       singleRun
@@ -280,15 +285,19 @@ function getFileName(jsx?: boolean): string {
 function populateProjectService(
   optionsRaw: ProjectServiceOptions | true | undefined,
   settings: CreateProjectServiceSettings,
+  sys?: ts.System,
 ) {
   const options = typeof optionsRaw === 'object' ? optionsRaw : {};
 
   validateDefaultProjectForFilesGlob(options.allowDefaultProject);
 
-  TSSERVER_PROJECT_SERVICE ??= createProjectService({
-    options,
-    ...settings,
-  });
+  TSSERVER_PROJECT_SERVICE ??= createProjectService(
+    {
+      options,
+      ...settings,
+    },
+    sys,
+  );
 
   return TSSERVER_PROJECT_SERVICE;
 }

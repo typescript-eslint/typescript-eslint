@@ -129,6 +129,7 @@ export function parseForESLint(
     comment: true,
     loc: true,
     range: true,
+    sys: parserOptions.sys,
     tokens: true,
   } satisfies TSESTreeOptions;
 

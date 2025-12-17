@@ -80,6 +80,7 @@ export interface CreateProjectServiceSettings {
 /**
  * Creates a new Project Service instance, as well as metadata on its creation.
  * @param settings Settings to create a new Project Service instance.
+ * @param sys An instance used for interacting with the file system.
  * @returns A new Project Service instance, as well as metadata on its creation.
  * @example
  * ```ts
@@ -90,11 +91,14 @@ export interface CreateProjectServiceSettings {
  * service.openClientFile('index.ts');
  * ```
  */
-export function createProjectService({
-  jsDocParsingMode,
-  options: optionsRaw = {},
-  tsconfigRootDir,
-}: CreateProjectServiceSettings = {}): ProjectServiceAndMetadata {
+export function createProjectService(
+  {
+    jsDocParsingMode,
+    options: optionsRaw = {},
+    tsconfigRootDir,
+  }: CreateProjectServiceSettings = {},
+  sys?: ts.System,
+): ProjectServiceAndMetadata {
   const options = {
     defaultProject: 'tsconfig.json',
     ...optionsRaw,
@@ -110,7 +114,7 @@ export function createProjectService({
   // there's a whole separate update pass in maybeInvalidateProgram at the bottom of getWatchProgramsForProjects
   // (this "goes nuclear on TypeScript")
   const system: ts.server.ServerHost = {
-    ...tsserver.sys,
+    ...(sys ?? tsserver.sys),
     clearImmediate,
     clearTimeout,
     setImmediate,

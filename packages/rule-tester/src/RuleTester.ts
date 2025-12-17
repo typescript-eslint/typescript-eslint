@@ -341,6 +341,9 @@ export class RuleTester extends TestFramework {
           filename,
         );
       }
+      if (resolvedOptions.sys) {
+        return path.join(resolvedOptions.sys.getCurrentDirectory(), filename);
+      }
       return filename;
     };
     const normalizeTest = <
@@ -702,6 +705,9 @@ export class RuleTester extends TestFramework {
         "Optional test case property 'filename' must be a string",
       );
       filename = item.filename;
+    }
+    if (filename) {
+      config.languageOptions.parserOptions?.sys?.writeFile(filename, code);
     }
 
     const prefixedRuleName = `${RULE_TESTER_PLUGIN_PREFIX}${ruleName}`;

@@ -268,6 +268,6 @@ export function parseAndGenerateServices<
    */
   return {
     ast: estree as AST<T>,
-    services: createParserServices(astMaps, program),
+    services: createParserServices(astMaps, program, parseSettings.sys),
   };
 }
