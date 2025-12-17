@@ -217,7 +217,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   programs?: ts.Program[] | null;
 
   /**
-   * An intance used for interacting with the file system.
+   * An instance used for interacting with the file system.
    * Defaults to `ts.sys`.
    * This allows switching to a virtual file system, such as `@typescript/vfs`.
    */
