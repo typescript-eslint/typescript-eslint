@@ -116,7 +116,7 @@ export default createRule<Options, MessageIds>({
           node.source.value,
           context.filename,
           services.program.getCompilerOptions(),
-          ts.sys,
+          services.host,
         );
         if (sourceModule.resolvedModule == null) {
           return;

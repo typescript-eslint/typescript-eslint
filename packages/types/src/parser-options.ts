@@ -1,4 +1,4 @@
-import type { Program } from 'typescript';
+import type { Program, System } from 'typescript';
 
 import type { Lib } from './lib';
 
@@ -113,6 +113,7 @@ export interface ParserOptions {
   projectService?: boolean | ProjectServiceOptions;
   range?: boolean;
   sourceType?: SourceType | undefined;
+  sys?: System;
   tokens?: boolean;
   tsconfigRootDir?: string;
 

@@ -1,12 +1,88 @@
 import rule from '../../src/rules/no-deprecated';
-import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
+import * as vfs from '../vfs';
 
-const rootDir = getFixturesRootDir();
+const sys = vfs.fixture`
+// @filename: /tsconfig.json
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "lib": ["es2015", "es2017", "esnext"],
+    "types": ["node", "react"],
+    "experimentalDecorators": true
+  },
+  "exclude": ["/lib*", "node_modules"]
+}
+
+// @filename: /tsconfig.moduleresolution-node16.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "node16",
+    "moduleResolution": "node16"
+  }
+}
+// @filename: /deprecated.ts
+/** @deprecated */
+export class DeprecatedClass {
+  /** @deprecated */
+  foo: string = '';
+}
+/** @deprecated */
+export const deprecatedVariable = 1;
+/** @deprecated */
+export function deprecatedFunction(): void {}
+class NormalClass {}
+const normalVariable = 1;
+function normalFunction(): void;
+function normalFunction(arg: string): void;
+function normalFunction(arg?: string): void {}
+function deprecatedFunctionWithOverloads(): void;
+/** @deprecated */
+function deprecatedFunctionWithOverloads(arg: string): void;
+function deprecatedFunctionWithOverloads(arg?: string): void {}
+export class ClassWithDeprecatedConstructor {
+  constructor();
+  /** @deprecated */
+  constructor(arg: string);
+  constructor(arg?: string) {}
+}
+export {
+  /** @deprecated */
+  NormalClass,
+  /** @deprecated */
+  normalVariable,
+  /** @deprecated */
+  normalFunction,
+  deprecatedFunctionWithOverloads,
+  /** @deprecated Reason */
+  deprecatedFunctionWithOverloads as reexportedDeprecatedFunctionWithOverloads,
+  /** @deprecated Reason */
+  ClassWithDeprecatedConstructor as ReexportedClassWithDeprecatedConstructor,
+};
+
+/** @deprecated Reason */
+export type T = { a: string };
+
+export type U = { b: string };
+
+/** @deprecated */
+export default {
+  foo: 1,
+};
+`;
+const rootDir = '/';
 const ruleTester = createRuleTesterWithTypes({
   ecmaFeatures: {
     jsx: true,
   },
   project: './tsconfig.json',
+  sys,
+  tsconfigRootDir: rootDir,
 });
 
 ruleTester.run('no-deprecated', rule, {
@@ -438,7 +514,7 @@ ruleTester.run('no-deprecated', rule, {
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.moduleResolution-node16.json',
+          project: './tsconfig.moduleresolution-node16.json',
           projectService: false,
           tsconfigRootDir: rootDir,
         },
@@ -3333,7 +3409,7 @@ exists('/foo');
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.moduleResolution-node16.json',
+          project: './tsconfig.moduleresolution-node16.json',
           projectService: false,
           tsconfigRootDir: rootDir,
         },

@@ -100,6 +100,7 @@ export function createParser(
             checker.getTypeAtLocation(
               converted.astMaps.esTreeNodeToTSNodeMap.get(node),
             ),
+          host: system,
           isolatedDeclarations: compilerOptions.isolatedDeclarations ?? false,
           program,
           tsNodeToESTreeNodeMap: converted.astMaps.tsNodeToESTreeNodeMap,

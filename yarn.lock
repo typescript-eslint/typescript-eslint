@@ -6171,6 +6171,7 @@ __metadata:
     "@typescript-eslint/type-utils": 8.50.0
     "@typescript-eslint/utils": 8.50.0
     "@typescript-eslint/visitor-keys": 8.50.0
+    "@typescript/vfs": ^1.6.2
     "@vitest/coverage-v8": ^3.1.3
     ajv: ^6.12.6
     cross-fetch: "*"
@@ -6374,6 +6375,7 @@ __metadata:
     "@typescript-eslint/types": "workspace:^"
     "@typescript-eslint/typescript-estree": "workspace:^"
     "@typescript-eslint/utils": "workspace:^"
+    "@typescript/vfs": ^1.6.2
     "@vitest/coverage-v8": ^3.1.3
     "@vitest/eslint-plugin": 1.5.1
     console-fail-test: ^0.6.0
@@ -6483,6 +6485,17 @@ __metadata:
     tsx: "*"
   languageName: unknown
   linkType: soft
+
+"@typescript/vfs@npm:^1.6.2":
+  version: 1.6.2
+  resolution: "@typescript/vfs@npm:1.6.2"
+  dependencies:
+    debug: ^4.1.1
+  peerDependencies:
+    typescript: "*"
+  checksum: 47e6b1b88bec1e69aa4dc1f419678b5d56caa6565bace12ca8b55a18c4961546018da318bd453fbb963995ca57d7e4fa91d42ad405bdc1e41c57aa034b68d0b3
+  languageName: node
+  linkType: hard
 
 "@uiw/react-shields@npm:2.0.1":
   version: 2.0.1

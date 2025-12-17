@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import * as ts from 'typescript';
 
 import type { ASTMaps } from './convert';
 import type { ParserServices } from './parser-options';
@@ -6,11 +6,13 @@ import type { ParserServices } from './parser-options';
 export function createParserServices(
   astMaps: ASTMaps,
   program: ts.Program | null,
+  host?: ts.ModuleResolutionHost,
 ): ParserServices {
   if (!program) {
     return {
       emitDecoratorMetadata: undefined,
       experimentalDecorators: undefined,
+      host: null,
       isolatedDeclarations: undefined,
       program,
       // we always return the node maps because
@@ -24,6 +26,7 @@ export function createParserServices(
   const compilerOptions = program.getCompilerOptions();
 
   return {
+    host: host ?? ts.sys,
     program,
     // not set in the config is the same as off
     emitDecoratorMetadata: compilerOptions.emitDecoratorMetadata ?? false,

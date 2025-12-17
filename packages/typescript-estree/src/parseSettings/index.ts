@@ -138,6 +138,13 @@ export interface MutableParseSettings {
   suppressDeprecatedPropertyWarnings: boolean;
 
   /**
+   * An instance used for interacting with the file system.
+   * Defaults to `ts.sys`.
+   * This allows switching to a virtual file system, such as `@typescript/vfs`.
+   */
+  sys?: ts.System;
+
+  /**
    * If the `tokens` parse option is enabled, retrieved tokens.
    */
   tokens: TSESTree.Token[] | null;

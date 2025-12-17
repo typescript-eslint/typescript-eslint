@@ -215,6 +215,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * All linted files must be part of the provided program(s).
    */
   programs?: ts.Program[] | null;
+
+  /**
+   * An instance used for interacting with the file system.
+   * Defaults to `ts.sys`.
+   * This allows switching to a virtual file system, such as `@typescript/vfs`.
+   */
+  sys?: ts.System;
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;
@@ -249,10 +256,12 @@ export interface ParserServicesWithTypeInformation
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
   getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
   program: ts.Program;
+  host: ts.ModuleResolutionHost;
 }
 export interface ParserServicesWithoutTypeInformation
   extends ParserServicesNodeMaps, ParserServicesBase {
   program: null;
+  host: null;
 }
 export type ParserServices =
   | ParserServicesWithoutTypeInformation
