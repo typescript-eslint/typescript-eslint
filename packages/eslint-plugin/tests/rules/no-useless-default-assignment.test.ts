@@ -431,7 +431,23 @@ ruleTester.run('no-useless-default-assignment', rule, {
         };
       `,
     },
-
+    {
+      code: `
+        function foo(a = undefined) {}
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { type: 'parameter' },
+          endColumn: 35,
+          line: 2,
+          messageId: 'uselessUndefined',
+        },
+      ],
+      output: `
+        function foo(a) {}
+      `,
+    },
     {
       code: `
         const { a = undefined } = {};
@@ -464,6 +480,23 @@ ruleTester.run('no-useless-default-assignment', rule, {
       ],
       output: `
         const [a] = [];
+      `,
+    },
+    {
+      code: `
+        function foo({ a = undefined }) {}
+      `,
+      errors: [
+        {
+          column: 28,
+          data: { type: 'property' },
+          endColumn: 37,
+          line: 2,
+          messageId: 'uselessUndefined',
+        },
+      ],
+      output: `
+        function foo({ a }) {}
       `,
     },
   ],
