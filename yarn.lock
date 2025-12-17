@@ -6335,7 +6335,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@8.50.1, @typescript-eslint/types@^8.11.0, @typescript-eslint/types@^8.34.1, @typescript-eslint/types@^8.50.1, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@8.50.1, @typescript-eslint/types@^8.11.0, @typescript-eslint/types@^8.50.1, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -6384,7 +6384,7 @@ __metadata:
     eslint-plugin-import: ^2.32.0
     eslint-plugin-jsdoc: ^50.5.0
     eslint-plugin-jsx-a11y: ^6.10.2
-    eslint-plugin-perfectionist: ^4.12.3
+    eslint-plugin-perfectionist: ^5.1.0
     eslint-plugin-react: ^7.37.3
     eslint-plugin-react-hooks: ^5.0.0
     eslint-plugin-regexp: ^2.7.0
@@ -6433,7 +6433,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/utils@8.50.1, @typescript-eslint/utils@^8.34.1, @typescript-eslint/utils@^8.46.1, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/utils@8.50.1, @typescript-eslint/utils@^8.46.1, @typescript-eslint/utils@^8.50.1, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
@@ -10417,16 +10417,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-perfectionist@npm:^4.12.3":
-  version: 4.15.0
-  resolution: "eslint-plugin-perfectionist@npm:4.15.0"
+"eslint-plugin-perfectionist@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "eslint-plugin-perfectionist@npm:5.1.0"
   dependencies:
-    "@typescript-eslint/types": ^8.34.1
-    "@typescript-eslint/utils": ^8.34.1
+    "@typescript-eslint/utils": ^8.50.1
     natural-orderby: ^5.0.0
   peerDependencies:
     eslint: ">=8.45.0"
-  checksum: 84a7ff19a18afc08d3b992e89a9af646b83c7ae925b62e689832d311931abcb1e531793de150ac15609b9819e157f85b155070f471c40ae65821e326f287ec4f
+  checksum: ddc82f98a21d8116b9b82d6fd08859aa287c898522557d302e4f18084033a972b19c614ea3f3824f5a0070669b0dccf7d432224e9a4f165c135a1eafc6a78c88
   languageName: node
   linkType: hard
 
