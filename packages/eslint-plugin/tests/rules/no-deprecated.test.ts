@@ -514,7 +514,7 @@ ruleTester.run('no-deprecated', rule, {
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.moduleResolution-node16.json',
+          project: './tsconfig.moduleresolution-node16.json',
           projectService: false,
           tsconfigRootDir: rootDir,
         },
@@ -3409,7 +3409,7 @@ exists('/foo');
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.moduleResolution-node16.json',
+          project: './tsconfig.moduleresolution-node16.json',
           projectService: false,
           tsconfigRootDir: rootDir,
         },
