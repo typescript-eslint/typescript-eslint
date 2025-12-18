@@ -1,26 +1,29 @@
 import type { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
 
+type ASTNodeTypes = `${AST_NODE_TYPES}` | AST_NODE_TYPES;
+type ASTTokenTypes = `${AST_TOKEN_TYPES}` | AST_TOKEN_TYPES;
+
 type ObjectEntry<BaseType> = BaseType extends unknown
   ? [keyof BaseType, BaseType[keyof BaseType]]
   : never;
 type ObjectEntries<BaseType> = ObjectEntry<BaseType>[];
 
 export const isNodeOfType =
-  <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
+  <NodeType extends ASTNodeTypes>(nodeType: NodeType) =>
   (
     node: TSESTree.Node | null | undefined,
   ): node is Extract<TSESTree.Node, { type: NodeType }> =>
     node?.type === nodeType;
 
 export const isNodeOfTypes =
-  <NodeTypes extends readonly AST_NODE_TYPES[]>(nodeTypes: NodeTypes) =>
+  <NodeTypes extends readonly ASTNodeTypes[]>(nodeTypes: NodeTypes) =>
   (
     node: TSESTree.Node | null | undefined,
   ): node is Extract<TSESTree.Node, { type: NodeTypes[number] }> =>
     !!node && nodeTypes.includes(node.type);
 
 export const isNodeOfTypeWithConditions = <
-  NodeType extends AST_NODE_TYPES,
+  NodeType extends ASTNodeTypes,
   ExtractedNode extends Extract<TSESTree.Node, { type: NodeType }>,
   Conditions extends Partial<ExtractedNode>,
 >(
@@ -39,7 +42,7 @@ export const isNodeOfTypeWithConditions = <
 };
 
 export const isTokenOfTypeWithConditions = <
-  TokenType extends AST_TOKEN_TYPES,
+  TokenType extends ASTTokenTypes,
   // This is technically unsafe, but we find it useful to extract out the type
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   ExtractedToken extends Extract<TSESTree.Token, { type: TokenType }>,
@@ -63,7 +66,7 @@ export const isTokenOfTypeWithConditions = <
 
 export const isNotTokenOfTypeWithConditions =
   <
-    TokenType extends AST_TOKEN_TYPES,
+    TokenType extends ASTTokenTypes,
     ExtractedToken extends Extract<TSESTree.Token, { type: TokenType }>,
     Conditions extends Partial<ExtractedToken>,
   >(
