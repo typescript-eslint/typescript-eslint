@@ -6394,7 +6394,7 @@ __metadata:
     husky: ^9.1.4
     knip: 5.75.1
     lint-staged: ^15.2.2
-    markdownlint-cli: ^0.46.0
+    markdownlint-cli: ^0.47.0
     nx: 22.1.1
     prettier: 3.7.2
     rimraf: ^5.0.5
@@ -11443,10 +11443,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-east-asian-width@npm:^1.0.0":
-  version: 1.2.0
-  resolution: "get-east-asian-width@npm:1.2.0"
-  checksum: ea55f4d4a42c4b00d3d9be3111bc17eb0161f60ed23fc257c1390323bb780a592d7a8bdd550260fd4627dabee9a118cdfa3475ae54edca35ebcd3bdae04179e3
+"get-east-asian-width@npm:^1.0.0, get-east-asian-width@npm:^1.3.0":
+  version: 1.4.0
+  resolution: "get-east-asian-width@npm:1.4.0"
+  checksum: 1d9a81a8004f4217ebef5d461875047d269e4b57e039558fd65130877cd4da8e3f61e1c4eada0c8b10e2816c7baf7d5fddb7006f561da13bc6f6dd19c1e964a4
   languageName: node
   linkType: hard
 
@@ -14000,9 +14000,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"markdownlint-cli@npm:^0.46.0":
-  version: 0.46.0
-  resolution: "markdownlint-cli@npm:0.46.0"
+"markdownlint-cli@npm:^0.47.0":
+  version: 0.47.0
+  resolution: "markdownlint-cli@npm:0.47.0"
   dependencies:
     commander: ~14.0.2
     deep-extend: ~0.6.0
@@ -14011,20 +14011,20 @@ __metadata:
     jsonc-parser: ~3.3.1
     jsonpointer: ~5.0.1
     markdown-it: ~14.1.0
-    markdownlint: ~0.39.0
+    markdownlint: ~0.40.0
     minimatch: ~10.1.1
     run-con: ~1.3.2
     smol-toml: ~1.5.2
     tinyglobby: ~0.2.15
   bin:
     markdownlint: markdownlint.js
-  checksum: 9d08bb92aac559ad7406eac8d487d4c81b5e32a912670230d064f48ceb724519f8418e559bdd061465c2cb3dbae4ba46d70f2a8988371089fe4065adc4d39d04
+  checksum: 26cb8086db3dfa55ecac2be1eea5d2caab9d8d0340ea61f347cb524707a721a726006c5a27ece55daa1dc36f1886de6483a20c643d56a9583bb7ffc73624d5a0
   languageName: node
   linkType: hard
 
-"markdownlint@npm:~0.39.0":
-  version: 0.39.0
-  resolution: "markdownlint@npm:0.39.0"
+"markdownlint@npm:~0.40.0":
+  version: 0.40.0
+  resolution: "markdownlint@npm:0.40.0"
   dependencies:
     micromark: 4.0.2
     micromark-core-commonmark: 2.0.3
@@ -14034,7 +14034,8 @@ __metadata:
     micromark-extension-gfm-table: 2.1.1
     micromark-extension-math: 3.1.0
     micromark-util-types: 2.0.2
-  checksum: e25af7c2ee6b377d5f3864e84cb136559abb5958f05bc2ab4306a9b6a2118f149d4540becd69b0f254371fcb920f820762ba9d35164c0c8684e9c5d4969d49bf
+    string-width: 8.1.0
+  checksum: c62e1695de703e50364b3f985f1870a01dffd4ce5662c41fe3fd42996f858f8b166e0919b4343d60717f6d027956735fcb7413f987e943d024fbefb70b3f3c58
   languageName: node
   linkType: hard
 
@@ -19098,6 +19099,16 @@ __metadata:
     is-fullwidth-code-point: ^3.0.0
     strip-ansi: ^6.0.1
   checksum: e52c10dc3fbfcd6c3a15f159f54a90024241d0f149cf8aed2982a2d801d2e64df0bf1dc351cf8e95c3319323f9f220c16e740b06faecd53e2462df1d2b5443fb
+  languageName: node
+  linkType: hard
+
+"string-width@npm:8.1.0":
+  version: 8.1.0
+  resolution: "string-width@npm:8.1.0"
+  dependencies:
+    get-east-asian-width: ^1.3.0
+    strip-ansi: ^7.1.0
+  checksum: 51ee97c4ffee7b94f8a2ee785fac14f81ec9809b9fcec9a4db44e25c717c263af0cc4387c111aef76195c0718dc43766f3678c07fb542294fb0244f7bfbde883
   languageName: node
   linkType: hard
 
