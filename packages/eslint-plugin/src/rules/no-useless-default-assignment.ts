@@ -147,13 +147,12 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const elementIndex = parent.elements.indexOf(node);
-
         if (!checker.isTupleType(sourceType)) {
           return;
         }
 
         const tupleArgs = checker.getTypeArguments(sourceType);
+        const elementIndex = parent.elements.indexOf(node);
         if (elementIndex < 0 || elementIndex >= tupleArgs.length) {
           return;
         }
