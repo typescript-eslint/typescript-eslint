@@ -257,7 +257,7 @@ export default createRule<Options, MessageIds>({
 
         if (tsutils.isUnionType(typeAtDefinition)) {
           return tsutils
-            .unionTypeParts(typeAtDefinition)
+            .unionConstituents(typeAtDefinition)
             .some(part => isFreshLiteralType(part));
         }
 
