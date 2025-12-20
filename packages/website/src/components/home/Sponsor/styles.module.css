@@ -1,0 +1,12 @@
+.sponsorLink {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+}
+
+@media screen and (width >= 1150px) {
+  .sponsorLink {
+    display: flex;
+  }
+}

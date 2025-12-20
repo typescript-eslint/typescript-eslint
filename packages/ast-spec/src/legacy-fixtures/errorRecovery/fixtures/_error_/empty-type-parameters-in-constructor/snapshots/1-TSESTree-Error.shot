@@ -1,3 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ empty-type-parameters-in-constructor TSESTree - Error 1`] = `"NO ERROR"`;
+exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > empty-type-parameters-in-constructor > TSESTree - Error`]
+TSError
+  2 |
+  3 | class foo {
+> 4 |   constructor<>() {}
+    |              ^^ Type parameter list cannot be empty.
+  5 | }
+  6 |

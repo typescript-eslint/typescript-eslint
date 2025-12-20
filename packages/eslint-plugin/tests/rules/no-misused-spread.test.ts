@@ -1,17 +1,10 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-misused-spread';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootPath = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig-with-dom.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
+const ruleTester = createRuleTesterWithTypes({
+  project: './tsconfig-with-dom.json',
 });
 
 ruleTester.run('no-misused-spread', rule, {
@@ -741,6 +734,17 @@ ruleTester.run('no-misused-spread', rule, {
           endLine: 6,
           line: 3,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        const o = Object.fromEntries(new Map([
+            ['test-1', 1],
+            ['test-2', 2],
+          ]));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -759,6 +763,19 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 7,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        const map = new Map([
+          ['test-1', 1],
+          ['test-2', 2],
+        ]);
+
+        const o = Object.fromEntries(map);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -773,6 +790,109 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: Map<string, number>;
+        const o = Object.fromEntries(map);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+        declare const map: Map<string, number>;
+        const o = { ...(map) };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 29,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: Map<string, number>;
+        const o = Object.fromEntries(map);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare const map: Map<string, number>;
+        const o = { ...(map, map) };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 34,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: Map<string, number>;
+        const o = Object.fromEntries((map, map));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare const map: Map<string, number>;
+        const others = { a: 1 };
+        const o = { ...map, ...others };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 27,
+          line: 4,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: Map<string, number>;
+        const others = { a: 1 };
+        const o = { ...Object.fromEntries(map), ...others };
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare const map: Map<string, number>;
+        const o = { other: 1, ...map };
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 37,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: Map<string, number>;
+        const o = { other: 1, ...Object.fromEntries(map) };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -787,6 +907,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: ReadonlyMap<string, number>;
+        const o = Object.fromEntries(map);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -801,6 +930,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: WeakMap<{ a: number }, string>;
+        const o = Object.fromEntries(map);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -829,6 +967,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 32,
           line: 3,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare function getMap(): Map<string, number>;
+        const o = Object.fromEntries(getMap());
+      `,
+            },
+          ],
         },
       ],
     },
@@ -843,6 +990,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 25,
           line: 3,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const a: Map<boolean, string> & Set<number>;
+        const o = Object.fromEntries(a);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -871,6 +1027,69 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 31,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        const promise = new Promise(() => {});
+        const o = { ...await promise };
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare const promise: Promise<{ a: 1 }>;
+        async function foo() {
+          return { ...(promise || {}) };
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 38,
+          line: 4,
+          messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare const promise: Promise<{ a: 1 }>;
+        async function foo() {
+          return { ...(await (promise || {})) };
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare const promise: Promise<any>;
+        async function foo() {
+          return { ...(Math.random() < 0.5 ? promise : {}) };
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 59,
+          line: 4,
+          messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare const promise: Promise<any>;
+        async function foo() {
+          return { ...(await (Math.random() < 0.5 ? promise : {})) };
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -886,6 +1105,16 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 30,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        function withPromise<P extends Promise<void>>(promise: P) {
+          return { ...await promise };
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -900,6 +1129,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 36,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare const maybePromise: Promise<number> | { a: number };
+        const o = { ...await maybePromise };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -914,6 +1152,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 31,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare const promise: Promise<number> & { a: number };
+        const o = { ...await promise };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -928,6 +1175,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 36,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare function getPromise(): Promise<number>;
+        const o = { ...await getPromise() };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -942,6 +1198,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 36,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare function getPromise<T extends Promise<number>>(arg: T): T;
+        const o = { ...await getPromise() };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1636,6 +1901,16 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 32,
           line: 4,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: Map<string, number>;
+
+        const o = <div {...Object.fromEntries(map)} />;
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -1658,6 +1933,16 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 36,
           line: 4,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        const promise = new Promise(() => {});
+
+        const o = <div {...await promise} />;
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {

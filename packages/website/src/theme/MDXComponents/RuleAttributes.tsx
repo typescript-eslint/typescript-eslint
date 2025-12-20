@@ -20,7 +20,10 @@ import {
 import { Feature } from './Feature';
 import styles from './RuleAttributes.module.css';
 
-const recommendations = {
+const recommendations: Record<
+  RuleRecommendation,
+  [string, RuleRecommendation]
+> = {
   recommended: [RECOMMENDED_CONFIG_EMOJI, 'recommended'],
   strict: [STRICT_CONFIG_EMOJI, 'strict'],
   stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
@@ -45,18 +48,22 @@ const resolveRecommendation = (
 };
 
 const getRecommendation = (docs: RecommendedRuleMetaDataDocs): string[] => {
-  const recommended = docs.recommended;
-  const recommendation =
-    recommendations[
-      typeof recommended === 'object'
-        ? resolveRecommendation(recommended)
-        : recommended
-    ];
+  const recommendation = getRecommendationWithEmoji(docs.recommended);
 
   return docs.requiresTypeChecking
     ? [recommendation[0], `${recommendation[1]}-type-checked`]
     : recommendation;
 };
+
+export function getRecommendationWithEmoji(
+  recommended: RecommendedRuleMetaDataDocs['recommended'],
+): [string, RuleRecommendation] {
+  const recommendationKey =
+    typeof recommended === 'object'
+      ? resolveRecommendation(recommended)
+      : recommended;
+  return recommendations[recommendationKey];
+}
 
 export function RuleAttributes({ name }: { name: string }): React.ReactNode {
   const rules = useRulesMeta();
@@ -127,10 +134,36 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
           <Link href="/getting-started/typed-linting" target="_blank">
             type information
           </Link>{' '}
-          to run.
+          to run, which comes with performance tradeoffs.
         </>
       ),
       emoji: '💭',
+    });
+  }
+
+  if (rule.docs.extendsBaseRule) {
+    features.push({
+      children: (
+        <>
+          {' '}
+          This is an "extension" rule that replaces a core ESLint rule to work
+          with TypeScript. See{' '}
+          <Link href="/rules#extension-rules">Rules &gt; Extension Rules</Link>.
+        </>
+      ),
+      emoji: '🧱',
+    });
+  }
+
+  if (rule.docs.frozen) {
+    features.push({
+      children: (
+        <>
+          This rule is currently <Link href="/rules#frozen-rules">frozen</Link>{' '}
+          and is not accepting feature requests.
+        </>
+      ),
+      emoji: '❄️',
     });
   }
 

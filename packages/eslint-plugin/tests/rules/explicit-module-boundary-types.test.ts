@@ -601,6 +601,15 @@ export default { Foo };
     },
     {
       code: `
+export class Foo {
+  accessor bar = (): void => {
+    return;
+  };
+}
+      `,
+    },
+    {
+      code: `
 export function foo(): (n: number) => string {
   return n => String(n);
 }
@@ -812,6 +821,64 @@ export const a: Foo = {
   f: (x: boolean) => x,
 };
     `,
+    {
+      code: `
+export function test(a: string): string;
+export function test(a: number): number;
+export function test(a: unknown) {
+  return a;
+}
+      `,
+      options: [
+        {
+          allowOverloadFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+export default function test(a: string): string;
+export default function test(a: number): number;
+export default function test(a: unknown) {
+  return a;
+}
+      `,
+      options: [
+        {
+          allowOverloadFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+export default function (a: string): string;
+export default function (a: number): number;
+export default function (a: unknown) {
+  return a;
+}
+      `,
+      options: [
+        {
+          allowOverloadFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+export class Test {
+  test(a: string): string;
+  test(a: number): number;
+  test(a: unknown) {
+    return a;
+  }
+}
+      `,
+      options: [
+        {
+          allowOverloadFunctions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1315,27 +1382,16 @@ export class Test {
     {
       code: `
 export class Test {
-  constructor(
-    public foo,
-    private ...bar,
-  ) {}
+  constructor(public foo) {}
 }
       `,
       errors: [
         {
-          column: 12,
+          column: 22,
           data: {
             name: 'foo',
           },
-          line: 4,
-          messageId: 'missingArgType',
-        },
-        {
-          column: 5,
-          data: {
-            name: 'bar',
-          },
-          line: 5,
+          line: 3,
           messageId: 'missingArgType',
         },
       ],
@@ -1689,6 +1745,52 @@ export default Foo;
     {
       code: `
 class Foo {
+  accessor bool = arg => {
+    return arg;
+  };
+}
+export default Foo;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+          },
+          line: 3,
+          messageId: 'missingArgType',
+        },
+        {
+          line: 3,
+          messageId: 'missingReturnType',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  accessor bool = function (arg) {
+    return arg;
+  };
+}
+export default Foo;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'missingReturnType',
+        },
+        {
+          data: {
+            name: 'arg',
+          },
+          line: 3,
+          messageId: 'missingArgType',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
   bool = function (arg) {
     return arg;
   };
@@ -2019,6 +2121,76 @@ export const foo = {
       options: [
         {
           allowedNames: [],
+        },
+      ],
+    },
+    {
+      code: `
+export function test(a: string): string;
+export function test(a: number): number;
+export function test(a: unknown) {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 21,
+          line: 4,
+          messageId: 'missingReturnType',
+        },
+      ],
+    },
+    {
+      code: `
+export default function test(a: string): string;
+export default function test(a: number): number;
+export default function test(a: unknown) {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 29,
+          line: 4,
+          messageId: 'missingReturnType',
+        },
+      ],
+    },
+    {
+      code: `
+export default function (a: string): string;
+export default function (a: number): number;
+export default function (a: unknown) {
+  return a;
+}
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 25,
+          line: 4,
+          messageId: 'missingReturnType',
+        },
+      ],
+    },
+    {
+      code: `
+export class Test {
+  test(a: string): string;
+  test(a: number): number;
+  test(a: unknown) {
+    return a;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 7,
+          line: 5,
+          messageId: 'missingReturnType',
         },
       ],
     },

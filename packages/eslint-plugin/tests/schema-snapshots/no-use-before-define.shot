@@ -1,13 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-use-before-define 1`] = `
-"
 # SCHEMA:
 
 [
   {
     "oneOf": [
       {
+        "description": "Broadly set functions and allowNamedExports to false.",
         "enum": ["nofunc"],
         "type": "string"
       },
@@ -53,7 +51,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Options = [
-  | 'nofunc'
   | {
       /** Whether to ignore named exports. */
       allowNamedExports?: boolean;
@@ -69,7 +66,7 @@ type Options = [
       typedefs?: boolean;
       /** Whether to ignore references to variables. */
       variables?: boolean;
-    },
+    }
+  /** Broadly set functions and allowNamedExports to false. */
+  | 'nofunc',
 ];
-"
-`;

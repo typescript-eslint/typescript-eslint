@@ -1,18 +1,7 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import rule from '../../src/rules/consistent-return';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootDir = getFixturesRootDir();
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('consistent-return', rule, {
   valid: [
@@ -226,7 +215,6 @@ ruleTester.run('consistent-return', rule, {
           endLine: 4,
           line: 4,
           messageId: 'missingReturnValue',
-          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -246,7 +234,6 @@ ruleTester.run('consistent-return', rule, {
           endLine: 5,
           line: 5,
           messageId: 'missingReturnValue',
-          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -270,7 +257,6 @@ ruleTester.run('consistent-return', rule, {
           endLine: 6,
           line: 6,
           messageId: 'unexpectedReturnValue',
-          type: AST_NODE_TYPES.ReturnStatement,
         },
         {
           column: 11,
@@ -279,7 +265,6 @@ ruleTester.run('consistent-return', rule, {
           endLine: 9,
           line: 9,
           messageId: 'missingReturnValue',
-          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -298,7 +283,6 @@ ruleTester.run('consistent-return', rule, {
           endLine: 4,
           line: 4,
           messageId: 'missingReturnValue',
-          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -317,7 +301,6 @@ ruleTester.run('consistent-return', rule, {
           endLine: 4,
           line: 4,
           messageId: 'unexpectedReturnValue',
-          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -336,7 +319,6 @@ ruleTester.run('consistent-return', rule, {
           endLine: 4,
           line: 4,
           messageId: 'missingReturnValue',
-          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -355,7 +337,6 @@ ruleTester.run('consistent-return', rule, {
           endLine: 4,
           line: 4,
           messageId: 'unexpectedReturnValue',
-          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -374,7 +355,6 @@ ruleTester.run('consistent-return', rule, {
           endLine: 4,
           line: 4,
           messageId: 'unexpectedReturnValue',
-          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -396,7 +376,6 @@ ruleTester.run('consistent-return', rule, {
           endLine: 7,
           line: 7,
           messageId: 'missingReturnValue',
-          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -417,7 +396,6 @@ ruleTester.run('consistent-return', rule, {
           endLine: 6,
           line: 6,
           messageId: 'unexpectedReturnValue',
-          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
       options: [
@@ -444,7 +422,6 @@ ruleTester.run('consistent-return', rule, {
           endLine: 7,
           line: 7,
           messageId: 'unexpectedReturnValue',
-          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
       options: [

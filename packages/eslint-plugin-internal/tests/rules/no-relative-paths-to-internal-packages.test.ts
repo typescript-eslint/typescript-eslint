@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import rule, {
   PACKAGES_DIR,
-} from '../../src/rules/no-relative-paths-to-internal-packages';
+} from '../../src/rules/no-relative-paths-to-internal-packages.js';
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -112,6 +112,10 @@ import type {
         PACKAGES_DIR,
         'ast-spec/src/expression/AssignmentExpression/spec.ts',
       ),
+    },
+    {
+      code: "import packageJson from '../../package.json' with { type: 'json' };",
+      filename: path.resolve(PACKAGES_DIR, 'ast-spec/vitest.config.mts'),
     },
   ],
 });

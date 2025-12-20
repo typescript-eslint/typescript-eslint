@@ -1,12 +1,17 @@
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import { createRule } from '../util';
+import { createRule } from '../util/index.js';
+
+// Replace with import.meta.dirname when minimum node version supports it
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const REPO_ROOT = path.resolve(__dirname, '../../../..');
 export const PACKAGES_DIR = path.join(REPO_ROOT, 'packages');
 
 export default createRule({
-  name: __filename,
+  name: 'no-relative-paths-to-internal-packages',
   meta: {
     type: 'problem',
     docs: {
@@ -52,6 +57,11 @@ export default createRule({
           absolutePathOfImport,
         );
         const packageOfImport = pathOfImportFromPackagesDir.split(path.sep)[0];
+
+        if (path.dirname(absolutePathOfImport) === REPO_ROOT) {
+          // this is to allow importing the root package.json
+          return;
+        }
 
         if (packageOfImport !== packageOfFile) {
           context.report({

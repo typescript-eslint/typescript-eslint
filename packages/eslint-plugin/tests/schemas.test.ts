@@ -1,18 +1,12 @@
-import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
-import 'jest-specific-snapshot';
-import fs from 'node:fs';
-import path from 'node:path';
+import { schemaToTypes } from '@typescript-eslint/rule-schema-to-typescript-types';
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
 import prettier from 'prettier';
 
-import rules from '../src/rules/index';
-import { areOptionsValid } from './areOptionsValid';
+import rules from '../src/rules/index.js';
+import { areOptionsValid } from './areOptionsValid.js';
 
 const snapshotFolder = path.resolve(__dirname, 'schema-snapshots');
-try {
-  fs.mkdirSync(snapshotFolder);
-} catch {
-  // ignore failure as it means it already exists probably
-}
 
 const PRETTIER_CONFIG_PATH = path.resolve(
   __dirname,
@@ -37,24 +31,30 @@ const getPrettierConfig = async (
     filepath,
   };
 };
-const PRETTIER_CONFIG = {
-  schema: getPrettierConfig(SCHEMA_FILEPATH),
-  tsType: getPrettierConfig(TS_TYPE_FILEPATH),
-};
 
 const SKIPPED_RULES_FOR_TYPE_GENERATION = new Set(['indent']);
 // Set this to a rule name to only run that rule
 const ONLY = '';
 
-describe('Rule schemas should be convertible to TS types for documentation purposes', () => {
-  for (const [ruleName, ruleDef] of Object.entries(rules)) {
-    if (SKIPPED_RULES_FOR_TYPE_GENERATION.has(ruleName)) {
-      // eslint-disable-next-line jest/no-disabled-tests -- intentional skip for documentation purposes
-      it.skip(ruleName, () => {});
-      continue;
-    }
+const ruleEntries = Object.entries(rules);
 
-    (ruleName === ONLY ? it.only : it)(ruleName, async () => {
+describe('Rule schemas should be convertible to TS types for documentation purposes', async () => {
+  const PRETTIER_CONFIG = {
+    schema: await getPrettierConfig(SCHEMA_FILEPATH),
+    tsType: await getPrettierConfig(TS_TYPE_FILEPATH),
+  };
+
+  beforeAll(async () => {
+    await fs.mkdir(snapshotFolder, { recursive: true });
+  });
+
+  describe.for(ruleEntries)('%s', ([ruleName, ruleDef]) => {
+    // skip for documentation purposes
+    it.skipIf(SKIPPED_RULES_FOR_TYPE_GENERATION.has(ruleName))(ruleName, () => {
+      expect(SKIPPED_RULES_FOR_TYPE_GENERATION).not.toContain(ruleName);
+    });
+
+    it(ruleName, { only: ruleName === ONLY }, async ({ expect }) => {
       const schemaString = await prettier.format(
         JSON.stringify(
           ruleDef.meta.schema,
@@ -81,40 +81,42 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
           // changes per line, or adding a prop can restructure an object
           2,
         ),
-        await PRETTIER_CONFIG.schema,
+        PRETTIER_CONFIG.schema,
       );
-      const compilationResult = await compile(
-        ruleDef.meta.schema,
+      const compilationResult = await prettier.format(
+        schemaToTypes(ruleDef.meta.schema),
         PRETTIER_CONFIG.tsType,
       );
 
-      expect(
-        [
-          '',
-          '# SCHEMA:',
-          '',
-          schemaString,
-          '',
-          '# TYPES:',
-          '',
-          compilationResult,
-        ].join('\n'),
-      ).toMatchSpecificSnapshot(path.join(snapshotFolder, `${ruleName}.shot`));
+      const snapshotPath = path.join(snapshotFolder, `${ruleName}.shot`);
+
+      const snapshotContent = [
+        '',
+        '# SCHEMA:',
+        '',
+        schemaString,
+        '',
+        '# TYPES:',
+        '',
+        compilationResult,
+      ].join('\n');
+
+      await expect(snapshotContent).toMatchFileSnapshot(snapshotPath);
     });
-  }
+  });
 });
 
-test('There should be no old snapshots for rules that have been deleted', () => {
-  const files = fs.readdirSync(snapshotFolder);
+describe('There should be no old snapshots for rules that have been deleted', async () => {
+  const files = await fs.readdir(snapshotFolder, { encoding: 'utf-8' });
   const names = new Set(
-    Object.keys(rules)
-      .filter(k => !SKIPPED_RULES_FOR_TYPE_GENERATION.has(k))
-      .map(k => `${k}.shot`),
+    ruleEntries
+      .filter(([k]) => !SKIPPED_RULES_FOR_TYPE_GENERATION.has(k))
+      .map(([k]) => `${k}.shot`),
   );
 
-  for (const file of files) {
+  test.for(files)('%s', (file, { expect }) => {
     expect(names).toContain(file);
-  }
+  });
 });
 
 const VALID_SCHEMA_PROPS = new Set([
@@ -154,10 +156,11 @@ const VALID_SCHEMA_PROPS = new Set([
   'title',
   'type',
   'uniqueItems',
-]);
+] as const);
+
 describe('Rules should only define valid keys on schemas', () => {
-  for (const [ruleName, ruleDef] of Object.entries(rules)) {
-    (ruleName === ONLY ? it.only : it)(ruleName, () => {
+  describe.for(ruleEntries)('%s', ([ruleName, ruleDef]) => {
+    it(ruleName, { only: ruleName === ONLY }, () => {
       JSON.stringify(ruleDef.meta.schema, (key, value: unknown) => {
         if (key === '') {
           // the root object will have key ""
@@ -176,7 +179,7 @@ describe('Rules should only define valid keys on schemas', () => {
         return value;
       });
     });
-  }
+  });
 });
 
 describe('Rule schemas should validate options correctly', () => {
@@ -190,22 +193,24 @@ describe('Rule schemas should validate options correctly', () => {
     semi: ['never'],
   };
 
-  for (const [ruleName, rule] of Object.entries(rules)) {
-    test(`${ruleName} must accept valid options`, () => {
-      if (
-        !areOptionsValid(
+  test.for(ruleEntries)(
+    '%s must accept valid options',
+    ([ruleName, rule], { expect }) => {
+      expect(
+        areOptionsValid(
           rule,
           overrideValidOptions[ruleName] ?? rule.defaultOptions,
-        )
-      ) {
-        throw new Error(`Options failed validation against rule's schema`);
-      }
-    });
+        ),
+      ).toBe(true);
+    },
+  );
 
-    test(`${ruleName} rejects arbitrary options`, () => {
-      if (areOptionsValid(rule, [{ 'arbitrary-schemas.test.ts': true }])) {
-        throw new Error(`Options succeeded validation for arbitrary options`);
-      }
-    });
-  }
+  test.for(ruleEntries)(
+    '%s rejects arbitrary options',
+    ([, rule], { expect }) => {
+      expect(
+        areOptionsValid(rule, [{ 'arbitrary-schemas.test.ts': true }]),
+      ).toBe(false);
+    },
+  );
 });

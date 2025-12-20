@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-with-exported-function AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > namespaces-and-modules > declare-namespace-with-exported-function > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -20,14 +20,14 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
               declaration: TSDeclareFunction {
                 type: 'TSDeclareFunction',
                 async: false,
--               declare: false,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'select',
--                 optional: false,
+                  optional: false,
 
                   range: [114, 120],
                   loc: {
@@ -38,9 +38,9 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
                 params: Array [
                   Identifier {
                     type: 'Identifier',
--                   decorators: Array [],
+                    decorators: Array [],
                     name: 'selector',
--                   optional: false,
+                    optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: 'TSTypeAnnotation',
                       typeAnnotation: TSStringKeyword {
@@ -74,7 +74,9 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
 -                   typeArguments: TSTypeParameterInstantiation {
 +                   typeName: Identifier {
 +                     type: 'Identifier',
++                     decorators: Array [],
 +                     name: 'Selection',
++                     optional: false,
 +
 +                     range: [140, 149],
 +                     loc: {
@@ -107,14 +109,14 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
 -                     decorators: Array [],
 -                     name: 'Selection',
 -                     optional: false,
-
+-
 -                     range: [140, 149],
 -                     loc: {
 -                       start: { column: 44, line: 4 },
 -                       end: { column: 53, line: 4 },
 -                     },
 -                   },
--
+
                     range: [140, 154],
                     loc: {
                       start: { column: 44, line: 4 },
@@ -154,12 +156,12 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
           },
         },
         declare: true,
--       global: false,
+        global: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'd3',
--         optional: false,
+          optional: false,
 
           range: [91, 93],
           loc: {
@@ -184,5 +186,4 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

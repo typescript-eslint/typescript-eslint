@@ -25,6 +25,69 @@ export interface RuleMetaDataDocs {
    * The URL of the rule's docs.
    */
   url?: string;
+
+  /**
+   * Mark this rule as feature-frozen.
+   */
+  frozen?: boolean;
+}
+
+export interface ExternalSpecifier {
+  /**
+   * Name of the referenced plugin / rule.
+   */
+  name?: string;
+  /**
+   * URL pointing to documentation for the plugin / rule.
+   */
+  url?: string;
+}
+
+export interface ReplacedByInfo {
+  /**
+   * General message presented to the user, e.g. how to replace the rule
+   */
+  message?: string;
+  /**
+   * URL to more information about this replacement in general
+   */
+  url?: string;
+  /**
+   * Name should be "eslint" if the replacement is an ESLint core rule. Omit
+   * the property if the replacement is in the same plugin.
+   */
+  plugin?: ExternalSpecifier;
+  /**
+   * Name and documentation of the replacement rule
+   */
+  rule?: ExternalSpecifier;
+}
+
+export interface DeprecatedInfo {
+  /**
+   * General message presented to the user, e.g. for the key rule why the rule
+   * is deprecated or for info how to replace the rule.
+   */
+  message?: string;
+  /**
+   * URL to more information about this deprecation in general.
+   */
+  url?: string;
+  /**
+   * An empty array explicitly states that there is no replacement.
+   */
+  replacedBy?: ReplacedByInfo[];
+  /**
+   * The package version since when the rule is deprecated (should use full
+   * semver without a leading "v").
+   */
+  deprecatedSince?: string;
+  /**
+   * The estimated version when the rule is removed (probably the next major
+   * version). null means the rule is "frozen" (will be available but will not
+   * be changed).
+   */
+  availableUntil?: string | null;
 }
 
 export interface RuleMetaData<
@@ -35,7 +98,7 @@ export interface RuleMetaData<
   /**
    * True if the rule is deprecated, false otherwise
    */
-  deprecated?: boolean;
+  deprecated?: boolean | DeprecatedInfo;
   /**
    * Documentation for the rule
    */
@@ -56,6 +119,8 @@ export interface RuleMetaData<
   messages: Record<MessageIds, string>;
   /**
    * The name of the rule this rule was replaced by, if it was deprecated.
+   *
+   * @deprecated since eslint 9.21.0, in favor of `RuleMetaData#deprecated.replacedBy`
    */
   replacedBy?: readonly string[];
   /**
@@ -73,7 +138,7 @@ export interface RuleMetaData<
   /**
    * Specifies default options for the rule. If present, any user-provided options in their config will be merged on top of them recursively.
    * This merging will be applied directly to `context.options`.
-   * If you want backwards-compatible support for earlier ESLint version; consider using the top-level `defaultOptions` instead.
+   * If you want backwards-compatible support for earlier ESLint version, consider using the top-level `defaultOptions` instead.
    *
    * since ESLint 9.15.0
    */
@@ -123,8 +188,9 @@ export interface RuleFixer {
   replaceTextRange(range: Readonly<AST.Range>, text: string): RuleFix;
 }
 
-export interface SuggestionReportDescriptor<MessageIds extends string>
-  extends Omit<ReportDescriptorBase<MessageIds>, 'fix'> {
+export interface SuggestionReportDescriptor<
+  MessageIds extends string,
+> extends Omit<ReportDescriptorBase<MessageIds>, 'fix'> {
   readonly fix: ReportFixFunction;
 }
 
@@ -154,8 +220,9 @@ interface ReportDescriptorBase<MessageIds extends string> {
   // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
   // readonly desc?: string;
 }
-interface ReportDescriptorWithSuggestion<MessageIds extends string>
-  extends ReportDescriptorBase<MessageIds> {
+interface ReportDescriptorWithSuggestion<
+  MessageIds extends string,
+> extends ReportDescriptorBase<MessageIds> {
   /**
    * 6.7's Suggestions API
    */
@@ -706,11 +773,11 @@ export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<
  */
 export type LooseRuleDefinition =
   // TODO - remove RuleCreateFunction once we no longer support ESLint 8
+  | LooseRuleCreateFunction
   | {
       create: LooseRuleCreateFunction;
       meta?: object | undefined;
-    }
-  | LooseRuleCreateFunction;
+    };
 /*
 eslint-disable-next-line @typescript-eslint/no-explicit-any --
 intentionally using `any` to allow bi-directional assignment (unknown and

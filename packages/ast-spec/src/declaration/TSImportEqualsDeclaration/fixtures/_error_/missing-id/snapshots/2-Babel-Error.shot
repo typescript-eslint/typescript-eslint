@@ -1,3 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSImportEqualsDeclaration _error_ missing-id Babel - Error 1`] = `[SyntaxError: Unexpected token, expected "{" (1:7)]`;
+exports[`AST Fixtures > declaration > TSImportEqualsDeclaration > _error_ > missing-id > Babel - Error`]
+BabelError
+> 1 | import = A.B;
+    |        ^ Unexpected token, expected "{" (1:7)
+  2 |
+  

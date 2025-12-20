@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/packages/typescript-estree"
+  },
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "../../tsconfig.spec.json"
+    }
+  ]
+}

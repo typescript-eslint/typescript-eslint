@@ -260,6 +260,20 @@ export const foo: FooType = bar => {};
 </TabItem>
 </Tabs>
 
+### `allowOverloadFunctions`
+
+{/* insert option description */}
+
+Examples of correct code when `allowOverloadFunctions` is set to `true`:
+
+```ts option='{ "allowOverloadFunctions": true }' showPlaygroundButton
+export function test(a: string): string;
+export function test(a: number): number;
+export function test(a: unknown) {
+  return a;
+}
+```
+
 ## When Not To Use It
 
 If your project is not used by downstream consumers that are sensitive to API types, you can disable this rule.

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-properties AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > abstract-class-with-declare-properties > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -18,13 +18,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
               type: 'PropertyDefinition',
               computed: false,
               declare: true,
--             decorators: Array [],
--             definite: false,
+              decorators: Array [],
+              definite: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'prop1',
--               optional: false,
+                optional: false,
 
                 range: [118, 123],
                 loc: {
@@ -32,9 +32,9 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
                   end: { column: 15, line: 4 },
                 },
               },
--             optional: false,
--             override: false,
--             readonly: false,
+              optional: false,
+              override: false,
+              readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -69,13 +69,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
 +             abstract: true,
               computed: false,
               declare: true,
--             decorators: Array [],
--             definite: false,
+              decorators: Array [],
+              definite: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'prop2',
--               optional: false,
+                optional: false,
 
                 range: [152, 157],
                 loc: {
@@ -83,9 +83,9 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
                   end: { column: 24, line: 5 },
                 },
               },
--             optional: false,
--             override: false,
--             readonly: false,
+              optional: false,
+              override: false,
+              readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -121,13 +121,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
               accessibility: 'public',
               computed: false,
               declare: true,
--             decorators: Array [],
--             definite: false,
+              decorators: Array [],
+              definite: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'prop3',
--               optional: false,
+                optional: false,
 
                 range: [193, 198],
                 loc: {
@@ -135,9 +135,9 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
                   end: { column: 31, line: 6 },
                 },
               },
--             optional: false,
--             override: false,
--             readonly: false,
+              optional: false,
+              override: false,
+              readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -172,13 +172,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
 +             abstract: true,
               computed: false,
               declare: true,
--             decorators: Array [],
--             definite: false,
+              decorators: Array [],
+              definite: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'prop4',
--               optional: false,
+                optional: false,
 
                 range: [236, 241],
                 loc: {
@@ -186,8 +186,8 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
                   end: { column: 33, line: 7 },
                 },
               },
--             optional: false,
--             override: false,
+              optional: false,
+              override: false,
               readonly: true,
               static: false,
               typeAnnotation: TSTypeAnnotation {
@@ -224,13 +224,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
               accessibility: 'public',
               computed: false,
               declare: true,
--             decorators: Array [],
--             definite: false,
+              decorators: Array [],
+              definite: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'prop5',
--               optional: false,
+                optional: false,
 
                 range: [286, 291],
                 loc: {
@@ -238,8 +238,8 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
                   end: { column: 40, line: 8 },
                 },
               },
--             optional: false,
--             override: false,
+              optional: false,
+              override: false,
               readonly: true,
               static: false,
               typeAnnotation: TSTypeAnnotation {
@@ -276,13 +276,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
             end: { column: 1, line: 9 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'AbstractDeclProps',
--         optional: false,
+          optional: false,
 
           range: [88, 105],
           loc: {
@@ -290,7 +290,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
             end: { column: 32, line: 3 },
           },
         },
--       implements: Array [],
+        implements: Array [],
         superClass: null,
 
         range: [73, 302],
@@ -307,5 +307,4 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-propert
       start: { column: 0, line: 3 },
       end: { column: 0, line: 10 },
     },
-  }"
-`;
+  }

@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics type-import-type TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -23,19 +20,12 @@ Program {
         type: "TSTypeQuery",
         exprName: TSImportType {
           type: "TSImportType",
-          argument: TSLiteralType {
-            type: "TSLiteralType",
-            literal: Literal {
-              type: "Literal",
-              raw: "'A'",
-              value: "A",
-
-              range: [96, 99],
-              loc: {
-                start: { column: 23, line: 3 },
-                end: { column: 26, line: 3 },
-              },
-            },
+          options: null,
+          qualifier: null,
+          source: Literal {
+            type: "Literal",
+            raw: "'A'",
+            value: "A",
 
             range: [96, 99],
             loc: {
@@ -43,8 +33,6 @@ Program {
               end: { column: 26, line: 3 },
             },
           },
-          attributes: [],
-          qualifier: null,
           typeArguments: null,
 
           range: [89, 100],
@@ -84,27 +72,7 @@ Program {
       },
       typeAnnotation: TSImportType {
         type: "TSImportType",
-        argument: TSLiteralType {
-          type: "TSLiteralType",
-          literal: Literal {
-            type: "Literal",
-            raw: "'B'",
-            value: "B",
-
-            range: [118, 121],
-            loc: {
-              start: { column: 16, line: 4 },
-              end: { column: 19, line: 4 },
-            },
-          },
-
-          range: [118, 121],
-          loc: {
-            start: { column: 16, line: 4 },
-            end: { column: 19, line: 4 },
-          },
-        },
-        attributes: [],
+        options: null,
         qualifier: Identifier {
           type: "Identifier",
           decorators: [],
@@ -115,6 +83,17 @@ Program {
           loc: {
             start: { column: 21, line: 4 },
             end: { column: 22, line: 4 },
+          },
+        },
+        source: Literal {
+          type: "Literal",
+          raw: "'B'",
+          value: "B",
+
+          range: [118, 121],
+          loc: {
+            start: { column: 16, line: 4 },
+            end: { column: 19, line: 4 },
           },
         },
         typeArguments: TSTypeParameterInstantiation {
@@ -172,4 +151,3 @@ Program {
     end: { column: 0, line: 5 },
   },
 }
-`;

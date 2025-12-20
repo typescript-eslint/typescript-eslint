@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-type-assertions 1`] = `
-"
 # SCHEMA:
 
 [
@@ -50,8 +47,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   | {
       /** The expected assertion style to enforce. */
-      assertionStyle: /** The expected assertion style to enforce. */
-      'never';
+      assertionStyle /** The expected assertion style to enforce. */: 'never';
     }
   | {
       /** Whether to always prefer type declarations for array literals used as variable initializers, rather than type assertions. */
@@ -73,5 +69,3 @@ type Options = [
         | 'allow';
     },
 ];
-"
-`;

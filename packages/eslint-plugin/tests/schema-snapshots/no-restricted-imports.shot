@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-restricted-imports 1`] = `
-"
 # SCHEMA:
 
 {
@@ -200,18 +197,16 @@ type Options =
         patterns?:
           | {
               allowImportNamePattern?: string;
-              allowImportNames?: [string, ...string[]];
+              allowImportNames?: string[];
               /** Whether to allow type-only imports for a path. */
               allowTypeImports?: boolean;
               caseSensitive?: boolean;
-              group?: [string, ...string[]];
+              group?: string[];
               importNamePattern?: string;
-              importNames?: [string, ...string[]];
+              importNames?: string[];
               message?: string;
               regex?: string;
             }[]
           | string[];
       },
     ];
-"
-`;

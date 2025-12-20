@@ -6,7 +6,9 @@ import type {
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
-const baseRule = getESLintCoreRule('no-loss-of-precision');
+const baseRule: ReturnType<typeof getESLintCoreRule> = getESLintCoreRule(
+  'no-loss-of-precision',
+);
 
 export type Options = InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
 export type MessageIds = InferMessageIdsTypeFromRule<
@@ -18,7 +20,18 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     // defaultOptions, -- base rule does not use defaultOptions
-    deprecated: true,
+    deprecated: {
+      deprecatedSince: '8.0.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-loss-of-precision',
+            url: 'https://eslint.org/docs/latest/rules/no-loss-of-precision',
+          },
+        },
+      ],
+      url: 'https://github.com/typescript-eslint/typescript-eslint/pull/8832',
+    },
     docs: {
       description: 'Disallow literal numbers that lose precision',
       extendsBaseRule: true,

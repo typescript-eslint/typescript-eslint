@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > parameter > TSParameterProperty > _error_ > rest-element > TSESTree - Error`]
+TSError
+> 1 | class Test { constructor(private ...baz) {} }
+    |                          ^^^^^^^ A parameter property cannot be a rest parameter.
+  2 |

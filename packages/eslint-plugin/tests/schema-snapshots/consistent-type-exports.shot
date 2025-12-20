@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-type-exports 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,7 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "fixMixedExportsWithInlineTypeSpecifier": {
-        "description": "Whether the rule will autofix \\"mixed\\" export cases using TS inline type specifiers.",
+        "description": "Whether the rule will autofix \"mixed\" export cases using TS inline type specifiers.",
         "type": "boolean"
       }
     },
@@ -26,5 +23,3 @@ type Options = [
     fixMixedExportsWithInlineTypeSpecifier?: boolean;
   },
 ];
-"
-`;

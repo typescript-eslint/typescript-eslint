@@ -1,14 +1,12 @@
 {
   "type": "module",
   "devDependencies": {
-    "@types/eslint__eslintrc": "latest",
     "@eslint/eslintrc": "latest",
-    "@types/eslint__js": "latest",
     "@eslint/js": "latest",
     "@types/eslint": "^8",
     "eslint": "9.9.1",
     "@stylistic/eslint-plugin": "2.3.0",
     "eslint-plugin-deprecation": "latest",
-    "eslint-plugin-jest": "latest"
+    "@vitest/eslint-plugin": "latest"
   }
 }

@@ -1,5 +1,4 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-restricted-imports';
 
@@ -291,6 +290,43 @@ import type { foo } from 'import2/private/bar';
       ],
     },
     {
+      code: `
+import type { foo } from 'import1/private/bar';
+import type { foo } from 'import2/private/bar';
+      `,
+      options: [
+        {
+          patterns: [
+            {
+              allowTypeImports: true,
+              message: 'usage of import1 private modules not allowed.',
+              regex: 'import1/.*',
+            },
+            {
+              allowTypeImports: true,
+              message: 'usage of import2 private modules not allowed.',
+              regex: 'import2/.*',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "import { foo } from 'import1/private';",
+      options: [
+        {
+          patterns: [
+            {
+              allowTypeImports: true,
+              caseSensitive: true,
+              message: 'usage of import1 private modules not allowed.',
+              regex: 'import1/[A-Z]+',
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: "import { type Bar } from 'import-foo';",
       options: [
         {
@@ -356,7 +392,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'path',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: ['import1', 'import2'],
@@ -375,7 +410,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'path',
-          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
       options: ['import1', 'import2'],
@@ -385,7 +419,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'path',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: [{ paths: ['import1', 'import2'] }],
@@ -395,7 +428,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'path',
-          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
       options: [{ paths: ['import1', 'import2'] }],
@@ -405,7 +437,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'patterns',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: [
@@ -420,7 +451,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'patterns',
-          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
       options: [
@@ -435,7 +465,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'pathWithCustomMessage',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: [
@@ -458,7 +487,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'pathWithCustomMessage',
-          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
       options: [
@@ -481,7 +509,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'importNameWithCustomMessage',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: [
@@ -501,7 +528,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'importNameWithCustomMessage',
-          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
       options: [
@@ -521,7 +547,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'patternWithCustomMessage',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: [
@@ -545,7 +570,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'patternWithCustomMessage',
-          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
       options: [
@@ -569,7 +593,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'path',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: [
@@ -587,7 +610,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'path',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: [
@@ -606,7 +628,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'pathWithCustomMessage',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: [
@@ -645,7 +666,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'importNameWithCustomMessage',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: [
@@ -666,7 +686,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'importNameWithCustomMessage',
-          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
       options: [
@@ -687,7 +706,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'patternWithCustomMessage',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: [
@@ -707,7 +725,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'patternWithCustomMessage',
-          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
       options: [
@@ -723,11 +740,49 @@ import type { foo } from 'import2/private/bar';
       ],
     },
     {
+      code: "export { foo } from 'import1/private/bar';",
+      errors: [
+        {
+          messageId: 'patternWithCustomMessage',
+        },
+      ],
+      options: [
+        {
+          patterns: [
+            {
+              allowTypeImports: true,
+              message: 'usage of import1 private modules not allowed.',
+              regex: 'import1/.*',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "import { foo } from 'import1/private-package';",
+      errors: [
+        {
+          messageId: 'patternWithCustomMessage',
+        },
+      ],
+      options: [
+        {
+          patterns: [
+            {
+              allowTypeImports: true,
+              caseSensitive: true,
+              message: 'usage of import1 private modules not allowed.',
+              regex: 'import1/private-[a-z]*',
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: "export * from 'import1';",
       errors: [
         {
           messageId: 'path',
-          type: AST_NODE_TYPES.ExportAllDeclaration,
         },
       ],
       options: ['import1'],
@@ -737,7 +792,6 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'patterns',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: [
@@ -751,11 +805,9 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'importNameWithCustomMessage',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
         {
           messageId: 'importNameWithCustomMessage',
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       options: [
@@ -776,11 +828,9 @@ import type { foo } from 'import2/private/bar';
       errors: [
         {
           messageId: 'importNameWithCustomMessage',
-          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
         {
           messageId: 'importNameWithCustomMessage',
-          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
       options: [

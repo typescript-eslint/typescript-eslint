@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > type-import-type > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,12 +10,12 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'A',
--         optional: false,
+          optional: false,
 
           range: [78, 79],
           loc: {
@@ -27,23 +27,13 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
           type: 'TSTypeQuery',
           exprName: TSImportType {
             type: 'TSImportType',
--           argument: TSLiteralType {
--             type: 'TSLiteralType',
--             literal: Literal {
--               type: 'Literal',
--               raw: '\\'A\\'',
--               value: 'A',
--
--               range: [96, 99],
--               loc: {
--                 start: { column: 23, line: 3 },
--                 end: { column: 26, line: 3 },
--               },
--             },
+-           options: null,
+-           qualifier: null,
+-           source: Literal {
 +           argument: Literal {
-+             type: 'Literal',
-+             raw: '\\'A\\'',
-+             value: 'A',
+              type: 'Literal',
+              raw: '\'A\'',
+              value: 'A',
 
               range: [96, 99],
               loc: {
@@ -51,10 +41,9 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
                 end: { column: 26, line: 3 },
               },
             },
--           attributes: Array [],
--           qualifier: null,
 -           typeArguments: null,
 +           options: null,
++           qualifier: null,
 
             range: [89, 100],
             loc: {
@@ -78,12 +67,12 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'B',
--         optional: false,
+          optional: false,
 
           range: [107, 108],
           loc: {
@@ -93,37 +82,23 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
         },
         typeAnnotation: TSImportType {
           type: 'TSImportType',
--         argument: TSLiteralType {
--           type: 'TSLiteralType',
--           literal: Literal {
--             type: 'Literal',
--             raw: '\\'B\\'',
--             value: 'B',
--
--             range: [118, 121],
--             loc: {
--               start: { column: 16, line: 4 },
--               end: { column: 19, line: 4 },
--             },
--           },
 +         argument: Literal {
 +           type: 'Literal',
-+           raw: '\\'B\\'',
++           raw: '\'B\'',
 +           value: 'B',
-
-            range: [118, 121],
-            loc: {
-              start: { column: 16, line: 4 },
-              end: { column: 19, line: 4 },
-            },
-          },
--         attributes: Array [],
-+         options: null,
++
++           range: [118, 121],
++           loc: {
++             start: { column: 16, line: 4 },
++             end: { column: 19, line: 4 },
++           },
++         },
+          options: null,
           qualifier: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'X',
--           optional: false,
+            optional: false,
 
             range: [123, 124],
             loc: {
@@ -131,6 +106,17 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
               end: { column: 22, line: 4 },
             },
           },
+-         source: Literal {
+-           type: 'Literal',
+-           raw: '\'B\'',
+-           value: 'B',
+-
+-           range: [118, 121],
+-           loc: {
+-             start: { column: 16, line: 4 },
+-             end: { column: 19, line: 4 },
+-           },
+-         },
 -         typeArguments: TSTypeParameterInstantiation {
 +         typeParameters: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
@@ -139,9 +125,9 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'Y',
--                 optional: false,
+                  optional: false,
 
                   range: [125, 126],
                   loc: {
@@ -186,5 +172,4 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
       start: { column: 0, line: 3 },
       end: { column: 0, line: 5 },
     },
-  }"
-`;
+  }

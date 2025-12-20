@@ -1,6 +1,7 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -34,9 +35,7 @@ const evenNumOfBackslashesRegExp = /(?<!(?:[^\\]|^)(?:\\\\)*\\)/;
 // '\\\\$' <- true
 // '\\\\\\$' <- false
 function endsWithUnescapedDollarSign(str: string): boolean {
-  return new RegExp(`${String(evenNumOfBackslashesRegExp.source)}\\$$`).test(
-    str,
-  );
+  return new RegExp(`${evenNumOfBackslashesRegExp.source}\\$$`).test(str);
 }
 
 export default createRule<[], MessageId>({
@@ -76,16 +75,13 @@ export default createRule<[], MessageId>({
       return isStringLike(type);
     }
 
-    /**
-     * Checks for whole enum types, i.e. `MyEnum`, and not their values, i.e. `MyEnum.A`
-     */
-    function isEnumType(type: ts.Type): boolean {
-      const symbol = type.getSymbol();
-
-      return !!(
-        symbol?.valueDeclaration &&
-        ts.isEnumDeclaration(symbol.valueDeclaration)
-      );
+    function isEnumMemberType(type: ts.Type): boolean {
+      return tsutils.typeConstituents(type).some(t => {
+        const symbol = t.getSymbol();
+        return !!(
+          symbol?.valueDeclaration && ts.isEnumMember(symbol.valueDeclaration)
+        );
+      });
     }
 
     const isLiteral = isNodeOfType(TSESTree.AST_NODE_TYPES.Literal);
@@ -197,7 +193,7 @@ export default createRule<[], MessageId>({
       });
     }
 
-    function isUnncessaryValueInterpolation({
+    function isUnnecessaryValueInterpolation({
       interpolation,
       nextQuasi,
       prevQuasi,
@@ -318,10 +314,7 @@ export default createRule<[], MessageId>({
             // \${ -> \${
             // \\${ -> \\\${
             .replaceAll(
-              new RegExp(
-                `${String(evenNumOfBackslashesRegExp.source)}(\`|\\\${)`,
-                'g',
-              ),
+              new RegExp(`${evenNumOfBackslashesRegExp.source}(\`|\\\${)`, 'g'),
               '\\$1',
             );
 
@@ -439,7 +432,7 @@ export default createRule<[], MessageId>({
         }
 
         const infos = getInterpolationInfos(node).filter(
-          isUnncessaryValueInterpolation,
+          isUnnecessaryValueInterpolation,
         );
 
         for (const reportDescriptor of getReportDescriptors(infos)) {
@@ -460,7 +453,7 @@ export default createRule<[], MessageId>({
             constraintType &&
             !isTypeParameter &&
             isUnderlyingTypeString(constraintType) &&
-            !isEnumType(constraintType)
+            !isEnumMemberType(constraintType)
           ) {
             reportSingleInterpolation(node);
             return;

@@ -1,11 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures accessor-decorators accessor-decorator-static-member Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [
@@ -17,7 +15,9 @@ Program {
                 type: "Decorator",
                 expression: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "adminonly",
+                  optional: false,
 
                   range: [89, 98],
                   loc: {
@@ -35,7 +35,9 @@ Program {
             ],
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "y",
+              optional: false,
 
               range: [112, 113],
               loc: {
@@ -44,6 +46,8 @@ Program {
               },
             },
             kind: "set",
+            optional: false,
+            override: false,
             static: true,
             value: FunctionExpression {
               type: "FunctionExpression",
@@ -70,7 +74,9 @@ Program {
                         optional: false,
                         property: Identifier {
                           type: "Identifier",
+                          decorators: [],
                           name: "_y",
+                          optional: false,
 
                           range: [128, 130],
                           loc: {
@@ -88,7 +94,9 @@ Program {
                       operator: "=",
                       right: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "a",
+                        optional: false,
 
                         range: [133, 134],
                         loc: {
@@ -118,13 +126,16 @@ Program {
                   end: { column: 3, line: 7 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
               params: [
                 Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "a",
+                  optional: false,
 
                   range: [114, 115],
                   loc: {
@@ -155,9 +166,13 @@ Program {
           end: { column: 1, line: 8 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "User",
+        optional: false,
 
         range: [79, 83],
         loc: {
@@ -165,6 +180,7 @@ Program {
           end: { column: 10, line: 3 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [73, 141],
@@ -182,4 +198,3 @@ Program {
     end: { column: 0, line: 9 },
   },
 }
-`;

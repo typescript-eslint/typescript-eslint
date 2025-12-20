@@ -1,3 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ const-id-definite-type-no-init Babel - Error 1`] = `[SyntaxError: Missing initializer in const declaration. (1:15)]`;
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > const-id-definite-type-no-init > Babel - Error`]
+BabelError
+> 1 | const foo!: any;
+    |                ^ Missing initializer in const declaration. (1:15)
+  2 |
+  

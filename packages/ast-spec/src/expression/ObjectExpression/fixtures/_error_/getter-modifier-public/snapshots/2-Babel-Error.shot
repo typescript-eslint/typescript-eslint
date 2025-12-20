@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > getter-modifier-public > Babel - Error`]
+BabelError
+> 1 | ({public get getter(){}})
+    |   ^ Unexpected reserved word 'public'. (1:2)
+  2 |
+  

@@ -9,7 +9,6 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-unused-vars** for documentation.
 
-This rule extends the base [`eslint/no-unused-vars`](https://eslint.org/docs/rules/no-unused-vars) rule.
 It adds support for TypeScript features, such as types.
 
 ## Options
@@ -119,3 +118,19 @@ export interface Box {
 </Tabs>
 
 If you find yourself writing runtime values only for types, consider refactoring your code to declare types directly.
+
+### Why are variables reported as unused despite being referenced by @link in JSDoc?
+
+JSDoc references are not supported by typescript-eslint.
+You can use a rule such as [`jsdoc/no-undefined-types`](https://github.com/gajus/eslint-plugin-jsdoc/blob/main/docs/rules/no-undefined-types.md) to resolve variables as used in JSDoc comments.
+
+```ts
+import type { Box } from './Box';
+//            ~~~
+//            'Box' is defined but never used.
+
+/**
+ * @see {@link Box}
+ */
+export function getBox() {}
+```

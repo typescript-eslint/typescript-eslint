@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics type-guard-in-arrow-function Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -9,9 +6,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "isString",
+            optional: false,
 
             range: [79, 87],
             loc: {
@@ -33,7 +33,9 @@ Program {
                       type: "UnaryExpression",
                       argument: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "x",
+                        optional: false,
 
                         range: [133, 134],
                         loc: {
@@ -90,7 +92,9 @@ Program {
             params: [
               Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "x",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSAnyKeyword {
@@ -124,7 +128,9 @@ Program {
                 asserts: false,
                 parameterName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "x",
+                  optional: false,
 
                   range: [100, 101],
                   loc: {
@@ -179,6 +185,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [73, 151],
@@ -196,4 +203,3 @@ Program {
     end: { column: 0, line: 6 },
   },
 }
-`;

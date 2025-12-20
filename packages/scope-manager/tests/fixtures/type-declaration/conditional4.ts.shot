@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`type-declaration conditional4 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -106,4 +103,3 @@ ScopeManager {
     },
   ],
 }
-`;

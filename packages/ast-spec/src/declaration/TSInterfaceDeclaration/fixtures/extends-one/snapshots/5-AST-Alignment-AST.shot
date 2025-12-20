@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSInterfaceDeclaration extends-one AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > declaration > TSInterfaceDeclaration > extends-one > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -20,7 +20,7 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration extends-one AST Alignme
             end: { column: 24, line: 1 },
           },
         },
--       declare: false,
+        declare: false,
         extends: Array [
 -         TSInterfaceHeritage {
 -           type: 'TSInterfaceHeritage',
@@ -28,9 +28,9 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration extends-one AST Alignme
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'A',
--             optional: false,
+              optional: false,
 
               range: [20, 21],
               loc: {
@@ -48,9 +48,9 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration extends-one AST Alignme
         ],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'F',
--         optional: false,
+          optional: false,
 
           range: [10, 11],
           loc: {
@@ -73,5 +73,4 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration extends-one AST Alignme
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics async-function-with-var-declaration Babel - Tokens 1`] = `
 [
   Identifier {
     type: "Identifier",
@@ -112,8 +109,8 @@ exports[`AST Fixtures legacy-fixtures basics async-function-with-var-declaration
       end: { column: 18, line: 4 },
     },
   },
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [118, 121],
@@ -223,4 +220,3 @@ exports[`AST Fixtures legacy-fixtures basics async-function-with-var-declaration
     },
   },
 ]
-`;

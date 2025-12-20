@@ -1,25 +1,13 @@
 import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-template-expression';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootPath = getFixturesRootDir();
+const ruleTester = createRuleTesterWithTypes();
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
-});
-
-const invalidCases: readonly InvalidTestCase<
-  'noUnnecessaryTemplateExpression',
-  []
->[] = [
+const invalidCases = [
   {
     code: '`${1}`;',
     errors: [
@@ -956,20 +944,21 @@ this code has trailing position template expression but it isn\\'t whitespace
     `,
     ],
   },
-];
+] as const satisfies readonly InvalidTestCase<
+  'noUnnecessaryTemplateExpression',
+  []
+>[];
 
 describe('fixer should not change runtime value', () => {
-  for (const { code, output } of invalidCases) {
-    if (!output) {
-      continue;
-    }
+  test.for(invalidCases)('$code', ({ code, output }, { expect }) => {
+    const lastOutput = output.at(-1);
 
-    test(code, () => {
-      expect(eval(code)).toEqual(
-        eval(Array.isArray(output) ? output.at(-1)! : output),
-      );
-    });
-  }
+    assert.isDefined(lastOutput);
+
+    expect(eval(code)).toStrictEqual(
+      eval(Array.isArray(output) ? lastOutput : output),
+    );
+  });
 });
 
 ruleTester.run('no-unnecessary-template-expression', rule, {
@@ -1187,6 +1176,60 @@ type Foo = \`\${StringOrNumber}\`;
 enum Foo {
   A = 1,
   B = 2,
+}
+type Bar = \`\${Foo.A}\`;
+    `,
+    `
+enum Enum1 {
+  A = 'A1',
+  B = 'B1',
+}
+
+enum Enum2 {
+  A = 'A2',
+  B = 'B2',
+}
+
+type Union = \`\${Enum1 | Enum2}\`;
+    `,
+    `
+enum Enum1 {
+  A = 'A1',
+  B = 'B1',
+}
+
+enum Enum2 {
+  A = 'A2',
+  B = 'B2',
+}
+
+type Union = \`\${Enum1.A | Enum2.B}\`;
+    `,
+    `
+enum Enum1 {
+  A = 'A1',
+  B = 'B1',
+}
+
+enum Enum2 {
+  A = 'A2',
+  B = 'B2',
+}
+type Enums = Enum1 | Enum2;
+type Union = \`\${Enums}\`;
+    `,
+    `
+enum Enum {
+  A = 'A',
+  B = 'A',
+}
+
+type Intersection = \`\${Enum1.A & string}\`;
+    `,
+    `
+enum Foo {
+  A = 'A',
+  B = 'B',
 }
 type Bar = \`\${Foo.A}\`;
     `,
@@ -1411,31 +1454,6 @@ type Bar = Foo;
         },
       ],
       output: "type FooBar = 'foo' | 'bar';",
-    },
-    {
-      code: `
-enum Foo {
-  A = 'A',
-  B = 'B',
-}
-type Bar = \`\${Foo.A}\`;
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 21,
-          endLine: 6,
-          line: 6,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-enum Foo {
-  A = 'A',
-  B = 'B',
-}
-type Bar = Foo.A;
-      `,
     },
   ],
 });

@@ -1,17 +1,12 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import path from 'node:path';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
+import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
 
-const rootDir = path.resolve(__dirname, '../fixtures/');
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      projectService: false,
-      tsconfigRootDir: rootDir,
-    },
-  },
+const rootDir = getFixturesRootDir();
+
+const ruleTester = createRuleTesterWithTypes({
+  project: './tsconfig.json',
 });
 
 const optionsWithOnUncheckedIndexedAccess = {
@@ -384,6 +379,131 @@ if (Math.random()) {
 x!;
       `,
     },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as T.Value2;
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as T;
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1 = 0,
+  Value2 = 1,
+}
+
+const b = 1 as T.Value2;
+      `,
+    },
+    `
+const foo: unknown = {};
+const baz: {} = foo!;
+    `,
+    `
+const foo: unknown = {};
+const bar: object = foo!;
+    `,
+    `
+declare function foo<T extends unknown>(bar: T): T;
+const baz: unknown = {};
+foo(baz!);
+    `,
+    {
+      code: 'const a = `a` as const;',
+    },
+    {
+      code: "const a = 'a' as const;",
+    },
+    {
+      code: "const a = <const>'a';",
+    },
+    {
+      code: `
+class T {
+  readonly a = 'a' as const;
+}
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+declare const a: T.Value1;
+const b = a as const;
+      `,
+    },
+    {
+      code: `
+(() => {})() as undefined;
+      `,
+    },
+    {
+      code: `
+const f = () => {};
+f() as undefined;
+      `,
+    },
+    {
+      code: `
+(function () {})() as undefined;
+      `,
+    },
+    {
+      code: `
+interface Overloaded {
+  (): undefined;
+  (value: string): void;
+}
+
+((value => {}) as Overloaded)('') as undefined;
+      `,
+    },
+    {
+      code: `
+interface Overloaded {
+  (): void;
+  (value: string): undefined;
+}
+
+((() => {}) as Overloaded)() as undefined;
+      `,
+    },
+    {
+      code: `
+interface GenericOverloaded {
+  <T extends string>(value: T): void;
+  (): undefined;
+}
+((value => {}) as GenericOverloaded)('') as undefined;
+      `,
+    },
+    {
+      code: `
+interface Unioned {
+  (): undefined | void;
+}
+
+((() => {}) as Unioned)() as undefined;
+      `,
+    },
     "let a = (Date.now() % 2 ? 'a' : 'b') as 'a' | 'b';",
     `
       const state: 'expired' | 'pending' = 'pending';
@@ -498,22 +618,6 @@ let b = (Math.random() > 0.5 ? new Foo() : '1') as '1' | Foo;
   ],
 
   invalid: [
-    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
-    {
-      code: 'const a = `a` as const;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      output: 'const a = `a`;',
-    },
-    {
-      code: "const a = 'a' as const;",
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      output: "const a = 'a';",
-    },
-    {
-      code: "const a = <const>'a';",
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
-      output: "const a = 'a';",
-    },
     {
       code: 'const foo = <3>3;',
       errors: [{ column: 13, line: 1, messageId: 'unnecessaryAssertion' }],
@@ -1276,24 +1380,6 @@ var x = 1;
     {
       code: `
 class T {
-  readonly a = 'a' as const;
-}
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'unnecessaryAssertion',
-        },
-      ],
-      output: `
-class T {
-  readonly a = 'a';
-}
-      `,
-    },
-    {
-      code: `
-class T {
   readonly a = 3 as 3;
 }
       `,
@@ -1362,6 +1448,212 @@ const b: string | undefined = (a ? undefined : a)!;
       output: `
 const a = '';
 const b: string | undefined = (a ? undefined : a);
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as T.Value1;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a;
+      `,
+    },
+    {
+      code: `
+const foo: unknown = {};
+const bar: unknown = foo!;
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+const foo: unknown = {};
+const bar: unknown = foo;
+      `,
+    },
+    {
+      code: `
+function foo(bar: unknown) {}
+const baz: unknown = {};
+foo(baz!);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+function foo(bar: unknown) {}
+const baz: unknown = {};
+foo(baz);
+      `,
+    },
+    {
+      code: 'const a = true as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = true;',
+    },
+    {
+      code: 'const a = <const>true;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = true;',
+    },
+    {
+      code: 'const a = 1 as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = 1;',
+    },
+    {
+      code: 'const a = <const>1;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = 1;',
+    },
+    {
+      code: 'const a = 1n as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = 1n;',
+    },
+    {
+      code: 'const a = <const>1n;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = 1n;',
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    {
+      code: 'const a = `a` as const;',
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: 'const a = `a`;',
+    },
+    {
+      code: "const a = 'a' as const;",
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: "const a = 'a';",
+    },
+    {
+      code: "const a = <const>'a';",
+      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: "const a = 'a';",
+    },
+    {
+      code: `
+class T {
+  readonly a = 'a' as const;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+class T {
+  readonly a = 'a';
+}
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as const;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a;
+      `,
+    },
+    {
+      code: `
+((): undefined => {})() as undefined;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+((): undefined => {})();
+      `,
+    },
+    {
+      code: `
+(() => 1)() as number;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+(() => 1)();
+      `,
+    },
+    {
+      code: `
+interface Overloaded {
+  (): void;
+  (value: string): undefined;
+}
+
+((value => {}) as Overloaded)('') as undefined;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+interface Overloaded {
+  (): void;
+  (value: string): undefined;
+}
+
+((value => {}) as Overloaded)('');
       `,
     },
     {

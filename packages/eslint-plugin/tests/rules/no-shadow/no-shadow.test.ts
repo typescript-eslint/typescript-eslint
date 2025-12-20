@@ -1,5 +1,4 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../../src/rules/no-shadow';
 
@@ -328,7 +327,6 @@ function doThing(foo: number) {}
             shadowedLine: 2,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ ignoreTypeValueShadow: false }],
@@ -346,7 +344,6 @@ function doThing(foo: number) {}
             shadowedLine: 2,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ ignoreTypeValueShadow: false }],
@@ -364,7 +361,6 @@ function doThing(foo: number, bar: number) {}
             shadowedLine: 2,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ ignoreTypeValueShadow: true }],
@@ -387,7 +383,6 @@ declare module 'bar' {
             shadowedLine: 2,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -409,7 +404,6 @@ declare module 'baz' {
             shadowedLine: 2,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -431,7 +425,6 @@ declare module 'baz' {
             shadowedLine: 2,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -448,7 +441,6 @@ let y;
             shadowedLine: 2,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
         {
           data: {
@@ -457,7 +449,6 @@ let y;
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
@@ -476,7 +467,6 @@ let y;
             shadowedLine: 2,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
@@ -495,7 +485,6 @@ type A = 1;
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'types' }],
@@ -513,7 +502,6 @@ type A = 1;
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'types' }],
@@ -531,7 +519,6 @@ interface A {}
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'types' }],
@@ -549,7 +536,6 @@ interface A {}
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'types' }],
@@ -569,7 +555,6 @@ type A = 1;
             shadowedLine: 5,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'types' }],
@@ -589,7 +574,6 @@ type A = 1;
             shadowedLine: 5,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'types' }],
@@ -608,7 +592,6 @@ type A = 1;
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'all' }],
@@ -626,7 +609,6 @@ type A = 1;
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'all' }],
@@ -644,7 +626,6 @@ interface A {}
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'all' }],
@@ -662,7 +643,6 @@ interface A {}
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'all' }],
@@ -682,7 +662,6 @@ type A = 1;
             shadowedLine: 5,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'all' }],
@@ -702,7 +681,6 @@ type A = 1;
             shadowedLine: 5,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'all' }],
@@ -721,7 +699,6 @@ type A = 1;
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'functions-and-types' }],
@@ -739,7 +716,6 @@ type A = 1;
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'functions-and-types' }],
@@ -757,7 +733,6 @@ interface A {}
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'functions-and-types' }],
@@ -775,7 +750,6 @@ interface A {}
             shadowedLine: 3,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'functions-and-types' }],
@@ -795,7 +769,6 @@ type A = 1;
             shadowedLine: 5,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'functions-and-types' }],
@@ -815,7 +788,6 @@ type A = 1;
             shadowedLine: 5,
           },
           messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [{ hoist: 'functions-and-types' }],
@@ -846,6 +818,48 @@ function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}
           ignoreTypeValueShadow: false,
         },
       ],
+    },
+    {
+      code: `
+declare const has = (environment: 'dev' | 'prod' | 'test') => boolean;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'has',
+          },
+          messageId: 'noShadowGlobal',
+        },
+      ],
+      languageOptions: {
+        globals: {
+          has: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare const has: (environment: 'dev' | 'prod' | 'test') => boolean;
+const fn = (has: string) => {};
+      `,
+      errors: [
+        {
+          data: {
+            name: 'has',
+            shadowedColumn: 15,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      filename: 'foo.d.ts',
+      languageOptions: {
+        globals: {
+          has: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
     },
   ],
   valid: [
@@ -1454,6 +1468,135 @@ declare module 'bar' {
   }
 }
       `,
+    },
+    {
+      code: `
+declare const foo1: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo1: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare let foo2: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo2: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare var foo3: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo3: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+function foo4(name: string): void;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo4: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare class Foopy1 {
+  name: string;
+}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy1: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare interface Foopy2 {
+  name: string;
+}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy2: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare type Foopy3 = {
+  x: number;
+};
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy3: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare enum Foopy4 {
+  x,
+}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy4: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare namespace Foopy5 {}
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          Foopy5: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+declare;
+foo5: boolean;
+      `,
+      filename: 'baz.d.ts',
+      languageOptions: {
+        globals: {
+          foo5: false,
+        },
+      },
+      options: [{ builtinGlobals: true }],
     },
   ],
 });

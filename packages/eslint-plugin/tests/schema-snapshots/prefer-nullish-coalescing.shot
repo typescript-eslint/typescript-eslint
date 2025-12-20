@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes prefer-nullish-coalescing 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,25 +6,30 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing": {
-        "description": "Unless this is set to \`true\`, the rule will error on every file whose \`tsconfig.json\` does _not_ have the \`strictNullChecks\` compiler option (or \`strict\`) set to \`true\`.",
+        "description": "Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.",
         "type": "boolean"
       },
       "ignoreBooleanCoercion": {
-        "description": "Whether to ignore arguments to the \`Boolean\` constructor",
+        "description": "Whether to ignore arguments to the `Boolean` constructor",
         "type": "boolean"
       },
       "ignoreConditionalTests": {
         "description": "Whether to ignore cases that are located within a conditional test.",
         "type": "boolean"
       },
+      "ignoreIfStatements": {
+        "description": "Whether to ignore any if statements that could be simplified by using the nullish coalescing operator.",
+        "type": "boolean"
+      },
       "ignoreMixedLogicalExpressions": {
-        "description": "Whether to ignore any logical or expressions that are part of a mixed logical expression (with \`&&\`).",
+        "description": "Whether to ignore any logical or expressions that are part of a mixed logical expression (with `&&`).",
         "type": "boolean"
       },
       "ignorePrimitives": {
-        "description": "Whether to ignore all (\`true\`) or some (an object with properties) primitive types.",
+        "description": "Whether to ignore all (`true`) or some (an object with properties) primitive types.",
         "oneOf": [
           {
+            "additionalProperties": false,
             "description": "Which primitives types may be ignored.",
             "properties": {
               "bigint": {
@@ -70,20 +72,22 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Unless this is set to \`true\`, the rule will error on every file whose \`tsconfig.json\` does _not_ have the \`strictNullChecks\` compiler option (or \`strict\`) set to \`true\`. */
+    /** Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`. */
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
-    /** Whether to ignore arguments to the \`Boolean\` constructor */
+    /** Whether to ignore arguments to the `Boolean` constructor */
     ignoreBooleanCoercion?: boolean;
     /** Whether to ignore cases that are located within a conditional test. */
     ignoreConditionalTests?: boolean;
-    /** Whether to ignore any logical or expressions that are part of a mixed logical expression (with \`&&\`). */
+    /** Whether to ignore any if statements that could be simplified by using the nullish coalescing operator. */
+    ignoreIfStatements?: boolean;
+    /** Whether to ignore any logical or expressions that are part of a mixed logical expression (with `&&`). */
     ignoreMixedLogicalExpressions?: boolean;
-    /** Whether to ignore all (\`true\`) or some (an object with properties) primitive types. */
+    /** Whether to ignore all (`true`) or some (an object with properties) primitive types. */
     ignorePrimitives?: /**
-     * Whether to ignore all (\`true\`) or some (an object with properties) primitive types.
-     * Which primitives types may be ignored.
-     */
-    | {
+       * Whether to ignore all (`true`) or some (an object with properties) primitive types.
+       * Which primitives types may be ignored.
+       */
+      | {
           /** Ignore bigint primitive types. */
           bigint?: boolean;
           /** Ignore boolean primitive types. */
@@ -92,7 +96,6 @@ type Options = [
           number?: boolean;
           /** Ignore string primitive types. */
           string?: boolean;
-          [k: string]: unknown;
         }
       /** Ignore all primitive types. */
       | true;
@@ -100,5 +103,3 @@ type Options = [
     ignoreTernaryTests?: boolean;
   },
 ];
-"
-`;

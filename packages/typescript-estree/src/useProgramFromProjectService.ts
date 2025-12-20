@@ -1,10 +1,11 @@
+import type { ProjectServiceAndMetadata } from '@typescript-eslint/project-service';
+
 import debug from 'debug';
 import { minimatch } from 'minimatch';
 import path from 'node:path';
 import util from 'node:util';
 import * as ts from 'typescript';
 
-import type { ProjectServiceSettings } from './create-program/createProjectService';
 import type {
   ASTAndDefiniteProgram,
   ASTAndNoProgram,
@@ -55,7 +56,7 @@ function openClientFileFromProjectService(
   isDefaultProjectAllowed: boolean,
   filePathAbsolute: string,
   parseSettings: Readonly<MutableParseSettings>,
-  serviceSettings: ProjectServiceSettings,
+  serviceAndSettings: ProjectServiceAndMetadata,
 ): ts.server.OpenConfiguredProjectResult {
   const opened = openClientFileAndMaybeReload();
 
@@ -95,8 +96,24 @@ function openClientFileFromProjectService(
     }
 
     if (!isDefaultProjectAllowed) {
+      const baseMessage = `${wasNotFound}. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`;
+      const allowDefaultProject =
+        parseSettings.projectService?.allowDefaultProject;
+
+      if (!allowDefaultProject) {
+        throw new Error(baseMessage);
+      }
+
+      const relativeFilePath = path.relative(
+        parseSettings.tsconfigRootDir,
+        filePathAbsolute,
+      );
+
       throw new Error(
-        `${wasNotFound}. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
+        [
+          baseMessage,
+          `allowDefaultProject is set to ${JSON.stringify(allowDefaultProject)}, which does not match '${relativeFilePath}'.`,
+        ].join('\n'),
       );
     }
   }
@@ -107,7 +124,7 @@ function openClientFileFromProjectService(
     defaultProjectMatchedFiles.add(filePathAbsolute);
     if (
       defaultProjectMatchedFiles.size >
-      serviceSettings.maximumDefaultProjectFileMatchCount
+      serviceAndSettings.maximumDefaultProjectFileMatchCount
     ) {
       const filePrintLimit = 20;
       const filesToPrint = [...defaultProjectMatchedFiles].slice(
@@ -118,7 +135,7 @@ function openClientFileFromProjectService(
         defaultProjectMatchedFiles.size - filesToPrint.length;
 
       throw new Error(
-        `Too many files (>${serviceSettings.maximumDefaultProjectFileMatchCount}) have matched the default project.${DEFAULT_PROJECT_FILES_ERROR_EXPLANATION}
+        `Too many files (>${serviceAndSettings.maximumDefaultProjectFileMatchCount}) have matched the default project.${DEFAULT_PROJECT_FILES_ERROR_EXPLANATION}
 Matching files:
 ${filesToPrint.map(file => `- ${file}`).join('\n')}
 ${truncatedFileCount ? `...and ${truncatedFileCount} more files\n` : ''}
@@ -131,7 +148,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
   return opened;
 
   function openClientFile(): ts.server.OpenConfiguredProjectResult {
-    return serviceSettings.service.openClientFile(
+    return serviceAndSettings.service.openClientFile(
       filePathAbsolute,
       parseSettings.codeFullText,
       /* scriptKind */ undefined,
@@ -152,13 +169,13 @@ If you absolutely need more files included, set parserOptions.projectService.max
       !opened.configFileName &&
       !parseSettings.singleRun &&
       !isDefaultProjectAllowed &&
-      performance.now() - serviceSettings.lastReloadTimestamp >
+      performance.now() - serviceAndSettings.lastReloadTimestamp >
         RELOAD_THROTTLE_MS
     ) {
       log('No config file found; reloading project service and retrying.');
-      serviceSettings.service.reloadProjects();
+      serviceAndSettings.service.reloadProjects();
       opened = openClientFile();
-      serviceSettings.lastReloadTimestamp = performance.now();
+      serviceAndSettings.lastReloadTimestamp = performance.now();
     }
 
     return opened;
@@ -192,13 +209,13 @@ function createNoProgramWithProjectService(
 function retrieveASTAndProgramFor(
   filePathAbsolute: string,
   parseSettings: Readonly<MutableParseSettings>,
-  serviceSettings: ProjectServiceSettings,
+  serviceAndSettings: ProjectServiceAndMetadata,
 ): ASTAndDefiniteProgram | undefined {
   log('Retrieving script info and then program for: %s', filePathAbsolute);
 
-  const scriptInfo = serviceSettings.service.getScriptInfo(filePathAbsolute);
+  const scriptInfo = serviceAndSettings.service.getScriptInfo(filePathAbsolute);
   /* eslint-disable @typescript-eslint/no-non-null-assertion */
-  const program = serviceSettings.service
+  const program = serviceAndSettings.service
     .getDefaultProjectForFile(scriptInfo!.fileName, true)!
     .getLanguageService(/*ensureSynchronized*/ true)
     .getProgram();
@@ -215,38 +232,41 @@ function retrieveASTAndProgramFor(
 }
 
 export function useProgramFromProjectService(
-  settings: ProjectServiceSettings,
+  serviceAndSettings: ProjectServiceAndMetadata,
   parseSettings: Readonly<MutableParseSettings>,
   hasFullTypeInformation: boolean,
   defaultProjectMatchedFiles: Set<string>,
 ): ASTAndProgram | undefined;
 export function useProgramFromProjectService(
-  settings: ProjectServiceSettings,
+  serviceAndSettings: ProjectServiceAndMetadata,
   parseSettings: Readonly<MutableParseSettings>,
   hasFullTypeInformation: true,
   defaultProjectMatchedFiles: Set<string>,
 ): ASTAndDefiniteProgram | undefined;
 export function useProgramFromProjectService(
-  settings: ProjectServiceSettings,
+  serviceAndSettings: ProjectServiceAndMetadata,
   parseSettings: Readonly<MutableParseSettings>,
   hasFullTypeInformation: false,
   defaultProjectMatchedFiles: Set<string>,
 ): ASTAndNoProgram | undefined;
 export function useProgramFromProjectService(
-  serviceSettings: ProjectServiceSettings,
+  serviceAndSettings: ProjectServiceAndMetadata,
   parseSettings: Readonly<MutableParseSettings>,
   hasFullTypeInformation: boolean,
   defaultProjectMatchedFiles: Set<string>,
 ): ASTAndProgram | undefined {
   // NOTE: triggers a full project reload when changes are detected
   updateExtraFileExtensions(
-    serviceSettings.service,
+    serviceAndSettings.service,
     parseSettings.extraFileExtensions,
   );
 
   // We don't canonicalize the filename because it caused a performance regression.
   // See https://github.com/typescript-eslint/typescript-eslint/issues/8519
-  const filePathAbsolute = absolutify(parseSettings.filePath, serviceSettings);
+  const filePathAbsolute = absolutify(
+    parseSettings.filePath,
+    serviceAndSettings,
+  );
   log(
     'Opening project service file for: %s at absolute path %s',
     parseSettings.filePath,
@@ -259,7 +279,7 @@ export function useProgramFromProjectService(
   );
   const isDefaultProjectAllowed = filePathMatchedBy(
     filePathRelative,
-    serviceSettings.allowDefaultProject,
+    serviceAndSettings.allowDefaultProject,
   );
 
   // Type-aware linting is disabled for this file.
@@ -268,7 +288,7 @@ export function useProgramFromProjectService(
     return createNoProgramWithProjectService(
       filePathAbsolute,
       parseSettings,
-      serviceSettings.service,
+      serviceAndSettings.service,
     );
   }
 
@@ -284,7 +304,7 @@ export function useProgramFromProjectService(
       isDefaultProjectAllowed,
       filePathAbsolute,
       parseSettings,
-      serviceSettings,
+      serviceAndSettings,
     );
 
   log('Opened project service file: %o', opened);
@@ -292,22 +312,27 @@ export function useProgramFromProjectService(
   return retrieveASTAndProgramFor(
     filePathAbsolute,
     parseSettings,
-    serviceSettings,
+    serviceAndSettings,
   );
 }
 
 function absolutify(
   filePath: string,
-  serviceSettings: ProjectServiceSettings,
+  serviceAndSettings: ProjectServiceAndMetadata,
 ): string {
   return path.isAbsolute(filePath)
     ? filePath
-    : path.join(serviceSettings.service.host.getCurrentDirectory(), filePath);
+    : path.join(
+        serviceAndSettings.service.host.getCurrentDirectory(),
+        filePath,
+      );
 }
 
 function filePathMatchedBy(
   filePath: string,
   allowDefaultProject: string[] | undefined,
 ): boolean {
-  return !!allowDefaultProject?.some(pattern => minimatch(filePath, pattern));
+  return !!allowDefaultProject?.some(pattern =>
+    minimatch(filePath, pattern, { dot: true }),
+  );
 }

@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types mapped TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -41,6 +38,7 @@ Program {
                   },
                 },
                 nameType: null,
+                optional: false,
                 typeAnnotation: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -98,4 +96,3 @@ Program {
     end: { column: 0, line: 4 },
   },
 }
-`;

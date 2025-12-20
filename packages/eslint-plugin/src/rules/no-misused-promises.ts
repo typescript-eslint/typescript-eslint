@@ -6,14 +6,17 @@ import * as ts from 'typescript';
 
 import {
   createRule,
+  getConstrainedTypeAtLocation,
   getFunctionHeadLoc,
   getParserServices,
   isArrayMethodCallWithPredicate,
   isFunction,
+  isPromiseLike,
   isRestParameterDeclaration,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { parseFinallyCall } from '../util/promiseUtils';
 
 export type Options = [
   {
@@ -23,7 +26,7 @@ export type Options = [
   },
 ];
 
-interface ChecksVoidReturnOptions {
+export interface ChecksVoidReturnOptions {
   arguments?: boolean;
   attributes?: boolean;
   inheritedMethods?: boolean;
@@ -85,7 +88,7 @@ export default createRule<Options, MessageId>({
     messages: {
       conditional: 'Expected non-Promise value in a boolean conditional.',
       predicate: 'Expected a non-Promise value to be returned.',
-      spread: 'Expected a non-Promise value to be spreaded in an object.',
+      spread: 'Expected a non-Promise value to be spread in an object.',
       voidReturnArgument:
         'Promise returned in function argument where a void return was expected.',
       voidReturnAttribute:
@@ -360,6 +363,13 @@ export default createRule<Options, MessageId>({
     function checkArguments(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
+      if (
+        node.type === AST_NODE_TYPES.CallExpression &&
+        isPromiseFinallyMethod(node)
+      ) {
+        return;
+      }
+
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const voidArgs = voidFunctionArguments(checker, tsNode);
       if (voidArgs.size === 0) {
@@ -492,10 +502,10 @@ export default createRule<Options, MessageId>({
         if (objType == null) {
           return;
         }
-        const propertySymbol = checker.getPropertyOfType(
-          objType,
-          tsNode.name.text,
-        );
+        const propertySymbol = tsutils
+          .unionConstituents(objType)
+          .map(t => checker.getPropertyOfType(t, tsNode.name.getText()))
+          .find(p => p);
         if (propertySymbol == null) {
           return;
         }
@@ -561,6 +571,18 @@ export default createRule<Options, MessageId>({
           messageId: 'voidReturnReturnValue',
         });
       }
+    }
+
+    function isPromiseFinallyMethod(node: TSESTree.CallExpression): boolean {
+      const promiseFinallyCall = parseFinallyCall(node, context);
+
+      return (
+        promiseFinallyCall != null &&
+        isPromiseLike(
+          services.program,
+          getConstrainedTypeAtLocation(services, promiseFinallyCall.object),
+        )
+      );
     }
 
     function checkClassLikeOrInterfaceNode(
@@ -686,7 +708,9 @@ export default createRule<Options, MessageId>({
 function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
 
-  for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
+  for (const subType of tsutils.unionConstituents(
+    checker.getApparentType(type),
+  )) {
     if (tsutils.isThenableType(checker, node, subType)) {
       return true;
     }
@@ -702,7 +726,9 @@ function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
 function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
 
-  for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
+  for (const subType of tsutils.unionConstituents(
+    checker.getApparentType(type),
+  )) {
     const thenProp = subType.getProperty('then');
 
     // If one of the alternates has no then property, it is not thenable in all
@@ -716,7 +742,7 @@ function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
     // be of the right form to consider it thenable.
     const thenType = checker.getTypeOfSymbolAtLocation(thenProp, node);
     let hasThenableSignature = false;
-    for (const subType of tsutils.unionTypeParts(thenType)) {
+    for (const subType of tsutils.unionConstituents(thenType)) {
       for (const signature of subType.getCallSignatures()) {
         if (
           signature.parameters.length !== 0 &&
@@ -754,7 +780,7 @@ function isFunctionParam(
   const type: ts.Type | undefined = checker.getApparentType(
     checker.getTypeOfSymbolAtLocation(param, node),
   );
-  for (const subType of tsutils.unionTypeParts(type)) {
+  for (const subType of tsutils.unionConstituents(type)) {
     if (subType.getCallSignatures().length !== 0) {
       return true;
     }
@@ -818,7 +844,7 @@ function voidFunctionArguments(
   // We can't use checker.getResolvedSignature because it prefers an early '() => void' over a later '() => Promise<void>'
   // See https://github.com/microsoft/TypeScript/issues/48077
 
-  for (const subType of tsutils.unionTypeParts(type)) {
+  for (const subType of tsutils.unionConstituents(type)) {
     // Standard function calls and `new` have two different types of signatures
     const signatures = ts.isCallExpression(node)
       ? subType.getCallSignatures()
@@ -915,7 +941,7 @@ function isThenableReturningFunctionType(
   node: ts.Node,
   type: ts.Type,
 ): boolean {
-  for (const subType of tsutils.unionTypeParts(type)) {
+  for (const subType of tsutils.unionConstituents(type)) {
     if (anySignatureIsThenableType(checker, node, subType)) {
       return true;
     }
@@ -934,7 +960,7 @@ function isVoidReturningFunctionType(
 ): boolean {
   let hadVoidReturn = false;
 
-  for (const subType of tsutils.unionTypeParts(type)) {
+  for (const subType of tsutils.unionConstituents(type)) {
     for (const signature of subType.getCallSignatures()) {
       const returnType = signature.getReturnType();
 
@@ -957,7 +983,7 @@ function isVoidReturningFunctionType(
 function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getApparentType(checker.getTypeAtLocation(node));
   return tsutils
-    .unionTypeParts(type)
+    .unionConstituents(type)
     .some(t => anySignatureIsThenableType(checker, node, t));
 }
 
@@ -987,7 +1013,8 @@ function getMemberIfExists(
 function isStaticMember(node: TSESTree.Node): boolean {
   return (
     (node.type === AST_NODE_TYPES.MethodDefinition ||
-      node.type === AST_NODE_TYPES.PropertyDefinition) &&
+      node.type === AST_NODE_TYPES.PropertyDefinition ||
+      node.type === AST_NODE_TYPES.AccessorProperty) &&
     node.static
   );
 }

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics export-default-interface AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > export-default-interface > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -20,9 +20,9 @@ exports[`AST Fixtures legacy-fixtures basics export-default-interface AST Alignm
                 computed: false,
                 key: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'method1',
--                 optional: false,
+                  optional: false,
 
                   range: [104, 111],
                   loc: {
@@ -31,11 +31,12 @@ exports[`AST Fixtures legacy-fixtures basics export-default-interface AST Alignm
                   },
                 },
                 kind: 'method',
--               optional: false,
+                optional: false,
 -               params: Array [],
--               readonly: false,
--               returnType: TSTypeAnnotation {
 +               parameters: Array [],
+                readonly: false,
+-               returnType: TSTypeAnnotation {
++               static: false,
 +               typeAnnotation: TSTypeAnnotation {
                   type: 'TSTypeAnnotation',
                   typeAnnotation: TSVoidKeyword {
@@ -70,13 +71,13 @@ exports[`AST Fixtures legacy-fixtures basics export-default-interface AST Alignm
               end: { column: 1, line: 5 },
             },
           },
--         declare: false,
--         extends: Array [],
+          declare: false,
+          extends: Array [],
           id: Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'T',
--           optional: false,
+            optional: false,
 
             range: [98, 99],
             loc: {
@@ -107,5 +108,4 @@ exports[`AST Fixtures legacy-fixtures basics export-default-interface AST Alignm
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

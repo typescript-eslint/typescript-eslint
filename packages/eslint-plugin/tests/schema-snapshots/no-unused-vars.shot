@@ -1,13 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-unused-vars 1`] = `
-"
 # SCHEMA:
 
 [
   {
     "oneOf": [
       {
+        "description": "Broad setting for unused variables to target.",
         "enum": ["all", "local"],
         "type": "string"
       },
@@ -41,7 +39,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "type": "boolean"
           },
           "ignoreRestSiblings": {
-            "description": "Whether to ignore sibling properties in \`...\` destructurings.",
+            "description": "Whether to ignore sibling properties in `...` destructurings.",
+            "type": "boolean"
+          },
+          "ignoreUsingDeclarations": {
+            "description": "Whether to ignore using or await using declarations.",
             "type": "boolean"
           },
           "reportUsedIgnorePattern": {
@@ -68,7 +70,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Options = [
-  | 'all'
   | 'local'
   | {
       /** Whether to check all, some, or no arguments. */
@@ -90,8 +91,10 @@ type Options = [
       destructuredArrayIgnorePattern?: string;
       /** Whether to ignore classes with at least one static initialization block. */
       ignoreClassWithStaticInitBlock?: boolean;
-      /** Whether to ignore sibling properties in \`...\` destructurings. */
+      /** Whether to ignore sibling properties in `...` destructurings. */
       ignoreRestSiblings?: boolean;
+      /** Whether to ignore using or await using declarations. */
+      ignoreUsingDeclarations?: boolean;
       /** Whether to report variables that match any of the valid ignore pattern options if they have been used. */
       reportUsedIgnorePattern?: boolean;
       /** Whether to check all variables or only locally-declared variables. */
@@ -101,7 +104,7 @@ type Options = [
         | 'all';
       /** Regular expressions of variable names to not check for usage. */
       varsIgnorePattern?: string;
-    },
+    }
+  /** Broad setting for unused variables to target. */
+  | 'all',
 ];
-"
-`;

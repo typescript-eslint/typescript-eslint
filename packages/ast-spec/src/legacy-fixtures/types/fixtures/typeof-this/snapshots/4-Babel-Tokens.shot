@@ -1,9 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types typeof-this Babel - Tokens 1`] = `
 [
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [73, 76],
@@ -62,8 +59,8 @@ exports[`AST Fixtures legacy-fixtures types typeof-this Babel - Tokens 1`] = `
       end: { column: 22, line: 3 },
     },
   },
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "let",
 
     range: [96, 99],
@@ -143,4 +140,3 @@ exports[`AST Fixtures legacy-fixtures types typeof-this Babel - Tokens 1`] = `
     },
   },
 ]
-`;

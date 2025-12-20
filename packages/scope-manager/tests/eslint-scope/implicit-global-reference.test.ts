@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/dot-notation -- ['implicit'] is private */
-import { DefinitionType } from '../../src/definition';
-import {
-  expectToBeGlobalScope,
-  getRealVariables,
-  parseAndAnalyze,
-} from '../test-utils';
+import type { Variable } from '../../src/index.js';
+
+import { DefinitionType, ScopeType } from '../../src/index.js';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('implicit global reference', () => {
   it('assignments global scope', () => {
@@ -13,7 +11,7 @@ describe('implicit global reference', () => {
       x = 300;
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
@@ -21,12 +19,14 @@ describe('implicit global reference', () => {
           variable.defs.map(def => def.type),
         ),
       ),
-    ).toEqual([[[DefinitionType.Variable]]]);
+    ).toStrictEqual([[[DefinitionType.Variable]]]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
-    ).toEqual([]);
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
+    ).toStrictEqual([]);
   });
 
   it('assignments global scope without definition', () => {
@@ -35,7 +35,7 @@ describe('implicit global reference', () => {
       x = 300;
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
@@ -43,12 +43,14 @@ describe('implicit global reference', () => {
           variable.defs.map(def => def.type),
         ),
       ),
-    ).toEqual([[]]);
+    ).toStrictEqual([[]]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
-    ).toEqual(['x']);
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
+    ).toStrictEqual(['x']);
   });
 
   it('assignments global scope without definition eval', () => {
@@ -59,7 +61,7 @@ describe('implicit global reference', () => {
       }
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
@@ -67,12 +69,14 @@ describe('implicit global reference', () => {
           variable.defs.map(def => def.type),
         ),
       ),
-    ).toEqual([[[DefinitionType.FunctionName]], [[]]]);
+    ).toStrictEqual([[[DefinitionType.FunctionName]], [[]]]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
-    ).toEqual(['x']);
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
+    ).toStrictEqual(['x']);
   });
 
   it('assignment leaks', () => {
@@ -82,18 +86,20 @@ describe('implicit global reference', () => {
       }
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
         getRealVariables(scope.variables).map(variable => variable.name),
       ),
-    ).toEqual([['outer'], ['arguments']]);
+    ).toStrictEqual([['outer'], ['arguments']]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
-    ).toEqual(['x']);
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
+    ).toStrictEqual(['x']);
   });
 
   it("assignment doesn't leak", () => {
@@ -106,18 +112,20 @@ describe('implicit global reference', () => {
       }
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
         getRealVariables(scope.variables).map(variable => variable.name),
       ),
-    ).toEqual([['outer'], ['arguments', 'inner', 'x'], ['arguments']]);
+    ).toStrictEqual([['outer'], ['arguments', 'inner', 'x'], ['arguments']]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
-    ).toEqual([]);
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
+    ).toStrictEqual([]);
   });
 
   it('for-in-statement leaks', () => {
@@ -127,18 +135,20 @@ describe('implicit global reference', () => {
       }
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
         getRealVariables(scope.variables).map(variable => variable.name),
       ),
-    ).toEqual([['outer'], ['arguments'], []]);
+    ).toStrictEqual([['outer'], ['arguments'], []]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
-    ).toEqual(['x']);
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
+    ).toStrictEqual(['x']);
   });
 
   it("for-in-statement doesn't leaks", () => {
@@ -151,17 +161,24 @@ describe('implicit global reference', () => {
       }
     `);
 
-    const scopes = scopeManager.scopes;
+    const { scopes } = scopeManager;
 
     expect(
       scopes.map(scope =>
         getRealVariables(scope.variables).map(variable => variable.name),
       ),
-    ).toEqual([['outer'], ['arguments', 'inner', 'x'], ['arguments'], []]);
+    ).toStrictEqual([
+      ['outer'],
+      ['arguments', 'inner', 'x'],
+      ['arguments'],
+      [],
+    ]);
 
-    expectToBeGlobalScope(scopes[0]);
+    assert.isScopeOfType(scopes[0], ScopeType.global);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
-    ).toEqual([]);
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
+    ).toStrictEqual([]);
   });
 });

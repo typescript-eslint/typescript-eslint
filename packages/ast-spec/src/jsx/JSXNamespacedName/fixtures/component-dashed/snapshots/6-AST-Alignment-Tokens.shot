@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > jsx > JSXNamespacedName > component-dashed > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -120,7 +120,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - Tok
     },
     String {
       type: 'String',
-      value: '\\'foo-bar:baz-bam\\'',
+      value: '\'foo-bar:baz-bam\'',
 
       range: [74, 91],
       loc: {
@@ -362,5 +362,4 @@ exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - Tok
         end: { column: 44, line: 9 },
       },
     },
-  ]"
-`;
+  ]

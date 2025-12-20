@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > interface-with-accessors > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -18,9 +18,9 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'size',
--               optional: false,
+                optional: false,
 
                 range: [97, 101],
                 loc: {
@@ -29,11 +29,12 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
                 },
               },
               kind: 'get',
--             optional: false,
+              optional: false,
 -             params: Array [],
--             readonly: false,
--             returnType: TSTypeAnnotation {
 +             parameters: Array [],
+              readonly: false,
+-             returnType: TSTypeAnnotation {
++             static: false,
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSNumberKeyword {
@@ -65,9 +66,9 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
               computed: false,
               key: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'size',
--               optional: false,
+                optional: false,
 
                 range: [119, 123],
                 loc: {
@@ -76,14 +77,14 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
                 },
               },
               kind: 'set',
--             optional: false,
+              optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
+                  decorators: Array [],
                   name: 'value',
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSUnionType {
@@ -139,8 +140,8 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
                   },
                 },
               ],
--             readonly: false,
--             static: false,
+              readonly: false,
+              static: false,
 
               range: [115, 158],
               loc: {
@@ -156,13 +157,13 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
             end: { column: 1, line: 6 },
           },
         },
--       declare: false,
--       extends: Array [],
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Thing',
--         optional: false,
+          optional: false,
 
           range: [83, 88],
           loc: {
@@ -185,5 +186,4 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
       start: { column: 0, line: 3 },
       end: { column: 0, line: 7 },
     },
-  }"
-`;
+  }

@@ -75,6 +75,7 @@ import noUnnecessaryTemplateExpression from './no-unnecessary-template-expressio
 import noUnnecessaryTypeArguments from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnnecessaryTypeConstraint from './no-unnecessary-type-constraint';
+import noUnnecessaryTypeConversion from './no-unnecessary-type-conversion';
 import noUnnecessaryTypeParameters from './no-unnecessary-type-parameters';
 import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
@@ -87,9 +88,11 @@ import noUnsafeReturn from './no-unsafe-return';
 import noUnsafeTypeAssertion from './no-unsafe-type-assertion';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
 import noUnusedExpressions from './no-unused-expressions';
+import noUnusedPrivateClassMembers from './no-unused-private-class-members';
 import noUnusedVars from './no-unused-vars';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
+import noUselessDefaultAssignment from './no-useless-default-assignment';
 import noUselessEmptyExport from './no-useless-empty-export';
 import noVarRequires from './no-var-requires';
 import noWrapperObjectTypes from './no-wrapper-object-types';
@@ -208,6 +211,7 @@ const rules = {
   'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-unnecessary-type-constraint': noUnnecessaryTypeConstraint,
+  'no-unnecessary-type-conversion': noUnnecessaryTypeConversion,
   'no-unnecessary-type-parameters': noUnnecessaryTypeParameters,
   'no-unsafe-argument': noUnsafeArgument,
   'no-unsafe-assignment': noUnsafeAssignment,
@@ -220,9 +224,11 @@ const rules = {
   'no-unsafe-type-assertion': noUnsafeTypeAssertion,
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
   'no-unused-expressions': noUnusedExpressions,
+  'no-unused-private-class-members': noUnusedPrivateClassMembers,
   'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
+  'no-useless-default-assignment': noUselessDefaultAssignment,
   'no-useless-empty-export': noUselessEmptyExport,
   'no-var-requires': noVarRequires,
   'no-wrapper-object-types': noWrapperObjectTypes,

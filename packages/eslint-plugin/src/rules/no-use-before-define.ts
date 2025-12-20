@@ -203,7 +203,7 @@ function isInInitializer(
   return false;
 }
 
-interface Config {
+export interface Config {
   allowNamedExports?: boolean;
   classes?: boolean;
   enums?: boolean;
@@ -231,6 +231,8 @@ export default createRule<Options, MessageIds>({
         oneOf: [
           {
             type: 'string',
+            description:
+              'Broadly set functions and allowNamedExports to false.',
             enum: ['nofunc'],
           },
           {

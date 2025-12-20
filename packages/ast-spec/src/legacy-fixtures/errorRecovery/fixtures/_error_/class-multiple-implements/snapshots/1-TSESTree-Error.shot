@@ -1,10 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ class-multiple-implements TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > class-multiple-implements > TSESTree - Error`]
+TSError
   1 | // TODO: This fixture might be too large, and if so should be split up.
   2 |
 > 3 | class a implements b implements c {}
     |                      ^^^^^^^^^^^^ 'implements' clause already seen.
-  4 |"
-`;
+  4 |

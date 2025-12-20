@@ -1,14 +1,25 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-unsafe-member-access 1`] = `
-"
 # SCHEMA:
 
-[]
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowOptionalChaining": {
+        "description": "Whether to allow `?.` optional chains on `any` values.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
 
 
 # TYPES:
 
-/** No options declared */
-type Options = [];"
-`;
+type Options = [
+  {
+    /** Whether to allow `?.` optional chains on `any` values. */
+    allowOptionalChaining?: boolean;
+  },
+];

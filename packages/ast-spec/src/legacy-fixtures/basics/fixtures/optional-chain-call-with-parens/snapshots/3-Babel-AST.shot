@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics optional-chain-call-with-parens Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -22,7 +19,9 @@ Program {
                   computed: false,
                   object: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "one",
+                    optional: false,
 
                     range: [123, 126],
                     loc: {
@@ -33,7 +32,9 @@ Program {
                   optional: true,
                   property: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "fn",
+                    optional: false,
 
                     range: [128, 130],
                     loc: {
@@ -85,7 +86,9 @@ Program {
                     computed: false,
                     object: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "one",
+                      optional: false,
 
                       range: [137, 140],
                       loc: {
@@ -96,7 +99,9 @@ Program {
                     optional: true,
                     property: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "two",
+                      optional: false,
 
                       range: [142, 145],
                       loc: {
@@ -121,7 +126,9 @@ Program {
                 optional: false,
                 property: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "fn",
+                  optional: false,
 
                   range: [147, 149],
                   loc: {
@@ -166,7 +173,9 @@ Program {
                     computed: false,
                     object: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "one",
+                      optional: false,
 
                       range: [155, 158],
                       loc: {
@@ -177,7 +186,9 @@ Program {
                     optional: false,
                     property: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "two",
+                      optional: false,
 
                       range: [159, 162],
                       loc: {
@@ -195,7 +206,9 @@ Program {
                   optional: true,
                   property: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "fn",
+                    optional: false,
 
                     range: [164, 166],
                     loc: {
@@ -250,7 +263,9 @@ Program {
                       computed: false,
                       object: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "one",
+                        optional: false,
 
                         range: [173, 176],
                         loc: {
@@ -261,7 +276,9 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "two",
+                        optional: false,
 
                         range: [177, 180],
                         loc: {
@@ -279,7 +296,9 @@ Program {
                     optional: true,
                     property: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "three",
+                      optional: false,
 
                       range: [182, 187],
                       loc: {
@@ -304,7 +323,9 @@ Program {
                 optional: false,
                 property: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "fn",
+                  optional: false,
 
                   range: [189, 191],
                   loc: {
@@ -352,7 +373,9 @@ Program {
                       computed: false,
                       object: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "one",
+                        optional: false,
 
                         range: [197, 200],
                         loc: {
@@ -363,7 +386,9 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
+                        decorators: [],
                         name: "two",
+                        optional: false,
 
                         range: [201, 204],
                         loc: {
@@ -381,7 +406,9 @@ Program {
                     optional: true,
                     property: Identifier {
                       type: "Identifier",
+                      decorators: [],
                       name: "three",
+                      optional: false,
 
                       range: [206, 211],
                       loc: {
@@ -399,7 +426,9 @@ Program {
                   optional: true,
                   property: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "fn",
+                    optional: false,
 
                     range: [213, 215],
                     loc: {
@@ -445,7 +474,9 @@ Program {
                 arguments: [],
                 callee: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "one",
+                  optional: false,
 
                   range: [222, 225],
                   loc: {
@@ -487,7 +518,9 @@ Program {
                   arguments: [],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "one",
+                    optional: false,
 
                     range: [234, 237],
                     loc: {
@@ -537,7 +570,9 @@ Program {
                   arguments: [],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "one",
+                    optional: false,
 
                     range: [248, 251],
                     loc: {
@@ -587,7 +622,9 @@ Program {
                   arguments: [],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "one",
+                    optional: false,
 
                     range: [265, 268],
                     loc: {
@@ -613,7 +650,9 @@ Program {
               optional: false,
               property: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "two",
+                optional: false,
 
                 range: [274, 277],
                 loc: {
@@ -643,11 +682,14 @@ Program {
           end: { column: 1, line: 15 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "processOptionalCallParens",
+        optional: false,
 
         range: [82, 107],
         loc: {
@@ -658,6 +700,7 @@ Program {
       params: [
         Identifier {
           type: "Identifier",
+          decorators: [],
           name: "one",
           optional: true,
           typeAnnotation: TSTypeAnnotation {
@@ -702,4 +745,3 @@ Program {
     end: { column: 0, line: 16 },
   },
 }
-`;

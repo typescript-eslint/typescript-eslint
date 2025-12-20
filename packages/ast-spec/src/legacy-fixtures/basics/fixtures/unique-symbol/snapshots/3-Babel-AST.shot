@@ -1,14 +1,14 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics unique-symbol Babel - AST 1`] = `
 Program {
   type: "Program",
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "A",
+        optional: false,
 
         range: [78, 79],
         loc: {
@@ -51,4 +51,3 @@ Program {
     end: { column: 0, line: 4 },
   },
 }
-`;

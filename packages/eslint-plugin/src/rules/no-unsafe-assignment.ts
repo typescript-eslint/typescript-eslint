@@ -50,6 +50,8 @@ export default createRule({
       unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
       unsafeAssignment:
         'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
+      unsafeObjectPattern:
+        'Unsafe object destructuring of a property with an {{sender}} value.',
     },
     schema: [],
   },
@@ -200,7 +202,7 @@ export default createRule({
           receiverProperty.key.type === AST_NODE_TYPES.TemplateLiteral &&
           receiverProperty.key.quasis.length === 1
         ) {
-          key = String(receiverProperty.key.quasis[0].value.cooked);
+          key = receiverProperty.key.quasis[0].value.cooked;
         } else {
           // can't figure out the name, so skip it
           continue;
@@ -215,7 +217,7 @@ export default createRule({
         if (isTypeAnyType(senderType)) {
           context.report({
             node: receiverProperty.value,
-            messageId: 'unsafeArrayPatternFromTuple',
+            messageId: 'unsafeObjectPattern',
             data: createData(senderType),
           });
           didReport = true;
@@ -337,6 +339,16 @@ export default createRule({
     }
 
     return {
+      'AccessorProperty[value != null]'(
+        node: { value: NonNullable<unknown> } & TSESTree.AccessorProperty,
+      ): void {
+        checkAssignment(
+          node.key,
+          node.value,
+          node,
+          getComparisonType(node.typeAnnotation),
+        );
+      },
       'AssignmentExpression[operator = "="], AssignmentPattern'(
         node: TSESTree.AssignmentExpression | TSESTree.AssignmentPattern,
       ): void {

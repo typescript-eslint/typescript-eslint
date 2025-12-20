@@ -68,13 +68,7 @@ function getProgramAndAST(
   }
 
   if (parseSettings.programs) {
-    const fromProvidedPrograms = useProvidedPrograms(
-      parseSettings.programs,
-      parseSettings,
-    );
-    if (fromProvidedPrograms) {
-      return fromProvidedPrograms;
-    }
+    return useProvidedPrograms(parseSettings.programs, parseSettings);
   }
 
   // no need to waste time creating a program as the caller didn't want parser services
@@ -101,8 +95,9 @@ export interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
   services: ParserServices;
 }
-interface ParseWithNodeMapsResult<T extends TSESTreeOptions>
-  extends ParserServicesNodeMaps {
+interface ParseWithNodeMapsResult<
+  T extends TSESTreeOptions,
+> extends ParserServicesNodeMaps {
   ast: AST<T>;
 }
 

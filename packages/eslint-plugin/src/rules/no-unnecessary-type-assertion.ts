@@ -25,6 +25,7 @@ import {
 
 export type Options = [
   {
+    checkLiteralConstAssertions?: boolean;
     typesToIgnore?: string[];
   },
 ];
@@ -52,6 +53,10 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          checkLiteralConstAssertions: {
+            type: 'boolean',
+            description: 'Whether to check literal const assertions.',
+          },
           typesToIgnore: {
             type: 'array',
             description: 'A list of type names to ignore.',
@@ -203,11 +208,11 @@ export default createRule<Options, MessageIds>({
         )
       ) {
         const uncastParts = tsutils
-          .unionTypeParts(uncast)
+          .unionConstituents(uncast)
           .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
 
         const castParts = tsutils
-          .unionTypeParts(cast)
+          .unionConstituents(cast)
           .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
 
         if (uncastParts.length !== castParts.length) {
@@ -278,6 +283,50 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
+    function isTypeLiteral(type: ts.Type) {
+      return type.isLiteral() || tsutils.isBooleanLiteralType(type);
+    }
+
+    function isIIFE(
+      expression: TSESTree.Expression,
+    ): expression is TSESTree.CallExpression & {
+      callee: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression;
+    } {
+      return (
+        expression.type === AST_NODE_TYPES.CallExpression &&
+        (expression.callee.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          expression.callee.type === AST_NODE_TYPES.FunctionExpression)
+      );
+    }
+
+    function getUncastType(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): ts.Type {
+      // Special handling for IIFE: extract the function's return type
+      if (isIIFE(node.expression)) {
+        const callee = node.expression.callee;
+        const functionType = services.getTypeAtLocation(callee);
+        const signatures = functionType.getCallSignatures();
+
+        if (signatures.length > 0) {
+          const returnType = checker.getReturnTypeOfSignature(signatures[0]);
+
+          // If the function has no explicit return type annotation and returns undefined,
+          // treat it as void (TypeScript infers () => {} as () => undefined, but it should be void)
+          if (
+            callee.returnType == null &&
+            isTypeFlagSet(returnType, ts.TypeFlags.Undefined)
+          ) {
+            return checker.getVoidType();
+          }
+
+          return returnType;
+        }
+      }
+
+      return services.getTypeAtLocation(node.expression);
+    }
+
     return {
       'TSAsExpression, TSTypeAssertion'(
         node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
@@ -291,16 +340,29 @@ export default createRule<Options, MessageIds>({
         }
 
         const castType = services.getTypeAtLocation(node);
-        const uncastType = services.getTypeAtLocation(node.expression);
-        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
+        const castTypeIsLiteral = isTypeLiteral(castType);
+        const typeAnnotationIsConstAssertion = isConstAssertion(
+          node.typeAnnotation,
+        );
 
+        if (
+          !options.checkLiteralConstAssertions &&
+          castTypeIsLiteral &&
+          typeAnnotationIsConstAssertion
+        ) {
+          return;
+        }
+
+        const uncastType = getUncastType(node);
+
+        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
         const hasFreshLiterals = doesExpressionHaveFreshLiterals(
           node.expression,
         );
 
         const wouldSameTypeBeInferred = hasFreshLiterals
           ? isImplicitlyNarrowedLiteralDeclaration(node)
-          : !isConstAssertion(node.typeAnnotation);
+          : !typeAnnotationIsConstAssertion;
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
           context.report({
@@ -414,6 +476,13 @@ export default createRule<Options, MessageIds>({
 
           const contextualType = getContextualType(checker, originalNode);
           if (contextualType) {
+            if (
+              isTypeFlagSet(type, ts.TypeFlags.Unknown) &&
+              !isTypeFlagSet(contextualType, ts.TypeFlags.Unknown)
+            ) {
+              return;
+            }
+
             // in strict mode you can't assign null to undefined, so we have to make sure that
             // the two types share a nullable type
             const typeIncludesUndefined = isTypeFlagSet(

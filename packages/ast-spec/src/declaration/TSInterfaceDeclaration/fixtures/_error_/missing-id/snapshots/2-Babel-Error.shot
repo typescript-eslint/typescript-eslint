@@ -1,3 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSInterfaceDeclaration _error_ missing-id Babel - Error 1`] = `[SyntaxError: 'interface' declarations must be followed by an identifier. (1:10)]`;
+exports[`AST Fixtures > declaration > TSInterfaceDeclaration > _error_ > missing-id > Babel - Error`]
+BabelError
+> 1 | interface {}
+    |           ^ 'interface' declarations must be followed by an identifier. (1:10)
+  2 |
+  

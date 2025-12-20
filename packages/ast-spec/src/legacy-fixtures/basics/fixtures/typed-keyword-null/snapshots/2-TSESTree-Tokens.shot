@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics typed-keyword-null TSESTree - Tokens 1`] = `
 [
   Identifier {
     type: "Identifier",
@@ -32,8 +29,8 @@ exports[`AST Fixtures legacy-fixtures basics typed-keyword-null TSESTree - Token
       end: { column: 10, line: 3 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Null {
+    type: "Null",
     value: "null",
 
     range: [84, 88],
@@ -53,4 +50,3 @@ exports[`AST Fixtures legacy-fixtures basics typed-keyword-null TSESTree - Token
     },
   },
 ]
-`;

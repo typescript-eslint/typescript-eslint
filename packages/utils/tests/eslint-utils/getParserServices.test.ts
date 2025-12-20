@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- wild and wacky testing */
 import type * as ts from 'typescript';
 
 import type { ParserServices, TSESLint, TSESTree } from '../../src';
@@ -38,19 +37,19 @@ const unknownParserErrorRegex = (parser?: string): RegExp =>
 Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.`,
   );
 
-describe('getParserServices', () => {
+describe(ESLintUtils.getParserServices, () => {
   it('throws a standard error with the parser when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is typescript-eslint', () => {
     const context = createMockRuleContext({
       sourceCode: {
         ...defaults.sourceCode,
         parserServices: {
           ...defaults.sourceCode.parserServices,
-          esTreeNodeToTSNodeMap: undefined as any,
+          esTreeNodeToTSNodeMap: undefined,
         },
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrow(
+    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
       baseErrorRegex('@typescript-eslint[\\/]parser[\\/]dist[\\/]index\\.js'),
     );
   });
@@ -69,12 +68,12 @@ describe('getParserServices', () => {
         ...defaults.sourceCode,
         parserServices: {
           ...defaults.sourceCode.parserServices,
-          esTreeNodeToTSNodeMap: undefined as any,
+          esTreeNodeToTSNodeMap: undefined,
         },
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrow(
+    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
       baseErrorRegex('custom-parser'),
     );
   });
@@ -87,12 +86,12 @@ describe('getParserServices', () => {
         ...defaults.sourceCode,
         parserServices: {
           ...defaults.sourceCode.parserServices,
-          esTreeNodeToTSNodeMap: undefined as any,
+          esTreeNodeToTSNodeMap: undefined,
         },
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrow(
+    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
       baseErrorRegex('\\(unknown\\)'),
     );
   });
@@ -107,12 +106,12 @@ describe('getParserServices', () => {
         ...defaults.sourceCode,
         parserServices: {
           ...defaults.sourceCode.parserServices,
-          esTreeNodeToTSNodeMap: undefined as any,
+          esTreeNodeToTSNodeMap: undefined,
         },
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrow(
+    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
       baseErrorRegex('\\(unknown\\)'),
     );
   });
@@ -124,11 +123,11 @@ describe('getParserServices', () => {
         ...defaults.sourceCode,
         parserServices: {
           ...defaults.sourceCode.parserServices,
-          esTreeNodeToTSNodeMap: undefined as any,
+          esTreeNodeToTSNodeMap: undefined,
         },
       },
     });
-    expect(() => ESLintUtils.getParserServices(context)).toThrow(
+    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
       unknownParserErrorRegex(),
     );
   });
@@ -139,12 +138,12 @@ describe('getParserServices', () => {
         ...defaults.sourceCode,
         parserServices: {
           ...defaults.sourceCode.parserServices,
-          tsNodeToESTreeNodeMap: undefined as any,
+          tsNodeToESTreeNodeMap: undefined,
         },
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrow(
+    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
       baseErrorRegex(),
     );
   });
@@ -155,12 +154,12 @@ describe('getParserServices', () => {
         ...defaults.sourceCode,
         parserServices: {
           ...defaults.sourceCode.parserServices,
-          program: undefined as any,
+          program: undefined,
         },
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrow(
+    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
       baseErrorRegex(),
     );
   });
@@ -171,7 +170,7 @@ describe('getParserServices', () => {
         ...defaults.sourceCode,
         parserServices: {
           ...defaults.sourceCode.parserServices,
-          program: undefined as any,
+          program: undefined,
         },
       },
     });

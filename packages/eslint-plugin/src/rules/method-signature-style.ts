@@ -4,6 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  forEachChildESTree,
   isClosingParenToken,
   isCommaToken,
   isOpeningParenToken,
@@ -31,6 +32,7 @@ export default createRule<Options, MessageIds>({
     schema: [
       {
         type: 'string',
+        description: 'The method signature style to enforce using.',
         enum: ['property', 'method'],
       },
     ],
@@ -130,6 +132,7 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
+          const skipFix = returnTypeReferencesThisType(methodNode.returnType);
           const parent = methodNode.parent;
           const members =
             parent.type === AST_NODE_TYPES.TSInterfaceBody
@@ -155,39 +158,41 @@ export default createRule<Options, MessageIds>({
               context.report({
                 node: methodNode,
                 messageId: 'errorMethod',
-                *fix(fixer) {
-                  const methodNodes = [
-                    methodNode,
-                    ...duplicatedKeyMethodNodes,
-                  ].sort((a, b) => (a.range[0] < b.range[0] ? -1 : 1));
-                  const typeString = methodNodes
-                    .map(node => {
-                      const params = getMethodParams(node);
-                      const returnType = getMethodReturnType(node);
-                      return `(${params} => ${returnType})`;
-                    })
-                    .join(' & ');
-                  const key = getMethodKey(methodNode);
-                  const delimiter = getDelimiter(methodNode);
-                  yield fixer.replaceText(
-                    methodNode,
-                    `${key}: ${typeString}${delimiter}`,
-                  );
-                  for (const node of duplicatedKeyMethodNodes) {
-                    const lastToken = context.sourceCode.getLastToken(node);
-                    if (lastToken) {
-                      const nextToken =
-                        context.sourceCode.getTokenAfter(lastToken);
-                      if (nextToken) {
-                        yield fixer.remove(node);
-                        yield fixer.replaceTextRange(
-                          [lastToken.range[1], nextToken.range[0]],
-                          '',
-                        );
+                fix: skipFix
+                  ? undefined
+                  : function* fix(fixer) {
+                      const methodNodes = [
+                        methodNode,
+                        ...duplicatedKeyMethodNodes,
+                      ].sort((a, b) => (a.range[0] < b.range[0] ? -1 : 1));
+                      const typeString = methodNodes
+                        .map(node => {
+                          const params = getMethodParams(node);
+                          const returnType = getMethodReturnType(node);
+                          return `(${params} => ${returnType})`;
+                        })
+                        .join(' & ');
+                      const key = getMethodKey(methodNode);
+                      const delimiter = getDelimiter(methodNode);
+                      yield fixer.replaceText(
+                        methodNode,
+                        `${key}: ${typeString}${delimiter}`,
+                      );
+                      for (const node of duplicatedKeyMethodNodes) {
+                        const lastToken = context.sourceCode.getLastToken(node);
+                        if (lastToken) {
+                          const nextToken =
+                            context.sourceCode.getTokenAfter(lastToken);
+                          if (nextToken) {
+                            yield fixer.remove(node);
+                            yield fixer.replaceTextRange(
+                              [lastToken.range[1], nextToken.range[0]],
+                              '',
+                            );
+                          }
+                        }
                       }
-                    }
-                  }
-                },
+                    },
               });
             }
             return;
@@ -202,16 +207,18 @@ export default createRule<Options, MessageIds>({
             context.report({
               node: methodNode,
               messageId: 'errorMethod',
-              fix: fixer => {
-                const key = getMethodKey(methodNode);
-                const params = getMethodParams(methodNode);
-                const returnType = getMethodReturnType(methodNode);
-                const delimiter = getDelimiter(methodNode);
-                return fixer.replaceText(
-                  methodNode,
-                  `${key}: ${params} => ${returnType}${delimiter}`,
-                );
-              },
+              fix: skipFix
+                ? undefined
+                : fixer => {
+                    const key = getMethodKey(methodNode);
+                    const params = getMethodParams(methodNode);
+                    const returnType = getMethodReturnType(methodNode);
+                    const delimiter = getDelimiter(methodNode);
+                    return fixer.replaceText(
+                      methodNode,
+                      `${key}: ${params} => ${returnType}${delimiter}`,
+                    );
+                  },
             });
           }
         },
@@ -242,3 +249,15 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function returnTypeReferencesThisType(
+  node: TSESTree.TSTypeAnnotation | undefined,
+) {
+  return (
+    node &&
+    forEachChildESTree(
+      node.typeAnnotation,
+      child => child.type === AST_NODE_TYPES.TSThisType,
+    )
+  );
+}

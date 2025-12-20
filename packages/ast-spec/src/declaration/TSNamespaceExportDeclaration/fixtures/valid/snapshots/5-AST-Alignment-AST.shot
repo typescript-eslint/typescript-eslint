@@ -1,41 +1,5 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSNamespaceExportDeclaration valid AST Alignment - AST 1`] = `
-"Snapshot Diff:
-- TSESTree
-+ Babel
-
-  Program {
-    type: 'Program',
-    body: Array [
-      TSNamespaceExportDeclaration {
-        type: 'TSNamespaceExportDeclaration',
-        id: Identifier {
-          type: 'Identifier',
--         decorators: Array [],
-          name: 'a',
--         optional: false,
-
-          range: [20, 21],
-          loc: {
-            start: { column: 20, line: 1 },
-            end: { column: 21, line: 1 },
-          },
-        },
-
-        range: [0, 22],
-        loc: {
-          start: { column: 0, line: 1 },
-          end: { column: 22, line: 1 },
-        },
-      },
-    ],
-    sourceType: 'script',
-
-    range: [0, 23],
-    loc: {
-      start: { column: 0, line: 1 },
-      end: { column: 0, line: 2 },
-    },
-  }"
-`;
+exports[`AST Fixtures > declaration > TSNamespaceExportDeclaration > valid > AST Alignment - AST`]
+Snapshot Diff:
+Compared values have no visual difference.

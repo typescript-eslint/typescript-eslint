@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types mapped-untypped AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > mapped-untypped > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -13,12 +13,12 @@ exports[`AST Fixtures legacy-fixtures types mapped-untypped AST Alignment - AST 
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
--           definite: false,
+            definite: false,
             id: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'map',
--             optional: false,
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSMappedType {
@@ -28,6 +28,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-untypped AST Alignment - AST 
 +                 nameType: null,
 +                 typeParameter: TSTypeParameter {
 +                   type: 'TSTypeParameter',
++                   const: false,
 +                   constraint: TSStringKeyword {
 +                     type: 'TSStringKeyword',
 
@@ -45,8 +46,10 @@ exports[`AST Fixtures legacy-fixtures types mapped-untypped AST Alignment - AST 
 -                 key: Identifier {
 -                   type: 'Identifier',
 -                   decorators: Array [],
++                   in: false,
                     name: 'P',
 -                   optional: false,
++                   out: false,
 
 -                   range: [85, 86],
 +                   range: [85, 96],
@@ -57,6 +60,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-untypped AST Alignment - AST 
                     },
                   },
 -                 nameType: null,
+-                 optional: false,
 
                   range: [82, 99],
                   loc: {
@@ -87,7 +91,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-untypped AST Alignment - AST 
             },
           },
         ],
--       declare: false,
+        declare: false,
         kind: 'let',
 
         range: [73, 100],
@@ -104,5 +108,4 @@ exports[`AST Fixtures legacy-fixtures types mapped-untypped AST Alignment - AST 
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

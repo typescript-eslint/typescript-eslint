@@ -1,14 +1,21 @@
+import type {
+  CreateProjectServiceSettings,
+  ProjectServiceAndMetadata,
+} from '@typescript-eslint/project-service';
+import type { ProjectServiceOptions } from '@typescript-eslint/types';
+
+import { createProjectService } from '@typescript-eslint/project-service';
 import debug from 'debug';
 import path from 'node:path';
 import * as ts from 'typescript';
 
-import type { ProjectServiceSettings } from '../create-program/createProjectService';
 import type { TSESTreeOptions } from '../parser-options';
 import type { MutableParseSettings } from './index';
 
-import { createProjectService } from '../create-program/createProjectService';
 import { ensureAbsolutePath } from '../create-program/shared';
+import { validateDefaultProjectForFilesGlob } from '../create-program/validateDefaultProjectForFilesGlob';
 import { isSourceFile } from '../source-files';
+import { getInferredTSConfigRootDir } from './candidateTSConfigRootDirs';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
   ExpiringCache,
@@ -23,7 +30,7 @@ const log = debug(
 );
 
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
-let TSSERVER_PROJECT_SERVICE: ProjectServiceSettings | null = null;
+let TSSERVER_PROJECT_SERVICE: ProjectServiceAndMetadata | null = null;
 
 // NOTE - we intentionally use "unnecessary" `?.` here because in TS<5.3 this enum doesn't exist
 // This object exists so we can centralize these for tracking and so we don't proliferate these across the file
@@ -43,10 +50,44 @@ export function createParseSettings(
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
-  const tsconfigRootDir =
-    typeof tsestreeOptions.tsconfigRootDir === 'string'
-      ? tsestreeOptions.tsconfigRootDir
-      : process.cwd();
+
+  const tsconfigRootDir = (() => {
+    if (tsestreeOptions.tsconfigRootDir == null) {
+      const inferredTsconfigRootDir = getInferredTSConfigRootDir();
+      if (path.resolve(inferredTsconfigRootDir) !== inferredTsconfigRootDir) {
+        throw new Error(
+          `inferred tsconfigRootDir should be a resolved absolute path, but received: ${JSON.stringify(
+            inferredTsconfigRootDir,
+          )}. This is a bug in typescript-eslint! Please report it to us at https://github.com/typescript-eslint/typescript-eslint/issues/new/choose.`,
+        );
+      }
+      return inferredTsconfigRootDir;
+    }
+
+    if (typeof tsestreeOptions.tsconfigRootDir === 'string') {
+      const userProvidedTsconfigRootDir = tsestreeOptions.tsconfigRootDir;
+      if (
+        !path.isAbsolute(userProvidedTsconfigRootDir) ||
+        // Ensure it's fully absolute with a drive letter if windows
+        (process.platform === 'win32' &&
+          !/^[a-zA-Z]:/.test(userProvidedTsconfigRootDir))
+      ) {
+        throw new Error(
+          `parserOptions.tsconfigRootDir must be an absolute path, but received: ${JSON.stringify(
+            userProvidedTsconfigRootDir,
+          )}. This is a bug in your configuration; please supply an absolute path.`,
+        );
+      }
+      // Deal with any funny business around trailing path separators (a/b/) or relative path segments (/a/b/../c)
+      // Since we already know it's absolute, we can safely use path.resolve here.
+      return path.resolve(userProvidedTsconfigRootDir);
+    }
+
+    throw new Error(
+      `If provided, parserOptions.tsconfigRootDir must be a string, but received a value of type "${typeof tsestreeOptions.tsconfigRootDir}"`,
+    );
+  })();
+
   const passedLoggerFn = typeof tsestreeOptions.loggerFn === 'function';
   const filePath = ensureAbsolutePath(
     typeof tsestreeOptions.filePath === 'string' &&
@@ -112,11 +153,10 @@ export function createParseSettings(
       (tsestreeOptions.project &&
         tsestreeOptions.projectService !== false &&
         process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')
-        ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(
-            tsestreeOptions.projectService,
+        ? populateProjectService(tsestreeOptions.projectService, {
             jsDocParsingMode,
             tsconfigRootDir,
-          ))
+          })
         : undefined,
     setExternalModuleIndicator:
       tsestreeOptions.sourceType === 'module' ||
@@ -135,10 +175,23 @@ export function createParseSettings(
       singleRun
         ? 'Infinity'
         : (tsestreeOptions.cacheLifetime?.glob ??
-          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS),
+            DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS),
     )),
     tsconfigRootDir,
   };
+
+  // TODO: Eventually, parse settings will be validated more thoroughly.
+  // https://github.com/typescript-eslint/typescript-eslint/issues/6403
+  if (
+    parseSettings.projectService &&
+    tsestreeOptions.project &&
+    process.env.TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR !==
+      'true'
+  ) {
+    throw new Error(
+      'Enabling "project" does nothing when "projectService" is enabled. You can remove the "project" setting.',
+    );
+  }
 
   // debug doesn't support multiple `enable` calls, so have to do it all at once
   if (parseSettings.debugLevel.size > 0) {
@@ -222,4 +275,20 @@ function enforceCodeString(code: unknown): string {
  */
 function getFileName(jsx?: boolean): string {
   return jsx ? 'estree.tsx' : 'estree.ts';
+}
+
+function populateProjectService(
+  optionsRaw: ProjectServiceOptions | true | undefined,
+  settings: CreateProjectServiceSettings,
+) {
+  const options = typeof optionsRaw === 'object' ? optionsRaw : {};
+
+  validateDefaultProjectForFilesGlob(options.allowDefaultProject);
+
+  TSSERVER_PROJECT_SERVICE ??= createProjectService({
+    options,
+    ...settings,
+  });
+
+  return TSSERVER_PROJECT_SERVICE;
 }

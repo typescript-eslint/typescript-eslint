@@ -10,6 +10,8 @@ import {
 } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
+import type { MakeRequired } from '../util';
+
 import {
   collectVariables,
   createRule,
@@ -33,6 +35,7 @@ export type Options = [
       destructuredArrayIgnorePattern?: string;
       ignoreClassWithStaticInitBlock?: boolean;
       ignoreRestSiblings?: boolean;
+      ignoreUsingDeclarations?: boolean;
       reportUsedIgnorePattern?: boolean;
       vars?: 'all' | 'local';
       varsIgnorePattern?: string;
@@ -47,6 +50,7 @@ interface TranslatedOptions {
   destructuredArrayIgnorePattern?: RegExp;
   ignoreClassWithStaticInitBlock: boolean;
   ignoreRestSiblings: boolean;
+  ignoreUsingDeclarations: boolean;
   reportUsedIgnorePattern: boolean;
   vars: 'all' | 'local';
   varsIgnorePattern?: RegExp;
@@ -57,6 +61,11 @@ type VariableType =
   | 'catch-clause'
   | 'parameter'
   | 'variable';
+
+type ModuleDeclarationWithBody = MakeRequired<
+  TSESTree.TSModuleDeclaration,
+  'body'
+>;
 
 export default createRule<Options, MessageIds>({
   name: 'no-unused-vars',
@@ -79,6 +88,7 @@ export default createRule<Options, MessageIds>({
         oneOf: [
           {
             type: 'string',
+            description: 'Broad setting for unused variables to target.',
             enum: ['all', 'local'],
           },
           {
@@ -120,6 +130,11 @@ export default createRule<Options, MessageIds>({
                 description:
                   'Whether to ignore sibling properties in `...` destructurings.',
               },
+              ignoreUsingDeclarations: {
+                type: 'boolean',
+                description:
+                  'Whether to ignore using or await using declarations.',
+              },
               reportUsedIgnorePattern: {
                 type: 'boolean',
                 description:
@@ -144,7 +159,10 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [firstOption]) {
-    const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
+    const MODULE_DECL_CACHE = new Map<
+      ModuleDeclarationWithBody | TSESTree.Program,
+      boolean
+    >();
 
     const options = ((): TranslatedOptions => {
       const options: TranslatedOptions = {
@@ -152,6 +170,7 @@ export default createRule<Options, MessageIds>({
         caughtErrors: 'all',
         ignoreClassWithStaticInitBlock: false,
         ignoreRestSiblings: false,
+        ignoreUsingDeclarations: false,
         reportUsedIgnorePattern: false,
         vars: 'all',
       };
@@ -163,6 +182,9 @@ export default createRule<Options, MessageIds>({
         options.args = firstOption.args ?? options.args;
         options.ignoreRestSiblings =
           firstOption.ignoreRestSiblings ?? options.ignoreRestSiblings;
+        options.ignoreUsingDeclarations =
+          firstOption.ignoreUsingDeclarations ??
+          options.ignoreUsingDeclarations;
         options.caughtErrors = firstOption.caughtErrors ?? options.caughtErrors;
         options.ignoreClassWithStaticInitBlock =
           firstOption.ignoreClassWithStaticInitBlock ??
@@ -538,6 +560,14 @@ export default createRule<Options, MessageIds>({
           continue;
         }
 
+        if (
+          def.type === TSESLint.Scope.DefinitionType.Variable &&
+          options.ignoreUsingDeclarations &&
+          (def.parent.kind === 'await using' || def.parent.kind === 'using')
+        ) {
+          continue;
+        }
+
         if (hasRestSpreadSibling(variable)) {
           continue;
         }
@@ -557,40 +587,71 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      // declaration file handling
-      [ambientDeclarationSelector(AST_NODE_TYPES.Program, true)](
+      // top-level declaration file handling
+      [ambientDeclarationSelector(AST_NODE_TYPES.Program)](
         node: DeclarationSelectorNode,
       ): void {
         if (!isDefinitionFile(context.filename)) {
           return;
         }
+
+        const moduleDecl = nullThrows(
+          node.parent,
+          NullThrowsReasons.MissingParent,
+        ) as TSESTree.Program;
+
+        if (checkForOverridingExportStatements(moduleDecl)) {
+          return;
+        }
+
         markDeclarationChildAsUsed(node);
       },
 
       // children of a namespace that is a child of a declared namespace are auto-exported
       [ambientDeclarationSelector(
         'TSModuleDeclaration[declare = true] > TSModuleBlock TSModuleDeclaration > TSModuleBlock',
-        false,
       )](node: DeclarationSelectorNode): void {
+        const moduleDecl = nullThrows(
+          node.parent.parent,
+          NullThrowsReasons.MissingParent,
+        ) as ModuleDeclarationWithBody;
+
+        if (checkForOverridingExportStatements(moduleDecl)) {
+          return;
+        }
+
         markDeclarationChildAsUsed(node);
       },
 
       // declared namespace handling
       [ambientDeclarationSelector(
         'TSModuleDeclaration[declare = true] > TSModuleBlock',
-        false,
       )](node: DeclarationSelectorNode): void {
         const moduleDecl = nullThrows(
           node.parent.parent,
           NullThrowsReasons.MissingParent,
-        ) as TSESTree.TSModuleDeclaration;
+        ) as ModuleDeclarationWithBody;
 
-        // declared ambient modules with an `export =` statement will only export that one thing
-        // all other statements are not automatically exported in this case
-        if (
-          moduleDecl.id.type === AST_NODE_TYPES.Literal &&
-          checkModuleDeclForExportEquals(moduleDecl)
-        ) {
+        if (checkForOverridingExportStatements(moduleDecl)) {
+          return;
+        }
+
+        markDeclarationChildAsUsed(node);
+      },
+
+      // namespace handling in definition files
+      [ambientDeclarationSelector('TSModuleDeclaration > TSModuleBlock')](
+        node: DeclarationSelectorNode,
+      ): void {
+        if (!isDefinitionFile(context.filename)) {
+          return;
+        }
+        const moduleDecl = nullThrows(
+          node.parent.parent,
+          NullThrowsReasons.MissingParent,
+        ) as ModuleDeclarationWithBody;
+
+        if (checkForOverridingExportStatements(moduleDecl)) {
           return;
         }
 
@@ -670,21 +731,19 @@ export default createRule<Options, MessageIds>({
       },
     };
 
-    function checkModuleDeclForExportEquals(
-      node: TSESTree.TSModuleDeclaration,
+    function checkForOverridingExportStatements(
+      node: ModuleDeclarationWithBody | TSESTree.Program,
     ): boolean {
       const cached = MODULE_DECL_CACHE.get(node);
       if (cached != null) {
         return cached;
       }
 
-      if (node.body) {
-        for (const statement of node.body.body) {
-          if (statement.type === AST_NODE_TYPES.TSExportAssignment) {
-            MODULE_DECL_CACHE.set(node, true);
-            return true;
-          }
-        }
+      const body = getStatementsOfNode(node);
+
+      if (hasOverridingExportStatement(body)) {
+        MODULE_DECL_CACHE.set(node, true);
+        return true;
       }
 
       MODULE_DECL_CACHE.set(node, false);
@@ -700,10 +759,7 @@ export default createRule<Options, MessageIds>({
       | TSESTree.TSModuleDeclaration
       | TSESTree.TSTypeAliasDeclaration
       | TSESTree.VariableDeclaration;
-    function ambientDeclarationSelector(
-      parent: string,
-      childDeclare: boolean,
-    ): string {
+    function ambientDeclarationSelector(parent: string): string {
       return [
         // Types are ambiently exported
         `${parent} > :matches(${[
@@ -717,7 +773,7 @@ export default createRule<Options, MessageIds>({
           AST_NODE_TYPES.TSEnumDeclaration,
           AST_NODE_TYPES.TSModuleDeclaration,
           AST_NODE_TYPES.VariableDeclaration,
-        ].join(', ')})${childDeclare ? '[declare = true]' : ''}`,
+        ].join(', ')})`,
       ].join(', ');
     }
     function markDeclarationChildAsUsed(node: DeclarationSelectorNode): void {
@@ -773,6 +829,40 @@ export default createRule<Options, MessageIds>({
     }
   },
 });
+
+function hasOverridingExportStatement(
+  body: TSESTree.ProgramStatement[],
+): boolean {
+  for (const statement of body) {
+    if (
+      (statement.type === AST_NODE_TYPES.ExportNamedDeclaration &&
+        statement.declaration == null) ||
+      statement.type === AST_NODE_TYPES.ExportAllDeclaration ||
+      statement.type === AST_NODE_TYPES.TSExportAssignment
+    ) {
+      return true;
+    }
+
+    if (
+      statement.type === AST_NODE_TYPES.ExportDefaultDeclaration &&
+      statement.declaration.type === AST_NODE_TYPES.Identifier
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function getStatementsOfNode(
+  block: ModuleDeclarationWithBody | TSESTree.Program,
+): TSESTree.ProgramStatement[] {
+  if (block.type === AST_NODE_TYPES.Program) {
+    return block.body;
+  }
+
+  return block.body.body;
+}
 
 /*
 

@@ -6,6 +6,7 @@ export * from './getDeclaration';
 export * from './getSourceFileOfNode';
 export * from './getTypeName';
 export * from './isSymbolFromDefaultLibrary';
+export * from './isTypeBrandedLiteralLike';
 export * from './isTypeReadonly';
 export * from './isUnsafeAssignment';
 export * from './predicates';
@@ -13,6 +14,7 @@ export * from './propertyTypes';
 export * from './requiresQuoting';
 export * from './typeFlagUtils';
 export * from './TypeOrValueSpecifier';
+export * from './discriminateAnyType';
 export {
   getDecorators,
   getModifiers,

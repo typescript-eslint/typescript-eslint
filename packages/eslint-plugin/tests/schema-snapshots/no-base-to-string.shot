@@ -1,15 +1,16 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-base-to-string 1`] = `
-"
 # SCHEMA:
 
 [
   {
     "additionalProperties": false,
     "properties": {
+      "checkUnknown": {
+        "description": "Whether to also check values of type `unknown`",
+        "type": "boolean"
+      },
       "ignoredTypeNames": {
-        "description": "Stringified regular expressions of type names to ignore.",
+        "description": "Stringified type names to ignore.",
         "items": {
           "type": "string"
         },
@@ -25,9 +26,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Stringified regular expressions of type names to ignore. */
+    /** Whether to also check values of type `unknown` */
+    checkUnknown?: boolean;
+    /** Stringified type names to ignore. */
     ignoredTypeNames?: string[];
   },
 ];
-"
-`;

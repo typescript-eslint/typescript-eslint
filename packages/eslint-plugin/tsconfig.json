@@ -1,15 +1,16 @@
 {
-  "extends": "./tsconfig.build.json",
-  "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
-  },
-  "include": ["src", "typings", "tests", "tools", "*.d.ts"],
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
   "references": [
-    { "path": "../utils/tsconfig.build.json" },
-    { "path": "../parser/tsconfig.build.json" },
-    { "path": "../rule-schema-to-typescript-types/tsconfig.build.json" },
-    { "path": "../scope-manager/tsconfig.build.json" },
-    { "path": "../type-utils/tsconfig.build.json" }
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./tsconfig.tools.json"
+    }
   ]
 }

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > mapped-named-type > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,12 +10,12 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
--       declare: false,
+        declare: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Test',
--         optional: false,
+          optional: false,
 
           range: [78, 82],
           loc: {
@@ -72,7 +72,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
             type: 'TSLiteralType',
             literal: Literal {
               type: 'Literal',
-              raw: '\\'a\\'',
+              raw: '\'a\'',
               value: 'a',
 
               range: [109, 112],
@@ -88,15 +88,16 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
               end: { column: 22, line: 4 },
             },
           },
+-         optional: false,
           typeAnnotation: TSIndexedAccessType {
             type: 'TSIndexedAccessType',
             indexType: TSTypeReference {
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'P',
--               optional: false,
+                optional: false,
 
                 range: [117, 118],
                 loc: {
@@ -115,9 +116,9 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
--               decorators: Array [],
+                decorators: Array [],
                 name: 'T',
--               optional: false,
+                optional: false,
 
                 range: [115, 116],
                 loc: {
@@ -141,6 +142,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
           },
 +         typeParameter: TSTypeParameter {
 +           type: 'TSTypeParameter',
++           const: false,
 +           constraint: TSTypeOperator {
 +             type: 'TSTypeOperator',
 +             operator: 'keyof',
@@ -148,7 +150,9 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
 +               type: 'TSTypeReference',
 +               typeName: Identifier {
 +                 type: 'Identifier',
++                 decorators: Array [],
 +                 name: 'T',
++                 optional: false,
 +
 +                 range: [104, 105],
 +                 loc: {
@@ -170,7 +174,9 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
 +               end: { column: 15, line: 4 },
 +             },
 +           },
++           in: false,
 +           name: 'P',
++           out: false,
 +
 +           range: [93, 105],
 +           loc: {
@@ -190,8 +196,8 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
--             const: false,
--             in: false,
+              const: false,
+              in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
@@ -204,8 +210,8 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
 -                 end: { column: 11, line: 3 },
 -               },
 -             },
--             out: false,
 +             name: 'T',
+              out: false,
 
               range: [83, 84],
               loc: {
@@ -236,5 +242,4 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
       start: { column: 0, line: 3 },
       end: { column: 0, line: 6 },
     },
-  }"
-`;
+  }

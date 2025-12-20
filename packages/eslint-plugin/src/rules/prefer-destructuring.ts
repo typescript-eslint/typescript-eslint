@@ -52,6 +52,7 @@ const schema: readonly JSONSchema4[] = [
   },
   {
     type: 'object',
+    additionalProperties: false,
     properties: {
       enforceForDeclarationWithTypeAnnotation: {
         type: 'boolean',
@@ -75,6 +76,7 @@ export default createRule<Options, MessageIds>({
     docs: {
       description: 'Require destructuring from arrays and/or objects',
       extendsBaseRule: true,
+      frozen: true,
       requiresTypeChecking: true,
     },
     fixable: baseRule.meta.fixable,

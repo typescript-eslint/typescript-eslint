@@ -100,8 +100,10 @@ const isNotImported = (
   );
 };
 
-const BASE_MESSAGE =
-  'Avoid referencing unbound methods which may cause unintentional scoping of `this`.';
+const BASE_MESSAGE = [
+  `A method that is not declared with \`this: void\` may cause unintentional scoping of \`this\` when separated from its object.`,
+  `Consider using an arrow function or explicitly \`.bind()\`ing the method to avoid calling the method with an unintended \`this\` value. `,
+].join('\n');
 
 export default createRule<Options, MessageIds>({
   name: 'unbound-method',
@@ -115,7 +117,7 @@ export default createRule<Options, MessageIds>({
     },
     messages: {
       unbound: BASE_MESSAGE,
-      unboundWithoutThisAnnotation: `${BASE_MESSAGE}\nIf your function does not access \`this\`, you can annotate it with \`this: void\`, or consider using an arrow function instead.`,
+      unboundWithoutThisAnnotation: `${BASE_MESSAGE}\nIf a function does not access \`this\`, it can be annotated with \`this: void\`.`,
     },
     schema: [
       {
@@ -259,8 +261,10 @@ export default createRule<Options, MessageIds>({
           }
 
           for (const intersectionPart of tsutils
-            .unionTypeParts(services.getTypeAtLocation(node))
-            .flatMap(unionPart => tsutils.intersectionTypeParts(unionPart))) {
+            .unionConstituents(services.getTypeAtLocation(node))
+            .flatMap(unionPart =>
+              tsutils.intersectionConstituents(unionPart),
+            )) {
             const reported = checkIfMethodAndReport(
               property.key,
               intersectionPart.getProperty(property.key.name),

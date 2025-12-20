@@ -1,19 +1,9 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/promise-function-async';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootDir = getFixturesRootDir();
-const messageId = 'missingAsync';
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('promise-function-async', rule, {
   valid: [
@@ -157,11 +147,6 @@ function foo(): Promise<string> | boolean {
       code: `
 abstract class Test {
   abstract test1(): Promise<number>;
-
-  // abstract method with body is always an error but it still parses into valid AST
-  abstract test2(): Promise<number> {
-    return Promise.resolve(1);
-  }
 }
       `,
     },
@@ -228,6 +213,26 @@ function overloadingThatIncludeAny(a?: boolean): any | number {
       `,
       options: [{ allowAny: true }],
     },
+    `
+class Base {
+  async foo() {
+    return Promise.resolve(42);
+  }
+}
+
+class Derived extends Base {
+  override async foo() {
+    return Promise.resolve(2000);
+  }
+}
+    `,
+    `
+class Test {
+  public override async method() {
+    return Promise.resolve(1);
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -238,7 +243,7 @@ function returnsAny(): any {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -256,7 +261,7 @@ function returnsUnknown(): unknown {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -274,7 +279,7 @@ const nonAsyncPromiseFunctionExpressionA = function (p: Promise<void>) {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -291,7 +296,7 @@ const nonAsyncPromiseFunctionExpressionB = function () {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -308,7 +313,7 @@ function nonAsyncPromiseFunctionDeclarationA(p: Promise<void>) {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -325,7 +330,7 @@ function nonAsyncPromiseFunctionDeclarationB() {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -340,7 +345,7 @@ const nonAsyncPromiseArrowFunctionA = (p: Promise<void>) => p;
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -353,7 +358,7 @@ const nonAsyncPromiseArrowFunctionB = () => new Promise<void>();
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -371,7 +376,7 @@ const functions = {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -397,11 +402,11 @@ class Test {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 7,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -437,15 +442,15 @@ class Test {
       errors: [
         {
           line: 2,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 6,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 13,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -492,15 +497,15 @@ class Test {
       errors: [
         {
           line: 2,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 10,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 13,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -547,15 +552,15 @@ class Test {
       errors: [
         {
           line: 6,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 10,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 13,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -602,15 +607,15 @@ class Test {
       errors: [
         {
           line: 2,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 6,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 10,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -645,7 +650,7 @@ const returnAllowedType = () => new PromiseType();
       errors: [
         {
           line: 4,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -671,7 +676,7 @@ function foo(): Promise<string> | SPromise<boolean> {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -697,7 +702,7 @@ class Test {
   }
 }
       `,
-      errors: [{ column: 3, line: 4, messageId }],
+      errors: [{ column: 3, line: 4, messageId: 'missingAsync' }],
       output: `
 class Test {
   @decorator
@@ -723,9 +728,9 @@ class Test {
 }
       `,
       errors: [
-        { column: 3, line: 4, messageId },
-        { column: 3, line: 7, messageId },
-        { column: 3, line: 10, messageId },
+        { column: 3, line: 4, messageId: 'missingAsync' },
+        { column: 3, line: 7, messageId: 'missingAsync' },
+        { column: 3, line: 10, messageId: 'missingAsync' },
       ],
       output: `
 class Test {
@@ -764,17 +769,17 @@ class Foo {
         {
           column: 3,
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           column: 3,
           line: 7,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           column: 3,
           line: 12,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -806,7 +811,7 @@ const foo = {
         {
           column: 3,
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -825,12 +830,71 @@ function promiseInUnionWithoutExplicitReturnType(p: boolean) {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsyncHybridReturn',
         },
       ],
       output: `
 async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
   return p ? Promise.resolve(5) : 5;
+}
+      `,
+    },
+    {
+      code: `
+function test1(): 'one' | Promise<'one'>;
+function test1(a: number): Promise<number>;
+function test1(a?: number) {
+  if (a) {
+    return Promise.resolve(a);
+  }
+
+  return Math.random() > 0.5 ? 'one' : Promise.resolve('one');
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAsyncHybridReturn',
+        },
+      ],
+      output: `
+function test1(): 'one' | Promise<'one'>;
+function test1(a: number): Promise<number>;
+async function test1(a?: number) {
+  if (a) {
+    return Promise.resolve(a);
+  }
+
+  return Math.random() > 0.5 ? 'one' : Promise.resolve('one');
+}
+      `,
+    },
+    {
+      code: `
+class PromiseType {
+  s?: string;
+}
+
+function promiseInUnionWithoutExplicitReturnType(p: boolean) {
+  return p ? new PromiseType() : 5;
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAsyncHybridReturn',
+        },
+      ],
+      options: [
+        {
+          allowedPromiseNames: ['PromiseType'],
+        },
+      ],
+      output: `
+class PromiseType {
+  s?: string;
+}
+
+async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
+  return p ? new PromiseType() : 5;
 }
       `,
     },
@@ -846,7 +910,7 @@ function overloadingThatCanReturnPromise(
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -869,7 +933,7 @@ function overloadingThatIncludeAny(a?: boolean): any | number {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [{ allowAny: false }],
@@ -884,10 +948,67 @@ function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [{ allowAny: false }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11729
+    {
+      code: `
+class Base {
+  async foo() {
+    return Promise.resolve(42);
+  }
+}
+
+class Derived extends Base {
+  override foo() {
+    return Promise.resolve(2000);
+  }
+}
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'missingAsync',
+        },
+      ],
+      output: `
+class Base {
+  async foo() {
+    return Promise.resolve(42);
+  }
+}
+
+class Derived extends Base {
+  override async foo() {
+    return Promise.resolve(2000);
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  public override method() {
+    return Promise.resolve(1);
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'missingAsync',
+        },
+      ],
+      output: `
+class Test {
+  public override async method() {
+    return Promise.resolve(1);
+  }
+}
+      `,
     },
   ],
 });

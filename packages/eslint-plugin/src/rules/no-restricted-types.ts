@@ -36,7 +36,7 @@ function stringifyNode(
 }
 
 function getCustomMessage(
-  bannedType: string | { fixWith?: string; message?: string } | true | null,
+  bannedType: string | true | { fixWith?: string; message?: string } | null,
 ): string {
   if (!bannedType || bannedType === true) {
     return '';

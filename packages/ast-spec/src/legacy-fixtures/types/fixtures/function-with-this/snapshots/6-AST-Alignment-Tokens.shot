@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures types function-with-this AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > types > function-with-this > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -48,10 +48,8 @@ exports[`AST Fixtures legacy-fixtures types function-with-this AST Alignment - T
         end: { column: 8, line: 3 },
       },
     },
--   Keyword {
--     type: 'Keyword',
-+   Identifier {
-+     type: 'Identifier',
+    Identifier {
+      type: 'Identifier',
       value: 'this',
 
       range: [81, 85],
@@ -120,5 +118,4 @@ exports[`AST Fixtures legacy-fixtures types function-with-this AST Alignment - T
         end: { column: 30, line: 3 },
       },
     },
-  ]"
-`;
+  ]

@@ -1,18 +1,7 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import rule from '../../src/rules/restrict-plus-operands';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootPath = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('restrict-plus-operands', rule, {
   valid: [
@@ -370,6 +359,10 @@ const f = (a: string | number, b: string | number) => a + b;
           allowRegExp: true,
         },
       ],
+    },
+    {
+      code: "let foo = '1' + 1n;",
+      options: [{ allowNumberAndString: true }],
     },
   ],
   invalid: [
@@ -1769,6 +1762,23 @@ const f = (a: any, b: unknown) => a + b;
           allowRegExp: true,
         },
       ],
+    },
+    {
+      code: "let foo = '1' + 1n;",
+      errors: [
+        {
+          column: 11,
+          data: {
+            left: 'string',
+            right: 'bigint',
+            stringLike:
+              'string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`',
+          },
+          line: 1,
+          messageId: 'mismatched',
+        },
+      ],
+      options: [{ allowNumberAndString: false }],
     },
   ],
 });

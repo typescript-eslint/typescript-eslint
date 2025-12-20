@@ -10,6 +10,7 @@ import type { MakeRequired } from '../util';
 import {
   createRule,
   getParserServices,
+  getWrappingFixer,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -108,7 +109,28 @@ export default createRule({
                 for (const reference of smTypeParameterVariable.references) {
                   if (reference.isTypeReference) {
                     const referenceNode = reference.identifier;
-                    yield fixer.replaceText(referenceNode, constraintText);
+                    const isComplexType =
+                      constraint?.type === AST_NODE_TYPES.TSUnionType ||
+                      constraint?.type === AST_NODE_TYPES.TSIntersectionType ||
+                      constraint?.type === AST_NODE_TYPES.TSConditionalType;
+                    const hasMatchingAncestorType = [
+                      AST_NODE_TYPES.TSArrayType,
+                      AST_NODE_TYPES.TSIndexedAccessType,
+                      AST_NODE_TYPES.TSIntersectionType,
+                      AST_NODE_TYPES.TSUnionType,
+                      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    ].some(type => referenceNode.parent.parent!.type === type);
+                    if (isComplexType && hasMatchingAncestorType) {
+                      const fixResult = getWrappingFixer({
+                        node: referenceNode,
+                        innerNode: constraint,
+                        sourceCode: context.sourceCode,
+                        wrap: constraintNode => constraintNode,
+                      })(fixer);
+                      yield fixResult;
+                    } else {
+                      yield fixer.replaceText(referenceNode, constraintText);
+                    }
                   }
                 }
 
@@ -239,9 +261,17 @@ function isTypeParameterRepeatedInAST(
       const grandparent = skipConstituentsUpward(
         reference.identifier.parent.parent,
       );
+
       if (
         grandparent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
-        grandparent.params.includes(reference.identifier.parent)
+        grandparent.params.includes(reference.identifier.parent) &&
+        // Array and ReadonlyArray must be handled carefully
+        // let's defer the check to the type-aware phase
+        !(
+          grandparent.parent.type === AST_NODE_TYPES.TSTypeReference &&
+          grandparent.parent.typeName.type === AST_NODE_TYPES.Identifier &&
+          ['Array', 'ReadonlyArray'].includes(grandparent.parent.typeName.name)
+        )
       ) {
         return true;
       }
@@ -281,13 +311,13 @@ function countTypeParameterUsage(
 
   if (ts.isClassLike(node)) {
     for (const typeParameter of node.typeParameters) {
-      collectTypeParameterUsageCounts(checker, typeParameter, counts);
+      collectTypeParameterUsageCounts(checker, typeParameter, counts, true);
     }
     for (const member of node.members) {
-      collectTypeParameterUsageCounts(checker, member, counts);
+      collectTypeParameterUsageCounts(checker, member, counts, true);
     }
   } else {
-    collectTypeParameterUsageCounts(checker, node, counts);
+    collectTypeParameterUsageCounts(checker, node, counts, false);
   }
 
   return counts;
@@ -302,6 +332,7 @@ function collectTypeParameterUsageCounts(
   checker: ts.TypeChecker,
   node: ts.Node,
   foundIdentifierUsages: Map<ts.Identifier, number>,
+  fromClass: boolean, // We are talking about the type parameters of a class or one of its methods
 ): void {
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
@@ -325,6 +356,7 @@ function collectTypeParameterUsageCounts(
   function visitType(
     type: ts.Type | undefined,
     assumeMultipleUses: boolean,
+    isReturnType = false,
   ): void {
     // Seeing the same type > (threshold=3 ** 2) times indicates a likely
     // recursive type, like `type T = { [P in keyof T]: T }`.
@@ -379,9 +411,23 @@ function collectTypeParameterUsageCounts(
 
     // Tuple types like `[K, V]`
     // Generic type references like `Map<K, V>`
-    else if (tsutils.isTupleType(type) || tsutils.isTypeReference(type)) {
+    else if (tsutils.isTypeReference(type)) {
       for (const typeArgument of type.typeArguments ?? []) {
-        visitType(typeArgument, true);
+        // currently, if we are in a "class context", everything is accepted
+        let thisAssumeMultipleUses = fromClass || assumeMultipleUses;
+
+        // special cases - readonly arrays/tuples are considered only to use the
+        // type parameter once. Mutable arrays/tuples are considered to use the
+        // type parameter multiple times if and only if they are returned.
+        // other kind of type references always count as multiple uses
+        thisAssumeMultipleUses ||= tsutils.isTupleType(type.target)
+          ? isReturnType && !type.target.readonly
+          : checker.isArrayType(type.target)
+            ? isReturnType &&
+              (type.symbol as ts.Symbol | undefined)?.getName() === 'Array'
+            : true;
+
+        visitType(typeArgument, thisAssumeMultipleUses, isReturnType);
       }
     }
 
@@ -471,6 +517,7 @@ function collectTypeParameterUsageCounts(
       checker.getTypePredicateOfSignature(signature)?.type ??
         signature.getReturnType(),
       false,
+      true,
     );
   }
 

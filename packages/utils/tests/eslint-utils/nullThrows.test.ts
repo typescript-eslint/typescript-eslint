@@ -1,6 +1,6 @@
 import { nullThrows, NullThrowsReasons } from '../../src/eslint-utils';
 
-describe('nullThrows', () => {
+describe(nullThrows, () => {
   it('returns a falsy value when it exists', () => {
     const value = 0;
 
@@ -18,21 +18,21 @@ describe('nullThrows', () => {
   });
 
   it('throws an error when the value is null', () => {
-    expect(() => nullThrows(null, NullThrowsReasons.MissingParent)).toThrow(
-      NullThrowsReasons.MissingParent,
-    );
+    expect(() =>
+      nullThrows(null, NullThrowsReasons.MissingParent),
+    ).toThrowError(NullThrowsReasons.MissingParent);
   });
 
   it('throws an error when the value is undefined', () => {
     expect(() =>
       nullThrows(undefined, NullThrowsReasons.MissingParent),
-    ).toThrow(NullThrowsReasons.MissingParent);
+    ).toThrowError(NullThrowsReasons.MissingParent);
   });
 
   it('throws a filled in error when the value is undefined and NullThrowsReasons.MissingToken is used', () => {
     expect(() =>
       nullThrows(undefined, NullThrowsReasons.MissingToken('bracket', 'node')),
-    ).toThrow(
+    ).toThrowError(
       new Error(
         'Non-null Assertion Failed: Expected to find a bracket for the node.',
       ),

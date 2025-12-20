@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -380,10 +377,10 @@ Program {
         type: "TSInterfaceBody",
         body: [],
 
-        range: [400, 402],
+        range: [403, 405],
         loc: {
-          start: { column: 37, line: 9 },
-          end: { column: 39, line: 9 },
+          start: { column: 37, line: 10 },
+          end: { column: 39, line: 10 },
         },
       },
       declare: false,
@@ -396,10 +393,10 @@ Program {
             name: "bar",
             optional: false,
 
-            range: [373, 376],
+            range: [376, 379],
             loc: {
-              start: { column: 10, line: 9 },
-              end: { column: 13, line: 9 },
+              start: { column: 10, line: 10 },
+              end: { column: 13, line: 10 },
             },
           },
           typeArguments: TSTypeParameterInstantiation {
@@ -413,32 +410,32 @@ Program {
                   name: "A",
                   optional: false,
 
-                  range: [387, 388],
+                  range: [390, 391],
                   loc: {
-                    start: { column: 24, line: 9 },
-                    end: { column: 25, line: 9 },
+                    start: { column: 24, line: 10 },
+                    end: { column: 25, line: 10 },
                   },
                 },
 
-                range: [387, 388],
+                range: [390, 391],
                 loc: {
-                  start: { column: 24, line: 9 },
-                  end: { column: 25, line: 9 },
+                  start: { column: 24, line: 10 },
+                  end: { column: 25, line: 10 },
                 },
               },
             ],
 
-            range: [376, 399],
+            range: [379, 402],
             loc: {
-              start: { column: 13, line: 9 },
-              end: { column: 36, line: 9 },
+              start: { column: 13, line: 10 },
+              end: { column: 36, line: 10 },
             },
           },
 
-          range: [373, 399],
+          range: [376, 402],
           loc: {
-            start: { column: 10, line: 9 },
-            end: { column: 36, line: 9 },
+            start: { column: 10, line: 10 },
+            end: { column: 36, line: 10 },
           },
         },
       ],
@@ -467,17 +464,17 @@ Program {
                 raw: "2",
                 value: 2,
 
-                range: [350, 351],
+                range: [353, 354],
                 loc: {
-                  start: { column: 39, line: 8 },
-                  end: { column: 40, line: 8 },
+                  start: { column: 26, line: 9 },
+                  end: { column: 27, line: 9 },
                 },
               },
 
-              range: [350, 351],
+              range: [353, 354],
               loc: {
-                start: { column: 39, line: 8 },
-                end: { column: 40, line: 8 },
+                start: { column: 26, line: 9 },
+                end: { column: 27, line: 9 },
               },
             },
             in: false,
@@ -487,42 +484,41 @@ Program {
               name: "A",
               optional: false,
 
-              range: [336, 337],
+              range: [339, 340],
               loc: {
-                start: { column: 25, line: 8 },
-                end: { column: 26, line: 8 },
+                start: { column: 12, line: 9 },
+                end: { column: 13, line: 9 },
               },
             },
             out: false,
 
-            range: [336, 351],
+            range: [339, 354],
             loc: {
-              start: { column: 25, line: 8 },
-              end: { column: 40, line: 8 },
+              start: { column: 12, line: 9 },
+              end: { column: 27, line: 9 },
             },
           },
         ],
 
-        range: [325, 362],
+        range: [325, 367],
         loc: {
           start: { column: 14, line: 8 },
-          end: { column: 51, line: 8 },
+          end: { column: 1, line: 10 },
         },
       },
 
-      range: [311, 402],
+      range: [311, 405],
       loc: {
         start: { column: 0, line: 8 },
-        end: { column: 39, line: 9 },
+        end: { column: 39, line: 10 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 403],
+  range: [73, 406],
   loc: {
     start: { column: 0, line: 3 },
-    end: { column: 0, line: 10 },
+    end: { column: 0, line: 11 },
   },
 }
-`;

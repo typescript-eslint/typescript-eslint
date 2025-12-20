@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-implements AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-implements > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -10,7 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-implements AST Alignment
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
--       abstract: false,
+        abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -21,13 +21,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-implements AST Alignment
             end: { column: 27, line: 3 },
           },
         },
--       declare: false,
--       decorators: Array [],
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'Foo',
--         optional: false,
+          optional: false,
 
           range: [79, 82],
           loc: {
@@ -42,9 +42,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-implements AST Alignment
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
--             decorators: Array [],
+              decorators: Array [],
               name: 'Bar',
--             optional: false,
+              optional: false,
 
               range: [94, 97],
               loc: {
@@ -76,5 +76,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-implements AST Alignment
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

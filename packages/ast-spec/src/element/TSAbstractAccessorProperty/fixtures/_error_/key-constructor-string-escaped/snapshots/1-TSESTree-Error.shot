@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > element > TSAbstractAccessorProperty > _error_ > key-constructor-string-escaped > TSESTree - Error`]
+TSError
+  1 | abstract class Foo {
+> 2 |   accessor 'construct\u{6f}r'
+    |            ^^^^^^^^^^^^^^^^^^ Classes may not have a field named 'constructor'.
+  3 | }
+  4 |

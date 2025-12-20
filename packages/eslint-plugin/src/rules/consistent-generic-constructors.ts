@@ -2,10 +2,27 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, nullThrows, NullThrowsReasons } from '../util';
+import {
+  createRule,
+  isReferenceToGlobalFunction,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 export type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
 export type Options = ['constructor' | 'type-annotation'];
+
+const builtInArrays = new Set([
+  'Float32Array',
+  'Float64Array',
+  'Int16Array',
+  'Int32Array',
+  'Int8Array',
+  'Uint16Array',
+  'Uint32Array',
+  'Uint8Array',
+  'Uint8ClampedArray',
+]);
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-generic-constructors',
@@ -34,20 +51,26 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['constructor'],
   create(context, [mode]) {
     return {
-      'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
+      'VariableDeclarator,PropertyDefinition,AccessorProperty,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
         node:
+          | TSESTree.AccessorProperty
           | TSESTree.AssignmentPattern
           | TSESTree.PropertyDefinition
           | TSESTree.VariableDeclarator,
       ): void {
         function getLHSRHS(): [
-          TSESTree.BindingName | TSESTree.PropertyDefinition,
+          (
+            | TSESTree.AccessorProperty
+            | TSESTree.BindingName
+            | TSESTree.PropertyDefinition
+          ),
           TSESTree.Expression | null,
         ] {
           switch (node.type) {
             case AST_NODE_TYPES.VariableDeclarator:
               return [node.id, node.init];
             case AST_NODE_TYPES.PropertyDefinition:
+            case AST_NODE_TYPES.AccessorProperty:
               return [node, node.value];
             case AST_NODE_TYPES.AssignmentPattern:
               return [node.left, node.right];
@@ -57,6 +80,18 @@ export default createRule<Options, MessageIds>({
               );
           }
         }
+
+        function isBuiltInArray(typeName: TSESTree.Identifier) {
+          return (
+            builtInArrays.has(typeName.name) &&
+            isReferenceToGlobalFunction(
+              typeName.name,
+              typeName,
+              context.sourceCode,
+            )
+          );
+        }
+
         const [lhsName, rhs] = getLHSRHS();
         const lhs = lhsName.typeAnnotation?.typeAnnotation;
 
@@ -71,7 +106,8 @@ export default createRule<Options, MessageIds>({
           lhs &&
           (lhs.type !== AST_NODE_TYPES.TSTypeReference ||
             lhs.typeName.type !== AST_NODE_TYPES.Identifier ||
-            lhs.typeName.name !== rhs.callee.name)
+            lhs.typeName.name !== rhs.callee.name ||
+            isBuiltInArray(lhs.typeName))
         ) {
           return;
         }
@@ -88,7 +124,10 @@ export default createRule<Options, MessageIds>({
                 function getIDToAttachAnnotation():
                   | TSESTree.Node
                   | TSESTree.Token {
-                  if (node.type !== AST_NODE_TYPES.PropertyDefinition) {
+                  if (
+                    node.type !== AST_NODE_TYPES.PropertyDefinition &&
+                    node.type !== AST_NODE_TYPES.AccessorProperty
+                  ) {
                     return lhsName;
                   }
                   if (!node.computed) {
@@ -114,7 +153,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (lhs?.typeArguments && !rhs.typeArguments) {
+        const isolatedDeclarations = context.parserOptions.isolatedDeclarations;
+        if (!isolatedDeclarations && lhs?.typeArguments && !rhs.typeArguments) {
           const hasParens =
             context.sourceCode.getTokenAfter(rhs.callee)?.value === '(';
           const extraComments = new Set(

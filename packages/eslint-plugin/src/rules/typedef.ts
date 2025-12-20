@@ -4,7 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-const enum OptionKeys {
+export const enum OptionKeys {
   ArrayDestructuring = 'arrayDestructuring',
   ArrowParameter = 'arrowParameter',
   MemberVariableDeclaration = 'memberVariableDeclaration',
@@ -23,6 +23,10 @@ export default createRule<Options, MessageIds>({
   name: 'typedef',
   meta: {
     type: 'suggestion',
+    deprecated: {
+      deprecatedSince: '8.33.0',
+      message: 'This is an old rule that is no longer recommended for use.',
+    },
     docs: {
       description: 'Require type annotations in certain places',
     },

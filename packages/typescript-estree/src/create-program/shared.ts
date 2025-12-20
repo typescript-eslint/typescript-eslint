@@ -1,5 +1,6 @@
 import type { Program } from 'typescript';
 
+import { CORE_COMPILER_OPTIONS } from '@typescript-eslint/tsconfig-utils';
 import path from 'node:path';
 import * as ts from 'typescript';
 
@@ -14,19 +15,6 @@ export interface ASTAndDefiniteProgram {
   program: ts.Program;
 }
 export type ASTAndProgram = ASTAndDefiniteProgram | ASTAndNoProgram;
-
-/**
- * Compiler options required to avoid critical functionality issues
- */
-export const CORE_COMPILER_OPTIONS: ts.CompilerOptions = {
-  noEmit: true, // required to avoid parse from causing emit to occur
-
-  /**
-   * Flags required to make no-unused-vars work
-   */
-  noUnusedLocals: true,
-  noUnusedParameters: true,
-};
 
 /**
  * Default compiler options for program generation
@@ -82,9 +70,7 @@ export function getCanonicalFileName(filePath: string): CanonicalPath {
 }
 
 export function ensureAbsolutePath(p: string, tsconfigRootDir: string): string {
-  return path.isAbsolute(p)
-    ? p
-    : path.join(tsconfigRootDir || process.cwd(), p);
+  return path.resolve(tsconfigRootDir, p);
 }
 
 export function canonicalDirname(p: CanonicalPath): CanonicalPath {

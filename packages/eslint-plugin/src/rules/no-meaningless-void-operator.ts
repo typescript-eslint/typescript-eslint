@@ -36,7 +36,6 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
         properties: {
           checkNever: {
             type: 'boolean',
-            default: false,
             description:
               'Whether to suggest removing `void` when the argument has type `never`.',
           },
@@ -60,7 +59,7 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
         };
 
         const argType = services.getTypeAtLocation(node.argument);
-        const unionParts = tsutils.unionTypeParts(argType);
+        const unionParts = tsutils.unionConstituents(argType);
         if (
           unionParts.every(
             part => part.flags & (ts.TypeFlags.Void | ts.TypeFlags.Undefined),

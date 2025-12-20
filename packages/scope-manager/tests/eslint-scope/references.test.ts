@@ -1,4 +1,4 @@
-import { getRealVariables, parseAndAnalyze } from '../test-utils';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('References:', () => {
   describe('When there is a `let` declaration on global,', () => {
@@ -18,9 +18,11 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[0]);
-      expect(reference.writeExpr).toBeDefined();
-      expect(reference.isWrite()).toBeTruthy();
-      expect(reference.isRead()).toBeFalsy();
+
+      assert.exists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(true);
+      expect(reference.isRead()).toBe(false);
     });
 
     it('the reference in functions should be resolved.', () => {
@@ -46,9 +48,11 @@ describe('References:', () => {
       expect(reference.resolved).toBe(
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
-      expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+
+      assert.notExists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
 
     it('the reference in default parameters should be resolved.', () => {
@@ -73,9 +77,11 @@ describe('References:', () => {
       expect(reference.resolved).toBe(
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
-      expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+
+      assert.notExists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 
@@ -96,9 +102,11 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[0]);
-      expect(reference.writeExpr).toBeDefined();
-      expect(reference.isWrite()).toBeTruthy();
-      expect(reference.isRead()).toBeFalsy();
+
+      assert.exists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(true);
+      expect(reference.isRead()).toBe(false);
     });
 
     it('the reference in functions should be resolved.', () => {
@@ -124,9 +132,11 @@ describe('References:', () => {
       expect(reference.resolved).toBe(
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
-      expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+
+      assert.notExists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 
@@ -146,10 +156,13 @@ describe('References:', () => {
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBeNull();
-      expect(reference.writeExpr).toBeDefined();
-      expect(reference.isWrite()).toBeTruthy();
-      expect(reference.isRead()).toBeFalsy();
+
+      assert.isNull(reference.resolved);
+
+      assert.exists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(true);
+      expect(reference.isRead()).toBe(false);
     });
 
     it('the reference in functions should NOT be resolved.', () => {
@@ -172,10 +185,13 @@ describe('References:', () => {
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-      expect(reference.resolved).toBeNull();
-      expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+
+      assert.isNull(reference.resolved);
+
+      assert.notExists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 
@@ -199,9 +215,11 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('A');
       expect(reference.resolved).toBe(variables[0]);
-      expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+
+      assert.notExists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
 
     it('the reference in functions should be resolved.', () => {
@@ -227,9 +245,11 @@ describe('References:', () => {
       expect(reference.resolved).toBe(
         getRealVariables(scopeManager.scopes[0].variables)[0],
       );
-      expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+
+      assert.notExists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 
@@ -254,9 +274,11 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[1]);
-      expect(reference.writeExpr).toBeDefined();
-      expect(reference.isWrite()).toBeTruthy();
-      expect(reference.isRead()).toBeFalsy();
+
+      assert.exists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(true);
+      expect(reference.isRead()).toBe(false);
     });
 
     it('the reference in nested functions should be resolved.', () => {
@@ -284,9 +306,11 @@ describe('References:', () => {
       expect(reference.resolved).toBe(
         getRealVariables(scopeManager.scopes[1].variables)[1],
       );
-      expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+
+      assert.notExists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 
@@ -311,9 +335,11 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[1]);
-      expect(reference.writeExpr).toBeDefined();
-      expect(reference.isWrite()).toBeTruthy();
-      expect(reference.isRead()).toBeFalsy();
+
+      assert.exists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(true);
+      expect(reference.isRead()).toBe(false);
     });
 
     it('the reference in nested functions should be resolved.', () => {
@@ -341,9 +367,11 @@ describe('References:', () => {
       expect(reference.resolved).toBe(
         getRealVariables(scopeManager.scopes[1].variables)[1],
       );
-      expect(reference.writeExpr).toBeUndefined();
-      expect(reference.isWrite()).toBeFalsy();
-      expect(reference.isRead()).toBeTruthy();
+
+      assert.notExists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
     });
   });
 
@@ -364,9 +392,11 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[0]);
-      expect(reference.writeExpr).toBeDefined();
-      expect(reference.isWrite()).toBeTruthy();
-      expect(reference.isRead()).toBeFalsy();
+
+      assert.exists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(true);
+      expect(reference.isRead()).toBe(false);
     });
 
     it('"let {a} = {a: 1};", the reference should be resolved.', () => {
@@ -385,9 +415,11 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[0]);
-      expect(reference.writeExpr).toBeDefined();
-      expect(reference.isWrite()).toBeTruthy();
-      expect(reference.isRead()).toBeFalsy();
+
+      assert.exists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(true);
+      expect(reference.isRead()).toBe(false);
     });
 
     it('"let {a: {a}} = {a: {a: 1}};", the reference should be resolved.', () => {
@@ -406,9 +438,11 @@ describe('References:', () => {
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
       expect(reference.resolved).toBe(variables[0]);
-      expect(reference.writeExpr).toBeDefined();
-      expect(reference.isWrite()).toBeTruthy();
-      expect(reference.isRead()).toBeFalsy();
+
+      assert.exists(reference.writeExpr);
+
+      expect(reference.isWrite()).toBe(true);
+      expect(reference.isRead()).toBe(false);
     });
   });
 
@@ -445,10 +479,11 @@ describe('References:', () => {
       'new function(a = 0) {}',
       'new function([a = 0] = []) {}',
       'new function({b: a = 0} = {}) {}',
-    ];
+    ] as const;
 
-    trueCodes.forEach(code =>
-      it(`"${code}", all references should be true.`, () => {
+    it.for(trueCodes)(
+      '"%s", all references should be true.',
+      (code, { expect }) => {
         const { scopeManager } = parseAndAnalyze(code);
 
         expect(scopeManager.scopes.length).toBeGreaterThanOrEqual(1);
@@ -461,13 +496,13 @@ describe('References:', () => {
 
         scope.references.forEach(reference => {
           expect(reference.identifier.name).toBe('a');
-          expect(reference.isWrite()).toBeTruthy();
-          expect(reference.init).toBeTruthy();
+          expect(reference.isWrite()).toBe(true);
+          expect(reference.init).toBe(true);
         });
-      }),
+      },
     );
 
-    let falseCodes = [
+    const falseCodes = [
       'let a; a = 0;',
       'let a; [a] = [];',
       'let a; [a = 1] = [];',
@@ -479,10 +514,11 @@ describe('References:', () => {
       'let a; for ([a = 0] in []);',
       'let a; for ({a} in []);',
       'let a; for ({a = 0} in []);',
-    ];
+    ] as const;
 
-    falseCodes.forEach(code =>
-      it(`"${code}", all references should be false.`, () => {
+    it.for(falseCodes)(
+      '"%s", all references should be false.',
+      (code, { expect }) => {
         const { scopeManager } = parseAndAnalyze(code);
 
         expect(scopeManager.scopes.length).toBeGreaterThanOrEqual(1);
@@ -495,13 +531,13 @@ describe('References:', () => {
 
         scope.references.forEach(reference => {
           expect(reference.identifier.name).toBe('a');
-          expect(reference.isWrite()).toBeTruthy();
-          expect(reference.init).toBeFalsy();
+          expect(reference.isWrite()).toBe(true);
+          expect(reference.init).toBe(false);
         });
-      }),
+      },
     );
 
-    falseCodes = [
+    it.for([
       'let a; let b = a;',
       'let a; let [b] = a;',
       'let a; let [b = a] = [];',
@@ -516,9 +552,9 @@ describe('References:', () => {
       'let a,b; for ([b = a] in []);',
       'let a; a.foo = 0;',
       'let a,b; b = a.foo;',
-    ];
-    falseCodes.forEach(code =>
-      it(`"${code}", readonly references of "a" should be undefined.`, () => {
+    ] as const)(
+      '"%s", readonly references of "a" should be undefined.',
+      (code, { expect }) => {
         const { scopeManager } = parseAndAnalyze(code);
 
         expect(scopeManager.scopes.length).toBeGreaterThanOrEqual(1);
@@ -529,15 +565,16 @@ describe('References:', () => {
         expect(variables.length).toBeGreaterThanOrEqual(1);
         expect(variables[0].name).toBe('a');
 
-        const references = variables[0].references;
+        const { references } = variables[0];
 
         expect(references.length).toBeGreaterThanOrEqual(1);
 
         references.forEach(reference => {
-          expect(reference.isRead()).toBeTruthy();
-          expect(reference.init).toBeUndefined();
+          expect(reference.isRead()).toBe(true);
+
+          assert.notExists(reference.init);
         });
-      }),
+      },
     );
   });
 });

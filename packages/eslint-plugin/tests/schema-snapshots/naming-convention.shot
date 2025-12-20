@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes naming-convention 1`] = `
-"
 # SCHEMA:
 
 {
@@ -1737,8 +1734,8 @@ type MatchRegexConfig = {
 
 type PrefixSuffixConfig = string[];
 
-type Options = /** Multiple selectors in one config */
-(| {
+type Options = (/** Multiple selectors in one config */
+| {
       custom?: MatchRegexConfig;
       failureMessage?: string;
       filter?: MatchRegexConfig | string;
@@ -2246,5 +2243,3 @@ type Options = /** Multiple selectors in one config */
       trailingUnderscore?: UnderscoreOptions;
     }
 )[];
-"
-`;

@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "allowJs": true,
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true
+  },
+  "include": [
+    "typings",
+    "tools/**/*.ts",
+    "tools/**/*.mts",
+    "eslint.config.mjs",
+    "knip.ts",
+    ".github/**/*.js"
+  ],
+  "references": [
+    {
+      "path": "./packages/typescript-eslint/tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

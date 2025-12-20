@@ -9,6 +9,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
+  matchesTypeOrBaseType,
   nullThrows,
 } from '../util';
 
@@ -21,9 +22,17 @@ enum Usefulness {
 export type Options = [
   {
     ignoredTypeNames?: string[];
+    checkUnknown?: boolean;
   },
 ];
 export type MessageIds = 'baseArrayJoin' | 'baseToString';
+const canHaveTypeParameters = (declaration: ts.Declaration) => {
+  return (
+    ts.isTypeAliasDeclaration(declaration) ||
+    ts.isInterfaceDeclaration(declaration) ||
+    ts.isClassDeclaration(declaration)
+  );
+};
 
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
@@ -46,10 +55,13 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          checkUnknown: {
+            type: 'boolean',
+            description: 'Whether to also check values of type `unknown`',
+          },
           ignoredTypeNames: {
             type: 'array',
-            description:
-              'Stringified regular expressions of type names to ignore.',
+            description: 'Stringified type names to ignore.',
             items: {
               type: 'string',
             },
@@ -60,12 +72,14 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      checkUnknown: false,
       ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
     },
   ],
   create(context, [option]) {
     const services = getParserServices(context);
-    const checker = services.program.getTypeChecker();
+    const { program } = services;
+    const checker = program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
     function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
@@ -76,6 +90,7 @@ export default createRule<Options, MessageIds>({
         type ?? services.getTypeAtLocation(node),
         new Set(),
       );
+
       if (certainty === Usefulness.Always) {
         return;
       }
@@ -213,7 +228,7 @@ export default createRule<Options, MessageIds>({
           return collectToStringCertainty(constraint, visited);
         }
         // unconstrained generic means `unknown`
-        return Usefulness.Always;
+        return option.checkUnknown ? Usefulness.Sometimes : Usefulness.Always;
       }
 
       // the Boolean type definition missing toString()
@@ -224,7 +239,24 @@ export default createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (ignoredTypeNames.includes(getTypeName(checker, type))) {
+      const symbol = type.aliasSymbol ?? type.getSymbol();
+      const decl = symbol?.getDeclarations()?.[0];
+      if (
+        decl &&
+        canHaveTypeParameters(decl) &&
+        decl.typeParameters &&
+        ignoredTypeNames.includes(symbol.name)
+      ) {
+        return Usefulness.Always;
+      }
+
+      if (
+        matchesTypeOrBaseType(
+          services,
+          type => ignoredTypeNames.includes(getTypeName(checker, type)),
+          type,
+        )
+      ) {
         return Usefulness.Always;
       }
 
@@ -251,13 +283,19 @@ export default createRule<Options, MessageIds>({
       const toString =
         checker.getPropertyOfType(type, 'toString') ??
         checker.getPropertyOfType(type, 'toLocaleString');
+
       if (!toString) {
-        // e.g. any/unknown
+        // unknown
+        if (option.checkUnknown && type.flags === ts.TypeFlags.Unknown) {
+          return Usefulness.Sometimes;
+        }
+        // e.g. any
         return Usefulness.Always;
       }
 
       const declarations = toString.getDeclarations();
 
+      // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
       if (declarations == null || declarations.length !== 1) {
         // If there are multiple declarations, at least one of them must not be
         // the default object toString.

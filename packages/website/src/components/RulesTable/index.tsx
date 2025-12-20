@@ -10,6 +10,7 @@ import React, { useMemo } from 'react';
 import type { HistorySelector } from '../../hooks/useHistorySelector';
 
 import { useHistorySelector } from '../../hooks/useHistorySelector';
+import { getRecommendationWithEmoji } from '../../theme/MDXComponents/RuleAttributes';
 import {
   CONFIG_EMOJI,
   DEPRECATED_RULE_EMOJI,
@@ -35,9 +36,9 @@ function interpolateCode(
 
 function getActualRecommended({
   docs,
-}: RulesMeta[number]): RuleRecommendation | undefined {
+}: RulesMeta[number]): ['', ''] | [string, RuleRecommendation] {
   const recommended = docs.recommended;
-  return typeof recommended === 'object' ? 'recommended' : recommended;
+  return recommended ? getRecommendationWithEmoji(recommended) : ['', ''];
 }
 
 function RuleRow({
@@ -50,31 +51,21 @@ function RuleRow({
   }
   const { deprecated, fixable, hasSuggestions } = rule;
   const { extendsBaseRule, requiresTypeChecking } = rule.docs;
-  const actualRecommended = getActualRecommended(rule);
+  const [emoji, actualRecommended] = getActualRecommended(rule);
   return (
     <tr>
       <td>
-        <Link to={new URL(rule.docs.url).pathname}>
-          <code>@typescript-eslint/{rule.name}</code>
-        </Link>
+        <div className={styles.ruleNameWrapper}>
+          <Link to={new URL(rule.docs.url).pathname}>
+            <code>@typescript-eslint/{rule.name}</code>
+          </Link>
+          {rule.docs.frozen && <span>❄️</span>}
+        </div>
         <br />
         {interpolateCode(rule.docs.description)}
       </td>
       <td className={styles.attrCol} title={actualRecommended}>
-        {(() => {
-          switch (actualRecommended) {
-            case 'recommended':
-              return RECOMMENDED_CONFIG_EMOJI;
-            case 'strict':
-              return STRICT_CONFIG_EMOJI;
-            case 'stylistic':
-              return STYLISTIC_CONFIG_EMOJI;
-            default:
-              // for some reason the current version of babel loader won't elide
-              // this correctly recommended satisfies undefined;
-              return '';
-          }
-        })()}
+        {emoji}
       </td>
       <td
         className={styles.attrCol}
@@ -172,7 +163,7 @@ export default function RulesTable(): React.JSX.Element {
   const relevantRules = useMemo(
     () =>
       rules.filter(r => {
-        const actualRecommended = getActualRecommended(r);
+        const actualRecommended = getActualRecommended(r)[1];
         const opinions = [
           match(filters.recommended, actualRecommended === 'recommended'),
           match(

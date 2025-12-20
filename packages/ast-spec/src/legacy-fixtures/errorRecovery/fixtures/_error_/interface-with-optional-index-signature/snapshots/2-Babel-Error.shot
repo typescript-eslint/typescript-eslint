@@ -1,3 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-with-optional-index-signature Babel - Error 1`] = `[SyntaxError: Unexpected token (4:7)]`;
+exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > interface-with-optional-index-signature > Babel - Error`]
+BabelError
+  2 |
+  3 | interface Foo {
+> 4 |   [fff?: number]: string;
+    |        ^ Unexpected token (4:7)
+  5 | }
+  6 |
+  

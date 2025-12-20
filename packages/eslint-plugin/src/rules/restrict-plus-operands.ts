@@ -184,7 +184,7 @@ export default createRule<Options, MessageIds>({
         }
 
         // RegExps also contain ts.TypeFlags.Any & ts.TypeFlags.Object
-        for (const subBaseType of tsutils.unionTypeParts(baseType)) {
+        for (const subBaseType of tsutils.unionConstituents(baseType)) {
           const typeName = getTypeName(typeChecker, subBaseType);
           if (
             typeName === 'RegExp'
@@ -218,7 +218,10 @@ export default createRule<Options, MessageIds>({
         if (
           !allowNumberAndString &&
           isTypeFlagSetInUnion(baseType, ts.TypeFlags.StringLike) &&
-          isTypeFlagSetInUnion(otherType, ts.TypeFlags.NumberLike)
+          isTypeFlagSetInUnion(
+            otherType,
+            ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
+          )
         ) {
           return context.report({
             node,
@@ -260,12 +263,12 @@ export default createRule<Options, MessageIds>({
 
 function isDeeplyObjectType(type: ts.Type): boolean {
   return type.isIntersection()
-    ? tsutils.intersectionTypeParts(type).every(tsutils.isObjectType)
-    : tsutils.unionTypeParts(type).every(tsutils.isObjectType);
+    ? tsutils.intersectionConstituents(type).every(tsutils.isObjectType)
+    : tsutils.unionConstituents(type).every(tsutils.isObjectType);
 }
 
 function isTypeFlagSetInUnion(type: ts.Type, flag: ts.TypeFlags): boolean {
   return tsutils
-    .unionTypeParts(type)
+    .unionConstituents(type)
     .some(subType => tsutils.isTypeFlagSet(subType, flag));
 }

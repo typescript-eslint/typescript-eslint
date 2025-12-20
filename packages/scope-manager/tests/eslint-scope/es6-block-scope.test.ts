@@ -1,10 +1,5 @@
-import {
-  expectToBeBlockScope,
-  expectToBeFunctionScope,
-  expectToBeGlobalScope,
-  getRealVariables,
-  parseAndAnalyze,
-} from '../test-utils';
+import { ScopeType } from '../../src/index.js';
+import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('ES6 block scope', () => {
   it('let is materialized in ES6 block scope#1', () => {
@@ -19,12 +14,12 @@ describe('ES6 block scope', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0); // No variable in Program scope.
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeBlockScope(scope);
+    assert.isScopeOfType(scope, ScopeType.block);
     expect(variables).toHaveLength(1); // `i` in block scope.
     expect(variables[0].name).toBe('i');
     expect(scope.references).toHaveLength(2);
@@ -32,7 +27,7 @@ describe('ES6 block scope', () => {
     expect(scope.references[1].identifier.name).toBe('i');
   });
 
-  it('function delaration is materialized in ES6 block scope', () => {
+  it('function declaration is materialized in ES6 block scope', () => {
     const { scopeManager } = parseAndAnalyze(`
       {
         function test() {
@@ -45,12 +40,12 @@ describe('ES6 block scope', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeBlockScope(scope);
+    assert.isScopeOfType(scope, ScopeType.block);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('test');
     expect(scope.references).toHaveLength(1);
@@ -58,7 +53,7 @@ describe('ES6 block scope', () => {
 
     scope = scopeManager.scopes[2];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('arguments');
     expect(scope.references).toHaveLength(0);
@@ -78,14 +73,14 @@ describe('ES6 block scope', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('i');
     expect(scope.references).toHaveLength(1);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeBlockScope(scope);
+    assert.isScopeOfType(scope, ScopeType.block);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('i');
     expect(scope.references).toHaveLength(3);
@@ -117,13 +112,13 @@ describe('ES6 block scope', () => {
 
     let scope = scopeManager.scopes[0];
     let variables = getRealVariables(scope.variables);
-    expectToBeGlobalScope(scope);
+    assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(0);
     expect(scope.references).toHaveLength(0);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
-    expectToBeFunctionScope(scope);
+    assert.isScopeOfType(scope, ScopeType.function);
     expect(variables).toHaveLength(2);
     expect(variables[0].name).toBe('arguments');
     expect(variables[1].name).toBe('i');
@@ -136,7 +131,7 @@ describe('ES6 block scope', () => {
 
     scope = scopeManager.scopes[2];
     variables = getRealVariables(scope.variables);
-    expectToBeBlockScope(scope);
+    assert.isScopeOfType(scope, ScopeType.block);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('i');
     const v3 = variables[0];
@@ -148,7 +143,7 @@ describe('ES6 block scope', () => {
 
     scope = scopeManager.scopes[3];
     variables = getRealVariables(scope.variables);
-    expectToBeBlockScope(scope);
+    assert.isScopeOfType(scope, ScopeType.block);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('i');
     const v2 = variables[0];

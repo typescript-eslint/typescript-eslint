@@ -172,7 +172,7 @@ function describeLiteralTypeNode(typeNode: TSESTree.TypeNode): string {
 }
 
 function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
-  return !!(
+  return (
     node.parent.type === AST_NODE_TYPES.TSTypeAnnotation &&
     isFunctionOrFunctionType(node.parent.parent)
   );
@@ -187,7 +187,7 @@ function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
     tsutils.isFalseLiteralType(type.types[0]) &&
     tsutils.isTrueLiteralType(type.types[1])
     ? [type]
-    : tsutils.unionTypeParts(type);
+    : tsutils.unionConstituents(type);
 }
 
 export default createRule({

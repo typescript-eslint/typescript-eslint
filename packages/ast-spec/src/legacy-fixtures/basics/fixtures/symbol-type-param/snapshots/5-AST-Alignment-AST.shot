@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics symbol-type-param AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > symbol-type-param > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -21,14 +21,14 @@ exports[`AST Fixtures legacy-fixtures basics symbol-type-param AST Alignment - A
             end: { column: 42, line: 3 },
           },
         },
--       declare: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
--         decorators: Array [],
+          decorators: Array [],
           name: 'test',
--         optional: false,
+          optional: false,
 
           range: [82, 86],
           loc: {
@@ -39,9 +39,9 @@ exports[`AST Fixtures legacy-fixtures basics symbol-type-param AST Alignment - A
         params: Array [
           Identifier {
             type: 'Identifier',
--           decorators: Array [],
+            decorators: Array [],
             name: 'abc',
--           optional: false,
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
@@ -49,7 +49,9 @@ exports[`AST Fixtures legacy-fixtures basics symbol-type-param AST Alignment - A
 -               typeArguments: TSTypeParameterInstantiation {
 +               typeName: Identifier {
 +                 type: 'Identifier',
++                 decorators: Array [],
 +                 name: 'Map',
++                 optional: false,
 +
 +                 range: [92, 95],
 +                 loc: {
@@ -135,5 +137,4 @@ exports[`AST Fixtures legacy-fixtures basics symbol-type-param AST Alignment - A
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

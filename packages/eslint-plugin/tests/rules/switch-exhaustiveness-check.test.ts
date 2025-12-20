@@ -1,18 +1,10 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import path from 'node:path';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
+import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
 
-const rootPath = path.join(process.cwd(), 'tests/fixtures/');
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
-});
+const rootDir = getFixturesRootDir();
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('switch-exhaustiveness-check', switchExhaustivenessCheck, {
   valid: [
@@ -928,7 +920,7 @@ function foo(x: string[]) {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
           projectService: false,
-          tsconfigRootDir: rootPath,
+          tsconfigRootDir: rootDir,
         },
       },
     },
@@ -951,7 +943,7 @@ function foo(x: string[], y: string | undefined) {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
           projectService: false,
-          tsconfigRootDir: rootPath,
+          tsconfigRootDir: rootDir,
         },
       },
     },
@@ -2282,46 +2274,6 @@ switch (value) {
       ],
     },
     {
-      code: `
-        enum Enum {
-          'a' = 1,
-          [\`key-with
-
-          new-line\`] = 2,
-        }
-
-        declare const a: Enum;
-
-        switch (a) {
-        }
-      `,
-      errors: [
-        {
-          messageId: 'switchIsNotExhaustive',
-          suggestions: [
-            {
-              messageId: 'addMissingCases',
-              output: `
-        enum Enum {
-          'a' = 1,
-          [\`key-with
-
-          new-line\`] = 2,
-        }
-
-        declare const a: Enum;
-
-        switch (a) {
-        case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
-        case Enum['key-with\\n\\n          new-line']: { throw new Error('Not implemented yet: Enum[\\'key-with\\\\n\\\\n          new-line\\'] case') }
-        }
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
       code: noFormat`
         enum Enum {
           'a' = 1,
@@ -2842,7 +2794,7 @@ function foo(x: string[]) {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
           projectService: false,
-          tsconfigRootDir: rootPath,
+          tsconfigRootDir: rootDir,
         },
       },
     },

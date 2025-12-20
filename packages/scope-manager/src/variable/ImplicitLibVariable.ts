@@ -10,6 +10,11 @@ export interface ImplicitLibVariableOptions {
   readonly writeable?: boolean;
 }
 
+export interface LibDefinition {
+  libs: readonly LibDefinition[];
+  variables: readonly [string, ImplicitLibVariableOptions][];
+}
+
 /**
  * An variable implicitly defined by the TS Lib
  */

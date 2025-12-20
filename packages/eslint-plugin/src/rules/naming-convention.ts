@@ -70,6 +70,7 @@ export default createRule<Options, MessageIds>({
       description:
         'Enforce naming conventions for everything across a codebase',
       // technically only requires type checking if the user uses "type" modifiers
+      frozen: true,
       requiresTypeChecking: true,
     },
     messages: {
@@ -209,19 +210,19 @@ export default createRule<Options, MessageIds>({
     ): boolean {
       return Boolean(
         'value' in propertyOrMemberNode &&
-          propertyOrMemberNode.value &&
-          'async' in propertyOrMemberNode.value &&
-          propertyOrMemberNode.value.async,
+        propertyOrMemberNode.value &&
+        'async' in propertyOrMemberNode.value &&
+        propertyOrMemberNode.value.async,
       );
     }
 
     function isAsyncVariableIdentifier(id: TSESTree.Identifier): boolean {
       return Boolean(
         ('async' in id.parent && id.parent.async) ||
-          ('init' in id.parent &&
-            id.parent.init &&
-            'async' in id.parent.init &&
-            id.parent.init.async),
+        ('init' in id.parent &&
+          id.parent.init &&
+          'async' in id.parent.init &&
+          id.parent.init.async),
       );
     }
 
@@ -631,11 +632,8 @@ export default createRule<Options, MessageIds>({
 
       // #region interface
 
-      'TSEnumMember[computed != true]': {
-        handler: (
-          node: TSESTree.TSEnumMemberNonComputedName,
-          validator,
-        ): void => {
+      TSEnumMember: {
+        handler: (node: TSESTree.TSEnumMember, validator): void => {
           const id = node.id;
           const modifiers = new Set<Modifiers>();
 

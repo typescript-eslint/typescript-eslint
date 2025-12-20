@@ -1,11 +1,5 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "composite": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "resolveJsonModule": true
-  },
-  "include": ["src", "typings"],
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {},
   "references": []
 }

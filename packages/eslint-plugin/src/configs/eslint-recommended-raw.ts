@@ -1,6 +1,4 @@
-// NOTE: this file is isolated to be shared across legacy and flat configs
-// it is exported via `./use-at-your-own-risk/eslint-recommended-raw`
-// and it has types manually defined in `./eslint-recommended-raw.d.ts`
+// NOTE: this file is isolated to be shared across legacy and flat configs.
 
 /**
  * This is a compatibility ruleset that:
@@ -11,7 +9,7 @@ const config = (
   style: 'glob' | 'minimatch',
 ): {
   files: string[];
-  rules: Record<string, 'off' | 'warn' | 'error'>;
+  rules: Record<string, 'error' | 'off' | 'warn'>;
 } => ({
   files:
     style === 'glob'
@@ -29,9 +27,14 @@ const config = (
     'no-dupe-keys': 'off', // ts(1117)
     'no-func-assign': 'off', // ts(2630)
     'no-import-assign': 'off', // ts(2632) & ts(2540)
-    // TODO - remove this once we no longer support ESLint v8
-    'no-new-symbol': 'off', // ts(7009)
     'no-new-native-nonconstructor': 'off', // ts(7009)
+    // "no-new-symbol" was deprecated in ESLint 9.0.0 and will be removed in
+    // ESLint v11.0.0. See:
+    // https://eslint.org/docs/latest/rules/no-new-symbol
+    // We need to keep the rule disabled until TSESLint drops support for
+    // ESlint 8. See:
+    // https://github.com/typescript-eslint/typescript-eslint/pull/8895
+    'no-new-symbol': 'off', // ts(7009)
     'no-obj-calls': 'off', // ts(2349)
     'no-redeclare': 'off', // ts(2451)
     'no-setter-return': 'off', // ts(2408)
@@ -40,6 +43,7 @@ const config = (
     'no-unreachable': 'off', // ts(7027)
     'no-unsafe-negation': 'off', // ts(2365) & ts(2322) & ts(2358)
     'no-var': 'error', // ts transpiles let/const to var, so no need for vars any more
+    'no-with': 'off', // ts(1101) & ts(2410)
     'prefer-const': 'error', // ts provides better types with const
     'prefer-rest-params': 'error', // ts provides better types with rest args over arguments
     'prefer-spread': 'error', // ts transpiles spread to apply, so no need for manual apply

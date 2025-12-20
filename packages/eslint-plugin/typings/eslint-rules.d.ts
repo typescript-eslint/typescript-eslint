@@ -163,7 +163,7 @@ declare module 'eslint/lib/rules/no-empty-function' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'unexpected',
+    'suggestComment' | 'unexpected',
     [
       {
         allow?: string[];
@@ -345,7 +345,7 @@ declare module 'eslint/lib/rules/no-unused-expressions' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'expected',
+    'unusedExpression',
     [
       {
         allowShortCircuit?: boolean;
@@ -515,17 +515,17 @@ declare module 'eslint/lib/rules/prefer-const' {
 declare module 'eslint/lib/rules/prefer-destructuring' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-  interface DestructuringTypeConfig {
+  export interface DestructuringTypeConfig {
     array?: boolean;
     object?: boolean;
   }
   type Option0 =
+    | DestructuringTypeConfig
     | {
         AssignmentExpression?: DestructuringTypeConfig;
         VariableDeclarator?: DestructuringTypeConfig;
-      }
-    | DestructuringTypeConfig;
-  interface Option1 {
+      };
+  export interface Option1 {
     enforceForRenamedProperties?: boolean;
   }
   const rule: TSESLint.RuleModule<
@@ -554,24 +554,25 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
         }
     )[];
     export type ArrayOfStringOrObjectPatterns =
+      | string[]
       | {
           // extended
           allowTypeImports?: boolean;
           caseSensitive?: boolean;
-          group: string[];
+          group?: string[];
+          regex?: string;
           message?: string;
-        }[]
-      | string[];
+        }[];
     export type RuleListener =
+      | Record<string, never>
       | {
           ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
           ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
           ImportDeclaration(node: TSESTree.ImportDeclaration): void;
-        }
-      | Record<string, never>;
+        };
   }
 
-  interface ObjectOfPathsAndPatterns {
+  export interface ObjectOfPathsAndPatterns {
     paths?: rule.ArrayOfStringOrObject;
     patterns?: rule.ArrayOfStringOrObjectPatterns;
   }

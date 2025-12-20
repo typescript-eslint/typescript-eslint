@@ -1,11 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes method-signature-style 1`] = `
-"
 # SCHEMA:
 
 [
   {
+    "description": "The method signature style to enforce using.",
     "enum": ["method", "property"],
     "type": "string"
   }
@@ -14,6 +12,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
-type Options = ['method' | 'property'];
-"
-`;
+type Options = [
+  /** The method signature style to enforce using. */
+  | 'property'
+  /** The method signature style to enforce using. */
+  | 'method',
+];

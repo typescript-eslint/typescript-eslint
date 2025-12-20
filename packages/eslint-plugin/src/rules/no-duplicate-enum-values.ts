@@ -36,6 +36,15 @@ export default createRule({
       );
     }
 
+    function isSupportedUnary(
+      node: TSESTree.Expression,
+    ): node is TSESTree.UnaryExpression {
+      return (
+        node.type === AST_NODE_TYPES.UnaryExpression &&
+        ['-', '+'].includes(node.operator)
+      );
+    }
+
     function isStaticTemplateLiteral(
       node: TSESTree.Expression,
     ): node is TSESTree.TemplateLiteral {
@@ -46,30 +55,47 @@ export default createRule({
       );
     }
 
+    function getMemberValue(
+      initializer: TSESTree.Expression,
+    ): number | string | undefined {
+      switch (true) {
+        case isStringLiteral(initializer):
+        case isNumberLiteral(initializer):
+          return initializer.value;
+        case isSupportedUnary(initializer): {
+          const inner = Number(getMemberValue(initializer.argument));
+          if (Number.isNaN(inner)) {
+            return undefined;
+          }
+
+          return initializer.operator === '-' ? -inner : inner;
+        }
+        case isStaticTemplateLiteral(initializer):
+          return initializer.quasis[0].value.cooked;
+        default:
+          return undefined;
+      }
+    }
+
     return {
       TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
         const enumMembers = node.body.members;
-        const seenValues = new Set<number | string>();
+        const seenValues: (number | string)[] = [];
 
         enumMembers.forEach(member => {
           if (member.initializer == null) {
             return;
           }
 
-          let value: number | string | undefined;
-          if (isStringLiteral(member.initializer)) {
-            value = String(member.initializer.value);
-          } else if (isNumberLiteral(member.initializer)) {
-            value = Number(member.initializer.value);
-          } else if (isStaticTemplateLiteral(member.initializer)) {
-            value = member.initializer.quasis[0].value.cooked;
-          }
-
+          const value = getMemberValue(member.initializer);
           if (value == null) {
             return;
           }
 
-          if (seenValues.has(value)) {
+          const isAlreadyPresent = seenValues.some(seenValue =>
+            Object.is(seenValue, value),
+          );
+          if (isAlreadyPresent) {
             context.report({
               node: member,
               messageId: 'duplicateValue',
@@ -78,7 +104,7 @@ export default createRule({
               },
             });
           } else {
-            seenValues.add(value);
+            seenValues.push(value);
           }
         });
       },

@@ -1,13 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "allowJs": true,
-    // opt-in files for checking
-    "checkJs": false,
-    // build is done via esbuild
-    "noEmit": true,
-    "skipLibCheck": true
-  },
-  "include": ["src", "types", "build.ts"],
-  "references": []
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    }
+  ]
 }
