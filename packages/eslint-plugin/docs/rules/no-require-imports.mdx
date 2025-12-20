@@ -98,7 +98,7 @@ While this rule is primarily intended to promote ES Module syntax, it still make
 
 If you prefer to use TypeScript's built-in `import ... from ...` ES Module syntax, which is transformed to `require()` calls during transpilation when outputting CommonJS, you can use the rule's default behavior.
 
-If, instead, you prefer to use `require()` syntax, we recommend you use this rule with [`allowAsImport`](#allowAsImport) enabled.
+If you prefer to instead use `require()` syntax, we recommend you use this rule with [`allowAsImport`](#allowAsImport) enabled.
 That way, you still enforce usage of `import ... = require(...)` rather than bare `require()` calls, which are not statically analyzed by TypeScript.
 We don't directly provide a way to _prohibit_ ES Module syntax from being used; consider instead using TypeScript's [`verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig/#verbatimModuleSyntax) option if you find yourself in a situation where you would want this.
 
