@@ -452,6 +452,17 @@ const b = a as const;
     },
     {
       code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as const;
+      `,
+    },
+    {
+      code: `
 (() => {})() as undefined;
       `,
     },
@@ -1579,32 +1590,6 @@ class T {
 class T {
   readonly a = 'a';
 }
-      `,
-    },
-    {
-      code: `
-enum T {
-  Value1,
-  Value2,
-}
-
-declare const a: T.Value1;
-const b = a as const;
-      `,
-      errors: [
-        {
-          messageId: 'unnecessaryAssertion',
-        },
-      ],
-      options: [{ checkLiteralConstAssertions: true }],
-      output: `
-enum T {
-  Value1,
-  Value2,
-}
-
-declare const a: T.Value1;
-const b = a;
       `,
     },
     {
