@@ -464,8 +464,45 @@ function getReportDescriptor(
 
   const reportRange = getReportRange(chain, node.range, sourceCode);
 
-  const fix: ReportFixFunction = fixer =>
-    fixer.replaceTextRange(reportRange, newCode);
+  const fix: ReportFixFunction = fixer => {
+    const replacedCode = sourceCode.text.substring(
+      reportRange[0],
+      reportRange[1],
+    );
+    let unclosedParens = 0;
+
+    for (const char of replacedCode) {
+      if (char === '(') {
+        unclosedParens++;
+      } else if (char === ')') {
+        unclosedParens--;
+      }
+    }
+
+    if (unclosedParens > 0 && reportRange[1] < node.range[1]) {
+      const unfixedCode = sourceCode.text.substring(
+        reportRange[1],
+        node.range[1],
+      );
+
+      let unfixedCodeWithoutExtraParens = '';
+      for (let i = unfixedCode.length - 1; i >= 0; i--) {
+        if (unfixedCode[i] === ')' && unclosedParens > 0) {
+          unclosedParens--;
+        } else {
+          unfixedCodeWithoutExtraParens =
+            unfixedCode[i] + unfixedCodeWithoutExtraParens;
+        }
+      }
+
+      return fixer.replaceTextRange(
+        [reportRange[0], node.range[1]],
+        newCode + unfixedCodeWithoutExtraParens,
+      );
+    }
+
+    return fixer.replaceTextRange(reportRange, newCode);
+  };
 
   return {
     loc: {
