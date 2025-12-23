@@ -1,16 +1,10 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unsafe-call';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.noImplicitThis.json',
-      projectService: false,
-      tsconfigRootDir: getFixturesRootDir(),
-    },
-  },
+const ruleTester = createRuleTesterWithTypes({
+  project: './tsconfig.noImplicitThis.json',
 });
 
 ruleTester.run('no-unsafe-call', rule, {

@@ -455,6 +455,15 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        // Computed identifier expressions are handled by checkMemberExpression
+        if (
+          parent.type === AST_NODE_TYPES.MemberExpression &&
+          parent.computed &&
+          parent.property === node
+        ) {
+          return;
+        }
+
         if (parent.type === AST_NODE_TYPES.ExportSpecifier) {
           // only deal with the alias (exported) side, not the local binding
           if (parent.exported !== node) {

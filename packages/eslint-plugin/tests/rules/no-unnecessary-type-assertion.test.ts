@@ -1,17 +1,12 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import path from 'node:path';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
+import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
 
-const rootDir = path.join(__dirname, '..', 'fixtures');
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      projectService: false,
-      tsconfigRootDir: rootDir,
-    },
-  },
+const rootDir = getFixturesRootDir();
+
+const ruleTester = createRuleTesterWithTypes({
+  project: './tsconfig.json',
 });
 
 const optionsWithOnUncheckedIndexedAccess = {
@@ -453,6 +448,60 @@ enum T {
 }
 declare const a: T.Value1;
 const b = a as const;
+      `,
+    },
+    {
+      code: `
+(() => {})() as undefined;
+      `,
+    },
+    {
+      code: `
+const f = () => {};
+f() as undefined;
+      `,
+    },
+    {
+      code: `
+(function () {})() as undefined;
+      `,
+    },
+    {
+      code: `
+interface Overloaded {
+  (): undefined;
+  (value: string): void;
+}
+
+((value => {}) as Overloaded)('') as undefined;
+      `,
+    },
+    {
+      code: `
+interface Overloaded {
+  (): void;
+  (value: string): undefined;
+}
+
+((() => {}) as Overloaded)() as undefined;
+      `,
+    },
+    {
+      code: `
+interface GenericOverloaded {
+  <T extends string>(value: T): void;
+  (): undefined;
+}
+((value => {}) as GenericOverloaded)('') as undefined;
+      `,
+    },
+    {
+      code: `
+interface Unioned {
+  (): undefined | void;
+}
+
+((() => {}) as Unioned)() as undefined;
       `,
     },
   ],
@@ -1445,6 +1494,55 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    {
+      code: `
+((): undefined => {})() as undefined;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+((): undefined => {})();
+      `,
+    },
+    {
+      code: `
+(() => 1)() as number;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+(() => 1)();
+      `,
+    },
+    {
+      code: `
+interface Overloaded {
+  (): void;
+  (value: string): undefined;
+}
+
+((value => {}) as Overloaded)('') as undefined;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+interface Overloaded {
+  (): void;
+  (value: string): undefined;
+}
+
+((value => {}) as Overloaded)('');
       `,
     },
   ],

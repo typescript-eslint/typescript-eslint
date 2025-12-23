@@ -4,18 +4,6 @@
   "include": [],
   "references": [
     {
-      "path": "../typescript-estree"
-    },
-    {
-      "path": "../utils"
-    },
-    {
-      "path": "../parser"
-    },
-    {
-      "path": "../eslint-plugin"
-    },
-    {
       "path": "./tsconfig.build.json"
     },
     {
