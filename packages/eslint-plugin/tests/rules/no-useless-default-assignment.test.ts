@@ -184,6 +184,46 @@ ruleTester.run('no-useless-default-assignment', rule, {
         },
       },
     },
+    `
+      declare const g: Array<string>;
+      const [foo = ''] = g;
+    `,
+    `
+      declare const g: Record<string, string>;
+      const { foo = '' } = g;
+    `,
+    `
+      declare const h: { [key: string]: string };
+      const { bar = '' } = h;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11849
+    `
+      type Merge = boolean | ((incoming: string[]) => void);
+
+      const policy: { merge: Merge } = {
+        merge: (incoming: string[] = []) => {
+          incoming;
+        },
+      };
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11846
+    `
+      const [a, b = ''] = 'somestr'.split('.');
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11846
+    `
+      declare const params: string[];
+      const [c = '123'] = params;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11846
+    `
+      declare function useCallback<T>(callback: T);
+      useCallback((value: number[] = []) => {});
+    `,
+    `
+      declare const tuple: [string];
+      const [a, b = 'default'] = tuple;
+    `,
   ],
   invalid: [
     {
@@ -457,63 +497,6 @@ ruleTester.run('no-useless-default-assignment', rule, {
       ],
       output: `
         function foo({ a }) {}
-      `,
-    },
-    {
-      code: `
-        declare const g: Record<string, string>;
-        const { hello = '' } = g;
-      `,
-      errors: [
-        {
-          column: 25,
-          data: { type: 'property' },
-          endColumn: 27,
-          line: 3,
-          messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
-        declare const g: Record<string, string>;
-        const { hello } = g;
-      `,
-    },
-    {
-      code: `
-        declare const h: { [key: string]: string };
-        const { world = '' } = h;
-      `,
-      errors: [
-        {
-          column: 25,
-          data: { type: 'property' },
-          endColumn: 27,
-          line: 3,
-          messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
-        declare const h: { [key: string]: string };
-        const { world } = h;
-      `,
-    },
-    {
-      code: `
-        declare const g: Array<string>;
-        const [foo = ''] = g;
-      `,
-      errors: [
-        {
-          column: 22,
-          data: { type: 'property' },
-          endColumn: 24,
-          line: 3,
-          messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
-        declare const g: Array<string>;
-        const [foo] = g;
       `,
     },
   ],
