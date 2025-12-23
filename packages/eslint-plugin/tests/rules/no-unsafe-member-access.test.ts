@@ -112,7 +112,6 @@ function foo(x: any) {
           column: 5,
           data: {
             property: '.a',
-            type: '`any`',
           },
           endColumn: 6,
           line: 3,
@@ -131,7 +130,6 @@ function foo(x: any) {
           column: 5,
           data: {
             property: '.a',
-            type: '`any`',
           },
           endColumn: 6,
           line: 3,
@@ -150,7 +148,6 @@ function foo(x: { a: any }) {
           column: 7,
           data: {
             property: '.b',
-            type: '`any`',
           },
           endColumn: 8,
           line: 3,
@@ -169,7 +166,6 @@ function foo(x: any) {
           column: 5,
           data: {
             property: "['a']",
-            type: '`any`',
           },
           endColumn: 8,
           line: 3,
@@ -188,7 +184,6 @@ function foo(x: any) {
           column: 5,
           data: {
             property: "['a']",
-            type: '`any`',
           },
           endColumn: 8,
           line: 3,
@@ -207,11 +202,10 @@ value.property;
           column: 7,
           data: {
             property: '.property',
-            type: 'unresolved due to error',
           },
           endColumn: 15,
           line: 4,
-          messageId: 'unsafeMemberExpression',
+          messageId: 'errorMemberExpression',
         },
       ],
     },
@@ -226,7 +220,6 @@ function foo(x: { a: number }, y: any) {
           column: 5,
           data: {
             property: '[y]',
-            type: '`any`',
           },
           endColumn: 6,
           line: 3,
@@ -245,7 +238,6 @@ function foo(x?: { a: number }, y: any) {
           column: 7,
           data: {
             property: '[y]',
-            type: '`any`',
           },
           endColumn: 8,
           line: 3,
@@ -264,7 +256,6 @@ function foo(x: { a: number }, y: any) {
           column: 6,
           data: {
             property: '[y += 1]',
-            type: '`any`',
           },
           endColumn: 12,
           line: 3,
@@ -283,7 +274,6 @@ function foo(x: { a: number }, y: any) {
           column: 5,
           data: {
             property: '[1 as any]',
-            type: '`any`',
           },
           endColumn: 13,
           line: 3,
@@ -302,7 +292,6 @@ function foo(x: { a: number }, y: any) {
           column: 5,
           data: {
             property: '[y()]',
-            type: '`any`',
           },
           endColumn: 8,
           line: 3,
@@ -321,7 +310,6 @@ function foo(x: string[], y: any) {
           column: 5,
           data: {
             property: '[y]',
-            type: '`any`',
           },
           endColumn: 6,
           line: 3,
@@ -340,11 +328,10 @@ function foo(x: { a: number }, y: NotKnown) {
           column: 5,
           data: {
             property: '[y]',
-            type: 'unresolved due to error',
           },
           endColumn: 6,
           line: 3,
-          messageId: 'unsafeComputedMemberAccess',
+          messageId: 'errorComputedMemberAccess',
         },
       ],
     },
@@ -425,7 +412,6 @@ value?.middle.inner;
           column: 15,
           data: {
             property: '.inner',
-            type: '`any`',
           },
           endColumn: 20,
           line: 4,
@@ -445,7 +431,6 @@ value?.outer.middle.inner;
           column: 14,
           data: {
             property: '.middle',
-            type: '`any`',
           },
           endColumn: 20,
           line: 4,
@@ -465,7 +450,6 @@ value.outer?.middle.inner;
           column: 7,
           data: {
             property: '.outer',
-            type: '`any`',
           },
           endColumn: 12,
           line: 4,
@@ -475,7 +459,6 @@ value.outer?.middle.inner;
           column: 21,
           data: {
             property: '.inner',
-            type: '`any`',
           },
           endColumn: 26,
           line: 4,
@@ -495,7 +478,6 @@ value.outer.middle?.inner;
           column: 7,
           data: {
             property: '.outer',
-            type: '`any`',
           },
           endColumn: 12,
           line: 4,
@@ -515,11 +497,10 @@ function foo(x: { a: number }, y: NotKnown) {
           column: 5,
           data: {
             property: '[y]',
-            type: 'unresolved due to error',
           },
           endColumn: 6,
           line: 3,
-          messageId: 'unsafeComputedMemberAccess',
+          messageId: 'errorComputedMemberAccess',
         },
       ],
       options: [{ allowOptionalChaining: true }],

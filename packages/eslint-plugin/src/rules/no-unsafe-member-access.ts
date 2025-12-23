@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -18,11 +17,6 @@ const enum State {
   Chained = 3,
 }
 
-function createDataType(type: ts.Type): '`any`' | 'unresolved due to error' {
-  const isErrorType = tsutils.isIntrinsicErrorType(type);
-  return isErrorType ? 'unresolved due to error' : '`any`';
-}
-
 export type Options = [
   {
     allowOptionalChaining?: boolean;
@@ -30,6 +24,9 @@ export type Options = [
 ];
 
 export type MessageIds =
+  | 'errorComputedMemberAccess'
+  | 'errorMemberExpression'
+  | 'errorThisMemberExpression'
   | 'unsafeComputedMemberAccess'
   | 'unsafeMemberExpression'
   | 'unsafeThisMemberExpression';
@@ -44,10 +41,18 @@ export default createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
+      errorComputedMemberAccess:
+        'The type of computed name {{property}} cannot be resolved.',
+      errorMemberExpression:
+        'Unsafe member access {{property}} on a type that cannot be resolved.',
+      errorThisMemberExpression: [
+        'Unsafe member access {{property}}. The type of `this` cannot be resolved.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
       unsafeComputedMemberAccess:
-        'Computed name {{property}} resolves to an {{type}} value.',
+        'Computed name {{property}} resolves to an `any` value.',
       unsafeMemberExpression:
-        'Unsafe member access {{property}} on an {{type}} value.',
+        'Unsafe member access {{property}} on an `any` value.',
       unsafeThisMemberExpression: [
         'Unsafe member access {{property}} on an `any` value. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
@@ -118,27 +123,34 @@ export default createRule<Options, MessageIds>({
       if (state === State.Unsafe) {
         const propertyName = context.sourceCode.getText(node.property);
 
-        let messageId: MessageIds = 'unsafeMemberExpression';
+        let messageId: MessageIds | undefined;
 
         if (!isNoImplicitThis) {
           // `this.foo` or `this.foo[bar]`
           const thisExpression = getThisExpression(node);
-
-          if (
-            thisExpression &&
-            isTypeAnyType(
-              getConstrainedTypeAtLocation(services, thisExpression),
-            )
-          ) {
-            messageId = 'unsafeThisMemberExpression';
+          if (thisExpression) {
+            const thisType = getConstrainedTypeAtLocation(
+              services,
+              thisExpression,
+            );
+            if (isTypeAnyType(thisType)) {
+              messageId = tsutils.isIntrinsicErrorType(thisType)
+                ? 'errorThisMemberExpression'
+                : 'unsafeThisMemberExpression';
+            }
           }
+        }
+
+        if (!messageId) {
+          messageId = tsutils.isIntrinsicErrorType(type)
+            ? 'errorMemberExpression'
+            : 'unsafeMemberExpression';
         }
 
         context.report({
           node: node.property,
           messageId,
           data: {
-            type: createDataType(type),
             property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
           },
         });
@@ -179,9 +191,10 @@ export default createRule<Options, MessageIds>({
           const propertyName = context.sourceCode.getText(node);
           context.report({
             node,
-            messageId: 'unsafeComputedMemberAccess',
+            messageId: tsutils.isIntrinsicErrorType(type)
+              ? 'errorComputedMemberAccess'
+              : 'unsafeComputedMemberAccess',
             data: {
-              type: createDataType(type),
               property: `[${propertyName}]`,
             },
           });
