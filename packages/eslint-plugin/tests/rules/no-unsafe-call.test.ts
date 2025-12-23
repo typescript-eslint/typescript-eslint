@@ -276,23 +276,6 @@ const methods = {
     },
     {
       code: `
-let value: NotKnown;
-value();
-      `,
-      errors: [
-        {
-          column: 1,
-          data: {
-            type: 'unresolved due to error',
-          },
-          endColumn: 6,
-          line: 3,
-          messageId: 'unsafeCall',
-        },
-      ],
-    },
-    {
-      code: `
 const t: Function = () => {};
 t();
       `,
@@ -419,6 +402,71 @@ unsafe();
           },
           line: 6,
           messageId: 'unsafeCall',
+        },
+      ],
+    },
+    {
+      code: `
+let value: NotKnown;
+value();
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          line: 3,
+          messageId: 'errorCall',
+        },
+      ],
+    },
+
+    {
+      code: `
+let value: NotKnown;
+value\`\`;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          line: 3,
+          messageId: 'errorTemplateTag',
+        },
+      ],
+    },
+    {
+      code: `
+let value: NotKnown;
+new value();
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          line: 3,
+          messageId: 'errorNew',
+        },
+      ],
+    },
+    {
+      code: `
+function callThis(this: NotKnown) {
+  this();
+  this.method();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 7,
+          line: 3,
+          messageId: 'errorCallThis',
+        },
+        {
+          column: 3,
+          endColumn: 14,
+          line: 4,
+          messageId: 'errorCallThis',
         },
       ],
     },
