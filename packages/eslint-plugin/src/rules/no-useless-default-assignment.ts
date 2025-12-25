@@ -32,7 +32,7 @@ export default createRule<[], MessageId>({
     fixable: 'code',
     messages: {
       preferOptionalSyntax:
-        'Using `= undefined` to make a parameter optional is unnecessary. Use the `?` optional syntax instead.',
+        'Using `= undefined` to make a parameter optional is verbose. Use the `?` optional syntax instead.',
       uselessDefaultAssignment:
         'Default value is useless because the {{ type }} is not optional.',
       uselessUndefined:
