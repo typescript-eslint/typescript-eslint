@@ -737,6 +737,11 @@ export interface RuleModule<
    * Metadata about the rule
    */
   meta: RuleMetaData<MessageIds, Docs, Options>;
+
+  /**
+   * Rule name
+   */
+  name?: string;
 }
 
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
