@@ -142,6 +142,10 @@ html[data-theme='dark'] .image-link::before {
   font-size: 0.8em;
 }
 
+aside nav ul code {
+  vertical-align: baseline;
+}
+
 .menu__list-item > .menu__version-item {
   color: var(--ifm-menu-color);
   line-height: 1.25;

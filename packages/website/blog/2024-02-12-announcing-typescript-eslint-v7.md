@@ -24,7 +24,7 @@ For most users this means that an upgrade from v6 should just look like this:
 npm i eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
-<!-- truncate -->
+<!--truncate-->
 
 ### Into the Future
 
