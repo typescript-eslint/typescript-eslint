@@ -1338,6 +1338,44 @@ describe('chain ending with comparison', () => {
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         output: `undefined !== foo?.bar?.baz;`,
       },
+      {
+        // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+        code: `
+          declare const foo: { bar: number | null } | undefined;
+          if (foo === undefined || foo.bar === null) {
+          }
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [], // This should not offer suggestions as it's not a true error
+          },
+        ],
+      },
+      {
+        code: `
+          declare const foo: { bar: number | null } | undefined;
+          if (foo.bar === null || foo === undefined) {
+          }
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: [] }],
+      },
+      {
+        code: `
+          declare const foo: { bar: number | null } | undefined;
+          if (undefined === foo || null === foo.bar) {
+          }
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: [] }],
+      },
+      {
+        code: `
+          declare const foo: { bar: { baz: number | null } } | undefined;
+          if (foo === undefined || foo.bar.baz === null) {
+          }
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: [] }],
+      },
     ],
     valid: [
       'foo && foo.bar == undeclaredVar;',
