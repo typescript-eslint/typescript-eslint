@@ -560,9 +560,12 @@ export default defineConfig(
       'perfectionist/sort-interfaces': [
         'error',
         {
-          customGroups: {
-            first: ['type'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: 'type',
+              groupName: 'first',
+            },
+          ],
           groups: ['first', 'unknown'],
         },
       ],
@@ -682,9 +685,12 @@ export default defineConfig(
       'perfectionist/sort-interfaces': [
         'error',
         {
-          customGroups: {
-            first: ['^type$'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: '^type$',
+              groupName: 'first',
+            },
+          ],
           groups: ['first', 'unknown'],
         },
       ],
@@ -700,12 +706,24 @@ export default defineConfig(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: {
-            first: ['^loc$', '^name$', '^node$', '^type$'],
-            fourth: ['^fix$'],
-            second: ['^meta$', '^messageId$', '^start$'],
-            third: ['^defaultOptions$', '^data$', '^end$'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: ['^loc$', '^name$', '^node$', '^type$'],
+              groupName: 'first',
+            },
+            {
+              elementNamePattern: ['^meta$', '^messageId$', '^start$'],
+              groupName: 'second',
+            },
+            {
+              elementNamePattern: ['^defaultOptions$', '^data$', '^end$'],
+              groupName: 'third',
+            },
+            {
+              elementNamePattern: '^fix$',
+              groupName: 'fourth',
+            },
+          ],
           groups: ['first', 'second', 'third', 'fourth', 'unknown'],
         },
       ],
@@ -718,7 +736,16 @@ export default defineConfig(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: { skip: ['^skip$'], top: ['^valid$'] },
+          customGroups: [
+            {
+              elementNamePattern: '^valid$',
+              groupName: 'top',
+            },
+            {
+              elementNamePattern: '^skip$',
+              groupName: 'skip',
+            },
+          ],
           groups: ['top', 'skip', 'unknown'],
         },
       ],
@@ -731,10 +758,16 @@ export default defineConfig(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: {
-            first: ['^type$'],
-            second: ['^loc$', '^range$'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: '^type$',
+              groupName: 'first',
+            },
+            {
+              elementNamePattern: ['^loc$', '^range$'],
+              groupName: 'second',
+            },
+          ],
           groups: ['first', 'second'],
         },
       ],
