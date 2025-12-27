@@ -59,6 +59,13 @@ export interface AnalyzeOptions {
    */
   sourceType?: SourceType;
 
+  /**
+   * Whether to resolve references to global `var`/function declarations when `sourceType` is `script`.
+   * Defaults to `false` (ESLint 9 behavior) to preserve support for the current eslint range (^8.57.0 || ^9.0.0).
+   * Set to `true` to opt into ESLint 10 behavior where such references are resolved out of `through`.
+   */
+  resolveGlobalVarsInScript?: boolean;
+
   // TODO - remove this in v10
   /**
    * @deprecated This option never did what it was intended for and will be removed in a future major release.
@@ -74,6 +81,8 @@ const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
   jsxFragmentName: null,
   jsxPragma: 'React',
   lib: ['es2018'],
+  // TODO(major): flip to true when ESLint 10 is within the supported range (see supported ESLint versions in project docs).
+  resolveGlobalVarsInScript: false,
   sourceType: 'script',
 };
 
@@ -99,6 +108,9 @@ export function analyze(
         ? DEFAULT_OPTIONS.jsxPragma
         : providedOptions.jsxPragma,
     lib: providedOptions?.lib ?? ['esnext'],
+    resolveGlobalVarsInScript:
+      providedOptions?.resolveGlobalVarsInScript ??
+      DEFAULT_OPTIONS.resolveGlobalVarsInScript,
     sourceType: providedOptions?.sourceType ?? DEFAULT_OPTIONS.sourceType,
   };
 
