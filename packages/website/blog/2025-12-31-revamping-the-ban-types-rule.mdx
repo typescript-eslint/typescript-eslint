@@ -36,7 +36,7 @@ This post will explain how `@typescript-eslint/ban-types` came to be, its benefi
 ## A Brief History of `ban-types`
 
 The first version of a _"ban types"_ lint rule came from [TSLint](https://palantir.github.io/tslint), a now-deprecated TypeScript-only linter predating typescript-eslint.
-[TSLint's `ban-type` rule](TODO) didn't ban any types by default.
+[TSLint's `ban-type` rule](http://palantir.github.io/tslint/rules/ban-types) didn't ban any types by default.
 It would only ban types explicitly declared in a project's linting config.
 
 When the rule was ported to `@typescript-eslint/ban-types`, it was changed to additionally lint against known dangerous built-in types by default.
