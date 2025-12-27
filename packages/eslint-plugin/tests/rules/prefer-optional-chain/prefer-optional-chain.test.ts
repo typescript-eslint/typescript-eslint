@@ -1338,6 +1338,11 @@ describe('chain ending with comparison', () => {
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         output: `undefined !== foo?.bar?.baz;`,
       },
+      {
+        code: noFormat`foo && (foo.bar == 0)`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar == 0',
+      },
     ],
     valid: [
       'foo && foo.bar == undeclaredVar;',
@@ -2856,6 +2861,26 @@ const baz = foo?.bar;
           },
         ],
         options: [{ checkString: false }],
+      },
+      {
+        code: noFormat`foo && (foo.bar)`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar',
+      },
+      {
+        code: noFormat`foo && (foo.bar && baz)`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar && baz',
+      },
+      {
+        code: noFormat`foo && (((foo.bar && baz)))`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar && baz',
+      },
+      {
+        code: noFormat`foo && (foo.bar && (foo.bar as any).baz)`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar && (foo.bar as any).baz',
       },
     ],
     valid: [
