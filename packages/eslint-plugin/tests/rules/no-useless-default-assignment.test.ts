@@ -520,5 +520,27 @@ ruleTester.run('no-useless-default-assignment', rule, {
         }
       `,
     },
+    {
+      code: `
+        type SomeType = number | undefined;
+        function f(
+          /* comment */ x /* comment 2 */ : /* comment 3 */ SomeType /* comment 4 */ = /* comment 5 */ undefined,
+        ) {}
+      `,
+      errors: [
+        {
+          column: 104,
+          endColumn: 113,
+          line: 4,
+          messageId: 'preferOptionalSyntax',
+        },
+      ],
+      output: `
+        type SomeType = number | undefined;
+        function f(
+          /* comment */ x? /* comment 2 */ : /* comment 3 */ SomeType,
+        ) {}
+      `,
+    },
   ],
 });
