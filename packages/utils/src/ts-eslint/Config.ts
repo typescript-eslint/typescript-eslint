@@ -44,6 +44,10 @@ export namespace SharedConfig {
      */
     name: string;
     /**
+     * The meta.namespace property should match what comes after eslint-plugin- in your package name.
+     */
+    namespace?: string;
+    /**
      * The meta.version property should match the npm package version for your plugin.
      */
     version: string;
