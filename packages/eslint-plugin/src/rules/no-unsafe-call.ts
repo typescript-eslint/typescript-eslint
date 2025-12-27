@@ -12,6 +12,10 @@ import {
 } from '../util';
 
 export type MessageIds =
+  | 'errorCall'
+  | 'errorCallThis'
+  | 'errorNew'
+  | 'errorTemplateTag'
   | 'unsafeCall'
   | 'unsafeCallThis'
   | 'unsafeNew'
@@ -27,13 +31,22 @@ export default createRule<[], MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeCall: 'Unsafe call of a(n) {{type}} typed value.',
-      unsafeCallThis: [
-        'Unsafe call of a(n) {{type}} typed value. `this` is typed as {{type}}.',
+      errorCall: 'Unsafe call of a type that could not be resolved.',
+      errorCallThis: [
+        'Unsafe call of a `this` type that could not be resolved.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
-      unsafeNew: 'Unsafe construction of a(n) {{type}} typed value.',
-      unsafeTemplateTag: 'Unsafe use of a(n) {{type}} typed template tag.',
+      errorNew: 'Unsafe construction of a type that could not be resolved.',
+      errorTemplateTag:
+        'Unsafe use of a template tag whose type could not be resolved.',
+      unsafeCall: 'Unsafe call of {{article}} {{type}} typed value.',
+      unsafeCallThis: [
+        'Unsafe call of {{article}} {{type}} typed value. `this` is typed as {{type}}.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
+      unsafeNew: 'Unsafe construction of {{article}} {{type}} typed value.',
+      unsafeTemplateTag:
+        'Unsafe use of {{article}} {{type}} typed template tag.',
     },
     schema: [],
   },
@@ -49,7 +62,8 @@ export default createRule<[], MessageIds>({
     function checkCall(
       node: TSESTree.Node,
       reportingNode: TSESTree.Node,
-      messageId: MessageIds,
+      unsafeMessageId: Extract<MessageIds, `unsafe${string}`>,
+      errorMessageId: Extract<MessageIds, `error${string}`>,
     ): void {
       const type = getConstrainedTypeAtLocation(services, node);
 
@@ -63,7 +77,8 @@ export default createRule<[], MessageIds>({
               getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
-            messageId = 'unsafeCallThis';
+            unsafeMessageId = 'unsafeCallThis';
+            errorMessageId = 'errorCallThis';
           }
         }
 
@@ -71,9 +86,10 @@ export default createRule<[], MessageIds>({
 
         context.report({
           node: reportingNode,
-          messageId,
+          messageId: isErrorType ? errorMessageId : unsafeMessageId,
           data: {
-            type: isErrorType ? '`error` type' : '`any`',
+            type: '`any`',
+            article: 'an',
           },
         });
         return;
@@ -98,7 +114,7 @@ export default createRule<[], MessageIds>({
         }
 
         const callSignatures = type.getCallSignatures();
-        if (messageId === 'unsafeNew') {
+        if (unsafeMessageId === 'unsafeNew') {
           if (
             callSignatures.some(
               signature =>
@@ -113,9 +129,10 @@ export default createRule<[], MessageIds>({
 
         context.report({
           node: reportingNode,
-          messageId,
+          messageId: unsafeMessageId,
           data: {
             type: '`Function`',
+            article: 'a',
           },
         });
         return;
@@ -126,13 +143,13 @@ export default createRule<[], MessageIds>({
       'CallExpression > *.callee'(
         node: TSESTree.CallExpression['callee'],
       ): void {
-        checkCall(node, node, 'unsafeCall');
+        checkCall(node, node, 'unsafeCall', 'errorCall');
       },
       NewExpression(node): void {
-        checkCall(node.callee, node, 'unsafeNew');
+        checkCall(node.callee, node, 'unsafeNew', 'errorNew');
       },
       'TaggedTemplateExpression > *.tag'(node: TSESTree.Node): void {
-        checkCall(node, node, 'unsafeTemplateTag');
+        checkCall(node, node, 'unsafeTemplateTag', 'errorTemplateTag');
       },
     };
   },
