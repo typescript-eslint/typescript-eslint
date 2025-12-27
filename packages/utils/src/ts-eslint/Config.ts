@@ -44,7 +44,10 @@ export namespace SharedConfig {
      */
     name: string;
     /**
-     * The meta.namespace property should match what comes after eslint-plugin- in your package name.
+     * If you followed the classic style to name your package
+     * (e.g. `eslint-plugin-X`, `@X/eslint-plugin`, or `@X/eslint-plugin-Y`),
+     * then this should match the classic namespace inferred for your package
+     * (e.g. `X`, `@X`, or `@X/Y`, respectively).
      */
     namespace?: string;
     /**
