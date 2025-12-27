@@ -568,8 +568,7 @@ export default createRule<Options, MessageIds>({
         }
 
         if (
-          !assignmentExpression ||
-          assignmentExpression.type !== AST_NODE_TYPES.AssignmentExpression ||
+          assignmentExpression?.type !== AST_NODE_TYPES.AssignmentExpression ||
           !isMemberAccessLike(assignmentExpression.left)
         ) {
           return;

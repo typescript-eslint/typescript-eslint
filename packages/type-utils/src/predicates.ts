@@ -129,7 +129,7 @@ export function typeIsOrHasBaseType(
 
   for (const baseType of typeAndBaseTypes) {
     const baseSymbol = baseType.getSymbol();
-    if (baseSymbol && baseSymbol.name === parentSymbol.name) {
+    if (baseSymbol?.name === parentSymbol.name) {
       return true;
     }
   }

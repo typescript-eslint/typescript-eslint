@@ -271,9 +271,8 @@ export default createRule<Options, MessageIds>({
         // Node.js or ES modules has a special scope.
         if (
           scope.type === ScopeType.global &&
-          scope.childScopes[0] &&
           // The special scope's block is the Program node.
-          scope.block === scope.childScopes[0].block
+          scope.block === scope.childScopes[0]?.block
         ) {
           findVariablesInScope(scope.childScopes[0]);
         }

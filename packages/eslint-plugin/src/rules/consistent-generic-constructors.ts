@@ -96,8 +96,7 @@ export default createRule<Options, MessageIds>({
         const lhs = lhsName.typeAnnotation?.typeAnnotation;
 
         if (
-          !rhs ||
-          rhs.type !== AST_NODE_TYPES.NewExpression ||
+          rhs?.type !== AST_NODE_TYPES.NewExpression ||
           rhs.callee.type !== AST_NODE_TYPES.Identifier
         ) {
           return;

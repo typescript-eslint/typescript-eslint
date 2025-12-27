@@ -315,7 +315,7 @@ abstract class ThisScope extends Visitor {
           // ```
           case AST_NODE_TYPES.VariableDeclarator: {
             const value = firstDef.node.init;
-            if (value == null || value.type !== AST_NODE_TYPES.ThisExpression) {
+            if (value?.type !== AST_NODE_TYPES.ThisExpression) {
               return null;
             }
 
