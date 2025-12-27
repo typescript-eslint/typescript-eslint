@@ -112,7 +112,7 @@ function foo2(): unknown[] {
 
 ## Limitations
 
-`@typescript-eslint/no-unsafe-return` only checks for `any`, `any[]`, and -only in `async` functions- `Promise<any>`.
+`@typescript-eslint/no-unsafe-return` only checks for unsafely returning `any`, `any[]`, and (specifically in `async` functions) `Promise<any>`.
 It will not detect `any` in type parameters for generic constructs.
 If you want to enforce safety around those `any`s, see the related `no-unsafe-*` rules for checking usage.
 
