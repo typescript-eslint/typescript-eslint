@@ -74,8 +74,11 @@ describe('config helper', () => {
           rules: { rule: 'error' },
         },
         {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          extends: [undefined as any, extension, undefined as any],
+          extends: [
+            undefined as unknown as TSESLint.FlatConfig.Config,
+            extension,
+            undefined as unknown as TSESLint.FlatConfig.Config,
+          ],
           files: ['common-file'],
           ignores: ['common-ignored'],
           name: 'my-config-2',
@@ -101,8 +104,11 @@ describe('config helper', () => {
           rules: { rule: 'error' },
         },
         {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          extends: [undefined as any, extension, undefined as any],
+          extends: [
+            undefined as unknown as TSESLint.FlatConfig.Config,
+            extension,
+            undefined as unknown as TSESLint.FlatConfig.Config,
+          ],
           files: ['common-file'],
           ignores: ['common-ignored'],
           rules: { rule: 'error' },

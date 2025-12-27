@@ -185,18 +185,20 @@ export function getTypescriptJsonSchema(): JSONSchema4 {
           type: 'boolean',
         };
       } else if (item.type === 'list' && item.element?.type instanceof Map) {
+        const enumValues = [...item.element.type.keys()].map(String);
         value = {
           description: item.description.message,
           items: {
-            enum: [...item.element.type.keys()],
+            enum: enumValues,
             type: 'string',
           },
           type: 'array',
         };
       } else if (item.type instanceof Map) {
+        const enumValues = [...item.type.keys()].map(String);
         value = {
           description: item.description.message,
-          enum: [...item.type.keys()],
+          enum: enumValues,
           type: 'string',
         };
       }

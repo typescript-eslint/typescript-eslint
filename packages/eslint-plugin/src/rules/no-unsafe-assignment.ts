@@ -302,6 +302,14 @@ export default createRule({
         return false;
       }
 
+      if (
+        result.deep &&
+        comparisonType === ComparisonType.Basic &&
+        senderNode.type === AST_NODE_TYPES.ObjectExpression
+      ) {
+        return false;
+      }
+
       const { receiver, sender } = result;
       context.report({
         node: reportingNode,

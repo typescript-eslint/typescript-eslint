@@ -47,8 +47,9 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
               type: 'boolean',
             });
           } else if (item.type instanceof Map) {
+            const enumValues = ['', ...[...item.type.keys()].map(String)];
             group[category].fields.push({
-              enum: ['', ...item.type.keys()],
+              enum: enumValues,
               key: item.name,
               label: item.description.message,
               type: 'string',
