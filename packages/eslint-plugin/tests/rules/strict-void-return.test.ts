@@ -1,18 +1,9 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/strict-void-return';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootDir = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('strict-void-return', rule, {
   valid: [
@@ -639,6 +630,15 @@ ruleTester.run('strict-void-return', rule, {
         declare function cb(): string;
         const foo: Record<string, () => void> = {
           ...cb,
+        };
+      `,
+    },
+    {
+      code: `
+        declare function cb(): string;
+        const foo: Record<string, () => void> = {
+          ...cb,
+          ...{},
         };
       `,
     },
