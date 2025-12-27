@@ -277,20 +277,16 @@ export default createRule<[], MessageId>({
       context.report({
         node: node.right,
         messageId: 'preferOptionalSyntax',
-        fix: fixer => {
-          const fixes = [removeDefault(fixer, node)];
+        *fix(fixer) {
+          yield removeDefault(fixer, node);
 
           const { left } = node;
           if (left.type === AST_NODE_TYPES.Identifier) {
-            fixes.push(
-              fixer.insertTextAfterRange(
-                [left.range[0], left.range[0] + left.name.length],
-                '?',
-              ),
+            yield fixer.insertTextAfterRange(
+              [left.range[0], left.range[0] + left.name.length],
+              '?',
             );
           }
-
-          return fixes;
         },
       });
     }
