@@ -44,6 +44,13 @@ export namespace SharedConfig {
      */
     name: string;
     /**
+     * If you followed the classic style to name your package
+     * (e.g. `eslint-plugin-X`, `@X/eslint-plugin`, or `@X/eslint-plugin-Y`),
+     * then this should match the classic namespace inferred for your package
+     * (e.g. `X`, `@X`, or `@X/Y`, respectively).
+     */
+    namespace?: string;
+    /**
      * The meta.version property should match the npm package version for your plugin.
      */
     version: string;
