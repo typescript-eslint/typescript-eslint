@@ -70,6 +70,30 @@ function toStaticValue(
   return undefined;
 }
 
+function typeContainsAnyOrUnknown(type: ts.Type): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .some(part => isTypeAnyType(part) || isTypeUnknownType(part));
+}
+
+function isArrayIsArrayCall(node: TSESTree.CallExpression): boolean {
+  if (node.callee.type !== AST_NODE_TYPES.MemberExpression) {
+    return false;
+  }
+
+  const memberExpr = node.callee;
+  if (memberExpr.computed || memberExpr.optional) {
+    return false;
+  }
+
+  return (
+    memberExpr.object.type === AST_NODE_TYPES.Identifier &&
+    memberExpr.object.name === 'Array' &&
+    memberExpr.property.type === AST_NODE_TYPES.Identifier &&
+    memberExpr.property.name === 'isArray'
+  );
+}
+
 const BOOL_OPERATORS = new Set([
   '<',
   '>',
@@ -607,6 +631,21 @@ export default createRule<Options, MessageId>({
                 typeGuardOrAssertionFunction: typeGuardAssertedArgument.asserts
                   ? 'assertion function'
                   : 'type guard',
+              },
+            });
+          } else if (
+            isArrayIsArrayCall(node) &&
+            !typeContainsAnyOrUnknown(typeOfArgument) &&
+            checker.isTypeAssignableTo(
+              typeOfArgument,
+              typeGuardAssertedArgument.type,
+            )
+          ) {
+            context.report({
+              node: typeGuardAssertedArgument.argument,
+              messageId: 'typeGuardAlreadyIsType',
+              data: {
+                typeGuardOrAssertionFunction: 'type guard',
               },
             });
           }
