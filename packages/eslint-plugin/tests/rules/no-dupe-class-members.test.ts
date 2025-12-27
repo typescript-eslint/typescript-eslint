@@ -146,7 +146,7 @@ class A {
 }
       `,
       errors: [
-        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        { column: 10, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -157,7 +157,7 @@ class A {
 }
       `,
       errors: [
-        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        { column: 7, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
