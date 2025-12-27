@@ -3,7 +3,7 @@ import type {
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
 
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
 
 import type {
@@ -12,18 +12,10 @@ import type {
 } from '../../src/rules/prefer-nullish-coalescing';
 
 import rule from '../../src/rules/prefer-nullish-coalescing';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
-const rootPath = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
-});
+const rootDir = getFixturesRootDir();
+const ruleTester = createRuleTesterWithTypes();
 
 const types = ['string', 'number', 'boolean', 'object'];
 const nullishTypes = ['null', 'undefined', 'null | undefined'];
@@ -1244,32 +1236,6 @@ let b: string | boolean | undefined;
 let c: string | boolean | undefined;
 
 const test = Boolean(((a = b), b || c));
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | true | undefined;
-let b: string | boolean | undefined;
-
-const x = Boolean(a ? a : b);
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-
-const test = Boolean(!a ? b : a);
       `,
       options: [
         {
@@ -2521,7 +2487,7 @@ if (x) {
       ],
       languageOptions: {
         parserOptions: {
-          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+          tsconfigRootDir: path.join(rootDir, 'unstrict'),
         },
       },
       output: null,
@@ -5073,6 +5039,64 @@ let a: string | true | undefined;
 let b: string | boolean | undefined;
 
 const x = Boolean(1 + (a ?? b));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a ? a : b);
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a ?? b);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+
+const test = Boolean(!a ? b : a);
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+
+const test = Boolean(a ?? b);
       `,
             },
           ],

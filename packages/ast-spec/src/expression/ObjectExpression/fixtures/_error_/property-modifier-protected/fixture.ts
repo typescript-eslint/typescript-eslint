@@ -1,0 +1,1 @@
+({protected property: 1})

@@ -2,6 +2,8 @@ import type { TSESLint } from '@typescript-eslint/utils';
 
 import tseslint from '../src/index.js';
 
+/* eslint @typescript-eslint/no-deprecated: ["error", { "allow": [{ "from": "file", "name": "config", "path": "packages/typescript-eslint/src/config-helper.ts" }] }] */
+
 describe('config helper', () => {
   it('works without extends', () => {
     expect(
@@ -80,7 +82,7 @@ describe('config helper', () => {
           rules: { rule: 'error' },
         },
       );
-    }).toThrow(
+    }).toThrowError(
       'tseslint.config(): Config at index 1, named "my-config-2", contains non-object ' +
         'extensions at the following indices: 0, 2',
     );
@@ -106,7 +108,7 @@ describe('config helper', () => {
           rules: { rule: 'error' },
         },
       );
-    }).toThrow(
+    }).toThrowError(
       'tseslint.config(): Config at index 1 (anonymous) contains non-object extensions at ' +
         'the following indices: 0, 2',
     );
@@ -323,7 +325,7 @@ describe('config helper', () => {
         // @ts-expect-error purposely testing invalid values
         extends: 42,
       });
-    }).toThrow(
+    }).toThrowError(
       "tseslint.config(): Config at index 0 (anonymous) has an 'extends' property that is not an array.",
     );
   });
@@ -346,7 +348,7 @@ describe('config helper', () => {
         // @ts-expect-error purposely testing invalid values
         extends: ['some-string'],
       });
-    }).toThrow(
+    }).toThrowError(
       'tseslint.config(): Config at index 0 (anonymous) has an \'extends\' array that contains a string ("some-string") at index 0. ' +
         "This is a feature of eslint's `defineConfig()` helper and is not supported by typescript-eslint. " +
         'Please provide a config object instead.',
@@ -370,8 +372,65 @@ describe('config helper', () => {
         // @ts-expect-error purposely testing invalid values
         name: 42,
       });
-    }).toThrow(
+    }).toThrowError(
       "tseslint.config(): Config at index 0 has a 'name' property that is not a string.",
     );
+  });
+
+  it('basePath works with unextended config', () => {
+    expect(
+      tseslint.config({
+        basePath: 'base/path',
+        rules: { rule1: 'error' },
+      }),
+    ).toStrictEqual([
+      {
+        basePath: 'base/path',
+        rules: { rule1: 'error' },
+      },
+    ]);
+  });
+
+  it('basePath works with extended config', () => {
+    expect(
+      tseslint.config({
+        basePath: 'base/path',
+        extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+      }),
+    ).toStrictEqual([
+      {
+        basePath: 'base/path',
+        rules: { rule1: 'error' },
+      },
+      {
+        basePath: 'base/path',
+        rules: { rule2: 'error' },
+      },
+    ]);
+  });
+
+  it('basePath cannot be used in an extension', () => {
+    expect(() => {
+      tseslint.config({
+        extends: [{ basePath: 'base/path', rules: { rule1: 'error' } }],
+      });
+    }).toThrowError(
+      "tseslint.config(): Config at index 0 (anonymous) has an 'extends' array that contains a config with a 'basePath' property at index 0. 'basePath' in 'extends' is not allowed.",
+    );
+  });
+
+  it('should error when trying to use nested extends', () => {
+    expect(() => {
+      tseslint.config({
+        extends: [
+          {
+            extends: [
+              { rules: { rule1: 'error' } },
+              { rules: { rule2: 'error' } },
+            ],
+          },
+        ],
+      });
+    }).toThrowError();
   });
 });

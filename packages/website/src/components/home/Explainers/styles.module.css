@@ -1,0 +1,56 @@
+.explainers {
+  --ifm-button-size-multiplier: 1.3;
+
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+}
+
+.explainerTexts {
+  font-size: 1.1rem;
+  margin: 1rem 2rem;
+  text-align: left;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.explainerTexts p {
+  margin: 0;
+}
+
+.explainerSpotlights {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2rem auto 2.5rem;
+}
+
+.buttons {
+  margin: 1rem auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (width >= 996px) {
+  .explainers {
+    margin-bottom: 2rem;
+  }
+
+  .explainerSpotlights {
+    flex-direction: row;
+    max-width: var(--ifm-container-width);
+  }
+
+  .explainerTexts {
+    margin: 0.5rem 2rem 2rem;
+    text-align: center;
+  }
+
+  .buttons {
+    flex-direction: row;
+    gap: 2rem;
+  }
+}

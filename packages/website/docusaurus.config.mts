@@ -351,8 +351,7 @@ const redirects: PluginRedirectOptions = {
 
 const config: Config = {
   baseUrl: '/',
-  tagline:
-    'The tooling that enables ESLint and Prettier to support TypeScript.',
+  tagline: 'Powerful static analysis for JavaScript and TypeScript.',
   title: 'typescript-eslint',
   url: 'https://typescript-eslint.io',
 
@@ -368,32 +367,35 @@ const config: Config = {
   onBrokenMarkdownLinks: 'throw',
   organizationName: 'typescript-eslint',
   plugins: [
-    ...['ast-spec', 'project-service', 'tsconfig-utils', 'type-utils'].map(
-      packageName => [
-        'docusaurus-plugin-typedoc',
-        {
-          entryPoints: [`../${packageName}/src/index.ts`],
-          enumMembersFormat: 'table',
-          exclude: '**/*.d.ts',
-          excludeExternals: true,
-          groupOrder: ['Functions', 'Variables', '*'],
-          hidePageTitle: true,
-          id: `typedoc-generated-${packageName}`,
-          indexFormat: 'table',
-          out: `../../docs/packages/${packageName}/generated`,
-          outputFileStrategy: 'modules',
-          parametersFormat: 'table',
-          plugin: [
-            require.resolve('./tools/typedoc-plugin-no-inherit-fork.mjs'),
-          ],
-          propertiesFormat: 'table',
-          readme: 'none',
-          tsconfig: `../${packageName}/tsconfig.json`,
-          typeDeclarationFormat: 'table',
-          useCodeBlocks: true,
-        },
-      ],
-    ),
+    './plugins/recent-blog-posts/index.ts',
+    ...[
+      'ast-spec',
+      'project-service',
+      'rule-schema-to-typescript-types',
+      'tsconfig-utils',
+      'type-utils',
+    ].map(packageName => [
+      'docusaurus-plugin-typedoc',
+      {
+        entryPoints: [`../${packageName}/src/index.ts`],
+        enumMembersFormat: 'table',
+        exclude: '**/*.d.ts',
+        excludeExternals: true,
+        groupOrder: ['Functions', 'Variables', '*'],
+        hidePageTitle: true,
+        id: `typedoc-generated-${packageName}`,
+        indexFormat: 'table',
+        out: `../../docs/packages/${packageName}/generated`,
+        outputFileStrategy: 'modules',
+        parametersFormat: 'table',
+        plugin: [require.resolve('./tools/typedoc-plugin-no-inherit-fork.mjs')],
+        propertiesFormat: 'table',
+        readme: 'none',
+        tsconfig: `../${packageName}/tsconfig.json`,
+        typeDeclarationFormat: 'table',
+        useCodeBlocks: true,
+      },
+    ]),
     require.resolve('./webpack.plugin'),
     ['@docusaurus/plugin-content-docs', pluginContentDocsOptions],
     ['@docusaurus/plugin-pwa', pluginPwaOptions],

@@ -25,6 +25,11 @@ export interface RuleMetaDataDocs {
    * The URL of the rule's docs.
    */
   url?: string;
+
+  /**
+   * Mark this rule as feature-frozen.
+   */
+  frozen?: boolean;
 }
 
 export interface ExternalSpecifier {
@@ -133,7 +138,7 @@ export interface RuleMetaData<
   /**
    * Specifies default options for the rule. If present, any user-provided options in their config will be merged on top of them recursively.
    * This merging will be applied directly to `context.options`.
-   * If you want backwards-compatible support for earlier ESLint version; consider using the top-level `defaultOptions` instead.
+   * If you want backwards-compatible support for earlier ESLint version, consider using the top-level `defaultOptions` instead.
    *
    * since ESLint 9.15.0
    */
@@ -183,8 +188,9 @@ export interface RuleFixer {
   replaceTextRange(range: Readonly<AST.Range>, text: string): RuleFix;
 }
 
-export interface SuggestionReportDescriptor<MessageIds extends string>
-  extends Omit<ReportDescriptorBase<MessageIds>, 'fix'> {
+export interface SuggestionReportDescriptor<
+  MessageIds extends string,
+> extends Omit<ReportDescriptorBase<MessageIds>, 'fix'> {
   readonly fix: ReportFixFunction;
 }
 
@@ -214,8 +220,9 @@ interface ReportDescriptorBase<MessageIds extends string> {
   // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
   // readonly desc?: string;
 }
-interface ReportDescriptorWithSuggestion<MessageIds extends string>
-  extends ReportDescriptorBase<MessageIds> {
+interface ReportDescriptorWithSuggestion<
+  MessageIds extends string,
+> extends ReportDescriptorBase<MessageIds> {
   /**
    * 6.7's Suggestions API
    */
@@ -730,6 +737,11 @@ export interface RuleModule<
    * Metadata about the rule
    */
   meta: RuleMetaData<MessageIds, Docs, Options>;
+
+  /**
+   * Rule name
+   */
+  name?: string;
 }
 
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;

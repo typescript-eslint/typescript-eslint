@@ -1,18 +1,7 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import rule from '../../src/rules/no-unnecessary-type-conversion';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootDir = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-type-conversion', rule, {
   valid: [
@@ -29,6 +18,10 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
     "Number('2');",
     "+'2';",
     "~~'2';",
+    '~~1.1;',
+    '~~-1.1;',
+    '~~(1.5 + 2.3);',
+    '~~(1 / 3);',
     'Boolean(0);',
     '!!0;',
     'BigInt(3);',
@@ -93,6 +86,14 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
     '~~new Number();',
     'Boolean(new Boolean());',
     '!!new Boolean();',
+    `
+      enum CustomIds {
+        Id1 = 'id1',
+        Id2 = 'id2',
+      }
+      const customId = 'id1';
+      const compareWithToString = customId === CustomIds.Id1.toString();
+    `,
   ],
 
   invalid: [
@@ -579,26 +580,6 @@ let str = 'asdf';
       ],
     },
     {
-      code: '2 * ~~(2 + 2);',
-      errors: [
-        {
-          column: 5,
-          endColumn: 7,
-          messageId: 'unnecessaryTypeConversion',
-          suggestions: [
-            {
-              messageId: 'suggestRemove',
-              output: '2 * (2 + 2);',
-            },
-            {
-              messageId: 'suggestSatisfies',
-              output: '2 * ((2 + 2) satisfies number);',
-            },
-          ],
-        },
-      ],
-    },
-    {
       code: 'false && !!(false || true);',
       errors: [
         {
@@ -714,6 +695,76 @@ let str = 'asdf';
               output: `
         let str = 'asdf';
         (str satisfies string).length;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '~~1;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: '1;',
+            },
+            {
+              messageId: 'suggestSatisfies',
+              output: '1 satisfies number;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '~~-1;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: '(-1);',
+            },
+            {
+              messageId: 'suggestSatisfies',
+              output: '(-1) satisfies number;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare const threeOrFour: 3 | 4;
+        ~~threeOrFour;
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 11,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'suggestRemove',
+              output: `
+        declare const threeOrFour: 3 | 4;
+        threeOrFour;
+      `,
+            },
+            {
+              messageId: 'suggestSatisfies',
+              output: `
+        declare const threeOrFour: 3 | 4;
+        threeOrFour satisfies number;
       `,
             },
           ],

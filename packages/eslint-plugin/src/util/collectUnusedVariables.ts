@@ -141,12 +141,10 @@ class UnusedVarsVisitor extends Visitor {
   }
 
   protected TSParameterProperty(node: TSESTree.TSParameterProperty): void {
-    let identifier: TSESTree.Identifier | null = null;
+    let identifier: TSESTree.Identifier;
     switch (node.parameter.type) {
       case AST_NODE_TYPES.AssignmentPattern:
-        if (node.parameter.left.type === AST_NODE_TYPES.Identifier) {
-          identifier = node.parameter.left;
-        }
+        identifier = node.parameter.left as TSESTree.Identifier;
         break;
 
       case AST_NODE_TYPES.Identifier:
@@ -154,9 +152,7 @@ class UnusedVarsVisitor extends Visitor {
         break;
     }
 
-    if (identifier) {
-      this.markVariableAsUsed(identifier);
-    }
+    this.markVariableAsUsed(identifier);
   }
 
   private collectUnusedVariables(
@@ -188,7 +184,7 @@ class UnusedVarsVisitor extends Visitor {
           // basic exported variables
           isExported(variable) ||
           // variables implicitly exported via a merged declaration
-          isMergableExported(variable) ||
+          isMergeableExported(variable) ||
           // used variables
           isUsedVariable(variable)
         ) {
@@ -415,7 +411,7 @@ function isSelfReference(
   return false;
 }
 
-const MERGABLE_TYPES = new Set([
+const MERGEABLE_TYPES = new Set([
   AST_NODE_TYPES.ClassDeclaration,
   AST_NODE_TYPES.FunctionDeclaration,
   AST_NODE_TYPES.TSInterfaceDeclaration,
@@ -426,7 +422,7 @@ const MERGABLE_TYPES = new Set([
  * Determine if the variable is directly exported
  * @param variable the variable to check
  */
-function isMergableExported(variable: ScopeVariable): boolean {
+function isMergeableExported(variable: ScopeVariable): boolean {
   // If all of the merged things are of the same type, TS will error if not all of them are exported - so we only need to find one
   for (const def of variable.defs) {
     // parameters can never be exported.
@@ -437,9 +433,9 @@ function isMergableExported(variable: ScopeVariable): boolean {
     }
 
     if (
-      (MERGABLE_TYPES.has(def.node.type) &&
-        def.node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
-      def.node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration
+      (MERGEABLE_TYPES.has(def.node.type) &&
+        def.node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
+      def.node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
     ) {
       return true;
     }
@@ -458,14 +454,12 @@ function isExported(variable: ScopeVariable): boolean {
     let node = definition.node;
 
     if (node.type === AST_NODE_TYPES.VariableDeclarator) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      node = node.parent!;
+      node = node.parent;
     } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
       return false;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return node.parent!.type.startsWith('Export');
+    return node.parent.type.startsWith('Export');
   });
 }
 

@@ -4,15 +4,6 @@
   "include": [],
   "references": [
     {
-      "path": "../utils"
-    },
-    {
-      "path": "../parser"
-    },
-    {
-      "path": "../eslint-plugin"
-    },
-    {
       "path": "./tsconfig.build.json"
     },
     {

@@ -3,6 +3,14 @@
   "compilerOptions": {
     "outDir": "../../dist/packages/ast-spec"
   },
+  "include": [
+    "tests",
+    "typings",
+    "**/fixtures/**/config.ts",
+    "vitest.config.mts",
+    "package.json"
+  ],
+  "exclude": ["**/fixtures/**/fixture.ts"],
   "references": [
     {
       "path": "../typescript-estree/tsconfig.build.json"

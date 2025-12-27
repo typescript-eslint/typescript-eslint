@@ -1,5 +1,4 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-array-constructor';
 
@@ -39,7 +38,6 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.NewExpression,
         },
       ],
       output: '[];',
@@ -49,7 +47,6 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.CallExpression,
         },
       ],
       output: '[];',
@@ -59,7 +56,6 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.CallExpression,
         },
       ],
       output: '[];',
@@ -69,7 +65,6 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.CallExpression,
         },
       ],
       output: '/* a */ /* b */ []; /* g */ /* h */',
@@ -79,7 +74,6 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.NewExpression,
         },
       ],
       output: '[x, y];',
@@ -89,7 +83,6 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.CallExpression,
         },
       ],
       output: '[x, y];',
@@ -99,7 +92,6 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.CallExpression,
         },
       ],
       output: '[x, y];',
@@ -109,7 +101,6 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.CallExpression,
         },
       ],
       output: '/* a */ /* b */ [x, y]; /* g */ /* h */',
@@ -119,7 +110,6 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.NewExpression,
         },
       ],
       output: '[0, 1, 2];',
@@ -129,7 +119,6 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.CallExpression,
         },
       ],
       output: '[0, 1, 2];',
@@ -139,7 +128,6 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.CallExpression,
         },
       ],
       output: '[0, 1, 2];',
@@ -155,7 +143,6 @@ ruleTester.run('no-array-constructor', rule, {
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.CallExpression,
         },
       ],
       output: `
@@ -173,7 +160,6 @@ new Array(0, 1, 2);
       errors: [
         {
           messageId: 'useLiteral',
-          type: AST_NODE_TYPES.NewExpression,
         },
       ],
       output: `

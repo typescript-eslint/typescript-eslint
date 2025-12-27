@@ -194,10 +194,7 @@ declare module './generated/ast-spec' {
     parent: TSESTree.TSEnumDeclaration;
   }
 
-  interface TSEnumMemberComputedName {
-    parent: TSESTree.TSEnumBody;
-  }
-  interface TSEnumMemberNonComputedName {
+  interface TSEnumMember {
     parent: TSESTree.TSEnumBody;
   }
 
@@ -254,3 +251,4 @@ declare module './generated/ast-spec' {
 }
 
 export * as TSESTree from './generated/ast-spec';
+export type NodeWithParent = Exclude<TSESTree.Node, TSESTree.Program>;

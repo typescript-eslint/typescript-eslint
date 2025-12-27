@@ -1,4 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > empty-type-parameters-in-arrow-function > TSESTree - Error`]
-NO ERROR
+TSError
+> 1 | const arrowFunction = < /* empty */ >() => {};
+    |                                     ^ Type expected.
+  2 |

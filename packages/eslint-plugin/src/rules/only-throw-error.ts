@@ -143,13 +143,6 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkThrowArgument(node: TSESTree.Node): void {
-      if (
-        node.type === AST_NODE_TYPES.AwaitExpression ||
-        node.type === AST_NODE_TYPES.YieldExpression
-      ) {
-        return;
-      }
-
       if (options.allowRethrowing && isRethrownError(node)) {
         return;
       }

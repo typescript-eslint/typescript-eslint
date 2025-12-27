@@ -93,7 +93,10 @@ export class Referencer extends Visitor {
   public currentScope(throwOnNull: true): Scope | null;
   public currentScope(dontThrowOnNull?: true): Scope | null {
     if (!dontThrowOnNull) {
-      assert(this.scopeManager.currentScope, 'aaa');
+      assert(
+        this.scopeManager.currentScope,
+        'Expected currentScope to exist. This usually happens when analyze() is called with an incomplete AST node instead of a complete Program node.',
+      );
     }
     return this.scopeManager.currentScope;
   }
@@ -668,10 +671,7 @@ export class Referencer extends Visitor {
           name,
           new TSEnumMemberDefinition(name, member),
         );
-      } else if (
-        !member.computed &&
-        member.id.type === AST_NODE_TYPES.Identifier
-      ) {
+      } else if (member.id.type === AST_NODE_TYPES.Identifier) {
         this.currentScope().defineIdentifier(
           member.id,
           new TSEnumMemberDefinition(member.id, member),

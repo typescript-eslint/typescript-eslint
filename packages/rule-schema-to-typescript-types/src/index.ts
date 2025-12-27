@@ -1,39 +1,34 @@
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import { TSUtils } from '@typescript-eslint/utils';
-import prettier from 'prettier';
 
-import type { AST } from './types';
+import type { SchemaAST } from './types.js';
 
-import { generateType } from './generateType';
-import { optimizeAST } from './optimizeAST';
-import { printTypeAlias } from './printAST';
+import { generateType } from './generateType.js';
+import { optimizeAST } from './optimizeAST.js';
+import { printTypeAlias } from './printAST.js';
 
-export async function compile(
-  schemaIn: JSONSchema4 | readonly JSONSchema4[],
-  prettierConfig: Promise<prettier.Options>,
-): Promise<string> {
-  const { isArraySchema, schema } = (() => {
-    if (TSUtils.isArray(schemaIn)) {
-      return {
-        isArraySchema: true,
-        schema: schemaIn,
-      };
-    }
-    return {
-      isArraySchema: false,
-      schema: [schemaIn],
-    };
-  })();
+/**
+ * Converts rule options schema(s) to the equivalent TypeScript type string.
+ *
+ * @param schema Original rule schema(s) as declared in `meta.schema`.
+ * @returns Stringified TypeScript type(s) equivalent to the options schema(s).
+ */
+export function schemaToTypes(
+  schema: JSONSchema4 | readonly JSONSchema4[],
+): string {
+  const [isArraySchema, schemaNormalized] = TSUtils.isArray(schema)
+    ? [true, schema]
+    : [false, [schema]];
 
-  if (schema.length === 0) {
+  if (schemaNormalized.length === 0) {
     return ['/** No options declared */', 'type Options = [];'].join('\n');
   }
 
   const refTypes: string[] = [];
-  const types: AST[] = [];
-  for (let i = 0; i < schema.length; i += 1) {
-    const result = compileSchema(schema[i], i);
+  const types: SchemaAST[] = [];
+  for (let i = 0; i < schemaNormalized.length; i += 1) {
+    const result = compileSchema(schemaNormalized[i], i);
     refTypes.push(...result.refTypes);
     types.push(result.type);
   }
@@ -47,21 +42,13 @@ export async function compile(
       })
     : printTypeAlias('Options', types[0]);
 
-  const unformattedCode = [...refTypes, optionsType].join('\n\n');
-  try {
-    return await prettier.format(unformattedCode, await prettierConfig);
-  } catch (e) {
-    if (e instanceof Error) {
-      e.message += `\n\nUnformatted Code:\n${unformattedCode}`;
-    }
-    throw e;
-  }
+  return [...refTypes, optionsType].join('\n\n');
 }
 
 function compileSchema(
   schema: JSONSchema4,
   index: number,
-): { refTypes: string[]; type: AST } {
+): { refTypes: string[]; type: SchemaAST } {
   const refTypes: string[] = [];
 
   const refMap = new Map<string, string>();

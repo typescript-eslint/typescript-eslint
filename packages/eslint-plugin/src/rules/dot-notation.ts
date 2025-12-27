@@ -35,6 +35,7 @@ export default createRule<Options, MessageIds>({
     docs: {
       description: 'Enforce dot notation whenever possible',
       extendsBaseRule: true,
+      frozen: true,
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },
@@ -48,29 +49,24 @@ export default createRule<Options, MessageIds>({
         properties: {
           allowIndexSignaturePropertyAccess: {
             type: 'boolean',
-            default: false,
             description:
               'Whether to allow accessing properties matching an index signature with array notation.',
           },
           allowKeywords: {
             type: 'boolean',
-            default: true,
             description: 'Whether to allow keywords such as ["class"]`.',
           },
           allowPattern: {
             type: 'string',
-            default: '',
             description: 'Regular expression of names to allow.',
           },
           allowPrivateClassPropertyAccess: {
             type: 'boolean',
-            default: false,
             description:
               'Whether to allow accessing class members marked as `private` with array notation.',
           },
           allowProtectedClassPropertyAccess: {
             type: 'boolean',
-            default: false,
             description:
               'Whether to allow accessing class members marked as `protected` with array notation.',
           },

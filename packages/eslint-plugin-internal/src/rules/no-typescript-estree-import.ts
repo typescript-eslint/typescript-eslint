@@ -1,4 +1,4 @@
-import { createRule } from '../util';
+import { createRule } from '../util/index.js';
 
 const TSESTREE_NAME = '@typescript-eslint/typescript-estree';
 const TYPES_NAME = '@typescript-eslint/types';
