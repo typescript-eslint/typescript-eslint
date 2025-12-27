@@ -12,20 +12,10 @@ export function createRuleTesterWithTypes(
       providedParserOptions.tsconfigRootDir ?? getFixturesRootDir(),
   };
 
-  // If the test has requested a specific project, disable projectService
-  // (regardless of whether it's being switched to by TYPESCRIPT_ESLINT_PROJECT_SERVICE)
-  if (parserOptions.project) {
-    parserOptions.projectService = false;
-  }
-  // Otherwise, use the project service for types if requested in the env
-  else if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE) {
-    parserOptions.projectService = true;
-  }
-  // Finally, default to project: true as the standard (legacy) behavior
+  // If the test has requested a specific project, disable projectService.
+  // Otherwise, default to using projectService for types
   // See: https://github.com/typescript-eslint/typescript-eslint/issues/11676
-  else {
-    parserOptions.project = true;
-  }
+  parserOptions.projectService ??= !parserOptions.project;
 
   return new RuleTester({
     languageOptions: { parserOptions },
