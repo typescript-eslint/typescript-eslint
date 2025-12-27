@@ -171,6 +171,7 @@ export default (
       'no-return-await': 'off',
       '@typescript-eslint/return-await': 'error',
       '@typescript-eslint/strict-boolean-expressions': 'error',
+      '@typescript-eslint/strict-void-return': 'error',
       '@typescript-eslint/switch-exhaustiveness-check': 'error',
       '@typescript-eslint/triple-slash-reference': 'error',
       '@typescript-eslint/unbound-method': 'error',
