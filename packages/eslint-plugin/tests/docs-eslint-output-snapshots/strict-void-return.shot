@@ -71,69 +71,6 @@ Correct
 
 Incorrect
 
-declare function takesCallback(cb: () => void): void;
-declare function TakesCallback(props: { cb: () => void }): string;
-declare let callback: () => void;
-declare let returnsCallback: () => () => void;
-declare let callbackObj: Record<string, () => void>;
-declare let callbackArr: (() => void)[];
-
-takesCallback(() => 'Hello');
-                    ~~~~~~~ Value returned in a context where a void return is expected.
-<TakesCallback cb={() => 'Hello'} />;
-                         ~~~~~~~ Value returned in a context where a void return is expected.
-callback = () => 'Hello';
-                 ~~~~~~~ Value returned in a context where a void return is expected.
-returnsCallback = () => {
-  return () => 'Hello';
-               ~~~~~~~ Value returned in a context where a void return is expected.
-};
-callbackObj = {
-  hello: () => 'Hello',
-               ~~~~~~~ Value returned in a context where a void return is expected.
-};
-callbackArr = [() => 'Hello'];
-                     ~~~~~~~ Value returned in a context where a void return is expected.
-
-Correct
-
-declare function takesCallback(cb: () => void): void;
-declare function TakesCallback(props: { cb: () => void }): string;
-declare let callback: () => void;
-declare let returnsCallback: () => () => void;
-declare let callbackObj: Record<string, () => void>;
-declare let callbackArr: (() => void)[];
-
-takesCallback(() => console.log('Hello'));
-<TakesCallback cb={() => console.log('Hello')} />;
-callback = () => console.log('Hello');
-returnsCallback = () => {
-  return () => console.log('Hello');
-};
-callbackObj = {
-  hello: () => console.log('Hello'),
-};
-callbackArr = [() => console.log('Hello')];
-
-Incorrect
-
-/// <reference lib="dom" />
-
-document.addEventListener('click', () => {
-  return 'Clicked';
-  ~~~~~~ Value returned in a context where a void return is expected.
-});
-
-Correct
-
-/// <reference lib="dom" />
-
-document.addEventListener('click', () => {
-  console.log('Clicked');
-});
-
-Incorrect
-
 class Foo {
   cb() {
     console.log('foo');
