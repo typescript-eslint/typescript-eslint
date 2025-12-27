@@ -14,7 +14,7 @@ title: Changes to `consistent-type-imports` with Legacy Decorators and Decorator
 
 We've made some changes to the [`consistent-type-imports` rule](/rules/consistent-type-imports) to fix some long-standing issues when used alongside `experimentalDecorators: true` and `emitDecoratorMetadata: true`. These changes increase safety and prevent invalid fixes when using decorator metadata.
 
-<!--truncate-->
+<!-- truncate -->
 
 ## Experimental Decorator Metadata
 
