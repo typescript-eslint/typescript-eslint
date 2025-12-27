@@ -110,6 +110,21 @@ function foo2(): unknown[] {
 }
 ```
 
+## Limitations
+
+`@typescript-eslint/no-unsafe-return` only checks for unsafely returning `any`, `any[]`, and (specifically in `async` functions) `Promise<any>`.
+It will not detect `any` in type parameters for generic constructs.
+
+```ts
+function createUnsafeMap() {
+  // Caught by other rules, but not by @typescript-eslint/no-unsafe-return
+  return new Map<string, any>();
+}
+```
+
+If you want to enforce safety around those `any`s, see the [Related To](#related-to) rules for checking usage.
+For `Promise<any>` in particular, see also [`@typescript-eslint/promise-function-async`](https://typescript-eslint.io/rules/promise-function-async) to enforce functions that return `Promise`s are marked as `async` - and thus can have `Promise<any>` detection run by this rule.
+
 ## When Not To Use It
 
 If your codebase has many existing `any`s or areas of unsafe code, it may be difficult to enable this rule.
