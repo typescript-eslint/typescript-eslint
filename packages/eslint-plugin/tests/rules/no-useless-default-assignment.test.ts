@@ -499,5 +499,48 @@ ruleTester.run('no-useless-default-assignment', rule, {
         function foo({ a }) {}
       `,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11847
+    {
+      code: `
+        function myFunction(p1: string, p2: number | undefined = undefined) {
+          console.log(p1, p2);
+        }
+      `,
+      errors: [
+        {
+          column: 66,
+          endColumn: 75,
+          line: 2,
+          messageId: 'preferOptionalSyntax',
+        },
+      ],
+      output: `
+        function myFunction(p1: string, p2?: number | undefined) {
+          console.log(p1, p2);
+        }
+      `,
+    },
+    {
+      code: `
+        type SomeType = number | undefined;
+        function f(
+          /* comment */ x /* comment 2 */ : /* comment 3 */ SomeType /* comment 4 */ = /* comment 5 */ undefined,
+        ) {}
+      `,
+      errors: [
+        {
+          column: 104,
+          endColumn: 113,
+          line: 4,
+          messageId: 'preferOptionalSyntax',
+        },
+      ],
+      output: `
+        type SomeType = number | undefined;
+        function f(
+          /* comment */ x? /* comment 2 */ : /* comment 3 */ SomeType,
+        ) {}
+      `,
+    },
   ],
 });
