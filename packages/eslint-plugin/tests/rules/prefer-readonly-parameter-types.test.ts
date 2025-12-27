@@ -1104,6 +1104,13 @@ function foo(arg: Test) {}
       `,
       errors: [{ line: 6, messageId: 'shouldBeReadonly' }],
     },
+    {
+      code: `
+        declare const fooFactory: <T>(x: readonly T[]) => (f: (x: T) => void) => void;
+        fooFactory([{ abc: 42 }])(x => {});
+      `,
+      errors: [{ line: 3, messageId: 'shouldBeReadonly' }],
+    },
     // Allowlist
     {
       code: `
