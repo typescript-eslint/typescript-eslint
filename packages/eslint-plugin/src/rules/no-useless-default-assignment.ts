@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -15,7 +15,10 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type MessageId = 'uselessDefaultAssignment' | 'uselessUndefined';
+type MessageId =
+  | 'preferOptionalSyntax'
+  | 'uselessDefaultAssignment'
+  | 'uselessUndefined';
 
 export default createRule<[], MessageId>({
   name: 'no-useless-default-assignment',
@@ -28,6 +31,8 @@ export default createRule<[], MessageId>({
     },
     fixable: 'code',
     messages: {
+      preferOptionalSyntax:
+        'Using `= undefined` to make a parameter optional adds unnecessary runtime logic. Use the `?` optional syntax instead.',
       uselessDefaultAssignment:
         'Default value is useless because the {{ type }} is not optional.',
       uselessUndefined:
@@ -79,12 +84,22 @@ export default createRule<[], MessageId>({
         node.right.type === AST_NODE_TYPES.Identifier &&
         node.right.name === 'undefined'
       ) {
+        const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+        if (
+          ts.isParameter(tsNode) &&
+          tsNode.type &&
+          canBeUndefined(checker.getTypeFromTypeNode(tsNode.type))
+        ) {
+          reportPreferOptionalSyntax(node);
+          return;
+        }
+
         const type =
           node.parent.type === AST_NODE_TYPES.Property ||
           node.parent.type === AST_NODE_TYPES.ArrayPattern
             ? 'property'
             : 'parameter';
-        reportUselessDefault(node, type, 'uselessUndefined');
+        reportUselessUndefined(node, type);
         return;
       }
 
@@ -119,11 +134,7 @@ export default createRule<[], MessageId>({
               if ((paramSymbol.flags & ts.SymbolFlags.Optional) === 0) {
                 const paramType = checker.getTypeOfSymbol(paramSymbol);
                 if (!canBeUndefined(paramType)) {
-                  reportUselessDefault(
-                    node,
-                    'parameter',
-                    'uselessDefaultAssignment',
-                  );
+                  reportUselessDefaultAssignment(node, 'parameter');
                 }
               }
             }
@@ -139,7 +150,7 @@ export default createRule<[], MessageId>({
         }
 
         if (!canBeUndefined(propertyType)) {
-          reportUselessDefault(node, 'property', 'uselessDefaultAssignment');
+          reportUselessDefaultAssignment(node, 'property');
         }
       } else if (parent.type === AST_NODE_TYPES.ArrayPattern) {
         const sourceType = getSourceTypeForPattern(parent);
@@ -158,7 +169,7 @@ export default createRule<[], MessageId>({
         }
         const elementType = tupleArgs[elementIndex];
         if (!canBeUndefined(elementType)) {
-          reportUselessDefault(node, 'property', 'uselessDefaultAssignment');
+          reportUselessDefaultAssignment(node, 'property');
         }
       }
     }
@@ -236,23 +247,57 @@ export default createRule<[], MessageId>({
       }
     }
 
-    function reportUselessDefault(
+    function reportUselessDefaultAssignment(
       node: TSESTree.AssignmentPattern,
       type: 'parameter' | 'property',
-      messageId: MessageId,
     ): void {
       context.report({
         node: node.right,
-        messageId,
+        messageId: 'uselessDefaultAssignment',
         data: { type },
-        fix(fixer) {
-          // Remove from before the = to the end of the default value
-          // Find the start position (including whitespace before =)
-          const start = node.left.range[1];
-          const end = node.range[1];
-          return fixer.removeRange([start, end]);
+        fix: fixer => removeDefault(fixer, node),
+      });
+    }
+
+    function reportUselessUndefined(
+      node: TSESTree.AssignmentPattern,
+      type: 'parameter' | 'property',
+    ): void {
+      context.report({
+        node: node.right,
+        messageId: 'uselessUndefined',
+        data: { type },
+        fix: fixer => removeDefault(fixer, node),
+      });
+    }
+
+    function reportPreferOptionalSyntax(
+      node: TSESTree.AssignmentPattern,
+    ): void {
+      context.report({
+        node: node.right,
+        messageId: 'preferOptionalSyntax',
+        *fix(fixer) {
+          yield removeDefault(fixer, node);
+
+          const { left } = node;
+          if (left.type === AST_NODE_TYPES.Identifier) {
+            yield fixer.insertTextAfterRange(
+              [left.range[0], left.range[0] + left.name.length],
+              '?',
+            );
+          }
         },
       });
+    }
+
+    function removeDefault(
+      fixer: TSESLint.RuleFixer,
+      node: TSESTree.AssignmentPattern,
+    ): TSESLint.RuleFix {
+      const start = node.left.range[1];
+      const end = node.range[1];
+      return fixer.removeRange([start, end]);
     }
 
     return {
