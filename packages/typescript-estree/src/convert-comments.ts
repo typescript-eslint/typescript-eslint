@@ -15,7 +15,7 @@ import { AST_TOKEN_TYPES } from './ts-estree';
 export function convertComments(ast: ts.SourceFile): TSESTree.Comment[] {
   return Array.from(
     tsutils.iterateComments(ast),
-    ({ kind, pos, end, value }) => {
+    ({ end, kind, pos, value }) => {
       const type =
         kind === ts.SyntaxKind.SingleLineCommentTrivia
           ? AST_TOKEN_TYPES.Line
