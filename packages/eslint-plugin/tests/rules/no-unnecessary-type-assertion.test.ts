@@ -529,6 +529,10 @@ declare const record: Record<string, unknown>;
 const obj = record as { id?: number };
     `,
     `
+declare const obj: { [key: string]: unknown };
+const foo = obj as {};
+    `,
+    `
 interface Obj {
   id: number;
 }
