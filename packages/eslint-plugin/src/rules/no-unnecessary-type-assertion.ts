@@ -365,6 +365,46 @@ export default createRule<Options, MessageIds>({
       }
     }
 
+    function isIIFE(
+      expression: TSESTree.Expression,
+    ): expression is TSESTree.CallExpression & {
+      callee: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression;
+    } {
+      return (
+        expression.type === AST_NODE_TYPES.CallExpression &&
+        (expression.callee.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          expression.callee.type === AST_NODE_TYPES.FunctionExpression)
+      );
+    }
+
+    function getUncastType(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): ts.Type {
+      // Special handling for IIFE: extract the function's return type
+      if (isIIFE(node.expression)) {
+        const callee = node.expression.callee;
+        const functionType = services.getTypeAtLocation(callee);
+        const signatures = functionType.getCallSignatures();
+
+        if (signatures.length > 0) {
+          const returnType = checker.getReturnTypeOfSignature(signatures[0]);
+
+          // If the function has no explicit return type annotation and returns undefined,
+          // treat it as void (TypeScript infers () => {} as () => undefined, but it should be void)
+          if (
+            callee.returnType == null &&
+            isTypeFlagSet(returnType, ts.TypeFlags.Undefined)
+          ) {
+            return checker.getVoidType();
+          }
+
+          return returnType;
+        }
+      }
+
+      return services.getTypeAtLocation(node.expression);
+    }
+
     return {
       'TSAsExpression, TSTypeAssertion'(
         node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
@@ -391,7 +431,7 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const uncastType = services.getTypeAtLocation(node.expression);
+        const uncastType = getUncastType(node);
         const typeIsUnchanged = isTypeUnchanged(
           node.expression,
           uncastType,

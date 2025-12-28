@@ -1,6 +1,5 @@
 import type { TypeScriptESLintRules } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 
-import { fetch } from 'cross-fetch';
 import { markdownTable } from 'markdown-table';
 
 import rulesImport from '../src/rules/index.js';

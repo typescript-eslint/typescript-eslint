@@ -1,5 +1,3 @@
-import fetch from 'cross-fetch';
-import makeDirectory from 'make-dir';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -83,7 +81,7 @@ const vendor = path.join(__dirname, '..', 'src', 'vendor');
 
 console.log('Cleaning...');
 await rimraf(vendor);
-await makeDirectory(vendor);
+await fs.mkdir(vendor);
 
 // TS-VFS
 await getFileAndStoreLocally(

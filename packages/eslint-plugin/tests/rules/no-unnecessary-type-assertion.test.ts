@@ -452,6 +452,60 @@ const b = a as const;
     },
     {
       code: `
+(() => {})() as undefined;
+      `,
+    },
+    {
+      code: `
+const f = () => {};
+f() as undefined;
+      `,
+    },
+    {
+      code: `
+(function () {})() as undefined;
+      `,
+    },
+    {
+      code: `
+interface Overloaded {
+  (): undefined;
+  (value: string): void;
+}
+
+((value => {}) as Overloaded)('') as undefined;
+      `,
+    },
+    {
+      code: `
+interface Overloaded {
+  (): void;
+  (value: string): undefined;
+}
+
+((() => {}) as Overloaded)() as undefined;
+      `,
+    },
+    {
+      code: `
+interface GenericOverloaded {
+  <T extends string>(value: T): void;
+  (): undefined;
+}
+((value => {}) as GenericOverloaded)('') as undefined;
+      `,
+    },
+    {
+      code: `
+interface Unioned {
+  (): undefined | void;
+}
+
+((() => {}) as Unioned)() as undefined;
+      `,
+    },
+    {
+      code: `
 function fn<T>(items: ReadonlyArray<T>) {}
 fn([42] as const);
       `,
@@ -1505,6 +1559,55 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    {
+      code: `
+((): undefined => {})() as undefined;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+((): undefined => {})();
+      `,
+    },
+    {
+      code: `
+(() => 1)() as number;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+(() => 1)();
+      `,
+    },
+    {
+      code: `
+interface Overloaded {
+  (): void;
+  (value: string): undefined;
+}
+
+((value => {}) as Overloaded)('') as undefined;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+interface Overloaded {
+  (): void;
+  (value: string): undefined;
+}
+
+((value => {}) as Overloaded)('');
       `,
     },
     {

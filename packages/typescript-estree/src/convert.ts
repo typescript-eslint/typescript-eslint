@@ -908,10 +908,7 @@ export class Converter {
         this.#checkForStatementDeclaration(node.initializer, node.kind);
         return this.createNode<TSESTree.ForOfStatement>(node, {
           type: AST_NODE_TYPES.ForOfStatement,
-          await: Boolean(
-            node.awaitModifier &&
-            node.awaitModifier.kind === SyntaxKind.AwaitKeyword,
-          ),
+          await: node.awaitModifier?.kind === SyntaxKind.AwaitKeyword,
           body: this.convertChild(node.statement),
           left: this.convertPattern(node.initializer),
           right: this.convertChild(node.expression),
@@ -974,9 +971,9 @@ export class Converter {
       }
 
       case SyntaxKind.VariableDeclaration: {
-        const definite = !!node.exclamationToken;
+        const hasExclamationToken = !!node.exclamationToken;
 
-        if (definite) {
+        if (hasExclamationToken) {
           if (node.initializer) {
             this.#throwError(
               node,
@@ -990,6 +987,90 @@ export class Converter {
           }
         }
 
+        if (node.parent.kind === SyntaxKind.VariableDeclarationList) {
+          const variableDeclarationList = node.parent;
+          const kind = getDeclarationKind(variableDeclarationList);
+
+          if (
+            (variableDeclarationList.parent.kind ===
+              SyntaxKind.ForInStatement ||
+              variableDeclarationList.parent.kind ===
+                SyntaxKind.ForStatement) &&
+            (kind === 'using' || kind === 'await using')
+          ) {
+            if (!node.initializer) {
+              this.#throwError(
+                node,
+                `'${kind}' declarations may not be initialized in for statement.`,
+              );
+            }
+
+            if (node.name.kind !== SyntaxKind.Identifier) {
+              this.#throwError(
+                node.name,
+                `'${kind}' declarations may not have binding patterns.`,
+              );
+            }
+          }
+
+          if (
+            variableDeclarationList.parent.kind === SyntaxKind.VariableStatement
+          ) {
+            const variableStatement = variableDeclarationList.parent;
+
+            if (kind === 'using' || kind === 'await using') {
+              if (!node.initializer) {
+                this.#throwError(
+                  node,
+                  `'${kind}' declarations must be initialized.`,
+                );
+              }
+              if (node.name.kind !== SyntaxKind.Identifier) {
+                this.#throwError(
+                  node.name,
+                  `'${kind}' declarations may not have binding patterns.`,
+                );
+              }
+            }
+
+            const hasDeclareKeyword = hasModifier(
+              SyntaxKind.DeclareKeyword,
+              variableStatement,
+            );
+
+            // Definite assignment only allowed for non-declare let and var
+            if (
+              (hasDeclareKeyword ||
+                ['await using', 'const', 'using'].includes(kind)) &&
+              hasExclamationToken
+            ) {
+              this.#throwError(
+                node,
+                `A definite assignment assertion '!' is not permitted in this context.`,
+              );
+            }
+
+            if (
+              hasDeclareKeyword &&
+              node.initializer &&
+              (['let', 'var'].includes(kind) || node.type)
+            ) {
+              this.#throwError(
+                node,
+                `Initializers are not permitted in ambient contexts.`,
+              );
+            }
+            // Theoretically, only certain initializers are allowed for declare const,
+            // (TS1254: A 'const' initializer in an ambient context must be a string
+            // or numeric literal or literal enum reference.) but we just allow
+            // all expressions
+
+            // Note! No-declare does not mean the variable is not ambient, because
+            // it can be further nested in other declare contexts. Therefore we cannot
+            // check for const initializers.
+          }
+        }
+
         const init = this.convertChild(node.initializer);
         const id = this.convertBindingNameWithTypeAnnotation(
           node.name,
@@ -998,77 +1079,28 @@ export class Converter {
         );
         return this.createNode<TSESTree.VariableDeclarator>(node, {
           type: AST_NODE_TYPES.VariableDeclarator,
-          definite,
+          definite: hasExclamationToken,
           id,
           init,
         });
       }
 
       case SyntaxKind.VariableStatement: {
-        const result = this.createNode<TSESTree.VariableDeclaration>(node, {
-          type: AST_NODE_TYPES.VariableDeclaration,
-          declarations: this.convertChildren(node.declarationList.declarations),
-          declare: hasModifier(SyntaxKind.DeclareKeyword, node),
-          kind: getDeclarationKind(node.declarationList),
-        });
+        const declarations = node.declarationList.declarations;
 
-        if (!result.declarations.length) {
+        if (!declarations.length) {
           this.#throwError(
             node,
             'A variable declaration list must have at least one variable declarator.',
           );
         }
-        if (result.kind === 'using' || result.kind === 'await using') {
-          node.declarationList.declarations.forEach((declaration, i) => {
-            if (result.declarations[i].init == null) {
-              this.#throwError(
-                declaration,
-                `'${result.kind}' declarations must be initialized.`,
-              );
-            }
-            if (result.declarations[i].id.type !== AST_NODE_TYPES.Identifier) {
-              this.#throwError(
-                declaration.name,
-                `'${result.kind}' declarations may not have binding patterns.`,
-              );
-            }
-          });
-        }
-        // Definite assignment only allowed for non-declare let and var
-        if (
-          result.declare ||
-          ['await using', 'const', 'using'].includes(result.kind)
-        ) {
-          node.declarationList.declarations.forEach((declaration, i) => {
-            if (result.declarations[i].definite) {
-              this.#throwError(
-                declaration,
-                `A definite assignment assertion '!' is not permitted in this context.`,
-              );
-            }
-          });
-        }
-        if (result.declare) {
-          node.declarationList.declarations.forEach((declaration, i) => {
-            if (
-              result.declarations[i].init &&
-              (['let', 'var'].includes(result.kind) ||
-                result.declarations[i].id.typeAnnotation)
-            ) {
-              this.#throwError(
-                declaration,
-                `Initializers are not permitted in ambient contexts.`,
-              );
-            }
-          });
-          // Theoretically, only certain initializers are allowed for declare const,
-          // (TS1254: A 'const' initializer in an ambient context must be a string
-          // or numeric literal or literal enum reference.) but we just allow
-          // all expressions
-        }
-        // Note! No-declare does not mean the variable is not ambient, because
-        // it can be further nested in other declare contexts. Therefore we cannot
-        // check for const initializers.
+
+        const result = this.createNode<TSESTree.VariableDeclaration>(node, {
+          type: AST_NODE_TYPES.VariableDeclaration,
+          declarations: this.convertChildren(declarations),
+          declare: hasModifier(SyntaxKind.DeclareKeyword, node),
+          kind: getDeclarationKind(node.declarationList),
+        });
 
         /**
          * Semantically, decorators are not allowed on variable declarations,
@@ -1082,30 +1114,12 @@ export class Converter {
 
       // mostly for for-of, for-in
       case SyntaxKind.VariableDeclarationList: {
-        const result = this.createNode<TSESTree.VariableDeclaration>(node, {
+        return this.createNode<TSESTree.VariableDeclaration>(node, {
           type: AST_NODE_TYPES.VariableDeclaration,
           declarations: this.convertChildren(node.declarations),
           declare: false,
           kind: getDeclarationKind(node),
         });
-
-        if (result.kind === 'using' || result.kind === 'await using') {
-          node.declarations.forEach((declaration, i) => {
-            if (result.declarations[i].init != null) {
-              this.#throwError(
-                declaration,
-                `'${result.kind}' declarations may not be initialized in for statement.`,
-              );
-            }
-            if (result.declarations[i].id.type !== AST_NODE_TYPES.Identifier) {
-              this.#throwError(
-                declaration.name,
-                `'${result.kind}' declarations may not have binding patterns.`,
-              );
-            }
-          });
-        }
-        return result;
       }
 
       // Expressions
@@ -1597,10 +1611,8 @@ export class Converter {
         } else {
           result = this.createNode<TSESTree.Property>(node, {
             type: AST_NODE_TYPES.Property,
-            computed: Boolean(
-              node.propertyName &&
-              node.propertyName.kind === SyntaxKind.ComputedPropertyName,
-            ),
+            computed:
+              node.propertyName?.kind === SyntaxKind.ComputedPropertyName,
             key: this.convertChild(node.propertyName ?? node.name),
             kind: 'init',
             method: false,
