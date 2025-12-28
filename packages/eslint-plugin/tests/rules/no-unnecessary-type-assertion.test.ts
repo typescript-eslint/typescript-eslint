@@ -533,6 +533,11 @@ declare const obj: { [key: string]: unknown };
 const foo = obj as {};
     `,
     `
+interface Empty {}
+declare function getAny(): any;
+const result = getAny() as Empty;
+    `,
+    `
 interface Obj {
   id: number;
 }
