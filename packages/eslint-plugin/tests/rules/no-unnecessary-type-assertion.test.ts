@@ -538,6 +538,11 @@ declare function getAny(): any;
 const result = getAny() as Empty;
     `,
     `
+interface Empty {}
+declare function getObject(): object;
+const result = getObject() as Empty;
+    `,
+    `
 interface Obj {
   id: number;
 }
