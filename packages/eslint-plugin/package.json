@@ -65,7 +65,7 @@
     "@typescript-eslint/visitor-keys": "8.50.1",
     "ignore": "^7.0.0",
     "natural-compare": "^1.4.0",
-    "ts-api-utils": "^2.2.0"
+    "ts-api-utils": "^2.3.0"
   },
   "devDependencies": {
     "@types/mdast": "^4.0.3",
