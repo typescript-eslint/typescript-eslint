@@ -1,3 +1,4 @@
+// eslint-disable-next-line n/no-extraneous-import
 import type { SponsorData } from 'website/src/components/home/FinancialContributors/types.ts';
 
 import * as fs from 'node:fs';
