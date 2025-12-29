@@ -23,25 +23,33 @@ function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
 }
 
 function isNumberLike(type: ts.Type): boolean {
-  const typeParts = tsutils.intersectionConstituents(type);
-
-  return typeParts.some(typePart => {
-    return tsutils.isTypeFlagSet(
-      typePart,
-      ts.TypeFlags.Number | ts.TypeFlags.NumberLike,
+  return tsutils
+    .unionConstituents(type)
+    .every(unionPart =>
+      tsutils
+        .intersectionConstituents(unionPart)
+        .some(intersectionPart =>
+          tsutils.isTypeFlagSet(
+            intersectionPart,
+            ts.TypeFlags.Number | ts.TypeFlags.NumberLike,
+          ),
+        ),
     );
-  });
 }
 
 function isStringLike(type: ts.Type): boolean {
-  const typeParts = tsutils.intersectionConstituents(type);
-
-  return typeParts.some(typePart => {
-    return tsutils.isTypeFlagSet(
-      typePart,
-      ts.TypeFlags.String | ts.TypeFlags.StringLike,
+  return tsutils
+    .unionConstituents(type)
+    .every(unionPart =>
+      tsutils
+        .intersectionConstituents(unionPart)
+        .some(intersectionPart =>
+          tsutils.isTypeFlagSet(
+            intersectionPart,
+            ts.TypeFlags.String | ts.TypeFlags.StringLike,
+          ),
+        ),
     );
-  });
 }
 
 /**

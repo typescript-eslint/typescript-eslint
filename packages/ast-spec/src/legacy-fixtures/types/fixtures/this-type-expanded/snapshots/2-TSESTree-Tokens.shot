@@ -109,8 +109,8 @@
       end: { column: 16, line: 6 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "this",
 
     range: [120, 124],
@@ -269,8 +269,8 @@
       end: { column: 17, line: 10 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "this",
 
     range: [183, 187],
@@ -429,8 +429,8 @@
       end: { column: 17, line: 14 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "this",
 
     range: [241, 245],
@@ -689,8 +689,8 @@
       end: { column: 17, line: 19 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "this",
 
     range: [329, 333],
@@ -949,8 +949,8 @@
       end: { column: 22, line: 24 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "this",
 
     range: [419, 423],
@@ -1089,8 +1089,8 @@
       end: { column: 8, line: 28 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "typeof",
 
     range: [471, 477],
@@ -1109,8 +1109,8 @@
       end: { column: 16, line: 28 },
     },
   },
-  Keyword {
-    type: "Keyword",
+  Identifier {
+    type: "Identifier",
     value: "this",
 
     range: [478, 482],

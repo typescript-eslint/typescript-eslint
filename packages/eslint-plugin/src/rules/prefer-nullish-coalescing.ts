@@ -123,6 +123,7 @@ export default createRule<Options, MessageIds>({
             oneOf: [
               {
                 type: 'object',
+                additionalProperties: false,
                 description: 'Which primitives types may be ignored.',
                 properties: {
                   bigint: {
@@ -300,7 +301,11 @@ export default createRule<Options, MessageIds>({
 
       if (
         ignoreBooleanCoercion === true &&
-        isBooleanConstructorContext(node, context)
+        isBooleanConstructorContext(node, context) &&
+        !(
+          node.type === AST_NODE_TYPES.ConditionalExpression &&
+          node.parent.type === AST_NODE_TYPES.CallExpression
+        )
       ) {
         return false;
       }
@@ -563,8 +568,7 @@ export default createRule<Options, MessageIds>({
         }
 
         if (
-          !assignmentExpression ||
-          assignmentExpression.type !== AST_NODE_TYPES.AssignmentExpression ||
+          assignmentExpression?.type !== AST_NODE_TYPES.AssignmentExpression ||
           !isMemberAccessLike(assignmentExpression.left)
         ) {
           return;

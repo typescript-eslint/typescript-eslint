@@ -140,7 +140,7 @@ describe(useProgramFromProjectService, () => {
         true,
         new Set(),
       ),
-    ).toThrow(
+    ).toThrowError(
       `${mockParseSettings.filePath} was included by allowDefaultProject but also was found in the project service. Consider removing it from allowDefaultProject.`,
     );
   });
@@ -161,13 +161,13 @@ describe(useProgramFromProjectService, () => {
         true,
         new Set(),
       ),
-    ).toThrow(
+    ).toThrowError(
       `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
     );
     expect(service.reloadProjects).not.toHaveBeenCalled();
   });
 
-  it('throws an error after reloading projects when hasFullTypeInformation is enabled, the file is neither in the project service nor allowDefaultProject, and the last reload was recent', () => {
+  it('throws a non-file-specific error after reloading projects when hasFullTypeInformation is enabled, the file is neither in the project service nor an empty allowDefaultProject, and the last reload was recent', () => {
     const { service } = createMockProjectService();
 
     service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
@@ -183,8 +183,42 @@ describe(useProgramFromProjectService, () => {
         true,
         new Set(),
       ),
-    ).toThrow(
+    ).toThrowError(
       `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
+    );
+    expect(service.reloadProjects).toHaveBeenCalledOnce();
+  });
+
+  it('throws a file-specific error after reloading projects when hasFullTypeInformation is enabled, the file is neither in the project service nor a populated allowDefaultProject, and the last reload was recent', () => {
+    const { service } = createMockProjectService();
+    const allowDefaultProject = ['a.js', 'b.js'];
+
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject,
+          lastReloadTimestamp: 0,
+          service,
+        }),
+        {
+          ...mockParseSettings,
+          projectService: {
+            allowDefaultProject,
+            lastReloadTimestamp: 0,
+            maximumDefaultProjectFileMatchCount: 8,
+            service,
+          },
+        },
+        true,
+        new Set(),
+      ),
+    ).toThrowError(
+      [
+        `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
+        `allowDefaultProject is set to ["a.js","b.js"], which does not match '${path.normalize('path/PascalCaseDirectory/camelCaseFile.ts')}'.`,
+      ].join('\n'),
     );
     expect(service.reloadProjects).toHaveBeenCalledOnce();
   });
@@ -234,7 +268,7 @@ describe(useProgramFromProjectService, () => {
         true,
         new Set(['a', 'b']),
       ),
-    ).toThrow(`Too many files (>2) have matched the default project.
+    ).toThrowError(`Too many files (>2) have matched the default project.
 
 Having many files run with the default project is known to cause performance issues and slow down linting.
 
@@ -268,7 +302,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
         true,
         new Set(Array.from({ length: 100 }, (_, i) => String(i))),
       ),
-    ).toThrow(`Too many files (>2) have matched the default project.
+    ).toThrowError(`Too many files (>2) have matched the default project.
 
 Having many files run with the default project is known to cause performance issues and slow down linting.
 
@@ -591,7 +625,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
         true,
         new Set(),
       ),
-    ).toThrow(
+    ).toThrowError(
       `${filePath} was not found by the project service because the extension for the file (\`${path.extname(
         filePath,
       )}\`) is non-standard. You should add \`parserOptions.extraFileExtensions\` to your config.`,
@@ -618,10 +652,37 @@ If you absolutely need more files included, set parserOptions.projectService.max
         true,
         new Set(),
       ),
-    ).toThrow(
+    ).toThrowError(
       `${filePath} was not found by the project service because the extension for the file (\`${path.extname(
         filePath,
       )}\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`.`,
     );
+  });
+
+  it('matches filenames starting with a period', () => {
+    const { service } = createMockProjectService();
+
+    const filePath = `.prettierrc.js`;
+
+    const program = { getSourceFile: vi.fn() };
+
+    mockGetProgram.mockReturnValueOnce(program);
+
+    service.openClientFile.mockReturnValueOnce({
+      configFileName: 'tsconfig.json',
+    });
+    mockCreateProjectProgram.mockReturnValueOnce(program);
+
+    const actual = useProgramFromProjectService(
+      createProjectServiceSettings({
+        allowDefaultProject: ['*.js'],
+        service,
+      }),
+      { ...mockParseSettings, filePath },
+      false,
+      new Set(),
+    );
+
+    expect(actual).toBe(program);
   });
 });

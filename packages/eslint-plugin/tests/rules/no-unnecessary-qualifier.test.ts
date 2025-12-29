@@ -1,19 +1,7 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import rule from '../../src/rules/no-unnecessary-qualifier';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootPath = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-qualifier', rule, {
   valid: [
@@ -94,7 +82,6 @@ namespace A {
       errors: [
         {
           messageId: 'unnecessaryQualifier',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `
@@ -114,7 +101,6 @@ namespace A {
       errors: [
         {
           messageId: 'unnecessaryQualifier',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `
@@ -136,7 +122,6 @@ namespace A {
       errors: [
         {
           messageId: 'unnecessaryQualifier',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `
@@ -160,7 +145,6 @@ namespace A {
       errors: [
         {
           messageId: 'unnecessaryQualifier',
-          type: AST_NODE_TYPES.TSQualifiedName,
         },
       ],
       output: `
@@ -184,7 +168,6 @@ namespace A {
       errors: [
         {
           messageId: 'unnecessaryQualifier',
-          type: AST_NODE_TYPES.TSQualifiedName,
         },
       ],
       output: `
@@ -208,7 +191,6 @@ namespace A {
       errors: [
         {
           messageId: 'unnecessaryQualifier',
-          type: AST_NODE_TYPES.MemberExpression,
         },
       ],
       output: `
@@ -230,7 +212,6 @@ enum A {
       errors: [
         {
           messageId: 'unnecessaryQualifier',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `
@@ -252,7 +233,6 @@ namespace Foo {
       errors: [
         {
           messageId: 'unnecessaryQualifier',
-          type: AST_NODE_TYPES.MemberExpression,
         },
       ],
       output: `
@@ -274,7 +254,6 @@ declare module './foo' {
       errors: [
         {
           messageId: 'unnecessaryQualifier',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `

@@ -1,17 +1,9 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-confusing-void-expression';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootPath = getFixturesRootDir();
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-confusing-void-expression', rule, {
   valid: [
@@ -110,13 +102,13 @@ ruleTester.run('no-confusing-void-expression', rule, {
 
     `
 function cool(input: string) {
-  return console.log(input), input;
+  return (console.log(input), input);
 }
     `,
     {
       code: `
 function cool(input: string) {
-  return input, console.log(input), input;
+  return (input, console.log(input), input);
 }
       `,
     },
@@ -487,10 +479,10 @@ test((() => {
     {
       code: `
 function notcool(input: string) {
-  return input, console.log(input);
+  return (input, console.log(input));
 }
       `,
-      errors: [{ column: 17, line: 3, messageId: 'invalidVoidExpr' }],
+      errors: [{ column: 18, line: 3, messageId: 'invalidVoidExpr' }],
       output: null,
     },
     {

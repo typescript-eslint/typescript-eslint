@@ -48,16 +48,6 @@ For rule tests we recommend, when reasonable:
 
 AST tests belong in the `ast-spec` package, within `fixtures/` subfolders alongside the AST declarations. Each test has its own `<test-name>/` folder, containing a `fixture.ts` file defining the test, and a `snapshots/` subfolder. Happy-path test folders are stored directly under `fixtures/`; error-path test folders go under `fixtures/_errors/`. You can check out the [`ClassDeclaration` fixtures folder](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/ast-spec/src/declaration/ClassDeclaration/fixtures) for an example of both happy-path and unhappy-path test folders.
 
-### Updating Snapshots
-
-[Jest snapshots](https://jestjs.io/docs/snapshot-testing) are generated for use in some tests, e.g. for [rule schemas](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin/tests/schema-snapshots) and [code examples in rule docs](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin/tests/docs-eslint-output-snapshots). You may need to re-generate these snapshots after adjusting a rule and/or its documentation, by running the relevant test suite(s) with the `-u` flag:
-
-```bash
-cd packages/eslint-plugin
-yarn test docs -u
-yarn test schemas -u
-```
-
 ## Raising the PR
 
 Once your changes are ready, you can raise a PR! 🙌
@@ -84,7 +74,7 @@ Within the body of your PR, make sure you reference the issue that you have work
 
 Must be one of the following:
 
-{/* Keep this synchronized with /.github/workflows/semantic-pr-titles.yml */}
+{/* Keep this synchronized with /.github/workflows/pr-title-validation.yml */}
 
 - `docs` - if you only change documentation, and not shipped code
 - `feat` - for any new functionality additions

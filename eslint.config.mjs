@@ -15,6 +15,7 @@ import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import regexpPlugin from 'eslint-plugin-regexp';
 import unicornPlugin from 'eslint-plugin-unicorn';
+import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import url from 'node:url';
 import tseslint from 'typescript-eslint';
@@ -28,7 +29,7 @@ const restrictNamedDeclarations = {
   selector: 'ExportNamedDeclaration[declaration=null][source=null]',
 };
 
-export default tseslint.config(
+export default defineConfig(
   // register all of the plugins up-front
   {
     name: 'register-all-plugins',
@@ -84,8 +85,6 @@ export default tseslint.config(
       'packages/types/src/generated/**/*.ts',
       // Playground types downloaded from the web
       'packages/website/src/vendor/',
-      // see the file header in eslint-base.test.js for more info
-      'packages/rule-tester/tests/eslint-base/',
     ],
     name: 'global-ignores',
   },
@@ -237,10 +236,13 @@ export default tseslint.config(
       'no-lonely-if': 'error',
       'no-mixed-operators': 'error',
       'no-process-exit': 'error',
+      'no-unassigned-vars': 'error',
       'no-unreachable-loop': 'error',
+      'no-useless-assignment': 'error',
       'no-useless-call': 'error',
       'no-useless-computed-key': 'error',
       'no-useless-concat': 'error',
+      'no-useless-rename': 'error',
       'no-var': 'error',
       'no-void': ['error', { allowAsStatement: true }],
       'object-shorthand': 'error',
@@ -320,6 +322,7 @@ export default tseslint.config(
       'jsdoc/tag-lines': 'off',
 
       'regexp/no-dupe-disjunctions': 'error',
+      'regexp/no-missing-g-flag': 'error',
       'regexp/no-useless-character-class': 'error',
       'regexp/no-useless-flag': 'error',
       'regexp/no-useless-lazy': 'error',
@@ -365,36 +368,42 @@ export default tseslint.config(
 
   // test file specific configuration
   {
+    extends: [
+      vitestPlugin.configs.env,
+      {
+        rules: {
+          '@typescript-eslint/no-empty-function': [
+            'error',
+            { allow: ['arrowFunctions'] },
+          ],
+          '@typescript-eslint/no-non-null-assertion': 'off',
+          '@typescript-eslint/no-unsafe-assignment': 'off',
+          '@typescript-eslint/no-unsafe-call': 'off',
+          '@typescript-eslint/no-unsafe-member-access': 'off',
+          '@typescript-eslint/no-unsafe-return': 'off',
+          'vitest/hoisted-apis-on-top': 'error',
+          'vitest/no-alias-methods': 'error',
+          'vitest/no-disabled-tests': 'error',
+          'vitest/no-focused-tests': 'error',
+          'vitest/no-identical-title': 'error',
+          'vitest/no-test-prefixes': 'error',
+          'vitest/no-test-return-statement': 'error',
+          'vitest/prefer-describe-function-title': 'error',
+          'vitest/prefer-each': 'error',
+          'vitest/prefer-spy-on': 'error',
+          'vitest/prefer-to-be': 'error',
+          'vitest/prefer-to-contain': 'error',
+          'vitest/prefer-to-have-length': 'error',
+          'vitest/valid-expect': 'error',
+        },
+        settings: { vitest: { typecheck: true } },
+      },
+    ],
+
     files: [
       'packages/*/tests/**/*.?(m|c)ts?(x)',
       'packages/integration-tests/tools/**/*.ts',
     ],
-    ...vitestPlugin.configs.env,
-    rules: {
-      '@typescript-eslint/no-empty-function': [
-        'error',
-        { allow: ['arrowFunctions'] },
-      ],
-      '@typescript-eslint/no-non-null-assertion': 'off',
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-return': 'off',
-      'vitest/no-alias-methods': 'error',
-      'vitest/no-disabled-tests': 'error',
-      'vitest/no-focused-tests': 'error',
-      'vitest/no-identical-title': 'error',
-      'vitest/no-test-prefixes': 'error',
-      'vitest/no-test-return-statement': 'error',
-      'vitest/prefer-describe-function-title': 'error',
-      'vitest/prefer-each': 'error',
-      'vitest/prefer-spy-on': 'error',
-      'vitest/prefer-to-be': 'error',
-      'vitest/prefer-to-contain': 'error',
-      'vitest/prefer-to-have-length': 'error',
-      'vitest/valid-expect': 'error',
-    },
-    settings: { vitest: { typecheck: true } },
   },
 
   {
@@ -419,6 +428,7 @@ export default tseslint.config(
     ],
     name: 'eslint-plugin-and-eslint-plugin-internal/test-files/rules',
     rules: {
+      '@typescript-eslint/internal/no-dynamic-tests': 'error',
       '@typescript-eslint/internal/plugin-test-formatting': 'error',
     },
   },
@@ -458,7 +468,7 @@ export default tseslint.config(
   //
 
   {
-    extends: [eslintPluginPlugin.configs['flat/recommended']],
+    extends: [eslintPluginPlugin.configs.recommended],
     files: [
       'packages/eslint-plugin-internal/**/*.?(m|c)ts?(x)',
       'packages/eslint-plugin/**/*.?(m|c)ts?(x)',
@@ -467,6 +477,9 @@ export default tseslint.config(
 
     rules: {
       '@typescript-eslint/internal/no-typescript-estree-import': 'error',
+      // TODO (43081j): maybe enable these one day?
+      'eslint-plugin/no-meta-replaced-by': 'off',
+      'eslint-plugin/require-meta-default-options': 'off',
     },
   },
   {
@@ -548,9 +561,12 @@ export default tseslint.config(
       'perfectionist/sort-interfaces': [
         'error',
         {
-          customGroups: {
-            first: ['type'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: 'type',
+              groupName: 'first',
+            },
+          ],
           groups: ['first', 'unknown'],
         },
       ],
@@ -669,9 +685,12 @@ export default tseslint.config(
       'perfectionist/sort-interfaces': [
         'error',
         {
-          customGroups: {
-            first: ['^type$'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: '^type$',
+              groupName: 'first',
+            },
+          ],
           groups: ['first', 'unknown'],
         },
       ],
@@ -687,12 +706,24 @@ export default tseslint.config(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: {
-            first: ['^loc$', '^name$', '^node$', '^type$'],
-            fourth: ['^fix$'],
-            second: ['^meta$', '^messageId$', '^start$'],
-            third: ['^defaultOptions$', '^data$', '^end$'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: ['^loc$', '^name$', '^node$', '^type$'],
+              groupName: 'first',
+            },
+            {
+              elementNamePattern: ['^meta$', '^messageId$', '^start$'],
+              groupName: 'second',
+            },
+            {
+              elementNamePattern: ['^defaultOptions$', '^data$', '^end$'],
+              groupName: 'third',
+            },
+            {
+              elementNamePattern: '^fix$',
+              groupName: 'fourth',
+            },
+          ],
           groups: ['first', 'second', 'third', 'fourth', 'unknown'],
         },
       ],
@@ -705,8 +736,17 @@ export default tseslint.config(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: { top: ['^valid$'] },
-          groups: ['top', 'unknown'],
+          customGroups: [
+            {
+              elementNamePattern: '^valid$',
+              groupName: 'top',
+            },
+            {
+              elementNamePattern: '^skip$',
+              groupName: 'skip',
+            },
+          ],
+          groups: ['top', 'skip', 'unknown'],
         },
       ],
     },
@@ -718,10 +758,16 @@ export default tseslint.config(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: {
-            first: ['^type$'],
-            second: ['^loc$', '^range$'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: '^type$',
+              groupName: 'first',
+            },
+            {
+              elementNamePattern: ['^loc$', '^range$'],
+              groupName: 'second',
+            },
+          ],
           groups: ['first', 'second'],
         },
       ],

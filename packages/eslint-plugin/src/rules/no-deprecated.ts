@@ -12,6 +12,7 @@ import {
   nullThrows,
   typeOrValueSpecifiersSchema,
   typeMatchesSomeSpecifier,
+  valueMatchesSomeSpecifier,
 } from '../util';
 
 type IdentifierLike =
@@ -156,22 +157,26 @@ export default createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSTypeParameter:
           return true;
 
+        // treat `export import Bar = Foo;` (and `import Foo = require('...')`) as declarations
+        case AST_NODE_TYPES.TSImportEqualsDeclaration:
+          return parent.id === node;
+
         default:
           return false;
       }
     }
 
-    function isInsideExportOrImport(node: TSESTree.Node): boolean {
+    function isInsideImport(node: TSESTree.Node): boolean {
       let current = node;
 
       while (true) {
         switch (current.type) {
-          case AST_NODE_TYPES.ExportAllDeclaration:
-          case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.ImportDeclaration:
             return true;
 
           case AST_NODE_TYPES.ArrowFunctionExpression:
+          case AST_NODE_TYPES.ExportAllDeclaration:
+          case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.BlockStatement:
           case AST_NODE_TYPES.ClassDeclaration:
           case AST_NODE_TYPES.TSInterfaceDeclaration:
@@ -365,17 +370,21 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkIdentifier(node: IdentifierLike): void {
-      if (isDeclaration(node) || isInsideExportOrImport(node)) {
+      if (isDeclaration(node) || isInsideImport(node)) {
         return;
       }
 
       const reason = getDeprecationReason(node);
+
       if (reason == null) {
         return;
       }
 
       const type = services.getTypeAtLocation(node);
-      if (typeMatchesSomeSpecifier(type, allow, services.program)) {
+      if (
+        typeMatchesSomeSpecifier(type, allow, services.program) ||
+        valueMatchesSomeSpecifier(node, allow, services.program, type)
+      ) {
         return;
       }
 
@@ -436,7 +445,42 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      Identifier: checkIdentifier,
+      Identifier(node): void {
+        const { parent } = node;
+
+        if (
+          parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
+          parent.type === AST_NODE_TYPES.ExportAllDeclaration
+        ) {
+          return;
+        }
+
+        // Computed identifier expressions are handled by checkMemberExpression
+        if (
+          parent.type === AST_NODE_TYPES.MemberExpression &&
+          parent.computed &&
+          parent.property === node
+        ) {
+          return;
+        }
+
+        if (parent.type === AST_NODE_TYPES.ExportSpecifier) {
+          // only deal with the alias (exported) side, not the local binding
+          if (parent.exported !== node) {
+            return;
+          }
+
+          const symbol = services.getSymbolAtLocation(node);
+          const aliasDeprecation = getJsDocDeprecation(symbol);
+
+          if (aliasDeprecation != null) {
+            return;
+          }
+        }
+
+        // whether it's a plain identifier or the exported alias
+        checkIdentifier(node);
+      },
       JSXIdentifier(node): void {
         if (node.parent.type !== AST_NODE_TYPES.JSXClosingElement) {
           checkIdentifier(node);

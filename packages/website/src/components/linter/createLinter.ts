@@ -8,6 +8,10 @@ import type {
 import type * as ts from 'typescript';
 
 import type {
+  ErrorGroup,
+  TabType,
+} from '../../../../website/src/components/types';
+import type {
   LinterOnLint,
   LinterOnParse,
   PlaygroundSystem,
@@ -44,6 +48,9 @@ export function createLinter(
   system: PlaygroundSystem,
   webLinterModule: WebLinterModule,
   vfs: typeof tsvfs,
+  onMarkersChange: React.Dispatch<
+    React.SetStateAction<Record<TabType, ErrorGroup[]>>
+  >,
 ): CreateLinter {
   const rules: CreateLinter['rules'] = new Map();
   const configs = new Map(Object.entries(webLinterModule.configs));
@@ -87,7 +94,6 @@ export function createLinter(
         column: 1,
         line: 1,
         message: String(e instanceof Error ? e.stack : e),
-        nodeType: '',
         ruleId: '',
         severity: 2,
         source: 'eslint',
@@ -155,6 +161,8 @@ export function createLinter(
   };
 
   const applyTSConfig = (fileName: string): void => {
+    let error: ErrorGroup | null = null;
+
     try {
       const file = system.readFile(fileName) ?? '{}';
       const parsed = parseTSConfig(file).compilerOptions;
@@ -162,7 +170,38 @@ export function createLinter(
       console.log('[Editor] Updating', fileName, compilerOptions);
       parser.updateConfig(compilerOptions);
     } catch (e) {
-      console.error(e);
+      if (e instanceof Error) {
+        error = {
+          group: 'TypeScript',
+          items: e.message
+            .trim()
+            .split('\n')
+            .map((message: string) => {
+              return {
+                message,
+                severity: 8, // MarkerSeverity.Error
+              };
+            }),
+          uri: undefined,
+        };
+      }
+    } finally {
+      onMarkersChange(prev => {
+        const activeTabErrors = Object.fromEntries(
+          prev.tsconfig.map(error => [error.group, error]),
+        );
+
+        if (error) {
+          activeTabErrors.TypeScript = error;
+        } else {
+          delete activeTabErrors.TypeScript;
+        }
+
+        return {
+          ...prev,
+          tsconfig: Object.values(activeTabErrors),
+        };
+      });
     }
   };
 

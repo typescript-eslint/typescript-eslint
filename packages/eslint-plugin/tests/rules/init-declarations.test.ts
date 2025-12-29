@@ -251,7 +251,7 @@ var bar: string = function (): string {
     },
     {
       code: `
-var bar: string = function (arg1: stirng): string {
+var bar: string = function (arg1: string): string {
   return 'string';
 };
       `,

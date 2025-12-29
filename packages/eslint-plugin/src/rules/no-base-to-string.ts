@@ -9,6 +9,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
+  matchesTypeOrBaseType,
   nullThrows,
 } from '../util';
 
@@ -25,6 +26,13 @@ export type Options = [
   },
 ];
 export type MessageIds = 'baseArrayJoin' | 'baseToString';
+const canHaveTypeParameters = (declaration: ts.Declaration) => {
+  return (
+    ts.isTypeAliasDeclaration(declaration) ||
+    ts.isInterfaceDeclaration(declaration) ||
+    ts.isClassDeclaration(declaration)
+  );
+};
 
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
@@ -53,8 +61,7 @@ export default createRule<Options, MessageIds>({
           },
           ignoredTypeNames: {
             type: 'array',
-            description:
-              'Stringified regular expressions of type names to ignore.',
+            description: 'Stringified type names to ignore.',
             items: {
               type: 'string',
             },
@@ -71,7 +78,8 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [option]) {
     const services = getParserServices(context);
-    const checker = services.program.getTypeChecker();
+    const { program } = services;
+    const checker = program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
     function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
@@ -231,7 +239,24 @@ export default createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (ignoredTypeNames.includes(getTypeName(checker, type))) {
+      const symbol = type.aliasSymbol ?? type.getSymbol();
+      const decl = symbol?.getDeclarations()?.[0];
+      if (
+        decl &&
+        canHaveTypeParameters(decl) &&
+        decl.typeParameters &&
+        ignoredTypeNames.includes(symbol.name)
+      ) {
+        return Usefulness.Always;
+      }
+
+      if (
+        matchesTypeOrBaseType(
+          services,
+          type => ignoredTypeNames.includes(getTypeName(checker, type)),
+          type,
+        )
+      ) {
         return Usefulness.Always;
       }
 
@@ -270,6 +295,7 @@ export default createRule<Options, MessageIds>({
 
       const declarations = toString.getDeclarations();
 
+      // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
       if (declarations == null || declarations.length !== 1) {
         // If there are multiple declarations, at least one of them must not be
         // the default object toString.

@@ -1,3 +1,365 @@
+## 8.50.1 (2025-12-22)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] correct handling of undefined vs. void ([#11826](https://github.com/typescript-eslint/typescript-eslint/pull/11826))
+- **eslint-plugin:** [method-signature-style] ignore methods that return `this` ([#11813](https://github.com/typescript-eslint/typescript-eslint/pull/11813))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+- Tamashoo @Tamashoo
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.50.0 (2025-12-15)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-useless-default-assignment] add rule ([#11720](https://github.com/typescript-eslint/typescript-eslint/pull/11720))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+- Ulrich Stark
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.49.0 (2025-12-08)
+
+### 🚀 Features
+
+- **eslint-plugin:** use `Intl.Segmenter` instead of `graphemer` ([#11804](https://github.com/typescript-eslint/typescript-eslint/pull/11804))
+
+### 🩹 Fixes
+
+- **deps:** update dependency prettier to v3.7.2 ([#11820](https://github.com/typescript-eslint/typescript-eslint/pull/11820))
+
+### ❤️ Thank You
+
+- Justin McBride
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.48.1 (2025-12-02)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [restrict-template-expressions] check base types in allow list ([#11764](https://github.com/typescript-eslint/typescript-eslint/pull/11764), [#11759](https://github.com/typescript-eslint/typescript-eslint/issues/11759))
+- **eslint-plugin:** honor ignored base types on generic classes ([#11767](https://github.com/typescript-eslint/typescript-eslint/pull/11767))
+- **eslint-plugin:** [consistent-type-exports] check value flag before resolving alias ([#11769](https://github.com/typescript-eslint/typescript-eslint/pull/11769))
+
+### ❤️ Thank You
+
+- Josh Goldberg
+- OleksandraKordonets
+- SangheeSon @Higangssh
+- tao
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.48.0 (2025-11-24)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-redundant-type-constituents] use assignability checking for redundancy checks ([#10744](https://github.com/typescript-eslint/typescript-eslint/pull/10744))
+
+### 🩹 Fixes
+
+- **typescript-estree:** disallow binding patterns in parameter properties ([#11760](https://github.com/typescript-eslint/typescript-eslint/pull/11760))
+- **eslint-plugin:** [consistent-generic-constructors] ignore when constructor is  typed array ([#10477](https://github.com/typescript-eslint/typescript-eslint/pull/10477))
+
+### ❤️ Thank You
+
+- Dima Barabash @dbarabashh
+- JamesHenry @JamesHenry
+- Josh Goldberg
+- mdm317 @gen-ip-1
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.47.0 (2025-11-17)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unused-private-class-members] new extension rule ([#10913](https://github.com/typescript-eslint/typescript-eslint/pull/10913))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.4 (2025-11-10)
+
+### 🩹 Fixes
+
+- **parser:** error when both `projectService` and `project` are set ([#11333](https://github.com/typescript-eslint/typescript-eslint/pull/11333))
+- **eslint-plugin:** handle override modifier in promise-function-async fixer ([#11730](https://github.com/typescript-eslint/typescript-eslint/pull/11730))
+- **eslint-plugin:** [no-deprecated] fix double-report on computed literal identifiers ([#11006](https://github.com/typescript-eslint/typescript-eslint/pull/11006), [#10958](https://github.com/typescript-eslint/typescript-eslint/issues/10958))
+
+### ❤️ Thank You
+
+- Evgeny Stepanovych @undsoft
+- Kentaro Suzuki @sushichan044
+- Maria Solano @MariaSolOs
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.3 (2025-11-03)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-duplicate-enum-values] support signed numbers ([#11722](https://github.com/typescript-eslint/typescript-eslint/pull/11722), [#11723](https://github.com/typescript-eslint/typescript-eslint/pull/11723))
+- **eslint-plugin:** [no-misused-promises] expand union type to retrieve target property ([#11706](https://github.com/typescript-eslint/typescript-eslint/pull/11706))
+
+### ❤️ Thank You
+
+- Evgeny Stepanovych @undsoft
+- tao
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.2 (2025-10-20)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] skip optional chaining when it could change the result ([#11702](https://github.com/typescript-eslint/typescript-eslint/pull/11702))
+
+### ❤️ Thank You
+
+- mdm317
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.1 (2025-10-13)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-misused-promises] special-case `.finally` not to report when a promise returning function is provided as an argument ([#11667](https://github.com/typescript-eslint/typescript-eslint/pull/11667))
+- **eslint-plugin:** [prefer-optional-chain] include mixed "nullish comparison style" chains in checks ([#11533](https://github.com/typescript-eslint/typescript-eslint/pull/11533))
+
+### ❤️ Thank You
+
+- mdm317
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.0 (2025-10-06)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-member-access] add allowOptionalChaining option ([#11659](https://github.com/typescript-eslint/typescript-eslint/pull/11659))
+- **rule-schema-to-typescript-types:** clean up and make public ([#11633](https://github.com/typescript-eslint/typescript-eslint/pull/11633))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-readonly-parameter-types] ignore tagged primitives ([#11660](https://github.com/typescript-eslint/typescript-eslint/pull/11660))
+- **typescript-estree:** forbid abstract method and accessor to have implementation ([#11657](https://github.com/typescript-eslint/typescript-eslint/pull/11657))
+- **eslint-plugin:** removed error type previously deprecated ([#11674](https://github.com/typescript-eslint/typescript-eslint/pull/11674))
+- **eslint-plugin:** [no-deprecated] ignore deprecated `export import`s ([#11603](https://github.com/typescript-eslint/typescript-eslint/pull/11603))
+- **eslint-plugin:** [unbound-method] improve wording around `this: void` and binding ([#11634](https://github.com/typescript-eslint/typescript-eslint/pull/11634))
+- **rule-tester:** deprecate TestCaseError#type and LintMessage#nodeType ([#11628](https://github.com/typescript-eslint/typescript-eslint/pull/11628))
+- **eslint-plugin:** [no-floating-promises] remove excess parentheses in suggestions ([#11487](https://github.com/typescript-eslint/typescript-eslint/pull/11487))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+- Mark de Dios @peanutenthusiast
+- Richard Torres @richardtorres314
+- Victor Genaev @mainframev
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.45.0 (2025-09-29)
+
+### 🚀 Features
+
+- **eslint-plugin:** expose rule name via RuleModule interface ([#11616](https://github.com/typescript-eslint/typescript-eslint/pull/11616))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-nullish-coalescing] ignoreBooleanCoercion should not apply to top-level ternary expressions ([#11614](https://github.com/typescript-eslint/typescript-eslint/pull/11614))
+- **eslint-plugin:** [no-base-to-string] check if superclass is ignored ([#11617](https://github.com/typescript-eslint/typescript-eslint/pull/11617))
+
+### ❤️ Thank You
+
+- mdm317
+- Moses Odutusin @thebolarin
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.44.1 (2025-09-22)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [await-thenable] should not report passing values to promise aggregators which may be a promise in an array literal ([#11611](https://github.com/typescript-eslint/typescript-eslint/pull/11611))
+- **eslint-plugin:** [no-unsafe-enum-comparison] support unions of literals ([#11599](https://github.com/typescript-eslint/typescript-eslint/pull/11599))
+- **eslint-plugin:** [no-base-to-string] make ignoredTypeNames match type names without generics ([#11597](https://github.com/typescript-eslint/typescript-eslint/pull/11597))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+- mdm317
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.44.0 (2025-09-15)
+
+### 🚀 Features
+
+- **eslint-plugin:** [await-thenable] report invalid (non-promise) values passed to promise aggregator methods ([#11267](https://github.com/typescript-eslint/typescript-eslint/pull/11267))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-conversion] ignore enum members ([#11490](https://github.com/typescript-eslint/typescript-eslint/pull/11490))
+
+### ❤️ Thank You
+
+- Moses Odutusin @thebolarin
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.43.0 (2025-09-08)
+
+### 🚀 Features
+
+- **typescript-estree:** disallow empty type parameter/argument lists ([#11563](https://github.com/typescript-eslint/typescript-eslint/pull/11563))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-return-this-type] don't report an error when returning a union type that includes a classType ([#11432](https://github.com/typescript-eslint/typescript-eslint/pull/11432))
+- **eslint-plugin:** [no-deprecated] should report deprecated exports and reexports ([#11359](https://github.com/typescript-eslint/typescript-eslint/pull/11359))
+- **eslint-plugin:** [no-floating-promises] allowForKnownSafeCalls now supports function names ([#11423](https://github.com/typescript-eslint/typescript-eslint/pull/11423), [#11430](https://github.com/typescript-eslint/typescript-eslint/pull/11430))
+- **eslint-plugin:** [consistent-type-exports] fix declaration shadowing ([#11457](https://github.com/typescript-eslint/typescript-eslint/pull/11457))
+- **eslint-plugin:** [no-unnecessary-type-conversion] only report ~~ on integer literal types ([#11517](https://github.com/typescript-eslint/typescript-eslint/pull/11517))
+- **scope-manager:** exclude Program from DefinitionBase node types ([#11469](https://github.com/typescript-eslint/typescript-eslint/pull/11469))
+- **eslint-plugin:** [no-non-null-assertion] do not suggest optional chain on LHS of assignment ([#11489](https://github.com/typescript-eslint/typescript-eslint/pull/11489))
+- **type-utils:** add union type support to TypeOrValueSpecifier ([#11526](https://github.com/typescript-eslint/typescript-eslint/pull/11526))
+
+### ❤️ Thank You
+
+- Dima @dbarabashh
+- Kirk Waiblinger @kirkwaiblinger
+- mdm317
+- tao
+- Victor Genaev @mainframev
+- Yukihiro Hasegawa @y-hsgw
+- 민감자(Minji Kim) @mouse0429
+- 송재욱
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.42.0 (2025-09-02)
+
+### 🩹 Fixes
+
+- **deps:** update eslint monorepo to v9.33.0 ([#11482](https://github.com/typescript-eslint/typescript-eslint/pull/11482))
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.41.0 (2025-08-25)
+
+### 🩹 Fixes
+
+- **deps:** update dependency prettier to v3.6.2 ([#11496](https://github.com/typescript-eslint/typescript-eslint/pull/11496))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.40.0 (2025-08-18)
+
+### 🚀 Features
+
+- **typescript-estree:** forbid invalid keys in `EnumMember` ([#11232](https://github.com/typescript-eslint/typescript-eslint/pull/11232))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.39.1 (2025-08-11)
+
+This was a version bump only for eslint-plugin to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.39.0 (2025-08-04)
+
+### 🚀 Features
+
+- **eslint-plugin:** [only-throw-error] support yield/await expressions ([#11417](https://github.com/typescript-eslint/typescript-eslint/pull/11417))
+- **eslint-plugin:** add no-unnecessary-type-conversion to strict-type-checked ruleset ([#11427](https://github.com/typescript-eslint/typescript-eslint/pull/11427))
+- update to TypeScript 5.9.2 ([#11445](https://github.com/typescript-eslint/typescript-eslint/pull/11445))
+- **eslint-plugin:** [naming-convention] add enumMember PascalCase default option ([#11127](https://github.com/typescript-eslint/typescript-eslint/pull/11127))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-assignment] add an `unsafeObjectPattern` message ([#11403](https://github.com/typescript-eslint/typescript-eslint/pull/11403))
+- **eslint-plugin:** [prefer-optional-chain] ignore `check` option for most RHS of a chain ([#11272](https://github.com/typescript-eslint/typescript-eslint/pull/11272))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- James Garbutt @43081j
+- Kim Sang Du @developer-bandi
+- Sasha Kondrashov
+- tao
+- Younsang Na @nayounsang
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.38.0 (2025-07-21)
+
+### 🩹 Fixes
+
+- disallow extra properties in rule options ([#11397](https://github.com/typescript-eslint/typescript-eslint/pull/11397))
+- **eslint-plugin:** [consistent-generic-constructors] resolve conflict with `isolatedDeclarations` if enabled in `constructor` option ([#11351](https://github.com/typescript-eslint/typescript-eslint/pull/11351))
+
+### ❤️ Thank You
+
+- Andrew Kazakov @andreww2012
+- Younsang Na @nayounsang
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.37.0 (2025-07-14)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [unified-signatures] fix false positives for ignoreOverloadsWithDifferentJSDoc option ([#11381](https://github.com/typescript-eslint/typescript-eslint/pull/11381))
+
+### ❤️ Thank You
+
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.36.0 (2025-07-07)
+
+This was a version bump only for eslint-plugin to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.35.1 (2025-06-30)
+
+### 🩹 Fixes
+
+- remove prettier from eslint-plugin ([#11339](https://github.com/typescript-eslint/typescript-eslint/pull/11339))
+
+### ❤️ Thank You
+
+- Abhijeet Singh @cseas
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.35.0 (2025-06-23)
 
 ### 🚀 Features

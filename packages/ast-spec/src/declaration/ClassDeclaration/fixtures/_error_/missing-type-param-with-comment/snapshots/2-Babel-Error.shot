@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ClassDeclaration > _error_ > missing-type-param-with-comment > Babel - Error`]
+BabelError
+> 1 | class C< /* empty */ > {}
+    |        ^ Type parameter list cannot be empty. (1:7)
+  2 |
+  

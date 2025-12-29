@@ -28,7 +28,7 @@ interface Test {
     `,
     `
 interface Test {
-  'f!': </* a */>(/* b */ x: any /* c */) => void;
+  'f!': </* a */ T>(/* b */ x: any /* c */) => void;
 }
     `,
     `
@@ -82,7 +82,7 @@ interface Test {
     {
       code: `
         interface Test {
-          'f!'</* a */>(/* b */ x: any /* c */): void;
+          'f!'</* a */ T>(/* b */ x: any /* c */): void;
         }
       `,
       options: ['method'],
@@ -190,13 +190,13 @@ interface Test {
     {
       code: `
         interface Test {
-          'f!'</* a */>(/* b */ x: any /* c */): void;
+          'f!'</* a */ T>(/* b */ x: any /* c */): void;
         }
       `,
       errors: [{ messageId: 'errorMethod' }],
       output: `
         interface Test {
-          'f!': </* a */>(/* b */ x: any /* c */) => void;
+          'f!': </* a */ T>(/* b */ x: any /* c */) => void;
         }
       `,
     },
@@ -295,14 +295,14 @@ interface Test {
     {
       code: `
         interface Test {
-          'f!': </* a */>(/* b */ x: any /* c */) => void;
+          'f!': </* a */ T>(/* b */ x: any /* c */) => void;
         }
       `,
       errors: [{ messageId: 'errorProperty' }],
       options: ['method'],
       output: `
         interface Test {
-          'f!'</* a */>(/* b */ x: any /* c */): void;
+          'f!'</* a */ T>(/* b */ x: any /* c */): void;
         }
       `,
     },
@@ -669,6 +669,81 @@ interface MyInterface {
   methodReturningImplicitAny: () => any;
 }
       `,
+    },
+    {
+      code: `
+interface Test {
+  f(value: number): this;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Test {
+  foo(): this;
+  foo(): Promise<this>;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+        {
+          line: 4,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Test {
+  f(value: number): this | undefined;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Test {
+  f(value: number): Promise<this>;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Test {
+  f(value: number): Promise<this | undefined>;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: null,
     },
   ],
 });

@@ -387,7 +387,7 @@ describe('Validating rule docs', () => {
               range: true,
               sourceType: 'module',
             });
-          }).not.toThrow();
+          }).not.toThrowError();
         });
       },
     );
@@ -428,6 +428,7 @@ describe('Validating rule docs', () => {
           parserOptions: {
             disallowAutomaticSingleRunInference: true,
             project: './tsconfig.json',
+            projectService: false,
             tsconfigRootDir: FIXTURES_DIR,
           },
           rules: Object.fromEntries(ruleEntries),

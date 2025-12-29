@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 
-import type { TSESTree, TSNode } from './ts-estree';
+import type { TSESTree } from './ts-estree';
 
 import { getModifiers } from './getModifiers';
 import { xhtmlEntities } from './jsx/xhtml-entities';
@@ -22,8 +22,7 @@ const LOGICAL_OPERATORS: ReadonlySet<LogicalOperatorKind> = new Set([
 ]);
 
 interface TokenToText
-  extends TSESTree.PunctuatorTokenToText,
-    TSESTree.BinaryOperatorToText {
+  extends TSESTree.PunctuatorTokenToText, TSESTree.BinaryOperatorToText {
   [SyntaxKind.ImportKeyword]: 'import';
   [SyntaxKind.KeyOfKeyword]: 'keyof';
   [SyntaxKind.NewKeyword]: 'new';
@@ -480,25 +479,6 @@ export function getTokenType(
   if (token.kind === SyntaxKind.NullKeyword) {
     return AST_TOKEN_TYPES.Null;
   }
-  let keywordKind: ts.SyntaxKind | undefined;
-  if (isAtLeast50 && token.kind === SyntaxKind.Identifier) {
-    keywordKind = ts.identifierToKeywordKind(token as ts.Identifier);
-  } else if ('originalKeywordKind' in token) {
-    // @ts-expect-error -- intentional fallback for older TS versions <=4.9
-    keywordKind = token.originalKeywordKind;
-  }
-  if (keywordKind) {
-    if (keywordKind === SyntaxKind.NullKeyword) {
-      return AST_TOKEN_TYPES.Null;
-    }
-    if (
-      keywordKind >= SyntaxKind.FirstFutureReservedWord &&
-      keywordKind <= SyntaxKind.LastKeyword
-    ) {
-      return AST_TOKEN_TYPES.Identifier;
-    }
-    return AST_TOKEN_TYPES.Keyword;
-  }
 
   if (
     token.kind >= SyntaxKind.FirstKeyword &&
@@ -657,6 +637,8 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
 }
 
 export class TSError extends Error {
+  override name = 'TSError';
+
   constructor(
     message: string,
     public readonly fileName: string,
@@ -674,11 +656,6 @@ export class TSError extends Error {
     },
   ) {
     super(message);
-    Object.defineProperty(this, 'name', {
-      configurable: true,
-      enumerable: false,
-      value: new.target.name,
-    });
   }
 
   // For old version of ESLint https://github.com/typescript-eslint/typescript-eslint/pull/6556#discussion_r1123237311
@@ -697,27 +674,40 @@ export class TSError extends Error {
   }
 }
 
+export function createError(node: ts.Node, message: string): TSError;
 export function createError(
+  node: number | ts.Node | TSESTree.Range,
   message: string,
-  ast: ts.SourceFile,
-  startIndex: number,
-  endIndex: number = startIndex,
+  sourceFile: ts.SourceFile,
+): TSError;
+export function createError(
+  node: number | ts.Node | TSESTree.Range,
+  message: string,
+  sourceFile?: ts.SourceFile,
 ): TSError {
+  let startIndex;
+  let endIndex;
+  if (Array.isArray(node)) {
+    [startIndex, endIndex] = node;
+  } else if (typeof node === 'number') {
+    startIndex = endIndex = node;
+  } else {
+    sourceFile ??= node.getSourceFile();
+    startIndex = node.getStart(sourceFile);
+    endIndex = node.getEnd();
+  }
+
+  if (!sourceFile) {
+    throw new Error('`sourceFile` is required.');
+  }
+
   const [start, end] = [startIndex, endIndex].map(offset => {
     const { character: column, line } =
-      ast.getLineAndCharacterOfPosition(offset);
+      sourceFile.getLineAndCharacterOfPosition(offset);
     return { column, line: line + 1, offset };
   });
-  return new TSError(message, ast.fileName, { end, start });
-}
 
-export function nodeHasIllegalDecorators(
-  node: ts.Node,
-): node is { illegalDecorators: ts.Node[] } & ts.Node {
-  return !!(
-    'illegalDecorators' in node &&
-    (node.illegalDecorators as unknown[] | undefined)?.length
-  );
+  return new TSError(message, sourceFile.fileName, { end, start });
 }
 
 export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
@@ -781,113 +771,6 @@ export function isThisInTypeQuery(node: ts.Node): boolean {
   return node.parent.kind === SyntaxKind.TypeQuery;
 }
 
-// `ts.nodeIsMissing`
-function nodeIsMissing(node: ts.Node | undefined): boolean {
-  if (node == null) {
-    return true;
-  }
-  return (
-    node.pos === node.end &&
-    node.pos >= 0 &&
-    node.kind !== SyntaxKind.EndOfFileToken
-  );
-}
-
-// `ts.nodeIsPresent`
-export function nodeIsPresent(node: ts.Node | undefined): node is ts.Node {
-  return !nodeIsMissing(node);
-}
-
-// `ts.getContainingFunction`
-export function getContainingFunction(
-  node: ts.Node,
-): ts.SignatureDeclaration | undefined {
-  return ts.findAncestor(node.parent, ts.isFunctionLike);
-}
-
-// `ts.hasAbstractModifier`
-function hasAbstractModifier(node: ts.Node): boolean {
-  return hasModifier(SyntaxKind.AbstractKeyword, node);
-}
-
-// `ts.getThisParameter`
-function getThisParameter(
-  signature: ts.SignatureDeclaration,
-): ts.ParameterDeclaration | null {
-  if (signature.parameters.length && !ts.isJSDocSignature(signature)) {
-    const thisParameter = signature.parameters[0];
-    if (parameterIsThisKeyword(thisParameter)) {
-      return thisParameter;
-    }
-  }
-
-  return null;
-}
-
-// `ts.parameterIsThisKeyword`
-function parameterIsThisKeyword(parameter: ts.ParameterDeclaration): boolean {
-  return isThisIdentifier(parameter.name);
-}
-
-// Rewrite version of `ts.nodeCanBeDecorated`
-// Returns `true` for both `useLegacyDecorators: true` and `useLegacyDecorators: false`
-export function nodeCanBeDecorated(node: TSNode): boolean {
-  switch (node.kind) {
-    case SyntaxKind.ClassDeclaration:
-      return true;
-    case SyntaxKind.ClassExpression:
-      // `ts.nodeCanBeDecorated` returns `false` if `useLegacyDecorators: true`
-      return true;
-    case SyntaxKind.PropertyDeclaration: {
-      const { parent } = node;
-
-      // `ts.nodeCanBeDecorated` uses this if `useLegacyDecorators: true`
-      if (ts.isClassDeclaration(parent)) {
-        return true;
-      }
-
-      // `ts.nodeCanBeDecorated` uses this if `useLegacyDecorators: false`
-      if (ts.isClassLike(parent) && !hasAbstractModifier(node)) {
-        return true;
-      }
-
-      return false;
-    }
-    case SyntaxKind.GetAccessor:
-    case SyntaxKind.SetAccessor:
-    case SyntaxKind.MethodDeclaration: {
-      const { parent } = node;
-      // In `ts.nodeCanBeDecorated`
-      // when `useLegacyDecorators: true` uses `ts.isClassDeclaration`
-      // when `useLegacyDecorators: true` uses `ts.isClassLike`
-      return (
-        Boolean(node.body) &&
-        (ts.isClassDeclaration(parent) || ts.isClassLike(parent))
-      );
-    }
-    case SyntaxKind.Parameter: {
-      // `ts.nodeCanBeDecorated` returns `false` if `useLegacyDecorators: false`
-
-      const { parent } = node;
-      const grandparent = parent.parent;
-
-      return (
-        Boolean(parent) &&
-        'body' in parent &&
-        Boolean(parent.body) &&
-        (parent.kind === SyntaxKind.Constructor ||
-          parent.kind === SyntaxKind.MethodDeclaration ||
-          parent.kind === SyntaxKind.SetAccessor) &&
-        getThisParameter(parent) !== node &&
-        Boolean(grandparent) &&
-        grandparent.kind === SyntaxKind.ClassDeclaration
-      );
-    }
-  }
-
-  return false;
-}
-
 export function isValidAssignmentTarget(node: ts.Node): boolean {
   switch (node.kind) {
     case SyntaxKind.Identifier:
@@ -937,4 +820,13 @@ export function getNamespaceModifiers(
     moduleDeclaration = moduleDeclaration.parent;
   }
   return modifiers;
+}
+
+// `ts.declarationNameToString`
+export function declarationNameToString(
+  name: ts.Node,
+  ast: ts.SourceFile,
+): string {
+  const text = ast.text.slice(name.pos, name.end).trimStart();
+  return text || '(Missing)';
 }

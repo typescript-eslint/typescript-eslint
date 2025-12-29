@@ -6,7 +6,6 @@
     "additionalProperties": false,
     "properties": {
       "enforceForClassFields": {
-        "default": true,
         "description": "Enforces that functions used as instance field initializers utilize `this`.",
         "type": "boolean"
       },
@@ -51,10 +50,10 @@ type Options = [
     exceptMethods?: string[];
     /** Whether to ignore class members that are defined within a class that `implements` a type. */
     ignoreClassesThatImplementAnInterface?: /**
-     * Whether to ignore class members that are defined within a class that `implements` a type.
-     * Ignore all classes that implement an interface
-     */
-    | boolean
+       * Whether to ignore class members that are defined within a class that `implements` a type.
+       * Ignore all classes that implement an interface
+       */
+      | boolean
       /** Ignore only the public fields of classes that implement an interface */
       | 'public-fields';
     /** Whether to ignore members marked with the `override` modifier. */

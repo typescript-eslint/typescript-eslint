@@ -8,14 +8,9 @@ import type * as ts from 'typescript';
 import type { SandboxInstance } from './useSandboxServices';
 
 function findTwoshashQueries(code: string): RegExpExecArray[] {
-  let match: RegExpExecArray | null = null;
-  const matches: RegExpExecArray[] = [];
   // RegExp that matches '^<spaces>//?<spaces>$'
   const twoslashQueryRegex = /^(\s*\/\/\s*\^\?)\s*$/gm;
-  while ((match = twoslashQueryRegex.exec(code))) {
-    matches.push(match);
-  }
-  return matches;
+  return [...code.matchAll(twoslashQueryRegex)];
 }
 
 export function createTwoslashInlayProvider(

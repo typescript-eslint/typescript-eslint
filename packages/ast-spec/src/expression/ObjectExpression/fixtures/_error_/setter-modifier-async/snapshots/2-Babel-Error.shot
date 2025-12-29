@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > setter-modifier-async > Babel - Error`]
+BabelError
+> 1 | ({async set setter(v){}})
+    |             ^ Unexpected token, expected "(" (1:12)
+  2 |
+  

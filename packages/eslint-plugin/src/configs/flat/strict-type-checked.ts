@@ -3,7 +3,7 @@
 // SEE https://typescript-eslint.io/users/configs
 //
 // For developers working in the typescript-eslint monorepo:
-// You can regenerate it using `yarn generate:configs`
+// You can regenerate it using `yarn generate-configs`
 
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
@@ -64,6 +64,7 @@ export default (
       '@typescript-eslint/no-unnecessary-type-arguments': 'error',
       '@typescript-eslint/no-unnecessary-type-assertion': 'error',
       '@typescript-eslint/no-unnecessary-type-constraint': 'error',
+      '@typescript-eslint/no-unnecessary-type-conversion': 'error',
       '@typescript-eslint/no-unnecessary-type-parameters': 'error',
       '@typescript-eslint/no-unsafe-argument': 'error',
       '@typescript-eslint/no-unsafe-assignment': 'error',
@@ -80,6 +81,7 @@ export default (
       '@typescript-eslint/no-unused-vars': 'error',
       'no-useless-constructor': 'off',
       '@typescript-eslint/no-useless-constructor': 'error',
+      '@typescript-eslint/no-useless-default-assignment': 'error',
       '@typescript-eslint/no-wrapper-object-types': 'error',
       'no-throw-literal': 'off',
       '@typescript-eslint/only-throw-error': 'error',

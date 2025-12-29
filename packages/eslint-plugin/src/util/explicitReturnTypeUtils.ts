@@ -1,10 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import {
-  AST_NODE_TYPES,
-  ASTUtils,
-  ESLintUtils,
-} from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { isConstructor, isSetter, isTypeAssertion } from './astUtils';
 import { getFunctionHeadLoc } from './getFunctionHeadLoc';
@@ -129,7 +125,7 @@ function isConstructorArgument(
 function isPropertyOfObjectWithType(
   property: TSESTree.Node | undefined,
 ): boolean {
-  if (!property || property.type !== AST_NODE_TYPES.Property) {
+  if (property?.type !== AST_NODE_TYPES.Property) {
     return false;
   }
   const objectExpr = property.parent;
@@ -210,19 +206,14 @@ export function isTypedFunctionExpression(
   node: FunctionExpression,
   options: Options,
 ): boolean {
-  const parent = ESLintUtils.nullThrows(
-    node.parent,
-    ESLintUtils.NullThrowsReasons.MissingParent,
-  );
-
   if (!options.allowTypedFunctionExpressions) {
     return false;
   }
 
   return (
-    isTypedParent(parent, node) ||
-    isPropertyOfObjectWithType(parent) ||
-    isConstructorArgument(parent)
+    isTypedParent(node.parent, node) ||
+    isPropertyOfObjectWithType(node.parent) ||
+    isConstructorArgument(node.parent)
   );
 }
 
@@ -238,16 +229,12 @@ export function isValidFunctionExpressionReturnType(
     return true;
   }
 
-  const parent = ESLintUtils.nullThrows(
-    node.parent,
-    ESLintUtils.NullThrowsReasons.MissingParent,
-  );
   if (
     options.allowExpressions &&
-    parent.type !== AST_NODE_TYPES.VariableDeclarator &&
-    parent.type !== AST_NODE_TYPES.MethodDefinition &&
-    parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
-    parent.type !== AST_NODE_TYPES.PropertyDefinition
+    node.parent.type !== AST_NODE_TYPES.VariableDeclarator &&
+    node.parent.type !== AST_NODE_TYPES.MethodDefinition &&
+    node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration &&
+    node.parent.type !== AST_NODE_TYPES.PropertyDefinition
   ) {
     return true;
   }

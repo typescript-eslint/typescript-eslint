@@ -1,3 +1,257 @@
+## 8.50.1 (2025-12-22)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.50.0 (2025-12-15)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.49.0 (2025-12-08)
+
+### 🩹 Fixes
+
+- **deps:** update dependency prettier to v3.7.2 ([#11820](https://github.com/typescript-eslint/typescript-eslint/pull/11820))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.48.1 (2025-12-02)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.48.0 (2025-11-24)
+
+### 🚀 Features
+
+- **typescript-estree:** replace fast-glob with tinyglobby ([#11740](https://github.com/typescript-eslint/typescript-eslint/pull/11740))
+- **eslint-plugin:** [no-redundant-type-constituents] use assignability checking for redundancy checks ([#10744](https://github.com/typescript-eslint/typescript-eslint/pull/10744))
+- **typescript-estree:** gate all errors behind allowInvalidAST ([#11693](https://github.com/typescript-eslint/typescript-eslint/pull/11693))
+
+### 🩹 Fixes
+
+- **typescript-estree:** disallow binding patterns in parameter properties ([#11760](https://github.com/typescript-eslint/typescript-eslint/pull/11760))
+- **typescript-estree:** infers singleRun as true for project service ([#11327](https://github.com/typescript-eslint/typescript-eslint/pull/11327))
+
+### ❤️ Thank You
+
+- Ben McCann @benmccann
+- Dima Barabash @dbarabashh
+- fisker Cheung @fisker
+- James Henry @JamesHenry
+- JamesHenry @JamesHenry
+- Josh Goldberg
+- Josh Goldberg ✨
+- mdm317 @gen-ip-1
+- Younsang Na @nayounsang
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.47.0 (2025-11-17)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.4 (2025-11-10)
+
+### 🩹 Fixes
+
+- **parser:** error when both `projectService` and `project` are set ([#11333](https://github.com/typescript-eslint/typescript-eslint/pull/11333))
+
+### ❤️ Thank You
+
+- Maria Solano @MariaSolOs
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.3 (2025-11-03)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.2 (2025-10-20)
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid invalid modifiers in object methods ([#11689](https://github.com/typescript-eslint/typescript-eslint/pull/11689))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.1 (2025-10-13)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.46.0 (2025-10-06)
+
+### 🚀 Features
+
+- **typescript-estree:** private identifiers can only appear on LHS of in expressions ([#9232](https://github.com/typescript-eslint/typescript-eslint/pull/9232))
+- **typescript-estree:** mention file specifics in project service allowDefaultProject error ([#11635](https://github.com/typescript-eslint/typescript-eslint/pull/11635))
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid abstract method and accessor to have implementation ([#11657](https://github.com/typescript-eslint/typescript-eslint/pull/11657))
+- **typescript-estree:** forbid `abstract` modifier in object methods ([#11656](https://github.com/typescript-eslint/typescript-eslint/pull/11656))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+- Josh Goldberg ✨
+- Joshua Chen
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.45.0 (2025-09-29)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.44.1 (2025-09-22)
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid class property with name `constructor` ([#11590](https://github.com/typescript-eslint/typescript-eslint/pull/11590))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.44.0 (2025-09-15)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.43.0 (2025-09-08)
+
+### 🚀 Features
+
+- **typescript-estree:** disallow empty type parameter/argument lists ([#11563](https://github.com/typescript-eslint/typescript-eslint/pull/11563))
+
+### 🩹 Fixes
+
+- **typescript-estree:** match filenames starting with a period when using glob in allowDefaultProject / ([#11537](https://github.com/typescript-eslint/typescript-eslint/pull/11537))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+- Nicolas Le Cam
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.42.0 (2025-09-02)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.41.0 (2025-08-25)
+
+### 🚀 Features
+
+- tighten `tsconfigRootDir` validation ([#11463](https://github.com/typescript-eslint/typescript-eslint/pull/11463))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.40.0 (2025-08-18)
+
+### 🚀 Features
+
+- **typescript-estree:** forbid invalid keys in `EnumMember` ([#11232](https://github.com/typescript-eslint/typescript-eslint/pull/11232))
+
+### 🩹 Fixes
+
+- **typescript-estree:** correct range of import assertion with trailing comma ([#11478](https://github.com/typescript-eslint/typescript-eslint/pull/11478))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.39.1 (2025-08-11)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.39.0 (2025-08-04)
+
+### 🚀 Features
+
+- update to TypeScript 5.9.2 ([#11445](https://github.com/typescript-eslint/typescript-eslint/pull/11445))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.38.0 (2025-07-21)
+
+### 🚀 Features
+
+- **typescript-estree:** forbid optional chain in `TemplateTaggedLiteral` ([#11391](https://github.com/typescript-eslint/typescript-eslint/pull/11391))
+
+### 🩹 Fixes
+
+- **typescript-estree:** ensure the token type of the property name is Identifier ([#11329](https://github.com/typescript-eslint/typescript-eslint/pull/11329))
+
+### ❤️ Thank You
+
+- MK @asdf93074
+- tao
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.37.0 (2025-07-14)
+
+### 🚀 Features
+
+- **typescript-estree:** infer tsconfigRootDir from call stack ([#11370](https://github.com/typescript-eslint/typescript-eslint/pull/11370))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.36.0 (2025-07-07)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.35.1 (2025-06-30)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.35.0 (2025-06-23)
 
 This was a version bump only for typescript-estree to align it with other projects, there were no code changes.

@@ -1,6 +1,5 @@
 import type { TypeScriptESLintRules } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 
-import { fetch } from 'cross-fetch';
 import { markdownTable } from 'markdown-table';
 
 import rulesImport from '../src/rules/index.js';
@@ -22,6 +21,7 @@ async function getNewRulesAsOfMajorVersion(
   // Normally we wouldn't condone using the 'eval' API...
   // But this is an internal-only script and it's the easiest way to convert
   // the JS raw text into a runtime object. 🤷
+  // eslint-disable-next-line no-unassigned-vars -- assigned by eval
   let oldRulesObject!: { rules: TypeScriptESLintRules };
   eval(`oldRulesObject = ${oldObjectText}`);
   const oldRuleNames = new Set(Object.keys(oldRulesObject.rules));

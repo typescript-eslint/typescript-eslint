@@ -210,7 +210,7 @@ export class RuleTester extends TestFramework {
     // file name (`foo.ts`), don't change the base path.
     if (
       filename != null &&
-      (path.isAbsolute(filename) || filename.startsWith('..'))
+      (path.isAbsolute(filename) || path.normalize(filename).startsWith('..'))
     ) {
       basePath = path.parse(
         path.resolve(basePath ?? process.cwd(), filename),
@@ -219,31 +219,11 @@ export class RuleTester extends TestFramework {
 
     let linterForBasePath = this.#lintersByBasePath.get(basePath);
     if (!linterForBasePath) {
-      linterForBasePath = (() => {
-        const linter = new Linter({
-          configType: 'flat',
-          cwd: basePath,
-        });
+      linterForBasePath = new Linter({
+        configType: 'flat',
+        cwd: basePath,
+      });
 
-        // This nonsense is a workaround for https://github.com/jestjs/jest/issues/14840
-        // see also https://github.com/typescript-eslint/typescript-eslint/issues/8942
-        //
-        // For some reason rethrowing exceptions skirts around the circular JSON error.
-        const oldVerify = linter.verify.bind(linter);
-        linter.verify = (
-          ...args: Parameters<Linter['verify']>
-        ): ReturnType<Linter['verify']> => {
-          try {
-            return oldVerify(...args);
-          } catch (error) {
-            throw new Error('Caught an error while linting', {
-              cause: error,
-            });
-          }
-        };
-
-        return linter;
-      })();
       this.#lintersByBasePath.set(basePath, linterForBasePath);
     }
     return linterForBasePath;
@@ -447,6 +427,7 @@ export class RuleTester extends TestFramework {
   defineRule(name: string, rule: AnyRuleModule): void {
     this.#rules[name] = {
       ...rule,
+      name,
       // Create a wrapper rule that freezes the `context` properties.
       create(context): RuleListener {
         freezeDeeply(context.options);
@@ -761,8 +742,8 @@ export class RuleTester extends TestFramework {
 
     // Verify the code.
     let initialMessages: Linter.LintMessage[] | null = null;
-    let messages: Linter.LintMessage[] | null = null;
-    let fixedResult: SourceCodeFixer.AppliedFixes | null = null;
+    let messages: Linter.LintMessage[];
+    let fixedResult: SourceCodeFixer.AppliedFixes;
     let passNumber = 0;
     const outputs: string[] = [];
     const configWithoutCustomKeys = omitCustomConfigProperties(config);
@@ -1099,14 +1080,6 @@ export class RuleTester extends TestFramework {
           } else {
             assert.fail(
               "Test error must specify either a 'messageId' or 'message'.",
-            );
-          }
-
-          if (error.type) {
-            assert.strictEqual(
-              message.nodeType,
-              error.type,
-              `Error type should be ${error.type}, found ${message.nodeType}`,
             );
           }
 
