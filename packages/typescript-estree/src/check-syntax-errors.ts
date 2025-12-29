@@ -306,7 +306,7 @@ export function checkSyntaxError(tsNode: ts.Node): void {
       }
       break;
 
-    case SyntaxKind.PropertySignature:
+    case SyntaxKind.PropertySignature: {
       // eslint-disable-next-line @typescript-eslint/no-deprecated
       const { initializer } = node;
       if (initializer) {
@@ -316,6 +316,7 @@ export function checkSyntaxError(tsNode: ts.Node): void {
         );
       }
       break;
+    }
 
     case SyntaxKind.FunctionType: {
       // eslint-disable-next-line @typescript-eslint/no-deprecated
