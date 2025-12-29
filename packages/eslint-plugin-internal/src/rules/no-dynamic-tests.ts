@@ -3,8 +3,8 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
+import { getRuleTesterCallObject } from '../util/getRuleTesterCallObject.js';
 import { createRule } from '../util/index.js';
-import { isRuleTesterCall } from '../util/isRuleTesterCall.js';
 
 export default createRule({
   name: 'no-dynamic-tests',
@@ -93,30 +93,29 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        if (isRuleTesterCall(node)) {
-          const testObject = node.arguments[2];
+        const testObject = getRuleTesterCallObject(node);
+        if (!testObject) {
+          return;
+        }
 
-          if (testObject.type === AST_NODE_TYPES.ObjectExpression) {
-            for (const prop of testObject.properties) {
-              const isTestCases =
-                prop.type === AST_NODE_TYPES.Property &&
-                prop.key.type === AST_NODE_TYPES.Identifier &&
-                (prop.key.name === 'valid' || prop.key.name === 'invalid');
+        for (const prop of testObject.properties) {
+          const isTestCases =
+            prop.type === AST_NODE_TYPES.Property &&
+            prop.key.type === AST_NODE_TYPES.Identifier &&
+            (prop.key.name === 'valid' || prop.key.name === 'invalid');
 
-              if (isTestCases) {
-                if (prop.value.type === AST_NODE_TYPES.ArrayExpression) {
-                  prop.value.elements.forEach(element => {
-                    if (element) {
-                      reportDynamicElements(element);
-                    }
-                  });
-                } else {
-                  context.report({
-                    node: prop.value,
-                    messageId: 'noDynamicTests',
-                  });
+          if (isTestCases) {
+            if (prop.value.type === AST_NODE_TYPES.ArrayExpression) {
+              prop.value.elements.forEach(element => {
+                if (element) {
+                  reportDynamicElements(element);
                 }
-              }
+              });
+            } else {
+              context.report({
+                node: prop.value,
+                messageId: 'noDynamicTests',
+              });
             }
           }
         }

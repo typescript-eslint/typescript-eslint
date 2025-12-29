@@ -59,6 +59,24 @@ ruleTester.run('test', rule, {
   ],
   valid: [
     `
+ruleTester.run('test', rule, other);
+    `,
+    `
+ruleTester.run('test', rule, {
+  invalid: [],
+});
+    `,
+    `
+ruleTester.run('test', rule, {
+  invalid: [null],
+});
+    `,
+    `
+ruleTester.run('test', rule, {
+  invalid: [{ ...other }],
+});
+    `,
+    `
 ruleTester.run('test', rule, {
   invalid: [
     {
