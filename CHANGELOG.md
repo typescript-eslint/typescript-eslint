@@ -1,3 +1,30 @@
+## 8.51.0 (2025-12-29)
+
+### 🚀 Features
+
+- **eslint-plugin:** expose rule name via RuleModule interface ([#11719](https://github.com/typescript-eslint/typescript-eslint/pull/11719))
+- **eslint-plugin:** [no-useless-default-assignment] fix some cases to optional syntax ([#11871](https://github.com/typescript-eslint/typescript-eslint/pull/11871))
+- **eslint-plugin:** add namespace to plugin meta ([#11885](https://github.com/typescript-eslint/typescript-eslint/pull/11885))
+- **tsconfig-utils:** more informative error on parsing failures ([#11888](https://github.com/typescript-eslint/typescript-eslint/pull/11888))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** fix crash and false positives in `no-useless-default-assignment` ([#11845](https://github.com/typescript-eslint/typescript-eslint/pull/11845))
+- **eslint-plugin:** remove fixable from no-dynamic-delete rule ([#11876](https://github.com/typescript-eslint/typescript-eslint/pull/11876))
+- **eslint-plugin:** bump ts-api-utils to 2.2.0 ([#11881](https://github.com/typescript-eslint/typescript-eslint/pull/11881))
+- **eslint-plugin:** [prefer-optional-chain] handle MemberExpression in final chain position ([#11835](https://github.com/typescript-eslint/typescript-eslint/pull/11835))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+- mdm317
+- Ulrich Stark
+- Yannick Decat @mho22
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.50.1 (2025-12-22)
 
 ### 🩹 Fixes
