@@ -4,4 +4,4 @@
 /none-of-those-tsconfigs-include-this-file https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file
 /typed-linting                             https://typescript-eslint.io/getting-started/typed-linting
 /parser-tsconfigrootdir                    https://typescript-eslint.io/packages/parser/#tsconfigrootdir
-/*                                         https://typescript-eslint.io/redirect/:splat 301
+/*                                         https://typescript-eslint.io/redirect/:splat 404
