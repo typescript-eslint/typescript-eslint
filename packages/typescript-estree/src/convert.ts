@@ -753,17 +753,6 @@ export class Converter {
         });
 
       case SyntaxKind.SwitchStatement:
-        if (
-          node.caseBlock.clauses.filter(
-            switchCase => switchCase.kind === SyntaxKind.DefaultClause,
-          ).length > 1
-        ) {
-          this.#throwError(
-            node,
-            "A 'default' clause cannot appear more than once in a 'switch' statement.",
-          );
-        }
-
         return this.createNode<TSESTree.SwitchStatement>(node, {
           type: AST_NODE_TYPES.SwitchStatement,
           cases: this.convertChildren(node.caseBlock.clauses),
@@ -785,10 +774,6 @@ export class Converter {
       // Exceptions
 
       case SyntaxKind.ThrowStatement:
-        if (node.expression.end === node.expression.pos) {
-          this.#throwError(node, 'A throw statement must throw an expression.');
-        }
-
         return this.createNode<TSESTree.ThrowStatement>(node, {
           type: AST_NODE_TYPES.ThrowStatement,
           argument: this.convertChild(node.expression),
@@ -803,12 +788,6 @@ export class Converter {
         });
 
       case SyntaxKind.CatchClause:
-        if (node.variableDeclaration?.initializer) {
-          this.#throwError(
-            node.variableDeclaration.initializer,
-            'Catch clause variable cannot have an initializer.',
-          );
-        }
         return this.createNode<TSESTree.CatchClause>(node, {
           type: AST_NODE_TYPES.CatchClause,
           body: this.convertChild(node.block),
@@ -873,29 +852,6 @@ export class Converter {
         const isDeclare = hasModifier(SyntaxKind.DeclareKeyword, node);
         const isAsync = hasModifier(SyntaxKind.AsyncKeyword, node);
         const isGenerator = !!node.asteriskToken;
-        if (isDeclare) {
-          if (node.body) {
-            this.#throwError(
-              node,
-              'An implementation cannot be declared in ambient contexts.',
-            );
-          } else if (isAsync) {
-            this.#throwError(
-              node,
-              "'async' modifier cannot be used in an ambient context.",
-            );
-          } else if (isGenerator) {
-            this.#throwError(
-              node,
-              'Generators are not allowed in an ambient context.',
-            );
-          }
-        } else if (!node.body && isGenerator) {
-          this.#throwError(
-            node,
-            'A function signature cannot be declared as a generator.',
-          );
-        }
 
         const result = this.createNode<
           TSESTree.FunctionDeclaration | TSESTree.TSDeclareFunction
@@ -924,105 +880,6 @@ export class Converter {
 
       case SyntaxKind.VariableDeclaration: {
         const hasExclamationToken = !!node.exclamationToken;
-
-        if (hasExclamationToken) {
-          if (node.initializer) {
-            this.#throwError(
-              node,
-              'Declarations with initializers cannot also have definite assignment assertions.',
-            );
-          } else if (node.name.kind !== SyntaxKind.Identifier || !node.type) {
-            this.#throwError(
-              node,
-              'Declarations with definite assignment assertions must also have type annotations.',
-            );
-          }
-        }
-
-        if (node.parent.kind === SyntaxKind.VariableDeclarationList) {
-          const variableDeclarationList = node.parent;
-          const kind = getDeclarationKind(variableDeclarationList);
-
-          if (
-            (variableDeclarationList.parent.kind ===
-              SyntaxKind.ForInStatement ||
-              variableDeclarationList.parent.kind ===
-                SyntaxKind.ForStatement) &&
-            (kind === 'using' || kind === 'await using')
-          ) {
-            if (!node.initializer) {
-              this.#throwError(
-                node,
-                `'${kind}' declarations may not be initialized in for statement.`,
-              );
-            }
-
-            if (node.name.kind !== SyntaxKind.Identifier) {
-              this.#throwError(
-                node.name,
-                `'${kind}' declarations may not have binding patterns.`,
-              );
-            }
-          }
-
-          if (
-            variableDeclarationList.parent.kind === SyntaxKind.VariableStatement
-          ) {
-            const variableStatement = variableDeclarationList.parent;
-
-            if (kind === 'using' || kind === 'await using') {
-              if (!node.initializer) {
-                this.#throwError(
-                  node,
-                  `'${kind}' declarations must be initialized.`,
-                );
-              }
-              if (node.name.kind !== SyntaxKind.Identifier) {
-                this.#throwError(
-                  node.name,
-                  `'${kind}' declarations may not have binding patterns.`,
-                );
-              }
-            }
-
-            const hasDeclareKeyword = hasModifier(
-              SyntaxKind.DeclareKeyword,
-              variableStatement,
-            );
-
-            // Definite assignment only allowed for non-declare let and var
-            if (
-              (hasDeclareKeyword ||
-                ['await using', 'const', 'using'].includes(kind)) &&
-              hasExclamationToken
-            ) {
-              this.#throwError(
-                node,
-                `A definite assignment assertion '!' is not permitted in this context.`,
-              );
-            }
-
-            if (
-              hasDeclareKeyword &&
-              node.initializer &&
-              (['let', 'var'].includes(kind) || node.type)
-            ) {
-              this.#throwError(
-                node,
-                `Initializers are not permitted in ambient contexts.`,
-              );
-            }
-            // Theoretically, only certain initializers are allowed for declare const,
-            // (TS1254: A 'const' initializer in an ambient context must be a string
-            // or numeric literal or literal enum reference.) but we just allow
-            // all expressions
-
-            // Note! No-declare does not mean the variable is not ambient, because
-            // it can be further nested in other declare contexts. Therefore we cannot
-            // check for const initializers.
-          }
-        }
-
         const init = this.convertChild(node.initializer);
         const id = this.convertBindingNameWithTypeAnnotation(
           node.name,
@@ -1039,14 +896,6 @@ export class Converter {
 
       case SyntaxKind.VariableStatement: {
         const declarations = node.declarationList.declarations;
-
-        if (!declarations.length) {
-          this.#throwError(
-            node,
-            'A variable declaration list must have at least one variable declarator.',
-          );
-        }
-
         const result = this.createNode<TSESTree.VariableDeclaration>(node, {
           type: AST_NODE_TYPES.VariableDeclaration,
           declarations: this.convertChildren(declarations),
@@ -1138,23 +987,6 @@ export class Converter {
       }
 
       case SyntaxKind.PropertyAssignment: {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const { exclamationToken, questionToken } = node;
-
-        if (questionToken) {
-          this.#throwError(
-            questionToken,
-            'A property assignment cannot have a question token.',
-          );
-        }
-
-        if (exclamationToken) {
-          this.#throwError(
-            exclamationToken,
-            'A property assignment cannot have an exclamation token.',
-          );
-        }
-
         return this.createNode<TSESTree.Property>(node, {
           type: AST_NODE_TYPES.Property,
           computed: isComputedProperty(node.name),
@@ -1168,30 +1000,6 @@ export class Converter {
       }
 
       case SyntaxKind.ShorthandPropertyAssignment: {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const { exclamationToken, modifiers, questionToken } = node;
-
-        if (modifiers) {
-          this.#throwError(
-            modifiers[0],
-            'A shorthand property assignment cannot have modifiers.',
-          );
-        }
-
-        if (questionToken) {
-          this.#throwError(
-            questionToken,
-            'A shorthand property assignment cannot have a question token.',
-          );
-        }
-
-        if (exclamationToken) {
-          this.#throwError(
-            exclamationToken,
-            'A shorthand property assignment cannot have an exclamation token.',
-          );
-        }
-
         if (node.objectAssignmentInitializer) {
           return this.createNode<TSESTree.Property>(node, {
             type: AST_NODE_TYPES.Property,
@@ -1228,24 +1036,6 @@ export class Converter {
 
       case SyntaxKind.PropertyDeclaration: {
         const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
-
-        if (isAbstract && node.initializer) {
-          this.#throwError(
-            node.initializer,
-            `Abstract property cannot have an initializer.`,
-          );
-        }
-
-        if (
-          node.name.kind === SyntaxKind.StringLiteral &&
-          node.name.text === 'constructor'
-        ) {
-          this.#throwError(
-            node.name,
-            "Classes may not have a field named 'constructor'.",
-          );
-        }
-
         const isAccessor = hasModifier(SyntaxKind.AccessorKeyword, node);
         const type = (() => {
           if (isAccessor) {
@@ -1659,12 +1449,6 @@ export class Converter {
       }
 
       case SyntaxKind.TaggedTemplateExpression: {
-        if (node.tag.flags & ts.NodeFlags.OptionalChain) {
-          this.#throwError(
-            node,
-            'Tagged template expressions are not permitted in an optional chain.',
-          );
-        }
         return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
           type: AST_NODE_TYPES.TaggedTemplateExpression,
           quasi: this.convertChild(node.template),
@@ -1787,17 +1571,6 @@ export class Converter {
       // Classes
 
       case SyntaxKind.ClassDeclaration:
-        if (
-          !node.name &&
-          (!hasModifier(ts.SyntaxKind.ExportKeyword, node) ||
-            !hasModifier(ts.SyntaxKind.DefaultKeyword, node))
-        ) {
-          this.#throwError(
-            node,
-            "A class declaration without the 'default' modifier must have a name.",
-          );
-        }
-      /* intentional fallthrough */
       case SyntaxKind.ClassExpression: {
         const heritageClauses = node.heritageClauses ?? [];
         const classNodeType =
@@ -2116,21 +1889,6 @@ export class Converter {
       // Binary Operations
 
       case SyntaxKind.BinaryExpression: {
-        if (
-          node.operatorToken.kind !== SyntaxKind.InKeyword &&
-          node.left.kind === SyntaxKind.PrivateIdentifier
-        ) {
-          this.#throwError(
-            node.left,
-            "Private identifiers cannot appear on the right-hand-side of an 'in' expression.",
-          );
-        } else if (node.right.kind === SyntaxKind.PrivateIdentifier) {
-          this.#throwError(
-            node.right,
-            "Private identifiers are only allowed on the left-hand-side of an 'in' expression.",
-          );
-        }
-
         // TypeScript uses BinaryExpression for sequences as well
         if (isComma(node.operatorToken)) {
           const result = this.createNode<TSESTree.SequenceExpression>(node, {
@@ -2634,13 +2392,6 @@ export class Converter {
         });
 
       case SyntaxKind.MappedType: {
-        if (node.members && node.members.length > 0) {
-          this.#throwError(
-            node.members[0],
-            'A mapped type may not declare properties or methods.',
-          );
-        }
-
         return this.createNode<TSESTree.TSMappedType>(
           node,
           this.#withDeprecatedGetter(
@@ -2690,15 +2441,6 @@ export class Converter {
       }
 
       case SyntaxKind.PropertySignature: {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const { initializer } = node;
-        if (initializer) {
-          this.#throwError(
-            initializer,
-            'A property signature cannot have an initializer.',
-          );
-        }
-
         return this.createNode<TSESTree.TSPropertySignature>(node, {
           type: AST_NODE_TYPES.TSPropertySignature,
           accessibility: getTSNodeAccessibility(node),
@@ -2738,17 +2480,7 @@ export class Converter {
         });
       }
 
-      case SyntaxKind.FunctionType: {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const { modifiers } = node;
-        if (modifiers) {
-          this.#throwError(
-            modifiers[0],
-            'A function type cannot have modifiers.',
-          );
-        }
-      }
-      // intentional fallthrough
+      case SyntaxKind.FunctionType:
       case SyntaxKind.ConstructSignature:
       case SyntaxKind.CallSignature: {
         const type =
@@ -3015,23 +2747,6 @@ export class Converter {
 
       case SyntaxKind.EnumMember: {
         const computed = node.name.kind === ts.SyntaxKind.ComputedPropertyName;
-        if (computed) {
-          this.#throwError(
-            node.name,
-            'Computed property names are not allowed in enums.',
-          );
-        }
-
-        if (
-          node.name.kind === SyntaxKind.NumericLiteral ||
-          node.name.kind === SyntaxKind.BigIntLiteral
-        ) {
-          this.#throwError(
-            node.name,
-            'An enum member cannot have a numeric name.',
-          );
-        }
-
         return this.createNode<TSESTree.TSEnumMember>(
           node,
           this.#withDeprecatedGetter(
@@ -3241,9 +2956,6 @@ export class Converter {
         );
       }
       case SyntaxKind.ExternalModuleReference: {
-        if (node.expression.kind !== SyntaxKind.StringLiteral) {
-          this.#throwError(node.expression, 'String literal expected.');
-        }
         return this.createNode<TSESTree.TSExternalModuleReference>(node, {
           type: AST_NODE_TYPES.TSExternalModuleReference,
           expression: this.convertChild(node.expression),
