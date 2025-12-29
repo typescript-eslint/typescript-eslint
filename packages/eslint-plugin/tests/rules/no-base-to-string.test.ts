@@ -1700,6 +1700,28 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
+        declare const a:
+          | {
+              valueOf(): string;
+            }
+          | {
+              other: true;
+            };
+
+        \`\${a}\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'a',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
         [{}, {}].toString();
       `,
       errors: [
