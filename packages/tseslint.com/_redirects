@@ -1,0 +1,6 @@
+/allowdefaultproject-glob-too-wide         https://typescript-eslint.io/troubleshooting/typed-linting#allowdefaultproject-glob-too-wide
+/are-project-references-supported          https://typescript-eslint.io/troubleshooting/typed-linting#are-typescript-project-references-supported
+/key-property-deprecated                   https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings
+/none-of-those-tsconfigs-include-this-file https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file
+/typed-linting                             https://typescript-eslint.io/getting-started/typed-linting
+/parser-tsconfigrootdir                    https://typescript-eslint.io/packages/parser/#tsconfigrootdir

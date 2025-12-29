@@ -34,7 +34,7 @@ describe(getInferredTSConfigRootDir, () => {
          - a
          - b
         You'll need to explicitly set tsconfigRootDir in your parser options.
-        See: https://typescript-eslint.io/packages/parser/#tsconfigrootdir]
+        See: https://tseslint.com/parser-tsconfigrootdir]
       `);
   });
 });
