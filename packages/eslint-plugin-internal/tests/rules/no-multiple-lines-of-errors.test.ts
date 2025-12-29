@@ -80,6 +80,60 @@ ruleTester.run('test', rule, {
 ruleTester.run('test', rule, {
   invalid: [
     {
+      errors: null,
+    },
+  ],
+});
+    `,
+    `
+ruleTester.run('test', rule, {
+  invalid: [
+    {
+      errors: {},
+    },
+  ],
+});
+    `,
+    `
+ruleTester.run('test', rule, {
+  invalid: [
+    {
+      errors: [],
+    },
+  ],
+});
+    `,
+    `
+ruleTester.run('test', rule, {
+  invalid: [
+    {
+      errors: [,],
+    },
+  ],
+});
+    `,
+    `
+ruleTester.run('test', rule, {
+  invalid: [
+    {
+      errors: [...other],
+    },
+  ],
+});
+    `,
+    `
+ruleTester.run('test', rule, {
+  invalid: [
+    {
+      errors: [{}],
+    },
+  ],
+});
+    `,
+    `
+ruleTester.run('test', rule, {
+  invalid: [
+    {
       errors: [{ messageId: '...', line: 1 }],
     },
   ],
