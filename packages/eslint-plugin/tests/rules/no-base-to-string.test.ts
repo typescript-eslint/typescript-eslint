@@ -129,6 +129,21 @@ ruleTester.run('no-base-to-string', rule, {
     '(() => {}).toString();',
     '(function () {}).toString();',
 
+    `
+      declare const a: {
+        [Symbol.toPrimitive](): string;
+      };
+
+      \`\${a}\`;
+    `,
+    `
+      declare const a: {
+        valueOf(): string;
+      };
+
+      \`\${a}\`;
+    `,
+
     // variable toString() and template
     `
       let value = '';
@@ -1661,7 +1676,28 @@ declare const foo: Bar & Foo;
         },
       ],
     },
+    {
+      code: `
+        declare const a:
+          | {
+              [Symbol.toPrimitive](): string;
+            }
+          | {
+              other: true;
+            };
 
+        \`\${a}\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'a',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
     {
       code: `
         [{}, {}].toString();

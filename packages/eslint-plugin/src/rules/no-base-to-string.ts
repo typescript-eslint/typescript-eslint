@@ -280,36 +280,21 @@ export default createRule<Options, MessageIds>({
         return collectArrayCertainty(type, new Set([...visited, type]));
       }
 
-      const toString =
-        checker.getPropertyOfType(type, 'toString') ??
-        checker.getPropertyOfType(type, 'toLocaleString');
+      switch (isToStringLikeFromObject(type)) {
+        case undefined:
+          // unknown
+          if (option.checkUnknown && type.flags === ts.TypeFlags.Unknown) {
+            return Usefulness.Sometimes;
+          }
+          // e.g. any
+          return Usefulness.Always;
 
-      if (!toString) {
-        // unknown
-        if (option.checkUnknown && type.flags === ts.TypeFlags.Unknown) {
-          return Usefulness.Sometimes;
-        }
-        // e.g. any
-        return Usefulness.Always;
+        case true:
+          return Usefulness.Never;
+
+        case false:
+          return Usefulness.Always;
       }
-
-      const declarations = toString.getDeclarations();
-
-      // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
-      if (declarations == null || declarations.length !== 1) {
-        // If there are multiple declarations, at least one of them must not be
-        // the default object toString.
-        //
-        // This may only matter for older versions of TS
-        // see https://github.com/typescript-eslint/typescript-eslint/issues/8585
-        return Usefulness.Always;
-      }
-
-      const declaration = declarations[0];
-      const isBaseToString =
-        ts.isInterfaceDeclaration(declaration.parent) &&
-        declaration.parent.name.text === 'Object';
-      return isBaseToString ? Usefulness.Never : Usefulness.Always;
     }
 
     function isBuiltInStringCall(node: TSESTree.CallExpression): boolean {
@@ -325,6 +310,71 @@ export default createRule<Options, MessageIds>({
         return !variable?.defs.length;
       }
       return false;
+    }
+
+    function isSymbolToPrimitiveMethod(node: ts.Declaration) {
+      return (
+        ts.isMethodSignature(node) &&
+        ts.isComputedPropertyName(node.name) &&
+        ts.isPropertyAccessExpression(node.name.expression) &&
+        ts.isIdentifier(node.name.expression.expression) &&
+        node.name.expression.expression.text === 'Symbol' &&
+        ts.isIdentifier(node.name.expression.name) &&
+        node.name.expression.name.text === 'toPrimitive' &&
+        checker
+          .getSymbolAtLocation(node.name.expression.expression)
+          ?.valueDeclaration?.getSourceFile().hasNoDefaultLib
+      );
+    }
+
+    function isToStringLikeFromObject(type: ts.Type) {
+      // An explicit [Symbol.toPrimitive] declaration is always user-defined
+      if (
+        type
+          .getProperties()
+          .some(
+            property =>
+              property.valueDeclaration &&
+              isSymbolToPrimitiveMethod(property.valueDeclaration),
+          )
+      ) {
+        return false;
+      }
+
+      // Otherwise, we check for known methods used in type coercion.
+      // We'll try to find one that's not declared on Object itself.
+      // Failing that, we'll fall back to one that is.
+      let foundFallbackOnObject = false;
+
+      for (const propertyName of ['toLocaleString', 'toString', 'valueOf']) {
+        const candidate = checker.getPropertyOfType(type, propertyName);
+        if (!candidate) {
+          continue;
+        }
+
+        const declarations = candidate.getDeclarations();
+
+        // If there are multiple declarations, at least one of them must not be
+        // the default object toString.
+        //
+        // This may only matter for older versions of TS
+        // see https://github.com/typescript-eslint/typescript-eslint/issues/8585
+        if (declarations?.length !== 1) {
+          continue;
+        }
+
+        // Not being the Object interface means this is user-defined.
+        if (
+          !ts.isInterfaceDeclaration(declarations[0].parent) ||
+          declarations[0].parent.name.text !== 'Object'
+        ) {
+          return false;
+        }
+
+        foundFallbackOnObject = true;
+      }
+
+      return foundFallbackOnObject ? true : undefined;
     }
 
     return {
