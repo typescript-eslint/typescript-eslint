@@ -4,6 +4,7 @@ import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comment
 import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
+import reactPlugin from '@eslint-react/eslint-plugin';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
 import vitestPlugin from '@vitest/eslint-plugin';
 import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
@@ -11,7 +12,6 @@ import importPlugin from 'eslint-plugin-import';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import perfectionistPlugin from 'eslint-plugin-perfectionist';
-import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import regexpPlugin from 'eslint-plugin-regexp';
 import unicornPlugin from 'eslint-plugin-unicorn';
@@ -45,8 +45,6 @@ export default defineConfig(
       ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
       ['perfectionist']: perfectionistPlugin,
       ['vitest']: vitestPlugin,
-      // https://github.com/facebook/react/issues/28313
-      ['react']: reactPlugin,
       // @ts-expect-error -- Temporary types incompatibility pending flat config support
       // https://github.com/facebook/react/pull/30774
       ['react-hooks']: fixupPluginRules(reactHooksPlugin),
@@ -593,9 +591,7 @@ export default defineConfig(
   {
     extends: [
       jsxA11yPlugin.flatConfigs.recommended,
-      // https://github.com/facebook/react/pull/30774
-      // @ts-expect-error -- Temporary types incompatibility pending flat config support
-      { name: 'react/recommended', ...reactPlugin.configs.flat.recommended },
+      reactPlugin.configs['recommended-typescript'],
       fixupConfigRules([
         {
           name: 'react-hooks/recommended',
@@ -611,9 +607,14 @@ export default defineConfig(
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
       'import/no-default-export': 'off',
       'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
-      'react/jsx-no-target-blank': 'off',
-      'react/no-unescaped-entities': 'off',
-      'react/prop-types': 'off',
+
+      // TODO: 'react/jsx-no-target-blank': 'off',
+      // TODO: 'react/no-unescaped-entities': 'off',
+      // TODO: 'react/prop-types': 'off',
+
+      // '@eslint-react/jsx-key-before-spread': 'off',
+      // '@eslint-react/hooks-extra/no-direct-set-state-in-use-effect': 'off',
+      // '@eslint-react/no-children-map': 'off',
     },
     settings: {
       react: {

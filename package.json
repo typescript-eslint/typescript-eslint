@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "^4.4.1",
+    "@eslint-react/eslint-plugin": "^2.4.0",
     "@eslint/compat": "^1.2.4",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.26.0",
@@ -84,7 +85,6 @@
     "eslint-plugin-jsdoc": "^50.5.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-perfectionist": "^5.1.0",
-    "eslint-plugin-react": "^7.37.3",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-regexp": "^2.7.0",
     "eslint-plugin-unicorn": "^59.0.0",
