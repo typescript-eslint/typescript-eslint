@@ -6069,6 +6069,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@typescript-eslint/redirects@workspace:packages/tseslint.com":
+  version: 0.0.0-use.local
+  resolution: "@typescript-eslint/redirects@workspace:packages/tseslint.com"
+  languageName: unknown
+  linkType: soft
+
 "@typescript-eslint/rule-schema-to-typescript-types@8.50.1, @typescript-eslint/rule-schema-to-typescript-types@workspace:*, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
