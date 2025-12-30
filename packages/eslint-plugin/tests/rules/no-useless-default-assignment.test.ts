@@ -224,6 +224,10 @@ ruleTester.run('no-useless-default-assignment', rule, {
       declare const tuple: [string];
       const [a, b = 'default'] = tuple;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11850
+    `
+      const { a = 'default' } = Math.random() > 0.5 ? { a: 'Hello' } : {};
+    `,
   ],
   invalid: [
     {
