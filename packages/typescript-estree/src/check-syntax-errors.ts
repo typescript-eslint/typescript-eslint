@@ -48,15 +48,6 @@ function checkForStatementDeclaration(
         `The variable declaration of a '${loop}' statement cannot have a type annotation.`,
       );
     }
-    if (
-      kind === SyntaxKind.ForInStatement &&
-      initializer.flags & ts.NodeFlags.Using
-    ) {
-      throw createError(
-        initializer,
-        "The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
-      );
-    }
   } else if (
     !isValidAssignmentTarget(initializer) &&
     initializer.kind !== SyntaxKind.ObjectLiteralExpression &&
