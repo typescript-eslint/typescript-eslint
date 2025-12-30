@@ -948,7 +948,7 @@ export class Converter {
               variableDeclarationList.parent.kind === SyntaxKind.ForInStatement
             ) {
               this.#throwError(
-                node,
+                variableDeclarationList,
                 `The left-hand side of a 'for...in' statement cannot be a '${kind}' declaration.`,
               );
             }
