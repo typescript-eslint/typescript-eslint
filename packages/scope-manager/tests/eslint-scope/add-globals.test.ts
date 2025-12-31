@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/dot-notation -- ['implicit'] is private */
+
+import { ScopeType } from '../../src/index.js';
 import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
 describe('ScopeManager#addGlobals', () => {
@@ -9,8 +12,7 @@ describe('ScopeManager#addGlobals', () => {
     expect(scopeManager.scopes).toHaveLength(1);
 
     const globalScope = scopeManager.scopes[0];
-
-    expect(globalScope.type).toBe('global');
+    assert.isScopeOfType(globalScope, ScopeType.global);
 
     const variables = getRealVariables(globalScope.variables);
     const typeVariableAmount = globalScope.variables.length - variables.length;
@@ -33,23 +35,23 @@ describe('ScopeManager#addGlobals', () => {
     expect(globalScope.through[0]).toStrictEqual(globalScope.references[0]);
     expect(globalScope.through[1]).toStrictEqual(globalScope.references[1]);
     expect(globalScope.through[2]).toStrictEqual(globalScope.references[2]);
-    expect(globalScope.implicit.variables).toHaveLength(1);
-    expect(globalScope.implicit.variables[0].name).toBe('foo');
-    expect(globalScope.implicit.variables[0].references).toHaveLength(0);
-    expect(globalScope.implicit.variables[0].defs).toHaveLength(1);
-    expect(globalScope.implicit.variables[0].identifiers).toHaveLength(1);
-    expect(globalScope.implicit.set.size).toBe(1);
-    expect(globalScope.implicit.set.get('foo')).toStrictEqual(
-      globalScope.implicit.variables[0],
+    expect(globalScope['implicit'].variables).toHaveLength(1);
+    expect(globalScope['implicit'].variables[0].name).toBe('foo');
+    expect(globalScope['implicit'].variables[0].references).toHaveLength(0);
+    expect(globalScope['implicit'].variables[0].defs).toHaveLength(1);
+    expect(globalScope['implicit'].variables[0].identifiers).toHaveLength(1);
+    expect(globalScope['implicit'].set.size).toBe(1);
+    expect(globalScope['implicit'].set.get('foo')).toStrictEqual(
+      globalScope['implicit'].variables[0],
     );
-    expect(globalScope.implicit.leftToBeResolved).toHaveLength(3);
-    expect(globalScope.implicit.leftToBeResolved[0]).toStrictEqual(
+    expect(globalScope['implicit'].leftToBeResolved).toHaveLength(3);
+    expect(globalScope['implicit'].leftToBeResolved[0]).toStrictEqual(
       globalScope.references[0],
     );
-    expect(globalScope.implicit.leftToBeResolved[1]).toStrictEqual(
+    expect(globalScope['implicit'].leftToBeResolved[1]).toStrictEqual(
       globalScope.references[1],
     );
-    expect(globalScope.implicit.leftToBeResolved[2]).toStrictEqual(
+    expect(globalScope['implicit'].leftToBeResolved[2]).toStrictEqual(
       globalScope.references[2],
     );
 
@@ -96,9 +98,9 @@ describe('ScopeManager#addGlobals', () => {
       globalScope.references[2],
     );
     expect(globalScope.through).toHaveLength(0);
-    expect(globalScope.implicit.variables).toHaveLength(0);
-    expect(globalScope.implicit.set.size).toBe(0);
-    expect(globalScope.implicit.leftToBeResolved).toHaveLength(0);
+    expect(globalScope['implicit'].variables).toHaveLength(0);
+    expect(globalScope['implicit'].set.size).toBe(0);
+    expect(globalScope['implicit'].leftToBeResolved).toHaveLength(0);
   });
 
   it('adds variables to the global scope and resolves references from inner scopes', () => {
@@ -109,6 +111,7 @@ describe('ScopeManager#addGlobals', () => {
     expect(scopeManager.scopes).toHaveLength(2);
 
     const globalScope = scopeManager.scopes[0];
+    assert.isScopeOfType(globalScope, ScopeType.global);
 
     expect(globalScope.type).toBe('global');
 
@@ -145,23 +148,23 @@ describe('ScopeManager#addGlobals', () => {
     expect(globalScope.through[0]).toStrictEqual(functionScope.references[0]);
     expect(globalScope.through[1]).toStrictEqual(functionScope.references[1]);
     expect(globalScope.through[2]).toStrictEqual(functionScope.references[2]);
-    expect(globalScope.implicit.variables).toHaveLength(1);
-    expect(globalScope.implicit.variables[0].name).toBe('foo');
-    expect(globalScope.implicit.variables[0].references).toHaveLength(0);
-    expect(globalScope.implicit.variables[0].defs).toHaveLength(1);
-    expect(globalScope.implicit.variables[0].identifiers).toHaveLength(1);
-    expect(globalScope.implicit.set.size).toBe(1);
-    expect(globalScope.implicit.set.get('foo')).toStrictEqual(
-      globalScope.implicit.variables[0],
+    expect(globalScope['implicit'].variables).toHaveLength(1);
+    expect(globalScope['implicit'].variables[0].name).toBe('foo');
+    expect(globalScope['implicit'].variables[0].references).toHaveLength(0);
+    expect(globalScope['implicit'].variables[0].defs).toHaveLength(1);
+    expect(globalScope['implicit'].variables[0].identifiers).toHaveLength(1);
+    expect(globalScope['implicit'].set.size).toBe(1);
+    expect(globalScope['implicit'].set.get('foo')).toStrictEqual(
+      globalScope['implicit'].variables[0],
     );
-    expect(globalScope.implicit.leftToBeResolved).toHaveLength(3);
-    expect(globalScope.implicit.leftToBeResolved[0]).toStrictEqual(
+    expect(globalScope['implicit'].leftToBeResolved).toHaveLength(3);
+    expect(globalScope['implicit'].leftToBeResolved[0]).toStrictEqual(
       functionScope.references[0],
     );
-    expect(globalScope.implicit.leftToBeResolved[1]).toStrictEqual(
+    expect(globalScope['implicit'].leftToBeResolved[1]).toStrictEqual(
       functionScope.references[1],
     );
-    expect(globalScope.implicit.leftToBeResolved[2]).toStrictEqual(
+    expect(globalScope['implicit'].leftToBeResolved[2]).toStrictEqual(
       functionScope.references[2],
     );
 
@@ -218,9 +221,9 @@ describe('ScopeManager#addGlobals', () => {
     expect(functionScope.through[2]).toStrictEqual(functionScope.references[2]);
     expect(globalScope.references).toHaveLength(0);
     expect(globalScope.through).toHaveLength(0);
-    expect(globalScope.implicit.variables).toHaveLength(0);
-    expect(globalScope.implicit.set.size).toBe(0);
-    expect(globalScope.implicit.leftToBeResolved).toHaveLength(0);
+    expect(globalScope['implicit'].variables).toHaveLength(0);
+    expect(globalScope['implicit'].set.size).toBe(0);
+    expect(globalScope['implicit'].leftToBeResolved).toHaveLength(0);
   });
 
   it("adds variables to the global scope and doesn't affect unrelated references", () => {
@@ -231,6 +234,7 @@ describe('ScopeManager#addGlobals', () => {
     expect(scopeManager.scopes).toHaveLength(1);
 
     const globalScope = scopeManager.scopes[0];
+    assert.isScopeOfType(globalScope, ScopeType.global);
 
     expect(globalScope.type).toBe('global');
 
@@ -255,23 +259,23 @@ describe('ScopeManager#addGlobals', () => {
     expect(globalScope.through[0]).toStrictEqual(globalScope.references[0]);
     expect(globalScope.through[1]).toStrictEqual(globalScope.references[1]);
     expect(globalScope.through[2]).toStrictEqual(globalScope.references[2]);
-    expect(globalScope.implicit.variables).toHaveLength(1);
-    expect(globalScope.implicit.variables[0].name).toBe('foo');
-    expect(globalScope.implicit.variables[0].references).toHaveLength(0);
-    expect(globalScope.implicit.variables[0].defs).toHaveLength(1);
-    expect(globalScope.implicit.variables[0].identifiers).toHaveLength(1);
-    expect(globalScope.implicit.set.size).toBe(1);
-    expect(globalScope.implicit.set.get('foo')).toStrictEqual(
-      globalScope.implicit.variables[0],
+    expect(globalScope['implicit'].variables).toHaveLength(1);
+    expect(globalScope['implicit'].variables[0].name).toBe('foo');
+    expect(globalScope['implicit'].variables[0].references).toHaveLength(0);
+    expect(globalScope['implicit'].variables[0].defs).toHaveLength(1);
+    expect(globalScope['implicit'].variables[0].identifiers).toHaveLength(1);
+    expect(globalScope['implicit'].set.size).toBe(1);
+    expect(globalScope['implicit'].set.get('foo')).toStrictEqual(
+      globalScope['implicit'].variables[0],
     );
-    expect(globalScope.implicit.leftToBeResolved).toHaveLength(3);
-    expect(globalScope.implicit.leftToBeResolved[0]).toStrictEqual(
+    expect(globalScope['implicit'].leftToBeResolved).toHaveLength(3);
+    expect(globalScope['implicit'].leftToBeResolved[0]).toStrictEqual(
       globalScope.references[0],
     );
-    expect(globalScope.implicit.leftToBeResolved[1]).toStrictEqual(
+    expect(globalScope['implicit'].leftToBeResolved[1]).toStrictEqual(
       globalScope.references[1],
     );
-    expect(globalScope.implicit.leftToBeResolved[2]).toStrictEqual(
+    expect(globalScope['implicit'].leftToBeResolved[2]).toStrictEqual(
       globalScope.references[2],
     );
 
@@ -309,23 +313,23 @@ describe('ScopeManager#addGlobals', () => {
     expect(globalScope.through[0]).toStrictEqual(globalScope.references[0]);
     expect(globalScope.through[1]).toStrictEqual(globalScope.references[1]);
     expect(globalScope.through[2]).toStrictEqual(globalScope.references[2]);
-    expect(globalScope.implicit.variables).toHaveLength(1);
-    expect(globalScope.implicit.variables[0].name).toBe('foo');
-    expect(globalScope.implicit.variables[0].references).toHaveLength(0);
-    expect(globalScope.implicit.variables[0].defs).toHaveLength(1);
-    expect(globalScope.implicit.variables[0].identifiers).toHaveLength(1);
-    expect(globalScope.implicit.set.size).toBe(1);
-    expect(globalScope.implicit.set.get('foo')).toStrictEqual(
-      globalScope.implicit.variables[0],
+    expect(globalScope['implicit'].variables).toHaveLength(1);
+    expect(globalScope['implicit'].variables[0].name).toBe('foo');
+    expect(globalScope['implicit'].variables[0].references).toHaveLength(0);
+    expect(globalScope['implicit'].variables[0].defs).toHaveLength(1);
+    expect(globalScope['implicit'].variables[0].identifiers).toHaveLength(1);
+    expect(globalScope['implicit'].set.size).toBe(1);
+    expect(globalScope['implicit'].set.get('foo')).toStrictEqual(
+      globalScope['implicit'].variables[0],
     );
-    expect(globalScope.implicit.leftToBeResolved).toHaveLength(3);
-    expect(globalScope.implicit.leftToBeResolved[0]).toStrictEqual(
+    expect(globalScope['implicit'].leftToBeResolved).toHaveLength(3);
+    expect(globalScope['implicit'].leftToBeResolved[0]).toStrictEqual(
       globalScope.references[0],
     );
-    expect(globalScope.implicit.leftToBeResolved[1]).toStrictEqual(
+    expect(globalScope['implicit'].leftToBeResolved[1]).toStrictEqual(
       globalScope.references[1],
     );
-    expect(globalScope.implicit.leftToBeResolved[2]).toStrictEqual(
+    expect(globalScope['implicit'].leftToBeResolved[2]).toStrictEqual(
       globalScope.references[2],
     );
   });
@@ -342,6 +346,7 @@ describe('ScopeManager#addGlobals', () => {
     expect(scopeManager.scopes).toHaveLength(1);
 
     const globalScope = scopeManager.scopes[0];
+    assert.isScopeOfType(globalScope, ScopeType.global);
 
     expect(globalScope.type).toBe('global');
 
@@ -375,9 +380,9 @@ describe('ScopeManager#addGlobals', () => {
     expect(variables[1].references[0]).toStrictEqual(globalScope.references[1]);
     expect(variables[1].references[1]).toStrictEqual(globalScope.references[2]);
     expect(globalScope.through).toHaveLength(0);
-    expect(globalScope.implicit.variables).toHaveLength(0);
-    expect(globalScope.implicit.set.size).toBe(0);
-    //expect(globalScope.implicit.leftToBeResolved).toHaveLength(0);
+    expect(globalScope['implicit'].variables).toHaveLength(0);
+    expect(globalScope['implicit'].set.size).toBe(0);
+    expect(globalScope['implicit'].leftToBeResolved).toHaveLength(0);
 
     scopeManager.addGlobals(['foo', 'bar']);
     const withAddedVariables = getRealVariables(scopeManager.variables);
@@ -421,8 +426,8 @@ describe('ScopeManager#addGlobals', () => {
       globalScope.references[2],
     );
     expect(globalScope.through).toHaveLength(0);
-    expect(globalScope.implicit.variables).toHaveLength(0);
-    expect(globalScope.implicit.set.size).toBe(0);
-    expect(globalScope.implicit.leftToBeResolved).toHaveLength(0);
+    expect(globalScope['implicit'].variables).toHaveLength(0);
+    expect(globalScope['implicit'].set.size).toBe(0);
+    expect(globalScope['implicit'].leftToBeResolved).toHaveLength(0);
   });
 });

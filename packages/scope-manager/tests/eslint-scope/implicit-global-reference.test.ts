@@ -29,7 +29,7 @@ describe('implicit global reference', () => {
     ).toStrictEqual([]);
     expect(
       scopes[0]['implicit'].leftToBeResolved.map(
-        reference => reference.identifier.name,
+        (reference: Reference) => reference.identifier.name,
       ),
     ).toStrictEqual([]);
     expect(scopes[0].through).toStrictEqual([]);
@@ -59,7 +59,7 @@ describe('implicit global reference', () => {
     ).toStrictEqual(['x']);
     expect(
       scopes[0]['implicit'].leftToBeResolved.map(
-        reference => reference.identifier.name,
+        (reference: Reference) => reference.identifier.name,
       ),
     ).toStrictEqual(['x', 'x']);
     expect(
