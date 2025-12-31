@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/dot-notation -- ['implicit'] is private */
-import type { Variable } from '../../src/index.js';
+import type { Variable, Reference } from '../../src/index.js';
 
 import { DefinitionType, ScopeType } from '../../src/index.js';
 import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
@@ -27,6 +27,12 @@ describe('implicit global reference', () => {
         (variable: Variable) => variable.name,
       ),
     ).toStrictEqual([]);
+    expect(
+      scopes[0]['implicit'].leftToBeResolved.map(
+        reference => reference.identifier.name,
+      ),
+    ).toStrictEqual([]);
+    expect(scopes[0].through).toStrictEqual([]);
   });
 
   it('assignments global scope without definition', () => {
@@ -51,6 +57,14 @@ describe('implicit global reference', () => {
         (variable: Variable) => variable.name,
       ),
     ).toStrictEqual(['x']);
+    expect(
+      scopes[0]['implicit'].leftToBeResolved.map(
+        reference => reference.identifier.name,
+      ),
+    ).toStrictEqual(['x', 'x']);
+    expect(
+      scopes[0].through.map(reference => reference.identifier.name),
+    ).toStrictEqual(['x', 'x']);
   });
 
   it('assignments global scope without definition eval', () => {
@@ -100,6 +114,16 @@ describe('implicit global reference', () => {
         (variable: Variable) => variable.name,
       ),
     ).toStrictEqual(['x']);
+    expect(
+      scopes[0]['implicit'].leftToBeResolved.map(
+        (reference: Reference) => reference.identifier.name,
+      ),
+    ).toStrictEqual(['x']);
+    expect(
+      scopes[0].through.map(
+        (reference: Reference) => reference.identifier.name,
+      ),
+    ).toStrictEqual(['x']);
   });
 
   it("assignment doesn't leak", () => {
@@ -126,6 +150,16 @@ describe('implicit global reference', () => {
         (variable: Variable) => variable.name,
       ),
     ).toStrictEqual([]);
+    expect(
+      scopes[0]['implicit'].leftToBeResolved.map(
+        (reference: Reference) => reference.identifier.name,
+      ),
+    ).toStrictEqual([]);
+    expect(
+      scopes[0].through.map(
+        (reference: Reference) => reference.identifier.name,
+      ),
+    ).toStrictEqual([]);
   });
 
   it('for-in-statement leaks', () => {
@@ -149,6 +183,16 @@ describe('implicit global reference', () => {
         (variable: Variable) => variable.name,
       ),
     ).toStrictEqual(['x']);
+    expect(
+      scopes[0]['implicit'].leftToBeResolved.map(
+        (reference: Reference) => reference.identifier.name,
+      ),
+    ).toStrictEqual(['x', 'y']);
+    expect(
+      scopes[0].through.map(
+        (reference: Reference) => reference.identifier.name,
+      ),
+    ).toStrictEqual(['x', 'y']);
   });
 
   it("for-in-statement doesn't leaks", () => {
@@ -180,5 +224,15 @@ describe('implicit global reference', () => {
         (variable: Variable) => variable.name,
       ),
     ).toStrictEqual([]);
+    expect(
+      scopes[0]['implicit'].leftToBeResolved.map(
+        (reference: Reference) => reference.identifier.name,
+      ),
+    ).toStrictEqual(['y']);
+    expect(
+      scopes[0].through.map(
+        (reference: Reference) => reference.identifier.name,
+      ),
+    ).toStrictEqual(['y']);
   });
 });
