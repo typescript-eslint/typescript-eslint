@@ -3213,19 +3213,19 @@ const baz = foo?.bar;
         output: 'foo?.bar && (foo.bar as any).baz',
       },
       {
-        code: noFormat`foo && /* inline :( */ (foo.bar && (foo.bar as any).baz)`,
+        code: noFormat`foo && /* inline comment ((( */ (foo.bar && (foo.bar as any).baz)`,
         errors: [{ messageId: 'preferOptionalChain' }],
         output: 'foo?.bar && (foo.bar as any).baz',
       },
       {
-        code: noFormat`foo && (foo.bar && (foo.bar as any).baz) /* gotcha :( */`,
+        code: noFormat`foo && (foo.bar && (foo.bar as any).baz) /* inline comment ))) */`,
         errors: [{ messageId: 'preferOptionalChain' }],
-        output: 'foo?.bar && (foo.bar as any).baz /* gotcha :( */',
+        output: 'foo?.bar && (foo.bar as any).baz /* inline comment ))) */',
       },
       {
-        code: noFormat`foo && (foo.bar/* gotcha :( */ && (foo.bar as any).baz)`,
+        code: noFormat`foo && (foo.bar/* inline comment ))) */ && (foo.bar as any).baz)`,
         errors: [{ messageId: 'preferOptionalChain' }],
-        output: 'foo?.bar/* gotcha :( */ && (foo.bar as any).baz',
+        output: 'foo?.bar/* inline comment ))) */ && (foo.bar as any).baz',
       },
       {
         code: noFormat`foo && (foo.bar && bar) && (baz)`,
