@@ -524,40 +524,53 @@ function getReportDescriptor(
   const reportRange = getReportRange(chain, node.range, sourceCode);
 
   const fix: ReportFixFunction = fixer => {
-    const replacedCode = sourceCode.text.substring(
-      reportRange[0],
-      reportRange[1],
-    );
     let unclosedParens = 0;
 
-    for (const char of replacedCode) {
-      if (char === '(') {
+    const tokensInRange = sourceCode.getTokens(node, {
+      filter: token =>
+        token.range[0] >= reportRange[0] && token.range[1] <= reportRange[1],
+    });
+
+    for (const token of tokensInRange) {
+      if (isOpeningParenToken(token)) {
         unclosedParens++;
-      } else if (char === ')') {
+      } else if (isClosingParenToken(token)) {
         unclosedParens--;
       }
     }
 
     if (unclosedParens > 0 && reportRange[1] < node.range[1]) {
-      const unfixedCode = sourceCode.text.substring(
-        reportRange[1],
-        node.range[1],
-      );
+      const openParensOutsideRange: number[] = [];
+      const unmatchedCloseParens: number[] = [];
 
-      let unfixedCodeWithoutExtraParens = '';
-      for (let i = unfixedCode.length - 1; i >= 0; i--) {
-        if (unfixedCode[i] === ')' && unclosedParens > 0) {
-          unclosedParens--;
-        } else {
-          unfixedCodeWithoutExtraParens =
-            unfixedCode[i] + unfixedCodeWithoutExtraParens;
+      const tokensOutRange = sourceCode.getTokens(node, {
+        filter: token => token.range[1] > reportRange[1],
+      });
+
+      for (const token of tokensOutRange) {
+        if (isOpeningParenToken(token)) {
+          openParensOutsideRange.push(token.range[0]);
+        }
+        if (isClosingParenToken(token)) {
+          if (openParensOutsideRange.length > 0) {
+            openParensOutsideRange.pop();
+          } else {
+            unmatchedCloseParens.push(token.range[0]);
+          }
         }
       }
 
-      return fixer.replaceTextRange(
-        [reportRange[0], node.range[1]],
-        newCode + unfixedCodeWithoutExtraParens,
-      );
+      let leftCode = sourceCode.getText(node);
+      unmatchedCloseParens.reverse();
+      for (const unmatchedParenIndex of unmatchedCloseParens) {
+        leftCode =
+          leftCode.slice(0, unmatchedParenIndex) +
+          leftCode.slice(unmatchedParenIndex + 1);
+      }
+
+      leftCode = leftCode.slice(reportRange[1]);
+
+      return fixer.replaceTextRange(node.range, newCode + leftCode);
     }
 
     return fixer.replaceTextRange(reportRange, newCode);
