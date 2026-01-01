@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/tsconfig-utils",
-  "version": "8.50.0",
+  "version": "8.51.0",
   "description": "Utilities for collecting TSConfigs for linting scenarios.",
   "files": [
     "dist",

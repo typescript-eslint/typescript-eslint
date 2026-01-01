@@ -31,7 +31,15 @@ import {
 } from '../../util';
 import { checkNullishAndReport } from './checkNullishAndReport';
 import { compareNodes, NodeComparisonResult } from './compareNodes';
-import { ComparisonType, NullishComparisonType } from './gatherLogicalOperands';
+import {
+  ComparisonType,
+  NullishComparisonType,
+  Yoda,
+} from './gatherLogicalOperands';
+
+type LastChainOperandForReport = Omit<LastChainOperand, 'yoda'> & {
+  isYoda: boolean;
+};
 
 function includesType(
   parserServices: ParserServicesWithTypeInformation,
@@ -257,6 +265,57 @@ const analyzeOrChainOperand: OperandAnalyzer = (
   }
 };
 
+const resolveOperandSubset = (
+  previousOperand: ValidOperand,
+  lastChainOperand: LastChainOperand,
+) => {
+  const isNameSubset =
+    compareNodes(
+      previousOperand.comparedName,
+      lastChainOperand.comparedName,
+    ) === NodeComparisonResult.Subset;
+
+  if (lastChainOperand.yoda !== Yoda.Unknown) {
+    return {
+      comparedName: lastChainOperand.comparedName,
+      comparisonValue: lastChainOperand.comparisonValue,
+      isSubset: isNameSubset,
+      isYoda: lastChainOperand.yoda === Yoda.Yes,
+    };
+  }
+
+  const isValueSubset =
+    compareNodes(
+      previousOperand.comparedName,
+      lastChainOperand.comparisonValue,
+    ) === NodeComparisonResult.Subset;
+
+  if (isNameSubset && !isValueSubset) {
+    return {
+      comparedName: lastChainOperand.comparedName,
+      comparisonValue: lastChainOperand.comparisonValue,
+      isSubset: true,
+      isYoda: false,
+    };
+  }
+
+  if (!isNameSubset && isValueSubset) {
+    return {
+      comparedName: lastChainOperand.comparisonValue,
+      comparisonValue: lastChainOperand.comparedName,
+      isSubset: true,
+      isYoda: true,
+    };
+  }
+
+  return {
+    comparedName: lastChainOperand.comparisonValue,
+    comparisonValue: lastChainOperand.comparisonValue,
+    isSubset: false,
+    isYoda: true,
+  };
+};
+
 /**
  * Returns the range that needs to be reported from the chain.
  * @param chain The chain of logical expressions.
@@ -306,7 +365,7 @@ function getReportDescriptor(
   operator: '&&' | '||',
   options: PreferOptionalChainOptions,
   subChain: ValidOperand[],
-  lastChain: (LastChainOperand | ValidOperand) | undefined,
+  lastChain: (LastChainOperandForReport | ValidOperand) | undefined,
 ): ReportDescriptor<PreferOptionalChainMessageIds> {
   const chain = lastChain ? [...subChain, lastChain] : subChain;
   const lastOperand = chain[chain.length - 1];
@@ -643,7 +702,9 @@ export function analyzeChain(
   // Things like x !== null && x !== undefined have two nodes, but they are
   // one logical unit here, so we'll allow them to be grouped.
   let subChain: (readonly ValidOperand[] | ValidOperand)[] = [];
-  let lastChain: LastChainOperand | ValidOperand | undefined = undefined;
+  let lastChain: LastChainOperandForReport | ValidOperand | undefined =
+    undefined;
+
   const maybeReportThenReset = (
     newChainSeed?: readonly [ValidOperand, ...ValidOperand[]],
   ): void => {
@@ -747,23 +808,27 @@ export function analyzeChain(
   const lastOperand = subChain.flat().at(-1);
 
   if (lastOperand && lastChainOperand) {
-    const comparisonResult = compareNodes(
-      lastOperand.comparedName,
-      lastChainOperand.comparedName,
-    );
     const isValidLastChainOperand =
       operator === '&&'
         ? isValidAndLastChainOperand
         : isValidOrLastChainOperand;
+
+    const { comparedName, comparisonValue, isSubset, isYoda } =
+      resolveOperandSubset(lastOperand, lastChainOperand);
     if (
-      comparisonResult === NodeComparisonResult.Subset &&
+      isSubset &&
       isValidLastChainOperand(
-        lastChainOperand.comparisonValue,
+        comparisonValue,
         lastChainOperand.comparisonType,
         parserServices,
       )
     ) {
-      lastChain = lastChainOperand;
+      lastChain = {
+        ...lastChainOperand,
+        comparedName,
+        comparisonValue,
+        isYoda,
+      };
     }
   }
   // check the leftovers

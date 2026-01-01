@@ -283,6 +283,21 @@ If this setting is specified, you must only lint files that are included in the 
 
 For an option that allows linting files outside of your TSConfig file(s), see [`projectService`](#projectservice).
 
+### Usage with `projectService`
+
+Enabling both `project` and `projectService` at the same time will cause an error:
+
+> ```plaintext
+> Enabling "project" does nothing when "projectService" is enabled. You can remove the "project" setting
+> ```
+
+If you're enabling `projectService`, we generally recommend disabling `project`.
+However, if you need, you can disable this check with a `TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR` environment variable:
+
+```shell
+TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR=true npx eslint .
+```
+
 <HiddenHeading id="experimental_useprojectservice" />
 
 ### `projectService`

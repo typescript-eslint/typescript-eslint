@@ -1339,9 +1339,264 @@ describe('chain ending with comparison', () => {
         output: `undefined !== foo?.bar?.baz;`,
       },
       {
-        code: noFormat`foo && (foo.bar == 0)`,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        output: 'foo?.bar == 0',
+        code: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: 3 };
+          a != null && a.b === foo.three;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: 3 };
+          a?.b === foo.three;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: 3 };
+          a != null && a.b() === foo.three;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: 3 };
+          a?.b() === foo.three;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: 3 };
+          a != null && a.b == foo.three;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: 3 };
+          a?.b == foo.three;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: 3 };
+          a != null && a.b() == foo.three;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: 3 };
+          a?.b() == foo.three;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: undefined };
+          a != null && a.b !== foo.three;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: undefined };
+          a?.b !== foo.three;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: undefined };
+          a != null && a.b() != foo.three;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: undefined };
+          a?.b() != foo.three;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: 3 };
+          a === null || a.b !== foo.three;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: 3 };
+          a?.b !== foo.three;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: 3 };
+          a === null || a.b() != foo.three;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: 3 };
+          a?.b() != foo.three;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: undefined };
+          a === null || a.b == foo.three;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: undefined };
+          a?.b == foo.three;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: undefined };
+          a === null || a.b() === foo.three;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: undefined };
+          a?.b() === foo.three;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: 3 };
+          a != null && foo.three === a.b;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: 3 };
+          foo.three === a?.b;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: 3 };
+          a != null && foo.three === a.b();
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: 3 };
+          foo.three === a?.b();
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: 3 };
+          a != null && foo.three == a.b;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: 3 };
+          foo.three == a?.b;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: 3 };
+          a != null && foo.three == a.b();
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: 3 };
+          foo.three == a?.b();
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: undefined };
+          a != null && foo.three !== a.b;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: undefined };
+          foo.three !== a?.b;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: undefined };
+          a != null && foo.three != a.b();
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: undefined };
+          foo.three != a?.b();
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: 3 };
+          a == null || foo.three !== a.b;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: 3 };
+          foo.three !== a?.b;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: 3 };
+          a == null || foo.three != a.b();
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: 3 };
+          foo.three != a?.b();
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: undefined };
+          a == null || foo.three == a.b;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: number } | null;
+          declare const foo: { three: undefined };
+          foo.three == a?.b;
+        `,
+      },
+      {
+        code: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: undefined };
+          a == null || foo.three === a.b();
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const a: { b: () => number } | null;
+          declare const foo: { three: undefined };
+          foo.three === a?.b();
+        `,
       },
     ],
     valid: [
@@ -1350,6 +1605,8 @@ describe('chain ending with comparison', () => {
       'foo && foo.bar == undefined;',
       'foo && foo.bar === undeclaredVar;',
       'foo && foo.bar === undefined;',
+      'foo && foo.bar === too.bar;',
+      'foo && foo.bar === foo.baz;',
       'foo && foo.bar !== 0;',
       'foo && foo.bar !== 1;',
       "foo && foo.bar !== '123';",
@@ -1358,6 +1615,8 @@ describe('chain ending with comparison', () => {
       'foo && foo.bar !== true;',
       'foo && foo.bar !== null;',
       'foo && foo.bar !== undeclaredVar;',
+      'foo && foo.bar !== too.bar;',
+      'foo && foo.bar !== foo.baz;',
       'foo && foo.bar != 0;',
       'foo && foo.bar != 1;',
       "foo && foo.bar != '123';",
@@ -1365,6 +1624,8 @@ describe('chain ending with comparison', () => {
       'foo && foo.bar != false;',
       'foo && foo.bar != true;',
       'foo && foo.bar != undeclaredVar;',
+      'foo && foo.bar != too.bar;',
+      'foo && foo.bar != foo.baz;',
       'foo != null && foo.bar == undeclaredVar;',
       'foo != null && foo.bar == null;',
       'foo != null && foo.bar == undefined;',
@@ -1385,6 +1646,38 @@ describe('chain ending with comparison', () => {
       'foo != null && foo.bar != false;',
       'foo != null && foo.bar != true;',
       'foo != null && foo.bar != undeclaredVar;',
+      `
+        declare const foo: { bar: number; baz: number } | null;
+        foo != null && foo.bar == foo.baz;
+      `,
+      `
+        declare const foo: { bar: number; baz: () => number } | null;
+        foo != null && foo.bar == foo.baz();
+      `,
+      `
+        declare const foo: { bar: number; baz: number } | null;
+        foo != null && foo.bar === foo.baz;
+      `,
+      `
+        declare const foo: { bar: number; baz: () => number } | null;
+        foo != null && foo.bar === foo.baz();
+      `,
+      `
+        declare const foo: { bar: number; baz: undefined } | null;
+        foo != null && foo.bar != foo.baz;
+      `,
+      `
+        declare const foo: { bar: number; baz: () => undefined } | null;
+        foo != null && foo.bar != foo.baz();
+      `,
+      `
+        declare const foo: { bar: number; baz: undefined } | null;
+        foo != null && foo.bar !== foo.baz;
+      `,
+      `
+        declare const foo: { bar: number; baz: () => undefined } | null;
+        foo != null && foo.bar !== foo.baz();
+      `,
       `
         declare const foo: { bar: number };
         foo && foo.bar == undeclaredVar;
@@ -1843,6 +2136,38 @@ describe('chain ending with comparison', () => {
       'foo == null || foo.bar == undeclaredVar;',
       'foo == null || foo.bar !== undeclaredVar;',
       'foo == null || foo.bar !== undefined;',
+      `
+        declare const foo: { bar: number; baz: number } | null;
+        foo == null || foo.bar != foo.baz;
+      `,
+      `
+        declare const foo: { bar: number; baz: () => number } | null;
+        foo == null || foo.bar != foo.baz();
+      `,
+      `
+        declare const foo: { bar: number; baz: undefined } | null;
+        foo == null || foo.bar === foo.baz;
+      `,
+      `
+        declare const foo: { bar: number; baz: () => undefined } | null;
+        foo == null || foo.bar === foo.baz();
+      `,
+      `
+        declare const foo: { bar: number; baz: undefined } | null;
+        foo == null || foo.bar == foo.baz;
+      `,
+      `
+        declare const foo: { bar: number; baz: () => undefined } | null;
+        foo == null || foo.bar == foo.baz();
+      `,
+      `
+        declare const foo: { bar: number; baz: number } | null;
+        foo == null || foo.bar !== foo.baz;
+      `,
+      `
+        declare const foo: { bar: number; baz: () => number } | null;
+        foo == null || foo.bar !== foo.baz();
+      `,
       'foo || foo.bar != 0;',
       'foo || foo.bar != 1;',
       "foo || foo.bar != '123';",

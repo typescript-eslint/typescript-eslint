@@ -489,8 +489,7 @@ export class Referencer extends Visitor {
     // NOTE: In ES6, ForStatement dynamically generates per iteration environment. However, this is
     // a static analyzer, we only generate one scope for ForStatement.
     if (
-      node.init &&
-      node.init.type === AST_NODE_TYPES.VariableDeclaration &&
+      node.init?.type === AST_NODE_TYPES.VariableDeclaration &&
       node.init.kind !== 'var'
     ) {
       this.scopeManager.nestForScope(node);

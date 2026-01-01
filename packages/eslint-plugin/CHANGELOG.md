@@ -1,3 +1,41 @@
+## 8.51.0 (2025-12-29)
+
+### 🚀 Features
+
+- **eslint-plugin:** add namespace to plugin meta ([#11885](https://github.com/typescript-eslint/typescript-eslint/pull/11885))
+- **eslint-plugin:** [no-useless-default-assignment] fix some cases to optional syntax ([#11871](https://github.com/typescript-eslint/typescript-eslint/pull/11871))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] handle MemberExpression in final chain position ([#11835](https://github.com/typescript-eslint/typescript-eslint/pull/11835))
+- **eslint-plugin:** bump ts-api-utils to 2.2.0 ([#11881](https://github.com/typescript-eslint/typescript-eslint/pull/11881))
+- **eslint-plugin:** remove fixable from no-dynamic-delete rule ([#11876](https://github.com/typescript-eslint/typescript-eslint/pull/11876))
+- **eslint-plugin:** fix crash and false positives in `no-useless-default-assignment` ([#11845](https://github.com/typescript-eslint/typescript-eslint/pull/11845))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+- mdm317
+- Ulrich Stark
+- Yannick Decat @mho22
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.50.1 (2025-12-22)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] correct handling of undefined vs. void ([#11826](https://github.com/typescript-eslint/typescript-eslint/pull/11826))
+- **eslint-plugin:** [method-signature-style] ignore methods that return `this` ([#11813](https://github.com/typescript-eslint/typescript-eslint/pull/11813))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+- Tamashoo @Tamashoo
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.50.0 (2025-12-15)
 
 ### 🚀 Features

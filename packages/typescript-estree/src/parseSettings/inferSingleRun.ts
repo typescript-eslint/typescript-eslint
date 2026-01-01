@@ -61,9 +61,6 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
   }
 
   /**
-   * We default to assuming that this run could be part of a long-running session (e.g. in an IDE)
-   * and watch programs will therefore be required.
-   *
    * Unless we can reliably infer otherwise, we default to assuming that this run could be part
    * of a long-running session (e.g. in an IDE) and watch programs will therefore be required
    */

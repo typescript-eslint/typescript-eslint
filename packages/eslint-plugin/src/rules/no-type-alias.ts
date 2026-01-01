@@ -229,8 +229,7 @@ export default createRule<Options, MessageIds>({
       if (
         type.node.type === AST_NODE_TYPES.TSTypeOperator &&
         ['keyof', 'readonly'].includes(type.node.operator) &&
-        type.node.typeAnnotation &&
-        type.node.typeAnnotation.type === AST_NODE_TYPES.TSTupleType
+        type.node.typeAnnotation?.type === AST_NODE_TYPES.TSTupleType
       ) {
         return true;
       }

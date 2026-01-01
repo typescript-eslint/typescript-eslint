@@ -18,6 +18,11 @@ import type { PreferOptionalChainOptions } from './PreferOptionalChainOptions';
 
 import { isReferenceToGlobalFunction, isTypeFlagSet } from '../../util';
 
+export const enum Yoda {
+  Yes,
+  No,
+  Unknown,
+}
 const enum ComparisonValueType {
   Null = 'Null', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
   Undefined = 'Undefined',
@@ -66,7 +71,7 @@ export interface LastChainOperand {
   comparedName: TSESTree.Node;
   comparisonType: ComparisonType;
   comparisonValue: TSESTree.Node;
-  isYoda: boolean;
+  yoda: Yoda;
   node: TSESTree.BinaryExpression;
   type: OperandValidity.Last;
 }
@@ -257,7 +262,7 @@ export function gatherLogicalOperands(
         // x !== something :(
         const binaryComparisonChain = getBinaryComparisonChain(operand);
         if (binaryComparisonChain) {
-          const { comparedName, comparedValue, isYoda } = binaryComparisonChain;
+          const { comparedName, comparedValue, yoda } = binaryComparisonChain;
 
           switch (operand.operator) {
             case '==':
@@ -270,9 +275,9 @@ export function gatherLogicalOperands(
                 comparedName,
                 comparisonType,
                 comparisonValue: comparedValue,
-                isYoda,
                 node: operand,
                 type: OperandValidity.Last,
+                yoda,
               });
               continue;
             }
@@ -287,9 +292,9 @@ export function gatherLogicalOperands(
                 comparedName,
                 comparisonType,
                 comparisonValue: comparedValue,
-                isYoda,
                 node: operand,
                 type: OperandValidity.Last,
+                yoda,
               });
               continue;
             }
@@ -430,29 +435,46 @@ export function gatherLogicalOperands(
     return null;
   }
 
+  function isMemberBasedExpression(
+    node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+  ): node is TSESTree.CallExpression | TSESTree.MemberExpression {
+    if (node.type === AST_NODE_TYPES.MemberExpression) {
+      return true;
+    }
+    if (
+      node.type === AST_NODE_TYPES.CallExpression &&
+      node.callee.type === AST_NODE_TYPES.MemberExpression
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   function getBinaryComparisonChain(node: TSESTree.BinaryExpression) {
     const { left, right } = node;
-    let isYoda = false;
-    const isLeftMemberExpression =
-      left.type === AST_NODE_TYPES.MemberExpression;
-    const isRightMemberExpression =
-      right.type === AST_NODE_TYPES.MemberExpression;
+    const isLeftMemberExpression = isMemberBasedExpression(left);
+    const isRightMemberExpression = isMemberBasedExpression(right);
     if (isLeftMemberExpression && !isRightMemberExpression) {
       const [comparedName, comparedValue] = [left, right];
       return {
         comparedName,
         comparedValue,
-        isYoda,
+        yoda: Yoda.No,
       };
     }
     if (!isLeftMemberExpression && isRightMemberExpression) {
       const [comparedName, comparedValue] = [right, left];
-
-      isYoda = true;
       return {
         comparedName,
         comparedValue,
-        isYoda,
+        yoda: Yoda.Yes,
+      };
+    }
+    if (isLeftMemberExpression && isRightMemberExpression) {
+      return {
+        comparedName: left,
+        comparedValue: right,
+        yoda: Yoda.Unknown,
       };
     }
     return null;
