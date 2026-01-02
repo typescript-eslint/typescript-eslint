@@ -224,6 +224,12 @@ ruleTester.run('no-useless-default-assignment', rule, {
       declare const tuple: [string];
       const [a, b = 'default'] = tuple;
     `,
+    `
+      const run = (cb: (...args: unknown[]) => void) => cb();
+      const cb = (p: boolean = true) => null; // Ok when zero indent code
+      run(cb);
+      run((p: boolean = true) => null); // Bug when inlined
+    `,
   ],
   invalid: [
     {
