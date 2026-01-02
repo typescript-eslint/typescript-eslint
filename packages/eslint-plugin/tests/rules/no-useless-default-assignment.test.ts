@@ -224,11 +224,12 @@ ruleTester.run('no-useless-default-assignment', rule, {
       declare const tuple: [string];
       const [a, b = 'default'] = tuple;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11911
     `
       const run = (cb: (...args: unknown[]) => void) => cb();
-      const cb = (p: boolean = true) => null; // Ok when zero indent code
+      const cb = (p: boolean = true) => null;
       run(cb);
-      run((p: boolean = true) => null); // Bug when inlined
+      run((p: boolean = true) => null);
     `,
   ],
   invalid: [
