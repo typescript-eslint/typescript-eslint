@@ -26,8 +26,10 @@ type MemberKind =
   | 'constructor'
   | 'field'
   | 'get'
+  | 'get-then-set'
   | 'method'
   | 'set'
+  | 'set-then-get'
   | 'signature'
   | 'static-initialization'
   | ReadonlyType;
@@ -36,8 +38,10 @@ type DecoratedMemberKind =
   | 'accessor'
   | 'field'
   | 'get'
+  | 'get-then-set'
   | 'method'
   | 'set'
+  | 'set-then-get'
   | Exclude<ReadonlyType, 'readonly-signature'>;
 
 type NonCallableMemberKind = Exclude<
@@ -313,6 +317,8 @@ const allMemberTypes = [
         'constructor',
         'accessor',
         'get',
+        'get-then-set',
+        'set-then-get',
         'set',
         'static-initialization',
       ] as const
@@ -336,7 +342,9 @@ const allMemberTypes = [
             type === 'method' ||
             type === 'accessor' ||
             type === 'get' ||
-            type === 'set')
+            type === 'set' ||
+            type === 'get-then-set' ||
+            type === 'set-then-get')
             ? [`${accessibility}-decorated-${type}`, `decorated-${type}`]
             : [],
 
@@ -576,6 +584,8 @@ function getRank(
   // Collect all existing member groups that apply to this node...
   // (e.g. 'public-instance-field', 'instance-field', 'public-field', 'constructor' etc.)
   const memberGroups: BaseMemberType[] = [];
+  const accessorPairOrderTypes = ['get-then-set', 'set-then-get'] as const;
+  const addAccessorPairGroups = type === 'get' || type === 'set';
 
   if (supportsModifiers) {
     const decorated = 'decorators' in node && node.decorators.length > 0;
@@ -588,6 +598,12 @@ function getRank(
         type === 'get' ||
         type === 'set')
     ) {
+      if (addAccessorPairGroups) {
+        accessorPairOrderTypes.forEach(orderType => {
+          memberGroups.push(`${accessibility}-decorated-${orderType}`);
+          memberGroups.push(`decorated-${orderType}`);
+        });
+      }
       memberGroups.push(`${accessibility}-decorated-${type}`);
       memberGroups.push(`decorated-${type}`);
 
@@ -604,6 +620,12 @@ function getRank(
     ) {
       if (type !== 'constructor') {
         // Constructors have no scope
+        if (addAccessorPairGroups) {
+          accessorPairOrderTypes.forEach(orderType => {
+            memberGroups.push(`${accessibility}-${scope}-${orderType}`);
+            memberGroups.push(`${scope}-${orderType}`);
+          });
+        }
         memberGroups.push(`${accessibility}-${scope}-${type}`);
         memberGroups.push(`${scope}-${type}`);
 
@@ -613,6 +635,11 @@ function getRank(
         }
       }
 
+      if (addAccessorPairGroups) {
+        accessorPairOrderTypes.forEach(orderType => {
+          memberGroups.push(`${accessibility}-${orderType}`);
+        });
+      }
       memberGroups.push(`${accessibility}-${type}`);
       if (type === 'readonly-field') {
         memberGroups.push(`${accessibility}-field`);
@@ -620,6 +647,11 @@ function getRank(
     }
   }
 
+  if (addAccessorPairGroups) {
+    accessorPairOrderTypes.forEach(orderType => {
+      memberGroups.push(orderType);
+    });
+  }
   memberGroups.push(type);
   if (type === 'readonly-signature') {
     memberGroups.push('signature');
@@ -722,6 +754,48 @@ function getLowestRank(
   return lowestRanks.map(rank => rank.replaceAll('-', ' ')).join(', ');
 }
 
+type AccessorPairOrder = 'get-then-set' | 'set-then-get';
+
+const getAccessorPairOrderFromString = (
+  memberType: string,
+): AccessorPairOrder | null => {
+  if (memberType.endsWith('get-then-set')) {
+    return 'get-then-set';
+  }
+  if (memberType.endsWith('set-then-get')) {
+    return 'set-then-get';
+  }
+  return null;
+};
+
+const getAccessorPairOrder = (
+  memberType: MemberType,
+): AccessorPairOrder | null => {
+  if (Array.isArray(memberType)) {
+    for (const type of memberType) {
+      const orderType = getAccessorPairOrder(type);
+      if (orderType) {
+        return orderType;
+      }
+    }
+    return null;
+  }
+  return getAccessorPairOrderFromString(memberType);
+};
+
+const getAccessorPairOrderRanks = (
+  memberTypes: MemberType[],
+): Map<number, AccessorPairOrder> => {
+  const ranks = new Map<number, AccessorPairOrder>();
+  memberTypes.forEach((memberType, index) => {
+    const order = getAccessorPairOrder(memberType);
+    if (order) {
+      ranks.set(index, order);
+    }
+  });
+  return ranks;
+};
+
 export default createRule<Options, MessageIds>({
   name: 'member-ordering',
   meta: {
@@ -766,6 +840,8 @@ export default createRule<Options, MessageIds>({
               'signature',
               'readonly-field',
               'field',
+              'get-then-set',
+              'set-then-get',
               'method',
               'constructor',
             ],
@@ -836,6 +912,8 @@ export default createRule<Options, MessageIds>({
     ): Member[][] | null {
       const previousRanks: number[] = [];
       const memberGroups: Member[][] = [];
+      const memberGroupRanks: number[] = [];
+      const accessorPairOrderRanks = getAccessorPairOrderRanks(groupOrder);
       let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted
@@ -867,10 +945,108 @@ export default createRule<Options, MessageIds>({
           // New member group --> Create new member group array
           previousRanks.push(rank);
           memberGroups.push([member]);
+          memberGroupRanks.push(rank);
         }
       }
 
+      if (isCorrectlySorted && accessorPairOrderRanks.size > 0) {
+        memberGroups.forEach((groupMembers, index) => {
+          const accessorPairOrder = accessorPairOrderRanks.get(
+            memberGroupRanks[index],
+          );
+          if (!accessorPairOrder) {
+            return;
+          }
+          if (!checkAccessorPairOrder(groupMembers, accessorPairOrder)) {
+            isCorrectlySorted = false;
+          }
+        });
+      }
+
       return isCorrectlySorted ? memberGroups : null;
+    }
+
+    function checkAccessorPairOrder(
+      members: Member[],
+      order: AccessorPairOrder,
+    ): boolean {
+      const getMemberLabel = (member: Member): string | null => {
+        const name = getMemberName(member, context.sourceCode);
+        if (!name) {
+          return null;
+        }
+        const type = getNodeType(member);
+        return type === 'get' || type === 'set' ? `${type} ${name}` : name;
+      };
+
+      const accessorsByName = new Map<
+        string,
+        { getIndex?: number; setIndex?: number }
+      >();
+
+      members.forEach((member, index) => {
+        const type = getNodeType(member);
+        if (type !== 'get' && type !== 'set') {
+          return;
+        }
+        const name = getMemberName(member, context.sourceCode);
+        if (!name) {
+          return;
+        }
+        const entry = accessorsByName.get(name) ?? {};
+        if (type === 'get') {
+          entry.getIndex ??= index;
+        } else {
+          entry.setIndex ??= index;
+        }
+        accessorsByName.set(name, entry);
+      });
+
+      let isCorrectlySorted = true;
+      const expectedFirst = order === 'get-then-set' ? 'get' : 'set';
+      const expectedSecond = expectedFirst === 'get' ? 'set' : 'get';
+
+      for (const [name, { getIndex, setIndex }] of accessorsByName) {
+        if (getIndex == null || setIndex == null) {
+          continue;
+        }
+        const expectedFirstIndex =
+          expectedFirst === 'get' ? getIndex : setIndex;
+        const expectedSecondIndex =
+          expectedFirst === 'get' ? setIndex : getIndex;
+        if (expectedFirstIndex > expectedSecondIndex) {
+          context.report({
+            node: members[expectedFirstIndex],
+            messageId: 'incorrectOrder',
+            data: {
+              beforeMember: `${expectedSecond} ${name}`,
+              member: `${expectedFirst} ${name}`,
+            },
+          });
+          isCorrectlySorted = false;
+          continue;
+        }
+
+        if (expectedSecondIndex !== expectedFirstIndex + 1) {
+          const interveningLabel = getMemberLabel(
+            members[expectedFirstIndex + 1],
+          );
+          if (!interveningLabel) {
+            continue;
+          }
+          context.report({
+            node: members[expectedSecondIndex],
+            messageId: 'incorrectOrder',
+            data: {
+              beforeMember: interveningLabel,
+              member: `${expectedSecond} ${name}`,
+            },
+          });
+          isCorrectlySorted = false;
+        }
+      }
+
+      return isCorrectlySorted;
     }
 
     /**

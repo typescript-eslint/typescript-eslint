@@ -9,29 +9,37 @@
           "#private-accessor",
           "#private-field",
           "#private-get",
+          "#private-get-then-set",
           "#private-instance-accessor",
           "#private-instance-field",
           "#private-instance-get",
+          "#private-instance-get-then-set",
           "#private-instance-method",
           "#private-instance-readonly-field",
           "#private-instance-set",
+          "#private-instance-set-then-get",
           "#private-instance-static-initialization",
           "#private-method",
           "#private-readonly-field",
           "#private-set",
+          "#private-set-then-get",
           "#private-static-accessor",
           "#private-static-field",
           "#private-static-get",
+          "#private-static-get-then-set",
           "#private-static-method",
           "#private-static-readonly-field",
           "#private-static-set",
+          "#private-static-set-then-get",
           "#private-static-static-initialization",
           "abstract-accessor",
           "abstract-field",
           "abstract-get",
+          "abstract-get-then-set",
           "abstract-method",
           "abstract-readonly-field",
           "abstract-set",
+          "abstract-set-then-get",
           "abstract-static-initialization",
           "accessor",
           "call-signature",
@@ -39,17 +47,22 @@
           "decorated-accessor",
           "decorated-field",
           "decorated-get",
+          "decorated-get-then-set",
           "decorated-method",
           "decorated-readonly-field",
           "decorated-set",
+          "decorated-set-then-get",
           "field",
           "get",
+          "get-then-set",
           "instance-accessor",
           "instance-field",
           "instance-get",
+          "instance-get-then-set",
           "instance-method",
           "instance-readonly-field",
           "instance-set",
+          "instance-set-then-get",
           "instance-static-initialization",
           "method",
           "private-accessor",
@@ -57,107 +70,138 @@
           "private-decorated-accessor",
           "private-decorated-field",
           "private-decorated-get",
+          "private-decorated-get-then-set",
           "private-decorated-method",
           "private-decorated-readonly-field",
           "private-decorated-set",
+          "private-decorated-set-then-get",
           "private-field",
           "private-get",
+          "private-get-then-set",
           "private-instance-accessor",
           "private-instance-field",
           "private-instance-get",
+          "private-instance-get-then-set",
           "private-instance-method",
           "private-instance-readonly-field",
           "private-instance-set",
+          "private-instance-set-then-get",
           "private-instance-static-initialization",
           "private-method",
           "private-readonly-field",
           "private-set",
+          "private-set-then-get",
           "private-static-accessor",
           "private-static-field",
           "private-static-get",
+          "private-static-get-then-set",
           "private-static-method",
           "private-static-readonly-field",
           "private-static-set",
+          "private-static-set-then-get",
           "private-static-static-initialization",
           "protected-abstract-accessor",
           "protected-abstract-field",
           "protected-abstract-get",
+          "protected-abstract-get-then-set",
           "protected-abstract-method",
           "protected-abstract-readonly-field",
           "protected-abstract-set",
+          "protected-abstract-set-then-get",
           "protected-abstract-static-initialization",
           "protected-accessor",
           "protected-constructor",
           "protected-decorated-accessor",
           "protected-decorated-field",
           "protected-decorated-get",
+          "protected-decorated-get-then-set",
           "protected-decorated-method",
           "protected-decorated-readonly-field",
           "protected-decorated-set",
+          "protected-decorated-set-then-get",
           "protected-field",
           "protected-get",
+          "protected-get-then-set",
           "protected-instance-accessor",
           "protected-instance-field",
           "protected-instance-get",
+          "protected-instance-get-then-set",
           "protected-instance-method",
           "protected-instance-readonly-field",
           "protected-instance-set",
+          "protected-instance-set-then-get",
           "protected-instance-static-initialization",
           "protected-method",
           "protected-readonly-field",
           "protected-set",
+          "protected-set-then-get",
           "protected-static-accessor",
           "protected-static-field",
           "protected-static-get",
+          "protected-static-get-then-set",
           "protected-static-method",
           "protected-static-readonly-field",
           "protected-static-set",
+          "protected-static-set-then-get",
           "protected-static-static-initialization",
           "public-abstract-accessor",
           "public-abstract-field",
           "public-abstract-get",
+          "public-abstract-get-then-set",
           "public-abstract-method",
           "public-abstract-readonly-field",
           "public-abstract-set",
+          "public-abstract-set-then-get",
           "public-abstract-static-initialization",
           "public-accessor",
           "public-constructor",
           "public-decorated-accessor",
           "public-decorated-field",
           "public-decorated-get",
+          "public-decorated-get-then-set",
           "public-decorated-method",
           "public-decorated-readonly-field",
           "public-decorated-set",
+          "public-decorated-set-then-get",
           "public-field",
           "public-get",
+          "public-get-then-set",
           "public-instance-accessor",
           "public-instance-field",
           "public-instance-get",
+          "public-instance-get-then-set",
           "public-instance-method",
           "public-instance-readonly-field",
           "public-instance-set",
+          "public-instance-set-then-get",
           "public-instance-static-initialization",
           "public-method",
           "public-readonly-field",
           "public-set",
+          "public-set-then-get",
           "public-static-accessor",
           "public-static-field",
           "public-static-get",
+          "public-static-get-then-set",
           "public-static-method",
           "public-static-readonly-field",
           "public-static-set",
+          "public-static-set-then-get",
           "public-static-static-initialization",
           "readonly-field",
           "readonly-signature",
           "set",
+          "set-then-get",
           "signature",
           "static-accessor",
           "static-field",
           "static-get",
+          "static-get-then-set",
           "static-initialization",
           "static-method",
           "static-readonly-field",
           "static-set",
+          "static-set-then-get",
           "static-static-initialization"
         ],
         "type": "string"
@@ -240,9 +284,11 @@
         "enum": [
           "constructor",
           "field",
+          "get-then-set",
           "method",
           "readonly-field",
           "readonly-signature",
+          "set-then-get",
           "signature"
         ],
         "type": "string"
@@ -342,29 +388,37 @@ type AllItems =
   | '#private-accessor'
   | '#private-field'
   | '#private-get'
+  | '#private-get-then-set'
   | '#private-instance-accessor'
   | '#private-instance-field'
   | '#private-instance-get'
+  | '#private-instance-get-then-set'
   | '#private-instance-method'
   | '#private-instance-readonly-field'
   | '#private-instance-set'
+  | '#private-instance-set-then-get'
   | '#private-instance-static-initialization'
   | '#private-method'
   | '#private-readonly-field'
   | '#private-set'
+  | '#private-set-then-get'
   | '#private-static-accessor'
   | '#private-static-field'
   | '#private-static-get'
+  | '#private-static-get-then-set'
   | '#private-static-method'
   | '#private-static-readonly-field'
   | '#private-static-set'
+  | '#private-static-set-then-get'
   | '#private-static-static-initialization'
   | 'abstract-accessor'
   | 'abstract-field'
   | 'abstract-get'
+  | 'abstract-get-then-set'
   | 'abstract-method'
   | 'abstract-readonly-field'
   | 'abstract-set'
+  | 'abstract-set-then-get'
   | 'abstract-static-initialization'
   | 'accessor'
   | 'call-signature'
@@ -372,17 +426,22 @@ type AllItems =
   | 'decorated-accessor'
   | 'decorated-field'
   | 'decorated-get'
+  | 'decorated-get-then-set'
   | 'decorated-method'
   | 'decorated-readonly-field'
   | 'decorated-set'
+  | 'decorated-set-then-get'
   | 'field'
   | 'get'
+  | 'get-then-set'
   | 'instance-accessor'
   | 'instance-field'
   | 'instance-get'
+  | 'instance-get-then-set'
   | 'instance-method'
   | 'instance-readonly-field'
   | 'instance-set'
+  | 'instance-set-then-get'
   | 'instance-static-initialization'
   | 'method'
   | 'private-accessor'
@@ -390,107 +449,138 @@ type AllItems =
   | 'private-decorated-accessor'
   | 'private-decorated-field'
   | 'private-decorated-get'
+  | 'private-decorated-get-then-set'
   | 'private-decorated-method'
   | 'private-decorated-readonly-field'
   | 'private-decorated-set'
+  | 'private-decorated-set-then-get'
   | 'private-field'
   | 'private-get'
+  | 'private-get-then-set'
   | 'private-instance-accessor'
   | 'private-instance-field'
   | 'private-instance-get'
+  | 'private-instance-get-then-set'
   | 'private-instance-method'
   | 'private-instance-readonly-field'
   | 'private-instance-set'
+  | 'private-instance-set-then-get'
   | 'private-instance-static-initialization'
   | 'private-method'
   | 'private-readonly-field'
   | 'private-set'
+  | 'private-set-then-get'
   | 'private-static-accessor'
   | 'private-static-field'
   | 'private-static-get'
+  | 'private-static-get-then-set'
   | 'private-static-method'
   | 'private-static-readonly-field'
   | 'private-static-set'
+  | 'private-static-set-then-get'
   | 'private-static-static-initialization'
   | 'protected-abstract-accessor'
   | 'protected-abstract-field'
   | 'protected-abstract-get'
+  | 'protected-abstract-get-then-set'
   | 'protected-abstract-method'
   | 'protected-abstract-readonly-field'
   | 'protected-abstract-set'
+  | 'protected-abstract-set-then-get'
   | 'protected-abstract-static-initialization'
   | 'protected-accessor'
   | 'protected-constructor'
   | 'protected-decorated-accessor'
   | 'protected-decorated-field'
   | 'protected-decorated-get'
+  | 'protected-decorated-get-then-set'
   | 'protected-decorated-method'
   | 'protected-decorated-readonly-field'
   | 'protected-decorated-set'
+  | 'protected-decorated-set-then-get'
   | 'protected-field'
   | 'protected-get'
+  | 'protected-get-then-set'
   | 'protected-instance-accessor'
   | 'protected-instance-field'
   | 'protected-instance-get'
+  | 'protected-instance-get-then-set'
   | 'protected-instance-method'
   | 'protected-instance-readonly-field'
   | 'protected-instance-set'
+  | 'protected-instance-set-then-get'
   | 'protected-instance-static-initialization'
   | 'protected-method'
   | 'protected-readonly-field'
   | 'protected-set'
+  | 'protected-set-then-get'
   | 'protected-static-accessor'
   | 'protected-static-field'
   | 'protected-static-get'
+  | 'protected-static-get-then-set'
   | 'protected-static-method'
   | 'protected-static-readonly-field'
   | 'protected-static-set'
+  | 'protected-static-set-then-get'
   | 'protected-static-static-initialization'
   | 'public-abstract-accessor'
   | 'public-abstract-field'
   | 'public-abstract-get'
+  | 'public-abstract-get-then-set'
   | 'public-abstract-method'
   | 'public-abstract-readonly-field'
   | 'public-abstract-set'
+  | 'public-abstract-set-then-get'
   | 'public-abstract-static-initialization'
   | 'public-accessor'
   | 'public-constructor'
   | 'public-decorated-accessor'
   | 'public-decorated-field'
   | 'public-decorated-get'
+  | 'public-decorated-get-then-set'
   | 'public-decorated-method'
   | 'public-decorated-readonly-field'
   | 'public-decorated-set'
+  | 'public-decorated-set-then-get'
   | 'public-field'
   | 'public-get'
+  | 'public-get-then-set'
   | 'public-instance-accessor'
   | 'public-instance-field'
   | 'public-instance-get'
+  | 'public-instance-get-then-set'
   | 'public-instance-method'
   | 'public-instance-readonly-field'
   | 'public-instance-set'
+  | 'public-instance-set-then-get'
   | 'public-instance-static-initialization'
   | 'public-method'
   | 'public-readonly-field'
   | 'public-set'
+  | 'public-set-then-get'
   | 'public-static-accessor'
   | 'public-static-field'
   | 'public-static-get'
+  | 'public-static-get-then-set'
   | 'public-static-method'
   | 'public-static-readonly-field'
   | 'public-static-set'
+  | 'public-static-set-then-get'
   | 'public-static-static-initialization'
   | 'readonly-field'
   | 'readonly-signature'
   | 'set'
+  | 'set-then-get'
   | 'signature'
   | 'static-accessor'
   | 'static-field'
   | 'static-get'
+  | 'static-get-then-set'
   | 'static-initialization'
   | 'static-method'
   | 'static-readonly-field'
   | 'static-set'
+  | 'static-set-then-get'
   | 'static-static-initialization';
 
 type OptionalityOrderOptions = 'optional-first' | 'required-first';
@@ -505,9 +595,11 @@ type OrderOptions =
 type TypeItems =
   | 'constructor'
   | 'field'
+  | 'get-then-set'
   | 'method'
   | 'readonly-field'
   | 'readonly-signature'
+  | 'set-then-get'
   | 'signature';
 
 type BaseConfig =

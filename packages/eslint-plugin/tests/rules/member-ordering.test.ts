@@ -2047,6 +2047,114 @@ class Foo {
     },
     {
       code: `
+class Foo {
+  get bar(): string {
+    return '';
+  }
+
+  set bar(value: string) {
+    void value;
+  }
+}
+      `,
+      options: [
+        {
+          default: ['public-instance-get-then-set'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  protected get bar(): string {
+    return '';
+  }
+
+  protected set bar(value: string) {
+    void value;
+  }
+}
+      `,
+      options: [
+        {
+          default: ['protected-instance-get-then-set'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private get bar(): string {
+    return '';
+  }
+
+  private set bar(value: string) {
+    void value;
+  }
+}
+      `,
+      options: [
+        {
+          default: ['private-instance-get-then-set'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  set bar(value: string) {
+    void value;
+  }
+
+  get bar(): string {
+    return '';
+  }
+}
+      `,
+      options: [
+        {
+          default: ['public-instance-set-then-get'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  protected set bar(value: string) {
+    void value;
+  }
+
+  protected get bar(): string {
+    return '';
+  }
+}
+      `,
+      options: [
+        {
+          default: ['protected-instance-set-then-get'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private set bar(value: string) {
+    void value;
+  }
+
+  private get bar(): string {
+    return '';
+  }
+}
+      `,
+      options: [
+        {
+          default: ['private-instance-set-then-get'],
+        },
+      ],
+    },
+    {
+      code: `
 // no accessibility === public
 class Foo {
   [A: string]: any;
@@ -5319,6 +5427,246 @@ interface Foo {
       options: [
         {
           default: ['method', 'get'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  set bar(value: string) {
+    void value;
+  }
+
+  get bar(): string {
+    return '';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'set bar',
+            member: 'get bar',
+          },
+          line: 7,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['public-instance-get-then-set'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  get bar(): string {
+    return '';
+  }
+
+  get baz(): string {
+    return '';
+  }
+
+  set bar(value: string) {
+    void value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'get baz',
+            member: 'set bar',
+          },
+          line: 11,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['public-instance-get-then-set'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  protected set bar(value: string) {
+    void value;
+  }
+
+  protected get bar(): string {
+    return '';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'set bar',
+            member: 'get bar',
+          },
+          line: 7,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['protected-instance-get-then-set'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private set bar(value: string) {
+    void value;
+  }
+
+  private get bar(): string {
+    return '';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'set bar',
+            member: 'get bar',
+          },
+          line: 7,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['private-instance-get-then-set'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  get bar(): string {
+    return '';
+  }
+
+  set bar(value: string) {
+    void value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'get bar',
+            member: 'set bar',
+          },
+          line: 7,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['public-instance-set-then-get'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  set bar(value: string) {
+    void value;
+  }
+
+  set baz(value: string) {
+    void value;
+  }
+
+  get bar(): string {
+    return '';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'set baz',
+            member: 'get bar',
+          },
+          line: 11,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['public-instance-set-then-get'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  protected get bar(): string {
+    return '';
+  }
+
+  protected set bar(value: string) {
+    void value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'get bar',
+            member: 'set bar',
+          },
+          line: 7,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['protected-instance-set-then-get'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private get bar(): string {
+    return '';
+  }
+
+  private set bar(value: string) {
+    void value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'get bar',
+            member: 'set bar',
+          },
+          line: 7,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['private-instance-set-then-get'],
         },
       ],
     },
