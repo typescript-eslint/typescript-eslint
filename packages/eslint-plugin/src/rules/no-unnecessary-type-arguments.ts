@@ -103,10 +103,17 @@ export default createRule<[], MessageIds>({
 
       const typeArgumentType = services.getTypeAtLocation(typeArgument);
 
-      if (typeArguments.parent.type === AST_NODE_TYPES.CallExpression) {
-        const sig = checker.getResolvedSignature(tsNode as ts.CallExpression);
+      const parent = typeArguments.parent;
 
-        typeArguments.parent.arguments.forEach((argument, i) => {
+      if (
+        parent.type === AST_NODE_TYPES.CallExpression ||
+        parent.type === AST_NODE_TYPES.NewExpression
+      ) {
+        const sig = checker.getResolvedSignature(
+          tsNode as ts.CallExpression | ts.NewExpression,
+        );
+
+        parent.arguments.forEach((argument, i) => {
           // This is the only possible type for `argument.type` which isn't `Expression`
           if (argument.type === AST_NODE_TYPES.SpreadElement) {
             return;
