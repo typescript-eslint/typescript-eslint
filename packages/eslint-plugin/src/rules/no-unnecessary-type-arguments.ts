@@ -10,6 +10,7 @@ import {
   getParserServices,
   isTypeReferenceType,
 } from '../util';
+import { isInferrable } from '../util/isInferrable';
 
 type ParameterCapableTSNode =
   | ts.CallExpression
@@ -87,13 +88,68 @@ export default createRule<[], MessageIds>({
     function checkTSArgsAndParameters(
       typeArguments: TSESTree.TSTypeParameterInstantiation,
       typeParameters: readonly ts.TypeParameterDeclaration[],
+      tsNode: ParameterCapableTSNode,
     ): void {
       // Just check the last one. Must specify previous type parameters if the last one is specified.
       const i = typeArguments.params.length - 1;
       const typeArgument = typeArguments.params[i];
       const typeParameter = typeParameters.at(i);
 
-      if (!typeParameter?.default) {
+      if (!typeParameter) {
+        return;
+      }
+
+      if (typeArguments.parent.type === AST_NODE_TYPES.CallExpression) {
+        const sig = checker.getResolvedSignature(tsNode as ts.CallExpression);
+
+        typeArguments.parent.arguments.forEach((argument, i) => {
+          // This is the only possible type for `argument.type` which isn't `Expression`
+          if (argument.type === AST_NODE_TYPES.SpreadElement) {
+            return;
+          }
+
+          const parameter = sig?.parameters.at(i);
+
+          if (
+            !parameter?.valueDeclaration ||
+            !ts.isParameter(parameter.valueDeclaration) ||
+            !parameter.valueDeclaration.type
+          ) {
+            return;
+          }
+
+          const typeParameterType = checker.getTypeAtLocation(typeParameter);
+
+          const parameterTypeFromDeclaration = checker.getTypeFromTypeNode(
+            parameter.valueDeclaration.type,
+          );
+
+          // Only handle parameters that were declared as the generic type parameter
+          if (
+            !areTypesEquivalent(typeParameterType, parameterTypeFromDeclaration)
+          ) {
+            return;
+          }
+
+          if (isInferrable(typeArgument, argument)) {
+            context.report({
+              node: typeArgument,
+              messageId: 'unnecessaryTypeParameter',
+              fix: fixer =>
+                fixer.removeRange(
+                  i === 0
+                    ? typeArguments.range
+                    : [
+                        typeArguments.params[i - 1].range[1],
+                        typeArgument.range[1],
+                      ],
+                ),
+            });
+          }
+        });
+      }
+
+      if (!typeParameter.default) {
         return;
       }
 
@@ -125,7 +181,7 @@ export default createRule<[], MessageIds>({
         );
 
         if (typeParameters) {
-          checkTSArgsAndParameters(node, typeParameters);
+          checkTSArgsAndParameters(node, typeParameters, expression);
         }
       },
     };
