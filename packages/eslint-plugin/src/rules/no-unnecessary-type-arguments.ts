@@ -274,7 +274,7 @@ function getTypeParametersFromCall(
 ): readonly ts.TypeParameterDeclaration[] | undefined {
   const sig = checker.getResolvedSignature(tsNode);
   const sigDecl = sig?.getDeclaration();
-  if (!sigDecl) {
+  if (!sigDecl?.typeParameters) {
     return ts.isNewExpression(tsNode)
       ? getTypeParametersFromType(node, tsNode.expression, checker)
       : undefined;
