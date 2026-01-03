@@ -189,6 +189,11 @@ namespace Foo {
 }
 class Bar extends Foo<string> {}
     `,
+    // Ignore invalid type arguments
+    `
+function f<T>() {}
+f<number, number>();
+    `,
     {
       code: `
 function Button<T>() {
@@ -252,6 +257,37 @@ function f<T>(x: T) {}
 f(10);
       `,
     },
+    // Ignore invalid arguments, check just ones we know the types of
+    {
+      code: `
+function f<T>(x: T) {}
+f<number>(10, 10);
+      `,
+      errors: [
+        {
+          messageId: 'canBeInferered',
+        },
+      ],
+      output: `
+function f<T>(x: T) {}
+f(10, 10);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T, y: number) {}
+f<number>(10, 10);
+      `,
+      errors: [
+        {
+          messageId: 'canBeInferered',
+        },
+      ],
+      output: `
+function f<T>(x: T, y: number) {}
+f(10, 10);
+      `,
+    },
     {
       code: `
 function g<T = number, U = string>() {}
@@ -267,6 +303,27 @@ g<string, string>();
 function g<T = number, U = string>() {}
 g<string>();
       `,
+    },
+    {
+      code: `
+function g<T, U>(x: T, y: U) {}
+g<number, number>(10, 10);
+      `,
+      errors: [
+        {
+          messageId: 'canBeInferered',
+        },
+      ],
+      output: [
+        `
+function g<T, U>(x: T, y: U) {}
+g<number>(10, 10);
+      `,
+        `
+function g<T, U>(x: T, y: U) {}
+g(10, 10);
+      `,
+      ],
     },
     {
       code: `
