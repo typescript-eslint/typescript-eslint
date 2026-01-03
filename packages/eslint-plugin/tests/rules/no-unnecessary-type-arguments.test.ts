@@ -351,6 +351,25 @@ const foo = new Foo();
     },
     {
       code: `
+class Foo<T> {
+  constructor(x: T) {}
+}
+const foo = new Foo<number>(10);
+      `,
+      errors: [
+        {
+          messageId: 'canBeInferered',
+        },
+      ],
+      output: `
+class Foo<T> {
+  constructor(x: T) {}
+}
+const foo = new Foo(10);
+      `,
+    },
+    {
+      code: `
 interface Bar<T = string> {}
 class Foo<T = number> implements Bar<string> {}
       `,
