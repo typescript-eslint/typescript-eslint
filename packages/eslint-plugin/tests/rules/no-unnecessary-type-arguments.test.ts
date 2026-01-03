@@ -219,7 +219,7 @@ f<number>();
       errors: [
         {
           column: 3,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -234,7 +234,7 @@ f<number>(10);
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'canBeInferered',
         },
       ],
       output: `
@@ -250,7 +250,7 @@ g<string, string>();
       errors: [
         {
           column: 11,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -266,7 +266,7 @@ f<number>\`\${1}\`;
       errors: [
         {
           column: 3,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -281,7 +281,7 @@ function h(c: C<number>) {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -296,7 +296,7 @@ new C<number>();
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -311,7 +311,7 @@ class D extends C<number> {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -326,7 +326,7 @@ class Impl implements I<number> {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -341,7 +341,7 @@ const foo = new Foo<number>();
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -356,7 +356,7 @@ class Foo<T = number> implements Bar<string> {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -371,7 +371,7 @@ class Foo<T = number> extends Bar<string> {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -389,7 +389,7 @@ bar<F<string>>();
         {
           column: 5,
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -412,7 +412,7 @@ declare module 'bar' {
         {
           column: 12,
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -433,7 +433,7 @@ type B = A<Map<string, string>>;
       errors: [
         {
           line: 3,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -450,7 +450,7 @@ type C = B<A>;
       errors: [
         {
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -468,7 +468,7 @@ type C = B<Map<string, string>>;
       errors: [
         {
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -487,7 +487,7 @@ type D = C<B>;
       errors: [
         {
           line: 5,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -509,7 +509,7 @@ type F = E<D>;
       errors: [
         {
           line: 7,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -532,7 +532,7 @@ class Bar extends Foo<string> {}
       errors: [
         {
           line: 6,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -554,7 +554,7 @@ class Bar extends Foo<string> {}
       errors: [
         {
           line: 6,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -574,7 +574,7 @@ class Bar implements Foo<string> {}
       errors: [
         {
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -594,7 +594,7 @@ class Bar extends Foo<string> {}
       errors: [
         {
           line: 6,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       output: `
@@ -615,7 +615,7 @@ const button = <Button<string>></Button>;
       errors: [
         {
           line: 5,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       languageOptions: {
@@ -642,7 +642,7 @@ const button = <Button<string> />;
       errors: [
         {
           line: 5,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultParameterValue',
         },
       ],
       languageOptions: {

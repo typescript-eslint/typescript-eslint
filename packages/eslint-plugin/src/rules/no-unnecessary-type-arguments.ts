@@ -23,7 +23,7 @@ type ParameterCapableTSNode =
   | ts.TypeQueryNode
   | ts.TypeReferenceNode;
 
-export type MessageIds = 'unnecessaryTypeParameter';
+export type MessageIds = 'canBeInferered' | 'isDefaultParameterValue';
 
 export default createRule<[], MessageIds>({
   name: 'no-unnecessary-type-arguments',
@@ -36,7 +36,9 @@ export default createRule<[], MessageIds>({
     },
     fixable: 'code',
     messages: {
-      unnecessaryTypeParameter:
+      canBeInferered:
+        'This value can be trivially inferred for this type paramter from a {{type}} literal, so it can be omitted.',
+      isDefaultParameterValue:
         'This is the default value for this type parameter, so it can be omitted.',
     },
     schema: [],
@@ -99,6 +101,8 @@ export default createRule<[], MessageIds>({
         return;
       }
 
+      const typeArgumentType = services.getTypeAtLocation(typeArgument);
+
       if (typeArguments.parent.type === AST_NODE_TYPES.CallExpression) {
         const sig = checker.getResolvedSignature(tsNode as ts.CallExpression);
 
@@ -134,7 +138,8 @@ export default createRule<[], MessageIds>({
           if (isInferrable(typeArgument, argument)) {
             context.report({
               node: typeArgument,
-              messageId: 'unnecessaryTypeParameter',
+              messageId: 'canBeInferered',
+              data: { type: typeArgumentType },
               fix: fixer =>
                 fixer.removeRange(
                   i === 0
@@ -154,14 +159,13 @@ export default createRule<[], MessageIds>({
       }
 
       const defaultType = checker.getTypeAtLocation(typeParameter.default);
-      const typeArgumentType = services.getTypeAtLocation(typeArgument);
       if (!areTypesEquivalent(defaultType, typeArgumentType)) {
         return;
       }
 
       context.report({
         node: typeArgument,
-        messageId: 'unnecessaryTypeParameter',
+        messageId: 'isDefaultParameterValue',
         fix: fixer =>
           fixer.removeRange(
             i === 0
