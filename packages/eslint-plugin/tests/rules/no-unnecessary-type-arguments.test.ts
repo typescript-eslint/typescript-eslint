@@ -20,6 +20,18 @@ function f<T = number>() {}
 f<string>();
     `,
     `
+function f<T>(x: T) {}
+f(10);
+    `,
+    `
+function f<T>(x: T) {}
+f<10>(10);
+    `,
+    `
+function f<T>(x: T) {}
+f<boolean | null>(true);
+    `,
+    `
 declare const f: (<T = number>() => void) | null;
 f?.();
     `,
@@ -213,6 +225,21 @@ f<number>();
       output: `
 function f<T = number>() {}
 f();
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+f<number>(10);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+function f<T>(x: T) {}
+f(10);
       `,
     },
     {
