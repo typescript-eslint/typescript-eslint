@@ -6215,7 +6215,7 @@ __metadata:
     execa: 7.2.0
     globals: ^16.0.0
     husky: ^9.1.4
-    knip: 5.76.0
+    knip: 5.78.0
     lint-staged: ^15.2.2
     markdownlint-cli: ^0.47.0
     nx: 22.1.1
@@ -13233,9 +13233,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"knip@npm:5.76.0":
-  version: 5.76.0
-  resolution: "knip@npm:5.76.0"
+"knip@npm:5.78.0":
+  version: 5.78.0
+  resolution: "knip@npm:5.78.0"
   dependencies:
     "@nodelib/fs.walk": ^1.2.3
     fast-glob: ^3.3.3
@@ -13255,7 +13255,7 @@ __metadata:
   bin:
     knip: bin/knip.js
     knip-bun: bin/knip-bun.js
-  checksum: 8bccf61ea167cfd21a15a52dabe05b3d783d3b61d40091acd1c2425483473a8ec1f3788d02099138a1eff15007b78a01c533fc6264bb25c50aeab13a50a5fd6c
+  checksum: c7b1a5ddd916fd49c913f46e2b259261a431d0614821bd174af5453dd1162073efa8e664012f1a89e7bd953c0477137ebc7f7fbcafe44b4223bbea182701f0dd
   languageName: node
   linkType: hard
 
