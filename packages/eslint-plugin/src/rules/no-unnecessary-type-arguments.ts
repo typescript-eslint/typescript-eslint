@@ -23,7 +23,7 @@ type ParameterCapableTSNode =
   | ts.TypeQueryNode
   | ts.TypeReferenceNode;
 
-export type MessageIds = 'canBeInferered' | 'isDefaultParameterValue';
+export type MessageIds = 'canBeInferred' | 'isDefaultParameterValue';
 
 export default createRule<[], MessageIds>({
   name: 'no-unnecessary-type-arguments',
@@ -36,7 +36,7 @@ export default createRule<[], MessageIds>({
     },
     fixable: 'code',
     messages: {
-      canBeInferered:
+      canBeInferred:
         'This value can be trivially inferred for this type paramter from a {{type}} literal, so it can be omitted.',
       isDefaultParameterValue:
         'This is the default value for this type parameter, so it can be omitted.',
@@ -146,7 +146,7 @@ export default createRule<[], MessageIds>({
           if (isInferrable(typeArgument, argument)) {
             context.report({
               node: typeArgument,
-              messageId: 'canBeInferered',
+              messageId: 'canBeInferred',
               data: { type: typeArgumentType },
               fix: fixer =>
                 fixer.removeRange(

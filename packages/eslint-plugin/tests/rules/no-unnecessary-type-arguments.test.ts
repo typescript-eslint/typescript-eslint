@@ -249,7 +249,7 @@ f<number>(10);
       `,
       errors: [
         {
-          messageId: 'canBeInferered',
+          messageId: 'canBeInferred',
         },
       ],
       output: `
@@ -265,7 +265,7 @@ f<number>(10, 10);
       `,
       errors: [
         {
-          messageId: 'canBeInferered',
+          messageId: 'canBeInferred',
         },
       ],
       output: `
@@ -280,7 +280,7 @@ f<number>(10, 10);
       `,
       errors: [
         {
-          messageId: 'canBeInferered',
+          messageId: 'canBeInferred',
         },
       ],
       output: `
@@ -311,7 +311,7 @@ g<number, number>(10, 10);
       `,
       errors: [
         {
-          messageId: 'canBeInferered',
+          messageId: 'canBeInferred',
         },
       ],
       output: [
@@ -425,7 +425,7 @@ const foo = new Foo<number>(10);
       `,
       errors: [
         {
-          messageId: 'canBeInferered',
+          messageId: 'canBeInferred',
         },
       ],
       output: `
