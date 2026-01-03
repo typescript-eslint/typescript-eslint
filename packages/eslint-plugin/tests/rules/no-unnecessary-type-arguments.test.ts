@@ -257,6 +257,63 @@ function f<T>(x: T) {}
 f(10);
       `,
     },
+    {
+      code: `
+function f<T>(x: T) {}
+declare const x: number;
+f<number>(x);
+      `,
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+function f<T>(x: T) {}
+declare const x: number;
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare function y(): number;
+f<number>(y());
+      `,
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+function f<T>(x: T) {}
+declare function y(): number;
+f(y());
+      `,
+    },
+    {
+      code: `
+enum E {
+  A,
+  B,
+}
+function f<T>(x: T) {}
+f<E>(E.A);
+      `,
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+enum E {
+  A,
+  B,
+}
+function f<T>(x: T) {}
+f(E.A);
+      `,
+    },
     // Ignore invalid arguments, check just ones we know the types of
     {
       code: `

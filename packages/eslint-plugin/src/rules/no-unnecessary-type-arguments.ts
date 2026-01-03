@@ -10,7 +10,6 @@ import {
   getParserServices,
   isTypeReferenceType,
 } from '../util';
-import { isInferrable } from '../util/isInferrable';
 
 type ParameterCapableTSNode =
   | ts.CallExpression
@@ -143,7 +142,11 @@ export default createRule<[], MessageIds>({
             return;
           }
 
-          if (isInferrable(typeArgument, argument)) {
+          const argumentType = checker.getBaseTypeOfLiteralType(
+            services.getTypeAtLocation(argument),
+          );
+
+          if (areTypesEquivalent(typeArgumentType, argumentType)) {
             context.report({
               node: typeArgument,
               messageId: 'canBeInferred',
