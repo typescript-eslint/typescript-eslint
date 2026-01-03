@@ -80,6 +80,10 @@ class C<T = number> {}
 new C<string>();
     `,
     `
+class C<T> {}
+new C<string>();
+    `,
+    `
 declare const C: any;
 new C<string>();
     `,
@@ -119,6 +123,12 @@ class D<TD = number> extends C {}
     `
 class Foo<T> {}
 const foo = new Foo<number>();
+    `,
+    `
+class Foo<T> {
+  constructor<T>(x: T) {}
+}
+const foo = new Foo(10);
     `,
     "type Foo<T> = import('foo').Foo<T>;",
     `
