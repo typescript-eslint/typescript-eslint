@@ -113,12 +113,6 @@ export default createRule<[], MessageIds>({
         );
 
         parent.arguments.forEach((argument, i) => {
-          // This is the only possible type for `argument.type` which isn't `Expression`
-          // TODO: should we handle this?
-          if (argument.type === AST_NODE_TYPES.SpreadElement) {
-            return;
-          }
-
           const parameter = sig?.parameters.at(i);
 
           if (
