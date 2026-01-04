@@ -36,7 +36,7 @@ export default createRule<[], MessageIds>({
     fixable: 'code',
     messages: {
       canBeInferred:
-        'This value can be trivially inferred for this type paramter from a {{type}} literal, so it can be omitted.',
+        'This value can be trivially inferred for this type parameter, so it can be omitted.',
       isDefaultParameterValue:
         'This is the default value for this type parameter, so it can be omitted.',
     },
@@ -144,7 +144,6 @@ export default createRule<[], MessageIds>({
             context.report({
               node: typeArgument,
               messageId: 'canBeInferred',
-              data: { type: typeArgumentType },
               fix: fixer =>
                 fixer.removeRange(
                   i === 0
