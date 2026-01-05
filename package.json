@@ -27,6 +27,7 @@
     "check-format": "prettier --check .",
     "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\" --no-progress --show-context --show-suggestions",
     "clean": "nx run-many -t clean --parallel=20",
+    "deduplicate": "pnpm dedupe --check",
     "format": "prettier --ignore-path=%PNPM_SCRIPT_SRC_DIR%/.prettierignore --config=%PNPM_SCRIPT_SRC_DIR%/.prettierrc.json --write %INIT_CWD%",
     "generate-breaking-changes": "nx run eslint-plugin:generate-breaking-changes",
     "generate-configs": "tsx tools/scripts/generate-configs.mts",
