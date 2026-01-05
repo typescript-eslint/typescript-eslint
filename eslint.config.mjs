@@ -10,6 +10,7 @@ import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+import nPlugin from 'eslint-plugin-n';
 import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
@@ -43,6 +44,7 @@ export default defineConfig(
       ['jsdoc']: jsdocPlugin,
       // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
       ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
+      ['n']: nPlugin,
       ['perfectionist']: perfectionistPlugin,
       ['vitest']: vitestPlugin,
       // https://github.com/facebook/react/issues/28313
@@ -329,6 +331,11 @@ export default defineConfig(
       'regexp/prefer-w': 'error',
 
       //
+      // eslint-plugin-n
+      //
+      'n/no-extraneous-import': 'error',
+
+      //
       // eslint-plugin-unicorn
       //
 
@@ -607,6 +614,7 @@ export default defineConfig(
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
       'import/no-default-export': 'off',
+      'n/no-extraneous-import': 'off',
       'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
