@@ -806,6 +806,46 @@ import type { foo } from 'import2/private/bar';
         {
           messageId: 'importNameWithCustomMessage',
         },
+      ],
+      options: [
+        {
+          paths: [
+            {
+              allowTypeImports: true,
+              importNames: ['Bar', 'Baz'],
+              message: 'Please use Bar and Baz from /import-bar/baz/ instead.',
+              name: 'import-foo',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "import { Bar, type Baz } from 'import-foo';",
+      errors: [
+        {
+          messageId: 'importNameWithCustomMessage',
+        },
+        {
+          messageId: 'importNameWithCustomMessage',
+        },
+      ],
+      options: [
+        {
+          paths: [
+            {
+              allowTypeImports: false,
+              importNames: ['Bar', 'Baz'],
+              message: 'Please use Bar and Baz from /import-bar/baz/ instead.',
+              name: 'import-foo',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { Bar, type Baz } from 'import-foo';",
+      errors: [
         {
           messageId: 'importNameWithCustomMessage',
         },
@@ -837,7 +877,7 @@ import type { foo } from 'import2/private/bar';
         {
           paths: [
             {
-              allowTypeImports: true,
+              allowTypeImports: false,
               importNames: ['Bar', 'Baz'],
               message: 'Please use Bar and Baz from /import-bar/baz/ instead.',
               name: 'import-foo',

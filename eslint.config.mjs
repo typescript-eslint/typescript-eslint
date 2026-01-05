@@ -435,6 +435,7 @@ export default defineConfig(
     name: 'eslint-plugin-and-eslint-plugin-internal/test-files/rules',
     rules: {
       '@typescript-eslint/internal/no-dynamic-tests': 'error',
+      '@typescript-eslint/internal/no-multiple-lines-of-errors': 'error',
       '@typescript-eslint/internal/plugin-test-formatting': 'error',
     },
   },
@@ -600,8 +601,6 @@ export default defineConfig(
   {
     extends: [
       jsxA11yPlugin.flatConfigs.recommended,
-      // https://github.com/facebook/react/pull/30774
-      // @ts-expect-error -- Temporary types incompatibility pending flat config support
       { name: 'react/recommended', ...reactPlugin.configs.flat.recommended },
       fixupConfigRules([
         {
