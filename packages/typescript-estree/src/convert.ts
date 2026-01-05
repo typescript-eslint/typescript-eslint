@@ -2692,37 +2692,12 @@ export class Converter {
           ...((): TSESTree.OptionalRangeAndLoc<
             Omit<TSESTree.TSModuleDeclaration, 'parent' | 'type'>
           > => {
-            // the constraints checked by this function are syntactically enforced by TS
-            // the checks mostly exist for type's sake
-
             if (node.flags & ts.NodeFlags.GlobalAugmentation) {
-              const id: TSESTree.Identifier | TSESTree.StringLiteral =
-                this.convertChild(node.name);
-              const body:
-                | TSESTree.TSModuleBlock
-                | TSESTree.TSModuleDeclaration
-                | null = this.convertChild(node.body);
-
-              if (
-                body == null ||
-                body.type === AST_NODE_TYPES.TSModuleDeclaration
-              ) {
-                this.#throwError(
-                  node.body ?? node,
-                  'Expected a valid module body',
-                );
-              }
-              if (id.type !== AST_NODE_TYPES.Identifier) {
-                this.#throwError(
-                  node.name,
-                  'global module augmentation must have an Identifier id',
-                );
-              }
               return {
-                body: body as TSESTree.TSModuleBlock,
+                body: this.convertChild(node.body) as TSESTree.TSModuleBlock,
                 declare: false,
                 global: false,
-                id,
+                id: this.convertChild(node.name),
                 kind: 'global',
               };
             }
@@ -2743,16 +2718,6 @@ export class Converter {
             // Nested module declarations are stored in TypeScript as nested tree nodes.
             // We "unravel" them here by making our own nested TSQualifiedName,
             // with the innermost node's body as the actual node body.
-
-            if (node.body == null) {
-              this.#throwError(node, 'Expected a module body');
-            }
-            if (node.name.kind !== ts.SyntaxKind.Identifier) {
-              this.#throwError(
-                node.name,
-                '`namespace`s must have an Identifier id',
-              );
-            }
 
             let name: TSESTree.Identifier | TSESTree.TSQualifiedName =
               this.createNode<TSESTree.Identifier>(node.name, {
