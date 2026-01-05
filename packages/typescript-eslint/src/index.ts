@@ -16,6 +16,8 @@ import type {
 import { config } from './config-helper';
 import { getTSConfigRootDirFromStack } from './getTSConfigRootDirFromStack';
 
+export type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
+
 export const parser: CompatibleParser =
   rawPlugin.parser as CompatibleParser satisfies FlatConfig.Parser;
 
@@ -28,7 +30,7 @@ require('typescript-eslint').plugin !== require('@typescript-eslint/eslint-plugi
 
 This is bad because it means that 3rd party configs would be required to use
 `typescript-eslint` or else they would break a user's config if the user either
-used `tseslint.configs.recomended` et al or
+used `tseslint.configs.recommended` et al or
 ```
 {
   plugins: {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/no-unused-vars';
@@ -1688,8 +1689,26 @@ export {};
     },
     {
       code: `
-class Foo {}
 declare class Bar {}
+
+export {};
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Bar',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+class Foo {}
 
 export {};
       `,
@@ -1703,17 +1722,50 @@ export {};
           line: 2,
           messageId: 'unusedVar',
         },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+using resource = getResource();
+      `,
+      errors: [
         {
           data: {
-            action: 'defined',
+            action: 'assigned a value',
             additional: '',
-            varName: 'Bar',
+            varName: 'resource',
           },
-          line: 3,
+          line: 2,
           messageId: 'unusedVar',
         },
       ],
-      filename: 'foo.d.ts',
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
+    },
+    {
+      code: `
+await using resource = getResource();
+      `,
+      errors: [
+        {
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'resource',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
     },
   ],
 
@@ -3017,6 +3069,39 @@ class Foo {}
 declare class Bar {}
       `,
       filename: 'foo.d.ts',
+    },
+    {
+      code: `
+using resource = getResource();
+resource;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
+    },
+    {
+      code: `
+using resource = getResource();
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
+      options: [{ ignoreUsingDeclarations: true }],
+    },
+    {
+      code: `
+await using resource = getResource();
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
+      options: [{ ignoreUsingDeclarations: true }],
     },
   ],
 });

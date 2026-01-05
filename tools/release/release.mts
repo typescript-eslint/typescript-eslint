@@ -94,7 +94,7 @@ if (options.dryRun) {
   console.log(
     '⚠️ NOTE: Applying canary version to package.json files so that dry-run publishing produces useful output...',
   );
-  execaSync('yarn', ['tsx', 'tools/release/apply-canary-version.mts']);
+  execaSync('pnpm exec', ['tsx', 'tools/release/apply-canary-version.mts']);
   console.log(
     '✅ Applied canary version to package.json files so that dry-run publishing produces useful output\n',
   );
@@ -115,7 +115,7 @@ if (options.dryRun) {
     'checkout',
     'packages/**/package.json',
     'package.json',
-    'yarn.lock',
+    'pnpm-lock.yaml',
   ]);
   console.log(
     '✅ Reverted temporary package.json changes related to dry-run publishing\n',

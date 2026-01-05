@@ -169,11 +169,11 @@ function getTypeParametersFromType(
     return undefined;
   }
 
-  const sortedDeclaraions = sortDeclarationsByTypeValueContext(
+  const sortedDeclarations = sortDeclarationsByTypeValueContext(
     node,
     declarations,
   );
-  return findFirstResult(sortedDeclaraions, decl => {
+  return findFirstResult(sortedDeclarations, decl => {
     if (
       ts.isTypeAliasDeclaration(decl) ||
       ts.isInterfaceDeclaration(decl) ||

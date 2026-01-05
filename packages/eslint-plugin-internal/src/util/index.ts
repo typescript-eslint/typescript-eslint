@@ -1,1 +1,1 @@
-export * from './createRule';
+export * from './createRule.js';

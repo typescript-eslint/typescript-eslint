@@ -59,7 +59,9 @@ Changes must pass two linters for documentation and naming, the commands for whi
 All code changes should ideally be unit tested if possible.
 You can run `pnpm run test` in any package to run its tests.
 
-> [VS Code launch tasks](https://code.visualstudio.com/docs/editor/tasks) tasks are provided that allow [visual debugging](https://code.visualstudio.com/docs/editor/debugging) tests.
+Oftentimes, you will only want to run one specific test related to the bug you are fixing or the feature you are implementing. To do this, you can add `only: true` to the test object definition. (Doing this will cause a new lint error for `eslint-plugin/no-only-tests`, but just ignore it while you work. The lint rule is only there so that you remember to delete the `only: true` once it comes time to make a pull request.)
+
+> The repository has [Visual Studio Code launch tasks](https://code.visualstudio.com/docs/editor/tasks) that allow for [visually debugging tests](https://code.visualstudio.com/docs/editor/debugging).
 
 ### Type Checking
 

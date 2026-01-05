@@ -1,17 +1,8 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import rule from '../../src/rules/no-base-to-string';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 /**
  * ref: https://github.com/typescript-eslint/typescript-eslint/issues/11043
@@ -341,6 +332,21 @@ interface MyError extends Error {}
 
 declare const error: MyError;
 error.toString();
+      `,
+    },
+    {
+      code: `
+        class BaseError extends Error {
+          code?: string;
+        }
+
+        class Boom<T> extends BaseError {
+          details: T;
+        }
+
+        function bar<T>(error: Boom<T>) {
+          console.log(error.toString());
+        }
       `,
     },
     {
@@ -1382,6 +1388,7 @@ declare const foo: Bar & Foo;
       languageOptions: {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
           tsconfigRootDir: rootDir,
         },
       },
@@ -1632,6 +1639,7 @@ declare const foo: Bar & Foo;
       languageOptions: {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
           tsconfigRootDir: rootDir,
         },
       },
@@ -1882,6 +1890,7 @@ declare const foo: Bar & Foo;
       languageOptions: {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
           tsconfigRootDir: rootDir,
         },
       },
@@ -2132,6 +2141,7 @@ declare const foo: Bar & Foo;
       languageOptions: {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
           tsconfigRootDir: rootDir,
         },
       },

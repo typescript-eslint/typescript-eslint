@@ -19,6 +19,7 @@ Program {
       typeAnnotation: TSMappedType {
         type: "TSMappedType",
         nameType: null,
+        optional: false,
         readonly: true,
         typeAnnotation: TSNumberKeyword {
           type: "TSNumberKeyword",

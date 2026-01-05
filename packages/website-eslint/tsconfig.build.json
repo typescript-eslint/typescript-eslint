@@ -10,9 +10,6 @@
   "include": ["src/**/*.ts", "src/index.js", "build.mts"],
   "references": [
     {
-      "path": "../tsconfig-utils/tsconfig.build.json"
-    },
-    {
       "path": "../visitor-keys/tsconfig.build.json"
     },
     {

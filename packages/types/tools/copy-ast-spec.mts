@@ -68,11 +68,6 @@ async function copyFile(
   console.log('Copied', fileName);
 }
 
-if (process.env.SKIP_AST_SPEC_REBUILD) {
-  // ensure the package is built
-  await execAsync('pnpm', ['run', 'build'], { cwd: AST_SPEC_PATH });
-}
-
 await copyFile('dist', 'ast-spec.ts', code =>
   code.replaceAll('export declare enum', 'export enum'),
 );

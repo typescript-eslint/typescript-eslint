@@ -25,20 +25,17 @@ interface PropertyDefinitionBase extends BaseNode {
   value: Expression | null;
 }
 
-export interface PropertyDefinitionComputedNameBase
-  extends PropertyDefinitionBase {
+export interface PropertyDefinitionComputedNameBase extends PropertyDefinitionBase {
   computed: true;
   key: PropertyNameComputed;
 }
 
-export interface PropertyDefinitionNonComputedNameBase
-  extends PropertyDefinitionBase {
+export interface PropertyDefinitionNonComputedNameBase extends PropertyDefinitionBase {
   computed: false;
   key: PropertyNameNonComputed;
 }
 
-export interface ClassPropertyDefinitionNonComputedNameBase
-  extends PropertyDefinitionBase {
+export interface ClassPropertyDefinitionNonComputedNameBase extends PropertyDefinitionBase {
   computed: false;
   key: ClassPropertyNameNonComputed;
 }

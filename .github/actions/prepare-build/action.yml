@@ -23,8 +23,8 @@ runs:
       shell: bash
       run: |
         pnpm exec nx run types:build
-      env:
-        SKIP_AST_SPEC_REBUILD: true
+
+
 
     - name: Build
       if: steps['build-cache'].outputs.cache-hit != 'true'

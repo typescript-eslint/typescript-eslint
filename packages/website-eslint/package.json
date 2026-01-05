@@ -45,7 +45,7 @@
     "@typescript-eslint/tsconfig-utils": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
-    "esbuild": "~0.25.0",
+    "esbuild": "~0.27.2",
     "eslint": "*",
     "esquery": "*",
     "rimraf": "*",

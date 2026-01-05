@@ -11,13 +11,11 @@ interface ExportSpecifierBase extends BaseNode {
   local: Identifier | StringLiteral;
 }
 
-export interface ExportSpecifierWithIdentifierLocal
-  extends ExportSpecifierBase {
+export interface ExportSpecifierWithIdentifierLocal extends ExportSpecifierBase {
   local: Identifier;
 }
 
-export interface ExportSpecifierWithStringOrLiteralLocal
-  extends ExportSpecifierBase {
+export interface ExportSpecifierWithStringOrLiteralLocal extends ExportSpecifierBase {
   local: Identifier | StringLiteral;
 }
 

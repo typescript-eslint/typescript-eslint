@@ -1,18 +1,7 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import rule from '../../src/rules/no-misused-promises';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootDir = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-misused-promises', rule, {
   valid: [
@@ -146,7 +135,7 @@ if (returnsPromise?.call()) {
     `,
     'Promise.resolve() ?? false;',
     `
-function test(a: Promise<void> | undefinded) {
+function test(a: Promise<void> | undefined) {
   const foo = a ?? Promise.reject();
 }
     `,
@@ -1095,6 +1084,13 @@ declare const useCallback: <T extends (...args: unknown[]) => unknown>(
   fn: T,
 ) => T;
 useCallback<ReturnsVoid | ReturnsPromiseVoid>(async () => {});
+    `,
+    `
+Promise.reject(3).finally(async () => {});
+    `,
+    `
+const f = 'finally';
+Promise.reject(3)[f](async () => {});
     `,
   ],
 
@@ -2640,6 +2636,23 @@ const obj: O = {
         {
           column: 16,
           endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type A = { f: () => void } | undefined;
+const a: A = {
+  async f() {},
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 10,
           endLine: 4,
           line: 4,
           messageId: 'voidReturnProperty',

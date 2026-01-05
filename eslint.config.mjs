@@ -44,7 +44,6 @@ export default defineConfig(
       // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
       ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
       ['perfectionist']: perfectionistPlugin,
-      // @ts-expect-error -- https://github.com/vitest-dev/eslint-plugin-vitest/issues/737
       ['vitest']: vitestPlugin,
       // https://github.com/facebook/react/issues/28313
       ['react']: reactPlugin,
@@ -426,6 +425,8 @@ export default defineConfig(
     ],
     name: 'eslint-plugin-and-eslint-plugin-internal/test-files/rules',
     rules: {
+      '@typescript-eslint/internal/no-dynamic-tests': 'error',
+      '@typescript-eslint/internal/no-multiple-lines-of-errors': 'error',
       '@typescript-eslint/internal/plugin-test-formatting': 'error',
     },
   },
@@ -558,9 +559,12 @@ export default defineConfig(
       'perfectionist/sort-interfaces': [
         'error',
         {
-          customGroups: {
-            first: ['type'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: 'type',
+              groupName: 'first',
+            },
+          ],
           groups: ['first', 'unknown'],
         },
       ],
@@ -678,9 +682,12 @@ export default defineConfig(
       'perfectionist/sort-interfaces': [
         'error',
         {
-          customGroups: {
-            first: ['^type$'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: '^type$',
+              groupName: 'first',
+            },
+          ],
           groups: ['first', 'unknown'],
         },
       ],
@@ -696,12 +703,24 @@ export default defineConfig(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: {
-            first: ['^loc$', '^name$', '^node$', '^type$'],
-            fourth: ['^fix$'],
-            second: ['^meta$', '^messageId$', '^start$'],
-            third: ['^defaultOptions$', '^data$', '^end$'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: ['^loc$', '^name$', '^node$', '^type$'],
+              groupName: 'first',
+            },
+            {
+              elementNamePattern: ['^meta$', '^messageId$', '^start$'],
+              groupName: 'second',
+            },
+            {
+              elementNamePattern: ['^defaultOptions$', '^data$', '^end$'],
+              groupName: 'third',
+            },
+            {
+              elementNamePattern: '^fix$',
+              groupName: 'fourth',
+            },
+          ],
           groups: ['first', 'second', 'third', 'fourth', 'unknown'],
         },
       ],
@@ -714,7 +733,16 @@ export default defineConfig(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: { skip: ['^skip$'], top: ['^valid$'] },
+          customGroups: [
+            {
+              elementNamePattern: '^valid$',
+              groupName: 'top',
+            },
+            {
+              elementNamePattern: '^skip$',
+              groupName: 'skip',
+            },
+          ],
           groups: ['top', 'skip', 'unknown'],
         },
       ],
@@ -727,10 +755,16 @@ export default defineConfig(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: {
-            first: ['^type$'],
-            second: ['^loc$', '^range$'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: '^type$',
+              groupName: 'first',
+            },
+            {
+              elementNamePattern: ['^loc$', '^range$'],
+              groupName: 'second',
+            },
+          ],
           groups: ['first', 'second'],
         },
       ],

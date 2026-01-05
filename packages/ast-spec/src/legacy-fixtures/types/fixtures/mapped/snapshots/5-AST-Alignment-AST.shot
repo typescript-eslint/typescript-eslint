@@ -45,7 +45,7 @@ Snapshot Diff:
 -                   },
 -                 },
                   nameType: null,
--                 optional: false,
+                  optional: false,
                   typeAnnotation: TSNumberKeyword {
                     type: 'TSNumberKeyword',
 
