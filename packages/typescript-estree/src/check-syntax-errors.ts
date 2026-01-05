@@ -9,6 +9,7 @@ import {
   hasModifier,
   getDeclarationKind,
   getTextForTokenKind,
+  isEntityNameExpression,
 } from './node-utils';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -399,6 +400,87 @@ export function checkSyntaxError(tsNode: ts.Node): void {
         );
       }
       break;
+
+    case SyntaxKind.ClassDeclaration:
+    case SyntaxKind.ClassExpression: {
+      const heritageClauses = node.heritageClauses ?? [];
+      let seenExtendsClause = false;
+      let seenImplementsClause = false;
+      for (const heritageClause of heritageClauses) {
+        const { token, types } = heritageClause;
+
+        if (types.length === 0) {
+          throw createError(
+            heritageClause,
+            `'${ts.tokenToString(token)}' list cannot be empty.`,
+          );
+        }
+
+        if (token === SyntaxKind.ExtendsKeyword) {
+          if (seenExtendsClause) {
+            throw createError(heritageClause, "'extends' clause already seen.");
+          }
+
+          if (seenImplementsClause) {
+            throw createError(
+              heritageClause,
+              "'extends' clause must precede 'implements' clause.",
+            );
+          }
+
+          if (types.length > 1) {
+            throw createError(
+              types[1],
+              'Classes can only extend a single class.',
+            );
+          }
+
+          seenExtendsClause = true;
+        } else if (token === SyntaxKind.ImplementsKeyword) {
+          if (seenImplementsClause) {
+            throw createError(
+              heritageClause,
+              "'implements' clause already seen.",
+            );
+          }
+
+          seenImplementsClause = true;
+        }
+      }
+      break;
+    }
+
+    case SyntaxKind.InterfaceDeclaration: {
+      const interfaceHeritageClauses = node.heritageClauses ?? [];
+      let seenExtendsClause = false;
+      for (const heritageClause of interfaceHeritageClauses) {
+        if (heritageClause.token !== SyntaxKind.ExtendsKeyword) {
+          throw createError(
+            heritageClause,
+            heritageClause.token === SyntaxKind.ImplementsKeyword
+              ? "Interface declaration cannot have 'implements' clause."
+              : 'Unexpected token.',
+          );
+        }
+        if (seenExtendsClause) {
+          throw createError(heritageClause, "'extends' clause already seen.");
+        }
+        seenExtendsClause = true;
+
+        for (const heritageType of heritageClause.types) {
+          if (
+            !isEntityNameExpression(heritageType.expression) ||
+            ts.isOptionalChain(heritageType.expression)
+          ) {
+            throw createError(
+              heritageType,
+              'Interface declaration can only extend an identifier/qualified name with optional type arguments.',
+            );
+          }
+        }
+      }
+      break;
+    }
 
     case SyntaxKind.ForInStatement:
     case SyntaxKind.ForOfStatement: {

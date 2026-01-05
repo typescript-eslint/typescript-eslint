@@ -830,3 +830,22 @@ export function declarationNameToString(
   const text = ast.text.slice(name.pos, name.end).trimStart();
   return text || '(Missing)';
 }
+
+function isPropertyAccessEntityNameExpression(
+  node: ts.Node,
+): node is ts.PropertyAccessEntityNameExpression {
+  return (
+    ts.isPropertyAccessExpression(node) &&
+    ts.isIdentifier(node.name) &&
+    isEntityNameExpression(node.expression)
+  );
+}
+
+export function isEntityNameExpression(
+  node: ts.Node,
+): node is ts.EntityNameExpression {
+  return (
+    node.kind === SyntaxKind.Identifier ||
+    isPropertyAccessEntityNameExpression(node)
+  );
+}

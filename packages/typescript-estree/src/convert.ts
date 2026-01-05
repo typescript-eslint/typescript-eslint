@@ -32,6 +32,7 @@ import {
   isComma,
   isComputedProperty,
   isESTreeClassMember,
+  isEntityNameExpression,
   isOptional,
   isThisInTypeQuery,
   unescapeStringLiteralText,
@@ -65,25 +66,6 @@ export function convertError(
 export interface ASTMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode, TSESTree.Node>;
-}
-
-function isPropertyAccessEntityNameExpression(
-  node: ts.Node,
-): node is ts.PropertyAccessEntityNameExpression {
-  return (
-    ts.isPropertyAccessExpression(node) &&
-    ts.isIdentifier(node.name) &&
-    isEntityNameExpression(node.expression)
-  );
-}
-
-function isEntityNameExpression(
-  node: ts.Node,
-): node is ts.EntityNameExpression {
-  return (
-    node.kind === SyntaxKind.Identifier ||
-    isPropertyAccessEntityNameExpression(node)
-  );
 }
 
 export class Converter {
@@ -1551,58 +1533,20 @@ export class Converter {
 
       case SyntaxKind.ClassDeclaration:
       case SyntaxKind.ClassExpression: {
-        const heritageClauses = node.heritageClauses ?? [];
         const classNodeType =
           node.kind === SyntaxKind.ClassDeclaration
             ? AST_NODE_TYPES.ClassDeclaration
             : AST_NODE_TYPES.ClassExpression;
-
-        let extendsClause: ts.HeritageClause | undefined;
-        let implementsClause: ts.HeritageClause | undefined;
-        for (const heritageClause of heritageClauses) {
-          const { token, types } = heritageClause;
-
-          if (types.length === 0) {
-            this.#throwError(
-              heritageClause,
-              `'${ts.tokenToString(token)}' list cannot be empty.`,
-            );
-          }
-
-          if (token === SyntaxKind.ExtendsKeyword) {
-            if (extendsClause) {
-              this.#throwError(
-                heritageClause,
-                "'extends' clause already seen.",
-              );
-            }
-
-            if (implementsClause) {
-              this.#throwError(
-                heritageClause,
-                "'extends' clause must precede 'implements' clause.",
-              );
-            }
-
-            if (types.length > 1) {
-              this.#throwError(
-                types[1],
-                'Classes can only extend a single class.',
-              );
-            }
-
-            extendsClause ??= heritageClause;
-          } else if (token === SyntaxKind.ImplementsKeyword) {
-            if (implementsClause) {
-              this.#throwError(
-                heritageClause,
-                "'implements' clause already seen.",
-              );
-            }
-
-            implementsClause ??= heritageClause;
-          }
-        }
+        const extendsClause: ts.HeritageClause | undefined =
+          node.heritageClauses?.find(
+            heritageClause =>
+              heritageClause.token === SyntaxKind.ExtendsKeyword,
+          );
+        const implementsClause: ts.HeritageClause | undefined =
+          node.heritageClauses?.find(
+            heritageClause =>
+              heritageClause.token === SyntaxKind.ImplementsKeyword,
+          );
 
         const result = this.createNode<
           TSESTree.ClassDeclaration | TSESTree.ClassExpression
@@ -2458,42 +2402,22 @@ export class Converter {
       }
 
       case SyntaxKind.InterfaceDeclaration: {
-        const interfaceHeritageClauses = node.heritageClauses ?? [];
-        const interfaceExtends: TSESTree.TSInterfaceHeritage[] = [];
-
-        let seenExtendsClause = false;
-        for (const heritageClause of interfaceHeritageClauses) {
-          if (heritageClause.token !== SyntaxKind.ExtendsKeyword) {
-            this.#throwError(
-              heritageClause,
-              heritageClause.token === SyntaxKind.ImplementsKeyword
-                ? "Interface declaration cannot have 'implements' clause."
-                : 'Unexpected token.',
-            );
-          }
-          if (seenExtendsClause) {
-            this.#throwError(heritageClause, "'extends' clause already seen.");
-          }
-          seenExtendsClause = true;
-
-          for (const heritageType of heritageClause.types) {
-            if (
-              !isEntityNameExpression(heritageType.expression) ||
-              ts.isOptionalChain(heritageType.expression)
-            ) {
-              this.#throwError(
-                heritageType,
-                'Interface declaration can only extend an identifier/qualified name with optional type arguments.',
-              );
-            }
-            interfaceExtends.push(
-              this.convertChild(
-                heritageType,
-                node,
-              ) as TSESTree.TSInterfaceHeritage,
-            );
-          }
-        }
+        const interfaceExtends: TSESTree.TSInterfaceHeritage[] =
+          node.heritageClauses?.flatMap(heritageClause =>
+            // `InterfaceDeclaration` can only have `extends`,
+            // already checked in `check-syntax-errors.ts`,
+            // However, `allowInvalidAST` allow to bypass the syntax check,
+            // We'll just ignore clauses after other keywords
+            heritageClause.token === SyntaxKind.ExtendsKeyword
+              ? heritageClause.types.map(
+                  heritageType =>
+                    this.convertChild(
+                      heritageType,
+                      node,
+                    ) as TSESTree.TSInterfaceHeritage,
+                )
+              : [],
+          ) ?? [];
 
         const result = this.createNode<TSESTree.TSInterfaceDeclaration>(node, {
           type: AST_NODE_TYPES.TSInterfaceDeclaration,
