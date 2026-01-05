@@ -15,7 +15,7 @@ import {
 
 const SyntaxKind = ts.SyntaxKind;
 
-export function checkSyntaxError(tsNode: ts.Node): void {
+export function checkSyntaxError(tsNode: ts.Node, parent: TSNode): void {
   checkModifiers(tsNode);
 
   const node = tsNode as TSNode;
@@ -388,6 +388,21 @@ export function checkSyntaxError(tsNode: ts.Node): void {
         node.exportClause?.kind === SyntaxKind.NamedExports,
       );
       break;
+
+    case SyntaxKind.ExportSpecifier: {
+      const local = node.propertyName ?? node.name;
+      if (
+        local.kind === SyntaxKind.StringLiteral &&
+        parent.kind === SyntaxKind.ExportDeclaration &&
+        parent.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
+      ) {
+        throw createError(
+          local,
+          'A string literal cannot be used as a local exported binding without `from`.',
+        );
+      }
+      break;
+    }
 
     case SyntaxKind.CallExpression:
       if (

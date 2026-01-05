@@ -85,12 +85,12 @@ export class Converter {
     this.options = { ...options };
   }
 
-  #checkSyntaxError(node: ts.Node): void {
+  #checkSyntaxError(node: ts.Node, parent: TSNode): void {
     if (this.options.allowInvalidAST) {
       return;
     }
 
-    checkSyntaxError(node);
+    checkSyntaxError(node, parent);
   }
 
   #throwError(
@@ -447,17 +447,15 @@ export class Converter {
       return null;
     }
 
-    this.#checkSyntaxError(node);
-
     const pattern = this.allowPattern;
     if (allowPattern != null) {
       this.allowPattern = allowPattern;
     }
 
-    const result = this.convertNode(
-      node as TSNode,
-      (parent ?? node.parent) as TSNode,
-    );
+    const parentNode = (parent ?? node.parent) as TSNode;
+    this.#checkSyntaxError(node, parentNode);
+
+    const result = this.convertNode(node as TSNode, parentNode);
 
     this.registerTSNodeInNodeMap(node, result);
 
@@ -1700,16 +1698,6 @@ export class Converter {
 
       case SyntaxKind.ExportSpecifier: {
         const local = node.propertyName ?? node.name;
-        if (
-          local.kind === SyntaxKind.StringLiteral &&
-          parent.kind === SyntaxKind.ExportDeclaration &&
-          parent.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
-        ) {
-          this.#throwError(
-            local,
-            'A string literal cannot be used as a local exported binding without `from`.',
-          );
-        }
         return this.createNode<TSESTree.ExportSpecifier>(node, {
           type: AST_NODE_TYPES.ExportSpecifier,
           exported: this.convertChild(node.name),
