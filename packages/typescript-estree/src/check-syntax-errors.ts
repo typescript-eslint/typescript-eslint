@@ -394,8 +394,7 @@ export function checkSyntaxError(tsNode: ts.Node): void {
         node.arguments.length !== 2
       ) {
         throw createError(
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- Bug?
-          node.arguments[2] ?? node,
+          node.arguments.length > 1 ? node.arguments[2] : node,
           'Dynamic import requires exactly one or two arguments.',
         );
       }
