@@ -414,6 +414,8 @@ export function checkSyntaxError(tsNode: ts.Node): void {
             'global module augmentation must have an Identifier id',
           );
         }
+
+        return;
       }
 
       if (ts.isStringLiteral(node.name)) {
