@@ -90,7 +90,7 @@ export class Converter {
       return;
     }
 
-    checkSyntaxError(node, parent);
+    checkSyntaxError(node, parent, this.allowPattern);
   }
 
   #throwError(
@@ -929,23 +929,9 @@ export class Converter {
           });
         }
 
-        const properties: TSESTree.Property[] = [];
-        for (const property of node.properties) {
-          if (
-            (property.kind === SyntaxKind.GetAccessor ||
-              property.kind === SyntaxKind.SetAccessor ||
-              property.kind === SyntaxKind.MethodDeclaration) &&
-            !property.body
-          ) {
-            this.#throwError(property.end - 1, "'{' expected.");
-          }
-
-          properties.push(this.convertChild(property) as TSESTree.Property);
-        }
-
         return this.createNode<TSESTree.ObjectExpression>(node, {
           type: AST_NODE_TYPES.ObjectExpression,
-          properties,
+          properties: this.convertChildren(node.properties),
         });
       }
 

@@ -15,7 +15,11 @@ import {
 
 const SyntaxKind = ts.SyntaxKind;
 
-export function checkSyntaxError(tsNode: ts.Node, parent: TSNode): void {
+export function checkSyntaxError(
+  tsNode: ts.Node,
+  parent: TSNode,
+  allowPattern: boolean,
+): void {
   checkModifiers(tsNode);
 
   const node = tsNode as TSNode;
@@ -518,6 +522,27 @@ export function checkSyntaxError(tsNode: ts.Node, parent: TSNode): void {
             : `Method '${declarationNameToString(node.name)}' cannot have an implementation because it is marked abstract.`,
         );
       }
+      break;
+    }
+
+    case SyntaxKind.ObjectLiteralExpression: {
+      if (!allowPattern) {
+        for (const property of node.properties) {
+          if (
+            (property.kind === SyntaxKind.GetAccessor ||
+              property.kind === SyntaxKind.SetAccessor ||
+              property.kind === SyntaxKind.MethodDeclaration) &&
+            !property.body
+          ) {
+            throw createError(
+              property.end - 1,
+              "'{' expected.",
+              node.getSourceFile(),
+            );
+          }
+        }
+      }
+
       break;
     }
 
