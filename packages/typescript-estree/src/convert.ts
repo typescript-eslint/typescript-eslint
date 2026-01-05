@@ -150,7 +150,7 @@ export class Converter {
         : (): Properties[typeof valueKey] => {
             if (!warned) {
               process.emitWarning(
-                `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+                `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://tseslint.com/key-property-deprecated.`,
                 'DeprecationWarning',
               );
               warned = true;
@@ -192,8 +192,7 @@ export class Converter {
               if (preferredKey) {
                 message += ` Use ${preferredKey} instead.`;
               }
-              message +=
-                ' See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.';
+              message += ' See https://tseslint.com/key-property-deprecated.';
               process.emitWarning(message, 'DeprecationWarning');
               warned = true;
             }
