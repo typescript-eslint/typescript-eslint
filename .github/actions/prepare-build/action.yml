@@ -24,8 +24,6 @@ runs:
       run: |
         pnpm exec nx run types:build
 
-
-
     - name: Build
       if: steps['build-cache'].outputs.cache-hit != 'true'
       shell: bash
