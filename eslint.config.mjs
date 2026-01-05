@@ -593,8 +593,6 @@ export default defineConfig(
   {
     extends: [
       jsxA11yPlugin.flatConfigs.recommended,
-      // https://github.com/facebook/react/pull/30774
-      // @ts-expect-error -- Temporary types incompatibility pending flat config support
       { name: 'react/recommended', ...reactPlugin.configs.flat.recommended },
       fixupConfigRules([
         {
