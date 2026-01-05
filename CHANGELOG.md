@@ -1,3 +1,22 @@
+## 8.52.0 (2026-01-05)
+
+### 🚀 Features
+
+- **eslint-plugin-internal:** [no-multiple-lines-of-errors] add rule ([#11899](https://github.com/typescript-eslint/typescript-eslint/pull/11899))
+- **typescript-estree:** add tseslint.com redirects for CLI outputs ([#11895](https://github.com/typescript-eslint/typescript-eslint/pull/11895))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-useless-default-assignment] handle conditional initializer ([#11908](https://github.com/typescript-eslint/typescript-eslint/pull/11908))
+- **eslint-plugin:** [no-base-to-string] detect @@toPrimitive and valueOf ([#11901](https://github.com/typescript-eslint/typescript-eslint/pull/11901))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+- Ulrich Stark
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.51.0 (2025-12-29)
 
 ### 🚀 Features
