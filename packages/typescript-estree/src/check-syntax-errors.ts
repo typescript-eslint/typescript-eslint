@@ -274,19 +274,6 @@ export function checkSyntaxError(
       }
       break;
 
-    case SyntaxKind.ClassDeclaration:
-      if (
-        !node.name &&
-        (!hasModifier(ts.SyntaxKind.ExportKeyword, node) ||
-          !hasModifier(ts.SyntaxKind.DefaultKeyword, node))
-      ) {
-        throw createError(
-          node,
-          "A class declaration without the 'default' modifier must have a name.",
-        );
-      }
-      break;
-
     case SyntaxKind.BinaryExpression:
       if (
         node.operatorToken.kind !== SyntaxKind.InKeyword &&
@@ -422,6 +409,17 @@ export function checkSyntaxError(
       break;
 
     case SyntaxKind.ClassDeclaration:
+      if (
+        !node.name &&
+        (!hasModifier(ts.SyntaxKind.ExportKeyword, node) ||
+          !hasModifier(ts.SyntaxKind.DefaultKeyword, node))
+      ) {
+        throw createError(
+          node,
+          "A class declaration without the 'default' modifier must have a name.",
+        );
+      }
+    // Fall though
     case SyntaxKind.ClassExpression: {
       const heritageClauses = node.heritageClauses ?? [];
       let seenExtendsClause = false;
@@ -456,7 +454,8 @@ export function checkSyntaxError(
           }
 
           seenExtendsClause = true;
-        } else if (token === SyntaxKind.ImplementsKeyword) {
+        } else {
+          // `implements`
           if (seenImplementsClause) {
             throw createError(
               heritageClause,

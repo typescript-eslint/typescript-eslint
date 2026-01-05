@@ -31,7 +31,6 @@ import {
   isComma,
   isComputedProperty,
   isESTreeClassMember,
-  isEntityNameExpression,
   isOptional,
   isThisInTypeQuery,
   unescapeStringLiteralText,
