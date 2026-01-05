@@ -10,7 +10,7 @@ import type {
 import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 
-import { checkModifiers } from './check-modifiers';
+import { checkSyntaxError } from './check-syntax-errors';
 import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
@@ -105,58 +105,12 @@ export class Converter {
     this.options = { ...options };
   }
 
-  #checkForStatementDeclaration(
-    initializer: ts.ForInitializer,
-    kind: ts.SyntaxKind.ForInStatement | ts.SyntaxKind.ForOfStatement,
-  ): void {
-    const loop =
-      kind === ts.SyntaxKind.ForInStatement ? 'for...in' : 'for...of';
-    if (ts.isVariableDeclarationList(initializer)) {
-      if (initializer.declarations.length !== 1) {
-        this.#throwError(
-          initializer,
-          `Only a single variable declaration is allowed in a '${loop}' statement.`,
-        );
-      }
-      const declaration = initializer.declarations[0];
-      if (declaration.initializer) {
-        this.#throwError(
-          declaration,
-          `The variable declaration of a '${loop}' statement cannot have an initializer.`,
-        );
-      } else if (declaration.type) {
-        this.#throwError(
-          declaration,
-          `The variable declaration of a '${loop}' statement cannot have a type annotation.`,
-        );
-      }
-      if (
-        kind === ts.SyntaxKind.ForInStatement &&
-        initializer.flags & ts.NodeFlags.Using
-      ) {
-        this.#throwError(
-          initializer,
-          "The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
-        );
-      }
-    } else if (
-      !isValidAssignmentTarget(initializer) &&
-      initializer.kind !== ts.SyntaxKind.ObjectLiteralExpression &&
-      initializer.kind !== ts.SyntaxKind.ArrayLiteralExpression
-    ) {
-      this.#throwError(
-        initializer,
-        `The left-hand side of a '${loop}' statement must be a variable or a property access.`,
-      );
-    }
-  }
-
-  #checkModifiers(node: ts.Node): void {
+  #checkSyntaxError(node: ts.Node): void {
     if (this.options.allowInvalidAST) {
       return;
     }
 
-    checkModifiers(node);
+    checkSyntaxError(node);
   }
 
   #throwError(
@@ -527,7 +481,7 @@ export class Converter {
       return null;
     }
 
-    this.#checkModifiers(node);
+    this.#checkSyntaxError(node);
 
     const pattern = this.allowPattern;
     if (allowPattern != null) {
@@ -895,7 +849,6 @@ export class Converter {
         });
 
       case SyntaxKind.ForInStatement:
-        this.#checkForStatementDeclaration(node.initializer, node.kind);
         return this.createNode<TSESTree.ForInStatement>(node, {
           type: AST_NODE_TYPES.ForInStatement,
           body: this.convertChild(node.statement),
@@ -904,7 +857,6 @@ export class Converter {
         });
 
       case SyntaxKind.ForOfStatement: {
-        this.#checkForStatementDeclaration(node.initializer, node.kind);
         return this.createNode<TSESTree.ForOfStatement>(node, {
           type: AST_NODE_TYPES.ForOfStatement,
           await: node.awaitModifier?.kind === SyntaxKind.AwaitKeyword,

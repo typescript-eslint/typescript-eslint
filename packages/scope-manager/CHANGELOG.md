@@ -1,3 +1,15 @@
+## 8.51.0 (2025-12-29)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] handle MemberExpression in final chain position ([#11835](https://github.com/typescript-eslint/typescript-eslint/pull/11835))
+
+### ❤️ Thank You
+
+- mdm317
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.50.1 (2025-12-22)
 
 This was a version bump only for scope-manager to align it with other projects, there were no code changes.
