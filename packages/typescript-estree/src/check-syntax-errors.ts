@@ -8,6 +8,7 @@ import {
   createError,
   hasModifier,
   getDeclarationKind,
+  getTextForTokenKind,
 } from './node-utils';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -357,6 +358,48 @@ export function checkSyntaxError(tsNode: ts.Node): void {
       }
       break;
 
+    case SyntaxKind.PrefixUnaryExpression:
+    case SyntaxKind.PostfixUnaryExpression: {
+      const operator = getTextForTokenKind(node.operator);
+      /**
+       * ESTree uses UpdateExpression for ++/--
+       */
+      if (
+        (operator === '++' || operator === '--') &&
+        !isValidAssignmentTarget(node.operand)
+      ) {
+        throw createError(
+          node.operand,
+          'Invalid left-hand side expression in unary operation',
+        );
+      }
+      break;
+    }
+
+    case SyntaxKind.ImportDeclaration:
+      assertModuleSpecifier(node, false);
+      break;
+
+    case SyntaxKind.ExportDeclaration:
+      assertModuleSpecifier(
+        node,
+        node.exportClause?.kind === SyntaxKind.NamedExports,
+      );
+      break;
+
+    case SyntaxKind.CallExpression:
+      if (
+        node.expression.kind === SyntaxKind.ImportKeyword &&
+        node.arguments.length !== 1 &&
+        node.arguments.length !== 2
+      ) {
+        throw createError(
+          node.arguments.length > 1 ? node.arguments[2] : node,
+          'Dynamic import requires exactly one or two arguments.',
+        );
+      }
+      break;
+
     case SyntaxKind.ForInStatement:
     case SyntaxKind.ForOfStatement: {
       checkForStatementDeclaration(node);
@@ -408,6 +451,25 @@ function checkForStatementDeclaration(
     throw createError(
       initializer,
       `The left-hand side of a '${loop}' statement must be a variable or a property access.`,
+    );
+  }
+}
+
+function assertModuleSpecifier(
+  node: ts.ExportDeclaration | ts.ImportDeclaration,
+  allowNull: boolean,
+) {
+  if (!allowNull && node.moduleSpecifier == null) {
+    throw createError(node, 'Module specifier must be a string literal.');
+  }
+
+  if (
+    node.moduleSpecifier &&
+    node.moduleSpecifier.kind !== SyntaxKind.StringLiteral
+  ) {
+    throw createError(
+      node.moduleSpecifier,
+      'Module specifier must be a string literal.',
     );
   }
 }

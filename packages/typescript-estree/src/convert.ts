@@ -34,7 +34,6 @@ import {
   isESTreeClassMember,
   isOptional,
   isThisInTypeQuery,
-  isValidAssignmentTarget,
   unescapeStringLiteralText,
 } from './node-utils';
 import { AST_NODE_TYPES } from './ts-estree';
@@ -209,25 +208,6 @@ export class Converter {
     });
 
     return node as Properties & Record<Key, Value>;
-  }
-
-  private assertModuleSpecifier(
-    node: ts.ExportDeclaration | ts.ImportDeclaration,
-    allowNull: boolean,
-  ): void {
-    if (!allowNull && node.moduleSpecifier == null) {
-      this.#throwError(node, 'Module specifier must be a string literal.');
-    }
-
-    if (
-      node.moduleSpecifier &&
-      node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
-    ) {
-      this.#throwError(
-        node.moduleSpecifier,
-        'Module specifier must be a string literal.',
-      );
-    }
   }
 
   private convertBindingNameWithTypeAnnotation(
@@ -1670,8 +1650,6 @@ export class Converter {
         });
 
       case SyntaxKind.ImportDeclaration: {
-        this.assertModuleSpecifier(node, false);
-
         const result = this.createNode<TSESTree.ImportDeclaration>(
           node,
           this.#withDeprecatedAliasGetter(
@@ -1749,7 +1727,6 @@ export class Converter {
 
       case SyntaxKind.ExportDeclaration: {
         if (node.exportClause?.kind === SyntaxKind.NamedExports) {
-          this.assertModuleSpecifier(node, true);
           return this.createNode<TSESTree.ExportNamedDeclaration>(
             node,
             this.#withDeprecatedAliasGetter(
@@ -1770,7 +1747,6 @@ export class Converter {
             ),
           );
         }
-        this.assertModuleSpecifier(node, false);
         return this.createNode<TSESTree.ExportAllDeclaration>(
           node,
           this.#withDeprecatedAliasGetter(
@@ -1833,12 +1809,6 @@ export class Converter {
          * ESTree uses UpdateExpression for ++/--
          */
         if (operator === '++' || operator === '--') {
-          if (!isValidAssignmentTarget(node.operand)) {
-            this.#throwError(
-              node.operand,
-              'Invalid left-hand side expression in unary operation',
-            );
-          }
           return this.createNode<TSESTree.UpdateExpression>(node, {
             type: AST_NODE_TYPES.UpdateExpression,
             argument: this.convertChild(node.operand),
@@ -1973,12 +1943,6 @@ export class Converter {
 
       case SyntaxKind.CallExpression: {
         if (node.expression.kind === SyntaxKind.ImportKeyword) {
-          if (node.arguments.length !== 1 && node.arguments.length !== 2) {
-            this.#throwError(
-              node.arguments[2] ?? node,
-              'Dynamic import requires exactly one or two arguments.',
-            );
-          }
           return this.createNode<TSESTree.ImportExpression>(
             node,
             this.#withDeprecatedAliasGetter(
