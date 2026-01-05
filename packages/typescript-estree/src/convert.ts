@@ -1943,12 +1943,6 @@ export class Converter {
 
       case SyntaxKind.CallExpression: {
         if (node.expression.kind === SyntaxKind.ImportKeyword) {
-          if (node.arguments.length !== 1 && node.arguments.length !== 2) {
-            this.#throwError(
-              node.arguments[2] ?? node,
-              'Dynamic import requires exactly one or two arguments.',
-            );
-          }
           return this.createNode<TSESTree.ImportExpression>(
             node,
             this.#withDeprecatedAliasGetter(

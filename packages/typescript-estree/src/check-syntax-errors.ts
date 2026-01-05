@@ -386,6 +386,17 @@ export function checkSyntaxError(tsNode: ts.Node): void {
       );
       break;
 
+    case SyntaxKind.CallExpression:
+      if (node.expression.kind === SyntaxKind.ImportKeyword) {
+        if (node.arguments.length !== 1 && node.arguments.length !== 2) {
+          throw createError(
+            node.arguments[2] ?? node,
+            'Dynamic import requires exactly one or two arguments.',
+          );
+        }
+      }
+      break;
+
     case SyntaxKind.ForInStatement:
     case SyntaxKind.ForOfStatement: {
       checkForStatementDeclaration(node);
