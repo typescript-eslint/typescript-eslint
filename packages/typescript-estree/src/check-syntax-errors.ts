@@ -8,6 +8,7 @@ import {
   createError,
   hasModifier,
   getDeclarationKind,
+  getTextForTokenKind,
 } from './node-utils';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -356,6 +357,23 @@ export function checkSyntaxError(tsNode: ts.Node): void {
         throw createError(node.expression, 'String literal expected.');
       }
       break;
+
+    case SyntaxKind.PrefixUnaryExpression:
+    case SyntaxKind.PostfixUnaryExpression: {
+      const operator = getTextForTokenKind(node.operator);
+      /**
+       * ESTree uses UpdateExpression for ++/--
+       */
+      if (operator === '++' || operator === '--') {
+        if (!isValidAssignmentTarget(node.operand)) {
+          throw createError(
+            node.operand,
+            'Invalid left-hand side expression in unary operation',
+          );
+        }
+      }
+      break;
+    }
 
     case SyntaxKind.ForInStatement:
     case SyntaxKind.ForOfStatement: {

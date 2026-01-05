@@ -34,7 +34,6 @@ import {
   isESTreeClassMember,
   isOptional,
   isThisInTypeQuery,
-  isValidAssignmentTarget,
   unescapeStringLiteralText,
 } from './node-utils';
 import { AST_NODE_TYPES } from './ts-estree';
@@ -1833,12 +1832,6 @@ export class Converter {
          * ESTree uses UpdateExpression for ++/--
          */
         if (operator === '++' || operator === '--') {
-          if (!isValidAssignmentTarget(node.operand)) {
-            this.#throwError(
-              node.operand,
-              'Invalid left-hand side expression in unary operation',
-            );
-          }
           return this.createNode<TSESTree.UpdateExpression>(node, {
             type: AST_NODE_TYPES.UpdateExpression,
             argument: this.convertChild(node.operand),
