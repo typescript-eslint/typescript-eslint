@@ -54,17 +54,6 @@ export default createRule<[], MessageId>({
         .some(part => isTypeFlagSet(part, ts.TypeFlags.Undefined));
     }
 
-    function getPropertyType(
-      objectType: ts.Type,
-      propertyName: string,
-    ): ts.Type | null {
-      const symbol = objectType.getProperty(propertyName);
-      if (!symbol) {
-        return null;
-      }
-      return checker.getTypeOfSymbol(symbol);
-    }
-
     function getArrayElementType(
       arrayType: ts.Type,
       elementIndex: number,
@@ -186,7 +175,33 @@ export default createRule<[], MessageId>({
         return null;
       }
 
-      return getPropertyType(sourceType, propertyName);
+      const symbol = sourceType.getProperty(propertyName);
+      if (!symbol) {
+        return null;
+      }
+
+      if (
+        symbol.flags & ts.SymbolFlags.Optional &&
+        hasConditionalInitializer(objectPattern)
+      ) {
+        return null;
+      }
+
+      return checker.getTypeOfSymbol(symbol);
+    }
+
+    function hasConditionalInitializer(node: TSESTree.Node): boolean {
+      const parent = node.parent;
+      if (!parent) {
+        return false;
+      }
+      if (parent.type === AST_NODE_TYPES.VariableDeclarator && parent.init) {
+        return (
+          parent.init.type === AST_NODE_TYPES.ConditionalExpression ||
+          parent.init.type === AST_NODE_TYPES.LogicalExpression
+        );
+      }
+      return hasConditionalInitializer(parent);
     }
 
     function getSourceTypeForPattern(pattern: TSESTree.Node): ts.Type | null {
@@ -220,12 +235,11 @@ export default createRule<[], MessageId>({
       }
 
       if (parent.type === AST_NODE_TYPES.ArrayPattern) {
-        const arrayPattern = parent;
-        const arrayType = getSourceTypeForPattern(arrayPattern);
+        const arrayType = getSourceTypeForPattern(parent);
         if (!arrayType) {
           return null;
         }
-        const elementIndex = arrayPattern.elements.indexOf(
+        const elementIndex = parent.elements.indexOf(
           pattern as TSESTree.DestructuringPattern,
         );
         return getArrayElementType(arrayType, elementIndex);
