@@ -178,6 +178,7 @@ export default {
         '^@theme-original/.*',
         'docusaurus-plugin-typedoc',
         'typedoc-plugin-markdown',
+        'prismjs',
       ],
     },
     'packages/website-eslint': {

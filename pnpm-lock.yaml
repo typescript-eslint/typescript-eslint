@@ -902,6 +902,9 @@ importers:
       monaco-editor:
         specifier: ~0.54.0
         version: 0.54.0
+      prismjs:
+        specifier: 1.30.0
+        version: 1.30.0
       raw-loader:
         specifier: ^4.0.2
         version: 4.0.2(webpack@5.104.1(@swc/core@1.15.8(@swc/helpers@0.5.17)))
