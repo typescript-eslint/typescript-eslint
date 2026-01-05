@@ -38,14 +38,13 @@ export default createRule<[], MessageIds>({
       errorNew: 'Unsafe construction of a type that could not be resolved.',
       errorTemplateTag:
         'Unsafe use of a template tag whose type could not be resolved.',
-      unsafeCall: 'Unsafe call of {{article}} {{type}} typed value.',
+      unsafeCall: 'Unsafe call of {{type}} typed value.',
       unsafeCallThis: [
-        'Unsafe call of {{article}} {{type}} typed value. `this` is typed as {{type}}.',
+        'Unsafe call of {{type}} typed value. `this` is typed as {{type}}.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
-      unsafeNew: 'Unsafe construction of {{article}} {{type}} typed value.',
-      unsafeTemplateTag:
-        'Unsafe use of {{article}} {{type}} typed template tag.',
+      unsafeNew: 'Unsafe construction of {{type}} typed value.',
+      unsafeTemplateTag: 'Unsafe use of {{type}} typed template tag.',
     },
     schema: [],
   },
@@ -87,8 +86,7 @@ export default createRule<[], MessageIds>({
           node: reportingNode,
           messageId: isErrorType ? errorMessageId : unsafeMessageId,
           data: {
-            type: '`any`',
-            article: 'an',
+            type: 'an `any`',
           },
         });
         return;
@@ -130,8 +128,7 @@ export default createRule<[], MessageIds>({
           node: reportingNode,
           messageId: unsafeMessageId,
           data: {
-            type: '`Function`',
-            article: 'a',
+            type: 'a `Function`',
           },
         });
         return;
