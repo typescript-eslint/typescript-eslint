@@ -42,7 +42,7 @@ It would only ban types explicitly declared in a project's linting config.
 When the rule was ported to `@typescript-eslint/ban-types`, it was changed to additionally lint against known dangerous built-in types by default.
 Doing so meant that the `plugin:typescript-eslint/recommended` preset config would lint against them by default.
 
-The drawback of linting against those types by default was that nuanced types -in particular, `{}`- went through the same limited configuration channels as more straightforward types like `Function`.
+The drawback of linting against those types by default was that nuanced types such as `object` and `{}` went through the same limited configuration channels as more straightforward types like `Function`.
 `{}` in particular has nuance of when it should be used -- which is not describable in a rule configuration format.
 
 As of typescript-eslint v8, the old `@typescript-eslint/ban-types` rule has now been split into several more targeted rules.
