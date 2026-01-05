@@ -54,6 +54,18 @@ export class Foo {}
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'ClassDecoratorFactory',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+
+export class Foo {}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -73,6 +85,19 @@ baz<Bar>();
           },
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Foo',
+              },
+              messageId: 'removeUnusedVar',
+              output: `
+import {  Bar } from 'foo';
+function baz<Foo>(): Foo {}
+baz<Bar>();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -92,6 +117,19 @@ console.log(a);
           },
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Nullable',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+
+const a: string = 'hello';
+console.log(a);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -112,6 +150,20 @@ console.log(a);
           },
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'SomeOther',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+
+const a: Nullable<string> = 'hello';
+console.log(a);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -137,6 +189,24 @@ new A();
           },
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Another',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+
+class A {
+  do = (a: Nullable) => {
+    console.log(a);
+  };
+}
+new A();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -161,6 +231,24 @@ new A();
           },
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Another',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+
+class A {
+  do(a: Nullable) {
+    console.log(a);
+  }
+}
+new A();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -185,6 +273,24 @@ new A();
           },
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Another',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+
+class A {
+  do(): Nullable {
+    return null;
+  }
+}
+new A();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -206,6 +312,21 @@ export interface A {
           },
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Another',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+
+export interface A {
+  do(a: Nullable);
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -227,6 +348,21 @@ export interface A {
           },
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Another',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+
+export interface A {
+  other: Nullable;
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -248,6 +384,21 @@ foo();
           },
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Nullable',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+
+function foo(a: string) {
+  console.log(a);
+}
+foo();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -269,6 +420,21 @@ foo();
           },
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Nullable',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+
+function foo(): string | null {
+  return null;
+}
+foo();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -292,6 +458,23 @@ new A();
           },
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'SomeOther',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+
+import { Another } from 'some';
+class A extends Nullable {
+  other: Nullable<Another>;
+}
+new A();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -315,6 +498,23 @@ new A();
           },
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'SomeOther',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+
+import { Another } from 'some';
+abstract class A extends Nullable {
+  other: Nullable<Another>;
+}
+new A();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -354,6 +554,19 @@ export interface Bar extends baz.test {}
           },
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'test',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+
+import baz from 'baz';
+export interface Bar extends baz.test {}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -373,6 +586,19 @@ export class Bar implements baz.test {}
           },
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'test',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+
+import baz from 'baz';
+export class Bar implements baz.test {}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -392,6 +618,19 @@ export class Bar implements baz().test {}
           },
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'test',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+
+import baz from 'baz';
+export class Bar implements baz().test {}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -561,6 +800,22 @@ export const ComponentFoo = () => {
           },
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Fragment',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import React from 'react';
+
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -590,6 +845,22 @@ export const ComponentFoo = () => {
           },
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'React',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+
+import { h } from 'some-other-jsx-lib';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -620,6 +891,21 @@ export const ComponentFoo = () => {
           },
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'React',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -851,6 +1137,22 @@ export namespace Bar {
           },
           line: 6,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'TheFoo',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+namespace Foo {
+  export const foo = 1;
+}
+export namespace Bar {
+${'  '}
+}
+      `,
+            },
+          ],
         },
       ],
     },
