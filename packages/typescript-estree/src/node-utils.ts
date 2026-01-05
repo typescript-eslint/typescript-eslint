@@ -823,11 +823,8 @@ export function getNamespaceModifiers(
 }
 
 // `ts.declarationNameToString`
-export function declarationNameToString(
-  name: ts.Node,
-  ast: ts.SourceFile,
-): string {
-  const text = ast.text.slice(name.pos, name.end).trimStart();
+export function declarationNameToString(node: ts.Node): string {
+  const text = node.getSourceFile().text.slice(node.pos, node.end).trimStart();
   return text || '(Missing)';
 }
 

@@ -15,7 +15,6 @@ import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
   createError,
-  declarationNameToString,
   findNextToken,
   getBinaryExpressionType,
   getDeclarationKind,
@@ -1059,18 +1058,6 @@ export class Converter {
       }
       // otherwise, it is a non-type accessor - intentional fallthrough
       case SyntaxKind.MethodDeclaration: {
-        const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
-
-        if (isAbstract && node.body) {
-          this.#throwError(
-            node.name,
-            node.kind === SyntaxKind.GetAccessor ||
-              node.kind === SyntaxKind.SetAccessor
-              ? 'An abstract accessor cannot have an implementation.'
-              : `Method '${declarationNameToString(node.name, this.ast)}' cannot have an implementation because it is marked abstract.`,
-          );
-        }
-
         const method = this.createNode<
           TSESTree.FunctionExpression | TSESTree.TSEmptyBodyFunctionExpression
         >(node, {
@@ -1117,6 +1104,8 @@ export class Converter {
           });
         } else {
           // class
+
+          const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
 
           /**
            * Unlike in object literal methods, class method params can have decorators

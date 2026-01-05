@@ -10,6 +10,7 @@ import {
   getDeclarationKind,
   getTextForTokenKind,
   isEntityNameExpression,
+  declarationNameToString,
 } from './node-utils';
 
 const SyntaxKind = ts.SyntaxKind;
@@ -478,6 +479,29 @@ export function checkSyntaxError(tsNode: ts.Node): void {
             );
           }
         }
+      }
+      break;
+    }
+
+    case SyntaxKind.GetAccessor:
+    case SyntaxKind.SetAccessor:
+      if (
+        node.parent.kind === SyntaxKind.InterfaceDeclaration ||
+        node.parent.kind === SyntaxKind.TypeLiteral
+      ) {
+        return;
+      }
+    // otherwise, it is a non-type accessor - intentional fallthrough
+    case SyntaxKind.MethodDeclaration: {
+      const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
+      if (isAbstract && node.body) {
+        throw createError(
+          node.name,
+          node.kind === SyntaxKind.GetAccessor ||
+            node.kind === SyntaxKind.SetAccessor
+            ? 'An abstract accessor cannot have an implementation.'
+            : `Method '${declarationNameToString(node.name)}' cannot have an implementation because it is marked abstract.`,
+        );
       }
       break;
     }
