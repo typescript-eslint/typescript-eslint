@@ -34,7 +34,6 @@ export default createRule<[], MessageIds>({
       errorCall: 'Unsafe call of a type that could not be resolved.',
       errorCallThis: [
         'Unsafe call of a `this` type that could not be resolved.',
-        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
       errorNew: 'Unsafe construction of a type that could not be resolved.',
       errorTemplateTag:
