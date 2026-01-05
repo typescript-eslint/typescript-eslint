@@ -210,25 +210,6 @@ export class Converter {
     return node as Properties & Record<Key, Value>;
   }
 
-  private assertModuleSpecifier(
-    node: ts.ExportDeclaration | ts.ImportDeclaration,
-    allowNull: boolean,
-  ): void {
-    if (!allowNull && node.moduleSpecifier == null) {
-      this.#throwError(node, 'Module specifier must be a string literal.');
-    }
-
-    if (
-      node.moduleSpecifier &&
-      node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
-    ) {
-      this.#throwError(
-        node.moduleSpecifier,
-        'Module specifier must be a string literal.',
-      );
-    }
-  }
-
   private convertBindingNameWithTypeAnnotation(
     name: ts.BindingName,
     tsType: ts.TypeNode | undefined,
@@ -1669,8 +1650,6 @@ export class Converter {
         });
 
       case SyntaxKind.ImportDeclaration: {
-        this.assertModuleSpecifier(node, false);
-
         const result = this.createNode<TSESTree.ImportDeclaration>(
           node,
           this.#withDeprecatedAliasGetter(
@@ -1748,7 +1727,6 @@ export class Converter {
 
       case SyntaxKind.ExportDeclaration: {
         if (node.exportClause?.kind === SyntaxKind.NamedExports) {
-          this.assertModuleSpecifier(node, true);
           return this.createNode<TSESTree.ExportNamedDeclaration>(
             node,
             this.#withDeprecatedAliasGetter(
@@ -1769,7 +1747,6 @@ export class Converter {
             ),
           );
         }
-        this.assertModuleSpecifier(node, false);
         return this.createNode<TSESTree.ExportAllDeclaration>(
           node,
           this.#withDeprecatedAliasGetter(
