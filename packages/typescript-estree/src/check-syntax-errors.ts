@@ -419,7 +419,7 @@ export function checkSyntaxError(
           "A class declaration without the 'default' modifier must have a name.",
         );
       }
-    // Fall though
+    // intentional fallthrough
     case SyntaxKind.ClassExpression: {
       const heritageClauses = node.heritageClauses ?? [];
       let seenExtendsClause = false;
@@ -476,6 +476,7 @@ export function checkSyntaxError(
         if (heritageClause.token !== SyntaxKind.ExtendsKeyword) {
           throw createError(
             heritageClause,
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             heritageClause.token === SyntaxKind.ImplementsKeyword
               ? "Interface declaration cannot have 'implements' clause."
               : 'Unexpected token.',
