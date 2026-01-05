@@ -426,6 +426,7 @@ export function checkSyntaxError(tsNode: ts.Node): void {
         throw createError(node, 'Expected a module body');
       }
 
+      // eslint-disable-next @typescript-eslint/no-unnecessary-condition -- Fixme: confirm if it's possible
       if (node.name.kind !== ts.SyntaxKind.Identifier) {
         throw createError(node.name, '`namespace`s must have an Identifier id');
       }
