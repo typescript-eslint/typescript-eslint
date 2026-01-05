@@ -136,7 +136,11 @@ export declare const createTypeScriptSandbox: (
       };
   /** A list of TypeScript versions you can use with the TypeScript sandbox */
   supportedVersions: readonly [
-    '5.5.3',
+    '5.9.3',
+    '5.8.3',
+    '5.7.3',
+    '5.6.3',
+    '5.5.4',
     '5.4.5',
     '5.3.3',
     '5.2.2',
@@ -246,7 +250,6 @@ export declare const createTypeScriptSandbox: (
     importHelpers?: boolean;
     inlineSourceMap?: boolean;
     inlineSources?: boolean;
-    isolatedDeclarations?: boolean;
     isolatedModules?: boolean;
     jsx?: MonacoEditor.languages.typescript.JsxEmit;
     keyofStringsOnly?: boolean;

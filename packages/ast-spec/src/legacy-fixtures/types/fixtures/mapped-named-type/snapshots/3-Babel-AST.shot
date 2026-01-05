@@ -38,6 +38,7 @@ Program {
             end: { column: 22, line: 4 },
           },
         },
+        optional: false,
         typeAnnotation: TSIndexedAccessType {
           type: "TSIndexedAccessType",
           indexType: TSTypeReference {

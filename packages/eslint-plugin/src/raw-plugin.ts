@@ -64,6 +64,7 @@ const plugin = {
   },
   meta: {
     name,
+    namespace: '@typescript-eslint',
     version,
   },
   rules,

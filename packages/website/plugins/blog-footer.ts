@@ -7,7 +7,7 @@ export const blogFooter: Plugin = () => {
   return (root, file) => {
     if (
       !nodeIsParent(root) ||
-      !(file.value as string).includes('<!--truncate-->')
+      !/<!--\s*truncate\s*-->/.test(file.value.toString())
     ) {
       return;
     }

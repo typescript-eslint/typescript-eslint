@@ -427,6 +427,7 @@ export class RuleTester extends TestFramework {
   defineRule(name: string, rule: AnyRuleModule): void {
     this.#rules[name] = {
       ...rule,
+      name,
       // Create a wrapper rule that freezes the `context` properties.
       create(context): RuleListener {
         freezeDeeply(context.options);
