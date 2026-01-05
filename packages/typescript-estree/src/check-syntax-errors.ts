@@ -542,7 +542,6 @@ export function checkSyntaxError(
           }
         }
       }
-
       break;
     }
 
