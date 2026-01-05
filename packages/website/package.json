@@ -60,7 +60,8 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "~3.7.0",
+    "@docusaurus/mdx-loader": "^3.9.2",
+    "@docusaurus/types": "^3.9.2",
     "@types/mdast": "^4.0.4",
     "@types/react": "*",
     "@types/unist": "^3.0.3",

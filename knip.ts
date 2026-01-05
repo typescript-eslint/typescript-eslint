@@ -25,11 +25,7 @@ export default {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
       ignore: ['tools/scripts/generate-sponsors.mts'],
 
-      ignoreDependencies: [
-        '@nx/workspace',
-        '@types/eslint',
-        '@docusaurus/theme-classic',
-      ],
+      ignoreDependencies: ['@nx/workspace'],
 
       project: [
         'tools/scripts/**/*.mts',
@@ -177,13 +173,11 @@ export default {
         '@docusaurus/useBaseUrl',
         '@docusaurus/BrowserOnly',
         '@generated/docusaurus.config',
-        '@typescript-eslint/website-eslint',
         '^@site/.*',
         '^@theme/.*',
         '^@theme-original/.*',
         'docusaurus-plugin-typedoc',
         'typedoc-plugin-markdown',
-        'prismjs',
       ],
     },
     'packages/website-eslint': {
