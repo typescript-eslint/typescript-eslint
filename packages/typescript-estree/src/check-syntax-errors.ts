@@ -364,13 +364,14 @@ export function checkSyntaxError(tsNode: ts.Node): void {
       /**
        * ESTree uses UpdateExpression for ++/--
        */
-      if (operator === '++' || operator === '--') {
-        if (!isValidAssignmentTarget(node.operand)) {
-          throw createError(
-            node.operand,
-            'Invalid left-hand side expression in unary operation',
-          );
-        }
+      if (
+        (operator === '++' || operator === '--') &&
+        !isValidAssignmentTarget(node.operand)
+      ) {
+        throw createError(
+          node.operand,
+          'Invalid left-hand side expression in unary operation',
+        );
       }
       break;
     }
@@ -387,13 +388,16 @@ export function checkSyntaxError(tsNode: ts.Node): void {
       break;
 
     case SyntaxKind.CallExpression:
-      if (node.expression.kind === SyntaxKind.ImportKeyword) {
-        if (node.arguments.length !== 1 && node.arguments.length !== 2) {
-          throw createError(
-            node.arguments[2] ?? node,
-            'Dynamic import requires exactly one or two arguments.',
-          );
-        }
+      if (
+        node.expression.kind === SyntaxKind.ImportKeyword &&
+        node.arguments.length !== 1 &&
+        node.arguments.length !== 2
+      ) {
+        throw createError(
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- Bug?
+          node.arguments[2] ?? node,
+          'Dynamic import requires exactly one or two arguments.',
+        );
       }
       break;
 
@@ -462,7 +466,7 @@ function assertModuleSpecifier(
 
   if (
     node.moduleSpecifier &&
-    node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
+    node.moduleSpecifier.kind !== SyntaxKind.StringLiteral
   ) {
     throw createError(
       node.moduleSpecifier,
