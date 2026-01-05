@@ -45,3 +45,8 @@ In addition to submitting code and documentation updates, you can help us sustai
 ## License
 
 typescript-eslint inherits is licensed under a permissive MIT license.
+
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
