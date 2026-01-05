@@ -376,10 +376,15 @@ export class Converter {
    * @param node parent used to create this node
    * @returns TypeParameterInstantiation node
    */
-  private convertTypeArgumentsToTypeParameterInstantiation(
-    typeArguments: ts.NodeArray<ts.TypeNode>,
+  private convertTypeArguments(
     node: TSESTreeToTSNode<TSESTree.TSTypeParameterInstantiation>,
-  ): TSESTree.TSTypeParameterInstantiation {
+  ): TSESTree.TSTypeParameterInstantiation | undefined {
+    const { typeArguments } = node;
+
+    if (!typeArguments) {
+      return undefined;
+    }
+
     const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
     const range: TSESTree.Range = [typeArguments.pos - 1, greaterThanToken.end];
 
@@ -1432,12 +1437,7 @@ export class Converter {
           type: AST_NODE_TYPES.TaggedTemplateExpression,
           quasi: this.convertChild(node.template),
           tag: this.convertChild(node.tag),
-          typeArguments:
-            node.typeArguments &&
-            this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            ),
+          typeArguments: this.convertTypeArguments(node),
         });
       }
 
@@ -1632,11 +1632,9 @@ export class Converter {
         });
 
         if (extendsClause?.types[0]?.typeArguments) {
-          result.superTypeArguments =
-            this.convertTypeArgumentsToTypeParameterInstantiation(
-              extendsClause.types[0].typeArguments,
-              extendsClause.types[0],
-            );
+          result.superTypeArguments = this.convertTypeArguments(
+            extendsClause.types[0],
+          );
         }
 
         return this.fixExports(node, result);
@@ -1962,12 +1960,7 @@ export class Converter {
 
         const callee = this.convertChild(node.expression);
         const args = this.convertChildren(node.arguments);
-        const typeArguments =
-          node.typeArguments &&
-          this.convertTypeArgumentsToTypeParameterInstantiation(
-            node.typeArguments,
-            node,
-          );
+        const typeArguments = this.convertTypeArguments(node);
 
         const result = this.createNode<TSESTree.CallExpression>(node, {
           type: AST_NODE_TYPES.CallExpression,
@@ -1981,12 +1974,7 @@ export class Converter {
       }
 
       case SyntaxKind.NewExpression: {
-        const typeArguments =
-          node.typeArguments &&
-          this.convertTypeArgumentsToTypeParameterInstantiation(
-            node.typeArguments,
-            node,
-          );
+        const typeArguments = this.convertTypeArguments(node);
 
         // NOTE - NewExpression cannot have an optional chain in it
         return this.createNode<TSESTree.NewExpression>(node, {
@@ -2157,12 +2145,7 @@ export class Converter {
             attributes: this.convertChildren(node.attributes.properties),
             name: this.convertJSXTagName(node.tagName, node),
             selfClosing: true,
-            typeArguments: node.typeArguments
-              ? this.convertTypeArgumentsToTypeParameterInstantiation(
-                  node.typeArguments,
-                  node,
-                )
-              : undefined,
+            typeArguments: this.convertTypeArguments(node),
           }),
         });
       }
@@ -2173,12 +2156,7 @@ export class Converter {
           attributes: this.convertChildren(node.attributes.properties),
           name: this.convertJSXTagName(node.tagName, node),
           selfClosing: false,
-          typeArguments:
-            node.typeArguments &&
-            this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            ),
+          typeArguments: this.convertTypeArguments(node),
         });
       }
 
@@ -2258,12 +2236,7 @@ export class Converter {
       case SyntaxKind.TypeReference:
         return this.createNode<TSESTree.TSTypeReference>(node, {
           type: AST_NODE_TYPES.TSTypeReference,
-          typeArguments:
-            node.typeArguments &&
-            this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            ),
+          typeArguments: this.convertTypeArguments(node),
           typeName: this.convertChild(node.typeName),
         });
 
@@ -2346,12 +2319,7 @@ export class Converter {
         return this.createNode<TSESTree.TSTypeQuery>(node, {
           type: AST_NODE_TYPES.TSTypeQuery,
           exprName: this.convertChild(node.exprName),
-          typeArguments:
-            node.typeArguments &&
-            this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            ),
+          typeArguments: this.convertTypeArguments(node),
         });
 
       case SyntaxKind.MappedType: {
@@ -2485,12 +2453,7 @@ export class Converter {
         >(node, {
           type,
           expression: this.convertChild(node.expression),
-          typeArguments:
-            node.typeArguments &&
-            this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            ),
+          typeArguments: this.convertTypeArguments(node),
         });
       }
 
@@ -2660,12 +2623,7 @@ export class Converter {
               options,
               qualifier: this.convertChild(node.qualifier),
               source,
-              typeArguments: node.typeArguments
-                ? this.convertTypeArgumentsToTypeParameterInstantiation(
-                    node.typeArguments,
-                    node,
-                  )
-                : null,
+              typeArguments: this.convertTypeArguments(node) ?? null,
             },
             'argument',
             'source',
@@ -3081,10 +3039,7 @@ export class Converter {
     if ('typeArguments' in node) {
       result.typeArguments =
         node.typeArguments && 'pos' in node.typeArguments
-          ? this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            )
+          ? this.convertTypeArguments(node)
           : null;
     }
     if ('typeParameters' in node) {
