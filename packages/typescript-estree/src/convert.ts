@@ -406,24 +406,22 @@ export class Converter {
    */
   private convertTypeParameters(
     node:
-      | ts.GetAccessorDeclaration
-      | ts.MethodSignature
-      | ts.SetAccessorDeclaration
-      | ts.GetAccessorDeclaration
-      | ts.IndexSignatureDeclaration
-      | ts.MethodDeclaration
-      | ts.MethodSignature
+      | ts.ArrowFunction
+      | ts.CallSignatureDeclaration
+      | ts.ClassDeclaration
+      | ts.ClassExpression
       | ts.ConstructorDeclaration
       | ts.ConstructorTypeNode
       | ts.ConstructSignatureDeclaration
-      | ts.CallSignatureDeclaration
-      | ts.FunctionTypeNode
       | ts.FunctionDeclaration
       | ts.FunctionExpression
-      | ts.ArrowFunction
-      | ts.ClassDeclaration
-      | ts.ClassExpression
+      | ts.FunctionTypeNode
+      | ts.GetAccessorDeclaration
+      | ts.IndexSignatureDeclaration
       | ts.InterfaceDeclaration
+      | ts.MethodDeclaration
+      | ts.MethodSignature
+      | ts.SetAccessorDeclaration
       | ts.TypeAliasDeclaration,
   ): TSESTree.TSTypeParameterDeclaration | undefined {
     const { typeParameters } = node;
