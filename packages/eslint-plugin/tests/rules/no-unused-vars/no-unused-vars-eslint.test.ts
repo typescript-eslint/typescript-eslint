@@ -1,7 +1,9 @@
-/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 // The following tests are adapted from the tests in eslint.
 // Original Code: https://github.com/eslint/eslint/blob/eb76282e0a2db8aa10a3d5659f5f9237d9729121/tests/lib/rules/no-unused-vars.js
 // License      : https://github.com/eslint/eslint/blob/eb76282e0a2db8aa10a3d5659f5f9237d9729121/LICENSE
+
+// We try not to change this file, as every modification is added maintenance burden
+/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 
 import type { TestCaseError } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
@@ -588,6 +590,8 @@ const [a, _b, c] = array;
       code: `
 const array = ['a', 'b', 'c'];
 const [a, _b, c] = array;
+const fooArray = ['foo'];
+const barArray = ['bar'];
 const ignoreArray = ['ignore'];
       `,
       errors: [
@@ -607,45 +611,21 @@ const ignoreArray = ['ignore'];
           column: 15,
           line: 3,
         },
-      ],
-      languageOptions: { parserOptions: { ecmaVersion: 2020 } },
-      options: [
-        { destructuredArrayIgnorePattern: '^_', varsIgnorePattern: 'ignore' },
-      ],
-    },
-    {
-      code: `
-const fooArray = ['foo'];
-const ignoreArray = ['ignore'];
-      `,
-      errors: [
         {
           ...assignedError(
             'fooArray',
             '. Allowed unused vars must match /ignore/u',
           ),
           column: 7,
-          line: 2,
+          line: 4,
         },
-      ],
-      languageOptions: { parserOptions: { ecmaVersion: 2020 } },
-      options: [
-        { destructuredArrayIgnorePattern: '^_', varsIgnorePattern: 'ignore' },
-      ],
-    },
-    {
-      code: `
-const barArray = ['bar'];
-const ignoreArray = ['ignore'];
-      `,
-      errors: [
         {
           ...assignedError(
             'barArray',
             '. Allowed unused vars must match /ignore/u',
           ),
           column: 7,
-          line: 2,
+          line: 5,
         },
       ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
