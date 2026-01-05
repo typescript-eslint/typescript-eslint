@@ -45,7 +45,7 @@ Doing so meant that the `plugin:typescript-eslint/recommended` preset config wou
 The drawback of linting against those types by default was that nuanced types -in particular, `{}`- went through the same limited configuration channels as more straightforward types like `Function`.
 `{}` in particular has nuance of when it should be used -- which is not describable in a rule configuration format.
 
-As of typescript-eslint v8, the old `@typescript-eslint/ban-types` rule is now split into several more targeted rules.
+As of typescript-eslint v8, the old `@typescript-eslint/ban-types` rule has now been split into several more targeted rules.
 Those rules each capture one of the targeted areas of the now-deprecated `@ytpescript-eslint/ban-types` rule.
 By splitting into several rules, each has more specific, user-friendly configuration options and documentation pages.
 
@@ -53,7 +53,7 @@ By splitting into several rules, each has more specific, user-friendly configura
 
 [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type) is the new rule for banning the built-in `{}` type in confusing locations.
 The `{}`, or "empty object" type in TypeScript is a common source of confusion for developers unfamiliar with TypeScript's structural typing.
-`{}` represents any _non-nullish value_, including literals like `0` and `""`:
+These developers think `{}` represents "an object with no properties", however `{}` represents any _non-nullish value_. This means that it can represent any object with 0 or more properties or even primitives like strings, numbers, and booleans:
 
 ```ts
 let anyNonNullishValue: {} = 'Intentionally allowed by TypeScript.';
@@ -83,7 +83,7 @@ The built-in `Function` type is an overly permissive way to describe a function.
 It allows being called with any number of arguments and returns type `any`.
 
 ```ts
-const anyFunction: Function = () => {};
+const anyFunction: Function = (arg: boolean) => {};
 
 anyFunction(); // Ok
 anyFunction(123); // Ok
