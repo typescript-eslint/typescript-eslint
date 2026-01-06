@@ -378,25 +378,6 @@ export class Bar implements baz.test {}
     },
     {
       code: `
-import test from 'test';
-import baz from 'baz';
-export class Bar implements baz.test {}
-      `,
-      errors: [
-        {
-          column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'test',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
 namespace Foo {}
       `,
       errors: [
