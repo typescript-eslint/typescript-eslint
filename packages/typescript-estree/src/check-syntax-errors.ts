@@ -556,6 +556,15 @@ export function checkSyntaxError(
       break;
     }
 
+    case SyntaxKind.ImportEqualsDeclaration:
+      if (
+        node.isTypeOnly &&
+        node.moduleReference.kind !== SyntaxKind.ExternalModuleReference
+      ) {
+        throw createError(node, "An import alias cannot use 'import type'");
+      }
+      break;
+
     case SyntaxKind.ForInStatement:
     case SyntaxKind.ForOfStatement: {
       checkForStatementDeclaration(node);

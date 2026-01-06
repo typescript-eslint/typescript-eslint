@@ -1,0 +1,54 @@
+Program {
+  type: "Program",
+  body: [
+    TSImportEqualsDeclaration {
+      type: "TSImportEqualsDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "A",
+        optional: false,
+
+        range: [12, 13],
+        loc: {
+          start: { column: 12, line: 1 },
+          end: { column: 13, line: 1 },
+        },
+      },
+      importKind: "type",
+      moduleReference: TSExternalModuleReference {
+        type: "TSExternalModuleReference",
+        expression: Literal {
+          type: "Literal",
+          raw: ""a"",
+          value: "a",
+
+          range: [24, 27],
+          loc: {
+            start: { column: 24, line: 1 },
+            end: { column: 27, line: 1 },
+          },
+        },
+
+        range: [16, 28],
+        loc: {
+          start: { column: 16, line: 1 },
+          end: { column: 28, line: 1 },
+        },
+      },
+
+      range: [0, 28],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 28, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 29],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
