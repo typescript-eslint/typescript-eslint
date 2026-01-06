@@ -13,24 +13,16 @@ interface Location {
   end: Position;
 }
 
-export class TSError extends Error {
-  location: Location;
+// TODO: Remove this in major version
+export class LegacyTSError extends Error {
   override name = 'TSError';
 
-  constructor(node: ts.Node, message: string);
   constructor(
-    node: number | ts.Node | TSESTree.Range,
     message: string,
-    sourceFile: ts.SourceFile,
-  );
-  constructor(
-    node: number | ts.Node | TSESTree.Range,
-    message: string,
-    sourceFile?: ts.SourceFile,
+    public readonly fileName: string,
+    public readonly location: Location,
   ) {
     super(message);
-
-    this.location = getErrorLocation(node, sourceFile);
   }
 
   // For old version of ESLint https://github.com/typescript-eslint/typescript-eslint/pull/6556#discussion_r1123237311
@@ -49,9 +41,33 @@ export class TSError extends Error {
   }
 }
 
+export class TSError extends LegacyTSError {
+  constructor(node: ts.Node, message: string);
+  constructor(
+    node: number | ts.Node | TSESTree.Range,
+    message: string,
+    sourceFile: ts.SourceFile,
+  );
+  constructor(
+    node: number | ts.Node | TSESTree.Range,
+    message: string,
+    sourceFile?: ts.SourceFile,
+  ) {
+    if (!sourceFile && typeof node !== 'number' && !Array.isArray(node)) {
+      sourceFile = node.getSourceFile();
+    }
+
+    if (!sourceFile) {
+      throw new Error('`sourceFile` is required.');
+    }
+
+    super(message, sourceFile.fileName, getErrorLocation(node, sourceFile));
+  }
+}
+
 function getErrorLocation(
   node: number | ts.Node | TSESTree.Range,
-  sourceFile?: ts.SourceFile,
+  sourceFile: ts.SourceFile,
 ): Location {
   let startIndex;
   let endIndex;
@@ -62,11 +78,6 @@ function getErrorLocation(
   } else {
     startIndex = node.getStart(sourceFile);
     endIndex = node.getEnd();
-    sourceFile = node.getSourceFile();
-  }
-
-  if (!sourceFile) {
-    throw new Error('`sourceFile` is required.');
   }
 
   const [start, end] = [startIndex, endIndex].map(offset => {
