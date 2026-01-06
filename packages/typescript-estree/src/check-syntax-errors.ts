@@ -498,14 +498,16 @@ export function checkSyntaxError(
       for (const heritageClause of interfaceHeritageClauses) {
         const { token, types } = heritageClause;
 
-        if (token !== SyntaxKind.ExtendsKeyword) {
+        if (token === SyntaxKind.ImplementsKeyword) {
           throw createError(
             heritageClause,
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            token === SyntaxKind.ImplementsKeyword
-              ? "Interface declaration cannot have 'implements' clause."
-              : 'Unexpected token.',
+            "Interface declaration cannot have 'implements' clause.",
           );
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (token !== SyntaxKind.ExtendsKeyword) {
+          throw createError(heritageClause, 'Unexpected token.');
         }
 
         if (types.length === 0) {
