@@ -3,7 +3,7 @@ export * from './create-program/getScriptKind';
 export { getCanonicalFileName } from './create-program/shared';
 export { createProgramFromConfigFile as createProgram } from './create-program/useProvidedPrograms';
 export * from './getModifiers';
-export { TSError } from './node-utils';
+export { TSError } from './errors';
 export {
   type AST,
   parse,
