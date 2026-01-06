@@ -330,6 +330,33 @@ export { Used };
         `,
       },
       {
+        code: noFormat`
+import Used, { Unused, } from 'module';
+export { Used };
+        `,
+        errors: [
+          {
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused',
+            },
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+import Used from 'module';
+export { Used };
+        `,
+      },
+      {
         code: `
 import Used, { Used2, Unused } from 'module';
 export { Used, Used2 };
@@ -450,6 +477,87 @@ export { Used };
         ],
         output: `
 import  { Used } from 'module';
+export { Used };
+        `,
+      },
+      {
+        code: `
+import { Unused as Unused1, Used } from 'module';
+export { Used };
+        `,
+        errors: [
+          {
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused1',
+            },
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+import {  Used } from 'module';
+export { Used };
+        `,
+      },
+      {
+        code: `
+import { Used, Unused as Unused1 } from 'module';
+export { Used };
+        `,
+        errors: [
+          {
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused1',
+            },
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+import { Used } from 'module';
+export { Used };
+        `,
+      },
+      {
+        code: noFormat`
+import { Used, Unused as Unused1, } from 'module';
+export { Used };
+        `,
+        errors: [
+          {
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'Unused1',
+            },
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+import { Used, } from 'module';
 export { Used };
         `,
       },
