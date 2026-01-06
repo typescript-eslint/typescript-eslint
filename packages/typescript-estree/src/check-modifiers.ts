@@ -131,7 +131,7 @@ function nodeHasIllegalDecorators(
 function getModifiers(node: ts.Node): ts.Modifier[] {
   return (
     // @ts-expect-error intentional to access `node.modifiers` instead of `ts.getModifiers(node)` to access all modifiers
-    ((node.modifiers as ts.Modifier[]) ?? []).filter(
+    ((node.modifiers as ts.Modifier[] | undefined) ?? []).filter(
       (modifier): modifier is ts.Modifier => !ts.isDecorator(modifier),
     )
   );
@@ -338,7 +338,7 @@ export function checkModifiers(node: ts.Node): void {
       modifier.kind === SyntaxKind.ProtectedKeyword ||
       modifier.kind === SyntaxKind.PrivateKeyword
     ) {
-      for (const anotherModifier of getModifiers(node) ?? []) {
+      for (const anotherModifier of getModifiers(node)) {
         if (
           anotherModifier !== modifier &&
           (anotherModifier.kind === SyntaxKind.PublicKeyword ||
