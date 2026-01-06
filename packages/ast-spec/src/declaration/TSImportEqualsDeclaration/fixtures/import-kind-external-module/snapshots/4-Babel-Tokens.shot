@@ -61,7 +61,7 @@
   },
   String {
     type: "String",
-    value: ""a"",
+    value: "'a'",
 
     range: [24, 27],
     loc: {
@@ -77,6 +77,16 @@
     loc: {
       start: { column: 27, line: 1 },
       end: { column: 28, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [28, 29],
+    loc: {
+      start: { column: 28, line: 1 },
+      end: { column: 29, line: 1 },
     },
   },
 ]

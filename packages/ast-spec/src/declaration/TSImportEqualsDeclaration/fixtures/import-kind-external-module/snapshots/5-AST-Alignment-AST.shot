@@ -28,7 +28,7 @@ Snapshot Diff:
           type: 'TSExternalModuleReference',
           expression: Literal {
             type: 'Literal',
-            raw: '"a"',
+            raw: '\'a\'',
             value: 'a',
 
             range: [24, 27],
@@ -45,16 +45,16 @@ Snapshot Diff:
           },
         },
 
-        range: [0, 28],
+        range: [0, 29],
         loc: {
           start: { column: 0, line: 1 },
-          end: { column: 28, line: 1 },
+          end: { column: 29, line: 1 },
         },
       },
     ],
     sourceType: 'module',
 
-    range: [0, 29],
+    range: [0, 30],
     loc: {
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
