@@ -568,6 +568,40 @@ export function checkSyntaxError(
       break;
     }
 
+    case SyntaxKind.ModuleDeclaration: {
+      if (node.flags & ts.NodeFlags.GlobalAugmentation) {
+        const { body } = node;
+        if (body == null || body.kind === SyntaxKind.ModuleDeclaration) {
+          throw createError(node.body ?? node, 'Expected a valid module body');
+        }
+
+        const { name } = node;
+        if (name.kind !== ts.SyntaxKind.Identifier) {
+          throw createError(
+            name,
+            'global module augmentation must have an Identifier id',
+          );
+        }
+
+        return;
+      }
+
+      if (ts.isStringLiteral(node.name)) {
+        return;
+      }
+
+      if (node.body == null) {
+        throw createError(node, 'Expected a module body');
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- Fixme: confirm if it's possible
+      if (node.name.kind !== ts.SyntaxKind.Identifier) {
+        throw createError(node.name, '`namespace`s must have an Identifier id');
+      }
+
+      break;
+    }
+
     case SyntaxKind.ForInStatement:
     case SyntaxKind.ForOfStatement: {
       checkForStatementDeclaration(node);
