@@ -1,4 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > expression > ObjectExpression > _error_ > getter-modifier-declare > Babel - Error`]
-SyntaxError: Unexpected token, expected "," (1:10)
