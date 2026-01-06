@@ -71,6 +71,7 @@ function getErrorLocation(
 ): Location {
   let startIndex;
   let endIndex;
+
   if (Array.isArray(node)) {
     [startIndex, endIndex] = node;
   } else if (typeof node === 'number') {
@@ -86,8 +87,5 @@ function getErrorLocation(
     return { column, line: line + 1, offset };
   });
 
-  return {
-    end,
-    start,
-  };
+  return { end, start };
 }
