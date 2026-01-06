@@ -404,9 +404,32 @@ export class Converter {
    * @param typeParameters ts.Node typeParameters
    * @returns TypeParameterDeclaration node
    */
-  private convertTSTypeParametersToTypeParametersDeclaration(
-    typeParameters: ts.NodeArray<ts.TypeParameterDeclaration>,
-  ): TSESTree.TSTypeParameterDeclaration {
+  private convertTypeParameters(
+    node:
+      | ts.ArrowFunction
+      | ts.CallSignatureDeclaration
+      | ts.ClassDeclaration
+      | ts.ClassExpression
+      | ts.ConstructorDeclaration
+      | ts.ConstructorTypeNode
+      | ts.ConstructSignatureDeclaration
+      | ts.FunctionDeclaration
+      | ts.FunctionExpression
+      | ts.FunctionTypeNode
+      | ts.GetAccessorDeclaration
+      | ts.IndexSignatureDeclaration
+      | ts.InterfaceDeclaration
+      | ts.MethodDeclaration
+      | ts.MethodSignature
+      | ts.SetAccessorDeclaration
+      | ts.TypeAliasDeclaration,
+  ): TSESTree.TSTypeParameterDeclaration | undefined {
+    const { typeParameters } = node;
+
+    if (!typeParameters) {
+      return undefined;
+    }
+
     const greaterThanToken = findNextToken(typeParameters, this.ast, this.ast)!;
     const range: TSESTree.Range = [
       typeParameters.pos - 1,
@@ -614,11 +637,7 @@ export class Converter {
       readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node),
       returnType: node.type && this.convertTypeAnnotation(node.type, node),
       static: hasModifier(SyntaxKind.StaticKeyword, node),
-      typeParameters:
-        node.typeParameters &&
-        this.convertTSTypeParametersToTypeParametersDeclaration(
-          node.typeParameters,
-        ),
+      typeParameters: this.convertTypeParameters(node),
     });
   }
 
@@ -852,11 +871,7 @@ export class Converter {
           id: this.convertChild(node.name),
           params: this.convertParameters(node.parameters),
           returnType: node.type && this.convertTypeAnnotation(node.type, node),
-          typeParameters:
-            node.typeParameters &&
-            this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            ),
+          typeParameters: this.convertTypeParameters(node),
         });
 
         return this.fixExports(node, result);
@@ -1104,11 +1119,7 @@ export class Converter {
           id: null,
           params: [],
           returnType: node.type && this.convertTypeAnnotation(node.type, node),
-          typeParameters:
-            node.typeParameters &&
-            this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            ),
+          typeParameters: this.convertTypeParameters(node),
         });
 
         if (method.typeParameters) {
@@ -1201,11 +1212,7 @@ export class Converter {
           id: null,
           params: this.convertParameters(node.parameters),
           returnType: node.type && this.convertTypeAnnotation(node.type, node),
-          typeParameters:
-            node.typeParameters &&
-            this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            ),
+          typeParameters: this.convertTypeParameters(node),
         });
 
         if (constructor.typeParameters) {
@@ -1262,11 +1269,7 @@ export class Converter {
           id: this.convertChild(node.name),
           params: this.convertParameters(node.parameters),
           returnType: node.type && this.convertTypeAnnotation(node.type, node),
-          typeParameters:
-            node.typeParameters &&
-            this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            ),
+          typeParameters: this.convertTypeParameters(node),
         });
       }
 
@@ -1372,11 +1375,7 @@ export class Converter {
           id: null,
           params: this.convertParameters(node.parameters),
           returnType: node.type && this.convertTypeAnnotation(node.type, node),
-          typeParameters:
-            node.typeParameters &&
-            this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            ),
+          typeParameters: this.convertTypeParameters(node),
         });
       }
 
@@ -1624,11 +1623,7 @@ export class Converter {
             ? this.convertChild(extendsClause.types[0].expression)
             : null,
           superTypeArguments: undefined,
-          typeParameters:
-            node.typeParameters &&
-            this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            ),
+          typeParameters: this.convertTypeParameters(node),
         });
 
         if (extendsClause?.types[0]?.typeArguments) {
@@ -2357,11 +2352,7 @@ export class Converter {
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
           id: this.convertChild(node.name),
           typeAnnotation: this.convertChild(node.type),
-          typeParameters:
-            node.typeParameters &&
-            this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            ),
+          typeParameters: this.convertTypeParameters(node),
         });
 
         return this.fixExports(node, result);
@@ -2403,11 +2394,7 @@ export class Converter {
           abstract: hasModifier(SyntaxKind.AbstractKeyword, node),
           params: this.convertParameters(node.parameters),
           returnType: node.type && this.convertTypeAnnotation(node.type, node),
-          typeParameters:
-            node.typeParameters &&
-            this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            ),
+          typeParameters: this.convertTypeParameters(node),
         });
       }
 
@@ -2429,11 +2416,7 @@ export class Converter {
           type,
           params: this.convertParameters(node.parameters),
           returnType: node.type && this.convertTypeAnnotation(node.type, node),
-          typeParameters:
-            node.typeParameters &&
-            this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            ),
+          typeParameters: this.convertTypeParameters(node),
         });
       }
 
@@ -2505,11 +2488,7 @@ export class Converter {
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
           extends: interfaceExtends,
           id: this.convertChild(node.name),
-          typeParameters:
-            node.typeParameters &&
-            this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            ),
+          typeParameters: this.convertTypeParameters(node),
         });
 
         return this.fixExports(node, result);
@@ -3045,9 +3024,8 @@ export class Converter {
     if ('typeParameters' in node) {
       result.typeParameters =
         node.typeParameters && 'pos' in node.typeParameters
-          ? this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            )
+          ? // @ts-expect-error -- Fix me
+            this.convertTypeParameters(node)
           : null;
     }
     const decorators = getDecorators(node);
