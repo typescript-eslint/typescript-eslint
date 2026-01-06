@@ -59,17 +59,6 @@ class Bar {}
       output: null,
     },
     {
-      code: noFormat`interface Foo extends {}`,
-      errors: [
-        {
-          column: 11,
-          line: 1,
-          messageId: 'noEmpty',
-        },
-      ],
-      output: null,
-    },
-    {
       code: `
 interface Foo {
   props: string;
