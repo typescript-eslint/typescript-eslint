@@ -3,5 +3,5 @@
 exports[`AST Fixtures > expression > ObjectExpression > _error_ > getter-modifier-abstract > TSESTree - Error`]
 TSError
 > 1 | ({abstract get getter(){}})
-    |                ^^^^^^ An abstract accessor cannot have an implementation.
+    |   ^^^^^^^^ 'abstract' modifier cannot be used here.
   2 |

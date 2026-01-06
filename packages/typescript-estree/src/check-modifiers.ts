@@ -2,7 +2,7 @@ import * as ts from 'typescript';
 
 import type { TSNode } from './ts-estree';
 
-import { getDecorators, getModifiers } from './getModifiers';
+import { getDecorators } from './getModifiers';
 import {
   getDeclarationKind,
   hasModifier,
@@ -128,6 +128,15 @@ function nodeHasIllegalDecorators(
   );
 }
 
+function getModifiers(node: ts.Node): ts.Modifier[] {
+  return (
+    // @ts-expect-error intentional to access `node.modifiers` instead of `ts.getModifiers(node)` to access all modifiers
+    ((node.modifiers as ts.Modifier[]) ?? []).filter(
+      (modifier): modifier is ts.Modifier => !ts.isDecorator(modifier),
+    )
+  );
+}
+
 export function checkModifiers(node: ts.Node): void {
   // typescript<5.0.0
   if (nodeHasIllegalDecorators(node)) {
@@ -154,10 +163,7 @@ export function checkModifiers(node: ts.Node): void {
     }
   }
 
-  for (const modifier of getModifiers(
-    node,
-    /* includeIllegalModifiers */ true,
-  ) ?? []) {
+  for (const modifier of getModifiers(node)) {
     if (modifier.kind !== SyntaxKind.ReadonlyKeyword) {
       if (
         node.kind === SyntaxKind.PropertySignature ||
@@ -388,11 +394,10 @@ export function checkModifiers(node: ts.Node): void {
       }
     }
 
-    // There are more cases in `checkGrammarObjectLiteralExpression` in TypeScript.
-    // We may add more validations for them here in the future.
+    // From `checkGrammarObjectLiteralExpression` function in `typescript`
     if (
-      modifier.kind !== SyntaxKind.AsyncKeyword &&
-      node.kind === SyntaxKind.MethodDeclaration &&
+      (modifier.kind !== SyntaxKind.AsyncKeyword ||
+        node.kind !== SyntaxKind.MethodDeclaration) &&
       node.parent.kind === SyntaxKind.ObjectLiteralExpression
     ) {
       throw createError(
