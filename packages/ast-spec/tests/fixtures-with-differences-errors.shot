@@ -3,7 +3,6 @@
 exports[`AST Fixtures > List fixtures with Error differences`]
 {
   "Babel errored but TSESTree didn't": [
-    "declaration/ClassDeclaration/fixtures/_error_/implements-non-identifier/fixture.ts",
     "declaration/ExportNamedDeclaration/fixtures/_error_/assertion/fixture.ts",
     "declaration/TSImportEqualsDeclaration/fixtures/_error_/import-kind/fixture.ts",
     "declaration/TSInterfaceDeclaration/fixtures/_error_/missing-extends/fixture.ts",
