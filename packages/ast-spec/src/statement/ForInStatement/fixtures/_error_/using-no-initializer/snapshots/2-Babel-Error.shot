@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > statement > ForInStatement > _error_ > using-no-initializer > Babel - Error`]
+BabelError
+> 1 | for (using foo in {});
+    |      ^ For-in loop may not start with 'using' declaration. (1:5)
+  2 |
+  

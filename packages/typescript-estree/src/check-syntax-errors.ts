@@ -85,6 +85,7 @@ export function checkSyntaxError(
 
     case SyntaxKind.VariableDeclaration: {
       const hasExclamationToken = !!node.exclamationToken;
+
       if (hasExclamationToken) {
         if (node.initializer) {
           throw createError(
@@ -103,32 +104,20 @@ export function checkSyntaxError(
         const variableDeclarationList = node.parent;
         const kind = getDeclarationKind(variableDeclarationList);
 
-        if (
-          (variableDeclarationList.parent.kind === SyntaxKind.ForInStatement ||
-            variableDeclarationList.parent.kind === SyntaxKind.ForStatement) &&
-          (kind === 'using' || kind === 'await using')
-        ) {
-          if (!node.initializer) {
+        if (kind === 'using' || kind === 'await using') {
+          if (
+            variableDeclarationList.parent.kind === SyntaxKind.ForInStatement
+          ) {
             throw createError(
-              node,
-              `'${kind}' declarations may not be initialized in for statement.`,
+              variableDeclarationList,
+              `The left-hand side of a 'for...in' statement cannot be a '${kind}' declaration.`,
             );
           }
 
-          if (node.name.kind !== SyntaxKind.Identifier) {
-            throw createError(
-              node.name,
-              `'${kind}' declarations may not have binding patterns.`,
-            );
-          }
-        }
-
-        if (
-          variableDeclarationList.parent.kind === SyntaxKind.VariableStatement
-        ) {
-          const variableStatement = variableDeclarationList.parent;
-
-          if (kind === 'using' || kind === 'await using') {
+          if (
+            variableDeclarationList.parent.kind === SyntaxKind.ForStatement ||
+            variableDeclarationList.parent.kind === SyntaxKind.VariableStatement
+          ) {
             if (!node.initializer) {
               throw createError(
                 node,
@@ -142,7 +131,12 @@ export function checkSyntaxError(
               );
             }
           }
+        }
 
+        if (
+          variableDeclarationList.parent.kind === SyntaxKind.VariableStatement
+        ) {
+          const variableStatement = variableDeclarationList.parent;
           const hasDeclareKeyword = hasModifier(
             SyntaxKind.DeclareKeyword,
             variableStatement,
@@ -594,15 +588,6 @@ function checkForStatementDeclaration(
       throw createError(
         declaration,
         `The variable declaration of a '${loop}' statement cannot have a type annotation.`,
-      );
-    }
-    if (
-      kind === SyntaxKind.ForInStatement &&
-      initializer.flags & ts.NodeFlags.Using
-    ) {
-      throw createError(
-        initializer,
-        "The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
       );
     }
   } else if (
