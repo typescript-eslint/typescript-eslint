@@ -1,4 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > legacy-fixtures > basics > _error_ > import-type-error > Error Alignment`]
-Babel errored but TSESTree didn't
