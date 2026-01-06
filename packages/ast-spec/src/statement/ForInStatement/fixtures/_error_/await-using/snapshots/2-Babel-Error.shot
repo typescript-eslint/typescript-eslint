@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > statement > ForInStatement > _error_ > await-using > Babel - Error`]
+BabelError
+  1 | async function f() {
+> 2 | for (await using foo = bar in {});
+    |      ^ For-in loop may not start with 'using' declaration. (2:5)
+  3 | }
+  4 |
+  

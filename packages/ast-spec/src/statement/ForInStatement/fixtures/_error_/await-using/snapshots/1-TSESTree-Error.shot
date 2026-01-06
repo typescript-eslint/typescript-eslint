@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > statement > ForInStatement > _error_ > await-using > TSESTree - Error`]
+TSError
+  1 | async function f() {
+> 2 | for (await using foo = bar in {});
+    |                  ^^^^^^^^^ The variable declaration of a 'for...in' statement cannot have an initializer.
+  3 | }
+  4 |
