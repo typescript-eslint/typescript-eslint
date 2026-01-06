@@ -474,6 +474,18 @@ export function checkSyntaxError(
             );
           }
 
+          for (const heritageType of heritageClause.types) {
+            if (
+              !isEntityNameExpression(heritageType.expression) ||
+              ts.isOptionalChain(heritageType.expression)
+            ) {
+              throw createError(
+                heritageType,
+                'A class can only implement an identifier/qualified-name with optional type arguments.',
+              );
+            }
+          }
+
           seenImplementsClause = true;
         }
       }
