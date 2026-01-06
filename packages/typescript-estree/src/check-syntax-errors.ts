@@ -9,11 +9,17 @@ import {
   hasModifier,
   getDeclarationKind,
   getTextForTokenKind,
+  isEntityNameExpression,
+  declarationNameToString,
 } from './node-utils';
 
 const SyntaxKind = ts.SyntaxKind;
 
-export function checkSyntaxError(tsNode: ts.Node): void {
+export function checkSyntaxError(
+  tsNode: ts.Node,
+  parent: TSNode,
+  allowPattern: boolean,
+): void {
   checkModifiers(tsNode);
 
   const node = tsNode as TSNode;
@@ -268,19 +274,6 @@ export function checkSyntaxError(tsNode: ts.Node): void {
       }
       break;
 
-    case SyntaxKind.ClassDeclaration:
-      if (
-        !node.name &&
-        (!hasModifier(ts.SyntaxKind.ExportKeyword, node) ||
-          !hasModifier(ts.SyntaxKind.DefaultKeyword, node))
-      ) {
-        throw createError(
-          node,
-          "A class declaration without the 'default' modifier must have a name.",
-        );
-      }
-      break;
-
     case SyntaxKind.BinaryExpression:
       if (
         node.operatorToken.kind !== SyntaxKind.InKeyword &&
@@ -404,6 +397,21 @@ export function checkSyntaxError(tsNode: ts.Node): void {
       );
       break;
 
+    case SyntaxKind.ExportSpecifier: {
+      const local = node.propertyName ?? node.name;
+      if (
+        local.kind === SyntaxKind.StringLiteral &&
+        parent.kind === SyntaxKind.ExportDeclaration &&
+        parent.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
+      ) {
+        throw createError(
+          local,
+          'A string literal cannot be used as a local exported binding without `from`.',
+        );
+      }
+      break;
+    }
+
     case SyntaxKind.CallExpression:
       if (
         node.expression.kind === SyntaxKind.ImportKeyword &&
@@ -416,6 +424,143 @@ export function checkSyntaxError(tsNode: ts.Node): void {
         );
       }
       break;
+
+    case SyntaxKind.ClassDeclaration:
+      if (
+        !node.name &&
+        (!hasModifier(ts.SyntaxKind.ExportKeyword, node) ||
+          !hasModifier(ts.SyntaxKind.DefaultKeyword, node))
+      ) {
+        throw createError(
+          node,
+          "A class declaration without the 'default' modifier must have a name.",
+        );
+      }
+    // intentional fallthrough
+    case SyntaxKind.ClassExpression: {
+      const heritageClauses = node.heritageClauses ?? [];
+      let seenExtendsClause = false;
+      let seenImplementsClause = false;
+      for (const heritageClause of heritageClauses) {
+        const { token, types } = heritageClause;
+
+        if (types.length === 0) {
+          throw createError(
+            heritageClause,
+            `'${ts.tokenToString(token)}' list cannot be empty.`,
+          );
+        }
+
+        if (token === SyntaxKind.ExtendsKeyword) {
+          if (seenExtendsClause) {
+            throw createError(heritageClause, "'extends' clause already seen.");
+          }
+
+          if (seenImplementsClause) {
+            throw createError(
+              heritageClause,
+              "'extends' clause must precede 'implements' clause.",
+            );
+          }
+
+          if (types.length > 1) {
+            throw createError(
+              types[1],
+              'Classes can only extend a single class.',
+            );
+          }
+
+          seenExtendsClause = true;
+        } else {
+          // `implements`
+          if (seenImplementsClause) {
+            throw createError(
+              heritageClause,
+              "'implements' clause already seen.",
+            );
+          }
+
+          seenImplementsClause = true;
+        }
+      }
+      break;
+    }
+
+    case SyntaxKind.InterfaceDeclaration: {
+      const interfaceHeritageClauses = node.heritageClauses ?? [];
+      let seenExtendsClause = false;
+      for (const heritageClause of interfaceHeritageClauses) {
+        if (heritageClause.token !== SyntaxKind.ExtendsKeyword) {
+          throw createError(
+            heritageClause,
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            heritageClause.token === SyntaxKind.ImplementsKeyword
+              ? "Interface declaration cannot have 'implements' clause."
+              : 'Unexpected token.',
+          );
+        }
+        if (seenExtendsClause) {
+          throw createError(heritageClause, "'extends' clause already seen.");
+        }
+        seenExtendsClause = true;
+
+        for (const heritageType of heritageClause.types) {
+          if (
+            !isEntityNameExpression(heritageType.expression) ||
+            ts.isOptionalChain(heritageType.expression)
+          ) {
+            throw createError(
+              heritageType,
+              'Interface declaration can only extend an identifier/qualified name with optional type arguments.',
+            );
+          }
+        }
+      }
+      break;
+    }
+
+    case SyntaxKind.GetAccessor:
+    case SyntaxKind.SetAccessor:
+      if (
+        node.parent.kind === SyntaxKind.InterfaceDeclaration ||
+        node.parent.kind === SyntaxKind.TypeLiteral
+      ) {
+        return;
+      }
+    // otherwise, it is a non-type accessor - intentional fallthrough
+    case SyntaxKind.MethodDeclaration: {
+      const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
+      if (isAbstract && node.body) {
+        throw createError(
+          node.name,
+          node.kind === SyntaxKind.GetAccessor ||
+            node.kind === SyntaxKind.SetAccessor
+            ? 'An abstract accessor cannot have an implementation.'
+            : `Method '${declarationNameToString(node.name)}' cannot have an implementation because it is marked abstract.`,
+        );
+      }
+      break;
+    }
+
+    case SyntaxKind.ObjectLiteralExpression: {
+      if (!allowPattern) {
+        for (const property of node.properties) {
+          if (
+            (property.kind === SyntaxKind.GetAccessor ||
+              property.kind === SyntaxKind.SetAccessor ||
+              property.kind === SyntaxKind.MethodDeclaration) &&
+            !property.body
+          ) {
+            throw createError(
+              property.end - 1,
+              "'{' expected.",
+              node.getSourceFile(),
+            );
+          }
+        }
+      }
+      break;
+    }
 
     case SyntaxKind.ForInStatement:
     case SyntaxKind.ForOfStatement: {
