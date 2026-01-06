@@ -53,6 +53,7 @@ exports[`AST Fixtures > List fixtures with AST differences`]
   "declaration/TSImportEqualsDeclaration/fixtures/entity-name-many/fixture.ts",
   "declaration/TSImportEqualsDeclaration/fixtures/entity-name-one/fixture.ts",
   "declaration/TSImportEqualsDeclaration/fixtures/external-module-ref-string/fixture.ts",
+  "declaration/TSInterfaceDeclaration/fixtures/extends-implements/fixture.ts",
   "declaration/TSInterfaceDeclaration/fixtures/extends-many/fixture.ts",
   "declaration/TSInterfaceDeclaration/fixtures/extends-one/fixture.ts",
   "declaration/TSInterfaceDeclaration/fixtures/type-param-many/fixture.ts",

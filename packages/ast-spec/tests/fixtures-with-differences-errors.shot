@@ -55,6 +55,7 @@ exports[`AST Fixtures > List fixtures with Error differences`]
     "declaration/TSDeclareFunction/fixtures/_error_/generator-ambient/fixture.ts",
     "declaration/TSDeclareFunction/fixtures/_error_/generator-overload/fixture.ts",
     "declaration/TSDeclareFunction/fixtures/_error_/generator/fixture.ts",
+    "declaration/TSInterfaceDeclaration/fixtures/_error_/extends-implements/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/const-id-definite-init/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/const-id-definite-type-init/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/declare-const-id-definite-init/fixture.ts",

@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > TSInterfaceDeclaration > _error_ > extends-implements > TSESTree - Error`]
+TSError
+> 1 | interface F extends implements {}
+    |             ^^^^^^^ 'extends' list cannot be empty.
+  2 |
