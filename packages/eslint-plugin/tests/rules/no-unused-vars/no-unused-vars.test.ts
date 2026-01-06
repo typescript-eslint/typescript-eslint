@@ -380,7 +380,7 @@ export class Bar implements baz.test {}
       code: `
 import test from 'test';
 import baz from 'baz';
-export class Bar implements baz().test {}
+export class Bar implements baz.test {}
       `,
       errors: [
         {
