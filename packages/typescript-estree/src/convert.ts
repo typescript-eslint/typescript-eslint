@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unnecessary-condition, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 import * as ts from 'typescript';
 
-import type { TSError } from './node-utils';
 import type {
   ParserWeakMap,
   ParserWeakMapESTreeToTSNode,
@@ -11,10 +10,10 @@ import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 
 import { checkSyntaxError } from './check-syntax-errors';
+import { TSError } from './errors';
 import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
-  createError,
   findNextToken,
   getBinaryExpressionType,
   getDeclarationKind,
@@ -54,7 +53,7 @@ export interface ConverterOptions {
 export function convertError(
   error: SemanticOrSyntacticError | ts.DiagnosticWithLocation,
 ): TSError {
-  return createError(
+  return new TSError(
     error.start!,
     ('message' in error && error.message) || (error.messageText as string),
     error.file!,
@@ -100,7 +99,7 @@ export class Converter {
       return;
     }
 
-    throw createError(node, message, this.ast);
+    throw new TSError(node, message, this.ast);
   }
 
   /**
