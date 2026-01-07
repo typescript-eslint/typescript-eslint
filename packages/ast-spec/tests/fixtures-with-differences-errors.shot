@@ -4,7 +4,6 @@ exports[`AST Fixtures > List fixtures with Error differences`]
 {
   "Babel errored but TSESTree didn't": [
     "declaration/ExportNamedDeclaration/fixtures/_error_/assertion/fixture.ts",
-    "declaration/TSImportEqualsDeclaration/fixtures/_error_/import-kind/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/const-destructure-no-init/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/const-destructure-type-no-init/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/const-id-no-init/fixture.ts",

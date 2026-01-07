@@ -581,6 +581,15 @@ export function checkSyntaxError(
       break;
     }
 
+    case SyntaxKind.ImportEqualsDeclaration:
+      if (
+        node.isTypeOnly &&
+        node.moduleReference.kind !== SyntaxKind.ExternalModuleReference
+      ) {
+        throw createError(node, "An import alias cannot use 'import type'");
+      }
+      break;
+
     case SyntaxKind.ModuleDeclaration: {
       if (node.flags & ts.NodeFlags.GlobalAugmentation) {
         const { body } = node;
