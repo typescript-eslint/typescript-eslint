@@ -487,7 +487,7 @@ export default createRule<Options, MessageIds>({
           ? isImplicitlyNarrowedLiteralDeclaration(node)
           : !typeAnnotationIsConstAssertion;
 
-        const reportFix: ReportFixFunction = fixer => {
+        const fixFunction: ReportFixFunction = fixer => {
           if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
             const openingAngleBracket = nullThrows(
               context.sourceCode.getTokenBefore(
@@ -541,7 +541,7 @@ export default createRule<Options, MessageIds>({
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
-            fix: reportFix,
+            fix: fixFunction,
           });
           return;
         }
@@ -563,7 +563,7 @@ export default createRule<Options, MessageIds>({
           context.report({
             node,
             messageId: 'contextuallyUnnecessary',
-            fix: reportFix,
+            fix: fixFunction,
           });
           return;
         }
