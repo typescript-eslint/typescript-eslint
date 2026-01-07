@@ -634,6 +634,20 @@ declare const narrow: Narrow;
 declare function identity<T>(x: T): T;
 const result = identity({ value: narrow as Wide }) satisfies { value: Wide };
     `,
+    `
+declare const x: string | number;
+const result: { tag: string; value: string | number } | { value: number } = {
+  value: x as number,
+};
+    `,
+    `
+declare const x: string | number;
+function fn(): { tag: string; value: string | number } | { value: number } {
+  return {
+    value: x as number,
+  };
+}
+    `,
   ],
 
   invalid: [

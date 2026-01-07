@@ -407,6 +407,12 @@ export default createRule<Options, MessageIds>({
       if (parent.type === AST_NODE_TYPES.Property && parent.value === node) {
         const objectExpr = parent.parent;
         if (objectExpr.type === AST_NODE_TYPES.ObjectExpression) {
+          const objectTsNode = services.esTreeNodeToTSNodeMap.get(objectExpr);
+          const objectContextualType = checker.getContextualType(objectTsNode);
+          if (objectContextualType?.isUnion()) {
+            return true;
+          }
+
           const objectParent = objectExpr.parent;
           if (objectParent.type === AST_NODE_TYPES.TSSatisfiesExpression) {
             return true;
