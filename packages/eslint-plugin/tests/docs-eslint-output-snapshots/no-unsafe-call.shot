@@ -4,24 +4,24 @@ declare const anyVar: any;
 declare const nestedAny: { prop: any };
 
 anyVar();
-~~~~~~ Unsafe call of a(n) `any` typed value.
+~~~~~~ Unsafe call of an `any` typed value.
 anyVar.a.b();
-~~~~~~~~~~ Unsafe call of a(n) `any` typed value.
+~~~~~~~~~~ Unsafe call of an `any` typed value.
 
 nestedAny.prop();
-~~~~~~~~~~~~~~ Unsafe call of a(n) `any` typed value.
+~~~~~~~~~~~~~~ Unsafe call of an `any` typed value.
 nestedAny.prop['a']();
-~~~~~~~~~~~~~~~~~~~ Unsafe call of a(n) `any` typed value.
+~~~~~~~~~~~~~~~~~~~ Unsafe call of an `any` typed value.
 
 new anyVar();
-~~~~~~~~~~~~ Unsafe construction of a(n) `any` typed value.
+~~~~~~~~~~~~ Unsafe construction of an `any` typed value.
 new nestedAny.prop();
-~~~~~~~~~~~~~~~~~~~~ Unsafe construction of a(n) `any` typed value.
+~~~~~~~~~~~~~~~~~~~~ Unsafe construction of an `any` typed value.
 
 anyVar`foo`;
-~~~~~~ Unsafe use of a(n) `any` typed template tag.
+~~~~~~ Unsafe use of an `any` typed template tag.
 nestedAny.prop`foo`;
-~~~~~~~~~~~~~~ Unsafe use of a(n) `any` typed template tag.
+~~~~~~~~~~~~~~ Unsafe use of an `any` typed template tag.
 
 Correct
 
@@ -41,4 +41,4 @@ Incorrect
 
 const f: Function = () => {};
 f();
-~ Unsafe call of a(n) `Function` typed value.
+~ Unsafe call of a `Function` typed value.

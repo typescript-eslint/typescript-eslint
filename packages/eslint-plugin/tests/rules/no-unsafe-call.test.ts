@@ -96,7 +96,7 @@ function foo(x: any) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 4,
           line: 3,
@@ -114,7 +114,7 @@ function foo(x: any) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 4,
           line: 3,
@@ -132,7 +132,7 @@ function foo(x: any) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 18,
           line: 3,
@@ -150,7 +150,7 @@ function foo(x: any) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 18,
           line: 3,
@@ -168,7 +168,7 @@ function foo(x: { a: any }) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 6,
           line: 3,
@@ -186,7 +186,7 @@ function foo(x: { a: any }) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 7,
           line: 3,
@@ -204,7 +204,7 @@ function foo(x: { a: any }) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 6,
           line: 3,
@@ -282,7 +282,7 @@ t();
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 3,
           messageId: 'unsafeCall',
@@ -297,7 +297,7 @@ f\`oo\`;
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 3,
           messageId: 'unsafeTemplateTag',
@@ -314,7 +314,7 @@ if (typeof maybeFunction === 'function') {
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 4,
           messageId: 'unsafeCall',
@@ -330,7 +330,7 @@ unsafe();
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 4,
           messageId: 'unsafeCall',
@@ -346,7 +346,7 @@ unsafe\`bad\`;
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 4,
           messageId: 'unsafeTemplateTag',
@@ -362,7 +362,7 @@ new unsafe();
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 4,
           messageId: 'unsafeNew',
@@ -380,7 +380,7 @@ new unsafe();
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 6,
           messageId: 'unsafeNew',
@@ -398,7 +398,7 @@ unsafe();
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 6,
           messageId: 'unsafeCall',
