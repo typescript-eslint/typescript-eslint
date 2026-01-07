@@ -597,11 +597,11 @@ export default defineConfig(
     extends: [
       jsxA11yPlugin.flatConfigs.recommended,
       { name: 'react/recommended', ...reactPlugin.configs.flat.recommended },
-      reactHooksPlugin.configs.recommended,
     ],
     files: ['packages/website/**/*.?(c|m)[tj]s?(x)'],
     name: 'website',
     rules: {
+      ...(reactHooksPlugin.configs.recommended.rules ?? {}),
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
       'import/no-default-export': 'off',
       'n/no-extraneous-import': 'off',

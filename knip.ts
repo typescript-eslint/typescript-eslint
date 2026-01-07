@@ -25,7 +25,7 @@ export default {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
       ignore: ['tools/scripts/generate-sponsors.mts'],
 
-      ignoreDependencies: ['@nx/workspace'],
+      ignoreDependencies: ['@nx/workspace', '@eslint/eslintrc'],
 
       project: [
         'tools/scripts/**/*.mts',
