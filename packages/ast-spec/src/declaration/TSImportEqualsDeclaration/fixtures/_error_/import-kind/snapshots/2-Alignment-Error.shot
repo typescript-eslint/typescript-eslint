@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration TSImportEqualsDeclaration _error_ import-kind Error Alignment 1`] = `"Babel errored but TSESTree didn't"`;

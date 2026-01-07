@@ -1,4 +1,5 @@
 {
   "name": "@typescript-eslint/redirects",
-  "private": true
+  "private": true,
+  "version": "8.52.0"
 }

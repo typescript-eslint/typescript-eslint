@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration TSImportEqualsDeclaration _error_ import-kind Babel - Error 1`] = `[SyntaxError: An import alias can not use 'import type'. (2:16)]`;
