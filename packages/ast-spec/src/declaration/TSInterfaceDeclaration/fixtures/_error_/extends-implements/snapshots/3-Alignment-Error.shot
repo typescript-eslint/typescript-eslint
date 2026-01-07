@@ -1,0 +1,4 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > TSInterfaceDeclaration > _error_ > extends-implements > Error Alignment`]
+TSESTree errored but Babel didn't

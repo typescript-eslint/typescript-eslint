@@ -1,0 +1,91 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > TSInterfaceDeclaration > extends-implements > AST Alignment - Token`]
+Snapshot Diff:
+- TSESTree
++ Babel
+
+  Array [
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
+      value: 'interface',
+
+      range: [0, 9],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 9, line: 1 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'F',
+
+      range: [10, 11],
+      loc: {
+        start: { column: 10, line: 1 },
+        end: { column: 11, line: 1 },
+      },
+    },
+    Keyword {
+      type: 'Keyword',
+      value: 'extends',
+
+      range: [12, 19],
+      loc: {
+        start: { column: 12, line: 1 },
+        end: { column: 19, line: 1 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'implements',
+
+      range: [20, 30],
+      loc: {
+        start: { column: 20, line: 1 },
+        end: { column: 30, line: 1 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ',',
+
+      range: [30, 31],
+      loc: {
+        start: { column: 30, line: 1 },
+        end: { column: 31, line: 1 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'A',
+
+      range: [32, 33],
+      loc: {
+        start: { column: 32, line: 1 },
+        end: { column: 33, line: 1 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '{',
+
+      range: [34, 35],
+      loc: {
+        start: { column: 34, line: 1 },
+        end: { column: 35, line: 1 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '}',
+
+      range: [35, 36],
+      loc: {
+        start: { column: 35, line: 1 },
+        end: { column: 36, line: 1 },
+      },
+    },
+  ]
