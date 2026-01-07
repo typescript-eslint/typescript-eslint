@@ -583,6 +583,57 @@ class PairBox<T, U> {
 declare const pairBox: PairBox<string, number>;
 const box = pairBox as Box<string>;
     `,
+    `
+type ObjectLike = Record<string, unknown>;
+declare const result: ObjectLike;
+declare const key: string;
+result[key] = { ...(result[key] as ObjectLike) };
+    `,
+    `
+interface AST {
+  comments: string[] | undefined;
+}
+const ast: AST = {
+  comments: [],
+};
+const { comments } = ast as { comments: string[] };
+    `,
+    `
+type Tuple = [string | undefined, number];
+const tuple: Tuple = ['hello', 42];
+const [first, second] = tuple as [string, number];
+    `,
+    `
+interface Wide {
+  name?: string;
+}
+interface Narrow {
+  name: string;
+}
+declare const narrow: Narrow;
+const obj = { value: narrow as Wide } satisfies Record<string, Wide>;
+    `,
+    `
+interface Wide {
+  name?: string;
+}
+interface Narrow {
+  name: string;
+}
+declare const narrow: Narrow;
+const value = narrow as Wide satisfies Wide;
+    `,
+    `
+interface Wide {
+  name?: string;
+}
+interface Narrow {
+  name: string;
+}
+declare const narrow: Narrow;
+declare function identity<T>(x: T): T;
+const result = identity({ value: narrow as Wide }) satisfies { value: Wide };
+    `,
   ],
 
   invalid: [
@@ -1885,7 +1936,7 @@ fn(42 as unknown as number);
       `,
       errors: [
         {
-          messageId: 'unnecessaryAssertion',
+          messageId: 'contextuallyUnnecessary',
         },
       ],
       output: `
@@ -1900,12 +1951,103 @@ fn(42 as any as number);
       `,
       errors: [
         {
-          messageId: 'unnecessaryAssertion',
+          messageId: 'contextuallyUnnecessary',
         },
       ],
       output: `
 declare function fn(param: number): void;
 fn(42);
+      `,
+    },
+    {
+      code: `
+declare function fn(params: { param: number });
+fn({ param: 42 as number });
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare function fn(params: { param: number });
+fn({ param: 42 });
+      `,
+    },
+    {
+      code: `
+declare function fn(params: { param: number });
+fn({ param: 42 as any });
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare function fn(params: { param: number });
+fn({ param: 42 });
+      `,
+    },
+    {
+      code: `
+type StringOrNumber = string | number;
+declare function fn(param: StringOrNumber);
+fn(42 as any as StringOrNumber);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+type StringOrNumber = string | number;
+declare function fn(param: StringOrNumber);
+fn(42);
+      `,
+    },
+    {
+      code: `
+type NumbersRecord = { [key: string]: number };
+declare function fn(params: { data: NumbersRecord });
+const data = { a: 1 };
+fn({ data: data as NumbersRecord });
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+type NumbersRecord = { [key: string]: number };
+declare function fn(params: { data: NumbersRecord });
+const data = { a: 1 };
+fn({ data: data });
+      `,
+    },
+    {
+      code: `
+type NumbersRecord = { [key: string]: number };
+declare function fn(params: { data: NumbersRecord });
+fn({
+  data: {
+    a: 1,
+  } as NumbersRecord,
+});
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+type NumbersRecord = { [key: string]: number };
+declare function fn(params: { data: NumbersRecord });
+fn({
+  data: {
+    a: 1,
+  },
+});
       `,
     },
   ],

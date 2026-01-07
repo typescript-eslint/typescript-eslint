@@ -314,7 +314,7 @@ export default createRule<Options, MessageIds>({
     function isDoubleAssertionUnnecessary(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
       contextualType: ts.Type | undefined,
-    ): boolean {
+    ): false | MessageIds {
       const innerExpression = node.expression;
       if (
         innerExpression.type !== AST_NODE_TYPES.TSAsExpression &&
@@ -331,7 +331,7 @@ export default createRule<Options, MessageIds>({
         isTypeUnchanged(innerExpression, originalType, castType) &&
         !isTypeFlagSet(castType, ts.TypeFlags.Any)
       ) {
-        return true;
+        return 'unnecessaryAssertion';
       }
 
       if (contextualType) {
@@ -341,7 +341,7 @@ export default createRule<Options, MessageIds>({
             isTypeFlagSet(intermediateType, ts.TypeFlags.Unknown)) &&
           checker.isTypeAssignableTo(originalType, contextualType)
         ) {
-          return true;
+          return 'contextuallyUnnecessary';
         }
       }
 
@@ -375,6 +375,52 @@ export default createRule<Options, MessageIds>({
         (expression.callee.type === AST_NODE_TYPES.ArrowFunctionExpression ||
           expression.callee.type === AST_NODE_TYPES.FunctionExpression)
       );
+    }
+
+    function shouldSkipContextualTypeFallback(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      const { parent } = node;
+
+      if (
+        parent.type === AST_NODE_TYPES.TSAsExpression ||
+        parent.type === AST_NODE_TYPES.TSTypeAssertion ||
+        parent.type === AST_NODE_TYPES.SpreadElement ||
+        parent.type === AST_NODE_TYPES.TSSatisfiesExpression
+      ) {
+        return true;
+      }
+
+      if (node.expression.type === AST_NODE_TYPES.ArrayExpression) {
+        return true;
+      }
+
+      if (
+        parent.type === AST_NODE_TYPES.VariableDeclarator &&
+        parent.init === node &&
+        (parent.id.type === AST_NODE_TYPES.ObjectPattern ||
+          parent.id.type === AST_NODE_TYPES.ArrayPattern)
+      ) {
+        return true;
+      }
+
+      if (parent.type === AST_NODE_TYPES.Property && parent.value === node) {
+        const objectExpr = parent.parent;
+        if (objectExpr.type === AST_NODE_TYPES.ObjectExpression) {
+          const objectParent = objectExpr.parent;
+          if (objectParent.type === AST_NODE_TYPES.TSSatisfiesExpression) {
+            return true;
+          }
+          if (
+            objectParent.type === AST_NODE_TYPES.CallExpression &&
+            objectParent.parent.type === AST_NODE_TYPES.TSSatisfiesExpression
+          ) {
+            return true;
+          }
+        }
+      }
+
+      return false;
     }
 
     function getUncastType(
@@ -501,7 +547,12 @@ export default createRule<Options, MessageIds>({
         }
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
-        const contextualType = getContextualType(checker, originalNode);
+
+        const contextualType =
+          getContextualType(checker, originalNode) ??
+          (shouldSkipContextualTypeFallback(node)
+            ? undefined
+            : checker.getContextualType(originalNode));
 
         if (
           contextualType &&
@@ -517,11 +568,15 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (isDoubleAssertionUnnecessary(node, contextualType)) {
+        const doubleAssertionResult = isDoubleAssertionUnnecessary(
+          node,
+          contextualType,
+        );
+        if (doubleAssertionResult) {
           const originalExpr = getOriginalExpression(node);
           context.report({
             node,
-            messageId: 'unnecessaryAssertion',
+            messageId: doubleAssertionResult,
             fix(fixer) {
               let text = context.sourceCode.getText(originalExpr);
 
