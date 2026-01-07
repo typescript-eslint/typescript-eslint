@@ -1,4 +1,4 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-empty-interface';
 
@@ -49,17 +49,6 @@ class Bar {}
   invalid: [
     {
       code: 'interface Foo {}',
-      errors: [
-        {
-          column: 11,
-          line: 1,
-          messageId: 'noEmpty',
-        },
-      ],
-      output: null,
-    },
-    {
-      code: noFormat`interface Foo extends {}`,
       errors: [
         {
           column: 11,

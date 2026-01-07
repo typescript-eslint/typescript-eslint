@@ -474,6 +474,18 @@ export function checkSyntaxError(
             );
           }
 
+          for (const heritageType of heritageClause.types) {
+            if (
+              !isEntityNameExpression(heritageType.expression) ||
+              ts.isOptionalChain(heritageType.expression)
+            ) {
+              throw createError(
+                heritageType,
+                'A class can only implement an identifier/qualified-name with optional type arguments.',
+              );
+            }
+          }
+
           seenImplementsClause = true;
         }
       }
@@ -484,18 +496,31 @@ export function checkSyntaxError(
       const interfaceHeritageClauses = node.heritageClauses ?? [];
       let seenExtendsClause = false;
       for (const heritageClause of interfaceHeritageClauses) {
-        if (heritageClause.token !== SyntaxKind.ExtendsKeyword) {
+        const { token, types } = heritageClause;
+
+        if (token === SyntaxKind.ImplementsKeyword) {
           throw createError(
             heritageClause,
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            heritageClause.token === SyntaxKind.ImplementsKeyword
-              ? "Interface declaration cannot have 'implements' clause."
-              : 'Unexpected token.',
+            "Interface declaration cannot have 'implements' clause.",
           );
         }
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (token !== SyntaxKind.ExtendsKeyword) {
+          throw createError(heritageClause, 'Unexpected token.');
+        }
+
+        if (types.length === 0) {
+          throw createError(
+            heritageClause,
+            `'${ts.tokenToString(token)}' list cannot be empty.`,
+          );
+        }
+
         if (seenExtendsClause) {
           throw createError(heritageClause, "'extends' clause already seen.");
         }
+
         seenExtendsClause = true;
 
         for (const heritageType of heritageClause.types) {
@@ -553,6 +578,49 @@ export function checkSyntaxError(
           }
         }
       }
+      break;
+    }
+
+    case SyntaxKind.ImportEqualsDeclaration:
+      if (
+        node.isTypeOnly &&
+        node.moduleReference.kind !== SyntaxKind.ExternalModuleReference
+      ) {
+        throw createError(node, "An import alias cannot use 'import type'");
+      }
+      break;
+
+    case SyntaxKind.ModuleDeclaration: {
+      if (node.flags & ts.NodeFlags.GlobalAugmentation) {
+        const { body } = node;
+        if (body == null || body.kind === SyntaxKind.ModuleDeclaration) {
+          throw createError(node.body ?? node, 'Expected a valid module body');
+        }
+
+        const { name } = node;
+        if (name.kind !== ts.SyntaxKind.Identifier) {
+          throw createError(
+            name,
+            'global module augmentation must have an Identifier id',
+          );
+        }
+
+        return;
+      }
+
+      if (ts.isStringLiteral(node.name)) {
+        return;
+      }
+
+      if (node.body == null) {
+        throw createError(node, 'Expected a module body');
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- Fixme: confirm if it's possible
+      if (node.name.kind !== ts.SyntaxKind.Identifier) {
+        throw createError(node.name, '`namespace`s must have an Identifier id');
+      }
+
       break;
     }
 
