@@ -823,10 +823,26 @@ export function getNamespaceModifiers(
 }
 
 // `ts.declarationNameToString`
-export function declarationNameToString(
-  name: ts.Node,
-  ast: ts.SourceFile,
-): string {
-  const text = ast.text.slice(name.pos, name.end).trimStart();
+export function declarationNameToString(node: ts.Node): string {
+  const text = node.getSourceFile().text.slice(node.pos, node.end).trimStart();
   return text || '(Missing)';
+}
+
+function isPropertyAccessEntityNameExpression(
+  node: ts.Node,
+): node is ts.PropertyAccessEntityNameExpression {
+  return (
+    ts.isPropertyAccessExpression(node) &&
+    ts.isIdentifier(node.name) &&
+    isEntityNameExpression(node.expression)
+  );
+}
+
+export function isEntityNameExpression(
+  node: ts.Node,
+): node is ts.EntityNameExpression {
+  return (
+    node.kind === SyntaxKind.Identifier ||
+    isPropertyAccessEntityNameExpression(node)
+  );
 }

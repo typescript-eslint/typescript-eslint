@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/no-unused-vars';
@@ -361,25 +362,6 @@ export interface Bar extends baz.test {}
 import test from 'test';
 import baz from 'baz';
 export class Bar implements baz.test {}
-      `,
-      errors: [
-        {
-          column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'test',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-import test from 'test';
-import baz from 'baz';
-export class Bar implements baz().test {}
       `,
       errors: [
         {
@@ -1688,8 +1670,26 @@ export {};
     },
     {
       code: `
-class Foo {}
 declare class Bar {}
+
+export {};
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Bar',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+class Foo {}
 
 export {};
       `,
@@ -1701,15 +1701,6 @@ export {};
             varName: 'Foo',
           },
           line: 2,
-          messageId: 'unusedVar',
-        },
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bar',
-          },
-          line: 3,
           messageId: 'unusedVar',
         },
       ],

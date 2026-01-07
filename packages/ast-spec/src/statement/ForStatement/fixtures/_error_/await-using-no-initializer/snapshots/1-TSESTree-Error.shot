@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > statement > ForStatement > _error_ > await-using-no-initializer > TSESTree - Error`]
+TSError
+  1 | async function f() {
+> 2 | for (await using foo;;);
+    |                  ^^^ 'await using' declarations must be initialized.
+  3 | }
+  4 |
