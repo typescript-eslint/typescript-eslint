@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > TSInterfaceDeclaration > _error_ > missing-implements > TSESTree - Error`]
+TSError
+> 1 | interface F implements {}
+    |             ^^^^^^^^^^ Interface declaration cannot have 'implements' clause.
+  2 |
