@@ -675,6 +675,15 @@ declare let b: B;
 const c = (a = b as C);
 c.c;
     `,
+    `
+type NumberRecord = { readonly [P in number]: number };
+function fn<T extends NumberRecord>(record: T) {
+  for (const key of Object.keys(record)) {
+    const index = +key as keyof T & number;
+    record[index] = record[index] + 1;
+  }
+}
+    `,
   ],
 
   invalid: [

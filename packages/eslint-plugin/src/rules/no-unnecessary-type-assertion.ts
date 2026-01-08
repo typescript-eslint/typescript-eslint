@@ -242,6 +242,10 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
+      if (containsTypeVariable(cast) && !containsTypeVariable(uncast)) {
+        return false;
+      }
+
       if (!hasSameProperties(uncast, cast)) {
         return false;
       }
@@ -292,6 +296,20 @@ export default createRule<Options, MessageIds>({
       }
       const typeArgs = checker.getTypeArguments(type as ts.TypeReference);
       return typeArgs.length > 0 && typeArgs.some(containsAny);
+    }
+
+    function containsTypeVariable(type: ts.Type): boolean {
+      if (isTypeFlagSet(type, ts.TypeFlags.TypeVariable | ts.TypeFlags.Index)) {
+        return true;
+      }
+
+      if (type.isUnionOrIntersection()) {
+        return type.types.some(containsTypeVariable);
+      }
+
+      return checker
+        .getTypeArguments(type as ts.TypeReference)
+        .some(containsTypeVariable);
     }
 
     function isTypeLiteral(type: ts.Type) {
