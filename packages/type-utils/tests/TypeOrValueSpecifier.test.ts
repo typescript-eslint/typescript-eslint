@@ -657,6 +657,34 @@ describe('TypeOrValueSpecifier', () => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
     );
+
+    it.for([
+      [
+        'type Original = { prop: string }; type Alias = Original; type Test = Alias;',
+        { from: 'file', name: 'Original' },
+      ],
+      [
+        'type Original = { prop: string }; type Alias = Original; type Test = Alias;',
+        { from: 'file', name: ['Original', 'Other'] },
+      ],
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      'matches a type alias that resolves to the original type: %s\n\t%s',
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).toMatchSpecifier(typeOrValueSpecifier);
+      },
+    );
+
+    it.for([
+      [
+        'type Original = { prop: string }; type Alias = Original; type Test = Alias;',
+        { from: 'file', name: 'Alias' },
+      ],
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      "doesn't match a type alias when specifier targets the alias name: %s\n\t%s",
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
+      },
+    );
   });
 
   describe(valueMatchesSpecifier, () => {
