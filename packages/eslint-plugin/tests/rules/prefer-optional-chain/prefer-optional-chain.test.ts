@@ -3189,20 +3189,12 @@ const baz = foo?.bar;
       },
       {
         code: `
-if (foo && foo[0]) {
+declare const foo: { bar: number } | null;
+declare const foos: { bar: number }[];
+if (foo && foo.bar === foos[0]?.bar) {
 }
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: 'if (foo?.[0]) {}',
-              },
-            ],
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain' }],
         output: null,
       },
     ],
