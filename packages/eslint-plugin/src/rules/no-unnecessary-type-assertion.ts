@@ -426,6 +426,19 @@ export default createRule<Options, MessageIds>({
         }
       }
 
+      if (
+        parent.type === AST_NODE_TYPES.AssignmentExpression &&
+        parent.right === node
+      ) {
+        let assignmentParent: TSESTree.Node = parent.parent;
+        while (assignmentParent.type === AST_NODE_TYPES.ChainExpression) {
+          assignmentParent = assignmentParent.parent;
+        }
+        if (assignmentParent.type !== AST_NODE_TYPES.ExpressionStatement) {
+          return true;
+        }
+      }
+
       return false;
     }
 
@@ -554,16 +567,16 @@ export default createRule<Options, MessageIds>({
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
 
-        const contextualType =
-          getContextualType(checker, originalNode) ??
-          (shouldSkipContextualTypeFallback(node)
-            ? undefined
-            : checker.getContextualType(originalNode));
+        const contextualType = shouldSkipContextualTypeFallback(node)
+          ? undefined
+          : (getContextualType(checker, originalNode) ??
+            checker.getContextualType(originalNode));
 
         if (
           contextualType &&
           !typeAnnotationIsConstAssertion &&
           !containsAny(uncastType) &&
+          !containsAny(contextualType) &&
           checker.isTypeAssignableTo(uncastType, contextualType)
         ) {
           context.report({

@@ -648,6 +648,33 @@ function fn(): { tag: string; value: string | number } | { value: number } {
   };
 }
     `,
+    `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare const a: A;
+let result;
+result = a as B;
+result.b;
+    `,
+    `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+interface C extends B {
+  c: string;
+}
+declare let a: A;
+declare let b: B;
+const c = (a = b as C);
+c.c;
+    `,
   ],
 
   invalid: [
