@@ -68,7 +68,7 @@
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/utils": "workspace:*",
     "copy-webpack-plugin": "^13.0.1",
-    "history": "^4.10.1",
+    "history": "^5.0.0",
     "mdast-util-from-markdown": "^2.0.2",
     "mdast-util-mdx": "^3.0.0",
     "monaco-editor": "~0.54.0",
