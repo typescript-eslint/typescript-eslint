@@ -769,7 +769,15 @@ describe('TypeOrValueSpecifier', () => {
           'var value = 45; const hoge = value;',
           { from: 'file', name: 'value' },
         ],
-      ])('matches a matching file specifier: %s', runTestPositive);
+        [
+          'const value = "test"; const hoge = value;',
+          { from: 'file', name: 'value' },
+        ],
+        [
+          'const value = 45; const hoge = value;',
+          { from: 'lib', name: 'value' },
+        ],
+      ])('matches a matching file/lib specifier: %s', runTestPositive);
 
       it.each<[string, TypeOrValueSpecifier]>([
         [
@@ -887,6 +895,25 @@ describe('TypeOrValueSpecifier', () => {
           'incorrect',
         ],
       ])('matches a matching universal string specifier: %s', runTestNegative);
+    });
+
+    it('matches string literal with specifier', () => {
+      const { ast, services } = parseCode('const value = "test";');
+      const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;
+      const { id, init } = declaration.declarations[0];
+      const literal = init as TSESTree.Literal;
+      const type = services.getTypeAtLocation(id);
+      expect(
+        valueMatchesSpecifier(literal, 'test', services.program, type),
+      ).toBe(true);
+      expect(
+        valueMatchesSpecifier(
+          literal,
+          { from: 'file', name: 'test' },
+          services.program,
+          type,
+        ),
+      ).toBe(true);
     });
   });
 
