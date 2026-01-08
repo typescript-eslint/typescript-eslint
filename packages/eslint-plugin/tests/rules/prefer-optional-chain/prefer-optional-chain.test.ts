@@ -3187,6 +3187,24 @@ const baz = foo?.bar;
         ],
         options: [{ checkString: false }],
       },
+      {
+        code: `
+if (foo && foo[0]) {
+}
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: 'if (foo?.[0]) {}',
+              },
+            ],
+          },
+        ],
+        output: null,
+      },
     ],
     valid: [
       '!a || !b;',
