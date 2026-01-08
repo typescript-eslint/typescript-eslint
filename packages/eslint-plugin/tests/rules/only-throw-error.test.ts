@@ -271,6 +271,26 @@ function* foo(): Generator<number, void, Error> {
         },
       ],
     },
+    {
+      code: `
+        export class CustomError extends Error {}
+        export { CustomError } from './error-types';
+        import { CustomError } from './index';
+        throw new CustomError();
+      `,
+      options: [
+        {
+          allow: [
+            {
+              from: 'file',
+              name: 'CustomError',
+            },
+          ],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {

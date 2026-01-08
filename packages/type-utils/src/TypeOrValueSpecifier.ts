@@ -1,9 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/types';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
 import { typeDeclaredInFile } from './typeOrValueSpecifiers/typeDeclaredInFile';
@@ -164,6 +164,38 @@ export const typeOrValueSpecifiersSchema = {
   type: 'array',
 } as const satisfies JSONSchema4;
 
+function resolveActualSymbol(
+  symbol: ts.Symbol | undefined,
+  checker: ts.TypeChecker,
+): ts.Symbol | undefined {
+  if (!symbol) {
+    return undefined;
+  }
+
+  let currentSymbol: ts.Symbol = symbol;
+  const visited = new Set<ts.Symbol>();
+
+  while (true) {
+    if (visited.has(currentSymbol)) {
+      break;
+    }
+    visited.add(currentSymbol);
+
+    if (currentSymbol.flags & ts.SymbolFlags.Alias) {
+      const aliasedSymbol = checker.getAliasedSymbol(currentSymbol);
+      if (aliasedSymbol !== currentSymbol) {
+        currentSymbol = aliasedSymbol;
+      } else {
+        break;
+      }
+    } else {
+      break;
+    }
+  }
+
+  return currentSymbol;
+}
+
 export function typeMatchesSpecifier(
   type: ts.Type,
   specifier: TypeOrValueSpecifier,
@@ -183,8 +215,10 @@ export function typeMatchesSpecifier(
     if (!specifierNameMatches(type, specifier.name)) {
       return false;
     }
+    const checker = program.getTypeChecker();
     const symbol = type.getSymbol() ?? type.aliasSymbol;
-    const declarations = symbol?.getDeclarations() ?? [];
+    const actualSymbol = resolveActualSymbol(symbol, checker);
+    const declarations = actualSymbol?.getDeclarations() ?? [];
     const declarationFiles = declarations.map(declaration =>
       declaration.getSourceFile(),
     );
@@ -266,8 +300,10 @@ export function valueMatchesSpecifier(
   }
 
   if (specifier.from === 'package') {
+    const checker = program.getTypeChecker();
     const symbol = type.getSymbol() ?? type.aliasSymbol;
-    const declarations = symbol?.getDeclarations() ?? [];
+    const actualSymbol = resolveActualSymbol(symbol, checker);
+    const declarations = actualSymbol?.getDeclarations() ?? [];
     const declarationFiles = declarations.map(declaration =>
       declaration.getSourceFile(),
     );
