@@ -711,6 +711,14 @@ declare const arrayA: A[];
 const a = mapDefined(() => b as A);
 [a].concat(arrayA);
     `,
+    `
+interface Params {
+  a?: string;
+  b?: string;
+}
+declare const params: Omit<Params, 'a'> & { c?: string };
+(params as Params).a = 'c';
+    `,
   ],
 
   invalid: [

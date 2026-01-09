@@ -277,11 +277,14 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
+      const castPropNames = new Set(castProps.map(p => p.getEscapedName()));
+
       return uncastProps.every(prop => {
         const name = prop.getEscapedName();
         return (
+          castPropNames.has(name) &&
           tsutils.isPropertyReadonlyInType(uncast, name, checker) ===
-          tsutils.isPropertyReadonlyInType(cast, name, checker)
+            tsutils.isPropertyReadonlyInType(cast, name, checker)
         );
       });
     }
