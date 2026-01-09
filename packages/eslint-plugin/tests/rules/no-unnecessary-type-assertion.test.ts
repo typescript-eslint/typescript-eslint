@@ -719,6 +719,18 @@ interface Params {
 declare const params: Omit<Params, 'a'> & { c?: string };
 (params as Params).a = 'c';
     `,
+    `
+const text: string | null = null as string | null;
+if (text) {
+  text.toLowerCase();
+}
+    `,
+    `
+const text: string | undefined = undefined as string | undefined;
+if (text) {
+  text.toLowerCase();
+}
+    `,
   ],
 
   invalid: [

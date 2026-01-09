@@ -654,7 +654,14 @@ export default createRule<Options, MessageIds>({
           !containsAny(uncastType) &&
           !containsAny(contextualType) &&
           !hasGenericSignature(contextualType) &&
-          checker.isTypeAssignableTo(uncastType, contextualType)
+          checker.isTypeAssignableTo(uncastType, contextualType) &&
+          !(
+            castType.isUnion() &&
+            ((node.expression.type === AST_NODE_TYPES.Literal &&
+              node.expression.value == null) ||
+              (node.expression.type === AST_NODE_TYPES.Identifier &&
+                node.expression.name === 'undefined'))
+          )
         ) {
           context.report({
             node,
