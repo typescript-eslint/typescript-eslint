@@ -1,4 +1,4 @@
-import type { KnipConfig } from 'knip' with { 'resolution-mode': 'import' };
+import type { KnipConfig } from 'knip';
 
 export default {
   rules: {
@@ -23,11 +23,9 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignoreDependencies: [
-        '@nx/workspace',
-        // imported for type purposes only
-        'website',
-      ],
+      ignore: ['tools/scripts/generate-sponsors.mts'],
+
+      ignoreDependencies: ['@nx/workspace', '@eslint/eslintrc'],
 
       project: [
         'tools/scripts/**/*.mts',
@@ -57,6 +55,7 @@ export default {
 
     'packages/eslint-plugin': {
       ignore: ['typings/eslint-rules.d.ts', 'typings/typescript.d.ts'],
+      ignoreDependencies: ['@types/react'],
 
       project: ['src/**/*.ts!', 'tools/**/*.mts'],
 
@@ -105,6 +104,8 @@ export default {
     'packages/type-utils': {
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
 
+      ignoreDependencies: ['@types/babel__code-frame'],
+
       vitest: {
         config: ['vitest.config.mts'],
         entry: [
@@ -144,7 +145,7 @@ export default {
         'src/pages/**/*.tsx',
 
         // imported in MDX docs
-        'src/components/**/*.tsx',
+        'src/components/**/*.{ts,tsx}',
 
         // used by Docusaurus
         'plugins/recent-blog-posts/index.ts',
@@ -164,10 +165,6 @@ export default {
         // it's imported only as type (esquery types are forked and defined in packages/website/typings/esquery.d.ts)
         'esquery',
 
-        '@docusaurus/mdx-loader',
-        '@docusaurus/types',
-        '@docusaurus/plugin-content-docs',
-        '@docusaurus/plugin-content-blog',
         '@docusaurus/theme-search-algolia',
         '@docusaurus/ExecutionEnvironment',
         '@docusaurus/Link',
@@ -181,6 +178,7 @@ export default {
         '^@theme-original/.*',
         'docusaurus-plugin-typedoc',
         'typedoc-plugin-markdown',
+        'prismjs',
       ],
     },
     'packages/website-eslint': {
@@ -198,7 +196,10 @@ export default {
       ],
       ignoreDependencies: [
         // virtual module
-        'vt:*',
+        'vt',
+        '@typescript-eslint/tsconfig-utils',
+        '@typescript-eslint/type-utils',
+        '@typescript-eslint/tsconfig-utils',
       ],
     },
     'tools/dummypkg': {},

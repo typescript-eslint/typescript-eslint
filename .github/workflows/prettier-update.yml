@@ -22,15 +22,16 @@ jobs:
     name: Run prettier formatting if required
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          persist-credentials: false
-
       - name: Check if prettier was changed as part of the latest commit on the PR
         id: prettier-package-check
         run: |
           git diff HEAD~1 -G"prettier" --exit-code package.json && echo "prettier unchanged" || echo "::set-output name=was-changed::true"
+
+      - uses: pnpm/action-setup@v4
+        if: ${{ steps.prettier-package-check.outputs.was-changed == 'true' }}
+        name: Install pnpm
+        with:
+          run_install: false
 
       - name: Run prettier formatting if prettier was changed and commit the results
         if: ${{ steps.prettier-package-check.outputs.was-changed == 'true' }}
@@ -38,8 +39,8 @@ jobs:
           # We cannot use secrets.GITHUB_TOKEN for this because it is not permitted to kick off subsequent actions worfklow runs, so we use a PAT instead
           GITHUB_TOKEN: ${{ secrets.JAMES_HENRY_GITHUB_TOKEN }}
         run: |
-          yarn --mode skip-build
-          yarn format
+          pnpm install --ignore-scripts
+          pnpm run format
 
           # Commit all the changes to the PR (see note on not being able to use secrets.GITHUB_TOKEN for this)
           git config --global user.email "james@henry.sc"

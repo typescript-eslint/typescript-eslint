@@ -48,14 +48,14 @@
     "typescript"
   ],
   "scripts": {
-    "build": "yarn run -BT nx build",
+    "build": "pnpm -w exec nx build",
     "clean": "rimraf dist/ coverage/",
-    "format": "yarn run -T format",
-    "generate-breaking-changes": "yarn run -BT nx generate-breaking-changes",
-    "generate-configs": "yarn run -BT nx generate-configs repo",
-    "lint": "yarn run -BT nx lint",
-    "test": "yarn run -BT nx test",
-    "typecheck": "yarn run -BT nx typecheck"
+    "format": "pnpm -w run format",
+    "generate-breaking-changes": "tsx tools/generate-breaking-changes.mts",
+    "generate-configs": "pnpm -w run generate-configs",
+    "lint": "pnpm -w exec nx lint",
+    "test": "pnpm -w exec nx test",
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.12.2",
@@ -68,9 +68,11 @@
     "ts-api-utils": "^2.4.0"
   },
   "devDependencies": {
+    "@types/json-schema": "^7.0.15",
     "@types/mdast": "^4.0.4",
     "@types/natural-compare": "*",
-    "@typescript-eslint/rule-schema-to-typescript-types": "8.52.0",
+    "@types/react": "^18.3.21",
+    "@typescript-eslint/rule-schema-to-typescript-types": "workspace:*",
     "@typescript-eslint/rule-tester": "8.52.0",
     "@vitest/coverage-v8": "^3.2.4",
     "ajv": "^6.12.6",
