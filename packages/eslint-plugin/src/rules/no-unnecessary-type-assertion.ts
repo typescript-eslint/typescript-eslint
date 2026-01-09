@@ -448,10 +448,7 @@ export default createRule<Options, MessageIds>({
       ) {
         return false;
       }
-      let assignmentParent: TSESTree.Node = parent.parent;
-      while (assignmentParent.type === AST_NODE_TYPES.ChainExpression) {
-        assignmentParent = assignmentParent.parent;
-      }
+      const assignmentParent = parent.parent;
       return assignmentParent.type !== AST_NODE_TYPES.ExpressionStatement;
     }
 
