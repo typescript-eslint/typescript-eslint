@@ -684,6 +684,15 @@ function fn<T extends NumberRecord>(record: T) {
   }
 }
     `,
+    `
+interface ReadonlyMap<K, V> {
+  get(key: K): V | undefined;
+}
+type T = { get<K>(key: K): K };
+declare const x: ReadonlyMap<string, string>;
+declare let y: T;
+y = x as T;
+    `,
   ],
 
   invalid: [

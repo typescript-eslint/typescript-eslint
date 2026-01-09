@@ -298,6 +298,15 @@ export default createRule<Options, MessageIds>({
       return typeArgs.length > 0 && typeArgs.some(containsAny);
     }
 
+    function hasGenericSignature(type: ts.Type): boolean {
+      return type.getProperties().some(prop => {
+        const propType = checker.getTypeOfSymbol(prop);
+        return checker
+          .getSignaturesOfType(propType, ts.SignatureKind.Call)
+          .some(sig => (sig.getTypeParameters()?.length ?? 0) > 0);
+      });
+    }
+
     function containsTypeVariable(type: ts.Type): boolean {
       if (isTypeFlagSet(type, ts.TypeFlags.TypeVariable | ts.TypeFlags.Index)) {
         return true;
@@ -595,6 +604,7 @@ export default createRule<Options, MessageIds>({
           !typeAnnotationIsConstAssertion &&
           !containsAny(uncastType) &&
           !containsAny(contextualType) &&
+          !hasGenericSignature(contextualType) &&
           checker.isTypeAssignableTo(uncastType, contextualType)
         ) {
           context.report({
