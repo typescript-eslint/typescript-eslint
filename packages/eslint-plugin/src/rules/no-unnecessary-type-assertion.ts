@@ -190,103 +190,8 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function isTypeUnchanged(
-      expression: TSESTree.Expression,
-      uncast: ts.Type,
-      cast: ts.Type,
-    ): boolean {
-      if (uncast === cast) {
-        return true;
-      }
-
-      if (
-        isTypeFlagSet(uncast, ts.TypeFlags.Undefined) &&
-        isTypeFlagSet(cast, ts.TypeFlags.Undefined) &&
-        tsutils.isCompilerOptionEnabled(
-          compilerOptions,
-          'exactOptionalPropertyTypes',
-        )
-      ) {
-        const uncastParts = tsutils
-          .unionConstituents(uncast)
-          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
-
-        const castParts = tsutils
-          .unionConstituents(cast)
-          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
-
-        if (uncastParts.length !== castParts.length) {
-          return false;
-        }
-
-        const uncastPartsSet = new Set(uncastParts);
-        return castParts.every(part => uncastPartsSet.has(part));
-      }
-
-      if (isConceptuallyLiteral(expression)) {
-        return false;
-      }
-
-      if (
-        isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
-        !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)
-      ) {
-        return false;
-      }
-
-      if (hasIndexSignature(uncast) && !hasIndexSignature(cast)) {
-        return false;
-      }
-
-      if (containsAny(uncast) || containsAny(cast)) {
-        return false;
-      }
-
-      if (containsTypeVariable(cast) && !containsTypeVariable(uncast)) {
-        return false;
-      }
-
-      if (!hasSameProperties(uncast, cast)) {
-        return false;
-      }
-
-      const uncastTypeArgs = checker.getTypeArguments(
-        uncast as ts.TypeReference,
-      );
-      const castTypeArgs = checker.getTypeArguments(cast as ts.TypeReference);
-      if (uncastTypeArgs.length !== castTypeArgs.length) {
-        return false;
-      }
-      for (let i = 0; i < uncastTypeArgs.length; i++) {
-        if (uncastTypeArgs[i] !== castTypeArgs[i]) {
-          return false;
-        }
-      }
-
-      return (
-        checker.isTypeAssignableTo(uncast, cast) &&
-        checker.isTypeAssignableTo(cast, uncast)
-      );
-    }
-
-    function hasSameProperties(uncast: ts.Type, cast: ts.Type): boolean {
-      const uncastProps = uncast.getProperties();
-      const castProps = cast.getProperties();
-
-      if (uncastProps.length !== castProps.length) {
-        return false;
-      }
-
-      const castPropNames = new Set(castProps.map(p => p.getEscapedName()));
-
-      return uncastProps.every(prop => {
-        const name = prop.getEscapedName();
-        return (
-          castPropNames.has(name) &&
-          tsutils.isPropertyReadonlyInType(uncast, name, checker) ===
-            tsutils.isPropertyReadonlyInType(cast, name, checker)
-        );
-      });
+    function isTypeLiteral(type: ts.Type): boolean {
+      return type.isLiteral() || tsutils.isBooleanLiteralType(type);
     }
 
     function hasIndexSignature(type: ts.Type): boolean {
@@ -298,34 +203,120 @@ export default createRule<Options, MessageIds>({
         return true;
       }
       const typeArgs = checker.getTypeArguments(type as ts.TypeReference);
-      return typeArgs.length > 0 && typeArgs.some(containsAny);
-    }
-
-    function hasGenericSignature(type: ts.Type): boolean {
-      return type.getProperties().some(prop => {
-        const propType = checker.getTypeOfSymbol(prop);
-        return checker
-          .getSignaturesOfType(propType, ts.SignatureKind.Call)
-          .some(sig => (sig.getTypeParameters()?.length ?? 0) > 0);
-      });
+      return typeArgs.some(containsAny);
     }
 
     function containsTypeVariable(type: ts.Type): boolean {
       if (isTypeFlagSet(type, ts.TypeFlags.TypeVariable | ts.TypeFlags.Index)) {
         return true;
       }
-
       if (type.isUnionOrIntersection()) {
         return type.types.some(containsTypeVariable);
       }
-
       return checker
         .getTypeArguments(type as ts.TypeReference)
         .some(containsTypeVariable);
     }
 
-    function isTypeLiteral(type: ts.Type) {
-      return type.isLiteral() || tsutils.isBooleanLiteralType(type);
+    function hasGenericSignature(type: ts.Type): boolean {
+      return type
+        .getProperties()
+        .some(prop =>
+          checker
+            .getSignaturesOfType(
+              checker.getTypeOfSymbol(prop),
+              ts.SignatureKind.Call,
+            )
+            .some(sig => (sig.getTypeParameters()?.length ?? 0) > 0),
+        );
+    }
+
+    function hasSameProperties(uncast: ts.Type, cast: ts.Type): boolean {
+      const uncastProps = uncast.getProperties();
+      const castProps = cast.getProperties();
+      if (uncastProps.length !== castProps.length) {
+        return false;
+      }
+      const castPropNames = new Set(castProps.map(p => p.getEscapedName()));
+      return uncastProps.every(prop => {
+        const name = prop.getEscapedName();
+        return (
+          castPropNames.has(name) &&
+          tsutils.isPropertyReadonlyInType(uncast, name, checker) ===
+            tsutils.isPropertyReadonlyInType(cast, name, checker)
+        );
+      });
+    }
+
+    function haveSameTypeArguments(uncast: ts.Type, cast: ts.Type): boolean {
+      const uncastArgs = checker.getTypeArguments(uncast as ts.TypeReference);
+      const castArgs = checker.getTypeArguments(cast as ts.TypeReference);
+      return (
+        uncastArgs.length === castArgs.length &&
+        uncastArgs.every((arg, i) => arg === castArgs[i])
+      );
+    }
+
+    function areMutuallyAssignable(a: ts.Type, b: ts.Type): boolean {
+      return (
+        checker.isTypeAssignableTo(a, b) && checker.isTypeAssignableTo(b, a)
+      );
+    }
+
+    function areUnionPartsEquivalentIgnoringUndefined(
+      uncast: ts.Type,
+      cast: ts.Type,
+    ): boolean {
+      const filterUndefined = (part: ts.Type): boolean =>
+        !isTypeFlagSet(part, ts.TypeFlags.Undefined);
+      const uncastParts = tsutils
+        .unionConstituents(uncast)
+        .filter(filterUndefined);
+      const castParts = tsutils.unionConstituents(cast).filter(filterUndefined);
+      if (uncastParts.length !== castParts.length) {
+        return false;
+      }
+      const uncastPartsSet = new Set(uncastParts);
+      return castParts.every(part => uncastPartsSet.has(part));
+    }
+
+    function isTypeUnchanged(
+      expression: TSESTree.Expression,
+      uncast: ts.Type,
+      cast: ts.Type,
+    ): boolean {
+      if (uncast === cast) {
+        return true;
+      }
+
+      // With exactOptionalPropertyTypes, check if union parts match ignoring undefined
+      if (
+        isTypeFlagSet(uncast, ts.TypeFlags.Undefined) &&
+        isTypeFlagSet(cast, ts.TypeFlags.Undefined) &&
+        tsutils.isCompilerOptionEnabled(
+          compilerOptions,
+          'exactOptionalPropertyTypes',
+        )
+      ) {
+        return areUnionPartsEquivalentIgnoringUndefined(uncast, cast);
+      }
+
+      // Cases where the assertion definitely changes semantics
+      if (
+        isConceptuallyLiteral(expression) ||
+        (isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
+          !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)) ||
+        (hasIndexSignature(uncast) && !hasIndexSignature(cast)) ||
+        containsAny(uncast) ||
+        containsAny(cast) ||
+        (containsTypeVariable(cast) && !containsTypeVariable(uncast)) ||
+        !hasSameProperties(uncast, cast) ||
+        !haveSameTypeArguments(uncast, cast)
+      ) {
+        return false;
+      }
+
+      return areMutuallyAssignable(uncast, cast);
     }
 
     function getOriginalExpression(
@@ -378,21 +369,20 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
+    const CONCEPTUALLY_LITERAL_TYPES = new Set([
+      AST_NODE_TYPES.Literal,
+      AST_NODE_TYPES.ArrayExpression,
+      AST_NODE_TYPES.ObjectExpression,
+      AST_NODE_TYPES.TemplateLiteral,
+      AST_NODE_TYPES.ClassExpression,
+      AST_NODE_TYPES.FunctionExpression,
+      AST_NODE_TYPES.ArrowFunctionExpression,
+      AST_NODE_TYPES.JSXElement,
+      AST_NODE_TYPES.JSXFragment,
+    ]);
+
     function isConceptuallyLiteral(node: TSESTree.Node): boolean {
-      switch (node.type) {
-        case AST_NODE_TYPES.Literal:
-        case AST_NODE_TYPES.ArrayExpression:
-        case AST_NODE_TYPES.ObjectExpression:
-        case AST_NODE_TYPES.TemplateLiteral:
-        case AST_NODE_TYPES.ClassExpression:
-        case AST_NODE_TYPES.FunctionExpression:
-        case AST_NODE_TYPES.ArrowFunctionExpression:
-        case AST_NODE_TYPES.JSXElement:
-        case AST_NODE_TYPES.JSXFragment:
-          return true;
-        default:
-          return false;
-      }
+      return CONCEPTUALLY_LITERAL_TYPES.has(node.type);
     }
 
     function isIIFE(
@@ -407,89 +397,90 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function shouldSkipContextualTypeFallback(
+    function hasGenericCallSignature(type: ts.Type): boolean {
+      return type
+        .getCallSignatures()
+        .some(sig => (sig.getTypeParameters()?.length ?? 0) > 0);
+    }
+
+    function isInDestructuringDeclaration(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): boolean {
       const { parent } = node;
-
-      if (
-        parent.type === AST_NODE_TYPES.TSAsExpression ||
-        parent.type === AST_NODE_TYPES.TSTypeAssertion ||
-        parent.type === AST_NODE_TYPES.SpreadElement ||
-        parent.type === AST_NODE_TYPES.TSSatisfiesExpression
-      ) {
-        return true;
-      }
-
-      if (node.expression.type === AST_NODE_TYPES.ArrayExpression) {
-        return true;
-      }
-
-      if (
+      return (
         parent.type === AST_NODE_TYPES.VariableDeclarator &&
         parent.init === node &&
         (parent.id.type === AST_NODE_TYPES.ObjectPattern ||
           parent.id.type === AST_NODE_TYPES.ArrayPattern)
-      ) {
+      );
+    }
+
+    function isPropertyInProblematicContext(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      const { parent } = node;
+      if (parent.type !== AST_NODE_TYPES.Property || parent.value !== node) {
+        return false;
+      }
+      const objectExpr = parent.parent;
+      if (objectExpr.type !== AST_NODE_TYPES.ObjectExpression) {
+        return false;
+      }
+      const objectTsNode = services.esTreeNodeToTSNodeMap.get(objectExpr);
+      if (checker.getContextualType(objectTsNode)?.isUnion()) {
         return true;
       }
+      const objectParent = objectExpr.parent;
+      return (
+        objectParent.type === AST_NODE_TYPES.TSSatisfiesExpression ||
+        (objectParent.type === AST_NODE_TYPES.CallExpression &&
+          objectParent.parent.type === AST_NODE_TYPES.TSSatisfiesExpression)
+      );
+    }
 
-      if (parent.type === AST_NODE_TYPES.Property && parent.value === node) {
-        const objectExpr = parent.parent;
-        if (objectExpr.type === AST_NODE_TYPES.ObjectExpression) {
-          const objectTsNode = services.esTreeNodeToTSNodeMap.get(objectExpr);
-          const objectContextualType = checker.getContextualType(objectTsNode);
-          if (objectContextualType?.isUnion()) {
-            return true;
-          }
-
-          const objectParent = objectExpr.parent;
-          if (objectParent.type === AST_NODE_TYPES.TSSatisfiesExpression) {
-            return true;
-          }
-          if (
-            objectParent.type === AST_NODE_TYPES.CallExpression &&
-            objectParent.parent.type === AST_NODE_TYPES.TSSatisfiesExpression
-          ) {
-            return true;
-          }
-        }
-      }
-
+    function isAssignmentInNonStatementContext(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      const { parent } = node;
       if (
-        parent.type === AST_NODE_TYPES.AssignmentExpression &&
-        parent.right === node
+        parent.type !== AST_NODE_TYPES.AssignmentExpression ||
+        parent.right !== node
       ) {
-        let assignmentParent: TSESTree.Node = parent.parent;
-        while (assignmentParent.type === AST_NODE_TYPES.ChainExpression) {
-          assignmentParent = assignmentParent.parent;
-        }
-        if (assignmentParent.type !== AST_NODE_TYPES.ExpressionStatement) {
-          return true;
-        }
+        return false;
       }
+      let assignmentParent: TSESTree.Node = parent.parent;
+      while (assignmentParent.type === AST_NODE_TYPES.ChainExpression) {
+        assignmentParent = assignmentParent.parent;
+      }
+      return assignmentParent.type !== AST_NODE_TYPES.ExpressionStatement;
+    }
 
+    function isArgumentToGenericCall(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      const { parent } = node;
       if (
-        parent.type === AST_NODE_TYPES.CallExpression &&
-        parent.arguments.includes(node)
+        parent.type !== AST_NODE_TYPES.CallExpression ||
+        !parent.arguments.includes(node)
       ) {
-        const calleeTsNode = services.esTreeNodeToTSNodeMap.get(parent.callee);
-        const calleeType = checker.getTypeAtLocation(calleeTsNode);
-        const signatures = calleeType.getCallSignatures();
-        if (
-          signatures.some(sig => (sig.getTypeParameters()?.length ?? 0) > 0)
-        ) {
-          return true;
-        }
+        return false;
       }
+      const calleeType = checker.getTypeAtLocation(
+        services.esTreeNodeToTSNodeMap.get(parent.callee),
+      );
+      return hasGenericCallSignature(calleeType);
+    }
 
+    function isInsideFunctionPassedToGenericCall(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
       for (
         let current: TSESTree.Node | undefined = node.parent;
         current;
         current = current.parent
       ) {
         if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
-          break;
+          return false;
         }
         if (
           current.type === AST_NODE_TYPES.ArrowFunctionExpression ||
@@ -503,19 +494,33 @@ export default createRule<Options, MessageIds>({
             const calleeType = checker.getTypeAtLocation(
               services.esTreeNodeToTSNodeMap.get(callExpr.callee),
             );
-            if (
-              calleeType
-                .getCallSignatures()
-                .some(sig => (sig.getTypeParameters()?.length ?? 0) > 0)
-            ) {
-              return true;
-            }
+            return hasGenericCallSignature(calleeType);
           }
-          break;
+          return false;
         }
       }
-
       return false;
+    }
+
+    const SKIP_PARENT_TYPES = new Set([
+      AST_NODE_TYPES.TSAsExpression,
+      AST_NODE_TYPES.TSTypeAssertion,
+      AST_NODE_TYPES.SpreadElement,
+      AST_NODE_TYPES.TSSatisfiesExpression,
+    ]);
+
+    function shouldSkipContextualTypeFallback(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      return (
+        SKIP_PARENT_TYPES.has(node.parent.type) ||
+        node.expression.type === AST_NODE_TYPES.ArrayExpression ||
+        isInDestructuringDeclaration(node) ||
+        isPropertyInProblematicContext(node) ||
+        isAssignmentInNonStatementContext(node) ||
+        isArgumentToGenericCall(node) ||
+        isInsideFunctionPassedToGenericCall(node)
+      );
     }
 
     function getUncastType(
