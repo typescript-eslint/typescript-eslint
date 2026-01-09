@@ -466,6 +466,20 @@ export default createRule<Options, MessageIds>({
         }
       }
 
+      if (
+        parent.type === AST_NODE_TYPES.CallExpression &&
+        parent.arguments.includes(node)
+      ) {
+        const calleeTsNode = services.esTreeNodeToTSNodeMap.get(parent.callee);
+        const calleeType = checker.getTypeAtLocation(calleeTsNode);
+        const signatures = calleeType.getCallSignatures();
+        if (
+          signatures.some(sig => (sig.getTypeParameters()?.length ?? 0) > 0)
+        ) {
+          return true;
+        }
+      }
+
       return false;
     }
 

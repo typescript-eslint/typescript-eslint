@@ -693,6 +693,11 @@ declare const x: ReadonlyMap<string, string>;
 declare let y: T;
 y = x as T;
     `,
+    `
+declare function find<T>(array: readonly T[] | undefined): T | undefined;
+declare const array: string[] | number[];
+find(array as (string | number)[]);
+    `,
   ],
 
   invalid: [
