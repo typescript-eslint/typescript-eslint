@@ -45,6 +45,7 @@
     "release": "tsx tools/release/release.mts",
     "start": "nx run website:start",
     "test": "nx run-many -t test --exclude integration-tests website website-eslint",
+    "test-coverage": "yarn test --coverage",
     "test-integration": "nx run integration-tests:test",
     "typecheck": "nx run-many -t typecheck"
   },
