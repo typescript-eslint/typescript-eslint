@@ -698,6 +698,19 @@ declare function find<T>(array: readonly T[] | undefined): T | undefined;
 declare const array: string[] | number[];
 find(array as (string | number)[]);
     `,
+    `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+declare const arrayA: A[];
+const a = mapDefined(() => b as A);
+[a].concat(arrayA);
+    `,
   ],
 
   invalid: [

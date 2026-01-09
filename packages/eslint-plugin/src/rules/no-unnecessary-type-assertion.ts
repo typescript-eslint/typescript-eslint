@@ -480,6 +480,38 @@ export default createRule<Options, MessageIds>({
         }
       }
 
+      for (
+        let current: TSESTree.Node | undefined = node.parent;
+        current;
+        current = current.parent
+      ) {
+        if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
+          break;
+        }
+        if (
+          current.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          current.type === AST_NODE_TYPES.FunctionExpression
+        ) {
+          const callExpr = current.parent;
+          if (
+            callExpr.type === AST_NODE_TYPES.CallExpression &&
+            callExpr.arguments.includes(current)
+          ) {
+            const calleeType = checker.getTypeAtLocation(
+              services.esTreeNodeToTSNodeMap.get(callExpr.callee),
+            );
+            if (
+              calleeType
+                .getCallSignatures()
+                .some(sig => (sig.getTypeParameters()?.length ?? 0) > 0)
+            ) {
+              return true;
+            }
+          }
+          break;
+        }
+      }
+
       return false;
     }
 
