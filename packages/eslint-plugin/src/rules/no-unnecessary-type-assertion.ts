@@ -441,23 +441,11 @@ export default createRule<Options, MessageIds>({
         return true;
       }
       const objectParent = objectExpr.parent;
-      if (
+      return (
         objectParent.type === AST_NODE_TYPES.TSSatisfiesExpression ||
         (objectParent.type === AST_NODE_TYPES.CallExpression &&
           objectParent.parent.type === AST_NODE_TYPES.TSSatisfiesExpression)
-      ) {
-        return true;
-      }
-      if (
-        objectParent.type === AST_NODE_TYPES.CallExpression &&
-        objectParent.arguments.includes(objectExpr)
-      ) {
-        const calleeType = checker.getTypeAtLocation(
-          services.esTreeNodeToTSNodeMap.get(objectParent.callee),
-        );
-        return hasGenericCallSignature(calleeType);
-      }
-      return false;
+      );
     }
 
     function isAssignmentInNonStatementContext(
@@ -474,23 +462,7 @@ export default createRule<Options, MessageIds>({
       return assignmentParent.type !== AST_NODE_TYPES.ExpressionStatement;
     }
 
-    function isArgumentToGenericCall(
-      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
-    ): boolean {
-      const { parent } = node;
-      if (
-        parent.type !== AST_NODE_TYPES.CallExpression ||
-        !parent.arguments.includes(node)
-      ) {
-        return false;
-      }
-      const calleeType = checker.getTypeAtLocation(
-        services.esTreeNodeToTSNodeMap.get(parent.callee),
-      );
-      return hasGenericCallSignature(calleeType);
-    }
-
-    function isInsideFunctionPassedToGenericCall(
+    function isInGenericContext(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): boolean {
       for (
@@ -502,20 +474,15 @@ export default createRule<Options, MessageIds>({
           return false;
         }
         if (
-          current.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-          current.type === AST_NODE_TYPES.FunctionExpression
+          current.type === AST_NODE_TYPES.CallExpression ||
+          current.type === AST_NODE_TYPES.NewExpression
         ) {
-          const callExpr = current.parent;
-          if (
-            callExpr.type === AST_NODE_TYPES.CallExpression &&
-            callExpr.arguments.includes(current)
-          ) {
-            const calleeType = checker.getTypeAtLocation(
-              services.esTreeNodeToTSNodeMap.get(callExpr.callee),
-            );
-            return hasGenericCallSignature(calleeType);
+          const calleeType = checker.getTypeAtLocation(
+            services.esTreeNodeToTSNodeMap.get(current.callee),
+          );
+          if (hasGenericCallSignature(calleeType)) {
+            return true;
           }
-          return false;
         }
       }
       return false;
@@ -537,8 +504,7 @@ export default createRule<Options, MessageIds>({
         isInDestructuringDeclaration(node) ||
         isPropertyInProblematicContext(node) ||
         isAssignmentInNonStatementContext(node) ||
-        isArgumentToGenericCall(node) ||
-        isInsideFunctionPassedToGenericCall(node)
+        isInGenericContext(node)
       );
     }
 

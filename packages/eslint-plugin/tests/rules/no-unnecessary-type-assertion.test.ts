@@ -732,16 +732,14 @@ if (text) {
 }
     `,
     `
-type Infer<T> = [T] extends [ObjectConstructor]
-  ? object
-  : [T] extends [() => infer R]
-    ? R
+type Infer<T> = T extends ObjectConstructor
+  ? never
+  : T extends () => infer V
+    ? V
     : never;
-declare function fn<P>(opts: { type: P; use: (v: Infer<P>) => void }): void;
-fn({
-  type: Object as () => string,
-  use: v => v.toLowerCase(),
-});
+declare function fn<T>(o: { p: T }): { [K in keyof T]: Infer<T[K]> };
+const result = fn({ p: { a: Object as () => string } });
+result.a.toLowerCase();
     `,
   ],
 
