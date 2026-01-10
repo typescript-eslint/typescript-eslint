@@ -129,6 +129,37 @@ function isValidOrLastChainOperand(
 // I can't think of a good way to reuse the code here in a way that will preserve
 // the type safety and simplicity.
 
+function isUnsafeEqualityCheck(
+  parserServices: ParserServicesWithTypeInformation,
+  lastChainOperand: LastChainOperandForReport,
+  operator: '&&' | '||',
+): boolean {
+  if (operator !== '&&') {
+    return false;
+  }
+
+  if (
+    lastChainOperand.comparisonType !== ComparisonType.Equal &&
+    lastChainOperand.comparisonType !== ComparisonType.StrictEqual
+  ) {
+    return false;
+  }
+  const rhsNode = lastChainOperand.comparisonValue;
+  if (rhsNode.type === AST_NODE_TYPES.ChainExpression) {
+    return true;
+  }
+
+  const type = parserServices.getTypeAtLocation(rhsNode);
+  const constituents = unionConstituents(type);
+
+  return constituents.some(t =>
+    isTypeFlagSet(
+      t,
+      ts.TypeFlags.Undefined | ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+    ),
+  );
+}
+
 type OperandAnalyzer = (
   parserServices: ParserServicesWithTypeInformation,
   operand: ValidOperand,
@@ -532,13 +563,21 @@ function getReportDescriptor(
       start: sourceCode.getLocFromIndex(reportRange[0]),
     },
     messageId: 'preferOptionalChain',
-    ...getFixOrSuggest({
-      fixOrSuggest: useSuggestionFixer ? 'suggest' : 'fix',
-      suggestion: {
-        fix,
-        messageId: 'optionalChainSuggest',
-      },
-    }),
+    ...(operator === '&&' &&
+    lastChain &&
+    isUnsafeEqualityCheck(
+      parserServices,
+      lastChain as LastChainOperandForReport,
+      operator,
+    )
+      ? {}
+      : getFixOrSuggest({
+          fixOrSuggest: useSuggestionFixer ? 'suggest' : 'fix',
+          suggestion: {
+            fix,
+            messageId: 'optionalChainSuggest',
+          },
+        })),
   };
 
   interface FlattenedChain {
