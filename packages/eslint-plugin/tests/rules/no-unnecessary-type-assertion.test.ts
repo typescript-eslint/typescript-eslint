@@ -731,6 +731,18 @@ if (text) {
   text.toLowerCase();
 }
     `,
+    `
+type Infer<T> = [T] extends [ObjectConstructor]
+  ? object
+  : [T] extends [() => infer R]
+    ? R
+    : never;
+declare function fn<P>(opts: { type: P; use: (v: Infer<P>) => void }): void;
+fn({
+  type: Object as () => string,
+  use: v => v.toLowerCase(),
+});
+    `,
   ],
 
   invalid: [

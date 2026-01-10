@@ -441,11 +441,23 @@ export default createRule<Options, MessageIds>({
         return true;
       }
       const objectParent = objectExpr.parent;
-      return (
+      if (
         objectParent.type === AST_NODE_TYPES.TSSatisfiesExpression ||
         (objectParent.type === AST_NODE_TYPES.CallExpression &&
           objectParent.parent.type === AST_NODE_TYPES.TSSatisfiesExpression)
-      );
+      ) {
+        return true;
+      }
+      if (
+        objectParent.type === AST_NODE_TYPES.CallExpression &&
+        objectParent.arguments.includes(objectExpr)
+      ) {
+        const calleeType = checker.getTypeAtLocation(
+          services.esTreeNodeToTSNodeMap.get(objectParent.callee),
+        );
+        return hasGenericCallSignature(calleeType);
+      }
+      return false;
     }
 
     function isAssignmentInNonStatementContext(
