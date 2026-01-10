@@ -19,9 +19,11 @@ import {
   isPossiblyTruthy,
   isTypeAnyType,
   isTypeFlagSet,
+  isTypeNeverType,
   isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
+  toWidenedType,
 } from '../util';
 import {
   findTruthinessAssertedArgument,
@@ -153,7 +155,7 @@ export type MessageId =
   | 'noOverlapBooleanExpression'
   | 'noStrictNullCheck'
   | 'suggestRemoveOptionalChain'
-  | 'typeGuardAlreadyIsType';
+  | 'typeAssertionArgumentAlreadyAssignable';
 
 export default createRule<Options, MessageId>({
   name: 'no-unnecessary-condition',
@@ -186,8 +188,8 @@ export default createRule<Options, MessageId>({
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
       suggestRemoveOptionalChain: 'Remove unnecessary optional chain',
-      typeGuardAlreadyIsType:
-        'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
+      typeAssertionArgumentAlreadyAssignable:
+        'Unnecessary conditional, expression is already assignable to the type being checked by {{typeGuardOrAssertionFunction}}.',
     },
     schema: [
       {
@@ -595,14 +597,50 @@ export default createRule<Options, MessageId>({
           node,
         );
         if (typeGuardAssertedArgument != null) {
-          const typeOfArgument = getConstrainedTypeAtLocation(
-            services,
-            typeGuardAssertedArgument.argument,
-          );
-          if (typeOfArgument === typeGuardAssertedArgument.type) {
+          const shouldReport = (() => {
+            const argumentType = services.getTypeAtLocation(
+              typeGuardAssertedArgument.argument,
+            );
+
+            const assertedType = typeGuardAssertedArgument.type;
+            if (isTypeAnyType(argumentType) && isTypeAnyType(assertedType)) {
+              return true;
+            }
+
+            if (isTypeAnyType(argumentType)) {
+              return false;
+            }
+
+            if (
+              isTypeNeverType(argumentType) &&
+              isTypeNeverType(assertedType)
+            ) {
+              return true;
+            }
+
+            if (isTypeNeverType(argumentType)) {
+              return false;
+            }
+
+            if (
+              checker.isTypeAssignableTo(
+                // Use the widened type to bypass excess property checking
+                toWidenedType(checker, argumentType),
+                assertedType,
+              )
+            ) {
+              // ... unless the asserted type actually does narrow the argument,
+              // for example by granting it additional optional properties?
+              return true;
+            }
+
+            return false;
+          })();
+
+          if (shouldReport) {
             context.report({
               node: typeGuardAssertedArgument.argument,
-              messageId: 'typeGuardAlreadyIsType',
+              messageId: 'typeAssertionArgumentAlreadyAssignable',
               data: {
                 typeGuardOrAssertionFunction: typeGuardAssertedArgument.asserts
                   ? 'assertion function'

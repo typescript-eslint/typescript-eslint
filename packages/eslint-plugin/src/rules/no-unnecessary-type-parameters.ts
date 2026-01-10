@@ -452,6 +452,7 @@ function collectTypeParameterUsageCounts(
       const properties = type.getProperties();
       visitSymbolsListOnce(properties, false);
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- TODO revisit this
       if (isMappedType(type)) {
         visitType(type.typeParameter, false);
         if (properties.length === 0) {
