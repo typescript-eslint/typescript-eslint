@@ -2147,5 +2147,24 @@ fn({
 });
       `,
     },
+    {
+      code: `
+type Json = string | number | boolean | null | { [key: string]: Json } | Json[];
+type Tables<T extends 'my_table'> = { my_table: { my_column: Json } }[T];
+declare const updatedColumn: Json;
+const result = updatedColumn as unknown as Tables<'my_table'>['my_column'];
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type Json = string | number | boolean | null | { [key: string]: Json } | Json[];
+type Tables<T extends 'my_table'> = { my_table: { my_column: Json } }[T];
+declare const updatedColumn: Json;
+const result = updatedColumn;
+      `,
+    },
   ],
 });

@@ -198,24 +198,34 @@ export default createRule<Options, MessageIds>({
       return checker.getIndexInfosOfType(type).length > 0;
     }
 
-    function containsAny(type: ts.Type): boolean {
-      if (isTypeFlagSet(type, ts.TypeFlags.Any)) {
-        return true;
+    function typeContains(
+      type: ts.Type,
+      predicate: (type: ts.Type) => boolean,
+      seen = new Set<ts.Type>(),
+    ): boolean {
+      if (seen.has(type)) {
+        return false;
       }
-      const typeArgs = checker.getTypeArguments(type as ts.TypeReference);
-      return typeArgs.some(containsAny);
-    }
-
-    function containsTypeVariable(type: ts.Type): boolean {
-      if (isTypeFlagSet(type, ts.TypeFlags.TypeVariable | ts.TypeFlags.Index)) {
+      seen.add(type);
+      if (predicate(type)) {
         return true;
       }
       if (type.isUnionOrIntersection()) {
-        return type.types.some(containsTypeVariable);
+        return type.types.some(t => typeContains(t, predicate, seen));
       }
       return checker
         .getTypeArguments(type as ts.TypeReference)
-        .some(containsTypeVariable);
+        .some(t => typeContains(t, predicate, seen));
+    }
+
+    function containsAny(type: ts.Type): boolean {
+      return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
+    }
+
+    function containsTypeVariable(type: ts.Type): boolean {
+      return typeContains(type, t =>
+        isTypeFlagSet(t, ts.TypeFlags.TypeVariable | ts.TypeFlags.Index),
+      );
     }
 
     function hasGenericSignature(type: ts.Type): boolean {
