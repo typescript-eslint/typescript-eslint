@@ -233,6 +233,20 @@ ruleTester.run('no-useless-default-assignment', rule, {
       const { a = 'default' } =
         Math.random() > 0.5 ? (Math.random() > 0.5 ? { a: 'Hello' } : {}) : {};
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11948
+    `
+      class AbstractEntity {
+        public a: string | undefined;
+        public static fromJson<T extends { a: string }>(
+          this: new () => T,
+          { inner = { a: 'test' } }: { inner?: { a: string } },
+        ): T {
+          const entity = new this();
+          entity.a = inner?.a;
+          return entity;
+        }
+      }
+    `,
   ],
   invalid: [
     {
