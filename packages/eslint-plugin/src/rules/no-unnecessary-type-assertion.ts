@@ -235,6 +235,10 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function hasTypeParams(sig: ts.Signature): boolean {
+      return (sig.getTypeParameters()?.length ?? 0) > 0;
+    }
+
     function hasGenericSignature(type: ts.Type): boolean {
       return type
         .getProperties()
@@ -244,7 +248,7 @@ export default createRule<Options, MessageIds>({
               checker.getTypeOfSymbol(prop),
               ts.SignatureKind.Call,
             )
-            .some(sig => (sig.getTypeParameters()?.length ?? 0) > 0),
+            .some(hasTypeParams),
         );
     }
 
@@ -306,7 +310,6 @@ export default createRule<Options, MessageIds>({
         return true;
       }
 
-      // With exactOptionalPropertyTypes, check if union parts match ignoring undefined
       if (
         isTypeFlagSet(uncast, ts.TypeFlags.Undefined) &&
         isTypeFlagSet(cast, ts.TypeFlags.Undefined) &&
@@ -318,7 +321,6 @@ export default createRule<Options, MessageIds>({
         return areUnionPartsEquivalentIgnoringUndefined(uncast, cast);
       }
 
-      // Cases where the assertion definitely changes semantics
       if (
         isConceptuallyLiteral(expression) ||
         (isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
@@ -416,9 +418,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function hasGenericCallSignature(type: ts.Type): boolean {
-      return type
-        .getCallSignatures()
-        .some(sig => (sig.getTypeParameters()?.length ?? 0) > 0);
+      return type.getCallSignatures().some(hasTypeParams);
     }
 
     function isInDestructuringDeclaration(
