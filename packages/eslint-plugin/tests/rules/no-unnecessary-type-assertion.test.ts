@@ -2211,5 +2211,35 @@ declare function fn<U extends T>(args: Pick<U, 'a'>): void;
 fn<T>({ a: '' });
       `,
     },
+    {
+      code: `
+declare function update<T extends string>(value: T): void;
+update('hi' as unknown as string);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare function update<T extends string>(value: T): void;
+update('hi');
+      `,
+    },
+    {
+      code: `
+declare function update<T extends string>(value: T): void;
+update('hi' as string);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare function update<T extends string>(value: T): void;
+update('hi');
+      `,
+    },
   ],
 });

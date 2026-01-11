@@ -509,14 +509,24 @@ export default createRule<Options, MessageIds>({
     function shouldSkipContextualTypeFallback(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): boolean {
-      return (
+      if (
         SKIP_PARENT_TYPES.has(node.parent.type) ||
         node.expression.type === AST_NODE_TYPES.ArrayExpression ||
         isInDestructuringDeclaration(node) ||
         isPropertyInProblematicContext(node) ||
-        isAssignmentInNonStatementContext(node) ||
-        isInGenericContext(node)
-      );
+        isAssignmentInNonStatementContext(node)
+      ) {
+        return true;
+      }
+
+      if (isInGenericContext(node)) {
+        const originalExpr = getOriginalExpression(node);
+        if (!isConceptuallyLiteral(originalExpr)) {
+          return true;
+        }
+      }
+
+      return false;
     }
 
     function getUncastType(
