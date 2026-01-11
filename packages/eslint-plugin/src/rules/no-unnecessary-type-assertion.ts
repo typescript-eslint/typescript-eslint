@@ -327,6 +327,7 @@ export default createRule<Options, MessageIds>({
         containsAny(uncast) ||
         containsAny(cast) ||
         (containsTypeVariable(cast) && !containsTypeVariable(uncast)) ||
+        (cast.isIntersection() && !uncast.isIntersection()) ||
         !hasSameProperties(uncast, cast) ||
         !haveSameTypeArguments(uncast, cast)
       ) {

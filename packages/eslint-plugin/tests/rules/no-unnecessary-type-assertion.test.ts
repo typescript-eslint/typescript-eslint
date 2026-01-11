@@ -748,6 +748,13 @@ function outer<T>(): Accessor<T> {
   return inner<string>() as Accessor<any>;
 }
     `,
+    `
+interface InjectionConstraint<T> {}
+type InjectionKey<T> = symbol & InjectionConstraint<T>;
+declare function inject<T>(key: InjectionKey<T>): T;
+const context = Symbol('ctx') as InjectionKey<{ value: string }>;
+inject(context).value;
+    `,
   ],
 
   invalid: [
