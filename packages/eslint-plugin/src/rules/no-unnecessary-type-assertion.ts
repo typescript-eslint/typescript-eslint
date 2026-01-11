@@ -213,9 +213,16 @@ export default createRule<Options, MessageIds>({
       if (type.isUnionOrIntersection()) {
         return type.types.some(t => typeContains(t, predicate, seen));
       }
-      return checker
-        .getTypeArguments(type as ts.TypeReference)
-        .some(t => typeContains(t, predicate, seen));
+      const nestedTypes = [
+        ...checker.getTypeArguments(type as ts.TypeReference),
+        ...type
+          .getCallSignatures()
+          .flatMap(sig => [
+            sig.getReturnType(),
+            ...sig.getParameters().map(p => checker.getTypeOfSymbol(p)),
+          ]),
+      ];
+      return nestedTypes.some(t => typeContains(t, predicate, seen));
     }
 
     function containsAny(type: ts.Type): boolean {

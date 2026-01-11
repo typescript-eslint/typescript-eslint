@@ -741,6 +741,13 @@ declare function fn<T>(o: { p: T }): { [K in keyof T]: Infer<T[K]> };
 const result = fn({ p: { a: Object as () => string } });
 result.a.toLowerCase();
     `,
+    `
+type Accessor<T> = () => T;
+declare function inner<T>(): Accessor<T>;
+function outer<T>(): Accessor<T> {
+  return inner<string>() as Accessor<any>;
+}
+    `,
   ],
 
   invalid: [
