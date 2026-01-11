@@ -2190,5 +2190,26 @@ declare const updatedColumn: Json;
 const result = updatedColumn;
       `,
     },
+    {
+      code: `
+interface T {
+  a: string;
+}
+declare function fn<U extends T>(args: Pick<U, 'a'>): void;
+fn<T>({ a: '' as string });
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface T {
+  a: string;
+}
+declare function fn<U extends T>(args: Pick<U, 'a'>): void;
+fn<T>({ a: '' });
+      `,
+    },
   ],
 });

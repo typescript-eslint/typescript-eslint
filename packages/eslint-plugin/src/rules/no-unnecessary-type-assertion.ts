@@ -485,6 +485,9 @@ export default createRule<Options, MessageIds>({
           current.type === AST_NODE_TYPES.CallExpression ||
           current.type === AST_NODE_TYPES.NewExpression
         ) {
+          if (current.typeArguments != null) {
+            continue;
+          }
           const calleeType = checker.getTypeAtLocation(
             services.esTreeNodeToTSNodeMap.get(current.callee),
           );
