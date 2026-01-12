@@ -67,6 +67,29 @@ describe(ESLintUtils.RuleCreator, () => {
     expect(rule.name).toBeUndefined();
   });
 
+  it('when defaultOptions is specified, it returns the defaultOptions', () => {
+    const rule = createRule({
+      create() {
+        return {};
+      },
+      defaultOptions: [{ option: true }],
+      meta: {
+        docs: {
+          description: 'some description',
+          recommended: 'yes',
+        },
+        messages: {
+          foo: 'some message',
+        },
+        schema: [],
+        type: 'problem',
+      },
+      name: 'with-default-options',
+    });
+
+    expect(rule.defaultOptions).toEqual([{ option: true }]);
+  });
+
   it('withoutDocs should work with a `name`', () => {
     const rule = ESLintUtils.RuleCreator.withoutDocs({
       create() {
