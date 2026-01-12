@@ -1,3 +1,9 @@
+## 8.53.0 (2026-01-12)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.52.0 (2026-01-05)
 
 This was a version bump only for rule-tester to align it with other projects, there were no code changes.

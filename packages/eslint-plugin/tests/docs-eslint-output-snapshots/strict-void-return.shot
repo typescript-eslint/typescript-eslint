@@ -1,0 +1,150 @@
+Incorrect
+
+const getNothing: () => void = () => 2137;
+                                     ~~~~ Value returned in a context where a void return is expected.
+const getString: () => string = () => 'Hello';
+const maybeString = Math.random() > 0.1 ? getNothing() : getString();
+if (maybeString) console.log(maybeString.toUpperCase()); // ❌ Crash if getNothing was called
+
+Correct
+
+const getNothing: () => void = () => {};
+const getString: () => string = () => 'Hello';
+const maybeString = Math.random() > 0.1 ? getNothing() : getString();
+if (maybeString) console.log(maybeString.toUpperCase()); // ✅ No crash
+
+Incorrect
+
+declare function takesCallback(cb: () => void): void;
+
+takesCallback(async () => {
+                       ~~ Async function used in a context where a void function is expected.
+  const response = await fetch('https://api.example.com/');
+  const data = await response.json();
+  console.log(data);
+});
+
+Correct
+
+declare function takesCallback(cb: () => void): void;
+
+takesCallback(() => {
+  (async () => {
+    const response = await fetch('https://api.example.com/');
+    const data = await response.json();
+    console.log(data);
+  })().catch(console.error);
+});
+
+Incorrect
+
+declare function takesCallback(cb: () => void): void;
+
+takesCallback(function* () {
+              ~~~~~~~~~~ Value-returning function used in a context where a void function is expected.
+  console.log('Hello');
+  yield;
+  console.log('World');
+});
+
+Correct
+
+declare function takesCallback(cb: () => void): void;
+
+takesCallback(() => {
+  function* gen() {
+    console.log('Hello');
+    yield;
+    console.log('World');
+  }
+  for (const _ of gen());
+});
+
+Incorrect
+
+['Kazik', 'Zenek'].forEach(name => `Hello, ${name}!`);
+                                   ~~~~~~~~~~~~~~~~~ Value returned in a context where a void return is expected.
+
+Correct
+
+['Kazik', 'Zenek'].forEach(name => console.log(`Hello, ${name}!`));
+
+Incorrect
+
+class Foo {
+  cb() {
+    console.log('foo');
+  }
+}
+
+class Bar extends Foo {
+  cb() {
+    super.cb();
+    return 'bar';
+    ~~~~~~ Value returned in a context where a void return is expected.
+  }
+}
+
+Correct
+
+class Foo {
+  cb() {
+    console.log('foo');
+  }
+}
+
+class Bar extends Foo {
+  cb() {
+    super.cb();
+    console.log('bar');
+  }
+}
+
+Incorrect
+
+interface Foo {
+  cb(): void;
+}
+
+class Bar implements Foo {
+  cb() {
+    return 'cb';
+    ~~~~~~ Value returned in a context where a void return is expected.
+  }
+}
+
+Correct
+
+interface Foo {
+  cb(): void;
+}
+
+class Bar implements Foo {
+  cb() {
+    console.log('cb');
+  }
+}
+
+Incorrect
+Options: { "allowReturnAny": false }
+
+declare function fn(cb: () => void): void;
+
+fn(() => JSON.parse('{}'));
+         ~~~~~~~~~~~~~~~~ Value returned in a context where a void return is expected.
+
+fn(() => {
+  return someUntypedApi();
+  ~~~~~~ Value returned in a context where a void return is expected.
+});
+
+Correct
+Options: { "allowReturnAny": false }
+
+declare function fn(cb: () => void): void;
+
+fn(() => void JSON.parse('{}'));
+
+fn(() => {
+  someUntypedApi();
+});
