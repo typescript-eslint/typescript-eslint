@@ -1,4 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > interface-empty-extends > TSESTree - Error`]
-NO ERROR
+TSError
+  1 | // TODO: This fixture might be too large, and if so should be split up.
+  2 |
+> 3 | interface Foo extends {
+    |               ^^^^^^^ 'extends' list cannot be empty.
+  4 |
+  5 | }
+  6 |

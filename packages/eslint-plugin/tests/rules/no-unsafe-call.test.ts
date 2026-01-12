@@ -96,7 +96,7 @@ function foo(x: any) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 4,
           line: 3,
@@ -114,7 +114,7 @@ function foo(x: any) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 4,
           line: 3,
@@ -132,7 +132,7 @@ function foo(x: any) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 18,
           line: 3,
@@ -150,7 +150,7 @@ function foo(x: any) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 18,
           line: 3,
@@ -168,7 +168,7 @@ function foo(x: { a: any }) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 6,
           line: 3,
@@ -186,7 +186,7 @@ function foo(x: { a: any }) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 7,
           line: 3,
@@ -204,7 +204,7 @@ function foo(x: { a: any }) {
         {
           column: 3,
           data: {
-            type: '`any`',
+            type: 'an `any`',
           },
           endColumn: 6,
           line: 3,
@@ -276,30 +276,13 @@ const methods = {
     },
     {
       code: `
-let value: NotKnown;
-value();
-      `,
-      errors: [
-        {
-          column: 1,
-          data: {
-            type: '`error` type',
-          },
-          endColumn: 6,
-          line: 3,
-          messageId: 'unsafeCall',
-        },
-      ],
-    },
-    {
-      code: `
 const t: Function = () => {};
 t();
       `,
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 3,
           messageId: 'unsafeCall',
@@ -314,7 +297,7 @@ f\`oo\`;
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 3,
           messageId: 'unsafeTemplateTag',
@@ -331,7 +314,7 @@ if (typeof maybeFunction === 'function') {
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 4,
           messageId: 'unsafeCall',
@@ -347,7 +330,7 @@ unsafe();
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 4,
           messageId: 'unsafeCall',
@@ -363,7 +346,7 @@ unsafe\`bad\`;
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 4,
           messageId: 'unsafeTemplateTag',
@@ -379,7 +362,7 @@ new unsafe();
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 4,
           messageId: 'unsafeNew',
@@ -397,7 +380,7 @@ new unsafe();
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 6,
           messageId: 'unsafeNew',
@@ -415,10 +398,75 @@ unsafe();
       errors: [
         {
           data: {
-            type: '`Function`',
+            type: 'a `Function`',
           },
           line: 6,
           messageId: 'unsafeCall',
+        },
+      ],
+    },
+    {
+      code: `
+let value: NotKnown;
+value();
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          line: 3,
+          messageId: 'errorCall',
+        },
+      ],
+    },
+
+    {
+      code: `
+let value: NotKnown;
+value\`\`;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          line: 3,
+          messageId: 'errorTemplateTag',
+        },
+      ],
+    },
+    {
+      code: `
+let value: NotKnown;
+new value();
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          line: 3,
+          messageId: 'errorNew',
+        },
+      ],
+    },
+    {
+      code: `
+function callThis(this: NotKnown) {
+  this();
+  this.method();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 7,
+          line: 3,
+          messageId: 'errorCallThis',
+        },
+        {
+          column: 3,
+          endColumn: 14,
+          line: 4,
+          messageId: 'errorCallThis',
         },
       ],
     },

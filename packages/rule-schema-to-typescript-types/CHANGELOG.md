@@ -1,3 +1,9 @@
+## 8.52.0 (2026-01-05)
+
+This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.51.0 (2025-12-29)
 
 This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.
