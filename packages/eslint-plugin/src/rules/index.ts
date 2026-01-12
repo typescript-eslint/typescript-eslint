@@ -127,6 +127,7 @@ import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
 import sortTypeConstituents from './sort-type-constituents';
 import strictBooleanExpressions from './strict-boolean-expressions';
+import strictVoidReturn from './strict-void-return';
 import switchExhaustivenessCheck from './switch-exhaustiveness-check';
 import tripleSlashReference from './triple-slash-reference';
 import typedef from './typedef';
@@ -263,6 +264,7 @@ const rules = {
   'return-await': returnAwait,
   'sort-type-constituents': sortTypeConstituents,
   'strict-boolean-expressions': strictBooleanExpressions,
+  'strict-void-return': strictVoidReturn,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
   typedef,
