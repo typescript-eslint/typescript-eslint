@@ -18,6 +18,7 @@ import { createLinter } from '../linter/createLinter';
 import { createTwoslashInlayProvider } from './createProvideTwoslashInlay';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
+import { TypeScriptWorker } from '../../../typings/monaco-editor';
 
 export interface SandboxServicesProps {
   readonly onLoaded: (
@@ -103,7 +104,8 @@ export const useSandboxServices = (
         });
 
         // Load the lib files from typescript to vfs (eg. es2020.d.ts)
-        const worker = await sandboxInstance.getWorkerProcess();
+        const worker =
+          (await sandboxInstance.getWorkerProcess()) as TypeScriptWorker;
         if (worker.getLibFiles) {
           const libs = await worker.getLibFiles();
           for (const [key, value] of Object.entries(libs)) {
