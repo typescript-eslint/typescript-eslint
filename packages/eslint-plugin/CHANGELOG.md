@@ -1,3 +1,32 @@
+## 8.53.0 (2026-01-12)
+
+### 🚀 Features
+
+- **eslint-plugin:** add rule [strict-void-return] ([#9707](https://github.com/typescript-eslint/typescript-eslint/pull/9707))
+- **eslint-plugin:** [no-unused-vars] add a fixer to remove unused imports ([#11922](https://github.com/typescript-eslint/typescript-eslint/pull/11922))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-useless-default-assignment] fix false positive for parameters corresponding to a rest parameter ([#11916](https://github.com/typescript-eslint/typescript-eslint/pull/11916))
+- **eslint-plugin:** replace unclear "`error` typed" with more helpful description ([#11704](https://github.com/typescript-eslint/typescript-eslint/pull/11704))
+- **typescript-estree:** forbid invalid `extends` and `implements` in interface declaration ([#11935](https://github.com/typescript-eslint/typescript-eslint/pull/11935))
+- **typescript-estree:** forbid invalid class implements ([#11934](https://github.com/typescript-eslint/typescript-eslint/pull/11934))
+- **typescript-estree:** forbid type-only import with both default and named specifiers ([#11930](https://github.com/typescript-eslint/typescript-eslint/pull/11930))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- fisker Cheung @fisker
+- Josh Goldberg
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Niki @phaux
+- Nikita
+- SungHyun627 @SungHyun627
+- Will Harney @wjhsf
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.52.0 (2026-01-05)
 
 ### 🚀 Features
