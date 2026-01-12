@@ -4,6 +4,7 @@ import { useColorMode } from '@docusaurus/theme-common';
 import { useEffect, useState } from 'react';
 import semverSatisfies from 'semver/functions/satisfies';
 
+import type { TypeScriptWorker } from '../../../typings/monaco-editor';
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import type { CreateLinter } from '../linter/createLinter';
 import type { PlaygroundSystem, RegisterFile } from '../linter/types';
@@ -18,7 +19,6 @@ import { createLinter } from '../linter/createLinter';
 import { createTwoslashInlayProvider } from './createProvideTwoslashInlay';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
-import { TypeScriptWorker } from '../../../typings/monaco-editor';
 
 export interface SandboxServicesProps {
   readonly onLoaded: (
