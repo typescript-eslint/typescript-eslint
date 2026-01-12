@@ -584,7 +584,7 @@ function custom1(arg: TaggedFunction) {}
       name: 'type alias not in allow list but is readonly',
       options: [
         {
-          allow: [{ from: 'file', name: 'OtherType' }],
+          allow: ['OtherType'],
         },
       ],
     },
