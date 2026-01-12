@@ -239,17 +239,36 @@ export default createRule<Options, MessageIds>({
       return (sig.getTypeParameters()?.length ?? 0) > 0;
     }
 
-    function hasGenericSignature(type: ts.Type): boolean {
-      return type
-        .getProperties()
-        .some(prop =>
-          checker
-            .getSignaturesOfType(
-              checker.getTypeOfSymbol(prop),
-              ts.SignatureKind.Call,
-            )
-            .some(hasTypeParams),
+    function genericsMismatch(uncast: ts.Type, contextual: ts.Type): boolean {
+      const contextualProps = contextual.getProperties();
+      for (const prop of contextualProps) {
+        const propName = prop.getEscapedName();
+        const contextualPropType = checker.getTypeOfSymbol(prop);
+        const contextualSigs = checker.getSignaturesOfType(
+          contextualPropType,
+          ts.SignatureKind.Call,
         );
+
+        if (!contextualSigs.some(hasTypeParams)) {
+          continue;
+        }
+
+        const uncastProp = uncast.getProperty(propName as string);
+        if (!uncastProp) {
+          return true;
+        }
+
+        const uncastPropType = checker.getTypeOfSymbol(uncastProp);
+        const uncastSigs = checker.getSignaturesOfType(
+          uncastPropType,
+          ts.SignatureKind.Call,
+        );
+
+        if (!uncastSigs.some(hasTypeParams)) {
+          return true;
+        }
+      }
+      return false;
     }
 
     function hasSameProperties(uncast: ts.Type, cast: ts.Type): boolean {
@@ -521,7 +540,10 @@ export default createRule<Options, MessageIds>({
 
       if (isInGenericContext(node)) {
         const originalExpr = getOriginalExpression(node);
-        if (!isConceptuallyLiteral(originalExpr)) {
+        if (
+          !isConceptuallyLiteral(originalExpr) &&
+          node.parent.type !== AST_NODE_TYPES.Property
+        ) {
           return true;
         }
       }
@@ -654,17 +676,24 @@ export default createRule<Options, MessageIds>({
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
 
-        const contextualType = shouldSkipContextualTypeFallback(node)
-          ? undefined
-          : (getContextualType(checker, originalNode) ??
-            checker.getContextualType(originalNode));
+        const castIsAny =
+          isTypeFlagSet(castType, ts.TypeFlags.Any) &&
+          !SKIP_PARENT_TYPES.has(node.parent.type);
+
+        const contextualType =
+          castIsAny || !shouldSkipContextualTypeFallback(node)
+            ? (getContextualType(checker, originalNode) ??
+              checker.getContextualType(originalNode))
+            : undefined;
+
+        const originalExpr = getOriginalExpression(node);
 
         if (
           contextualType &&
           !typeAnnotationIsConstAssertion &&
           !containsAny(uncastType) &&
           !containsAny(contextualType) &&
-          !hasGenericSignature(contextualType) &&
+          (castIsAny || !genericsMismatch(uncastType, contextualType)) &&
           checker.isTypeAssignableTo(uncastType, contextualType) &&
           !(
             castType.isUnion() &&
@@ -687,7 +716,6 @@ export default createRule<Options, MessageIds>({
           contextualType,
         );
         if (doubleAssertionResult) {
-          const originalExpr = getOriginalExpression(node);
           context.report({
             node,
             messageId: doubleAssertionResult,

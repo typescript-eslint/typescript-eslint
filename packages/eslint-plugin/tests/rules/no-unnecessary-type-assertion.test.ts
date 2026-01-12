@@ -2241,5 +2241,62 @@ declare function update<T extends string>(value: T): void;
 update('hi');
       `,
     },
+    {
+      code: `
+declare function fn(x: string[]): void;
+fn(['hello'] as any);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare function fn(x: string[]): void;
+fn(['hello']);
+      `,
+    },
+    {
+      code: `
+type ChatMessage = { message: string };
+type Json = string | { [key: string]: Json };
+declare function update(values: { chat: Json[] }): void;
+declare const chat: ChatMessage[];
+update({ chat: chat as Json[] });
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+type ChatMessage = { message: string };
+type Json = string | { [key: string]: Json };
+declare function update(values: { chat: Json[] }): void;
+declare const chat: ChatMessage[];
+update({ chat: chat });
+      `,
+    },
+    {
+      code: `
+type ChatMessage = { message: string };
+type Json = string | { [key: string]: Json };
+declare function update<Row extends { chat: Json[] }>(values: Row): void;
+declare const chat: ChatMessage[];
+update({ chat: chat as Json[] });
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+type ChatMessage = { message: string };
+type Json = string | { [key: string]: Json };
+declare function update<Row extends { chat: Json[] }>(values: Row): void;
+declare const chat: ChatMessage[];
+update({ chat: chat });
+      `,
+    },
   ],
 });
