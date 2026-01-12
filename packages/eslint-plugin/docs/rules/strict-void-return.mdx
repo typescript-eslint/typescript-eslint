@@ -11,14 +11,14 @@ import TabItem from '@theme/TabItem';
 
 ## Rule Details
 
-TypeScript considers functions returning a value to be assignable to a function returning void.
+TypeScript considers functions returning a value to be assignable to a function returning `void`.
 Using this feature of TypeScript can lead to bugs or confusing code.
 
 ## Examples
 
 ### Return type unsafety
 
-Passing a value-returning function in a place expecting a void function can be unsound.
+Passing a value-returning function in a place expecting a `void`-returning function can be unsound.
 TypeScript generally treats the `void` type as though it has the same runtime behavior as `undefined`,
 so this pattern will cause a mismatch between the runtime behavior and the types.
 
@@ -297,15 +297,15 @@ fn(() => {
 
 ## When Not To Use It
 
-Some projects are architected so that values returned from synchronous void functions are generally safe.
-If you only want to check for misused voids with asynchronous functions then you can use [`no-misused-promises`](./no-misused-promises.mdx) instead.
+Some projects are architected so that values returned from synchronous `void` functions are generally safe.
+If you only want to check for misused `void`s with asynchronous functions then you can use [`no-misused-promises`](./no-misused-promises.mdx) instead.
 
-In browser context, an unhandled promise will be reported as an error in the console.
+In browser contexts, an unhandled Promise will be reported as an error in the console.
 It's generally a good idea to also show some kind of indicator on the page that something went wrong,
 but if you are just prototyping or don't care about that, the default behavior might be acceptable.
-In such case, instead of handling the promises and `console.error`ing them anyways, you can just disable this rule.
+In such cases you can disable this rule.
 
-Similarly, the default behavior of crashing the process on unhandled promise rejection
+Similarly, the default server runtime behaviors of crashing the process on unhandled Promise rejections
 might be acceptable when developing, for example, a CLI tool.
 If your promise handlers simply call `process.exit(1)` on rejection,
 you may prefer to avoid this rule and rely on the default behavior.
