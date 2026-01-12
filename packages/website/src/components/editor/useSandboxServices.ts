@@ -53,7 +53,7 @@ export const useSandboxServices = (
           {
             acquireTypes: true,
             compilerOptions:
-              compilerOptions as Monaco.languages.typescript.CompilerOptions,
+              compilerOptions as Monaco.typescript.CompilerOptions,
             domID: editorEmbedId,
             monacoSettings: {
               autoIndent: 'full',
