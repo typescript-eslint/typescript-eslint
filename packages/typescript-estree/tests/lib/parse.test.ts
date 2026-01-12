@@ -1,8 +1,8 @@
 import type { CacheDurationSeconds } from '@typescript-eslint/types';
 
 import debug from 'debug';
-import * as fastGlobModule from 'fast-glob';
 import { join, resolve } from 'node:path';
+import * as tinyGlobbyModule from 'tinyglobby';
 
 import type { TSESTreeOptions } from '../../src/parser-options';
 
@@ -39,20 +39,21 @@ vi.mock(import('typescript'), async importOriginal => {
   };
 });
 
-vi.mock('fast-glob', async importOriginal => {
-  const fastGlob = await importOriginal<typeof fastGlobModule>();
+vi.mock('tinyglobby', async importOriginal => {
+  const tinyglobby = await importOriginal<typeof tinyGlobbyModule>();
 
   return {
-    ...fastGlob,
-    default: fastGlob.default,
-    sync: vi.fn(fastGlob.sync),
+    ...tinyglobby,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- see #10215
+    globSync: vi.fn(tinyglobby.globSync),
   };
 });
 
 const createDefaultCompilerOptionsFromExtra = vi.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
-const fastGlobSyncMock = vi.mocked(fastGlobModule.sync);
+// eslint-disable-next-line @typescript-eslint/no-deprecated -- see #10215
+const globSyncMock = vi.mocked(tinyGlobbyModule.globSync);
 
 /**
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
@@ -68,6 +69,10 @@ describe(parser.parseAndGenerateServices, () => {
   beforeEach(() => {
     vi.clearAllMocks();
     clearGlobResolutionCache();
+    vi.stubEnv(
+      'TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR',
+      'true',
+    );
   });
 
   afterAll(() => {
@@ -514,10 +519,10 @@ describe(parser.parseAndGenerateServices, () => {
 
       describe('project includes', () => {
         it("doesn't error for matched files", () => {
-          expect(testParse('ts/included01.ts')).not.toThrow();
-          expect(testParse('ts/included02.tsx')).not.toThrow();
-          expect(testParse('js/included01.js')).not.toThrow();
-          expect(testParse('js/included02.jsx')).not.toThrow();
+          expect(testParse('ts/included01.ts')).not.toThrowError();
+          expect(testParse('ts/included02.tsx')).not.toThrowError();
+          expect(testParse('js/included01.js')).not.toThrowError();
+          expect(testParse('js/included02.jsx')).not.toThrowError();
         });
 
         it('errors for not included files', () => {
@@ -528,7 +533,7 @@ describe(parser.parseAndGenerateServices, () => {
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+              See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
             `);
           expect(testParse('ts/notIncluded02.tsx'))
             .toThrowErrorMatchingInlineSnapshot(`
@@ -537,7 +542,7 @@ describe(parser.parseAndGenerateServices, () => {
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+              See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
             `);
           expect(testParse('js/notIncluded01.js'))
             .toThrowErrorMatchingInlineSnapshot(`
@@ -546,7 +551,7 @@ describe(parser.parseAndGenerateServices, () => {
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+              See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
             `);
           expect(testParse('js/notIncluded02.jsx'))
             .toThrowErrorMatchingInlineSnapshot(`
@@ -555,14 +560,14 @@ describe(parser.parseAndGenerateServices, () => {
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+              See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
             `);
         });
       });
 
       describe('"parserOptions.extraFileExtensions" is empty', () => {
         it('should not error', () => {
-          expect(testParse('ts/included01.ts', [])).not.toThrow();
+          expect(testParse('ts/included01.ts', [])).not.toThrowError();
         });
 
         it('the extension does not match', () => {
@@ -577,7 +582,7 @@ describe(parser.parseAndGenerateServices, () => {
       describe('"parserOptions.extraFileExtensions" is non-empty', () => {
         describe('the extension matches', () => {
           it('the file is included', () => {
-            expect(testParse('other/included.vue')).not.toThrow();
+            expect(testParse('other/included.vue')).not.toThrowError();
           });
 
           it("the file isn't included", () => {
@@ -588,7 +593,7 @@ describe(parser.parseAndGenerateServices, () => {
                 - Change ESLint's list of included files to not include this file
                 - Change that TSConfig to include this file
                 - Create a new TSConfig that includes this file and include it in your parserOptions.project
-                See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+                See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
               `);
           });
 
@@ -601,7 +606,7 @@ describe(parser.parseAndGenerateServices, () => {
                 - Change ESLint's list of included files to not include this file
                 - Change that TSConfig to include this file
                 - Create a new TSConfig that includes this file and include it in your parserOptions.project
-                See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+                See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
               `);
           });
         });
@@ -629,19 +634,23 @@ describe(parser.parseAndGenerateServices, () => {
           it('the file is included', () => {
             expect(
               testExtraFileExtensions('other/included.vue', ['.vue']),
-            ).not.toThrow();
+            ).not.toThrowError();
           });
 
           it("the file isn't included", () => {
             expect(
               testExtraFileExtensions('other/notIncluded.vue', ['.vue']),
-            ).toThrow(/notIncluded\.vue was not found by the project service/);
+            ).toThrowError(
+              /notIncluded\.vue was not found by the project service/,
+            );
           });
 
           it('duplicate extension', () => {
             expect(
               testExtraFileExtensions('ts/notIncluded.ts', ['.ts']),
-            ).toThrow(/notIncluded\.ts was not found by the project service/);
+            ).toThrowError(
+              /notIncluded\.ts was not found by the project service/,
+            );
           });
         });
 
@@ -650,7 +659,7 @@ describe(parser.parseAndGenerateServices, () => {
             testExtraFileExtensions('other/unknownFileType.unknown', [
               '.unknown',
             ]),
-          ).toThrow(
+          ).toThrowError(
             /unknownFileType\.unknown was not found by the project service/,
           );
         });
@@ -658,7 +667,7 @@ describe(parser.parseAndGenerateServices, () => {
         it('the extension does not match the file name', () => {
           expect(
             testExtraFileExtensions('other/unknownFileType.unknown', ['.vue']),
-          ).toThrow(
+          ).toThrowError(
             /unknownFileType\.unknown was not found by the project service/,
           );
         });
@@ -701,7 +710,7 @@ describe(parser.parseAndGenerateServices, () => {
               - Change ESLint's list of included files to not include this file
               - Change one of those TSConfigs to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+              See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
             `);
       },
     );
@@ -760,7 +769,7 @@ describe(parser.parseAndGenerateServices, () => {
             project: ['./tsconfig-that-doesnt-exist.json'],
           }),
         ) // should throw because the file and tsconfig don't exist
-          .toThrow();
+          .toThrowError();
         expect(createDefaultCompilerOptionsFromExtra).toHaveBeenCalledOnce();
         expect(createDefaultCompilerOptionsFromExtra).toHaveLastReturnedWith(
           expect.objectContaining({
@@ -808,16 +817,16 @@ describe(parser.parseAndGenerateServices, () => {
         };
 
       it('ignores nothing when given nothing', () => {
-        expect(testParse('ignoreme')).not.toThrow();
-        expect(testParse('includeme')).not.toThrow();
+        expect(testParse('ignoreme')).not.toThrowError();
+        expect(testParse('includeme')).not.toThrowError();
       });
 
       it('ignores a folder when given a string glob', () => {
         const ignore = ['**/ignoreme/**'];
         // cspell:disable-next-line
-        expect(testParse('ignoreme', ignore)).toThrow();
+        expect(testParse('ignoreme', ignore)).toThrowError();
         // cspell:disable-next-line
-        expect(testParse('includeme', ignore)).not.toThrow();
+        expect(testParse('includeme', ignore)).not.toThrowError();
       });
     },
   );
@@ -827,11 +836,11 @@ describe(parser.parseAndGenerateServices, () => {
     () => {
       describe('glob', () => {
         const project = ['./**/tsconfig.json', './**/tsconfig.extra.json'];
-        // fast-glob returns arbitrary order of results to improve performance.
-        // `resolveProjectList()` calls fast-glob for each pattern to ensure the
+        // tinyglobby returns arbitrary order of results to improve performance.
+        // `resolveProjectList()` runs a glob for each pattern to ensure the
         // order is correct.
         // Thus the expected call time of spy is the number of patterns.
-        const expectFastGlobCalls = project.length;
+        const expectedGlobCount = project.length;
         function doParse(lifetime: CacheDurationSeconds): void {
           parser.parseAndGenerateServices('const x = 1', {
             cacheLifetime: {
@@ -846,50 +855,46 @@ describe(parser.parseAndGenerateServices, () => {
 
         it('should cache globs if the lifetime is non-zero', () => {
           doParse(30);
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectedGlobCount);
           doParse(30);
-          // shouldn't call fast-glob again due to the caching
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          // shouldn't glob again due to the caching
+          expect(globSyncMock).toHaveBeenCalledTimes(expectedGlobCount);
         });
 
         it('should not cache globs if the lifetime is zero', () => {
           doParse(0);
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectedGlobCount);
           doParse(0);
-          // should call fast-glob again because we specified immediate cache expiry
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
-            expectFastGlobCalls * 2,
-          );
+          // should glob again because we specified immediate cache expiry
+          expect(globSyncMock).toHaveBeenCalledTimes(2 * expectedGlobCount);
         });
 
         it('should evict the cache if the entry expires', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse(30);
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectedGlobCount);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse(30);
-          // shouldn't call fast-glob again due to the caching
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
-            expectFastGlobCalls * 2,
-          );
+          // shouldn't glob again due to the caching
+          expect(globSyncMock).toHaveBeenCalledTimes(2 * expectedGlobCount);
         });
 
         it('should infinitely cache if passed Infinity', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse('Infinity');
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectedGlobCount);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse('Infinity');
-          // shouldn't call fast-glob again due to the caching
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          // shouldn't glob again due to the caching
+          expect(globSyncMock).toHaveBeenCalledTimes(expectedGlobCount);
         });
       });
     },
@@ -921,7 +926,7 @@ describe(parser.parseAndGenerateServices, () => {
           Either:
           - Switch to \`parserOptions.projectService\`
           - Use an ESLint-specific TSConfig
-          See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#are-typescript-project-references-supported]
+          See the typescript-eslint docs for more info: https://tseslint.com/are-project-references-supported]
         `);
       });
     },

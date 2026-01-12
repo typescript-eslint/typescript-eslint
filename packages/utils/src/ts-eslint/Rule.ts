@@ -188,8 +188,9 @@ export interface RuleFixer {
   replaceTextRange(range: Readonly<AST.Range>, text: string): RuleFix;
 }
 
-export interface SuggestionReportDescriptor<MessageIds extends string>
-  extends Omit<ReportDescriptorBase<MessageIds>, 'fix'> {
+export interface SuggestionReportDescriptor<
+  MessageIds extends string,
+> extends Omit<ReportDescriptorBase<MessageIds>, 'fix'> {
   readonly fix: ReportFixFunction;
 }
 
@@ -219,8 +220,9 @@ interface ReportDescriptorBase<MessageIds extends string> {
   // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
   // readonly desc?: string;
 }
-interface ReportDescriptorWithSuggestion<MessageIds extends string>
-  extends ReportDescriptorBase<MessageIds> {
+interface ReportDescriptorWithSuggestion<
+  MessageIds extends string,
+> extends ReportDescriptorBase<MessageIds> {
   /**
    * 6.7's Suggestions API
    */
@@ -735,6 +737,11 @@ export interface RuleModule<
    * Metadata about the rule
    */
   meta: RuleMetaData<MessageIds, Docs, Options>;
+
+  /**
+   * Rule name
+   */
+  name?: string;
 }
 
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;

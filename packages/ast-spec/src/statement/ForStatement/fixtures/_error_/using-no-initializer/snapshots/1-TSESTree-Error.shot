@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > statement > ForStatement > _error_ > using-no-initializer > TSESTree - Error`]
+TSError
+> 1 | for (using foo;;);
+    |            ^^^ 'using' declarations must be initialized.
+  2 |

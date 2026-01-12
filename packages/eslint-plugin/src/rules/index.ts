@@ -88,9 +88,11 @@ import noUnsafeReturn from './no-unsafe-return';
 import noUnsafeTypeAssertion from './no-unsafe-type-assertion';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
 import noUnusedExpressions from './no-unused-expressions';
+import noUnusedPrivateClassMembers from './no-unused-private-class-members';
 import noUnusedVars from './no-unused-vars';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
+import noUselessDefaultAssignment from './no-useless-default-assignment';
 import noUselessEmptyExport from './no-useless-empty-export';
 import noVarRequires from './no-var-requires';
 import noWrapperObjectTypes from './no-wrapper-object-types';
@@ -125,6 +127,7 @@ import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
 import sortTypeConstituents from './sort-type-constituents';
 import strictBooleanExpressions from './strict-boolean-expressions';
+import strictVoidReturn from './strict-void-return';
 import switchExhaustivenessCheck from './switch-exhaustiveness-check';
 import tripleSlashReference from './triple-slash-reference';
 import typedef from './typedef';
@@ -222,9 +225,11 @@ const rules = {
   'no-unsafe-type-assertion': noUnsafeTypeAssertion,
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
   'no-unused-expressions': noUnusedExpressions,
+  'no-unused-private-class-members': noUnusedPrivateClassMembers,
   'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
+  'no-useless-default-assignment': noUselessDefaultAssignment,
   'no-useless-empty-export': noUselessEmptyExport,
   'no-var-requires': noVarRequires,
   'no-wrapper-object-types': noWrapperObjectTypes,
@@ -259,6 +264,7 @@ const rules = {
   'return-await': returnAwait,
   'sort-type-constituents': sortTypeConstituents,
   'strict-boolean-expressions': strictBooleanExpressions,
+  'strict-void-return': strictVoidReturn,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
   typedef,

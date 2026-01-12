@@ -36,6 +36,7 @@ Per [Users > Releases > Major Releases](../users/Releases.mdx#major-releases), w
      - Add a link to a `v${major}--typescript-eslint.netlify.app` preview deploy environment on Netlify that you create for the branch.
    - `docusaurus.config.mts`: updating the `supportedMajorVersion` variable
    - Merge this into `main` once reviewed and rebase the `v${major}` branch.
+1. Configure the https://github.com/ldez/gha-mjolnir action to auto-close issues when PRs are merged to the `v${major}` branch (GitHub doesn't by default): see [`close-v8-issues.yml`](https://github.com/auvred/typescript-eslint/blob/b77e94dbd8ac7fd59c92527e13d241d6b26908b1/.github/workflows/close-v8-issues.yml) for reference
 
 #### 1a. Shared Config Changes
 
@@ -58,7 +59,16 @@ In parallel to the shared config changes work, make sure to test out the beta ve
    - These PRs can be sent without asking, as a friendly courtesy.
 1. Once the proposed _Shared Config Changes_ are merged into the `v${major}` branch, send a draft PR to each project with the new beta version.
 
-#### 1c. Post Community Testing Config Touchups
+#### 1c. Tracking Issue for Support
+
+If there are behavioral breaking changes in the new major version, consider also creating a tracking issue showing support across popular plugins.
+To do this:
+
+1. Create a pinned issue (example: [📈 Tracking: typescript-eslint v8 support](https://github.com/typescript-eslint/typescript-eslint/issues/9720))
+2. For each plugin you're familiar with, try sending a draft PR to them with a description of what you're doing (example: [chore: bump typescript-eslint to v8](https://github.com/vitest-dev/eslint-plugin-vitest/pull/479))
+3. Make sure you're subscribed to notifications on that issue and any PRs, and update the table regularly
+
+#### 1d. Post Community Testing Config Touchups
 
 There may be additional changes to preset configs discovered as part of the community testing.
 If that's the case:

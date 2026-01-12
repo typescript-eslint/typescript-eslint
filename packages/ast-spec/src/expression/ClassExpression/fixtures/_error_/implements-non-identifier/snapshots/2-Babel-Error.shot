@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ClassExpression > _error_ > implements-non-identifier > Babel - Error`]
+BabelError
+> 1 | (class Foo implements 'thing' {})
+    |                       ^ Unexpected token (1:22)
+  2 |
+  

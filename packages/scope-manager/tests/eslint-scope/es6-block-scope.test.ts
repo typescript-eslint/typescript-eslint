@@ -27,7 +27,7 @@ describe('ES6 block scope', () => {
     expect(scope.references[1].identifier.name).toBe('i');
   });
 
-  it('function delaration is materialized in ES6 block scope', () => {
+  it('function declaration is materialized in ES6 block scope', () => {
     const { scopeManager } = parseAndAnalyze(`
       {
         function test() {

@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ClassDeclaration > _error_ > abstract-setter-with-implementation > TSESTree - Error`]
+TSError
+  1 | abstract class Foo  {
+> 2 |   abstract set setter(v) { }
+    |                ^^^^^^ An abstract accessor cannot have an implementation.
+  3 | }
+  4 |

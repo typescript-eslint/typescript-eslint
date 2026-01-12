@@ -157,6 +157,10 @@ export default createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSTypeParameter:
           return true;
 
+        // treat `export import Bar = Foo;` (and `import Foo = require('...')`) as declarations
+        case AST_NODE_TYPES.TSImportEqualsDeclaration:
+          return parent.id === node;
+
         default:
           return false;
       }
@@ -447,6 +451,15 @@ export default createRule<Options, MessageIds>({
         if (
           parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
           parent.type === AST_NODE_TYPES.ExportAllDeclaration
+        ) {
+          return;
+        }
+
+        // Computed identifier expressions are handled by checkMemberExpression
+        if (
+          parent.type === AST_NODE_TYPES.MemberExpression &&
+          parent.computed &&
+          parent.property === node
         ) {
           return;
         }

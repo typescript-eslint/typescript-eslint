@@ -1,8 +1,10 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
 
 export * from './astUtils';
+export * from './baseTypeUtils';
 export * from './collectUnusedVariables';
 export * from './createRule';
+export * from './getBaseTypesOfClassMember';
 export * from './getFixOrSuggest';
 export * from './getFunctionHeadLoc';
 export * from './getOperatorPrecedence';
@@ -29,6 +31,7 @@ export * from './getValueOfLiteralType';
 export * from './isHigherPrecedenceThanAwait';
 export * from './skipChainExpression';
 export * from './truthinessUtils';
+export * from './walkStatements';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';
