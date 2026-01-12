@@ -5733,10 +5733,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/trusted-types@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@types/trusted-types@npm:2.0.2"
-  checksum: 3371eef5f1c50e1c3c07a127c1207b262ba65b83dd167a1c460fc1b135a3fb0c97b9f508efebd383f239cc5dd5b7169093686a692a501fde9c3f7208657d9b0d
+"@types/trusted-types@npm:^2.0.2, @types/trusted-types@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "@types/trusted-types@npm:2.0.7"
+  checksum: 8e4202766a65877efcf5d5a41b7dd458480b36195e580a3b1085ad21e948bc417d55d6f8af1fd2a7ad008015d4117d5fdfe432731157da3c68678487174e4ba3
   languageName: node
   linkType: hard
 
@@ -9250,10 +9250,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:3.1.7":
-  version: 3.1.7
-  resolution: "dompurify@npm:3.1.7"
-  checksum: 0a9b811bbc94f3dba60cf6486962362b0f1a5b4ab789f5e1cbd4749b6ba1a1fad190a677a962dc8850ce28764424765fe425e9d6508e4e93ba648ef15d54bc24
+"dompurify@npm:3.2.7":
+  version: 3.2.7
+  resolution: "dompurify@npm:3.2.7"
+  dependencies:
+    "@types/trusted-types": ^2.0.7
+  dependenciesMeta:
+    "@types/trusted-types":
+      optional: true
+  checksum: 15958b76e0266f463303b81bc190ab78808c20640e5211dcf7e5071e4fe4396b904c04a8cb68e149e02ab44360defa13a00147e3f23721d41a81ca4bf6d7c983
   languageName: node
   linkType: hard
 
@@ -14782,13 +14787,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monaco-editor@npm:~0.54.0":
-  version: 0.54.0
-  resolution: "monaco-editor@npm:0.54.0"
+"monaco-editor@npm:~0.55.0":
+  version: 0.55.1
+  resolution: "monaco-editor@npm:0.55.1"
   dependencies:
-    dompurify: 3.1.7
+    dompurify: 3.2.7
     marked: 14.0.0
-  checksum: 27bda0afafe5bbce693be9c72531e772bf71cfce6362a8358acd28815ddb95113cc1738ddccb28359a9d9def00da4dd928c1f32514dc0d1611ba0251758c3e2a
+  checksum: e6f6d9507e2c9cb81fd30370f853a42cd5133236d2d00158ce74e14c19044606c0dfc0465d9af57b7cf164c4f813c9b87572ebb57d10b02d713a61b566b77d56
   languageName: node
   linkType: hard
 
@@ -20315,7 +20320,7 @@ __metadata:
     lz-string: ^1.5.0
     mdast-util-from-markdown: ^2.0.2
     mdast-util-mdx: ^3.0.0
-    monaco-editor: ~0.54.0
+    monaco-editor: ~0.55.0
     prettier: 3.7.4
     prism-react-renderer: ^2.4.1
     raw-loader: ^4.0.2

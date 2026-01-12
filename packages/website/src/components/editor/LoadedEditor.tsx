@@ -128,8 +128,8 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     const config = createCompilerOptions(
       parseTSConfig(tsconfig).compilerOptions,
     );
-    monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
-      config as Monaco.languages.typescript.CompilerOptions,
+    monaco.typescript.typescriptDefaults.setCompilerOptions(
+      config as Monaco.typescript.CompilerOptions,
     );
   }, [monaco, tsconfig]);
 
@@ -167,7 +167,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       monaco.Uri.parse(`/rules/${name.replace('@', '')}.json`).toString();
 
     // configure the JSON language support with schemas and schema associations
-    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+    monaco.json.jsonDefaults.setDiagnosticsOptions({
       allowComments: true,
       enableSchemaRequest: false,
       schemas: [

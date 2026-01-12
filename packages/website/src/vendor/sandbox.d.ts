@@ -10,10 +10,10 @@
 
 import type * as ts from 'typescript';
 import type * as MonacoEditor from 'monaco-editor';
-import type TypeScriptWorker = MonacoEditor.languages.typescript.TypeScriptWorker;
+import type TypeScriptWorker = MonacoEditor.typescript.TypeScriptWorker;
 import type lzstring from 'lz-string';
 import type * as tsvfs from './typescript-vfs';
-type CompilerOptions = MonacoEditor.languages.typescript.CompilerOptions;
+type CompilerOptions = MonacoEditor.typescript.CompilerOptions;
 type Monaco = typeof MonacoEditor;
 /**
  * These are settings for the playground which are the equivalent to props in React

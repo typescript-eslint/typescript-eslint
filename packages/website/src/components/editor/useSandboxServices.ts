@@ -4,6 +4,7 @@ import { useColorMode } from '@docusaurus/theme-common';
 import { useEffect, useState } from 'react';
 import semverSatisfies from 'semver/functions/satisfies';
 
+import type { TypeScriptWorker } from '../../../typings/monaco-editor';
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import type { CreateLinter } from '../linter/createLinter';
 import type { PlaygroundSystem, RegisterFile } from '../linter/types';
@@ -53,7 +54,7 @@ export const useSandboxServices = (
           {
             acquireTypes: true,
             compilerOptions:
-              compilerOptions as Monaco.languages.typescript.CompilerOptions,
+              compilerOptions as Monaco.typescript.CompilerOptions,
             domID: editorEmbedId,
             monacoSettings: {
               autoIndent: 'full',
@@ -103,7 +104,8 @@ export const useSandboxServices = (
         });
 
         // Load the lib files from typescript to vfs (eg. es2020.d.ts)
-        const worker = await sandboxInstance.getWorkerProcess();
+        const worker =
+          (await sandboxInstance.getWorkerProcess()) as TypeScriptWorker;
         if (worker.getLibFiles) {
           const libs = await worker.getLibFiles();
           for (const [key, value] of Object.entries(libs)) {

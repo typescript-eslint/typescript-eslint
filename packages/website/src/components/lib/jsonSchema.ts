@@ -17,9 +17,9 @@ function isArray(arg: unknown): arg is readonly unknown[] {
  * Add the error level to the rule schema items
  *
  * if you encounter issues with rule schema validation you can check the schema by using the following code in the console:
- * monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.find(item => item.uri.includes('typescript-eslint/consistent-type-imports'))
- * monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.find(item => item.uri.includes('no-unused-labels'))
- * monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.filter(item => item.schema.type === 'array')
+ * monaco.json.jsonDefaults.diagnosticsOptions.schemas.find(item => item.uri.includes('typescript-eslint/consistent-type-imports'))
+ * monaco.json.jsonDefaults.diagnosticsOptions.schemas.find(item => item.uri.includes('no-unused-labels'))
+ * monaco.json.jsonDefaults.diagnosticsOptions.schemas.filter(item => item.schema.type === 'array')
  */
 export function getRuleJsonSchemaWithErrorLevel(
   name: string,
