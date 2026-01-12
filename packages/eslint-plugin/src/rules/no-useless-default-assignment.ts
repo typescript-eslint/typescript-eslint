@@ -120,6 +120,14 @@ export default createRule<[], MessageId>({
             const params = signatures[0].getParameters();
             if (paramIndex < params.length) {
               const paramSymbol = params[paramIndex];
+              if (
+                paramSymbol.valueDeclaration &&
+                ts.isParameter(paramSymbol.valueDeclaration) &&
+                paramSymbol.valueDeclaration.dotDotDotToken != null
+              ) {
+                return;
+              }
+
               if ((paramSymbol.flags & ts.SymbolFlags.Optional) === 0) {
                 const paramType = checker.getTypeOfSymbol(paramSymbol);
                 if (!canBeUndefined(paramType)) {
