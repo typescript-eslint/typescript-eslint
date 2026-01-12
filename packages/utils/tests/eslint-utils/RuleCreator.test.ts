@@ -16,7 +16,6 @@ describe(ESLintUtils.RuleCreator, () => {
       create() {
         return {};
       },
-      defaultOptions: [],
       meta: {
         docs: {
           description: 'some description',
@@ -50,7 +49,6 @@ describe(ESLintUtils.RuleCreator, () => {
       create() {
         return {};
       },
-      defaultOptions: [],
       meta: {
         docs: {
           description: 'some description',
@@ -74,7 +72,6 @@ describe(ESLintUtils.RuleCreator, () => {
       create() {
         return {};
       },
-      defaultOptions: [],
       meta: {
         docs: {
           description: 'some description',
