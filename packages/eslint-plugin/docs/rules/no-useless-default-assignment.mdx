@@ -52,5 +52,5 @@ const [foo = ''] = [undefined];
 
 If you use default values defensively against runtime values that bypass type checking, or for documentation purposes, you may want to disable this rule.
 
-In a few niche situations (e.g. [express.js error handler functions](https://expressjs.com/en/guide/error-handling.html)), the runtime [`.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length of a function) may be important to you.
+In a few niche situations (e.g. [express.js error handler functions](https://expressjs.com/en/guide/error-handling.html)), the runtime [`.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length) of a function may be important to you.
 In these rare cases, you may need to disable the fixes produced by this rule, which can affect function's `.length` value.
