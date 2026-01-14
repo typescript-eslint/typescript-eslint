@@ -763,6 +763,13 @@ enum E {
 }
 const x: E = fn(n => n | 0, 0 as E);
     `,
+    `
+function fn<T extends { type: string }, K extends string, V>(
+  node: T,
+): T & Record<K, V> {
+  return node as T & Record<K, V>;
+}
+    `,
   ],
 
   invalid: [

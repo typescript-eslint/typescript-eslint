@@ -321,12 +321,20 @@ export default createRule<Options, MessageIds>({
     }
 
     function isTypeUnchanged(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
       expression: TSESTree.Expression,
       uncast: ts.Type,
       cast: ts.Type,
     ): boolean {
       if (uncast === cast) {
         return true;
+      }
+
+      if (
+        node.typeAnnotation.type === AST_NODE_TYPES.TSIntersectionType &&
+        containsTypeVariable(cast)
+      ) {
+        return false;
       }
 
       if (
@@ -354,11 +362,14 @@ export default createRule<Options, MessageIds>({
 
       if (cast.isIntersection() && !uncast.isIntersection()) {
         const castParts = cast.types;
+        const otherPart = castParts.find(part => part !== uncast);
         if (
           tsutils.isTypeParameter(uncast) &&
           castParts.length === 2 &&
           castParts.some(part => part === uncast) &&
-          castParts.some(isEmptyObjectType)
+          otherPart != null &&
+          isEmptyObjectType(otherPart) &&
+          !containsTypeVariable(otherPart)
         ) {
           const constraint = checker.getBaseConstraintOfType(uncast);
           if (constraint && !isNullableType(constraint)) {
@@ -408,7 +419,7 @@ export default createRule<Options, MessageIds>({
       const castType = services.getTypeAtLocation(node);
 
       if (
-        isTypeUnchanged(innerExpression, originalType, castType) &&
+        isTypeUnchanged(node, innerExpression, originalType, castType) &&
         !isTypeFlagSet(castType, ts.TypeFlags.Any)
       ) {
         return 'unnecessaryAssertion';
@@ -718,6 +729,7 @@ export default createRule<Options, MessageIds>({
 
         const uncastType = getUncastType(node);
         const typeIsUnchanged = isTypeUnchanged(
+          node,
           node.expression,
           uncastType,
           castType,
