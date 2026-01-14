@@ -557,12 +557,11 @@ describe('semanticInfo', async () => {
 
   it('should verify that the new shortcut methods are available', () => {
     const code = 'const x: number = 1;';
-    const { ast, services } = parseAndGenerateServices(code, {
-      filePath: 'test.ts',
-      loc: true,
-      range: true,
-    });
+    const filename = path.join(FIXTURES_DIR, 'shortcut-method-test.ts');
+    const options = createOptions(filename);
+    const { ast, services } = parseAndGenerateServices(code, options);
     const typedServices = services as ParserServicesWithTypeInformation;
+
     expect(typedServices.getContextualType).toBeInstanceOf(Function);
     expect(typedServices.getResolvedSignature).toBeInstanceOf(Function);
     expect(typedServices.getTypeFromTypeNode).toBeInstanceOf(Function);
@@ -570,6 +569,6 @@ describe('semanticInfo', async () => {
 
     const variableDeclaration = ast.body[0] as TSESTree.VariableDeclaration;
     const init = variableDeclaration.declarations[0].init!;
-    expect(() => typedServices.getContextualType(init)).not.toThrowError();
+    expect(() => typedServices.getContextualType(init)).not.toThrow();
   });
 });
