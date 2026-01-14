@@ -347,8 +347,28 @@ export default createRule<Options, MessageIds>({
         (hasIndexSignature(uncast) && !hasIndexSignature(cast)) ||
         containsAny(uncast) ||
         containsAny(cast) ||
-        (containsTypeVariable(cast) && !containsTypeVariable(uncast)) ||
-        (cast.isIntersection() && !uncast.isIntersection()) ||
+        (containsTypeVariable(cast) && !containsTypeVariable(uncast))
+      ) {
+        return false;
+      }
+
+      if (cast.isIntersection() && !uncast.isIntersection()) {
+        const castParts = cast.types;
+        if (
+          tsutils.isTypeParameter(uncast) &&
+          castParts.length === 2 &&
+          castParts.some(part => part === uncast) &&
+          castParts.some(isEmptyObjectType)
+        ) {
+          const constraint = checker.getBaseConstraintOfType(uncast);
+          if (constraint && !isNullableType(constraint)) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      if (
         !hasSameProperties(uncast, cast) ||
         !haveSameTypeArguments(uncast, cast)
       ) {
@@ -436,8 +456,77 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function isEmptyObjectType(type: ts.Type): boolean {
+      return (
+        isTypeFlagSet(type, ts.TypeFlags.NonPrimitive) ||
+        (type.getProperties().length === 0 &&
+          !type.getCallSignatures().length &&
+          !type.getConstructSignatures().length &&
+          !type.getStringIndexType() &&
+          !type.getNumberIndexType())
+      );
+    }
+
     function hasGenericCallSignature(type: ts.Type): boolean {
       return type.getCallSignatures().some(hasTypeParams);
+    }
+
+    function isArgumentToOverloadedFunction(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      const { parent } = node;
+      if (
+        (parent.type !== AST_NODE_TYPES.CallExpression &&
+          parent.type !== AST_NODE_TYPES.NewExpression) ||
+        !parent.arguments.includes(node)
+      ) {
+        return false;
+      }
+      const calleeType = checker.getTypeAtLocation(
+        services.esTreeNodeToTSNodeMap.get(parent.callee),
+      );
+      const signatures = calleeType.getCallSignatures();
+      if (signatures.length <= 1) {
+        return false;
+      }
+
+      const argIndex = parent.arguments.indexOf(node);
+      const paramTypes: (ts.Type | undefined)[] = signatures.map(sig => {
+        const params = sig.getParameters();
+        if (argIndex >= params.length) {
+          return undefined;
+        }
+        const param = params[argIndex];
+        let paramType = checker.getTypeOfSymbol(param);
+        if (
+          param.valueDeclaration &&
+          ts.isParameter(param.valueDeclaration) &&
+          param.valueDeclaration.dotDotDotToken
+        ) {
+          const typeArgs = checker.getTypeArguments(
+            paramType as ts.TypeReference,
+          );
+          if (typeArgs.length > 0) {
+            paramType = typeArgs[0];
+          }
+        }
+        return paramType;
+      });
+
+      if (paramTypes.some(type => type == null)) {
+        return true;
+      }
+
+      const definedParamTypes = paramTypes as ts.Type[];
+      const firstParamType = definedParamTypes[0];
+      if (definedParamTypes.every(type => type === firstParamType)) {
+        return false;
+      }
+
+      const uncastType = services.getTypeAtLocation(node.expression);
+      return !definedParamTypes.every(type =>
+        checker.isTypeAssignableTo(uncastType, type),
+      );
     }
 
     function isInDestructuringDeclaration(
@@ -507,6 +596,13 @@ export default createRule<Options, MessageIds>({
           if (current.typeArguments != null) {
             continue;
           }
+          if (
+            current.type === AST_NODE_TYPES.CallExpression &&
+            current.callee.type === AST_NODE_TYPES.MemberExpression &&
+            current.arguments.includes(node)
+          ) {
+            continue;
+          }
           const calleeType = checker.getTypeAtLocation(
             services.esTreeNodeToTSNodeMap.get(current.callee),
           );
@@ -533,7 +629,8 @@ export default createRule<Options, MessageIds>({
         node.expression.type === AST_NODE_TYPES.ArrayExpression ||
         isInDestructuringDeclaration(node) ||
         isPropertyInProblematicContext(node) ||
-        isAssignmentInNonStatementContext(node)
+        isAssignmentInNonStatementContext(node) ||
+        isArgumentToOverloadedFunction(node)
       ) {
         return true;
       }

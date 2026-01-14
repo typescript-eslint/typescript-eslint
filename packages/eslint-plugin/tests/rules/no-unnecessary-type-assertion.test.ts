@@ -755,6 +755,14 @@ declare function inject<T>(key: InjectionKey<T>): T;
 const context = Symbol('ctx') as InjectionKey<{ value: string }>;
 inject(context).value;
     `,
+    `
+declare function fn<U>(g: (memo: U) => U, initial: U): U;
+declare function fn<T>(g: (memo: T) => T): T | undefined;
+enum E {
+  A = 1,
+}
+const x: E = fn(n => n | 0, 0 as E);
+    `,
   ],
 
   invalid: [
@@ -2296,6 +2304,79 @@ type Json = string | { [key: string]: Json };
 declare function update<Row extends { chat: Json[] }>(values: Row): void;
 declare const chat: ChatMessage[];
 update({ chat: chat });
+      `,
+    },
+    {
+      code: `
+interface Node {
+  parent: Node;
+}
+declare function fn<T extends Node>(node: T): T;
+function fn2<T extends Node>(node: T): void {
+  fn(node as NonNullable<T>);
+}
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+interface Node {
+  parent: Node;
+}
+declare function fn<T extends Node>(node: T): T;
+function fn2<T extends Node>(node: T): void {
+  fn(node);
+}
+      `,
+    },
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function fn(a: A): A;
+declare function fn(a: A): A | undefined;
+declare const a: A;
+fn(a as B);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function fn(a: A): A;
+declare function fn(a: A): A | undefined;
+declare const a: A;
+fn(a);
+      `,
+    },
+    {
+      code: `
+declare const a: string[];
+declare const b: readonly string[];
+const fileNames: string[] = a.concat(b as string[]);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare const a: string[];
+declare const b: readonly string[];
+const fileNames: string[] = a.concat(b);
       `,
     },
   ],
