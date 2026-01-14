@@ -3,7 +3,11 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import * as ts from 'typescript';
 
-import type { TSESTree, TSESTreeOptions } from '../../src/index.js';
+import type {
+  ParserServicesWithTypeInformation,
+  TSESTree,
+  TSESTreeOptions,
+} from '../../src/index.js';
 
 import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms.js';
 import { clearCaches, parseAndGenerateServices } from '../../src/index.js';
@@ -549,5 +553,23 @@ describe('semanticInfo', async () => {
     expect(() =>
       createProgram(path.join(FIXTURES_DIR, 'badTSConfig', 'tsconfig.json')),
     ).toThrowError();
+  });
+
+  it('should verify that the new shortcut methods are available', () => {
+    const code = 'const x: number = 1;';
+    const { ast, services } = parseAndGenerateServices(code, {
+      filePath: 'test.ts',
+      loc: true,
+      range: true,
+    });
+    const typedServices = services as ParserServicesWithTypeInformation;
+    expect(typedServices.getContextualType).toBeInstanceOf(Function);
+    expect(typedServices.getResolvedSignature).toBeInstanceOf(Function);
+    expect(typedServices.getTypeFromTypeNode).toBeInstanceOf(Function);
+    expect(typedServices.getTypeOfSymbolAtLocation).toBeInstanceOf(Function);
+
+    const variableDeclaration = ast.body[0] as TSESTree.VariableDeclaration;
+    const init = variableDeclaration.declarations[0].init!;
+    expect(() => typedServices.getContextualType(init)).not.toThrowError();
   });
 });
