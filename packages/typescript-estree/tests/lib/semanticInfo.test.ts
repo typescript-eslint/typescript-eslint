@@ -557,8 +557,8 @@ describe('semanticInfo', async () => {
 
   it('should verify that the new shortcut methods are available', () => {
     const code = 'const x: number = 1;';
-    const filename = path.join(FIXTURES_DIR, 'shortcut-method-test.ts');
-    const options = createOptions(filename);
+    const fileName = path.join(FIXTURES_DIR, 'import-file.src.ts');
+    const options = createOptions(fileName);
     const { ast, services } = parseAndGenerateServices(code, options);
     const typedServices = services as ParserServicesWithTypeInformation;
 
