@@ -569,6 +569,6 @@ describe('semanticInfo', async () => {
 
     const variableDeclaration = ast.body[0] as TSESTree.VariableDeclaration;
     const init = variableDeclaration.declarations[0].init!;
-    expect(() => typedServices.getContextualType(init)).not.toThrow();
+    expect(() => typedServices.getContextualType(init)).not.toThrowError();
   });
 });

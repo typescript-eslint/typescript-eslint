@@ -92,14 +92,6 @@ export function createParser(
           esTreeNodeToTSNodeMap: converted.astMaps.esTreeNodeToTSNodeMap,
           experimentalDecorators:
             compilerOptions.experimentalDecorators ?? false,
-          getSymbolAtLocation: node =>
-            checker.getSymbolAtLocation(
-              converted.astMaps.esTreeNodeToTSNodeMap.get(node),
-            ),
-          getTypeAtLocation: node =>
-            checker.getTypeAtLocation(
-              converted.astMaps.esTreeNodeToTSNodeMap.get(node),
-            ),
           getContextualType: node =>
             checker.getContextualType(
               converted.astMaps.esTreeNodeToTSNodeMap.get(
@@ -111,6 +103,14 @@ export function createParser(
               converted.astMaps.esTreeNodeToTSNodeMap.get(
                 node,
               ) as ts.CallLikeExpression,
+            ),
+          getSymbolAtLocation: node =>
+            checker.getSymbolAtLocation(
+              converted.astMaps.esTreeNodeToTSNodeMap.get(node),
+            ),
+          getTypeAtLocation: node =>
+            checker.getTypeAtLocation(
+              converted.astMaps.esTreeNodeToTSNodeMap.get(node),
             ),
           getTypeFromTypeNode: node =>
             checker.getTypeFromTypeNode(
