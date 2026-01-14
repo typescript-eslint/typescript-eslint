@@ -556,9 +556,12 @@ describe('semanticInfo', async () => {
   });
 
   it('should verify that the new shortcut methods are available', () => {
-    const code = 'const x: number = 1;';
-    const filename = path.join(FIXTURES_DIR, 'shortcut-method-test.ts');
-    const options = createOptions(filename);
+    const code = `
+      const x: number = 1;
+      function app() { console.log('test'); }
+    `;
+    const fileName = path.join(FIXTURES_DIR, 'import-file.src.ts');
+    const options = createOptions(fileName);
     const { ast, services } = parseAndGenerateServices(code, options);
     const typedServices = services as ParserServicesWithTypeInformation;
 
@@ -569,6 +572,27 @@ describe('semanticInfo', async () => {
 
     const variableDeclaration = ast.body[0] as TSESTree.VariableDeclaration;
     const init = variableDeclaration.declarations[0].init!;
+
     expect(() => typedServices.getContextualType(init)).not.toThrowError();
+
+    const typeNode =
+      variableDeclaration.declarations[0].id.typeAnnotation!.typeAnnotation;
+    expect(() =>
+      typedServices.getTypeFromTypeNode(typeNode),
+    ).not.toThrowError();
+
+    const id = variableDeclaration.declarations[0].id;
+    const symbol = typedServices.getSymbolAtLocation(id)!;
+    expect(() =>
+      typedServices.getTypeOfSymbolAtLocation(symbol, id),
+    ).not.toThrowError();
+
+    const func = ast.body[1] as TSESTree.FunctionDeclaration;
+    const body = func.body.body[0] as TSESTree.ExpressionStatement;
+    const callExpr = body.expression as TSESTree.CallExpression;
+
+    expect(() =>
+      typedServices.getResolvedSignature(callExpr),
+    ).not.toThrowError();
   });
 });
