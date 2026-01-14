@@ -559,6 +559,7 @@ describe('semanticInfo', async () => {
     const code = 'const x: number = 1;';
     const { ast, services } = parseAndGenerateServices(code, {
       filePath: 'test.ts',
+      project: './tsconfig.json',
       loc: true,
       range: true,
     });
