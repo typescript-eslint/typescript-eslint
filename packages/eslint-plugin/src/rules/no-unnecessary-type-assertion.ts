@@ -554,7 +554,14 @@ export default createRule<Options, MessageIds>({
       }
       const objectTsNode = services.esTreeNodeToTSNodeMap.get(objectExpr);
       if (checker.getContextualType(objectTsNode)?.isUnion()) {
-        return true;
+        const nodeTsNode = services.esTreeNodeToTSNodeMap.get(node);
+        const propContextualType = checker.getContextualType(nodeTsNode);
+        const uncastType = services.getTypeAtLocation(node.expression);
+        return (
+          propContextualType == null ||
+          propContextualType.isUnion() ||
+          !checker.isTypeAssignableTo(uncastType, propContextualType)
+        );
       }
       const objectParent = objectExpr.parent;
       return (
