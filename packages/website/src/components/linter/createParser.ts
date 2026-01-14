@@ -100,6 +100,27 @@ export function createParser(
             checker.getTypeAtLocation(
               converted.astMaps.esTreeNodeToTSNodeMap.get(node),
             ),
+          getContextualType: node =>
+            checker.getContextualType(
+              converted.astMaps.esTreeNodeToTSNodeMap.get(
+                node,
+              ) as ts.Expression,
+            ),
+          getResolvedSignature: node =>
+            checker.getResolvedSignature(
+              converted.astMaps.esTreeNodeToTSNodeMap.get(
+                node,
+              ) as ts.CallLikeExpression,
+            ),
+          getTypeFromTypeNode: node =>
+            checker.getTypeFromTypeNode(
+              converted.astMaps.esTreeNodeToTSNodeMap.get(node) as ts.TypeNode,
+            ),
+          getTypeOfSymbolAtLocation: (symbol, node) =>
+            checker.getTypeOfSymbolAtLocation(
+              symbol,
+              converted.astMaps.esTreeNodeToTSNodeMap.get(node),
+            ),
           isolatedDeclarations: compilerOptions.isolatedDeclarations ?? false,
           program,
           tsNodeToESTreeNodeMap: converted.astMaps.tsNodeToESTreeNodeMap,
