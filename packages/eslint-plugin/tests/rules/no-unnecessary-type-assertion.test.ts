@@ -2379,5 +2379,22 @@ declare const b: readonly string[];
 const fileNames: string[] = a.concat(b);
       `,
     },
+    {
+      code: `
+declare function fn(text: any): void;
+declare const value: string | number;
+fn(value as number);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare function fn(text: any): void;
+declare const value: string | number;
+fn(value);
+      `,
+    },
   ],
 });

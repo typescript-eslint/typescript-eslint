@@ -783,15 +783,27 @@ export default createRule<Options, MessageIds>({
               checker.getContextualType(originalNode))
             : undefined;
 
+        const contextualTypeIsAny =
+          contextualType != null &&
+          isTypeFlagSet(contextualType, ts.TypeFlags.Any);
+
+        const isCallArgument =
+          (node.parent.type === AST_NODE_TYPES.CallExpression ||
+            node.parent.type === AST_NODE_TYPES.NewExpression) &&
+          node.parent.arguments.includes(node);
+
         const originalExpr = getOriginalExpression(node);
 
         if (
           contextualType &&
           !typeAnnotationIsConstAssertion &&
           !containsAny(uncastType) &&
-          !containsAny(contextualType) &&
+          (contextualTypeIsAny
+            ? isCallArgument && !containsAny(castType)
+            : !containsAny(contextualType)) &&
           (castIsAny || !genericsMismatch(uncastType, contextualType)) &&
-          checker.isTypeAssignableTo(uncastType, contextualType) &&
+          (contextualTypeIsAny ||
+            checker.isTypeAssignableTo(uncastType, contextualType)) &&
           !(
             castType.isUnion() &&
             ((node.expression.type === AST_NODE_TYPES.Literal &&
