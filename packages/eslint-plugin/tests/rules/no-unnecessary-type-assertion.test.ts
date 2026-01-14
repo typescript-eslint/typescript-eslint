@@ -2431,5 +2431,40 @@ const schema: A | B = {
 };
       `,
     },
+    {
+      code: `
+interface A {
+  type: 'a';
+  a?: string;
+}
+interface B {
+  type: 'b';
+}
+declare const a: '1' | '2';
+const schema: A | B = {
+  type: 'a',
+  a: a as string,
+};
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  type: 'a';
+  a?: string;
+}
+interface B {
+  type: 'b';
+}
+declare const a: '1' | '2';
+const schema: A | B = {
+  type: 'a',
+  a: a,
+};
+      `,
+    },
   ],
 });

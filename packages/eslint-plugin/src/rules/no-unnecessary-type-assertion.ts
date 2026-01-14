@@ -556,11 +556,18 @@ export default createRule<Options, MessageIds>({
       if (checker.getContextualType(objectTsNode)?.isUnion()) {
         const nodeTsNode = services.esTreeNodeToTSNodeMap.get(node);
         const propContextualType = checker.getContextualType(nodeTsNode);
+        if (propContextualType == null) {
+          return true;
+        }
+        const nonNullableContextualType =
+          checker.getNonNullableType(propContextualType);
+        if (nonNullableContextualType.isUnion()) {
+          return true;
+        }
         const uncastType = services.getTypeAtLocation(node.expression);
-        return (
-          propContextualType == null ||
-          propContextualType.isUnion() ||
-          !checker.isTypeAssignableTo(uncastType, propContextualType)
+        return !checker.isTypeAssignableTo(
+          uncastType,
+          nonNullableContextualType,
         );
       }
       const objectParent = objectExpr.parent;
