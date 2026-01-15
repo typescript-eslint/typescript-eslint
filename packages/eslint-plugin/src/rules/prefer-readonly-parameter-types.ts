@@ -93,9 +93,9 @@ export default createRule<Options, MessageIds>({
         | TSESTree.ObjectPattern
         | TSESTree.RestElement,
     ): ts.Type {
-      const checker = services.program.getTypeChecker();
       if (actualParam.typeAnnotation?.typeAnnotation) {
         // Get type from annotation node to preserve aliasSymbol
+        const checker = services.program.getTypeChecker();
         const tsTypeNode = services.esTreeNodeToTSNodeMap.get(
           actualParam.typeAnnotation.typeAnnotation,
         ) as ts.TypeNode;
