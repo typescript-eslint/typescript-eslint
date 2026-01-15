@@ -846,6 +846,11 @@ export default createRule<Options, MessageIds>({
               node.expression.value == null) ||
               (node.expression.type === AST_NODE_TYPES.Identifier &&
                 node.expression.name === 'undefined'))
+          ) &&
+          !(
+            castIsAny &&
+            node.parent.type === AST_NODE_TYPES.Property &&
+            isInGenericContext(node)
           )
         ) {
           context.report({
