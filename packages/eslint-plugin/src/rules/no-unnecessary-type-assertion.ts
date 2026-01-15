@@ -658,7 +658,15 @@ export default createRule<Options, MessageIds>({
 
     function shouldSkipContextualTypeFallback(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      castIsAny: boolean,
     ): boolean {
+      if (castIsAny) {
+        return (
+          node.parent.type === AST_NODE_TYPES.LogicalExpression ||
+          isInGenericContext(node)
+        );
+      }
+
       if (
         SKIP_PARENT_TYPES.has(node.parent.type) ||
         node.expression.type === AST_NODE_TYPES.ArrayExpression ||
@@ -672,12 +680,10 @@ export default createRule<Options, MessageIds>({
 
       if (isInGenericContext(node)) {
         const originalExpr = getOriginalExpression(node);
-        if (
+        return (
           !isConceptuallyLiteral(originalExpr) &&
           node.parent.type !== AST_NODE_TYPES.Property
-        ) {
-          return true;
-        }
+        );
       }
 
       return false;
@@ -709,6 +715,80 @@ export default createRule<Options, MessageIds>({
       }
 
       return services.getTypeAtLocation(node.expression);
+    }
+
+    function createAssertionFixer(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): ReportFixFunction {
+      return fixer => {
+        if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
+          const openingAngleBracket = nullThrows(
+            context.sourceCode.getTokenBefore(
+              node.typeAnnotation,
+              token =>
+                token.type === AST_TOKEN_TYPES.Punctuator &&
+                token.value === '<',
+            ),
+            NullThrowsReasons.MissingToken('<', 'type annotation'),
+          );
+          const closingAngleBracket = nullThrows(
+            context.sourceCode.getTokenAfter(
+              node.typeAnnotation,
+              token =>
+                token.type === AST_TOKEN_TYPES.Punctuator &&
+                token.value === '>',
+            ),
+            NullThrowsReasons.MissingToken('>', 'type annotation'),
+          );
+          return fixer.removeRange([
+            openingAngleBracket.range[0],
+            closingAngleBracket.range[1],
+          ]);
+        }
+        const asToken = nullThrows(
+          context.sourceCode.getTokenAfter(
+            node.expression,
+            token =>
+              token.type === AST_TOKEN_TYPES.Identifier && token.value === 'as',
+          ),
+          NullThrowsReasons.MissingToken('>', 'type annotation'),
+        );
+        const tokenBeforeAs = nullThrows(
+          context.sourceCode.getTokenBefore(asToken, {
+            includeComments: true,
+          }),
+          NullThrowsReasons.MissingToken('comment', 'as'),
+        );
+        return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
+      };
+    }
+
+    function reportDoubleAssertionIfUnnecessary(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      contextualType: ts.Type | undefined,
+    ): void {
+      const doubleAssertionResult = isDoubleAssertionUnnecessary(
+        node,
+        contextualType,
+      );
+      if (doubleAssertionResult) {
+        context.report({
+          node,
+          messageId: doubleAssertionResult,
+          fix(fixer) {
+            const originalExpr = getOriginalExpression(node);
+            let text = context.sourceCode.getText(originalExpr);
+            if (
+              originalExpr.type === AST_NODE_TYPES.ObjectExpression &&
+              node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+              node.parent.body === node
+            ) {
+              text = `(${text})`;
+            }
+            return fixer.replaceText(node, text);
+          },
+        });
+      }
     }
 
     return {
@@ -748,61 +828,11 @@ export default createRule<Options, MessageIds>({
           ? isImplicitlyNarrowedLiteralDeclaration(node)
           : !typeAnnotationIsConstAssertion;
 
-        const fixFunction: ReportFixFunction = fixer => {
-          if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
-            const openingAngleBracket = nullThrows(
-              context.sourceCode.getTokenBefore(
-                node.typeAnnotation,
-                token =>
-                  token.type === AST_TOKEN_TYPES.Punctuator &&
-                  token.value === '<',
-              ),
-              NullThrowsReasons.MissingToken('<', 'type annotation'),
-            );
-            const closingAngleBracket = nullThrows(
-              context.sourceCode.getTokenAfter(
-                node.typeAnnotation,
-                token =>
-                  token.type === AST_TOKEN_TYPES.Punctuator &&
-                  token.value === '>',
-              ),
-              NullThrowsReasons.MissingToken('>', 'type annotation'),
-            );
-
-            // < ( number ) > ( 3 + 5 )
-            // ^---remove---^
-            return fixer.removeRange([
-              openingAngleBracket.range[0],
-              closingAngleBracket.range[1],
-            ]);
-          }
-          // `as` is always present in TSAsExpression
-          const asToken = nullThrows(
-            context.sourceCode.getTokenAfter(
-              node.expression,
-              token =>
-                token.type === AST_TOKEN_TYPES.Identifier &&
-                token.value === 'as',
-            ),
-            NullThrowsReasons.MissingToken('>', 'type annotation'),
-          );
-          const tokenBeforeAs = nullThrows(
-            context.sourceCode.getTokenBefore(asToken, {
-              includeComments: true,
-            }),
-            NullThrowsReasons.MissingToken('comment', 'as'),
-          );
-
-          // ( 3 + 5 )  as  number
-          //          ^--remove--^
-          return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
-        };
-
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
-            fix: fixFunction,
+            fix: createAssertionFixer(node),
           });
           return;
         }
@@ -813,85 +843,53 @@ export default createRule<Options, MessageIds>({
           isTypeFlagSet(castType, ts.TypeFlags.Any) &&
           !SKIP_PARENT_TYPES.has(node.parent.type);
 
-        const contextualType =
-          castIsAny || !shouldSkipContextualTypeFallback(node)
-            ? (getContextualType(checker, originalNode) ??
-              checker.getContextualType(originalNode))
-            : undefined;
+        const contextualType = shouldSkipContextualTypeFallback(node, castIsAny)
+          ? undefined
+          : (getContextualType(checker, originalNode) ??
+            checker.getContextualType(originalNode));
 
-        const contextualTypeIsAny =
-          contextualType != null &&
-          isTypeFlagSet(contextualType, ts.TypeFlags.Any);
+        if (contextualType) {
+          const contextualTypeIsAny = isTypeFlagSet(
+            contextualType,
+            ts.TypeFlags.Any,
+          );
 
-        const isCallArgument =
-          (node.parent.type === AST_NODE_TYPES.CallExpression ||
-            node.parent.type === AST_NODE_TYPES.NewExpression) &&
-          node.parent.arguments.includes(node);
+          const isCallArgument =
+            (node.parent.type === AST_NODE_TYPES.CallExpression ||
+              node.parent.type === AST_NODE_TYPES.NewExpression) &&
+            node.parent.arguments.includes(node);
 
-        const originalExpr = getOriginalExpression(node);
+          const anyInvolvedInContextualCheck = contextualTypeIsAny
+            ? isCallArgument && !containsAny(castType)
+            : !containsAny(contextualType);
 
-        const isUncastAssignableToContextual =
-          contextualTypeIsAny ||
-          (contextualType != null &&
-            checker.isTypeAssignableTo(uncastType, contextualType));
+          const isNullishLiteralToUnion =
+            castType.isUnion() &&
+            ((node.expression.type === AST_NODE_TYPES.Literal &&
+              node.expression.value == null) ||
+              (node.expression.type === AST_NODE_TYPES.Identifier &&
+                node.expression.name === 'undefined'));
 
-        const anyInvolvedInContextualCheck = contextualTypeIsAny
-          ? isCallArgument && !containsAny(castType)
-          : contextualType != null && !containsAny(contextualType);
+          const isContextuallyUnnecessary =
+            !typeAnnotationIsConstAssertion &&
+            !containsAny(uncastType) &&
+            anyInvolvedInContextualCheck &&
+            (castIsAny || !genericsMismatch(uncastType, contextualType)) &&
+            (contextualTypeIsAny ||
+              checker.isTypeAssignableTo(uncastType, contextualType)) &&
+            !isNullishLiteralToUnion;
 
-        const isNullOrUndefinedLiteralToUnion =
-          castType.isUnion() &&
-          ((node.expression.type === AST_NODE_TYPES.Literal &&
-            node.expression.value == null) ||
-            (node.expression.type === AST_NODE_TYPES.Identifier &&
-              node.expression.name === 'undefined'));
-
-        const isAnyInTypeFlowContext =
-          castIsAny &&
-          (node.parent.type === AST_NODE_TYPES.LogicalExpression ||
-            isInGenericContext(node));
-
-        if (
-          contextualType &&
-          !typeAnnotationIsConstAssertion &&
-          !containsAny(uncastType) &&
-          anyInvolvedInContextualCheck &&
-          (castIsAny || !genericsMismatch(uncastType, contextualType)) &&
-          isUncastAssignableToContextual &&
-          !isNullOrUndefinedLiteralToUnion &&
-          !isAnyInTypeFlowContext
-        ) {
-          context.report({
-            node,
-            messageId: 'contextuallyUnnecessary',
-            fix: fixFunction,
-          });
-          return;
+          if (isContextuallyUnnecessary) {
+            context.report({
+              node,
+              messageId: 'contextuallyUnnecessary',
+              fix: createAssertionFixer(node),
+            });
+            return;
+          }
         }
 
-        const doubleAssertionResult = isDoubleAssertionUnnecessary(
-          node,
-          contextualType,
-        );
-        if (doubleAssertionResult) {
-          context.report({
-            node,
-            messageId: doubleAssertionResult,
-            fix(fixer) {
-              let text = context.sourceCode.getText(originalExpr);
-
-              if (
-                originalExpr.type === AST_NODE_TYPES.ObjectExpression &&
-                node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-                node.parent.body === node
-              ) {
-                text = `(${text})`;
-              }
-
-              return fixer.replaceText(node, text);
-            },
-          });
-        }
+        reportDoubleAssertionIfUnnecessary(node, contextualType);
       },
       TSNonNullExpression(node): void {
         const removeExclamationFix: ReportFixFunction = fixer => {
