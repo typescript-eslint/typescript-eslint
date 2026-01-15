@@ -784,6 +784,10 @@ fn({
   b: true as any,
 });
     `,
+    `
+declare const a: number[] | number | undefined;
+const b: number[] = a ?? ([0] as any);
+    `,
   ],
 
   invalid: [

@@ -846,10 +846,10 @@ export default createRule<Options, MessageIds>({
             (node.expression.type === AST_NODE_TYPES.Identifier &&
               node.expression.name === 'undefined'));
 
-        const isAnyAssertionAffectingInference =
+        const isAnyInTypeFlowContext =
           castIsAny &&
-          node.parent.type === AST_NODE_TYPES.Property &&
-          isInGenericContext(node);
+          (node.parent.type === AST_NODE_TYPES.LogicalExpression ||
+            isInGenericContext(node));
 
         if (
           contextualType &&
@@ -859,7 +859,7 @@ export default createRule<Options, MessageIds>({
           (castIsAny || !genericsMismatch(uncastType, contextualType)) &&
           isUncastAssignableToContextual &&
           !isNullOrUndefinedLiteralToUnion &&
-          !isAnyAssertionAffectingInference
+          !isAnyInTypeFlowContext
         ) {
           context.report({
             node,
