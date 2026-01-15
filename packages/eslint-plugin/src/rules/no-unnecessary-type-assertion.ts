@@ -362,7 +362,6 @@ export default createRule<Options, MessageIds>({
       if (
         isConceptuallyLiteral(expression) &&
         (expression.type !== AST_NODE_TYPES.ObjectExpression ||
-          !('properties' in expression) ||
           expression.properties.length === 0 ||
           cast
             .getProperties()
