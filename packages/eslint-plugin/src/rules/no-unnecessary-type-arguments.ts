@@ -129,8 +129,8 @@ export default createRule<[], MessageIds>({
             parameter.valueDeclaration.type,
           );
 
-          // TODO: right now we check if the type is declare as `T` or `T | something`;
-          // we should basically be checking if `parameterTypeFromDeclaration` depends on `typeParameterType` somehow
+          // TODO: right now we check if the type is declared as `T` or `T | something`;
+          // we should really be checking if `parameterTypeFromDeclaration` depends on `typeParameterType` somehow
           // (e.g. `NonNullable<T>`, `(arg: T) => void`, etc.)
           if (
             !checker.isTypeAssignableTo(
