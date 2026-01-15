@@ -129,9 +129,14 @@ export default createRule<[], MessageIds>({
             parameter.valueDeclaration.type,
           );
 
-          // Only handle parameters that were declared as the generic type parameter
+          // TODO: right now we check if the type is declare as `T` or `T | something`;
+          // we should basically be checking if `parameterTypeFromDeclaration` depends on `typeParameterType` somehow
+          // (e.g. `NonNullable<T>`, `(arg: T) => void`, etc.)
           if (
-            !areTypesEquivalent(typeParameterType, parameterTypeFromDeclaration)
+            !checker.isTypeAssignableTo(
+              typeParameterType,
+              parameterTypeFromDeclaration,
+            )
           ) {
             return;
           }
