@@ -28,6 +28,40 @@ function f<T>(x: T) {}
 f<10>(10);
     `,
     `
+function f<T = number>(x: T) {}
+f(10);
+    `,
+    `
+function f<T extends number>(x: T) {}
+f(10);
+    `,
+    `
+function f<T extends number | string>(x: T) {}
+f(10);
+    `,
+    `
+function f<T extends number | string>(x: T) {}
+f<number | string>(10);
+    `,
+    `
+const curried =
+  <Outer,>(outer: Outer) =>
+  <Inner,>(inner: Inner) => {};
+curried(10)(10);
+    `,
+    `
+const curried =
+  <Outer,>(outer: Outer) =>
+  <Inner,>(inner: Inner) => {};
+curried<10>(10)<10>(10);
+    `,
+    `
+declare function f<T>(x: T | (() => T)): [T, (x: T) => void];
+declare function f<T>(): [T | undefined, (x: T | undefined) => void];
+f(10);
+f<number>();
+    `,
+    `
 function f<T>(x: T) {}
 f<boolean | null>(true);
     `,
@@ -312,6 +346,70 @@ enum E {
 }
 function f<T>(x: T) {}
 f(E.A);
+      `,
+    },
+    {
+      code: `
+function f<T = number>(x: T) {}
+f<number>(10);
+      `,
+      errors: [
+        { messageId: 'canBeInferred' },
+        { messageId: 'isDefaultParameterValue' },
+      ],
+      output: `
+function f<T = number>(x: T) {}
+f(10);
+      `,
+    },
+    {
+      code: `
+function f<T extends number>(x: T) {}
+f<number>(10);
+      `,
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T extends number>(x: T) {}
+f(10);
+      `,
+    },
+    {
+      code: `
+function f<T extends number | string>(x: T) {}
+f<number>(10);
+      `,
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T extends number | string>(x: T) {}
+f(10);
+      `,
+    },
+    {
+      code: `
+const curried =
+  <Outer,>(outer: Outer) =>
+  <Inner,>(inner: Inner) => {};
+curried<number>(10)<number>(10);
+      `,
+      errors: [{ messageId: 'canBeInferred' }, { messageId: 'canBeInferred' }],
+      output: `
+const curried =
+  <Outer,>(outer: Outer) =>
+  <Inner,>(inner: Inner) => {};
+curried(10)(10);
+      `,
+    },
+    {
+      code: `
+declare function f<T>(x: T | (() => T)): [T, (x: T) => void];
+declare function f<T>(): [T | undefined, (x: T | undefined) => void];
+f<number>(10);
+      `,
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+declare function f<T>(x: T | (() => T)): [T, (x: T) => void];
+declare function f<T>(): [T | undefined, (x: T | undefined) => void];
+f(10);
       `,
     },
     // Ignore invalid arguments, check just ones we know the types of
