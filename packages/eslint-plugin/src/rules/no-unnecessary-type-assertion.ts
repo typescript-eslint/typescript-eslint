@@ -830,28 +830,36 @@ export default createRule<Options, MessageIds>({
 
         const originalExpr = getOriginalExpression(node);
 
+        const isUncastAssignableToContextual =
+          contextualTypeIsAny ||
+          (contextualType != null &&
+            checker.isTypeAssignableTo(uncastType, contextualType));
+
+        const anyInvolvedInContextualCheck = contextualTypeIsAny
+          ? isCallArgument && !containsAny(castType)
+          : contextualType != null && !containsAny(contextualType);
+
+        const isNullOrUndefinedLiteralToUnion =
+          castType.isUnion() &&
+          ((node.expression.type === AST_NODE_TYPES.Literal &&
+            node.expression.value == null) ||
+            (node.expression.type === AST_NODE_TYPES.Identifier &&
+              node.expression.name === 'undefined'));
+
+        const isAnyAssertionAffectingInference =
+          castIsAny &&
+          node.parent.type === AST_NODE_TYPES.Property &&
+          isInGenericContext(node);
+
         if (
           contextualType &&
           !typeAnnotationIsConstAssertion &&
           !containsAny(uncastType) &&
-          (contextualTypeIsAny
-            ? isCallArgument && !containsAny(castType)
-            : !containsAny(contextualType)) &&
+          anyInvolvedInContextualCheck &&
           (castIsAny || !genericsMismatch(uncastType, contextualType)) &&
-          (contextualTypeIsAny ||
-            checker.isTypeAssignableTo(uncastType, contextualType)) &&
-          !(
-            castType.isUnion() &&
-            ((node.expression.type === AST_NODE_TYPES.Literal &&
-              node.expression.value == null) ||
-              (node.expression.type === AST_NODE_TYPES.Identifier &&
-                node.expression.name === 'undefined'))
-          ) &&
-          !(
-            castIsAny &&
-            node.parent.type === AST_NODE_TYPES.Property &&
-            isInGenericContext(node)
-          )
+          isUncastAssignableToContextual &&
+          !isNullOrUndefinedLiteralToUnion &&
+          !isAnyAssertionAffectingInference
         ) {
           context.report({
             node,
