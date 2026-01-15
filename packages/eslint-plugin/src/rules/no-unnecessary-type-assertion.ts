@@ -349,13 +349,24 @@ export default createRule<Options, MessageIds>({
       }
 
       if (
-        isConceptuallyLiteral(expression) ||
         (isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
           !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)) ||
         (hasIndexSignature(uncast) && !hasIndexSignature(cast)) ||
         containsAny(uncast) ||
         containsAny(cast) ||
         (containsTypeVariable(cast) && !containsTypeVariable(uncast))
+      ) {
+        return false;
+      }
+
+      if (
+        isConceptuallyLiteral(expression) &&
+        (expression.type !== AST_NODE_TYPES.ObjectExpression ||
+          !('properties' in expression) ||
+          expression.properties.length === 0 ||
+          cast
+            .getProperties()
+            .some(p => isTypeLiteral(checker.getTypeOfSymbol(p))))
       ) {
         return false;
       }
@@ -857,7 +868,11 @@ export default createRule<Options, MessageIds>({
             fix(fixer) {
               let text = context.sourceCode.getText(originalExpr);
 
-              if (originalExpr.type === AST_NODE_TYPES.ObjectExpression) {
+              if (
+                originalExpr.type === AST_NODE_TYPES.ObjectExpression &&
+                node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+                node.parent.body === node
+              ) {
                 text = `(${text})`;
               }
 

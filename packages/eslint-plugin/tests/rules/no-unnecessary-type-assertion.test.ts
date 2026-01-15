@@ -2043,7 +2043,26 @@ const x = { a: 1 } as unknown as Props;
 interface Props {
   a: number;
 }
-const x = ({ a: 1 });
+const x = { a: 1 };
+      `,
+    },
+    {
+      code: `
+interface Props {
+  a: number;
+}
+const x = { a: 1 } as Props;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+interface Props {
+  a: number;
+}
+const x = { a: 1 };
       `,
     },
     {
