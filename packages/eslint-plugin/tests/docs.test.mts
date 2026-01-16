@@ -487,7 +487,7 @@ ${token.value}`,
       // TypeScript can't infer type arguments unless we provide them explicitly
       linter.defineRule<
         keyof (typeof rule)['meta']['messages'],
-        (typeof rule)['defaultOptions']
+        NonNullable<(typeof rule)['defaultOptions']>
       >(ruleName, rule);
 
       const tree = fromMarkdown(fullText, {

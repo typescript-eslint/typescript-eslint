@@ -33,7 +33,7 @@ export function insertRuleOptions(page: RuleDocsPage): void {
     return;
   }
 
-  const defaultOptions = (page.rule.defaultOptions[0] ?? {}) as Record<
+  const defaultOptions = (page.rule.defaultOptions?.[0] ?? {}) as Record<
     string,
     unknown
   >;
