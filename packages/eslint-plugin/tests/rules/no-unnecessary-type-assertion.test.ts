@@ -133,6 +133,24 @@ function foo<T extends string | undefined>(bar: T) {
   return bar!;
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11559
+    `
+type Data<T> = { value?: T };
+type ValueType<TData> = TData extends Data<infer T> ? T : never;
+
+export const foo = <TData extends Data<any>>(data: TData) => {
+  const getValue = () => data.value as ValueType<TData> | undefined;
+  const value: ValueType<TData> = getValue()!;
+  return value;
+};
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11559
+    // Simpler reproduction case
+    `
+function bar<T extends any>(value: T | undefined): T {
+  return value!;
+}
+    `,
     `
 declare function nonNull(s: string);
 let s: string | null = null;
