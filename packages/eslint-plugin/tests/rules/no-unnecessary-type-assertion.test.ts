@@ -712,6 +712,21 @@ const a = mapDefined(() => b as A);
 [a].concat(arrayA);
     `,
     `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+declare const arrayA: A[];
+const a = mapDefined(() =>
+  Math.random() > 0.5 ? (b as A) : (null as unknown as A),
+);
+[a].concat(arrayA);
+    `,
+    `
 interface Params {
   a?: string;
   b?: string;

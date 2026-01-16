@@ -606,6 +606,7 @@ export default createRule<Options, MessageIds>({
     function isInGenericContext(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): boolean {
+      let seenFunction = false;
       for (
         let current: TSESTree.Node | undefined = node.parent;
         current;
@@ -615,11 +616,16 @@ export default createRule<Options, MessageIds>({
           return false;
         }
         if (
-          (current.type === AST_NODE_TYPES.FunctionExpression ||
-            current.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
-          current !== node.parent
+          current.type === AST_NODE_TYPES.FunctionExpression ||
+          current.type === AST_NODE_TYPES.ArrowFunctionExpression
         ) {
-          return false;
+          if (current.body.type === AST_NODE_TYPES.BlockStatement) {
+            return false;
+          }
+          if (seenFunction) {
+            return false;
+          }
+          seenFunction = true;
         }
         if (
           current.type === AST_NODE_TYPES.CallExpression ||
