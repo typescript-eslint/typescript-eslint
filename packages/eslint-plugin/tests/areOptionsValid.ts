@@ -37,7 +37,7 @@ function normalizeSchema(
   }
 
   return {
-    items: schema as JSONSchema4[],
+    items: schema,
     maxItems: schema.length,
     minItems: 0,
     type: 'array',
