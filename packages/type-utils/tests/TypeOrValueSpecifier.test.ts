@@ -657,6 +657,34 @@ describe('TypeOrValueSpecifier', () => {
         expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
       },
     );
+
+    it.for([
+      [
+        'type Original = { prop: string }; type Alias = Original; type Test = Alias;',
+        { from: 'file', name: 'Original' },
+      ],
+      [
+        'type Original = { prop: string }; type Alias = Original; type Test = Alias;',
+        { from: 'file', name: ['Original', 'Other'] },
+      ],
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      'matches a type alias that resolves to the original type: %s\n\t%s',
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).toMatchSpecifier(typeOrValueSpecifier);
+      },
+    );
+
+    it.for([
+      [
+        'type Original = { prop: string }; type Alias = Original; type Test = Alias;',
+        { from: 'file', name: 'Alias' },
+      ],
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      "doesn't match a type alias when specifier targets the alias name: %s\n\t%s",
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
+      },
+    );
   });
 
   describe(valueMatchesSpecifier, () => {
@@ -741,7 +769,15 @@ describe('TypeOrValueSpecifier', () => {
           'var value = 45; const hoge = value;',
           { from: 'file', name: 'value' },
         ],
-      ])('matches a matching file specifier: %s', runTestPositive);
+        [
+          'const value = "test"; const hoge = value;',
+          { from: 'file', name: 'value' },
+        ],
+        [
+          'const value = 45; const hoge = value;',
+          { from: 'lib', name: 'value' },
+        ],
+      ])('matches a matching file/lib specifier: %s', runTestPositive);
 
       it.each<[string, TypeOrValueSpecifier]>([
         [
@@ -859,6 +895,25 @@ describe('TypeOrValueSpecifier', () => {
           'incorrect',
         ],
       ])('matches a matching universal string specifier: %s', runTestNegative);
+    });
+
+    it('matches string literal with specifier', () => {
+      const { ast, services } = parseCode('const value = "test";');
+      const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;
+      const { id, init } = declaration.declarations[0];
+      const literal = init as TSESTree.Literal;
+      const type = services.getTypeAtLocation(id);
+      expect(
+        valueMatchesSpecifier(literal, 'test', services.program, type),
+      ).toBe(true);
+      expect(
+        valueMatchesSpecifier(
+          literal,
+          { from: 'file', name: 'test' },
+          services.program,
+          type,
+        ),
+      ).toBe(true);
     });
   });
 
