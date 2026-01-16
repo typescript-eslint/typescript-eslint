@@ -2510,5 +2510,28 @@ const schema: A | B = {
 };
       `,
     },
+    {
+      code: `
+declare function fn1<T>(fn: () => void): void;
+declare function fn2(text: string): void;
+fn1(() => {
+  fn2("hi" as any);
+});
+
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare function fn1<T>(fn: () => void): void;
+declare function fn2(text: string): void;
+fn1(() => {
+  fn2("hi");
+});
+
+      `,
+    },
   ],
 });
