@@ -10,10 +10,10 @@ import {
   parseLines,
   useCodeWordWrap,
 } from '@docusaurus/theme-common/internal';
+import CopyButton from '@theme/CodeBlock/Buttons/CopyButton';
+import WordWrapButton from '@theme/CodeBlock/Buttons/WordWrapButton';
 import Container from '@theme/CodeBlock/Container';
-import CopyButton from '@theme/CodeBlock/CopyButton';
 import Line from '@theme/CodeBlock/Line';
-import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
 import clsx from 'clsx';
 import * as lz from 'lz-string';
 import { Highlight } from 'prism-react-renderer';

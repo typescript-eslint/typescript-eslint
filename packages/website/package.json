@@ -27,12 +27,12 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
-    "@docusaurus/core": "~3.7.0",
-    "@docusaurus/plugin-client-redirects": "~3.7.0",
-    "@docusaurus/plugin-pwa": "~3.7.0",
-    "@docusaurus/preset-classic": "~3.7.0",
-    "@docusaurus/remark-plugin-npm2yarn": "~3.7.0",
-    "@docusaurus/theme-common": "~3.7.0",
+    "@docusaurus/core": "~3.8.0",
+    "@docusaurus/plugin-client-redirects": "~3.8.0",
+    "@docusaurus/plugin-pwa": "~3.8.0",
+    "@docusaurus/preset-classic": "~3.8.0",
+    "@docusaurus/remark-plugin-npm2yarn": "~3.8.0",
+    "@docusaurus/theme-common": "~3.8.0",
     "@typescript-eslint/parser": "workspace:*",
     "@typescript-eslint/website-eslint": "workspace:*",
     "@uiw/react-shields": "2.0.2",
@@ -57,7 +57,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "~3.7.0",
+    "@docusaurus/module-type-aliases": "~3.8.0",
     "@types/mdast": "^4.0.4",
     "@types/react": "*",
     "@types/unist": "^3.0.3",
