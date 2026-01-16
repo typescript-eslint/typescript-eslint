@@ -625,6 +625,13 @@ export default createRule<Options, MessageIds>({
           return false;
         }
         if (
+          (current.type === AST_NODE_TYPES.FunctionExpression ||
+            current.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
+          current !== node.parent
+        ) {
+          return false;
+        }
+        if (
           current.type === AST_NODE_TYPES.CallExpression ||
           current.type === AST_NODE_TYPES.NewExpression
         ) {

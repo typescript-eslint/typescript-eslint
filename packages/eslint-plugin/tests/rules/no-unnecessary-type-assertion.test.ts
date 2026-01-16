@@ -2515,9 +2515,8 @@ const schema: A | B = {
 declare function fn1<T>(fn: () => void): void;
 declare function fn2(text: string): void;
 fn1(() => {
-  fn2("hi" as any);
+  fn2('hi' as any);
 });
-
       `,
       errors: [
         {
@@ -2528,9 +2527,8 @@ fn1(() => {
 declare function fn1<T>(fn: () => void): void;
 declare function fn2(text: string): void;
 fn1(() => {
-  fn2("hi");
+  fn2('hi');
 });
-
       `,
     },
   ],
