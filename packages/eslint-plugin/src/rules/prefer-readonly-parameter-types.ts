@@ -104,28 +104,6 @@ export default createRule<Options, MessageIds>({
       return services.getTypeAtLocation(actualParam);
     }
 
-    function checkIsReadonly(type: ts.Type): boolean {
-      if (type.aliasSymbol && allow) {
-        const aliasMatches = allow.some(specifier => {
-          const specifierName =
-            typeof specifier === 'string' ? specifier : specifier.name;
-          const names = Array.isArray(specifierName)
-            ? specifierName
-            : [specifierName];
-          return type.aliasSymbol && names.includes(type.aliasSymbol.getName());
-        });
-
-        if (aliasMatches) {
-          return true;
-        }
-      }
-
-      return isTypeReadonly(services.program, type, {
-        allow,
-        treatMethodsAsReadonly: !!treatMethodsAsReadonly,
-      });
-    }
-
     return {
       [[
         AST_NODE_TYPES.ArrowFunctionExpression,
@@ -167,7 +145,10 @@ export default createRule<Options, MessageIds>({
           }
 
           const type = getParameterType(actualParam);
-          const isReadOnly = checkIsReadonly(type);
+          const isReadOnly = isTypeReadonly(services.program, type, {
+            allow,
+            treatMethodsAsReadonly: !!treatMethodsAsReadonly,
+          });
 
           if (!isReadOnly && !isTypeBrandedLiteralLike(type)) {
             context.report({
