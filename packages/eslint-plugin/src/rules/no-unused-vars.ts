@@ -1,5 +1,6 @@
 import type {
   Definition,
+  ImportBindingDefinition,
   ScopeVariable,
 } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
@@ -8,7 +9,11 @@ import {
   DefinitionType,
   PatternVisitor,
 } from '@typescript-eslint/scope-manager';
-import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  TSESLint,
+} from '@typescript-eslint/utils';
 
 import type { MakeRequired } from '../util';
 
@@ -23,7 +28,13 @@ import {
 } from '../util';
 import { referenceContainsTypeQuery } from '../util/referenceContainsTypeQuery';
 
-export type MessageIds = 'unusedVar' | 'usedIgnoredVar' | 'usedOnlyAsType';
+export type MessageIds =
+  | 'removeUnusedImportDeclaration'
+  | 'removeUnusedVar'
+  | 'unusedVar'
+  | 'usedIgnoredVar'
+  | 'usedOnlyAsType';
+
 export type Options = [
   | 'all'
   | 'local'
@@ -33,6 +44,9 @@ export type Options = [
       caughtErrors?: 'all' | 'none';
       caughtErrorsIgnorePattern?: string;
       destructuredArrayIgnorePattern?: string;
+      enableAutofixRemoval?: {
+        imports?: boolean;
+      };
       ignoreClassWithStaticInitBlock?: boolean;
       ignoreRestSiblings?: boolean;
       ignoreUsingDeclarations?: boolean;
@@ -48,6 +62,9 @@ interface TranslatedOptions {
   caughtErrors: 'all' | 'none';
   caughtErrorsIgnorePattern?: RegExp;
   destructuredArrayIgnorePattern?: RegExp;
+  enableAutofixRemoval: {
+    imports: boolean;
+  };
   ignoreClassWithStaticInitBlock: boolean;
   ignoreRestSiblings: boolean;
   ignoreUsingDeclarations: boolean;
@@ -56,16 +73,117 @@ interface TranslatedOptions {
   varsIgnorePattern?: RegExp;
 }
 
-type VariableType =
-  | 'array-destructure'
-  | 'catch-clause'
-  | 'parameter'
-  | 'variable';
+// this is a superset of DefinitionType which defines sub-types for better granularity
+enum VariableType {
+  // New sub-types
+  ArrayDestructure,
+
+  // DefinitionType
+  CatchClause,
+  ClassName,
+  FunctionName,
+  ImportBinding,
+  ImplicitGlobalVariable,
+  Parameter,
+  TSEnumMember,
+  TSEnumName,
+  TSModuleName,
+  Type,
+  Variable,
+}
+
+type DefToVariableType =
+  | {
+      type: VariableType.ArrayDestructure;
+      def: Definition;
+    }
+  | {
+      type: VariableType.CatchClause;
+      def: Definition & { type: DefinitionType.CatchClause };
+    }
+  | {
+      type: VariableType.ClassName;
+      def: Definition & { type: DefinitionType.ClassName };
+    }
+  | {
+      type: VariableType.FunctionName;
+      def: Definition & { type: DefinitionType.FunctionName };
+    }
+  | {
+      type: VariableType.ImplicitGlobalVariable;
+      def: Definition & { type: DefinitionType.ImplicitGlobalVariable };
+    }
+  | {
+      type: VariableType.ImportBinding;
+      def: Definition & { type: DefinitionType.ImportBinding };
+    }
+  | {
+      type: VariableType.Parameter;
+      def: Definition & { type: DefinitionType.Parameter };
+    }
+  | {
+      type: VariableType.TSEnumMember;
+      def: Definition & { type: DefinitionType.TSEnumMember };
+    }
+  | {
+      type: VariableType.TSEnumName;
+      def: Definition & { type: DefinitionType.TSEnumName };
+    }
+  | {
+      type: VariableType.TSModuleName;
+      def: Definition & { type: DefinitionType.TSModuleName };
+    }
+  | {
+      type: VariableType.Type;
+      def: Definition & { type: DefinitionType.Type };
+    }
+  | {
+      type: VariableType.Variable;
+      def: Definition & { type: DefinitionType.Variable };
+    };
 
 type ModuleDeclarationWithBody = MakeRequired<
   TSESTree.TSModuleDeclaration,
   'body'
 >;
+
+interface Predicate {
+  predicate: (token: TSESTree.Token) => boolean;
+  tokenChar: string;
+}
+const isCommaToken: Predicate = {
+  predicate: (token: TSESTree.Token): boolean =>
+    token.type === AST_TOKEN_TYPES.Punctuator && token.value === ',',
+  tokenChar: ',',
+};
+const isLeftCurlyToken: Predicate = {
+  predicate: (token: TSESTree.Token): boolean =>
+    token.type === AST_TOKEN_TYPES.Punctuator && token.value === '{',
+  tokenChar: '{',
+};
+const isRightCurlyToken: Predicate = {
+  predicate: (token: TSESTree.Token): boolean =>
+    token.type === AST_TOKEN_TYPES.Punctuator && token.value === '}',
+  tokenChar: '}',
+};
+
+function assertToken(
+  { predicate, tokenChar }: Predicate,
+  token: TSESTree.Token | null,
+): TSESTree.Token {
+  if (token == null) {
+    throw new Error(
+      `Expected a valid "${tokenChar}" token, but found no token`,
+    );
+  }
+
+  if (!predicate(token)) {
+    throw new Error(
+      `Expected a valid "${tokenChar}" token, but got "${token.value}" instead`,
+    );
+  }
+  return token;
+}
 
 export default createRule<Options, MessageIds>({
   name: 'no-unused-vars',
@@ -76,7 +194,11 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
       recommended: 'recommended',
     },
+    fixable: 'code',
+    hasSuggestions: true,
     messages: {
+      removeUnusedImportDeclaration: 'Remove unused import declaration.',
+      removeUnusedVar: 'Remove unused variable "{{varName}}".',
       unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
       usedIgnoredVar:
         "'{{varName}}' is marked as ignored but is used{{additional}}.",
@@ -119,6 +241,19 @@ export default createRule<Options, MessageIds>({
                 type: 'string',
                 description:
                   'Regular expressions of destructured array variable names to not check for usage.',
+              },
+              enableAutofixRemoval: {
+                type: 'object',
+                additionalProperties: false,
+                description:
+                  'Configurable automatic fixes for different types of unused variables.',
+                properties: {
+                  imports: {
+                    type: 'boolean',
+                    description:
+                      'Whether to enable automatic removal of unused imports.',
+                  },
+                },
               },
               ignoreClassWithStaticInitBlock: {
                 type: 'boolean',
@@ -163,11 +298,166 @@ export default createRule<Options, MessageIds>({
       ModuleDeclarationWithBody | TSESTree.Program,
       boolean
     >();
+    const reportedUnusedVariables = new Set<ScopeVariable>();
+    function areAllSpecifiersUnused(decl: TSESTree.ImportDeclaration): boolean {
+      return context.sourceCode.getDeclaredVariables(decl).every(variable => {
+        return reportedUnusedVariables.has(variable);
+      });
+    }
+
+    const report = (
+      unusedVar: ScopeVariable,
+      opts: {
+        data: TSESLint.ReportDescriptorMessageData;
+        messageId: MessageIds;
+        node?: TSESTree.Node;
+      },
+    ) => {
+      reportedUnusedVariables.add(unusedVar);
+
+      const writeReferences = unusedVar.references.filter(
+        ref =>
+          ref.isWrite() &&
+          ref.from.variableScope === unusedVar.scope.variableScope,
+      );
+
+      const id = writeReferences.length
+        ? writeReferences[writeReferences.length - 1].identifier
+        : unusedVar.identifiers[0];
+
+      const { start } = id.loc;
+      const idLength = id.name.length;
+
+      const loc = {
+        start,
+        end: {
+          column: start.column + idLength,
+          line: start.line,
+        },
+      };
+
+      const fixer = (() => {
+        const { messageId, fix, useAutofix } = ((): {
+          fix?: TSESLint.ReportFixFunction;
+          messageId?: MessageIds;
+          useAutofix?: boolean;
+        } => {
+          if (unusedVar.defs.length !== 1) {
+            // If there's multiple definitions then we'd have to clean them all
+            // up! That's complicated and messy so for now let's just ignore it.
+            return {};
+          }
+
+          const { type, def } = defToVariableType(unusedVar.defs[0]);
+          switch (type) {
+            case VariableType.ArrayDestructure:
+              // TODO(bradzacher) -- this would be really easy to implement and
+              // is side-effect free!
+              return {};
+
+            case VariableType.CatchClause:
+              // TODO(bradzacher) -- this would be really easy to implement and
+              // is side-effect free!
+              return {};
+
+            case VariableType.ClassName:
+              // This would be easy to implement -- but classes can have
+              // side-effects in static initializers / static blocks. So it's
+              // dangerous to ever auto-fix remove them.
+              //
+              // Perhaps as an always-suggestion fixer...?
+              return {};
+
+            case VariableType.FunctionName:
+              // TODO(bradzacher) -- this would be really easy to implement and
+              // is side-effect free!
+              return {};
+
+            case VariableType.ImportBinding:
+              return {
+                ...getImportFixer(def),
+                useAutofix: options.enableAutofixRemoval.imports,
+              };
+
+            case VariableType.ImplicitGlobalVariable:
+              // We don't report these via this code path, so no fixer is possible
+              return {};
+
+            case VariableType.Parameter:
+              // This is easy to implement -- but we cannot implement it cos it
+              // changes the signature of the function which in turn might
+              // introduce type errors in consumers.
+              //
+              // Also parameters can have default values which might have
+              // side-effects.
+              //
+              // Perhaps as an always-suggestion fixer...?
+              return {};
+
+            case VariableType.TSEnumMember:
+              // We don't report unused enum members so no fixer is ever possible
+              return {};
+
+            case VariableType.TSEnumName:
+              // TODO(bradzacher) -- this would be really easy to implement and
+              // is side-effect free!
+              return {};
+
+            case VariableType.TSModuleName:
+              // This is easy to implement -- but TS namespaces are eagerly
+              // initialized -- meaning that they might have side-effects in
+              // the body. So it's dangerous to ever auto-fix remove them.
+              //
+              // Perhaps as an always-suggestion fixer...?
+              return {};
+
+            case VariableType.Type:
+              // TODO(bradzacher) -- this would be really easy to implement and
+              // is side-effect free!
+              return {};
+
+            case VariableType.Variable:
+              // TODO(bradzacher) -- this would be really easy to implement
+              return {};
+          }
+        })();
+
+        if (!fix) {
+          return {};
+        }
+
+        if (useAutofix) {
+          return { fix };
+        }
+
+        const data = {
+          varName: unusedVar.name,
+        };
+        return {
+          suggest: [
+            {
+              messageId: messageId ?? ('removeUnusedVar' as const),
+              data,
+              fix,
+            },
+          ],
+        };
+      })();
+      context.report({
+        ...opts,
+        ...fixer,
+        loc,
+        node: id,
+      });
+    };
 
     const options = ((): TranslatedOptions => {
       const options: TranslatedOptions = {
         args: 'after-used',
         caughtErrors: 'all',
+        enableAutofixRemoval: {
+          imports: false,
+        },
         ignoreClassWithStaticInitBlock: false,
         ignoreRestSiblings: false,
         ignoreUsingDeclarations: false,
@@ -220,17 +510,223 @@ export default createRule<Options, MessageIds>({
             'u',
           );
         }
+
+        if (firstOption.enableAutofixRemoval) {
+          // eslint-disable-next-line unicorn/no-lonely-if -- will add more cases later
+          if (firstOption.enableAutofixRemoval.imports != null) {
+            options.enableAutofixRemoval.imports =
+              firstOption.enableAutofixRemoval.imports;
+          }
+        }
       }
 
       return options;
     })();
+
+    function getImportFixer(def: ImportBindingDefinition): {
+      fix: TSESLint.ReportFixFunction;
+      messageId: MessageIds;
+    } {
+      switch (def.node.type) {
+        case AST_NODE_TYPES.TSImportEqualsDeclaration:
+          // import equals declarations can only have one binding -- so we can
+          // just remove entire import declaration
+          return {
+            messageId: 'removeUnusedImportDeclaration',
+            fix: fixer => fixer.remove(def.node),
+          };
+
+        case AST_NODE_TYPES.ImportDefaultSpecifier: {
+          const importDecl = def.node.parent;
+          if (
+            importDecl.specifiers.length === 1 ||
+            areAllSpecifiersUnused(importDecl)
+          ) {
+            // all specifiers are unused -- so we can just remove entire import
+            // declaration
+            return {
+              messageId: 'removeUnusedImportDeclaration',
+              fix: fixer => fixer.remove(importDecl),
+            };
+          }
+
+          // in this branch we know the following things:
+          // 1) there is at least one specifier that is used
+          // 2) the default specifier is unused
+          //
+          // by process of elimination we can deduce that there is at least one
+          // named specifier that is used
+          //
+          // i.e. the code must be import Unused, { Used, ... } from 'module';
+          //
+          // there's one or more unused named specifiers, so we must remove the
+          // default specifier in isolation including the trailing comma.
+          //
+          //     import Unused, { Used, ... } from 'module';
+          //            ^^^^^^^ remove this
+          //
+          // NOTE: we could also remove the spaces between the comma and the
+          // opening curly brace -- but this does risk removing comments. To be
+          // safe we'll be conservative for now
+          //
+          // TODO(bradzacher) -- consider removing the extra space whilst also
+          //                     preserving comments.
+          return {
+            messageId: 'removeUnusedVar',
+            fix: fixer => {
+              const comma = nullThrows(
+                context.sourceCode.getTokenAfter(def.node),
+                NullThrowsReasons.MissingToken(',', 'import specifier'),
+              );
+              assertToken(isCommaToken, comma);
+
+              return fixer.removeRange([
+                Math.min(def.node.range[0], comma.range[0]),
+                Math.max(def.node.range[1], comma.range[1]),
+              ]);
+            },
+          };
+        }
+
+        case AST_NODE_TYPES.ImportSpecifier: {
+          // guaranteed to NOT be in an export statement as we're inspecting an
+          // import
+          const importDecl = def.node.parent as Exclude<
+            typeof def.node.parent,
+            TSESTree.ExportAllDeclaration | TSESTree.ExportNamedDeclaration
+          >;
+          if (
+            importDecl.specifiers.length === 1 ||
+            areAllSpecifiersUnused(importDecl)
+          ) {
+            // all specifiers are unused -- so we can just remove entire import
+            // declaration
+            return {
+              messageId: 'removeUnusedImportDeclaration',
+              fix: fixer => fixer.remove(importDecl),
+            };
+          }
+
+          return {
+            messageId: 'removeUnusedVar',
+            fix: fixer => {
+              const usedNamedSpecifiers = context.sourceCode
+                .getDeclaredVariables(importDecl)
+                .map(variable => {
+                  if (reportedUnusedVariables.has(variable)) {
+                    return null;
+                  }
+                  const specifier = variable.defs[0].node;
+                  if (specifier.type !== AST_NODE_TYPES.ImportSpecifier) {
+                    return null;
+                  }
+                  return specifier;
+                })
+                .filter(v => v != null);
+
+              if (usedNamedSpecifiers.length === 0) {
+                // in this branch we know the following things:
+                // 1) there is at least one specifier that is used
+                // 2) all named specifiers are unused
+                //
+                // by process of elimination we can deduce that there is a
+                // default specifier and it is the only used specifier
+                //
+                // i.e. the code must be import Used, { Unused, ... } from
+                //     'module';
+                //
+                // So we can just remove the entire curly content and the comma
+                // before, eg import Used, { Unused, ... } from 'module';
+                // ^^^^^^^^^^^^^^^^^ remove this
+
+                const leftCurly = assertToken(
+                  isLeftCurlyToken,
+                  context.sourceCode.getFirstToken(
+                    importDecl,
+                    isLeftCurlyToken.predicate,
+                  ),
+                );
+                const leftToken = assertToken(
+                  isCommaToken,
+                  context.sourceCode.getTokenBefore(leftCurly),
+                );
+
+                const rightToken = assertToken(
+                  isRightCurlyToken,
+                  context.sourceCode.getFirstToken(
+                    importDecl,
+                    isRightCurlyToken.predicate,
+                  ),
+                );
+                return fixer.removeRange([
+                  leftToken.range[0],
+                  rightToken.range[1],
+                ]);
+              }
+
+              // in this branch we know there is at least one used named
+              // specifier which means we have to remove each unused specifier
+              // in isolation.
+              //
+              // there's 3 possible cases to care about: import { Unused,
+              //    Used... } from 'module'; import { ...Used, Unused } from
+              //    'module'; import { ...Used, Unused, } from 'module';
+              //
+              // Note that because of the above usedNamedSpecifiers check we
+              // know that we don't have one of these cases: import { Unused }
+              // from 'module'; import { Unused, Unused... } from 'module';
+              // import { ...Unused, Unused, } from 'module';
+              //
+              // The result is that we know that there _must_ be a comma that
+              // needs cleaning up
+              //
+              // try to remove the leading comma first as it leads to a nicer
+              // fix output in most cases
+              //
+              // leading preferred: import { Used, Unused, Used } from 'module';
+              //   ^^^^^^^^ remove import { Used, Used } from 'module';
+              //
+              // trailing preferred: import { Used, Unused, Used } from
+              //   'module'; ^^^^^^^ remove import { Used,  Used } from
+              //   'module'; ^^ ugly double space
+              //
+              // But we need to still fallback to the trailing comma for cases
+              // where the unused specifier is the first in the import eg:
+              // import { Unused, Used } from 'module';
+              const maybeComma = context.sourceCode.getTokenBefore(def.node);
+              const comma =
+                maybeComma && isCommaToken.predicate(maybeComma)
+                  ? maybeComma
+                  : assertToken(
+                      isCommaToken,
+                      context.sourceCode.getTokenAfter(def.node),
+                    );
+              return fixer.removeRange([
+                Math.min(def.node.range[0], comma.range[0]),
+                Math.max(def.node.range[1], comma.range[1]),
+              ]);
+            },
+          };
+        }
+
+        case AST_NODE_TYPES.ImportNamespaceSpecifier: {
+          // namespace specifiers cannot be used with any other specifier -- so
+          // we can just remove entire import declaration
+          const importDecl = def.node.parent;
+          return {
+            messageId: 'removeUnusedImportDeclaration',
+            fix: fixer => fixer.remove(importDecl),
+          };
+        }
+      }
+    }
 
     /**
      * Determines what variable type a def is.
      * @param def the declaration to check
      * @returns a simple name for the types of variables that this rule supports
      */
-    function defToVariableType(def: Definition): VariableType {
+    function defToVariableType(def: Definition): DefToVariableType {
       /*
        * This `destructuredArrayIgnorePattern` error report works differently from the catch
        * clause and parameter error reports. _Both_ the `varsIgnorePattern` and the
@@ -244,16 +740,32 @@ export default createRule<Options, MessageIds>({
         options.destructuredArrayIgnorePattern &&
         def.name.parent.type === AST_NODE_TYPES.ArrayPattern
       ) {
-        return 'array-destructure';
+        return { type: VariableType.ArrayDestructure, def };
       }
 
       switch (def.type) {
         case DefinitionType.CatchClause:
-          return 'catch-clause';
+          return { type: VariableType.CatchClause, def };
+        case DefinitionType.ClassName:
+          return { type: VariableType.ClassName, def };
+        case DefinitionType.FunctionName:
+          return { type: VariableType.FunctionName, def };
+        case DefinitionType.ImplicitGlobalVariable:
+          return { type: VariableType.ImplicitGlobalVariable, def };
+        case DefinitionType.ImportBinding:
+          return { type: VariableType.ImportBinding, def };
         case DefinitionType.Parameter:
-          return 'parameter';
-        default:
-          return 'variable';
+          return { type: VariableType.Parameter, def };
+        case DefinitionType.TSEnumName:
+          return { type: VariableType.TSEnumName, def };
+        case DefinitionType.TSEnumMember:
+          return { type: VariableType.TSEnumMember, def };
+        case DefinitionType.TSModuleName:
+          return { type: VariableType.TSModuleName, def };
+        case DefinitionType.Type:
+          return { type: VariableType.Type, def };
+        case DefinitionType.Variable:
+          return { type: VariableType.Variable, def };
       }
     }
 
@@ -269,25 +781,25 @@ export default createRule<Options, MessageIds>({
       variableDescription: string;
     } {
       switch (variableType) {
-        case 'array-destructure':
+        case VariableType.ArrayDestructure:
           return {
             pattern: options.destructuredArrayIgnorePattern?.toString(),
             variableDescription: 'elements of array destructuring',
           };
 
-        case 'catch-clause':
+        case VariableType.CatchClause:
           return {
             pattern: options.caughtErrorsIgnorePattern?.toString(),
             variableDescription: 'caught errors',
           };
 
-        case 'parameter':
+        case VariableType.Parameter:
           return {
             pattern: options.argsIgnorePattern?.toString(),
             variableDescription: 'args',
           };
 
-        case 'variable':
+        default:
           return {
             pattern: options.varsIgnorePattern?.toString(),
             variableDescription: 'vars',
@@ -309,7 +821,7 @@ export default createRule<Options, MessageIds>({
 
       if (def) {
         const { pattern, variableDescription } = getVariableDescription(
-          defToVariableType(def),
+          defToVariableType(def).type,
         );
 
         if (pattern && variableDescription) {
@@ -338,7 +850,7 @@ export default createRule<Options, MessageIds>({
 
       if (def) {
         const { pattern, variableDescription } = getVariableDescription(
-          defToVariableType(def),
+          defToVariableType(def).type,
         );
 
         if (pattern && variableDescription) {
@@ -473,10 +985,12 @@ export default createRule<Options, MessageIds>({
           options.destructuredArrayIgnorePattern?.test(def.name.name)
         ) {
           if (options.reportUsedIgnorePattern && used) {
-            context.report({
-              node: def.name,
+            report(variable, {
               messageId: 'usedIgnoredVar',
-              data: getUsedIgnoredMessageData(variable, 'array-destructure'),
+              data: getUsedIgnoredMessageData(
+                variable,
+                VariableType.ArrayDestructure,
+              ),
             });
           }
           continue;
@@ -503,10 +1017,12 @@ export default createRule<Options, MessageIds>({
             options.caughtErrorsIgnorePattern?.test(def.name.name)
           ) {
             if (options.reportUsedIgnorePattern && used) {
-              context.report({
-                node: def.name,
+              report(variable, {
                 messageId: 'usedIgnoredVar',
-                data: getUsedIgnoredMessageData(variable, 'catch-clause'),
+                data: getUsedIgnoredMessageData(
+                  variable,
+                  VariableType.CatchClause,
+                ),
               });
             }
             continue;
@@ -522,10 +1038,12 @@ export default createRule<Options, MessageIds>({
             options.argsIgnorePattern?.test(def.name.name)
           ) {
             if (options.reportUsedIgnorePattern && used) {
-              context.report({
-                node: def.name,
+              report(variable, {
                 messageId: 'usedIgnoredVar',
-                data: getUsedIgnoredMessageData(variable, 'parameter'),
+                data: getUsedIgnoredMessageData(
+                  variable,
+                  VariableType.Parameter,
+                ),
               });
             }
             continue;
@@ -551,10 +1069,9 @@ export default createRule<Options, MessageIds>({
                unused. either way, don't complain about their naming. */
             def.type !== TSESLint.Scope.DefinitionType.TSEnumMember
           ) {
-            context.report({
-              node: def.name,
+            report(variable, {
               messageId: 'usedIgnoredVar',
-              data: getUsedIgnoredMessageData(variable, 'variable'),
+              data: getUsedIgnoredMessageData(variable, VariableType.Variable),
             });
           }
           continue;
@@ -668,6 +1185,7 @@ export default createRule<Options, MessageIds>({
             const usedOnlyAsType = unusedVar.references.some(ref =>
               referenceContainsTypeQuery(ref.identifier),
             );
+            const messageId = usedOnlyAsType ? 'usedOnlyAsType' : 'unusedVar';
 
             const isImportUsedOnlyAsType =
               usedOnlyAsType &&
@@ -678,31 +1196,7 @@ export default createRule<Options, MessageIds>({
               continue;
             }
 
-            const writeReferences = unusedVar.references.filter(
-              ref =>
-                ref.isWrite() &&
-                ref.from.variableScope === unusedVar.scope.variableScope,
-            );
-
-            const id = writeReferences.length
-              ? writeReferences[writeReferences.length - 1].identifier
-              : unusedVar.identifiers[0];
-
-            const messageId = usedOnlyAsType ? 'usedOnlyAsType' : 'unusedVar';
-
-            const { start } = id.loc;
-            const idLength = id.name.length;
-
-            const loc = {
-              start,
-              end: {
-                column: start.column + idLength,
-                line: start.line,
-              },
-            };
-
-            context.report({
-              loc,
+            report(unusedVar, {
               messageId,
               data: unusedVar.references.some(ref => ref.isWrite())
                 ? getAssignedMessageData(unusedVar)

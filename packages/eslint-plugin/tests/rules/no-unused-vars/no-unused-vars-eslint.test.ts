@@ -2,6 +2,9 @@
 // Original Code: https://github.com/eslint/eslint/blob/eb76282e0a2db8aa10a3d5659f5f9237d9729121/tests/lib/rules/no-unused-vars.js
 // License      : https://github.com/eslint/eslint/blob/eb76282e0a2db8aa10a3d5659f5f9237d9729121/LICENSE
 
+// We try not to change this file, as every modification is added maintenance burden
+/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors, @typescript-eslint/internal/no-dynamic-tests */
+
 import type { TestCaseError } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
 
@@ -381,7 +384,25 @@ function f() {
     },
     {
       code: "import x from 'y';",
-      errors: [definedError('x')],
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'x',
+          },
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'x',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: '',
+            },
+          ],
+        },
+      ],
       languageOptions: {
         parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       },

@@ -1,6 +1,6 @@
+// eslint-disable-next-line n/no-extraneous-import
 import type { SponsorData } from 'website/src/components/home/FinancialContributors/types.ts';
 
-import fetch from 'cross-fetch';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 

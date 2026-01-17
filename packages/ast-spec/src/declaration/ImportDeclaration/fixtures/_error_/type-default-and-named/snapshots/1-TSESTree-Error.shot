@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > type-default-and-named > TSESTree - Error`]
+TSError
+> 1 | import type foo, {named} from 'foo'
+    |        ^^^^^^^^^^^^^^^^^ A type-only import can specify a default import or named bindings, but not both.
+  2 |

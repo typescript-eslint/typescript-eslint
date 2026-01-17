@@ -75,6 +75,13 @@ export interface CreateProjectServiceSettings {
    * Root directory for the tsconfig.json file, if not the current directory.
    */
   tsconfigRootDir?: string;
+
+  /**
+   * Custom project service host.
+   *
+   * @default `ts.sys` with stub watchers
+   */
+  host?: Partial<ts.server.ServerHost>;
 }
 
 /**
@@ -91,6 +98,7 @@ export interface CreateProjectServiceSettings {
  * ```
  */
 export function createProjectService({
+  host,
   jsDocParsingMode,
   options: optionsRaw = {},
   tsconfigRootDir,
@@ -129,6 +137,7 @@ export function createProjectService({
         module: undefined,
       }),
     }),
+    ...host,
   };
 
   const logger: ts.server.Logger = {

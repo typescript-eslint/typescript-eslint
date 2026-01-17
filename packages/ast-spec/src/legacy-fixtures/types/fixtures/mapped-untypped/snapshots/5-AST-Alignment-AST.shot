@@ -26,6 +26,7 @@ Snapshot Diff:
 -                 constraint: TSStringKeyword {
 -                   type: 'TSStringKeyword',
 +                 nameType: null,
++                 optional: false,
 +                 typeParameter: TSTypeParameter {
 +                   type: 'TSTypeParameter',
 +                   const: false,

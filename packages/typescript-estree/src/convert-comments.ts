@@ -9,43 +9,26 @@ import { AST_TOKEN_TYPES } from './ts-estree';
 /**
  * Convert all comments for the given AST.
  * @param ast the AST object
- * @param code the TypeScript code
  * @returns the converted ESTreeComment
  * @private
  */
-export function convertComments(
-  ast: ts.SourceFile,
-  code: string,
-): TSESTree.Comment[] {
-  const comments: TSESTree.Comment[] = [];
-
-  tsutils.forEachComment(
-    ast,
-    (_, comment) => {
+export function convertComments(ast: ts.SourceFile): TSESTree.Comment[] {
+  return Array.from(
+    tsutils.iterateComments(ast),
+    ({ end, kind, pos, value }) => {
       const type =
-        comment.kind === ts.SyntaxKind.SingleLineCommentTrivia
+        kind === ts.SyntaxKind.SingleLineCommentTrivia
           ? AST_TOKEN_TYPES.Line
           : AST_TOKEN_TYPES.Block;
-      const range: TSESTree.Range = [comment.pos, comment.end];
+      const range: TSESTree.Range = [pos, end];
       const loc = getLocFor(range, ast);
 
-      // both comments start with 2 characters - /* or //
-      const textStart = range[0] + 2;
-      const textEnd =
-        comment.kind === ts.SyntaxKind.SingleLineCommentTrivia
-          ? // single line comments end at the end
-            range[1]
-          : // multiline comments end 2 characters early
-            range[1] - 2;
-      comments.push({
+      return {
         type,
         loc,
         range,
-        value: code.slice(textStart, textEnd),
-      });
+        value,
+      };
     },
-    ast,
   );
-
-  return comments;
 }

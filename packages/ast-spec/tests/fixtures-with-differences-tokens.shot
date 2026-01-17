@@ -13,6 +13,7 @@ exports[`AST Fixtures > List fixtures with Token differences`]
   "declaration/TSEnumDeclaration/fixtures/with-member-one/fixture.ts",
   "declaration/TSInterfaceDeclaration/fixtures/declare/fixture.ts",
   "declaration/TSInterfaceDeclaration/fixtures/empty/fixture.ts",
+  "declaration/TSInterfaceDeclaration/fixtures/extends-implements/fixture.ts",
   "declaration/TSInterfaceDeclaration/fixtures/extends-many/fixture.ts",
   "declaration/TSInterfaceDeclaration/fixtures/extends-one/fixture.ts",
   "declaration/TSInterfaceDeclaration/fixtures/type-param-many/fixture.ts",

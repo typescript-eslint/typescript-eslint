@@ -3,6 +3,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
+import { getRuleTesterCallObject } from '../util/getRuleTesterCallObject.js';
 import { createRule } from '../util/index.js';
 
 export default createRule({
@@ -20,17 +21,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    function isRuleTesterCall(node: TSESTree.Node): boolean {
-      return (
-        node.type === AST_NODE_TYPES.CallExpression &&
-        node.callee.type === AST_NODE_TYPES.MemberExpression &&
-        node.callee.object.type === AST_NODE_TYPES.Identifier &&
-        node.callee.object.name === 'ruleTester' &&
-        node.callee.property.type === AST_NODE_TYPES.Identifier &&
-        node.callee.property.name === 'run'
-      );
-    }
-
     function reportDynamicElements(node: TSESTree.Node): void {
       switch (node.type) {
         case AST_NODE_TYPES.CallExpression:
@@ -103,34 +93,29 @@ export default createRule({
 
     return {
       CallExpression(node) {
-        if (isRuleTesterCall(node)) {
-          // If valid code, arg length is always 3 but we need to avoid conflict while dev
-          if (node.arguments.length < 3) {
-            return;
-          }
-          const testObject = node.arguments[2];
+        const testObject = getRuleTesterCallObject(node);
+        if (!testObject) {
+          return;
+        }
 
-          if (testObject.type === AST_NODE_TYPES.ObjectExpression) {
-            for (const prop of testObject.properties) {
-              const isTestCases =
-                prop.type === AST_NODE_TYPES.Property &&
-                prop.key.type === AST_NODE_TYPES.Identifier &&
-                (prop.key.name === 'valid' || prop.key.name === 'invalid');
+        for (const prop of testObject.properties) {
+          const isTestCases =
+            prop.type === AST_NODE_TYPES.Property &&
+            prop.key.type === AST_NODE_TYPES.Identifier &&
+            (prop.key.name === 'valid' || prop.key.name === 'invalid');
 
-              if (isTestCases) {
-                if (prop.value.type === AST_NODE_TYPES.ArrayExpression) {
-                  prop.value.elements.forEach(element => {
-                    if (element) {
-                      reportDynamicElements(element);
-                    }
-                  });
-                } else {
-                  context.report({
-                    node: prop.value,
-                    messageId: 'noDynamicTests',
-                  });
+          if (isTestCases) {
+            if (prop.value.type === AST_NODE_TYPES.ArrayExpression) {
+              prop.value.elements.forEach(element => {
+                if (element) {
+                  reportDynamicElements(element);
                 }
-              }
+              });
+            } else {
+              context.report({
+                node: prop.value,
+                messageId: 'noDynamicTests',
+              });
             }
           }
         }

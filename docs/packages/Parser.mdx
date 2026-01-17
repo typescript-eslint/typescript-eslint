@@ -283,6 +283,21 @@ If this setting is specified, you must only lint files that are included in the 
 
 For an option that allows linting files outside of your TSConfig file(s), see [`projectService`](#projectservice).
 
+#### Usage with `projectService`
+
+Enabling both `project` and `projectService` at the same time will cause an error:
+
+> ```plaintext
+> Enabling "project" does nothing when "projectService" is enabled. You can remove the "project" setting
+> ```
+
+If you're enabling `projectService`, we generally recommend disabling `project`.
+However, if you need, you can disable this check with a `TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR` environment variable:
+
+```shell
+TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR=true npx eslint .
+```
+
 <HiddenHeading id="experimental_useprojectservice" />
 
 ### `projectService`
@@ -418,7 +433,7 @@ For example, by default it will ensure that a glob like `./**/tsconfig.json` wil
 
 > Default: the directory of the ESLint config file.
 
-This option allows you to provide the root directory for relative TSConfig paths specified in the `project` option above.
+This option allows you to provide the root directory for relative TSConfig paths specified in the [`project`](#project) and [`projectService`](#projectservice) options.
 Doing so ensures running ESLint from a directory other than the root will still be able to find your TSConfig.
 
 `tsconfigRootDir` uses the call stack to determine the closest `eslint.config.*` ESLint config file.
@@ -427,6 +442,7 @@ Manually specifying `tsconfigRootDir` to the directory of your ESLint config fil
 
 ```js
 parserOptions: {
+  projectService: true,
   tsconfigRootDir: import.meta.dirname,
   // or, in CommonJS, __dirname
 }
