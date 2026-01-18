@@ -411,10 +411,10 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
     },
     {
       code: `
-            declare module '2' {
-            type Array<Y> = Y;
-            const y: Array<2>;
-            }
+        declare module '2' {
+          type Array<Y> = Y;
+          const y: Array<2>;
+        }
       `,
       options: [{ default: 'generic' }],
     },
