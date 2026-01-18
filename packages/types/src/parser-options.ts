@@ -39,8 +39,9 @@ export type EcmaVersion =
 
 export type SourceTypeClassic = 'module' | 'script';
 export type SourceType = 'commonjs' | SourceTypeClassic;
+  
 
-export type JSDocParsingMode = 'all' | 'none' | 'type-info';
+       export type JSDocParsingMode = 'all' | 'none' | 'type-info';
 
 /**
  * Granular options to configure the project service.
