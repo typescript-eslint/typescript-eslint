@@ -51,6 +51,23 @@ export class Referencer extends Visitor {
     this.#lib = options.lib;
   }
 
+  private populateGlobalsFromLib(globalScope: GlobalScope): void {
+    const libs = this.resolveLibDefinitions();
+
+    for (const lib of libs) {
+      for (const [name, variable] of lib.variables) {
+        globalScope.defineImplicitVariable(name, variable);
+      }
+    }
+
+    // Special implicit global for const assertions (`{} as const`, `<const>{}`)
+    globalScope.defineImplicitVariable('const', {
+      eslintImplicitGlobalSetting: 'readonly',
+      isTypeVariable: true,
+      isValueVariable: false,
+    });
+  }
+
   /**
    * Resolves lib names into a deduplicated set of LibDefinitions,
    * including all transitive dependencies.
@@ -76,23 +93,6 @@ export class Referencer extends Visitor {
     }
 
     return resolvedLibs;
-  }
-
-  private populateGlobalsFromLib(globalScope: GlobalScope): void {
-    const libs = this.resolveLibDefinitions();
-
-    for (const lib of libs) {
-      for (const [name, variable] of lib.variables) {
-        globalScope.defineImplicitVariable(name, variable);
-      }
-    }
-
-    // Special implicit global for const assertions (`{} as const`, `<const>{}`)
-    globalScope.defineImplicitVariable('const', {
-      eslintImplicitGlobalSetting: 'readonly',
-      isTypeVariable: true,
-      isValueVariable: false,
-    });
   }
 
   public close(node: TSESTree.Node): void {
