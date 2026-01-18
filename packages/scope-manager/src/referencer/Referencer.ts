@@ -4,6 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type { GlobalScope, Scope } from '../scope';
 import type { ScopeManager } from '../ScopeManager';
+import type { LibDefinition } from '../variable';
 import type { ReferenceImplicitGlobal } from './Reference';
 import type { VisitorOptions } from './Visitor';
 
@@ -18,7 +19,7 @@ import {
   TSModuleNameDefinition,
   VariableDefinition,
 } from '../definition';
-import { resolveLibDefinitionsWithDependencies } from '../lib/lib.resolve';
+import { lib as TSLibraries } from '../lib';
 import { ClassVisitor } from './ClassVisitor';
 import { ExportVisitor } from './ExportVisitor';
 import { ImportVisitor } from './ImportVisitor';
@@ -50,8 +51,35 @@ export class Referencer extends Visitor {
     this.#lib = options.lib;
   }
 
+  /**
+   * Resolves lib names into a deduplicated set of LibDefinitions,
+   * including all transitive dependencies.
+   */
+  private resolveLibDefinitions(): Set<LibDefinition> {
+    const resolvedLibs = new Set<LibDefinition>();
+
+    // Resolve the top-level lib names into LibDefinition objects
+    for (const lib of this.#lib) {
+      const definition = TSLibraries.get(lib);
+      if (!definition) {
+        throw new Error(`Invalid value for lib provided: ${lib}`);
+      }
+      resolvedLibs.add(definition);
+    }
+
+    // Expand transitive lib dependencies.
+    // New entries added to the Set during iteration will be visited exactly once.
+    for (const lib of resolvedLibs) {
+      for (const dependency of lib.libs) {
+        resolvedLibs.add(dependency);
+      }
+    }
+
+    return resolvedLibs;
+  }
+
   private populateGlobalsFromLib(globalScope: GlobalScope): void {
-    const libs = resolveLibDefinitionsWithDependencies(this.#lib);
+    const libs = this.resolveLibDefinitions();
 
     for (const lib of libs) {
       for (const [name, variable] of lib.variables) {
