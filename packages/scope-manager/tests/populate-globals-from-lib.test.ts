@@ -1,11 +1,12 @@
 import { describe, it, expect } from 'vitest';
 
 import type { ScopeManager } from '../src';
-import { analyze } from '../src';
 import type { Definition } from '../src/definition';
+
+import { analyze } from '../src';
 import { parse } from './test-utils';
 
-// 테스트용 코드 (lib 전역을 폭넓게 사용)
+// Test code that heavily relies on lib-provided globals
 const CODE = `
 const arr: Array<number> = [1, 2, 3];
 const map: Map<string, number> = new Map();
@@ -21,10 +22,10 @@ type T2 = Record<string, number>;
 const ast = parse(CODE, { range: true });
 
 /**
- * analyze 결과에서
- * - global scope
- * - 비교 가능한 최소 정보만 추출
- * - 순서 의존성 제거
+ * Extracts a comparable snapshot from analyze() output:
+ * - focuses on the global scope
+ * - includes only the minimal information needed for comparison
+ * - removes ordering dependencies by sorting
  */
 function extractGlobalSnapshot(scopeManager: ScopeManager) {
   const globalScope = scopeManager.globalScope!;
@@ -32,12 +33,12 @@ function extractGlobalSnapshot(scopeManager: ScopeManager) {
   return {
     variables: [...globalScope.variables.values()]
       .map(variable => ({
-        name: variable.name,
-        isTypeVariable: variable.isTypeVariable,
-        isValueVariable: variable.isValueVariable,
         defs: variable.defs.map((def: Definition) => ({
           type: def.type,
         })),
+        isTypeVariable: variable.isTypeVariable,
+        isValueVariable: variable.isValueVariable,
+        name: variable.name,
       }))
       .sort((a, b) => a.name.localeCompare(b.name)),
   };
@@ -70,7 +71,7 @@ describe('populateGlobalsFromLib – error handling', () => {
   it('throws error for invalid lib name', () => {
     expect(() => {
       analyze(ast, { lib: ['invalid-lib-name' as never] });
-    }).toThrow('Invalid value for lib provided: invalid-lib-name');
+    }).toThrowError('Invalid value for lib provided: invalid-lib-name');
   });
 });
 
@@ -86,12 +87,10 @@ describe('populateGlobalsFromLib – lib dependency flattening', () => {
       [...es5Result.globalScope!.variables.values()].map(v => v.name),
     );
 
-    // es2018은 es5의 모든 전역 변수를 포함해야 함
     for (const varName of es5Vars) {
       expect(es2018Vars.has(varName)).toBe(true);
     }
 
-    // es2018은 es5보다 더 많은 전역 변수를 가져야 함 (Promise, Symbol 등)
     expect(es2018Vars.size).toBeGreaterThan(es5Vars.size);
   });
 
@@ -108,7 +107,6 @@ describe('populateGlobalsFromLib – lib dependency flattening', () => {
       [...es5OnlyResult.globalScope!.variables.values()].map(v => v.name),
     );
 
-    // combined는 es5의 모든 변수 + Promise, Symbol을 포함해야 함
     for (const varName of es5Vars) {
       expect(combinedVars.has(varName)).toBe(true);
     }
@@ -131,7 +129,6 @@ describe('populateGlobalsFromLib – deduplication', () => {
   });
 
   it('overlapping libs are deduplicated correctly', () => {
-    // es2018은 이미 es2017을 포함하므로, 명시적으로 es2017을 추가해도 결과가 같아야 함
     const es2018Only = analyze(ast, { lib: ['es2018'] });
     const es2018WithEs2017 = analyze(ast, { lib: ['es2018', 'es2017'] });
 
@@ -144,7 +141,6 @@ describe('populateGlobalsFromLib – deduplication', () => {
 
 describe('populateGlobalsFromLib – const assertion global', () => {
   it('const type variable is always registered for const assertions', () => {
-    // lib이 비어있어도 const 타입 변수는 등록되어야 함
     const noLibResult = analyze(ast, { lib: [] });
     const globalScope = noLibResult.globalScope!;
 
