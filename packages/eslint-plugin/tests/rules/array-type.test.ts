@@ -404,7 +404,7 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       code: "const x: Readonly<string> = 'a';",
       options: [{ default: 'array' }],
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/11911
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11964
     {
       code: 'type Generic<Array extends unknown[]> = { array: Array };',
       options: [{ default: 'array' }],
