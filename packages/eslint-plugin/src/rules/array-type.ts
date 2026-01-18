@@ -216,6 +216,14 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        if (
+          (node.typeName.name === 'Array' ||
+            node.typeName.name === 'ReadonlyArray') &&
+          !node.typeArguments
+        ) {
+          return;
+        }
+
         const isReadonlyWithGenericArrayType =
           node.typeName.name === 'Readonly' &&
           node.typeArguments?.params[0].type === AST_NODE_TYPES.TSArrayType;
