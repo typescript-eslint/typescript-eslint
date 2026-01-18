@@ -404,6 +404,27 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       code: "const x: Readonly<string> = 'a';",
       options: [{ default: 'array' }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11911
+    {
+      code: 'type Generic<Array extends unknown[]> = { array: Array };',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: "declare module '2' { type Array<Y> = Y; const y: Array<2>; }",
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: "let z: Array = [3, '4'];",
+      options: [{ default: 'array-simple' }],
+    },
+    {
+      code: 'let x: Array;',
+      options: [{ default: 'generic' }],
+    },
+    {
+      code: 'type MyType<ReadonlyArray> = { data: ReadonlyArray };',
+      options: [{ default: 'array' }],
+    },
   ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
@@ -1304,19 +1325,19 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       options: [{ default: 'array-simple' }],
       output: "let y: string[] = <string[]>['2'];",
     },
-    {
-      code: "let z: Array = [3, '4'];",
-      errors: [
-        {
-          column: 8,
-          data: { className: 'Array', readonlyPrefix: '', type: 'any' },
-          line: 1,
-          messageId: 'errorStringArraySimple',
-        },
-      ],
-      options: [{ default: 'array-simple' }],
-      output: "let z: any[] = [3, '4'];",
-    },
+    // {
+    //   code: "let z: Array = [3, '4'];",
+    //   errors: [
+    //     {
+    //       column: 8,
+    //       data: { className: 'Array', readonlyPrefix: '', type: 'any' },
+    //       line: 1,
+    //       messageId: 'errorStringArraySimple',
+    //     },
+    //   ],
+    //   options: [{ default: 'array-simple' }],
+    //   output: "let z: any[] = [3, '4'];",
+    // },
     {
       code: "let ya = [[1, '2']] as [number, string][];",
       errors: [
@@ -1506,19 +1527,6 @@ function barFunction(bar: Array<ArrayClass<String>>) {
       output: "let y: string[] = <string[]>['2'];",
     },
     {
-      code: "let z: Array = [3, '4'];",
-      errors: [
-        {
-          column: 8,
-          data: { className: 'Array', readonlyPrefix: '', type: 'any' },
-          line: 1,
-          messageId: 'errorStringArray',
-        },
-      ],
-      options: [{ default: 'array' }],
-      output: "let z: any[] = [3, '4'];",
-    },
-    {
       code: 'type Arr<T> = Array<T>;',
       errors: [
         {
@@ -1634,32 +1642,6 @@ function fooFunction(foo: ArrayClass<string>[]) {
       ],
       options: [{ default: 'array' }],
       output: 'type fooIntersection = (string & number)[];',
-    },
-    {
-      code: 'let x: Array;',
-      errors: [
-        {
-          column: 8,
-          data: { className: 'Array', readonlyPrefix: '', type: 'any' },
-          line: 1,
-          messageId: 'errorStringArray',
-        },
-      ],
-      options: [{ default: 'array' }],
-      output: 'let x: any[];',
-    },
-    {
-      code: 'let x: Array;',
-      errors: [
-        {
-          column: 8,
-          data: { className: 'Array', readonlyPrefix: '', type: 'any' },
-          line: 1,
-          messageId: 'errorStringArraySimple',
-        },
-      ],
-      options: [{ default: 'array-simple' }],
-      output: 'let x: any[];',
     },
     {
       code: 'let x: Array<number> = [1] as number[];',
