@@ -1330,19 +1330,6 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       options: [{ default: 'array-simple' }],
       output: "let y: string[] = <string[]>['2'];",
     },
-    // {
-    //   code: "let z: Array = [3, '4'];",
-    //   errors: [
-    //     {
-    //       column: 8,
-    //       data: { className: 'Array', readonlyPrefix: '', type: 'any' },
-    //       line: 1,
-    //       messageId: 'errorStringArraySimple',
-    //     },
-    //   ],
-    //   options: [{ default: 'array-simple' }],
-    //   output: "let z: any[] = [3, '4'];",
-    // },
     {
       code: "let ya = [[1, '2']] as [number, string][];",
       errors: [
