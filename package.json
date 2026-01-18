@@ -22,6 +22,7 @@
   },
   "homepage": "https://typescript-eslint.io",
   "scripts": {
+    "preinstall": "echo 'install started'",
     "build": "nx run-many -t build --exclude website website-eslint",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
     "check-format": "prettier --check .",
