@@ -410,7 +410,12 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       options: [{ default: 'array' }],
     },
     {
-      code: "declare module '2' { type Array<Y> = Y; const y: Array<2>; }",
+      code: `
+            declare module '2' {
+            type Array<Y> = Y;
+            const y: Array<2>;
+            }
+      `,
       options: [{ default: 'generic' }],
     },
     {
