@@ -4,7 +4,6 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type { GlobalScope, Scope } from '../scope';
 import type { ScopeManager } from '../ScopeManager';
-import type { LibDefinition } from '../variable';
 import type { ReferenceImplicitGlobal } from './Reference';
 import type { VisitorOptions } from './Visitor';
 
@@ -19,7 +18,7 @@ import {
   TSModuleNameDefinition,
   VariableDefinition,
 } from '../definition';
-import { lib as TSLibraries } from '../lib';
+import { resolveLibDefinitionsWithDependencies } from '../lib/lib.resolve';
 import { ClassVisitor } from './ClassVisitor';
 import { ExportVisitor } from './ExportVisitor';
 import { ImportVisitor } from './ImportVisitor';
@@ -52,36 +51,22 @@ export class Referencer extends Visitor {
   }
 
   private populateGlobalsFromLib(globalScope: GlobalScope): void {
-    const flattenedLibs = new Set<LibDefinition>();
-    for (const lib of this.#lib) {
-      const definition = TSLibraries.get(lib);
-      if (!definition) {
-        throw new Error(`Invalid value for lib provided: ${lib}`);
-      }
-      flattenedLibs.add(definition);
-    }
+    const libs = resolveLibDefinitionsWithDependencies(this.#lib);
 
-    // Flatten and deduplicate the set of included libs
-    for (const lib of flattenedLibs) {
-      // By adding the dependencies to the set as we iterate it,
-      // they get iterated only if they are new
-      for (const referencedLib of lib.libs) {
-        flattenedLibs.add(referencedLib);
-      }
-
-      // This loop is guaranteed to see each included lib exactly once
+    for (const lib of libs) {
       for (const [name, variable] of lib.variables) {
         globalScope.defineImplicitVariable(name, variable);
       }
     }
 
-    // for const assertions (`{} as const` / `<const>{}`)
+    // Special implicit global for const assertions (`{} as const`, `<const>{}`)
     globalScope.defineImplicitVariable('const', {
       eslintImplicitGlobalSetting: 'readonly',
       isTypeVariable: true,
       isValueVariable: false,
     });
   }
+
   public close(node: TSESTree.Node): void {
     while (this.currentScope(true) && node === this.currentScope().block) {
       this.scopeManager.currentScope = this.currentScope().close(
