@@ -153,6 +153,7 @@ module.exports = {
           type: 'category',
         },
         'contributing/pull-requests',
+        'contributing/ai-policy',
       ],
       label: 'Contributing',
       link: {
