@@ -43,13 +43,9 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    /**
-     * Check if a node is a member expression accessing ts.XFlags.Y
-     */
     function isTsFlagAccess(
       node: TSESTree.Node,
     ): { flagType: FlagType; fullText: string } | null {
-      // ts.TypeFlags.X or ts.SymbolFlags.X or ts.ObjectFlags.X
       if (
         node.type === AST_NODE_TYPES.MemberExpression &&
         node.object.type === AST_NODE_TYPES.MemberExpression &&
@@ -72,10 +68,6 @@ export default createRule({
       return null;
     }
 
-    /**
-     * Check if a node is a parenthesized expression containing OR of flags
-     * (ts.TypeFlags.X | ts.TypeFlags.Y)
-     */
     function isFlagOrExpression(
       node: TSESTree.Node,
     ): { flagType: FlagType; fullText: string } | null {
@@ -101,11 +93,6 @@ export default createRule({
       return null;
     }
 
-    /**
-     * Check if a node is a flag property access like type.flags or type.objectFlags
-     * The expectedFlagType is used to disambiguate when the property name is 'flags'
-     * (which is shared by TypeFlags and SymbolFlags)
-     */
     function isFlagPropertyAccess(
       node: TSESTree.Node,
       expectedFlagType: FlagType,
@@ -125,17 +112,12 @@ export default createRule({
       return null;
     }
 
-    /**
-     * Analyze a binary expression with & operator
-     */
     function analyzeBitwiseAnd(node: TSESTree.BinaryExpression): {
       flagAccess: { flagType: FlagType; flagText: string };
       objectText: string;
     } | null {
       const { left, right } = node;
 
-      // Pattern: obj.flags & ts.TypeFlags.X
-      // First check if right side is a flag constant, then verify left matches
       const rightFlag = isTsFlagAccess(right) ?? isFlagOrExpression(right);
       if (rightFlag) {
         const leftPropAccess = isFlagPropertyAccess(left, rightFlag.flagType);
@@ -150,7 +132,6 @@ export default createRule({
         }
       }
 
-      // Pattern: ts.TypeFlags.X & obj.flags (reversed)
       const leftFlag = isTsFlagAccess(left) ?? isFlagOrExpression(left);
       if (leftFlag) {
         const rightPropAccess = isFlagPropertyAccess(right, leftFlag.flagType);
@@ -170,7 +151,6 @@ export default createRule({
 
     return {
       BinaryExpression(node: TSESTree.BinaryExpression): void {
-        // We're looking for bitwise AND
         if (node.operator !== '&') {
           return;
         }
@@ -184,11 +164,9 @@ export default createRule({
         const { flagText, flagType } = flagAccess;
         const method = FLAG_CONFIGS[flagType].method;
 
-        // Determine the full expression to replace and whether it's negated
         let nodeToReplace: TSESTree.Node = node;
         let isNegated = false;
 
-        // Check if parent is a comparison with 0: (expr) === 0 or (expr) !== 0
         const parent = node.parent;
         if (
           parent.type === AST_NODE_TYPES.BinaryExpression &&
