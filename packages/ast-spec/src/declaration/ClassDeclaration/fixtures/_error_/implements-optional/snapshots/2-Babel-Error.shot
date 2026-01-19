@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ClassDeclaration > _error_ > implements-optional > Babel - Error`]
+BabelError
+> 1 | class Foo implements A?.B {}
+    |                       ^ Unexpected token, expected "," (1:22)
+  2 |
+  

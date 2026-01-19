@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > statement > ForStatement > _error_ > using-no-initializer > Babel - Error`]
+BabelError
+> 1 | for (using foo;;);
+    |               ^ Missing initializer in using declaration. (1:14)
+  2 |
+  

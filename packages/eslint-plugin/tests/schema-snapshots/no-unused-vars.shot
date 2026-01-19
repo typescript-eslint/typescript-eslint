@@ -34,6 +34,17 @@
             "description": "Regular expressions of destructured array variable names to not check for usage.",
             "type": "string"
           },
+          "enableAutofixRemoval": {
+            "additionalProperties": false,
+            "description": "Configurable automatic fixes for different types of unused variables.",
+            "properties": {
+              "imports": {
+                "description": "Whether to enable automatic removal of unused imports.",
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
           "ignoreClassWithStaticInitBlock": {
             "description": "Whether to ignore classes with at least one static initialization block.",
             "type": "boolean"
@@ -89,6 +100,11 @@ type Options = [
       caughtErrorsIgnorePattern?: string;
       /** Regular expressions of destructured array variable names to not check for usage. */
       destructuredArrayIgnorePattern?: string;
+      /** Configurable automatic fixes for different types of unused variables. */
+      enableAutofixRemoval?: {
+        /** Whether to enable automatic removal of unused imports. */
+        imports?: boolean;
+      };
       /** Whether to ignore classes with at least one static initialization block. */
       ignoreClassWithStaticInitBlock?: boolean;
       /** Whether to ignore sibling properties in `...` destructurings. */

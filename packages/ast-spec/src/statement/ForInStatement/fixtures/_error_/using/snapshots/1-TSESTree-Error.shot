@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > statement > ForInStatement > _error_ > using > TSESTree - Error`]
+TSError
+> 1 | for (using foo = bar in {});
+    |            ^^^^^^^^^ The variable declaration of a 'for...in' statement cannot have an initializer.
+  2 |

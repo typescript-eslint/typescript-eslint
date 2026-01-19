@@ -367,6 +367,17 @@ interface B extends A {
       errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
       output: null,
     },
+
+    // export default interface - no fixer since `export default type` is invalid
+    {
+      code: `
+export default interface Foo {
+  [key: string]: unknown;
+}
+      `,
+      errors: [{ column: 16, line: 2, messageId: 'preferRecord' }],
+      output: null,
+    },
     // Readonly interface with generic parameter
     {
       code: `

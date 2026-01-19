@@ -212,6 +212,10 @@ h6 {
   vertical-align: baseline;
 }
 
+aside nav ul code {
+  vertical-align: baseline;
+}
+
 td > p:last-child {
   margin-bottom: 0;
 }

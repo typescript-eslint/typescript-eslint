@@ -184,6 +184,62 @@ ruleTester.run('no-useless-default-assignment', rule, {
         },
       },
     },
+    `
+      declare const g: Array<string>;
+      const [foo = ''] = g;
+    `,
+    `
+      declare const g: Record<string, string>;
+      const { foo = '' } = g;
+    `,
+    `
+      declare const h: { [key: string]: string };
+      const { bar = '' } = h;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11849
+    `
+      type Merge = boolean | ((incoming: string[]) => void);
+
+      const policy: { merge: Merge } = {
+        merge: (incoming: string[] = []) => {
+          incoming;
+        },
+      };
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11846
+    `
+      const [a, b = ''] = 'somestr'.split('.');
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11846
+    `
+      declare const params: string[];
+      const [c = '123'] = params;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11846
+    `
+      declare function useCallback<T>(callback: T);
+      useCallback((value: number[] = []) => {});
+    `,
+    `
+      declare const tuple: [string];
+      const [a, b = 'default'] = tuple;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11911
+    `
+      const run = (cb: (...args: unknown[]) => void) => cb();
+      const cb = (p: boolean = true) => null;
+      run(cb);
+      run((p: boolean = true) => null);
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11850
+    `
+      const { a = 'default' } = Math.random() > 0.5 ? { a: 'Hello' } : {};
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11850
+    `
+      const { a = 'default' } =
+        Math.random() > 0.5 ? (Math.random() > 0.5 ? { a: 'Hello' } : {}) : {};
+    `,
   ],
   invalid: [
     {
@@ -459,61 +515,47 @@ ruleTester.run('no-useless-default-assignment', rule, {
         function foo({ a }) {}
       `,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11847
     {
       code: `
-        declare const g: Record<string, string>;
-        const { hello = '' } = g;
+        function myFunction(p1: string, p2: number | undefined = undefined) {
+          console.log(p1, p2);
+        }
       `,
       errors: [
         {
-          column: 25,
-          data: { type: 'property' },
-          endColumn: 27,
-          line: 3,
-          messageId: 'uselessDefaultAssignment',
+          column: 66,
+          endColumn: 75,
+          line: 2,
+          messageId: 'preferOptionalSyntax',
         },
       ],
       output: `
-        declare const g: Record<string, string>;
-        const { hello } = g;
+        function myFunction(p1: string, p2?: number | undefined) {
+          console.log(p1, p2);
+        }
       `,
     },
     {
       code: `
-        declare const h: { [key: string]: string };
-        const { world = '' } = h;
+        type SomeType = number | undefined;
+        function f(
+          /* comment */ x /* comment 2 */ : /* comment 3 */ SomeType /* comment 4 */ = /* comment 5 */ undefined,
+        ) {}
       `,
       errors: [
         {
-          column: 25,
-          data: { type: 'property' },
-          endColumn: 27,
-          line: 3,
-          messageId: 'uselessDefaultAssignment',
+          column: 104,
+          endColumn: 113,
+          line: 4,
+          messageId: 'preferOptionalSyntax',
         },
       ],
       output: `
-        declare const h: { [key: string]: string };
-        const { world } = h;
-      `,
-    },
-    {
-      code: `
-        declare const g: Array<string>;
-        const [foo = ''] = g;
-      `,
-      errors: [
-        {
-          column: 22,
-          data: { type: 'property' },
-          endColumn: 24,
-          line: 3,
-          messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
-        declare const g: Array<string>;
-        const [foo] = g;
+        type SomeType = number | undefined;
+        function f(
+          /* comment */ x? /* comment 2 */ : /* comment 3 */ SomeType,
+        ) {}
       `,
     },
   ],

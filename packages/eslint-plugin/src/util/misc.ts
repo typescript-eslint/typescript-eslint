@@ -66,10 +66,7 @@ export function arraysAreEqual<T>(
 ): boolean {
   return (
     a === b ||
-    (a != null &&
-      b != null &&
-      a.length === b.length &&
-      a.every((x, idx) => eq(x, b[idx])))
+    (a != null && a.length === b?.length && a.every((x, idx) => eq(x, b[idx])))
   );
 }
 

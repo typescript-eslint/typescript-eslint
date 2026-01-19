@@ -731,12 +731,17 @@ export interface RuleModule<
   /**
    * Default options the rule will be run with
    */
-  defaultOptions: Options;
+  defaultOptions?: Options;
 
   /**
    * Metadata about the rule
    */
   meta: RuleMetaData<MessageIds, Docs, Options>;
+
+  /**
+   * Rule name
+   */
+  name?: string;
 }
 
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
