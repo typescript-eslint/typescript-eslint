@@ -576,7 +576,10 @@ abstract class ThisScope extends Visitor {
         continue;
       }
 
-      if (prop.key.type !== AST_NODE_TYPES.Identifier) {
+      if (
+        prop.key.type !== AST_NODE_TYPES.Identifier ||
+        prop.computed
+      ) {
         continue;
       }
 
