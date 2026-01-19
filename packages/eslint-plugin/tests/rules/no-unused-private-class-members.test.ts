@@ -1330,5 +1330,32 @@ class Foo {
         },
       ],
     },
+    {
+      code: `
+const foo = 'bar';
+class Foo {
+  private foo = 1;
+  private bar = 2;
+
+  method() {
+    const { [foo]: test } = this;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'foo',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+        {
+          data: {
+            classMemberName: 'bar',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
   ],
 });
