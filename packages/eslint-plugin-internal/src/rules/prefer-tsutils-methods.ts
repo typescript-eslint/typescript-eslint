@@ -79,22 +79,18 @@ export default createRule({
     function isFlagOrExpression(
       node: TSESTree.Node,
     ): { flagType: FlagType; fullText: string } | null {
-      // Handle parenthesized expression: (ts.TypeFlags.X | ts.TypeFlags.Y)
-      const innerNode = node;
       if (
-        innerNode.type === AST_NODE_TYPES.BinaryExpression &&
-        innerNode.operator === '|'
+        node.type === AST_NODE_TYPES.BinaryExpression &&
+        node.operator === '|'
       ) {
-        // Check if left side is a flag access
-        const leftFlag = isTsFlagAccess(innerNode.left);
+        const leftFlag = isTsFlagAccess(node.left);
         if (leftFlag) {
           return {
             flagType: leftFlag.flagType,
             fullText: context.sourceCode.getText(node),
           };
         }
-        // Could also be nested OR, check recursively
-        const leftOr = isFlagOrExpression(innerNode.left);
+        const leftOr = isFlagOrExpression(node.left);
         if (leftOr) {
           return {
             flagType: leftOr.flagType,
