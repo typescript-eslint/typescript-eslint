@@ -6099,7 +6099,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/utils@8.53.0, @typescript-eslint/utils@^8.51.0, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/utils@8.53.0, @typescript-eslint/utils@^8.51.0, @typescript-eslint/utils@^8.52.0, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
@@ -9959,14 +9959,14 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-perfectionist@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "eslint-plugin-perfectionist@npm:5.2.0"
+  version: 5.3.1
+  resolution: "eslint-plugin-perfectionist@npm:5.3.1"
   dependencies:
-    "@typescript-eslint/utils": ^8.51.0
+    "@typescript-eslint/utils": ^8.52.0
     natural-orderby: ^5.0.0
   peerDependencies:
     eslint: ">=8.45.0"
-  checksum: 0473808767fca280a19e6b8258fd781efd1f71a65e1515ec140e135944b535df2a13ce90a586abfc311f5530134b71af783f21eff76175aabb9be605a3f80330
+  checksum: 36768de4defea902a2644f59a25c5f07560a33aeee62677cd6e0984e2f87ac6bdfb553cf676778272613423e1eb8a376d4b32eb98bc0214972d5a7d3d7b4d846
   languageName: node
   linkType: hard
 
