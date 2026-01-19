@@ -27,7 +27,7 @@ export interface RuleCreateAndOptions<
     context: Readonly<RuleContext<MessageIds, Options>>,
     optionsWithDefault: Readonly<Options>,
   ) => RuleListener;
-  defaultOptions: Readonly<Options>;
+  defaultOptions?: Readonly<Options>;
 }
 
 export interface RuleWithMeta<
@@ -108,9 +108,13 @@ function createRule<
   Options,
   PluginDocs
 > {
+  const resolvedDefaultOptions = (defaultOptions ?? []) as Readonly<Options>;
   return {
     create(context: Readonly<RuleContext<MessageIds, Options>>): RuleListener {
-      const optionsWithDefault = applyDefault(defaultOptions, context.options);
+      const optionsWithDefault = applyDefault(
+        resolvedDefaultOptions,
+        context.options,
+      );
       return create(context, optionsWithDefault);
     },
     defaultOptions,

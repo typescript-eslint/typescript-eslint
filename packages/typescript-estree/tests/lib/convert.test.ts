@@ -333,7 +333,7 @@ describe('convert', () => {
       esTsEnumDeclaration.members;
 
       expect(emitWarning).toHaveBeenCalledExactlyOnceWith(
-        `The 'members' property is deprecated on TSEnumDeclaration nodes. Use 'body.members' instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        `The 'members' property is deprecated on TSEnumDeclaration nodes. Use 'body.members' instead. See https://tseslint.com/key-property-deprecated.`,
         'DeprecationWarning',
       );
     });
@@ -397,7 +397,7 @@ describe('convert', () => {
       tsMappedType.typeParameter;
 
       expect(emitWarning).toHaveBeenCalledExactlyOnceWith(
-        `The 'typeParameter' property is deprecated on TSMappedType nodes. Use 'constraint' and 'key' instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        `The 'typeParameter' property is deprecated on TSMappedType nodes. Use 'constraint' and 'key' instead. See https://tseslint.com/key-property-deprecated.`,
         'DeprecationWarning',
       );
     });
