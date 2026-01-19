@@ -5219,9 +5219,9 @@ __metadata:
   linkType: hard
 
 "@types/babel__code-frame@npm:^7.0.6":
-  version: 7.0.6
-  resolution: "@types/babel__code-frame@npm:7.0.6"
-  checksum: 5325ab85d95e58fe84279757788ddb0de68bfd6814bc636e868f9ff7b5229915873f28847c4baf48fd3a4a460a73b4ea87bc9e1d78a3a5a60cfc7ca627a722c5
+  version: 7.27.0
+  resolution: "@types/babel__code-frame@npm:7.27.0"
+  checksum: 3cc95c6ce9e703d5d88ba6fcafb8d9e002c78cc26eb3214a1759113f2b45a5fb054f1ba89040ccd1541bec1facb35d38453a2d7775faff9f61ddeee485593868
   languageName: node
   linkType: hard
 
