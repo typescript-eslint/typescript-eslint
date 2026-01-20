@@ -216,12 +216,14 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (
-          (node.typeName.name === 'Array' ||
-            node.typeName.name === 'ReadonlyArray') &&
-          !node.typeArguments
+        for (
+          let scope = context.sourceCode.getScope(node);
+          scope.upper;
+          scope = scope.upper
         ) {
-          return;
+          if (scope.set.has(node.typeName.name)) {
+            return;
+          }
         }
 
         const isReadonlyWithGenericArrayType =
