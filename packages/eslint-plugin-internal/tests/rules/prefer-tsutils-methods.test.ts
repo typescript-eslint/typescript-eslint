@@ -137,6 +137,46 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       ],
       output: 'tsutils.isSymbolFlagSet(paramSymbol, ts.SymbolFlags.Optional);',
     },
+    {
+      code: 'ts.TypeFlags.Undefined & type.flags;',
+      errors: [
+        {
+          data: {
+            flagType: 'TypeFlags',
+            method: 'isTypeFlagSet',
+          },
+          messageId: 'preferMethod',
+        },
+      ],
+      output: 'tsutils.isTypeFlagSet(type, ts.TypeFlags.Undefined);',
+    },
+    {
+      code: 'ts.SymbolFlags.Method & symbol.flags;',
+      errors: [
+        {
+          data: {
+            flagType: 'SymbolFlags',
+            method: 'isSymbolFlagSet',
+          },
+          messageId: 'preferMethod',
+        },
+      ],
+      output: 'tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Method);',
+    },
+    {
+      code: 'type.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.Void);',
+      errors: [
+        {
+          data: {
+            flagType: 'TypeFlags',
+            method: 'isTypeFlagSet',
+          },
+          messageId: 'preferMethod',
+        },
+      ],
+      output:
+        'tsutils.isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.Void);',
+    },
   ],
   valid: [
     'tsutils.isTypeFlagSet(type, ts.TypeFlags.Undefined);',
