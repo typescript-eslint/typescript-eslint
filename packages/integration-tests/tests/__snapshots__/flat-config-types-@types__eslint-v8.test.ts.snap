@@ -16,7 +16,7 @@ exports[`flat-config-types-@types__eslint-v8 > eslint > should work successfully
         "line": 38,
         "message": "'_otherCases' is defined but never used.",
         "messageId": "unusedVar",
-        "nodeType": "Identifier",
+        "nodeType": null,
         "ruleId": "@typescript-eslint/no-unused-vars",
         "severity": 2,
       },
