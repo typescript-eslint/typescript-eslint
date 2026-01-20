@@ -186,10 +186,18 @@ import { F } from './missing';
 function bar<T = F>() {}
 bar<F<number>>();
     `,
-    `
+    {
+      code: `
 type A<T = Element> = T;
 type B = A<HTMLInputElement>;
-    `,
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.lib-dom.json',
+          projectService: false,
+        },
+      },
+    },
     `
 type A<T = Map<string, string>> = T;
 type B = A<Map<string, number>>;

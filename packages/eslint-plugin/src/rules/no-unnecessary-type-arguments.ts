@@ -4,12 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import {
-  createRule,
-  findFirstResult,
-  getParserServices,
-  isTypeReferenceType,
-} from '../util';
+import { createRule, findFirstResult, getParserServices } from '../util';
 
 type ParameterCapableTSNode =
   | ts.CallExpression
@@ -46,45 +41,6 @@ export default createRule<[], MessageIds>({
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-
-    function getTypeForComparison(type: ts.Type): {
-      type: ts.Type;
-      typeArguments: readonly ts.Type[];
-    } {
-      if (isTypeReferenceType(type)) {
-        return {
-          type: type.target,
-          typeArguments: checker.getTypeArguments(type),
-        };
-      }
-      return {
-        type,
-        typeArguments: [],
-      };
-    }
-
-    // TODO: would like checker.areTypesEquivalent. https://github.com/Microsoft/TypeScript/issues/13502
-    function areTypesEquivalent(a: ts.Type, b: ts.Type) {
-      // this check should handle some of the most simple cases of like strings, numbers, etc
-      if (a === b) {
-        return true;
-      }
-
-      // For more complex types (like aliases to generic object types) - TS won't always create a
-      // global shared type object for the type - so we need to resort to manually comparing the
-      // reference type and the passed type arguments.
-      // Also - in case there are aliases - we need to resolve them before we do checks
-      const aResolved = getTypeForComparison(a);
-      const bResolved = getTypeForComparison(b);
-      return (
-        // ensure the resolved type AND all the parameters are the same
-        aResolved.type === bResolved.type &&
-        aResolved.typeArguments.length === bResolved.typeArguments.length &&
-        aResolved.typeArguments.every(
-          (t, i) => t === bResolved.typeArguments[i],
-        )
-      );
-    }
 
     function checkTSArgsAndParameters(
       typeArguments: TSESTree.TSTypeParameterInstantiation,
@@ -145,7 +101,10 @@ export default createRule<[], MessageIds>({
             services.getTypeAtLocation(argument),
           );
 
-          if (areTypesEquivalent(typeArgumentType, argumentType)) {
+          if (
+            checker.isTypeAssignableTo(typeArgumentType, argumentType) &&
+            checker.isTypeAssignableTo(argumentType, typeArgumentType)
+          ) {
             context.report({
               node: typeArgument,
               messageId: 'canBeInferred',
@@ -168,7 +127,10 @@ export default createRule<[], MessageIds>({
       }
 
       const defaultType = checker.getTypeAtLocation(typeParameter.default);
-      if (!areTypesEquivalent(defaultType, typeArgumentType)) {
+      if (
+        !checker.isTypeAssignableTo(defaultType, typeArgumentType) ||
+        !checker.isTypeAssignableTo(typeArgumentType, defaultType)
+      ) {
         return;
       }
 
