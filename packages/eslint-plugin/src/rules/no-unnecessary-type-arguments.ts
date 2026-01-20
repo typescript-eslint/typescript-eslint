@@ -42,6 +42,18 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
+    function areTypesEquivalent(a: ts.Type, b: ts.Type) {
+      // If either type is `any` or unresolved,
+      // they should be considered equivalent if they're explicitly the same reference
+      if (a.flags & ts.TypeFlags.Any || b.flags & ts.TypeFlags.Any) {
+        return a === b;
+      }
+
+      return (
+        checker.isTypeAssignableTo(a, b) && checker.isTypeAssignableTo(b, a)
+      );
+    }
+
     function checkTSArgsAndParameters(
       typeArguments: TSESTree.TSTypeParameterInstantiation,
       typeParameters: readonly ts.TypeParameterDeclaration[],
@@ -101,10 +113,7 @@ export default createRule<[], MessageIds>({
             services.getTypeAtLocation(argument),
           );
 
-          if (
-            checker.isTypeAssignableTo(typeArgumentType, argumentType) &&
-            checker.isTypeAssignableTo(argumentType, typeArgumentType)
-          ) {
+          if (areTypesEquivalent(typeArgumentType, argumentType)) {
             context.report({
               node: typeArgument,
               messageId: 'canBeInferred',
@@ -127,10 +136,7 @@ export default createRule<[], MessageIds>({
       }
 
       const defaultType = checker.getTypeAtLocation(typeParameter.default);
-      if (
-        !checker.isTypeAssignableTo(defaultType, typeArgumentType) ||
-        !checker.isTypeAssignableTo(typeArgumentType, defaultType)
-      ) {
+      if (!areTypesEquivalent(defaultType, typeArgumentType)) {
         return;
       }
 
