@@ -42,10 +42,31 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
+    function isEmptyObjectType(type: ts.Type) {
+      if (!(type.flags & ts.TypeFlags.Object)) {
+        return false;
+      }
+
+      if (type.getProperties().length) {
+        return false;
+      }
+
+      if (type.getStringIndexType() || type.getNumberIndexType()) {
+        return false;
+      }
+
+      return true;
+    }
+
     function areTypesEquivalent(a: ts.Type, b: ts.Type) {
-      // If either type is `any` or unresolved,
+      // If either type is `any` (including when they're unresolved) or `{}`,
       // they should be considered equivalent if they're explicitly the same reference
-      if (a.flags & ts.TypeFlags.Any || b.flags & ts.TypeFlags.Any) {
+      if (
+        a.flags & ts.TypeFlags.Any ||
+        b.flags & ts.TypeFlags.Any ||
+        isEmptyObjectType(a) ||
+        isEmptyObjectType(b)
+      ) {
         return a === b;
       }
 

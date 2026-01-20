@@ -28,6 +28,45 @@ function f<T>(x: T) {}
 f<10>(10);
     `,
     `
+function f<T>(x: T) {}
+declare const x: any;
+f<string>(x);
+    `,
+    `
+function f<T>(x: T) {}
+f<Record<string, boolean>>({});
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: {};
+f<Record<string, boolean>>(x);
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: Record<string, never>;
+f<Record<string, boolean>>(x);
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: any;
+f<{}>(x);
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: {};
+f<any>(x);
+    `,
+    `
+function f<T>(x: T) {}
+interface F {}
+declare const x: {};
+f<F>(x);
+    `,
+    `
+function f<T>(x: T) {}
+f<number[]>([]);
+    `,
+    `
 function f<T = number>(x: T) {}
 f(10);
     `,
@@ -313,6 +352,60 @@ f<number>(x);
       output: `
 function f<T>(x: T) {}
 declare const x: number;
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare const x: any;
+f<any>(x);
+      `,
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T>(x: T) {}
+declare const x: any;
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare const x: {};
+f<{}>(x);
+      `,
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T>(x: T) {}
+declare const x: {};
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare const x: Record<string, never>;
+f<Record<string, never>>(x);
+      `,
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T>(x: T) {}
+declare const x: Record<string, never>;
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+interface F {}
+declare const x: F;
+f<F>(x);
+      `,
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T>(x: T) {}
+interface F {}
+declare const x: F;
 f(x);
       `,
     },
