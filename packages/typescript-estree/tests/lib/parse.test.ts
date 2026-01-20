@@ -533,7 +533,7 @@ describe(parser.parseAndGenerateServices, () => {
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+              See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
             `);
           expect(testParse('ts/notIncluded02.tsx'))
             .toThrowErrorMatchingInlineSnapshot(`
@@ -542,7 +542,7 @@ describe(parser.parseAndGenerateServices, () => {
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+              See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
             `);
           expect(testParse('js/notIncluded01.js'))
             .toThrowErrorMatchingInlineSnapshot(`
@@ -551,7 +551,7 @@ describe(parser.parseAndGenerateServices, () => {
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+              See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
             `);
           expect(testParse('js/notIncluded02.jsx'))
             .toThrowErrorMatchingInlineSnapshot(`
@@ -560,7 +560,7 @@ describe(parser.parseAndGenerateServices, () => {
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+              See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
             `);
         });
       });
@@ -593,7 +593,7 @@ describe(parser.parseAndGenerateServices, () => {
                 - Change ESLint's list of included files to not include this file
                 - Change that TSConfig to include this file
                 - Create a new TSConfig that includes this file and include it in your parserOptions.project
-                See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+                See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
               `);
           });
 
@@ -606,7 +606,7 @@ describe(parser.parseAndGenerateServices, () => {
                 - Change ESLint's list of included files to not include this file
                 - Change that TSConfig to include this file
                 - Create a new TSConfig that includes this file and include it in your parserOptions.project
-                See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+                See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
               `);
           });
         });
@@ -710,7 +710,7 @@ describe(parser.parseAndGenerateServices, () => {
               - Change ESLint's list of included files to not include this file
               - Change one of those TSConfigs to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file]
+              See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
             `);
       },
     );
@@ -926,7 +926,7 @@ describe(parser.parseAndGenerateServices, () => {
           Either:
           - Switch to \`parserOptions.projectService\`
           - Use an ESLint-specific TSConfig
-          See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#are-typescript-project-references-supported]
+          See the typescript-eslint docs for more info: https://tseslint.com/are-project-references-supported]
         `);
       });
     },

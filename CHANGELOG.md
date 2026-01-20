@@ -1,3 +1,69 @@
+## 8.53.1 (2026-01-19)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [consistent-indexed-object-style] skip fixer if interface is a default export ([#11951](https://github.com/typescript-eslint/typescript-eslint/pull/11951))
+- **utils:** make RuleCreator root defaultOptions optional ([#11956](https://github.com/typescript-eslint/typescript-eslint/pull/11956))
+
+### ❤️ Thank You
+
+- Cameron
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.53.0 (2026-01-12)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unused-vars] add a fixer to remove unused imports ([#11922](https://github.com/typescript-eslint/typescript-eslint/pull/11922))
+- **eslint-plugin:** add rule [strict-void-return] ([#9707](https://github.com/typescript-eslint/typescript-eslint/pull/9707))
+- **project-service:** allow passing `Partial<ts.server.ServerHost>` to project service ([#11932](https://github.com/typescript-eslint/typescript-eslint/pull/11932))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** replace unclear "`error` typed" with more helpful description ([#11704](https://github.com/typescript-eslint/typescript-eslint/pull/11704))
+- **eslint-plugin:** [no-useless-default-assignment] fix false positive for parameters corresponding to a rest parameter ([#11916](https://github.com/typescript-eslint/typescript-eslint/pull/11916))
+- **typescript-estree:** forbid type-only import with both default and named specifiers ([#11930](https://github.com/typescript-eslint/typescript-eslint/pull/11930))
+- **typescript-estree:** fix syntax check for `using` declaration ([#11910](https://github.com/typescript-eslint/typescript-eslint/pull/11910))
+- **typescript-estree:** forbid invalid class implements ([#11934](https://github.com/typescript-eslint/typescript-eslint/pull/11934))
+- **typescript-estree:** forbid invalid "import equals" declaration ([#11936](https://github.com/typescript-eslint/typescript-eslint/pull/11936))
+- **typescript-estree:** forbid invalid `extends` and `implements` in interface declaration ([#11935](https://github.com/typescript-eslint/typescript-eslint/pull/11935))
+
+### ❤️ Thank You
+
+- auvred @auvred
+- Brad Zacher @bradzacher
+- fisker Cheung @fisker
+- Josh Goldberg
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Niki @phaux
+- Nikita
+- SungHyun627 @SungHyun627
+- Will Harney @wjhsf
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.52.0 (2026-01-05)
+
+### 🚀 Features
+
+- **eslint-plugin-internal:** [no-multiple-lines-of-errors] add rule ([#11899](https://github.com/typescript-eslint/typescript-eslint/pull/11899))
+- **typescript-estree:** add tseslint.com redirects for CLI outputs ([#11895](https://github.com/typescript-eslint/typescript-eslint/pull/11895))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-useless-default-assignment] handle conditional initializer ([#11908](https://github.com/typescript-eslint/typescript-eslint/pull/11908))
+- **eslint-plugin:** [no-base-to-string] detect @@toPrimitive and valueOf ([#11901](https://github.com/typescript-eslint/typescript-eslint/pull/11901))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+- Ulrich Stark
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.51.0 (2025-12-29)
 
 ### 🚀 Features
