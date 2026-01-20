@@ -410,6 +410,10 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       options: [{ default: 'array' }],
     },
     {
+      code: 'type Generic<ReadonlyArray> = { array: ReadonlyArray };',
+      options: [{ default: 'array' }],
+    },
+    {
       code: `
         declare module '2' {
           type Array<Y> = Y;
@@ -417,18 +421,6 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         }
       `,
       options: [{ default: 'generic' }],
-    },
-    {
-      code: "let z: Array = [3, '4'];",
-      options: [{ default: 'array-simple' }],
-    },
-    {
-      code: 'let x: Array;',
-      options: [{ default: 'generic' }],
-    },
-    {
-      code: 'type MyType<ReadonlyArray> = { data: ReadonlyArray };',
-      options: [{ default: 'array' }],
     },
   ],
   invalid: [
@@ -1331,6 +1323,19 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       output: "let y: string[] = <string[]>['2'];",
     },
     {
+      code: "let z: Array = [3, '4'];",
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'any' },
+          line: 1,
+          messageId: 'errorStringArraySimple',
+        },
+      ],
+      options: [{ default: 'array-simple' }],
+      output: "let z: any[] = [3, '4'];",
+    },
+    {
       code: "let ya = [[1, '2']] as [number, string][];",
       errors: [
         {
@@ -1517,6 +1522,19 @@ function barFunction(bar: Array<ArrayClass<String>>) {
       ],
       options: [{ default: 'array' }],
       output: "let y: string[] = <string[]>['2'];",
+    },
+    {
+      code: "let z: Array = [3, '4'];",
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'any' },
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: "let z: any[] = [3, '4'];",
     },
     {
       code: 'type Arr<T> = Array<T>;',
