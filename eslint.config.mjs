@@ -160,6 +160,7 @@ export default defineConfig(
         {
           argsIgnorePattern: '^_',
           caughtErrors: 'all',
+          enableAutofixRemoval: { imports: true },
           varsIgnorePattern: '^_',
         },
       ],
@@ -562,7 +563,10 @@ export default defineConfig(
     name: 'ast-spec/source-files',
     rules: {
       // disallow ALL unused vars
-      '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'all' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { caughtErrors: 'all', enableAutofixRemoval: { imports: true } },
+      ],
       '@typescript-eslint/sort-type-constituents': 'error',
 
       'perfectionist/sort-interfaces': [
