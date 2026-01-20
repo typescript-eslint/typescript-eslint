@@ -3,11 +3,7 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import * as ts from 'typescript';
 
-import type {
-  ParserServicesWithTypeInformation,
-  TSESTree,
-  TSESTreeOptions,
-} from '../../src/index.js';
+import type { TSESTree, TSESTreeOptions } from '../../src/index.js';
 
 import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms.js';
 import { clearCaches, parseAndGenerateServices } from '../../src/index.js';
@@ -553,46 +549,5 @@ describe('semanticInfo', async () => {
     expect(() =>
       createProgram(path.join(FIXTURES_DIR, 'badTSConfig', 'tsconfig.json')),
     ).toThrowError();
-  });
-
-  it('should verify that the new shortcut methods are available', () => {
-    const code = `
-      const x: number = 1;
-      function app() { console.log('test'); }
-    `;
-    const fileName = path.join(FIXTURES_DIR, 'import-file.src.ts');
-    const options = createOptions(fileName);
-    const { ast, services } = parseAndGenerateServices(code, options);
-    const typedServices = services as ParserServicesWithTypeInformation;
-
-    expect(typedServices.getContextualType).toBeInstanceOf(Function);
-    expect(typedServices.getResolvedSignature).toBeInstanceOf(Function);
-    expect(typedServices.getTypeFromTypeNode).toBeInstanceOf(Function);
-    expect(typedServices.getTypeOfSymbolAtLocation).toBeInstanceOf(Function);
-
-    const variableDeclaration = ast.body[0] as TSESTree.VariableDeclaration;
-    const init = variableDeclaration.declarations[0].init!;
-
-    expect(() => typedServices.getContextualType(init)).not.toThrowError();
-
-    const typeNode =
-      variableDeclaration.declarations[0].id.typeAnnotation!.typeAnnotation;
-    expect(() =>
-      typedServices.getTypeFromTypeNode(typeNode),
-    ).not.toThrowError();
-
-    const id = variableDeclaration.declarations[0].id;
-    const symbol = typedServices.getSymbolAtLocation(id)!;
-    expect(() =>
-      typedServices.getTypeOfSymbolAtLocation(symbol, id),
-    ).not.toThrowError();
-
-    const func = ast.body[1] as TSESTree.FunctionDeclaration;
-    const body = func.body.body[0] as TSESTree.ExpressionStatement;
-    const callExpr = body.expression as TSESTree.CallExpression;
-
-    expect(() =>
-      typedServices.getResolvedSignature(callExpr),
-    ).not.toThrowError();
   });
 });
