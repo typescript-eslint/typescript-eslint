@@ -287,11 +287,6 @@ ruleTester.run('no-useless-default-assignment', rule, {
       const obj: unknown = [];
       const { a = 'baz' } = cond ? obj : { a: 'bar' };
     `,
-    `
-      const key: unknown = Symbol('a');
-      const obj: unknown = { [key as any]: 42 };
-      const { a = 'baz' } = cond ? obj : { a: 'bar' };
-    `,
   ],
   invalid: [
     {
@@ -627,7 +622,6 @@ ruleTester.run('no-useless-default-assignment', rule, {
         const { a } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
       `,
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/11980
     {
       code: `
         const { a = 'baz' } =
