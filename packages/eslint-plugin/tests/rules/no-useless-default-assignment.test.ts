@@ -260,6 +260,17 @@ ruleTester.run('no-useless-default-assignment', rule, {
       const key = 'a';
       const { a = 'baz' } = cond ? { [key]: 'foo' } : { [key]: 'bar' };
     `,
+    `
+      const key = Math.random() > 0.5 ? 'a' : 'b';
+      const { a = 'baz' } = cond ? { [key]: 'foo' } : { [key]: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? foo && { a: 'bar' } : { a: 'baz' };
+    `,
+    `
+      const obj: unknown = { a: 'bar' };
+      const { a = 'baz' } = cond ? obj : { a: 'bar' };
+    `,
   ],
   invalid: [
     {
