@@ -240,6 +240,18 @@ ruleTester.run('no-useless-default-assignment', rule, {
       const { a = 'default' } =
         Math.random() > 0.5 ? (Math.random() > 0.5 ? { a: 'Hello' } : {}) : {};
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11980
+    `
+      const { a = 'baz' } = cond ? {} : { a: 'bar' };
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11980
+    `
+      const { a = 'baz' } = cond ? foo : { a: 'bar' };
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11980
+    `
+      const { a = 'baz' } = foo && { a: 'bar' };
+    `,
   ],
   invalid: [
     {
@@ -556,6 +568,50 @@ ruleTester.run('no-useless-default-assignment', rule, {
         function f(
           /* comment */ x? /* comment 2 */ : /* comment 3 */ SomeType,
         ) {}
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11980
+    {
+      code: `
+        const { a = 'baz' } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 26,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11980
+    {
+      code: `
+        const { a = 'baz' } =
+          Math.random() < 0.5
+            ? { a: 'foo' }
+            : Math.random() > 0.2
+              ? { a: 'bar' }
+              : { a: 'qux' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 26,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } =
+          Math.random() < 0.5
+            ? { a: 'foo' }
+            : Math.random() > 0.2
+              ? { a: 'bar' }
+              : { a: 'qux' };
       `,
     },
   ],
