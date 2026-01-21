@@ -338,12 +338,11 @@ export default createRule<[], MessageId>({
       propertyName: string,
     ): boolean {
       if (expr.type === AST_NODE_TYPES.ObjectExpression) {
-        return expr.properties.some(prop => {
-          if (prop.type !== AST_NODE_TYPES.Property) {
-            return false;
-          }
-          return getPropertyName(prop.key) === propertyName;
-        });
+        return expr.properties.some(
+          prop =>
+            prop.type === AST_NODE_TYPES.Property &&
+            getPropertyName(prop.key) === propertyName,
+        );
       }
 
       if (expr.type === AST_NODE_TYPES.ConditionalExpression) {
