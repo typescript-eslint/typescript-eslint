@@ -212,7 +212,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0 # So vitest `--changed` will be able to compare against main
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -257,7 +257,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0 # So vitest `--changed` will be able to compare against main
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
