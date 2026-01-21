@@ -20,6 +20,7 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
     getLoaderScript.src = 'https://www.typescriptlang.org/js/vs.loader.js';
     getLoaderScript.async = true;
     getLoaderScript.onload = async () => {
+      // https://github.com/microsoft/TypeScript-Website/blob/4559775016e7b2e9d598eae86c931cf6121d73c6/packages/typescriptlang-org/src/templates/play.tsx#L106
       const urlForMonaco = `https://playgroundcdn.typescriptlang.org/cdn/${tsVersion}/monaco/min/vs/editor/editor.main.js`;
 
       const nightlyLookup = await fetch(urlForMonaco, { method: 'HEAD' });
