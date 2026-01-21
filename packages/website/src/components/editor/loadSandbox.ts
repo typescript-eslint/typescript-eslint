@@ -6,6 +6,8 @@ import type { WebLinterModule } from '../linter/types';
 type Monaco = typeof MonacoEditor;
 type Sandbox = typeof SandboxFactory;
 
+export const TS_VERSION_ERROR_MESSAGE = 'ts version error';
+
 export interface SandboxModel {
   lintUtils: WebLinterModule;
   main: Monaco;
@@ -17,7 +19,16 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = 'https://www.typescriptlang.org/js/vs.loader.js';
     getLoaderScript.async = true;
-    getLoaderScript.onload = (): void => {
+    getLoaderScript.onload = async () => {
+      const urlForMonaco = `https://playgroundcdn.typescriptlang.org/cdn/${tsVersion}/monaco/min/vs/editor/editor.main.js`;
+
+      const nightlyLookup = await fetch(urlForMonaco, { method: 'HEAD' });
+      if (!nightlyLookup.ok) {
+        // throw new Error(`Could not find the requested TypeScript version: ${tsVersion}`);
+        reject(new Error(TS_VERSION_ERROR_MESSAGE));
+        return;
+      }
+
       // For the monaco version you can use unpkg or the TypeScript web infra CDN
       // You can see the available releases for TypeScript here:
       // https://typescript.azureedge.net/indexes/releases.json
