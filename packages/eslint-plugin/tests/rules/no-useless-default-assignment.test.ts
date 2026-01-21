@@ -244,13 +244,21 @@ ruleTester.run('no-useless-default-assignment', rule, {
     `
       const { a = 'baz' } = cond ? {} : { a: 'bar' };
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/11980
     `
       const { a = 'baz' } = cond ? foo : { a: 'bar' };
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/11980
     `
       const { a = 'baz' } = foo && { a: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? { a: 'foo', ...extra } : { a: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? { ...foo } : { a: 'bar' };
+    `,
+    `
+      const key = 'a';
+      const { a = 'baz' } = cond ? { [key]: 'foo' } : { [key]: 'bar' };
     `,
   ],
   invalid: [
@@ -612,6 +620,22 @@ ruleTester.run('no-useless-default-assignment', rule, {
             : Math.random() > 0.2
               ? { a: 'bar' }
               : { a: 'qux' };
+      `,
+    },
+    {
+      code: `
+        const { a = 'baz' } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 26,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
       `,
     },
   ],
