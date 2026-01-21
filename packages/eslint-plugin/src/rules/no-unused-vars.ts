@@ -1012,10 +1012,7 @@ export default createRule<Options, MessageIds>({
             continue;
           }
           // skip ignored parameters
-          if (
-            def.name.type === AST_NODE_TYPES.Identifier &&
-            options.caughtErrorsIgnorePattern?.test(def.name.name)
-          ) {
+          if (options.caughtErrorsIgnorePattern?.test(def.name.name)) {
             if (options.reportUsedIgnorePattern && used) {
               report(variable, {
                 messageId: 'usedIgnoredVar',
