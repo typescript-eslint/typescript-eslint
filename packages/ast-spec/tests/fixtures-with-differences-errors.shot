@@ -3,10 +3,7 @@
 exports[`AST Fixtures > List fixtures with Error differences`]
 {
   "Babel errored but TSESTree didn't": [
-    "declaration/ClassDeclaration/fixtures/_error_/implements-non-identifier/fixture.ts",
     "declaration/ExportNamedDeclaration/fixtures/_error_/assertion/fixture.ts",
-    "declaration/TSImportEqualsDeclaration/fixtures/_error_/import-kind/fixture.ts",
-    "declaration/TSInterfaceDeclaration/fixtures/_error_/missing-extends/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/const-destructure-no-init/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/const-destructure-type-no-init/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/const-id-no-init/fixture.ts",
@@ -45,19 +42,19 @@ exports[`AST Fixtures > List fixtures with Error differences`]
     "legacy-fixtures/basics/fixtures/_error_/class-with-two-methods-computed-constructor/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/const-assertions/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/export-with-import-assertions/fixture.ts",
-    "legacy-fixtures/basics/fixtures/_error_/import-type-error/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/new-target-in-arrow-function-body/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/index-signature-parameters/fixture.ts",
-    "legacy-fixtures/errorRecovery/fixtures/_error_/interface-empty-extends/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/interface-with-optional-index-signature/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-array-pattern-decorator/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-rest-element-decorator/fixture.ts",
     "type/TSImportType/fixtures/_error_/type-import-type-with-import-attributes-assert/fixture.ts"
   ],
   "TSESTree errored but Babel didn't": [
+    "declaration/ImportDeclaration/fixtures/_error_/type-default-and-empty-named/fixture.ts",
     "declaration/TSDeclareFunction/fixtures/_error_/generator-ambient/fixture.ts",
     "declaration/TSDeclareFunction/fixtures/_error_/generator-overload/fixture.ts",
     "declaration/TSDeclareFunction/fixtures/_error_/generator/fixture.ts",
+    "declaration/TSInterfaceDeclaration/fixtures/_error_/extends-implements/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/const-id-definite-init/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/const-id-definite-type-init/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/declare-const-id-definite-init/fixture.ts",
@@ -76,7 +73,11 @@ exports[`AST Fixtures > List fixtures with Error differences`]
     "declaration/VariableDeclaration/fixtures/_error_/var-id-definite-no-init/fixture.ts",
     "declaration/VariableDeclaration/fixtures/_error_/var-id-definite-type-init/fixture.ts",
     "element/AccessorProperty/fixtures/_error_/modifier-abstract-accessor-with-value/fixture.ts",
+    "expression/UpdateExpression/fixtures/_error_/call-expr/fixture.ts",
+    "expression/UpdateExpression/fixtures/_error_/paren-expr/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/abstract-class-with-abstract-constructor/fixture.ts",
+    "parameter/TSParameterProperty/fixtures/_error_/array-binding-pattern/fixture.ts",
+    "parameter/TSParameterProperty/fixtures/_error_/object-binding-pattern/fixture.ts",
     "statement/ForOfStatement/fixtures/_error_/decl-definite-using/fixture.ts",
     "statement/ForOfStatement/fixtures/_error_/decl-definite/fixture.ts",
     "statement/ForOfStatement/fixtures/_error_/decl-type/fixture.ts"

@@ -30,8 +30,7 @@ export default createRule({
         const moduleType = context.sourceCode.getTokenBefore(node.id);
 
         if (
-          moduleType &&
-          moduleType.type === AST_TOKEN_TYPES.Identifier &&
+          moduleType?.type === AST_TOKEN_TYPES.Identifier &&
           moduleType.value === 'module'
         ) {
           context.report({

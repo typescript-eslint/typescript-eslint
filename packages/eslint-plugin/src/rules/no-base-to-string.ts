@@ -9,6 +9,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
+  matchesTypeOrBaseType,
   nullThrows,
 } from '../util';
 
@@ -77,7 +78,8 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [option]) {
     const services = getParserServices(context);
-    const checker = services.program.getTypeChecker();
+    const { program } = services;
+    const checker = program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
     function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
@@ -211,36 +213,6 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Always;
     }
 
-    function hasBaseTypes(type: ts.Type): type is ts.InterfaceType {
-      return (
-        tsutils.isObjectType(type) &&
-        tsutils.isObjectFlagSet(
-          type,
-          ts.ObjectFlags.Interface | ts.ObjectFlags.Class,
-        )
-      );
-    }
-
-    function isIgnoredTypeOrBase(
-      type: ts.Type,
-      seen = new Set<ts.Type>(),
-    ): boolean {
-      if (seen.has(type)) {
-        return false;
-      }
-
-      seen.add(type);
-
-      const typeName = getTypeName(checker, type);
-      return (
-        ignoredTypeNames.includes(typeName) ||
-        (hasBaseTypes(type) &&
-          checker
-            .getBaseTypes(type)
-            .some(base => isIgnoredTypeOrBase(base, seen)))
-      );
-    }
-
     function collectToStringCertainty(
       type: ts.Type,
       visited: Set<ts.Type>,
@@ -278,7 +250,13 @@ export default createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (isIgnoredTypeOrBase(type)) {
+      if (
+        matchesTypeOrBaseType(
+          services,
+          type => ignoredTypeNames.includes(getTypeName(checker, type)),
+          type,
+        )
+      ) {
         return Usefulness.Always;
       }
 
@@ -302,36 +280,21 @@ export default createRule<Options, MessageIds>({
         return collectArrayCertainty(type, new Set([...visited, type]));
       }
 
-      const toString =
-        checker.getPropertyOfType(type, 'toString') ??
-        checker.getPropertyOfType(type, 'toLocaleString');
+      switch (isToStringLikeFromObject(type)) {
+        case undefined:
+          // unknown
+          if (option.checkUnknown && type.flags === ts.TypeFlags.Unknown) {
+            return Usefulness.Sometimes;
+          }
+          // e.g. any
+          return Usefulness.Always;
 
-      if (!toString) {
-        // unknown
-        if (option.checkUnknown && type.flags === ts.TypeFlags.Unknown) {
-          return Usefulness.Sometimes;
-        }
-        // e.g. any
-        return Usefulness.Always;
+        case true:
+          return Usefulness.Never;
+
+        case false:
+          return Usefulness.Always;
       }
-
-      const declarations = toString.getDeclarations();
-
-      // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
-      if (declarations == null || declarations.length !== 1) {
-        // If there are multiple declarations, at least one of them must not be
-        // the default object toString.
-        //
-        // This may only matter for older versions of TS
-        // see https://github.com/typescript-eslint/typescript-eslint/issues/8585
-        return Usefulness.Always;
-      }
-
-      const declaration = declarations[0];
-      const isBaseToString =
-        ts.isInterfaceDeclaration(declaration.parent) &&
-        declaration.parent.name.text === 'Object';
-      return isBaseToString ? Usefulness.Never : Usefulness.Always;
     }
 
     function isBuiltInStringCall(node: TSESTree.CallExpression): boolean {
@@ -347,6 +310,71 @@ export default createRule<Options, MessageIds>({
         return !variable?.defs.length;
       }
       return false;
+    }
+
+    function isSymbolToPrimitiveMethod(node: ts.Declaration) {
+      return (
+        ts.isMethodSignature(node) &&
+        ts.isComputedPropertyName(node.name) &&
+        ts.isPropertyAccessExpression(node.name.expression) &&
+        ts.isIdentifier(node.name.expression.expression) &&
+        node.name.expression.expression.text === 'Symbol' &&
+        ts.isIdentifier(node.name.expression.name) &&
+        node.name.expression.name.text === 'toPrimitive' &&
+        checker
+          .getSymbolAtLocation(node.name.expression.expression)
+          ?.valueDeclaration?.getSourceFile().hasNoDefaultLib
+      );
+    }
+
+    function isToStringLikeFromObject(type: ts.Type) {
+      // An explicit [Symbol.toPrimitive] declaration is always user-defined
+      if (
+        type
+          .getProperties()
+          .some(
+            property =>
+              property.valueDeclaration &&
+              isSymbolToPrimitiveMethod(property.valueDeclaration),
+          )
+      ) {
+        return false;
+      }
+
+      // Otherwise, we check for known methods used in type coercion.
+      // We'll try to find one that's not declared on Object itself.
+      // Failing that, we'll fall back to one that is.
+      let foundFallbackOnObject = false;
+
+      for (const propertyName of ['toLocaleString', 'toString', 'valueOf']) {
+        const candidate = checker.getPropertyOfType(type, propertyName);
+        if (!candidate) {
+          continue;
+        }
+
+        const declarations = candidate.getDeclarations();
+
+        // If there are multiple declarations, at least one of them must not be
+        // the default object toString.
+        //
+        // This may only matter for older versions of TS
+        // see https://github.com/typescript-eslint/typescript-eslint/issues/8585
+        if (declarations?.length !== 1) {
+          continue;
+        }
+
+        // Not being the Object interface means this is user-defined.
+        if (
+          !ts.isInterfaceDeclaration(declarations[0].parent) ||
+          declarations[0].parent.name.text !== 'Object'
+        ) {
+          return false;
+        }
+
+        foundFallbackOnObject = true;
+      }
+
+      return foundFallbackOnObject ? true : undefined;
     }
 
     return {

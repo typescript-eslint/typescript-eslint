@@ -219,31 +219,11 @@ export class RuleTester extends TestFramework {
 
     let linterForBasePath = this.#lintersByBasePath.get(basePath);
     if (!linterForBasePath) {
-      linterForBasePath = (() => {
-        const linter = new Linter({
-          configType: 'flat',
-          cwd: basePath,
-        });
+      linterForBasePath = new Linter({
+        configType: 'flat',
+        cwd: basePath,
+      });
 
-        // This nonsense is a workaround for https://github.com/jestjs/jest/issues/14840
-        // see also https://github.com/typescript-eslint/typescript-eslint/issues/8942
-        //
-        // For some reason rethrowing exceptions skirts around the circular JSON error.
-        const oldVerify = linter.verify.bind(linter);
-        linter.verify = (
-          ...args: Parameters<Linter['verify']>
-        ): ReturnType<Linter['verify']> => {
-          try {
-            return oldVerify(...args);
-          } catch (error) {
-            throw new Error('Caught an error while linting', {
-              cause: error,
-            });
-          }
-        };
-
-        return linter;
-      })();
       this.#lintersByBasePath.set(basePath, linterForBasePath);
     }
     return linterForBasePath;
@@ -447,6 +427,7 @@ export class RuleTester extends TestFramework {
   defineRule(name: string, rule: AnyRuleModule): void {
     this.#rules[name] = {
       ...rule,
+      name,
       // Create a wrapper rule that freezes the `context` properties.
       create(context): RuleListener {
         freezeDeeply(context.options);

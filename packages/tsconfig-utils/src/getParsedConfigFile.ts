@@ -43,7 +43,12 @@ export function getParsedConfigFile(
   );
 
   if (parsed?.errors.length) {
-    throw new Error(formatDiagnostics(parsed.errors));
+    throw new Error(
+      [
+        "Unable to parse the specified 'tsconfig' file. Ensure it's correct and has valid syntax.",
+        formatDiagnostics(parsed.errors),
+      ].join('\n\n'),
+    );
   }
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

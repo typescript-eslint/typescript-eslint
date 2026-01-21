@@ -2,10 +2,27 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, nullThrows, NullThrowsReasons } from '../util';
+import {
+  createRule,
+  isReferenceToGlobalFunction,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 export type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
 export type Options = ['constructor' | 'type-annotation'];
+
+const builtInArrays = new Set([
+  'Float32Array',
+  'Float64Array',
+  'Int16Array',
+  'Int32Array',
+  'Int8Array',
+  'Uint16Array',
+  'Uint32Array',
+  'Uint8Array',
+  'Uint8ClampedArray',
+]);
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-generic-constructors',
@@ -63,12 +80,23 @@ export default createRule<Options, MessageIds>({
               );
           }
         }
+
+        function isBuiltInArray(typeName: TSESTree.Identifier) {
+          return (
+            builtInArrays.has(typeName.name) &&
+            isReferenceToGlobalFunction(
+              typeName.name,
+              typeName,
+              context.sourceCode,
+            )
+          );
+        }
+
         const [lhsName, rhs] = getLHSRHS();
         const lhs = lhsName.typeAnnotation?.typeAnnotation;
 
         if (
-          !rhs ||
-          rhs.type !== AST_NODE_TYPES.NewExpression ||
+          rhs?.type !== AST_NODE_TYPES.NewExpression ||
           rhs.callee.type !== AST_NODE_TYPES.Identifier
         ) {
           return;
@@ -77,7 +105,8 @@ export default createRule<Options, MessageIds>({
           lhs &&
           (lhs.type !== AST_NODE_TYPES.TSTypeReference ||
             lhs.typeName.type !== AST_NODE_TYPES.Identifier ||
-            lhs.typeName.name !== rhs.callee.name)
+            lhs.typeName.name !== rhs.callee.name ||
+            isBuiltInArray(lhs.typeName))
         ) {
           return;
         }

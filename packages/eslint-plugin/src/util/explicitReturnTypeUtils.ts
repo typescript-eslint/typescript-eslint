@@ -125,7 +125,7 @@ function isConstructorArgument(
 function isPropertyOfObjectWithType(
   property: TSESTree.Node | undefined,
 ): boolean {
-  if (!property || property.type !== AST_NODE_TYPES.Property) {
+  if (property?.type !== AST_NODE_TYPES.Property) {
     return false;
   }
   const objectExpr = property.parent;

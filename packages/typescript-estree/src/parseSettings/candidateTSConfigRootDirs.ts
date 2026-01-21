@@ -24,7 +24,7 @@ export function getInferredTSConfigRootDir(): string {
           'No tsconfigRootDir was set, and multiple candidate TSConfigRootDirs are present:',
           ...entries.map(candidate => ` - ${candidate}`),
           "You'll need to explicitly set tsconfigRootDir in your parser options.",
-          'See: https://typescript-eslint.io/packages/parser/#tsconfigrootdir',
+          'See: https://tseslint.com/parser-tsconfigrootdir',
         ].join('\n'),
       );
   }

@@ -1,0 +1,56 @@
+---
+description: 'Disallow default values that will never be used.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-useless-default-assignment** for documentation.
+
+[Default parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters) and [default values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value) are only used if the parameter or property is `undefined`.
+That can happen when a value is missing, or when one is provided and set to `undefined`.
+If a non-`undefined` value is guaranteed to be provided, then there is no need to define a default.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function Bar({ foo = '' }: { foo: string }) {
+  return foo;
+}
+
+const { foo = '' } = { foo: 'bar' };
+
+const [foo = ''] = ['bar'];
+
+[1, 2, 3].map((a = 42) => a + 1);
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function Bar({ foo = '' }: { foo?: string }) {
+  return foo;
+}
+
+const { foo = '' } = { foo: undefined };
+
+const [foo = ''] = [undefined];
+
+[1, 2, 3, undefined].map((a = 42) => a + 1);
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If you use default values defensively against runtime values that bypass type checking, or for documentation purposes, you may want to disable this rule.
+
+In a few niche situations (e.g. [express.js error handler functions](https://expressjs.com/en/guide/error-handling.html)), the runtime [`.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length) of a function may be important to you.
+In these rare cases, you may need to disable the fixes produced by this rule, which can affect function's `.length` value.

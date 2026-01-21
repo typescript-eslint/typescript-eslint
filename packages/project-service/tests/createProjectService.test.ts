@@ -274,4 +274,30 @@ describe(createProjectService, () => {
       },
     });
   });
+
+  it('uses watchFile from custom host', () => {
+    const watchFile = (): ts.FileWatcher => ({
+      close() {
+        void 0;
+      },
+    });
+    const { service } = createProjectService({
+      host: {
+        watchFile,
+      },
+    });
+
+    expect(service.host.watchFile).toEqual(watchFile);
+  });
+
+  it('uses readFile from custom host', () => {
+    const readFile = (): string | undefined => undefined;
+    const { service } = createProjectService({
+      host: {
+        readFile,
+      },
+    });
+
+    expect(service.host.readFile).toEqual(readFile);
+  });
 });

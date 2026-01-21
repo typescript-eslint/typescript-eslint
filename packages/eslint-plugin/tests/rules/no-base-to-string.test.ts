@@ -129,6 +129,21 @@ ruleTester.run('no-base-to-string', rule, {
     '(() => {}).toString();',
     '(function () {}).toString();',
 
+    `
+      declare const a: {
+        [Symbol.toPrimitive](): string;
+      };
+
+      \`\${a}\`;
+    `,
+    `
+      declare const a: {
+        valueOf(): string;
+      };
+
+      \`\${a}\`;
+    `,
+
     // variable toString() and template
     `
       let value = '';
@@ -332,6 +347,21 @@ interface MyError extends Error {}
 
 declare const error: MyError;
 error.toString();
+      `,
+    },
+    {
+      code: `
+        class BaseError extends Error {
+          code?: string;
+        }
+
+        class Boom<T> extends BaseError {
+          details: T;
+        }
+
+        function bar<T>(error: Boom<T>) {
+          console.log(error.toString());
+        }
       `,
     },
     {
@@ -1646,7 +1676,50 @@ declare const foo: Bar & Foo;
         },
       ],
     },
+    {
+      code: `
+        declare const a:
+          | {
+              [Symbol.toPrimitive](): string;
+            }
+          | {
+              other: true;
+            };
 
+        \`\${a}\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'a',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        declare const a:
+          | {
+              valueOf(): string;
+            }
+          | {
+              other: true;
+            };
+
+        \`\${a}\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'a',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
     {
       code: `
         [{}, {}].toString();

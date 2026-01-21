@@ -91,7 +91,7 @@ describe('convert', () => {
         errorOnUnknownASTType: true,
       });
 
-      expect(() => instance['deeplyCopy'](ast)).toThrow(
+      expect(() => instance['deeplyCopy'](ast)).toThrowError(
         'Unknown AST_NODE_TYPE: "TSSourceFile"',
       );
     });
@@ -252,7 +252,7 @@ describe('convert', () => {
       const ast = convertCode(code);
 
       const instance = new Converter(ast);
-      expect(() => instance.convertProgram()).toThrow(
+      expect(() => instance.convertProgram()).toThrowError(
         'JSDoc types can only be used inside documentation comments.',
       );
     });
@@ -266,7 +266,7 @@ describe('convert', () => {
 
       const instance = new Converter(ast);
 
-      expect(() => instance.convertProgram()).toThrow(
+      expect(() => instance.convertProgram()).toThrowError(
         'A variable declaration list must have at least one variable declarator.',
       );
     });
@@ -278,7 +278,7 @@ describe('convert', () => {
         allowInvalidAST: true,
       });
 
-      expect(() => instance.convertProgram()).not.toThrow();
+      expect(() => instance.convertProgram()).not.toThrowError();
     });
   });
 
@@ -333,7 +333,7 @@ describe('convert', () => {
       esTsEnumDeclaration.members;
 
       expect(emitWarning).toHaveBeenCalledExactlyOnceWith(
-        `The 'members' property is deprecated on TSEnumDeclaration nodes. Use 'body.members' instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        `The 'members' property is deprecated on TSEnumDeclaration nodes. Use 'body.members' instead. See https://tseslint.com/key-property-deprecated.`,
         'DeprecationWarning',
       );
     });
@@ -397,7 +397,7 @@ describe('convert', () => {
       tsMappedType.typeParameter;
 
       expect(emitWarning).toHaveBeenCalledExactlyOnceWith(
-        `The 'typeParameter' property is deprecated on TSMappedType nodes. Use 'constraint' and 'key' instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        `The 'typeParameter' property is deprecated on TSMappedType nodes. Use 'constraint' and 'key' instead. See https://tseslint.com/key-property-deprecated.`,
         'DeprecationWarning',
       );
     });

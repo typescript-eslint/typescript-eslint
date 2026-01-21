@@ -7,12 +7,12 @@ export class CatchClauseDefinition extends DefinitionBase<
   DefinitionType.CatchClause,
   TSESTree.CatchClause,
   null,
-  TSESTree.BindingName
+  TSESTree.Identifier
 > {
   public readonly isTypeDefinition = false;
   public readonly isVariableDefinition = true;
 
-  constructor(name: TSESTree.BindingName, node: CatchClauseDefinition['node']) {
+  constructor(name: TSESTree.Identifier, node: CatchClauseDefinition['node']) {
     super(DefinitionType.CatchClause, name, node, null);
   }
 }

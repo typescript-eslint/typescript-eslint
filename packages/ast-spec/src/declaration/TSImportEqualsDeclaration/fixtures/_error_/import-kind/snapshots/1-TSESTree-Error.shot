@@ -1,4 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > TSImportEqualsDeclaration > _error_ > import-kind > TSESTree - Error`]
-NO ERROR
+TSError
+> 1 | import type F = T;
+    | ^^^^^^^^^^^^^^^^^^ An import alias cannot use 'import type'
+  2 |

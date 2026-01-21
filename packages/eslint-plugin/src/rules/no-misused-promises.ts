@@ -657,10 +657,7 @@ export default createRule<Options, MessageId>({
     }
 
     function checkJSXAttribute(node: TSESTree.JSXAttribute): void {
-      if (
-        node.value == null ||
-        node.value.type !== AST_NODE_TYPES.JSXExpressionContainer
-      ) {
+      if (node.value?.type !== AST_NODE_TYPES.JSXExpressionContainer) {
         return;
       }
       const expressionContainer = services.esTreeNodeToTSNodeMap.get(

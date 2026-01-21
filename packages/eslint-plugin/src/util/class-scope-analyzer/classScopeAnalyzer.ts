@@ -16,7 +16,7 @@ import {
   extractNameForMember,
   extractNameForMemberExpression,
 } from './extractComputedName';
-import { privateKey } from './types';
+import { privateKey, publicKey } from './types';
 
 export class Member {
   /**
@@ -315,7 +315,7 @@ abstract class ThisScope extends Visitor {
           // ```
           case AST_NODE_TYPES.VariableDeclarator: {
             const value = firstDef.node.init;
-            if (value == null || value.type !== AST_NODE_TYPES.ThisExpression) {
+            if (value?.type !== AST_NODE_TYPES.ThisExpression) {
               return null;
             }
 
@@ -435,6 +435,28 @@ abstract class ThisScope extends Visitor {
   // Visit selectors //
   /////////////////////
 
+  protected AssignmentExpression(node: TSESTree.AssignmentExpression): void {
+    this.visitChildren(node);
+
+    if (
+      node.right.type === AST_NODE_TYPES.ThisExpression &&
+      node.left.type === AST_NODE_TYPES.ObjectPattern
+    ) {
+      this.handleThisDestructuring(node.left);
+    }
+  }
+
+  protected AssignmentPattern(node: TSESTree.AssignmentPattern): void {
+    this.visitChildren(node);
+
+    if (
+      node.right.type === AST_NODE_TYPES.ThisExpression &&
+      node.left.type === AST_NODE_TYPES.ObjectPattern
+    ) {
+      this.handleThisDestructuring(node.left);
+    }
+  }
+
   protected ClassDeclaration(node: TSESTree.ClassDeclaration): void {
     this.visitClass(node);
   }
@@ -527,6 +549,49 @@ abstract class ThisScope extends Visitor {
 
   protected StaticBlock(node: TSESTree.StaticBlock): void {
     this.visitIntermediate(node);
+  }
+
+  protected VariableDeclarator(node: TSESTree.VariableDeclarator): void {
+    this.visitChildren(node);
+
+    if (
+      node.init?.type === AST_NODE_TYPES.ThisExpression &&
+      node.id.type === AST_NODE_TYPES.ObjectPattern
+    ) {
+      this.handleThisDestructuring(node.id);
+    }
+  }
+
+  /**
+   * Handles destructuring from `this` in ObjectPattern.
+   * Example: const { property } = this;
+   */
+  private handleThisDestructuring(pattern: TSESTree.ObjectPattern): void {
+    if (this.thisContext == null) {
+      return;
+    }
+
+    for (const prop of pattern.properties) {
+      if (prop.type !== AST_NODE_TYPES.Property) {
+        continue;
+      }
+
+      if (prop.key.type !== AST_NODE_TYPES.Identifier || prop.computed) {
+        continue;
+      }
+
+      const memberKey = publicKey(prop.key.name);
+      const members = this.isStaticThisContext
+        ? this.thisContext.members.static
+        : this.thisContext.members.instance;
+      const member = members.get(memberKey);
+
+      if (member == null) {
+        continue;
+      }
+
+      countReference(prop.key, member);
+    }
   }
 }
 

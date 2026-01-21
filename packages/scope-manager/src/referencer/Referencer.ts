@@ -93,7 +93,10 @@ export class Referencer extends Visitor {
   public currentScope(throwOnNull: true): Scope | null;
   public currentScope(dontThrowOnNull?: true): Scope | null {
     if (!dontThrowOnNull) {
-      assert(this.scopeManager.currentScope, 'aaa');
+      assert(
+        this.scopeManager.currentScope,
+        'Expected currentScope to exist. This usually happens when analyze() is called with an incomplete AST node instead of a complete Program node.',
+      );
     }
     return this.scopeManager.currentScope;
   }
@@ -419,13 +422,12 @@ export class Referencer extends Visitor {
     this.scopeManager.nestCatchScope(node);
 
     if (node.param) {
-      const param = node.param;
       this.visitPattern(
-        param,
+        node.param,
         (pattern, info) => {
           this.currentScope().defineIdentifier(
             pattern,
-            new CatchClauseDefinition(param, node),
+            new CatchClauseDefinition(pattern, node),
           );
           this.referencingDefaultValue(pattern, info.assignments, null, true);
         },
@@ -486,8 +488,7 @@ export class Referencer extends Visitor {
     // NOTE: In ES6, ForStatement dynamically generates per iteration environment. However, this is
     // a static analyzer, we only generate one scope for ForStatement.
     if (
-      node.init &&
-      node.init.type === AST_NODE_TYPES.VariableDeclaration &&
+      node.init?.type === AST_NODE_TYPES.VariableDeclaration &&
       node.init.kind !== 'var'
     ) {
       this.scopeManager.nestForScope(node);

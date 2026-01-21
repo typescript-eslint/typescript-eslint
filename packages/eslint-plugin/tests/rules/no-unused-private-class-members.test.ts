@@ -379,7 +379,70 @@ class C {
   }
 }
     `,
+    `
+class Foo {
+  private privateMember;
+  private privateMember2;
 
+  method() {
+    const { privateMember, privateMember2 } = this;
+    console.log(privateMember, privateMember2);
+  }
+}
+    `,
+    `
+class Foo {
+  private static staticMember = 1;
+  static method() {
+    const { staticMember } = this;
+    console.log(staticMember);
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember = 1;
+  method() {
+    const { privateMember } = this;
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember = 1;
+  method() {
+    const { privateMember: privateMember2 } = this;
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember = 1;
+
+  method() {
+    let privateMember;
+    ({ privateMember } = this);
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember = 1;
+
+  method() {
+    const foo = ({ privateMember } = this) => {};
+  }
+}
+    `,
+    `
+class Foo {
+  private privateMember;
+
+  method() {
+    const { privateMember: used } = this;
+  }
+}
+    `,
     //--------------------------------------------------------------------------
     // Method definitions
     //--------------------------------------------------------------------------
@@ -1223,6 +1286,72 @@ class Foo {
         {
           data: {
             classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private privateMember;
+
+  method() {
+    const { unused: privateMember } = this;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'privateMember',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = 'bar';
+class Foo {
+  private foo = 1;
+
+  method() {
+    const { [foo]: test } = this;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'foo',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = 'bar';
+class Foo {
+  private foo = 1;
+  private bar = 2;
+
+  method() {
+    const { [foo]: test } = this;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            classMemberName: 'foo',
+          },
+          messageId: 'unusedPrivateClassMember',
+        },
+        {
+          data: {
+            classMemberName: 'bar',
           },
           messageId: 'unusedPrivateClassMember',
         },

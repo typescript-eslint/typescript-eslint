@@ -302,11 +302,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function isThisParam(param: TSESTree.Parameter | undefined): boolean {
-      return (
-        param != null &&
-        param.type === AST_NODE_TYPES.Identifier &&
-        param.name === 'this'
-      );
+      return param?.type === AST_NODE_TYPES.Identifier && param.name === 'this';
     }
 
     function isThisVoidParam(param: TSESTree.Parameter | undefined) {
@@ -510,7 +506,7 @@ export default createRule<Options, MessageIds>({
       a: TSESTree.TypeNode | undefined,
       b: TSESTree.TypeNode | undefined,
     ): boolean {
-      return a === b || (a != null && b != null && a.type === b.type);
+      return a === b || (a != null && a.type === b?.type);
     }
 
     /* Returns the first index where `a` and `b` differ. */
@@ -595,10 +591,7 @@ export default createRule<Options, MessageIds>({
       containingNode?: ContainingNode,
     ): void {
       key ??= getOverloadKey(signature);
-      if (
-        currentScope &&
-        (containingNode ?? signature).parent === currentScope.parent
-      ) {
+      if ((containingNode ?? signature).parent === currentScope?.parent) {
         const overloads = currentScope.overloads.get(key);
         if (overloads != null) {
           overloads.push(signature);

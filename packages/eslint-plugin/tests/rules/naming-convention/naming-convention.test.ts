@@ -152,10 +152,6 @@ ruleTester.run('naming-convention', rule, {
     {
       code: `
         let unused_foo = 'a';
-        const _unused_foo = 1;
-        interface IFoo {}
-        class IBar {}
-        function fooBar() {}
       `,
       errors: [
         {
@@ -166,46 +162,6 @@ ruleTester.run('naming-convention', rule, {
             type: 'Variable',
           },
           line: 2,
-          messageId: 'satisfyCustom',
-        },
-        {
-          data: {
-            name: '_unused_foo',
-            regex: '/^unused_\\w/u',
-            regexMatch: 'not match',
-            type: 'Variable',
-          },
-          line: 3,
-          messageId: 'satisfyCustom',
-        },
-        {
-          data: {
-            name: 'IFoo',
-            regex: '/^I[A-Z]/u',
-            regexMatch: 'not match',
-            type: 'Interface',
-          },
-          line: 4,
-          messageId: 'satisfyCustom',
-        },
-        {
-          data: {
-            name: 'IBar',
-            regex: '/^I[A-Z]/u',
-            regexMatch: 'not match',
-            type: 'Class',
-          },
-          line: 5,
-          messageId: 'satisfyCustom',
-        },
-        {
-          data: {
-            name: 'fooBar',
-            regex: '/function/u',
-            regexMatch: 'match',
-            type: 'Function',
-          },
-          line: 6,
           messageId: 'satisfyCustom',
         },
       ],
@@ -219,6 +175,53 @@ ruleTester.run('naming-convention', rule, {
           leadingUnderscore: 'allow',
           selector: 'default',
         },
+      ],
+    },
+    {
+      code: `
+        const _unused_foo = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: '_unused_foo',
+            regex: '/^unused_\\w/u',
+            regexMatch: 'not match',
+            type: 'Variable',
+          },
+          line: 2,
+          messageId: 'satisfyCustom',
+        },
+      ],
+      options: [
+        {
+          custom: {
+            match: false,
+            regex: /^unused_\w/.source,
+          },
+          format: ['snake_case'],
+          leadingUnderscore: 'allow',
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+        interface IFoo {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'IFoo',
+            regex: '/^I[A-Z]/u',
+            regexMatch: 'not match',
+            type: 'Interface',
+          },
+          line: 2,
+          messageId: 'satisfyCustom',
+        },
+      ],
+      options: [
         {
           custom: {
             match: false,
@@ -227,6 +230,52 @@ ruleTester.run('naming-convention', rule, {
           format: ['PascalCase'],
           selector: 'typeLike',
         },
+      ],
+    },
+    {
+      code: `
+        class IBar {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'IBar',
+            regex: '/^I[A-Z]/u',
+            regexMatch: 'not match',
+            type: 'Class',
+          },
+          line: 2,
+          messageId: 'satisfyCustom',
+        },
+      ],
+      options: [
+        {
+          custom: {
+            match: false,
+            regex: /^I[A-Z]/.source,
+          },
+          format: ['PascalCase'],
+          selector: 'typeLike',
+        },
+      ],
+    },
+    {
+      code: `
+        function fooBar() {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'fooBar',
+            regex: '/function/u',
+            regexMatch: 'match',
+            type: 'Function',
+          },
+          line: 2,
+          messageId: 'satisfyCustom',
+        },
+      ],
+      options: [
         {
           custom: {
             match: true,
@@ -241,10 +290,6 @@ ruleTester.run('naming-convention', rule, {
     {
       code: `
         let unused_foo = 'a';
-        const _unused_foo = 1;
-        function foo_bar() {}
-        interface IFoo {}
-        class IBar {}
       `,
       errors: [
         {
@@ -256,6 +301,20 @@ ruleTester.run('naming-convention', rule, {
           line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+          selector: ['variable', 'function'],
+        },
+      ],
+    },
+    {
+      code: `
+        const _unused_foo = 1;
+      `,
+      errors: [
         {
           data: {
             formats: 'camelCase',
@@ -263,18 +322,46 @@ ruleTester.run('naming-convention', rule, {
             processedName: 'unused_foo',
             type: 'Variable',
           },
-          line: 3,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      options: [
+        {
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+          selector: ['variable', 'function'],
+        },
+      ],
+    },
+    {
+      code: `
+        function foo_bar() {}
+      `,
+      errors: [
         {
           data: {
             formats: 'camelCase',
             name: 'foo_bar',
             type: 'Function',
           },
-          line: 4,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+          selector: ['variable', 'function'],
+        },
+      ],
+    },
+    {
+      code: `
+        interface IFoo {}
+      `,
+      errors: [
         {
           data: {
             name: 'IFoo',
@@ -282,9 +369,26 @@ ruleTester.run('naming-convention', rule, {
             regexMatch: 'not match',
             type: 'Interface',
           },
-          line: 5,
+          line: 2,
           messageId: 'satisfyCustom',
         },
+      ],
+      options: [
+        {
+          custom: {
+            match: false,
+            regex: /^I[A-Z]/.source,
+          },
+          format: ['PascalCase'],
+          selector: ['class', 'interface'],
+        },
+      ],
+    },
+    {
+      code: `
+        class IBar {}
+      `,
+      errors: [
         {
           data: {
             name: 'IBar',
@@ -292,7 +396,7 @@ ruleTester.run('naming-convention', rule, {
             regexMatch: 'not match',
             type: 'Class',
           },
-          line: 6,
+          line: 2,
           messageId: 'satisfyCustom',
         },
       ],
