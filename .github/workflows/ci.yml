@@ -224,12 +224,12 @@ jobs:
       # we don't collect coverage on other node versions so they run faster
       - name: Run unit tests with coverage for ${{ matrix.package }}
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        run: yarn nx run ${{ matrix.package }}:test -- --coverage
+        run: yarn nx run ${{ matrix.package }}:test -- --coverage --changed origin/main
         env:
           CI: true
       - name: Run unit tests for ${{ matrix.package }}
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        run: yarn nx test ${{ matrix.package }}
+        run: yarn nx test ${{ matrix.package }} -- --changed origin/main
         env:
           CI: true
 
@@ -265,7 +265,7 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
       - name: Run unit tests for ${{ matrix.package }}
-        run: yarn nx test ${{ matrix.package }} --coverage=false
+        run: yarn nx test ${{ matrix.package }} --coverage=false --changed origin/main
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
