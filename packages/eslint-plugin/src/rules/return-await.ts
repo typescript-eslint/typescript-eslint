@@ -24,6 +24,7 @@ interface ScopeInfo {
   hasAsync: boolean;
   owningFunc: FunctionNode;
 }
+//
 
 type Option =
   | 'always'
