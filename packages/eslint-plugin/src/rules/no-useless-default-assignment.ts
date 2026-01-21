@@ -190,7 +190,6 @@ export default createRule<[], MessageId>({
 
       if (symbol.flags & ts.SymbolFlags.Optional) {
         const parent = objectPattern.parent;
-
         if (
           parent.type === AST_NODE_TYPES.VariableDeclarator &&
           parent.init &&
@@ -199,13 +198,11 @@ export default createRule<[], MessageId>({
           const propertyName = getPropertyName(node.key);
 
           if (
-            propertyName &&
-            hasPropertyInAllBranches(parent.init, propertyName)
+            !propertyName ||
+            !hasPropertyInAllBranches(parent.init, propertyName)
           ) {
-            return checker.getTypeOfSymbol(symbol);
+            return null;
           }
-
-          return null;
         }
       }
 
