@@ -337,34 +337,22 @@ export default createRule<[], MessageId>({
       expr: TSESTree.Expression,
       propertyName: string,
     ): boolean {
-      switch (expr.type) {
-        case AST_NODE_TYPES.ObjectExpression:
-          return expr.properties.some(prop => {
-            if (prop.type !== AST_NODE_TYPES.Property) {
-              return false;
-            }
-
-            const key = prop.key;
-            if (key.type === AST_NODE_TYPES.Identifier) {
-              return key.name === propertyName;
-            }
-
-            if (key.type === AST_NODE_TYPES.Literal) {
-              return String(key.value) === propertyName;
-            }
-
+      if (expr.type === AST_NODE_TYPES.ObjectExpression) {
+        return expr.properties.some(prop => {
+          if (prop.type !== AST_NODE_TYPES.Property) {
             return false;
-          });
-
-        case AST_NODE_TYPES.ConditionalExpression:
-          return (
-            hasPropertyInAllBranches(expr.consequent, propertyName) &&
-            hasPropertyInAllBranches(expr.alternate, propertyName)
-          );
-
-        default:
-          return false;
+          }
+          return getPropertyName(prop.key) === propertyName;
+        });
       }
+
+      if (expr.type === AST_NODE_TYPES.ConditionalExpression) {
+        return (
+          hasPropertyInAllBranches(expr.consequent, propertyName) &&
+          hasPropertyInAllBranches(expr.alternate, propertyName)
+        );
+      }
+      return false;
     }
 
     return {
