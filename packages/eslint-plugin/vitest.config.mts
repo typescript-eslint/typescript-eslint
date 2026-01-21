@@ -4,10 +4,6 @@ import { defineProject, mergeConfig } from 'vitest/config';
 import { vitestBaseConfig } from '../../vitest.config.base.mjs';
 import packageJson from './package.json' with { type: 'json' };
 
-console.log('isWindowsCI', isWindowsCI());
-console.log('process.platform', process.platform);
-console.log('process.env.CI', process.env.CI);
-
 const vitestConfig = mergeConfig(
   vitestBaseConfig,
 
