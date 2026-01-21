@@ -4,8 +4,8 @@ ScopeManager {
     Variable$2 {
       defs: [
         CatchClauseDefinition$1 {
-          name: ArrayPattern$1,
-          node: CatchClause$2,
+          name: Identifier<"a">,
+          node: CatchClause$1,
         },
       ],
       name: "a",
@@ -16,8 +16,8 @@ ScopeManager {
     Variable$3 {
       defs: [
         CatchClauseDefinition$2 {
-          name: ArrayPattern$1,
-          node: CatchClause$2,
+          name: Identifier<"b">,
+          node: CatchClause$1,
         },
       ],
       name: "b",
@@ -28,8 +28,8 @@ ScopeManager {
     Variable$4 {
       defs: [
         CatchClauseDefinition$3 {
-          name: ArrayPattern$1,
-          node: CatchClause$2,
+          name: Identifier<"c">,
+          node: CatchClause$1,
         },
       ],
       name: "c",
@@ -42,7 +42,7 @@ ScopeManager {
           isValueReference: true,
           isWrite: true,
           resolved: Variable$4,
-          writeExpr: Literal$3,
+          writeExpr: Literal$2,
         },
       ],
       isValueVariable: true,
@@ -51,8 +51,8 @@ ScopeManager {
     Variable$5 {
       defs: [
         CatchClauseDefinition$4 {
-          name: ArrayPattern$1,
-          node: CatchClause$2,
+          name: Identifier<"d">,
+          node: CatchClause$1,
         },
       ],
       name: "d",
@@ -63,7 +63,7 @@ ScopeManager {
   ],
   scopes: [
     GlobalScope$1 {
-      block: Program$4,
+      block: Program$3,
       isStrict: false,
       references: [],
       set: Map {
@@ -76,7 +76,7 @@ ScopeManager {
       ],
     },
     BlockScope$2 {
-      block: BlockStatement$5,
+      block: BlockStatement$4,
       isStrict: false,
       references: [],
       set: Map {},
@@ -85,7 +85,7 @@ ScopeManager {
       variables: [],
     },
     CatchScope$3 {
-      block: CatchClause$2,
+      block: CatchClause$1,
       isStrict: false,
       references: [
         Reference$1,
@@ -106,7 +106,7 @@ ScopeManager {
       ],
     },
     BlockScope$4 {
-      block: BlockStatement$6,
+      block: BlockStatement$5,
       isStrict: false,
       references: [],
       set: Map {},
