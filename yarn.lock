@@ -3560,14 +3560,14 @@ __metadata:
   linkType: hard
 
 "@eslint-community/eslint-plugin-eslint-comments@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "@eslint-community/eslint-plugin-eslint-comments@npm:4.5.0"
+  version: 4.6.0
+  resolution: "@eslint-community/eslint-plugin-eslint-comments@npm:4.6.0"
   dependencies:
     escape-string-regexp: ^4.0.0
-    ignore: ^5.2.4
+    ignore: ^7.0.5
   peerDependencies:
     eslint: ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 6988581531f8bf93910a6d68c990c6d063d3cc382c836aa865a5dba77d75831a34f2ede8ec7f599908a4f8fea0491241156ee8f49cb50778178858a3729d434c
+  checksum: 3df755d34daeac76195168aa57e28b221997c032e0aae32a77c0fa40425dddc03cfb15d17967be69f5ca4fb7ad8a64df3de49f10249c7bf62345a2c4b6c9fae0
   languageName: node
   linkType: hard
 
@@ -11939,7 +11939,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ignore@npm:^5.0.4, ignore@npm:^5.2.0, ignore@npm:^5.2.4, ignore@npm:^5.3.2":
+"ignore@npm:^5.0.4, ignore@npm:^5.2.0, ignore@npm:^5.3.2":
   version: 5.3.2
   resolution: "ignore@npm:5.3.2"
   checksum: 2acfd32a573260ea522ea0bfeff880af426d68f6831f973129e2ba7363f422923cf53aab62f8369cbf4667c7b25b6f8a3761b34ecdb284ea18e87a5262a865be
