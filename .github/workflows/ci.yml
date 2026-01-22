@@ -52,6 +52,36 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
+  affected:
+    name: Determine Affected Projects
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }}
+    needs: [install]
+    runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    outputs:
+      affected: ${{ steps.affected.outputs.affected }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Get affected projects
+        id: affected
+        run: |
+          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            # On main branch push, consider all projects affected
+            affected=$(yarn nx show projects --json 2>/dev/null || echo '[]')
+          else
+            # For PRs and merge groups, check what's affected
+            affected=$(yarn nx show projects --affected --json 2>/dev/null || echo '[]')
+          fi
+          echo "affected=$affected" >> $GITHUB_OUTPUT
+
   build:
     name: Build All Packages
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
@@ -178,7 +208,8 @@ jobs:
   unit_tests:
     name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
+    needs: [build, affected]
+    if: contains(fromJson(needs.affected.outputs.affected || '[]'), matrix.package)
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -245,7 +276,8 @@ jobs:
   unit_tests_project_service:
     name: Run Unit Tests with Project Service
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
+    needs: [build, affected]
+    if: contains(fromJson(needs.affected.outputs.affected || '[]'), matrix.package)
     runs-on: ubuntu-latest
     strategy:
       matrix:
