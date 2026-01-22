@@ -82,6 +82,9 @@ jobs:
           affected=$(yarn nx show projects --affected --json --base=origin/${{ github.base_ref }} 2>/dev/null || echo '[]')
 
           echo "affected=$affected" >> $GITHUB_OUTPUT
+
+      # We want to skip non-affected packages, but GH Actions doesn't support `contains(affected, matrix.package)` in `if` conditions,
+      # so we're creating the whole matrix dynamically instead.
       - name: Filter affected packages for test matrices
         id: filter
         uses: actions/github-script@v8
