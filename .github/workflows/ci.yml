@@ -54,7 +54,7 @@ jobs:
 
   affected:
     name: Determine Affected Projects
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }}
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
     runs-on: ubuntu-latest
     env:
@@ -64,8 +64,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -73,13 +71,13 @@ jobs:
       - name: Get affected projects
         id: affected
         run: |
-          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            # On main branch push, consider all projects affected
-            affected=$(yarn nx show projects --json 2>/dev/null || echo '[]')
-          else
-            # For PRs and merge groups, check what's affected
-            affected=$(yarn nx show projects --affected --json 2>/dev/null || echo '[]')
+          # Fetch base ref history so NX can determine affected projects
+          if [ "${{ github.event_name }}" = "pull_request" ] then
+            git fetch --depth=1 origin ${{ github.base_ref }}
           fi
+
+          affected=$(yarn nx show projects --affected --json)
+
           echo "affected=$affected" >> $GITHUB_OUTPUT
 
   build:
