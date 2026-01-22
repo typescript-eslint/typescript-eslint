@@ -77,6 +77,11 @@ jobs:
             git fetch --depth=2 origin ${{ github.base_ref }}
           fi
 
+          yarn nx show projects --affected --json
+
+          yarn nx show projects --affected --json --base=HEAD~1 --head=HEAD
+
+
           affected=$(yarn nx show projects --affected --json --base=HEAD~1 --head=HEAD 2>/dev/null || echo '[]')
 
           echo "affected=$affected" >> $GITHUB_OUTPUT
