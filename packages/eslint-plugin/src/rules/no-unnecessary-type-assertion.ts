@@ -390,9 +390,22 @@ export default createRule<Options, MessageIds>({
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
 
-        const type = getConstrainedTypeAtLocation(services, node.expression);
+        const constrainedType = getConstrainedTypeAtLocation(
+          services,
+          node.expression,
+        );
+        const actualType = services.getTypeAtLocation(node.expression);
 
-        if (!isNullableType(type)) {
+        // Check both the constrained type and the actual type.
+        // If either is nullable, we should not report the assertion as unnecessary.
+        // This handles cases like generic constraints with `any` where the
+        // constrained type is `any` (nullable) but the actual type might be
+        // a type parameter that TypeScript treats nominally.
+        // See: https://github.com/typescript-eslint/typescript-eslint/issues/11559
+        const constrainedTypeIsNullable = isNullableType(constrainedType);
+        const actualTypeIsNullable = isNullableType(actualType);
+
+        if (!constrainedTypeIsNullable && !actualTypeIsNullable) {
           if (
             node.expression.type === AST_NODE_TYPES.Identifier &&
             isPossiblyUsedBeforeAssigned(node.expression)
@@ -409,10 +422,19 @@ export default createRule<Options, MessageIds>({
           // we know it's a nullable type
           // so figure out if the variable is used in a place that accepts nullable types
 
+          // If the constrained type differs from the actual type (e.g., when dealing
+          // with unresolved generic type parameters), we should not report the assertion
+          // as contextually unnecessary. TypeScript may still require the assertion
+          // even if the constraint is nullable (like `any`).
+          // See: https://github.com/typescript-eslint/typescript-eslint/issues/11559
+          if (constrainedType !== actualType) {
+            return;
+          }
+
           const contextualType = getContextualType(checker, originalNode);
           if (contextualType) {
             if (
-              isTypeFlagSet(type, ts.TypeFlags.Unknown) &&
+              isTypeFlagSet(constrainedType, ts.TypeFlags.Unknown) &&
               !isTypeFlagSet(contextualType, ts.TypeFlags.Unknown)
             ) {
               return;
@@ -421,11 +443,17 @@ export default createRule<Options, MessageIds>({
             // in strict mode you can't assign null to undefined, so we have to make sure that
             // the two types share a nullable type
             const typeIncludesUndefined = isTypeFlagSet(
-              type,
+              constrainedType,
               ts.TypeFlags.Undefined,
             );
-            const typeIncludesNull = isTypeFlagSet(type, ts.TypeFlags.Null);
-            const typeIncludesVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
+            const typeIncludesNull = isTypeFlagSet(
+              constrainedType,
+              ts.TypeFlags.Null,
+            );
+            const typeIncludesVoid = isTypeFlagSet(
+              constrainedType,
+              ts.TypeFlags.Void,
+            );
 
             const contextualTypeIncludesUndefined = isTypeFlagSet(
               contextualType,
