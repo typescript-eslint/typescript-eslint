@@ -6,6 +6,7 @@ instead of the ones declared within this package
 */
 
 declare module 'eslint' {
+  export const ESLint: unknown;
   export const Linter: unknown;
   export const RuleTester: unknown;
   export const SourceCode: unknown;
