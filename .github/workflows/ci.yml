@@ -79,12 +79,7 @@ jobs:
             git fetch --depth=1 origin ${{ github.base_ref }}
           fi
 
-          yarn nx show projects --affected --json --base=origin/${{ github.base_ref }}
-
-          yarn nx show projects --affected --json --base=HEAD~1 --head=HEAD
-
-
-          affected=$(yarn nx show projects --affected --json --base=HEAD~1 --head=HEAD 2>/dev/null || echo '[]')
+          affected=$(yarn nx show projects --affected --json --base=origin/${{ github.base_ref }} 2>/dev/null || echo '[]')
 
           echo "affected=$affected" >> $GITHUB_OUTPUT
       - name: Filter affected packages for test matrices
