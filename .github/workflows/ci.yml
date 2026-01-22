@@ -65,6 +65,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -74,7 +76,7 @@ jobs:
         run: |
           # Fetch base ref history so NX can determine affected projects
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch --depth=2 origin ${{ github.base_ref }}
+            git fetch --depth=1 origin ${{ github.base_ref }}
           fi
 
           yarn nx show projects --affected --json --base=origin/${{ github.base_ref }}
