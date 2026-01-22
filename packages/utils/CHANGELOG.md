@@ -1,3 +1,15 @@
+## 8.53.1 (2026-01-19)
+
+### 🩹 Fixes
+
+- **utils:** make RuleCreator root defaultOptions optional ([#11956](https://github.com/typescript-eslint/typescript-eslint/pull/11956))
+
+### ❤️ Thank You
+
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.53.0 (2026-01-12)
 
 This was a version bump only for utils to align it with other projects, there were no code changes.

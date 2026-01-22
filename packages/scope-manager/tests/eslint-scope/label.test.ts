@@ -47,9 +47,10 @@ describe('label', () => {
     assert.isScopeOfType(scope, ScopeType.global);
     expect(variables).toHaveLength(1);
     expect(variables[0].name).toBe('foo');
-    expect(scope.through).toHaveLength(3);
-    expect(scope.through[2].identifier.name).toBe('foo');
-    expect(scope.through[2].isRead()).toBe(true);
+    expect(scope.through).toHaveLength(1);
+    expect(scope.through[0].identifier.name).toBe('console');
+    expect(variables[0].references).toHaveLength(2);
+    expect(variables[0].references[1].isRead()).toBe(true);
 
     scope = scopeManager.scopes[1];
     variables = getRealVariables(scope.variables);
