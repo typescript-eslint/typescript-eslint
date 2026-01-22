@@ -60,7 +60,8 @@ jobs:
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     outputs:
-      affected: ${{ steps.affected.outputs.affected }}
+      unit_tests_packages: ${{ steps.filter.outputs.unit_tests_packages }}
+      project_service_packages: ${{ steps.filter.outputs.project_service_packages }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -79,6 +80,40 @@ jobs:
           affected=$(yarn nx show projects --affected --json --base=HEAD~1 --head=HEAD)
 
           echo "affected=$affected" >> $GITHUB_OUTPUT
+      - name: Filter affected packages for test matrices
+        id: filter
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const affected = ${{ steps.affected.outputs.affected }};
+
+            const unitTestsPackages = [
+              'ast-spec',
+              'eslint-plugin',
+              'eslint-plugin-internal',
+              'parser',
+              'project-service',
+              'rule-schema-to-typescript-types',
+              'rule-tester',
+              'scope-manager',
+              'tsconfig-utils',
+              'type-utils',
+              'typescript-eslint',
+              'typescript-estree',
+              'utils',
+              'visitor-keys',
+            ];
+
+            const projectServicePackages = [
+              'eslint-plugin-internal',
+              'typescript-estree',
+            ];
+
+            const affectedUnitTests = unitTestsPackages.filter(pkg => affected.includes(pkg));
+            const affectedProjectService = projectServicePackages.filter(pkg => affected.includes(pkg));
+
+            core.setOutput('unit_tests_packages', JSON.stringify(affectedUnitTests));
+            core.setOutput('project_service_packages', JSON.stringify(affectedProjectService));
 
   build:
     name: Build All Packages
@@ -207,7 +242,7 @@ jobs:
     name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build, affected]
-    if: contains(fromJson(needs.affected.outputs.affected || '[]'), matrix.package)
+    if: ${{ needs.affected.outputs.unit_tests_packages != '[]' && needs.affected.outputs.unit_tests_packages != '' }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -217,23 +252,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [18, 20]
-        package:
-          [
-            'ast-spec',
-            'eslint-plugin',
-            'eslint-plugin-internal',
-            'parser',
-            'project-service',
-            'rule-schema-to-typescript-types',
-            'rule-tester',
-            'scope-manager',
-            'tsconfig-utils',
-            'type-utils',
-            'typescript-eslint',
-            'typescript-estree',
-            'utils',
-            'visitor-keys',
-          ]
+        package: ${{ fromJson(needs.affected.outputs.unit_tests_packages) }}
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
@@ -275,11 +294,11 @@ jobs:
     name: Run Unit Tests with Project Service
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build, affected]
-    if: contains(fromJson(needs.affected.outputs.affected || '[]'), matrix.package)
+    if: ${{ needs.affected.outputs.project_service_packages != '[]' && needs.affected.outputs.project_service_packages != '' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ['eslint-plugin-internal', 'typescript-estree']
+        package: ${{ fromJson(needs.affected.outputs.project_service_packages) }}
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
       COLLECT_COVERAGE: false,
