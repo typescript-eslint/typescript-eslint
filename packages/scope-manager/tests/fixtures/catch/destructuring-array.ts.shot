@@ -1,0 +1,118 @@
+ScopeManager {
+  variables: [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: [
+        CatchClauseDefinition$1 {
+          name: Identifier<"a">,
+          node: CatchClause$1,
+        },
+      ],
+      name: "a",
+      references: [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$3 {
+      defs: [
+        CatchClauseDefinition$2 {
+          name: Identifier<"b">,
+          node: CatchClause$1,
+        },
+      ],
+      name: "b",
+      references: [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$4 {
+      defs: [
+        CatchClauseDefinition$3 {
+          name: Identifier<"c">,
+          node: CatchClause$1,
+        },
+      ],
+      name: "c",
+      references: [
+        Reference$1 {
+          identifier: Identifier<"c">,
+          init: true,
+          isRead: false,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: true,
+          resolved: Variable$4,
+          writeExpr: Literal$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$5 {
+      defs: [
+        CatchClauseDefinition$4 {
+          name: Identifier<"d">,
+          node: CatchClause$1,
+        },
+      ],
+      name: "d",
+      references: [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: [],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+      },
+      type: "global",
+      upper: null,
+      variables: [
+        ImplicitGlobalConstTypeVariable,
+      ],
+    },
+    BlockScope$2 {
+      block: BlockStatement$4,
+      isStrict: false,
+      references: [],
+      set: Map {},
+      type: "block",
+      upper: GlobalScope$1,
+      variables: [],
+    },
+    CatchScope$3 {
+      block: CatchClause$1,
+      isStrict: false,
+      references: [
+        Reference$1,
+      ],
+      set: Map {
+        "a" => Variable$2,
+        "b" => Variable$3,
+        "c" => Variable$4,
+        "d" => Variable$5,
+      },
+      type: "catch",
+      upper: GlobalScope$1,
+      variables: [
+        Variable$2,
+        Variable$3,
+        Variable$4,
+        Variable$5,
+      ],
+    },
+    BlockScope$4 {
+      block: BlockStatement$5,
+      isStrict: false,
+      references: [],
+      set: Map {},
+      type: "block",
+      upper: CatchScope$3,
+      variables: [],
+    },
+  ],
+}
