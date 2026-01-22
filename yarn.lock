@@ -5813,7 +5813,7 @@ __metadata:
     "@typescript-eslint/utils": "workspace:*"
     "@vitest/coverage-v8": ^3.2.4
     eslint: "*"
-    prettier: 3.7.4
+    prettier: 3.8.0
     rimraf: "*"
     vitest: ^3.2.4
   languageName: unknown
@@ -5843,7 +5843,7 @@ __metadata:
     mdast-util-mdx: ^3.0.0
     micromark-extension-mdxjs: ^3.0.0
     natural-compare: ^1.4.0
-    prettier: 3.7.4
+    prettier: 3.8.0
     rimraf: "*"
     title-case: ^4.3.2
     ts-api-utils: ^2.4.0
@@ -6062,7 +6062,7 @@ __metadata:
     lint-staged: ^15.5.2
     markdownlint-cli: ^0.47.0
     nx: 22.3.3
-    prettier: 3.7.4
+    prettier: 3.8.0
     rimraf: ^5.0.10
     semver: 7.7.3
     tsx: "*"
@@ -16662,12 +16662,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.7.4":
-  version: 3.7.4
-  resolution: "prettier@npm:3.7.4"
+"prettier@npm:3.8.0":
+  version: 3.8.0
+  resolution: "prettier@npm:3.8.0"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 955e37e87b1151ca3b3282463f5295f4c415821884791df152ff66e6eb1c5257115153cccba61b13962546100dd00ae45670ff27077dcab04c977d84036eaf80
+  checksum: 50770d842539d5fa208bd84ecfb28ae367258b14a5e7e4b9472ba087ed9f8888a5bfd387bfd5596473529f04347670f9b1aa6f0bd8631bec1644e6a8e47c7d35
   languageName: node
   linkType: hard
 
@@ -20321,7 +20321,7 @@ __metadata:
     mdast-util-from-markdown: ^2.0.2
     mdast-util-mdx: ^3.0.0
     monaco-editor: ~0.54.0
-    prettier: 3.7.4
+    prettier: 3.8.0
     prism-react-renderer: ^2.4.1
     raw-loader: ^4.0.2
     react: ^18.3.1
