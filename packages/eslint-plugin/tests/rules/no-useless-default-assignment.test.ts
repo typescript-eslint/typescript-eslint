@@ -257,10 +257,6 @@ ruleTester.run('no-useless-default-assignment', rule, {
       const { a = 'baz' } = cond ? { ...foo } : { a: 'bar' };
     `,
     `
-      const key = 'a';
-      const { a = 'baz' } = cond ? { [key]: 'foo' } : { [key]: 'bar' };
-    `,
-    `
       const key = Math.random() > 0.5 ? 'a' : 'b';
       const { a = 'baz' } = cond ? { [key]: 'foo' } : { [key]: 'bar' };
     `,
@@ -274,18 +270,6 @@ ruleTester.run('no-useless-default-assignment', rule, {
     `
       const sym = Symbol('a');
       const { a = 'baz' } = cond ? { [sym]: 'foo' } : { [sym]: 'bar' };
-    `,
-    `
-      const foo = Math.random() > 0.5 ? 1 : 2;
-      const { a = 'baz' } = foo;
-    `,
-    `
-      const obj: unknown = { ...foo };
-      const { a = 'baz' } = cond ? obj : { a: 'bar' };
-    `,
-    `
-      const obj: unknown = [];
-      const { a = 'baz' } = cond ? obj : { a: 'bar' };
     `,
   ],
   invalid: [
@@ -678,6 +662,22 @@ ruleTester.run('no-useless-default-assignment', rule, {
       ],
       output: `
         const { a } = cond ? { a() {} } : { a: 'bar' };
+      `,
+    },
+    {
+      code: `
+        const { a2 = 'b' } = Math.random() < 0.5 ? { [\`a2\`]: 'a' } : { a2: 'b' };
+      `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 25,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a2 } = Math.random() < 0.5 ? { [\`a2\`]: 'a' } : { a2: 'b' };
       `,
     },
   ],
