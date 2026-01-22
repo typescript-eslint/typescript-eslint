@@ -54,8 +54,8 @@ jobs:
 
   affected:
     name: Determine Affected Projects
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [install]
+    # environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    # needs: [install]
     runs-on: ubuntu-latest
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
@@ -66,11 +66,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 5
+          fetch-depth: 2
       - name: Install
         uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+        # with:
+        #   node-version: ${{ env.PRIMARY_NODE_VERSION }}
       - name: Get affected projects
         id: affected
         run: |
