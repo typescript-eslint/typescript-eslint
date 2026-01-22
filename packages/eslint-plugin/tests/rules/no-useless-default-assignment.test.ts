@@ -271,6 +271,9 @@ ruleTester.run('no-useless-default-assignment', rule, {
       const sym = Symbol('a');
       const { a = 'baz' } = cond ? { [sym]: 'foo' } : { [sym]: 'bar' };
     `,
+    `
+      const { a = 'baz' } = cond ? { [\`a\${1}\`]: 'foo' } : { a: 'bar' };
+    `,
   ],
   invalid: [
     {
@@ -666,18 +669,18 @@ ruleTester.run('no-useless-default-assignment', rule, {
     },
     {
       code: `
-        const { a2 = 'b' } = Math.random() < 0.5 ? { [\`a2\`]: 'a' } : { a2: 'b' };
+        const { a = 'b' } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 25,
+          column: 21,
+          endColumn: 24,
           line: 2,
           messageId: 'uselessDefaultAssignment',
         },
       ],
       output: `
-        const { a2 } = Math.random() < 0.5 ? { [\`a2\`]: 'a' } : { a2: 'b' };
+        const { a } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
       `,
     },
   ],
