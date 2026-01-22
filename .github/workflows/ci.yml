@@ -74,10 +74,10 @@ jobs:
         run: |
           # Fetch base ref history so NX can determine affected projects
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch --depth=1 origin ${{ github.base_ref }}
+            git fetch --depth=2 origin ${{ github.base_ref }}
           fi
 
-          affected=$(yarn nx show projects --affected --json --base=HEAD~1 --head=HEAD)
+          affected=$(yarn nx show projects --affected --json --base=HEAD~1 --head=HEAD 2>/dev/null || echo '[]')
 
           echo "affected=$affected" >> $GITHUB_OUTPUT
       - name: Filter affected packages for test matrices
