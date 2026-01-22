@@ -128,7 +128,9 @@ export default createRule<[], MessageId>({
                 return;
               }
 
-              if ((paramSymbol.flags & ts.SymbolFlags.Optional) === 0) {
+              if (
+                !tsutils.isSymbolFlagSet(paramSymbol, ts.SymbolFlags.Optional)
+              ) {
                 const paramType = checker.getTypeOfSymbol(paramSymbol);
                 if (!canBeUndefined(paramType)) {
                   reportUselessDefaultAssignment(node, 'parameter');
@@ -189,7 +191,7 @@ export default createRule<[], MessageId>({
       }
 
       if (
-        symbol.flags & ts.SymbolFlags.Optional &&
+        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Optional) &&
         hasConditionalInitializer(objectPattern)
       ) {
         return null;

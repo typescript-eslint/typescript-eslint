@@ -6,12 +6,13 @@ import { createRule } from '../util/index.js';
 
 type FlagType = 'ObjectFlags' | 'SymbolFlags' | 'TypeFlags';
 
-interface FlagConfig {
-  flagsProperty: string;
-  method: string;
+function isFlagType(name: string): name is FlagType {
+  return (
+    name === 'TypeFlags' || name === 'SymbolFlags' || name === 'ObjectFlags'
+  );
 }
 
-const FLAG_CONFIGS: Record<FlagType, FlagConfig> = {
+const FLAG_CONFIGS = {
   ObjectFlags: {
     flagsProperty: 'objectFlags',
     method: 'isObjectFlagSet',
@@ -43,9 +44,7 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    function isTsFlagAccess(
-      node: TSESTree.Node,
-    ): { flagType: FlagType; fullText: string } | null {
+    function isTsFlagAccess(node: TSESTree.Node) {
       if (
         node.type === AST_NODE_TYPES.MemberExpression &&
         node.object.type === AST_NODE_TYPES.MemberExpression &&
@@ -54,15 +53,8 @@ export default createRule({
         node.object.property.type === AST_NODE_TYPES.Identifier
       ) {
         const flagType = node.object.property.name;
-        if (
-          flagType === 'TypeFlags' ||
-          flagType === 'SymbolFlags' ||
-          flagType === 'ObjectFlags'
-        ) {
-          return {
-            flagType,
-            fullText: context.sourceCode.getText(node),
-          };
+        if (isFlagType(flagType)) {
+          return { flagType, fullText: context.sourceCode.getText(node) };
         }
       }
       return null;
@@ -96,7 +88,7 @@ export default createRule({
     function isFlagPropertyAccess(
       node: TSESTree.Node,
       expectedFlagType: FlagType,
-    ): { objectText: string } | null {
+    ) {
       if (
         node.type === AST_NODE_TYPES.MemberExpression &&
         node.property.type === AST_NODE_TYPES.Identifier
@@ -112,10 +104,7 @@ export default createRule({
       return null;
     }
 
-    function analyzeBitwiseAnd(node: TSESTree.BinaryExpression): {
-      flagAccess: { flagType: FlagType; flagText: string };
-      objectText: string;
-    } | null {
+    function analyzeBitwiseAnd(node: TSESTree.BinaryExpression) {
       const { left, right } = node;
 
       const rightFlag = isTsFlagAccess(right) ?? isFlagOrExpression(right);
@@ -123,10 +112,8 @@ export default createRule({
         const leftPropAccess = isFlagPropertyAccess(left, rightFlag.flagType);
         if (leftPropAccess) {
           return {
-            flagAccess: {
-              flagText: rightFlag.fullText,
-              flagType: rightFlag.flagType,
-            },
+            flagText: rightFlag.fullText,
+            flagType: rightFlag.flagType,
             objectText: leftPropAccess.objectText,
           };
         }
@@ -137,10 +124,8 @@ export default createRule({
         const rightPropAccess = isFlagPropertyAccess(right, leftFlag.flagType);
         if (rightPropAccess) {
           return {
-            flagAccess: {
-              flagText: leftFlag.fullText,
-              flagType: leftFlag.flagType,
-            },
+            flagText: leftFlag.fullText,
+            flagType: leftFlag.flagType,
             objectText: rightPropAccess.objectText,
           };
         }
@@ -160,22 +145,20 @@ export default createRule({
           return;
         }
 
-        const { flagAccess, objectText } = analysis;
-        const { flagText, flagType } = flagAccess;
+        const { flagText, flagType, objectText } = analysis;
         const method = FLAG_CONFIGS[flagType].method;
 
         let nodeToReplace: TSESTree.Node = node;
         let isNegated = false;
 
-        const parent = node.parent;
         if (
-          parent.type === AST_NODE_TYPES.BinaryExpression &&
-          (parent.operator === '===' || parent.operator === '!==') &&
-          parent.right.type === AST_NODE_TYPES.Literal &&
-          parent.right.value === 0
+          node.parent.type === AST_NODE_TYPES.BinaryExpression &&
+          (node.parent.operator === '===' || node.parent.operator === '!==') &&
+          node.parent.right.type === AST_NODE_TYPES.Literal &&
+          node.parent.right.value === 0
         ) {
-          nodeToReplace = parent;
-          isNegated = parent.operator === '===';
+          nodeToReplace = node.parent;
+          isNegated = node.parent.operator === '===';
         }
 
         const replacement = isNegated
