@@ -275,6 +275,10 @@ export default createRule<[], MessageId>({
           return key.name;
         case AST_NODE_TYPES.Literal:
           return String(key.value);
+        case AST_NODE_TYPES.TemplateLiteral:
+          return key.expressions.length === 0
+            ? key.quasis[0].value.cooked
+            : null;
         default:
           return null;
       }
