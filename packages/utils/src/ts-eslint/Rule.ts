@@ -729,6 +729,7 @@ export interface RuleModule<
   ): ExtendedRuleListener;
 
   /**
+   * @deprecated Use meta.defaultOptions instead
    * Default options the rule will be run with
    */
   defaultOptions?: Options;
