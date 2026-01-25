@@ -3194,7 +3194,22 @@ declare const foos: { bar: number }[];
 if (foo && foo.bar === foos[0]?.bar) {
 }
         `,
-        errors: [{ messageId: 'preferOptionalChain' }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+declare const foo: { bar: number } | null;
+declare const foos: { bar: number }[];
+if (foo?.bar === foos[0]?.bar) {
+}
+        `,
+              },
+            ],
+          },
+        ],
         output: null,
       },
     ],
