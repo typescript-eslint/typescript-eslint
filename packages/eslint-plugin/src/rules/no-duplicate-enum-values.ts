@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows } from '../util';
 
 export default createRule({
   name: 'no-duplicate-enum-values',
@@ -62,9 +62,10 @@ export default createRule({
           } else if (isNumberLiteral(member.initializer)) {
             value = member.initializer.value;
           } else if (isStaticTemplateLiteral(member.initializer)) {
-            // cooked can only be null inside a TaggedTemplateExpression, which is not possible.
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            value = member.initializer.quasis[0].value.cooked!;
+            value = nullThrows(
+              member.initializer.quasis[0].value.cooked,
+              'impossible condition',
+            );
           }
 
           if (value == null) {
