@@ -1948,29 +1948,19 @@ export class Converter {
         return result;
       }
 
-      case SyntaxKind.TaggedTemplateExpression: {
-        if (node.tag.flags & ts.NodeFlags.OptionalChain) {
-          this.#throwError(
-            node,
-            'Tagged template expressions are not permitted in an optional chain.',
-          );
-        }
-        const result = this.createNode<TSESTree.TaggedTemplateExpression>(
-          node,
-          {
-            type: AST_NODE_TYPES.TaggedTemplateExpression,
-            quasi: this.convertChild(node.template),
-            tag: this.convertChild(node.tag),
-            typeArguments:
-              node.typeArguments &&
-              this.convertTypeArgumentsToTypeParameterInstantiation(
-                node.typeArguments,
-                node,
-              ),
-          },
-        );
-        return result;
-      }
+      case SyntaxKind.TaggedTemplateExpression:
+        return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
+          type: AST_NODE_TYPES.TaggedTemplateExpression,
+          quasi: this.convertChild(node.template),
+          tag: this.convertChild(node.tag),
+          typeArguments:
+            node.typeArguments &&
+            this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            ),
+        });
+
       case SyntaxKind.TemplateHead:
       case SyntaxKind.TemplateMiddle:
       case SyntaxKind.TemplateTail: {
