@@ -554,30 +554,32 @@ function getReportDescriptor(
 
   const reportRange = getReportRange(chain, node.range, sourceCode);
 
+  const isUnsafe =
+    operator === '&&' &&
+    lastChain &&
+    isUnsafeEqualityCheck(
+      parserServices,
+      lastChain as LastChainOperandForReport,
+      operator,
+    );
+
   const fix: ReportFixFunction = fixer =>
     fixer.replaceTextRange(reportRange, newCode);
 
+  const fixMode = isUnsafe || useSuggestionFixer ? 'suggest' : 'fix';
   return {
     loc: {
       end: sourceCode.getLocFromIndex(reportRange[1]),
       start: sourceCode.getLocFromIndex(reportRange[0]),
     },
     messageId: 'preferOptionalChain',
-    ...(operator === '&&' &&
-    lastChain &&
-    isUnsafeEqualityCheck(
-      parserServices,
-      lastChain as LastChainOperandForReport,
-      operator,
-    )
-      ? {}
-      : getFixOrSuggest({
-          fixOrSuggest: useSuggestionFixer ? 'suggest' : 'fix',
-          suggestion: {
-            fix,
-            messageId: 'optionalChainSuggest',
-          },
-        })),
+    ...getFixOrSuggest({
+      fixOrSuggest: fixMode,
+      suggestion: {
+        fix,
+        messageId: 'optionalChainSuggest',
+      },
+    }),
   };
 
   interface FlattenedChain {
