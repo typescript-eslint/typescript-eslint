@@ -237,7 +237,7 @@ jobs:
           CI: true
       - name: Run unit tests for ${{ matrix.package }}
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        run: yarn nx test ${{ matrix.package }} -- --changed origin/main
+        run: yarn nx test ${{ matrix.package }} -- --changed origin/${{ github.base_ref || github.ref_name }}
         env:
           CI: true
 
