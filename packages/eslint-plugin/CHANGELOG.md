@@ -1,3 +1,29 @@
+## 8.54.0 (2026-01-26)
+
+### 🚀 Features
+
+- **eslint-plugin-internal:** add prefer-tsutils-methods rule ([#11974](https://github.com/typescript-eslint/typescript-eslint/pull/11974), [#11625](https://github.com/typescript-eslint/typescript-eslint/issues/11625))
+- **typescript-estree:** add shortcut methods to ParserServicesWithTypeInformation ([#11965](https://github.com/typescript-eslint/typescript-eslint/pull/11965), [#11955](https://github.com/typescript-eslint/typescript-eslint/issues/11955))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] check both base constraint and actual type for non-null assertions ([#11967](https://github.com/typescript-eslint/typescript-eslint/pull/11967), [#11559](https://github.com/typescript-eslint/typescript-eslint/issues/11559))
+- **deps:** update dependency prettier to v3.8.0 ([#11991](https://github.com/typescript-eslint/typescript-eslint/pull/11991))
+- **scope-manager:** fix catch clause scopes `def.name` ([#11982](https://github.com/typescript-eslint/typescript-eslint/pull/11982))
+- **eslint-plugin:** [no-unused-private-class-members] private destructured class member is defined but used ([#11785](https://github.com/typescript-eslint/typescript-eslint/pull/11785))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- Josh Goldberg
+- MinJae @Ju-MINJAE
+- Minyeong Kim @minyeong981
+- overlookmotel
+- Yuya Yoshioka @YuyaYoshioka
+- 김현수 @Kimsoo0119
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.53.1 (2026-01-19)
 
 ### 🩹 Fixes
