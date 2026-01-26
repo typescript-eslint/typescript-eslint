@@ -229,7 +229,7 @@ jobs:
         # See: https://vitest.dev/guide/cli.html#changed
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            git fetch origin ${{ github.base_ref }} --depth=1
+            git fetch origin ${{ github.base_ref }} --depth=2
           fi
 
           yarn nx run ${{ matrix.package }}:test -- --coverage --changed origin/${{ github.base_ref || github.ref_name }}
@@ -278,7 +278,7 @@ jobs:
         # See: https://vitest.dev/guide/cli.html#changed
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            git fetch origin ${{ github.base_ref }} --depth=1
+            git fetch origin ${{ github.base_ref }} --depth=2
           fi
 
           yarn nx test ${{ matrix.package }} --coverage=false --changed origin/${{ github.base_ref || github.ref_name }}
