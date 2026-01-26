@@ -92,12 +92,33 @@ export function createParser(
           esTreeNodeToTSNodeMap: converted.astMaps.esTreeNodeToTSNodeMap,
           experimentalDecorators:
             compilerOptions.experimentalDecorators ?? false,
+          getContextualType: node =>
+            checker.getContextualType(
+              converted.astMaps.esTreeNodeToTSNodeMap.get(
+                node,
+              ) as ts.Expression,
+            ),
+          getResolvedSignature: node =>
+            checker.getResolvedSignature(
+              converted.astMaps.esTreeNodeToTSNodeMap.get(
+                node,
+              ) as ts.CallLikeExpression,
+            ),
           getSymbolAtLocation: node =>
             checker.getSymbolAtLocation(
               converted.astMaps.esTreeNodeToTSNodeMap.get(node),
             ),
           getTypeAtLocation: node =>
             checker.getTypeAtLocation(
+              converted.astMaps.esTreeNodeToTSNodeMap.get(node),
+            ),
+          getTypeFromTypeNode: node =>
+            checker.getTypeFromTypeNode(
+              converted.astMaps.esTreeNodeToTSNodeMap.get(node) as ts.TypeNode,
+            ),
+          getTypeOfSymbolAtLocation: (symbol, node) =>
+            checker.getTypeOfSymbolAtLocation(
+              symbol,
               converted.astMaps.esTreeNodeToTSNodeMap.get(node),
             ),
           isolatedDeclarations: compilerOptions.isolatedDeclarations ?? false,

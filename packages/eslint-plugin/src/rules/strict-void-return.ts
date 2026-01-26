@@ -127,10 +127,7 @@ export default util.createRule<Options, MessageId>({
      * @returns `true` if the expected type was void function.
      */
     function checkExpressionNode(node: TSESTree.Expression): boolean {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
-        node,
-      ) as ts.Expression;
-      const expectedType = checker.getContextualType(tsNode);
+      const expectedType = parserServices.getContextualType(node);
 
       if (expectedType != null && isVoidReturningFunctionType(expectedType)) {
         reportIfNonVoidFunction(node);
@@ -228,8 +225,7 @@ export default util.createRule<Options, MessageId>({
           // Don't check object methods with computed name.
           return;
         }
-        const objTsNode = propTsNode.parent as ts.ObjectLiteralExpression;
-        const objType = checker.getContextualType(objTsNode);
+        const objType = parserServices.getContextualType(propNode.parent);
         if (objType == null) {
           // Expected object type is unknown.
           return;
