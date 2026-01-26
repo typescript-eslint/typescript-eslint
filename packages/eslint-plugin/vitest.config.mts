@@ -15,8 +15,17 @@ const vitestConfig = mergeConfig(
       isolate: false,
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
+
+      // Skip rules tests on Windows CI since they aren't affected by OS.
+      exclude: isWindowsCI()
+        ? ['./rules/**/*', './eslint-rules/**/*']
+        : undefined,
     },
   }),
 );
 
 export default vitestConfig;
+
+function isWindowsCI() {
+  return process.platform === 'win32' && Boolean(process.env.CI);
+}
