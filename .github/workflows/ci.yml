@@ -225,7 +225,7 @@ jobs:
       - name: Run unit tests with coverage for ${{ matrix.package }}
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
 
-        # Fetch the base branch so Vite's `--changed` will be able to compare against it.
+        # Fetch the base branch so Vitest's `--changed` will be able to compare against it.
         # See: https://vitest.dev/guide/cli.html#changed
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
@@ -274,7 +274,7 @@ jobs:
         uses: ./.github/actions/prepare-build
       - name: Run unit tests for ${{ matrix.package }}
 
-        # Fetch the base branch so Vite's `--changed` will be able to compare against it.
+        # Fetch the base branch so Vitest's `--changed` will be able to compare against it.
         # See: https://vitest.dev/guide/cli.html#changed
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
