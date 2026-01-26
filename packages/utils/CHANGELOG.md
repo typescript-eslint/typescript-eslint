@@ -1,3 +1,16 @@
+## 8.54.0 (2026-01-26)
+
+### 🩹 Fixes
+
+- **utils:** handle missing `FlatESLint` and `LegacyESLint` ([#11958](https://github.com/typescript-eslint/typescript-eslint/pull/11958))
+
+### ❤️ Thank You
+
+- Francesco Trotta
+- Josh Goldberg
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.53.1 (2026-01-19)
 
 ### 🩹 Fixes

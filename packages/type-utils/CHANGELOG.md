@@ -1,3 +1,15 @@
+## 8.54.0 (2026-01-26)
+
+### 🚀 Features
+
+- **eslint-plugin-internal:** add prefer-tsutils-methods rule ([#11974](https://github.com/typescript-eslint/typescript-eslint/pull/11974), [#11625](https://github.com/typescript-eslint/typescript-eslint/issues/11625))
+
+### ❤️ Thank You
+
+- 김현수 @Kimsoo0119
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.53.1 (2026-01-19)
 
 This was a version bump only for type-utils to align it with other projects, there were no code changes.

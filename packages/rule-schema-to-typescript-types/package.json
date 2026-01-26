@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "8.53.1",
+  "version": "8.54.0",
   "description": "Converts ESLint rule schemas to equivalent TypeScript type strings.",
   "type": "module",
   "exports": {
@@ -32,8 +32,8 @@
     "typecheck": "yarn run -BT nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/type-utils": "8.53.1",
-    "@typescript-eslint/utils": "8.53.1",
+    "@typescript-eslint/type-utils": "8.54.0",
+    "@typescript-eslint/utils": "8.54.0",
     "natural-compare": "^1.4.0"
   },
   "devDependencies": {
