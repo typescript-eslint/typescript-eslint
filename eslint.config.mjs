@@ -208,6 +208,7 @@ export default defineConfig(
         'error',
       '@typescript-eslint/internal/no-typescript-default-import': 'error',
       '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
+      '@typescript-eslint/internal/prefer-tsutils-methods': 'error',
       'no-restricted-syntax': ['error', restrictNamedDeclarations],
 
       //
