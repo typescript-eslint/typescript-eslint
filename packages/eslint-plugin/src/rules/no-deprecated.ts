@@ -319,10 +319,10 @@ export default createRule<Options, MessageIds>({
       openingElement: TSESTree.JSXOpeningElement,
       propertyName: string,
     ): string | undefined {
-      const tsNode = services.esTreeNodeToTSNodeMap.get(openingElement.name);
-
       const contextualType = nullThrows(
-        checker.getContextualType(tsNode as ts.Expression),
+        services.getContextualType(
+          openingElement.name as unknown as TSESTree.Expression,
+        ),
         'Expected JSX opening element name to have contextualType',
       );
 
