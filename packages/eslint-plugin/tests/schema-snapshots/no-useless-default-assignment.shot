@@ -1,10 +1,25 @@
 
 # SCHEMA:
 
-[]
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing": {
+        "description": "Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
 
 
 # TYPES:
 
-/** No options declared */
-type Options = [];
+type Options = [
+  {
+    /** Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`. */
+    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+  },
+];

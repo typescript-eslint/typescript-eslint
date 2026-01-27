@@ -48,6 +48,16 @@ const [foo = ''] = [undefined];
 </TabItem>
 </Tabs>
 
+## Options
+
+### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
+
+{/* insert option description */}
+
+If this is set to `false`, then the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
+
+Without `strictNullChecks`, TypeScript essentially erases `undefined` and `null` from the types. This means when this rule inspects the types from a variable, **it will not be able to tell that the variable might be `null` or `undefined`**, which essentially makes this rule useless.
+
 ## When Not To Use It
 
 If you use default values defensively against runtime values that bypass type checking, or for documentation purposes, you may want to disable this rule.
