@@ -28,20 +28,46 @@ function typeDeclaredInDeclareModule(
   );
 }
 
+function normalizeDefinitelyTypedPackageName(name: string): string {
+  if (!name.startsWith('@types/')) {
+    return name;
+  }
+
+  // @types/babel__code-frame -> @babel__code-frame
+  const withoutTypesPrefix = name.slice('@types/'.length);
+
+  // @babel__code-frame -> @babel/code-frame
+  const match = /^([^_]+)__(.+)$/.exec(withoutTypesPrefix);
+  if (match) {
+    return `@${match[1]}/${match[2]}`;
+  }
+
+  return withoutTypesPrefix;
+}
+
+function isSameOrSubpathPackage(
+  packageIdName: string,
+  targetPackageName: string,
+): boolean {
+  const normalizedPackageIdName =
+    normalizeDefinitelyTypedPackageName(packageIdName);
+
+  return (
+    normalizedPackageIdName === targetPackageName ||
+    normalizedPackageIdName.startsWith(`${targetPackageName}/`)
+  );
+}
+
 function typeDeclaredInDeclarationFile(
   packageName: string,
   declarationFiles: ts.SourceFile[],
   program: ts.Program,
 ): boolean {
-  // Handle scoped packages: if the name starts with @, remove it and replace / with __
-  const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
-
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
   return declarationFiles.some(declaration => {
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
     return (
       packageIdName != null &&
-      matcher.test(packageIdName) &&
+      isSameOrSubpathPackage(packageIdName, packageName) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );
   });
