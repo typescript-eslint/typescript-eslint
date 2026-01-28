@@ -57,6 +57,10 @@
         "dependsOn": [
           "types:copy-ast-spec"
         ],
+        "cache": true,
+        "outputs": [
+          "{projectRoot}/dist"
+        ],
         "options": {
           "cwd": "{projectRoot}"
         }
