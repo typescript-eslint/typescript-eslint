@@ -2037,6 +2037,42 @@ await using resource = getResource();
         },
       },
     },
+    {
+      code: `
+export const myTypeGuard2 = (data2: unknown): typeof data2 => {
+  return true;
+};
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'data2',
+          },
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+export const myTypeGuard = (data: unknown): data is string => {
+  return true;
+};
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'data',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
   ],
 
   valid: [
