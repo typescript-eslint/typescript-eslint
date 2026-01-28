@@ -16,9 +16,6 @@
   ],
   "references": [
     {
-      "path": "./packages/typescript-eslint/tsconfig.build.json"
-    },
-    {
       "path": "./tsconfig.spec.json"
     }
   ]
