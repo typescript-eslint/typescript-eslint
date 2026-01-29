@@ -191,22 +191,23 @@ jobs:
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
-      PACKAGES: ${{ fromJSON([
-        'ast-spec',
-        'eslint-plugin',
-        'eslint-plugin-internal',
-        'parser',
-        'project-service',
-        'rule-schema-to-typescript-types',
-        'rule-tester',
-        'scope-manager',
-        'tsconfig-utils',
-        'type-utils',
-        'typescript-eslint',
-        'typescript-estree',
-        'utils',
-        'visitor-keys',
-      ]) }}
+      PACKAGES: >
+        [
+          'ast-spec',
+          'eslint-plugin',
+          'eslint-plugin-internal',
+          'parser',
+          'project-service',
+          'rule-schema-to-typescript-types',
+          'rule-tester',
+          'scope-manager',
+          'tsconfig-utils',
+          'type-utils',
+          'typescript-eslint',
+          'typescript-estree',
+          'utils',
+          'visitor-keys',
+        ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -223,12 +224,12 @@ jobs:
       # we don't collect coverage on other node versions so they run faster
       - name: Run unit tests with coverage
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        run: yarn nx affected -t test --projects=${{ join(env.PACKAGES, ',') }} -- --coverage
+        run: yarn nx affected -t test --projects=${{ join(fromJSON(env.PACKAGES), ',') }} -- --coverage
         env:
           CI: true
       - name: Run unit tests
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        run: yarn nx affected -t test --projects=${{ join(env.PACKAGES, ',') }}
+        run: yarn nx affected -t test --projects=${{ join(fromJSON(env.PACKAGES), ',') }}
         env:
           CI: true
 
