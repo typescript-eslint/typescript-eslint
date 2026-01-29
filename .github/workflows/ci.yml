@@ -191,7 +191,7 @@ jobs:
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
-      PACKAGES: fromJSON([
+      PACKAGES: ${{ fromJSON([
         'ast-spec',
         'eslint-plugin',
         'eslint-plugin-internal',
@@ -206,7 +206,7 @@ jobs:
         'typescript-estree',
         'utils',
         'visitor-keys',
-      ])
+      ]) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
