@@ -188,26 +188,26 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [18, 20]
-        package:
-          [
-            'ast-spec',
-            'eslint-plugin',
-            'eslint-plugin-internal',
-            'parser',
-            'project-service',
-            'rule-schema-to-typescript-types',
-            'rule-tester',
-            'scope-manager',
-            'tsconfig-utils',
-            'type-utils',
-            'typescript-eslint',
-            'typescript-estree',
-            'utils',
-            'visitor-keys',
-          ]
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
+      PACKAGES:
+        [
+          'ast-spec',
+          'eslint-plugin',
+          'eslint-plugin-internal',
+          'parser',
+          'project-service',
+          'rule-schema-to-typescript-types',
+          'rule-tester',
+          'scope-manager',
+          'tsconfig-utils',
+          'type-utils',
+          'typescript-eslint',
+          'typescript-estree',
+          'utils',
+          'visitor-keys',
+        ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -222,14 +222,14 @@ jobs:
 
       # collect coverage on the primary node version
       # we don't collect coverage on other node versions so they run faster
-      - name: Run unit tests with coverage for ${{ matrix.package }}
+      - name: Run unit tests with coverage
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        run: yarn nx run ${{ matrix.package }}:test -- --coverage
+        run: yarn nx affected -t test --projects=${{ join(fromJSON(env.PACKAGES), ',') }} -- --coverage
         env:
           CI: true
-      - name: Run unit tests for ${{ matrix.package }}
+      - name: Run unit tests
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        run: yarn nx test ${{ matrix.package }}
+        run: yarn nx affected -t test --projects=${{ join(fromJSON(env.PACKAGES), ',') }}
         env:
           CI: true
 
@@ -237,8 +237,8 @@ jobs:
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.package }}-coverage
-          path: packages/${{ matrix.package }}/coverage/lcov.info
+          name: coverage
+          path: packages/**/coverage/lcov.info
           # Sadly 1 day is the minimum
           retention-days: 1
 
