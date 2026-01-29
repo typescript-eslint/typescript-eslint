@@ -223,12 +223,12 @@ jobs:
       # we don't collect coverage on other node versions so they run faster
       - name: Run unit tests with coverage
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        run: yarn nx affected -t test --projects=${{ join(fromJSON(env.PACKAGES), ',') }} -- --coverage
+        run: yarn nx affected -t test --projects=${{ join(env.PACKAGES, ',') }} -- --coverage
         env:
           CI: true
       - name: Run unit tests
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        run: yarn nx affected -t test --projects=${{ join(fromJSON(env.PACKAGES), ',') }}
+        run: yarn nx affected -t test --projects=${{ join(env.PACKAGES, ',') }}
         env:
           CI: true
 
