@@ -192,22 +192,20 @@ jobs:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
       PACKAGES:
-        [
-          'ast-spec',
-          'eslint-plugin',
-          'eslint-plugin-internal',
-          'parser',
-          'project-service',
-          'rule-schema-to-typescript-types',
-          'rule-tester',
-          'scope-manager',
-          'tsconfig-utils',
-          'type-utils',
-          'typescript-eslint',
-          'typescript-estree',
-          'utils',
-          'visitor-keys',
-        ]
+        - 'ast-spec'
+        - 'eslint-plugin'
+        - 'eslint-plugin-internal'
+        - 'parser'
+        - 'project-service'
+        - 'rule-schema-to-typescript-types'
+        - 'rule-tester'
+        - 'scope-manager'
+        - 'tsconfig-utils'
+        - 'type-utils'
+        - 'typescript-eslint'
+        - 'typescript-estree'
+        - 'utils'
+        - 'visitor-keys'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
