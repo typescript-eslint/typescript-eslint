@@ -64,7 +64,7 @@ export default createRule({
           } else if (isStaticTemplateLiteral(member.initializer)) {
             value = nullThrows(
               member.initializer.quasis[0].value.cooked,
-              'impossible condition',
+              'cooked can only be null inside a TaggedTemplateExpression, which is not possible here',
             );
           }
 

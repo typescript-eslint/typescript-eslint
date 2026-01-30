@@ -204,7 +204,7 @@ export default createRule({
         ) {
           const cooked = nullThrows(
             receiverProperty.key.quasis[0].value.cooked,
-            'impossible condition',
+            'cooked can only be null inside a TaggedTemplateExpression, which is not possible here',
           );
           key = cooked;
         } else {
