@@ -45,7 +45,7 @@
     "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "8.54.0",
+    "@typescript-eslint/types": "workspace:*",
     "eslint-visitor-keys": "^4.2.1"
   },
   "devDependencies": {

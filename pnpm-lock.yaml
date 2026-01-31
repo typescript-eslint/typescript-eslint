@@ -228,20 +228,20 @@ importers:
         specifier: ^4.12.2
         version: 4.12.2
       '@typescript-eslint/parser':
-        specifier: ^8.54.0
-        version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
+        specifier: workspace:^
+        version: link:../parser
       '@typescript-eslint/scope-manager':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../scope-manager
       '@typescript-eslint/type-utils':
-        specifier: 8.54.0
-        version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../type-utils
       '@typescript-eslint/utils':
-        specifier: 8.54.0
-        version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../utils
       '@typescript-eslint/visitor-keys':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../visitor-keys
       ignore:
         specifier: ^7.0.5
         version: 7.0.5
@@ -368,17 +368,17 @@ importers:
   packages/parser:
     dependencies:
       '@typescript-eslint/scope-manager':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../scope-manager
       '@typescript-eslint/types':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../types
       '@typescript-eslint/typescript-estree':
-        specifier: 8.54.0
-        version: 8.54.0(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../typescript-estree
       '@typescript-eslint/visitor-keys':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../visitor-keys
       debug:
         specifier: ^4.4.3
         version: 4.4.3
@@ -430,11 +430,11 @@ importers:
   packages/rule-schema-to-typescript-types:
     dependencies:
       '@typescript-eslint/type-utils':
-        specifier: 8.54.0
-        version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../type-utils
       '@typescript-eslint/utils':
-        specifier: 8.54.0
-        version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../utils
       natural-compare:
         specifier: ^1.4.0
         version: 1.4.0
@@ -458,14 +458,14 @@ importers:
   packages/rule-tester:
     dependencies:
       '@typescript-eslint/parser':
-        specifier: 8.54.0
-        version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../parser
       '@typescript-eslint/typescript-estree':
-        specifier: 8.54.0
-        version: 8.54.0(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../typescript-estree
       '@typescript-eslint/utils':
-        specifier: 8.54.0
-        version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../utils
       ajv:
         specifier: ^6.12.6
         version: 6.12.6
@@ -504,15 +504,15 @@ importers:
   packages/scope-manager:
     dependencies:
       '@typescript-eslint/types':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../types
       '@typescript-eslint/visitor-keys':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../visitor-keys
     devDependencies:
       '@typescript-eslint/typescript-estree':
-        specifier: 8.54.0
-        version: 8.54.0(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../typescript-estree
       '@vitest/coverage-v8':
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.15.18)(jiti@2.6.1)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.2))
@@ -555,14 +555,14 @@ importers:
   packages/type-utils:
     dependencies:
       '@typescript-eslint/types':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../types
       '@typescript-eslint/typescript-estree':
-        specifier: 8.54.0
-        version: 8.54.0(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../typescript-estree
       '@typescript-eslint/utils':
-        specifier: 8.54.0
-        version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../utils
       debug:
         specifier: ^4.4.3
         version: 4.4.3
@@ -619,17 +619,17 @@ importers:
   packages/typescript-eslint:
     dependencies:
       '@typescript-eslint/eslint-plugin':
-        specifier: 8.54.0
-        version: 8.54.0(@typescript-eslint/parser@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../eslint-plugin
       '@typescript-eslint/parser':
-        specifier: 8.54.0
-        version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../parser
       '@typescript-eslint/typescript-estree':
-        specifier: 8.54.0
-        version: 8.54.0(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../typescript-estree
       '@typescript-eslint/utils':
-        specifier: 8.54.0
-        version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../utils
     devDependencies:
       '@vitest/coverage-v8':
         specifier: ^3.2.4
@@ -650,17 +650,17 @@ importers:
   packages/typescript-estree:
     dependencies:
       '@typescript-eslint/project-service':
-        specifier: 8.54.0
-        version: 8.54.0(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../project-service
       '@typescript-eslint/tsconfig-utils':
-        specifier: 8.54.0
-        version: 8.54.0(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../tsconfig-utils
       '@typescript-eslint/types':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../types
       '@typescript-eslint/visitor-keys':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../visitor-keys
       debug:
         specifier: ^4.4.3
         version: 4.4.3
@@ -702,14 +702,14 @@ importers:
         specifier: ^4.9.1
         version: 4.9.1(eslint@9.39.2(jiti@2.6.1))
       '@typescript-eslint/scope-manager':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../scope-manager
       '@typescript-eslint/types':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../types
       '@typescript-eslint/typescript-estree':
-        specifier: 8.54.0
-        version: 8.54.0(typescript@5.9.2)
+        specifier: workspace:*
+        version: link:../typescript-estree
     devDependencies:
       '@vitest/coverage-v8':
         specifier: ^3.2.4
@@ -730,8 +730,8 @@ importers:
   packages/visitor-keys:
     dependencies:
       '@typescript-eslint/types':
-        specifier: 8.54.0
-        version: 8.54.0
+        specifier: workspace:*
+        version: link:../types
       eslint-visitor-keys:
         specifier: ^4.2.1
         version: 4.2.1
@@ -3725,21 +3725,6 @@ packages:
   '@types/yargs@17.0.35':
     resolution: {integrity: sha512-qUHkeCyQFxMXg79wQfTtfndEC+N9ZZg76HJftDJp+qH2tV7Gj4OJi7l+PiWwJ+pWtW8GwSmqsDj/oymhrTWXjg==}
 
-  '@typescript-eslint/eslint-plugin@8.54.0':
-    resolution: {integrity: sha512-hAAP5io/7csFStuOmR782YmTthKBJ9ND3WVL60hcOjvtGFb+HJxH4O5huAcmcZ9v9G8P+JETiZ/G1B8MALnWZQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      '@typescript-eslint/parser': ^8.54.0
-      eslint: ^8.57.0 || ^9.0.0
-      typescript: 5.9.2
-
-  '@typescript-eslint/parser@8.54.0':
-    resolution: {integrity: sha512-BtE0k6cjwjLZoZixN0t5AKP0kSzlGu7FctRXYuPAm//aaiZhmfq1JwdYpYr1brzEspYyFeF+8XF5j2VK6oalrA==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
-      typescript: 5.9.2
-
   '@typescript-eslint/project-service@8.54.0':
     resolution: {integrity: sha512-YPf+rvJ1s7MyiWM4uTRhE4DvBXrEV+d8oC3P9Y2eT7S+HBS0clybdMIPnhiATi9vZOYDc7OQ1L/i6ga6NFYK/g==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -3754,13 +3739,6 @@ packages:
     resolution: {integrity: sha512-dRgOyT2hPk/JwxNMZDsIXDgyl9axdJI3ogZ2XWhBPsnZUv+hPesa5iuhdYt2gzwA9t8RE5ytOJ6xB0moV0Ujvw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      typescript: 5.9.2
-
-  '@typescript-eslint/type-utils@8.54.0':
-    resolution: {integrity: sha512-hiLguxJWHjjwL6xMBwD903ciAwd7DmK30Y9Axs/etOkftC3ZNN9K44IuRD/EB08amu+Zw6W37x9RecLkOo3pMA==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
       typescript: 5.9.2
 
   '@typescript-eslint/types@8.54.0':
@@ -12920,34 +12898,6 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@typescript-eslint/eslint-plugin@8.54.0(@typescript-eslint/parser@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)':
-    dependencies:
-      '@eslint-community/regexpp': 4.12.2
-      '@typescript-eslint/parser': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
-      '@typescript-eslint/scope-manager': 8.54.0
-      '@typescript-eslint/type-utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
-      '@typescript-eslint/visitor-keys': 8.54.0
-      eslint: 9.39.2(jiti@2.6.1)
-      ignore: 7.0.5
-      natural-compare: 1.4.0
-      ts-api-utils: 2.4.0(typescript@5.9.2)
-      typescript: 5.9.2
-    transitivePeerDependencies:
-      - supports-color
-
-  '@typescript-eslint/parser@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)':
-    dependencies:
-      '@typescript-eslint/scope-manager': 8.54.0
-      '@typescript-eslint/types': 8.54.0
-      '@typescript-eslint/typescript-estree': 8.54.0(typescript@5.9.2)
-      '@typescript-eslint/visitor-keys': 8.54.0
-      debug: 4.4.3
-      eslint: 9.39.2(jiti@2.6.1)
-      typescript: 5.9.2
-    transitivePeerDependencies:
-      - supports-color
-
   '@typescript-eslint/project-service@8.54.0(typescript@5.9.2)':
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.54.0(typescript@5.9.2)
@@ -12965,18 +12915,6 @@ snapshots:
   '@typescript-eslint/tsconfig-utils@8.54.0(typescript@5.9.2)':
     dependencies:
       typescript: 5.9.2
-
-  '@typescript-eslint/type-utils@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)':
-    dependencies:
-      '@typescript-eslint/types': 8.54.0
-      '@typescript-eslint/typescript-estree': 8.54.0(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.2)
-      debug: 4.4.3
-      eslint: 9.39.2(jiti@2.6.1)
-      ts-api-utils: 2.4.0(typescript@5.9.2)
-      typescript: 5.9.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@typescript-eslint/types@8.54.0': {}
 

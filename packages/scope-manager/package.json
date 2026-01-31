@@ -47,11 +47,11 @@
     "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "8.54.0",
-    "@typescript-eslint/visitor-keys": "8.54.0"
+    "@typescript-eslint/types": "workspace:*",
+    "@typescript-eslint/visitor-keys": "workspace:*"
   },
   "devDependencies": {
-    "@typescript-eslint/typescript-estree": "8.54.0",
+    "@typescript-eslint/typescript-estree": "workspace:*",
     "@vitest/coverage-v8": "^3.2.4",
     "@vitest/pretty-format": "^3.2.4",
     "eslint": "*",

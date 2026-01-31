@@ -44,9 +44,9 @@
     "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "8.54.0",
-    "@typescript-eslint/typescript-estree": "8.54.0",
-    "@typescript-eslint/utils": "8.54.0",
+    "@typescript-eslint/types": "workspace:*",
+    "@typescript-eslint/typescript-estree": "workspace:*",
+    "@typescript-eslint/utils": "workspace:*",
     "debug": "^4.4.3",
     "ts-api-utils": "^2.4.0"
   },

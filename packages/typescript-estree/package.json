@@ -52,10 +52,10 @@
     "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/project-service": "8.54.0",
-    "@typescript-eslint/tsconfig-utils": "8.54.0",
-    "@typescript-eslint/types": "8.54.0",
-    "@typescript-eslint/visitor-keys": "8.54.0",
+    "@typescript-eslint/project-service": "workspace:*",
+    "@typescript-eslint/tsconfig-utils": "workspace:*",
+    "@typescript-eslint/types": "workspace:*",
+    "@typescript-eslint/visitor-keys": "workspace:*",
     "debug": "^4.4.3",
     "minimatch": "^9.0.5",
     "semver": "^7.7.3",
