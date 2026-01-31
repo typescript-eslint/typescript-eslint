@@ -1,18 +1,7 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import rule from '../../src/rules/no-unnecessary-type-conversion';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootDir = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-type-conversion', rule, {
   valid: [
@@ -97,6 +86,14 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
     '~~new Number();',
     'Boolean(new Boolean());',
     '!!new Boolean();',
+    `
+      enum CustomIds {
+        Id1 = 'id1',
+        Id2 = 'id2',
+      }
+      const customId = 'id1';
+      const compareWithToString = customId === CustomIds.Id1.toString();
+    `,
   ],
 
   invalid: [

@@ -1,0 +1,1 @@
+({abstract property: 1})

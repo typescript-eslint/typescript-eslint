@@ -1,8 +1,8 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, nullThrows, NullThrowsReasons } from '../util';
+import { createRule } from '../util';
 
 export default createRule({
   name: 'no-dynamic-delete',
@@ -13,7 +13,6 @@ export default createRule({
         'Disallow using the `delete` operator on computed key expressions',
       recommended: 'strict',
     },
-    fixable: 'code',
     messages: {
       dynamicDelete: 'Do not delete dynamically computed property keys.',
     },
@@ -21,22 +20,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    function createFixer(
-      member: TSESTree.MemberExpression,
-    ): TSESLint.ReportFixFunction | undefined {
-      if (
-        member.property.type === AST_NODE_TYPES.Literal &&
-        typeof member.property.value === 'string'
-      ) {
-        return createPropertyReplacement(
-          member.property,
-          `.${member.property.value}`,
-        );
-      }
-
-      return undefined;
-    }
-
     return {
       'UnaryExpression[operator=delete]'(node: TSESTree.UnaryExpression): void {
         if (
@@ -50,31 +33,9 @@ export default createRule({
         context.report({
           node: node.argument.property,
           messageId: 'dynamicDelete',
-          fix: createFixer(node.argument),
         });
       },
     };
-
-    function createPropertyReplacement(
-      property: TSESTree.Expression,
-      replacement: string,
-    ) {
-      return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix =>
-        fixer.replaceTextRange(getTokenRange(property), replacement);
-    }
-
-    function getTokenRange(property: TSESTree.Expression): [number, number] {
-      return [
-        nullThrows(
-          context.sourceCode.getTokenBefore(property),
-          NullThrowsReasons.MissingToken('token before', 'property'),
-        ).range[0],
-        nullThrows(
-          context.sourceCode.getTokenAfter(property),
-          NullThrowsReasons.MissingToken('token after', 'property'),
-        ).range[1],
-      ];
-    }
   },
 });
 

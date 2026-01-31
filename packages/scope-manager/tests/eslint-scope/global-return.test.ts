@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import { DefinitionType, ScopeType } from '../../src/index.js';
 import { getRealVariables, parseAndAnalyze } from '../test-utils/index.js';
 
-describe('gloablReturn option', () => {
+describe('globalReturn option', () => {
   it('creates a function scope following the global scope immediately', () => {
     const { scopeManager } = parseAndAnalyze(
       `

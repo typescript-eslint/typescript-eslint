@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ClassExpression > _error_ > implements-optional > TSESTree - Error`]
+TSError
+> 1 | (class Foo implements A?.B {})
+    |                       ^^^^ A class can only implement an identifier/qualified-name with optional type arguments.
+  2 |

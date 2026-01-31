@@ -157,6 +157,10 @@ export default createRule<Options, MessageIds>({
         case AST_NODE_TYPES.TSTypeParameter:
           return true;
 
+        // treat `export import Bar = Foo;` (and `import Foo = require('...')`) as declarations
+        case AST_NODE_TYPES.TSImportEqualsDeclaration:
+          return parent.id === node;
+
         default:
           return false;
       }
@@ -315,10 +319,10 @@ export default createRule<Options, MessageIds>({
       openingElement: TSESTree.JSXOpeningElement,
       propertyName: string,
     ): string | undefined {
-      const tsNode = services.esTreeNodeToTSNodeMap.get(openingElement.name);
-
       const contextualType = nullThrows(
-        checker.getContextualType(tsNode as ts.Expression),
+        services.getContextualType(
+          openingElement.name as unknown as TSESTree.Expression,
+        ),
         'Expected JSX opening element name to have contextualType',
       );
 
@@ -447,6 +451,15 @@ export default createRule<Options, MessageIds>({
         if (
           parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
           parent.type === AST_NODE_TYPES.ExportAllDeclaration
+        ) {
+          return;
+        }
+
+        // Computed identifier expressions are handled by checkMemberExpression
+        if (
+          parent.type === AST_NODE_TYPES.MemberExpression &&
+          parent.computed &&
+          parent.property === node
         ) {
           return;
         }

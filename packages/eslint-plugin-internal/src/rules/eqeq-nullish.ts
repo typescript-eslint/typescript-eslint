@@ -4,10 +4,10 @@ import {
   NullThrowsReasons,
 } from '@typescript-eslint/utils/eslint-utils';
 
-import { createRule } from '../util';
+import { createRule } from '../util/index.js';
 
 export default createRule({
-  name: __filename,
+  name: 'eqeq-nullish',
   meta: {
     type: 'suggestion',
     docs: {

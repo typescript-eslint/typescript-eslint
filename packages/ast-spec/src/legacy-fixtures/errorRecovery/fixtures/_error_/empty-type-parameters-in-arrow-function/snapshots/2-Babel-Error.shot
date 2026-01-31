@@ -2,9 +2,7 @@
 
 exports[`AST Fixtures > legacy-fixtures > errorRecovery > _error_ > empty-type-parameters-in-arrow-function > Babel - Error`]
 BabelError
-  1 | // TODO: This fixture might be too large, and if so should be split up.
+> 1 | const arrowFunction = < /* empty */ >() => {};
+    |                       ^ Type parameter list cannot be empty. (1:22)
   2 |
-> 3 | function f1<>() {}
-    |            ^ Type parameter list cannot be empty. (3:11)
-  4 |
   

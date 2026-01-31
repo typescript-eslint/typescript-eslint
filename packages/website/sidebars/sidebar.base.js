@@ -104,6 +104,7 @@ module.exports = {
         'packages/eslint-plugin-tslint',
         'packages/parser',
         'packages/project-service',
+        'packages/rule-schema-to-typescript-types',
         'packages/rule-tester',
         'packages/scope-manager',
         'packages/tsconfig-utils',
@@ -152,6 +153,7 @@ module.exports = {
           type: 'category',
         },
         'contributing/pull-requests',
+        'contributing/ai-policy',
       ],
       label: 'Contributing',
       link: {

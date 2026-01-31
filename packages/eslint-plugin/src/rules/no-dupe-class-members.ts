@@ -40,10 +40,7 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (
-          node.value &&
-          node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
-        ) {
+        if (node.value?.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
           return;
         }
 

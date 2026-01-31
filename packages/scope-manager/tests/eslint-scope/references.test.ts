@@ -141,7 +141,7 @@ describe('References:', () => {
   });
 
   describe('When there is a `var` declaration on global,', () => {
-    it('the reference on global should NOT be resolved.', () => {
+    it('the reference on global should be resolved.', () => {
       const { scopeManager } = parseAndAnalyze('var a = 0;');
 
       expect(scopeManager.scopes).toHaveLength(1);
@@ -156,8 +156,7 @@ describe('References:', () => {
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-
-      assert.isNull(reference.resolved);
+      expect(reference.resolved).toStrictEqual(variables[0]);
 
       assert.exists(reference.writeExpr);
 
@@ -165,7 +164,7 @@ describe('References:', () => {
       expect(reference.isRead()).toBe(false);
     });
 
-    it('the reference in functions should NOT be resolved.', () => {
+    it('the reference in functions should be resolved.', () => {
       const { scopeManager } = parseAndAnalyze(`
         var a = 0;
         function foo() {
@@ -185,11 +184,68 @@ describe('References:', () => {
 
       expect(reference.from).toBe(scope);
       expect(reference.identifier.name).toBe('a');
-
-      assert.isNull(reference.resolved);
+      const [outerVariable] = getRealVariables(
+        scopeManager.scopes[0].variables,
+      );
+      expect(reference.resolved).toStrictEqual(outerVariable);
 
       assert.notExists(reference.writeExpr);
 
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
+    });
+  });
+
+  describe('When there is a `function` declaration on global,', () => {
+    it('the reference on global should be resolved.', () => {
+      const { scopeManager } = parseAndAnalyze(
+        `
+                  function a() {}
+                  a();
+              `,
+        { sourceType: 'script' },
+      );
+
+      expect(scopeManager.scopes).toHaveLength(2); // [global, a]
+
+      const scope = scopeManager.scopes[0];
+      const variables = getRealVariables(scope.variables);
+
+      expect(variables).toHaveLength(1);
+      expect(scope.references).toHaveLength(1);
+
+      const reference = scope.references[0];
+
+      expect(reference.from).toStrictEqual(scope);
+      expect(reference.identifier.name).toBe('a');
+      expect(reference.resolved).toStrictEqual(variables[0]);
+      expect(reference.writeExpr).toBeUndefined();
+      expect(reference.isWrite()).toBe(false);
+      expect(reference.isRead()).toBe(true);
+    });
+
+    it('the reference in functions should be resolved.', () => {
+      const { scopeManager } = parseAndAnalyze(`
+                  function a() {}
+                  function foo() {
+                      let b = a();
+                  }
+              `);
+
+      expect(scopeManager.scopes).toHaveLength(3); // [global, a, foo]
+
+      const scope = scopeManager.scopes[2];
+
+      expect(scope.variables).toHaveLength(2); // [arguments, b]
+      expect(scope.references).toHaveLength(2); // [b, a]
+
+      const reference = scope.references[1];
+
+      expect(reference.from).toStrictEqual(scope);
+      expect(reference.identifier.name).toBe('a');
+      const [variable] = getRealVariables(scopeManager.scopes[0].variables);
+      expect(reference.resolved).toStrictEqual(variable);
+      expect(reference.writeExpr).toBeUndefined();
       expect(reference.isWrite()).toBe(false);
       expect(reference.isRead()).toBe(true);
     });

@@ -1,12 +1,13 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/plugin-test-formatting';
-import { getFixturesRootDir } from '../RuleTester';
+import rule from '../../src/rules/plugin-test-formatting.js';
+import { getFixturesRootDir } from '../RuleTester.js';
 
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
       project: './tsconfig.json',
+      projectService: false,
       tsconfigRootDir: getFixturesRootDir(),
     },
   },

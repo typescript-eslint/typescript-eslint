@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { FlatESLint as ESLintFlatESLint } from 'eslint/use-at-your-own-risk';
+import { ESLint } from 'eslint';
+import useAtYourOwnRisk from 'eslint/use-at-your-own-risk';
 
 import type { FlatConfig } from '../Config';
 import type * as Shared from './ESLintShared';
@@ -34,10 +35,10 @@ declare class FlatESLintBase extends Shared.ESLintBase<
  *
  * If you want to lint code on browsers, use the Linter class instead.
  */
-export class FlatESLint extends (ESLintFlatESLint as typeof FlatESLintBase) {}
+export class FlatESLint extends ((useAtYourOwnRisk.FlatESLint ??
+  ESLint) as typeof FlatESLintBase) {}
 export namespace FlatESLint {
-  export interface ESLintOptions
-    extends Shared.ESLintOptions<FlatConfig.ConfigArray> {
+  export interface ESLintOptions extends Shared.ESLintOptions<FlatConfig.ConfigArray> {
     /**
      * If false is present, the eslint.lintFiles() method doesn't respect `ignorePatterns` ignorePatterns in your configuration.
      * @default true
@@ -49,9 +50,13 @@ export namespace FlatESLint {
      */
     ignorePatterns?: string[] | null;
     /**
-     * The path to a configuration file, overrides all configurations used with this instance.
+     * The path to a configuration file. Overrides all configurations used with this instance.
      * The options.overrideConfig option is applied after this option is applied.
-     * Searches for default config file when falsy; doesn't do any config file lookup when `true`; considered to be a config filename when a string.
+     *
+     * - When falsy, searches for default config file.
+     * - When `true`, does not do any config file lookup.
+     * - When a string, considered to be a config file name.
+     *
      * @default false
      */
     overrideConfigFile?: boolean | string;

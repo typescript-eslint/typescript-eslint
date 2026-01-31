@@ -10,6 +10,7 @@ import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+import nPlugin from 'eslint-plugin-n';
 import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
@@ -43,8 +44,8 @@ export default defineConfig(
       ['jsdoc']: jsdocPlugin,
       // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
       ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
+      ['n']: nPlugin,
       ['perfectionist']: perfectionistPlugin,
-      // @ts-expect-error -- https://github.com/vitest-dev/eslint-plugin-vitest/issues/737
       ['vitest']: vitestPlugin,
       // https://github.com/facebook/react/issues/28313
       ['react']: reactPlugin,
@@ -159,6 +160,7 @@ export default defineConfig(
         {
           argsIgnorePattern: '^_',
           caughtErrors: 'all',
+          enableAutofixRemoval: { imports: true },
           varsIgnorePattern: '^_',
         },
       ],
@@ -206,6 +208,7 @@ export default defineConfig(
         'error',
       '@typescript-eslint/internal/no-typescript-default-import': 'error',
       '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
+      '@typescript-eslint/internal/prefer-tsutils-methods': 'error',
       'no-restricted-syntax': ['error', restrictNamedDeclarations],
 
       //
@@ -322,6 +325,7 @@ export default defineConfig(
       'jsdoc/tag-lines': 'off',
 
       'regexp/no-dupe-disjunctions': 'error',
+      'regexp/no-missing-g-flag': 'error',
       'regexp/no-useless-character-class': 'error',
       'regexp/no-useless-flag': 'error',
       'regexp/no-useless-lazy': 'error',
@@ -329,6 +333,11 @@ export default defineConfig(
       'regexp/prefer-quantifier': 'error',
       'regexp/prefer-question-quantifier': 'error',
       'regexp/prefer-w': 'error',
+
+      //
+      // eslint-plugin-n
+      //
+      'n/no-extraneous-import': 'error',
 
       //
       // eslint-plugin-unicorn
@@ -427,6 +436,8 @@ export default defineConfig(
     ],
     name: 'eslint-plugin-and-eslint-plugin-internal/test-files/rules',
     rules: {
+      '@typescript-eslint/internal/no-dynamic-tests': 'error',
+      '@typescript-eslint/internal/no-multiple-lines-of-errors': 'error',
       '@typescript-eslint/internal/plugin-test-formatting': 'error',
     },
   },
@@ -478,7 +489,6 @@ export default defineConfig(
       // TODO (43081j): maybe enable these one day?
       'eslint-plugin/no-meta-replaced-by': 'off',
       'eslint-plugin/require-meta-default-options': 'off',
-      'eslint-plugin/require-meta-schema-description': 'off',
     },
   },
   {
@@ -554,15 +564,21 @@ export default defineConfig(
     name: 'ast-spec/source-files',
     rules: {
       // disallow ALL unused vars
-      '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'all' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { caughtErrors: 'all', enableAutofixRemoval: { imports: true } },
+      ],
       '@typescript-eslint/sort-type-constituents': 'error',
 
       'perfectionist/sort-interfaces': [
         'error',
         {
-          customGroups: {
-            first: ['type'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: 'type',
+              groupName: 'first',
+            },
+          ],
           groups: ['first', 'unknown'],
         },
       ],
@@ -590,8 +606,6 @@ export default defineConfig(
   {
     extends: [
       jsxA11yPlugin.flatConfigs.recommended,
-      // https://github.com/facebook/react/pull/30774
-      // @ts-expect-error -- Temporary types incompatibility pending flat config support
       { name: 'react/recommended', ...reactPlugin.configs.flat.recommended },
       fixupConfigRules([
         {
@@ -607,6 +621,7 @@ export default defineConfig(
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
       'import/no-default-export': 'off',
+      'n/no-extraneous-import': 'off',
       'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
@@ -682,9 +697,12 @@ export default defineConfig(
       'perfectionist/sort-interfaces': [
         'error',
         {
-          customGroups: {
-            first: ['^type$'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: '^type$',
+              groupName: 'first',
+            },
+          ],
           groups: ['first', 'unknown'],
         },
       ],
@@ -700,12 +718,24 @@ export default defineConfig(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: {
-            first: ['^loc$', '^name$', '^node$', '^type$'],
-            fourth: ['^fix$'],
-            second: ['^meta$', '^messageId$', '^start$'],
-            third: ['^defaultOptions$', '^data$', '^end$'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: ['^loc$', '^name$', '^node$', '^type$'],
+              groupName: 'first',
+            },
+            {
+              elementNamePattern: ['^meta$', '^messageId$', '^start$'],
+              groupName: 'second',
+            },
+            {
+              elementNamePattern: ['^defaultOptions$', '^data$', '^end$'],
+              groupName: 'third',
+            },
+            {
+              elementNamePattern: '^fix$',
+              groupName: 'fourth',
+            },
+          ],
           groups: ['first', 'second', 'third', 'fourth', 'unknown'],
         },
       ],
@@ -718,7 +748,16 @@ export default defineConfig(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: { skip: ['^skip$'], top: ['^valid$'] },
+          customGroups: [
+            {
+              elementNamePattern: '^valid$',
+              groupName: 'top',
+            },
+            {
+              elementNamePattern: '^skip$',
+              groupName: 'skip',
+            },
+          ],
           groups: ['top', 'skip', 'unknown'],
         },
       ],
@@ -731,10 +770,16 @@ export default defineConfig(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: {
-            first: ['^type$'],
-            second: ['^loc$', '^range$'],
-          },
+          customGroups: [
+            {
+              elementNamePattern: '^type$',
+              groupName: 'first',
+            },
+            {
+              elementNamePattern: ['^loc$', '^range$'],
+              groupName: 'second',
+            },
+          ],
           groups: ['first', 'second'],
         },
       ],

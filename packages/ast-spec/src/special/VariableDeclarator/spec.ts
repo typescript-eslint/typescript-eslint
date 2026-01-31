@@ -34,8 +34,7 @@ export interface VariableDeclaratorMaybeInit extends VariableDeclaratorBase {
   definite: false;
 }
 
-export interface VariableDeclaratorDefiniteAssignment
-  extends VariableDeclaratorBase {
+export interface VariableDeclaratorDefiniteAssignment extends VariableDeclaratorBase {
   definite: true;
   /**
    * The name of the variable. Must have a type annotation.

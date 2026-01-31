@@ -1,20 +1,11 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
 
 import rule from '../../src/rules/prefer-readonly-parameter-types';
 import { readonlynessOptionsDefaults } from '../../src/util';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootPath = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootPath,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-readonly-parameter-types', rule, {
   valid: [
@@ -319,6 +310,114 @@ function foo(arg: Test) {}
       }
 
       const willNotCrash = (foo: Readonly<WithSymbol>) => {};
+    `,
+    `
+type TaggedBigInt = bigint & {
+  readonly __tag: unique symbol;
+};
+function custom1(arg: TaggedBigInt) {}
+    `,
+    `
+type TaggedNumber = number & {
+  readonly __tag: unique symbol;
+};
+function custom1(arg: TaggedNumber) {}
+    `,
+    `
+type TaggedString = string & {
+  readonly __tag: unique symbol;
+};
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type TaggedString = string & {
+  readonly __tagA: unique symbol;
+  readonly __tagB: unique symbol;
+};
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type TaggedString = string & {
+  readonly __tag: unique symbol;
+};
+
+type OtherSpecialString = string & {
+  readonly ' __other_tag': unique symbol;
+};
+
+function custom1(arg: TaggedString | OtherSpecialString) {}
+    `,
+    `
+type TaggedTemplateLiteral = \`\${string}-\${string}\` & {
+  readonly __tag: unique symbol;
+};
+function custom1(arg: TaggedTemplateLiteral) {}
+    `,
+    `
+type TaggedNumber = 1 & {
+  readonly __tag: unique symbol;
+};
+
+function custom1(arg: TaggedNumber) {}
+    `,
+    `
+type TaggedNumber = (1 | 2) & {
+  readonly __tag: unique symbol;
+};
+
+function custom1(arg: TaggedNumber) {}
+    `,
+    `
+type TaggedString = ('a' | 'b') & {
+  readonly __tag: unique symbol;
+};
+
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type Strings = 'one' | 'two' | 'three';
+
+type TaggedString = Strings & {
+  readonly __tag: unique symbol;
+};
+
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type Strings = 'one' | 'two' | 'three';
+
+type TaggedString = Strings & {
+  __tag: unique symbol;
+};
+
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type TaggedString = string & {
+  __tag: unique symbol;
+} & {
+  __tag: unique symbol;
+};
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type TaggedString = string & {
+  __tagA: unique symbol;
+} & {
+  __tagB: unique symbol;
+};
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type TaggedString = string &
+  ({ __tag: unique symbol } | { __tag: unique symbol });
+function custom1(arg: TaggedString) {}
+    `,
+    `
+type TaggedFunction = (() => void) & {
+  readonly __tag: unique symbol;
+};
+function custom1(arg: TaggedFunction) {}
     `,
     {
       code: `
@@ -911,6 +1010,23 @@ function foo(arg: Test) {}
     },
     {
       code: `
+class ClassExample {}
+type Test = typeof ClassExample & {
+  readonly property: boolean;
+};
+function foo(arg: Test) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 23,
+          line: 6,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
+    {
+      code: `
         const sym = Symbol('sym');
 
         interface WithSymbol {
@@ -987,6 +1103,13 @@ function foo(arg: Test) {}
         method<'mouse'[]>(['cat', 'mouse']);
       `,
       errors: [{ line: 6, messageId: 'shouldBeReadonly' }],
+    },
+    {
+      code: `
+        declare const fooFactory: <T>(x: readonly T[]) => (f: (x: T) => void) => void;
+        fooFactory([{ abc: 42 }])(x => {});
+      `,
+      errors: [{ line: 3, messageId: 'shouldBeReadonly' }],
     },
     // Allowlist
     {

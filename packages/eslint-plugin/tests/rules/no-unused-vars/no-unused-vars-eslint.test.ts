@@ -2,11 +2,13 @@
 // Original Code: https://github.com/eslint/eslint/blob/eb76282e0a2db8aa10a3d5659f5f9237d9729121/tests/lib/rules/no-unused-vars.js
 // License      : https://github.com/eslint/eslint/blob/eb76282e0a2db8aa10a3d5659f5f9237d9729121/LICENSE
 
+// We try not to change this file, as every modification is added maintenance burden
+/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors, @typescript-eslint/internal/no-dynamic-tests */
+
 import type { TestCaseError } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { MessageIds } from '../../../src/rules/no-unused-vars';
 
@@ -88,13 +90,11 @@ function assignedError(
  * Returns an expected error for used-but-ignored variables.
  * @param varName The name of the variable
  * @param [additional] The additional text for the message data
- * @param [type] The node type (defaults to "Identifier")
  * @returns An expected error object
  */
 function usedIgnoredError(
   varName: string,
   additional = '',
-  type = AST_NODE_TYPES.Identifier,
 ): TestCaseError<MessageIds> {
   return {
     data: {
@@ -102,7 +102,6 @@ function usedIgnoredError(
       varName,
     },
     messageId: 'usedIgnoredVar',
-    type,
   };
 }
 
@@ -385,7 +384,25 @@ function f() {
     },
     {
       code: "import x from 'y';",
-      errors: [definedError('x')],
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'x',
+          },
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'x',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: '',
+            },
+          ],
+        },
+      ],
       languageOptions: {
         parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       },

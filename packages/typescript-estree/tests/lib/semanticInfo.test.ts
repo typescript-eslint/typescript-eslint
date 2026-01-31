@@ -41,7 +41,16 @@ describe('semanticInfo', async () => {
     clearCaches();
 
     vi.stubEnv('TSESTREE_SINGLE_RUN', '');
+    vi.stubEnv(
+      'TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR',
+      'true',
+    );
   });
+
+  vi.stubEnv(
+    'TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR',
+    'true',
+  );
 
   // test all AST snapshots
   const testCases = await Promise.all(
@@ -385,7 +394,7 @@ describe('semanticInfo', async () => {
           `function M() { return Base }`,
           createOptions('<input>'),
         ),
-      ).toThrow(
+      ).toThrowError(
         /ESLint was configured to run on `<tsconfigRootDir>\/estree\.ts` using/,
       );
     },
@@ -398,7 +407,7 @@ describe('semanticInfo', async () => {
       const badConfig = createOptions(fileName);
       badConfig.project = './tsconfigs.json';
       const code = await fs.readFile(fileName, { encoding: 'utf-8' });
-      expect(() => parseCodeAndGenerateServices(code, badConfig)).toThrow(
+      expect(() => parseCodeAndGenerateServices(code, badConfig)).toThrowError(
         /Cannot read file .+tsconfigs\.json'/,
       );
     },
@@ -411,7 +420,7 @@ describe('semanticInfo', async () => {
       const badConfig = createOptions(fileName);
       badConfig.project = '.';
       const code = await fs.readFile(fileName, { encoding: 'utf-8' });
-      expect(() => parseCodeAndGenerateServices(code, badConfig)).toThrow(
+      expect(() => parseCodeAndGenerateServices(code, badConfig)).toThrowError(
         // case insensitive because unix based systems are case insensitive
         /Cannot read file .+semanticInfo'/i,
       );
@@ -437,7 +446,9 @@ describe('semanticInfo', async () => {
     const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const badConfig = createOptions(fileName);
     badConfig.programs = [];
-    expect(() => parseAndGenerateServices('const foo = 5;', badConfig)).toThrow(
+    expect(() =>
+      parseAndGenerateServices('const foo = 5;', badConfig),
+    ).toThrowError(
       'You have set parserOptions.programs to an empty array. This will cause all files to not be found in existing programs. Either provide one or more existing TypeScript Program instances in the array, or remove the parserOptions.programs setting.',
     );
   });
@@ -475,7 +486,7 @@ describe('semanticInfo', async () => {
       };
       expect(() =>
         parseAndGenerateServices('const foo = 5;', optionsWithProjectTrue),
-      ).toThrow(
+      ).toThrowError(
         process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'
           ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`
           : `The file was not found in any of the provided project(s): ${filename}`,
@@ -493,7 +504,7 @@ describe('semanticInfo', async () => {
     };
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithSingleProgram),
-    ).toThrow(
+    ).toThrowError(
       process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'
         ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`
         : `The file was not found in any of the provided program instance(s): ${filename}`,
@@ -510,7 +521,7 @@ describe('semanticInfo', async () => {
     };
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithSingleProgram),
-    ).toThrow(
+    ).toThrowError(
       process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'
         ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`
         : `The file was not found in any of the provided program instance(s): ${filename}`,
@@ -523,7 +534,7 @@ describe('semanticInfo', async () => {
     };
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithMultiplePrograms),
-    ).toThrow(
+    ).toThrowError(
       process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'
         ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`
         : `The file was not found in any of the provided program instance(s): ${filename}`,
@@ -531,12 +542,12 @@ describe('semanticInfo', async () => {
   });
 
   it('createProgram fails on non-existent file', () => {
-    expect(() => createProgram('tsconfig.non-existent.json')).toThrow();
+    expect(() => createProgram('tsconfig.non-existent.json')).toThrowError();
   });
 
   it('createProgram fails on tsconfig with errors', () => {
     expect(() =>
       createProgram(path.join(FIXTURES_DIR, 'badTSConfig', 'tsconfig.json')),
-    ).toThrow();
+    ).toThrowError();
   });
 });

@@ -67,6 +67,38 @@ class B implements F.S.T.A {}
     `
 interface B extends F.S.T.A {}
     `,
+    {
+      code: `
+function foo(x?: { a: number }) {
+  x?.a;
+}
+      `,
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+function foo(x?: { a: number }, y: string) {
+  x?.[y];
+}
+      `,
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+function foo(x: { a: number }, y: 'a') {
+  x?.[y];
+}
+      `,
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+function foo(x: { a: number }, y: NotKnown) {
+  x?.[y];
+}
+      `,
+      options: [{ allowOptionalChaining: true }],
+    },
   ],
   invalid: [
     {
@@ -80,7 +112,6 @@ function foo(x: any) {
           column: 5,
           data: {
             property: '.a',
-            type: '`any`',
           },
           endColumn: 6,
           line: 3,
@@ -99,7 +130,6 @@ function foo(x: any) {
           column: 5,
           data: {
             property: '.a',
-            type: '`any`',
           },
           endColumn: 6,
           line: 3,
@@ -118,7 +148,6 @@ function foo(x: { a: any }) {
           column: 7,
           data: {
             property: '.b',
-            type: '`any`',
           },
           endColumn: 8,
           line: 3,
@@ -137,7 +166,6 @@ function foo(x: any) {
           column: 5,
           data: {
             property: "['a']",
-            type: '`any`',
           },
           endColumn: 8,
           line: 3,
@@ -156,7 +184,6 @@ function foo(x: any) {
           column: 5,
           data: {
             property: "['a']",
-            type: '`any`',
           },
           endColumn: 8,
           line: 3,
@@ -175,11 +202,10 @@ value.property;
           column: 7,
           data: {
             property: '.property',
-            type: '`error` typed',
           },
           endColumn: 15,
           line: 4,
-          messageId: 'unsafeMemberExpression',
+          messageId: 'errorMemberExpression',
         },
       ],
     },
@@ -194,7 +220,6 @@ function foo(x: { a: number }, y: any) {
           column: 5,
           data: {
             property: '[y]',
-            type: '`any`',
           },
           endColumn: 6,
           line: 3,
@@ -213,7 +238,6 @@ function foo(x?: { a: number }, y: any) {
           column: 7,
           data: {
             property: '[y]',
-            type: '`any`',
           },
           endColumn: 8,
           line: 3,
@@ -232,7 +256,6 @@ function foo(x: { a: number }, y: any) {
           column: 6,
           data: {
             property: '[y += 1]',
-            type: '`any`',
           },
           endColumn: 12,
           line: 3,
@@ -251,7 +274,6 @@ function foo(x: { a: number }, y: any) {
           column: 5,
           data: {
             property: '[1 as any]',
-            type: '`any`',
           },
           endColumn: 13,
           line: 3,
@@ -270,7 +292,6 @@ function foo(x: { a: number }, y: any) {
           column: 5,
           data: {
             property: '[y()]',
-            type: '`any`',
           },
           endColumn: 8,
           line: 3,
@@ -289,7 +310,6 @@ function foo(x: string[], y: any) {
           column: 5,
           data: {
             property: '[y]',
-            type: '`any`',
           },
           endColumn: 6,
           line: 3,
@@ -308,11 +328,10 @@ function foo(x: { a: number }, y: NotKnown) {
           column: 5,
           data: {
             property: '[y]',
-            type: '`error` typed',
           },
           endColumn: 6,
           line: 3,
-          messageId: 'unsafeComputedMemberAccess',
+          messageId: 'errorComputedMemberAccess',
         },
       ],
     },
@@ -381,6 +400,110 @@ class C {
           messageId: 'unsafeMemberExpression',
         },
       ],
+    },
+    {
+      code: `
+let value: any;
+
+value?.middle.inner;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            property: '.inner',
+          },
+          endColumn: 20,
+          line: 4,
+          messageId: 'unsafeMemberExpression',
+        },
+      ],
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+let value: any;
+
+value?.outer.middle.inner;
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            property: '.middle',
+          },
+          endColumn: 20,
+          line: 4,
+          messageId: 'unsafeMemberExpression',
+        },
+      ],
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+let value: any;
+
+value.outer?.middle.inner;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            property: '.outer',
+          },
+          endColumn: 12,
+          line: 4,
+          messageId: 'unsafeMemberExpression',
+        },
+        {
+          column: 21,
+          data: {
+            property: '.inner',
+          },
+          endColumn: 26,
+          line: 4,
+          messageId: 'unsafeMemberExpression',
+        },
+      ],
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+let value: any;
+
+value.outer.middle?.inner;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            property: '.outer',
+          },
+          endColumn: 12,
+          line: 4,
+          messageId: 'unsafeMemberExpression',
+        },
+      ],
+      options: [{ allowOptionalChaining: true }],
+    },
+    {
+      code: `
+function foo(x: { a: number }, y: NotKnown) {
+  x[y];
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            property: '[y]',
+          },
+          endColumn: 6,
+          line: 3,
+          messageId: 'errorComputedMemberAccess',
+        },
+      ],
+      options: [{ allowOptionalChaining: true }],
     },
   ],
 });

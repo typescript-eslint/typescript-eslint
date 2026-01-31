@@ -1,5 +1,3 @@
-import fetch from 'cross-fetch';
-import { makeDirectory } from 'make-dir';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -72,7 +70,7 @@ function processFiles(text: string): string {
   // replace the import of the worker with the type
   result = result.replace(
     /import\s*\{\s*TypeScriptWorker\s*}\s*from\s*['"].\/tsWorker['"];/,
-    'import TypeScriptWorker = MonacoEditor.languages.typescript.TypeScriptWorker;',
+    'type TypeScriptWorker = MonacoEditor.languages.typescript.TypeScriptWorker;',
   );
   // replace all imports with import type
   result = result.replaceAll(/^import\s+(?!type)/gm, 'import type ');
@@ -83,7 +81,7 @@ const vendor = path.join(__dirname, '..', 'src', 'vendor');
 
 console.log('Cleaning...');
 await rimraf(vendor);
-await makeDirectory(vendor);
+await fs.mkdir(vendor);
 
 // TS-VFS
 await getFileAndStoreLocally(

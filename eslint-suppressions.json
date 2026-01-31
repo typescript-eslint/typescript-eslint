@@ -1,0 +1,92 @@
+{
+  "packages/eslint-plugin-internal/tests/rules/plugin-test-formatting.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 26
+    }
+  },
+  "packages/eslint-plugin/tests/rules/dot-notation.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-case-insensitive-order.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 4
+    }
+  },
+  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-order.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 4
+    }
+  },
+  "packages/eslint-plugin/tests/rules/naming-convention/naming-convention.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 12
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-extraneous-class.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 12
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-invalid-this.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 43
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-loop-func.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-this-alias.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 14
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-unnecessary-condition.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 44
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-unnecessary-template-expression.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-unsafe-enum-comparison.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-useless-empty-export.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 9
+    }
+  },
+  "packages/eslint-plugin/tests/rules/prefer-nullish-coalescing.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 42
+    }
+  },
+  "packages/eslint-plugin/tests/rules/prefer-optional-chain/prefer-optional-chain.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 17
+    }
+  },
+  "packages/eslint-plugin/tests/rules/return-await.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/sort-type-constituents.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 4
+    }
+  },
+  "packages/eslint-plugin/tests/rules/unbound-method.test.ts": {
+    "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 3
+    }
+  }
+}

@@ -387,7 +387,7 @@ describe('Validating rule docs', () => {
               range: true,
               sourceType: 'module',
             });
-          }).not.toThrow();
+          }).not.toThrowError();
         });
       },
     );
@@ -428,6 +428,7 @@ describe('Validating rule docs', () => {
           parserOptions: {
             disallowAutomaticSingleRunInference: true,
             project: './tsconfig.json',
+            projectService: false,
             tsconfigRootDir: FIXTURES_DIR,
           },
           rules: Object.fromEntries(ruleEntries),
@@ -486,7 +487,7 @@ ${token.value}`,
       // TypeScript can't infer type arguments unless we provide them explicitly
       linter.defineRule<
         keyof (typeof rule)['meta']['messages'],
-        (typeof rule)['defaultOptions']
+        NonNullable<(typeof rule)['defaultOptions']>
       >(ruleName, rule);
 
       const tree = fromMarkdown(fullText, {

@@ -1,18 +1,7 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import rule from '../../src/rules/no-unsafe-enum-comparison';
-import { getFixturesRootDir } from '../RuleTester';
+import { createRuleTesterWithTypes } from '../RuleTester';
 
-const rootDir = getFixturesRootDir();
-
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: rootDir,
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unsafe-enum-comparison', rule, {
   valid: [
@@ -1164,6 +1153,82 @@ ruleTester.run('no-unsafe-enum-comparison', rule, {
         }
       `,
       errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+enum NUMBER_ENUM {
+  First = 0,
+  Second = 1,
+}
+
+type NumberUnion = 0 | 1;
+
+declare const numberUnion: NumberUnion;
+
+switch (numberUnion) {
+  case NUMBER_ENUM.First:
+  case NUMBER_ENUM.Second:
+    break;
+}
+      `,
+      errors: [
+        {
+          line: 12,
+          messageId: 'mismatchedCase',
+        },
+        {
+          line: 13,
+          messageId: 'mismatchedCase',
+        },
+      ],
+    },
+    {
+      code: `
+enum STRING_ENUM {
+  First = 'one',
+  Second = 'two',
+}
+
+type StringUnion = 'one' | 'two';
+
+declare const stringUnion: StringUnion;
+
+switch (stringUnion) {
+  case STRING_ENUM.First:
+  case STRING_ENUM.Second:
+    break;
+}
+      `,
+      errors: [
+        {
+          line: 12,
+          messageId: 'mismatchedCase',
+        },
+        {
+          line: 13,
+          messageId: 'mismatchedCase',
+        },
+      ],
+    },
+    {
+      code: `
+declare const stringUnion: 'foo' | 'bar';
+
+enum StringEnum {
+  FOO = 'foo',
+  BAR = 'bar',
+}
+
+declare const stringEnum: StringEnum;
+
+stringUnion === stringEnum;
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
   ],
 });
