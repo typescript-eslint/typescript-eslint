@@ -40,6 +40,8 @@ export const FIXTURES_DESTINATION_DIR = path.join(
   FIXTURES_DIR_BASENAME,
 );
 
+const NPMRC_CONTENT = 'node-linker=hoisted\n';
+
 const FIXTURES_DIR = path.join(__dirname, '..', FIXTURES_DIR_BASENAME);
 
 const TAR_FOLDER = path.join(INTEGRATION_TEST_DIR, 'tarballs');
@@ -122,14 +124,20 @@ export const setup = async (project: TestProject): Promise<void> => {
       {
         devDependencies: BASE_DEPENDENCIES,
         packageManager: rootPackageJson.packageManager,
+        pnpm: {
+          overrides: tseslintPackages,
+        },
         private: true,
-        resolutions: tseslintPackages,
       },
       null,
       2,
     ),
     { encoding: 'utf-8' },
   );
+
+  await fs.writeFile(path.join(temp, '.npmrc'), NPMRC_CONTENT, {
+    encoding: 'utf-8',
+  });
 
   // We install the tarballs here once so that pnpm can cache them globally.
   // This solves 2 problems:
@@ -171,8 +179,8 @@ export const setup = async (project: TestProject): Promise<void> => {
             packageManager: rootPackageJson.packageManager,
 
             // ensure everything uses the locally packed versions instead of the NPM versions
-            resolutions: {
-              ...tseslintPackages,
+            pnpm: {
+              overrides: tseslintPackages,
             },
           },
           null,
@@ -180,6 +188,10 @@ export const setup = async (project: TestProject): Promise<void> => {
         ),
         { encoding: 'utf-8' },
       );
+
+      await fs.writeFile(path.join(testFolder, '.npmrc'), NPMRC_CONTENT, {
+        encoding: 'utf-8',
+      });
 
       const { stderr, stdout } = await execFile(
         'pnpm',
