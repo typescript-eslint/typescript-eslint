@@ -1,0 +1,8 @@
+packages:
+  - packages/*
+
+overrides:
+  "@types/node": ^22.0.0
+  "@types/react": ^18.2.14
+  tsx: ^4.7.2
+  typescript: 5.9.2

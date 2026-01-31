@@ -42,18 +42,18 @@
     "eslint-plugin"
   ],
   "scripts": {
-    "build": "yarn run -BT nx build",
+    "build": "pnpm exec nx build",
     "clean": "rimraf dist/ coverage/",
-    "format": "yarn run -T format",
-    "lint": "yarn run -BT nx lint",
-    "test": "yarn run -BT nx test",
-    "typecheck": "yarn run -BT nx typecheck"
+    "format": "pnpm -w run format",
+    "lint": "pnpm -w exec nx lint",
+    "test": "pnpm -w exec nx test",
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "8.54.0",
-    "@typescript-eslint/parser": "8.54.0",
-    "@typescript-eslint/typescript-estree": "8.54.0",
-    "@typescript-eslint/utils": "8.54.0"
+    "@typescript-eslint/eslint-plugin": "workspace:*",
+    "@typescript-eslint/parser": "workspace:*",
+    "@typescript-eslint/typescript-estree": "workspace:*",
+    "@typescript-eslint/utils": "workspace:*"
   },
   "peerDependencies": {
     "eslint": "^8.57.0 || ^9.0.0",
