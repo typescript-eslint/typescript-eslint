@@ -16,7 +16,7 @@ module.exports = class CustomChangelogRenderer extends (
     const githubLink = version
       ? `See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v${version}) for more information.`
       : `See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases) for more information.`;
-    // Append our custom messaging to the generated changelog entry
+    // Append custom messaging to the generated changelog entry
     return (
       `${defaultChangelog}\n\n` +
       `${githubLink}\n\n` +
