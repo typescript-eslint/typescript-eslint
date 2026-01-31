@@ -25,6 +25,12 @@ jobs:
     name: Run nx migrate if required
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # To ensure we can push from a different user (and therefore cause actions to rerun)
+          persist-credentials: false
+
       - name: Check if @nx/workspace was changed as part of the latest commit on the PR
         id: nrwl-workspace-package-check
         run: |
