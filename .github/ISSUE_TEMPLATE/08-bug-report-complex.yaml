@@ -46,8 +46,8 @@ body:
       description: The steps we need to take to reproduce the bug using your repro
       value: |
         1) clone the repo
-        2) `yarn install`
-        3) `yarn lint`
+        2) `pnpm install`
+        3) `pnpm run lint`
     validations:
       required: true
   - type: textarea

@@ -22,11 +22,13 @@ runs:
       if: steps['build-cache'].outputs.cache-hit == 'true'
       shell: bash
       run: |
-        yarn nx run types:build
+        pnpm exec nx run types:build
 
     - name: Build
       if: steps['build-cache'].outputs.cache-hit != 'true'
       shell: bash
       # Website will be built by the Netlify GitHub App
       run: |
-        yarn nx run-many --target=build --parallel --exclude=website --exclude=website-eslint
+        pnpm exec nx run-many --target=build --parallel --exclude=website --exclude=website-eslint
+      env:
+        SKIP_AST_SPEC_REBUILD: true
