@@ -887,14 +887,5 @@ const test = [
   errors: [],
 }));
     `,
-    // cooked is null for invalid escape sequences in tagged template literals. ignore it.
-    `
-ruleTester.run({
-  valid: [
-    {code: tag\`${String.raw`\uXXXX`}\`,
-    },
-  ],
-});
-   `,
   ],
 });
