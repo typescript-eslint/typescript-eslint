@@ -190,7 +190,7 @@ importers:
         version: 7.55.2(@types/node@22.15.18)
       '@types/babel__code-frame':
         specifier: ^7.0.6
-        version: 7.0.6
+        version: 7.27.0
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
@@ -572,7 +572,7 @@ importers:
     devDependencies:
       '@types/babel__code-frame':
         specifier: ^7.0.6
-        version: 7.0.6
+        version: 7.27.0
       '@typescript-eslint/parser':
         specifier: workspace:*
         version: link:../parser
@@ -3524,8 +3524,8 @@ packages:
   '@types/argparse@1.0.38':
     resolution: {integrity: sha512-ebDJ9b0e702Yr7pWgB0jzm+CX4Srzz8RcXtLJDJB+BSccqMa36uyH/zUsSYao5+BD1ytv3k3rPYCq4mAE1hsXA==}
 
-  '@types/babel__code-frame@7.0.6':
-    resolution: {integrity: sha512-Anitqkl3+KrzcW2k77lRlg/GfLZLWXBuNgbEcIOU6M92yw42vsd3xV/Z/yAHEj8m+KUjL6bWOVOFqX8PFPJ4LA==}
+  '@types/babel__code-frame@7.27.0':
+    resolution: {integrity: sha512-Dwlo+LrxDx/0SpfmJ/BKveHf7QXWvLBLc+x03l5sbzykj3oB9nHygCpSECF1a+s+QIxbghe+KHqC90vGtxLRAA==}
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -12683,7 +12683,7 @@ snapshots:
 
   '@types/argparse@1.0.38': {}
 
-  '@types/babel__code-frame@7.0.6': {}
+  '@types/babel__code-frame@7.27.0': {}
 
   '@types/babel__core@7.20.5':
     dependencies:
