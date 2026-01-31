@@ -59,11 +59,6 @@
       "count": 2
     }
   },
-  "packages/eslint-plugin/tests/rules/no-unused-vars/no-unused-vars-eslint.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 154
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-useless-empty-export.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 9

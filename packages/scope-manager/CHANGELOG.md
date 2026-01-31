@@ -1,3 +1,34 @@
+## 8.54.0 (2026-01-26)
+
+### 🚀 Features
+
+- **scope-manager:** support ScopeManager#addGlobals ([#11914](https://github.com/typescript-eslint/typescript-eslint/pull/11914))
+
+### 🩹 Fixes
+
+- **scope-manager:** prevent misidentification of `"use strict"` directives ([#11995](https://github.com/typescript-eslint/typescript-eslint/pull/11995))
+- **scope-manager:** fix catch clause scopes `def.name` ([#11982](https://github.com/typescript-eslint/typescript-eslint/pull/11982))
+
+### ❤️ Thank You
+
+- fnx @DMartens
+- Josh Goldberg
+- overlookmotel
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.53.1 (2026-01-19)
+
+This was a version bump only for scope-manager to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.53.0 (2026-01-12)
+
+This was a version bump only for scope-manager to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.52.0 (2026-01-05)
 
 This was a version bump only for scope-manager to align it with other projects, there were no code changes.

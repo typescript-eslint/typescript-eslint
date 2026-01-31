@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import { LegacyESLint as ESLintLegacyESLint } from 'eslint/use-at-your-own-risk';
+import { ESLint } from 'eslint';
+import useAtYourOwnRisk from 'eslint/use-at-your-own-risk';
 
 import type { ClassicConfig } from '../Config';
 import type { Linter } from '../Linter';
@@ -14,15 +15,38 @@ declare class LegacyESLintBase extends Shared.ESLintBase<
   static readonly configType: 'eslintrc';
 }
 
+function throwMissingLegacyESLintError(): never {
+  throw new Error(
+    'LegacyESLint is not available with the current version of ESLint.',
+  );
+}
+
+/* eslint-disable-next-line @typescript-eslint/no-extraneous-class */
+class MissingLegacyESLint {
+  static readonly configType = 'eslintrc';
+  static readonly version = (ESLint as typeof LegacyESLintBase).version;
+  constructor() {
+    throwMissingLegacyESLintError();
+  }
+  static getErrorResults(): Shared.LintResult {
+    throwMissingLegacyESLintError();
+  }
+  static outputFixes(): Promise<void> {
+    throwMissingLegacyESLintError();
+  }
+}
+
 /**
  * The ESLint class is the primary class to use in Node.js applications.
  * This class depends on the Node.js fs module and the file system, so you cannot use it in browsers.
  *
  * If you want to lint code on browsers, use the Linter class instead.
  */
-export class LegacyESLint extends (ESLintLegacyESLint as typeof LegacyESLintBase) {}
+export class LegacyESLint extends ((useAtYourOwnRisk.LegacyESLint ??
+  MissingLegacyESLint) as typeof LegacyESLintBase) {}
 export namespace LegacyESLint {
-  export interface ESLintOptions extends Shared.ESLintOptions<ClassicConfig.Config> {
+  export interface ESLintOptions
+    extends Shared.ESLintOptions<ClassicConfig.Config> {
     /**
      * If you pass directory paths to the eslint.lintFiles() method, ESLint checks the files in those directories that
      * have the given extensions. For example, when passing the src/ directory and extensions is [".js", ".ts"], ESLint

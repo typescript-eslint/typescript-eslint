@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { FlatESLint as ESLintFlatESLint } from 'eslint/use-at-your-own-risk';
+import { ESLint } from 'eslint';
+import useAtYourOwnRisk from 'eslint/use-at-your-own-risk';
 
 import type { FlatConfig } from '../Config';
 import type * as Shared from './ESLintShared';
@@ -34,9 +35,11 @@ declare class FlatESLintBase extends Shared.ESLintBase<
  *
  * If you want to lint code on browsers, use the Linter class instead.
  */
-export class FlatESLint extends (ESLintFlatESLint as typeof FlatESLintBase) {}
+export class FlatESLint extends ((useAtYourOwnRisk.FlatESLint ??
+  ESLint) as typeof FlatESLintBase) {}
 export namespace FlatESLint {
-  export interface ESLintOptions extends Shared.ESLintOptions<FlatConfig.ConfigArray> {
+  export interface ESLintOptions
+    extends Shared.ESLintOptions<FlatConfig.ConfigArray> {
     /**
      * If false is present, the eslint.lintFiles() method doesn't respect `ignorePatterns` ignorePatterns in your configuration.
      * @default true
