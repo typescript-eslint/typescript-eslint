@@ -40,7 +40,7 @@ export const FIXTURES_DESTINATION_DIR = path.join(
   FIXTURES_DIR_BASENAME,
 );
 
-const YARN_RC_CONTENT = 'nodeLinker: node-modules\n\nenableGlobalCache: true\n';
+const NPMRC_CONTENT = 'node-linker=hoisted\n';
 
 const FIXTURES_DIR = path.join(__dirname, '..', FIXTURES_DIR_BASENAME);
 
@@ -118,18 +118,16 @@ export const setup = async (project: TestProject): Promise<void> => {
     encoding: 'utf-8',
   });
 
-  await fs.writeFile(path.join(temp, '.yarnrc.yml'), YARN_RC_CONTENT, {
-    encoding: 'utf-8',
-  });
-
   await fs.writeFile(
     path.join(temp, 'package.json'),
     JSON.stringify(
       {
         devDependencies: BASE_DEPENDENCIES,
         packageManager: rootPackageJson.packageManager,
+        pnpm: {
+          overrides: tseslintPackages,
+        },
         private: true,
-        resolutions: tseslintPackages,
       },
       null,
       2,
@@ -137,13 +135,17 @@ export const setup = async (project: TestProject): Promise<void> => {
     { encoding: 'utf-8' },
   );
 
-  // We install the tarballs here once so that yarn can cache them globally.
+  await fs.writeFile(path.join(temp, '.npmrc'), NPMRC_CONTENT, {
+    encoding: 'utf-8',
+  });
+
+  // We install the tarballs here once so that pnpm can cache them globally.
   // This solves 2 problems:
   // 1. Tests can be run concurrently because they won't be trying to install
   //    the same tarballs at the same time.
-  // 2. Installing the tarballs for each test becomes much faster as Yarn can
-  //    grab them from the global cache folder.
-  await execFile('yarn', ['install', '--no-immutable'], {
+  // 2. Installing the tarballs for each test becomes much faster as pnpm can
+  //    reuse them from its global content-addressable store.
+  await execFile('pnpm', ['install', '--no-frozen-lockfile'], {
     cwd: temp,
     shell: true,
   });
@@ -177,8 +179,8 @@ export const setup = async (project: TestProject): Promise<void> => {
             packageManager: rootPackageJson.packageManager,
 
             // ensure everything uses the locally packed versions instead of the NPM versions
-            resolutions: {
-              ...tseslintPackages,
+            pnpm: {
+              overrides: tseslintPackages,
             },
           },
           null,
@@ -187,15 +189,13 @@ export const setup = async (project: TestProject): Promise<void> => {
         { encoding: 'utf-8' },
       );
 
-      await fs.writeFile(
-        path.join(testFolder, '.yarnrc.yml'),
-        YARN_RC_CONTENT,
-        { encoding: 'utf-8' },
-      );
+      await fs.writeFile(path.join(testFolder, '.npmrc'), NPMRC_CONTENT, {
+        encoding: 'utf-8',
+      });
 
       const { stderr, stdout } = await execFile(
-        'yarn',
-        ['install', '--no-immutable'],
+        'pnpm',
+        ['install', '--no-frozen-lockfile'],
         {
           cwd: testFolder,
           shell: true,
