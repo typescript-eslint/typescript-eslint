@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "8.53.1",
+  "version": "8.54.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -37,14 +37,14 @@
     "estree"
   ],
   "scripts": {
-    "build": "yarn run -BT nx build",
+    "build": "pnpm exec nx build",
     "clean": "rimraf dist/ src/generated/ coverage/",
-    "copy-ast-spec": "yarn run -BT nx copy-ast-spec",
-    "format": "yarn run -T format",
-    "generate-lib": "yarn run -BT nx generate-lib repo",
-    "lint": "yarn run -BT nx lint",
-    "test": "yarn run -BT nx test",
-    "typecheck": "yarn run -BT nx typecheck"
+    "copy-ast-spec": "tsx ./tools/copy-ast-spec.mts",
+    "format": "pnpm -w run format",
+    "generate-lib": "pnpm -w exec nx run scope-manager:generate-lib",
+    "lint": "pnpm -w exec nx lint",
+    "test": "pnpm -w exec nx test",
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^3.2.4",

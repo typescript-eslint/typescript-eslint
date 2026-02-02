@@ -27,5 +27,5 @@ These tests are setup to run within temporary folders to ensure that each test i
    );
    ```
 
-1. Run your integration test with `yarn test-integration ./tests/integration/tests/your-file.test.ts`
+1. Run your integration test with `pnpm run test-integration ./tests/integration/tests/your-file.test.ts`
    - This will generate your snapshot output for the lint run which is a JSON representation of your ESLint run.

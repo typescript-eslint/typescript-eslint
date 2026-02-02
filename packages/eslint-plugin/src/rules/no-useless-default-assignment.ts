@@ -128,7 +128,9 @@ export default createRule<[], MessageId>({
                 return;
               }
 
-              if ((paramSymbol.flags & ts.SymbolFlags.Optional) === 0) {
+              if (
+                !tsutils.isSymbolFlagSet(paramSymbol, ts.SymbolFlags.Optional)
+              ) {
                 const paramType = checker.getTypeOfSymbol(paramSymbol);
                 if (!canBeUndefined(paramType)) {
                   reportUselessDefaultAssignment(node, 'parameter');
@@ -188,7 +190,7 @@ export default createRule<[], MessageId>({
         return null;
       }
 
-      if (symbol.flags & ts.SymbolFlags.Optional) {
+      if (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Optional)) {
         const parent = objectPattern.parent;
         if (
           parent.type === AST_NODE_TYPES.VariableDeclarator &&
@@ -275,8 +277,6 @@ export default createRule<[], MessageId>({
           return key.name;
         case AST_NODE_TYPES.Literal:
           return String(key.value);
-        case AST_NODE_TYPES.TemplateLiteral:
-          return key.expressions.length ? null : key.quasis[0].value.cooked;
         default:
           return null;
       }
@@ -336,19 +336,19 @@ export default createRule<[], MessageId>({
     }
 
     function hasPropertyInAllBranches(
-      expr: TSESTree.Expression,
+      expression: TSESTree.Expression,
       propertyName: string,
     ): boolean {
       return (
-        (expr.type === AST_NODE_TYPES.ObjectExpression &&
-          expr.properties.some(
+        (expression.type === AST_NODE_TYPES.ObjectExpression &&
+          expression.properties.some(
             prop =>
               prop.type === AST_NODE_TYPES.Property &&
               getPropertyName(prop.key) === propertyName,
           )) ||
-        (expr.type === AST_NODE_TYPES.ConditionalExpression &&
-          hasPropertyInAllBranches(expr.consequent, propertyName) &&
-          hasPropertyInAllBranches(expr.alternate, propertyName))
+        (expression.type === AST_NODE_TYPES.ConditionalExpression &&
+          hasPropertyInAllBranches(expression.consequent, propertyName) &&
+          hasPropertyInAllBranches(expression.alternate, propertyName))
       );
     }
 

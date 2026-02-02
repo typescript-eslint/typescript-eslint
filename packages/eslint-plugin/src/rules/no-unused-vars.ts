@@ -523,6 +523,32 @@ export default createRule<Options, MessageIds>({
       return options;
     })();
 
+    function removeNodeWithTrailingNewline(
+      fixer: TSESLint.RuleFixer,
+      node: TSESTree.Node,
+    ): TSESLint.RuleFix {
+      const sourceCode = context.sourceCode;
+      const { line: startLine } = node.loc.start;
+      const { line: endLine } = node.loc.end;
+      // Expand range: start of first line to start of next line (or EOF)
+      const lineRangeStart = sourceCode.getIndexFromLoc({
+        column: 0,
+        line: startLine,
+      });
+      const lineRangeEnd =
+        endLine < sourceCode.lines.length
+          ? sourceCode.getIndexFromLoc({ column: 0, line: endLine + 1 })
+          : sourceCode.text.length;
+      // If node is the only non-whitespace on its line(s), remove full line(s)
+      if (
+        sourceCode.getText(node) ===
+        sourceCode.text.slice(lineRangeStart, lineRangeEnd).trim()
+      ) {
+        return fixer.removeRange([lineRangeStart, lineRangeEnd]);
+      }
+      return fixer.remove(node);
+    }
+
     function getImportFixer(def: ImportBindingDefinition): {
       fix: TSESLint.ReportFixFunction;
       messageId: MessageIds;
@@ -533,7 +559,7 @@ export default createRule<Options, MessageIds>({
           // just remove entire import declaration
           return {
             messageId: 'removeUnusedImportDeclaration',
-            fix: fixer => fixer.remove(def.node),
+            fix: fixer => removeNodeWithTrailingNewline(fixer, def.node),
           };
 
         case AST_NODE_TYPES.ImportDefaultSpecifier: {
@@ -546,7 +572,7 @@ export default createRule<Options, MessageIds>({
             // declaration
             return {
               messageId: 'removeUnusedImportDeclaration',
-              fix: fixer => fixer.remove(importDecl),
+              fix: fixer => removeNodeWithTrailingNewline(fixer, importDecl),
             };
           }
 
@@ -603,7 +629,7 @@ export default createRule<Options, MessageIds>({
             // declaration
             return {
               messageId: 'removeUnusedImportDeclaration',
-              fix: fixer => fixer.remove(importDecl),
+              fix: fixer => removeNodeWithTrailingNewline(fixer, importDecl),
             };
           }
 
@@ -715,7 +741,7 @@ export default createRule<Options, MessageIds>({
           const importDecl = def.node.parent;
           return {
             messageId: 'removeUnusedImportDeclaration',
-            fix: fixer => fixer.remove(importDecl),
+            fix: fixer => removeNodeWithTrailingNewline(fixer, importDecl),
           };
         }
       }
@@ -1012,10 +1038,7 @@ export default createRule<Options, MessageIds>({
             continue;
           }
           // skip ignored parameters
-          if (
-            def.name.type === AST_NODE_TYPES.Identifier &&
-            options.caughtErrorsIgnorePattern?.test(def.name.name)
-          ) {
+          if (options.caughtErrorsIgnorePattern?.test(def.name.name)) {
             if (options.reportUsedIgnorePattern && used) {
               report(variable, {
                 messageId: 'usedIgnoredVar',

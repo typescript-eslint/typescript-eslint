@@ -422,13 +422,12 @@ export class Referencer extends Visitor {
     this.scopeManager.nestCatchScope(node);
 
     if (node.param) {
-      const param = node.param;
       this.visitPattern(
-        param,
+        node.param,
         (pattern, info) => {
           this.currentScope().defineIdentifier(
             pattern,
-            new CatchClauseDefinition(param, node),
+            new CatchClauseDefinition(pattern, node),
           );
           this.referencingDefaultValue(pattern, info.assignments, null, true);
         },

@@ -27,7 +27,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # To allow us to perform the git diff we need the git history
           fetch-depth: 0
           # To ensure we can push from a different user (and therefore cause actions to rerun)
           persist-credentials: false
@@ -36,6 +35,12 @@ jobs:
         id: nrwl-workspace-package-check
         run: |
           git diff HEAD~1 -G"@nx/workspace" --exit-code package.json && echo "@nx/workspace unchanged" || echo "::set-output name=was-changed::true"
+
+      - uses: pnpm/action-setup@v4
+        if: ${{ steps.nrwl-workspace-package-check.outputs.was-changed == 'true' }}
+        name: Install pnpm
+        with:
+          run_install: false
 
       - name: Run nx migrate if @nx/workspace changed and commit the results
         if: ${{ steps.nrwl-workspace-package-check.outputs.was-changed == 'true' }}
@@ -51,31 +56,31 @@ jobs:
           # Get the version of Nx we are migrating to
           NX_VERSION=$(node -e "console.log(require('./package.json').devDependencies['nx'])")
 
-          # Revert renovate's changes to package.json and yarn.lock so that it is a clean migrate from the status quo
-          git checkout HEAD~1 -- package.json yarn.lock
+          # Revert renovate's changes to package.json and pnpm-lock.yaml so that it is a clean migrate from the status quo
+          git checkout HEAD~1 -- package.json pnpm-lock.yaml
 
-          YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+          pnpm install --ignore-scripts --frozen-lockfile=false
 
-          yarn nx migrate $NX_VERSION
+          pnpm exec nx migrate $NX_VERSION
 
           # Sometimes Nx can require config formatting changes after a migrate command
-          YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
-          yarn nx format
+          pnpm install --ignore-scripts --frozen-lockfile=false
+          pnpm exec nx format
 
           # migrations.json may or may not exist after running nx migrate
           if [ -f migrations.json ]; then
-            # This will also invoke yarn automatically
-            yarn nx migrate --run-migrations=migrations.json
+            # This will also invoke pnpm automatically
+            pnpm exec nx migrate --run-migrations=migrations.json
 
             # After we have run its migrations, we no longer need the migrations.json file
             rm migrations.json
           fi
 
           # Run the special nx repair command to ensure config matches latest and greatest
-          yarn nx repair
+          pnpm exec nx repair
 
           # Ensure all the changed files are formatted appropriately
-          yarn format
+          pnpm run format
 
           # Commit all the changes to the PR (see note on not being able to use secrets.GITHUB_TOKEN for this)
           git config --global user.email "james@henry.sc"

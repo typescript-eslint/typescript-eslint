@@ -10,6 +10,7 @@ import noTypescriptDefaultImport from './no-typescript-default-import.js';
 import noTypescriptEstreeImport from './no-typescript-estree-import.js';
 import pluginTestFormatting from './plugin-test-formatting.js';
 import preferASTTypesEnum from './prefer-ast-types-enum.js';
+import preferTsutilsMethods from './prefer-tsutils-methods.js';
 
 export default {
   'debug-namespace': debugNamespace,
@@ -22,4 +23,5 @@ export default {
   'no-typescript-estree-import': noTypescriptEstreeImport,
   'plugin-test-formatting': pluginTestFormatting,
   'prefer-ast-types-enum': preferASTTypesEnum,
+  'prefer-tsutils-methods': preferTsutilsMethods,
 } satisfies Linter.PluginRules;

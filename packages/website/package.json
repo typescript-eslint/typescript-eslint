@@ -12,27 +12,31 @@
   "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
-    "build": "yarn run -BT nx build",
+    "build": "pnpm exec nx build",
     "clear": "docusaurus clear",
-    "clean": "rimraf dist/ build/ .docusaurus/ && yarn run clear",
-    "format": "yarn run -T format",
+    "clean": "rimraf dist/ build/ .docusaurus/ && pnpm run clear",
+    "format": "pnpm -w run format",
     "generate-website-dts": "tsx ./tools/generate-website-dts.mts",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
-    "lint": "yarn run -BT nx lint",
+    "lint": "pnpm -w exec nx lint",
     "serve": "docusaurus serve",
-    "start": "yarn run -BT nx start",
+    "start": "pnpm -w run start",
     "swizzle": "docusaurus swizzle",
-    "typecheck": "yarn run -BT nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
     "@docusaurus/core": "~3.7.0",
+    "@docusaurus/faster": "^3.9.2",
     "@docusaurus/plugin-client-redirects": "~3.7.0",
+    "@docusaurus/plugin-content-blog": "~3.7.0",
+    "@docusaurus/plugin-content-docs": "~3.7.0",
     "@docusaurus/plugin-pwa": "~3.7.0",
     "@docusaurus/preset-classic": "~3.7.0",
     "@docusaurus/remark-plugin-npm2yarn": "~3.7.0",
     "@docusaurus/theme-common": "~3.7.0",
+    "@mdx-js/react": "^3.1.0",
     "@typescript-eslint/parser": "workspace:*",
     "@typescript-eslint/website-eslint": "workspace:*",
     "@uiw/react-shields": "2.0.2",
@@ -43,7 +47,7 @@
     "json5": "^2.2.3",
     "konamimojisplosion": "^0.5.2",
     "lz-string": "^1.5.0",
-    "prettier": "3.7.4",
+    "prettier": "3.8.0",
     "prism-react-renderer": "^2.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -57,7 +61,9 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "~3.7.0",
+    "@docusaurus/mdx-loader": "^3.9.2",
+    "@docusaurus/types": "^3.9.2",
+    "@types/history": "^4.7.11",
     "@types/mdast": "^4.0.4",
     "@types/react": "*",
     "@types/unist": "^3.0.3",
@@ -67,11 +73,11 @@
     "@typescript-eslint/types": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/utils": "workspace:*",
-    "copy-webpack-plugin": "^13.0.1",
     "history": "^4.10.1",
     "mdast-util-from-markdown": "^2.0.2",
     "mdast-util-mdx": "^3.0.0",
     "monaco-editor": "~0.54.0",
+    "prismjs": "1.30.0",
     "raw-loader": "^4.0.2",
     "rimraf": "*",
     "stylelint": "^16.26.1",
@@ -80,8 +86,7 @@
     "stylelint-order": "^7.0.1",
     "tsx": "*",
     "unified": "^11.0.5",
-    "vfile": "^6.0.3",
-    "webpack": "^5.104.1"
+    "vfile": "^6.0.3"
   },
   "browserslist": {
     "production": [
@@ -108,7 +113,11 @@
         ],
         "options": {
           "cwd": "{projectRoot}"
-        }
+        },
+        "cache": true,
+        "outputs": [
+          "{projectRoot}/build"
+        ]
       },
       "lint": {
         "command": "eslint",

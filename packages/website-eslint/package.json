@@ -27,17 +27,22 @@
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "scripts": {
-    "build": "yarn run -BT nx build",
+    "build": "pnpm exec nx build",
     "clean": "rimraf dist/",
-    "format": "yarn run -T format",
-    "lint": "yarn run -BT nx lint",
-    "typecheck": "yarn run -BT nx typecheck"
+    "format": "pnpm -w run format",
+    "lint": "pnpm -w exec nx lint",
+    "typecheck": "pnpm -w exec nx typecheck"
+  },
+  "dependencies": {
+    "@typescript-eslint/tsconfig-utils": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "*",
     "@typescript-eslint/eslint-plugin": "workspace:*",
     "@typescript-eslint/parser": "workspace:*",
+    "@typescript-eslint/type-utils": "workspace:*",
     "@typescript-eslint/scope-manager": "workspace:*",
+    "@typescript-eslint/tsconfig-utils": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
     "esbuild": "~0.27.2",
@@ -56,6 +61,10 @@
         "command": "tsx build.mts",
         "dependsOn": [
           "types:copy-ast-spec"
+        ],
+        "cache": true,
+        "outputs": [
+          "{projectRoot}/dist"
         ],
         "options": {
           "cwd": "{projectRoot}"

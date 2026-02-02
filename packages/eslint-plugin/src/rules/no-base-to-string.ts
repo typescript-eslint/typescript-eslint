@@ -233,8 +233,8 @@ export default createRule<Options, MessageIds>({
 
       // the Boolean type definition missing toString()
       if (
-        type.flags & ts.TypeFlags.Boolean ||
-        type.flags & ts.TypeFlags.BooleanLiteral
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.Boolean) ||
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.BooleanLiteral)
       ) {
         return Usefulness.Always;
       }
