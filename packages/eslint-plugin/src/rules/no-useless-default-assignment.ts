@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  getStaticValue,
   isFunction,
   isTypeAnyType,
   isTypeFlagSet,
@@ -324,6 +325,8 @@ export default createRule<Options, MessageId>({
           return key.name;
         case AST_NODE_TYPES.Literal:
           return String(key.value);
+        case AST_NODE_TYPES.TemplateLiteral:
+          return key.expressions.length ? null : key.quasis[0].value.cooked;
         default:
           return null;
       }
