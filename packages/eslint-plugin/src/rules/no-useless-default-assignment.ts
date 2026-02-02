@@ -284,13 +284,16 @@ export default createRule<Options, MessageId>({
       }
 
       if (isFunction(parent)) {
-        const paramIndex = parent.params.indexOf(pattern as TSESTree.Parameter);
+        let paramIndex = parent.params.indexOf(pattern as TSESTree.Parameter);
         const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
         const signature = nullThrows(
           checker.getSignatureFromDeclaration(tsFunc),
           NullThrowsReasons.MissingToken('signature', 'function'),
         );
         const params = signature.getParameters();
+        if (signature.thisParameter) {
+          paramIndex--;
+        }
         return checker.getTypeOfSymbol(params[paramIndex]);
       }
 
