@@ -6,7 +6,7 @@ import type { WebLinterModule } from '../linter/types';
 type Monaco = typeof MonacoEditor;
 type Sandbox = typeof SandboxFactory;
 
-export const TS_VERSION_ERROR_MESSAGE = 'ts version error';
+export const TS_VERSION_ERROR_MESSAGE = 'Could not find the requested TypeScript version. This playground should reload itself.';
 
 export interface SandboxModel {
   lintUtils: WebLinterModule;
