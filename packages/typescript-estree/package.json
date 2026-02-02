@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "8.52.0",
+  "version": "8.54.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -44,18 +44,18 @@
     "syntax"
   ],
   "scripts": {
-    "build": "yarn run -BT nx build",
+    "build": "pnpm exec nx build",
     "clean": "rimraf dist/ coverage/",
-    "format": "yarn run -T format",
-    "lint": "yarn run -BT nx lint",
-    "test": "yarn run -BT nx test",
-    "typecheck": "yarn run -BT nx typecheck"
+    "format": "pnpm -w run format",
+    "lint": "pnpm -w exec nx lint",
+    "test": "pnpm -w exec nx test",
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/project-service": "8.52.0",
-    "@typescript-eslint/tsconfig-utils": "8.52.0",
-    "@typescript-eslint/types": "8.52.0",
-    "@typescript-eslint/visitor-keys": "8.52.0",
+    "@typescript-eslint/project-service": "workspace:*",
+    "@typescript-eslint/tsconfig-utils": "workspace:*",
+    "@typescript-eslint/types": "workspace:*",
+    "@typescript-eslint/visitor-keys": "workspace:*",
     "debug": "^4.4.3",
     "minimatch": "^9.0.5",
     "semver": "^7.7.3",

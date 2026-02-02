@@ -1,4 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > expression > ObjectExpression > _error_ > setter-modifier-declare > TSESTree - Error`]
-NO ERROR
+TSError
+> 1 | ({declare set setter(v){}})
+    |   ^^^^^^^ 'declare' modifier cannot be used here.
+  2 |

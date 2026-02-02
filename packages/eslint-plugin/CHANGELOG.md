@@ -1,3 +1,72 @@
+## 8.54.0 (2026-01-26)
+
+### 🚀 Features
+
+- **eslint-plugin-internal:** add prefer-tsutils-methods rule ([#11974](https://github.com/typescript-eslint/typescript-eslint/pull/11974), [#11625](https://github.com/typescript-eslint/typescript-eslint/issues/11625))
+- **typescript-estree:** add shortcut methods to ParserServicesWithTypeInformation ([#11965](https://github.com/typescript-eslint/typescript-eslint/pull/11965), [#11955](https://github.com/typescript-eslint/typescript-eslint/issues/11955))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] check both base constraint and actual type for non-null assertions ([#11967](https://github.com/typescript-eslint/typescript-eslint/pull/11967), [#11559](https://github.com/typescript-eslint/typescript-eslint/issues/11559))
+- **deps:** update dependency prettier to v3.8.0 ([#11991](https://github.com/typescript-eslint/typescript-eslint/pull/11991))
+- **scope-manager:** fix catch clause scopes `def.name` ([#11982](https://github.com/typescript-eslint/typescript-eslint/pull/11982))
+- **eslint-plugin:** [no-unused-private-class-members] private destructured class member is defined but used ([#11785](https://github.com/typescript-eslint/typescript-eslint/pull/11785))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- Josh Goldberg
+- MinJae @Ju-MINJAE
+- Minyeong Kim @minyeong981
+- overlookmotel
+- Yuya Yoshioka @YuyaYoshioka
+- 김현수 @Kimsoo0119
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.53.1 (2026-01-19)
+
+### 🩹 Fixes
+
+- **utils:** make RuleCreator root defaultOptions optional ([#11956](https://github.com/typescript-eslint/typescript-eslint/pull/11956))
+- **eslint-plugin:** [consistent-indexed-object-style] skip fixer if interface is a default export ([#11951](https://github.com/typescript-eslint/typescript-eslint/pull/11951))
+
+### ❤️ Thank You
+
+- Cameron
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.53.0 (2026-01-12)
+
+### 🚀 Features
+
+- **eslint-plugin:** add rule [strict-void-return] ([#9707](https://github.com/typescript-eslint/typescript-eslint/pull/9707))
+- **eslint-plugin:** [no-unused-vars] add a fixer to remove unused imports ([#11922](https://github.com/typescript-eslint/typescript-eslint/pull/11922))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-useless-default-assignment] fix false positive for parameters corresponding to a rest parameter ([#11916](https://github.com/typescript-eslint/typescript-eslint/pull/11916))
+- **eslint-plugin:** replace unclear "`error` typed" with more helpful description ([#11704](https://github.com/typescript-eslint/typescript-eslint/pull/11704))
+- **typescript-estree:** forbid invalid `extends` and `implements` in interface declaration ([#11935](https://github.com/typescript-eslint/typescript-eslint/pull/11935))
+- **typescript-estree:** forbid invalid class implements ([#11934](https://github.com/typescript-eslint/typescript-eslint/pull/11934))
+- **typescript-estree:** forbid type-only import with both default and named specifiers ([#11930](https://github.com/typescript-eslint/typescript-eslint/pull/11930))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- fisker Cheung @fisker
+- Josh Goldberg
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Niki @phaux
+- Nikita
+- SungHyun627 @SungHyun627
+- Will Harney @wjhsf
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.52.0 (2026-01-05)
 
 ### 🚀 Features

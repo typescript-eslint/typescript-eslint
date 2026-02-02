@@ -1,3 +1,81 @@
+## 8.54.0 (2026-01-26)
+
+### 🚀 Features
+
+- **eslint-plugin-internal:** add prefer-tsutils-methods rule ([#11974](https://github.com/typescript-eslint/typescript-eslint/pull/11974), [#11625](https://github.com/typescript-eslint/typescript-eslint/issues/11625))
+- **scope-manager:** support ScopeManager#addGlobals ([#11914](https://github.com/typescript-eslint/typescript-eslint/pull/11914))
+- **typescript-estree:** add shortcut methods to ParserServicesWithTypeInformation ([#11965](https://github.com/typescript-eslint/typescript-eslint/pull/11965), [#11955](https://github.com/typescript-eslint/typescript-eslint/issues/11955))
+
+### 🩹 Fixes
+
+- **deps:** update dependency prettier to v3.8.0 ([#11991](https://github.com/typescript-eslint/typescript-eslint/pull/11991))
+- **eslint-plugin:** [no-unused-private-class-members] private destructured class member is defined but used ([#11785](https://github.com/typescript-eslint/typescript-eslint/pull/11785))
+- **eslint-plugin:** [no-unnecessary-type-assertion] check both base constraint and actual type for non-null assertions ([#11967](https://github.com/typescript-eslint/typescript-eslint/pull/11967), [#11559](https://github.com/typescript-eslint/typescript-eslint/issues/11559))
+- **scope-manager:** fix catch clause scopes `def.name` ([#11982](https://github.com/typescript-eslint/typescript-eslint/pull/11982))
+- **scope-manager:** prevent misidentification of `"use strict"` directives ([#11995](https://github.com/typescript-eslint/typescript-eslint/pull/11995))
+- **utils:** handle missing `FlatESLint` and `LegacyESLint` ([#11958](https://github.com/typescript-eslint/typescript-eslint/pull/11958))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- fnx @DMartens
+- Francesco Trotta
+- Josh Goldberg
+- MinJae @Ju-MINJAE
+- Minyeong Kim @minyeong981
+- overlookmotel
+- Yuya Yoshioka @YuyaYoshioka
+- 김현수 @Kimsoo0119
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.53.1 (2026-01-19)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [consistent-indexed-object-style] skip fixer if interface is a default export ([#11951](https://github.com/typescript-eslint/typescript-eslint/pull/11951))
+- **utils:** make RuleCreator root defaultOptions optional ([#11956](https://github.com/typescript-eslint/typescript-eslint/pull/11956))
+
+### ❤️ Thank You
+
+- Cameron
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.53.0 (2026-01-12)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unused-vars] add a fixer to remove unused imports ([#11922](https://github.com/typescript-eslint/typescript-eslint/pull/11922))
+- **eslint-plugin:** add rule [strict-void-return] ([#9707](https://github.com/typescript-eslint/typescript-eslint/pull/9707))
+- **project-service:** allow passing `Partial<ts.server.ServerHost>` to project service ([#11932](https://github.com/typescript-eslint/typescript-eslint/pull/11932))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** replace unclear "`error` typed" with more helpful description ([#11704](https://github.com/typescript-eslint/typescript-eslint/pull/11704))
+- **eslint-plugin:** [no-useless-default-assignment] fix false positive for parameters corresponding to a rest parameter ([#11916](https://github.com/typescript-eslint/typescript-eslint/pull/11916))
+- **typescript-estree:** forbid type-only import with both default and named specifiers ([#11930](https://github.com/typescript-eslint/typescript-eslint/pull/11930))
+- **typescript-estree:** fix syntax check for `using` declaration ([#11910](https://github.com/typescript-eslint/typescript-eslint/pull/11910))
+- **typescript-estree:** forbid invalid class implements ([#11934](https://github.com/typescript-eslint/typescript-eslint/pull/11934))
+- **typescript-estree:** forbid invalid "import equals" declaration ([#11936](https://github.com/typescript-eslint/typescript-eslint/pull/11936))
+- **typescript-estree:** forbid invalid `extends` and `implements` in interface declaration ([#11935](https://github.com/typescript-eslint/typescript-eslint/pull/11935))
+
+### ❤️ Thank You
+
+- auvred @auvred
+- Brad Zacher @bradzacher
+- fisker Cheung @fisker
+- Josh Goldberg
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Niki @phaux
+- Nikita
+- SungHyun627 @SungHyun627
+- Will Harney @wjhsf
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.52.0 (2026-01-05)
 
 ### 🚀 Features

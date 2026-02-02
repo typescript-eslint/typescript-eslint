@@ -3,7 +3,7 @@
 // SEE https://typescript-eslint.io/users/configs
 //
 // For developers working in the typescript-eslint monorepo:
-// You can regenerate it using `yarn generate-configs`
+// You can regenerate it using `pnpm run generate-configs`
 
 import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
@@ -157,6 +157,7 @@ export = {
     'no-return-await': 'off',
     '@typescript-eslint/return-await': 'error',
     '@typescript-eslint/strict-boolean-expressions': 'error',
+    '@typescript-eslint/strict-void-return': 'error',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
     '@typescript-eslint/triple-slash-reference': 'error',
     '@typescript-eslint/unbound-method': 'error',

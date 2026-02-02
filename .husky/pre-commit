@@ -1,1 +1,1 @@
-yarn pre-commit
+pnpm run pre-commit

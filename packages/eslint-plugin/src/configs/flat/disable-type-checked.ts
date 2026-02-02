@@ -3,7 +3,7 @@
 // SEE https://typescript-eslint.io/users/configs
 //
 // For developers working in the typescript-eslint monorepo:
-// You can regenerate it using `yarn generate-configs`
+// You can regenerate it using `pnpm run generate-configs`
 
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
@@ -74,6 +74,7 @@ export default (
     '@typescript-eslint/restrict-template-expressions': 'off',
     '@typescript-eslint/return-await': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/strict-void-return': 'off',
     '@typescript-eslint/switch-exhaustiveness-check': 'off',
     '@typescript-eslint/unbound-method': 'off',
     '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',

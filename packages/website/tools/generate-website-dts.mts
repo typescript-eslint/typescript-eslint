@@ -15,7 +15,7 @@ const banner = [
   ' *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *',
   ' *                                            *',
   ' *    YOU CAN REGENERATE THESE FILES USING    *',
-  ' *          yarn generate-website-dts         *',
+  ' *          pnpm run generate-website-dts     *',
   ' **********************************************/',
 ];
 
@@ -70,7 +70,7 @@ function processFiles(text: string): string {
   // replace the import of the worker with the type
   result = result.replace(
     /import\s*\{\s*TypeScriptWorker\s*}\s*from\s*['"].\/tsWorker['"];/,
-    'import TypeScriptWorker = MonacoEditor.languages.typescript.TypeScriptWorker;',
+    'type TypeScriptWorker = MonacoEditor.languages.typescript.TypeScriptWorker;',
   );
   // replace all imports with import type
   result = result.replaceAll(/^import\s+(?!type)/gm, 'import type ');

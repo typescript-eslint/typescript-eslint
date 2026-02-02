@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/project-service",
-  "version": "8.52.0",
+  "version": "8.54.0",
   "description": "Standalone TypeScript project service wrapper for linting.",
   "files": [
     "dist",
@@ -38,19 +38,19 @@
   ],
   "scripts": {
     "//": "These package scripts are mostly here for convenience. Task running is handled by Nx at the root level.",
-    "build": "yarn run -BT nx build",
+    "build": "pnpm exec nx build",
     "clean": "rimraf dist/ coverage/",
-    "format": "yarn run -T format",
-    "lint": "yarn run -BT nx lint",
-    "test": "yarn run -BT nx test",
-    "typecheck": "yarn run -BT nx typecheck"
+    "format": "pnpm -w run format",
+    "lint": "pnpm -w exec nx lint",
+    "test": "pnpm -w exec nx test",
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "peerDependencies": {
     "typescript": ">=4.8.4 <6.0.0"
   },
   "dependencies": {
-    "@typescript-eslint/tsconfig-utils": "^8.52.0",
-    "@typescript-eslint/types": "^8.52.0",
+    "@typescript-eslint/tsconfig-utils": "workspace:^",
+    "@typescript-eslint/types": "workspace:^",
     "debug": "^4.4.3"
   },
   "devDependencies": {

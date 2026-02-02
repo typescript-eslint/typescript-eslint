@@ -1,9 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const CopyPlugin = require('copy-webpack-plugin');
+const { rspack } = require('@docusaurus/faster');
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require('node:path');
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const webpack = require('webpack');
 
 module.exports = function (/*context, options*/) {
   return {
@@ -13,7 +11,7 @@ module.exports = function (/*context, options*/) {
           typescript: 'window.ts',
         },
         plugins: [
-          new webpack.DefinePlugin({
+          new rspack.DefinePlugin({
             'process.env.ESLINT_VERSION': JSON.stringify(
               require('eslint/package.json').version,
             ),
@@ -24,7 +22,7 @@ module.exports = function (/*context, options*/) {
               require('typescript/package.json').version,
             ),
           }),
-          new CopyPlugin({
+          new rspack.CopyRspackPlugin({
             patterns: [
               {
                 from: path.dirname(

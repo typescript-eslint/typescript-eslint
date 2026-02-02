@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.52.0",
+  "version": "8.54.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -48,30 +48,32 @@
     "typescript"
   ],
   "scripts": {
-    "build": "yarn run -BT nx build",
+    "build": "pnpm -w exec nx build",
     "clean": "rimraf dist/ coverage/",
-    "format": "yarn run -T format",
-    "generate-breaking-changes": "yarn run -BT nx generate-breaking-changes",
-    "generate-configs": "yarn run -BT nx generate-configs repo",
-    "lint": "yarn run -BT nx lint",
-    "test": "yarn run -BT nx test",
-    "typecheck": "yarn run -BT nx typecheck"
+    "format": "pnpm -w run format",
+    "generate-breaking-changes": "tsx tools/generate-breaking-changes.mts",
+    "generate-configs": "pnpm -w run generate-configs",
+    "lint": "pnpm -w exec nx lint",
+    "test": "pnpm -w exec nx test",
+    "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.12.2",
-    "@typescript-eslint/scope-manager": "8.52.0",
-    "@typescript-eslint/type-utils": "8.52.0",
-    "@typescript-eslint/utils": "8.52.0",
-    "@typescript-eslint/visitor-keys": "8.52.0",
+    "@typescript-eslint/scope-manager": "workspace:*",
+    "@typescript-eslint/type-utils": "workspace:*",
+    "@typescript-eslint/utils": "workspace:*",
+    "@typescript-eslint/visitor-keys": "workspace:*",
     "ignore": "^7.0.5",
     "natural-compare": "^1.4.0",
     "ts-api-utils": "^2.4.0"
   },
   "devDependencies": {
+    "@types/json-schema": "^7.0.15",
     "@types/mdast": "^4.0.4",
     "@types/natural-compare": "*",
-    "@typescript-eslint/rule-schema-to-typescript-types": "8.52.0",
-    "@typescript-eslint/rule-tester": "8.52.0",
+    "@types/react": "^18.3.21",
+    "@typescript-eslint/rule-schema-to-typescript-types": "workspace:*",
+    "@typescript-eslint/rule-tester": "workspace:*",
     "@vitest/coverage-v8": "^3.2.4",
     "ajv": "^6.12.6",
     "eslint": "*",
@@ -81,7 +83,7 @@
     "mdast-util-from-markdown": "^2.0.2",
     "mdast-util-mdx": "^3.0.0",
     "micromark-extension-mdxjs": "^3.0.0",
-    "prettier": "3.7.4",
+    "prettier": "3.8.0",
     "rimraf": "*",
     "title-case": "^4.3.2",
     "tsx": "*",
@@ -90,7 +92,7 @@
     "vitest": "^3.2.4"
   },
   "peerDependencies": {
-    "@typescript-eslint/parser": "^8.52.0",
+    "@typescript-eslint/parser": "workspace:^",
     "eslint": "^8.57.0 || ^9.0.0",
     "typescript": ">=4.8.4 <6.0.0"
   },

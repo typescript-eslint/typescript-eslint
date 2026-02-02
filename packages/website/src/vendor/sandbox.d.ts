@@ -5,12 +5,12 @@
  *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *
  *                                            *
  *    YOU CAN REGENERATE THESE FILES USING    *
- *          yarn generate-website-dts         *
+ *          pnpm run generate-website-dts     *
  **********************************************/
 
 import type * as ts from 'typescript';
 import type * as MonacoEditor from 'monaco-editor';
-import type TypeScriptWorker = MonacoEditor.languages.typescript.TypeScriptWorker;
+type TypeScriptWorker = MonacoEditor.languages.typescript.TypeScriptWorker;
 import type lzstring from 'lz-string';
 import type * as tsvfs from './typescript-vfs';
 type CompilerOptions = MonacoEditor.languages.typescript.CompilerOptions;
