@@ -237,11 +237,22 @@ export default createRule<Options, MessageId>({
         return null;
       }
 
-      if (
-        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Optional) &&
-        hasConditionalInitializer(objectPattern)
-      ) {
-        return null;
+      if (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Optional)) {
+        const parent = objectPattern.parent;
+        if (
+          parent.type === AST_NODE_TYPES.VariableDeclarator &&
+          parent.init &&
+          hasConditionalInitializer(objectPattern)
+        ) {
+          const propertyName = getPropertyName(node.key);
+
+          if (
+            !propertyName ||
+            !hasPropertyInAllBranches(parent.init, propertyName)
+          ) {
+            return null;
+          }
+        }
       }
 
       return checker.getTypeOfSymbol(symbol);
@@ -313,6 +324,8 @@ export default createRule<Options, MessageId>({
           return key.name;
         case AST_NODE_TYPES.Literal:
           return String(key.value);
+        case AST_NODE_TYPES.TemplateLiteral:
+          return key.expressions.length ? null : key.quasis[0].value.cooked;
         default:
           return null;
       }
@@ -369,6 +382,23 @@ export default createRule<Options, MessageId>({
       const start = node.left.range[1];
       const end = node.range[1];
       return fixer.removeRange([start, end]);
+    }
+
+    function hasPropertyInAllBranches(
+      expression: TSESTree.Expression,
+      propertyName: string,
+    ): boolean {
+      return (
+        (expression.type === AST_NODE_TYPES.ObjectExpression &&
+          expression.properties.some(
+            prop =>
+              prop.type === AST_NODE_TYPES.Property &&
+              getPropertyName(prop.key) === propertyName,
+          )) ||
+        (expression.type === AST_NODE_TYPES.ConditionalExpression &&
+          hasPropertyInAllBranches(expression.consequent, propertyName) &&
+          hasPropertyInAllBranches(expression.alternate, propertyName))
+      );
     }
 
     return {

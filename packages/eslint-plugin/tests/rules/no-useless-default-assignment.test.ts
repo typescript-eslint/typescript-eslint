@@ -254,6 +254,40 @@ ruleTester.run('no-useless-default-assignment', rule, {
         return Promise.resolve([category, String(maxResults)]);
       }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11980
+    `
+      const { a = 'baz' } = cond ? {} : { a: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? foo : { a: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = foo && { a: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? { a: 'foo', ...extra } : { a: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? { ...foo } : { a: 'bar' };
+    `,
+    `
+      const key = Math.random() > 0.5 ? 'a' : 'b';
+      const { a = 'baz' } = cond ? { [key]: 'foo' } : { [key]: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? foo && { a: 'bar' } : { a: 'baz' };
+    `,
+    `
+      const obj: unknown = { a: 'bar' };
+      const { a = 'baz' } = cond ? obj : { a: 'bar' };
+    `,
+    `
+      const sym = Symbol('a');
+      const { a = 'baz' } = cond ? { [sym]: 'foo' } : { [sym]: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? { [\`a\${1}\`]: 'foo' } : { a: 'bar' };
+    `,
   ],
   invalid: [
     {
@@ -660,6 +694,97 @@ ruleTester.run('no-useless-default-assignment', rule, {
         function Bar({ foo }: { foo: string }) {
           return foo;
         }
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11980
+    {
+      code: `
+        const { a = 'baz' } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 26,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
+      `,
+    },
+    {
+      code: `
+        const { a = 'baz' } =
+          Math.random() < 0.5
+            ? { a: 'foo' }
+            : Math.random() > 0.2
+              ? { a: 'bar' }
+              : { a: 'qux' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 26,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } =
+          Math.random() < 0.5
+            ? { a: 'foo' }
+            : Math.random() > 0.2
+              ? { a: 'bar' }
+              : { a: 'qux' };
+      `,
+    },
+    {
+      code: `
+        const { a = 'baz' } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 26,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
+      `,
+    },
+    {
+      code: `
+        const { a = 'baz' } = cond ? { a() {} } : { a: 'bar' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 26,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } = cond ? { a() {} } : { a: 'bar' };
+      `,
+    },
+    {
+      code: `
+        const { a = 'b' } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 24,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
       `,
     },
   ],
