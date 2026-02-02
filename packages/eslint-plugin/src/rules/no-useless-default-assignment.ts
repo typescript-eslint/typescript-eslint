@@ -16,11 +16,18 @@ import {
 } from '../util';
 
 type MessageId =
+  | 'noStrictNullCheck'
   | 'preferOptionalSyntax'
   | 'uselessDefaultAssignment'
   | 'uselessUndefined';
 
-export default createRule<[], MessageId>({
+type Options = [
+  {
+    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+  },
+];
+
+export default createRule<Options, MessageId>({
   name: 'no-useless-default-assignment',
   meta: {
     type: 'suggestion',
@@ -31,6 +38,8 @@ export default createRule<[], MessageId>({
     },
     fixable: 'code',
     messages: {
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
       preferOptionalSyntax:
         'Using `= undefined` to make a parameter optional adds unnecessary runtime logic. Use the `?` optional syntax instead.',
       uselessDefaultAssignment:
@@ -38,12 +47,50 @@ export default createRule<[], MessageId>({
       uselessUndefined:
         'Default value is useless because it is undefined. Optional {{ type }}s are already undefined by default.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            type: 'boolean',
+            description:
+              'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+    },
+  ],
+  create(
+    context,
+    [{ allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing }],
+  ) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+
+    const compilerOptions = services.program.getCompilerOptions();
+    const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
+      compilerOptions,
+      'strictNullChecks',
+    );
+
+    if (
+      !isStrictNullChecks &&
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing !== true
+    ) {
+      context.report({
+        loc: {
+          start: { column: 0, line: 0 },
+          end: { column: 0, line: 0 },
+        },
+        messageId: 'noStrictNullCheck',
+      });
+    }
 
     function canBeUndefined(type: ts.Type): boolean {
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
