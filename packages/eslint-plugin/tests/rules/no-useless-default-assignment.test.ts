@@ -1,3 +1,5 @@
+import * as path from 'node:path';
+
 import rule from '../../src/rules/no-useless-default-assignment';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
@@ -239,6 +241,18 @@ ruleTester.run('no-useless-default-assignment', rule, {
     `
       const { a = 'default' } =
         Math.random() > 0.5 ? (Math.random() > 0.5 ? { a: 'Hello' } : {}) : {};
+    `,
+    // Optional parameter with meaningful default value
+    `
+      function findPosts({
+        category,
+        maxResults = 100,
+      }: {
+        category: string;
+        maxResults?: number;
+      }): Promise<string[]> {
+        return Promise.resolve([category, String(maxResults)]);
+      }
     `,
   ],
   invalid: [
@@ -556,6 +570,96 @@ ruleTester.run('no-useless-default-assignment', rule, {
         function f(
           /* comment */ x? /* comment 2 */ : /* comment 3 */ SomeType,
         ) {}
+      `,
+    },
+    // noStrictNullCheck tests
+    {
+      code: `
+        function Bar({ foo = '' }: { foo: string }) {
+          return foo;
+        }
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 0,
+          messageId: 'noStrictNullCheck',
+        },
+        {
+          column: 30,
+          data: { type: 'property' },
+          endColumn: 32,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'unstrict'),
+        },
+      },
+      output: `
+        function Bar({ foo }: { foo: string }) {
+          return foo;
+        }
+      `,
+    },
+    {
+      code: `
+        function foo(a = undefined) {}
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 0,
+          messageId: 'noStrictNullCheck',
+        },
+        {
+          column: 26,
+          data: { type: 'parameter' },
+          endColumn: 35,
+          line: 2,
+          messageId: 'uselessUndefined',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'unstrict'),
+        },
+      },
+      output: `
+        function foo(a) {}
+      `,
+    },
+    {
+      code: `
+        function Bar({ foo = '' }: { foo: string }) {
+          return foo;
+        }
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'property' },
+          endColumn: 32,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'unstrict'),
+        },
+      },
+      options: [
+        {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
+        },
+      ],
+      output: `
+        function Bar({ foo }: { foo: string }) {
+          return foo;
+        }
       `,
     },
   ],
