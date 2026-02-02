@@ -7,7 +7,6 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
-  getStaticValue,
   isFunction,
   isTypeAnyType,
   isTypeFlagSet,
