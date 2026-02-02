@@ -1,4 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > expression > ObjectExpression > _error_ > getter-modifier-public > TSESTree - Error`]
-NO ERROR
+TSError
+> 1 | ({public get getter(){}})
+    |   ^^^^^^ 'public' modifier cannot be used here.
+  2 |
