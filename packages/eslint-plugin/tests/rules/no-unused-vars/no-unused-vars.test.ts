@@ -2069,7 +2069,7 @@ export const myTypeGuard = (data: unknown): data is string => {
             varName: 'data',
           },
           line: 2,
-          messageId: 'unusedVar',
+          messageId: 'usedOnlyAsType',
         },
       ],
     },

@@ -26,6 +26,7 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { referenceContainsTypePredicate } from '../util/referenceContainsTypePredicate';
 import { referenceContainsTypeQuery } from '../util/referenceContainsTypeQuery';
 
 export type MessageIds =
@@ -892,22 +893,6 @@ export default createRule<Options, MessageIds>({
     }
 
     function collectUnusedVariables(): ScopeVariable[] {
-      function isOnlyUsedInTypePredicate(variable: ScopeVariable): boolean {
-        const readRefs = variable.references.filter(ref => ref.isRead());
-
-        if (readRefs.length === 0) {
-          return false;
-        }
-
-        return readRefs.every(ref => {
-          const node = ref.identifier;
-          const parent = node.parent;
-          return (
-            parent.type === AST_NODE_TYPES.TSTypePredicate &&
-            parent.parameterName === node
-          );
-        });
-      }
       /**
        * Checks whether a node is a sibling of the rest property or not.
        * @param node a node to check
@@ -970,14 +955,7 @@ export default createRule<Options, MessageIds>({
         })),
       ];
       const unusedVariablesReturn: ScopeVariable[] = [];
-      for (const variableObj of variables) {
-        const { variable } = variableObj;
-        let { used } = variableObj;
-
-        if (used && isOnlyUsedInTypePredicate(variable)) {
-          used = false;
-        }
-
+      for (const { used, variable } of variables) {
         // explicit global variables don't have definitions.
         if (variable.defs.length === 0) {
           if (!used) {
@@ -1202,8 +1180,10 @@ export default createRule<Options, MessageIds>({
         for (const unusedVar of unusedVars) {
           // Report the first declaration.
           if (unusedVar.defs.length > 0) {
-            const usedOnlyAsType = unusedVar.references.some(ref =>
-              referenceContainsTypeQuery(ref.identifier),
+            const usedOnlyAsType = unusedVar.references.some(
+              ref =>
+                referenceContainsTypeQuery(ref.identifier) ||
+                referenceContainsTypePredicate(ref.identifier),
             );
             const messageId = usedOnlyAsType ? 'usedOnlyAsType' : 'unusedVar';
 
