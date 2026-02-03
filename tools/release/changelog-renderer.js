@@ -8,11 +8,9 @@ const {
 module.exports = class CustomChangelogRenderer extends (
   DefaultChangelogRenderer
 ) {
-  /** @type {any} */
-  config;
   async render() {
     const defaultChangelog = await super.render();
-    const version = this.config?.changelogEntryVersion;
+    const version = this.changelogEntryVersion;
     const githubLink = version
       ? `See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v${version}) for more information.`
       : `See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases) for more information.`;
