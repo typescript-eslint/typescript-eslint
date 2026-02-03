@@ -341,7 +341,9 @@ function createWatchProgram(
 
   // Since we don't want to asynchronously update program we want to disable timeout methods
   // So any changes in the program will be delayed and updated when getProgram is called on watch
+  // @ts-expect-error -- TypeScript's types don't play well with exactOptionalPropertyTypes.
   watchCompilerHost.setTimeout = undefined;
+  // @ts-expect-error -- TypeScript's types don't play well with exactOptionalPropertyTypes.
   watchCompilerHost.clearTimeout = undefined;
   return ts.createWatchProgram(watchCompilerHost);
 }

@@ -37,23 +37,23 @@ interface ParseOptions {
    * Specify the `sourceType`.
    * For more details, see https://github.com/typescript-eslint/typescript-eslint/pull/9121
    */
-  sourceType?: SourceType;
+  sourceType?: SourceType | undefined;
 
   /**
    * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
    * This case only usually occurs when attempting to lint invalid code.
    */
-  allowInvalidAST?: boolean;
+  allowInvalidAST?: boolean | undefined;
 
   /**
    * create a top-level comments array containing all comments
    */
-  comment?: boolean;
+  comment?: boolean | undefined;
 
   /**
    * Whether deprecated AST properties should skip calling console.warn on accesses.
    */
-  suppressDeprecatedPropertyWarnings?: boolean;
+  suppressDeprecatedPropertyWarnings?: boolean | undefined;
 
   /**
    * An array of modules to turn explicit debugging on for.
@@ -65,18 +65,21 @@ interface ParseOptions {
    * - true === ['typescript-eslint']
    * - false === []
    */
-  debugLevel?: boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
+  debugLevel?:
+    | boolean
+    | ('typescript-eslint' | 'eslint' | 'typescript')[]
+    | undefined;
 
   /**
    * Cause the parser to error if it encounters an unknown AST node type (useful for testing).
    * This case only usually occurs when TypeScript releases new features.
    */
-  errorOnUnknownASTType?: boolean;
+  errorOnUnknownASTType?: boolean | undefined;
 
   /**
    * Absolute (or relative to `cwd`) path to the file being parsed.
    */
-  filePath?: string;
+  filePath?: string | undefined;
 
   /**
    * If you are using TypeScript version >=5.3 then this option can be used as a performance optimization.
@@ -88,7 +91,7 @@ interface ParseOptions {
    *
    * If you do not rely on JSDoc tags from the TypeScript AST, then you can safely set this to `'none'` to improve performance.
    */
-  jsDocParsingMode?: JSDocParsingMode;
+  jsDocParsingMode?: JSDocParsingMode | undefined;
 
   /**
    * Enable parsing of JSX.
@@ -99,33 +102,33 @@ interface ParseOptions {
    *
    * For the exact behavior, see https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsecmafeaturesjsx
    */
-  jsx?: boolean;
+  jsx?: boolean | undefined;
 
   /**
    * Controls whether the `loc` information to each node.
    * The `loc` property is an object which contains the exact line/column the node starts/ends on.
    * This is similar to the `range` property, except it is line/column relative.
    */
-  loc?: boolean;
+  loc?: boolean | undefined;
 
   /*
    * Allows overriding of function used for logging.
    * When value is `false`, no logging will occur.
    * When value is not provided, `console.log()` will be used.
    */
-  loggerFn?: Function | false;
+  loggerFn?: Function | false | undefined;
 
   /**
    * Controls whether the `range` property is included on AST nodes.
    * The `range` property is a [number, number] which indicates the start/end index of the node in the file contents.
    * This is similar to the `loc` property, except this is the absolute index.
    */
-  range?: boolean;
+  range?: boolean | undefined;
 
   /**
    * Set to true to create a top-level array containing all tokens from the file.
    */
-  tokens?: boolean;
+  tokens?: boolean | undefined;
 }
 
 const PARSE_DEFAULT_OPTIONS: ParseOptions = {

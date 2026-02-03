@@ -27,9 +27,9 @@ import { ClassFieldInitializerScope } from './scope/ClassFieldInitializerScope';
 import { ClassStaticBlockScope } from './scope/ClassStaticBlockScope';
 
 interface ScopeManagerOptions {
-  globalReturn?: boolean;
-  impliedStrict?: boolean;
-  sourceType?: SourceType;
+  globalReturn?: boolean | undefined;
+  impliedStrict?: boolean | undefined;
+  sourceType?: SourceType | undefined;
 }
 
 /**

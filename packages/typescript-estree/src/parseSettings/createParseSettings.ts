@@ -158,14 +158,14 @@ export function createParseSettings(
             tsconfigRootDir,
           })
         : undefined,
-    setExternalModuleIndicator:
-      tsestreeOptions.sourceType === 'module' ||
+    ...((tsestreeOptions.sourceType === 'module' ||
       (tsestreeOptions.sourceType == null && extension === ts.Extension.Mjs) ||
-      (tsestreeOptions.sourceType == null && extension === ts.Extension.Mts)
-        ? (file): void => {
-            file.externalModuleIndicator = true;
-          }
-        : undefined,
+      tsestreeOptions.sourceType == null) &&
+      extension === ts.Extension.Mts && {
+        setExternalModuleIndicator: (file): void => {
+          file.externalModuleIndicator = true;
+        },
+      }),
     singleRun,
     suppressDeprecatedPropertyWarnings:
       tsestreeOptions.suppressDeprecatedPropertyWarnings ??

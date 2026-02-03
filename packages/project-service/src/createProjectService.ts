@@ -179,13 +179,13 @@ export function createProjectService({
 
   const service = new tsserver.server.ProjectService({
     cancellationToken: { isCancellationRequested: (): boolean => false },
-    eventHandler: logTsserverEvent.enabled
-      ? (e): void => {
-          logTsserverEvent(e);
-        }
-      : undefined,
+    ...(logTsserverEvent.enabled && {
+      eventHandler: (e): void => {
+        logTsserverEvent(e);
+      },
+    }),
     host: system,
-    jsDocParsingMode,
+    ...(jsDocParsingMode && { jsDocParsingMode }),
     logger,
     session: undefined,
     useInferredProjectPerProjectRoot: false,

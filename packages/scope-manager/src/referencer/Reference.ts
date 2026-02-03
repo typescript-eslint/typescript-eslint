@@ -90,11 +90,11 @@ export class Reference {
     this.#flag = flag;
 
     if (this.isWrite()) {
-      this.writeExpr = writeExpr;
-      this.init = init;
+      this.writeExpr = writeExpr ?? null;
+      this.init = init ?? false;
     }
 
-    this.maybeImplicitGlobal = maybeImplicitGlobal;
+    this.maybeImplicitGlobal = maybeImplicitGlobal ?? null;
     this.#referenceType = referenceType;
   }
 
