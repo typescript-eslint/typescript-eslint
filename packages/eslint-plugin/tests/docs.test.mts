@@ -184,6 +184,7 @@ describe('Validating rule docs', () => {
     'no-misused-promises',
     'no-type-alias',
     'no-unnecessary-condition',
+    'no-useless-default-assignment',
     'no-unnecessary-type-assertion',
     'parameter-properties',
     'prefer-nullish-coalescing',

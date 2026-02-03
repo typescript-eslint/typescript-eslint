@@ -27,6 +27,7 @@ export interface RuleCreateAndOptions<
     context: Readonly<RuleContext<MessageIds, Options>>,
     optionsWithDefault: Readonly<Options>,
   ) => RuleListener;
+  /** @deprecated Use meta.defaultOptions instead */
   defaultOptions?: Readonly<Options>;
 }
 
@@ -100,6 +101,8 @@ function createRule<
   PluginDocs = unknown,
 >({
   create,
+  // Keep accepting deprecated defaultOptions for backward compatibility.
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   defaultOptions,
   meta,
   name,
@@ -108,7 +111,9 @@ function createRule<
   Options,
   PluginDocs
 > {
-  const resolvedDefaultOptions = (defaultOptions ?? []) as Readonly<Options>;
+  const resolvedDefaultOptions = (meta.defaultOptions ??
+    defaultOptions ??
+    []) as Readonly<Options>;
   return {
     create(context: Readonly<RuleContext<MessageIds, Options>>): RuleListener {
       const optionsWithDefault = applyDefault(

@@ -1,3 +1,5 @@
+import * as path from 'node:path';
+
 import rule from '../../src/rules/no-useless-default-assignment';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
@@ -239,6 +241,66 @@ ruleTester.run('no-useless-default-assignment', rule, {
     `
       const { a = 'default' } =
         Math.random() > 0.5 ? (Math.random() > 0.5 ? { a: 'Hello' } : {}) : {};
+    `,
+    // Optional parameter with meaningful default value
+    `
+      function findPosts({
+        category,
+        maxResults = 100,
+      }: {
+        category: string;
+        maxResults?: number;
+      }): Promise<string[]> {
+        return Promise.resolve([category, String(maxResults)]);
+      }
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11980
+    `
+      const { a = 'baz' } = cond ? {} : { a: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? foo : { a: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = foo && { a: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? { a: 'foo', ...extra } : { a: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? { ...foo } : { a: 'bar' };
+    `,
+    `
+      const key = Math.random() > 0.5 ? 'a' : 'b';
+      const { a = 'baz' } = cond ? { [key]: 'foo' } : { [key]: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? foo && { a: 'bar' } : { a: 'baz' };
+    `,
+    `
+      const obj: unknown = { a: 'bar' };
+      const { a = 'baz' } = cond ? obj : { a: 'bar' };
+    `,
+    `
+      const sym = Symbol('a');
+      const { a = 'baz' } = cond ? { [sym]: 'foo' } : { [sym]: 'bar' };
+    `,
+    `
+      const { a = 'baz' } = cond ? { [\`a\${1}\`]: 'foo' } : { a: 'bar' };
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11948
+    `
+      class AbstractEntity {
+        public a: string | undefined;
+        public static fromJson<T extends { a: string }>(
+          this: new () => T,
+          { inner = { a: 'test' } }: { inner?: { a: string } },
+        ): T {
+          const entity = new this();
+          entity.a = inner?.a;
+          return entity;
+        }
+      }
     `,
   ],
   invalid: [
@@ -556,6 +618,187 @@ ruleTester.run('no-useless-default-assignment', rule, {
         function f(
           /* comment */ x? /* comment 2 */ : /* comment 3 */ SomeType,
         ) {}
+      `,
+    },
+    // noStrictNullCheck tests
+    {
+      code: `
+        function Bar({ foo = '' }: { foo: string }) {
+          return foo;
+        }
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 0,
+          messageId: 'noStrictNullCheck',
+        },
+        {
+          column: 30,
+          data: { type: 'property' },
+          endColumn: 32,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'unstrict'),
+        },
+      },
+      output: `
+        function Bar({ foo }: { foo: string }) {
+          return foo;
+        }
+      `,
+    },
+    {
+      code: `
+        function foo(a = undefined) {}
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 0,
+          messageId: 'noStrictNullCheck',
+        },
+        {
+          column: 26,
+          data: { type: 'parameter' },
+          endColumn: 35,
+          line: 2,
+          messageId: 'uselessUndefined',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'unstrict'),
+        },
+      },
+      output: `
+        function foo(a) {}
+      `,
+    },
+    {
+      code: `
+        function Bar({ foo = '' }: { foo: string }) {
+          return foo;
+        }
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'property' },
+          endColumn: 32,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'unstrict'),
+        },
+      },
+      options: [
+        {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
+        },
+      ],
+      output: `
+        function Bar({ foo }: { foo: string }) {
+          return foo;
+        }
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11980
+    {
+      code: `
+        const { a = 'baz' } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 26,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
+      `,
+    },
+    {
+      code: `
+        const { a = 'baz' } =
+          Math.random() < 0.5
+            ? { a: 'foo' }
+            : Math.random() > 0.2
+              ? { a: 'bar' }
+              : { a: 'qux' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 26,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } =
+          Math.random() < 0.5
+            ? { a: 'foo' }
+            : Math.random() > 0.2
+              ? { a: 'bar' }
+              : { a: 'qux' };
+      `,
+    },
+    {
+      code: `
+        const { a = 'baz' } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 26,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
+      `,
+    },
+    {
+      code: `
+        const { a = 'baz' } = cond ? { a() {} } : { a: 'bar' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 26,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } = cond ? { a() {} } : { a: 'bar' };
+      `,
+    },
+    {
+      code: `
+        const { a = 'b' } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 24,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+        const { a } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
       `,
     },
   ],

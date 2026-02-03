@@ -28,6 +28,7 @@
   "dependencies": {
     "@babel/runtime": "^7.28.4",
     "@docusaurus/core": "~3.7.0",
+    "@docusaurus/faster": "^3.9.2",
     "@docusaurus/plugin-client-redirects": "~3.7.0",
     "@docusaurus/plugin-content-blog": "~3.7.0",
     "@docusaurus/plugin-content-docs": "~3.7.0",
@@ -72,7 +73,6 @@
     "@typescript-eslint/types": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/utils": "workspace:*",
-    "copy-webpack-plugin": "^13.0.1",
     "history": "^4.10.1",
     "mdast-util-from-markdown": "^2.0.2",
     "mdast-util-mdx": "^3.0.0",
@@ -86,8 +86,7 @@
     "stylelint-order": "^7.0.1",
     "tsx": "*",
     "unified": "^11.0.5",
-    "vfile": "^6.0.3",
-    "webpack": "^5.104.1"
+    "vfile": "^6.0.3"
   },
   "browserslist": {
     "production": [
@@ -114,7 +113,12 @@
         ],
         "options": {
           "cwd": "{projectRoot}"
-        }
+        },
+        "cache": true,
+        "outputs": [
+          "{projectRoot}/build",
+          "{projectRoot}/data"
+        ]
       },
       "lint": {
         "command": "eslint",

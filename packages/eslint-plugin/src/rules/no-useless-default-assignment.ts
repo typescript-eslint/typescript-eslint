@@ -16,11 +16,18 @@ import {
 } from '../util';
 
 type MessageId =
+  | 'noStrictNullCheck'
   | 'preferOptionalSyntax'
   | 'uselessDefaultAssignment'
   | 'uselessUndefined';
 
-export default createRule<[], MessageId>({
+type Options = [
+  {
+    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+  },
+];
+
+export default createRule<Options, MessageId>({
   name: 'no-useless-default-assignment',
   meta: {
     type: 'suggestion',
@@ -31,6 +38,8 @@ export default createRule<[], MessageId>({
     },
     fixable: 'code',
     messages: {
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
       preferOptionalSyntax:
         'Using `= undefined` to make a parameter optional adds unnecessary runtime logic. Use the `?` optional syntax instead.',
       uselessDefaultAssignment:
@@ -38,12 +47,50 @@ export default createRule<[], MessageId>({
       uselessUndefined:
         'Default value is useless because it is undefined. Optional {{ type }}s are already undefined by default.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            type: 'boolean',
+            description:
+              'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+    },
+  ],
+  create(
+    context,
+    [{ allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing }],
+  ) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+
+    const compilerOptions = services.program.getCompilerOptions();
+    const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
+      compilerOptions,
+      'strictNullChecks',
+    );
+
+    if (
+      !isStrictNullChecks &&
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing !== true
+    ) {
+      context.report({
+        loc: {
+          start: { column: 0, line: 0 },
+          end: { column: 0, line: 0 },
+        },
+        messageId: 'noStrictNullCheck',
+      });
+    }
 
     function canBeUndefined(type: ts.Type): boolean {
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
@@ -190,11 +237,22 @@ export default createRule<[], MessageId>({
         return null;
       }
 
-      if (
-        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Optional) &&
-        hasConditionalInitializer(objectPattern)
-      ) {
-        return null;
+      if (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Optional)) {
+        const parent = objectPattern.parent;
+        if (
+          parent.type === AST_NODE_TYPES.VariableDeclarator &&
+          parent.init &&
+          hasConditionalInitializer(objectPattern)
+        ) {
+          const propertyName = getPropertyName(node.key);
+
+          if (
+            !propertyName ||
+            !hasPropertyInAllBranches(parent.init, propertyName)
+          ) {
+            return null;
+          }
+        }
       }
 
       return checker.getTypeOfSymbol(symbol);
@@ -226,13 +284,16 @@ export default createRule<[], MessageId>({
       }
 
       if (isFunction(parent)) {
-        const paramIndex = parent.params.indexOf(pattern as TSESTree.Parameter);
+        let paramIndex = parent.params.indexOf(pattern as TSESTree.Parameter);
         const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
         const signature = nullThrows(
           checker.getSignatureFromDeclaration(tsFunc),
           NullThrowsReasons.MissingToken('signature', 'function'),
         );
         const params = signature.getParameters();
+        if (signature.thisParameter) {
+          paramIndex--;
+        }
         return checker.getTypeOfSymbol(params[paramIndex]);
       }
 
@@ -266,6 +327,8 @@ export default createRule<[], MessageId>({
           return key.name;
         case AST_NODE_TYPES.Literal:
           return String(key.value);
+        case AST_NODE_TYPES.TemplateLiteral:
+          return key.expressions.length ? null : key.quasis[0].value.cooked;
         default:
           return null;
       }
@@ -322,6 +385,23 @@ export default createRule<[], MessageId>({
       const start = node.left.range[1];
       const end = node.range[1];
       return fixer.removeRange([start, end]);
+    }
+
+    function hasPropertyInAllBranches(
+      expression: TSESTree.Expression,
+      propertyName: string,
+    ): boolean {
+      return (
+        (expression.type === AST_NODE_TYPES.ObjectExpression &&
+          expression.properties.some(
+            prop =>
+              prop.type === AST_NODE_TYPES.Property &&
+              getPropertyName(prop.key) === propertyName,
+          )) ||
+        (expression.type === AST_NODE_TYPES.ConditionalExpression &&
+          hasPropertyInAllBranches(expression.consequent, propertyName) &&
+          hasPropertyInAllBranches(expression.alternate, propertyName))
+      );
     }
 
     return {
