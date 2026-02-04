@@ -28,45 +28,40 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
     });
 
     it(ruleName, { only: ruleName === ONLY }, async ({ expect }) => {
-      const schemaString = (
-        await oxfmt.format(
-          'schema.json',
-          JSON.stringify(
-            ruleDef.meta.schema,
-            (k, v: unknown) => {
-              if (k === 'enum' && Array.isArray(v)) {
-                // sort enum arrays for consistency regardless of source order
-                v.sort();
-              } else if (
-                typeof v === 'object' &&
-                v != null &&
-                !Array.isArray(v)
-              ) {
-                // sort properties for consistency regardless of source order
-                return Object.fromEntries(
-                  Object.entries(v).sort(([a], [b]) => a.localeCompare(b)),
-                );
-              }
-              return v;
-            },
-            // use the indent feature as it forces all objects to be multiline
-            // if we don't do this then prettier decides what objects are multiline
-            // based on what fits on a line - which looks less consistent
-            // and makes changes harder to understand as you can have multiple
-            // changes per line, or adding a prop can restructure an object
-            2,
-          ),
-          oxfmtConfig as oxfmt.FormatOptions,
-        )
-      ).code;
-
-      const compilationResult = (
-        await oxfmt.format(
-          'schema.ts',
-          schemaToTypes(ruleDef.meta.schema),
-          oxfmtConfig as oxfmt.FormatOptions,
-        )
-      ).code;
+      const schemaString = await oxfmt.format(
+        'schema.json',
+        JSON.stringify(
+          ruleDef.meta.schema,
+          (k, v: unknown) => {
+            if (k === 'enum' && Array.isArray(v)) {
+              // sort enum arrays for consistency regardless of source order
+              v.sort();
+            } else if (
+              typeof v === 'object' &&
+              v != null &&
+              !Array.isArray(v)
+            ) {
+              // sort properties for consistency regardless of source order
+              return Object.fromEntries(
+                Object.entries(v).sort(([a], [b]) => a.localeCompare(b)),
+              );
+            }
+            return v;
+          },
+          // use the indent feature as it forces all objects to be multiline
+          // if we don't do this then prettier decides what objects are multiline
+          // based on what fits on a line - which looks less consistent
+          // and makes changes harder to understand as you can have multiple
+          // changes per line, or adding a prop can restructure an object
+          2,
+        ),
+        oxfmtConfig as oxfmt.FormatOptions,
+      );
+      const compilationResult = await oxfmt.format(
+        'schema.ts',
+        schemaToTypes(ruleDef.meta.schema),
+        oxfmtConfig as oxfmt.FormatOptions,
+      );
 
       const snapshotPath = path.join(snapshotFolder, `${ruleName}.shot`);
 
@@ -74,11 +69,11 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
         '',
         '# SCHEMA:',
         '',
-        schemaString,
+        schemaString.code,
         '',
         '# TYPES:',
         '',
-        compilationResult,
+        compilationResult.code,
       ].join('\n');
 
       await expect(snapshotContent).toMatchFileSnapshot(snapshotPath);
