@@ -12,7 +12,7 @@ const snapshotFolder = path.resolve(__dirname, 'schema-snapshots');
 
 const SKIPPED_RULES_FOR_TYPE_GENERATION = new Set(['indent']);
 // Set this to a rule name to only run that rule
-const ONLY = 'naming-convention';
+const ONLY = '';
 
 const ruleEntries = Object.entries(rules);
 
