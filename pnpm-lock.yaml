@@ -340,9 +340,9 @@ importers:
       eslint:
         specifier: '*'
         version: 9.39.2(jiti@2.6.1)
-      prettier:
-        specifier: ^3.8.1
-        version: 3.8.1
+      make-synchronized:
+        specifier: ^0.8.0
+        version: 0.8.0
       rimraf:
         specifier: '*'
         version: 5.0.10

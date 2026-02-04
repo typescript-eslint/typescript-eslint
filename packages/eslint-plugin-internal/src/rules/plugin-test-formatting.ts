@@ -1,16 +1,14 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import prettier from '@prettier/sync';
+import type * as oxfmt from 'oxfmt';
+import { makeModuleSynchronized } from 'make-synchronized';
 import { getContextualType } from '@typescript-eslint/type-utils';
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 import { createRule } from '../util/index.js';
+import oxfmtConfig from '../../../../.oxfmtrc.json' with { type: 'json' };
 
-// Replace with import.meta.dirname when minimum node version supports it
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const oxfmtSync = makeModuleSynchronized<typeof oxfmt>('oxfmt');
 
 /*
 The strings that are used for eslint plugins will not be checked for formatting.
@@ -52,7 +50,6 @@ const a = 1;
 ]
 */
 
-const prettierConfig = prettier.resolveConfig(__dirname) ?? {};
 const START_OF_LINE_WHITESPACE_MATCHER = /^( *)/;
 const BACKTICK_REGEX = /`/g;
 const TEMPLATE_EXPR_OPENER = /\$\{/g;
@@ -171,23 +168,23 @@ export default createRule<Options, MessageIds>({
 
     function getCodeFormatted(code: string): string | FormattingError {
       try {
-        return prettier
-          .format(code, {
-            ...prettierConfig,
-            parser: 'typescript',
-          })
-          .trimEnd(); // prettier will insert a new line at the end of the code
-      } catch (ex) {
-        // ex instanceof Error is false as of @prettier/sync@0.3.0, as is ex instanceof SyntaxError
-        if (
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          (ex as Partial<Error> | undefined)?.constructor?.name !==
-          'SyntaxError'
-        ) {
-          throw ex;
+        const result = oxfmtSync.format(
+          'file.ts',
+          code,
+          oxfmtConfig as oxfmt.FormatOptions,
+        );
+
+        if (result.errors.length > 0) {
+          throw new SyntaxError(result.errors.map(e => e.message).join('\n'));
         }
 
-        return ex as FormattingError;
+        return result.code.trimEnd(); // prettier will insert a new line at the end of the code
+      } catch (ex) {
+        if (ex instanceof SyntaxError) {
+          return ex as FormattingError;
+        }
+
+        throw ex;
       }
     }
 

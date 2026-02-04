@@ -32,7 +32,7 @@
   "devDependencies": {
     "@vitest/coverage-v8": "^3.2.4",
     "eslint": "*",
-    "prettier": "^3.8.1",
+    "make-synchronized": "^0.8.0",
     "rimraf": "*",
     "vitest": "^3.2.4"
   },

@@ -561,13 +561,13 @@ foo;
       ],
     },
 
-    // handles prettier errors
+    // handles formatter errors
     {
       code: wrap`'const x = ";'`,
       errors: [
         {
           data: {
-            message: 'Unterminated string literal.',
+            message: 'Unterminated string',
           },
           messageId: 'prettierException',
         },
