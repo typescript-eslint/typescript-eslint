@@ -1,43 +1,43 @@
 # https://docs.netlify.com/configure-builds/file-based-configuration/#build-settings
 [build]
-  base = ""
-  publish = "packages/website/build"
-  command = "NX_VERBOSE_LOGGING=true pnpm exec nx build website"
+base = ""
+publish = "packages/website/build"
+command = "NX_VERBOSE_LOGGING=true pnpm exec nx build website"
 
 # https://docs.netlify.com/configure-builds/file-based-configuration/#redirects
 
 [[redirects]]
-  from = "/docs"
-  to = "/getting-started"
+from = "/docs"
+to = "/getting-started"
 
 [[redirects]]
-  from = "/docs/development/architecture/asts"
-  to = "/blog/asts-and-typescript-eslint"
+from = "/docs/development/architecture/asts"
+to = "/blog/asts-and-typescript-eslint"
 
 [[redirects]]
-  from = "/docs/development/architecture/packages"
-  to = "/packages"
+from = "/docs/development/architecture/packages"
+to = "/packages"
 
 [[redirects]]
-  from = "/docs/development/custom-rules"
-  to = "/custom-rules"
+from = "/docs/development/custom-rules"
+to = "/custom-rules"
 
 [[redirects]]
-  from = "/docs/linting/type-linting"
-  to = "/linting/typed-linting"
+from = "/docs/linting/type-linting"
+to = "/linting/typed-linting"
 
 [[redirects]]
-  from = "/linting/troubleshooting"
-  to = "/troubleshooting/faqs/general"
+from = "/linting/troubleshooting"
+to = "/troubleshooting/faqs/general"
 
 [[redirects]]
-  from = "/docs/linting/monorepo"
-  to = "/linting/troubleshooting/typed-linting/Monorepos"
+from = "/docs/linting/monorepo"
+to = "/linting/troubleshooting/typed-linting/Monorepos"
 
 [[redirects]]
-  from = "/docs/linting/tslint"
-  to = "/linting/troubleshooting/tslint"
+from = "/docs/linting/tslint"
+to = "/linting/troubleshooting/tslint"
 
 [[redirects]]
-  from = "/docs/*"
-  to = "/:splat"
+from = "/docs/*"
+to = "/:splat"

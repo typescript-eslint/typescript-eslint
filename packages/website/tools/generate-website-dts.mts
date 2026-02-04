@@ -1,8 +1,10 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import prettier from 'prettier';
+import * as oxfmt from 'oxfmt';
 import { rimraf } from 'rimraf';
+
+import oxfmtConfig from '../../../.oxfmtrc.json' with { type: 'json' };
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const BASE_HOST = 'https://www.staging-typescript.org';
@@ -30,14 +32,11 @@ async function getFileAndStoreLocally(
     method: 'GET',
   });
 
-  const config = await prettier.resolveConfig(path);
-
   let contents = await response.text();
   contents = [...banner, '', editFunc(contents)].join('\n');
-  contents = await prettier.format(contents, {
-    parser: 'typescript',
-    ...config,
-  });
+  contents = (
+    await oxfmt.format(path, contents, oxfmtConfig as oxfmt.FormatOptions)
+  ).code;
 
   await fs.writeFile(path, contents, 'utf8');
 }

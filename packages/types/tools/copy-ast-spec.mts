@@ -63,7 +63,7 @@ async function copyFile(
     encoding: 'utf-8',
   });
 
-  await execAsync('pnpm', ['-w', 'exec', 'prettier', '--write', outpath], {});
+  await execAsync('pnpm', ['-w', 'exec', 'oxfmt', '--write', outpath], {});
 
   console.log('Copied', fileName);
 }

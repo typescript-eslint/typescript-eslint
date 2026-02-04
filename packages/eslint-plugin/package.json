@@ -83,7 +83,6 @@
     "mdast-util-from-markdown": "^2.0.2",
     "mdast-util-mdx": "^3.0.0",
     "micromark-extension-mdxjs": "^3.0.0",
-    "prettier": "3.8.0",
     "rimraf": "*",
     "title-case": "^4.3.2",
     "tsx": "*",
