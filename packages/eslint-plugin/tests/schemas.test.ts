@@ -1,49 +1,22 @@
 import { schemaToTypes } from '@typescript-eslint/rule-schema-to-typescript-types';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
-import prettier from 'prettier';
+import * as oxfmt from 'oxfmt';
+
+import oxfmtConfig from '../../../.oxfmtrc.json';
 
 import rules from '../src/rules/index.js';
 import { areOptionsValid } from './areOptionsValid.js';
 
 const snapshotFolder = path.resolve(__dirname, 'schema-snapshots');
 
-const PRETTIER_CONFIG_PATH = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  '.prettierrc.json',
-);
-const SCHEMA_FILEPATH = path.join(__dirname, 'schema.json');
-const TS_TYPE_FILEPATH = path.join(__dirname, 'schema.ts');
-const getPrettierConfig = async (
-  filepath: string,
-): Promise<prettier.Options> => {
-  const config = await prettier.resolveConfig(filepath, {
-    config: PRETTIER_CONFIG_PATH,
-  });
-  if (config == null) {
-    throw new Error('Unable to resolve prettier config');
-  }
-  return {
-    ...config,
-    filepath,
-  };
-};
-
 const SKIPPED_RULES_FOR_TYPE_GENERATION = new Set(['indent']);
 // Set this to a rule name to only run that rule
-const ONLY = '';
+const ONLY = 'naming-convention';
 
 const ruleEntries = Object.entries(rules);
 
 describe('Rule schemas should be convertible to TS types for documentation purposes', async () => {
-  const PRETTIER_CONFIG = {
-    schema: await getPrettierConfig(SCHEMA_FILEPATH),
-    tsType: await getPrettierConfig(TS_TYPE_FILEPATH),
-  };
-
   beforeAll(async () => {
     await fs.mkdir(snapshotFolder, { recursive: true });
   });
@@ -55,38 +28,50 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
     });
 
     it(ruleName, { only: ruleName === ONLY }, async ({ expect }) => {
-      const schemaString = await prettier.format(
-        JSON.stringify(
-          ruleDef.meta.schema,
-          (k, v: unknown) => {
-            if (k === 'enum' && Array.isArray(v)) {
-              // sort enum arrays for consistency regardless of source order
-              v.sort();
-            } else if (
-              typeof v === 'object' &&
-              v != null &&
-              !Array.isArray(v)
-            ) {
-              // sort properties for consistency regardless of source order
-              return Object.fromEntries(
-                Object.entries(v).sort(([a], [b]) => a.localeCompare(b)),
-              );
-            }
-            return v;
-          },
-          // use the indent feature as it forces all objects to be multiline
-          // if we don't do this then prettier decides what objects are multiline
-          // based on what fits on a line - which looks less consistent
-          // and makes changes harder to understand as you can have multiple
-          // changes per line, or adding a prop can restructure an object
-          2,
-        ),
-        PRETTIER_CONFIG.schema,
-      );
-      const compilationResult = await prettier.format(
+      const schemaString = (
+        await oxfmt.format(
+          'schema.json',
+          JSON.stringify(
+            ruleDef.meta.schema,
+            (k, v: unknown) => {
+              if (k === 'enum' && Array.isArray(v)) {
+                // sort enum arrays for consistency regardless of source order
+                v.sort();
+              } else if (
+                typeof v === 'object' &&
+                v != null &&
+                !Array.isArray(v)
+              ) {
+                // sort properties for consistency regardless of source order
+                return Object.fromEntries(
+                  Object.entries(v).sort(([a], [b]) => a.localeCompare(b)),
+                );
+              }
+              return v;
+            },
+            // use the indent feature as it forces all objects to be multiline
+            // if we don't do this then prettier decides what objects are multiline
+            // based on what fits on a line - which looks less consistent
+            // and makes changes harder to understand as you can have multiple
+            // changes per line, or adding a prop can restructure an object
+            2,
+          ),
+          oxfmtConfig as oxfmt.FormatOptions,
+        )
+      ).code;
+
+      fs.writeFile(
+        path.join(snapshotFolder, 'schema.ts'),
         schemaToTypes(ruleDef.meta.schema),
-        PRETTIER_CONFIG.tsType,
       );
+
+      const compilationResult = (
+        await oxfmt.format(
+          'schema.ts',
+          schemaToTypes(ruleDef.meta.schema),
+          oxfmtConfig as oxfmt.FormatOptions,
+        )
+      ).code;
 
       const snapshotPath = path.join(snapshotFolder, `${ruleName}.shot`);
 
