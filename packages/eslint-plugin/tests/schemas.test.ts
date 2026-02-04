@@ -60,11 +60,6 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
         )
       ).code;
 
-      fs.writeFile(
-        path.join(snapshotFolder, 'schema.ts'),
-        schemaToTypes(ruleDef.meta.schema),
-      );
-
       const compilationResult = (
         await oxfmt.format(
           'schema.ts',
