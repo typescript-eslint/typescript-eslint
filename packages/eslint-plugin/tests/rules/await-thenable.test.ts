@@ -44,7 +44,7 @@ async function test() {
   await unknownValue;
 }
     `,
-    `
+    noFormat`
 async function test() {
   const numberPromise: Promise<number>;
   await numberPromise;
@@ -61,7 +61,7 @@ async function test() {
   await bar;
 }
     `,
-    `
+    noFormat`
 async function test() {
   await (Math.random() > 0.5 ? numberPromise : 0);
   await (Math.random() > 0.5 ? foo : 0);
@@ -189,7 +189,7 @@ const doSomething = async (
 };
     `,
     {
-      code: `
+      code: noFormat`
 async function* asyncYieldNumbers() {
   yield 1;
   yield 2;
@@ -211,7 +211,7 @@ async function forAwait() {
       `,
     },
     {
-      code: `
+      code: noFormat`
 declare const asyncIter: AsyncIterable<string> | Iterable<string>;
 for await (const s of asyncIter) {
 }
@@ -870,7 +870,7 @@ declare const obj: { a: { b: { c?: () => void } } } | undefined;
       ],
     },
     {
-      code: `
+      code: noFormat`
 function* yieldNumbers() {
   yield 1;
   yield 2;
@@ -906,7 +906,7 @@ for  (const value of yieldNumbers()) {
       ],
     },
     {
-      code: `
+      code: noFormat`
 function* yieldNumberPromises() {
   yield Promise.resolve(1);
   yield Promise.resolve(2);

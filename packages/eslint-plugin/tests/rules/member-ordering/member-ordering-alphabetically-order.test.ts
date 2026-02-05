@@ -1,6 +1,6 @@
 import type { RunTests } from '@typescript-eslint/rule-tester';
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import type { MessageIds, Options } from '../../../src/rules/member-ordering';
 
@@ -1416,7 +1416,7 @@ const sortedWithGroupingDefaultOption: RunTests<MessageIds, Options> = {
   invalid: [
     // default option + class + wrong order within group and wrong group order + alphabetically
     {
-      code: `
+      code: noFormat`
 class FooTestGetter {
   public static a: string;
   protected static b: string = '';
@@ -1454,7 +1454,7 @@ class FooTestGetter {
 
     // default option + class + custom + alphabetically
     {
-      code: `
+      code: noFormat`
 class Foo {
   @Bar
   get a() {}
@@ -1495,7 +1495,7 @@ class Foo {
 
     // default option + class + wrong order within group and wrong group order + alphabetically
     {
-      code: `
+      code: noFormat`
 class FooTestGetter {
   public static a: string;
   protected static b: string = '';
@@ -1762,7 +1762,7 @@ class Foo {
 
     // default option + class + defaultOrder + alphabetically
     {
-      code: `
+      code: noFormat`
 class Foo {
   public static a: string;
   protected static b: string = '';
@@ -1791,7 +1791,7 @@ class Foo {
 
     // default option + class + custom + alphabetically
     {
-      code: `
+      code: noFormat`
 class Foo {
   get a() {}
 

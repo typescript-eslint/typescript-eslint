@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-misused-new';
 
@@ -6,7 +6,7 @@ const ruleTester = new RuleTester();
 
 ruleTester.run('no-misused-new', rule, {
   valid: [
-    `
+    noFormat`
 declare abstract class C {
   foo() {}
   get new();

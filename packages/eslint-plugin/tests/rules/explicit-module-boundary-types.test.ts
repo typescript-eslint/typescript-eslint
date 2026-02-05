@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester, noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/explicit-module-boundary-types';
 
@@ -34,7 +34,7 @@ export var arrowFn = (): string => 'test';
     },
     {
       // not exported
-      code: `
+      code: noFormat`
 class Test {
   constructor(one) {}
   get prop(one) {
@@ -50,7 +50,7 @@ class Test {
       `,
     },
     {
-      code: `
+      code: noFormat`
 export class Test {
   constructor(one: string) {}
   get prop(one: string): void {
@@ -66,7 +66,7 @@ export class Test {
       `,
     },
     {
-      code: `
+      code: noFormat`
 export class Test {
   private constructor(one) {}
   private get prop(one) {
@@ -167,7 +167,7 @@ export var funcExpr: Foo = function () {
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      code: 'const x = <Foo>(() => {});',
+      code: noFormat`const x = <Foo>(() => {});`,
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
@@ -179,7 +179,7 @@ export const x = {
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      code: `
+      code: noFormat`
 export const x = <Foo>{
   foo: () => {},
 };
@@ -204,7 +204,7 @@ export const x = {
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      code: `
+      code: noFormat`
 export const x = <Foo>{
   foo: { bar: () => {} },
 };
@@ -442,7 +442,7 @@ export const foo = {
       ],
     },
     {
-      code: `
+      code: noFormat`
 export class Test {
   get prop() {
     return 1;
@@ -1343,7 +1343,7 @@ export const func = (value: number) =>
       ],
     },
     {
-      code: `
+      code: noFormat`
 export class Test {
   constructor() {}
   get prop() {

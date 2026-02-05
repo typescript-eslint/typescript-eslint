@@ -58,7 +58,7 @@ if (
     `,
     'let y = 1 as 1;',
     'const foo = 3 as number;',
-    'const foo = <number>3;',
+    noFormat`const foo = <number>3;`,
     `
 type Tuple = [3, 'hi', 'bye'];
 const foo = [3, 'hi', 'bye'] as Tuple;
@@ -108,7 +108,7 @@ const foo = (3 + 5) as Foo;
       options: [{ typesToIgnore: ['string'] }],
     },
     {
-      code: `
+      code: noFormat`
 type Foo = number;
 const foo = <Foo>(3 + 5);
       `,
@@ -258,17 +258,17 @@ const c = [...a, ...b] as const;
       code: "const a = { foo: 'foo' } as const;",
     },
     {
-      code: `
+      code: noFormat`
 const a = [1, 2];
 const b = [3, 4];
 const c = <const>[...a, ...b];
       `,
     },
     {
-      code: 'const a = <const>[1, 2];',
+      code: noFormat`const a = <const>[1, 2];`,
     },
     {
-      code: "const a = <const>{ foo: 'foo' };",
+      code: noFormat`const a = <const>{ foo: 'foo' };`,
     },
     {
       code: `
@@ -300,7 +300,7 @@ const a = foo()!;
 declare function foo(): number | undefined;
 const a = foo() as number;
     `,
-    `
+    noFormat`
 declare function foo(): number | undefined;
 const a = <number>foo();
     `,
@@ -312,7 +312,7 @@ const item = arr[0]!;
 declare const arr: (object | undefined)[];
 const item = arr[0] as object;
     `,
-    `
+    noFormat`
 declare const arr: (object | undefined)[];
 const item = <object>arr[0];
     `,
@@ -333,7 +333,7 @@ declare const myString: 'foo';
 const templateLiteral = \`\${myString}-somethingElse\` as const;
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
-    `
+    noFormat`
 declare const myString: 'foo';
 const templateLiteral = <const>\`\${myString}-somethingElse\`;
     `,
@@ -449,7 +449,7 @@ foo(baz!);
       code: "const a = 'a' as const;",
     },
     {
-      code: "const a = <const>'a';",
+      code: noFormat`const a = <const>'a';`,
     },
     {
       code: `
@@ -526,7 +526,7 @@ interface Unioned {
 
   invalid: [
     {
-      code: 'const foo = <3>3;',
+      code: noFormat`const foo = <3>3;`,
       errors: [{ column: 13, line: 1, messageId: 'unnecessaryAssertion' }],
       output: 'const foo = 3;',
     },
@@ -536,7 +536,7 @@ interface Unioned {
       output: 'const foo = 3;',
     },
     {
-      code: `
+      code: noFormat`
         type Foo = 3;
         const foo = <Foo>3;
       `,
@@ -590,7 +590,7 @@ const foo = (3 + 5);
       `,
     },
     {
-      code: `
+      code: noFormat`
 const foo = <number>(3 + 5);
       `,
       errors: [
@@ -622,7 +622,7 @@ const foo = (3 + 5);
       `,
     },
     {
-      code: `
+      code: noFormat`
 type Foo = number;
 const foo = <Foo>(3 + 5);
       `,
@@ -725,7 +725,7 @@ function foo<T extends string>(bar: T) {
       `,
     },
     {
-      code: `
+      code: noFormat`
 declare const foo: Foo;
 const bar = <Foo>foo;
       `,
@@ -961,7 +961,7 @@ const a = foo();
       `,
     },
     {
-      code: `
+      code: noFormat`
 declare function foo(): number;
 const a = <number>foo();
       `,
@@ -1149,7 +1149,7 @@ const foo =  /* a */ (3 + 5);
       `,
     },
     {
-      code: `
+      code: noFormat`
 const foo = <number /* a */>(3 + 5);
       `,
       errors: [
@@ -1421,7 +1421,7 @@ foo(baz);
       output: 'const a = true;',
     },
     {
-      code: 'const a = <const>true;',
+      code: noFormat`const a = <const>true;`,
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
       options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = true;',
@@ -1433,7 +1433,7 @@ foo(baz);
       output: 'const a = 1;',
     },
     {
-      code: 'const a = <const>1;',
+      code: noFormat`const a = <const>1;`,
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
       options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = 1;',
@@ -1445,7 +1445,7 @@ foo(baz);
       output: 'const a = 1n;',
     },
     {
-      code: 'const a = <const>1n;',
+      code: noFormat`const a = <const>1n;`,
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
       options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = 1n;',
@@ -1464,7 +1464,7 @@ foo(baz);
       output: "const a = 'a';",
     },
     {
-      code: "const a = <const>'a';",
+      code: noFormat`const a = <const>'a';`,
       errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
       options: [{ checkLiteralConstAssertions: true }],
       output: "const a = 'a';",

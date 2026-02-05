@@ -220,14 +220,14 @@ type Foo = Generic<{
     'function foo(): { [key: string]: any; bar: string } {}',
 
     // Invalid syntax allowed by the parser
-    'type Foo = { [key: string] };',
-    'type Foo = { [] };',
-    `
+    noFormat`type Foo = { [key: string] };`,
+    noFormat`type Foo = { [] };`,
+    noFormat`
 interface Foo {
   [key: string];
 }
     `,
-    `
+    noFormat`
 interface Foo {
   [];
 }
@@ -931,7 +931,7 @@ function f(): Record<keyof ParseResult, unknown> {
 
     // missing index signature type annotation while checking for a recursive type
     {
-      code: `
+      code: noFormat`
 interface Foo {
   [key: string]: Bar;
 }

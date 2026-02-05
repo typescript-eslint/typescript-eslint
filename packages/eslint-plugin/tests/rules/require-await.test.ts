@@ -344,7 +344,7 @@ function values(): Array<number> {
     },
     {
       // non-async function with await inside async function without await
-      code: `
+      code: noFormat`
         async function foo() {
           function nested() {
             await doSomething();
@@ -766,7 +766,7 @@ async function foo() {
       code: 'await foo();',
     },
     {
-      code: `
+      code: noFormat`
 for await (let num of asyncIterable) {
   console.log(num);
 }

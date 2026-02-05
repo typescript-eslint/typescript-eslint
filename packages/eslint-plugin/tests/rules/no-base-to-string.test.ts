@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-base-to-string';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
@@ -288,9 +290,9 @@ tag\`\${{}}\`;
         return \`\${v}\`;
       }
     `,
-    "'' += new Error();",
-    "'' += new URL();",
-    "'' += new URLSearchParams();",
+    noFormat`'' += new Error();`,
+    noFormat`'' += new URL();`,
+    noFormat`'' += new URLSearchParams();`,
     `
 Number(1);
     `,
@@ -759,7 +761,7 @@ declare const x: unknown;
 declare const x: unknown;
 String(x);
     `,
-    `
+    noFormat`
 declare const x: unknown;
 '' += x;
     `,
@@ -788,7 +790,7 @@ declare const x: any;
 declare const x: any;
 String(x);
     `,
-    `
+    noFormat`
 declare const x: any;
 '' += x;
     `,
@@ -895,7 +897,7 @@ String(x);
       ],
     },
     {
-      code: `
+      code: noFormat`
 declare const x: unknown;
 '' += x;
       `,
@@ -996,7 +998,7 @@ function foo<T>(x: T) {
       ],
     },
     {
-      code: "'' += {};",
+      code: noFormat`'' += {};`,
       errors: [
         {
           data: {

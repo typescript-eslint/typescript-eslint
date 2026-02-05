@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/related-getter-setter-pairs';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -11,13 +13,13 @@ interface Example {
   set value(newValue: string);
 }
     `,
-    `
+    noFormat`
 interface Example {
   get value(): string | undefined;
   set value();
 }
     `,
-    `
+    noFormat`
 interface Example {
   get value(): string | undefined;
   set value(newValue: string, invalid: string);
@@ -34,7 +36,7 @@ interface Example {
   get value(): number;
 }
     `,
-    `
+    noFormat`
 interface Example {
   get value(): number;
   set value();
@@ -45,7 +47,7 @@ interface Example {
   set value(newValue: string);
 }
     `,
-    `
+    noFormat`
 interface Example {
   set value();
 }
@@ -55,7 +57,7 @@ type Example = {
   get value();
 };
     `,
-    `
+    noFormat`
 type Example = {
   set value();
 };
@@ -67,7 +69,7 @@ class Example {
   }
 }
     `,
-    `
+    noFormat`
 class Example {
   get value() {
     return '';
@@ -91,7 +93,7 @@ class Example {
   set value(param: number) {}
 }
     `,
-    `
+    noFormat`
 class Example {
   set value() {}
 }

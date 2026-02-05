@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-inferrable-types';
 
@@ -670,7 +670,7 @@ class Foo {
 
     {
       // This is invalid TS semantic, but it's trivial to make valid anyway
-      code: 'const fn = (a?: number = 5) => {};',
+      code: noFormat`const fn = (a?: number = 5) => {};`,
       errors: [
         {
           column: 13,

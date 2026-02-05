@@ -36,7 +36,7 @@ interface Test {
   get f(): number;
 }
     `,
-    `
+    noFormat`
 interface Test {
   set f(value: number): void;
 }
@@ -46,7 +46,7 @@ interface Test {
     'type Test = { readonly f?: <T>(a?: T) => T };',
     "type Test = { readonly ['f']?: <T>(a: T, b: T) => T };",
     'type Test = { get f(): number };',
-    'type Test = { set f(value: number): void };',
+    noFormat`type Test = { set f(value: number): void };`,
     {
       code: `
         interface Test {
@@ -116,7 +116,7 @@ interface Test {
         get f(): number;
       }
     `,
-    `
+    noFormat`
       interface Test {
         set f(value: number): void;
       }
@@ -128,7 +128,7 @@ interface Test {
       options: ['method'],
     },
     {
-      code: `
+      code: noFormat`
         type Test = { set f(value: number): void };
       `,
       options: ['method'],

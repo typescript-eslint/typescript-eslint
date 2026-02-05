@@ -1,6 +1,6 @@
 import type { RunTests } from '@typescript-eslint/rule-tester';
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import type { MessageIds, Options } from '../../../src/rules/member-ordering';
 
@@ -138,7 +138,7 @@ class X {
       ],
     },
     {
-      code: `
+      code: noFormat`
 interface X {
   a: string;
   [i?: number]: string;

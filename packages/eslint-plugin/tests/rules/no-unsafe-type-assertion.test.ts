@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-unsafe-type-assertion';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -10,7 +12,7 @@ describe('basic assertions', () => {
 declare const a: string;
 a as string | number;
       `,
-      `
+      noFormat`
 declare const a: string;
 <string | number>a;
       `,
@@ -73,7 +75,7 @@ a satisfies string as string;
         ],
       },
       {
-        code: `
+        code: noFormat`
 declare const a: string | number;
 <string>a;
         `,

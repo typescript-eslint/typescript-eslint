@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-misused-promises';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -2244,7 +2246,7 @@ class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
       ],
     },
     {
-      code: `
+      code: noFormat`
 interface MyInterface {
   setThing(): void;
 }

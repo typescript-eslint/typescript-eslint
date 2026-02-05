@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/prefer-as-const';
 
@@ -12,8 +12,8 @@ ruleTester.run('prefer-as-const', rule, {
     'let foo = { bar: 1 as const };',
     "let foo = { bar: 'baz' };",
     'let foo = { bar: 2 };',
-    "let foo = <bar>'bar';",
-    "let foo = <string>'bar';",
+    noFormat`let foo = <bar>'bar';`,
+    noFormat`let foo = <string>'bar';`,
     "let foo = 'bar' as string;",
     'let foo = `bar` as `bar`;',
     'let foo = `bar` as `foo`;',
@@ -40,7 +40,7 @@ ruleTester.run('prefer-as-const', rule, {
         bar;
       }
     `,
-    `
+    noFormat`
       class foo {
         bar = <baz>'baz';
       }
@@ -174,7 +174,7 @@ ruleTester.run('prefer-as-const', rule, {
       output: "let foo: 'bar' = 'bar' as const;",
     },
     {
-      code: "let foo = <'bar'>'bar';",
+      code: noFormat`let foo = <'bar'>'bar';`,
       errors: [
         {
           column: 12,
@@ -185,7 +185,7 @@ ruleTester.run('prefer-as-const', rule, {
       output: "let foo = <const>'bar';",
     },
     {
-      code: 'let foo = <4>4;',
+      code: noFormat`let foo = <4>4;`,
       errors: [
         {
           column: 12,
@@ -268,7 +268,7 @@ class foo {
       output: null,
     },
     {
-      code: `
+      code: noFormat`
 class foo {
   foo = <'bar'>'bar';
 }
