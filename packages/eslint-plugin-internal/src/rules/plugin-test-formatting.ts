@@ -1,12 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-
 import type * as oxfmt from 'oxfmt';
-import { makeModuleSynchronized } from 'make-synchronized';
+
 import { getContextualType } from '@typescript-eslint/type-utils';
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
+import { makeModuleSynchronized } from 'make-synchronized';
 
-import { createRule } from '../util/index.js';
 import oxfmtConfig from '../../../../.oxfmtrc.json' with { type: 'json' };
+import { createRule } from '../util/index.js';
 
 const oxfmtSync = makeModuleSynchronized<typeof oxfmt>('oxfmt');
 
