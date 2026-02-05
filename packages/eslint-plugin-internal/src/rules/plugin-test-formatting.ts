@@ -108,11 +108,6 @@ type MessageIds =
   | 'templateStringMinimumIndent'
   | 'templateStringRequiresIndent';
 
-type FormattingError = {
-  codeFrame: string;
-  loc?: unknown;
-} & Error;
-
 export default createRule<Options, MessageIds>({
   name: 'plugin-test-formatting',
   meta: {
@@ -166,7 +161,7 @@ export default createRule<Options, MessageIds>({
 
     const checkedObjects = new Set<TSESTree.ObjectExpression>();
 
-    function getCodeFormatted(code: string): string | FormattingError {
+    function getCodeFormatted(code: string): string | Error {
       try {
         const result = oxfmtSync.format(
           'file.ts',
@@ -174,17 +169,21 @@ export default createRule<Options, MessageIds>({
           oxfmtConfig as oxfmt.FormatOptions,
         );
 
-        if (result.errors.length > 0) {
-          throw new SyntaxError(result.errors.map(e => e.message).join('\n'));
+        const parsingError = result.errors.find(
+          e => e.severity.toString() === 'Error',
+        );
+
+        if (parsingError) {
+          throw new SyntaxError(parsingError.message);
         }
 
-        return result.code.trimEnd(); // prettier will insert a new line at the end of the code
+        return result.code.trimEnd(); // oxfmt will insert a new line at the end of the code
       } catch (ex) {
-        if (ex instanceof SyntaxError) {
-          return ex as FormattingError;
+        if (!(ex instanceof SyntaxError)) {
+          throw ex;
         }
 
-        throw ex;
+        return ex;
       }
     }
 
@@ -201,20 +200,11 @@ export default createRule<Options, MessageIds>({
         return formatted;
       }
 
-      let message = formatted.message;
-
-      if (formatted.codeFrame) {
-        message = message.replace(`\n${formatted.codeFrame}`, '');
-      }
-      if (formatted.loc) {
-        message = message.replace(/ \(\d+:\d+\)$/, '');
-      }
-
       context.report({
         node: location,
         messageId: 'prettierException',
         data: {
-          message,
+          message: formatted.message,
         },
       });
       return null;

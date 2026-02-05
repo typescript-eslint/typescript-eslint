@@ -330,6 +330,12 @@ importers:
       '@typescript-eslint/utils':
         specifier: workspace:*
         version: link:../utils
+      make-synchronized:
+        specifier: ^0.8.0
+        version: 0.8.0
+      oxfmt:
+        specifier: ^0.28.0
+        version: 0.28.0
     devDependencies:
       '@vitest/coverage-v8':
         specifier: ^3.2.4
@@ -337,9 +343,6 @@ importers:
       eslint:
         specifier: '*'
         version: 9.39.2(jiti@2.6.1)
-      make-synchronized:
-        specifier: ^0.8.0
-        version: 0.8.0
       rimraf:
         specifier: '*'
         version: 5.0.10
