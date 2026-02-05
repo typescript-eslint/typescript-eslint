@@ -22,8 +22,16 @@ interface Example {
 ```
 
 The two are very similar; most of the time it doesn't matter which one you use.
+However, when TypeScript's `strictFunctionTypes` option is enabled, there is an important difference: methods are always bivariant in their arguments, while function properties are contravariant.
+This means that switching from method syntax to property syntax (or vice versa) can cause TypeScript to report new type errors or stop reporting existing ones.
 
 A good practice is to use the TypeScript's `strict` option (which implies `strictFunctionTypes`) which enables correct typechecking for function properties only (method signatures get old behavior).
+
+:::caution Autofix Considerations
+When using the `--fix` flag, this rule's autofix will change signatures between method and property styles.
+If you have `strictFunctionTypes` enabled, this can introduce new TypeScript type errors in your codebase, particularly in scenarios involving generic types or type inference.
+This is not a bug in the autofix; rather, it reveals type issues that were previously hidden due to the bivariant nature of method signatures.
+:::
 
 TypeScript FAQ:
 
@@ -119,6 +127,10 @@ type T2 = {
 ## When Not To Use It
 
 If you don't want to enforce a particular style for object/interface function types, and/or if you don't use `strictFunctionTypes`, then you don't need this rule.
+
+You may also want to avoid this rule if you're introducing it to a large existing codebase with `strictFunctionTypes` enabled.
+Running the autofix across many files at once could introduce multiple TypeScript errors, making it difficult to identify which specific change caused each error.
+In such cases, consider adopting the rule incrementally or reviewing changes file-by-file.
 
 However, keep in mind that inconsistent style can harm readability in a project.
 We recommend picking a single option for this rule that works best for your project.
