@@ -4,7 +4,6 @@ import * as path from 'node:path';
 import * as oxfmt from 'oxfmt';
 
 import oxfmtConfig from '../../../.oxfmtrc.json';
-
 import rules from '../src/rules/index.js';
 import { areOptionsValid } from './areOptionsValid.js';
 
@@ -16,7 +15,7 @@ const ONLY = '';
 
 const ruleEntries = Object.entries(rules);
 
-describe('Rule schemas should be convertible to TS types for documentation purposes', async () => {
+describe('Rule schemas should be convertible to TS types for documentation purposes', () => {
   beforeAll(async () => {
     await fs.mkdir(snapshotFolder, { recursive: true });
   });

@@ -12,7 +12,6 @@ import path from 'node:path';
 import * as oxfmt from 'oxfmt';
 
 import oxfmtConfig from '../../.oxfmtrc.json' with { type: 'json' };
-
 import { PACKAGES_ESLINT_PLUGIN } from './paths.mts';
 
 // no need for us to bring in an entire dependency for a few simple terminal colors

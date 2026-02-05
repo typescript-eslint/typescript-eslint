@@ -297,6 +297,9 @@ importers:
       micromark-extension-mdxjs:
         specifier: ^3.0.0
         version: 3.0.0
+      oxfmt:
+        specifier: ^0.28.0
+        version: 0.28.0
       rimraf:
         specifier: '*'
         version: 5.0.10

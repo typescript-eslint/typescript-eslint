@@ -15,7 +15,7 @@ The strings that are used for eslint plugins will not be checked for formatting.
 This can lead to diff noise as one contributor adjusts formatting, uses different quotes, etc.
 
 This rule just enforces the following:
-- all code samples are formatted with prettier
+- all code samples are formatted with oxfmt
 - all single line tests do not use backticks
 - all multiline tests have:
   - no code on the first line
@@ -93,7 +93,7 @@ function escapeTemplateString(code: string): string {
 type Options = [
   {
     // This option exists so that rules like type-annotation-spacing can exist without every test needing a prettier-ignore
-    formatWithPrettier?: boolean;
+    formatWithOxfmt?: boolean;
   },
 ];
 
@@ -101,7 +101,7 @@ type MessageIds =
   | 'invalidFormatting'
   | 'invalidFormattingErrorTest'
   | 'noUnnecessaryNoFormat'
-  | 'prettierException'
+  | 'oxfmtException'
   | 'singleLineQuotes'
   | 'templateLiteralEmptyEnds'
   | 'templateLiteralLastLineIndent'
@@ -124,8 +124,7 @@ export default createRule<Options, MessageIds>({
         'This snippet should be formatted correctly. Use the fixer to format the code. Note that the automated fixer may break your test locations.',
       noUnnecessaryNoFormat:
         'noFormat is unnecessary here. Use the fixer to remove it.',
-      prettierException:
-        'Prettier was unable to format this snippet: {{message}}',
+      oxfmtException: 'Oxfmt was unable to format this snippet: {{message}}',
       singleLineQuotes: 'Use quotes (\' or ") for single line tests.',
       templateLiteralEmptyEnds:
         'Template literals must start and end with an empty line.',
@@ -141,10 +140,10 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          formatWithPrettier: {
+          formatWithOxfmt: {
             type: 'boolean',
             description:
-              'Whether to enforce formatting of code snippets using Prettier.',
+              'Whether to enforce formatting of code snippets using Oxfmt.',
           },
         },
       },
@@ -152,10 +151,10 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      formatWithPrettier: true,
+      formatWithOxfmt: true,
     },
   ],
-  create(context, [{ formatWithPrettier }]) {
+  create(context, [{ formatWithOxfmt }]) {
     const services = ESLintUtils.getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -164,7 +163,7 @@ export default createRule<Options, MessageIds>({
     function getCodeFormatted(code: string): string | Error {
       try {
         const result = oxfmtSync.format(
-          'file.ts',
+          'file.tsx',
           code,
           oxfmtConfig as oxfmt.FormatOptions,
         );
@@ -191,7 +190,7 @@ export default createRule<Options, MessageIds>({
       code: string,
       location: TSESTree.Node,
     ): string | null {
-      if (formatWithPrettier === false) {
+      if (formatWithOxfmt === false) {
         return null;
       }
 
@@ -202,7 +201,7 @@ export default createRule<Options, MessageIds>({
 
       context.report({
         node: location,
-        messageId: 'prettierException',
+        messageId: 'oxfmtException',
         data: {
           message: formatted.message,
         },
@@ -306,7 +305,7 @@ export default createRule<Options, MessageIds>({
 
       const lines = text.split('\n');
       const lastLine = lines[lines.length - 1];
-      // prettier will trim out the end of line on save, but eslint will check before then
+      // oxfmt will trim out the end of line on save, but eslint will check before then
       const isStartEmpty = lines[0].trimEnd() === '';
       // last line can be indented
       const isEndEmpty = lastLine.trimStart() === '';

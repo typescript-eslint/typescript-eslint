@@ -569,7 +569,7 @@ foo;
           data: {
             message: 'Unterminated string',
           },
-          messageId: 'prettierException',
+          messageId: 'oxfmtException',
         },
       ],
       output: null,
@@ -838,7 +838,7 @@ const a = 1;
       code: wrap`'const x=1;'`,
       options: [
         {
-          formatWithPrettier: false,
+          formatWithOxfmt: false,
         },
       ],
     },

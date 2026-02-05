@@ -17,7 +17,6 @@ import { rimraf } from 'rimraf';
 import * as ts from 'typescript';
 
 import oxfmtConfig from '../../.oxfmtrc.json' with { type: 'json' };
-
 import { PACKAGES_SCOPE_MANAGER, PACKAGES_TYPES, REPO_ROOT } from './paths.mts';
 
 function parseAndAnalyze(
