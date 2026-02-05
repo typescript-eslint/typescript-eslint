@@ -396,7 +396,8 @@ export function checkModifiers(node: ts.Node): void {
   // @eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- incorrect type
   if (node.parent?.kind === SyntaxKind.ObjectLiteralExpression) {
     // @ts-expect-error intentional to access deprecated `node.modifiers`
-    for (const modifier of (node.modifiers as ts.Modifier[] | undefined) ?? []) {
+    for (const modifier of (node.modifiers as ts.Modifier[] | undefined) ??
+      []) {
       if (ts.isDecorator(modifier) || modifiers.includes(modifier)) {
         continue;
       }
