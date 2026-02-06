@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester, noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/explicit-function-return-type';
 
@@ -27,7 +27,7 @@ var arrowFn = (): string => 'test';
       `,
     },
     {
-      code: `
+      code: noFormat`
 class Test {
   constructor() {}
   get prop(): number {
@@ -116,7 +116,7 @@ var funcExpr: Foo = function () {
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      code: 'const x = <Foo>(() => {});',
+      code: noFormat`const x = <Foo>(() => {});`,
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
@@ -128,7 +128,7 @@ const x = {
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      code: `
+      code: noFormat`
 const x = <Foo>{
   foo: () => {},
 };
@@ -153,7 +153,7 @@ const x = {
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      code: `
+      code: noFormat`
 const x = <Foo>{
   foo: { bar: () => {} },
 };
@@ -592,7 +592,7 @@ export const foo = {
       ],
     },
     {
-      code: `
+      code: noFormat`
 class Test {
   constructor() {}
   get prop() {
@@ -915,7 +915,7 @@ var arrowFn = () => 'test';
       ],
     },
     {
-      code: `
+      code: noFormat`
 class Test {
   constructor() {}
   get prop() {

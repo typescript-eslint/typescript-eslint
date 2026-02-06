@@ -30,7 +30,7 @@ defaults:
 # Workflow for how the CI spawns jobs:
 # 1) Run the install and cache the install artefacts
 # 2) Run the build and cache the output
-#    - In parallel we also any steps that don't need the build (like prettier)
+#    - In parallel we also any steps that don't need the build (like oxfmt)
 # 3) Run the steps that depend on the build
 #
 

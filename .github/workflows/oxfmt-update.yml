@@ -1,7 +1,7 @@
 # This workflow is used to augment the capabilities of the renovate GitHub app by running a full
-# `prettier --write` when renovate opens a PR to change the version of prettier.
+# `oxfmt --write` when renovate opens a PR to change the version of oxfmt.
 
-name: Prettier Update
+name: Oxfmt Update
 
 on:
   # NOTE: Never use pull_request_target here because that would populate secrets for forks
@@ -16,10 +16,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  maybe_prettier_update:
+  maybe_oxfmt_update:
     # Only run if it was the renovate bot that triggered the workflow (otherwise we'll create a loop)
     if: contains('["renovate[bot]"]', github.actor) == true
-    name: Run prettier formatting if required
+    name: Run oxfmt formatting if required
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,19 +27,19 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           persist-credentials: false
 
-      - name: Check if prettier was changed as part of the latest commit on the PR
-        id: prettier-package-check
+      - name: Check if oxfmt was changed as part of the latest commit on the PR
+        id: oxfmt-package-check
         run: |
-          git diff HEAD~1 -G"prettier" --exit-code package.json && echo "prettier unchanged" || echo "::set-output name=was-changed::true"
+          git diff HEAD~1 -G"oxfmt" --exit-code package.json && echo "oxfmt unchanged" || echo "::set-output name=was-changed::true"
 
       - uses: pnpm/action-setup@v4
-        if: ${{ steps.prettier-package-check.outputs.was-changed == 'true' }}
+        if: ${{ steps.oxfmt-package-check.outputs.was-changed == 'true' }}
         name: Install pnpm
         with:
           run_install: false
 
-      - name: Run prettier formatting if prettier was changed and commit the results
-        if: ${{ steps.prettier-package-check.outputs.was-changed == 'true' }}
+      - name: Run oxfmt formatting if oxfmt was changed and commit the results
+        if: ${{ steps.oxfmt-package-check.outputs.was-changed == 'true' }}
         env:
           # We cannot use secrets.GITHUB_TOKEN for this because it is not permitted to kick off subsequent actions worfklow runs, so we use a PAT instead
           GITHUB_TOKEN: ${{ secrets.JAMES_HENRY_GITHUB_TOKEN }}
@@ -57,6 +57,6 @@ jobs:
             echo "No uncommitted changes"
           else
             git add --all
-            git commit -m "chore: update formatting after prettier upgrade"
+            git commit -m "chore: update formatting after oxfmt upgrade"
             git push
           fi

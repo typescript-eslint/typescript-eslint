@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 
@@ -13,7 +13,7 @@ ruleTester.run('prefer-const', rule, {
 let x: number | undefined = 1;
 x! += 1;
     `,
-    `
+    noFormat`
 let x: number | undefined = 1;
 (<number>x) += 1;
     `,
@@ -25,7 +25,7 @@ let x: number | undefined = 1;
 let x: number | undefined = 1;
 x!++;
     `,
-    `
+    noFormat`
 let x: number | undefined = 1;
 (<number>x)++;
     `,

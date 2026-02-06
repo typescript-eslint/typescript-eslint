@@ -4,6 +4,11 @@
       "count": 26
     }
   },
+  "packages/eslint-plugin/tests/rules/array-type.test.ts": {
+    "@typescript-eslint/internal/plugin-test-formatting": {
+      "count": 3
+    }
+  },
   "packages/eslint-plugin/tests/rules/dot-notation.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 1
@@ -24,6 +29,11 @@
       "count": 12
     }
   },
+  "packages/eslint-plugin/tests/rules/no-array-constructor.test.ts": {
+    "@typescript-eslint/internal/plugin-test-formatting": {
+      "count": 2
+    }
+  },
   "packages/eslint-plugin/tests/rules/no-extraneous-class.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 12
@@ -34,8 +44,18 @@
       "count": 43
     }
   },
+  "packages/eslint-plugin/tests/rules/no-invalid-void-type.test.ts": {
+    "@typescript-eslint/internal/plugin-test-formatting": {
+      "count": 2
+    }
+  },
   "packages/eslint-plugin/tests/rules/no-loop-func.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-loss-of-precision.test.ts": {
+    "@typescript-eslint/internal/plugin-test-formatting": {
       "count": 2
     }
   },
@@ -59,9 +79,29 @@
       "count": 2
     }
   },
+  "packages/eslint-plugin/tests/rules/no-unused-expressions.test.ts": {
+    "@typescript-eslint/internal/plugin-test-formatting": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-unused-vars/no-unused-vars-eslint.test.ts": {
+    "@typescript-eslint/internal/plugin-test-formatting": {
+      "count": 6
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-useless-default-assignment.test.ts": {
+    "@typescript-eslint/internal/plugin-test-formatting": {
+      "count": 1
+    }
+  },
   "packages/eslint-plugin/tests/rules/no-useless-empty-export.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 9
+    }
+  },
+  "packages/eslint-plugin/tests/rules/prefer-find.test.ts": {
+    "@typescript-eslint/internal/plugin-test-formatting": {
+      "count": 1
     }
   },
   "packages/eslint-plugin/tests/rules/prefer-nullish-coalescing.test.ts": {
@@ -72,6 +112,9 @@
   "packages/eslint-plugin/tests/rules/prefer-optional-chain/prefer-optional-chain.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 17
+    },
+    "@typescript-eslint/internal/plugin-test-formatting": {
+      "count": 2
     }
   },
   "packages/eslint-plugin/tests/rules/return-await.test.ts": {

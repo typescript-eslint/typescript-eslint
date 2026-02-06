@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import * as parser from '@typescript-eslint/parser';
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/consistent-type-assertions';
 
@@ -127,7 +127,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: 'const x = <Foo>new Generic<int>();',
+      code: noFormat`const x = <Foo>new Generic<int>();`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -136,7 +136,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: 'const x = <A>b;',
+      code: noFormat`const x = <A>b;`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -145,7 +145,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: 'const x = <readonly number[]>[1];',
+      code: noFormat`const x = <readonly number[]>[1];`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -154,7 +154,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: "const x = <a | b>'string';",
+      code: noFormat`const x = <a | b>'string';`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -163,7 +163,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: "const x = <A>!'string';",
+      code: noFormat`const x = <A>!'string';`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -172,7 +172,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: 'const x = <A>a + b;',
+      code: noFormat`const x = <A>a + b;`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -181,7 +181,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: 'const x = <Foo>new Generic<string>();',
+      code: noFormat`const x = <Foo>new Generic<string>();`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -190,7 +190,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: 'const x = new (<Foo>Generic<string>)();',
+      code: noFormat`const x = new (<Foo>Generic<string>)();`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -199,7 +199,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: "const x = new (<Foo>Generic<string>)('string');",
+      code: noFormat`const x = new (<Foo>Generic<string>)('string');`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -208,7 +208,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: 'const x = () => <Foo>{ bar: 5 };',
+      code: noFormat`const x = () => <Foo>{ bar: 5 };`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -217,7 +217,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: 'const x = () => <Foo>bar;',
+      code: noFormat`const x = () => <Foo>bar;`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -226,7 +226,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: "const x = <Foo>bar<string>`${'baz'}`;",
+      code: noFormat`const x = <Foo>bar<string>\`\${'baz'}\`;`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -235,7 +235,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: "const x = <const>{ key: 'value' };",
+      code: noFormat`const x = <const>{ key: 'value' };`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -292,7 +292,7 @@ function foo() {
       options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
     },
     {
-      code: 'const x = <Foo<int>>{};',
+      code: noFormat`const x = <Foo<int>>{};`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -301,7 +301,7 @@ function foo() {
       ],
     },
     {
-      code: 'const x = <a | b>{};',
+      code: noFormat`const x = <a | b>{};`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -310,7 +310,7 @@ function foo() {
       ],
     },
     {
-      code: 'const x = <A>{} + b;',
+      code: noFormat`const x = <A>{} + b;`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -319,7 +319,7 @@ function foo() {
       ],
     },
     {
-      code: 'print(<Foo>{ bar: 5 });',
+      code: noFormat`print(<Foo>{ bar: 5 });`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -328,7 +328,7 @@ function foo() {
       ],
     },
     {
-      code: 'new print(<Foo>{ bar: 5 });',
+      code: noFormat`new print(<Foo>{ bar: 5 });`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -337,7 +337,7 @@ function foo() {
       ],
     },
     {
-      code: `
+      code: noFormat`
 function foo() {
   throw <Foo>{ bar: 5 };
 }
@@ -350,7 +350,7 @@ function foo() {
       ],
     },
     {
-      code: 'print?.(<Foo>{ bar: 5 });',
+      code: noFormat`print?.(<Foo>{ bar: 5 });`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -359,7 +359,7 @@ function foo() {
       ],
     },
     {
-      code: 'print?.call(<Foo>{ bar: 5 });',
+      code: noFormat`print?.call(<Foo>{ bar: 5 });`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -368,7 +368,7 @@ function foo() {
       ],
     },
     {
-      code: 'print`${<Foo>{ bar: 5 }}`;',
+      code: noFormat`print\`\${<Foo>{ bar: 5 }}\`;`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -453,7 +453,7 @@ function foo() {
       ],
     },
     {
-      code: 'print(<Foo>{ bar: 5 });',
+      code: noFormat`print(<Foo>{ bar: 5 });`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -462,7 +462,7 @@ function foo() {
       ],
     },
     {
-      code: 'new print(<Foo>{ bar: 5 });',
+      code: noFormat`new print(<Foo>{ bar: 5 });`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -471,7 +471,7 @@ function foo() {
       ],
     },
     {
-      code: `
+      code: noFormat`
 function foo() {
   throw <Foo>{ bar: 5 };
 }
@@ -484,7 +484,7 @@ function foo() {
       ],
     },
     {
-      code: 'print?.(<Foo>{ bar: 5 });',
+      code: noFormat`print?.(<Foo>{ bar: 5 });`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -493,7 +493,7 @@ function foo() {
       ],
     },
     {
-      code: 'print?.call(<Foo>{ bar: 5 });',
+      code: noFormat`print?.call(<Foo>{ bar: 5 });`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -502,7 +502,7 @@ function foo() {
       ],
     },
     {
-      code: 'print`${<Foo>{ bar: 5 }}`;',
+      code: noFormat`print\`\${<Foo>{ bar: 5 }}\`;`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -528,7 +528,7 @@ function foo() {
       ],
     },
     {
-      code: 'const x = <string[]>[];',
+      code: noFormat`const x = <string[]>[];`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -536,7 +536,7 @@ function foo() {
       ],
     },
     {
-      code: 'const x = <Array<string>>[];',
+      code: noFormat`const x = <Array<string>>[];`,
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -621,7 +621,7 @@ function foo() {
       ],
     },
     {
-      code: 'print(<Foo>[5]);',
+      code: noFormat`print(<Foo>[5]);`,
       options: [
         {
           arrayLiteralTypeAssertions: 'allow-as-parameter',
@@ -630,7 +630,7 @@ function foo() {
       ],
     },
     {
-      code: `
+      code: noFormat`
 function foo() {
   throw <Foo>[5];
 }
@@ -643,7 +643,7 @@ function foo() {
       ],
     },
     {
-      code: 'function b(x = <Foo.Bar>[5]) {}',
+      code: noFormat`function b(x = <Foo.Bar>[5]) {}`,
       options: [
         {
           arrayLiteralTypeAssertions: 'allow-as-parameter',
@@ -652,7 +652,7 @@ function foo() {
       ],
     },
     {
-      code: 'print?.(<Foo>[5]);',
+      code: noFormat`print?.(<Foo>[5]);`,
       options: [
         {
           arrayLiteralTypeAssertions: 'allow-as-parameter',
@@ -661,7 +661,7 @@ function foo() {
       ],
     },
     {
-      code: 'print?.call(<Foo>[5]);',
+      code: noFormat`print?.call(<Foo>[5]);`,
       options: [
         {
           arrayLiteralTypeAssertions: 'allow-as-parameter',
@@ -670,7 +670,7 @@ function foo() {
       ],
     },
     {
-      code: 'print`${<Foo>[5]}`;',
+      code: noFormat`print\`\${<Foo>[5]}\`;`,
       options: [
         {
           arrayLiteralTypeAssertions: 'allow-as-parameter',
@@ -679,7 +679,7 @@ function foo() {
       ],
     },
     {
-      code: 'new Print(<Foo>[5]);',
+      code: noFormat`new Print(<Foo>[5]);`,
       options: [
         {
           arrayLiteralTypeAssertions: 'allow-as-parameter',
@@ -687,7 +687,10 @@ function foo() {
         },
       ],
     },
-    { code: 'const x = <const>[1];', options: [{ assertionStyle: 'never' }] },
+    {
+      code: noFormat`const x = <const>[1];`,
+      options: [{ assertionStyle: 'never' }],
+    },
     { code: 'const x = [1] as const;', options: [{ assertionStyle: 'never' }] },
     {
       code: 'const bar = <Foo style={{ bar: 5 } as Bar} />;',
@@ -853,7 +856,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'angle-bracket' }],
     },
     {
-      code: 'const x = <Foo>new Generic<int>();',
+      code: noFormat`const x = <Foo>new Generic<int>();`,
       errors: [
         {
           line: 1,
@@ -864,7 +867,7 @@ const x = { key: 'value' } as unknown;
       output: 'const x = new Generic<int>() as Foo;',
     },
     {
-      code: 'const x = <A>b;',
+      code: noFormat`const x = <A>b;`,
       errors: [
         {
           line: 1,
@@ -875,7 +878,7 @@ const x = { key: 'value' } as unknown;
       output: 'const x = b as A;',
     },
     {
-      code: 'const x = <readonly number[]>[1];',
+      code: noFormat`const x = <readonly number[]>[1];`,
       errors: [
         {
           line: 1,
@@ -886,7 +889,7 @@ const x = { key: 'value' } as unknown;
       output: 'const x = [1] as readonly number[];',
     },
     {
-      code: "const x = <a | b>'string';",
+      code: noFormat`const x = <a | b>'string';`,
       errors: [
         {
           line: 1,
@@ -897,7 +900,7 @@ const x = { key: 'value' } as unknown;
       output: "const x = 'string' as a | b;",
     },
     {
-      code: "const x = <A>!'string';",
+      code: noFormat`const x = <A>!'string';`,
       errors: [
         {
           line: 1,
@@ -908,7 +911,7 @@ const x = { key: 'value' } as unknown;
       output: "const x = !'string' as A;",
     },
     {
-      code: 'const x = <A>a + b;',
+      code: noFormat`const x = <A>a + b;`,
       errors: [
         {
           line: 1,
@@ -919,7 +922,7 @@ const x = { key: 'value' } as unknown;
       output: 'const x = (a as A) + b;',
     },
     {
-      code: 'const x = <Foo>new Generic<string>();',
+      code: noFormat`const x = <Foo>new Generic<string>();`,
       errors: [
         {
           line: 1,
@@ -930,7 +933,7 @@ const x = { key: 'value' } as unknown;
       output: 'const x = new Generic<string>() as Foo;',
     },
     {
-      code: 'const x = new (<Foo>Generic<string>)();',
+      code: noFormat`const x = new (<Foo>Generic<string>)();`,
       errors: [
         {
           line: 1,
@@ -941,7 +944,7 @@ const x = { key: 'value' } as unknown;
       output: 'const x = new ((Generic<string>) as Foo)();',
     },
     {
-      code: "const x = new (<Foo>Generic<string>)('string');",
+      code: noFormat`const x = new (<Foo>Generic<string>)('string');`,
       errors: [
         {
           line: 1,
@@ -952,7 +955,7 @@ const x = { key: 'value' } as unknown;
       output: "const x = new ((Generic<string>) as Foo)('string');",
     },
     {
-      code: 'const x = () => <Foo>{ bar: 5 };',
+      code: noFormat`const x = () => <Foo>{ bar: 5 };`,
       errors: [
         {
           line: 1,
@@ -963,7 +966,7 @@ const x = { key: 'value' } as unknown;
       output: 'const x = () => ({ bar: 5 } as Foo);',
     },
     {
-      code: 'const x = () => <Foo>bar;',
+      code: noFormat`const x = () => <Foo>bar;`,
       errors: [
         {
           line: 1,
@@ -974,7 +977,7 @@ const x = { key: 'value' } as unknown;
       output: 'const x = () => (bar as Foo);',
     },
     {
-      code: "const x = <Foo>bar<string>`${'baz'}`;",
+      code: noFormat`const x = <Foo>bar<string>\`\${'baz'}\`;`,
       errors: [
         {
           line: 1,
@@ -985,7 +988,7 @@ const x = { key: 'value' } as unknown;
       output: "const x = bar<string>`${'baz'}` as Foo;",
     },
     {
-      code: "const x = <const>{ key: 'value' };",
+      code: noFormat`const x = <const>{ key: 'value' };`,
       errors: [
         {
           line: 1,
@@ -1116,7 +1119,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'never' }],
     },
     {
-      code: 'const x = <Foo>new Generic<int>();',
+      code: noFormat`const x = <Foo>new Generic<int>();`,
       errors: [
         {
           line: 1,
@@ -1126,7 +1129,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'never' }],
     },
     {
-      code: 'const x = <A>b;',
+      code: noFormat`const x = <A>b;`,
       errors: [
         {
           line: 1,
@@ -1136,7 +1139,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'never' }],
     },
     {
-      code: 'const x = <readonly number[]>[1];',
+      code: noFormat`const x = <readonly number[]>[1];`,
       errors: [
         {
           line: 1,
@@ -1146,7 +1149,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'never' }],
     },
     {
-      code: "const x = <a | b>'string';",
+      code: noFormat`const x = <a | b>'string';`,
       errors: [
         {
           line: 1,
@@ -1156,7 +1159,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'never' }],
     },
     {
-      code: "const x = <A>!'string';",
+      code: noFormat`const x = <A>!'string';`,
       errors: [
         {
           line: 1,
@@ -1166,7 +1169,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'never' }],
     },
     {
-      code: 'const x = <A>a + b;',
+      code: noFormat`const x = <A>a + b;`,
       errors: [
         {
           line: 1,
@@ -1176,7 +1179,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'never' }],
     },
     {
-      code: 'const x = <Foo>new Generic<string>();',
+      code: noFormat`const x = <Foo>new Generic<string>();`,
       errors: [
         {
           line: 1,
@@ -1186,7 +1189,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'never' }],
     },
     {
-      code: 'const x = new (<Foo>Generic<string>)();',
+      code: noFormat`const x = new (<Foo>Generic<string>)();`,
       errors: [
         {
           line: 1,
@@ -1196,7 +1199,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'never' }],
     },
     {
-      code: "const x = new (<Foo>Generic<string>)('string');",
+      code: noFormat`const x = new (<Foo>Generic<string>)('string');`,
       errors: [
         {
           line: 1,
@@ -1206,7 +1209,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'never' }],
     },
     {
-      code: 'const x = () => <Foo>{ bar: 5 };',
+      code: noFormat`const x = () => <Foo>{ bar: 5 };`,
       errors: [
         {
           line: 1,
@@ -1216,7 +1219,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'never' }],
     },
     {
-      code: 'const x = () => <Foo>bar;',
+      code: noFormat`const x = () => <Foo>bar;`,
       errors: [
         {
           line: 1,
@@ -1226,7 +1229,7 @@ const x = { key: 'value' } as unknown;
       options: [{ assertionStyle: 'never' }],
     },
     {
-      code: "const x = <Foo>bar<string>`${'baz'}`;",
+      code: noFormat`const x = <Foo>bar<string>\`\${'baz'}\`;`,
       errors: [
         {
           line: 1,
@@ -1312,7 +1315,7 @@ const x = { key: 'value' } as unknown;
       ],
     },
     {
-      code: 'const x = <Foo<int>>{};',
+      code: noFormat`const x = <Foo<int>>{};`,
       errors: [
         {
           line: 1,
@@ -1339,7 +1342,7 @@ const x = { key: 'value' } as unknown;
       ],
     },
     {
-      code: 'const x = <a | b>{};',
+      code: noFormat`const x = <a | b>{};`,
       errors: [
         {
           line: 1,
@@ -1366,7 +1369,7 @@ const x = { key: 'value' } as unknown;
       ],
     },
     {
-      code: 'const x = <A>{} + b;',
+      code: noFormat`const x = <A>{} + b;`,
       errors: [
         {
           line: 1,
@@ -1593,7 +1596,7 @@ function foo() {
       options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
     },
     {
-      code: 'const x = <Foo<int>>{};',
+      code: noFormat`const x = <Foo<int>>{};`,
       errors: [
         {
           line: 1,
@@ -1620,7 +1623,7 @@ function foo() {
       ],
     },
     {
-      code: 'const x = <a | b>{};',
+      code: noFormat`const x = <a | b>{};`,
       errors: [
         {
           line: 1,
@@ -1647,7 +1650,7 @@ function foo() {
       ],
     },
     {
-      code: 'const x = <A>{} + b;',
+      code: noFormat`const x = <A>{} + b;`,
       errors: [
         {
           line: 1,
@@ -1669,7 +1672,7 @@ function foo() {
       ],
     },
     {
-      code: 'print(<Foo>{ bar: 5 });',
+      code: noFormat`print(<Foo>{ bar: 5 });`,
       errors: [
         {
           line: 1,
@@ -1691,7 +1694,7 @@ function foo() {
       ],
     },
     {
-      code: 'new print(<Foo>{ bar: 5 });',
+      code: noFormat`new print(<Foo>{ bar: 5 });`,
       errors: [
         {
           line: 1,
@@ -1713,7 +1716,7 @@ function foo() {
       ],
     },
     {
-      code: `
+      code: noFormat`
 function foo() {
   throw <Foo>{ bar: 5 };
 }
@@ -1743,7 +1746,7 @@ function foo() {
       ],
     },
     {
-      code: 'print?.(<Foo>{ bar: 5 });',
+      code: noFormat`print?.(<Foo>{ bar: 5 });`,
       errors: [
         {
           line: 1,
@@ -1765,7 +1768,7 @@ function foo() {
       ],
     },
     {
-      code: 'print?.call(<Foo>{ bar: 5 });',
+      code: noFormat`print?.call(<Foo>{ bar: 5 });`,
       errors: [
         {
           line: 1,
@@ -1787,7 +1790,7 @@ function foo() {
       ],
     },
     {
-      code: 'print`${<Foo>{ bar: 5 }}`;',
+      code: noFormat`print\`\${<Foo>{ bar: 5 }}\`;`,
       errors: [
         {
           line: 1,
@@ -1816,7 +1819,7 @@ function foo() {
       output: null,
     },
     {
-      code: 'const a = <any>(b, c);',
+      code: noFormat`const a = <any>(b, c);`,
       errors: [
         {
           line: 1,
@@ -1831,7 +1834,7 @@ function foo() {
       output: `const a = (b, c) as any;`,
     },
     {
-      code: 'const f = <any>(() => {});',
+      code: noFormat`const f = <any>(() => {});`,
       errors: [
         {
           line: 1,
@@ -1846,7 +1849,7 @@ function foo() {
       output: 'const f = (() => {}) as any;',
     },
     {
-      code: 'const f = <any>function () {};',
+      code: noFormat`const f = <any>function () {};`,
       errors: [
         {
           line: 1,
@@ -1861,7 +1864,7 @@ function foo() {
       output: 'const f = function () {} as any;',
     },
     {
-      code: 'const f = <any>(async () => {});',
+      code: noFormat`const f = <any>(async () => {});`,
       errors: [
         {
           line: 1,
@@ -1878,7 +1881,7 @@ function foo() {
     {
       // prettier wants to remove the parens around the yield expression,
       // but they're required.
-      code: `
+      code: noFormat`
 function* g() {
   const y = <any>(yield a);
 }
@@ -1901,7 +1904,7 @@ function* g() {
       `,
     },
     {
-      code: `
+      code: noFormat`
 declare let x: number, y: number;
 const bs = <any>(x <<= y);
       `,
@@ -1922,7 +1925,7 @@ const bs = (x <<= y) as any;
       `,
     },
     {
-      code: 'const ternary = <any>(true ? x : y);',
+      code: noFormat`const ternary = <any>(true ? x : y);`,
       errors: [
         {
           line: 1,
@@ -1950,7 +1953,7 @@ const bs = (x <<= y) as any;
       ],
     },
     {
-      code: 'const x = <string[]>[];',
+      code: noFormat`const x = <string[]>[];`,
       errors: [
         {
           messageId: 'never',
@@ -1976,7 +1979,7 @@ const bs = (x <<= y) as any;
       ],
     },
     {
-      code: 'const x = <string[]>[];',
+      code: noFormat`const x = <string[]>[];`,
       errors: [
         {
           messageId: 'as',
@@ -2016,7 +2019,7 @@ const bs = (x <<= y) as any;
       ],
     },
     {
-      code: 'const x = <string[]>[];',
+      code: noFormat`const x = <string[]>[];`,
       errors: [
         {
           messageId: 'unexpectedArrayTypeAssertion',
@@ -2176,7 +2179,7 @@ function foo() {
       ],
     },
     {
-      code: 'new print(<Foo>[5]);',
+      code: noFormat`new print(<Foo>[5]);`,
       errors: [
         {
           messageId: 'unexpectedArrayTypeAssertion',
@@ -2197,7 +2200,7 @@ function foo() {
       ],
     },
     {
-      code: 'function b(x = <Foo.Bar>[5]) {}',
+      code: noFormat`function b(x = <Foo.Bar>[5]) {}`,
       errors: [
         {
           messageId: 'unexpectedArrayTypeAssertion',
@@ -2218,7 +2221,7 @@ function foo() {
       ],
     },
     {
-      code: `
+      code: noFormat`
 function foo() {
   throw <Foo>[5];
 }
@@ -2247,7 +2250,7 @@ function foo() {
       ],
     },
     {
-      code: 'print`${<Foo>[5]}`;',
+      code: noFormat`print\`\${<Foo>[5]}\`;`,
       errors: [
         {
           messageId: 'unexpectedArrayTypeAssertion',
@@ -2268,7 +2271,7 @@ function foo() {
       ],
     },
     {
-      code: 'const foo = <Foo>[5];',
+      code: noFormat`const foo = <Foo>[5];`,
       errors: [
         {
           messageId: 'unexpectedArrayTypeAssertion',

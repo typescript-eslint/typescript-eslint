@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unused-expressions';
 
@@ -361,7 +361,7 @@ foo as any;
       ],
     },
     {
-      code: `
+      code: noFormat`
 declare const foo: number | undefined;
 <any>foo;
       `,

@@ -19,6 +19,6 @@
   "typescript.preferences.importModuleSpecifier": "project-relative",
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "nxConsole.generateAiAgentRules": true,
 }

@@ -1,3 +1,4 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
 
 import rule from '../../src/rules/no-floating-promises';
@@ -4508,7 +4509,7 @@ await returnsPromise()?.finally(() => {});
       ],
     },
     {
-      code: `
+      code: noFormat`
 const promiseIntersection: Promise<number> & number;
 promiseIntersection.finally(() => {});
       `,
@@ -5494,7 +5495,7 @@ await (({}) as Promise<number> & { yolo?: string });
       ],
     },
     {
-      code: `
+      code: noFormat`
 <Promise<number>>{};
       `,
       errors: [

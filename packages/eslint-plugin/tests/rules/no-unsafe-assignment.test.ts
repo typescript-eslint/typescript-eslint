@@ -50,7 +50,7 @@ class Foo {
     // this is not checked, because there's no annotation to compare it with
     'const x = new Set<any>();',
     'const x = { y: 1 };',
-    'const x = { y = 1 };',
+    noFormat`const x = { y = 1 };`,
     noFormat`const x = { y(){} };`,
     'const x: { y: number } = { y: 1 };',
     'const x = [...[1, 2, 3]];',
@@ -88,7 +88,7 @@ declare function Foo(props: { a: string }): never;
       },
     },
     {
-      code: `
+      code: noFormat`
 declare function Foo(props: { a: string }): never;
 <Foo a={} />;
       `,

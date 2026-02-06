@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/unified-signatures';
 
@@ -165,7 +165,7 @@ interface I {
   p(x: number): Promise<number>;
 }
     `,
-    `
+    noFormat`
 function rest(...xs: number[]): Promise<number[]>;
 function rest(xs: number[], y: string): Promise<string>;
 async function rest(...args: any[], y?: string): Promise<number[] | string> {

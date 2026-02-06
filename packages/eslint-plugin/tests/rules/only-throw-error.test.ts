@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/only-throw-error';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -509,7 +511,7 @@ throw new CustomError();
       ],
     },
     {
-      code: `
+      code: noFormat`
 function foo<T>() {
   const res: T;
   throw res;
@@ -693,7 +695,7 @@ Promise.reject('foo').catch((...e) => {
       ],
     },
     {
-      code: `
+      code: noFormat`
 declare const x: any[];
 Promise.reject('foo').catch(...x, e => {
   throw e;
@@ -713,7 +715,7 @@ Promise.reject('foo').catch(...x, e => {
       ],
     },
     {
-      code: `
+      code: noFormat`
 declare const x: any[];
 Promise.reject('foo').then(...x, e => {
   throw e;

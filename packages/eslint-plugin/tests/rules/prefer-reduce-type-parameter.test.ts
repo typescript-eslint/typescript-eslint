@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/prefer-reduce-type-parameter';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -124,7 +126,7 @@ arr.reduce<string | undefined>(acc => acc, arr.shift());
       output: '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
     },
     {
-      code: '[1, 2, 3].reduce((a, s) => a.concat(s * 2), <number[]>[]);',
+      code: noFormat`[1, 2, 3].reduce((a, s) => a.concat(s * 2), <number[]>[]);`,
       errors: [
         {
           column: 45,
@@ -146,7 +148,7 @@ arr.reduce<string | undefined>(acc => acc, arr.shift());
       output: '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
     },
     {
-      code: '[1, 2, 3]?.reduce((a, s) => a.concat(s * 2), <number[]>[]);',
+      code: noFormat`[1, 2, 3]?.reduce((a, s) => a.concat(s * 2), <number[]>[]);`,
       errors: [
         {
           column: 46,
@@ -188,7 +190,7 @@ names.reduce<Record<string, boolean>>(
       `,
     },
     {
-      code: `
+      code: noFormat`
 ['a', 'b'].reduce(
   (accum, name) => ({
     ...accum,

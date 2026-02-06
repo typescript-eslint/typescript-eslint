@@ -1403,7 +1403,7 @@ export class Foo {
       ],
     },
     {
-      code: `
+      code: noFormat`
 export namespace Foo {
   const foo: 1234;
   export {};
@@ -1423,7 +1423,7 @@ export namespace Foo {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 const foo: 1234;
 export {};
       `,
@@ -1461,7 +1461,7 @@ declare module 'foo' {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 export namespace Foo {
   const foo: 1234;
   const bar: 4567;
@@ -1483,7 +1483,7 @@ export namespace Foo {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 const foo: 1234;
 const bar: 4567;
 
@@ -1525,7 +1525,7 @@ declare module 'foo' {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 export namespace Foo {
   const foo: 1234;
   const bar: 4567;
@@ -1548,7 +1548,7 @@ export namespace Foo {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 const foo: 1234;
 const bar: 4567;
 export const bazz: 4567;
@@ -1592,7 +1592,7 @@ declare module 'foo' {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 export namespace Foo {
   const foo: string;
   const bar: number;
@@ -1614,7 +1614,7 @@ export namespace Foo {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 const foo: string;
 const bar: number;
 
@@ -1656,7 +1656,7 @@ declare module 'foo' {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 export namespace Foo {
   const foo: string;
   const bar: number;
@@ -1679,7 +1679,7 @@ export namespace Foo {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 const foo: string;
 const bar: number;
 export const bazz: number;
@@ -1723,7 +1723,7 @@ declare module 'foo' {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 export namespace Foo {
   const foo: string;
   export const bar: number;
@@ -1745,7 +1745,7 @@ export namespace Foo {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 const foo: string;
 export const bar: number;
 
@@ -2039,7 +2039,7 @@ export class Foo {
   get bar() {}
 }
     `,
-    `
+    noFormat`
 import { AccessorDecorator } from 'decorators';
 export class Foo {
   @AccessorDecorator
@@ -2145,7 +2145,7 @@ import { Foo } from 'foo';
 const bar = <T,>(): T => {};
 bar<Foo>();
     `,
-    `
+    noFormat`
 import { Foo } from 'foo';
 <Foo>(<T,>(): T => {})();
     `,
@@ -2637,7 +2637,7 @@ export default class Foo {
   ) {}
 }
     `,
-    `
+    noFormat`
 import { Dec, TypeA, Class } from 'test';
 export default class Foo {
   constructor(
@@ -3189,7 +3189,7 @@ export class Foo {
 }
     `,
     {
-      code: `
+      code: noFormat`
 export namespace Foo {
   const foo: 1234;
 }
@@ -3205,13 +3205,13 @@ declare module 'foo' {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 const foo: 1234;
       `,
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 export namespace Foo {
   export import Bar = Something.Bar;
   const foo: 1234;
@@ -3229,7 +3229,7 @@ declare module 'foo' {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 export import Bar = Something.Bar;
 const foo: 1234;
       `,
@@ -3249,7 +3249,7 @@ declare module 'foo' {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 export namespace Foo {
   export import Bar = Something.Bar;
   const foo: 1234;
@@ -3262,7 +3262,7 @@ export namespace Foo {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 export import Bar = Something.Bar;
 const foo: 1234;
 export const bar: string;
@@ -3273,7 +3273,7 @@ export namespace NS {
       filename: 'foo.d.ts',
     },
     {
-      code: `
+      code: noFormat`
 export namespace Foo {
   const foo: 1234;
   export const bar: string;

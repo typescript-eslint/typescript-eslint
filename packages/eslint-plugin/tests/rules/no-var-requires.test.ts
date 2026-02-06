@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-var-requires';
 
@@ -141,7 +141,7 @@ const json = require('./some.json');
       ],
     },
     {
-      code: "const foo = <Foo>require('./foo.json');",
+      code: noFormat`const foo = <Foo>require('./foo.json');`,
       errors: [
         {
           column: 18,

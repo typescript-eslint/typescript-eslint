@@ -462,7 +462,7 @@ ruleTester.run('strict-void-return', rule, {
       filename: 'react.tsx',
     },
     {
-      code: `
+      code: noFormat`
         declare function Foo(props: { cb: () => void }): unknown;
         return <Foo cb={} />;
       `,
@@ -565,7 +565,7 @@ ruleTester.run('strict-void-return', rule, {
       options: [{ allowReturnAny: true }],
     },
     {
-      code: `
+      code: noFormat`
         declare let foo: { cb: () => void };
         foo = {
           // don't check this thing
@@ -694,7 +694,7 @@ ruleTester.run('strict-void-return', rule, {
       `,
     },
     {
-      code: `
+      code: noFormat`
         interface Bar {
           foo(): void;
         }

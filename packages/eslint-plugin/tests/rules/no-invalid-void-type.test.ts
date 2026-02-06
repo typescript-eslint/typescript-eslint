@@ -393,7 +393,7 @@ export function f(x?: string): string | void {
       ],
     },
     {
-      code: 'let value = <void>undefined;',
+      code: noFormat`let value = <void>undefined;`,
       errors: [
         {
           column: 14,
