@@ -374,5 +374,67 @@ describe(isTypeReadonly, () => {
         );
       });
     });
+
+    describe('type alias name matching', () => {
+      const options: ReadonlynessOptions = {
+        allow: [{ from: 'file', name: 'MyMutableType' }],
+      };
+
+      describe('is readonly', () => {
+        it.for([
+          ['type MyMutableType = { prop: string }; type Test = MyMutableType;'],
+        ] as const)(
+          'treats type aliases in allow list as readonly: %s',
+          ([code], { expect }) => {
+            expect(code).toBeReadOnly(options);
+          },
+        );
+      });
+
+      describe('is not readonly', () => {
+        it.for([
+          ['type OtherType = { prop: string }; type Test = OtherType;'],
+        ] as const)(
+          'checks structure when type alias not in allow list: %s',
+          ([code], { expect }) => {
+            expect(code).not.toBeReadOnly(options);
+          },
+        );
+      });
+    });
+
+    describe('string format allow specifier', () => {
+      const options: ReadonlynessOptions = {
+        allow: ['StringFormatType'],
+      };
+
+      describe('is readonly', () => {
+        it.for([
+          [
+            'type StringFormatType = { prop: string }; type Test = StringFormatType;',
+          ],
+        ] as const)(
+          'handles string format allow specifier: %s',
+          ([code], { expect }) => {
+            expect(code).toBeReadOnly(options);
+          },
+        );
+      });
+    });
+
+    describe('array format name in allow specifier', () => {
+      const options: ReadonlynessOptions = {
+        allow: [{ from: 'file', name: ['Type1', 'Type2'] }],
+      };
+
+      describe('is readonly', () => {
+        it.for([
+          ['type Type1 = { prop: string }; type Test = Type1;'],
+          ['type Type2 = { prop: string }; type Test = Type2;'],
+        ] as const)('handles array format name: %s', ([code], { expect }) => {
+          expect(code).toBeReadOnly(options);
+        });
+      });
+    });
   });
 });
