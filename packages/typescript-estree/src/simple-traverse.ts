@@ -24,10 +24,10 @@ function getVisitorKeysForNode(
 type SimpleTraverseOptions = Readonly<
   | {
       enter: (node: TSESTree.Node, parent: TSESTree.Node | undefined) => void;
-      visitorKeys?: Readonly<VisitorKeys>;
+      visitorKeys?: Readonly<VisitorKeys> | undefined;
     }
   | {
-      visitorKeys?: Readonly<VisitorKeys>;
+      visitorKeys?: Readonly<VisitorKeys> | undefined;
       visitors: Record<
         string,
         (node: TSESTree.Node, parent: TSESTree.Node | undefined) => void
@@ -54,7 +54,8 @@ class SimpleTraverser {
     }
 
     if (this.setParentPointers) {
-      node.parent = parent;
+      // @ts-expect-error -- TSESTree.Node's parent is a very long, difficult-to-satisfy union
+      node.parent = parent as typeof node.parent;
     }
 
     if ('enter' in this.selectors) {
