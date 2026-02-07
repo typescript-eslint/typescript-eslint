@@ -220,16 +220,23 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
+      # Fetch the base branch so Vitest's `--changed` will be able to compare against it.
+      # See: https://vitest.dev/guide/cli.html#changed
+      - name: Fetch base branch
+        if: github.event_name == 'pull_request'
+        run: git fetch origin ${{ github.base_ref }} --depth=1
+
       # collect coverage on the primary node version
       # we don't collect coverage on other node versions so they run faster
       - name: Run unit tests with coverage for ${{ matrix.package }}
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        run: pnpm exec nx run ${{ matrix.package }}:test -- --coverage
+        run: pnpm exec nx run ${{ matrix.package }}:test -- --coverage --changed origin/${{ github.base_ref || github.ref_name }}
         env:
           CI: true
+
       - name: Run unit tests for ${{ matrix.package }}
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package }}
+        run: pnpm exec nx test ${{ matrix.package }} --changed origin/${{ github.base_ref || github.ref_name }}
         env:
           CI: true
 
@@ -264,8 +271,15 @@ jobs:
           node-version: 18
       - name: Build
         uses: ./.github/actions/prepare-build
+
+      # Fetch the base branch so Vitest's `--changed` will be able to compare against it.
+      # See: https://vitest.dev/guide/cli.html#changed
+      - name: Fetch base branch
+        if: github.event_name == 'pull_request'
+        run: git fetch origin ${{ github.base_ref }} --depth=1
+
       - name: Run unit tests for ${{ matrix.package }}
-        run: pnpm exec nx test ${{ matrix.package }} --coverage=false
+        run: pnpm exec nx test ${{ matrix.package }} --coverage=false --changed origin/${{ github.base_ref || github.ref_name }}
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
