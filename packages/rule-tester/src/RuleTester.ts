@@ -576,7 +576,7 @@ export class RuleTester extends TestFramework {
                   ruleName,
                   rule,
                   // no need to pass no infer type parameter down to private methods
-                  invalid as InvalidTestCase<MessageIds, Options>,
+                  invalid,
                   seenInvalidTestCases,
                 );
               } finally {
