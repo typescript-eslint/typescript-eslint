@@ -687,8 +687,8 @@ class ClassScope extends ThisScope implements ClassScopeResult {
    * The class's members, keyed by their name
    */
   public readonly members: ClassScopeResult['members'] = {
-    instance: new Map(),
-    static: new Map(),
+    instance: new Map<Key, Member>(),
+    static: new Map<Key, Member>(),
   };
 
   /**
