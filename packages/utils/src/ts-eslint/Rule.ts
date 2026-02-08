@@ -274,7 +274,9 @@ export interface RuleContext<
   /**
    * The language options configured for this run
    */
-  languageOptions: FlatConfig.LanguageOptions;
+  languageOptions: FlatConfig.LanguageOptions & {
+    parserOptions: FlatConfig.ParserOptions;
+  };
   /**
    * An array of the configured options for this rule.
    * This array does not include the rule severity.
