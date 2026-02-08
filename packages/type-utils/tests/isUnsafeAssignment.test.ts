@@ -355,10 +355,26 @@ describe(isUnsafeAssignment, () => {
       `).toBeSafeAssignment({ declarationIndex: 1 });
     });
 
+    // Safe: union with different member count (length mismatch skips pairwise check)
+    it('union with different member count', () => {
+      expect(`
+        declare const sender: { a: any } | { b: string } | { c: number };
+        const test: { a: number } | { b: string } = sender;
+      `).toBeSafeAssignment({ declarationIndex: 1 });
+    });
+
     // Safe: intersection types without any
     it('non-any intersection to same intersection', () => {
       expect(`
         declare const sender: { a: number } & { b: string };
+        const test: { a: number } & { b: string } = sender;
+      `).toBeSafeAssignment({ declarationIndex: 1 });
+    });
+
+    // Safe: intersection with different member count (length mismatch skips pairwise check)
+    it('intersection with different member count', () => {
+      expect(`
+        declare const sender: { a: any } & { b: string } & { c: number };
         const test: { a: number } & { b: string } = sender;
       `).toBeSafeAssignment({ declarationIndex: 1 });
     });
@@ -471,6 +487,74 @@ describe(isUnsafeAssignment, () => {
         receiverStr: '[{ a: number; }]',
         senderStr: '[{ a: any; }]',
       });
+    });
+
+    // Sender has extra properties not present in receiver (receiverProp is undefined)
+    it('sender with extra property skips missing receiver property (unsafe due to any in shared property)', () => {
+      expect(`
+        declare const sender: { foo: any; extra: string };
+        const test: { foo: number } = sender;
+      `).toHaveTypes({
+        declarationIndex: 1,
+        receiverStr: '{ foo: number; }',
+        senderStr: '{ foo: any; extra: string; }',
+      });
+    });
+
+    it('sender with extra property skips missing receiver property (safe)', () => {
+      expect(`
+        declare const sender: { foo: number; extra: string };
+        const test: { foo: number } = sender;
+      `).toBeSafeAssignment({ declarationIndex: 1 });
+    });
+
+    // Named interface type (symbol exists, declarations exist, not from default library)
+    it('any in named interface property to non-any (unsafe)', () => {
+      expect(`
+        interface Sender { foo: any }
+        interface Receiver { foo: number }
+        declare const sender: Sender;
+        const test: Receiver = sender;
+      `).toHaveTypes({
+        declarationIndex: 3,
+        receiverStr: 'Receiver',
+        senderStr: 'Sender',
+      });
+    });
+
+    it('named interface without any (safe)', () => {
+      expect(`
+        interface Sender { foo: number }
+        interface Receiver { foo: number }
+        declare const sender: Sender;
+        const test: Receiver = sender;
+      `).toBeSafeAssignment({ declarationIndex: 3 });
+    });
+
+    // isFromDefaultLibrary: type from default library (lib.*.d.ts) skips property check
+    it('default library object type skips property check (safe)', () => {
+      expect(`
+        declare const sender: Error;
+        const test: { message: string } = sender;
+      `).toBeSafeAssignment({ declarationIndex: 1 });
+    });
+
+    // object keyword type is NonPrimitive, not ObjectType, so isFromDefaultLibrary is not reached
+    it('object keyword type assignment (safe)', () => {
+      expect(`
+        declare const sender: object;
+        const test: object = sender;
+      `).toBeSafeAssignment({ declarationIndex: 1 });
+    });
+
+    // Generic type parameter is TypeParameter, not ObjectType, so isFromDefaultLibrary is not reached
+    it('generic type parameter as object type (safe)', () => {
+      expect(`
+        function test<T extends { foo: number }>(sender: T): { foo: number } {
+          const result: { foo: number } = sender;
+          return result;
+        }
+      `).toBeSafeAssignment({ declarationIndex: 0 });
     });
   });
 });
