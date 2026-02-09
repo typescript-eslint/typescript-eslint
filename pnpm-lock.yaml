@@ -4,11 +4,44 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@types/node': ^22.0.0
-  '@types/react': ^18.2.14
-  tsx: ^4.7.2
-  typescript: 5.9.2
+catalogs:
+  default:
+    '@eslint/js':
+      specifier: ^9.39.2
+      version: 9.39.2
+    '@types/natural-compare':
+      specifier: ^1.4.3
+      version: 1.4.3
+    '@types/node':
+      specifier: ^22.19.3
+      version: 22.19.8
+    '@types/react':
+      specifier: ^18.3.21
+      version: 18.3.21
+    eslint:
+      specifier: ^9.39.2
+      version: 9.39.2
+    esquery:
+      specifier: ^1.7.0
+      version: 1.7.0
+    glob:
+      specifier: ^11.1.0
+      version: 11.1.0
+    globals:
+      specifier: ^16.5.0
+      version: 16.5.0
+    json-schema:
+      specifier: ^0.4.0
+      version: 0.4.0
+    rimraf:
+      specifier: ^5.0.10
+      version: 5.0.10
+    tsx:
+      specifier: ^4.7.2
+      version: 4.21.0
+    typescript:
+      specifier: '>=4.8.4 <6.0.0'
+      version: 5.9.2
 
 importers:
 
@@ -21,7 +54,7 @@ importers:
         specifier: ^3.3.3
         version: 3.3.3
       '@eslint/js':
-        specifier: ^9.39.2
+        specifier: 'catalog:'
         version: 9.39.2
       '@nx/devkit':
         specifier: 22.3.3
@@ -45,10 +78,10 @@ importers:
         specifier: ^6.10.1
         version: 6.10.1(jiti@2.6.1)
       '@types/natural-compare':
-        specifier: ^1.4.3
+        specifier: 'catalog:'
         version: 1.4.3
       '@types/node':
-        specifier: ^22.0.0
+        specifier: 'catalog:'
         version: 22.19.8
       '@types/semver':
         specifier: ^7.7.1
@@ -90,7 +123,7 @@ importers:
         specifier: ^9.4.0
         version: 9.6.2
       eslint:
-        specifier: ^9.39.2
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       eslint-plugin-eslint-plugin:
         specifier: ^7.2.0
@@ -126,7 +159,7 @@ importers:
         specifier: 7.2.0
         version: 7.2.0
       globals:
-        specifier: ^16.5.0
+        specifier: 'catalog:'
         version: 16.5.0
       husky:
         specifier: ^9.1.7
@@ -147,16 +180,16 @@ importers:
         specifier: 3.8.0
         version: 3.8.0
       rimraf:
-        specifier: ^5.0.10
+        specifier: 'catalog:'
         version: 5.0.10
       semver:
         specifier: 7.7.3
         version: 7.7.3
       tsx:
-        specifier: ^4.7.2
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       typescript-eslint:
         specifier: workspace:^
@@ -207,16 +240,16 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       glob:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 11.1.0
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -259,10 +292,10 @@ importers:
         specifier: ^4.0.4
         version: 4.0.4
       '@types/natural-compare':
-        specifier: '*'
+        specifier: 'catalog:'
         version: 1.4.3
       '@types/react':
-        specifier: ^18.2.14
+        specifier: 'catalog:'
         version: 18.3.21
       '@typescript-eslint/rule-schema-to-typescript-types':
         specifier: workspace:*
@@ -277,10 +310,10 @@ importers:
         specifier: ^6.12.6
         version: 6.12.6
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       json-schema:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 0.4.0
       markdown-table:
         specifier: ^3.0.4
@@ -301,16 +334,16 @@ importers:
         specifier: 3.8.0
         version: 3.8.0
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       title-case:
         specifier: ^4.3.2
         version: 4.3.2
       tsx:
-        specifier: ^4.7.2
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       unist-util-visit:
         specifier: ^5.0.0
@@ -344,10 +377,10 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       vitest:
         specifier: ^3.2.4
@@ -359,7 +392,7 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       vitest:
         specifier: ^3.2.4
@@ -387,16 +420,16 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       glob:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 11.1.0
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -418,10 +451,10 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -443,13 +476,13 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -489,13 +522,13 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -520,16 +553,16 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       glob:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 11.1.0
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -541,10 +574,10 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -583,13 +616,13 @@ importers:
         specifier: ^6.12.6
         version: 6.12.6
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -601,16 +634,16 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       tsx:
-        specifier: ^4.7.2
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -635,13 +668,13 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -681,16 +714,16 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       glob:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 11.1.0
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -715,13 +748,13 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -740,13 +773,13 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
         specifier: ^3.2.4
@@ -848,7 +881,7 @@ importers:
         specifier: ^4.9.0
         version: 4.9.0(typedoc@0.28.15(typescript@5.9.2))
       typescript:
-        specifier: 5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       zod:
         specifier: ^3.25.76
@@ -867,7 +900,7 @@ importers:
         specifier: ^4.0.4
         version: 4.0.4
       '@types/react':
-        specifier: ^18.2.14
+        specifier: 'catalog:'
         version: 18.3.21
       '@types/unist':
         specifier: ^3.0.3
@@ -909,7 +942,7 @@ importers:
         specifier: ^4.0.2
         version: 4.0.2(webpack@5.104.1(@swc/core@1.15.8(@swc/helpers@0.5.17)))
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       stylelint:
         specifier: ^16.26.1
@@ -924,7 +957,7 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1(stylelint@16.26.1(typescript@5.9.2))
       tsx:
-        specifier: ^4.7.2
+        specifier: 'catalog:'
         version: 4.21.0
       unified:
         specifier: ^11.0.5
@@ -940,7 +973,7 @@ importers:
         version: link:../tsconfig-utils
     devDependencies:
       '@eslint/js':
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2
       '@typescript-eslint/eslint-plugin':
         specifier: workspace:*
@@ -964,16 +997,16 @@ importers:
         specifier: ~0.27.2
         version: 0.27.2
       eslint:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
       esquery:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 1.7.0
       rimraf:
-        specifier: '*'
+        specifier: 'catalog:'
         version: 5.0.10
       tsx:
-        specifier: ^4.7.2
+        specifier: 'catalog:'
         version: 4.21.0
 
 packages:
@@ -2156,7 +2189,7 @@ packages:
   '@docsearch/react@3.9.0':
     resolution: {integrity: sha512-mb5FOZYZIkRQ6s/NWnM98k879vu5pscWqTLubLFBO87igYYT4VzVazh4h5o/zCvTIZgEt3PvsCOMOswOUo9yHQ==}
     peerDependencies:
-      '@types/react': ^18.2.14
+      '@types/react': '>= 16.8.0 < 20.0.0'
       react: '>= 16.8.0 < 20.0.0'
       react-dom: '>= 16.8.0 < 20.0.0'
       search-insights: '>= 1 < 3'
@@ -2712,7 +2745,7 @@ packages:
   '@mdx-js/react@3.1.0':
     resolution: {integrity: sha512-QjHtSaoameoalGnKDT3FoIl4+9RwyTmo9ZJGBdLOks/YOiWHoRDI3PUwEzOE7kEmGcV3AFcp9K6dYu9rEuKLAQ==}
     peerDependencies:
-      '@types/react': ^18.2.14
+      '@types/react': '>=16'
       react: '>=16'
 
   '@microsoft/api-extractor-model@7.32.2':
@@ -2950,7 +2983,7 @@ packages:
   '@phenomnomnominal/tsquery@5.0.1':
     resolution: {integrity: sha512-3nVv+e2FQwsW8Aw6qTU6f+1rfcJ3hrcnvH/mu9i8YhxO+9sqbOfpL8m6PbET5+xKOlz/VSbp0RoYWYCtIsnmuA==}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: ^3 || ^4 || ^5
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -3220,7 +3253,7 @@ packages:
   '@rushstack/node-core-library@5.19.1':
     resolution: {integrity: sha512-ESpb2Tajlatgbmzzukg6zyAhH+sICqJR2CNXNhXcEbz6UGCQfrKCtkxOpJTftWc8RGouroHG0Nud1SJAszvpmA==}
     peerDependencies:
-      '@types/node': ^22.0.0
+      '@types/node': '*'
     peerDependenciesMeta:
       '@types/node':
         optional: true
@@ -3228,7 +3261,7 @@ packages:
   '@rushstack/problem-matcher@0.1.1':
     resolution: {integrity: sha512-Fm5XtS7+G8HLcJHCWpES5VmeMyjAKaWeyZU5qPzZC+22mPlJzAsOxymHiWIfuirtPckX3aptWws+K2d0BzniJA==}
     peerDependencies:
-      '@types/node': ^22.0.0
+      '@types/node': '*'
     peerDependenciesMeta:
       '@types/node':
         optional: true
@@ -3239,7 +3272,7 @@ packages:
   '@rushstack/terminal@0.19.5':
     resolution: {integrity: sha512-6k5tpdB88G0K7QrH/3yfKO84HK9ggftfUZ51p7fePyCE7+RLLHkWZbID9OFWbXuna+eeCFE7AkKnRMHMxNbz7Q==}
     peerDependencies:
-      '@types/node': ^22.0.0
+      '@types/node': '*'
     peerDependenciesMeta:
       '@types/node':
         optional: true
@@ -3663,6 +3696,9 @@ packages:
   '@types/node-forge@1.3.11':
     resolution: {integrity: sha512-FQx220y22OKNTqaByeBGqHWYz4cl94tpcxeFdvBo3wjG6XPBuZ0BNgNZRV5J5TFmmcsJ4IzsLkmGRiQbnYsBEQ==}
 
+  '@types/node@17.0.45':
+    resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
+
   '@types/node@22.19.8':
     resolution: {integrity: sha512-ebO/Yl+EAvVe8DnMfi+iaAyIqYdK0q/q0y0rw82INWEKJOBe6b/P3YWE8NW7oOlF/nXFNrHwhARrN/hdgDkraA==}
 
@@ -3739,7 +3775,7 @@ packages:
     resolution: {integrity: sha512-YPf+rvJ1s7MyiWM4uTRhE4DvBXrEV+d8oC3P9Y2eT7S+HBS0clybdMIPnhiATi9vZOYDc7OQ1L/i6ga6NFYK/g==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: '>=4.8.4 <6.0.0'
 
   '@typescript-eslint/scope-manager@8.54.0':
     resolution: {integrity: sha512-27rYVQku26j/PbHYcVfRPonmOlVI6gihHtXFbTdB5sb6qA0wdAQAbyXFVarQ5t4HRojIz64IV90YtsjQSSGlQg==}
@@ -3749,7 +3785,7 @@ packages:
     resolution: {integrity: sha512-dRgOyT2hPk/JwxNMZDsIXDgyl9axdJI3ogZ2XWhBPsnZUv+hPesa5iuhdYt2gzwA9t8RE5ytOJ6xB0moV0Ujvw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: '>=4.8.4 <6.0.0'
 
   '@typescript-eslint/types@8.54.0':
     resolution: {integrity: sha512-PDUI9R1BVjqu7AUDsRBbKMtwmjWcn4J3le+5LpcFgWULN3LvHC5rkc9gCVxbrsrGmO1jfPybN5s6h4Jy+OnkAA==}
@@ -3759,14 +3795,14 @@ packages:
     resolution: {integrity: sha512-BUwcskRaPvTk6fzVWgDPdUndLjB87KYDrN5EYGetnktoeAvPtO4ONHlAZDnj5VFnUANg0Sjm7j4usBlnoVMHwA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: '>=4.8.4 <6.0.0'
 
   '@typescript-eslint/utils@8.54.0':
     resolution: {integrity: sha512-9Cnda8GS57AQakvRyG0PTejJNlA2xhvyNtEVIMlDWOOeEyBkYWhGPnfrIAnqxLMTSTo6q8g12XVjjev5l1NvMA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
-      typescript: 5.9.2
+      typescript: '>=4.8.4 <6.0.0'
 
   '@typescript-eslint/visitor-keys@8.54.0':
     resolution: {integrity: sha512-VFlhGSl4opC0bprJiItPQ1RfUhGDIBokcPwaFH4yiBCaNPeld/9VeXbiPO1cLyorQi1G1vL+ecBk1x8o1axORA==}
@@ -3796,7 +3832,7 @@ packages:
     engines: {node: '>=18'}
     peerDependencies:
       eslint: '>=8.57.0'
-      typescript: 5.9.2
+      typescript: '>=5.0.0'
       vitest: '*'
     peerDependenciesMeta:
       typescript:
@@ -4591,7 +4627,7 @@ packages:
     resolution: {integrity: sha512-kcZ6+W5QzcJ3P1Mt+83OUv/oHFqZHIx8DuxG6eZ5RGMERoLqp4BuGjhHLYGK+Kf5XVkQvqBSmAy/nGWN3qDgEA==}
     engines: {node: '>=14'}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: '>=4.9.5'
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -4600,7 +4636,7 @@ packages:
     resolution: {integrity: sha512-itvL5h8RETACmOTFc4UfIyB2RfEHi71Ax6E/PivVxq9NseKbOWpeyHEOIbmAw1rs8Ak0VursQNww7lf7YtUwzg==}
     engines: {node: '>=14'}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: '>=4.9.5'
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -5518,7 +5554,7 @@ packages:
     engines: {node: '>=10', yarn: '>=1.0.0'}
     peerDependencies:
       eslint: '>= 6'
-      typescript: 5.9.2
+      typescript: '>= 2.7'
       vue-template-compiler: '*'
       webpack: '>= 4'
     peerDependenciesMeta:
@@ -6416,8 +6452,8 @@ packages:
     engines: {node: '>=18.18.0'}
     hasBin: true
     peerDependencies:
-      '@types/node': ^22.0.0
-      typescript: 5.9.2
+      '@types/node': '>=18'
+      typescript: '>=5.0.4 <7'
 
   known-css-properties@0.37.0:
     resolution: {integrity: sha512-JCDrsP4Z1Sb9JwG0aJ8Eo2r7k4Ou5MwmThS/6lcIe1ICyb7UBJKGRIUUdqc2ASdE/42lgz6zFUnzAIhtXnBVrQ==}
@@ -7905,7 +7941,7 @@ packages:
     resolution: {integrity: sha512-84Ivxmr17KjUupyqzFode6xKhjwuEJDROWKJy/BthkL7Wn6NJ8h4WE6k/exAv6ImS+0oZLRRW5j/aINMHyeGeQ==}
     engines: {node: '>=14'}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: '>=2.7'
       webpack: '>=4'
     peerDependenciesMeta:
       typescript:
@@ -7944,7 +7980,7 @@ packages:
   react-markdown@10.1.0:
     resolution: {integrity: sha512-qKxVopLT/TyA6BX3Ue5NwabOsAzm0Q7kAPwq6L+wWDwisYs7R8vZ0nRXqq6rkueboxpkjvLGU9fWifiX/ZZFxQ==}
     peerDependencies:
-      '@types/react': ^18.2.14
+      '@types/react': '>=18'
       react: '>=18'
 
   react-resizable-panels@3.0.6:
@@ -8772,12 +8808,12 @@ packages:
     resolution: {integrity: sha512-3TaVTaAv2gTiMB35i3FiGJaRfwb3Pyn/j3m/bfAvGe8FB7CF6u+LMYqYlDh7reQf7UNvoTvdfAqHGmPGOSsPmA==}
     engines: {node: '>=18.12'}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: '>=4.8.4'
 
   ts-declaration-location@1.0.7:
     resolution: {integrity: sha512-EDyGAwH1gO0Ausm9gV6T2nUvBgXT5kGoCMJPllOaooZ+4VvJiKBdZE7wK18N1deEowhcUptS+5GXZK8U/fvpwA==}
     peerDependencies:
-      typescript: 5.9.2
+      typescript: '>=4.0.0'
 
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
@@ -8853,7 +8889,12 @@ packages:
     engines: {node: '>= 18', pnpm: '>= 10'}
     hasBin: true
     peerDependencies:
-      typescript: 5.9.2
+      typescript: 5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x || 5.9.x
+
+  typescript@5.8.2:
+    resolution: {integrity: sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
 
   typescript@5.9.2:
     resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
@@ -8998,7 +9039,7 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
-      '@types/node': ^22.0.0
+      '@types/node': ^20.19.0 || >=22.12.0
       jiti: '>=1.21.0'
       less: ^4.0.0
       lightningcss: ^1.21.0
@@ -9007,7 +9048,7 @@ packages:
       stylus: '>=0.54.8'
       sugarss: ^5.0.0
       terser: ^5.16.0
-      tsx: ^4.7.2
+      tsx: ^4.8.1
       yaml: ^2.4.2
     peerDependenciesMeta:
       '@types/node':
@@ -9040,7 +9081,7 @@ packages:
     peerDependencies:
       '@edge-runtime/vm': '*'
       '@types/debug': ^4.1.12
-      '@types/node': ^22.0.0
+      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
       '@vitest/browser': 3.2.4
       '@vitest/ui': 3.2.4
       happy-dom: '*'
@@ -12057,7 +12098,7 @@ snapshots:
       resolve: 1.22.10
       semver: 7.5.4
       source-map: 0.6.1
-      typescript: 5.9.2
+      typescript: 5.8.2
     transitivePeerDependencies:
       - '@types/node'
 
@@ -12981,6 +13022,8 @@ snapshots:
   '@types/node-forge@1.3.11':
     dependencies:
       '@types/node': 22.19.8
+
+  '@types/node@17.0.45': {}
 
   '@types/node@22.19.8':
     dependencies:
@@ -18702,7 +18745,7 @@ snapshots:
 
   sitemap@7.1.2:
     dependencies:
-      '@types/node': 22.19.8
+      '@types/node': 17.0.45
       '@types/sax': 1.2.7
       arg: 5.0.2
       sax: 1.4.1
@@ -19255,6 +19298,8 @@ snapshots:
       minimatch: 9.0.5
       typescript: 5.9.2
       yaml: 2.8.2
+
+  typescript@5.8.2: {}
 
   typescript@5.9.2: {}
 

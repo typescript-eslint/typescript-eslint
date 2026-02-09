@@ -32,8 +32,8 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^3.2.4",
-    "eslint": "*",
-    "rimraf": "*",
+    "eslint": "catalog:",
+    "rimraf": "catalog:",
     "vitest": "^3.2.4"
   },
   "nx": {

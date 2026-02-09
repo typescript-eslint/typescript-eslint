@@ -59,10 +59,10 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^3.2.4",
-    "eslint": "*",
-    "glob": "*",
-    "rimraf": "*",
-    "typescript": "*",
+    "eslint": "catalog:",
+    "glob": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:",
     "vitest": "^3.2.4"
   },
   "funding": {

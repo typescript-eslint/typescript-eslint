@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^3.2.4",
-    "eslint": "*",
+    "eslint": "catalog:",
     "vitest": "^3.2.4"
   },
   "nx": {
