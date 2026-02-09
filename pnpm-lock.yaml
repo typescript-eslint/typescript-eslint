@@ -18,6 +18,9 @@ catalogs:
     '@types/react':
       specifier: ^18.3.21
       version: 18.3.21
+    '@vitest/coverage-v8':
+      specifier: ^3.2.4
+      version: 3.2.4
     eslint:
       specifier: ^9.39.2
       version: 9.39.2
@@ -114,7 +117,7 @@ importers:
         specifier: workspace:^
         version: link:packages/utils
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       '@vitest/eslint-plugin':
         specifier: 1.6.5
@@ -234,7 +237,7 @@ importers:
         specifier: workspace:*
         version: link:../typescript-estree
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       '@vitest/pretty-format':
         specifier: ^3.2.4
@@ -307,7 +310,7 @@ importers:
         specifier: workspace:*
         version: link:../rule-tester
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       ajv:
         specifier: ^6.12.6
@@ -377,7 +380,7 @@ importers:
         version: 3.8.0
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: 'catalog:'
@@ -392,7 +395,7 @@ importers:
   packages/integration-tests:
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: 'catalog:'
@@ -400,6 +403,9 @@ importers:
       vitest:
         specifier: 'catalog:'
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2)
+      yaml:
+        specifier: ^2.8.2
+        version: 2.8.2
 
   packages/parser:
     dependencies:
@@ -420,7 +426,7 @@ importers:
         version: 4.4.3
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: 'catalog:'
@@ -451,7 +457,7 @@ importers:
         version: 4.4.3
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       rimraf:
         specifier: 'catalog:'
@@ -476,7 +482,7 @@ importers:
         version: 1.4.0
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: 'catalog:'
@@ -522,7 +528,7 @@ importers:
         specifier: 4.6.9
         version: 4.6.9
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: 'catalog:'
@@ -550,7 +556,7 @@ importers:
         specifier: workspace:*
         version: link:../typescript-estree
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       '@vitest/pretty-format':
         specifier: ^3.2.4
@@ -574,7 +580,7 @@ importers:
   packages/tsconfig-utils:
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       rimraf:
         specifier: 'catalog:'
@@ -613,7 +619,7 @@ importers:
         specifier: workspace:*
         version: link:../parser
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       ajv:
         specifier: ^6.12.6
@@ -634,7 +640,7 @@ importers:
   packages/types:
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: 'catalog:'
@@ -668,7 +674,7 @@ importers:
         version: link:../utils
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: 'catalog:'
@@ -714,7 +720,7 @@ importers:
         version: 2.4.0(typescript@5.9.2)
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: 'catalog:'
@@ -748,7 +754,7 @@ importers:
         version: link:../typescript-estree
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: 'catalog:'
@@ -773,7 +779,7 @@ importers:
         version: 4.2.1
     devDependencies:
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: 'catalog:'

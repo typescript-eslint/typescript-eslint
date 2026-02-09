@@ -1,6 +1,7 @@
 {
   "name": "@typescript-eslint/integration-tests",
   "private": true,
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
@@ -18,9 +19,10 @@
     "typecheck": "pnpm -w exec nx typecheck"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
-    "vitest": "catalog:"
+    "vitest": "catalog:",
+    "yaml": "^2.8.2"
   },
   "nx": {
     "name": "integration-tests",
