@@ -57,12 +57,12 @@ describe(ESLintUtils.getParserServices, () => {
   it('throws a standard error with the parser when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is custom', () => {
     const context = createMockRuleContext({
       languageOptions: {
-        parserOptions: {},
         parser: {
           meta: {
             name: 'custom-parser',
           },
         } as FlatConfig.Parser,
+        parserOptions: {},
       },
       parserPath: undefined,
       sourceCode: {
@@ -100,8 +100,8 @@ describe(ESLintUtils.getParserServices, () => {
   it('throws a standard error with an unknown parser when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is unknown', () => {
     const context = createMockRuleContext({
       languageOptions: {
-        parserOptions: {},
         parser: {} as FlatConfig.Parser,
+        parserOptions: {},
       },
       parserPath: undefined,
       sourceCode: {
