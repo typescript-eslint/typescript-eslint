@@ -1,7 +1,6 @@
 {
   "name": "@typescript-eslint/integration-tests",
   "private": true,
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
