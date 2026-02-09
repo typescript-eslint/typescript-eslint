@@ -57,6 +57,7 @@ describe(ESLintUtils.getParserServices, () => {
   it('throws a standard error with the parser when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is custom', () => {
     const context = createMockRuleContext({
       languageOptions: {
+        parserOptions: {},
         parser: {
           meta: {
             name: 'custom-parser',
