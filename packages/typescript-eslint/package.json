@@ -64,7 +64,7 @@
     "eslint": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:",
-    "vitest": "^3.2.4"
+    "vitest": "catalog:"
   },
   "funding": {
     "type": "opencollective",

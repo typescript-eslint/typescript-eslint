@@ -57,7 +57,7 @@
     "@vitest/coverage-v8": "^3.2.4",
     "rimraf": "catalog:",
     "typescript": "catalog:",
-    "vitest": "^3.2.4"
+    "vitest": "catalog:"
   },
   "funding": {
     "type": "opencollective",

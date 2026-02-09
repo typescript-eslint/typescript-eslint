@@ -14,3 +14,4 @@ catalog:
   rimraf: "^5.0.10"
   tsx: "^4.7.2"
   typescript: ">=4.8.4 <6.0.0"
+  vitest: "^3.2.4"

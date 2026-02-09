@@ -59,7 +59,7 @@
     "glob": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:",
-    "vitest": "^3.2.4"
+    "vitest": "catalog:"
   },
   "nx": {
     "name": "ast-spec",
