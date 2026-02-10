@@ -27,12 +27,6 @@ This means that switching from method syntax to property syntax (or vice versa) 
 
 A good practice is to use the TypeScript's `strict` option (which implies `strictFunctionTypes`) which enables correct typechecking for function properties only (method signatures get old behavior).
 
-:::caution Autofix Considerations
-When using the `--fix` flag, this rule's autofix will change signatures between method and property styles.
-If you have `strictFunctionTypes` enabled, this can introduce new TypeScript type errors in your codebase, particularly in scenarios involving generic types or type inference.
-This is not a bug in the autofix; rather, it reveals type issues that were previously hidden due to the bivariant nature of method signatures.
-:::
-
 TypeScript FAQ:
 
 > A method and a function property of the same type behave differently.
