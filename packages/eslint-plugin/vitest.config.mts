@@ -12,6 +12,11 @@ const vitestConfig = mergeConfig(
 
     test: {
       dir: path.join(import.meta.dirname, 'tests'),
+
+      include: process.env.CI
+        ? ['./*.test.?(m)ts', './{eslint-rules,rules,util}/**/*.test.ts']
+        : undefined,
+
       isolate: false,
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
