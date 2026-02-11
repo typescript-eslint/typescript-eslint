@@ -50,12 +50,12 @@
     "typecheck": "nx run-many -t typecheck"
   },
   "engines": {
-    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+    "node": "^20.19.0 || ^22.13.0 || >=24.0.0"
   },
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "^4.5.0",
     "@eslint/eslintrc": "^3.3.3",
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^10.0.1",
     "@nx/devkit": "22.3.3",
     "@nx/js": "22.3.3",
     "@nx/vitest": "22.3.3",
@@ -78,7 +78,7 @@
     "@vitest/eslint-plugin": "1.6.5",
     "console-fail-test": "^0.6.1",
     "cspell": "^9.4.0",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.0",
     "eslint-plugin-eslint-plugin": "^7.2.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsdoc": "^50.8.0",

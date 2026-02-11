@@ -252,6 +252,7 @@ export default defineConfig(
       'prefer-object-spread': 'error',
       'prefer-rest-params': 'error',
       'prefer-template': 'error',
+      'preserve-caught-error': 'error',
       radix: 'error',
 
       //

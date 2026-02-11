@@ -734,6 +734,7 @@ export class RuleTester extends TestFramework {
       } catch (err) {
         throw new Error(
           `Schema for rule ${ruleName} is invalid: ${(err as Error).message}`,
+          { cause: err },
         );
       }
     }
