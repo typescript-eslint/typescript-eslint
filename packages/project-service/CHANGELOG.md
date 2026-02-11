@@ -1,3 +1,11 @@
+## 8.55.0 (2026-02-09)
+
+This was a version bump only for project-service to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.55.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.54.0 (2026-01-26)
 
 This was a version bump only for project-service to align it with other projects, there were no code changes.

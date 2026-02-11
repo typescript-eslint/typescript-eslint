@@ -1,3 +1,17 @@
+## 8.55.0 (2026-02-09)
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid invalid modifier in object expression ([#11931](https://github.com/typescript-eslint/typescript-eslint/pull/11931))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.55.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.54.0 (2026-01-26)
 
 ### 🚀 Features
