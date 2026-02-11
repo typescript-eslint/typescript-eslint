@@ -96,7 +96,7 @@
     "lint-staged": "^15.5.2",
     "markdownlint-cli": "^0.47.0",
     "nx": "22.3.3",
-    "oxfmt": "^0.28.0",
+    "oxfmt": "^0.31.0",
     "rimraf": "^5.0.10",
     "semver": "7.7.3",
     "tsx": "*",

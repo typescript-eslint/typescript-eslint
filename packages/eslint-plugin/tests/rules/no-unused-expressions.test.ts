@@ -227,7 +227,7 @@ a() &&
       code: `
 module Foo {
   const foo = true;
-  'use strict';
+  ('use strict');
 }
       `,
       errors: [
@@ -246,7 +246,7 @@ namespace Foo {
   export class Foo {}
   export class Bar {}
 
-  'use strict';
+  ('use strict');
 }
       `,
       errors: [

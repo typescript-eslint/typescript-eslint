@@ -695,7 +695,7 @@ Promise.reject('foo').catch((...e) => {
       ],
     },
     {
-      code: noFormat`
+      code: `
 declare const x: any[];
 Promise.reject('foo').catch(...x, e => {
   throw e;
@@ -715,7 +715,7 @@ Promise.reject('foo').catch(...x, e => {
       ],
     },
     {
-      code: noFormat`
+      code: `
 declare const x: any[];
 Promise.reject('foo').then(...x, e => {
   throw e;

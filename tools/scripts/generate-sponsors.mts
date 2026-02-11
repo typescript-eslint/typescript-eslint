@@ -11,8 +11,6 @@ const excludedNames = new Set([
 
 const filteredTerms = ['casino', 'deepnude', 'tiktok'];
 
-// TODO: Remove when https://github.com/oxc-project/oxc/pull/18928 is published
-// prettier-ignore
 const jsonApiFetch = async <T,>(
   api: string,
   options?: RequestInit,
@@ -71,8 +69,6 @@ const openCollectiveSponsorsPromise = jsonApiFetch<{
   method: 'POST',
 }).then(({ data }) => {
   // TODO: remove polyfill in Node 22
-  // TODO: Remove when https://github.com/oxc-project/oxc/pull/18928 is published
-  // prettier-ignore
   const groupBy = <T,>(
     arr: T[],
     fn: (item: T) => string,
