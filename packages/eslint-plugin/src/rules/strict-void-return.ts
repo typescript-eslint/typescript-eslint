@@ -196,11 +196,11 @@ export default util.createRule<Options, MessageId>({
             tsutils.isTypeParameter(type),
         );
 
+        // Check against the contextual type first, but only when there is a
+        // single signature or when all signatures return void, because
+        // `getContextualType` resolves to the first overload's return type even
+        // though there may be another one that matches the call.
         if (
-          // Check against the contextual type first, but only when there is a
-          // single signature or when all signatures are void, because
-          // `getContextualType` resolves to the first overload's return type
-          // even though there may be another one that matches the call.
           (hasSingleSignature || allSignaturesReturnVoid) &&
           checkExpressionNode(argNode)
         ) {
