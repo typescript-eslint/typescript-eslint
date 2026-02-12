@@ -20,6 +20,9 @@ importers:
       '@eslint/compat':
         specifier: ^2.0.2
         version: 2.0.2(eslint@10.0.0(jiti@2.6.1))
+      '@eslint/config-helpers':
+        specifier: ^0.5.2
+        version: 0.5.2
       '@eslint/eslintrc':
         specifier: ^3.3.3
         version: 3.3.3
@@ -44,9 +47,6 @@ importers:
       '@types/debug':
         specifier: ^4.1.12
         version: 4.1.12
-      '@types/eslint-plugin-jsx-a11y':
-        specifier: ^6.10.1
-        version: 6.10.1(jiti@2.6.1)
       '@types/natural-compare':
         specifier: ^1.4.3
         version: 1.4.3
@@ -184,7 +184,7 @@ importers:
         version: 7.28.5
       '@babel/eslint-parser':
         specifier: ^7.28.5
-        version: 7.28.5(@babel/core@7.28.5)(eslint@9.39.2(jiti@2.6.1))
+        version: 7.28.5(@babel/core@7.28.5)(eslint@10.0.0(jiti@2.6.1))
       '@babel/parser':
         specifier: ^7.28.5
         version: 7.28.5
@@ -211,7 +211,7 @@ importers:
         version: 3.2.4
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       glob:
         specifier: '*'
         version: 11.1.0
@@ -281,7 +281,7 @@ importers:
         version: 6.12.6
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       json-schema:
         specifier: '*'
         version: 0.4.0
@@ -348,7 +348,7 @@ importers:
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -363,7 +363,7 @@ importers:
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2)
@@ -391,7 +391,7 @@ importers:
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       glob:
         specifier: '*'
         version: 11.1.0
@@ -447,7 +447,7 @@ importers:
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -493,7 +493,7 @@ importers:
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -524,7 +524,7 @@ importers:
         version: 3.2.4
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       glob:
         specifier: '*'
         version: 11.1.0
@@ -587,7 +587,7 @@ importers:
         version: 6.12.6
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -605,7 +605,7 @@ importers:
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -639,7 +639,7 @@ importers:
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -685,7 +685,7 @@ importers:
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       glob:
         specifier: '*'
         version: 11.1.0
@@ -703,7 +703,7 @@ importers:
     dependencies:
       '@eslint-community/eslint-utils':
         specifier: ^4.9.1
-        version: 4.9.1(eslint@9.39.2(jiti@2.6.1))
+        version: 4.9.1(eslint@10.0.0(jiti@2.6.1))
       '@typescript-eslint/scope-manager':
         specifier: workspace:*
         version: link:../scope-manager
@@ -719,7 +719,7 @@ importers:
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -744,7 +744,7 @@ importers:
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       rimraf:
         specifier: '*'
         version: 5.0.10
@@ -944,7 +944,7 @@ importers:
     devDependencies:
       '@eslint/js':
         specifier: '*'
-        version: 9.39.2
+        version: 10.0.1(eslint@10.0.0(jiti@2.6.1))
       '@typescript-eslint/eslint-plugin':
         specifier: workspace:*
         version: link:../eslint-plugin
@@ -968,7 +968,7 @@ importers:
         version: 0.27.2
       eslint:
         specifier: '*'
-        version: 9.39.2(jiti@2.6.1)
+        version: 10.0.0(jiti@2.6.1)
       esquery:
         specifier: '*'
         version: 1.7.0
@@ -3610,9 +3610,6 @@ packages:
 
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
-
-  '@types/eslint-plugin-jsx-a11y@6.10.1':
-    resolution: {integrity: sha512-5RtuPVe0xz8BAhrkn2oww6Uw885atf962Q4fqZo48QdO3EQA7oCEDSXa6optgJ1ZMds3HD9ITK5bfm4AWuoXFQ==}
 
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
@@ -9553,11 +9550,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/eslint-parser@7.28.5(@babel/core@7.28.5)(eslint@9.39.2(jiti@2.6.1))':
+  '@babel/eslint-parser@7.28.5(@babel/core@7.28.5)(eslint@10.0.0(jiti@2.6.1))':
     dependencies:
       '@babel/core': 7.28.5
       '@nicolo-ribaudo/eslint-scope-5-internals': 5.1.1-v1
-      eslint: 9.39.2(jiti@2.6.1)
+      eslint: 10.0.0(jiti@2.6.1)
       eslint-visitor-keys: 2.1.0
       semver: 6.3.1
 
@@ -12981,13 +12978,6 @@ snapshots:
       '@types/ms': 2.1.0
 
   '@types/deep-eql@4.0.2': {}
-
-  '@types/eslint-plugin-jsx-a11y@6.10.1(jiti@2.6.1)':
-    dependencies:
-      eslint: 9.39.2(jiti@2.6.1)
-    transitivePeerDependencies:
-      - jiti
-      - supports-color
 
   '@types/eslint-scope@3.7.7':
     dependencies:

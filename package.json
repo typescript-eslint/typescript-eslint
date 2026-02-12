@@ -55,6 +55,7 @@
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "^4.5.0",
     "@eslint/compat": "^2.0.2",
+    "@eslint/config-helpers": "^0.5.2",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^10.0.1",
     "@nx/devkit": "22.3.3",
@@ -63,7 +64,6 @@
     "@nx/workspace": "22.3.3",
     "@swc/core": "^1.15.8",
     "@types/debug": "^4.1.12",
-    "@types/eslint-plugin-jsx-a11y": "^6.10.1",
     "@types/natural-compare": "^1.4.3",
     "@types/node": "^22.19.3",
     "@types/semver": "^7.7.1",

@@ -40,13 +40,10 @@ export default defineConfig(
       ['eslint-plugin']: eslintPluginPlugin,
       ['import']: fixupPluginRules(importPlugin),
       ['jsdoc']: jsdocPlugin,
-      // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
       ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
       ['n']: nPlugin,
       ['perfectionist']: perfectionistPlugin,
       ['react']: fixupPluginRules(reactPlugin),
-      // @ts-expect-error -- Temporary types incompatibility pending flat config support
-      // https://github.com/facebook/react/pull/30774
       ['react-hooks']: reactHooksPlugin,
       ['regexp']: regexpPlugin,
       ['unicorn']: unicornPlugin,
@@ -603,7 +600,7 @@ export default defineConfig(
     files: ['packages/website/**/*.?(c|m)[tj]s?(x)'],
     name: 'website',
     rules: {
-      ...(reactHooksPlugin.configs.recommended.rules ?? {}),
+      ...reactHooksPlugin.configs.recommended.rules,
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
       'import/no-default-export': 'off',
       'n/no-extraneous-import': 'off',
