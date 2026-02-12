@@ -1,6 +1,7 @@
 // @ts-check
 
 import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
+import { fixupPluginRules } from '@eslint/compat';
 import eslint from '@eslint/js';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
 import vitestPlugin from '@vitest/eslint-plugin';
@@ -37,20 +38,19 @@ export default defineConfig(
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
-      ['import']: importPlugin,
+      ['import']: fixupPluginRules(importPlugin),
       ['jsdoc']: jsdocPlugin,
       // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
       ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
       ['n']: nPlugin,
       ['perfectionist']: perfectionistPlugin,
-      ['vitest']: vitestPlugin,
-      // https://github.com/facebook/react/issues/28313
-      ['react']: reactPlugin,
+      ['react']: fixupPluginRules(reactPlugin),
       // @ts-expect-error -- Temporary types incompatibility pending flat config support
       // https://github.com/facebook/react/pull/30774
       ['react-hooks']: reactHooksPlugin,
       ['regexp']: regexpPlugin,
       ['unicorn']: unicornPlugin,
+      ['vitest']: vitestPlugin,
     },
     /* eslint-enable no-useless-computed-key */
     settings: {
@@ -599,10 +599,7 @@ export default defineConfig(
   //
 
   {
-    extends: [
-      jsxA11yPlugin.flatConfigs.recommended,
-      { name: 'react/recommended', ...reactPlugin.configs.flat.recommended },
-    ],
+    extends: [jsxA11yPlugin.flatConfigs.recommended],
     files: ['packages/website/**/*.?(c|m)[tj]s?(x)'],
     name: 'website',
     rules: {
