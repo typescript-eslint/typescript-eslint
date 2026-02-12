@@ -229,8 +229,8 @@ ruleTester.run('strict-void-return', rule, {
       code: `
         declare function foo(fn: () => void);
         declare function foo(fn: () => Promise<void>);
-
-        foo(async () => { });
+        
+        foo(async () => {});
       `,
     },
     {
@@ -950,14 +950,15 @@ ruleTester.run('strict-void-return', rule, {
           (fn: () => void): T;
           (fn: () => Promise<void>): T;
         }
-
+        
         class Hook {}
-
+        
         declare var beforeEach: HookFunction<Hook>;
-
+        
         beforeEach(() => {});
-
-        beforeEach(async () => { });`,
+        
+        beforeEach(async () => {});
+      `,
     },
   ],
   invalid: [
@@ -1139,8 +1140,8 @@ ruleTester.run('strict-void-return', rule, {
       `,
       errors: [
         {
-          line: 4,
           column: 28,
+          line: 4,
           messageId: 'nonVoidReturn',
         },
       ],
