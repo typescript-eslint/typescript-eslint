@@ -432,6 +432,7 @@ export class RuleTester extends TestFramework {
       create(context): RuleListener {
         freezeDeeply(context.options);
         freezeDeeply(context.settings);
+        // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8
         freezeDeeply(context.parserOptions);
 
         return (typeof rule === 'function' ? rule : rule.create)(context);

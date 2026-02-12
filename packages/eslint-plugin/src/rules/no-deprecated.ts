@@ -61,7 +61,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const { jsDocParsingMode } = context.parserOptions;
+    const { jsDocParsingMode } = context.languageOptions.parserOptions;
     const allow = options.allow;
     if (jsDocParsingMode === 'none' || jsDocParsingMode === 'type-info') {
       throw new Error(
