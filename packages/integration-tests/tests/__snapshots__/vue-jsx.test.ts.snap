@@ -23,8 +23,8 @@ exports[`vue-jsx > eslint > should work successfully 1`] = `
             "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
             "fix": {
               "range": [
-                410,
-                413,
+                394,
+                397,
               ],
               "text": "unknown",
             },
@@ -34,8 +34,8 @@ exports[`vue-jsx > eslint > should work successfully 1`] = `
             "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
             "fix": {
               "range": [
-                410,
-                413,
+                394,
+                397,
               ],
               "text": "never",
             },
