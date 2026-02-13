@@ -2,7 +2,7 @@ import type { analyze, ScopeManager } from '@typescript-eslint/scope-manager';
 import type { astConverter } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
 import type { TSESTree } from '@typescript-eslint/utils';
 import type {
-  ClassicConfig,
+  FlatConfig,
   Linter,
   SourceCode,
 } from '@typescript-eslint/utils/ts-eslint';
@@ -21,7 +21,7 @@ export interface UpdateModel {
 export interface WebLinterModule {
   analyze: typeof analyze;
   astConverter: typeof astConverter;
-  configs: Record<string, ClassicConfig.Config>;
+  configs: Record<string, FlatConfig.Config>;
   createLinter: () => Linter;
   esquery: typeof esquery;
   visitorKeys: SourceCode.VisitorKeys;

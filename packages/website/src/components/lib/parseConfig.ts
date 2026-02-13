@@ -6,25 +6,29 @@ import { ensureObject, parseJSONObject, toJson } from './json';
 /**
  * Parse a .eslintrc string into an object.
  * This function is pretty naive, as it only validates rules and extends.
+ *
+ * TODO: the user should probably write flat configs, but that requires
+ * work on the visual editor.
  */
 export function parseESLintRC(code?: string): EslintRC {
   if (code) {
     try {
       const parsed = parseJSONObject(code);
       parsed.rules = ensureObject(parsed.rules);
-
-      if ('extends' in parsed) {
-        parsed.extends =
-          Array.isArray(parsed.extends) || typeof parsed.extends === 'string'
-            ? parsed.extends
-            : [];
+      if (
+        !Array.isArray(parsed.extends) &&
+        typeof parsed.extends !== 'string'
+      ) {
+        parsed.extends = [];
+      } else if (typeof parsed.extends === 'string') {
+        parsed.extends = [parsed.extends];
       }
       return parsed as EslintRC;
     } catch (e) {
       console.error(e);
     }
   }
-  return { rules: {} };
+  return { rules: {}, extends: [] };
 }
 
 /**
