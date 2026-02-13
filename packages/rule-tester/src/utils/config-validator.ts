@@ -118,9 +118,9 @@ function validateRuleOptions(
     }`;
 
     if (typeof source === 'string') {
-      throw new Error(`${source}:\n\t${enhancedMessage}`);
+      throw new Error(`${source}:\n\t${enhancedMessage}`, { cause: err });
     } else {
-      throw new Error(enhancedMessage);
+      throw new Error(enhancedMessage, { cause: err });
     }
   }
 }
