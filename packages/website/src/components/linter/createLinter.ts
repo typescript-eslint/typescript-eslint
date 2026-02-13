@@ -91,10 +91,19 @@ export function createLinter(
 
   Object.entries(webLinterModule.rules).forEach(([name, item]) => {
     rules.set(`@typescript-eslint/${name}`, {
-      description: item.meta?.docs?.description,
+      description: item.meta.docs?.description,
       name: `@typescript-eslint/${name}`,
-      schema: item.meta?.schema ?? [],
-      url: item.meta?.docs?.url,
+      schema: item.meta.schema,
+      url: item.meta.docs?.url,
+    });
+  });
+
+  [...webLinterModule.builtinRules.entries()].forEach(([name, item]) => {
+    rules.set(name, {
+      description: item.meta.docs?.description,
+      name,
+      schema: item.meta.schema,
+      url: item.meta.docs?.url,
     });
   });
 

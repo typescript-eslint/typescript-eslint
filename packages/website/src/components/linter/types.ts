@@ -1,11 +1,11 @@
 import type { analyze, ScopeManager } from '@typescript-eslint/scope-manager';
-import type plugin from '@typescript-eslint/eslint-plugin';
 import type { astConverter } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
 import type { TSESTree } from '@typescript-eslint/utils';
 import type {
   FlatConfig,
   Linter,
   SourceCode,
+  RuleModule,
 } from '@typescript-eslint/utils/ts-eslint';
 import type esquery from 'esquery';
 import type * as ts from 'typescript';
@@ -22,10 +22,11 @@ export interface UpdateModel {
 export interface WebLinterModule {
   analyze: typeof analyze;
   astConverter: typeof astConverter;
+  builtinRules: Map<string, RuleModule<string>>;
   configs: Record<string, FlatConfig.Config | FlatConfig.ConfigArray>;
   createLinter: () => Linter;
   esquery: typeof esquery;
-  rules: typeof plugin.rules;
+  rules: Record<string, RuleModule<string>>;
   visitorKeys: SourceCode.VisitorKeys;
 }
 

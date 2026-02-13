@@ -18,6 +18,7 @@ import {
 } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import { Linter } from 'eslint';
+import { builtinRules } from 'eslint/use-at-your-own-risk';
 import esquery from 'esquery';
 
 // don't change exports to export *
@@ -45,3 +46,5 @@ for (const [name, value] of Object.entries(rawPlugin.flatConfigs)) {
 exports.configs = configs;
 
 exports.rules = plugin.rules;
+
+exports.builtinRules = builtinRules;
