@@ -1,4 +1,5 @@
 import type { analyze, ScopeManager } from '@typescript-eslint/scope-manager';
+import type plugin from '@typescript-eslint/eslint-plugin';
 import type { astConverter } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
 import type { TSESTree } from '@typescript-eslint/utils';
 import type {
@@ -24,6 +25,7 @@ export interface WebLinterModule {
   configs: Record<string, FlatConfig.Config | FlatConfig.ConfigArray>;
   createLinter: () => Linter;
   esquery: typeof esquery;
+  rules: typeof plugin.rules;
   visitorKeys: SourceCode.VisitorKeys;
 }
 

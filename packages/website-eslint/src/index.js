@@ -9,6 +9,7 @@ This saves us having to mock unnecessary things and reduces our bundle size.
 */
 
 import eslintJs from '@eslint/js';
+import * as plugin from '@typescript-eslint/eslint-plugin';
 import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw-plugin';
 import { analyze } from '@typescript-eslint/scope-manager';
 import {
@@ -34,11 +35,13 @@ exports.createLinter = function () {
 const configs = {};
 
 for (const [name, value] of Object.entries(eslintJs.configs)) {
-  configs[`eslint:${name}`] = value;
+  configs[`js/${name}`] = value;
 }
 
 for (const [name, value] of Object.entries(rawPlugin.flatConfigs)) {
-  configs[`plugin:@typescript-eslint/${name}`] = value;
+  configs[`@typescript-eslint/${name}`] = value;
 }
 
 exports.configs = configs;
+
+exports.rules = plugin.rules;
