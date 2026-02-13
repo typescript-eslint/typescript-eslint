@@ -138,6 +138,7 @@ export function createLinter(
   };
 
   const updateParserOptions = (sourceType?: SourceType): void => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     eslintLanguageConfig.languageOptions!.parserOptions!.sourceType =
       sourceType ?? 'module';
   };
@@ -150,7 +151,11 @@ export function createLinter(
       for (const extendsName of parsed.extends) {
         const maybeConfig = configs.get(extendsName);
         if (maybeConfig) {
-          eslintExtendedConfig.push(maybeConfig);
+          if (Array.isArray(maybeConfig)) {
+            eslintExtendedConfig.push(...maybeConfig);
+          } else {
+            eslintExtendedConfig.push(maybeConfig);
+          }
         }
       }
       console.log('[Editor] Updating', fileName, [

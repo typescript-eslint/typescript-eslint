@@ -21,7 +21,7 @@ export interface UpdateModel {
 export interface WebLinterModule {
   analyze: typeof analyze;
   astConverter: typeof astConverter;
-  configs: Record<string, FlatConfig.Config>;
+  configs: Record<string, FlatConfig.Config | FlatConfig.ConfigArray>;
   createLinter: () => Linter;
   esquery: typeof esquery;
   visitorKeys: SourceCode.VisitorKeys;

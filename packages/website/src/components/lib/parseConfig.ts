@@ -23,12 +23,12 @@ export function parseESLintRC(code?: string): EslintRC {
       } else if (typeof parsed.extends === 'string') {
         parsed.extends = [parsed.extends];
       }
-      return parsed as EslintRC;
+      return parsed as unknown as EslintRC;
     } catch (e) {
       console.error(e);
     }
   }
-  return { rules: {}, extends: [] };
+  return { extends: [], rules: {} };
 }
 
 /**
