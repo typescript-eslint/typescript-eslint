@@ -63,7 +63,7 @@ interface ParserOptions {
 
 ### `disallowAutomaticSingleRunInference`
 
-> Default: `process.env.TSESTREE_SINGLE_RUN` or `true`.
+> Default: `process.env.TSESTREE_SINGLE_RUN` or `false`.
 
 Whether to stop using common heuristics to infer whether ESLint is being used as part of a single run (as opposed to `--fix` mode or in a persistent session such as an editor extension).
 In other words, typescript-eslint is faster by default, and this option disables an automatic performance optimization.
