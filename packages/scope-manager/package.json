@@ -53,7 +53,7 @@
   "devDependencies": {
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
-    "@vitest/pretty-format": "^3.2.4",
+    "@vitest/pretty-format": "catalog:",
     "eslint": "catalog:",
     "glob": "catalog:",
     "rimraf": "catalog:",
