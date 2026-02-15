@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "eslint": "9.39.2",
+    "@eslint/js": "9.39.2"
+  }
+}

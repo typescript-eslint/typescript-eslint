@@ -3,11 +3,11 @@ packages:
 
 catalog:
   "@vitest/coverage-v8": "^3.2.4"
-  "@eslint/js": "^9.39.2"
+  "@eslint/js": "^10.0.0"
   "@types/natural-compare": "^1.4.3"
   "@types/node": "^22.19.3"
   "@types/react": ^18.3.21
-  eslint: "^9.39.2"
+  eslint: "^10.0.0"
   esquery: "^1.7.0"
   glob: "^11.1.0"
   globals: "^16.5.0"

@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@typescript-eslint/types": "workspace:*",
-    "eslint-visitor-keys": "^4.2.1"
+    "eslint-visitor-keys": "^5.0.0"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "catalog:",

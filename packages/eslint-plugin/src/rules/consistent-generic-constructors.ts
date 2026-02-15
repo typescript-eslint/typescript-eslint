@@ -152,7 +152,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const isolatedDeclarations = context.parserOptions.isolatedDeclarations;
+        const isolatedDeclarations =
+          context.languageOptions.parserOptions.isolatedDeclarations;
         if (!isolatedDeclarations && lhs?.typeArguments && !rhs.typeArguments) {
           const hasParens =
             context.sourceCode.getTokenAfter(rhs.callee)?.value === '(';
