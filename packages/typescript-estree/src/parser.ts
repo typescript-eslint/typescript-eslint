@@ -225,6 +225,12 @@ export function parseAndGenerateServices<
    *
    * In this scenario we cannot rely upon the singleRun AOT compiled programs because the SourceFiles will not contain the source
    * with the latest fixes applied. Therefore we fallback to creating the quickest possible isolated program from the updated source.
+   *
+   * Note: This fallback is only needed for the legacy `project` option which uses AOT compiled programs.
+   * When `projectService` is used, the TypeScript language service always provides up-to-date programs,
+   * so no fallback is necessary. Additionally, external parsers like vue-eslint-parser may call
+   * parseAndGenerateServices() multiple times for the same file in a single lint pass, which would
+   * incorrectly trigger this fallback.
    */
   if (parseSettings.singleRun && tsestreeOptions.filePath) {
     parseAndGenerateServicesCalls[tsestreeOptions.filePath] =
@@ -234,7 +240,8 @@ export function parseAndGenerateServices<
   const { ast, program } =
     parseSettings.singleRun &&
     tsestreeOptions.filePath &&
-    parseAndGenerateServicesCalls[tsestreeOptions.filePath] > 1
+    parseAndGenerateServicesCalls[tsestreeOptions.filePath] > 1 &&
+    !parseSettings.projectService
       ? createIsolatedProgram(parseSettings)
       : getProgramAndAST(parseSettings, hasFullTypeInformation);
 
