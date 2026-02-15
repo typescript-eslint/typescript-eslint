@@ -9,6 +9,12 @@ catalogs:
     '@eslint/js':
       specifier: ^10.0.0
       version: 10.0.1
+    '@types/babel__code-frame':
+      specifier: ^7.0.6
+      version: 7.27.0
+    '@types/mdast':
+      specifier: ^4.0.4
+      version: 4.0.4
     '@types/natural-compare':
       specifier: ^1.4.3
       version: 1.4.3
@@ -21,6 +27,15 @@ catalogs:
     '@vitest/coverage-v8':
       specifier: ^3.2.4
       version: 3.2.4
+    '@vitest/pretty-format':
+      specifier: ^3.2.4
+      version: 3.2.4
+    '@vitest/utils':
+      specifier: ^3.2.4
+      version: 3.2.4
+    ajv:
+      specifier: ^6.12.6
+      version: 6.12.6
     eslint:
       specifier: ^10.0.0
       version: 10.0.0
@@ -36,6 +51,15 @@ catalogs:
     json-schema:
       specifier: ^0.4.0
       version: 0.4.0
+    mdast-util-from-markdown:
+      specifier: ^2.0.2
+      version: 2.0.2
+    mdast-util-mdx:
+      specifier: ^3.0.0
+      version: 3.0.0
+    prettier:
+      specifier: 3.8.0
+      version: 3.8.0
     rimraf:
       specifier: ^5.0.10
       version: 5.0.10
@@ -231,7 +255,7 @@ importers:
         specifier: ^7.55.2
         version: 7.56.0(@types/node@22.19.8)
       '@types/babel__code-frame':
-        specifier: ^7.0.6
+        specifier: 'catalog:'
         version: 7.27.0
       '@types/babel__core':
         specifier: ^7.20.5
@@ -243,10 +267,10 @@ importers:
         specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       '@vitest/pretty-format':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4
       '@vitest/utils':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4
       eslint:
         specifier: 'catalog:'
@@ -298,7 +322,7 @@ importers:
         specifier: ^7.0.15
         version: 7.0.15
       '@types/mdast':
-        specifier: ^4.0.4
+        specifier: 'catalog:'
         version: 4.0.4
       '@types/natural-compare':
         specifier: 'catalog:'
@@ -316,7 +340,7 @@ importers:
         specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       ajv:
-        specifier: ^6.12.6
+        specifier: 'catalog:'
         version: 6.12.6
       eslint:
         specifier: 'catalog:'
@@ -331,16 +355,16 @@ importers:
         specifier: ^15.0.12
         version: 15.0.12
       mdast-util-from-markdown:
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       mdast-util-mdx:
-        specifier: ^3.0.0
+        specifier: 'catalog:'
         version: 3.0.0
       micromark-extension-mdxjs:
         specifier: ^3.0.0
         version: 3.0.0
       prettier:
-        specifier: 3.8.0
+        specifier: 'catalog:'
         version: 3.8.0
       rimraf:
         specifier: 'catalog:'
@@ -562,7 +586,7 @@ importers:
         specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       '@vitest/pretty-format':
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4
       eslint:
         specifier: 'catalog:'
@@ -616,7 +640,7 @@ importers:
         version: 2.4.0(typescript@5.9.2)
     devDependencies:
       '@types/babel__code-frame':
-        specifier: ^7.0.6
+        specifier: 'catalog:'
         version: 7.27.0
       '@typescript-eslint/parser':
         specifier: workspace:*
@@ -625,7 +649,7 @@ importers:
         specifier: 'catalog:'
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2))
       ajv:
-        specifier: ^6.12.6
+        specifier: 'catalog:'
         version: 6.12.6
       eslint:
         specifier: 'catalog:'
@@ -909,7 +933,7 @@ importers:
         specifier: ^4.7.11
         version: 4.7.11
       '@types/mdast':
-        specifier: ^4.0.4
+        specifier: 'catalog:'
         version: 4.0.4
       '@types/react':
         specifier: 'catalog:'
@@ -939,10 +963,10 @@ importers:
         specifier: ^4.10.1
         version: 4.10.1
       mdast-util-from-markdown:
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       mdast-util-mdx:
-        specifier: ^3.0.0
+        specifier: 'catalog:'
         version: 3.0.0
       monaco-editor:
         specifier: ~0.54.0
