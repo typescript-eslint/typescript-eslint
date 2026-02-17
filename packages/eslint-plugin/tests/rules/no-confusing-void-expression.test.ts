@@ -402,6 +402,11 @@ test((() => {
       `,
       options: [{ ignoreVoidReturningFunctions: true }],
     },
+    `
+      async function f<T>(input: T) {
+        await input;
+      }
+    `,
   ],
 
   invalid: [
@@ -1199,6 +1204,23 @@ function test(arg?: string): any | void {
   console.log();
 }
       `,
+    },
+    {
+      code: `
+        declare const a: void;
+        const b = await a;
+      `,
+      errors: [{ column: 19, messageId: 'invalidVoidExpr' }],
+      output: null,
+    },
+    {
+      code: `
+        function fn(a: void) {
+          const b = await a;
+        }
+      `,
+      errors: [{ column: 21, messageId: 'invalidVoidExpr' }],
+      output: null,
     },
   ],
 });
