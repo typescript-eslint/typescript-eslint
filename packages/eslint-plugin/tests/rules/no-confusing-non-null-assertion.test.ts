@@ -1,5 +1,5 @@
 // this rule enforces adding parens, which prettier will want to fix and break the tests
-/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
+/* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithOxfmt: false }] */
 
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 

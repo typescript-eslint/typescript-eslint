@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester, noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-invalid-this';
 
@@ -32,7 +32,7 @@ function foo(this: prop) {
   this.propMethod();
 }
     `,
-    `
+    noFormat`
 z(function (x, this: context) {
   console.log(x, this);
 });

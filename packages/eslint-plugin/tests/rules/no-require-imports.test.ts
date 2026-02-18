@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-require-imports';
 
@@ -72,7 +72,7 @@ const foo: Foo = require('./foo.json').default;
       options: [{ allowAsImport: true }],
     },
     {
-      code: `
+      code: noFormat`
 let require = bazz;
 const foo = <Foo>require('./foo.json');
       `,
@@ -316,7 +316,7 @@ var lib5 = require?.('lib5'),
       options: [{ allowAsImport: true }],
     },
     {
-      code: "const foo = <Foo>require('./foo.json');",
+      code: noFormat`const foo = <Foo>require('./foo.json');`,
       errors: [
         {
           column: 18,

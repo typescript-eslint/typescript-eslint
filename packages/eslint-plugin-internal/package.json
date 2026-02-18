@@ -23,12 +23,12 @@
     "typecheck": "pnpm -w exec nx typecheck"
   },
   "dependencies": {
-    "@prettier/sync": "^0.6.1",
     "@typescript-eslint/rule-tester": "workspace:*",
     "@typescript-eslint/scope-manager": "workspace:*",
     "@typescript-eslint/type-utils": "workspace:*",
     "@typescript-eslint/utils": "workspace:*",
-    "prettier": "3.8.0"
+    "make-synchronized": "^0.8.0",
+    "oxfmt": "^0.31.0"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^3.2.4",

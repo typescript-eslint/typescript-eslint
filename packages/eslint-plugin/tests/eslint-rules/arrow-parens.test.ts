@@ -13,7 +13,7 @@ ruleTester.run('arrow-parens', rule, {
     noFormat`const foo = (t) => {};`,
     'const foo = <T,>(t) => {};',
     'const foo = <T,>(t: T) => {};',
-    'const foo = <T>((t: T) => {});',
+    noFormat`const foo = <T>((t: T) => {});`,
     'const foo = function <T>(t: T) {};',
     `
 const foo = <T,>(bar: any): void => {

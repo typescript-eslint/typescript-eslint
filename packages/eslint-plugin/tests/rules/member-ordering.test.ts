@@ -1,6 +1,6 @@
 import type { RunTests } from '@typescript-eslint/rule-tester';
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import type { MessageIds, Options } from '../../src/rules/member-ordering';
 
@@ -1512,7 +1512,7 @@ class Foo {
       ],
     },
     {
-      code: `
+      code: noFormat`
 class Foo {
   A: string;
   constructor() {}
@@ -1544,7 +1544,7 @@ class Foo {
       ],
     },
     {
-      code: `
+      code: noFormat`
 class Foo {
   A: string;
   constructor() {}
@@ -1566,7 +1566,7 @@ class Foo {
       ],
     },
     {
-      code: `
+      code: noFormat`
 class Foo {
   A: string;
   constructor() {}
@@ -1739,7 +1739,7 @@ class Foo {
       ],
     },
     {
-      code: `
+      code: noFormat`
 class Foo {
   private readonly A: string;
   readonly B: string;
@@ -4646,7 +4646,7 @@ class Foo {
       ],
     },
     {
-      code: `
+      code: noFormat`
 class Foo {
   A: string;
   get B() {}
@@ -4675,7 +4675,7 @@ class Foo {
       ],
     },
     {
-      code: `
+      code: noFormat`
 class Foo {
   A: string;
   private C() {}
@@ -4708,7 +4708,7 @@ class Foo {
       ],
     },
     {
-      code: `
+      code: noFormat`
 class Foo {
   A: string;
   constructor() {}
@@ -5027,7 +5027,7 @@ class Foo {
       options: [{ default: ['readonly-field', 'field'] }],
     },
     {
-      code: `
+      code: noFormat`
 class Foo {
   A: string;
   private C() {}

@@ -166,7 +166,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
     `
       new Foo((resolve, reject) => reject(5));
     `,
-    `
+    noFormat`
       class Foo {
         constructor(
           executor: (resolve: () => void, reject: (reason?: any) => void) => void,

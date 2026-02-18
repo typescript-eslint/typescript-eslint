@@ -3,10 +3,10 @@
       "davidanson.vscode-markdownlint",
       "dbaeumer.vscode-eslint",
       "editorconfig.editorconfig",
-      "esbenp.prettier-vscode",
       "streetsidesoftware.code-spell-checker",
       "mrmlnc.vscode-json5",
-      "vitest.explorer"
+      "vitest.explorer",
+      "oxc.oxc-vscode"
   ],
   "unwantedRecommendations": ["hookyqr.beautify", "dbaeumer.jshint"]
 }

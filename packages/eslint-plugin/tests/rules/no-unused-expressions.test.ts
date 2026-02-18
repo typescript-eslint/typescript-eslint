@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unused-expressions';
 
@@ -227,7 +227,7 @@ a() &&
       code: `
 module Foo {
   const foo = true;
-  'use strict';
+  ('use strict');
 }
       `,
       errors: [
@@ -246,7 +246,7 @@ namespace Foo {
   export class Foo {}
   export class Bar {}
 
-  'use strict';
+  ('use strict');
 }
       `,
       errors: [
@@ -361,7 +361,7 @@ foo as any;
       ],
     },
     {
-      code: `
+      code: noFormat`
 declare const foo: number | undefined;
 <any>foo;
       `,

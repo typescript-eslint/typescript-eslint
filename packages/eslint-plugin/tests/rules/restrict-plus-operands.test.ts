@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/restrict-plus-operands';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -154,7 +156,7 @@ declare const a: \`template\${string}\`;
 declare const b: '';
 const x = a + b;
     `,
-    `
+    noFormat`
 const a: \`template\${0}\`;
 declare const b: '';
 const x = a + b;

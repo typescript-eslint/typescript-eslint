@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester, noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/init-declarations';
 
@@ -315,7 +315,7 @@ interface IEmployee {
       options: ['always'],
     },
     {
-      code: 'const foo: number;',
+      code: noFormat`const foo: number;`,
       options: ['never'],
     },
     {
@@ -819,7 +819,7 @@ namespace myLib {
       options: ['never'],
     },
     {
-      code: `
+      code: noFormat`
 namespace myLib1 {
   const foo: number;
   namespace myLib2 {

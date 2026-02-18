@@ -561,15 +561,15 @@ foo;
       ],
     },
 
-    // handles prettier errors
+    // handles formatter errors
     {
       code: wrap`'const x = ";'`,
       errors: [
         {
           data: {
-            message: 'Unterminated string literal.',
+            message: 'Unterminated string',
           },
-          messageId: 'prettierException',
+          messageId: 'oxfmtException',
         },
       ],
       output: null,
@@ -838,7 +838,7 @@ const a = 1;
       code: wrap`'const x=1;'`,
       options: [
         {
-          formatWithPrettier: false,
+          formatWithOxfmt: false,
         },
       ],
     },

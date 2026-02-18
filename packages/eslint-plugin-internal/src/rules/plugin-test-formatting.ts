@@ -1,23 +1,21 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as oxfmt from 'oxfmt';
 
-import prettier from '@prettier/sync';
 import { getContextualType } from '@typescript-eslint/type-utils';
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { makeModuleSynchronized } from 'make-synchronized';
 
+import oxfmtConfig from '../../../../.oxfmtrc.json' with { type: 'json' };
 import { createRule } from '../util/index.js';
 
-// Replace with import.meta.dirname when minimum node version supports it
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const oxfmtSync = makeModuleSynchronized<typeof oxfmt>('oxfmt');
 
 /*
 The strings that are used for eslint plugins will not be checked for formatting.
 This can lead to diff noise as one contributor adjusts formatting, uses different quotes, etc.
 
 This rule just enforces the following:
-- all code samples are formatted with prettier
+- all code samples are formatted with oxfmt
 - all single line tests do not use backticks
 - all multiline tests have:
   - no code on the first line
@@ -52,7 +50,6 @@ const a = 1;
 ]
 */
 
-const prettierConfig = prettier.resolveConfig(__dirname) ?? {};
 const START_OF_LINE_WHITESPACE_MATCHER = /^( *)/;
 const BACKTICK_REGEX = /`/g;
 const TEMPLATE_EXPR_OPENER = /\$\{/g;
@@ -96,7 +93,7 @@ function escapeTemplateString(code: string): string {
 type Options = [
   {
     // This option exists so that rules like type-annotation-spacing can exist without every test needing a prettier-ignore
-    formatWithPrettier?: boolean;
+    formatWithOxfmt?: boolean;
   },
 ];
 
@@ -104,17 +101,12 @@ type MessageIds =
   | 'invalidFormatting'
   | 'invalidFormattingErrorTest'
   | 'noUnnecessaryNoFormat'
-  | 'prettierException'
+  | 'oxfmtException'
   | 'singleLineQuotes'
   | 'templateLiteralEmptyEnds'
   | 'templateLiteralLastLineIndent'
   | 'templateStringMinimumIndent'
   | 'templateStringRequiresIndent';
-
-type FormattingError = {
-  codeFrame: string;
-  loc?: unknown;
-} & Error;
 
 export default createRule<Options, MessageIds>({
   name: 'plugin-test-formatting',
@@ -132,8 +124,7 @@ export default createRule<Options, MessageIds>({
         'This snippet should be formatted correctly. Use the fixer to format the code. Note that the automated fixer may break your test locations.',
       noUnnecessaryNoFormat:
         'noFormat is unnecessary here. Use the fixer to remove it.',
-      prettierException:
-        'Prettier was unable to format this snippet: {{message}}',
+      oxfmtException: 'Oxfmt was unable to format this snippet: {{message}}',
       singleLineQuotes: 'Use quotes (\' or ") for single line tests.',
       templateLiteralEmptyEnds:
         'Template literals must start and end with an empty line.',
@@ -149,10 +140,10 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          formatWithPrettier: {
+          formatWithOxfmt: {
             type: 'boolean',
             description:
-              'Whether to enforce formatting of code snippets using Prettier.',
+              'Whether to enforce formatting of code snippets using Oxfmt.',
           },
         },
       },
@@ -160,34 +151,38 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      formatWithPrettier: true,
+      formatWithOxfmt: true,
     },
   ],
-  create(context, [{ formatWithPrettier }]) {
+  create(context, [{ formatWithOxfmt }]) {
     const services = ESLintUtils.getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     const checkedObjects = new Set<TSESTree.ObjectExpression>();
 
-    function getCodeFormatted(code: string): string | FormattingError {
+    function getCodeFormatted(code: string): string | Error {
       try {
-        return prettier
-          .format(code, {
-            ...prettierConfig,
-            parser: 'typescript',
-          })
-          .trimEnd(); // prettier will insert a new line at the end of the code
+        const result = oxfmtSync.format(
+          'file.tsx',
+          code,
+          oxfmtConfig as oxfmt.FormatOptions,
+        );
+
+        const parsingError = result.errors.find(
+          e => e.severity.toString() === 'Error',
+        );
+
+        if (parsingError) {
+          throw new SyntaxError(parsingError.message);
+        }
+
+        return result.code.trimEnd(); // oxfmt will insert a new line at the end of the code
       } catch (ex) {
-        // ex instanceof Error is false as of @prettier/sync@0.3.0, as is ex instanceof SyntaxError
-        if (
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          (ex as Partial<Error> | undefined)?.constructor?.name !==
-          'SyntaxError'
-        ) {
+        if (!(ex instanceof SyntaxError)) {
           throw ex;
         }
 
-        return ex as FormattingError;
+        return ex;
       }
     }
 
@@ -195,7 +190,7 @@ export default createRule<Options, MessageIds>({
       code: string,
       location: TSESTree.Node,
     ): string | null {
-      if (formatWithPrettier === false) {
+      if (formatWithOxfmt === false) {
         return null;
       }
 
@@ -204,20 +199,11 @@ export default createRule<Options, MessageIds>({
         return formatted;
       }
 
-      let message = formatted.message;
-
-      if (formatted.codeFrame) {
-        message = message.replace(`\n${formatted.codeFrame}`, '');
-      }
-      if (formatted.loc) {
-        message = message.replace(/ \(\d+:\d+\)$/, '');
-      }
-
       context.report({
         node: location,
-        messageId: 'prettierException',
+        messageId: 'oxfmtException',
         data: {
-          message,
+          message: formatted.message,
         },
       });
       return null;
@@ -319,7 +305,7 @@ export default createRule<Options, MessageIds>({
 
       const lines = text.split('\n');
       const lastLine = lines[lines.length - 1];
-      // prettier will trim out the end of line on save, but eslint will check before then
+      // oxfmt will trim out the end of line on save, but eslint will check before then
       const isStartEmpty = lines[0].trimEnd() === '';
       // last line can be indented
       const isEndEmpty = lastLine.trimStart() === '';

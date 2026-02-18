@@ -167,7 +167,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     `
       function ItemComponent<T>(props: { item: T; onSelect: (item: T) => void }) {}
     `,
-    `
+    noFormat`
       interface ItemProps<T> {
         item: readonly T;
         onSelect: (item: T) => void;

@@ -1,5 +1,5 @@
 import * as parser from '@typescript-eslint/parser';
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import { TSESLint } from '@typescript-eslint/utils';
 
 import type { OptionString } from '../../src/rules/array-type';
@@ -1292,7 +1292,7 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       output: 'let x: undefined[] = [undefined] as undefined[];',
     },
     {
-      code: "let y: string[] = <Array<string>>['2'];",
+      code: noFormat`let y: string[] = <Array<string>>['2'];`,
       errors: [
         {
           column: 20,
@@ -1493,7 +1493,7 @@ function barFunction(bar: Array<ArrayClass<String>>) {
       output: 'let x: undefined[] = [undefined] as undefined[];',
     },
     {
-      code: "let y: string[] = <Array<string>>['2'];",
+      code: noFormat`let y: string[] = <Array<string>>['2'];`,
       errors: [
         {
           column: 20,
@@ -1675,7 +1675,7 @@ function fooFunction(foo: ArrayClass<string>[]) {
       output: 'let x: Array<number> = [1] as Array<number>;',
     },
     {
-      code: "let y: string[] = <Array<string>>['2'];",
+      code: noFormat`let y: string[] = <Array<string>>['2'];`,
       errors: [
         {
           column: 8,

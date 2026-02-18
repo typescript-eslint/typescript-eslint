@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "arrowParens": "avoid",
+  "bracketSpacing": true,
+  "endOfLine": "lf",
+  "bracketSameLine": false,
+  "jsxSingleQuote": false,
+  "printWidth": 80,
+  "proseWrap": "preserve",
+  "quoteProps": "as-needed",
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "useTabs": false,
+  "experimentalSortPackageJson": false,
+  "ignorePatterns": [
+    "**/dist",
+    "**/coverage",
+    "**/.vscode",
+    "**/.nyc_output",
+    "**/.vs",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "**/fixtures/**",
+    "CHANGELOG.md",
+    "packages/website/.docusaurus",
+    "packages/website/build",
+    "/.nx/cache",
+    "/.nx/workspace-data"
+  ]
+}

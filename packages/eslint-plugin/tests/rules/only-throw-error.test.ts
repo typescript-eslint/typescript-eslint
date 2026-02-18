@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/only-throw-error';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -509,7 +511,7 @@ throw new CustomError();
       ],
     },
     {
-      code: `
+      code: noFormat`
 function foo<T>() {
   const res: T;
   throw res;

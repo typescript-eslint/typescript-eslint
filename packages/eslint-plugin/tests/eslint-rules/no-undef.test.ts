@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 
@@ -20,7 +20,7 @@ ruleTester.run('no-undef', rule, {
       ],
     },
     {
-      code: 'a?.b = 5;',
+      code: noFormat`a?.b = 5;`,
       errors: [
         {
           data: {
@@ -31,7 +31,7 @@ ruleTester.run('no-undef', rule, {
       ],
     },
     {
-      code: 'a()?.b = 5;',
+      code: noFormat`a()?.b = 5;`,
       errors: [
         {
           data: {

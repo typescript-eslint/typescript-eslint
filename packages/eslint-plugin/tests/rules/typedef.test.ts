@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/typedef';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -341,7 +343,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: `
+      code: noFormat`
         type Test = {
           [i: string];
         };
@@ -908,7 +910,7 @@ class ClassName {
       ],
     },
     {
-      code: `
+      code: noFormat`
         type Test = {
           [i: string];
         };
@@ -943,7 +945,7 @@ class ClassName {
       ],
     },
     {
-      code: `
+      code: noFormat`
         interface Test {
           [i: string];
         }
