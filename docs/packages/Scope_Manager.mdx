@@ -23,27 +23,27 @@ interface AnalyzeOptions {
   /**
    * Known visitor keys.
    */
-  childVisitorKeys?: Record<string, string[]> | null;
+  childVisitorKeys?: Record<string, string[]> | null | undefined;
 
   /**
    * Whether the whole script is executed under node.js environment.
    * When enabled, the scope manager adds a function scope immediately following the global scope.
    * Defaults to `false`.
    */
-  globalReturn?: boolean;
+  globalReturn?: boolean | undefined;
 
   /**
    * Implied strict mode.
    * Defaults to `false`.
    */
-  impliedStrict?: boolean;
+  impliedStrict?: boolean | undefined;
 
   /**
    * The identifier that's used for JSX Element creation (after transpilation).
    * This should not be a member expression - just the root identifier (i.e. use "React" instead of "React.createElement").
    * Defaults to `"React"`.
    */
-  jsxPragma?: string;
+  jsxPragma?: string | undefined;
 
   /**
    * The identifier that's used for JSX fragment elements (after transpilation).
@@ -51,7 +51,7 @@ interface AnalyzeOptions {
    * This should not be a member expression - just the root identifier (i.e. use "h" instead of "h.Fragment").
    * Defaults to `null`.
    */
-  jsxFragmentName?: string | null;
+  jsxFragmentName?: string | null | undefined;
 
   /**
    * The lib used by the project.
@@ -60,18 +60,18 @@ interface AnalyzeOptions {
    *
    * Defaults to ['esnext'].
    */
-  lib?: Lib[];
+  lib?: Lib[] | undefined;
 
   /**
    * The source type of the script.
    */
-  sourceType?: 'script' | 'module';
+  sourceType?: 'script' | 'module' | undefined;
 
   /**
    * Emit design-type metadata for decorated declarations in source.
    * Defaults to `false`.
    */
-  emitDecoratorMetadata?: boolean;
+  emitDecoratorMetadata?: boolean | undefined;
 }
 ```
 

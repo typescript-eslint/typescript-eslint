@@ -15,7 +15,7 @@ import {
 
 export type Options = [
   {
-    allow?: TypeOrValueSpecifier[];
+    allow?: TypeOrValueSpecifier[] | undefined;
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
     treatMethodsAsReadonly?: boolean;

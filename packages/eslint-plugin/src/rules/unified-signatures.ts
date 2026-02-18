@@ -538,7 +538,7 @@ export default createRule<Options, MessageIds>({
     interface Scope {
       overloads: Map<string, OverloadNode[]>;
       parent?: ScopeNode;
-      typeParameters?: TSESTree.TSTypeParameterDeclaration;
+      typeParameters?: TSESTree.TSTypeParameterDeclaration | undefined;
     }
 
     const scopes: Scope[] = [];

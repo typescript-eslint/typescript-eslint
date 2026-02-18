@@ -111,9 +111,9 @@ function createRule<
   Options,
   PluginDocs
 > {
+  const internalDefaultOptions = (defaultOptions ?? []) as Readonly<Options>;
   const resolvedDefaultOptions = (meta.defaultOptions ??
-    defaultOptions ??
-    []) as Readonly<Options>;
+    internalDefaultOptions) as Readonly<Options>;
   return {
     create(context: Readonly<RuleContext<MessageIds, Options>>): RuleListener {
       const optionsWithDefault = applyDefault(
@@ -122,9 +122,9 @@ function createRule<
       );
       return create(context, optionsWithDefault);
     },
-    defaultOptions,
+    defaultOptions: internalDefaultOptions,
     meta,
-    name,
+    ...(name != null && { name }),
   };
 }
 
