@@ -385,14 +385,14 @@ export default createRule<Options, MessageIds>({
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
     ): IsTypeParameter {
       if (typeParameters == null) {
-        return (() => false) as IsTypeParameter;
+        return () => false;
       }
 
       const set = new Set<string>();
       for (const t of typeParameters.params) {
         set.add(t.name.name);
       }
-      return (typeName => set.has(typeName)) as IsTypeParameter;
+      return typeName => set.has(typeName);
     }
 
     /** True if any of the outer type parameters are used in a signature. */

@@ -129,7 +129,7 @@ export default createRule<Options, MessageIds>({
           const reference = node.moduleReference;
 
           if (reference.type === AST_NODE_TYPES.TSExternalModuleReference) {
-            hasMatchingReference(reference.expression as TSESTree.Literal);
+            hasMatchingReference(reference.expression);
           }
         }
       },
