@@ -653,12 +653,12 @@ const {
       code: 'const x: { y: Set<Set<Set<string>>> } = { y: new Set<Set<Set<any>>>() };',
       errors: [
         {
-          column: 43,
+          column: 7,
           data: {
-            receiver: '`Set<Set<Set<string>>>`',
-            sender: '`Set<Set<Set<any>>>`',
+            receiver: '`{ y: Set<Set<Set<string>>>; }`',
+            sender: '`{ y: Set<Set<Set<any>>>; }`',
           },
-          endColumn: 70,
+          endColumn: 72,
           messageId: 'unsafeAssignment',
         },
       ],
@@ -734,10 +734,14 @@ const foo: Foo = { bar };
       `,
       errors: [
         {
-          column: 20,
-          endColumn: 23,
+          column: 7,
+          data: {
+            receiver: '`Foo`',
+            sender: '`{ bar: any; }`',
+          },
+          endColumn: 25,
           line: 4,
-          messageId: 'anyAssignment',
+          messageId: 'unsafeAssignment',
         },
       ],
     },

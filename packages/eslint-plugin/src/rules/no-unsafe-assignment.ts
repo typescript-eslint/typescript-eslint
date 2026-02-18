@@ -65,6 +65,10 @@ export default createRule({
       'noImplicitThis',
     );
 
+    // Track object expressions that were already reported as unsafe assignments
+    // to avoid duplicate reports from the Property selector.
+    const reportedObjectExpressions = new Set<TSESTree.ObjectExpression>();
+
     // returns true if the assignment reported
     function checkArrayDestructureHelper(
       receiverNode: TSESTree.Node,
@@ -308,6 +312,11 @@ export default createRule({
         messageId: 'unsafeAssignment',
         data: createData(sender, receiver),
       });
+
+      if (senderNode.type === AST_NODE_TYPES.ObjectExpression) {
+        reportedObjectExpressions.add(senderNode);
+      }
+
       return true;
     }
 
@@ -405,6 +414,14 @@ export default createRule({
           node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
         ) {
           // handled by other selector
+          return;
+        }
+
+        if (
+          node.parent.type === AST_NODE_TYPES.ObjectExpression &&
+          reportedObjectExpressions.has(node.parent)
+        ) {
+          // already reported by the parent assignment check
           return;
         }
 
