@@ -31,10 +31,10 @@
     "prettier": "3.8.0"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^3.2.4",
-    "eslint": "*",
-    "rimraf": "*",
-    "vitest": "^3.2.4"
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
+    "rimraf": "catalog:",
+    "vitest": "catalog:"
   },
   "nx": {
     "name": "eslint-plugin-internal",
