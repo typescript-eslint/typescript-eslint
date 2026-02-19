@@ -57,12 +57,12 @@
   "devDependencies": {
     "@types/babel__code-frame": "^7.0.6",
     "@typescript-eslint/parser": "workspace:*",
-    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/coverage-v8": "^4.0.18",
     "ajv": "^6.12.6",
     "eslint": "*",
     "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.18"
   },
   "funding": {
     "type": "opencollective",
