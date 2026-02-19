@@ -63,12 +63,12 @@
     "ts-api-utils": "^2.4.0"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/coverage-v8": "^4.0.18",
     "eslint": "*",
     "glob": "*",
     "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.18"
   },
   "peerDependencies": {
     "typescript": ">=4.8.4 <6.0.0"

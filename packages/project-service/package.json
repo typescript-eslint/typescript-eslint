@@ -54,10 +54,10 @@
     "debug": "^4.4.3"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/coverage-v8": "^4.0.18",
     "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.18"
   },
   "funding": {
     "type": "opencollective",
