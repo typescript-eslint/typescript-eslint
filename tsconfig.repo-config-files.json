@@ -16,7 +16,8 @@
     "eslint.config.mjs",
     "knip.ts",
     ".github/**/*.js",
-    "package/website"
+    "package/website",
+    "./.oxfmtrc.json"
   ],
   "references": [
     {

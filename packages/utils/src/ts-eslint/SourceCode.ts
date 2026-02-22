@@ -395,14 +395,11 @@ namespace SourceCode {
   export type VisitorKeys = Parser.VisitorKeys;
 
   export type FilterPredicate = (token: TSESTree.Token) => boolean;
-  export type GetFilterPredicate<Filter, Default> =
-    // https://github.com/prettier/prettier/issues/14275
-    // prettier-ignore
-    Filter extends ((
-      token: TSESTree.Token,
-    ) => token is infer U extends TSESTree.Token)
-      ? U
-      : Default;
+  export type GetFilterPredicate<Filter, Default> = Filter extends ((
+    token: TSESTree.Token,
+  ) => token is infer U extends TSESTree.Token)
+    ? U
+    : Default;
   export type GetFilterPredicateFromOptions<Options, Default> =
     Options extends { filter?: FilterPredicate }
       ? GetFilterPredicate<Options['filter'], Default>

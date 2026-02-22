@@ -4,11 +4,11 @@ import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
 import { schemaToTypes } from '@typescript-eslint/rule-schema-to-typescript-types';
 import { EOL } from 'node:os';
-import * as path from 'node:path';
-import prettier from 'prettier';
+import * as oxfmt from 'oxfmt';
 
 import type { RuleDocsPage } from '../RuleDocsPage';
 
+import oxfmtConfig from '../../../../../.oxfmtrc.json' with { type: 'json' };
 import { nodeIsHeading } from '../../utils/nodes';
 import { convertToPlaygroundHash } from '../../utils/rules';
 
@@ -22,29 +22,6 @@ const COMPLICATED_RULE_OPTIONS = new Set([
   'member-ordering',
   'naming-convention',
 ]);
-
-const PRETTIER_CONFIG_PATH = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  '..',
-  '..',
-  '.prettierrc.json',
-);
-const lazyPrettierConfig = (async () => {
-  const filepath = path.join(__dirname, 'file.ts');
-  const config = await prettier.resolveConfig(filepath, {
-    config: PRETTIER_CONFIG_PATH,
-  });
-  if (config == null) {
-    throw new Error('Unable to resolve prettier config');
-  }
-  return {
-    ...config,
-    filepath,
-  };
-})();
 
 export async function insertNewRuleReferences(
   page: RuleDocsPage,
@@ -149,7 +126,6 @@ export async function insertNewRuleReferences(
       'This rule is not configurable.',
     );
   } else if (!COMPLICATED_RULE_OPTIONS.has(page.file.stem)) {
-    const prettierConfig = await lazyPrettierConfig;
     page.spliceChildren(
       page.headingIndices.options + 1,
       0,
@@ -160,12 +136,19 @@ export async function insertNewRuleReferences(
         lang: 'ts',
         type: 'code',
         value: [
-          await prettier.format(
+          await oxfmt.format(
+            'types.ts',
             schemaToTypes(page.rule.meta.schema),
-            prettierConfig,
+            oxfmtConfig as oxfmt.FormatOptions,
           ),
-          await prettier.format(getRuleDefaultOptions(page), prettierConfig),
+
+          await oxfmt.format(
+            'options.ts',
+            getRuleDefaultOptions(page),
+            oxfmtConfig as oxfmt.FormatOptions,
+          ),
         ]
+          .map(result => result.code)
           .join(EOL)
           .trim(),
       } as mdast.Code,

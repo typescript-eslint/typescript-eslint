@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/class-methods-use-this';
 
@@ -631,7 +631,7 @@ class Foo implements Bar {
       options: [{ ignoreClassesThatImplementAnInterface: true }],
     },
     {
-      code: `
+      code: noFormat`
 class Foo implements Bar {
   set setter() {}
 }

@@ -161,7 +161,7 @@ declare const yoloHandler: (x: any) => void;
 Promise.reject(new Error('I will reject!')).catch(yoloHandler);
     `,
     // type assertion is not a function literal.
-    `
+    noFormat`
 type InvalidHandler = (arg: any) => void;
 Promise.resolve().catch(<InvalidHandler>(
   function (err /* awkward spot for comment */) {

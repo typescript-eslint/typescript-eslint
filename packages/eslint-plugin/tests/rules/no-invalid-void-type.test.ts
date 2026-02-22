@@ -118,7 +118,7 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'type Generic<T> = [T];',
     'type voidPromiseUnion = void | Promise<void>;',
     'type promiseNeverUnion = Promise<void> | never;',
-    'const arrowGeneric1 = <T = void,>(arg: T) => {};',
+    'const arrowGeneric1 = <T = void>(arg: T) => {};',
     'declare function functionDeclaration1<T = void>(arg: T): void;',
     `
       class ClassName {
@@ -393,7 +393,7 @@ export function f(x?: string): string | void {
       ],
     },
     {
-      code: 'let value = <void>undefined;',
+      code: noFormat`let value = <void>undefined;`,
       errors: [
         {
           column: 14,

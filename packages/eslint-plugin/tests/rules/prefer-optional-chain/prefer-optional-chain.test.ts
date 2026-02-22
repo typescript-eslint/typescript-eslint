@@ -3273,7 +3273,7 @@ const baz = foo?.bar;
         languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       },
       'foo[x++] && foo[x++].bar;',
-      'foo[yield x] && foo[yield x].bar;',
+      noFormat`foo[yield x] && foo[yield x].bar;`,
       'a = b && (a = b).wtf;',
       // TODO - should we handle this?
       '(x || y) != null && (x || y).foo;',
