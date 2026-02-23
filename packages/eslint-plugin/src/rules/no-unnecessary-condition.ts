@@ -543,7 +543,6 @@ export default createRule<Options, MessageId>({
     function checkIfWhileLoopIsNecessaryConditional(
       node: TSESTree.WhileStatement,
     ): void {
-
       checkIfLoopIsNecessaryConditional(node);
     }
 
