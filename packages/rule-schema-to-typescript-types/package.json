@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "8.56.0",
+  "version": "8.56.1",
   "description": "Converts ESLint rule schemas to equivalent TypeScript type strings.",
   "type": "module",
   "exports": {

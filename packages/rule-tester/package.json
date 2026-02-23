@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-tester",
-  "version": "8.56.0",
+  "version": "8.56.1",
   "description": "Tooling to test ESLint rules",
   "files": [
     "dist",
