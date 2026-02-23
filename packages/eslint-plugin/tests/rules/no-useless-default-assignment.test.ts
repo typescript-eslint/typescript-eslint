@@ -309,6 +309,11 @@ ruleTester.run('no-useless-default-assignment', rule, {
       const foos: Foos[] = [];
       foos.flatMap(({ bar = 42 }) => bar);
     `,
+    `
+      function f(this: void, { bar = 42 }: { bar?: number }) {
+        return bar;
+      }
+    `,
   ],
   invalid: [
     {
