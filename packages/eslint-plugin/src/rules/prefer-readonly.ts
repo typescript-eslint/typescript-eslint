@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
+  getStaticMemberAccessValue,
   getParserServices,
   nullThrows,
   typeIsOrHasBaseType,
@@ -311,7 +312,19 @@ export default createRule<Options, MessageIds>({
               name: context.sourceCode.getText(nameNode),
             },
             *fix(fixer) {
-              yield fixer.insertTextBefore(nameNode, 'readonly ');
+              const readonlyInsertionTarget =
+                esNode.type === AST_NODE_TYPES.PropertyDefinition &&
+                esNode.computed
+                  ? nullThrows(
+                      context.sourceCode.getTokenBefore(nameNode),
+                      'Expected to find a token before computed property name',
+                    )
+                  : nameNode;
+
+              yield fixer.insertTextBefore(
+                readonlyInsertionTarget,
+                'readonly ',
+              );
 
               if (typeAnnotation) {
                 yield fixer.insertTextAfter(nameNode, `: ${typeAnnotation}`);
@@ -336,15 +349,33 @@ export default createRule<Options, MessageIds>({
         }
       },
       MemberExpression(node): void {
-        if (classScopeStack.length !== 0 && !node.computed) {
+        if (classScopeStack.length === 0) {
+          return;
+        }
+
+        const classScope = classScopeStack[classScopeStack.length - 1];
+
+        if (!node.computed) {
           const tsNode = services.esTreeNodeToTSNodeMap.get(
             node,
           ) as ts.PropertyAccessExpression;
-          handlePropertyAccessExpression(
-            tsNode,
-            tsNode.parent,
-            classScopeStack[classScopeStack.length - 1],
-          );
+          handlePropertyAccessExpression(tsNode, tsNode.parent, classScope);
+        } else {
+          const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+          if (
+            ts.isElementAccessExpression(tsNode) &&
+            ts.isBinaryExpression(tsNode.parent) &&
+            tsNode.parent.left === tsNode &&
+            tsutils.isAssignmentKind(tsNode.parent.operatorToken.kind)
+          ) {
+            const memberName = getStaticMemberAccessValue(node, context);
+            if (typeof memberName === 'string') {
+              classScope.addVariableModificationByName(
+                tsNode.expression,
+                memberName,
+              );
+            }
+          }
         }
       },
     };
@@ -411,8 +442,7 @@ class ClassScope {
       tsutils.isModifierFlagSet(
         node,
         ts.ModifierFlags.Accessor | ts.ModifierFlags.Readonly,
-      ) ||
-      ts.isComputedPropertyName(node.name)
+      )
     ) {
       return;
     }
@@ -425,14 +455,26 @@ class ClassScope {
       return;
     }
 
+    const memberName = getMemberName(node.name);
+    if (memberName == null) {
+      return;
+    }
+
     (tsutils.isModifierFlagSet(node, ts.ModifierFlags.Static)
       ? this.privateModifiableStatics
       : this.privateModifiableMembers
-    ).set(node.name.getText(), node);
+    ).set(memberName, node);
   }
 
   public addVariableModification(node: ts.PropertyAccessExpression): void {
-    const modifierType = this.checker.getTypeAtLocation(node.expression);
+    this.addVariableModificationByName(node.expression, node.name.text);
+  }
+
+  public addVariableModificationByName(
+    expression: ts.Expression,
+    memberName: string,
+  ): void {
+    const modifierType = this.checker.getTypeAtLocation(expression);
 
     const relationOfModifierTypeToClass =
       this.getTypeToClassRelation(modifierType);
@@ -441,7 +483,7 @@ class ClassScope {
       relationOfModifierTypeToClass === TypeToClassRelation.Instance &&
       this.constructorScopeDepth === DIRECTLY_INSIDE_CONSTRUCTOR
     ) {
-      this.memberVariableWithConstructorModifications.add(node.name.text);
+      this.memberVariableWithConstructorModifications.add(memberName);
       return;
     }
 
@@ -449,13 +491,13 @@ class ClassScope {
       relationOfModifierTypeToClass === TypeToClassRelation.Instance ||
       relationOfModifierTypeToClass === TypeToClassRelation.ClassAndInstance
     ) {
-      this.memberVariableModifications.add(node.name.text);
+      this.memberVariableModifications.add(memberName);
     }
     if (
       relationOfModifierTypeToClass === TypeToClassRelation.Class ||
       relationOfModifierTypeToClass === TypeToClassRelation.ClassAndInstance
     ) {
-      this.staticVariableModifications.add(node.name.text);
+      this.staticVariableModifications.add(memberName);
     }
   }
 
@@ -553,4 +595,34 @@ class ClassScope {
   public memberHasConstructorModifications(name: string) {
     return this.memberVariableWithConstructorModifications.has(name);
   }
+}
+
+function getMemberName(name: ts.DeclarationName): string | undefined {
+  if (
+    ts.isIdentifier(name) ||
+    ts.isPrivateIdentifier(name) ||
+    ts.isStringLiteral(name) ||
+    ts.isNoSubstitutionTemplateLiteral(name) ||
+    ts.isNumericLiteral(name)
+  ) {
+    return name.text;
+  }
+
+  if (ts.isComputedPropertyName(name)) {
+    const expression = name.expression;
+
+    if (ts.isNumericLiteral(expression)) {
+      return expression.text;
+    }
+
+    if (
+      ts.isPropertyAccessExpression(expression) &&
+      ts.isIdentifier(expression.expression) &&
+      expression.expression.text === 'Symbol'
+    ) {
+      return expression.getText();
+    }
+  }
+
+  return undefined;
 }
