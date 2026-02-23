@@ -543,13 +543,6 @@ export default createRule<Options, MessageId>({
     function checkIfWhileLoopIsNecessaryConditional(
       node: TSESTree.WhileStatement,
     ): void {
-      if (
-        allowConstantLoopConditionsOption === 'only-allowed-literals' &&
-        node.test.type === AST_NODE_TYPES.Literal &&
-        constantLoopConditionsAllowedLiterals.has(node.test.value)
-      ) {
-        return;
-      }
 
       checkIfLoopIsNecessaryConditional(node);
     }
@@ -565,6 +558,14 @@ export default createRule<Options, MessageId>({
     ): void {
       if (node.test == null) {
         // e.g. `for(;;)`
+        return;
+      }
+
+      if (
+        allowConstantLoopConditionsOption === 'only-allowed-literals' &&
+        node.test.type === AST_NODE_TYPES.Literal &&
+        constantLoopConditionsAllowedLiterals.has(node.test.value)
+      ) {
         return;
       }
 
