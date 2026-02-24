@@ -165,7 +165,7 @@ export default createRule<Options, MessageId>({
             }
 
             const params = signatures[0].getParameters();
-            if (paramIndex < params.length) {
+            if (paramIndex >= 0 && paramIndex < params.length) {
               const paramSymbol = params[paramIndex];
               if (
                 paramSymbol.valueDeclaration &&
@@ -293,6 +293,9 @@ export default createRule<Options, MessageId>({
         const params = signature.getParameters();
         if (signature.thisParameter) {
           paramIndex--;
+        }
+        if (paramIndex < 0 || paramIndex >= params.length) {
+          return null;
         }
         return checker.getTypeOfSymbol(params[paramIndex]);
       }
