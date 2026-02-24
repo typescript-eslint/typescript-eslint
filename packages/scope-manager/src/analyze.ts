@@ -15,27 +15,27 @@ export interface AnalyzeOptions {
   /**
    * Known visitor keys.
    */
-  childVisitorKeys?: ReferencerOptions['childVisitorKeys'];
+  childVisitorKeys?: ReferencerOptions['childVisitorKeys'] | undefined;
 
   /**
    * Whether the whole script is executed under node.js environment.
    * When enabled, the scope manager adds a function scope immediately following the global scope.
    * Defaults to `false`.
    */
-  globalReturn?: boolean;
+  globalReturn?: boolean | undefined;
 
   /**
    * Implied strict mode.
    * Defaults to `false`.
    */
-  impliedStrict?: boolean;
+  impliedStrict?: boolean | undefined;
 
   /**
    * The identifier that's used for JSX Element creation (after transpilation).
    * This should not be a member expression - just the root identifier (i.e. use "React" instead of "React.createElement").
    * Defaults to `"React"`.
    */
-  jsxPragma?: string | null;
+  jsxPragma?: string | null | undefined;
 
   /**
    * The identifier that's used for JSX fragment elements (after transpilation).
@@ -43,7 +43,7 @@ export interface AnalyzeOptions {
    * This should not be a member expression - just the root identifier (i.e. use "h" instead of "h.Fragment").
    * Defaults to `null`.
    */
-  jsxFragmentName?: string | null;
+  jsxFragmentName?: string | null | undefined;
 
   /**
    * The lib used by the project.
@@ -52,12 +52,12 @@ export interface AnalyzeOptions {
    *
    * https://www.typescriptlang.org/tsconfig#lib
    */
-  lib?: Lib[];
+  lib?: Lib[] | undefined;
 
   /**
    * The source type of the script.
    */
-  sourceType?: SourceType;
+  sourceType?: SourceType | undefined;
 
   // TODO - remove this in v10
   /**
@@ -66,7 +66,7 @@ export interface AnalyzeOptions {
   emitDecoratorMetadata?: boolean;
 }
 
-const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
+const DEFAULT_OPTIONS = {
   childVisitorKeys: visitorKeys,
   emitDecoratorMetadata: false,
   globalReturn: false,
@@ -75,7 +75,7 @@ const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
   jsxPragma: 'React',
   lib: ['es2018'],
   sourceType: 'script',
-};
+} satisfies Required<AnalyzeOptions>;
 
 /**
  * Takes an AST and returns the analyzed scopes.
@@ -84,7 +84,7 @@ export function analyze(
   tree: TSESTree.Program,
   providedOptions?: AnalyzeOptions,
 ): ScopeManager {
-  const options: Required<AnalyzeOptions> = {
+  const options = {
     childVisitorKeys:
       providedOptions?.childVisitorKeys ?? DEFAULT_OPTIONS.childVisitorKeys,
     emitDecoratorMetadata: false,

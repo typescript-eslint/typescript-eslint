@@ -438,7 +438,7 @@ export function isComputedProperty(
  * @param node ts.Node to be checked
  */
 export function isOptional(node: {
-  questionToken?: ts.QuestionToken;
+  questionToken?: ts.QuestionToken | undefined;
 }): boolean {
   return !!node.questionToken;
 }

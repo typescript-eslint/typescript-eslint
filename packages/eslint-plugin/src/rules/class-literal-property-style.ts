@@ -19,7 +19,7 @@ export type MessageIds =
   | 'preferGetterStyleSuggestion';
 
 interface NodeWithModifiers {
-  accessibility?: TSESTree.Accessibility;
+  accessibility?: TSESTree.Accessibility | undefined;
   static: boolean;
 }
 

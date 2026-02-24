@@ -68,7 +68,7 @@ export function createIsolatedProgram(
     [parseSettings.filePath],
     {
       jsDocParsingMode: parseSettings.jsDocParsingMode,
-      jsx: parseSettings.jsx ? ts.JsxEmit.Preserve : undefined,
+      ...(parseSettings.jsx && { jsx: ts.JsxEmit.Preserve }),
       noResolve: true,
       target: ts.ScriptTarget.Latest,
       ...createDefaultCompilerOptionsFromExtra(parseSettings),
