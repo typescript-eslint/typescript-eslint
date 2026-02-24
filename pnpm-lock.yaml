@@ -210,7 +210,7 @@ importers:
         specifier: 22.3.3
         version: 22.3.3(@swc/core@1.15.8(@swc/helpers@0.5.17))
       prettier:
-        specifier: 3.8.0
+        specifier: 'catalog:'
         version: 3.8.0
       rimraf:
         specifier: 'catalog:'
@@ -403,7 +403,7 @@ importers:
         specifier: workspace:*
         version: link:../utils
       prettier:
-        specifier: 3.8.0
+        specifier: 'catalog:'
         version: 3.8.0
     devDependencies:
       '@vitest/coverage-v8':
@@ -886,9 +886,6 @@ importers:
       lz-string:
         specifier: ^1.5.0
         version: 1.5.0
-      prettier:
-        specifier: 3.8.0
-        version: 3.8.0
       prism-react-renderer:
         specifier: ^2.4.1
         version: 2.4.1(react@18.3.1)
@@ -971,6 +968,9 @@ importers:
       monaco-editor:
         specifier: ~0.54.0
         version: 0.54.0
+      prettier:
+        specifier: 'catalog:'
+        version: 3.8.0
       prismjs:
         specifier: 1.30.0
         version: 1.30.0

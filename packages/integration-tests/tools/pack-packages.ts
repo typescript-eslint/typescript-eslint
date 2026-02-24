@@ -239,5 +239,13 @@ async function getPnpmCatalog() {
 
   const parsed: PnpmWorkspace = yaml.parse(pnpmWorkspace);
 
+  const expectedPackages = ['eslint', 'typescript', 'vitest'];
+
+  for (const packageName of expectedPackages) {
+    if (!(packageName in parsed.catalog)) {
+      throw new Error(`Package ${packageName} not found in pnpm catalog`);
+    }
+  }
+
   return parsed.catalog;
 }

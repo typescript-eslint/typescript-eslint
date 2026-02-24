@@ -28,7 +28,7 @@
     "@typescript-eslint/scope-manager": "workspace:*",
     "@typescript-eslint/type-utils": "workspace:*",
     "@typescript-eslint/utils": "workspace:*",
-    "prettier": "3.8.0"
+    "prettier": "catalog:"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "catalog:",
