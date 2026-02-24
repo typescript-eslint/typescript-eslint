@@ -207,7 +207,7 @@ function noFixContext(context: Context): Context {
   // we can't directly proxy `context` because its `report` property is non-configurable
   // and non-writable. So we proxy `customContext` and redirect all
   // property access to the original context except for `report`
-  return new Proxy<Context>(customContext as typeof context, {
+  return new Proxy(customContext as typeof context, {
     get(target, path, receiver): unknown {
       if (path !== 'report') {
         return Reflect.get(context, path, receiver);

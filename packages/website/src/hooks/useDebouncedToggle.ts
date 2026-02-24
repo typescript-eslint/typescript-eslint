@@ -4,7 +4,7 @@ export function useDebouncedToggle<T>(
   value: T,
   timeout = 1000,
 ): [T, (data: T) => void] {
-  const [state, setState] = useState<T>(value);
+  const [state, setState] = useState(value);
   const timeoutIdRef = useRef<NodeJS.Timeout>();
 
   const update = useCallback(

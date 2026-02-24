@@ -4,12 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import {
-  createRule,
-  findFirstResult,
-  getParserServices,
-  isTypeReferenceType,
-} from '../util';
+import { createRule, findFirstResult, getParserServices } from '../util';
 
 type ParameterCapableTSNode =
   | ts.CallExpression
@@ -22,7 +17,7 @@ type ParameterCapableTSNode =
   | ts.TypeQueryNode
   | ts.TypeReferenceNode;
 
-export type MessageIds = 'unnecessaryTypeParameter';
+export type MessageIds = 'canBeInferred' | 'isDefaultParameterValue';
 
 export default createRule<[], MessageIds>({
   name: 'no-unnecessary-type-arguments',
@@ -35,7 +30,9 @@ export default createRule<[], MessageIds>({
     },
     fixable: 'code',
     messages: {
-      unnecessaryTypeParameter:
+      canBeInferred:
+        'This value can be trivially inferred for this type parameter, so it can be omitted.',
+      isDefaultParameterValue:
         'This is the default value for this type parameter, so it can be omitted.',
     },
     schema: [],
@@ -45,66 +42,133 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function getTypeForComparison(type: ts.Type): {
-      type: ts.Type;
-      typeArguments: readonly ts.Type[];
-    } {
-      if (isTypeReferenceType(type)) {
-        return {
-          type: type.target,
-          typeArguments: checker.getTypeArguments(type),
-        };
+    function isEmptyObjectType(type: ts.Type) {
+      if (!(type.flags & ts.TypeFlags.Object)) {
+        return false;
       }
-      return {
-        type,
-        typeArguments: [],
-      };
+
+      if (type.getProperties().length) {
+        return false;
+      }
+
+      if (type.getStringIndexType() || type.getNumberIndexType()) {
+        return false;
+      }
+
+      return true;
+    }
+
+    function areTypesEquivalent(a: ts.Type, b: ts.Type) {
+      // If either type is `any` (including when they're unresolved) or `{}`,
+      // they should be considered equivalent if they're explicitly the same reference
+      if (
+        a.flags & ts.TypeFlags.Any ||
+        b.flags & ts.TypeFlags.Any ||
+        isEmptyObjectType(a) ||
+        isEmptyObjectType(b)
+      ) {
+        return a === b;
+      }
+
+      return (
+        checker.isTypeAssignableTo(a, b) && checker.isTypeAssignableTo(b, a)
+      );
     }
 
     function checkTSArgsAndParameters(
-      esParameters: TSESTree.TSTypeParameterInstantiation,
+      typeArguments: TSESTree.TSTypeParameterInstantiation,
       typeParameters: readonly ts.TypeParameterDeclaration[],
+      tsNode: ParameterCapableTSNode,
     ): void {
       // Just check the last one. Must specify previous type parameters if the last one is specified.
-      const i = esParameters.params.length - 1;
-      const arg = esParameters.params[i];
-      const param = typeParameters.at(i);
-      if (!param?.default) {
+      const i = typeArguments.params.length - 1;
+      const typeArgument = typeArguments.params[i];
+      const typeParameter = typeParameters.at(i);
+
+      if (!typeParameter) {
         return;
       }
 
-      // TODO: would like checker.areTypesEquivalent. https://github.com/Microsoft/TypeScript/issues/13502
-      const defaultType = checker.getTypeAtLocation(param.default);
-      const argType = services.getTypeAtLocation(arg);
-      // this check should handle some of the most simple cases of like strings, numbers, etc
-      if (defaultType !== argType) {
-        // For more complex types (like aliases to generic object types) - TS won't always create a
-        // global shared type object for the type - so we need to resort to manually comparing the
-        // reference type and the passed type arguments.
-        // Also - in case there are aliases - we need to resolve them before we do checks
-        const defaultTypeResolved = getTypeForComparison(defaultType);
-        const argTypeResolved = getTypeForComparison(argType);
-        if (
-          // ensure the resolved type AND all the parameters are the same
-          defaultTypeResolved.type !== argTypeResolved.type ||
-          defaultTypeResolved.typeArguments.length !==
-            argTypeResolved.typeArguments.length ||
-          defaultTypeResolved.typeArguments.some(
-            (t, i) => t !== argTypeResolved.typeArguments[i],
-          )
-        ) {
-          return;
-        }
+      const typeArgumentType = services.getTypeAtLocation(typeArgument);
+
+      const parent = typeArguments.parent;
+
+      if (
+        parent.type === AST_NODE_TYPES.CallExpression ||
+        parent.type === AST_NODE_TYPES.NewExpression
+      ) {
+        const sig = checker.getResolvedSignature(
+          tsNode as ts.CallExpression | ts.NewExpression,
+        );
+
+        parent.arguments.forEach((argument, i) => {
+          const parameter = sig?.parameters.at(i);
+
+          if (
+            !parameter?.valueDeclaration ||
+            !ts.isParameter(parameter.valueDeclaration) ||
+            !parameter.valueDeclaration.type
+          ) {
+            return;
+          }
+
+          const typeParameterType = checker.getTypeAtLocation(typeParameter);
+
+          const parameterTypeFromDeclaration = checker.getTypeFromTypeNode(
+            parameter.valueDeclaration.type,
+          );
+
+          // TODO: right now we check if the type is declared as `T` or `T | something`;
+          // we should really be checking if `parameterTypeFromDeclaration` depends on `typeParameterType` somehow
+          // (e.g. `NonNullable<T>`, `(arg: T) => void`, etc.)
+          if (
+            !checker.isTypeAssignableTo(
+              typeParameterType,
+              parameterTypeFromDeclaration,
+            )
+          ) {
+            return;
+          }
+
+          const argumentType = checker.getBaseTypeOfLiteralType(
+            services.getTypeAtLocation(argument),
+          );
+
+          if (areTypesEquivalent(typeArgumentType, argumentType)) {
+            context.report({
+              node: typeArgument,
+              messageId: 'canBeInferred',
+              fix: fixer =>
+                fixer.removeRange(
+                  i === 0
+                    ? typeArguments.range
+                    : [
+                        typeArguments.params[i - 1].range[1],
+                        typeArgument.range[1],
+                      ],
+                ),
+            });
+          }
+        });
+      }
+
+      if (!typeParameter.default) {
+        return;
+      }
+
+      const defaultType = checker.getTypeAtLocation(typeParameter.default);
+      if (!areTypesEquivalent(defaultType, typeArgumentType)) {
+        return;
       }
 
       context.report({
-        node: arg,
-        messageId: 'unnecessaryTypeParameter',
+        node: typeArgument,
+        messageId: 'isDefaultParameterValue',
         fix: fixer =>
           fixer.removeRange(
             i === 0
-              ? esParameters.range
-              : [esParameters.params[i - 1].range[1], arg.range[1]],
+              ? typeArguments.range
+              : [typeArguments.params[i - 1].range[1], typeArgument.range[1]],
           ),
       });
     }
@@ -119,7 +183,7 @@ export default createRule<[], MessageIds>({
         );
 
         if (typeParameters) {
-          checkTSArgsAndParameters(node, typeParameters);
+          checkTSArgsAndParameters(node, typeParameters, expression);
         }
       },
     };
@@ -201,7 +265,7 @@ function getTypeParametersFromCall(
 ): readonly ts.TypeParameterDeclaration[] | undefined {
   const sig = checker.getResolvedSignature(tsNode);
   const sigDecl = sig?.getDeclaration();
-  if (!sigDecl) {
+  if (!sigDecl?.typeParameters) {
     return ts.isNewExpression(tsNode)
       ? getTypeParametersFromType(node, tsNode.expression, checker)
       : undefined;
