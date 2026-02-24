@@ -1131,6 +1131,71 @@ isString('falafel');
       `,
       options: [{ checkTypePredicates: true }],
     },
+    {
+      code: `
+declare const items: number[] | null;
+if (Array.isArray(items)) {
+  console.log(items.length);
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare const items: number[] | string;
+if (Array.isArray(items)) {
+  console.log(items.length);
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare const items: unknown;
+if (Array.isArray(items)) {
+  console.log(items.length);
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare const items: any;
+if (Array.isArray(items)) {
+  console.log(items.length);
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare const MaybeArray: typeof Array | undefined;
+declare const items: number[];
+if (MaybeArray?.isArray(items)) {
+  console.log(items.length);
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare const items: number[];
+if (Array['isArray'](items)) {
+  console.log(items.length);
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+function process<T>(value: T) {
+  if (Array.isArray(value)) {
+    console.log(value.length);
+  }
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
     `
 type A = { [name in Lowercase<string>]?: A };
 declare const a: A;
@@ -3506,6 +3571,64 @@ isString('fa' + 'lafel');
       errors: [
         {
           line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare const items: number[];
+if (Array.isArray(items)) {
+  console.log(items.length);
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare const items: string[];
+Array.isArray(items);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+const tuple: [string, number] = ['a', 1];
+if (Array.isArray(tuple)) {
+  console.log(tuple[0]);
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare const items: string[] | number[];
+if (Array.isArray(items)) {
+  console.log(items.length);
+}
+      `,
+      errors: [
+        {
+          line: 3,
           messageId: 'typeGuardAlreadyIsType',
         },
       ],

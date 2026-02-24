@@ -423,7 +423,7 @@ const processorSchema: ObjectPropertySchema<Processor.LooseProcessorModule> = {
   },
 };
 
-type ConfigRules = Record<string, SharedConfig.RuleLevelAndOptions>;
+type ConfigRules = Record<string, SharedConfig.RuleEntry>;
 
 const rulesSchema = {
   merge(first: ConfigRules = {}, second: ConfigRules = {}): ConfigRules {
