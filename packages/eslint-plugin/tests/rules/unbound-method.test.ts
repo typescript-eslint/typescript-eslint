@@ -1857,15 +1857,15 @@ function foo(arg: ContainsMethods | null) {
       `,
       errors: [
         {
+          line: 19,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+        {
           line: 20,
           messageId: 'unboundWithoutThisAnnotation',
         },
         {
           line: 21,
-          messageId: 'unboundWithoutThisAnnotation',
-        },
-        {
-          line: 22,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
