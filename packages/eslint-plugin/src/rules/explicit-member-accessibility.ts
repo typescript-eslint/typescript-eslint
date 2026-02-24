@@ -362,7 +362,7 @@ export default createRule<Options, MessageIds>({
       const nodeName =
         node.parameter.type === AST_NODE_TYPES.Identifier
           ? node.parameter.name
-          : (node.parameter.left as TSESTree.Identifier).name;
+          : node.parameter.left.name;
 
       switch (paramPropCheck) {
         case 'explicit': {

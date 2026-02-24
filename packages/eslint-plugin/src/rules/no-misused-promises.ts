@@ -382,7 +382,7 @@ export default createRule<Options, MessageId>({
         }
 
         const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
-        if (returnsThenable(checker, tsNode as ts.Expression)) {
+        if (returnsThenable(checker, tsNode)) {
           context.report({
             node: argument,
             messageId: 'voidReturnArgument',

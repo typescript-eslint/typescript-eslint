@@ -3,11 +3,7 @@ import Loader from '@site/src/components/layout/Loader';
 import Layout from '@theme/Layout';
 import React, { lazy, Suspense } from 'react';
 
-const Playground = lazy(
-  () =>
-    // @ts-expect-error: This does not follow Node resolution
-    import('../components/Playground') as Promise<() => React.JSX.Element>,
-);
+const Playground = lazy(() => import('../components/Playground'));
 
 function Play(): React.JSX.Element {
   return (

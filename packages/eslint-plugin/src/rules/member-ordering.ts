@@ -743,7 +743,7 @@ export default createRule<Options, MessageIds>({
         $defs: {
           allItems: {
             type: 'string',
-            enum: allMemberTypes as string[],
+            enum: allMemberTypes,
           },
           optionalityOrderOptions: {
             type: 'string',
