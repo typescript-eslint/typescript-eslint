@@ -52,6 +52,74 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
+  affected:
+    name: Determine Affected Projects
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [install]
+    runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    outputs:
+      unit_tests_packages: ${{ steps.filter.outputs.unit_tests_packages }}
+      project_service_packages: ${{ steps.filter.outputs.project_service_packages }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Get affected projects
+        id: affected
+        run: |
+          # Fetch base ref history so NX can determine affected projects
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --depth=1 origin ${{ github.base_ref }}
+          fi
+
+          affected=$(yarn nx show projects --affected --json --base=origin/${{ github.base_ref }} 2>/dev/null || echo '[]')
+
+          echo "affected=$affected" >> $GITHUB_OUTPUT
+
+      # We want to skip non-affected packages, but GH Actions doesn't support `contains(affected, matrix.package)` in `if` conditions,
+      # so we're creating the whole matrix dynamically instead.
+      - name: Filter affected packages for test matrices
+        id: filter
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const affected = ${{ steps.affected.outputs.affected }};
+
+            const unitTestsPackages = [
+              'ast-spec',
+              'eslint-plugin',
+              'eslint-plugin-internal',
+              'parser',
+              'project-service',
+              'rule-schema-to-typescript-types',
+              'rule-tester',
+              'scope-manager',
+              'tsconfig-utils',
+              'type-utils',
+              'typescript-eslint',
+              'typescript-estree',
+              'utils',
+              'visitor-keys',
+            ];
+
+            const projectServicePackages = [
+              'eslint-plugin-internal',
+              'typescript-estree',
+            ];
+
+            const affectedUnitTests = unitTestsPackages.filter(pkg => affected.includes(pkg));
+            const affectedProjectService = projectServicePackages.filter(pkg => affected.includes(pkg));
+
+            core.setOutput('unit_tests_packages', JSON.stringify(affectedUnitTests));
+            core.setOutput('project_service_packages', JSON.stringify(affectedProjectService));
+
   build:
     name: Build All Packages
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
@@ -178,7 +246,8 @@ jobs:
   unit_tests:
     name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
+    needs: [build, affected]
+    if: ${{ needs.affected.outputs.unit_tests_packages != '[]' && needs.affected.outputs.unit_tests_packages != '' }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -188,23 +257,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [18, 20]
-        package:
-          [
-            'ast-spec',
-            'eslint-plugin',
-            'eslint-plugin-internal',
-            'parser',
-            'project-service',
-            'rule-schema-to-typescript-types',
-            'rule-tester',
-            'scope-manager',
-            'tsconfig-utils',
-            'type-utils',
-            'typescript-eslint',
-            'typescript-estree',
-            'utils',
-            'visitor-keys',
-          ]
+        package: ${{ fromJson(needs.affected.outputs.unit_tests_packages) }}
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
@@ -245,11 +298,12 @@ jobs:
   unit_tests_project_service:
     name: Run Unit Tests with Project Service
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
+    needs: [build, affected]
+    if: ${{ needs.affected.outputs.project_service_packages != '[]' && needs.affected.outputs.project_service_packages != '' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ['eslint-plugin-internal', 'typescript-estree']
+        package: ${{ fromJson(needs.affected.outputs.project_service_packages) }}
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
       COLLECT_COVERAGE: false,
