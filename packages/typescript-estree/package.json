@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "8.55.0",
+  "version": "8.56.1",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -57,7 +57,7 @@
     "@typescript-eslint/types": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
     "debug": "^4.4.3",
-    "minimatch": "^9.0.5",
+    "minimatch": "^10.2.2",
     "semver": "^7.7.3",
     "tinyglobby": "^0.2.15",
     "ts-api-utils": "^2.4.0"
