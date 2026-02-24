@@ -129,6 +129,37 @@ function isValidOrLastChainOperand(
 // I can't think of a good way to reuse the code here in a way that will preserve
 // the type safety and simplicity.
 
+function isUnsafeEqualityCheck(
+  parserServices: ParserServicesWithTypeInformation,
+  lastChainOperand: LastChainOperandForReport,
+  operator: '&&' | '||',
+): boolean {
+  if (operator !== '&&') {
+    return false;
+  }
+
+  if (
+    lastChainOperand.comparisonType !== ComparisonType.Equal &&
+    lastChainOperand.comparisonType !== ComparisonType.StrictEqual
+  ) {
+    return false;
+  }
+  const rhsNode = lastChainOperand.comparisonValue;
+  if (rhsNode.type === AST_NODE_TYPES.ChainExpression) {
+    return true;
+  }
+
+  const type = parserServices.getTypeAtLocation(rhsNode);
+  const constituents = unionConstituents(type);
+
+  return constituents.some(t =>
+    isTypeFlagSet(
+      t,
+      ts.TypeFlags.Undefined | ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+    ),
+  );
+}
+
 type OperandAnalyzer = (
   parserServices: ParserServicesWithTypeInformation,
   operand: ValidOperand,
@@ -523,9 +554,19 @@ function getReportDescriptor(
 
   const reportRange = getReportRange(chain, node.range, sourceCode);
 
+  const isUnsafe =
+    operator === '&&' &&
+    lastChain &&
+    isUnsafeEqualityCheck(
+      parserServices,
+      lastChain as LastChainOperandForReport,
+      operator,
+    );
+
   const fix: ReportFixFunction = fixer =>
     fixer.replaceTextRange(reportRange, newCode);
 
+  const fixMode = isUnsafe || useSuggestionFixer ? 'suggest' : 'fix';
   return {
     loc: {
       end: sourceCode.getLocFromIndex(reportRange[1]),
@@ -533,7 +574,7 @@ function getReportDescriptor(
     },
     messageId: 'preferOptionalChain',
     ...getFixOrSuggest({
-      fixOrSuggest: useSuggestionFixer ? 'suggest' : 'fix',
+      fixOrSuggest: fixMode,
       suggestion: {
         fix,
         messageId: 'optionalChainSuggest',

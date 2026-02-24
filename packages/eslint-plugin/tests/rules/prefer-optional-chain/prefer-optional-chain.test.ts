@@ -3187,6 +3187,31 @@ const baz = foo?.bar;
         ],
         options: [{ checkString: false }],
       },
+      {
+        code: `
+declare const foo: { bar: number } | null;
+declare const foos: { bar: number }[];
+if (foo && foo.bar === foos[0]?.bar) {
+}
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+declare const foo: { bar: number } | null;
+declare const foos: { bar: number }[];
+if (foo?.bar === foos[0]?.bar) {
+}
+        `,
+              },
+            ],
+          },
+        ],
+        output: null,
+      },
     ],
     valid: [
       '!a || !b;',
