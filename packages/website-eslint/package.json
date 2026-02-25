@@ -37,7 +37,7 @@
     "@typescript-eslint/tsconfig-utils": "workspace:*"
   },
   "devDependencies": {
-    "@eslint/js": "*",
+    "@eslint/js": "catalog:",
     "@typescript-eslint/eslint-plugin": "workspace:*",
     "@typescript-eslint/parser": "workspace:*",
     "@typescript-eslint/type-utils": "workspace:*",
@@ -46,10 +46,10 @@
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
     "esbuild": "~0.27.2",
-    "eslint": "*",
-    "esquery": "*",
-    "rimraf": "*",
-    "tsx": "*"
+    "eslint": "catalog:",
+    "esquery": "catalog:",
+    "rimraf": "catalog:",
+    "tsx": "catalog:"
   },
   "nx": {
     "name": "website-eslint",

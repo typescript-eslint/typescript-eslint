@@ -18,9 +18,10 @@
     "typecheck": "pnpm -w exec nx typecheck"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^4.0.18",
-    "eslint": "*",
-    "vitest": "^4.0.18"
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
+    "vitest": "catalog:",
+    "yaml": "catalog:"
   },
   "nx": {
     "name": "integration-tests",

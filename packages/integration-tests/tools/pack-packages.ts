@@ -15,6 +15,7 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
+import yaml from 'yaml';
 
 import rootPackageJson from '../../../package.json';
 
@@ -26,7 +27,8 @@ interface PackageJSON {
   private?: boolean;
 }
 
-const PACKAGES_DIR = path.resolve(__dirname, '..', '..');
+const ROOT_DIR = path.resolve(__dirname, '..', '..', '..');
+const PACKAGES_DIR = path.resolve(ROOT_DIR, 'packages');
 
 const INTEGRATION_TEST_DIR = path.join(
   os.tmpdir() || os.homedir(),
@@ -107,11 +109,13 @@ export const setup = async (project: TestProject): Promise<void> => {
     ).filter(e => e != null),
   );
 
+  const PNPM_CATALOG = await getPnpmCatalog();
+
   const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
     ...tseslintPackages,
-    eslint: rootPackageJson.devDependencies.eslint,
-    typescript: rootPackageJson.devDependencies.typescript,
-    vitest: rootPackageJson.devDependencies.vitest,
+    eslint: PNPM_CATALOG.eslint,
+    typescript: PNPM_CATALOG.typescript,
+    vitest: PNPM_CATALOG.vitest,
   };
 
   const temp = await fs.mkdtemp(path.join(INTEGRATION_TEST_DIR, 'temp'), {
@@ -222,3 +226,26 @@ export const teardown = async (): Promise<void> => {
     await fs.rm(INTEGRATION_TEST_DIR, { recursive: true });
   }
 };
+
+interface PnpmWorkspace {
+  catalog: Record<string, string>;
+}
+
+async function getPnpmCatalog() {
+  const pnpmWorkspace = await fs.readFile(
+    path.join(ROOT_DIR, 'pnpm-workspace.yaml'),
+    { encoding: 'utf-8' },
+  );
+
+  const parsed: PnpmWorkspace = yaml.parse(pnpmWorkspace);
+
+  const expectedPackages = ['eslint', 'typescript', 'vitest'];
+
+  for (const packageName of expectedPackages) {
+    if (!(packageName in parsed.catalog)) {
+      throw new Error(`Package ${packageName} not found in pnpm catalog`);
+    }
+  }
+
+  return parsed.catalog;
+}

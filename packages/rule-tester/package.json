@@ -58,11 +58,11 @@
   "devDependencies": {
     "@types/json-stable-stringify-without-jsonify": "^1.0.2",
     "@types/lodash.merge": "4.6.9",
-    "@vitest/coverage-v8": "^4.0.18",
-    "eslint": "*",
-    "rimraf": "*",
-    "typescript": "*",
-    "vitest": "^4.0.18"
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "funding": {
     "type": "opencollective",
