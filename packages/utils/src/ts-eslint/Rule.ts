@@ -3,7 +3,6 @@ import type { ParserServices, TSESTree } from '../ts-estree';
 import type { AST } from './AST';
 import type { FlatConfig } from './Config';
 import type { Linter } from './Linter';
-import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
 export type RuleRecommendation = 'recommended' | 'strict' | 'stylistic';
@@ -307,23 +306,6 @@ export interface RuleContext<
   // Deprecated members
 
   /**
-   * Returns an array of the ancestors of the currently-traversed node, starting at
-   * the root of the AST and continuing through the direct parent of the current node.
-   * This array does not include the currently-traversed node itself.
-   *
-   * @deprecated in favor of `SourceCode#getAncestors`
-   */
-  getAncestors(): TSESTree.Node[];
-
-  /**
-   * Returns a list of variables declared by the given node.
-   * This information can be used to track references to variables.
-   *
-   * @deprecated in favor of `SourceCode#getDeclaredVariables`
-   */
-  getDeclaredVariables(node: TSESTree.Node): readonly Scope.Variable[];
-
-  /**
    * Returns the current working directory passed to Linter.
    * It is a path to a directory that should be considered as the current working directory.
    * @deprecated in favor of `RuleContext#cwd`
@@ -360,14 +342,6 @@ export interface RuleContext<
   physicalFilename: string;
 
   /**
-   * Returns the scope of the currently-traversed node.
-   * This information can be used track references to variables.
-   *
-   * @deprecated in favor of `SourceCode#getScope`
-   */
-  getScope(): Scope.Scope;
-
-  /**
    * Returns a SourceCode object that you can use to work with the source that
    * was passed to ESLint.
    *
@@ -380,14 +354,6 @@ export interface RuleContext<
    * was passed to ESLint.
    */
   sourceCode: Readonly<SourceCode>;
-
-  /**
-   * Marks a variable with the given name in the current scope as used.
-   * This affects the no-unused-vars rule.
-   *
-   * @deprecated in favor of `SourceCode#markVariableAsUsed`
-   */
-  markVariableAsUsed(name: string): boolean;
 
   /**
    * Reports a problem in the code.
