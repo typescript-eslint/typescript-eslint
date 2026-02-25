@@ -328,6 +328,15 @@ function checkIfMethod(
       }
       return checkMethod(assignee as ts.FunctionExpression, ignoreStatic);
     }
+    case ts.SyntaxKind.PropertySignature: {
+      const type = (valueDeclaration as ts.PropertySignature).type;
+      if (type?.kind !== ts.SyntaxKind.FunctionType) {
+        return {
+          dangerous: false,
+        };
+      }
+      return checkMethod(type as ts.FunctionTypeNode, ignoreStatic);
+    }
     case ts.SyntaxKind.MethodDeclaration:
     case ts.SyntaxKind.MethodSignature: {
       return checkMethod(
@@ -343,6 +352,7 @@ function checkIfMethod(
 function checkMethod(
   valueDeclaration:
     | ts.FunctionExpression
+    | ts.FunctionTypeNode
     | ts.MethodDeclaration
     | ts.MethodSignature,
   ignoreStatic: boolean,
