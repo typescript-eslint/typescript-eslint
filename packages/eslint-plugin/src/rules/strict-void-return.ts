@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -12,7 +12,11 @@ type Options = [
   },
 ];
 
-type MessageId = `asyncFunc` | `nonVoidFunc` | `nonVoidReturn`;
+type MessageId =
+  | `asyncFunc`
+  | `nonVoidFunc`
+  | `nonVoidReturn`
+  | `suggestWrapInAsyncIIFE`;
 
 export default util.createRule<Options, MessageId>({
   name: 'strict-void-return',
@@ -23,6 +27,7 @@ export default util.createRule<Options, MessageId>({
         'Disallow passing a value-returning function in a position accepting a void function',
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
       asyncFunc:
         'Async function used in a context where a void function is expected.',
@@ -30,6 +35,8 @@ export default util.createRule<Options, MessageId>({
         'Value-returning function used in a context where a void function is expected.',
       nonVoidReturn:
         'Value returned in a context where a void return is expected.',
+      suggestWrapInAsyncIIFE:
+        'Wrap the function body in an immediately-invoked async function expression.',
     },
     schema: [
       {
@@ -357,6 +364,25 @@ export default util.createRule<Options, MessageId>({
 
       if (funcNode.async) {
         // The provided function is an async function.
+
+        if (
+          funcNode.body.type === AST_NODE_TYPES.BlockStatement &&
+          funcNode.body.body.length > 0
+        ) {
+          // This function has a block body.
+          // Suggest wrapping its body in an async IIFE.
+          return context.report({
+            loc: util.getFunctionHeadLoc(funcNode, sourceCode),
+            messageId: `asyncFunc`,
+            suggest: [
+              {
+                messageId: 'suggestWrapInAsyncIIFE',
+                fix: fixer => wrapFuncInAsyncIIFEFix(fixer, funcNode),
+              },
+            ],
+          });
+        }
+
         // Async functions aren't allowed.
         return context.report({
           loc: util.getFunctionHeadLoc(funcNode, sourceCode),
@@ -419,6 +445,50 @@ export default util.createRule<Options, MessageId>({
       }
 
       // No invalid returns found. The function is allowed.
+    }
+
+    /**
+     * Wraps function body in an inner async IIFE which allows the outer function to be non-async and return void.
+     * The passed function node must be an async function with a block body.
+     */
+    function* wrapFuncInAsyncIIFEFix(
+      fixer: TSESLint.RuleFixer,
+      funcNode: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+    ): Generator<TSESLint.RuleFix> {
+      // Remove async keyword
+      yield removeAsyncKeywordFix(fixer, funcNode);
+      // Replace return type with void
+      if (funcNode.returnType != null) {
+        yield fixer.replaceText(funcNode.returnType.typeAnnotation, 'void');
+      }
+      // Wrap body in async IIFE
+      yield fixer.insertTextBefore(funcNode.body, '{ (async () => ');
+      yield fixer.insertTextAfter(funcNode.body, ')(); }');
+    }
+
+    function removeAsyncKeywordFix(
+      fixer: TSESLint.RuleFixer,
+      funcNode: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+    ): TSESLint.RuleFix {
+      const funcHeadNode =
+        funcNode.parent.type === AST_NODE_TYPES.Property ||
+        funcNode.parent.type === AST_NODE_TYPES.MethodDefinition
+          ? funcNode.parent
+          : funcNode;
+      const asyncToken = util.nullThrows(
+        sourceCode.getFirstToken(funcHeadNode, {
+          filter: token => token.value === 'async',
+        }),
+        util.NullThrowsReasons.MissingToken('async keyword', funcNode.type),
+      );
+      const afterAsyncToken = util.nullThrows(
+        sourceCode.getTokenAfter(asyncToken),
+        util.NullThrowsReasons.MissingToken(
+          'token after async keyword',
+          funcNode.type,
+        ),
+      );
+      return fixer.removeRange([asyncToken.range[0], afterAsyncToken.range[0]]);
     }
   },
 });
