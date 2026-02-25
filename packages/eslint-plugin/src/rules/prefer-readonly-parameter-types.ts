@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
@@ -84,6 +85,25 @@ export default createRule<Options, MessageIds>({
   ) {
     const services = getParserServices(context);
 
+    function getParameterType(
+      actualParam:
+        | TSESTree.ArrayPattern
+        | TSESTree.AssignmentPattern
+        | TSESTree.Identifier
+        | TSESTree.ObjectPattern
+        | TSESTree.RestElement,
+    ): ts.Type {
+      if (actualParam.typeAnnotation?.typeAnnotation) {
+        // Get type from annotation node to preserve aliasSymbol
+        const checker = services.program.getTypeChecker();
+        const tsTypeNode = services.esTreeNodeToTSNodeMap.get(
+          actualParam.typeAnnotation.typeAnnotation,
+        ) as ts.TypeNode;
+        return checker.getTypeFromTypeNode(tsTypeNode);
+      }
+      return services.getTypeAtLocation(actualParam);
+    }
+
     return {
       [[
         AST_NODE_TYPES.ArrowFunctionExpression,
@@ -124,7 +144,7 @@ export default createRule<Options, MessageIds>({
             continue;
           }
 
-          const type = services.getTypeAtLocation(actualParam);
+          const type = getParameterType(actualParam);
           const isReadOnly = isTypeReadonly(services.program, type, {
             allow,
             treatMethodsAsReadonly: !!treatMethodsAsReadonly,
