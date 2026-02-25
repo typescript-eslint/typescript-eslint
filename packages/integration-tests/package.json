@@ -21,7 +21,7 @@
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "vitest": "catalog:",
-    "yaml": "^2.8.2"
+    "yaml": "catalog:"
   },
   "nx": {
     "name": "integration-tests",

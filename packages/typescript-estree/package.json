@@ -68,7 +68,8 @@
     "glob": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:",
-    "vitest": "catalog:"
+    "vitest": "catalog:",
+    "yaml": "catalog:"
   },
   "peerDependencies": {
     "typescript": ">=4.8.4 <6.0.0"
