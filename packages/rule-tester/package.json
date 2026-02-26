@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-tester",
-  "version": "8.56.0",
+  "version": "8.56.1",
   "description": "Tooling to test ESLint rules",
   "files": [
     "dist",
@@ -58,11 +58,11 @@
   "devDependencies": {
     "@types/json-stable-stringify-without-jsonify": "^1.0.2",
     "@types/lodash.merge": "4.6.9",
-    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/coverage-v8": "^4.0.18",
     "eslint": "*",
     "rimraf": "*",
     "typescript": "*",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.18"
   },
   "funding": {
     "type": "opencollective",
