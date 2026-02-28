@@ -190,6 +190,85 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function isTypeUnchanged(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      expression: TSESTree.Expression,
+      uncast: ts.Type,
+      cast: ts.Type,
+    ): boolean {
+      if (uncast === cast) {
+        return true;
+      }
+
+      if (
+        node.typeAnnotation.type === AST_NODE_TYPES.TSIntersectionType &&
+        containsTypeVariable(cast)
+      ) {
+        return false;
+      }
+
+      if (
+        isTypeFlagSet(uncast, ts.TypeFlags.Undefined) &&
+        isTypeFlagSet(cast, ts.TypeFlags.Undefined) &&
+        tsutils.isCompilerOptionEnabled(
+          compilerOptions,
+          'exactOptionalPropertyTypes',
+        )
+      ) {
+        return areUnionPartsEquivalentIgnoringUndefined(uncast, cast);
+      }
+
+      if (
+        (isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
+          !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)) ||
+        (hasIndexSignature(uncast) && !hasIndexSignature(cast)) ||
+        containsAny(uncast) ||
+        containsAny(cast) ||
+        (containsTypeVariable(cast) && !containsTypeVariable(uncast))
+      ) {
+        return false;
+      }
+
+      if (
+        isConceptuallyLiteral(expression) &&
+        (expression.type !== AST_NODE_TYPES.ObjectExpression ||
+          expression.properties.length === 0 ||
+          cast
+            .getProperties()
+            .some(p => isTypeLiteral(checker.getTypeOfSymbol(p))))
+      ) {
+        return false;
+      }
+
+      if (cast.isIntersection() && !uncast.isIntersection()) {
+        const castParts = cast.types;
+        const otherPart = castParts.find(part => part !== uncast);
+        if (
+          tsutils.isTypeParameter(uncast) &&
+          castParts.length === 2 &&
+          castParts.some(part => part === uncast) &&
+          otherPart != null &&
+          isEmptyObjectType(otherPart) &&
+          !containsTypeVariable(otherPart)
+        ) {
+          const constraint = checker.getBaseConstraintOfType(uncast);
+          if (constraint && !isNullableType(constraint)) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      if (
+        !hasSameProperties(uncast, cast) ||
+        !haveSameTypeArguments(uncast, cast)
+      ) {
+        return false;
+      }
+
+      return areMutuallyAssignable(uncast, cast);
+    }
+
     function isTypeLiteral(type: ts.Type): boolean {
       return type.isLiteral() || tsutils.isBooleanLiteralType(type);
     }
@@ -308,85 +387,6 @@ export default createRule<Options, MessageIds>({
       }
       const uncastPartsSet = new Set(uncastParts);
       return castParts.every(part => uncastPartsSet.has(part));
-    }
-
-    function isTypeUnchanged(
-      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
-      expression: TSESTree.Expression,
-      uncast: ts.Type,
-      cast: ts.Type,
-    ): boolean {
-      if (uncast === cast) {
-        return true;
-      }
-
-      if (
-        node.typeAnnotation.type === AST_NODE_TYPES.TSIntersectionType &&
-        containsTypeVariable(cast)
-      ) {
-        return false;
-      }
-
-      if (
-        isTypeFlagSet(uncast, ts.TypeFlags.Undefined) &&
-        isTypeFlagSet(cast, ts.TypeFlags.Undefined) &&
-        tsutils.isCompilerOptionEnabled(
-          compilerOptions,
-          'exactOptionalPropertyTypes',
-        )
-      ) {
-        return areUnionPartsEquivalentIgnoringUndefined(uncast, cast);
-      }
-
-      if (
-        (isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
-          !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)) ||
-        (hasIndexSignature(uncast) && !hasIndexSignature(cast)) ||
-        containsAny(uncast) ||
-        containsAny(cast) ||
-        (containsTypeVariable(cast) && !containsTypeVariable(uncast))
-      ) {
-        return false;
-      }
-
-      if (
-        isConceptuallyLiteral(expression) &&
-        (expression.type !== AST_NODE_TYPES.ObjectExpression ||
-          expression.properties.length === 0 ||
-          cast
-            .getProperties()
-            .some(p => isTypeLiteral(checker.getTypeOfSymbol(p))))
-      ) {
-        return false;
-      }
-
-      if (cast.isIntersection() && !uncast.isIntersection()) {
-        const castParts = cast.types;
-        const otherPart = castParts.find(part => part !== uncast);
-        if (
-          tsutils.isTypeParameter(uncast) &&
-          castParts.length === 2 &&
-          castParts.some(part => part === uncast) &&
-          otherPart != null &&
-          isEmptyObjectType(otherPart) &&
-          !containsTypeVariable(otherPart)
-        ) {
-          const constraint = checker.getBaseConstraintOfType(uncast);
-          if (constraint && !isNullableType(constraint)) {
-            return true;
-          }
-        }
-        return false;
-      }
-
-      if (
-        !hasSameProperties(uncast, cast) ||
-        !haveSameTypeArguments(uncast, cast)
-      ) {
-        return false;
-      }
-
-      return areMutuallyAssignable(uncast, cast);
     }
 
     function getOriginalExpression(
