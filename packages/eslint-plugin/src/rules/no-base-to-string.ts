@@ -354,19 +354,20 @@ export default createRule<Options, MessageIds>({
 
         const declarations = candidate.getDeclarations();
 
-        // If there are multiple declarations, at least one of them must not be
-        // the default object toString.
-        //
-        // This may only matter for older versions of TS
-        // see https://github.com/typescript-eslint/typescript-eslint/issues/8585
-        if (declarations?.length !== 1) {
+        if (!declarations?.length) {
           continue;
         }
 
-        // Not being the Object interface means this is user-defined.
+        // If any declaration is not from the Object interface, this is
+        // user-defined (e.g. overloaded toString on a class or module).
+        // see https://github.com/typescript-eslint/typescript-eslint/issues/8585
+        // see https://github.com/typescript-eslint/typescript-eslint/issues/11945
         if (
-          !ts.isInterfaceDeclaration(declarations[0].parent) ||
-          declarations[0].parent.name.text !== 'Object'
+          declarations.some(
+            declaration =>
+              !ts.isInterfaceDeclaration(declaration.parent) ||
+              declaration.parent.name.text !== 'Object',
+          )
         ) {
           return false;
         }
