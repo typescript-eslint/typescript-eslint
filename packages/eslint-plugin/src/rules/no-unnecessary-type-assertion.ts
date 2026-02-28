@@ -977,20 +977,46 @@ export default createRule<Options, MessageIds>({
             }
 
             // in strict mode you can't assign null to undefined, so we have to make sure that
-            // the two types share the same nullable types
-            // i.e. assigning `string | null | undefined` to `string | undefined` is invalid
-            const nullableFlags = [
+            // the two types share a nullable type
+            const typeIncludesUndefined = isTypeFlagSet(
+              constrainedType,
               ts.TypeFlags.Undefined,
+            );
+            const typeIncludesNull = isTypeFlagSet(
+              constrainedType,
               ts.TypeFlags.Null,
+            );
+            const typeIncludesVoid = isTypeFlagSet(
+              constrainedType,
               ts.TypeFlags.Void,
-            ];
-            const contextAcceptsAllNullables = nullableFlags.every(
-              flag =>
-                !isTypeFlagSet(constrainedType, flag) ||
-                isTypeFlagSet(contextualType, flag),
             );
 
-            if (contextAcceptsAllNullables) {
+            const contextualTypeIncludesUndefined = isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Undefined,
+            );
+            const contextualTypeIncludesNull = isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Null,
+            );
+            const contextualTypeIncludesVoid = isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Void,
+            );
+
+            // make sure that the parent accepts the same types
+            // i.e. assigning `string | null | undefined` to `string | undefined` is invalid
+            const isValidUndefined = typeIncludesUndefined
+              ? contextualTypeIncludesUndefined
+              : true;
+            const isValidNull = typeIncludesNull
+              ? contextualTypeIncludesNull
+              : true;
+            const isValidVoid = typeIncludesVoid
+              ? contextualTypeIncludesVoid
+              : true;
+
+            if (isValidUndefined && isValidNull && isValidVoid) {
               context.report({
                 node,
                 messageId: 'contextuallyUnnecessary',
