@@ -502,7 +502,7 @@ export default createRule<Options, MessageIds>({
       }
 
       const argIndex = parent.arguments.indexOf(node);
-      const paramTypes: (ts.Type | undefined)[] = signatures.map(sig => {
+      const paramTypes = signatures.map(sig => {
         const params = sig.getParameters();
         if (argIndex >= params.length) {
           return undefined;
@@ -848,8 +848,7 @@ export default createRule<Options, MessageIds>({
 
         const contextualType = shouldSkipContextualTypeFallback(node, castIsAny)
           ? undefined
-          : (getContextualType(checker, originalNode) ??
-            checker.getContextualType(originalNode));
+          : checker.getContextualType(originalNode);
 
         if (contextualType) {
           const contextualTypeIsAny = isTypeFlagSet(
