@@ -10,7 +10,7 @@ export function useHistorySelector<T>(
   getServerSnapshot: () => T,
 ): T {
   // by default H.History<LocationState = unknown>
-  const history = useHistory() as unknown as H.History;
+  const history = useHistory();
 
   return useSyncExternalStore(
     history.listen,
