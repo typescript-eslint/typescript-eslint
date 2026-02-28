@@ -31,8 +31,7 @@ export function findTruthinessAssertedArgument(
   }
 
   const checker = services.program.getTypeChecker();
-  const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-  const signature = checker.getResolvedSignature(tsNode);
+  const signature = services.getResolvedSignature(node);
 
   if (signature == null) {
     return undefined;
@@ -84,8 +83,7 @@ export function findTypeGuardAssertedArgument(
   }
 
   const checker = services.program.getTypeChecker();
-  const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-  const callSignature = checker.getResolvedSignature(tsNode);
+  const callSignature = services.getResolvedSignature(node);
 
   if (callSignature == null) {
     return undefined;

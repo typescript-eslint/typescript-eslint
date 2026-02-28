@@ -56,9 +56,6 @@ jspm_packages/
 # Output of 'npm pack'
 *.tgz
 
-# Yarn Integrity file
-.yarn-integrity
-
 # dotenv environment variables file
 .env
 
@@ -80,16 +77,6 @@ dist
 
 # Files copied as part of the build
 packages/types/src/generated/**/*.ts
-
-# Yarn 3
-.pnp.*
-.yarn/*
-packages/**/.yarn
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
 
 .nx/cache
 .nx/workspace-data

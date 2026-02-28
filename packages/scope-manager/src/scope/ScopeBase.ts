@@ -86,22 +86,14 @@ function isStrictScope(
 
   // Search 'use strict' directive.
   for (const stmt of body.body) {
-    if (stmt.type !== AST_NODE_TYPES.ExpressionStatement) {
+    if (
+      stmt.type !== AST_NODE_TYPES.ExpressionStatement ||
+      stmt.directive == null
+    ) {
       break;
     }
 
     if (stmt.directive === 'use strict') {
-      return true;
-    }
-
-    const expr = stmt.expression;
-    if (expr.type !== AST_NODE_TYPES.Literal) {
-      break;
-    }
-    if (expr.raw === '"use strict"' || expr.raw === "'use strict'") {
-      return true;
-    }
-    if (expr.value === 'use strict') {
       return true;
     }
   }

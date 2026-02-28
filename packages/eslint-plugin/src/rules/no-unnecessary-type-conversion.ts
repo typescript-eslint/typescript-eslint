@@ -28,7 +28,7 @@ function isEnumMemberType(type: ts.Type): boolean {
   if (!symbol) {
     return false;
   }
-  return (symbol.flags & ts.SymbolFlags.EnumMember) !== 0;
+  return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember);
 }
 
 export default createRule<Options, MessageIds>({
