@@ -91,7 +91,7 @@ export default createRule({
         const flags = node.arguments.at(1);
 
         // No flags argument: definitely no global flag.
-        if (flags === undefined) {
+        if (flags == null) {
           return true;
         }
 
