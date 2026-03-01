@@ -120,6 +120,19 @@ abstract class Foo {
   abstract accessor prop: string;
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12061
+    // Index signatures are non-static members: should not report onlyStatic
+    `
+class Indexed {
+  [key: string]: string;
+}
+    `,
+    `
+class Indexed {
+  [key: string]: number;
+  [key: number]: string;
+}
+    `,
   ],
 
   invalid: [
