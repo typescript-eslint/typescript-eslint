@@ -2455,5 +2455,21 @@ a.toString();
         },
       ],
     },
+    {
+      code: `
+        type Mapped = { [K in 'toString']: () => string };
+        declare const x: Mapped;
+        '' + x;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'x',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
   ],
 });
