@@ -60,6 +60,20 @@ function test(pattern: string) {
   'hello hello'.match(new RegExp(pattern, 'gi'))?.reduce(() => []);
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12085
+    // Dynamic flags argument: cannot prove 'g' is absent, so no autofix/report
+    `
+function findMatches(text: string, pattern: string, flags: string) {
+  return text.match(new RegExp(pattern, flags));
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12085
+    // Dynamic flags argument via variable
+    `
+function findMatches(text: string, pattern: string, flags: string) {
+  return text.match(RegExp(pattern, flags));
+}
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/3477
     `
 const matchCount = (str: string, re: RegExp) => {

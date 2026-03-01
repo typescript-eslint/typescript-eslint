@@ -89,11 +89,30 @@ export default createRule({
         node.callee.name === 'RegExp'
       ) {
         const flags = node.arguments.at(1);
-        return !(
-          flags?.type === AST_NODE_TYPES.Literal &&
-          typeof flags.value === 'string' &&
-          flags.value.includes('g')
-        );
+
+        // No flags argument: definitely no global flag.
+        if (flags === undefined) {
+          return true;
+        }
+
+        // `undefined` identifier: equivalent to no flags.
+        if (
+          flags.type === AST_NODE_TYPES.Identifier &&
+          flags.name === 'undefined'
+        ) {
+          return true;
+        }
+
+        // Non-literal flags argument (e.g. a variable or expression): we
+        // cannot prove the 'g' flag is absent at compile time.
+        if (
+          flags.type !== AST_NODE_TYPES.Literal ||
+          typeof flags.value !== 'string'
+        ) {
+          return false;
+        }
+
+        return !flags.value.includes('g');
       }
 
       return false;
