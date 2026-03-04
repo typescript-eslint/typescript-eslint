@@ -249,6 +249,27 @@ search.exec(text);
       `,
     },
     {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/12085
+      // No flags argument (null/undefined from .at(1)): definitely no global flag → fix allowed
+      code: `
+function test(pattern: string) {
+  'check'.match(new RegExp(pattern));
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+function test(pattern: string) {
+  new RegExp(pattern).exec('check');
+}
+      `,
+    },
+    {
       code: `
 function test(pattern: string) {
   'check'.match(new RegExp(pattern, undefined));
