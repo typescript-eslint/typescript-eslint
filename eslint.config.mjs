@@ -90,6 +90,7 @@ export default defineConfig(
   },
 
   {
+    name: 'base-config',
     files: [ALL_JSTS_FILES_GLOB],
     extends: [
       eslintCommentsPlugin.recommended,
