@@ -540,12 +540,6 @@ export default createRule<Options, MessageId>({
       checkNode(node.left);
     }
 
-    function checkIfWhileLoopIsNecessaryConditional(
-      node: TSESTree.WhileStatement,
-    ): void {
-      checkIfLoopIsNecessaryConditional(node);
-    }
-
     /**
      * Checks that a testable expression of a loop is necessarily conditional, reports otherwise.
      */
@@ -933,7 +927,7 @@ export default createRule<Options, MessageId>({
           );
         }
       },
-      WhileStatement: checkIfWhileLoopIsNecessaryConditional,
+      WhileStatement: checkIfLoopIsNecessaryConditional,
     };
   },
 });
