@@ -55,13 +55,16 @@ import someOtherConfig from 'eslint-config-other-configuration-that-enables-form
 import prettierConfig from 'eslint-config-prettier';
 import tseslint from 'typescript-eslint';
 
-export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.recommended,
-  someOtherConfig,
-  // Add this line
-  prettierConfig,
-);
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [
+    eslint.configs.recommended,
+    tseslint.configs.recommended,
+    someOtherConfig,
+    // Add this line
+    prettierConfig,
+  ],
+});
 ```
 
 </TabItem>

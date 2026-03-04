@@ -72,12 +72,14 @@ This causes the underlying TypeScript server to perform a full project reload.
 ```js title="eslint.config.js"
 // @ts-check
 
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import vueParser from 'vue-eslint-parser';
 
 // Add this line
 const extraFileExtensions = ['.vue'];
-export default [
+export default defineConfig(
+  // ...
   {
     files: ['*.ts'],
     languageOptions: {
@@ -103,7 +105,7 @@ export default [
       },
     },
   },
-];
+);
 ```
 
 </TabItem>
@@ -180,20 +182,23 @@ Instead of globs that use `**` to recursively check all folders, prefer paths th
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
-export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.recommendedRequiringTypeChecking,
-  {
-    languageOptions: {
-      parserOptions: {
-        // Remove this line
-        project: ['./**/tsconfig.json'],
-        // Add this line
-        project: ['./packages/*/tsconfig.json'],
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [
+    eslint.configs.recommended,
+    tseslint.configs.recommendedRequiringTypeChecking,
+    {
+      languageOptions: {
+        parserOptions: {
+          // Remove this line
+          project: ['./**/tsconfig.json'],
+          // Add this line
+          project: ['./packages/*/tsconfig.json'],
+        },
       },
     },
-  },
-);
+  ],
+});
 ```
 
 </TabItem>

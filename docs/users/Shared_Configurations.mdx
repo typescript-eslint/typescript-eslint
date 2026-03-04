@@ -24,10 +24,10 @@ import eslint from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.recommended,
-);
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [eslint.configs.recommended, tseslint.configs.recommended],
+});
 ```
 
 ### Projects Without Type Checking
@@ -38,11 +38,16 @@ If your project does not enable [typed linting](../getting-started/Typed_Linting
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.recommended,
-  tseslint.configs.stylistic,
-);
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [
+    eslint.configs.recommended,
+    // Added lines start
+    tseslint.configs.recommended,
+    tseslint.configs.stylistic,
+    // Added lines end
+  ],
+});
 ```
 
 </TabItem>
@@ -76,11 +81,16 @@ To use type-checking, you also need to configure `languageOptions.parserOptions`
 
 ```js title="eslint.config.mjs"
 export default defineConfig(
-  eslint.configs.recommended,
-  // Added lines start
-  tseslint.configs.recommendedTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
-  // Added lines end
+  {
+    files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+    extends: [
+      eslint.configs.recommended,
+      // Added lines start
+      tseslint.configs.recommendedTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+      // Added lines end
+    ],
+  },
   // Other configuration...
 );
 ```
@@ -136,11 +146,11 @@ These rules are those whose reports are almost always for a bad practice and/or 
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default defineConfig(
-  tseslint.configs.recommended,
-);
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [tseslint.configs.recommended],
+});
 ```
 
 </TabItem>
@@ -165,11 +175,12 @@ Rules newly added in this configuration are similarly useful to those in `recomm
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default defineConfig(
-  tseslint.configs.recommendedTypeChecked,
-);
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [tseslint.configs.recommendedTypeChecked],
+  // typed linting config...
+});
 ```
 
 </TabItem>
@@ -196,9 +207,10 @@ Rules added in `strict` are more opinionated than recommended rules and might no
 
 {/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default defineConfig(
-  tseslint.configs.strict,
-);
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [tseslint.configs.strict],
+});
 ```
 
 </TabItem>
@@ -233,11 +245,12 @@ Rules newly added in this configuration are similarly useful (and opinionated) t
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-export default defineConfig(
-  tseslint.configs.strictTypeChecked,
-);
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [tseslint.configs.strictTypeChecked],
+  // typed linting config...
+});
 ```
 
 </TabItem>
@@ -272,10 +285,13 @@ These rules are generally opinionated about enforcing simpler code patterns.
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
 export default defineConfig(
-  tseslint.configs.stylistic,
+  // ...
+  {
+    files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+    extends: [tseslint.configs.stylistic],
+  },
 );
 ```
 
@@ -304,10 +320,13 @@ Rules newly added in this configuration are similarly opinionated to those in `s
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
 export default defineConfig(
-  tseslint.configs.stylisticTypeChecked,
+  // ...
+  {
+    files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+    extends: [tseslint.configs.stylisticTypeChecked],
+  },
 );
 ```
 
@@ -374,9 +393,12 @@ If you use type-aware rules from other plugins, you will need to manually disabl
 
 ```js title="eslint.config.mjs"
 export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.recommendedTypeChecked,
   {
+    files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+    extends: [
+      eslint.configs.recommended,
+      tseslint.configs.recommendedTypeChecked,
+    ],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -436,10 +458,14 @@ Additionally, it enables rules that promote using the more modern constructs Typ
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.eslintRecommended,
-);
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [
+    eslint.configs.recommended,
+    // Add this line
+    tseslint.configs.eslintRecommended,
+  ],
+});
 ```
 
 </TabItem>

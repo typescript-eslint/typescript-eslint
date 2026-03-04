@@ -36,17 +36,16 @@ Some examples
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default defineConfig(
-  // ... the rest of your config ...
-  {
-    rules: {
-      // turns a rule on with no configuration (i.e. uses the default configuration)
-      '@typescript-eslint/array-type': 'error',
-      // turns on a rule with configuration
-      '@typescript-eslint/no-explicit-any': ['warn', { ignoreRestArgs: true }],
-    },
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  // ... the rest of your typescript config ...
+  rules: {
+    // turns a rule on with no configuration (i.e. uses the default configuration)
+    '@typescript-eslint/array-type': 'error',
+    // turns on a rule with configuration
+    '@typescript-eslint/no-explicit-any': ['warn', { ignoreRestArgs: true }],
   },
-);
+});
 ```
 
 </TabItem>
@@ -239,22 +238,24 @@ For example, the following config enables only the recommended config's type-che
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
 import eslint from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default defineConfig(
-  tseslint.configs.recommendedTypeCheckedOnly,
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [
+    tseslint.configs.recommendedTypeCheckedOnly,
+    {
+      languageOptions: {
+        parserOptions: {
+          projectService: true,
+        },
       },
     },
-  },
-);
+  ],
+});
 ```
 
 </TabItem>
