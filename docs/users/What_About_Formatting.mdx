@@ -41,7 +41,7 @@ However, some third party plugin configurations may still enable that bad practi
 If you see formatting rules enabled in your ESLint configuration, we recommend using [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable formatting rules in your ESLint configuration.
 You can then configure your formatter separately from ESLint.
 
-Using this config by adding it to the end of your `extends`:
+Using this config by adding it to the end of your config:
 
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
@@ -55,16 +55,18 @@ import someOtherConfig from 'eslint-config-other-configuration-that-enables-form
 import prettierConfig from 'eslint-config-prettier';
 import tseslint from 'typescript-eslint';
 
-export default defineConfig({
-  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
-  extends: [
-    eslint.configs.recommended,
-    tseslint.configs.recommended,
-    someOtherConfig,
-    // Add this line
-    prettierConfig,
-  ],
-});
+export default defineConfig(
+  {
+    files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+    extends: [
+      eslint.configs.recommended,
+      tseslint.configs.recommended,
+      someOtherConfig,
+    ],
+  },
+  // Add this line
+  prettierConfig,
+);
 ```
 
 </TabItem>
