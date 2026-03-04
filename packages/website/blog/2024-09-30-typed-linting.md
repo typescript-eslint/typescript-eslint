@@ -215,10 +215,11 @@ You can add typed linting to your ESLint configuration by following the steps in
 We recommend doing so by enabling [`parserOptions.projectService`](/packages/parser#projectservice):
 
 ```js title="eslint.config.js"
+import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  eslint.configs.recommended,
+  js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {

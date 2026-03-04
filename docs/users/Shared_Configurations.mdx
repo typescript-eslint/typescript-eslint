@@ -20,12 +20,12 @@ See [Getting Started > Quickstart](../getting-started/Quickstart.mdx) first to s
 ```js title="eslint.config.mjs"
 // @ts-check
 
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   tseslint.configs.recommended,
 );
 ```
@@ -39,7 +39,7 @@ If your project does not enable [typed linting](../getting-started/Typed_Linting
 
 ```js title="eslint.config.mjs"
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   tseslint.configs.recommended,
   tseslint.configs.stylistic,
 );
@@ -76,7 +76,7 @@ To use type-checking, you also need to configure `languageOptions.parserOptions`
 
 ```js title="eslint.config.mjs"
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   // Added lines start
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
@@ -374,7 +374,7 @@ If you use type-aware rules from other plugins, you will need to manually disabl
 
 ```js title="eslint.config.mjs"
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
@@ -437,7 +437,7 @@ Additionally, it enables rules that promote using the more modern constructs Typ
 
 ```js title="eslint.config.mjs"
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   tseslint.configs.eslintRecommended,
 );
 ```
