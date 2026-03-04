@@ -1,3 +1,59 @@
+## 8.56.1 (2026-02-23)
+
+This was a version bump only, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.56.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.56.0 (2026-02-16)
+
+### 🚀 Features
+
+- support ESLint v10 ([#12057](https://github.com/typescript-eslint/typescript-eslint/pull/12057))
+
+### 🩹 Fixes
+
+- use parser options from context.languageOptions ([#12043](https://github.com/typescript-eslint/typescript-eslint/pull/12043))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- fnx @DMartens
+- Joshua Chen
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.56.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.55.0 (2026-02-09)
+
+### 🚀 Features
+
+- **utils:** deprecate defaultOptions in favor of meta.defaultOptions ([#11992](https://github.com/typescript-eslint/typescript-eslint/pull/11992))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unused-vars] remove trailing newline when removing entire import ([#11990](https://github.com/typescript-eslint/typescript-eslint/pull/11990))
+- **eslint-plugin:** [no-useless-default-assignment] require strictNullChecks ([#11966](https://github.com/typescript-eslint/typescript-eslint/pull/11966), [#12000](https://github.com/typescript-eslint/typescript-eslint/pull/12000))
+- **eslint-plugin:** [no-useless-default-assignment] report unnecessary defaults in ternary expressions ([#11984](https://github.com/typescript-eslint/typescript-eslint/pull/11984))
+- **eslint-plugin:** [no-useless-default-assignment] reduce param index to ts this handling ([#11949](https://github.com/typescript-eslint/typescript-eslint/pull/11949))
+- **typescript-estree:** forbid invalid modifier in object expression ([#11931](https://github.com/typescript-eslint/typescript-eslint/pull/11931))
+
+### ❤️ Thank You
+
+- Christian Rose @chrros95
+- fisker Cheung @fisker
+- Josh Goldberg
+- Maria Solano @MariaSolOs
+- Minyeong Kim @minyeong981
+- SungHyun627 @SungHyun627
+- Yukihiro Hasegawa @y-hsgw
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.55.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.54.0 (2026-01-26)
 
 ### 🚀 Features

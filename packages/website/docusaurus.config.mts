@@ -351,6 +351,9 @@ const redirects: PluginRedirectOptions = {
 
 const config: Config = {
   baseUrl: '/',
+  future: {
+    experimental_faster: true,
+  },
   tagline: 'Powerful static analysis for JavaScript and TypeScript.',
   title: 'typescript-eslint',
   url: 'https://typescript-eslint.io',
