@@ -640,12 +640,12 @@ export default defineConfig(
   },
   {
     name: 'all-files',
+    files: [ALL_JSTS_FILES_GLOB],
     ignores: [
       'packages/eslint-plugin/src/configs/eslintrc/*',
       'packages/eslint-plugin/src/configs/flat/*',
       'packages/scope-manager/src/configs/*',
     ],
-    files: [ALL_JSTS_FILES_GLOB],
     rules: {
       '@typescript-eslint/sort-type-constituents': 'off',
       'perfectionist/sort-classes': [
@@ -798,7 +798,7 @@ export default defineConfig(
               groupName: 'extends',
             },
           ],
-          groups: ['name', 'ignores', 'files', 'extends', 'unknown'],
+          groups: ['name', 'files', 'ignores', 'extends', 'unknown'],
         },
       ],
     },
