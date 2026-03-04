@@ -84,14 +84,9 @@ export default defineConfig(
 
   // extends ...
   eslintCommentsPlugin.recommended,
-  {
-    extends: [
-      eslint.configs.recommended,
-      tseslint.configs.strictTypeChecked,
-      tseslint.configs.stylisticTypeChecked,
-    ],
-    files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
-  },
+  { name: `${eslint.meta.name}/recommended`, ...eslint.configs.recommended },
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   jsdocPlugin.configs['flat/recommended-typescript-error'],
 
   // base config
