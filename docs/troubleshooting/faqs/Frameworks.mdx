@@ -7,9 +7,9 @@ title: Framework FAQs
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"
+## I use a framework (like Vue) that requires custom file extensions
 
-You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeScript extensions to allow, for example:
+In order to use extra file types you'll need to provide `parserOptions.extraFileExtensions` to specify an array of non-TypeScript extensions to allow.
 
 :::note
 See [Changes to `extraFileExtensions` with `projectService`](../typed-linting/Performance.mdx#changes-to-extrafileextensions-with-projectservice) to avoid performance issues.
@@ -19,19 +19,25 @@ See [Changes to `extraFileExtensions` with `projectService`](../typed-linting/Pe
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default defineConfig(
+export default defineConfig({
+  // If you're using a files/extends setup, be sure to include your extra file
+  // type here, too, or your configs won't apply to it
+  // Remove this line
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  // Add this line
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,vue}'],
   // ... the rest of your config ...
-  {
-    languageOptions: {
-      parserOptions: {
-        // Add this line
-        extraFileExtensions: ['.vue'],
-        projectService: true,
-      },
+  languageOptions: {
+    parserOptions: {
+      // Add this line
+      extraFileExtensions: ['.vue'],
+      projectService: true,
     },
   },
-);
+});
 ```
+
+If you forget to include `extraFileExtensions: ['.vue']`, you'll likely see error messages like "You should add `parserOptions.extraFileExtensions` to your config" appearing when ESLint attempts to run on the extra file type.
 
 </TabItem>
 <TabItem value="Legacy Config">
