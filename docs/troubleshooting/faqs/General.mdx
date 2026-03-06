@@ -39,6 +39,7 @@ Some examples
 export default defineConfig(
   // ... the rest of your config ...
   {
+    files: ['**/*.ts', '**/*.tsx'],
     rules: {
       // turns a rule on with no configuration (i.e. uses the default configuration)
       '@typescript-eslint/array-type': 'error',
@@ -248,6 +249,7 @@ import tseslint from 'typescript-eslint';
 export default defineConfig(
   tseslint.configs.recommendedTypeCheckedOnly,
   {
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parserOptions: {
         projectService: true,

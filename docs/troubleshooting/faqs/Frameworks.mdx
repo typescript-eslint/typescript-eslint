@@ -22,6 +22,7 @@ See [Changes to `extraFileExtensions` with `projectService`](../typed-linting/Pe
 export default defineConfig(
   // ... the rest of your config ...
   {
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parserOptions: {
         // Add this line
@@ -67,6 +68,7 @@ import vueParser from 'vue-eslint-parser';
 export default defineConfig(
   // ... the rest of your config ...
   {
+    files: ['**/*.vue'],
     languageOptions: {
       // Remove this line
       parser: tseslint.parser,

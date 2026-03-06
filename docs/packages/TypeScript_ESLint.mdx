@@ -44,6 +44,9 @@ import tseslint from 'typescript-eslint';
 export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommended,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
@@ -261,6 +264,7 @@ import jestPlugin from 'eslint-plugin-jest';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig({
+  files: ['**/*.ts', '**/*.tsx'],
   plugins: {
     // highlight-next-line
     '@typescript-eslint': tseslint.plugin,
@@ -312,6 +316,7 @@ export default defineConfig(
   },
   eslint.configs.recommended,
   {
+    files: ['**/*.ts', '**/*.tsx'],
     plugins: {
       '@typescript-eslint': tseslint.plugin,
       jest: jestPlugin,

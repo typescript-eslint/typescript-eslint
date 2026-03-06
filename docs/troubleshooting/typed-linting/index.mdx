@@ -39,6 +39,9 @@ export default defineConfig(
     files: ['**/*.js'],
     extends: [tseslint.configs.disableTypeChecked],
   },
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
@@ -75,6 +78,7 @@ export default defineConfig(
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   {
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -298,6 +302,7 @@ For example, if you use a specific `tsconfig.eslint.json` for linting, you'd spe
 
 ```js title="eslint.config.mjs"
 export default defineConfig({
+  files: ['**/*.ts', '**/*.tsx'],
   // ...
   languageOptions: {
     parserOptions: {

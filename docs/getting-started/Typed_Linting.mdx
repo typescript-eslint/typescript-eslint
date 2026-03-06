@@ -30,6 +30,7 @@ export default defineConfig(
   // Added lines start
   tseslint.configs.recommendedTypeChecked,
   {
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -109,7 +110,9 @@ export default defineConfig(
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   // Added lines end
-  // ...
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 

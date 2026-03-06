@@ -27,6 +27,9 @@ import tseslint from 'typescript-eslint';
 export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommended,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
@@ -42,6 +45,9 @@ export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommended,
   tseslint.configs.stylistic,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
@@ -81,7 +87,9 @@ export default defineConfig(
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   // Added lines end
-  // Other configuration...
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
@@ -140,6 +148,9 @@ These rules are those whose reports are almost always for a bad practice and/or 
 ```js title="eslint.config.mjs"
 export default defineConfig(
   tseslint.configs.recommended,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
@@ -169,6 +180,9 @@ Rules newly added in this configuration are similarly useful to those in `recomm
 ```js title="eslint.config.mjs"
 export default defineConfig(
   tseslint.configs.recommendedTypeChecked,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
@@ -198,6 +212,9 @@ Rules added in `strict` are more opinionated than recommended rules and might no
 ```js title="eslint.config.mjs"
 export default defineConfig(
   tseslint.configs.strict,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
@@ -237,6 +254,9 @@ Rules newly added in this configuration are similarly useful (and opinionated) t
 ```js title="eslint.config.mjs"
 export default defineConfig(
   tseslint.configs.strictTypeChecked,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
@@ -276,6 +296,9 @@ These rules are generally opinionated about enforcing simpler code patterns.
 ```js title="eslint.config.mjs"
 export default defineConfig(
   tseslint.configs.stylistic,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
@@ -308,6 +331,9 @@ Rules newly added in this configuration are similarly opinionated to those in `s
 ```js title="eslint.config.mjs"
 export default defineConfig(
   tseslint.configs.stylisticTypeChecked,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
@@ -377,6 +403,7 @@ export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   {
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -439,6 +466,9 @@ Additionally, it enables rules that promote using the more modern constructs Typ
 export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.eslintRecommended,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 

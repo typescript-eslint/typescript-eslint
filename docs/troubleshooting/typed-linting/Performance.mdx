@@ -184,6 +184,7 @@ export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommendedRequiringTypeChecking,
   {
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parserOptions: {
         // Remove this line

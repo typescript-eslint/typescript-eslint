@@ -41,6 +41,9 @@ import tseslint from 'typescript-eslint';
 export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommended,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
@@ -109,6 +112,9 @@ export default defineConfig(
   tseslint.configs.strict,
   // Add this line
   tseslint.configs.stylistic,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+  },
 );
 ```
 
