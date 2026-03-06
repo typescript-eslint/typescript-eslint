@@ -641,7 +641,7 @@ importers:
         specifier: '*'
         version: 10.0.0(jiti@2.6.1)
       minimatch:
-        specifier: ^10.2.2
+        specifier: '*'
         version: 10.2.2
       rimraf:
         specifier: '*'
