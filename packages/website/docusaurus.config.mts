@@ -12,6 +12,7 @@ import { version } from '@typescript-eslint/parser/package.json';
 
 import { blogFooter } from './plugins/blog-footer';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
+import { faqData } from './plugins/faq-data';
 import { rulesMeta } from './rulesMeta';
 
 const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
@@ -49,6 +50,7 @@ const presetClassicOptions: PresetClassicOptions = {
 };
 
 const pluginContentDocsOptions: PluginContentDocsOptions = {
+  beforeDefaultRemarkPlugins: [faqData],
   breadcrumbs: false,
   editUrl: `${githubUrl}/edit/main/packages/website/`,
   id: 'base-docs',
