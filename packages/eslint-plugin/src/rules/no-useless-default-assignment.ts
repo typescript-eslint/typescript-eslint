@@ -165,7 +165,7 @@ export default createRule<Options, MessageId>({
             }
 
             const params = signatures[0].getParameters();
-            if (paramIndex >= 0 && paramIndex < params.length) {
+            if (paramIndex < params.length) {
               const paramSymbol = params[paramIndex];
               if (
                 paramSymbol.valueDeclaration &&
