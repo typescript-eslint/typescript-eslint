@@ -540,20 +540,6 @@ export default createRule<Options, MessageId>({
       checkNode(node.left);
     }
 
-    function checkIfWhileLoopIsNecessaryConditional(
-      node: TSESTree.WhileStatement,
-    ): void {
-      if (
-        allowConstantLoopConditionsOption === 'only-allowed-literals' &&
-        node.test.type === AST_NODE_TYPES.Literal &&
-        constantLoopConditionsAllowedLiterals.has(node.test.value)
-      ) {
-        return;
-      }
-
-      checkIfLoopIsNecessaryConditional(node);
-    }
-
     /**
      * Checks that a testable expression of a loop is necessarily conditional, reports otherwise.
      */
@@ -565,6 +551,14 @@ export default createRule<Options, MessageId>({
     ): void {
       if (node.test == null) {
         // e.g. `for(;;)`
+        return;
+      }
+
+      if (
+        allowConstantLoopConditionsOption === 'only-allowed-literals' &&
+        node.test.type === AST_NODE_TYPES.Literal &&
+        constantLoopConditionsAllowedLiterals.has(node.test.value)
+      ) {
         return;
       }
 
@@ -933,7 +927,7 @@ export default createRule<Options, MessageId>({
           );
         }
       },
-      WhileStatement: checkIfWhileLoopIsNecessaryConditional,
+      WhileStatement: checkIfLoopIsNecessaryConditional,
     };
   },
 });

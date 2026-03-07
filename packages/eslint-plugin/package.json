@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.56.0",
+  "version": "8.56.1",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -74,7 +74,7 @@
     "@types/react": "^18.3.21",
     "@typescript-eslint/rule-schema-to-typescript-types": "workspace:*",
     "@typescript-eslint/rule-tester": "workspace:*",
-    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/coverage-v8": "^4.0.18",
     "ajv": "^6.12.6",
     "eslint": "*",
     "json-schema": "*",
@@ -89,7 +89,7 @@
     "tsx": "*",
     "typescript": "*",
     "unist-util-visit": "^5.0.0",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.18"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "workspace:^",
