@@ -39,6 +39,21 @@ If you don't want to check conditionals, you can configure the rule with `"check
 
 Doing so prevents the rule from looking at code like `if (somePromise)`.
 
+The following sub-options are supported:
+
+#### `flagUnions = 'all'`
+
+Flags any time a Promise non-Promise union is encountered in a conditional.
+
+#### `flagUnions = 'narrow'`
+
+Flags when a Promise non-Promise union is encountered in a conditional only when
+no constituent of the union can be falsy.
+
+#### `flagUnions = 'none'`
+
+Disables checking for Promise non-Promise unions.
+
 ### `checksVoidReturn`
 
 {/* insert option description */}
@@ -164,6 +179,73 @@ const returnVal = await promise;
 [1, 2, 3].filter(() => returnVal);
 
 while (await promise) {
+  // Do something
+}
+```
+
+</TabItem>
+</Tabs>
+
+Examples of code for this rule with `checksConditionals: { flagUnions: 'narrow' }`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "checksConditionals": { "flagUnions": "narrow" } }'
+const fn: () => Promise<boolean> | true = () => Promise.resolve({});
+if (fn()) {
+  // Do something
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "checksConditionals": { "flagUnions": "narrow" } }'
+// If the type isn't narrowed by the conditional then you must await
+const fn: () => Promise<boolean> | true = () => Promise.resolve(false);
+if (await fn()) {
+  // Do something
+}
+
+// Allowed since the type is narrowed by the conditional
+const val = Promise.resolve(false) as Promise<boolean> | boolean;
+if (val) {
+  // val: Promise<boolean> | true
+}
+```
+
+</TabItem>
+</Tabs>
+
+Examples of code for this rule with `checksConditionals: { flagUnions: 'all' }`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "checksConditionals": { "flagUnions": "all" } }'
+const fn: () => Promise<boolean> | true = () => Promise.resolve(false);
+if (fn()) {
+  // Do something
+}
+
+const val = Promise.resolve(true) as Promise<boolean> | boolean;
+if (val) {
+  // Do something
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "checksConditionals": { "flagUnions": "all" } }'
+const fn: () => Promise<boolean> | true = () => Promise.resolve({});
+if (await fn()) {
+  // Do something
+}
+
+const val: Promise<boolean> | boolean = Promise.resolve(true);
+if (await val) {
   // Do something
 }
 ```
