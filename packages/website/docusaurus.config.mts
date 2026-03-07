@@ -11,8 +11,8 @@ import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import { version } from '@typescript-eslint/parser/package.json';
 
 import { blogFooter } from './plugins/blog-footer';
-import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { faqData } from './plugins/faq-data';
+import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';
 
 const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];

@@ -1,6 +1,8 @@
 import type { Plugin } from 'unified';
-import { toString } from 'mdast-util-to-string';
+
 import * as acorn from 'acorn';
+import { toString } from 'mdast-util-to-string';
+
 import { nodeIsHeading, nodeIsParent } from '../utils/nodes';
 
 const faqPages = [
@@ -23,12 +25,10 @@ export const faqData: Plugin = () => (root, file) => {
     '@type': 'FAQPage',
     mainEntity: allQs.map(q => ({
       '@type': 'Question',
-      name: toString(q),
       acceptedAnswer: {
         '@type': 'Answer',
-        text:
-          toString(root.children[root.children.indexOf(q) + 1]) +
-          '\n\nRead more on our website!',
+        name: toString(q),
+        text: `${toString(root.children[root.children.indexOf(q) + 1])} Read more on our website!`,
       },
     })),
   };
@@ -37,41 +37,40 @@ export const faqData: Plugin = () => (root, file) => {
     .replaceAll('`', '\\`')
     .replaceAll('${', '\\${');
   const headElem = {
-    type: 'mdxJsxFlowElement',
-    name: 'Head',
     attributes: [],
     children: [
       {
-        type: 'mdxJsxFlowElement',
-        name: 'script',
         attributes: [
           {
-            type: 'mdxJsxAttribute',
             name: 'type',
+            type: 'mdxJsxAttribute',
             value: 'application/ld+json',
           },
         ],
         children: [
           {
-            type: 'mdxFlowExpression',
-            value: `\`${dataStr}\``,
             data: {
               estree: acorn.parse(`\`${dataStr}\``, {
                 ecmaVersion: 'latest',
                 sourceType: 'module',
               }),
             },
+            type: 'mdxFlowExpression',
+            value: `\`${dataStr}\``,
           },
         ],
         data: {
           _mdxExplicitJsx: true,
         },
+        name: 'script',
+        type: 'mdxJsxFlowElement',
       },
     ],
     data: {
       _mdxExplicitJsx: true,
     },
+    name: 'Head',
+    type: 'mdxJsxFlowElement',
   };
-  console.dir(headElem, { depth: null });
   root.children.push(headElem);
 };
